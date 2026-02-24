@@ -165,8 +165,8 @@ def get_background_image(page_type):
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
-def get_home_background_images(limit=3):
-    """Ana səhifə üçün background image-ləri qaytarır (maksimum 3 ədəd)"""
+def get_home_background_images(limit=6):
+    """Ana səhifə hero karuseli üçün background image-ləri qaytarır (maksimum 6 ədəd)"""
     media_list = Media.objects.filter(
         is_home_page_background_image=True,
         image__isnull=False
@@ -450,8 +450,8 @@ def get_home_page_data(request, lang):
     contact = get_contact(lang)
     serialized_contact = serialize_contact(contact, lang) if contact else None
     
-    # Hero carousel üçün 3 ədəd background image
-    hero_background_images = get_home_background_images(limit=3)
+    # Hero carousel üçün 6 ədəd background image
+    hero_background_images = get_home_background_images(limit=6)
     
     # Motto modelindən deviz
     motto = get_motto(lang)
