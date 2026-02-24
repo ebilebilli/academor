@@ -111,8 +111,8 @@ section {
 # Breadcrumbs
 --------------------------------------------------------------*/
 .breadcrumbs {
-  padding: 140px 0 60px 0;
-  min-height: 30vh;
+  padding: 160px 0 80px 0;
+  min-height: 45vh;
   position: relative;
   background-size: cover;
   background-position: center;
@@ -257,8 +257,10 @@ section {
 --------------------------------------------------------------*/
 .header {
   z-index: 997;
-  position: absolute;
-  padding: 30px 0;
+  position: fixed;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 12px 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
   top: 0;
   left: 0;
   right: 0;
@@ -267,10 +269,18 @@ section {
 .header .logo img {
   width: 105px;
   height: 105px;
-  border-radius: 50%;
+  border-radius: 0;
   object-fit: contain;
-  padding: 5px;
+  padding: 0;
   margin-right: 6px;
+}
+
+/* Desktop: smaller logo in fixed header */
+@media (min-width: 1280px) {
+  .header .logo img {
+    width: 70px;
+    height: 70px;
+  }
 }
 
 .header .logo h1 {
@@ -326,13 +336,14 @@ section {
     font-family: var(--font-primary);
     font-size: 16px;
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.6);
+    color: #333333;
     text-transform: capitalize;
     white-space: nowrap;
     transition: 0.3s;
     position: relative;
   }
-/* Scroll olduqda header fonu açıq olsun */
+
+  /* Scroll olduqda header fonu açıq olsun */
 
   .navbar a i,
   .navbar a:focus i {
@@ -372,7 +383,7 @@ section {
   .navbar>ul>li.dropdown-closed>a:hover,
   .navbar>ul>li.dropdown-closed:hover>a,
   .navbar>ul>li.dropdown-closed>a.active {
-    color: rgba(255, 255, 255, 0.6) !important;
+    color: #333333 !important;
   }
 
   .navbar>ul>li.dropdown-closed>a .dropdown-indicator,
@@ -392,7 +403,7 @@ section {
   .navbar .active,
   .navbar .active:focus,
   .navbar li:hover>a {
-    color: #fff;
+    color: var(--color-primary);
   }
 
   .navbar>ul>li.dropdown-closed:hover>a {
@@ -607,7 +618,7 @@ section {
 
   .mobile-nav-show {
     position: relative;
-    color: #fff;
+    color: #000;
     font-size: 28px;
     cursor: pointer;
     line-height: 0;
@@ -617,7 +628,7 @@ section {
   }
 
   .mobile-nav-hide {
-    color: #fff;
+    color: #000;
     font-size: 32px;
     cursor: pointer;
     line-height: 0;
