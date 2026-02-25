@@ -1,9 +1,15 @@
 from django import forms
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from projects.models import AppealVacancy, AppealContact
 
 
 class AppealForm(forms.ModelForm):
+    website = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(),
+        label='',
+    )
     full_name = forms.CharField(
         widget=forms.TextInput(attrs={
             'class': 'form-control',
@@ -57,8 +63,19 @@ class AppealForm(forms.ModelForm):
             'cv'
         ]
 
+    def clean_website(self):
+        value = self.cleaned_data.get('website')
+        if value:
+            raise ValidationError(_('Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.'))
+        return value
+
 
 class AppealContactForm(forms.ModelForm):
+    website = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(),
+        label='',
+    )
     full_name = forms.CharField(
         widget=forms.TextInput(attrs={
             'class': 'form-control',
@@ -103,4 +120,9 @@ class AppealContactForm(forms.ModelForm):
             'subject',
             'info'
         ]
-    
+
+    def clean_website(self):
+        value = self.cleaned_data.get('website')
+        if value:
+            raise ValidationError(_('Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.'))
+        return value

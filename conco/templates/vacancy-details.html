@@ -210,6 +210,7 @@
                 </style>
                 <form method="post" action="{% url 'projects:vacancy-detail' slug=vacancy.slug %}" enctype="multipart/form-data">
                   {% csrf_token %}
+                  {{ form.website }}
                   <div class="row">
 
                     <div class="col-md-6 form-group mb-3">

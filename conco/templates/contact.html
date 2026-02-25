@@ -194,6 +194,7 @@
             {% if form %}
             <form method="post" action="{% url 'projects:contact-page' %}" role="form" class="php-email-form" data-django-form="true">
               {% csrf_token %}
+              {{ form.website }}
               <div class="row gy-4">
                 <div class="col-lg-6 form-group">
                   {{ form.full_name }}
