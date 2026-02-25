@@ -6,6 +6,7 @@ from .project_models import Project
 from .partner_models import Partner
 from .about_models import About
 from .vacancy_models import Vacancy
+from .service_models import Service
 
 logger = logging.getLogger(__name__)
 
@@ -43,6 +44,14 @@ class Media(models.Model):
         blank=True,
         verbose_name='Vakansiyalar'
     )
+    service = models.ForeignKey(
+        Service,
+        related_name='medias',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        verbose_name='Servislər'
+    )
     image = models.ImageField(
         upload_to='images/',  
         verbose_name='Şəkil'
@@ -72,6 +81,10 @@ class Media(models.Model):
     is_vacany_page_background_image = models.BooleanField(
         default=False,
         verbose_name='Vakansiya səhifəsi üçün arxa plan şəkli'
+    )
+    is_service_page_background_image = models.BooleanField(
+        default=False,
+        verbose_name='Servis səhifəsi üçün arxa plan şəkli'
     )
     is_footer_background_image = models.BooleanField(
         default=False,

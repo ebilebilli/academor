@@ -25,6 +25,7 @@ class MediaAdmin(admin.ModelAdmin):
         'is_contact_page_background_image',
         'is_project_page_background_image',
         'is_vacany_page_background_image',
+        'is_service_page_background_image',
         'is_footer_background_image',
         'created_at',
     )
@@ -41,6 +42,7 @@ class MediaAdmin(admin.ModelAdmin):
                 'is_contact_page_background_image',
                 'is_project_page_background_image',
                 'is_vacany_page_background_image',
+                'is_service_page_background_image',
                 'is_footer_background_image',
             ),
         }),
@@ -54,12 +56,13 @@ class MediaAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        return qs.filter(
+        return         qs.filter(
             models.Q(is_home_page_background_image=True) |
             models.Q(is_about_page_background_image=True) |
             models.Q(is_contact_page_background_image=True) |
             models.Q(is_project_page_background_image=True) |
-            models.Q(is_vacany_page_background_image=True)  |
+            models.Q(is_vacany_page_background_image=True) |
+            models.Q(is_service_page_background_image=True) |
             models.Q(is_footer_background_image=True)
         )
 
@@ -93,6 +96,8 @@ class MediaAdmin(admin.ModelAdmin):
             flags.append("📁 Layihələr səhifəsi")
         if obj.is_vacany_page_background_image:
             flags.append("💼 Vakansiyalar səhifəsi")
+        if obj.is_service_page_background_image:
+            flags.append("🛠️ Xidmətlər səhifəsi")
         if obj.is_footer_background_image:
             flags.append("🖼️ Websiten-ın aşağı hissəsi üçün")
         return " | ".join(flags) if flags else "-"
@@ -189,7 +194,19 @@ class MediaInlineAbout(MediaInlineBase):
 
 class MediaInlineVacancy(MediaInlineBase):
     max_num = 1
-    fields = ('image', 'thumbnail_preview', 'created_at')  
+    fields = ('image', 'thumbnail_preview', 'created_at')
+
+
+class MediaInlineService(MediaInlineBase):
+    fk_name = 'service'
+    max_num = 1
+    fields = ('image', 'thumbnail_preview', 'created_at')
+    extra = 0
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.select_related('service')
+
 
 # Project Category 
 @admin.register(ProjectCategory)
@@ -509,6 +526,57 @@ class AboutAdmin(admin.ModelAdmin):
             return obj.updated_at.strftime('%d.%m.%Y %H:%M') if obj.updated_at else "-"
         return "-"
     updated_info.short_description = "Son Yenilənmə"
+
+
+# Service (Xidmətlər)
+@admin.register(Service)
+class ServiceAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title_link', 'media_count', 'active_status', 'created_at')
+    list_display_links = ('id',)
+    list_filter = ('is_active', 'created_at')
+    search_fields = ('title_az', 'title_en', 'title_ru', 'description_az', 'description_en', 'description_ru')
+    inlines = [MediaInlineService]
+    list_per_page = 25
+
+    fieldsets = (
+        ('Azərbaycan', {
+            'fields': ('title_az', 'description_az')
+        }),
+        ('English', {
+            'fields': ('title_en', 'description_en')
+        }),
+        ('Русский', {
+            'fields': ('title_ru', 'description_ru')
+        }),
+        ('Link', {
+            'fields': ('url',),
+            'description': 'Ətraflı düyməsi bu URL-ə keçid edər. Boş buraxılsa düymə göstərilməz.'
+        }),
+        ('Status', {
+            'fields': ('is_active',)
+        }),
+    )
+
+    def title_link(self, obj):
+        url = reverse('admin:projects_service_change', args=[obj.pk])
+        title = obj.title_az or 'Xidmət'
+        return format_html('<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; font-size: 14px;">🔗 {}</a>', url, title)
+    title_link.short_description = "Ad (AZ)"
+    title_link.admin_order_field = 'title_az'
+
+    def media_count(self, obj):
+        count = obj.medias.count()
+        if count > 0:
+            return format_html('<span style="background: #007bff; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px;">📷 {} şəkil</span>', count)
+        return "📷 0 şəkil"
+    media_count.short_description = "Medialar"
+
+    def active_status(self, obj):
+        if obj.is_active:
+            return format_html('<span style="background: #28a745; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">✓ Aktiv</span>')
+        return format_html('<span style="background: #dc3545; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">✗ Deaktiv</span>')
+    active_status.short_description = "Status"
+
 
 # Contact 
 @admin.register(Contact)

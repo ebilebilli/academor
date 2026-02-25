@@ -14,7 +14,8 @@ from projects.utils.queries import (
     get_about, serialize_about, get_partners, serialize_partner,
     get_contact, serialize_contact, get_vacancy_list_data,
     get_vacancy_by_slug, serialize_vacancy, get_statistics,
-    get_project_categories, serialize_project_category
+    get_project_categories, serialize_project_category,
+    get_services, serialize_service,
 )
 
 
@@ -113,6 +114,30 @@ class AboutPageView(View):
             'footer_image': get_background_image('footer'),
         }
 
+        return render(request, self.template_name, context)
+
+
+class ServicesPageView(View):
+    template_name = 'services.html'
+
+    def get(self, request):
+        lang = get_language_from_request(request)
+        contact = get_contact(lang)
+        categories = get_project_categories(lang)
+        serialized_categories = [
+            serialize_project_category(category, lang)
+            for category in categories
+        ]
+        services = get_services(lang=lang, is_active=True)
+        serialized_services = [serialize_service(s, lang) for s in services]
+        context = {
+            'contact': serialize_contact(contact, lang) if contact else None,
+            'categories': serialized_categories,
+            'services': serialized_services,
+            'language': lang,
+            'background_image': get_background_image('service'),
+            'footer_image': get_background_image('footer'),
+        }
         return render(request, self.template_name, context)
 
 

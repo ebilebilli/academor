@@ -15,7 +15,8 @@ from projects.models import (
     Contact, 
     Media,
     Motto, 
-    Statistic
+    Statistic,
+    Service,
 )
 
 
@@ -93,6 +94,13 @@ def invalidate_contact_cache(sender, instance, **kwargs):
     invalidate_model_cache('Contact')
 
 
+@receiver(post_save, sender=Service)
+@receiver(post_delete, sender=Service)
+def invalidate_service_cache(sender, instance, **kwargs):
+    """Invalidate cache when Service is saved or deleted."""
+    invalidate_model_cache('Service')
+
+
 @receiver(post_save, sender=Media)
 @receiver(post_delete, sender=Media)
 def invalidate_media_cache(sender, instance, **kwargs):
@@ -111,6 +119,8 @@ def invalidate_media_cache(sender, instance, **kwargs):
         invalidate_model_cache('About')
     if getattr(instance, 'vacancy_id', None):
         invalidate_model_cache('Vacancy')
+    if getattr(instance, 'service_id', None):
+        invalidate_model_cache('Service')
     
     # If media is a background image for home page, invalidate home page cache
     if instance.is_home_page_background_image:

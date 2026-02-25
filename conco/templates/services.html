@@ -5,46 +5,11 @@
 
 <head>
   <meta charset="utf-8">
-
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>{% trans "CONCO | Tikinti, Təmir və Layihələndirmə Şirkəti" %}</title>
-  <meta name="description" content="{% trans "CONCO tikinti şirkəti Bakıda yüksək keyfiyyətli tikinti, təmir, interyer dizayn və layihələndirmə xidmətləri təklif edir. Peşəkar mühəndislik və inşaat həlləri." %}">
-  <meta name="keywords" content="{% trans "tikinti şirkəti, bakida temir, insaat sirketi, layihələndirmə, dizayn, ev tikintisi, ofis təmiri, conco az" %}">
+  <title>{% trans "Xidmətlər" %} | {% trans "CONCO" %}</title>
+  <meta name="description" content="{% trans "CONCO tikinti şirkəti Bakıda yüksək keyfiyyətli tikinti, təmir, interyer dizayn və layihələndirmə xidmətləri təklif edir." %}">
   <meta name="author" content="CONCO Construction">
-  <link rel="canonical" href="https://www.conco.az"/>
-
-  <meta property="og:title" content="{% trans "CONCO | Tikinti və Təmir Şirkəti" %}"/>
-  <meta property="og:description" content="{% trans "Peşəkar tikinti, təmir və dizayn xidmətləri. Xəyallarınızdakı məkanı bizimlə reallaşdırın." %}"/>
-  <meta property="og:image" content="https://www.conco.az{% static 'assets/img/my_logo.png' %}">
-  
-  <meta property="og:image:width" content="1200"/>
-  <meta property="og:image:height" content="630"/>
-  <meta property="og:url" content="https://www.conco.az"/>
-  <meta property="og:site_name" content="CONCO Construction"/>
-  <meta property="og:type" content="website"/>
-
-  <meta name="twitter:card" content="summary_large_image"/>
-  <meta name="twitter:title" content="{% trans "CONCO | Tikinti və Təmir Şirkəti" %}"/>
-  <meta name="twitter:description" content="{% trans "Bakıda peşəkar tikinti və təmir xidmətləri. Keyfiyyət və zəmanət." %}"/>
-  <meta name="twitter:image" content="https://www.conco.az{% static 'assets/img/my_logo.png' %}"/>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ConstructionBusiness", 
-    "name": "CONCO",
-    "url": "https://www.conco.az",
-    "logo": "https://www.conco.az{% static 'assets/img/my_logo.png' %}",
-    "description": "{% trans "Bakıda peşəkar tikinti, təmir və layihələndirmə xidmətləri." %}",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Bakı",
-      "addressCountry": "AZ"
-    },
-    "openingHours": "Mo-Sa 09:00-18:00",
-    "priceRange": "$$"
-  }
-  </script>
+  <link rel="canonical" href="https://www.conco.az/services/"/>
 
   <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
   <link href="{% static 'assets/img/my_logo.png' %}" rel="apple-touch-icon">
@@ -59,9 +24,7 @@
   <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
   <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
   <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
-
   <link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
-
 </head>
 
 <body>
@@ -69,18 +32,15 @@
   <!-- ======= Header ======= -->
   <header id="header" class="header d-flex align-items-center">
     <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
-
       <a href="{% url 'projects:home-page' %}" class="logo d-flex align-items-center justify-content-center">
         <img src="{% static 'assets/img/favicon.png' %}" alt="Logo" class="logo-img">
       </a>
-
       <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
       <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
-      <nav id="navbar" class="navbar " >
+      <nav id="navbar" class="navbar">
         <ul>
           <li><a href="{% url 'projects:home-page' %}">{% trans "Ana səhifə" %}</a></li>
-          <li class="dropdown"><a href="#" ><span>{% trans "Layihələr" %}</span> <i
-                class="bi bi-chevron-down dropdown-indicator"></i></a>
+          <li class="dropdown"><a href="#"><span>{% trans "Layihələr" %}</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
             <ul>
               {% for category in categories %}
               <li><a href="{% url 'projects:project-page' %}?slug={{ category.slug }}">{{ category.name }}</a></li>
@@ -93,15 +53,15 @@
           <li><a href="{% url 'projects:services-page' %}">{% trans "Xidmətlər" %}</a></li>
           <li><a href="{% url 'projects:vacancy-page' %}">{% trans "Vakansiyalar" %}</a></li>
           <li><a href="{% url 'projects:contact-page' %}">{% trans "Əlaqə" %}</a></li>
-          <li class="dropdown"><a href="#"><span>{% if language %}{{ language|upper }}{% else %}AZ{% endif %}</span> 
-                {% if language == 'az' or not language %}
-                <img src="{% static 'assets/img/azerbaijan.png' %}" alt="AZ" style="width: 18px; height: 17px; margin-left: 5px; vertical-align: middle;">
-                {% elif language == 'en' %}
-                <img src="{% static 'assets/img/united-kingdom.png' %}" alt="EN" style="width: 18px; height: 17px; margin-left: 5px; vertical-align: middle;">
-                {% elif language == 'ru' %}
-                <img src="{% static 'assets/img/russia.png' %}" alt="RU" style="width: 18px; height: 17px; margin-left: 5px; vertical-align: middle;">
-                {% endif %}
-                <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+          <li class="dropdown"><a href="#"><span>{% if language %}{{ language|upper }}{% else %}AZ{% endif %}</span>
+            {% if language == 'az' or not language %}
+            <img src="{% static 'assets/img/azerbaijan.png' %}" alt="AZ" style="width: 18px; height: 17px; margin-left: 5px; vertical-align: middle;">
+            {% elif language == 'en' %}
+            <img src="{% static 'assets/img/united-kingdom.png' %}" alt="EN" style="width: 18px; height: 17px; margin-left: 5px; vertical-align: middle;">
+            {% elif language == 'ru' %}
+            <img src="{% static 'assets/img/russia.png' %}" alt="RU" style="width: 18px; height: 17px; margin-left: 5px; vertical-align: middle;">
+            {% endif %}
+            <i class="bi bi-chevron-down dropdown-indicator"></i></a>
             <ul>
               <li><a href="#" class="lang-option" data-lang="az">AZ <img src="{% static 'assets/img/azerbaijan.png' %}" alt="AZ" style="width: 18px; height: 17px; margin-left: 5px; vertical-align: middle;"></a></li>
               <li><a href="#" class="lang-option" data-lang="en">EN <img src="{% static 'assets/img/united-kingdom.png' %}" alt="EN" style="width: 18px; height: 17px; margin-left: 5px; vertical-align: middle;"></a></li>
@@ -109,129 +69,75 @@
             </ul>
           </li>
         </ul>
-      </nav><!-- .navbar -->
-
+      </nav>
     </div>
-  </header><!-- End Header -->
+  </header>
 
   <main id="main">
 
     <!-- ======= Breadcrumbs ======= -->
     <div class="breadcrumbs d-flex align-items-center" style="background-image: url('{% if background_image %}{{ background_image }}{% else %}{% static 'assets/img/breadcrumbs-bg.jpg' %}{% endif %}');">
       <div class="container position-relative d-flex flex-column align-items-center" data-aos="fade">
-
-        <!-- <h2>{% trans "Vakansiyalar" %}</h2>
-        <ol>
-          <li><a href="{% url 'projects:home-page' %}">{% trans "Ana səhifə" %}</a></li>
-          <li>{% trans "Vakansiyalar" %}</li>
-        </ol> -->
-
       </div>
-    </div><!-- End Breadcrumbs -->
+    </div>
 
-
-    <!-- ======= Vakansiyalar Section ======= -->
-    <section id="recent-blog-posts" class="recent-blog-posts">
+    <!-- ======= Services Section – alternating cards (dynamic) ======= -->
+    <section id="services" class="services section-bg">
       <div class="container" data-aos="fade-up">
-
-    
-    
-        <div class=" section-header">
-          <h2>{% trans "Bütün vakansiyalar" %}</h2>
+        <div class="section-header">
+          <h2>{% trans "Xidmətlər" %}</h2>
         </div>
 
-        <div class="row gy-5">
-          {% for vacancy in vacancies %}
-          <div class="col-xl-4 col-md-6 col-6" data-aos="fade-up" data-aos-delay="100">
-            <div class="post-item position-relative h-100">
-
-              <div class="post-img position-relative overflow-hidden">
-                {% if vacancy.image %}
-                <img src="{{ vacancy.image }}" class="img-fluid" alt="{{ vacancy.title }}">
-                {% else %}
-                <img src="{% static 'assets/img/blog/blog-1.jpg' %}" class="img-fluid" alt="{{ vacancy.title }}">
-                {% endif %}
-                <span class="post-date">{{ vacancy.created_at|date:"d M Y" }}</span>
-              </div>
-
-              <div class="post-content d-flex flex-column">
-
-                <h3 class="post-title">{{ vacancy.title }}</h3>
-
-                <hr>
-
-                <a href="{% url 'projects:vacancy-detail' slug=vacancy.slug %}" class="readmore stretched-link"><span>{% trans "Ətraflı" %}</span><i
-                    class="bi bi-arrow-right"></i></a>
-
-              </div>
-
-            </div>
-          </div><!-- End post item -->
-          {% empty %}
-          <div class="col-12">
-            <p>{% trans "Vakansiya tapılmadı." %}</p>
+        {% for service in services %}
+        <div class="service-card {% if forloop.counter0|divisibleby:2 %}service-card--image-left{% else %}service-card--image-right{% endif %}" data-aos="fade-up" data-aos-delay="{% widthratio forloop.counter0 1 80 %}">
+          {% if forloop.counter0|divisibleby:2 %}
+          <div class="service-card__image" style="background-image: url('{% if service.image %}{{ service.image }}{% else %}{% static 'assets/img/features-1.jpg' %}{% endif %}');"></div>
+          <div class="service-card__body">
+            <h3 class="service-card__title">{{ service.title }}</h3>
+            {% if service.description %}<p class="service-card__description">{{ service.description|truncatechars:800 }}</p>{% endif %}
+            {% if service.url %}<a href="{{ service.url }}" class="service-card__link" target="_blank" rel="noopener noreferrer">{% trans "Ətraflı" %} <i class="bi bi-arrow-right"></i></a>{% endif %}
           </div>
-          {% endfor %}
-
+          {% else %}
+          <div class="service-card__body">
+            <h3 class="service-card__title">{{ service.title }}</h3>
+            {% if service.description %}<p class="service-card__description">{{ service.description|truncatechars:800 }}</p>{% endif %}
+            {% if service.url %}<a href="{{ service.url }}" class="service-card__link" target="_blank" rel="noopener noreferrer">{% trans "Ətraflı" %} <i class="bi bi-arrow-right"></i></a>{% endif %}
+          </div>
+          <div class="service-card__image" style="background-image: url('{% if service.image %}{{ service.image }}{% else %}{% static 'assets/img/features-1.jpg' %}{% endif %}');"></div>
+          {% endif %}
         </div>
+        {% empty %}
+        <p class="text-center text-muted">{% trans "Xidmət tapılmadı." %}</p>
+        {% endfor %}
 
       </div>
     </section>
-    <!-- End Recent Blog Posts Section -->
 
-  </main><!-- End #main -->
+  </main>
 
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer" {% if footer_image %}style="background-image: url('{{ footer_image }}');"{% endif %}>
-
     <div class="footer-content position-relative">
       <div class="container">
         <div class="row">
-          <!-- Əsas -->
           {% if contact %}
           <div class="col-lg-4 col-md-4">
             <div class="footer-info footer-links">
               <h3>{% trans "Əlaqə" %}</h3>
               <ul>
-                {% if contact.address %}
-                <li>{{ contact.address }}</li>
-                {% endif %}
-                {% if contact.phone %}
-                <li>
-                  <a href="tel:{{ contact.phone }}">📞 {% trans "Zəng et" %}: {{ contact.phone }}</a>
-                </li>
-                {% endif %}
-                {% if contact.whatsapp_number %}
-                <li>
-                  <a href="https://wa.me/{{ contact.whatsapp_number }}" target="_blank">
-                    💬 Whatsapp: {{ contact.whatsapp_number }}
-                  </a>
-                </li>
-                {% endif %}
-                {% if contact.email %}
-                <li>
-                  <a href="mailto:{{ contact.email }}">✉️ {{ contact.email }}</a>
-                </li>
-                {% endif %}
+                {% if contact.address %}<li>{{ contact.address }}</li>{% endif %}
+                {% if contact.phone %}<li><a href="tel:{{ contact.phone }}">📞 {% trans "Zəng et" %}: {{ contact.phone }}</a></li>{% endif %}
+                {% if contact.whatsapp_number %}<li><a href="https://wa.me/{{ contact.whatsapp_number }}" target="_blank">💬 {% trans "Whatsapp" %}: {{ contact.whatsapp_number }}</a></li>{% endif %}
+                {% if contact.email %}<li><a href="mailto:{{ contact.email }}">✉️ {{ contact.email }}</a></li>{% endif %}
               </ul>
-
               <div class="social-links d-flex mt-3">
-                {% if contact.facebook %}
-                <a href="{{ contact.facebook }}" target="_blank" class="d-flex align-items-center justify-content-center"><i class="bi bi-facebook"></i></a>
-                {% endif %}
-                {% if contact.instagram %}
-                <a href="{{ contact.instagram }}" target="_blank" class="d-flex align-items-center justify-content-center"><i class="bi bi-instagram"></i></a>
-                {% endif %}
-                {% if contact.linkedn %}
-                <a href="{{ contact.linkedn }}" target="_blank" class="d-flex align-items-center justify-content-center"><i class="bi bi-linkedin"></i></a>
-                {% endif %}
+                {% if contact.facebook %}<a href="{{ contact.facebook }}" target="_blank" class="d-flex align-items-center justify-content-center"><i class="bi bi-facebook"></i></a>{% endif %}
+                {% if contact.instagram %}<a href="{{ contact.instagram }}" target="_blank" class="d-flex align-items-center justify-content-center"><i class="bi bi-instagram"></i></a>{% endif %}
+                {% if contact.linkedn %}<a href="{{ contact.linkedn }}" target="_blank" class="d-flex align-items-center justify-content-center"><i class="bi bi-linkedin"></i></a>{% endif %}
               </div>
             </div>
           </div>
           {% endif %}
-
-
-
           <div class="col-lg-4 col-md-4">
             <div class="footer-info footer-links">
               <h3>{% trans "Əsas" %}</h3>
@@ -244,8 +150,6 @@
               </ul>
             </div>
           </div>
-
-
           <div class="col-lg-4 col-md-4">
             <div class="footer-info footer-links">
               <h3>{% trans "Layihələr" %}</h3>
@@ -258,30 +162,21 @@
               </ul>
             </div>
           </div>
-
-
         </div>
       </div>
     </div>
-
     <div class="footer-legal text-center position-relative danger">
       <div class="container">
         <div class="copyright">
           &copy; <strong><span>{% autoescape off %}{% blocktrans trimmed %}<a href="https://digiboom.az/" target="_blank" rel="noopener noreferrer">Digiboom.az</a> tərəfindən hazırlanmışdır.{% endblocktrans %}{% endautoescape %}</span></strong>
         </div>
-
       </div>
     </div>
-
   </footer>
-  <!-- End Footer -->
 
-  <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i
-      class="bi bi-arrow-up-short"></i></a>
-
+  <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
   <div id="preloader"></div>
 
-  <!-- Vendor JS Files -->
   <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
   <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
@@ -289,10 +184,6 @@
   <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
   <script src="{% static 'assets/vendor/purecounter/purecounter_vanilla.js' %}"></script>
   <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
-
-  <!-- Template Main JS File -->
   <script src="{% static 'assets/js/main.js' %}"></script>
-
 </body>
-
 </html>

@@ -5,6 +5,7 @@ from projects.views.views_v1 import (
     ProjectPageView,
     ProjectDetailPageView,
     AboutPageView,
+    ServicesPageView,
     ContactPageView,
     VacancyPageView,
     VacancyDetailPageView,
@@ -33,6 +34,11 @@ urlpatterns = [
         'about/', 
         AboutPageView.as_view(), 
         name='about-page'
+    ),
+    path(
+        'services/', 
+        ServicesPageView.as_view(), 
+        name='services-page'
     ),
     path(
         'contact/', 

@@ -2572,7 +2572,7 @@ section {
   flex-wrap: nowrap;
   min-height: 100vh;
   width: max-content;
-  animation: hero-flow 45s linear infinite;
+  animation: hero-flow 26s linear infinite;
 }
 
 .hero-flow-item {
@@ -3397,6 +3397,536 @@ section {
   padding-top: 30px;
   border-top: 1px solid var(--color-primary);
   color: #fff;
+}
+
+/*--------------------------------------------------------------
+# Services Page – alternating cards (image left/right)
+--------------------------------------------------------------*/
+#services.services {
+  padding: 72px 0 88px;
+  background: linear-gradient(180deg, #f8f9fa 0%, #f0f2f4 100%);
+}
+
+#services.services .section-header {
+  padding-bottom: 50px;
+}
+
+#services.services .section-header h2 {
+  letter-spacing: 0.02em;
+}
+
+#services.services .section-header h2:before,
+#services.services .section-header h2:after {
+  width: 60px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.service-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  background: #fff;
+  box-shadow: 0 4px 24px rgba(46, 49, 53, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+  margin-bottom: 40px;
+  overflow: hidden;
+  border-radius: 12px;
+  height: 300px;
+  min-height: 300px;
+  max-height: 300px;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  border: 1px solid rgba(46, 49, 53, 0.06);
+}
+
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(46, 49, 53, 0.12), 0 4px 12px rgba(0, 0, 0, 0.06);
+  border-color: rgba(254, 185, 0, 0.2);
+}
+
+.service-card:last-child {
+  margin-bottom: 0;
+}
+
+.service-card__image {
+  flex: 0 0 25%;
+  width: 25%;
+  height: 300px;
+  min-height: 300px;
+  max-height: 300px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.5s ease;
+}
+
+.service-card:hover .service-card__image {
+  transform: scale(1.05);
+}
+
+.service-card__image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(254, 185, 0, 0.08) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.service-card:hover .service-card__image::after {
+  opacity: 1;
+}
+
+.service-card__body {
+  flex: 0 0 75%;
+  width: 75%;
+  height: 300px;
+  min-height: 300px;
+  max-height: 300px;
+  padding: 32px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.service-card__title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #2e3135;
+  margin-bottom: 12px;
+  font-family: var(--font-primary);
+  flex-shrink: 0;
+  position: relative;
+  padding-bottom: 10px;
+  transition: color 0.25s ease;
+}
+
+.service-card__title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 40px;
+  height: 3px;
+  background: var(--color-primary);
+  border-radius: 2px;
+  transition: width 0.35s ease;
+}
+
+.service-card:hover .service-card__title {
+  color: #1e3c4a;
+}
+
+.service-card:hover .service-card__title::after {
+  width: 56px;
+}
+
+.service-card__description {
+  color: #4a4e54;
+  line-height: 1.65;
+  margin-bottom: 14px;
+  font-size: 16px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  line-clamp: 5;
+}
+
+.service-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  padding: 10px 24px;
+  font-size: 15px;
+  background: var(--color-primary);
+  color: #1e3c4a;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.25s ease, box-shadow 0.3s ease;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(254, 185, 0, 0.35);
+}
+
+.service-card__link:hover {
+  background: #ffc732;
+  color: #1e3c4a;
+  transform: translateX(4px);
+  box-shadow: 0 4px 14px rgba(254, 185, 0, 0.45);
+}
+
+.service-card__link i {
+  font-size: 14px;
+  transition: transform 0.25s ease;
+}
+
+.service-card__link:hover i {
+  transform: translateX(3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .service-card,
+  .service-card__image,
+  .service-card__title::after,
+  .service-card__link,
+  .service-card__link i {
+    transition: none;
+  }
+  .service-card:hover {
+    transform: none;
+  }
+  .service-card:hover .service-card__image {
+    transform: none;
+  }
+  .service-card:hover .service-card__image::after {
+    opacity: 0;
+  }
+  .service-card__link:hover {
+    transform: none;
+  }
+  .service-card__link:hover i {
+    transform: none;
+  }
+}
+
+/* Card 1, 3: image LEFT, content RIGHT – ad və mətn soldan, düymə sağda */
+.service-card--image-left {
+  flex-direction: row;
+}
+
+.service-card--image-left .service-card__body {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.service-card--image-left .service-card__title,
+.service-card--image-left .service-card__description {
+  width: 100%;
+  text-align: left;
+}
+
+.service-card--image-left .service-card__link {
+  align-self: flex-end;
+}
+
+/* Card 2, 4: content LEFT, image RIGHT – şablonda body əvvəl, image sonra; row ilə body=sol, image=sağ */
+.service-card--image-right {
+  flex-direction: row;
+}
+
+.service-card--image-right .service-card__body {
+  align-items: flex-start;
+  text-align: left;
+  justify-content: flex-start;
+}
+
+/* Reverse kartda ad və təsvir soldan eyni başlanğıc xəttindən başlasın (body padding-in daxilində) */
+.service-card--image-right .service-card__title,
+.service-card--image-right .service-card__description {
+  width: 100%;
+  max-width: 100%;
+  text-align: left;
+  margin-left: 0;
+  margin-right: 0;
+  box-sizing: border-box;
+}
+
+.service-card--image-right .service-card__title {
+  padding-right: 0;
+}
+
+.service-card--image-right .service-card__link {
+  align-self: flex-start;
+}
+
+/* Laptop 1024px – sabit kart, ad/mətn/Ətraflı hamısı görünsün */
+@media (max-width: 1024px) {
+  .service-card {
+    height: 280px;
+    min-height: 280px;
+    max-height: 280px;
+    margin-bottom: 32px;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+  .service-card__image {
+    height: 280px;
+    min-height: 280px;
+    max-height: 280px;
+  }
+  .service-card__body {
+    height: 280px;
+    min-height: 280px;
+    max-height: 280px;
+    padding: 24px 22px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .service-card__title {
+    font-size: 18px;
+    margin-bottom: 8px;
+    flex-shrink: 0;
+    line-height: 1.3;
+  }
+  .service-card__title::after {
+    width: 32px;
+    height: 2px;
+  }
+  .service-card__description {
+    font-size: 14px;
+    margin-bottom: 10px;
+    flex: 1;
+    min-height: 60px;
+    max-height: 100px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    line-clamp: 3;
+    line-height: 1.45;
+  }
+  .service-card__link {
+    padding: 8px 18px;
+    font-size: 13px;
+    flex-shrink: 0;
+    margin-top: auto;
+  }
+  .service-card__link i {
+    font-size: 12px;
+  }
+}
+
+/* Tablet 768px 1024 kimi üfüqi kart; 767 və aşağı – şəkil yuxarıda, mətn altında */
+@media (max-width: 767px) {
+  #services.services .container {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .service-card {
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    overflow: visible;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .service-card__image,
+  .service-card__body {
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    box-sizing: border-box;
+  }
+  .service-card--image-left,
+  .service-card--image-right {
+    flex-direction: column;
+  }
+  /* Hər iki kart tipində şəkil həmişə yuxarıda */
+  .service-card--image-left .service-card__image,
+  .service-card--image-right .service-card__image {
+    min-height: 140px;
+    height: 140px;
+    max-height: 140px;
+    order: 0;
+    flex-shrink: 0;
+  }
+  /* Body həmişə şəkilin altında */
+  .service-card--image-left .service-card__body,
+  .service-card--image-right .service-card__body {
+    order: 1;
+    min-height: 0;
+    height: auto;
+    max-height: none;
+    overflow: visible;
+    align-items: flex-start;
+    text-align: left;
+    padding: 22px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .service-card--image-left .service-card__title,
+  .service-card--image-right .service-card__title,
+  .service-card--image-left .service-card__description,
+  .service-card--image-right .service-card__description {
+    flex: none;
+    min-height: 0;
+    max-height: none;
+    -webkit-line-clamp: unset;
+    line-clamp: unset;
+    overflow: visible;
+    display: block;
+    width: 100%;
+  }
+  /* Mobil/tablet: Ətraflı yalnız sağ altda */
+  .service-card--image-left .service-card__link,
+  .service-card--image-right .service-card__link {
+    margin-top: auto;
+    align-self: flex-end;
+  }
+}
+
+/* Mobil – şəkil yuxarıda, ad + mətn + düymə birbaşa altında, ekrana tam uyğun */
+@media (max-width: 575px) {
+  #services.services {
+    padding: 40px 0 48px;
+    width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+  #services.services .container {
+    max-width: 100%;
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+  }
+  #services.services .section-header {
+    padding-bottom: 24px;
+  }
+  #services.services .section-header h2 {
+    font-size: 22px;
+    text-align: center;
+  }
+  .service-card {
+    margin-bottom: 20px;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    overflow: visible;
+    border-radius: 8px;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .service-card:last-child {
+    margin-bottom: 0;
+  }
+  .service-card__image,
+  .service-card--image-left .service-card__image,
+  .service-card--image-right .service-card__image {
+    order: 0;
+    width: 100%;
+    max-width: 100%;
+    height: 0;
+    min-height: 0;
+    padding-bottom: 56.25%; /* 16:9 enli düzbucaqlı */
+    flex-shrink: 0;
+    background-size: cover;
+    background-position: center;
+    box-sizing: border-box;
+  }
+  .service-card__body,
+  .service-card--image-left .service-card__body,
+  .service-card--image-right .service-card__body {
+    order: 1;
+    width: 100%;
+    max-width: 100%;
+    padding: 16px 12px 18px;
+    min-height: 0;
+    height: auto;
+    overflow: visible;
+    box-sizing: border-box;
+  }
+  .service-card__title {
+    font-size: 17px;
+    margin-bottom: 8px;
+    line-height: 1.35;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  .service-card__title::after {
+    width: 28px;
+    height: 2px;
+  }
+  .service-card__description {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 12px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    -webkit-line-clamp: unset;
+    line-clamp: unset;
+    display: block;
+  }
+  .service-card__link {
+    padding: 10px 18px;
+    font-size: 13px;
+    width: auto;
+    max-width: 100%;
+  }
+  .service-card__link i {
+    font-size: 12px;
+  }
+}
+
+/* Çox kiçik ekranlar (380px və aşağı) – ekrana tam uyğun */
+@media (max-width: 380px) {
+  #services.services {
+    padding: 24px 0 32px;
+  }
+  #services.services .container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  #services.services .section-header {
+    padding-bottom: 18px;
+  }
+  #services.services .section-header h2 {
+    font-size: 20px;
+  }
+  .service-card {
+    margin-bottom: 16px;
+    min-height: 0;
+    border-radius: 6px;
+  }
+  .service-card__image,
+  .service-card--image-left .service-card__image,
+  .service-card--image-right .service-card__image {
+    padding-bottom: 56.25%; /* 16:9 enli düzbucaqlı */
+    height: 0;
+    min-height: 0;
+  }
+  .service-card__body,
+  .service-card--image-left .service-card__body,
+  .service-card--image-right .service-card__body {
+    padding: 12px 10px 14px;
+    min-height: 0;
+  }
+  .service-card__title {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+  .service-card__title::after {
+    width: 24px;
+  }
+  .service-card__description {
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+  .service-card__link {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+  .service-card__link i {
+    font-size: 11px;
+  }
 }
 
 

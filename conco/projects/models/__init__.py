@@ -7,3 +7,4 @@ from .vacancy_models import Vacancy
 from .appeal_models import AppealVacancy, AppealContact
 from .motto_models import Motto
 from .statistic_models import Statistic
+from .service_models import Service
