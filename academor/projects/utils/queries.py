@@ -596,8 +596,7 @@ def get_home_page_data(request, lang):
     }
 
 
-@cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')
-def get_project_list_data(request, lang):
+def _get_project_list_data_impl(request, lang):
     category_slug = request.GET.get('slug')  # category_slug -> slug
     is_completed = request.GET.get('is_completed')
     is_active = request.GET.get('is_active', 'true').lower() == 'true'
@@ -655,6 +654,18 @@ def get_project_list_data(request, lang):
         'background_image': get_background_image('project'),
         'footer_image': get_background_image('footer'),
     }
+
+
+@cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_project_list_data(request, lang):
+    # Backward-compatible name (used by older views/links)
+    return _get_project_list_data_impl(request, lang)
+
+
+@cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_courses_list_data(request, lang):
+    # Preferred name for the new "courses" route/view
+    return _get_project_list_data_impl(request, lang)
 
 
 @cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')

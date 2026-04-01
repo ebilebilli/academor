@@ -60,15 +60,15 @@ from projects.models import (
 
 @receiver(post_save, sender=Service)
 @receiver(post_delete, sender=Service)
-def invalidate_project_cache(sender, instance, **kwargs):
-    """Invalidate cache when Project is saved or deleted."""
+def invalidate_courses_cache(sender, instance, **kwargs):
+    """Invalidate cache when a Course/Project (Service) is saved or deleted."""
     invalidate_model_cache('Service')
 
 
 @receiver(post_save, sender=ServiceCategory)
 @receiver(post_delete, sender=ServiceCategory)
-def invalidate_project_category_cache(sender, instance, **kwargs):
-    """Invalidate cache when ProjectCategory is saved or deleted."""
+def invalidate_course_category_cache(sender, instance, **kwargs):
+    """Invalidate cache when a course category (ServiceCategory) is saved or deleted."""
     invalidate_model_cache('ServiceCategory')
 
 

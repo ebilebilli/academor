@@ -10,6 +10,7 @@ from projects.models import JobApplication, ServiceCategory
 from projects.forms.forms_v1 import AppealForm, ReviewForm
 from projects.utils.queries import (
     get_language_from_request, get_home_page_data, get_project_list_data,
+    get_courses_list_data,
     get_project_by_slug, serialize_project, get_background_image,
     get_about, serialize_about, get_partners, serialize_partner,
     get_contact, serialize_contact, get_vacancy_list_data,
@@ -40,7 +41,7 @@ class CoursesPageView(View):
         if category_slug:
             request.GET = request.GET.copy()
             request.GET['slug'] = category_slug
-        context = get_project_list_data(request, lang)
+        context = get_courses_list_data(request, lang)
         context['background_image'] = get_background_image('project')
         context['footer_image'] = get_background_image('footer')
         context['language'] = lang
@@ -80,7 +81,7 @@ class CourseDetailPageView(View):
             # Bu kateqoriyadır, kateqoriya səhifəsini göstər
             request.GET = request.GET.copy()
             request.GET['slug'] = slug
-            context = get_project_list_data(request, lang)
+            context = get_courses_list_data(request, lang)
             context['background_image'] = get_background_image('project')
             context['footer_image'] = get_background_image('footer')
             context['language'] = lang
@@ -307,7 +308,7 @@ class TeamPageView(View):
 
 
 class ReviewsPageView(View):
-    template_name = 'reviews.html'
+    template_name = 'testimonial.html'
 
     def get(self, request):
         lang = get_language_from_request(request)
