@@ -9,11 +9,11 @@ echo "PostgreSQL is ready!"
 
 # Run migrations
 echo "Running migrations..."
-python conco/manage.py migrate --noinput
+python academor/manage.py migrate --noinput
 
 # Collect static files
 echo "Collecting static files..."
-python conco/manage.py collectstatic --noinput
+python academor/manage.py collectstatic --noinput
 
 # Execute the command passed to the container
 exec "$@"

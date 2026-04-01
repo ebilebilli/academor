@@ -1,0 +1,86 @@
+from django.urls import path
+
+from projects.views.views_v1 import (
+    HomePageView,
+    ProjectPageView,
+    ProjectDetailPageView,
+    AboutPageView,
+    ServicesPageView,
+    ContactPageView,
+    VacancyPageView,
+    VacancyDetailPageView,
+    TeamPageView,
+    ReviewsPageView,
+)
+from projects.views.test_views import TestListPageView, TestTakePageView, TestResultPageView
+
+
+app_name = 'projects'
+
+urlpatterns = [
+    path(
+        '', 
+        HomePageView.as_view(),
+        name='home-page'
+    ),
+    path(
+        'projects/', 
+        ProjectPageView.as_view(), 
+        name='project-page'
+    ),
+    path(
+        'projects/<slug:slug>/', 
+        ProjectDetailPageView.as_view(), 
+        name='project-detail'
+    ),
+    path(
+        'about/', 
+        AboutPageView.as_view(), 
+        name='about-page'
+    ),
+    path(
+        'services/', 
+        ServicesPageView.as_view(), 
+        name='services-page'
+    ),
+    path(
+        'contact/', 
+        ContactPageView.as_view(), 
+        name='contact-page'
+    ),
+    path(
+        'vacancies/', 
+        VacancyPageView.as_view(), 
+        name='vacancy-page'
+    ),
+    path(
+        'vacancies/<slug:slug>/', 
+        VacancyDetailPageView.as_view(), 
+        name='vacancy-detail'
+    ),
+    path(
+        'team/',
+        TeamPageView.as_view(),
+        name='team-page',
+    ),
+    path(
+        'reviews/',
+        ReviewsPageView.as_view(),
+        name='reviews-page',
+    ),
+    path(
+        'tests/',
+        TestListPageView.as_view(),
+        name='tests-page',
+    ),
+    path(
+        'tests/<int:test_id>/',
+        TestTakePageView.as_view(),
+        name='test-take',
+    ),
+    path(
+        'tests/result/<int:result_id>/',
+        TestResultPageView.as_view(),
+        name='test-result',
+    ),
+]   

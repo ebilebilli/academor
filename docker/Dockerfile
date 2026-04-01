@@ -9,8 +9,8 @@ ENV PYTHONUNBUFFERED=1 \
 # Set work directory
 WORKDIR /app
 
-# Set PYTHONPATH to include the conco directory
-ENV PYTHONPATH=/app/conco:$PYTHONPATH
+# Set PYTHONPATH to include the Django project directory
+ENV PYTHONPATH=/app/academor:$PYTHONPATH
 
 # Install system dependencies (gettext əlavə edildi)
 RUN apt-get update && apt-get install -y \
@@ -40,4 +40,4 @@ RUN chmod +x /entrypoint.sh
 EXPOSE 8000
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "1", "--timeout", "120", "--chdir", "conco", "conco.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "1", "--timeout", "120", "--chdir", "academor", "academor.wsgi:application"]

@@ -47,10 +47,10 @@ docker/docker-compose-local.bat
 docker/docker-compose-local.sh
 docker/Dockerfile-local
 docker/entrypoint-local.sh
-conco/conco/settings_local.py
-conco/conco/wsgi_local.py
-docker/conco/media
-docker/conco/staticfiles
+conco/academor/settings_local.py
+conco/academor/wsgi_local.py
+docker/academor/media
+docker/academor/staticfiles
 
 # Local database volumes (if created)
 postgres_data_local/

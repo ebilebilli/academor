@@ -1,10 +1,10 @@
 
-# CONCO
+# ACADEMOR
 
-**CONCO** is the official website for a company offering construction, repair, and design services in Baku. The site presents projects, vacancies, about information, and contact options in three languages: **Azerbaijani**, **English**, and **Russian**.
+**ACADEMOR** is the official website backend for an English Academy / course platform. The site presents courses, instructors, careers, about information, and contact options in three languages: **Azerbaijani**, **English**, and **Russian**.
 
-**Live site:** [conco.az](https://conco.az)  
-**Repository:** [https://github.com/MusfiqEmirov/Conco](https://github.com/MusfiqEmirov/Conco)
+**Live site:** `academor.az`  
+**Repository:** `https://github.com/MusfiqEmirov/Academor`
 
 ---
 
@@ -36,7 +36,7 @@ Create a `.env` file in the project root (or in `docker/` when using Docker Comp
 |----------|--------------------|
 | `SECRET_KEY` | Django secret key (e.g. from `python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"`) |
 | `DEBUG` | `True` for development, `False` for production |
-| `ALLOWED_HOSTS` | Comma-separated hosts, e.g. `localhost,127.0.0.1` or `conco.az,www.conco.az` |
+| `ALLOWED_HOSTS` | Comma-separated hosts, e.g. `localhost,127.0.0.1` or `academor.az,www.academor.az` |
 | `ADMIN_URL` | Secret admin path (e.g. `my-secret-admin/`) ? **required** |
 | `POSTGRES_DB` | PostgreSQL database name |
 | `POSTGRES_USER` | PostgreSQL user |
@@ -57,8 +57,8 @@ Create a `.env` file in the project root (or in `docker/` when using Docker Comp
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/MusfiqEmirov/Conco.git
-   cd Conco
+   git clone https://github.com/MusfiqEmirov/Academor.git
+   cd Academor
    ```
 
 2. **Create `.env`**  
@@ -85,7 +85,7 @@ Create a `.env` file in the project root (or in `docker/` when using Docker Comp
 
 2. **Create a virtual environment and install dependencies**
    ```bash
-   cd Conco
+   cd Academor
    uv venv
    # Windows:
    .venv\Scripts\activate
@@ -119,7 +119,7 @@ Create a `.env` file in the project root (or in `docker/` when using Docker Comp
    ```
    For local settings (e.g. `settings_local`), set:
    ```bash
-   set DJANGO_SETTINGS_MODULE=conco.settings_local
+   set DJANGO_SETTINGS_MODULE=academor.settings_local
    python manage.py runserver
    ```
    (Use `export` on Linux/macOS.)
@@ -131,10 +131,10 @@ Create a `.env` file in the project root (or in `docker/` when using Docker Comp
 1. **Server:** Provision a host with Docker and Docker Compose (or use a PaaS that supports Docker).
 
 2. **Code and env**
-   - Clone the repo: `git clone https://github.com/MusfiqEmirov/Conco.git`
+  - Clone the repo: `git clone https://github.com/MusfiqEmirov/Academor.git`
    - Create a production `.env` (e.g. in `docker/` or where Compose is run) with:
      - `DEBUG=False`
-     - `ALLOWED_HOSTS=conco.az,www.conco.az` (and any other domains)
+    - `ALLOWED_HOSTS=academor.az,www.academor.az` (and any other domains)
      - Strong `SECRET_KEY` and `ADMIN_URL`
      - Production PostgreSQL credentials and `POSTGRES_HOST`/`POSTGRES_PORT` pointing to your DB.
 
