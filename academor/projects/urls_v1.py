@@ -2,8 +2,8 @@ from django.urls import path
 
 from projects.views.views_v1 import (
     HomePageView,
-    ProjectPageView,
-    ProjectDetailPageView,
+    CoursesPageView,
+    CourseDetailPageView,
     AboutPageView,
     ServicesPageView,
     ContactPageView,
@@ -24,14 +24,14 @@ urlpatterns = [
         name='home-page'
     ),
     path(
-        'projects/', 
-        ProjectPageView.as_view(), 
-        name='project-page'
+        'courses/',
+        CoursesPageView.as_view(),
+        name='courses-page'
     ),
     path(
-        'projects/<slug:slug>/', 
-        ProjectDetailPageView.as_view(), 
-        name='project-detail'
+        'courses/<slug:slug>/',
+        CourseDetailPageView.as_view(),
+        name='course-detail'
     ),
     path(
         'about/', 

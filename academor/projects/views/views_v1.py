@@ -32,8 +32,8 @@ class HomePageView(View):
         return render(request, self.template_name, context)
 
 
-class ProjectPageView(View):
-    template_name = 'projects.html'
+class CoursesPageView(View):
+    template_name = 'courses.html'
     
     def get(self, request, category_slug=None):
         lang = get_language_from_request(request)
@@ -47,8 +47,8 @@ class ProjectPageView(View):
         return render(request, self.template_name, context)
 
 
-class ProjectDetailPageView(View):
-    template_name = 'project-details.html'
+class CourseDetailPageView(View):
+    template_name = 'courses.html'
     
     def get(self, request, slug):
         lang = get_language_from_request(request)
@@ -84,7 +84,7 @@ class ProjectDetailPageView(View):
             context['background_image'] = get_background_image('project')
             context['footer_image'] = get_background_image('footer')
             context['language'] = lang
-            return render(request, 'projects.html', context)
+            return render(request, 'courses.html', context)
         except ServiceCategory.DoesNotExist:
             raise Http404(_("Project not found"))
 

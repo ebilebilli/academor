@@ -30,7 +30,7 @@ for f in templates_dir.glob("*.html"):
     repl = {
         'href="index.html"': 'href="{% url \'projects:home-page\' %}"',
         'href="about.html"': 'href="{% url \'projects:about-page\' %}"',
-        'href="courses.html"': 'href="{% url \'projects:project-page\' %}"',
+        'href="courses.html"': 'href="{% url \'projects:courses-page\' %}"',
         'href="team.html"': 'href="{% url \'projects:team-page\' %}"',
         'href="testimonial.html"': 'href="{% url \'projects:reviews-page\' %}"',
         'href="404.html"': 'href="{% url \'projects:home-page\' %}"',
