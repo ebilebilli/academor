@@ -3,7 +3,7 @@ from django.conf import settings
 
 
 class CustomLocaleMiddleware:
-    DEFAULT_LANGUAGE = 'az'
+    DEFAULT_LANGUAGE = 'en'
     LANGUAGES = {
         'az': 'Azərbaycan',
         'en': 'English',

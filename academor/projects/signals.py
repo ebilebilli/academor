@@ -131,6 +131,8 @@ def invalidate_media_cache(sender, instance, **kwargs):
     # (accessing instance.project may trigger a DB fetch and fail mid-delete)
     if getattr(instance, 'project_id', None):
         invalidate_model_cache('Service')
+    if getattr(instance, 'category_id', None):
+        invalidate_model_cache('ServiceCategory')
     if getattr(instance, 'partner_id', None):
         invalidate_model_cache('Instructor')
     if getattr(instance, 'about_id', None):

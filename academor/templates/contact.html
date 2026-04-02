@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load static %}
+{% load static i18n %}
 <html lang="en">
 
 <head>
@@ -18,7 +18,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
@@ -45,7 +45,7 @@
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
         <a href="{% url 'projects:home-page' %}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-            <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>eLEARNING</h2>
+            <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>Academor</h2>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
@@ -63,7 +63,24 @@
                         <a href="{% url 'projects:home-page' %}" class="dropdown-item">404 Page</a>
                     </div>
                 </div>
+                <a href="{% url 'projects:tests-page' %}" class="nav-item nav-link">Test</a>
                 <a href="{% url 'projects:contact-page' %}" class="nav-item nav-link active">Contact</a>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
+                        {% if language == 'az' %}
+                        <img src="{% static 'assets/img/azerbaijan.png' %}" alt="AZ" style="width: 18px; height: 12px; object-fit: cover; margin-right: 6px;">AZ
+                        {% elif language == 'ru' %}
+                        <img src="{% static 'assets/img/russia.png' %}" alt="RU" style="width: 18px; height: 12px; object-fit: cover; margin-right: 6px;">RU
+                        {% else %}
+                        <img src="{% static 'assets/img/united-kingdom.png' %}" alt="EN" style="width: 18px; height: 12px; object-fit: cover; margin-right: 6px;">EN
+                        {% endif %}
+                    </a>
+                    <div class="dropdown-menu fade-down m-0">
+                        <a href="{% url 'set_language' %}?language=en&next={{ request.get_full_path|urlencode }}" class="dropdown-item d-flex align-items-center"><img src="{% static 'assets/img/united-kingdom.png' %}" alt="EN" style="width: 18px; height: 12px; object-fit: cover; margin-right: 8px;">English</a>
+                        <a href="{% url 'set_language' %}?language=az&next={{ request.get_full_path|urlencode }}" class="dropdown-item d-flex align-items-center"><img src="{% static 'assets/img/azerbaijan.png' %}" alt="AZ" style="width: 18px; height: 12px; object-fit: cover; margin-right: 8px;">Azərbaycan</a>
+                        <a href="{% url 'set_language' %}?language=ru&next={{ request.get_full_path|urlencode }}" class="dropdown-item d-flex align-items-center"><img src="{% static 'assets/img/russia.png' %}" alt="RU" style="width: 18px; height: 12px; object-fit: cover; margin-right: 8px;">Русский</a>
+                    </div>
+                </div>
             </div>
             <a href="" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
         </div>
@@ -72,13 +89,12 @@
 
 
     <!-- Header Start -->
-    <div class="container-fluid bg-primary py-5 mb-5 page-header">
-        <div class="container py-5">
+    <div class="container-fluid bg-primary mb-3 page-header page-header-contact">
+        <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-10 text-center">
-                    <h1 class="display-3 text-white animated slideInDown">Contact</h1>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-center">
+                <div class="col-12">
+                    <nav class="page-header-contact-breadcrumb d-flex justify-content-center" aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 justify-content-center">
                             <li class="breadcrumb-item"><a class="text-white" href="{% url 'projects:home-page' %}">Home</a></li>
                             <li class="breadcrumb-item"><a class="text-white" href="#">Pages</a></li>
                             <li class="breadcrumb-item text-white active" aria-current="page">Contact</li>
@@ -90,81 +106,136 @@
     </div>
     <!-- Header End -->
 
+    {% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
 
     <!-- Contact Start -->
     <div class="container-xxl py-5">
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-center text-primary px-3">Contact Us</h6>
-                <h1 class="mb-5">Contact For Any Query</h1>
+                <h6 class="section-title bg-white text-center text-primary px-3">{% trans "Contact Us" %}</h6>
+                <h1 class="mb-5">{% trans "Contact For Any Query" %}</h1>
             </div>
             <div class="row g-4">
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <h5>Get In Touch</h5>
-                    <p class="mb-4">The contact form is currently inactive. Get a functional and working contact form with Ajax & PHP in a few minutes. Just copy and paste the files, add a little code and you're done. <a href="https://htmlcodex.com/contact-form">Download Now</a>.</p>
+                    <h5>{% trans "Get In Touch" %}</h5>
+                    {% if contact %}
                     <div class="d-flex align-items-center mb-3">
                         <div class="d-flex align-items-center justify-content-center flex-shrink-0 bg-primary" style="width: 50px; height: 50px;">
                             <i class="fa fa-map-marker-alt text-white"></i>
                         </div>
                         <div class="ms-3">
-                            <h5 class="text-primary">Office</h5>
-                            <p class="mb-0">123 Street, New York, USA</p>
+                            <h5 class="text-primary">{% trans "Office" %}</h5>
+                            <p class="mb-0">{{ contact.address }}</p>
                         </div>
                     </div>
+                    {% if contact.phone %}
                     <div class="d-flex align-items-center mb-3">
                         <div class="d-flex align-items-center justify-content-center flex-shrink-0 bg-primary" style="width: 50px; height: 50px;">
                             <i class="fa fa-phone-alt text-white"></i>
                         </div>
                         <div class="ms-3">
-                            <h5 class="text-primary">Mobile</h5>
-                            <p class="mb-0">+012 345 67890</p>
+                            <h5 class="text-primary">{% trans "Phone" %}</h5>
+                            <p class="mb-0"><a class="text-body" href="tel:{{ contact.phone }}">{{ contact.phone }}</a></p>
+                            {% if contact.phone_three %}<p class="mb-0"><a class="text-body" href="tel:{{ contact.phone_three }}">{{ contact.phone_three }}</a></p>{% endif %}
                         </div>
                     </div>
-                    <div class="d-flex align-items-center">
+                    {% endif %}
+                    {% if contact.whatsapp_number or contact.whatsapp_number_2 %}
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="d-flex align-items-center justify-content-center flex-shrink-0 bg-primary" style="width: 50px; height: 50px;">
+                            <i class="fab fa-whatsapp text-white"></i>
+                        </div>
+                        <div class="ms-3">
+                            <h5 class="text-primary">WhatsApp</h5>
+                            {% if contact.whatsapp_number %}
+                            <p class="mb-0">{% if contact.whatsapp_number_me %}<a class="text-body" href="https://wa.me/{{ contact.whatsapp_number_me }}" target="_blank" rel="noopener">{{ contact.whatsapp_number }}</a>{% else %}{{ contact.whatsapp_number }}{% endif %}</p>
+                            {% endif %}
+                            {% if contact.whatsapp_number_2 %}
+                            <p class="mb-0">{% if contact.whatsapp_number_2_me %}<a class="text-body" href="https://wa.me/{{ contact.whatsapp_number_2_me }}" target="_blank" rel="noopener">{{ contact.whatsapp_number_2 }}</a>{% else %}{{ contact.whatsapp_number_2 }}{% endif %}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if contact.email %}
+                    <div class="d-flex align-items-center mb-3">
                         <div class="d-flex align-items-center justify-content-center flex-shrink-0 bg-primary" style="width: 50px; height: 50px;">
                             <i class="fa fa-envelope-open text-white"></i>
                         </div>
                         <div class="ms-3">
-                            <h5 class="text-primary">Email</h5>
-                            <p class="mb-0">info@example.com</p>
+                            <h5 class="text-primary">{% trans "Email" %}</h5>
+                            <p class="mb-0"><a class="text-body" href="mailto:{{ contact.email }}">{{ contact.email }}</a></p>
                         </div>
                     </div>
+                    {% endif %}
+                    <div class="d-flex flex-wrap gap-2 pt-2">
+                        {% if contact.instagram %}<a class="btn btn-sm btn-outline-primary" href="{{ contact.instagram }}" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>{% endif %}
+                        {% if contact.facebook %}<a class="btn btn-sm btn-outline-primary" href="{{ contact.facebook }}" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>{% endif %}
+                        {% if contact.youtube %}<a class="btn btn-sm btn-outline-primary" href="{{ contact.youtube }}" target="_blank" rel="noopener"><i class="fab fa-youtube"></i></a>{% endif %}
+                        {% if contact.linkedn %}<a class="btn btn-sm btn-outline-primary" href="{{ contact.linkedn }}" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>{% endif %}
+                        {% if contact.tiktok %}<a class="btn btn-sm btn-outline-primary" href="{{ contact.tiktok }}" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>{% endif %}
+                    </div>
+                    {% else %}
+                    <p class="mb-4 text-muted">{% trans "Əlaqə məlumatları admin paneldən əlavə ediləndə burada göstəriləcək." %}</p>
+                    {% endif %}
                 </div>
+                {% if contact and contact.map_embed_url %}
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                     <iframe class="position-relative rounded w-100 h-100"
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3001156.4288297426!2d-78.01371936852176!3d42.72876761954724!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4ccc4bf0f123a5a9%3A0xddcfc6c1de189567!2sNew%20York%2C%20USA!5e0!3m2!1sen!2sbd!4v1603794290143!5m2!1sen!2sbd"
-                        frameborder="0" style="min-height: 300px; border:0;" allowfullscreen="" aria-hidden="false"
-                        tabindex="0"></iframe>
+                        src="{{ contact.map_embed_url }}"
+                        title="{% trans 'Map' %}"
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        style="min-height: 300px; border:0;" allowfullscreen></iframe>
                 </div>
-                <div class="col-lg-4 col-md-12 wow fadeInUp" data-wow-delay="0.5s">
-                    <form>
+                {% endif %}
+                <div class="{% if contact and contact.map_embed_url %}col-lg-4{% else %}col-lg-8{% endif %} col-md-12 wow fadeInUp" data-wow-delay="0.5s">
+                    <div id="contact-form-alert" class="alert d-none" role="alert"></div>
+                    <form method="post" action="{% url 'projects:contact-page' %}" id="contact-form" novalidate>
+                        {% csrf_token %}
+                        {{ form.website }}
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="name" placeholder="Your Name">
-                                    <label for="name">Your Name</label>
+                                    {{ form.full_name }}
+                                    <label for="{{ form.full_name.id_for_label }}">{{ form.full_name.label }}</label>
                                 </div>
+                                {% if form.full_name.errors %}<div class="text-danger small mt-1">{{ form.full_name.errors.0 }}</div>{% endif %}
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="email" class="form-control" id="email" placeholder="Your Email">
-                                    <label for="email">Your Email</label>
+                                    {{ form.email }}
+                                    <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
                                 </div>
+                                {% if form.email.errors %}<div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>{% endif %}
                             </div>
                             <div class="col-12">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="subject" placeholder="Subject">
-                                    <label for="subject">Subject</label>
+                                    {{ form.subject }}
+                                    <label for="{{ form.subject.id_for_label }}">{{ form.subject.label }}</label>
                                 </div>
+                                {% if form.subject.errors %}<div class="text-danger small mt-1">{{ form.subject.errors.0 }}</div>{% endif %}
                             </div>
                             <div class="col-12">
                                 <div class="form-floating">
-                                    <textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 150px"></textarea>
-                                    <label for="message">Message</label>
+                                    {{ form.info }}
+                                    <label for="{{ form.info.id_for_label }}">{{ form.info.label }}</label>
                                 </div>
+                                {% if form.info.errors %}<div class="text-danger small mt-1">{{ form.info.errors.0 }}</div>{% endif %}
                             </div>
+                            {% if form.non_field_errors %}
+                            <div class="col-12"><div class="text-danger small">{{ form.non_field_errors }}</div></div>
+                            {% endif %}
                             <div class="col-12">
-                                <button class="btn btn-primary w-100 py-3" type="submit">Send Message</button>
+                                <button class="btn btn-primary w-100 py-3" type="submit" id="contact-form-submit">{% trans "Send Message" %}</button>
                             </div>
                         </div>
                     </form>
@@ -183,21 +254,23 @@
                     <h4 class="text-white mb-3">Quick Link</h4>
                     <a class="btn btn-link" href="{% url 'projects:about-page' %}">About Us</a>
                     <a class="btn btn-link" href="{% url 'projects:contact-page' %}">Contact Us</a>
-                    <a class="btn btn-link" href="">Privacy Policy</a>
-                    <a class="btn btn-link" href="">Terms & Condition</a>
-                    <a class="btn btn-link" href="">FAQs & Help</a>
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    <h4 class="text-white mb-3">Contact</h4>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+                    <h4 class="text-white mb-3">{% trans "Contact" %}</h4>
+                    {% if contact %}
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>{{ contact.address }}</p>
+                    {% if contact.phone %}<p class="mb-2"><i class="fa fa-phone-alt me-3"></i><a class="text-light" href="tel:{{ contact.phone }}">{{ contact.phone }}</a></p>{% endif %}
+                    {% if contact.email %}<p class="mb-2"><i class="fa fa-envelope me-3"></i><a class="text-light" href="mailto:{{ contact.email }}">{{ contact.email }}</a></p>{% endif %}
+                    <div class="d-flex pt-2 flex-wrap gap-1">
+                        {% if contact.instagram %}<a class="btn btn-outline-light btn-social" href="{{ contact.instagram }}" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>{% endif %}
+                        {% if contact.facebook %}<a class="btn btn-outline-light btn-social" href="{{ contact.facebook }}" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>{% endif %}
+                        {% if contact.youtube %}<a class="btn btn-outline-light btn-social" href="{{ contact.youtube }}" target="_blank" rel="noopener"><i class="fab fa-youtube"></i></a>{% endif %}
+                        {% if contact.linkedn %}<a class="btn btn-outline-light btn-social" href="{{ contact.linkedn }}" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>{% endif %}
+                        {% if contact.tiktok %}<a class="btn btn-outline-light btn-social" href="{{ contact.tiktok }}" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>{% endif %}
                     </div>
+                    {% else %}
+                    <p class="mb-2 text-white-50">{% trans "Əlaqə məlumatları tezliklə əlavə olunacaq." %}</p>
+                    {% endif %}
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h4 class="text-white mb-3">Gallery</h4>
@@ -233,24 +306,8 @@
             </div>
         </div>
         <div class="container">
-            <div class="copyright">
-                <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved.
-
-                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                        Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a><br><br>
-                        Distributed By <a class="border-bottom" href="https://themewagon.com">ThemeWagon</a>
-                    </div>
-                    <div class="col-md-6 text-center text-md-end">
-                        <div class="footer-menu">
-                            <a href="{% url 'projects:home-page' %}">Home</a>
-                            <a href="">Cookies</a>
-                            <a href="">Help</a>
-                            <a href="">FQAs</a>
-                        </div>
-                    </div>
-                </div>
+            <div class="copyright border-top border-secondary border-opacity-25">
+                <p class="text-center text-white-50 mb-0 py-3 small">@Academor 2026. All rights reserved.</p>
             </div>
         </div>
     </div>
@@ -271,6 +328,72 @@
 
     <!-- Template Javascript -->
     <script src="{% static 'assets/js/main.js' %}"></script>
+    <script>
+    (function () {
+        var form = document.getElementById('contact-form');
+        if (!form) return;
+        var alertEl = document.getElementById('contact-form-alert');
+        var submitBtn = document.getElementById('contact-form-submit');
+        function showAlert(kind, text) {
+            alertEl.className = 'alert alert-' + kind + ' mt-0 mb-3';
+            alertEl.textContent = text;
+            alertEl.classList.remove('d-none');
+        }
+        function hideAlert() {
+            alertEl.classList.add('d-none');
+            alertEl.textContent = '';
+        }
+        function clearFieldErrors() {
+            form.querySelectorAll('.js-field-error').forEach(function (n) { n.remove(); });
+        }
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            hideAlert();
+            clearFieldErrors();
+            var fd = new FormData(form);
+            var token = form.querySelector('[name=csrfmiddlewaretoken]');
+            submitBtn.disabled = true;
+            fetch(form.action, {
+                method: 'POST',
+                body: fd,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': token ? token.value : ''
+                },
+                credentials: 'same-origin'
+            }).then(function (r) {
+                return r.text().then(function (text) {
+                    var data = null;
+                    try { data = text ? JSON.parse(text) : null; } catch (e) { data = null; }
+                    return { ok: r.ok, status: r.status, data: data };
+                });
+            }).then(function (res) {
+                if (res.data && res.data.success) {
+                    showAlert('success', res.data.message || '');
+                    form.reset();
+                    return;
+                }
+                var msg = (res.data && res.data.message) ? res.data.message : '{% trans "Formda xəta var. Zəhmət olmasa düzəldin."|escapejs %}';
+                showAlert('danger', msg);
+                if (res.data && res.data.errors) {
+                    Object.keys(res.data.errors).forEach(function (field) {
+                        var input = form.querySelector('[name="' + field + '"]');
+                        if (!input || !input.closest('.col-md-6, .col-12')) return;
+                        var wrap = input.closest('.col-md-6, .col-12');
+                        var err = document.createElement('div');
+                        err.className = 'text-danger small mt-1 js-field-error';
+                        err.textContent = (res.data.errors[field] && res.data.errors[field][0]) ? res.data.errors[field][0] : '';
+                        wrap.appendChild(err);
+                    });
+                }
+            }).catch(function () {
+                showAlert('danger', '{% trans "Şəbəkə xətası. Yenidən cəhd edin."|escapejs %}');
+            }).finally(function () {
+                submitBtn.disabled = false;
+            });
+        });
+    })();
+    </script>
 </body>
 
 </html>

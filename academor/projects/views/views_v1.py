@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.db import IntegrityError
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.utils.translation import gettext as _
 
 from projects.models import JobApplication, ServiceCategory
@@ -171,17 +171,31 @@ class ContactPageView(View):
         lang = get_language_from_request(request)
         from projects.forms.forms_v1 import AppealContactForm
         form = AppealContactForm(request.POST)
-        
+        is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+
         if form.is_valid():
             try:
-                appeal_contact = form.save()
-                messages.success(request, _('Mesajınız uğurla göndərildi.'))
+                form.save()
+                msg = _('Mesajınız uğurla göndərildi.')
+                if is_ajax:
+                    return JsonResponse({'success': True, 'message': str(msg)})
+                messages.success(request, msg)
                 return redirect('projects:contact-page')
-            except Exception as e:
-                messages.error(request, _('Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.'))
+            except Exception:
+                err_msg = _('Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.')
+                if is_ajax:
+                    return JsonResponse({'success': False, 'message': str(err_msg)}, status=500)
+                messages.error(request, err_msg)
         else:
-            messages.error(request, _('Formda xəta var. Zəhmət olmasa düzəldin.'))
-        
+            err_msg = _('Formda xəta var. Zəhmət olmasa düzəldin.')
+            if is_ajax:
+                errors = {k: [str(e) for e in v] for k, v in form.errors.items()}
+                return JsonResponse(
+                    {'success': False, 'message': str(err_msg), 'errors': errors},
+                    status=400,
+                )
+            messages.error(request, err_msg)
+
         contact = get_contact(lang)
         categories = get_project_categories(lang)
         serialized_categories = [

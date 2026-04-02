@@ -68,6 +68,12 @@ class Contact(models.Model):
         null=True,
         blank=True
     )
+    map_embed_url = models.TextField(
+        null=True,
+        blank=True,
+        verbose_name='Google Maps embed URL',
+        help_text='iframe src dəyəri (məs. https://www.google.com/maps/embed?pb=...)',
+    )
 
     class Meta:
         verbose_name = "Contact"

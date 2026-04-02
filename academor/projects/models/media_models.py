@@ -2,7 +2,7 @@ from django.db import models
 from django.core.files.storage import default_storage
 import logging
 
-from .project_models import Service
+from .project_models import Service, ServiceCategory
 from .partner_models import Instructor
 from .about_models import About
 from .vacancy_models import CareerOpening
@@ -27,6 +27,14 @@ class Media(models.Model):
         null=True,
         blank=True,
         verbose_name='Project'
+    )
+    category = models.ForeignKey(
+        ServiceCategory,
+        related_name='medias',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        verbose_name='Service category'
     )
     partner = models.ForeignKey(
         Instructor,

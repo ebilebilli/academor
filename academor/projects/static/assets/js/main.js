@@ -83,6 +83,43 @@
     });
 
 
+    // Course categories carousel (index)
+    var $catCarousel = $(".categories-carousel");
+    if ($catCarousel.length) {
+        var catCount = $catCarousel.find(".item").length;
+        $catCarousel.owlCarousel({
+            autoplay: false,
+            smartSpeed: 500,
+            margin: 20,
+            dots: true,
+            nav: true,
+            navText: [
+                '<i class="bi bi-chevron-left"></i>',
+                '<i class="bi bi-chevron-right"></i>'
+            ],
+            loop: catCount > 4,
+            responsive: {
+                0: {
+                    items: 1,
+                    stagePadding: 24
+                },
+                576: {
+                    items: 2,
+                    stagePadding: 16
+                },
+                768: {
+                    items: 3,
+                    stagePadding: 12
+                },
+                992: {
+                    items: 4,
+                    stagePadding: 0
+                }
+            }
+        });
+    }
+
+
     // Testimonials carousel
     $(".testimonial-carousel").owlCarousel({
         autoplay: true,

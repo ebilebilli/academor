@@ -1,8 +1,37 @@
 /********** Template CSS **********/
 :root {
-    --primary: #06BBCC;
-    --light: #F0FBFC;
+    --primary: #F57C00;
+    --light: #FFF4E6;
     --dark: #181d38;
+    --bs-primary: #F57C00;
+    --bs-primary-rgb: 245, 124, 0;
+    --bs-light: #FFF4E6;
+    --bs-light-rgb: 255, 244, 230;
+}
+
+/* Bootstrap primary palette override */
+.text-primary {
+    color: var(--primary) !important;
+}
+
+.bg-primary {
+    background-color: var(--primary) !important;
+}
+
+.border-primary {
+    border-color: var(--primary) !important;
+}
+
+.btn-primary {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background-color: #E66F00 !important;
+    border-color: #E66F00 !important;
 }
 
 .fw-medium {
@@ -203,6 +232,31 @@
     background-size: cover;
 }
 
+/* Contact: no hero title — keep band height; center breadcrumb in the hero (background image) */
+.page-header.page-header-contact {
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+}
+
+@media (min-width: 992px) {
+    .page-header.page-header-contact {
+        min-height: 340px;
+    }
+}
+
+.page-header-contact .page-header-contact-breadcrumb {
+    width: 100%;
+}
+
+.page-header-contact .breadcrumb {
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 .page-header-inner {
     background: rgba(15, 23, 43, .7);
 }
@@ -281,6 +335,52 @@
 .category a:hover img,
 .course-item:hover img {
     transform: scale(1.1);
+}
+
+/*** Categories carousel (square cards) ***/
+.category-square-card__media img {
+    transition: transform .45s ease;
+}
+
+.category-square-card:hover .category-square-card__media img {
+    transform: scale(1.08);
+}
+
+.categories-carousel .owl-nav {
+    margin-top: 1.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.categories-carousel .owl-nav .owl-prev,
+.categories-carousel .owl-nav .owl-next {
+    width: 44px;
+    height: 44px;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50% !important;
+    background: var(--primary) !important;
+    color: #fff !important;
+    font-size: 1.25rem;
+    line-height: 1;
+    transition: opacity .2s ease, transform .2s ease;
+}
+
+.categories-carousel .owl-nav .owl-prev:hover,
+.categories-carousel .owl-nav .owl-next:hover {
+    opacity: .9;
+    transform: scale(1.05);
+}
+
+.categories-carousel .owl-dots {
+    margin-top: 0.75rem;
+}
+
+.categories-carousel .owl-dot.active span {
+    background: var(--primary) !important;
 }
 
 

@@ -105,6 +105,7 @@ class AppealContactForm(forms.ModelForm):
         widget=forms.Textarea(attrs={
             'class': 'form-control',
             'rows': 5,
+            'style': 'height: 150px',
             'placeholder': _('Mesajınız')
         }),
         required=True,
@@ -167,13 +168,14 @@ class ReviewForm(forms.ModelForm):
 
 class TestUserForm(forms.Form):
     first_name = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Ad')}),
-        label=_('Ad'),
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Ad Soyad')}),
+        label=_('Ad Soyad'),
         max_length=100,
     )
     last_name = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Soyad')}),
-        label=_('Soyad'),
+        required=False,
+        widget=forms.HiddenInput(),
+        label='',
         max_length=100,
     )
     number = forms.CharField(

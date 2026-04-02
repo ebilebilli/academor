@@ -1,3 +1,5 @@
+import re
+
 from django.db.models import Q, Prefetch
 from django.utils import translation
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -29,7 +31,7 @@ def get_language_from_request(request):
         translation.activate(lang)
         return lang
     
-    lang = getattr(request, 'LANGUAGE_CODE', 'az')
+    lang = getattr(request, 'LANGUAGE_CODE', 'en')
     if lang in ['az', 'en', 'ru']:
         request.session['django_language'] = lang
         request.session['language'] = lang
@@ -37,12 +39,12 @@ def get_language_from_request(request):
         translation.activate(lang)
         return lang
     
-    # Default olaraq az
-    request.session['django_language'] = 'az'
-    request.session['language'] = 'az'
+    # Default olaraq en
+    request.session['django_language'] = 'en'
+    request.session['language'] = 'en'
     request.session.modified = True
-    translation.activate('az')
-    return 'az'
+    translation.activate('en')
+    return 'en'
 
 
 def get_localized_field_name(field_base, lang):
@@ -58,7 +60,12 @@ def get_localized_field_name(field_base, lang):
 def get_project_categories(lang='az'):
     """Layihə kateqoriyalarını qaytarır"""
     name_field = get_localized_field_name('name', lang)
-    return ServiceCategory.objects.all().order_by('id')
+    return ServiceCategory.objects.all().order_by('id').prefetch_related(
+        Prefetch(
+            'medias',
+            queryset=Media.objects.filter(image__isnull=False).exclude(image=''),
+        )
+    )
 
 
 def get_projects(lang='az', category_slug=None, is_active=True, is_completed=None, on_main_page=None, speacial_project=None):
@@ -350,11 +357,17 @@ def serialize_project(project, lang='az'):
 
 def serialize_project_category(category, lang='az'):
     name_field = get_localized_field_name('name', lang)
-    
+    first_image = None
+    for media in category.medias.all():
+        if media.image:
+            first_image = media.image.url
+            break
+
     return {
         'id': category.id,
         'slug': category.slug,
         'name': getattr(category, name_field, category.name_az),
+        'image': first_image,
     }
 
 
@@ -417,6 +430,13 @@ def serialize_partner(partner, lang='az'):
     }
 
 
+def _whatsapp_me_digits(value):
+    if not value:
+        return None
+    digits = re.sub(r'\D', '', str(value))
+    return digits or None
+
+
 def serialize_contact(contact, lang='az'):
     if contact is None:
         return None
@@ -429,6 +449,8 @@ def serialize_contact(contact, lang='az'):
         'phone': contact.phone,
         'whatsapp_number': contact.whatsapp_number,
         'whatsapp_number_2': contact.whatsapp_number_2,
+        'whatsapp_number_me': _whatsapp_me_digits(contact.whatsapp_number),
+        'whatsapp_number_2_me': _whatsapp_me_digits(contact.whatsapp_number_2),
         'phone_three': contact.phone_three,
         'email': contact.email,
         'instagram': contact.instagram,
@@ -436,6 +458,7 @@ def serialize_contact(contact, lang='az'):
         'youtube': contact.youtube,
         'linkedn': contact.linkedn,
         'tiktok': contact.tiktok,
+        'map_embed_url': (contact.map_embed_url or '').strip() or None,
     }
 
 

@@ -56,14 +56,15 @@ class MediaAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        return         qs.filter(
+        return qs.filter(
             models.Q(is_home_page_background_image=True) |
             models.Q(is_about_page_background_image=True) |
             models.Q(is_contact_page_background_image=True) |
             models.Q(is_project_page_background_image=True) |
             models.Q(is_vacany_page_background_image=True) |
             models.Q(is_service_page_background_image=True) |
-            models.Q(is_footer_background_image=True)
+            models.Q(is_footer_background_image=True) |
+            models.Q(category__isnull=False)
         )
 
     def media_preview(self, obj):
@@ -208,13 +209,25 @@ class MediaInlineService(MediaInlineBase):
         return qs.select_related('service')
 
 
+class MediaInlineCategory(MediaInlineBase):
+    fk_name = 'category'
+    max_num = 1
+    fields = ('image', 'thumbnail_preview', 'created_at')
+    extra = 0
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.select_related('category')
+
+
 @admin.register(ServiceCategory)
 class ServiceCategoryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name_link', 'name_en', 'name_ru', 'projects_count')
+    list_display = ('id', 'category_thumb', 'name_link', 'name_en', 'name_ru', 'projects_count')
     list_display_links = ('id',)
     search_fields = ('name_az', 'name_en', 'name_ru')
     list_per_page = 25
-    
+    inlines = [MediaInlineCategory]
+
     fieldsets = (
         ('Azərbaycan', {
             'fields': ('name_az',)
@@ -226,7 +239,18 @@ class ServiceCategoryAdmin(admin.ModelAdmin):
             'fields': ('name_ru',)
         }),
     )
-    
+
+    def category_thumb(self, obj):
+        media = obj.medias.filter(image__isnull=False).exclude(image='').first()
+        if media and media.image:
+            return format_html(
+                '<img src="{}" style="max-width: 48px; max-height: 48px; border-radius: 4px; object-fit: cover;" />',
+                media.image.url,
+            )
+        return '—'
+
+    category_thumb.short_description = 'Şəkil'
+
     def name_link(self, obj):
         url = reverse('admin:projects_servicecategory_change', args=[obj.pk])
         name = obj.name_az or 'Kateqoriya'
@@ -597,14 +621,18 @@ class ContactAdmin(admin.ModelAdmin):
         ('Ünvan', {
             'fields': ('address_az', 'address_en', 'address_ru')
         }),
+        ('Xəritə', {
+            'fields': ('map_embed_url',),
+            'description': 'Google Maps → Paylaş → Xəritəni yerləşdir → iframe-dən yalnız src URL-ni yapışdırın.',
+        }),
         ('Əlaqə Nömrələri', {
-            'fields': ('phone', 'whatsapp_number')
+            'fields': ('phone', 'whatsapp_number', 'whatsapp_number_2', 'phone_three')
         }),
         ('Email', {
             'fields': ('email',)
         }),
         ('Sosial Şəbəkələr', {
-            'fields': ('instagram', 'facebook', 'linkedn')
+            'fields': ('instagram', 'facebook', 'youtube', 'linkedn', 'tiktok')
         }),
     )
     

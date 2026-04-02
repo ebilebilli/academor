@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Academor - Test Result</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="{% static 'assets/img/favicon.ico' %}" rel="icon">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+        <a href="{% url 'projects:home-page' %}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+            <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>eLEARNING</h2>
+        </a>
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <a href="{% url 'projects:home-page' %}" class="nav-item nav-link">Home</a>
+                <a href="{% url 'projects:about-page' %}" class="nav-item nav-link">About</a>
+                <a href="{% url 'projects:courses-page' %}" class="nav-item nav-link">Courses</a>
+                <a href="{% url 'projects:tests-page' %}" class="nav-item nav-link active">Test</a>
+                <a href="{% url 'projects:contact-page' %}" class="nav-item nav-link">Contact</a>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
+                        {% if language == 'az' %}
+                        <img src="{% static 'assets/img/azerbaijan.png' %}" alt="AZ" style="width: 18px; height: 12px; object-fit: cover; margin-right: 6px;">AZ
+                        {% elif language == 'ru' %}
+                        <img src="{% static 'assets/img/russia.png' %}" alt="RU" style="width: 18px; height: 12px; object-fit: cover; margin-right: 6px;">RU
+                        {% else %}
+                        <img src="{% static 'assets/img/united-kingdom.png' %}" alt="EN" style="width: 18px; height: 12px; object-fit: cover; margin-right: 6px;">EN
+                        {% endif %}
+                    </a>
+                    <div class="dropdown-menu fade-down m-0">
+                        <a href="{% url 'set_language' %}?language=en&next={{ request.get_full_path|urlencode }}" class="dropdown-item d-flex align-items-center"><img src="{% static 'assets/img/united-kingdom.png' %}" alt="EN" style="width: 18px; height: 12px; object-fit: cover; margin-right: 8px;">English</a>
+                        <a href="{% url 'set_language' %}?language=az&next={{ request.get_full_path|urlencode }}" class="dropdown-item d-flex align-items-center"><img src="{% static 'assets/img/azerbaijan.png' %}" alt="AZ" style="width: 18px; height: 12px; object-fit: cover; margin-right: 8px;">Azərbaycan</a>
+                        <a href="{% url 'set_language' %}?language=ru&next={{ request.get_full_path|urlencode }}" class="dropdown-item d-flex align-items-center"><img src="{% static 'assets/img/russia.png' %}" alt="RU" style="width: 18px; height: 12px; object-fit: cover; margin-right: 8px;">Русский</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid bg-primary py-5 mb-5 page-header">
+        <div class="container py-5 text-center">
+            <h1 class="display-5 text-white">Nəticəniz</h1>
+            <p class="text-white mb-0">{{ result.test.title }}</p>
+        </div>
+    </div>
+
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="bg-light rounded shadow-sm p-4 p-md-5 text-center">
+                        <h3 class="mb-3">{{ result.first_name }} {{ result.last_name }}</h3>
+                        <p class="mb-1"><strong>Nömrə:</strong> {{ result.number }}</p>
+                        <p class="mb-4"><strong>Tarix:</strong> {{ result.created_at|date:"d.m.Y H:i" }}</p>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <div class="border rounded p-3 bg-white h-100">
+                                    <h6 class="text-muted mb-2">Düzgün cavab</h6>
+                                    <h2 class="text-primary mb-0">{{ result.score }}/{{ total_questions }}</h2>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="border rounded p-3 bg-white h-100">
+                                    <h6 class="text-muted mb-2">Faiz</h6>
+                                    <h2 class="text-primary mb-0">{{ percentage }}%</h2>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="border rounded p-3 bg-white h-100">
+                                    <h6 class="text-muted mb-2">Səviyyə</h6>
+                                    <h2 class="text-primary mb-0">{{ result.level }}</h2>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href="{% url 'projects:tests-page' %}" class="btn btn-primary px-4 py-2">Yenidən test et</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -112,8 +112,12 @@ class TestResultPageView(View):
             raise Http404(_("Result not found"))
 
         categories = get_project_categories(lang)
+        total_questions = result.test.questions.count()
+        percentage = int((result.score / total_questions) * 100) if total_questions else 0
         context = {
             'result': result,
+            'total_questions': total_questions,
+            'percentage': percentage,
             'categories': [serialize_project_category(c, lang) for c in categories],
             'language': lang,
             'background_image': get_background_image('about'),
