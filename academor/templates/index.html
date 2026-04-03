@@ -95,7 +95,8 @@
 
 
     <!-- Carousel Start -->
-    <div class="container-fluid p-0 mb-5">
+    <div class="header-carousel-section mb-5">
+        <div class="container-xxl px-3 px-md-4 px-lg-5">
         <div class="owl-carousel header-carousel position-relative">
             {% if hero_background_images %}
             {% for img_url in hero_background_images %}
@@ -239,6 +240,7 @@
                 </div>
             </div>
             {% endif %}
+        </div>
         </div>
     </div>
     <!-- Carousel End -->
@@ -474,79 +476,57 @@
                 <h6 class="section-title bg-white text-center text-primary px-3">Instructors</h6>
                 <h1 class="mb-5">Expert Instructors</h1>
             </div>
+
             <div class="row g-4">
+                {% for member in team %}
                 <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="team-item bg-light">
+                    <div class="team-item bg-light h-100">
                         <div class="overflow-hidden">
-                            <img class="img-fluid" src="{% static 'assets/img/team-1.jpg' %}" alt="">
+                            {% if member.image %}
+                            <img class="img-fluid" src="{{ member.image }}" alt="{{ member.name }}">
+                            {% else %}
+                            <img class="img-fluid" src="{% static 'assets/img/team-1.jpg' %}" alt="{{ member.name }}">
+                            {% endif %}
                         </div>
                         <div class="position-relative d-flex justify-content-center" style="margin-top: -23px;">
                             <div class="bg-light d-flex justify-content-center pt-2 px-1">
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-instagram"></i></a>
+                                {% if member.facebook %}
+                                <a class="btn btn-sm-square btn-primary mx-1" href="{{ member.facebook }}" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+                                {% endif %}
+                                {% if member.instagram %}
+                                <a class="btn btn-sm-square btn-primary mx-1" href="{{ member.instagram }}" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+                                {% endif %}
+                                {% if member.linkedin %}
+                                <a class="btn btn-sm-square btn-primary mx-1" href="{{ member.linkedin }}" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>
+                                {% endif %}
+                                {% if member.youtube %}
+                                <a class="btn btn-sm-square btn-primary mx-1" href="{{ member.youtube }}" target="_blank" rel="noopener"><i class="fab fa-youtube"></i></a>
+                                {% endif %}
+                                {% if member.tiktok %}
+                                <a class="btn btn-sm-square btn-primary mx-1" href="{{ member.tiktok }}" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>
+                                {% endif %}
+                                {% if not member.facebook and not member.instagram and not member.linkedin and not member.youtube and not member.tiktok %}
+                                <a class="btn btn-sm-square btn-primary mx-1 disabled" href="javascript:void(0)"><i class="fa fa-user"></i></a>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="text-center p-4">
-                            <h5 class="mb-0">Instructor Name</h5>
-                            <small>Designation</small>
+                            <h5 class="mb-0">
+                                <a href="{% url 'projects:team-detail' member.id %}" class="text-decoration-none text-dark">
+                                    {{ member.name }}
+                                </a>
+                            </h5>
+                            <small>{{ member.role }}</small>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="team-item bg-light">
-                        <div class="overflow-hidden">
-                            <img class="img-fluid" src="{% static 'assets/img/team-2.jpg' %}" alt="">
-                        </div>
-                        <div class="position-relative d-flex justify-content-center" style="margin-top: -23px;">
-                            <div class="bg-light d-flex justify-content-center pt-2 px-1">
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-instagram"></i></a>
-                            </div>
-                        </div>
-                        <div class="text-center p-4">
-                            <h5 class="mb-0">Instructor Name</h5>
-                            <small>Designation</small>
-                        </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="alert text-center mb-0" style="background-color: #fff3cd; border-color: #ffecb5; color: #8a6d3b;">
+                        No team members have been added yet.
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="team-item bg-light">
-                        <div class="overflow-hidden">
-                            <img class="img-fluid" src="{% static 'assets/img/team-3.jpg' %}" alt="">
-                        </div>
-                        <div class="position-relative d-flex justify-content-center" style="margin-top: -23px;">
-                            <div class="bg-light d-flex justify-content-center pt-2 px-1">
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-instagram"></i></a>
-                            </div>
-                        </div>
-                        <div class="text-center p-4">
-                            <h5 class="mb-0">Instructor Name</h5>
-                            <small>Designation</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
-                    <div class="team-item bg-light">
-                        <div class="overflow-hidden">
-                            <img class="img-fluid" src="{% static 'assets/img/team-4.jpg' %}" alt="">
-                        </div>
-                        <div class="position-relative d-flex justify-content-center" style="margin-top: -23px;">
-                            <div class="bg-light d-flex justify-content-center pt-2 px-1">
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-instagram"></i></a>
-                            </div>
-                        </div>
-                        <div class="text-center p-4">
-                            <h5 class="mb-0">Instructor Name</h5>
-                            <small>Designation</small>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>

@@ -5,6 +5,7 @@ from django.utils.html import format_html
 from django.urls import reverse
 from django import forms
 from django.core.exceptions import ValidationError
+from ckeditor.widgets import CKEditorWidget
 
 from projects.models import *
 
@@ -670,8 +671,18 @@ class ContactAdmin(admin.ModelAdmin):
     social_links.short_description = "Social links"
 
 
+class TeamAdminForm(forms.ModelForm):
+    class Meta:
+        model = Team
+        fields = '__all__'
+        widgets = {
+            'description': CKEditorWidget(),
+        }
+
+
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
+    form = TeamAdminForm
     list_display = ('id', 'name', 'role')
     search_fields = ('name', 'role', 'description', 'instagram', 'facebook', 'linkedin', 'tiktok', 'youtube')
     list_per_page = 25
@@ -833,8 +844,6 @@ class CareerOpeningAdmin(admin.ModelAdmin):
 
 @admin.register(Tagline)
 class TaglineAdmin(admin.ModelAdmin):
-    """Ana səhifə hero mətnləri: sistemdə yalnız bir Tagline qeydi ola bilər."""
-
     list_display = (
         'id',
         'text_preview_az',

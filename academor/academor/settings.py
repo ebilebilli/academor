@@ -70,10 +70,19 @@ INSTALLED_APPS = [
     
     # Third Packages
     'django_cleanup.apps.CleanupConfig',
+    'ckeditor',
     
     # Apps
     'projects'
 ]
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': '100%',
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -174,10 +183,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Static files directories
-STATICFILES_DIRS = [
-    os.path.join(str(BASE_DIR), 'static'),
-]
+# Static files directories (only paths that exist — avoids staticfiles.W004 in Docker)
+_candidate_static_dirs = (BASE_DIR / 'static', BASE_DIR / 'projects' / 'static')
+STATICFILES_DIRS = [str(d) for d in _candidate_static_dirs if d.is_dir()]
 
 # Cache configuration
 # https://docs.djangoproject.com/en/5.2/topics/cache/

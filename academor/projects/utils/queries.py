@@ -145,6 +145,7 @@ def serialize_team_member(member):
         'linkedin': getattr(member, 'linkedin', None),
         'tiktok': getattr(member, 'tiktok', None),
         'youtube': getattr(member, 'youtube', None),
+        'descriptor': member.descriptor.url if getattr(member, 'descriptor', None) else None,
     }
 
 

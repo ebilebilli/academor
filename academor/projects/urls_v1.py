@@ -10,6 +10,7 @@ from projects.views.views_v1 import (
     VacancyPageView,
     VacancyDetailPageView,
     TeamPageView,
+    TeamDetailPageView,
     ReviewsPageView,
 )
 from projects.views.test_views import TestListPageView, TestTakePageView
@@ -62,6 +63,11 @@ urlpatterns = [
         'team/',
         TeamPageView.as_view(),
         name='team-page',
+    ),
+    path(
+        'team/<int:pk>/',
+        TeamDetailPageView.as_view(),
+        name='team-detail',
     ),
     path(
         'reviews/',

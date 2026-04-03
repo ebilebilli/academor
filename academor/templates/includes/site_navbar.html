@@ -12,9 +12,9 @@
             <a href="{% url 'projects:about-page' %}" class="nav-item nav-link{% if nav_active == 'about' %} active{% endif %}">About</a>
             <a href="{% url 'projects:courses-page' %}" class="nav-item nav-link{% if nav_active == 'courses' %} active{% endif %}">Courses</a>
             <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                <a href="#" class="nav-link dropdown-toggle{% if nav_active == 'team' %} active{% endif %}" data-bs-toggle="dropdown">Pages</a>
                 <div class="dropdown-menu fade-down m-0">
-                    <a href="{% url 'projects:team-page' %}" class="dropdown-item">Our Team</a>
+                    <a href="{% url 'projects:team-page' %}" class="dropdown-item{% if nav_active == 'team' %} active{% endif %}">Our Team</a>
                     <a href="{% url 'projects:reviews-page' %}" class="dropdown-item">Testimonial</a>
                     <a href="{% url 'projects:home-page' %}" class="dropdown-item">404 Page</a>
                 </div>

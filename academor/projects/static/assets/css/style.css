@@ -180,42 +180,128 @@
 }
 
 
-/*** Header carousel (index): fixed slide height; crop any image size like inner page hero ***/
+/*** Header carousel (index): lower band, inset in page, crop image; smaller tagline type ***/
+.header-carousel-section {
+    padding-top: 0.75rem;
+    padding-bottom: 0.5rem;
+}
+
+.header-carousel-section .container-xxl > .header-carousel {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 0.25rem 1rem rgba(24, 29, 56, 0.12);
+}
+
 .header-carousel .owl-carousel-item {
     position: relative;
-    height: 720px;
-    max-height: 720px;
+    height: 360px;
+    max-height: 360px;
     overflow: hidden;
 }
 
 .header-carousel .owl-carousel-item img {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 50%;
+    left: 50%;
     width: 100%;
     height: 100%;
     max-width: none;
     object-fit: cover;
-    object-position: center;
+    object-position: 50% 50%;
+    transform: translate(-50%, -50%) scale(1.12);
+    transform-origin: center center;
 }
 
 @media (min-width: 576px) {
     .header-carousel .owl-carousel-item {
-        height: 840px;
-        max-height: 840px;
+        height: 420px;
+        max-height: 420px;
     }
 }
 
 @media (min-width: 992px) {
     .header-carousel .owl-carousel-item {
-        height: 960px;
-        max-height: 960px;
+        height: 480px;
+        max-height: 480px;
+    }
+
+    .header-carousel .owl-carousel-item img {
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+}
+
+/* Hero titles + buttons: slight right and down together */
+.header-carousel .owl-carousel-item .position-absolute .container > .row > [class*="col-"] {
+    transform: translate(clamp(0.45rem, 1.5vw, 1.1rem), clamp(0.5rem, 1.8vh, 1.35rem));
+}
+
+@media (min-width: 768px) {
+    .header-carousel .owl-carousel-item .position-absolute .container > .row > [class*="col-"] {
+        transform: translate(clamp(0.65rem, 2vw, 1.5rem), clamp(0.65rem, 2vh, 1.6rem));
+    }
+}
+
+.header-carousel .owl-carousel-item .position-absolute h5.text-primary {
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.4rem !important;
+}
+
+.header-carousel .owl-carousel-item .position-absolute h1.display-3 {
+    font-size: clamp(1.5rem, 4vw, 2.15rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.5rem !important;
+}
+
+.header-carousel .owl-carousel-item .position-absolute p.fs-5 {
+    font-size: 0.9rem !important;
+    line-height: 1.55;
+    margin-bottom: 1rem !important;
+}
+
+@media (min-width: 768px) {
+    .header-carousel .owl-carousel-item .position-absolute h1.display-3 {
+        font-size: clamp(1.75rem, 3.5vw, 2.35rem);
+    }
+
+    .header-carousel .owl-carousel-item .position-absolute p.fs-5 {
+        font-size: 0.95rem !important;
+    }
+}
+
+@media (min-width: 992px) {
+    .header-carousel .owl-carousel-item .position-absolute h1.display-3 {
+        font-size: 2.5rem;
+        max-width: 36rem;
+    }
+
+    .header-carousel .owl-carousel-item .position-absolute p.fs-5 {
+        font-size: 1rem !important;
+        max-width: 32rem;
+    }
+}
+
+.header-carousel .owl-carousel-item .position-absolute .btn {
+    font-size: 0.9rem;
+    padding-top: 0.55rem !important;
+    padding-bottom: 0.55rem !important;
+    padding-left: 1.1rem !important;
+    padding-right: 1.1rem !important;
+}
+
+@media (min-width: 768px) {
+    .header-carousel .owl-carousel-item .position-absolute .btn {
+        padding-top: 0.65rem !important;
+        padding-bottom: 0.65rem !important;
+        padding-left: 1.35rem !important;
+        padding-right: 1.35rem !important;
     }
 }
 
 .header-carousel .owl-nav {
     position: absolute;
-    top: 50%;
+    top: 70%;
     right: 8%;
     transform: translateY(-50%);
     display: flex;
@@ -393,12 +479,59 @@
 
 
 /*** Team ***/
+.team-item .overflow-hidden {
+    height: 320px;
+}
+
 .team-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     transition: .5s;
 }
 
 .team-item:hover img {
     transform: scale(1.1);
+}
+
+/* Team member detail (profile page) — compact frame like team cards; old 480px felt too tall */
+.team-detail-page .team-member-detail-photo {
+    width: 100%;
+    max-width: 340px;
+    margin-inline: auto;
+    height: 300px;
+    overflow: hidden;
+}
+
+.team-detail-page .team-member-detail-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+}
+
+@media (min-width: 768px) {
+    .team-detail-page .team-member-detail-photo {
+        margin-inline: 0;
+        max-width: none;
+        height: 320px;
+    }
+}
+
+@media (min-width: 992px) {
+    .team-detail-sidebar {
+        position: sticky;
+        top: 96px;
+    }
+
+    .team-detail-page .team-member-detail-photo {
+        height: 320px;
+    }
+}
+
+.team-detail-description {
+    font-size: 1.05rem;
 }
 
 

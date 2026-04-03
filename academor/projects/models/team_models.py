@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.validators import MaxLengthValidator
+from ckeditor.fields import RichTextField
 
 
 class Team(models.Model):
@@ -17,10 +17,9 @@ class Team(models.Model):
         max_length=120,
         verbose_name='Role',
     )
-    description = models.TextField(
+    description = RichTextField(
         null=True,
         blank=True,
-        validators=[MaxLengthValidator(1000)],
         verbose_name='Description',
     )
     instagram = models.URLField(
@@ -47,6 +46,13 @@ class Team(models.Model):
         null=True,
         blank=True,
         verbose_name='YouTube',
+    )
+
+    descriptor = models.FileField(
+        upload_to='team/descriptors/',
+        null=True,
+        blank=True,
+        verbose_name='Description file',
     )
 
     class Meta:

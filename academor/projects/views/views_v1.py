@@ -6,7 +6,7 @@ from django.db import IntegrityError
 from django.http import Http404, JsonResponse
 from django.utils.translation import gettext as _
 
-from projects.models import JobApplication, ServiceCategory
+from projects.models import JobApplication, ServiceCategory, Team
 from projects.forms.forms_v1 import AppealForm, ReviewForm
 from projects.utils.queries import (
     get_language_from_request, get_home_page_data,
@@ -305,6 +305,30 @@ class TeamPageView(View):
             'categories': [serialize_project_category(c, lang) for c in categories],
             'language': lang,
             'background_image': get_background_image('about'),
+            'nav_active': 'team',
+        }
+        return render(request, self.template_name, context)
+
+
+class TeamDetailPageView(View):
+    template_name = 'team-detail.html'
+
+    def get(self, request, pk: int):
+        lang = get_language_from_request(request)
+        try:
+            member = Team.objects.get(pk=pk)
+        except Team.DoesNotExist:
+            raise Http404(_("Team member not found"))
+
+        categories = get_project_categories(lang)
+        member_data = serialize_team_member(member)
+        context = {
+            'member': member_data,
+            'categories': [serialize_project_category(c, lang) for c in categories],
+            'language': lang,
+            'background_image': get_background_image('about'),
+            'page_title': f'{member_data["name"]} | Academor',
+            'nav_active': 'team',
         }
         return render(request, self.template_name, context)
 
