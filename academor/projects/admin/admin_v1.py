@@ -24,26 +24,28 @@ class MediaAdmin(admin.ModelAdmin):
         'is_about_page_background_image',
         'is_contact_page_background_image',
         'is_project_page_background_image',
+        'is_courses_page_background_image',
+        'is_tests_page_background_image',
         'is_vacany_page_background_image',
         'is_service_page_background_image',
-        'is_footer_background_image',
         'created_at',
     )
     readonly_fields = ('created_at', 'media_preview_detailed')
 
     fieldsets = (
-        ('Media Faylı', {
+        ('Media file', {
             'fields': ('image', 'media_preview_detailed')
         }),
-        ('Arxa Plan Təyinatları', {
+        ('Background assignments', {
             'fields': (
                 'is_home_page_background_image',
                 'is_about_page_background_image',
                 'is_contact_page_background_image',
                 'is_project_page_background_image',
+                'is_courses_page_background_image',
+                'is_tests_page_background_image',
                 'is_vacany_page_background_image',
                 'is_service_page_background_image',
-                'is_footer_background_image',
             ),
         }),
     )
@@ -57,14 +59,14 @@ class MediaAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         return qs.filter(
-            models.Q(is_home_page_background_image=True) |
-            models.Q(is_about_page_background_image=True) |
-            models.Q(is_contact_page_background_image=True) |
-            models.Q(is_project_page_background_image=True) |
-            models.Q(is_vacany_page_background_image=True) |
-            models.Q(is_service_page_background_image=True) |
-            models.Q(is_footer_background_image=True) |
-            models.Q(category__isnull=False)
+            Q(is_home_page_background_image=True)
+            | Q(is_about_page_background_image=True)
+            | Q(is_contact_page_background_image=True)
+            | Q(is_project_page_background_image=True)
+            | Q(is_courses_page_background_image=True)
+            | Q(is_tests_page_background_image=True)
+            | Q(is_vacany_page_background_image=True)
+            | Q(is_service_page_background_image=True)
         )
 
     def media_preview(self, obj):
@@ -74,7 +76,7 @@ class MediaAdmin(admin.ModelAdmin):
                 obj.image.url
             )
         return "-"
-    media_preview.short_description = "Şəkil"
+    media_preview.short_description = "Image"
 
     def media_preview_detailed(self, obj):
         if obj.image:
@@ -83,26 +85,28 @@ class MediaAdmin(admin.ModelAdmin):
                 obj.image.url
             )
         return "-"
-    media_preview_detailed.short_description = "Şəkil Önizləmə"
+    media_preview_detailed.short_description = "Image preview"
 
     def background_flags(self, obj):
         flags = []
         if obj.is_home_page_background_image:
-            flags.append("🏠 Ana səhifə")
+            flags.append("🏠 Home page")
         if obj.is_about_page_background_image:
-            flags.append("ℹ️ Haqqımızda səhifəsi")
+            flags.append("ℹ️ About page")
         if obj.is_contact_page_background_image:
-            flags.append("🤝 Əlaqə səhifəi")
+            flags.append("🤝 Contact page")
         if obj.is_project_page_background_image:
-            flags.append("📁 Layihələr səhifəsi")
+            flags.append("📁 Projects page")
+        if obj.is_courses_page_background_image:
+            flags.append("📚 Courses page")
+        if obj.is_tests_page_background_image:
+            flags.append("📝 Tests pages")
         if obj.is_vacany_page_background_image:
-            flags.append("💼 Vakansiyalar səhifəsi")
+            flags.append("💼 Vacancies page")
         if obj.is_service_page_background_image:
-            flags.append("🛠️ Xidmətlər səhifəsi")
-        if obj.is_footer_background_image:
-            flags.append("🖼️ Websiten-ın aşağı hissəsi üçün")
+            flags.append("🛠️ Services page")
         return " | ".join(flags) if flags else "-"
-    background_flags.short_description = "Arxa Plan"
+    background_flags.short_description = "Background"
 
 
 
@@ -112,7 +116,7 @@ class MediaInlineBase(admin.TabularInline):
     readonly_fields = ('created_at', 'thumbnail_preview')
     fields = ('image', 'video', 'thumbnail_preview', 'created_at')
     verbose_name = "Media"
-    verbose_name_plural = "Medialar"
+    verbose_name_plural = "Media"
     
     class Media:
         js = ('assets/js/admin_image_compress.js',)
@@ -124,7 +128,7 @@ class MediaInlineBase(admin.TabularInline):
                 obj.image.url
             )
         return "-"
-    thumbnail_preview.short_description = "Önizləmə"
+    thumbnail_preview.short_description = "Preview"
 
 
 class MediaInlineProject(MediaInlineBase):
@@ -156,7 +160,7 @@ class MediaInlineAbout(MediaInlineBase):
                 image_count = 0
                 deleted_images = 0
                 
-                # Mövcud şəkilləri saymaq
+                # Count existing images on the About instance
                 if obj:
                     existing_images = obj.medias.filter(image__isnull=False).exclude(image='').count()
                 else:
@@ -167,27 +171,25 @@ class MediaInlineAbout(MediaInlineBase):
                         is_deleted = form.cleaned_data.get('DELETE', False)
                         
                         if is_deleted:
-                            # Silinən şəkilləri saymaq
                             if form.instance and form.instance.pk and form.instance.image:
                                 deleted_images += 1
                         else:
-                            # Yeni və ya redaktə olunan şəkilləri saymaq
                             if form.cleaned_data.get('video'):
                                 video_count += 1
                             if form.cleaned_data.get('image'):
-                                # Yeni şəkil və ya mövcud şəkilin dəyişdirilməsi
                                 if not form.instance.pk or (form.instance.pk and form.cleaned_data.get('image') != form.instance.image):
                                     image_count += 1
                 
                 if video_count > 1:
-                    raise ValidationError('Yalnız bir video yükləmək mümkündür. Lütfən, yalnız bir media-da video əlavə edin.')
+                    raise ValidationError('Only one video may be uploaded. Please add a video to a single media row only.')
                 
-                # Ümumi şəkil sayını hesablamaq
                 total_images = existing_images - deleted_images + image_count
                 
                 if total_images > 12:
-                    raise ValidationError('Haqqımızda üçün maksimum 12 şəkil yükləmək mümkündür. Hal-hazırda {} şəkil mövcuddur, {} şəkil silinir, {} yeni şəkil əlavə olunur. Ümumi: {} şəkil.'.format(
-                        existing_images, deleted_images, image_count, total_images))
+                    raise ValidationError(
+                        'About page allows at most 12 images. Currently: {} existing, {} removed, {} new — total would be {}.'
+                        .format(existing_images, deleted_images, image_count, total_images)
+                    )
         
         kwargs['formset'] = MediaAboutFormSet
         return super().get_formset(request, obj, **kwargs)
@@ -229,7 +231,7 @@ class ServiceCategoryAdmin(admin.ModelAdmin):
     inlines = [MediaInlineCategory]
 
     fieldsets = (
-        ('Azərbaycan', {
+        ('Azerbaijani', {
             'fields': ('name_az',)
         }),
         ('English', {
@@ -249,31 +251,31 @@ class ServiceCategoryAdmin(admin.ModelAdmin):
             )
         return '—'
 
-    category_thumb.short_description = 'Şəkil'
+    category_thumb.short_description = 'Thumbnail'
 
     def name_link(self, obj):
         url = reverse('admin:projects_servicecategory_change', args=[obj.pk])
-        name = obj.name_az or 'Kateqoriya'
+        name = obj.name_az or 'Category'
         return format_html('<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; font-size: 14px;">🔗 {}</a>', url, name)
-    name_link.short_description = "Ad (AZ)"
+    name_link.short_description = "Name (AZ)"
     name_link.admin_order_field = 'name_az'
     
     def projects_count(self, obj):
         count = obj.services.count()
         if count > 0:
             url = reverse('admin:projects_service_changelist') + f'?category__id__exact={obj.id}'
-            return format_html('<a href="{}" style="color: #28a745; text-decoration: none;">📁 {} layihə</a>', url, count)
-        return "0 layihə"
-    projects_count.short_description = "Layihələr"
+            return format_html('<a href="{}" style="color: #28a745; text-decoration: none;">📁 {} projects</a>', url, count)
+        return "0 projects"
+    projects_count.short_description = "Projects"
 
 # Project 
 class ServiceAdminForm(forms.ModelForm):
-    """Layihə admin formu"""
-    
+    """Service (project) admin form."""
+
     class Meta:
         model = Service
         fields = '__all__'
-    
+
     def clean(self):
         cleaned_data = super().clean()
 
@@ -283,31 +285,26 @@ class ServiceAdminForm(forms.ModelForm):
 
         errors = {}
 
-        # 1) "Seçilmiş Layihə" üçün ümumi maksimum 9 və "Ana səhifədə olsun" tələb olunur
         if speacial_project:
-            # "Seçilmiş" layihələr üçün "Ana səhifədə olsun" field-i tələb olunur
             if not on_main_page:
                 errors['on_main_page'] = (
-                    '⚠️ Xəbərdarlıq: "Seçilmiş layihə" seçildikdə "Ana səhifədə olsun" field-i də seçilməlidir. '
-                    'Seçilmiş layihələr ana səhifədə görünməlidir.'
+                    '⚠️ When “Featured project” is enabled, “Show on home page” must also be checked. '
+                    'Featured projects are shown on the home page.'
                 )
-            
-            # Maksimum 9 layihə limiti
+
             qs = Service.objects.filter(speacial_project=True, on_main_page=True)
             if self.instance and self.instance.pk:
                 qs = qs.exclude(pk=self.instance.pk)
 
             if qs.count() >= 9:
                 errors['speacial_project'] = (
-                    '⚠️ Xəbərdarlıq: "Seçilmiş layihə" üçün maksimum 9 layihə seçilə bilər. '
-                    'Yeni layihəni seçilmiş etmək üçün köhnələrdən birinin "Seçilmiş Lahiyə" seçimini silməlisiniz.'
+                    '⚠️ At most 9 featured projects are allowed. '
+                    'Uncheck “Featured project” on an existing project before adding another.'
                 )
 
-        # 2) "Ana səhifədə olsun" üçün: hər kateqoriya üzrə maksimum 9
         if on_main_page:
             if category is None:
-                # Nəzəri halda category boş qala bilərsə, əvvəl onu tələb et
-                errors['category'] = 'Ana səhifədə göstərmək üçün kateqoriya seçilməlidir.'
+                errors['category'] = 'Select a category to show this project on the home page.'
             else:
                 qs = Service.objects.filter(on_main_page=True, category=category)
                 if self.instance and self.instance.pk:
@@ -315,9 +312,8 @@ class ServiceAdminForm(forms.ModelForm):
 
                 if qs.count() >= 9:
                     errors['on_main_page'] = (
-                        f'⚠️ Xəbərdarlıq: "{category}" kateqoriyası üçün ana səhifədə maksimum 9 layihə ola bilər. '
-                        'Yeni layihəni ana səhifəyə əlavə etmək üçün həmin kateqoriyadan köhnələrdən birinin '
-                        '"Ana səhifədə olsun" seçimini silməlisiniz.'
+                        f'⚠️ At most 9 home-page projects are allowed in category “{category}”. '
+                        'Uncheck “Show on home page” on an existing project in this category first.'
                     )
 
         if errors:
@@ -353,10 +349,10 @@ class ServiceAdmin(admin.ModelAdmin):
     list_per_page = 25
     
     fieldsets = (
-        ('Əsas Məlumatlar', {
+        ('Main details', {
             'fields': ('category', 'url')
         }),
-        ('Azərbaycan', {
+        ('Azerbaijani', {
             'fields': ('name_az', 'description_az')
         }),
         ('English', {
@@ -368,7 +364,7 @@ class ServiceAdmin(admin.ModelAdmin):
         ('Status', {
             'fields': ('is_completed', 'is_active', 'on_main_page', 'speacial_project')
         }),
-        ('Tarix', {
+        ('Date', {
             'fields': ('project_date', 'created_at')
         }),
     )
@@ -391,39 +387,39 @@ class ServiceAdmin(admin.ModelAdmin):
             except Exception:
                 pass
             
-            messages.success(request, f'"{obj_display}" uğurla silindi.')
+            messages.success(request, f'"{obj_display}" was deleted successfully.')
             return HttpResponseRedirect(reverse('admin:projects_service_changelist'))
     
     def name_link(self, obj):
         url = reverse('admin:projects_service_change', args=[obj.pk])
         return format_html('<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; font-size: 14px;">🔗 {}</a>', url, obj.name_az)
-    name_link.short_description = "Layihə Adı"
+    name_link.short_description = "Project name"
     name_link.admin_order_field = 'name_az'
     
     def category_display(self, obj):
         if obj.category:
             return obj.category.name_az or '-'
         return '-'
-    category_display.short_description = "Kateqoriya"
+    category_display.short_description = "Category"
     category_display.admin_order_field = 'category'
     
     def status_badges(self, obj):
         badges = []
         if obj.is_active:
-            badges.append('<span style="background: #28a745; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;">✓ Aktiv</span>')
+            badges.append('<span style="background: #28a745; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;">✓ Active</span>')
         else:
-            badges.append('<span style="background: #dc3545; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;">✗ Deaktiv</span>')
+            badges.append('<span style="background: #dc3545; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;">✗ Inactive</span>')
         
         if obj.is_completed:
-            badges.append('<span style="background: #17a2b8; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;">✓ Tamamlanıb</span>')
+            badges.append('<span style="background: #17a2b8; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;">✓ Completed</span>')
         else:
-            badges.append('<span style="background: #ffc107; color: #333; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;">🔄 Davam edir</span>')
+            badges.append('<span style="background: #ffc107; color: #333; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;">🔄 In progress</span>')
         
         if obj.on_main_page:
-            badges.append('<span style="background: #6f42c1; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;">🏠 Ana səhifədə</span>')
+            badges.append('<span style="background: #6f42c1; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;">🏠 On home page</span>')
         
         if obj.speacial_project:
-            badges.append('<span style="background: #e83e8c; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;">⭐ Xüsusi Layihə</span>')
+            badges.append('<span style="background: #e83e8c; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;">⭐ Featured</span>')
         
         return format_html(' '.join(badges))
     status_badges.short_description = "Status"
@@ -446,7 +442,7 @@ class InstructorAdmin(admin.ModelAdmin):
     list_per_page = 25
     
     fieldsets = (
-        ('Azərbaycan', {
+        ('Azerbaijani', {
             'fields': ('name_az',)
         }),
         ('English', {
@@ -455,16 +451,16 @@ class InstructorAdmin(admin.ModelAdmin):
         ('Русский', {
             'fields': ('name_ru',)
         }),
-        ('Əlaqə', {
+        ('Social links', {
             'fields': ('instagram', 'facebook', 'linkedn')
         }),
         ('Status', {
             'fields': ('is_active',)
         }),
-        ('Media', {
+        ('Logo', {
             'fields': ('logo_preview',)
         }),
-        ('Tarix', {
+        ('Date', {
             'fields': ('created_at',)
         }),
     )
@@ -481,9 +477,9 @@ class InstructorAdmin(admin.ModelAdmin):
     
     def name_link(self, obj):
         url = reverse('admin:projects_instructor_change', args=[obj.pk])
-        name = obj.name_az or 'Əməkdaş'
+        name = obj.name_az or 'Instructor'
         return format_html('<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; font-size: 14px;">🔗 {}</a>', url, name)
-    name_link.short_description = "Ad"
+    name_link.short_description = "Name"
     name_link.admin_order_field = 'name_az'
     
     def logo_preview(self, obj):
@@ -493,13 +489,13 @@ class InstructorAdmin(admin.ModelAdmin):
                 '<img src="{}" style="max-width: 250px; max-height: 250px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />',
                 media.image.url
             )
-        return "Logo yoxdur"
-    logo_preview.short_description = "Logo Önizləmə"
+        return "No logo"
+    logo_preview.short_description = "Logo preview"
     
     def active_status(self, obj):
         if obj.is_active:
-            return format_html('<span style="background: #28a745; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">✓ Aktiv</span>')
-        return format_html('<span style="background: #dc3545; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">✗ Deaktiv</span>')
+            return format_html('<span style="background: #28a745; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">✓ Active</span>')
+        return format_html('<span style="background: #dc3545; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">✗ Inactive</span>')
     active_status.short_description = "Status"
 
 # About 
@@ -512,42 +508,42 @@ class AboutAdmin(admin.ModelAdmin):
     list_per_page = 25
     
     fieldsets = (
-        ('Əsas Başlıq', {
+        ('Main heading', {
             'fields': ('main_title_az', 'main_title_en', 'main_title_ru')
         }),
-        ('Alt Başlıq', {
+        ('Subtitle', {
             'fields': ('second_title_az', 'second_title_en', 'second_title_ru')
         }),
-        ('Təsvir - Azərbaycan', {
+        ('Description — Azerbaijani', {
             'fields': ('description_az',)
         }),
-        ('Təsvir - English', {
+        ('Description — English', {
             'fields': ('description_en',)
         }),
-        ('Təsvir - Русский', {
+        ('Description — Russian', {
             'fields': ('description_ru',)
         }),
     )
     
     def title_link(self, obj):
         url = reverse('admin:projects_about_change', args=[obj.pk])
-        title = obj.main_title_az or 'Haqqımızda'
+        title = obj.main_title_az or 'About'
         return format_html('<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; font-size: 14px;">🔗 {}</a>', url, title)
-    title_link.short_description = "Əsas Başlıq"
+    title_link.short_description = "Main heading"
     title_link.admin_order_field = 'main_title_az'
     
     def media_count(self, obj):
         count = obj.medias.count()
         if count > 0:
-            return format_html('<span style="background: #007bff; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px;">📷 {} şəkil</span>', count)
-        return "📷 0 şəkil"
-    media_count.short_description = "Medialar"
+            return format_html('<span style="background: #007bff; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px;">📷 {} images</span>', count)
+        return "📷 0 images"
+    media_count.short_description = "Media"
     
     def updated_info(self, obj):
         if hasattr(obj, 'updated_at'):
             return obj.updated_at.strftime('%d.%m.%Y %H:%M') if obj.updated_at else "-"
         return "-"
-    updated_info.short_description = "Son Yenilənmə"
+    updated_info.short_description = "Last updated"
 
 
 @admin.register(Program)
@@ -560,7 +556,7 @@ class ProgramAdmin(admin.ModelAdmin):
     list_per_page = 25
 
     fieldsets = (
-        ('Azərbaycan', {
+        ('Azerbaijani', {
             'fields': ('title_az', 'description_az')
         }),
         ('English', {
@@ -571,7 +567,7 @@ class ProgramAdmin(admin.ModelAdmin):
         }),
         ('Link', {
             'fields': ('url',),
-            'description': 'Ətraflı düyməsi bu URL-ə keçid edər. Boş buraxılsa düymə göstərilməz.'
+            'description': 'The “Learn more” button links to this URL. Leave blank to hide the button.'
         }),
         ('Status', {
             'fields': ('is_active',)
@@ -580,22 +576,22 @@ class ProgramAdmin(admin.ModelAdmin):
 
     def title_link(self, obj):
         url = reverse('admin:projects_program_change', args=[obj.pk])
-        title = obj.title_az or 'Xidmət'
+        title = obj.title_az or 'Service'
         return format_html('<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; font-size: 14px;">🔗 {}</a>', url, title)
-    title_link.short_description = "Ad (AZ)"
+    title_link.short_description = "Name (AZ)"
     title_link.admin_order_field = 'title_az'
 
     def media_count(self, obj):
         count = obj.medias.count()
         if count > 0:
-            return format_html('<span style="background: #007bff; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px;">📷 {} şəkil</span>', count)
-        return "📷 0 şəkil"
-    media_count.short_description = "Medialar"
+            return format_html('<span style="background: #007bff; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px;">📷 {} images</span>', count)
+        return "📷 0 images"
+    media_count.short_description = "Media"
 
     def active_status(self, obj):
         if obj.is_active:
-            return format_html('<span style="background: #28a745; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">✓ Aktiv</span>')
-        return format_html('<span style="background: #dc3545; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">✗ Deaktiv</span>')
+            return format_html('<span style="background: #28a745; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">✓ Active</span>')
+        return format_html('<span style="background: #dc3545; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">✗ Inactive</span>')
     active_status.short_description = "Status"
 
 
@@ -618,29 +614,29 @@ class ContactAdmin(admin.ModelAdmin):
     list_per_page = 25
     
     fieldsets = (
-        ('Ünvan', {
+        ('Address', {
             'fields': ('address_az', 'address_en', 'address_ru')
         }),
-        ('Xəritə', {
+        ('Map', {
             'fields': ('map_embed_url',),
-            'description': 'Google Maps → Paylaş → Xəritəni yerləşdir → iframe-dən yalnız src URL-ni yapışdırın.',
+            'description': 'Google Maps → Share → Embed map → paste only the iframe src URL.',
         }),
-        ('Əlaqə Nömrələri', {
+        ('Phone numbers', {
             'fields': ('phone', 'whatsapp_number', 'whatsapp_number_2', 'phone_three')
         }),
         ('Email', {
             'fields': ('email',)
         }),
-        ('Sosial Şəbəkələr', {
+        ('Social networks', {
             'fields': ('instagram', 'facebook', 'youtube', 'linkedn', 'tiktok')
         }),
     )
     
     def address_link(self, obj):
         url = reverse('admin:projects_contact_change', args=[obj.pk])
-        address = obj.address_az or 'Əlaqə'
+        address = obj.address_az or 'Contact'
         return format_html('<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; font-size: 14px;">🔗 {}</a>', url, address[:50] + '...' if len(address) > 50 else address)
-    address_link.short_description = "Ünvan"
+    address_link.short_description = "Address"
     address_link.admin_order_field = 'address_az'
     
     def contact_phone(self, obj):
@@ -650,7 +646,7 @@ class ContactAdmin(admin.ModelAdmin):
         if obj.whatsapp_number:
             phones.append(format_html('<span style="color: #25D366;">💬 {}</span>', obj.whatsapp_number))
         return format_html('<br>'.join(phones)) if phones else "-"
-    contact_phone.short_description = "Telefonlar"
+    contact_phone.short_description = "Phones"
     
     def contact_email(self, obj):
         if obj.email:
@@ -671,7 +667,7 @@ class ContactAdmin(admin.ModelAdmin):
         if obj.tiktok:
             links.append(format_html('<a href="{}" target="_blank" style="color: #000000; margin-right: 8px;">🎵 TikTok</a>', obj.tiktok))
         return format_html(' '.join(links)) if links else "-"
-    social_links.short_description = "Sosial Şəbəkələr"
+    social_links.short_description = "Social links"
 
 
 @admin.register(Team)
@@ -789,7 +785,7 @@ class CareerOpeningAdmin(admin.ModelAdmin):
     list_per_page = 25
     
     fieldsets = (
-        ('Azərbaycan', {
+        ('Azerbaijani', {
             'fields': ('title_az', 'description_az')
         }),
         ('English', {
@@ -801,7 +797,7 @@ class CareerOpeningAdmin(admin.ModelAdmin):
         ('Status', {
             'fields': ('is_active',)
         }),
-        ('Tarix', {
+        ('Date', {
             'fields': ('created_at',)
         }),
     )
@@ -809,13 +805,13 @@ class CareerOpeningAdmin(admin.ModelAdmin):
     def title_link(self, obj):
         url = reverse('admin:projects_careeropening_change', args=[obj.pk])
         return format_html('<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; font-size: 14px;">🔗 {}</a>', url, obj.title_az)
-    title_link.short_description = "Vakansiya Adı"
+    title_link.short_description = "Vacancy title"
     title_link.admin_order_field = 'title_az'
     
     def vacancy_status(self, obj):
         if obj.is_active:
-            return format_html('<span style="background: #28a745; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">✓ Aktiv</span>')
-        return format_html('<span style="background: #dc3545; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">✗ Deaktiv</span>')
+            return format_html('<span style="background: #28a745; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">✓ Active</span>')
+        return format_html('<span style="background: #dc3545; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">✗ Inactive</span>')
     vacancy_status.short_description = "Status"
     
     def appeals_count(self, obj):
@@ -827,16 +823,18 @@ class CareerOpeningAdmin(admin.ModelAdmin):
             url = reverse('admin:projects_jobapplication_changelist') + f'?vacancy__id__exact={obj.id}'
             badge_html = f'<a href="{url}" style="text-decoration: none;">'
             if unread_count > 0:
-                badge_html += f'<span style="background: #dc3545; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">📄 {count} CV ({unread_count} oxunmayıb)</span>'
+                badge_html += f'<span style="background: #dc3545; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">📄 {count} CV ({unread_count} unread)</span>'
             else:
-                badge_html += f'<span style="background: #28a745; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">📄 {count} CV (hamısı oxunub)</span>'
+                badge_html += f'<span style="background: #28a745; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">📄 {count} CV (all read)</span>'
             badge_html += '</a>'
             return format_html(badge_html)
         return format_html('<span style="color: #6c757d;">📄 0 CV</span>')
-    appeals_count.short_description = "CV-lər"
+    appeals_count.short_description = "Applications"
 
 @admin.register(Tagline)
 class TaglineAdmin(admin.ModelAdmin):
+    """Ana səhifə hero mətnləri: sistemdə yalnız bir Tagline qeydi ola bilər."""
+
     list_display = (
         'id',
         'text_preview_az',
@@ -844,39 +842,55 @@ class TaglineAdmin(admin.ModelAdmin):
         'text_preview_ru',
     )
     list_display_links = ('text_preview_az',)
-    search_fields = ('text_az', 'text_en', 'text_ru')
+    search_fields = (
+        'heading_small_az', 'heading_main_az', 'body_az',
+        'heading_small_en', 'heading_main_en', 'body_en',
+        'heading_small_ru', 'heading_main_ru', 'body_ru',
+    )
     list_per_page = 25
     
     fieldsets = (
-        ('Azərbaycan', {
-            'fields': ('text_az',)
+        ('Azerbaijani', {
+            'fields': ('heading_small_az', 'heading_main_az', 'body_az')
         }),
         ('English', {
-            'fields': ('text_en',)
+            'fields': ('heading_small_en', 'heading_main_en', 'body_en')
         }),
         ('Русский', {
-            'fields': ('text_ru',)
+            'fields': ('heading_small_ru', 'heading_main_ru', 'body_ru')
         }),
     )
     
     def text_preview_az(self, obj):
         url = reverse('admin:projects_tagline_change', args=[obj.pk])
-        preview = obj.text_az[:100] + '...' if len(obj.text_az) > 100 else obj.text_az
-        return format_html('<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; font-size: 14px;">🔗 {}</a>', url, preview)
-    text_preview_az.short_description = "Deviz (AZ)"
-    text_preview_az.admin_order_field = 'text_az'
+        base = obj.heading_main_az or obj.heading_small_az or obj.body_az or ''
+        preview = base[:100] + '...' if len(base) > 100 else base
+        return format_html(
+            '<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; font-size: 14px;">🔗 {}</a>',
+            url,
+            preview or 'Tagline (AZ)',
+        )
+    text_preview_az.short_description = "Hero (AZ)"
+    text_preview_az.admin_order_field = 'heading_main_az'
     
     def text_preview_en(self, obj):
-        preview = obj.text_en[:100] + '...' if len(obj.text_en) > 100 else obj.text_en
-        return preview if obj.text_en else "-"
-    text_preview_en.short_description = "Deviz (EN)"
-    text_preview_en.admin_order_field = 'text_en'
+        base = obj.heading_main_en or obj.heading_small_en or obj.body_en or ''
+        preview = base[:100] + '...' if len(base) > 100 else base
+        return preview or "-"
+    text_preview_en.short_description = "Hero (EN)"
+    text_preview_en.admin_order_field = 'heading_main_en'
     
     def text_preview_ru(self, obj):
-        preview = obj.text_ru[:100] + '...' if len(obj.text_ru) > 100 else obj.text_ru
-        return preview if obj.text_ru else "-"
-    text_preview_ru.short_description = "Deviz (RU)"
-    text_preview_ru.admin_order_field = 'text_ru'
+        base = obj.heading_main_ru or obj.heading_small_ru or obj.body_ru or ''
+        preview = base[:100] + '...' if len(base) > 100 else base
+        return preview or "-"
+    text_preview_ru.short_description = "Hero (RU)"
+    text_preview_ru.admin_order_field = 'heading_main_ru'
+
+    def has_add_permission(self, request):
+        if Tagline.objects.exists():
+            return False
+        return super().has_add_permission(request)
 
 @admin.register(JobApplication)
 class JobApplicationAdmin(admin.ModelAdmin):
@@ -907,27 +921,26 @@ class JobApplicationAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
 
     fieldsets = (
-        ('Vakansiya', {
+        ('Vacancy', {
             'fields': ('vacancy',)
         }),
-        ('Namizəd Məlumatları', {
+        ('Candidate', {
             'fields': ('full_name', 'email', 'phone_number', 'info')
         }),
-        ('CV Faylı', {
+        ('CV file', {
             'fields': ('cv', 'cv_preview')
         }),
         ('Status', {
             'fields': ('is_read',)
         }),
-        ('Tarix', {
+        ('Date', {
             'fields': ('created_at',)
         }),
     )
 
     def candidate_info(self, obj):
-        """Namizəd məlumatlarını səliqəli şəkildə göstərir"""
         detail_url = reverse('admin:projects_jobapplication_change', args=[obj.pk])
-        name = obj.full_name or "Ad Soyad yoxdur"
+        name = obj.full_name or "No name"
         
         return format_html(
             '<div style="padding: 8px 0;">'
@@ -938,7 +951,7 @@ class JobApplicationAdmin(admin.ModelAdmin):
             detail_url,
             name
         )
-    candidate_info.short_description = "Namizəd"
+    candidate_info.short_description = "Candidate"
     candidate_info.admin_order_field = 'full_name'
 
     def vacancy_info(self, obj):
@@ -952,18 +965,17 @@ class JobApplicationAdmin(admin.ModelAdmin):
                 'font-size: 14px; display: block; margin-bottom: 4px; line-height: 1.4;">'
                 '💼 {}</a>'
                 '<a href="{}" style="color: #6c757d; text-decoration: none; font-size: 11px; '
-                'opacity: 0.8;">→ Vakansiyaya bax</a>'
+                'opacity: 0.8;">→ View vacancy</a>'
                 '</div>',
                 detail_url,
                 obj.vacancy.title_az[:50] + ('...' if len(obj.vacancy.title_az) > 50 else ''),
                 vacancy_url
             )
-        return format_html('<span style="color: #999; font-size: 13px;">Vakansiya yoxdur</span>')
-    vacancy_info.short_description = "Vakansiya"
+        return format_html('<span style="color: #999; font-size: 13px;">No vacancy</span>')
+    vacancy_info.short_description = "Vacancy"
     vacancy_info.admin_order_field = 'vacancy__title_az'
 
     def contact_info(self, obj):
-        """Əlaqə məlumatlarını səliqəli şəkildə göstərir"""
         contact_items = []
         
         if obj.email:
@@ -991,13 +1003,13 @@ class JobApplicationAdmin(admin.ModelAdmin):
             )
         
         if not contact_items:
-            return format_html('<span style="color: #999; font-size: 12px;">Əlaqə məlumatı yoxdur</span>')
+            return format_html('<span style="color: #999; font-size: 12px;">No contact info</span>')
         
         return format_html(
             '<div style="padding: 8px 0; line-height: 1.6;">{}</div>',
             format_html(''.join(contact_items))
         )
-    contact_info.short_description = "Əlaqə"
+    contact_info.short_description = "Contact"
 
     def cv_download(self, obj):
         detail_url = reverse('admin:projects_jobapplication_change', args=[obj.pk])
@@ -1014,7 +1026,7 @@ class JobApplicationAdmin(admin.ModelAdmin):
                 'color: white; padding: 8px 14px; border-radius: 6px; text-decoration: none; '
                 'font-size: 12px; font-weight: 600; display: inline-block; margin-bottom: 4px; '
                 'box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: all 0.2s;">'
-                '📎 CV Endir</a>'
+                '📎 Download CV</a>'
                 '<div style="color: #666; font-size: 11px; margin-top: 4px;">'
                 '📄 {} <span style="opacity: 0.7;">({})</span>'
                 '</div>'
@@ -1027,11 +1039,11 @@ class JobApplicationAdmin(admin.ModelAdmin):
         return format_html(
             '<div style="padding: 8px 0;">'
             '<a href="{}" style="color: #999; text-decoration: none; font-size: 12px;">'
-            'CV faylı yoxdur</a>'
+            'No CV file</a>'
             '</div>',
             detail_url
         )
-    cv_download.short_description = "CV Faylı"
+    cv_download.short_description = "CV"
 
     def read_status_badge(self, obj):
         if obj.is_read:
@@ -1040,7 +1052,7 @@ class JobApplicationAdmin(admin.ModelAdmin):
                 '<span style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); '
                 'color: white; padding: 6px 12px; border-radius: 8px; font-size: 11px; '
                 'font-weight: 600; display: inline-block; box-shadow: 0 2px 4px rgba(40,167,69,0.3);">'
-                '✓ Oxunub</span>'
+                '✓ Read</span>'
                 '</div>'
             )
         return format_html(
@@ -1048,7 +1060,7 @@ class JobApplicationAdmin(admin.ModelAdmin):
             '<span style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); '
             'color: white; padding: 6px 12px; border-radius: 8px; font-size: 11px; '
             'font-weight: 600; display: inline-block; box-shadow: 0 2px 4px rgba(220,53,69,0.3);">'
-            '🔴 Oxunmayıb</span>'
+            '🔴 Unread</span>'
             '</div>'
         )
     read_status_badge.short_description = "Status"
@@ -1067,7 +1079,7 @@ class JobApplicationAdmin(admin.ModelAdmin):
                 time_str
             )
         return "-"
-    created_at_formatted.short_description = "Tarix"
+    created_at_formatted.short_description = "Date"
     created_at_formatted.admin_order_field = 'created_at'
 
     def cv_preview(self, obj):
@@ -1082,7 +1094,7 @@ class JobApplicationAdmin(admin.ModelAdmin):
                 '<span style="color:#666;font-size:12px;">({} KB)</span>'
                 '<a href="{}" target="_blank" '
                 'style="color:#2196f3;text-decoration:none;margin-left:8px;font-weight:500;">'
-                '📥 Endir</a>'
+                '📥 Download</a>'
                 '</div>',
                 file_name,
                 round(file_size / 1024, 2) if isinstance(file_size, (int, float)) else 'N/A',
@@ -1090,7 +1102,7 @@ class JobApplicationAdmin(admin.ModelAdmin):
             )
         return "-"
 
-    cv_preview.short_description = "CV Önizləmə"
+    cv_preview.short_description = "CV preview"
 
 
 @admin.register(ContactInquiry)
@@ -1119,25 +1131,24 @@ class ContactInquiryAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
 
     fieldsets = (
-        ('Göndərən Məlumatları', {
+        ('Sender', {
             'fields': ('full_name', 'email')
         }),
-        ('Mesaj Məlumatları', {
+        ('Message', {
             'fields': ('subject', 'info')
         }),
         ('Status', {
             'fields': ('is_read',)
         }),
-        ('Tarix', {
+        ('Date', {
             'fields': ('created_at', 'created_date')
         }),
     )
 
     def sender_info(self, obj):
-        """Göndərən məlumatlarını göstərir"""
         detail_url = reverse('admin:projects_contactinquiry_change', args=[obj.pk])
-        name = obj.full_name or "Ad Soyad yoxdur"
-        email = obj.email or "Email yoxdur"
+        name = obj.full_name or "No name"
+        email = obj.email or "No email"
         
         return format_html(
             '<div style="padding: 8px 0;">'
@@ -1152,13 +1163,12 @@ class ContactInquiryAdmin(admin.ModelAdmin):
             email,
             email[:30] + ('...' if len(email) > 30 else '')
         )
-    sender_info.short_description = "Göndərən"
+    sender_info.short_description = "Sender"
     sender_info.admin_order_field = 'full_name'
 
     def subject_preview(self, obj):
-        """Subyekt önizləməsi"""
         detail_url = reverse('admin:projects_contactinquiry_change', args=[obj.pk])
-        subject = obj.subject or "Subyekt yoxdur"
+        subject = obj.subject or "No subject"
         
         return format_html(
             '<a href="{}" style="color: #417690; text-decoration: none; font-weight: 500; '
@@ -1166,37 +1176,34 @@ class ContactInquiryAdmin(admin.ModelAdmin):
             detail_url,
             subject[:50] + ('...' if len(subject) > 50 else '')
         )
-    subject_preview.short_description = "Subyekt"
+    subject_preview.short_description = "Subject"
     subject_preview.admin_order_field = 'subject'
 
     def message_preview(self, obj):
-        """Mesaj önizləməsi"""
-        message = obj.info or "Mesaj yoxdur"
+        message = obj.info or "No message"
         return format_html(
             '<span style="color: #666; font-size: 13px;">{}</span>',
             message[:80] + ('...' if len(message) > 80 else '')
         )
-    message_preview.short_description = "Mesaj"
+    message_preview.short_description = "Message"
     message_preview.admin_order_field = 'info'
 
     def read_status_badge(self, obj):
-        """Oxunma statusu badge"""
         if obj.is_read:
             return format_html(
                 '<span style="background: #28a745; color: white; padding: 4px 10px; '
-                'border-radius: 12px; font-size: 11px; font-weight: bold;">✓ Oxunub</span>'
+                'border-radius: 12px; font-size: 11px; font-weight: bold;">✓ Read</span>'
             )
         return format_html(
             '<span style="background: #dc3545; color: white; padding: 4px 10px; '
-            'border-radius: 12px; font-size: 11px; font-weight: bold;">✗ Oxunmayıb</span>'
+            'border-radius: 12px; font-size: 11px; font-weight: bold;">✗ Unread</span>'
         )
     read_status_badge.short_description = "Status"
     read_status_badge.admin_order_field = 'is_read'
 
     def created_at_formatted(self, obj):
-        """Formatlanmış yaradılma tarixi"""
         return obj.created_at.strftime('%d.%m.%Y %H:%M')
-    created_at_formatted.short_description = "Tarix"
+    created_at_formatted.short_description = "Date"
     created_at_formatted.admin_order_field = 'created_at'
 
 @admin.register(AcademyStatistic)
@@ -1209,7 +1216,7 @@ class AcademyStatisticAdmin(admin.ModelAdmin):
     )
     list_display_links = ('id',)
     fieldsets = (
-        ('Statistikalar', {
+        ('Statistics', {
             'fields': (
                 'value_one',
                 'value_two',

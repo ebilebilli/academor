@@ -94,9 +94,13 @@ class Media(models.Model):
         default=False,
         verbose_name='Service page background image'
     )
-    is_footer_background_image = models.BooleanField(
+    is_courses_page_background_image = models.BooleanField(
         default=False,
-        verbose_name='Footer background image'
+        verbose_name='Courses page background image'
+    )
+    is_tests_page_background_image = models.BooleanField(
+        default=False,
+        verbose_name='Tests pages background image'
     )
 
     created_at = models.DateTimeField(

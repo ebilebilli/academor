@@ -1,5 +1,5 @@
 from django.views import View
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.http import Http404
 from django.contrib import messages
 from django.utils.translation import gettext as _
@@ -29,8 +29,7 @@ class TestListPageView(View):
             'tests': tests,
             'categories': [serialize_project_category(c, lang) for c in categories],
             'language': lang,
-            'background_image': get_background_image('about'),
-            'footer_image': get_background_image('footer'),
+            'background_image': get_background_image('tests'),
         }
         return render(request, self.template_name, context)
 
@@ -49,8 +48,7 @@ class TestTakePageView(View):
             'user_form': TestUserForm(),
             'categories': [serialize_project_category(c, lang) for c in categories],
             'language': lang,
-            'background_image': get_background_image('about'),
-            'footer_image': get_background_image('footer'),
+            'background_image': get_background_image('tests'),
         }
         return render(request, self.template_name, context)
 
@@ -69,8 +67,7 @@ class TestTakePageView(View):
                 'user_form': user_form,
                 'categories': [serialize_project_category(c, lang) for c in categories],
                 'language': lang,
-                'background_image': get_background_image('about'),
-                'footer_image': get_background_image('footer'),
+                'background_image': get_background_image('tests'),
             })
         user_data = user_form.cleaned_data
 
@@ -98,30 +95,17 @@ class TestTakePageView(View):
             score=score,
             level=level,
         )
-        return redirect('projects:test-result', result_id=result.id)
-
-
-class TestResultPageView(View):
-    template_name = 'test-result.html'
-
-    def get(self, request, result_id: int):
-        lang = get_language_from_request(request)
-        try:
-            result = UserResult.objects.select_related('test').get(id=result_id)
-        except UserResult.DoesNotExist:
-            raise Http404(_("Result not found"))
-
-        categories = get_project_categories(lang)
-        total_questions = result.test.questions.count()
+        total_questions = total
         percentage = int((result.score / total_questions) * 100) if total_questions else 0
-        context = {
+        categories = get_project_categories(lang)
+        return render(request, self.template_name, {
+            'test': serialize_test_for_taking(test),
+            'user_form': TestUserForm(),
             'result': result,
             'total_questions': total_questions,
             'percentage': percentage,
             'categories': [serialize_project_category(c, lang) for c in categories],
             'language': lang,
-            'background_image': get_background_image('about'),
-            'footer_image': get_background_image('footer'),
-        }
-        return render(request, self.template_name, context)
+            'background_image': get_background_image('tests'),
+        })
 

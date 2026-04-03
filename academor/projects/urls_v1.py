@@ -12,7 +12,7 @@ from projects.views.views_v1 import (
     TeamPageView,
     ReviewsPageView,
 )
-from projects.views.test_views import TestListPageView, TestTakePageView, TestResultPageView
+from projects.views.test_views import TestListPageView, TestTakePageView
 
 
 app_name = 'projects'
@@ -77,10 +77,5 @@ urlpatterns = [
         'tests/<int:test_id>/',
         TestTakePageView.as_view(),
         name='test-take',
-    ),
-    path(
-        'tests/result/<int:result_id>/',
-        TestResultPageView.as_view(),
-        name='test-result',
     ),
 ]   

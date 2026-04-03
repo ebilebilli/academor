@@ -9,7 +9,7 @@ from django.utils.translation import gettext as _
 from projects.models import JobApplication, ServiceCategory
 from projects.forms.forms_v1 import AppealForm, ReviewForm
 from projects.utils.queries import (
-    get_language_from_request, get_home_page_data, get_project_list_data,
+    get_language_from_request, get_home_page_data,
     get_courses_list_data,
     get_project_by_slug, serialize_project, get_background_image,
     get_about, serialize_about, get_partners, serialize_partner,
@@ -28,7 +28,6 @@ class HomePageView(View):
     def get(self, request):
         lang = get_language_from_request(request)
         context = get_home_page_data(request, lang)
-        context['footer_image'] = get_background_image('footer')
         context['language'] = lang
         return render(request, self.template_name, context)
 
@@ -42,8 +41,7 @@ class CoursesPageView(View):
             request.GET = request.GET.copy()
             request.GET['slug'] = category_slug
         context = get_courses_list_data(request, lang)
-        context['background_image'] = get_background_image('project')
-        context['footer_image'] = get_background_image('footer')
+        context['background_image'] = get_background_image('courses')
         context['language'] = lang
         return render(request, self.template_name, context)
 
@@ -70,8 +68,7 @@ class CourseDetailPageView(View):
                 'categories': serialized_categories,
                 'contact': serialize_contact(contact, lang) if contact else None,
                 'language': lang,
-                'background_image': get_background_image('project'),
-                'footer_image': get_background_image('footer'),
+                'background_image': get_background_image('courses'),
             }
             return render(request, self.template_name, context)
         
@@ -82,8 +79,7 @@ class CourseDetailPageView(View):
             request.GET = request.GET.copy()
             request.GET['slug'] = slug
             context = get_courses_list_data(request, lang)
-            context['background_image'] = get_background_image('project')
-            context['footer_image'] = get_background_image('footer')
+            context['background_image'] = get_background_image('courses')
             context['language'] = lang
             return render(request, 'courses.html', context)
         except ServiceCategory.DoesNotExist:
@@ -113,7 +109,6 @@ class AboutPageView(View):
             'statistics': statistics,
             'language': lang,
             'background_image': get_background_image('about'),
-            'footer_image': get_background_image('footer'),
         }
 
         return render(request, self.template_name, context)
@@ -138,7 +133,6 @@ class ServicesPageView(View):
             'services': serialized_services,
             'language': lang,
             'background_image': get_background_image('service'),
-            'footer_image': get_background_image('footer'),
         }
         return render(request, self.template_name, context)
 
@@ -161,7 +155,6 @@ class ContactPageView(View):
             'categories': serialized_categories,
             'language': lang,
             'background_image': get_background_image('contact'),
-            'footer_image': get_background_image('footer'),
             'form': form,
         }
 
@@ -176,22 +169,22 @@ class ContactPageView(View):
         if form.is_valid():
             try:
                 form.save()
-                msg = _('Mesajınız uğurla göndərildi.')
+                msg = 'Your message has been sent successfully.'
                 if is_ajax:
-                    return JsonResponse({'success': True, 'message': str(msg)})
+                    return JsonResponse({'success': True, 'message': msg})
                 messages.success(request, msg)
                 return redirect('projects:contact-page')
             except Exception:
-                err_msg = _('Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.')
+                err_msg = 'Something went wrong. Please try again.'
                 if is_ajax:
-                    return JsonResponse({'success': False, 'message': str(err_msg)}, status=500)
+                    return JsonResponse({'success': False, 'message': err_msg}, status=500)
                 messages.error(request, err_msg)
         else:
-            err_msg = _('Formda xəta var. Zəhmət olmasa düzəldin.')
+            err_msg = 'Please correct the errors in the form.'
             if is_ajax:
                 errors = {k: [str(e) for e in v] for k, v in form.errors.items()}
                 return JsonResponse(
-                    {'success': False, 'message': str(err_msg), 'errors': errors},
+                    {'success': False, 'message': err_msg, 'errors': errors},
                     status=400,
                 )
             messages.error(request, err_msg)
@@ -207,7 +200,6 @@ class ContactPageView(View):
             'categories': serialized_categories,
             'language': lang,
             'background_image': get_background_image('contact'),
-            'footer_image': get_background_image('footer'),
             'form': form,
         }
         
@@ -226,7 +218,6 @@ class VacancyPageView(View):
             for category in categories
         ]
         context['background_image'] = get_background_image('vacancy')
-        context['footer_image'] = get_background_image('footer')
         context['language'] = lang
         return render(request, self.template_name, context)
 
@@ -254,7 +245,6 @@ class VacancyDetailPageView(View):
             'categories': serialized_categories,
             'language': lang,
             'background_image': get_background_image('vacancy'),
-            'footer_image': get_background_image('footer'),
             'form': form,
         }
         return render(request, self.template_name, context)
@@ -298,7 +288,6 @@ class VacancyDetailPageView(View):
             'categories': serialized_categories,
             'language': lang,
             'background_image': get_background_image('vacancy'),
-            'footer_image': get_background_image('footer'),
             'form': form,
         }
         return render(request, self.template_name, context)
@@ -316,7 +305,6 @@ class TeamPageView(View):
             'categories': [serialize_project_category(c, lang) for c in categories],
             'language': lang,
             'background_image': get_background_image('about'),
-            'footer_image': get_background_image('footer'),
         }
         return render(request, self.template_name, context)
 
@@ -334,7 +322,6 @@ class ReviewsPageView(View):
             'categories': [serialize_project_category(c, lang) for c in categories],
             'language': lang,
             'background_image': get_background_image('about'),
-            'footer_image': get_background_image('footer'),
         }
         return render(request, self.template_name, context)
 
@@ -359,7 +346,6 @@ class ReviewsPageView(View):
             'categories': [serialize_project_category(c, lang) for c in categories],
             'language': lang,
             'background_image': get_background_image('about'),
-            'footer_image': get_background_image('footer'),
         }
         return render(request, self.template_name, context)
 

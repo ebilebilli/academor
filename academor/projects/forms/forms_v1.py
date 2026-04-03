@@ -79,26 +79,26 @@ class AppealContactForm(forms.ModelForm):
     full_name = forms.CharField(
         widget=forms.TextInput(attrs={
             'class': 'form-control',
-            'placeholder': _('Ad soyad')
+            'placeholder': _('Full name')
         }),
         required=True,
-        label=_('Ad soyad')
+        label=_('Full name')
     )
     email = forms.EmailField(
         widget=forms.EmailInput(attrs={
             'class': 'form-control',
-            'placeholder': _('E-poçt ünvanı')
+            'placeholder': _('Email address')
         }),
         required=True,
-        label=_('E-poçt ünvanı')
+        label=_('Email address')
     )
     subject = forms.CharField(
         widget=forms.TextInput(attrs={
             'class': 'form-control',
-            'placeholder': _('Subyekt')
+            'placeholder': _('Subject')
         }),
         required=True,
-        label=_('Subyekt'),
+        label=_('Subject'),
         max_length=250
     )
     info = forms.CharField(
@@ -106,10 +106,10 @@ class AppealContactForm(forms.ModelForm):
             'class': 'form-control',
             'rows': 5,
             'style': 'height: 150px',
-            'placeholder': _('Mesajınız')
+            'placeholder': _('Your message')
         }),
         required=True,
-        label=_('Mesajınız'),
+        label=_('Your message'),
         max_length=500
     )
 
@@ -125,7 +125,7 @@ class AppealContactForm(forms.ModelForm):
     def clean_website(self):
         value = self.cleaned_data.get('website')
         if value:
-            raise ValidationError(_('Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.'))
+            raise ValidationError(_('Something went wrong. Please try again.'))
         return value
 
 

@@ -257,9 +257,10 @@ def get_background_image(page_type):
         'contact': 'is_contact_page_background_image',
         'partner': 'is_partner_background_image',
         'project': 'is_project_page_background_image',
+        'courses': 'is_courses_page_background_image',
+        'tests': 'is_tests_page_background_image',
         'vacancy': 'is_vacany_page_background_image',
         'service': 'is_service_page_background_image',
-        'footer': 'is_footer_background_image',
     }
     
     if page_type not in image_map:
@@ -287,10 +288,16 @@ def get_motto(lang='az'):
     motto = Tagline.objects.first()
     if not motto:
         return None
-    
-    text_field = get_localized_field_name('text', lang)
-    text = getattr(motto, text_field, motto.text_az)
-    return text
+
+    small_field = get_localized_field_name('heading_small', lang)
+    main_field = get_localized_field_name('heading_main', lang)
+    body_field = get_localized_field_name('body', lang)
+
+    return {
+        'heading_small': getattr(motto, small_field, motto.heading_small_az),
+        'heading_main': getattr(motto, main_field, motto.heading_main_az),
+        'body': getattr(motto, body_field, motto.body_az),
+    }
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
@@ -615,7 +622,6 @@ def get_home_page_data(request, lang):
         'statistics': get_statistics(),
         'team': [serialize_team_member(m) for m in get_team_members()],
         'reviews': [serialize_review(r) for r in get_reviews()],
-        'footer_image': get_background_image('footer'),
     }
 
 
@@ -674,8 +680,7 @@ def _get_project_list_data_impl(request, lang):
             'is_completed': is_completed,
             'is_active': is_active,
         },
-        'background_image': get_background_image('project'),
-        'footer_image': get_background_image('footer'),
+        'background_image': get_background_image('courses'),
     }
 
 
@@ -713,5 +718,4 @@ def get_vacancy_list_data(request, lang):
         'contact': serialized_contact,
         'pagination': get_pagination_data(vacancies_page_obj, vacancies_paginator),
         'background_image': get_background_image('vacancy'),
-        'footer_image': get_background_image('footer'),
     }

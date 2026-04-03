@@ -89,21 +89,7 @@
 
 
     <!-- Header Start -->
-    <div class="container-fluid bg-primary mb-3 page-header page-header-contact">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-12">
-                    <nav class="page-header-contact-breadcrumb d-flex justify-content-center" aria-label="breadcrumb">
-                        <ol class="breadcrumb mb-0 justify-content-center">
-                            <li class="breadcrumb-item"><a class="text-white" href="{% url 'projects:home-page' %}">Home</a></li>
-                            <li class="breadcrumb-item"><a class="text-white" href="#">Pages</a></li>
-                            <li class="breadcrumb-item text-white active" aria-current="page">Contact</li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="container-fluid bg-primary mb-3 page-header page-header-hero-band"{% include "includes/page_header_dynamic_bg.html" %}></div>
     <!-- Header End -->
 
     {% if messages %}
@@ -184,7 +170,7 @@
                         {% if contact.tiktok %}<a class="btn btn-sm btn-outline-primary" href="{{ contact.tiktok }}" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>{% endif %}
                     </div>
                     {% else %}
-                    <p class="mb-4 text-muted">{% trans "Əlaqə məlumatları admin paneldən əlavə ediləndə burada göstəriləcək." %}</p>
+                    <p class="mb-4 text-muted">Contact details will appear here once they are added in the admin panel.</p>
                     {% endif %}
                 </div>
                 {% if contact and contact.map_embed_url %}
@@ -269,7 +255,7 @@
                         {% if contact.tiktok %}<a class="btn btn-outline-light btn-social" href="{{ contact.tiktok }}" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>{% endif %}
                     </div>
                     {% else %}
-                    <p class="mb-2 text-white-50">{% trans "Əlaqə məlumatları tezliklə əlavə olunacaq." %}</p>
+                    <p class="mb-2 text-white-50">Contact details will be available soon.</p>
                     {% endif %}
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -373,7 +359,7 @@
                     form.reset();
                     return;
                 }
-                var msg = (res.data && res.data.message) ? res.data.message : '{% trans "Formda xəta var. Zəhmət olmasa düzəldin."|escapejs %}';
+                var msg = (res.data && res.data.message) ? res.data.message : 'Please correct the errors in the form.';
                 showAlert('danger', msg);
                 if (res.data && res.data.errors) {
                     Object.keys(res.data.errors).forEach(function (field) {
@@ -387,7 +373,7 @@
                     });
                 }
             }).catch(function () {
-                showAlert('danger', '{% trans "Şəbəkə xətası. Yenidən cəhd edin."|escapejs %}');
+                showAlert('danger', 'Network error. Please try again.');
             }).finally(function () {
                 submitBtn.disabled = false;
             });
