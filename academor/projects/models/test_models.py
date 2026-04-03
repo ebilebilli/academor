@@ -1,17 +1,41 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.core.validators import MaxLengthValidator
 
 
 class Test(models.Model):
-    title = models.CharField(
+    title_az = models.CharField(
         max_length=200,
-        verbose_name='Test title',
+        blank=True,
+        verbose_name='Test title (AZ)',
     )
-    description = models.TextField(
+    title_en = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name='Test title (EN)',
+    )
+    title_ru = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name='Test title (RU)',
+    )
+    description_az = models.TextField(
         null=True,
         blank=True,
         validators=[MaxLengthValidator(2000)],
-        verbose_name='Description',
+        verbose_name='Description (AZ)',
+    )
+    description_en = models.TextField(
+        null=True,
+        blank=True,
+        validators=[MaxLengthValidator(2000)],
+        verbose_name='Description (EN)',
+    )
+    description_ru = models.TextField(
+        null=True,
+        blank=True,
+        validators=[MaxLengthValidator(2000)],
+        verbose_name='Description (RU)',
     )
     is_active = models.BooleanField(
         default=True,
@@ -27,8 +51,18 @@ class Test(models.Model):
         verbose_name_plural = 'Tests'
         ordering = ('-created_at',)
 
+    def clean(self):
+        super().clean()
+        if not (self.title_az or self.title_en or self.title_ru):
+            raise ValidationError(
+                'At least one of AZ / EN / RU titles must be filled in.'
+            )
+
+    def display_title(self):
+        return (self.title_en or self.title_az or self.title_ru or '').strip()
+
     def __str__(self):
-        return self.title
+        return self.display_title() or f'Test #{self.pk}'
 
 
 class Question(models.Model):
@@ -42,7 +76,8 @@ class Question(models.Model):
         ordering = ('order', 'id')
 
     def __str__(self):
-        return f'{self.test.title} - {self.text[:50]}'
+        head = self.test.display_title() if self.test_id else ''
+        return f'{head} - {self.text[:50]}'
 
 
 class Option(models.Model):

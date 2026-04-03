@@ -478,55 +478,16 @@
 }
 
 
-/*** Team ***/
-.team-item .overflow-hidden {
-    height: 320px;
-}
-
-.team-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: .5s;
-}
-
-.team-item:hover img {
-    transform: scale(1.1);
-}
-
-/* Team member detail (profile page) — compact frame like team cards; old 480px felt too tall */
-.team-detail-page .team-member-detail-photo {
-    width: 100%;
-    max-width: 340px;
-    margin-inline: auto;
-    height: 300px;
-    overflow: hidden;
-}
-
-.team-detail-page .team-member-detail-photo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center top;
-    display: block;
-}
-
-@media (min-width: 768px) {
-    .team-detail-page .team-member-detail-photo {
-        margin-inline: 0;
-        max-width: none;
-        height: 320px;
-    }
+/*** Team (no photos): cards are text + socials only ***/
+.team-item--no-photo {
+    display: flex;
+    flex-direction: column;
 }
 
 @media (min-width: 992px) {
     .team-detail-sidebar {
         position: sticky;
         top: 96px;
-    }
-
-    .team-detail-page .team-member-detail-photo {
-        height: 320px;
     }
 }
 
@@ -605,6 +566,34 @@
 .testimonial-carousel .owl-dot.active {
     background: var(--primary);
     border-color: var(--primary);
+}
+
+.testimonial-review-avatar {
+    width: 80px;
+    height: 80px;
+    font-size: 1.75rem;
+}
+
+/*** Testimonial page — review submit form ***/
+.review-form-section {
+    background: #f8f9fa;
+}
+
+.review-form-section .lead-small {
+    font-size: 0.95rem;
+    max-width: 28rem;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.55;
+}
+
+.review-form-card {
+    border: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+.review-form-floating-textarea textarea.form-control {
+    min-height: 148px;
+    height: auto;
 }
 
 

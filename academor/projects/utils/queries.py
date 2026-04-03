@@ -192,13 +192,51 @@ def get_test_by_id(test_id: int, is_active=True):
         return None
 
 
-def serialize_test_for_taking(test):
+def _norm_ui_lang(lang):
+    if not lang:
+        return 'en'
+    return str(lang).lower().split('-')[0][:2]
+
+
+def localized_test_title(test, lang='en'):
+    if test is None:
+        return ''
+    lang = _norm_ui_lang(lang)
+    order = {
+        'az': ('title_az', 'title_en', 'title_ru'),
+        'en': ('title_en', 'title_az', 'title_ru'),
+        'ru': ('title_ru', 'title_en', 'title_az'),
+    }.get(lang, ('title_en', 'title_az', 'title_ru'))
+    for attr in order:
+        val = (getattr(test, attr, None) or '').strip()
+        if val:
+            return val
+    return ''
+
+
+def localized_test_description(test, lang='en'):
+    if test is None:
+        return ''
+    lang = _norm_ui_lang(lang)
+    order = {
+        'az': ('description_az', 'description_en', 'description_ru'),
+        'en': ('description_en', 'description_az', 'description_ru'),
+        'ru': ('description_ru', 'description_en', 'description_az'),
+    }.get(lang, ('description_en', 'description_az', 'description_ru'))
+    for attr in order:
+        val = getattr(test, attr, None)
+        if val is not None and str(val).strip():
+            return str(val).strip()
+    return ''
+
+
+def serialize_test_for_taking(test, lang='en'):
     if test is None:
         return None
     return {
         'id': test.id,
-        'title': test.title,
-        'description': test.description,
+        'title': localized_test_title(test, lang),
+        'description': localized_test_description(test, lang),
         'questions': [
             {
                 'id': q.id,
@@ -210,6 +248,18 @@ def serialize_test_for_taking(test):
             }
             for q in test.questions.all()
         ],
+    }
+
+
+def serialize_test_for_list(test, lang='en'):
+    """Tests listing card: localized strings + question count."""
+    if test is None:
+        return None
+    return {
+        'id': test.id,
+        'title': localized_test_title(test, lang),
+        'description': localized_test_description(test, lang),
+        'question_count': test.questions.count(),
     }
 
 

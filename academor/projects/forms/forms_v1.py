@@ -3,11 +3,24 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from projects.models import JobApplication, ContactInquiry, Review
 
+# Bot honeypots: must stay empty (hidden inputs; tabindex -1 for keyboard users).
+_HP = {'autocomplete': 'off', 'tabindex': '-1', 'aria-hidden': 'true'}
+
 
 class AppealForm(forms.ModelForm):
     website = forms.CharField(
         required=False,
-        widget=forms.HiddenInput(),
+        widget=forms.HiddenInput(attrs=_HP),
+        label='',
+    )
+    fax = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(attrs=_HP),
+        label='',
+    )
+    company = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(attrs=_HP),
         label='',
     )
     full_name = forms.CharField(
@@ -69,11 +82,31 @@ class AppealForm(forms.ModelForm):
             raise ValidationError(_('Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.'))
         return value
 
+    def clean_fax(self):
+        if self.cleaned_data.get('fax'):
+            raise ValidationError(_('Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.'))
+        return ''
+
+    def clean_company(self):
+        if self.cleaned_data.get('company'):
+            raise ValidationError(_('Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.'))
+        return ''
+
 
 class AppealContactForm(forms.ModelForm):
     website = forms.CharField(
         required=False,
-        widget=forms.HiddenInput(),
+        widget=forms.HiddenInput(attrs=_HP),
+        label='',
+    )
+    fax = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(attrs=_HP),
+        label='',
+    )
+    company = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(attrs=_HP),
         label='',
     )
     full_name = forms.CharField(
@@ -128,28 +161,54 @@ class AppealContactForm(forms.ModelForm):
             raise ValidationError(_('Something went wrong. Please try again.'))
         return value
 
+    def clean_fax(self):
+        if self.cleaned_data.get('fax'):
+            raise ValidationError(_('Something went wrong. Please try again.'))
+        return ''
+
+    def clean_company(self):
+        if self.cleaned_data.get('company'):
+            raise ValidationError(_('Something went wrong. Please try again.'))
+        return ''
+
 
 class ReviewForm(forms.ModelForm):
     website = forms.CharField(
         required=False,
-        widget=forms.HiddenInput(),
+        widget=forms.HiddenInput(attrs=_HP),
+        label='',
+    )
+    fax = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(attrs=_HP),
+        label='',
+    )
+    company = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(attrs=_HP),
         label='',
     )
     name = forms.CharField(
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': _('Ad')
-        }),
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control form-control-lg',
+                'placeholder': _('Ad və soyad'),
+                'autocomplete': 'name',
+            }
+        ),
         required=True,
-        label=_('Ad'),
+        label=_('Ad və soyad'),
         max_length=120,
     )
     message = forms.CharField(
-        widget=forms.Textarea(attrs={
-            'class': 'form-control',
-            'rows': 4,
-            'placeholder': _('Rəyiniz')
-        }),
+        widget=forms.Textarea(
+            attrs={
+                'class': 'form-control',
+                'rows': 5,
+                'placeholder': _('Rəyiniz'),
+                'style': 'min-height: 148px;',
+            }
+        ),
         required=True,
         label=_('Rəy'),
         max_length=1000,
@@ -165,8 +224,33 @@ class ReviewForm(forms.ModelForm):
             raise ValidationError(_('Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.'))
         return value
 
+    def clean_fax(self):
+        if self.cleaned_data.get('fax'):
+            raise ValidationError(_('Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.'))
+        return ''
+
+    def clean_company(self):
+        if self.cleaned_data.get('company'):
+            raise ValidationError(_('Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.'))
+        return ''
+
 
 class TestUserForm(forms.Form):
+    website = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(attrs=_HP),
+        label='',
+    )
+    fax = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(attrs=_HP),
+        label='',
+    )
+    company = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(attrs=_HP),
+        label='',
+    )
     first_name = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Ad Soyad')}),
         label=_('Ad Soyad'),
@@ -188,3 +272,18 @@ class TestUserForm(forms.Form):
         widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': _('Email')}),
         label=_('Email'),
     )
+
+    def clean_website(self):
+        if self.cleaned_data.get('website'):
+            raise ValidationError(_('Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.'))
+        return ''
+
+    def clean_fax(self):
+        if self.cleaned_data.get('fax'):
+            raise ValidationError(_('Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.'))
+        return ''
+
+    def clean_company(self):
+        if self.cleaned_data.get('company'):
+            raise ValidationError(_('Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.'))
+        return ''

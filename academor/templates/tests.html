@@ -29,7 +29,7 @@
                             <h5 class="mb-3">{{ test.title }}</h5>
                             <p class="mb-3 text-muted">{{ test.description|default:"Bu test sizin səviyyənizi ölçmək üçündür." }}</p>
                             <p class="small text-muted mb-4">
-                                <i class="fa fa-question-circle text-primary me-2"></i>{{ test.questions.count }} sual
+                                <i class="fa fa-question-circle text-primary me-2"></i>{{ test.question_count }} sual
                             </p>
                             <a href="{% url 'projects:test-take' test.id %}" class="btn btn-primary px-4 py-2 rounded-pill">
                                 Testə başla

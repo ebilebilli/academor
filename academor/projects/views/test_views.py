@@ -13,6 +13,7 @@ from projects.utils.queries import (
     get_tests,
     get_test_by_id,
     serialize_test_for_taking,
+    serialize_test_for_list,
     get_background_image,
 )
 from projects.utils.test_scoring import calculate_level
@@ -23,7 +24,8 @@ class TestListPageView(View):
 
     def get(self, request):
         lang = get_language_from_request(request)
-        tests = get_tests(is_active=True)
+        tests_qs = get_tests(is_active=True)
+        tests = [serialize_test_for_list(t, lang) for t in tests_qs]
         categories = get_project_categories(lang)
         context = {
             'tests': tests,
@@ -44,7 +46,7 @@ class TestTakePageView(View):
             raise Http404(_("Test not found"))
         categories = get_project_categories(lang)
         context = {
-            'test': serialize_test_for_taking(test),
+            'test': serialize_test_for_taking(test, lang),
             'user_form': TestUserForm(),
             'categories': [serialize_project_category(c, lang) for c in categories],
             'language': lang,
@@ -63,7 +65,7 @@ class TestTakePageView(View):
             messages.error(request, _('Formda xəta var. Zəhmət olmasa düzəldin.'))
             categories = get_project_categories(lang)
             return render(request, self.template_name, {
-                'test': serialize_test_for_taking(test),
+                'test': serialize_test_for_taking(test, lang),
                 'user_form': user_form,
                 'categories': [serialize_project_category(c, lang) for c in categories],
                 'language': lang,
@@ -99,7 +101,7 @@ class TestTakePageView(View):
         percentage = int((result.score / total_questions) * 100) if total_questions else 0
         categories = get_project_categories(lang)
         return render(request, self.template_name, {
-            'test': serialize_test_for_taking(test),
+            'test': serialize_test_for_taking(test, lang),
             'user_form': TestUserForm(),
             'result': result,
             'total_questions': total_questions,

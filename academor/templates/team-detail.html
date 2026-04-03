@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-{% load static %}
 <html lang="en">
 <head>
     {% include "includes/site_layout_head.html" with page_title=page_title %}
@@ -33,17 +32,7 @@
             <div class="row g-4 g-lg-5 align-items-start">
                 <div class="col-lg-4 col-md-5">
                     <div class="team-detail-sidebar">
-                        <div class="bg-white shadow-sm rounded-3 overflow-hidden mb-4 border border-light wow fadeInUp" data-wow-delay="0.1s">
-                            <div class="team-member-detail-photo">
-                                {% if member.image %}
-                                <img src="{{ member.image }}" alt="{{ member.name }}">
-                                {% else %}
-                                <img src="{% static 'assets/img/team-1.jpg' %}" alt="{{ member.name }}">
-                                {% endif %}
-                            </div>
-                        </div>
-
-                        <div class="bg-light shadow-sm rounded-3 p-4 border border-light wow fadeInUp" data-wow-delay="0.15s">
+                        <div class="bg-light shadow-sm rounded-3 p-4 border border-light wow fadeInUp" data-wow-delay="0.1s">
                             <h6 class="text-primary text-uppercase mb-3 small fw-bold">Connect</h6>
                             <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-md-start">
                                 {% if member.facebook %}

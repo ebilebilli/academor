@@ -1,0 +1,29 @@
+<!-- Reviews / testimonial carousel (data from Review model, is_active=True) -->
+<div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container">
+        <div class="text-center">
+            <h6 class="section-title bg-white text-center text-primary px-3">Testimonial</h6>
+            <h1 class="mb-5">Our Students Say!</h1>
+        </div>
+        {% if reviews %}
+        <div class="owl-carousel testimonial-carousel position-relative">
+            {% for review in reviews %}
+            <div class="testimonial-item text-center">
+                <div class="testimonial-review-avatar mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle bg-primary text-white" role="img" aria-label="{{ review.name }}">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                </div>
+                <h5 class="mb-0">{{ review.name }}</h5>
+                <p class="text-muted small mb-2">{{ review.created_at|date:"d.m.Y" }}</p>
+                <div class="testimonial-text bg-light text-center p-4">
+                    <p class="mb-0">{{ review.message|linebreaksbr }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="alert alert-info text-center mb-0 py-4">
+            <i class="fa fa-info-circle me-2"></i>Hazırda təsdiqlənmiş rəy yoxdur.
+        </div>
+        {% endif %}
+    </div>
+</div>

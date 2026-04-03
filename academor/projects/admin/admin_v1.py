@@ -5,6 +5,7 @@ from django.utils.html import format_html
 from django.urls import reverse
 from django import forms
 from django.core.exceptions import ValidationError
+from django.forms.models import BaseInlineFormSet
 from ckeditor.widgets import CKEditorWidget
 
 from projects.models import *
@@ -699,73 +700,83 @@ class ReviewAdmin(admin.ModelAdmin):
     list_per_page = 25
 
 
+class OptionInlineFormSet(BaseInlineFormSet):
+    """At most 5 options per question (admin + POST tampering)."""
+
+    def clean(self):
+        super().clean()
+        if any(self.errors):
+            return
+        kept = 0
+        for form in self.forms:
+            data = getattr(form, 'cleaned_data', None)
+            if not data or data.get('DELETE'):
+                continue
+            if form.instance.pk:
+                kept += 1
+            elif (data.get('text') or '').strip():
+                kept += 1
+        if kept > 5:
+            raise ValidationError('Each question can have at most 5 options.')
+
+
 class OptionInline(admin.TabularInline):
     model = Option
-    extra = 6
-    fields = ("text", "is_correct")
-    show_change_link = True
-
-
-class QuestionInline(admin.StackedInline):
-    model = Question
+    formset = OptionInlineFormSet
     extra = 1
-    show_change_link = True
+    max_num = 5
+    fields = ('text', 'is_correct')
+    can_delete = True
+    verbose_name_plural = 'Options (max 5)'
+
+    def get_max_num(self, request, obj=None, **kwargs):
+        """Cap at 5 when new; if DB already has >5, show all so staff can delete down to 5."""
+        if obj is None:
+            return 5
+        return max(5, obj.options.count())
 
 
 @admin.register(Test)
 class TestAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'is_active', 'created_at')
+    list_display = ('id', 'list_title', 'is_active', 'created_at')
     list_filter = ('is_active', 'created_at')
-    search_fields = ('title', 'description')
+    search_fields = (
+        'title_az',
+        'title_en',
+        'title_ru',
+        'description_az',
+        'description_en',
+        'description_ru',
+    )
     list_editable = ('is_active',)
     readonly_fields = ('created_at',)
     ordering = ('-created_at',)
-    inlines = [QuestionInline]
     list_per_page = 25
+    fieldsets = (
+        ('Azərbaycan', {'fields': ('title_az', 'description_az')}),
+        ('English', {'fields': ('title_en', 'description_en')}),
+        ('Русский', {'fields': ('title_ru', 'description_ru')}),
+        ('Other', {'fields': ('is_active', 'created_at')}),
+    )
+
+    @admin.display(description='Title')
+    def list_title(self, obj):
+        return obj.display_title() or '—'
 
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
     list_display = ('id', 'test', 'order', 'text')
     list_filter = ('test',)
-    search_fields = ('text', 'test__title')
+    search_fields = (
+        'text',
+        'test__title_az',
+        'test__title_en',
+        'test__title_ru',
+    )
     ordering = ('test', 'order', 'id')
     inlines = [OptionInline]
     list_per_page = 25
-
-
-@admin.register(Option)
-class OptionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'test_title', 'question_order', 'question_text', 'text', 'is_correct')
-    list_filter = (
-        'is_correct',
-        ('question__test', admin.RelatedOnlyFieldListFilter),
-        ('question', admin.RelatedOnlyFieldListFilter),
-    )
-    search_fields = (
-        'text',
-        'question__text',
-        'question__test__title',
-    )
-    ordering = ('question__test__title', 'question__order', 'id')
-    list_select_related = ('question', 'question__test')
-    autocomplete_fields = ('question',)
-    list_per_page = 25
-
-    @admin.display(description='Test', ordering='question__test__title')
-    def test_title(self, obj):
-        return obj.question.test.title if obj.question_id else '-'
-
-    @admin.display(description='Q order', ordering='question__order')
-    def question_order(self, obj):
-        return obj.question.order if obj.question_id else None
-
-    @admin.display(description='Question', ordering='question__text')
-    def question_text(self, obj):
-        if not obj.question_id:
-            return '-'
-        text = obj.question.text or ''
-        return (text[:80] + '…') if len(text) > 80 else text
 
 
 @admin.register(UserResult)
@@ -1273,7 +1284,6 @@ def _sorted_get_app_list(request, app_label=None):
         # Tests
         "Test": 400,
         "Question": 410,
-        "Option": 420,
         "UserResult": 430,
     }
 

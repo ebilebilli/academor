@@ -71,6 +71,7 @@
             {% else %}
             <form method="post" class="bg-light p-4 p-md-5 rounded shadow-sm wow fadeInUp" data-wow-delay="0.1s">
                 {% csrf_token %}
+                {{ user_form.website }}{{ user_form.fax }}{{ user_form.company }}
                 <h4 class="mb-4 pb-2 border-bottom">Məlumatlarınız</h4>
                 <div class="row g-3 mb-4">
                     <div class="col-md-6">

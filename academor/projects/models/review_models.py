@@ -12,7 +12,7 @@ class Review(models.Model):
         verbose_name='Review',
     )
     is_active = models.BooleanField(
-        default=True,
+        default=False,
         verbose_name='Active',
     )
     created_at = models.DateTimeField(
