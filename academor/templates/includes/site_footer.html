@@ -1,31 +1,82 @@
-{% load static %}
+{% load static i18n %}
 <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
     <div class="container py-5">
         <div class="row g-5">
             <div class="col-md-6 col-lg-6">
-                <h4 class="text-white mb-3">Quick Link</h4>
-                <a class="btn btn-link" href="{% url 'projects:about-page' %}">About Us</a>
-                <a class="btn btn-link" href="{% url 'projects:contact-page' %}">Contact Us</a>
+                <h4 class="text-white mb-3">{% trans "Quick Link" %}</h4>
+                <a class="btn btn-link text-start d-block px-0" href="{% url 'projects:home-page' %}">{% trans "Home" %}</a>
+                <a class="btn btn-link text-start d-block px-0" href="{% url 'projects:about-page' %}">{% trans "About" %}</a>
+                <a class="btn btn-link text-start d-block px-0" href="{% url 'projects:courses-page' %}">{% trans "Courses" %}</a>
+                <a class="btn btn-link text-start d-block px-0" href="{% url 'projects:team-page' %}">{% trans "Our Team" %}</a>
+                <a class="btn btn-link text-start d-block px-0" href="{% url 'projects:reviews-page' %}">{% trans "Testimonial" %}</a>
+                <a class="btn btn-link text-start d-block px-0" href="{% url 'projects:tests-page' %}">{% trans "Test" %}</a>
+                <a class="btn btn-link text-start d-block px-0" href="{% url 'projects:contact-page' %}">{% trans "Contact" %}</a>
+                <a class="btn btn-link text-start d-block px-0" href="{% url 'projects:home-page' %}">{% trans "404 Page" %}</a>
             </div>
             <div class="col-md-6 col-lg-6">
-                <h4 class="text-white mb-3">Contact</h4>
-                <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
-                <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-                <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
-                <div class="d-flex pt-2">
-                    <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                    <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+                <h4 class="text-white mb-3">{% trans "Contact" %}</h4>
+                {% if footer_contact %}
+                {% if footer_contact.address %}
+                <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>{{ footer_contact.address|linebreaksbr }}</p>
+                {% endif %}
+                {% if footer_contact.phone %}
+                <p class="mb-2"><i class="fa fa-phone-alt me-3"></i><a class="text-light text-decoration-none" href="tel:{{ footer_contact.phone }}">{{ footer_contact.phone }}</a></p>
+                {% endif %}
+                {% if footer_contact.phone_three %}
+                <p class="mb-2"><i class="fa fa-phone-alt me-3"></i><a class="text-light text-decoration-none" href="tel:{{ footer_contact.phone_three }}">{{ footer_contact.phone_three }}</a></p>
+                {% endif %}
+                {% if footer_contact.whatsapp_number and footer_contact.whatsapp_number_me %}
+                <p class="mb-2"><i class="fab fa-whatsapp me-3"></i><a class="text-light text-decoration-none" href="https://wa.me/{{ footer_contact.whatsapp_number_me }}" target="_blank" rel="noopener noreferrer">{{ footer_contact.whatsapp_number }}</a></p>
+                {% endif %}
+                {% if footer_contact.whatsapp_number_2 and footer_contact.whatsapp_number_2_me %}
+                <p class="mb-2"><i class="fab fa-whatsapp me-3"></i><a class="text-light text-decoration-none" href="https://wa.me/{{ footer_contact.whatsapp_number_2_me }}" target="_blank" rel="noopener noreferrer">{{ footer_contact.whatsapp_number_2 }}</a></p>
+                {% endif %}
+                {% if footer_contact.email %}
+                <p class="mb-2"><i class="fa fa-envelope me-3"></i><a class="text-light text-decoration-none" href="mailto:{{ footer_contact.email }}">{{ footer_contact.email }}</a></p>
+                {% endif %}
+                <div class="d-flex pt-2 flex-wrap gap-1">
+                    {% if footer_contact.instagram %}<a class="btn btn-outline-light btn-social" href="{{ footer_contact.instagram }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>{% endif %}
+                    {% if footer_contact.facebook %}<a class="btn btn-outline-light btn-social" href="{{ footer_contact.facebook }}" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>{% endif %}
+                    {% if footer_contact.youtube %}<a class="btn btn-outline-light btn-social" href="{{ footer_contact.youtube }}" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube"></i></a>{% endif %}
+                    {% if footer_contact.linkedn %}<a class="btn btn-outline-light btn-social" href="{{ footer_contact.linkedn }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>{% endif %}
+                    {% if footer_contact.tiktok %}<a class="btn btn-outline-light btn-social" href="{{ footer_contact.tiktok }}" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>{% endif %}
                 </div>
+                {% else %}
+                <p class="mb-2 text-white-50">{% trans "Contact details will be available soon." %}</p>
+                {% endif %}
             </div>
         </div>
     </div>
     <div class="container">
         <div class="copyright border-top border-secondary border-opacity-25">
-            <p class="text-center text-white-50 mb-0 py-3 small">@Academor 2026. All rights reserved.</p>
+            <p class="text-center text-white-50 mb-0 py-3 small">@Academor 2026. {% trans "All rights reserved." %}</p>
         </div>
     </div>
 </div>
 
-<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+{% if footer_contact %}
+{% if footer_contact.whatsapp_number_me or footer_contact.whatsapp_number_2_me or footer_contact.phone_href or footer_contact.phone_three_href %}
+<div class="floating-contact-btns" aria-label="{% trans 'Quick contact' %}">
+    {% if footer_contact.whatsapp_number_me %}
+    <a href="https://wa.me/{{ footer_contact.whatsapp_number_me }}" class="floating-contact-btns__btn floating-contact-btns__btn--whatsapp" target="_blank" rel="noopener noreferrer" title="WhatsApp" aria-label="WhatsApp">
+        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+    </a>
+    {% elif footer_contact.whatsapp_number_2_me %}
+    <a href="https://wa.me/{{ footer_contact.whatsapp_number_2_me }}" class="floating-contact-btns__btn floating-contact-btns__btn--whatsapp" target="_blank" rel="noopener noreferrer" title="WhatsApp" aria-label="WhatsApp">
+        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+    </a>
+    {% endif %}
+    {% if footer_contact.phone_href %}
+    <a href="tel:{{ footer_contact.phone_href }}" class="floating-contact-btns__btn floating-contact-btns__btn--call" title="{% trans 'Call' %}" aria-label="{% trans 'Call' %}">
+        <i class="fa fa-phone-alt" aria-hidden="true"></i>
+    </a>
+    {% elif footer_contact.phone_three_href %}
+    <a href="tel:{{ footer_contact.phone_three_href }}" class="floating-contact-btns__btn floating-contact-btns__btn--call" title="{% trans 'Call' %}" aria-label="{% trans 'Call' %}">
+        <i class="fa fa-phone-alt" aria-hidden="true"></i>
+    </a>
+    {% endif %}
+</div>
+{% endif %}
+{% endif %}
+
+<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top" role="button" tabindex="-1" aria-hidden="true" aria-label="{% trans 'Back to top' %}"><i class="bi bi-arrow-up" aria-hidden="true"></i></a>

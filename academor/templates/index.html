@@ -293,44 +293,31 @@
 
 
     <!-- About Start -->
+    {% if about %}
     <div class="container-xxl py-5">
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s" style="min-height: 400px;">
                     <div class="position-relative h-100">
+                        {% if about.first_image %}
+                        <img class="img-fluid position-absolute w-100 h-100" src="{{ about.first_image }}" alt="" style="object-fit: cover;">
+                        {% else %}
                         <img class="img-fluid position-absolute w-100 h-100" src="{% static 'assets/img/about.jpg' %}" alt="" style="object-fit: cover;">
+                        {% endif %}
                     </div>
                 </div>
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
                     <h6 class="section-title bg-white text-start text-primary pe-3">About Us</h6>
-                    <h1 class="mb-4">Welcome to eLEARNING</h1>
-                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet</p>
-                    <div class="row gy-2 gx-4 mb-4">
-                        <div class="col-sm-6">
-                            <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Skilled Instructors</p>
-                        </div>
-                        <div class="col-sm-6">
-                            <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Online Classes</p>
-                        </div>
-                        <div class="col-sm-6">
-                            <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>International Certificate</p>
-                        </div>
-                        <div class="col-sm-6">
-                            <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Skilled Instructors</p>
-                        </div>
-                        <div class="col-sm-6">
-                            <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Online Classes</p>
-                        </div>
-                        <div class="col-sm-6">
-                            <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>International Certificate</p>
-                        </div>
-                    </div>
-                    <a class="btn btn-primary py-3 px-5 mt-2" href="">Read More</a>
+                    <h1 class="mb-4">Academor</h1>
+                    {% if about.description_excerpt %}
+                    <p class="mb-4 text-secondary index-about-excerpt">{{ about.description_excerpt }}</p>
+                    {% endif %}
+                    <a class="btn btn-primary py-3 px-5 mt-2" href="{% url 'projects:about-page' %}">Read More</a>
                 </div>
             </div>
         </div>
     </div>
+    {% endif %}
     <!-- About End -->
 
 
@@ -339,7 +326,7 @@
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
                 <h6 class="section-title bg-white text-center text-primary px-3">Categories</h6>
-                <h1 class="mb-5">Courses Categories</h1>
+                <h1 class="mb-5">Courses</h1>
             </div>
             {% if categories %}
             <div class="categories-carousel owl-carousel owl-theme position-relative px-lg-2">
@@ -470,57 +457,14 @@
 
 
     <!-- Team Start -->
-    <div class="container-xxl py-5">
+    <div class="container-xxl py-5 index-team-section">
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
                 <h6 class="section-title bg-white text-center text-primary px-3">Instructors</h6>
-                <h1 class="mb-5">Expert Instructors</h1>
+                <h1 class="mb-4 mb-lg-5">Expert Instructors</h1>
             </div>
 
-            <div class="row g-4">
-                {% for member in team %}
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="team-item bg-light h-100 team-item--no-photo">
-                        <div class="position-relative d-flex justify-content-center pt-4">
-                            <div class="bg-light d-flex justify-content-center pt-2 px-1">
-                                {% if member.facebook %}
-                                <a class="btn btn-sm-square btn-primary mx-1" href="{{ member.facebook }}" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
-                                {% endif %}
-                                {% if member.instagram %}
-                                <a class="btn btn-sm-square btn-primary mx-1" href="{{ member.instagram }}" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
-                                {% endif %}
-                                {% if member.linkedin %}
-                                <a class="btn btn-sm-square btn-primary mx-1" href="{{ member.linkedin }}" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>
-                                {% endif %}
-                                {% if member.youtube %}
-                                <a class="btn btn-sm-square btn-primary mx-1" href="{{ member.youtube }}" target="_blank" rel="noopener"><i class="fab fa-youtube"></i></a>
-                                {% endif %}
-                                {% if member.tiktok %}
-                                <a class="btn btn-sm-square btn-primary mx-1" href="{{ member.tiktok }}" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>
-                                {% endif %}
-                                {% if not member.facebook and not member.instagram and not member.linkedin and not member.youtube and not member.tiktok %}
-                                <a class="btn btn-sm-square btn-primary mx-1 disabled" href="javascript:void(0)"><i class="fa fa-user"></i></a>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="text-center p-4">
-                            <h5 class="mb-0">
-                                <a href="{% url 'projects:team-detail' member.id %}" class="text-decoration-none text-dark">
-                                    {{ member.name }}
-                                </a>
-                            </h5>
-                            <small>{{ member.role }}</small>
-                        </div>
-                    </div>
-                </div>
-                {% empty %}
-                <div class="col-12">
-                    <div class="alert text-center mb-0" style="background-color: #fff3cd; border-color: #ffecb5; color: #8a6d3b;">
-                        No team members have been added yet.
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
+            {% include "includes/team_carousel.html" %}
         </div>
     </div>
     <!-- Team End -->
@@ -531,40 +475,7 @@
     <!-- Testimonial End -->
         
 
-    <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-md-6 col-lg-6">
-                    <h4 class="text-white mb-3">Quick Link</h4>
-                    <a class="btn btn-link" href="{% url 'projects:about-page' %}">About Us</a>
-                    <a class="btn btn-link" href="{% url 'projects:contact-page' %}">Contact Us</a>
-                </div>
-                <div class="col-md-6 col-lg-6">
-                    <h4 class="text-white mb-3">Contact</h4>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="copyright border-top border-secondary border-opacity-25">
-                <p class="text-center text-white-50 mb-0 py-3 small">@Academor 2026. All rights reserved.</p>
-            </div>
-        </div>
-    </div>
-    <!-- Footer End -->
-
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    {% include "includes/site_footer.html" %}
 
 
     <!-- JavaScript Libraries -->

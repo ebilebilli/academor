@@ -1,0 +1,40 @@
+{# member: dict from serialize_team_member (image = URL string or None) #}
+<div class="team-item bg-light h-100 overflow-hidden {% if not member.image %}team-item--no-photo{% endif %}">
+    {% if member.image %}
+    <a href="{% url 'projects:team-detail' member.id %}" class="team-item-photo-link">
+        <div class="team-item-photo-wrap">
+            <img src="{{ member.image }}" alt="{{ member.name }}" class="team-item-photo-img w-100 h-100">
+        </div>
+    </a>
+    {% endif %}
+    <div class="position-relative d-flex justify-content-center team-item-social-wrap {% if member.image %}mt-n4{% else %}pt-4{% endif %}">
+        <div class="bg-light d-flex justify-content-center pt-2 px-1 rounded shadow-sm">
+            {% if member.facebook %}
+            <a class="btn btn-sm-square btn-primary mx-1" href="{{ member.facebook }}" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+            {% endif %}
+            {% if member.instagram %}
+            <a class="btn btn-sm-square btn-primary mx-1" href="{{ member.instagram }}" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+            {% endif %}
+            {% if member.linkedin %}
+            <a class="btn btn-sm-square btn-primary mx-1" href="{{ member.linkedin }}" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>
+            {% endif %}
+            {% if member.youtube %}
+            <a class="btn btn-sm-square btn-primary mx-1" href="{{ member.youtube }}" target="_blank" rel="noopener"><i class="fab fa-youtube"></i></a>
+            {% endif %}
+            {% if member.tiktok %}
+            <a class="btn btn-sm-square btn-primary mx-1" href="{{ member.tiktok }}" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>
+            {% endif %}
+            {% if not member.facebook and not member.instagram and not member.linkedin and not member.youtube and not member.tiktok %}
+            <a class="btn btn-sm-square btn-primary mx-1 disabled" href="javascript:void(0)"><i class="fa fa-user"></i></a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="text-center p-4">
+        <h5 class="mb-0">
+            <a href="{% url 'projects:team-detail' member.id %}" class="text-decoration-none text-dark">
+                {{ member.name }}
+            </a>
+        </h5>
+        <small>{{ member.role }}</small>
+    </div>
+</div>

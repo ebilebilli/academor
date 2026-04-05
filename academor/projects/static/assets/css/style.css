@@ -42,15 +42,6 @@
     font-weight: 700 !important;
 }
 
-.back-to-top {
-    position: fixed;
-    display: none;
-    right: 45px;
-    bottom: 45px;
-    z-index: 99;
-}
-
-
 /*** Spinner ***/
 #spinner {
     opacity: 0;
@@ -102,6 +93,171 @@
     justify-content: center;
     font-weight: normal;
     border-radius: 0px;
+}
+
+/* Back to top — after .btn-lg-square; opacity/transform anim (display:none can't ease) */
+.back-to-top {
+    position: fixed;
+    right: 28px;
+    bottom: 28px;
+    z-index: 1080;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 52px !important;
+    height: 52px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    border: 0 !important;
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(0, 0, 0, 0.06);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translate3d(0, 18px, 0) scale(0.9);
+    transition:
+        opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0s linear 0.42s,
+        box-shadow 0.25s ease;
+}
+
+.back-to-top.back-to-top--visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translate3d(0, 0, 0) scale(1);
+    transition:
+        opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0s linear 0s,
+        box-shadow 0.25s ease;
+}
+
+.back-to-top.back-to-top--visible:hover {
+    transform: translate3d(0, -3px, 0) scale(1.03);
+    box-shadow: 0 12px 32px rgba(245, 124, 0, 0.28), 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.back-to-top.back-to-top--visible:active {
+    transform: translate3d(0, -1px, 0) scale(0.98);
+}
+
+.back-to-top:focus-visible {
+    outline: 3px solid rgba(245, 124, 0, 0.45);
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .back-to-top {
+        transition-duration: 0.01ms !important;
+        transform: none !important;
+    }
+
+    .back-to-top:not(.back-to-top--visible) {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+
+    .back-to-top.back-to-top--visible {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+}
+
+/* Fixed WhatsApp + call — sağ alt, yuxarı oxun üstündə (back-to-top: bottom 28px, hündürlük 52px) */
+.floating-contact-btns {
+    position: fixed;
+    z-index: 1075;
+    right: max(28px, env(safe-area-inset-right, 0px));
+    left: auto;
+    width: max-content;
+    max-width: 100%;
+    bottom: calc(28px + 52px + 14px + env(safe-area-inset-bottom, 0px));
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+    gap: 12px;
+    pointer-events: none;
+}
+
+.floating-contact-btns__btn {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    color: #fff !important;
+    text-decoration: none !important;
+    border: none;
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.floating-contact-btns__btn:hover {
+    transform: translateY(-3px) scale(1.04);
+    color: #fff !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18), 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.floating-contact-btns__btn:active {
+    transform: translateY(-1px) scale(0.98);
+}
+
+.floating-contact-btns__btn--whatsapp {
+    background: #25d366 !important;
+    font-size: 1.7rem;
+    line-height: 1;
+}
+
+.floating-contact-btns__btn--call {
+    background: var(--primary) !important;
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+.floating-contact-btns__btn:focus-visible {
+    outline: 3px solid rgba(255, 255, 255, 0.9);
+    outline-offset: 2px;
+}
+
+@media (max-width: 575.98px) {
+    /* Eyni sağ/boşluq və ölçü — scroll ilə paralel sütun */
+    :root {
+        --fab-safe-right: max(16px, env(safe-area-inset-right, 0px));
+        --fab-safe-bottom: max(16px, env(safe-area-inset-bottom, 0px));
+        --fab-btn-size: 52px;
+        --fab-stack-gap: 12px;
+    }
+
+    .back-to-top {
+        right: var(--fab-safe-right) !important;
+        bottom: var(--fab-safe-bottom) !important;
+        width: var(--fab-btn-size) !important;
+        height: var(--fab-btn-size) !important;
+    }
+
+    .floating-contact-btns {
+        right: var(--fab-safe-right);
+        left: auto;
+        bottom: calc(var(--fab-safe-bottom) + var(--fab-btn-size) + var(--fab-stack-gap));
+        align-items: flex-end;
+        gap: var(--fab-stack-gap);
+    }
+
+    .floating-contact-btns__btn {
+        width: var(--fab-btn-size);
+        height: var(--fab-btn-size);
+        flex-shrink: 0;
+        box-sizing: border-box;
+    }
+
+    .floating-contact-btns__btn--whatsapp {
+        font-size: 1.65rem;
+    }
 }
 
 
@@ -478,10 +634,128 @@
 }
 
 
-/*** Team (no photos): cards are text + socials only ***/
+/*** Team (photos: portrait area; reviews have no avatars) ***/
+.team-item-photo-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    outline: none;
+}
+
+.team-item-photo-link:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+.team-item-photo-link:hover .team-item-photo-img {
+    opacity: 0.92;
+    transform: scale(1.02);
+    transition: opacity 0.2s ease, transform 0.25s ease;
+}
+
+.team-item-photo-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    background: #e9ecef;
+}
+
+.team-item-photo-img {
+    display: block;
+    object-fit: cover;
+    object-position: center top;
+    transition: opacity 0.2s ease, transform 0.25s ease;
+}
+
+.team-item:not(.team-item--no-photo) .team-item-social-wrap {
+    z-index: 2;
+}
+
+/*** Team carousel (Owl) ***/
+.team-carousel-wrap {
+    padding-bottom: 0.5rem;
+}
+
+.team-carousel .owl-stage-outer {
+    padding-top: 4px;
+    padding-bottom: 8px;
+}
+
+.team-carousel .item {
+    height: 100%;
+}
+
+.team-carousel-item-inner {
+    min-height: 100%;
+}
+
+.team-carousel .owl-nav {
+    margin-top: 1.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.team-carousel .owl-nav .owl-prev,
+.team-carousel .owl-nav .owl-next {
+    width: 44px;
+    height: 44px;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50% !important;
+    background: var(--primary) !important;
+    color: #fff !important;
+    font-size: 1.25rem;
+    line-height: 1;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.team-carousel .owl-nav .owl-prev:hover,
+.team-carousel .owl-nav .owl-next:hover {
+    opacity: 0.92;
+    transform: scale(1.05);
+}
+
+.team-carousel .owl-dots {
+    margin-top: 0.75rem;
+}
+
+.team-carousel .owl-dot.active span {
+    background: var(--primary) !important;
+}
+
 .team-item--no-photo {
     display: flex;
     flex-direction: column;
+}
+
+/* Team detail: fixed portrait frame (3:4), typical profile width ~320px (WCAG-friendly sizing) */
+.team-detail-photo-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    background: #e9ecef;
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.08);
+}
+
+.team-detail-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+}
+
+/* Home index: team carousel cards slightly shorter portrait than full team page */
+.index-team-section .team-item-photo-wrap {
+    aspect-ratio: 4 / 5;
 }
 
 @media (min-width: 992px) {
@@ -493,6 +767,57 @@
 
 .team-detail-description {
     font-size: 1.05rem;
+}
+
+.about-page-description {
+    font-size: 1.05rem;
+    line-height: 1.65;
+}
+
+.about-page-description img {
+    max-width: 100%;
+    height: auto;
+}
+
+.index-about-excerpt {
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+/* Team detail: long bio scrolls inside About box (shorter page) */
+.team-detail-description-scroll {
+    max-height: min(58vh, 520px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 0.35rem;
+    margin-right: -0.15rem;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    border-radius: 0.35rem;
+    outline: none;
+}
+
+.team-detail-description-scroll:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+.team-detail-description-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+
+.team-detail-description-scroll::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.04);
+    border-radius: 4px;
+}
+
+.team-detail-description-scroll::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.18);
+    border-radius: 4px;
+}
+
+.team-detail-description-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.28);
 }
 
 
@@ -566,12 +891,6 @@
 .testimonial-carousel .owl-dot.active {
     background: var(--primary);
     border-color: var(--primary);
-}
-
-.testimonial-review-avatar {
-    width: 80px;
-    height: 80px;
-    font-size: 1.75rem;
 }
 
 /*** Testimonial page — review submit form ***/

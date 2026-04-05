@@ -33,6 +33,13 @@
                 <div class="col-lg-4 col-md-5">
                     <div class="team-detail-sidebar">
                         <div class="bg-light shadow-sm rounded-3 p-4 border border-light wow fadeInUp" data-wow-delay="0.1s">
+                            {% if member.image %}
+                            <div class="d-flex justify-content-center justify-content-md-start mb-4">
+                                <div class="team-detail-photo-wrap">
+                                    <img src="{{ member.image }}" alt="{{ member.name }}" class="team-detail-photo" width="320" height="427" decoding="async">
+                                </div>
+                            </div>
+                            {% endif %}
                             <h6 class="text-primary text-uppercase mb-3 small fw-bold">Connect</h6>
                             <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-md-start">
                                 {% if member.facebook %}
@@ -63,10 +70,12 @@
                 </div>
 
                 <div class="col-lg-8 col-md-7">
-                    <div class="bg-light shadow-sm rounded-3 p-4 p-md-5 border border-light wow fadeInUp h-100" data-wow-delay="0.1s">
+                    <div class="bg-light shadow-sm rounded-3 p-4 p-md-5 border border-light wow fadeInUp" data-wow-delay="0.1s">
                         <h4 class="mb-4 pb-3 border-bottom text-dark">About</h4>
                         {% if member.description %}
-                        <div class="team-detail-description text-secondary">{{ member.description|safe }}</div>
+                        <div class="team-detail-description-scroll" tabindex="0" role="region" aria-label="Biography">
+                            <div class="team-detail-description text-secondary mb-0">{{ member.description|safe }}</div>
+                        </div>
                         {% else %}
                         <p class="text-muted mb-0 fst-italic">No biography has been added for this instructor yet.</p>
                         {% endif %}

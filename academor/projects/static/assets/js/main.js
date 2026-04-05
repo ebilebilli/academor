@@ -54,33 +54,51 @@
     });
     
     
-    // Back to top button
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 300) {
-            $('.back-to-top').fadeIn('slow');
+    // Back to top — class toggles display:flex (see style.css); robust scrollTop for document/body
+    var $backToTop = $('.back-to-top');
+    function getScrollTop() {
+        return window.pageYOffset
+            || document.documentElement.scrollTop
+            || document.body.scrollTop
+            || 0;
+    }
+    function updateBackToTop() {
+        if (getScrollTop() > 300) {
+            $backToTop.addClass('back-to-top--visible').attr({ tabindex: '0', 'aria-hidden': 'false' });
         } else {
-            $('.back-to-top').fadeOut('slow');
+            $backToTop.removeClass('back-to-top--visible').attr({ tabindex: '-1', 'aria-hidden': 'true' });
+        }
+    }
+    $(window).on('scroll.backToTop', updateBackToTop);
+    $(window).on('load.backToTop', updateBackToTop);
+    updateBackToTop();
+
+    $backToTop.on('click', function (e) {
+        e.preventDefault();
+        if ('scrollBehavior' in document.documentElement.style) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            $('html, body').stop(true).animate({ scrollTop: 0 }, 600, 'swing');
         }
     });
-    $('.back-to-top').click(function () {
-        $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
-        return false;
-    });
 
 
-    // Header carousel
-    $(".header-carousel").owlCarousel({
-        autoplay: true,
-        smartSpeed: 1500,
-        items: 1,
-        dots: false,
-        loop: true,
-        nav : true,
-        navText : [
-            '<i class="bi bi-chevron-left"></i>',
-            '<i class="bi bi-chevron-right"></i>'
-        ]
-    });
+    // Header carousel (index only — other pages have no .header-carousel)
+    var $headerCarousel = $(".header-carousel");
+    if ($headerCarousel.length) {
+        $headerCarousel.owlCarousel({
+            autoplay: true,
+            smartSpeed: 1500,
+            items: 1,
+            dots: false,
+            loop: true,
+            nav: true,
+            navText: [
+                '<i class="bi bi-chevron-left"></i>',
+                '<i class="bi bi-chevron-right"></i>'
+            ]
+        });
+    }
 
 
     // Course categories carousel (index)
@@ -120,27 +138,74 @@
     }
 
 
-    // Testimonials carousel
-    $(".testimonial-carousel").owlCarousel({
-        autoplay: true,
-        smartSpeed: 1000,
-        center: true,
-        margin: 24,
-        dots: true,
-        loop: true,
-        nav : false,
-        responsive: {
-            0:{
-                items:1
-            },
-            768:{
-                items:2
-            },
-            992:{
-                items:3
+    // Team members carousel (index + team page)
+    var $teamCarousel = $(".team-carousel");
+    if ($teamCarousel.length && $teamCarousel.find(".item").length) {
+        var teamCount = $teamCarousel.find(".item").length;
+        $teamCarousel.owlCarousel({
+            autoplay: true,
+            autoplayTimeout: 4500,
+            autoplayHoverPause: true,
+            smartSpeed: 650,
+            margin: 24,
+            dots: true,
+            nav: true,
+            navText: [
+                '<i class="bi bi-chevron-left"></i>',
+                '<i class="bi bi-chevron-right"></i>'
+            ],
+            loop: teamCount > 4,
+            rewind: true,
+            responsive: {
+                0: {
+                    items: 1,
+                    stagePadding: 28,
+                    margin: 16
+                },
+                576: {
+                    items: 2,
+                    stagePadding: 16,
+                    margin: 20
+                },
+                992: {
+                    items: 3,
+                    stagePadding: 8,
+                    margin: 22
+                },
+                1200: {
+                    items: 4,
+                    stagePadding: 0,
+                    margin: 24
+                }
             }
-        }
-    });
+        });
+    }
+
+
+    // Testimonials carousel (pages that include reviews section only)
+    var $testimonialCarousel = $(".testimonial-carousel");
+    if ($testimonialCarousel.length) {
+        $testimonialCarousel.owlCarousel({
+            autoplay: true,
+            smartSpeed: 1000,
+            center: true,
+            margin: 24,
+            dots: true,
+            loop: true,
+            nav: false,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                768: {
+                    items: 2
+                },
+                992: {
+                    items: 3
+                }
+            }
+        });
+    }
     
 })(jQuery);
 

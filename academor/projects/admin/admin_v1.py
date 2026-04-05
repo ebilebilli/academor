@@ -503,19 +503,13 @@ class InstructorAdmin(admin.ModelAdmin):
 # About 
 @admin.register(About)
 class AboutAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title_link', 'second_title_az', 'media_count', 'updated_info')
+    list_display = ('id', 'title_link', 'media_count', 'updated_info')
     list_display_links = ('id',)
-    search_fields = ('main_title_az', 'main_title_en', 'main_title_ru', 'second_title_az', 'second_title_en', 'second_title_ru', 'description_az', 'description_en', 'description_ru')
+    search_fields = ('description_az', 'description_en', 'description_ru')
     inlines = [MediaInlineAbout]
     list_per_page = 25
-    
+
     fieldsets = (
-        ('Main heading', {
-            'fields': ('main_title_az', 'main_title_en', 'main_title_ru')
-        }),
-        ('Subtitle', {
-            'fields': ('second_title_az', 'second_title_en', 'second_title_ru')
-        }),
         ('Description — Azerbaijani', {
             'fields': ('description_az',)
         }),
@@ -526,13 +520,15 @@ class AboutAdmin(admin.ModelAdmin):
             'fields': ('description_ru',)
         }),
     )
-    
+
     def title_link(self, obj):
         url = reverse('admin:projects_about_change', args=[obj.pk])
-        title = obj.main_title_az or 'About'
-        return format_html('<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; font-size: 14px;">🔗 {}</a>', url, title)
-    title_link.short_description = "Main heading"
-    title_link.admin_order_field = 'main_title_az'
+        return format_html(
+            '<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; font-size: 14px;">🔗 About #{}</a>',
+            url,
+            obj.pk,
+        )
+    title_link.short_description = 'About'
     
     def media_count(self, obj):
         count = obj.medias.count()

@@ -1,6 +1,7 @@
 import re
 
 from django.db.models import Q, Prefetch
+from django.utils.html import strip_tags
 from django.utils import translation
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # from django.conf import settings
@@ -136,7 +137,7 @@ def serialize_team_member(member):
         return None
     return {
         'id': member.id,
-        'image': member.image.url if getattr(member, 'image', None) else None,
+        'image': member.image.url if member.image else None,
         'name': member.name,
         'role': member.role,
         'description': member.description,
@@ -429,27 +430,40 @@ def serialize_project_category(category, lang='az'):
     }
 
 
+def _about_plain_excerpt(html, max_chars=300):
+    if not html:
+        return ''
+    text = strip_tags(str(html))
+    text = ' '.join(text.split())
+    if len(text) <= max_chars:
+        return text
+    cut = text[:max_chars].rsplit(' ', 1)[0]
+    return (cut or text[:max_chars]).rstrip(',;—') + '…'
+
+
 def serialize_about(about, lang='az'):
     if about is None:
         return None
-    
-    main_title_field = get_localized_field_name('main_title', lang)
-    second_title_field = get_localized_field_name('second_title', lang)
+
     desc_field = get_localized_field_name('description', lang)
-    
+    raw_desc = getattr(about, desc_field, about.description_az) or ''
+
+    medias = [
+        {
+            'id': media.id,
+            'image': media.image.url if media.image else None,
+            'video': media.video.url if media.video else None,
+        }
+        for media in about.medias.all()
+    ]
+    first_image = next((m['image'] for m in medias if m.get('image')), None)
+
     return {
         'id': about.id,
-        'main_title': getattr(about, main_title_field, about.main_title_az),
-        'second_title': getattr(about, second_title_field, about.second_title_az),
-        'description': getattr(about, desc_field, about.description_az),
-        'medias': [
-            {
-                'id': media.id,
-                'image': media.image.url if media.image else None,
-                'video': media.video.url if media.video else None,
-            }
-            for media in about.medias.all()
-        ]
+        'description': raw_desc,
+        'description_excerpt': _about_plain_excerpt(raw_desc),
+        'first_image': first_image,
+        'medias': medias,
     }
 
 
@@ -495,6 +509,13 @@ def _whatsapp_me_digits(value):
     return digits or None
 
 
+def _tel_href(value):
+    if not value:
+        return None
+    s = ''.join(c for c in str(value) if c.isdigit() or c == '+')
+    return s if s else None
+
+
 def serialize_contact(contact, lang='az'):
     if contact is None:
         return None
@@ -510,6 +531,8 @@ def serialize_contact(contact, lang='az'):
         'whatsapp_number_me': _whatsapp_me_digits(contact.whatsapp_number),
         'whatsapp_number_2_me': _whatsapp_me_digits(contact.whatsapp_number_2),
         'phone_three': contact.phone_three,
+        'phone_href': _tel_href(contact.phone),
+        'phone_three_href': _tel_href(contact.phone_three),
         'email': contact.email,
         'instagram': contact.instagram,
         'facebook': contact.facebook,
