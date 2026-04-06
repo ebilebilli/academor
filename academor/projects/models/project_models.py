@@ -113,3 +113,30 @@ class ServiceHighlight(models.Model):
 
     def __str__(self):
         return self.title_az or self.title_en or self.title_ru or f'Highlight #{self.pk}'
+
+
+class AbroadModel(models.Model):
+    name = models.CharField(
+        max_length=120,
+        verbose_name='Name'
+    )
+    img = models.ImageField(
+        upload_to='abroad/',
+        verbose_name='Image'
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name='Active'
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Created at'
+    )
+
+    class Meta:
+        verbose_name = 'Abroad item'
+        verbose_name_plural = 'Abroad items'
+        ordering = ('id',)
+
+    def __str__(self):
+        return self.name

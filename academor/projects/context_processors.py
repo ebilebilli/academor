@@ -1,9 +1,4 @@
-from projects.utils.queries import (
-    get_contact,
-    get_language_from_request,
-    get_nav_courses,
-    serialize_contact,
-)
+from projects.utils.queries import get_contact, get_nav_courses, serialize_contact
 
 
 SEO_HOME = {
@@ -55,8 +50,18 @@ SEO_HOME = {
 SEO_LOCALE = {"en": "en_US", "az": "az_AZ", "ru": "ru_RU"}
 
 
+def _request_lang(request):
+    lang = (getattr(request, 'LANGUAGE_CODE', '') or '').lower().split('-')[0]
+    if lang in {'az', 'en', 'ru'}:
+        return lang
+    session_lang = (request.session.get('django_language') or request.session.get('language') or '').lower().split('-')[0]
+    if session_lang in {'az', 'en', 'ru'}:
+        return session_lang
+    return 'en'
+
+
 def site_seo_context(request):
-    lang = get_language_from_request(request)
+    lang = _request_lang(request)
     data = SEO_HOME.get(lang) or SEO_HOME["en"]
     return {
         "seo_home_title": data["title"],
@@ -70,7 +75,7 @@ def site_seo_context(request):
 
 
 def site_footer_context(request):
-    lang = get_language_from_request(request)
+    lang = _request_lang(request)
     contact = get_contact(lang)
     rm = getattr(request, 'resolver_match', None)
     nav_url_name = getattr(rm, 'url_name', '') if rm else ''

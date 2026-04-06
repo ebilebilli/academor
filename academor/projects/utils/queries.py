@@ -332,6 +332,24 @@ def serialize_service_highlight(item, lang='az'):
     }
 
 
+@cached_query(timeout='CACHE_TIMEOUT_LONG')
+def get_abroad_items(is_active=True):
+    qs = AbroadModel.objects.all()
+    if is_active is not None:
+        qs = qs.filter(is_active=is_active)
+    return list(qs.order_by('id'))
+
+
+def serialize_abroad_item(item):
+    if item is None:
+        return None
+    return {
+        'id': item.id,
+        'name': item.name,
+        'img': item.img.url if item.img else None,
+    }
+
+
 def serialize_project_category(category, lang='az'):
     name_field = get_localized_field_name('name', lang)
     desc_field = get_localized_field_name('description', lang)
@@ -499,16 +517,6 @@ def get_home_page_data(request, lang):
         for category in categories
     ]
     
-    partners_page = request.GET.get('partners_page', 1)
-    partners_per_page = int(request.GET.get('partners_per_page', 10))
-    
-    all_partners = get_partners(lang=lang, is_active=True)
-    partners_page_obj, partners_paginator = paginate_queryset(all_partners, partners_page, partners_per_page)
-    serialized_partners = [
-        serialize_partner(partner, lang)
-        for partner in partners_page_obj
-    ]
-    
     about = get_about(lang)
     serialized_about = serialize_about(about, lang) if about else None
     
@@ -525,11 +533,11 @@ def get_home_page_data(request, lang):
     return {
         'projects': [],
         'categories': serialized_categories,
-        'partners': serialized_partners,
+        'partners': [],
         'about': serialized_about,
         'contact': serialized_contact,
         'projects_pagination': None,
-        'partners_pagination': get_pagination_data(partners_page_obj, partners_paginator),
+        'partners_pagination': None,
         'filters': {
             'slug': category_slug,
             'is_completed': None,
@@ -539,6 +547,7 @@ def get_home_page_data(request, lang):
         'hero_background_images': hero_background_images,
         'motto': motto,
         'service_highlights': [serialize_service_highlight(s, lang) for s in service_highlights],
+        'abroad_items': [serialize_abroad_item(i) for i in get_abroad_items(is_active=True)],
         'team': [serialize_team_member(m) for m in get_team_members()],
         'reviews': [serialize_review(r) for r in get_reviews()],
     }
@@ -587,6 +596,7 @@ def _get_project_list_data_impl(request, lang):
             'is_active': is_active,
         },
         'background_image': get_background_image('courses'),
+        'abroad_items': [serialize_abroad_item(i) for i in get_abroad_items(is_active=True)],
     }
 
 

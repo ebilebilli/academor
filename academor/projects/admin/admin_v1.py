@@ -301,6 +301,42 @@ class ServiceHighlightAdmin(admin.ModelAdmin):
     title_link.short_description = "Title (AZ)"
     title_link.admin_order_field = 'title_az'
 
+
+@admin.register(AbroadModel)
+class AbroadModelAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'preview_image', 'is_active', 'created_at')
+    list_filter = ('is_active', 'created_at')
+    search_fields = ('name',)
+    list_editable = ('is_active',)
+    readonly_fields = ('created_at', 'preview_image_large')
+    list_per_page = 25
+    fieldsets = (
+        ('Content', {
+            'fields': ('name', 'img')
+        }),
+        ('Status', {
+            'fields': ('is_active', 'created_at', 'preview_image_large')
+        }),
+    )
+
+    def preview_image(self, obj):
+        if obj.img:
+            return format_html(
+                '<img src="{}" style="max-width: 52px; max-height: 52px; border-radius: 6px; object-fit: cover;" />',
+                obj.img.url,
+            )
+        return "—"
+    preview_image.short_description = "Image"
+
+    def preview_image_large(self, obj):
+        if obj.img:
+            return format_html(
+                '<img src="{}" style="max-width: 280px; max-height: 220px; border-radius: 8px; object-fit: cover;" />',
+                obj.img.url,
+            )
+        return "—"
+    preview_image_large.short_description = "Preview"
+
 @admin.register(Instructor)
 class InstructorAdmin(admin.ModelAdmin):
     list_display = (
@@ -796,6 +832,7 @@ def _sorted_get_app_list(request, app_label=None):
         # Service categories
         "ServiceCategory": 200,
         "ServiceHighlight": 210,
+        "AbroadModel": 220,
         "Instructor": 230,
 
         # Inbound

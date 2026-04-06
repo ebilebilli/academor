@@ -27,7 +27,6 @@
             <a href="{% url 'projects:team-page' %}" class="nav-item nav-link{% if u == 'team-page' or u == 'team-detail' %} active{% endif %}">{% trans "Our Team" %}</a>
             <a href="{% url 'projects:reviews-page' %}" class="nav-item nav-link{% if u == 'reviews-page' %} active{% endif %}">{% trans "Reviews" %}</a>
             <a href="{% url 'projects:tests-page' %}" class="nav-item nav-link{% if u == 'tests-page' or u == 'test-take' %} active{% endif %}">{% trans "Test" %}</a>
-            <a href="{% url 'projects:contact-page' %}" class="nav-item nav-link{% if u == 'contact-page' %} active{% endif %}">{% trans "Contact" %}</a>
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
                     {% if LANG == 'az' %}
@@ -51,7 +50,7 @@
                 </div>
             </div>
         </div>
-        <a href="" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">{% trans "Join Now" %}<i class="fa fa-arrow-right ms-3"></i></a>
+        <a href="{% url 'projects:contact-page' %}" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">{% trans "Contact" %}<i class="fa fa-arrow-right ms-3"></i></a>
     </div>
 </nav>
 {% endwith %}

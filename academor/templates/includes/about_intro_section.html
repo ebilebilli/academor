@@ -19,10 +19,8 @@
                 <h2 class="mb-4 h1">Academor</h2>
                 {% endif %}
                 {% if about and about.description %}
-                    {% if use_description_scroll %}
-                    <div class="index-about-description-scroll" tabindex="0" role="region" aria-label="{% trans 'About Academor' %}">
-                        <div class="about-page-description text-secondary mb-0">{{ about.description|safe }}</div>
-                    </div>
+                    {% if show_read_more_link %}
+                    <p class="about-page-description text-secondary mb-0">{{ about.description_excerpt }}</p>
                     {% else %}
                     <div class="about-page-description text-secondary">{{ about.description|safe }}</div>
                     {% endif %}

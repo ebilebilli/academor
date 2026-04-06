@@ -12,18 +12,30 @@
     spinner();
     
     
-    // Initiate the wowjs
-    new WOW().init();
+    // Initiate wowjs (skip on small screens / reduced motion)
+    var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!prefersReducedMotion && window.innerWidth >= 768) {
+        new WOW({
+            mobile: false,
+            offset: 40
+        }).init();
+    }
 
 
-    // Sticky Navbar
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 300) {
-            $('.sticky-top').css('top', '0px');
-        } else {
-            $('.sticky-top').css('top', '-100px');
+    // Sticky Navbar (throttled via requestAnimationFrame)
+    var stickyTicking = false;
+    function updateStickyNavbar() {
+        var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+        $('.sticky-top').css('top', y > 300 ? '0px' : '-100px');
+        stickyTicking = false;
+    }
+    $(window).on('scroll.stickyNavbar', function () {
+        if (!stickyTicking) {
+            window.requestAnimationFrame(updateStickyNavbar);
+            stickyTicking = true;
         }
     });
+    updateStickyNavbar();
     
     
     // Dropdown on mouse hover
@@ -69,7 +81,16 @@
             $backToTop.removeClass('back-to-top--visible').attr({ tabindex: '-1', 'aria-hidden': 'true' });
         }
     }
-    $(window).on('scroll.backToTop', updateBackToTop);
+    var backToTopTicking = false;
+    $(window).on('scroll.backToTop', function () {
+        if (!backToTopTicking) {
+            window.requestAnimationFrame(function () {
+                updateBackToTop();
+                backToTopTicking = false;
+            });
+            backToTopTicking = true;
+        }
+    });
     $(window).on('load.backToTop', updateBackToTop);
     updateBackToTop();
 
@@ -87,12 +108,17 @@
     var $headerCarousel = $(".header-carousel");
     if ($headerCarousel.length) {
         $headerCarousel.owlCarousel({
-            autoplay: true,
-            smartSpeed: 1500,
+            autoplay: !prefersReducedMotion,
+            autoplayTimeout: 5000,
+            autoplayHoverPause: true,
+            smartSpeed: 850,
             items: 1,
             dots: false,
             loop: true,
             nav: true,
+            lazyLoad: true,
+            mouseDrag: true,
+            touchDrag: true,
             navText: [
                 '<i class="bi bi-chevron-left"></i>',
                 '<i class="bi bi-chevron-right"></i>'
@@ -107,10 +133,14 @@
         var catCount = $catCarousel.find(".item").length;
         $catCarousel.owlCarousel({
             autoplay: false,
-            smartSpeed: 500,
+            smartSpeed: 420,
             margin: 20,
             dots: true,
             nav: true,
+            lazyLoad: true,
+            mouseDrag: catCount > 1,
+            touchDrag: catCount > 1,
+            slideBy: 1,
             navText: [
                 '<i class="bi bi-chevron-left"></i>',
                 '<i class="bi bi-chevron-right"></i>'
@@ -143,13 +173,16 @@
     if ($teamCarousel.length && $teamCarousel.find(".item").length) {
         var teamCount = $teamCarousel.find(".item").length;
         $teamCarousel.owlCarousel({
-            autoplay: true,
+            autoplay: !prefersReducedMotion,
             autoplayTimeout: 4500,
             autoplayHoverPause: true,
             smartSpeed: 650,
             margin: 24,
             dots: true,
             nav: true,
+            lazyLoad: true,
+            mouseDrag: teamCount > 1,
+            touchDrag: teamCount > 1,
             navText: [
                 '<i class="bi bi-chevron-left"></i>',
                 '<i class="bi bi-chevron-right"></i>'
@@ -186,13 +219,16 @@
     var $testimonialCarousel = $(".testimonial-carousel");
     if ($testimonialCarousel.length) {
         $testimonialCarousel.owlCarousel({
-            autoplay: true,
-            smartSpeed: 1000,
+            autoplay: !prefersReducedMotion,
+            autoplayTimeout: 4200,
+            autoplayHoverPause: true,
+            smartSpeed: 700,
             center: true,
             margin: 24,
             dots: true,
             loop: true,
             nav: false,
+            lazyLoad: true,
             responsive: {
                 0: {
                     items: 1

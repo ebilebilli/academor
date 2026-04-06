@@ -1,4 +1,4 @@
-from .project_models import ServiceCategory, ServiceHighlight
+from .project_models import ServiceCategory, ServiceHighlight, AbroadModel
 from .media_models import Media
 from .partner_models import Instructor
 from .about_models import About

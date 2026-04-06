@@ -1,0 +1,28 @@
+{% load i18n static %}
+<div class="container-xxl py-5 abroad-section">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h1 class="mb-5">{% trans "Study in Abroad" %}</h1>
+        </div>
+        {% if abroad_items %}
+        <div class="row g-4">
+            {% for item in abroad_items %}
+            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="{% widthratio forloop.counter 1 2 %}00ms">
+                <div class="abroad-card h-100 text-center">
+                    <div class="abroad-card__icon-wrap">
+                        {% if item.img %}
+                        <img src="{{ item.img }}" alt="{{ item.name }}" class="abroad-card__thumb">
+                        {% else %}
+                        <i class="fa fa-angle-left abroad-card__icon" aria-hidden="true"></i>
+                        {% endif %}
+                    </div>
+                    <h4 class="abroad-card__title">{{ item.name }}</h4>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-center text-muted mb-0">{% trans "No abroad items yet." %}</p>
+        {% endif %}
+    </div>
+</div>

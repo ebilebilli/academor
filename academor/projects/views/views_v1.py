@@ -19,6 +19,7 @@ from projects.utils.queries import (
     get_team_members, serialize_team_member,
     get_reviews, serialize_review,
     get_service_highlights, serialize_service_highlight,
+    get_abroad_items, serialize_abroad_item,
 )
 
 
@@ -230,30 +231,6 @@ class ReviewsPageView(View):
         context = {
             'reviews': [serialize_review(r) for r in reviews],
             'form': ReviewForm(),
-            'categories': [serialize_project_category(c, lang) for c in categories],
-            'language': lang,
-            'background_image': get_background_image('about'),
-        }
-        return render(request, self.template_name, context)
-
-    def post(self, request):
-        lang = get_language_from_request(request)
-        form = ReviewForm(request.POST)
-        if form.is_valid():
-            try:
-                form.save()
-                messages.success(request, _('Rəyiniz uğurla göndərildi.'))
-                return redirect('projects:reviews-page')
-            except Exception:
-                messages.error(request, _('Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.'))
-        else:
-            messages.error(request, _('Formda xəta var. Zəhmət olmasa düzəldin.'))
-
-        reviews = get_reviews()
-        categories = get_project_categories(lang)
-        context = {
-            'reviews': [serialize_review(r) for r in reviews],
-            'form': form,
             'categories': [serialize_project_category(c, lang) for c in categories],
             'language': lang,
             'background_image': get_background_image('about'),

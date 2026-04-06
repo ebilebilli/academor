@@ -8,6 +8,7 @@ from projects.models import (
     ContactInquiry,
     ServiceCategory,
     ServiceHighlight,
+    AbroadModel,
     Team,
     Review,
     Instructor,
@@ -65,6 +66,12 @@ def invalidate_course_category_cache(sender, instance, **kwargs):
 @receiver(post_delete, sender=ServiceHighlight)
 def invalidate_service_highlight_cache(sender, instance, **kwargs):
     invalidate_model_cache('ServiceHighlight')
+
+
+@receiver(post_save, sender=AbroadModel)
+@receiver(post_delete, sender=AbroadModel)
+def invalidate_abroad_cache(sender, instance, **kwargs):
+    invalidate_model_cache('AbroadModel')
 
 
 @receiver(post_save, sender=Instructor)
