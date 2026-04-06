@@ -1,5 +1,6 @@
 from django.db import models
-from django.core.validators import MaxLengthValidator
+
+from ckeditor.fields import RichTextField
 
 from projects.utils import SluggedModel
 
@@ -23,11 +24,31 @@ class ServiceCategory(SluggedModel):
         blank=True,
         verbose_name='Category name (RU)'
     )
+    description_az = RichTextField(
+        blank=True,
+        verbose_name='Description (AZ)'
+    )
+    description_en = RichTextField(
+        blank=True,
+        verbose_name='Description (EN)'
+    )
+    description_ru = RichTextField(
+        blank=True,
+        verbose_name='Description (RU)'
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name='Active'
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Created at'
+    )
 
     class Meta:
         verbose_name = 'Service category'
         verbose_name_plural = 'Service categories'
-    
+
     def get_slug_source(self) -> str:
         return self.name_az
 
@@ -35,90 +56,60 @@ class ServiceCategory(SluggedModel):
         return self.name_az or 'Category'
 
 
-class Service(SluggedModel):
-    category = models.ForeignKey(
-        ServiceCategory,
-        on_delete=models.PROTECT,
-        related_name='services',
-        verbose_name='Service category'
-    )
-    name_az = models.CharField(
-        max_length=250,
-        verbose_name='Name (AZ)'
-    )
-    name_en = models.CharField(
-        max_length=250,
+class ServiceHighlight(models.Model):
+    title_az = models.CharField(
+        max_length=100,
         null=True,
         blank=True,
-        verbose_name='Name (EN)'
+        verbose_name='Title (AZ)'
     )
-    name_ru = models.CharField(
-        max_length=250,
+    title_en = models.CharField(
+        max_length=100,
         null=True,
         blank=True,
-        verbose_name='Name (RU)'
+        verbose_name='Title (EN)'
+    )
+    title_ru = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+        verbose_name='Title (RU)'
     )
     description_az = models.TextField(
-        validators=[MaxLengthValidator(5000)],
-        verbose_name='Service description (AZ)'
+        null=True,
+        blank=True,
+        max_length=100,
+        verbose_name='Description (AZ)'
     )
     description_en = models.TextField(
-        validators=[MaxLengthValidator(5000)],
         null=True,
         blank=True,
-        verbose_name='Service description (EN)'
+        max_length=100,
+        verbose_name='Description (EN)'
     )
     description_ru = models.TextField(
-        validators=[MaxLengthValidator(5000)],
         null=True,
         blank=True,
-        verbose_name='Service description (RU)'
+        max_length=100,
+        verbose_name='Description (RU)'
     )
-    url = models.URLField(
-        null=True,
-        blank=True,
-        verbose_name='URL'
-    )
-    is_completed = models.BooleanField(
-        default=True,
-        null=True,
-        blank=True,
-        verbose_name='Completed'
+    order = models.PositiveIntegerField(
+        default=0,
+        verbose_name='Order'
     )
     is_active = models.BooleanField(
         default=True,
-        null=True,
-        blank=True,
         verbose_name='Active'
     )
-    speacial_project = models.BooleanField(
-        default=False,
-        null=True,
-        blank=True,
-        verbose_name='Featured'
-    )
-    on_main_page = models.BooleanField(
-        default=False,
-        null=True,
-        blank=True,
-        verbose_name='Show on home page'
-    )
-    project_date = models.DateField(
-        null=True,
-        blank=True,
-        verbose_name='Service date'
-    )
     created_at = models.DateTimeField(
-        auto_now_add=True
+        auto_now_add=True,
+        verbose_name='Created at'
     )
-    
-    def get_slug_source(self) -> str:
-        return self.name_az
 
     class Meta:
-        verbose_name = 'Service'
-        verbose_name_plural = 'Services'
-        ordering  = ['-created_at']
+        verbose_name = 'Service highlight'
+        verbose_name_plural = 'Service highlights'
+        ordering = ('order', 'id')
 
     def __str__(self):
-        return self.name_az
+        return self.title_az or self.title_en or self.title_ru or f'Highlight #{self.pk}'

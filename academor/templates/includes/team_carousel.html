@@ -1,3 +1,4 @@
+{% load i18n %}
 {% if team %}
 <div class="position-relative team-carousel-wrap px-lg-1">
     <div class="owl-carousel owl-theme team-carousel">
@@ -12,6 +13,6 @@
 </div>
 {% else %}
 <div class="alert text-center mb-0" style="background-color: #fff3cd; border-color: #ffecb5; color: #8a6d3b;">
-    No team members have been added yet.
+    {% trans "No team members have been added yet." %}
 </div>
 {% endif %}

@@ -2,11 +2,9 @@ from django.db import models
 from django.core.files.storage import default_storage
 import logging
 
-from .project_models import Service, ServiceCategory
+from .project_models import ServiceCategory
 from .partner_models import Instructor
 from .about_models import About
-from .vacancy_models import CareerOpening
-from .service_models import Program
 
 logger = logging.getLogger(__name__)
 
@@ -19,14 +17,6 @@ class Media(models.Model):
         null=True,
         blank=True,
         verbose_name='About'
-    )
-    project = models.ForeignKey(
-        Service,
-        related_name='medias',
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        verbose_name='Project'
     )
     category = models.ForeignKey(
         ServiceCategory,
@@ -44,28 +34,12 @@ class Media(models.Model):
         blank=True,
         verbose_name='Partner'
     )
-    vacancy = models.ForeignKey(
-        CareerOpening,
-        related_name='medias',
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        verbose_name='Vacancy'
-    )
-    service = models.ForeignKey(
-        Program,
-        related_name='medias',
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        verbose_name='Service'
-    )
     image = models.ImageField(
-        upload_to='images/',  
+        upload_to='images/',
         verbose_name='Image'
     )
     video = models.FileField(
-        upload_to='videos/',  
+        upload_to='videos/',
         null=True,
         blank=True,
         verbose_name='Video'
@@ -85,10 +59,6 @@ class Media(models.Model):
     is_project_page_background_image = models.BooleanField(
         default=False,
         verbose_name='Project page background image'
-    )
-    is_vacany_page_background_image = models.BooleanField(
-        default=False,
-        verbose_name='Vacancy page background image'
     )
     is_service_page_background_image = models.BooleanField(
         default=False,
@@ -119,15 +89,15 @@ class Media(models.Model):
     def delete_files(self):
         if not self.image:
             return
-        
+
         image_name = self.image.name
         image_id = self.pk
-        
+
         logger.info(f"[IMAGE DELETE FILES] Deleting files (Image ID: {image_id}, File: {image_name})")
-        
+
         try:
             storage = default_storage
-            
+
             if image_name.lower().endswith('.webp'):
                 logger.info(f"[IMAGE DELETE FILES] WebP file found: {image_name}")
                 base_name = image_name.rsplit('.', 1)[0]
@@ -140,7 +110,7 @@ class Media(models.Model):
                             logger.info(f"[IMAGE DELETE FILES] Original file deleted: {original_name}")
                         except Exception as e:
                             logger.error(f"[IMAGE DELETE FILES] Error deleting original file ({original_name}): {e}")
-                
+
                 if storage.exists(image_name):
                     storage.delete(image_name)
                     logger.info(f"[IMAGE DELETE FILES] WebP file deleted: {image_name}")
@@ -155,13 +125,13 @@ class Media(models.Model):
                         logger.info(f"[IMAGE DELETE FILES] WebP version deleted: {webp_name}")
                     except Exception as e:
                         logger.error(f"[IMAGE DELETE FILES] Error deleting WebP version ({webp_name}): {e}")
-                
+
                 if storage.exists(image_name):
                     storage.delete(image_name)
                     logger.info(f"[IMAGE DELETE FILES] Original file deleted: {image_name}")
                 else:
                     logger.warning(f"[IMAGE DELETE FILES] Original file not found: {image_name}")
-            
+
             logger.info(f"[IMAGE DELETE FILES] Files successfully deleted (Image ID: {image_id})")
         except Exception as e:
             logger.error(f"[IMAGE DELETE FILES] Error occurred (Image ID: {image_id}): {e}")
@@ -169,9 +139,9 @@ class Media(models.Model):
     def delete(self, *args, **kwargs):
         image_id = self.pk
         logger.info(f"[IMAGE DELETE] Deleting image (Image ID: {image_id})")
-        
+
         self.delete_files()
-        
+
         super().delete(*args, **kwargs)
-        
+
         logger.info(f"[IMAGE DELETE] Image successfully deleted (Image ID: {image_id})")

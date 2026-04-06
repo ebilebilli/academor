@@ -5,20 +5,16 @@ from django.conf import settings
 # from projects.utils import send_mail_func
 from projects.utils.cache_utils import invalidate_model_cache
 from projects.models import (
-    JobApplication,
     ContactInquiry,
-    Service,
     ServiceCategory,
+    ServiceHighlight,
     Team,
     Review,
-    CareerOpening,
     Instructor,
-    About, 
-    Contact, 
+    About,
+    Contact,
     Media,
     Tagline,
-    AcademyStatistic,
-    Program,
     Test,
     Question,
     Option,
@@ -58,13 +54,6 @@ from projects.models import (
 
 # Cache invalidation signals for models
 
-@receiver(post_save, sender=Service)
-@receiver(post_delete, sender=Service)
-def invalidate_courses_cache(sender, instance, **kwargs):
-    """Invalidate cache when a Course/Project (Service) is saved or deleted."""
-    invalidate_model_cache('Service')
-
-
 @receiver(post_save, sender=ServiceCategory)
 @receiver(post_delete, sender=ServiceCategory)
 def invalidate_course_category_cache(sender, instance, **kwargs):
@@ -72,11 +61,10 @@ def invalidate_course_category_cache(sender, instance, **kwargs):
     invalidate_model_cache('ServiceCategory')
 
 
-@receiver(post_save, sender=CareerOpening)
-@receiver(post_delete, sender=CareerOpening)
-def invalidate_vacancy_cache(sender, instance, **kwargs):
-    """Invalidate cache when Vacancy is saved or deleted."""
-    invalidate_model_cache('CareerOpening')
+@receiver(post_save, sender=ServiceHighlight)
+@receiver(post_delete, sender=ServiceHighlight)
+def invalidate_service_highlight_cache(sender, instance, **kwargs):
+    invalidate_model_cache('ServiceHighlight')
 
 
 @receiver(post_save, sender=Instructor)
@@ -112,13 +100,6 @@ def invalidate_review_cache(sender, instance, **kwargs):
     invalidate_model_cache('Review')
 
 
-@receiver(post_save, sender=Program)
-@receiver(post_delete, sender=Program)
-def invalidate_service_cache(sender, instance, **kwargs):
-    """Invalidate cache when Service is saved or deleted."""
-    invalidate_model_cache('Program')
-
-
 @receiver(post_save, sender=Media)
 @receiver(post_delete, sender=Media)
 def invalidate_media_cache(sender, instance, **kwargs):
@@ -128,20 +109,13 @@ def invalidate_media_cache(sender, instance, **kwargs):
     
     # Also invalidate related model caches if media belongs to them
     # IMPORTANT: use *_id to avoid DoesNotExist during cascaded deletes
-    # (accessing instance.project may trigger a DB fetch and fail mid-delete)
-    if getattr(instance, 'project_id', None):
-        invalidate_model_cache('Service')
     if getattr(instance, 'category_id', None):
         invalidate_model_cache('ServiceCategory')
     if getattr(instance, 'partner_id', None):
         invalidate_model_cache('Instructor')
     if getattr(instance, 'about_id', None):
         invalidate_model_cache('About')
-    if getattr(instance, 'vacancy_id', None):
-        invalidate_model_cache('CareerOpening')
-    if getattr(instance, 'service_id', None):
-        invalidate_model_cache('Program')
-    
+
     # If media is a background image for home page, invalidate home page cache
     if instance.is_home_page_background_image:
         invalidate_model_cache('Media')
@@ -154,16 +128,6 @@ def invalidate_motto_cache(sender, instance, **kwargs):
     invalidate_model_cache('Tagline')
     # Motto affects home page, so invalidate home page cache
     invalidate_model_cache('Media')
-
-
-@receiver(post_save, sender=AcademyStatistic)
-@receiver(post_delete, sender=AcademyStatistic)
-def invalidate_statistic_cache(sender, instance, **kwargs):
-    """Invalidate cache when Statistic is saved or deleted."""
-    from projects.utils.cache_utils import invalidate_query_cache
-    # Invalidate statistics cache
-    invalidate_query_cache(['get_statistics'])
-    invalidate_model_cache('AcademyStatistic')
 
 
 @receiver(post_save, sender=ContactInquiry)

@@ -1,96 +1,10 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-from projects.models import JobApplication, ContactInquiry, Review
+from projects.models import ContactInquiry, Review
 
 # Bot honeypots: must stay empty (hidden inputs; tabindex -1 for keyboard users).
 _HP = {'autocomplete': 'off', 'tabindex': '-1', 'aria-hidden': 'true'}
-
-
-class AppealForm(forms.ModelForm):
-    website = forms.CharField(
-        required=False,
-        widget=forms.HiddenInput(attrs=_HP),
-        label='',
-    )
-    fax = forms.CharField(
-        required=False,
-        widget=forms.HiddenInput(attrs=_HP),
-        label='',
-    )
-    company = forms.CharField(
-        required=False,
-        widget=forms.HiddenInput(attrs=_HP),
-        label='',
-    )
-    full_name = forms.CharField(
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': _('Ad Soyad')
-        }),
-        required=True,
-        label=_('Ad Soyad')
-    )
-    email = forms.EmailField(
-        widget=forms.EmailInput(attrs={
-            'class': 'form-control',
-            'placeholder': _('Nümunə: example@email.com')
-        }),
-        required=True,
-        label=_('E-poçt')
-    )
-    phone_number = forms.CharField(
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': _('Nümunə: 0501234567')
-        }),
-        required=True,
-        label=_('Mobil Nömrə')
-    )
-    info = forms.CharField(
-        widget=forms.Textarea(attrs={
-            'class': 'form-control',
-            'rows': 4,
-            'placeholder': _('Əlavə məlumat')
-        }),
-        required=False,
-        label=_('Əlavə məlumat'),
-        max_length=250
-    )
-    cv = forms.FileField(
-        widget=forms.FileInput(attrs={
-            'accept': '.pdf,.doc,.docx',
-            'class': 'form-control'
-        }),
-        required=True,
-        label=_('CV faylı')
-    )
-
-    class Meta:
-        model = JobApplication
-        fields = [
-            'full_name',
-            'email',
-            'phone_number',
-            'info',
-            'cv'
-        ]
-
-    def clean_website(self):
-        value = self.cleaned_data.get('website')
-        if value:
-            raise ValidationError(_('Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.'))
-        return value
-
-    def clean_fax(self):
-        if self.cleaned_data.get('fax'):
-            raise ValidationError(_('Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.'))
-        return ''
-
-    def clean_company(self):
-        if self.cleaned_data.get('company'):
-            raise ValidationError(_('Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.'))
-        return ''
 
 
 class AppealContactForm(forms.ModelForm):

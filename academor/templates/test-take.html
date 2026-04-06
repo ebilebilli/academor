@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-{% load static %}
+{% load static i18n %}
 <html lang="en">
 <head>
-    {% include "includes/site_layout_head.html" with page_title="Academor - Test" %}
+    {% trans "Academor - Test" as take_test_page_title %}
+    {% include "includes/site_layout_head.html" with page_title=take_test_page_title %}
 </head>
 <body>
     {% include "includes/site_spinner.html" %}
 
-    {% include "includes/site_navbar.html" with nav_active="tests" %}
+    {% include "includes/site_navbar.html" %}
 
     <div class="container-fluid bg-primary mb-5 page-header page-header-hero-band"{% include "includes/page_header_dynamic_bg.html" %}></div>
 
@@ -15,7 +16,7 @@
         <div class="container">
             {% if not result and test %}
             <div class="text-center wow fadeInUp mb-4" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-center text-primary px-3">Test</h6>
+                <h6 class="section-title bg-white text-center text-primary px-3">{% trans "Test" %}</h6>
                 <h1 class="mb-2">{{ test.title }}</h1>
                 {% if test.description %}
                 <p class="text-muted mx-auto mb-0" style="max-width: 640px;">{{ test.description }}</p>
@@ -35,36 +36,36 @@
             <div class="row justify-content-center wow fadeInUp" data-wow-delay="0.1s">
                 <div class="col-lg-8">
                     <div class="text-center mb-4">
-                        <h6 class="section-title bg-white text-center text-primary px-3 d-inline-block">Nəticə</h6>
+                        <h6 class="section-title bg-white text-center text-primary px-3 d-inline-block">{% trans "Result" %}</h6>
                     </div>
                     <div class="bg-light rounded shadow-sm p-4 p-md-5 text-center border-0">
                         <h3 class="mb-3">{{ result.first_name }} {{ result.last_name }}</h3>
-                        <p class="mb-1"><strong>Nömrə:</strong> {{ result.number }}</p>
-                        <p class="mb-4 text-muted"><strong>Tarix:</strong> {{ result.created_at|date:"d.m.Y H:i" }}</p>
+                        <p class="mb-1"><strong>{% trans "Number:" %}</strong> {{ result.number }}</p>
+                        <p class="mb-4 text-muted"><strong>{% trans "Date:" %}</strong> {{ result.created_at|date:"d.m.Y H:i" }}</p>
 
                         <div class="row g-3 mb-4">
                             <div class="col-md-4">
                                 <div class="border rounded p-3 bg-white h-100 shadow-sm">
-                                    <h6 class="text-muted mb-2">Düzgün cavab</h6>
+                                    <h6 class="text-muted mb-2">{% trans "Correct answers" %}</h6>
                                     <h2 class="text-primary mb-0">{{ result.score }}/{{ total_questions }}</h2>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="border rounded p-3 bg-white h-100 shadow-sm">
-                                    <h6 class="text-muted mb-2">Faiz</h6>
+                                    <h6 class="text-muted mb-2">{% trans "Percentage" %}</h6>
                                     <h2 class="text-primary mb-0">{{ percentage }}%</h2>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="border rounded p-3 bg-white h-100 shadow-sm">
-                                    <h6 class="text-muted mb-2">Səviyyə</h6>
+                                    <h6 class="text-muted mb-2">{% trans "Level" %}</h6>
                                     <h2 class="text-primary mb-0">{{ result.level }}</h2>
                                 </div>
                             </div>
                         </div>
 
-                        <a href="{% url 'projects:tests-page' %}" class="btn btn-primary px-4 py-2 me-2 rounded-pill">Digər testlər</a>
-                        <a href="{% url 'projects:test-take' test.id %}" class="btn btn-outline-primary px-4 py-2 rounded-pill">Bu testi yenidən</a>
+                        <a href="{% url 'projects:tests-page' %}" class="btn btn-primary px-4 py-2 me-2 rounded-pill">{% trans "Other tests" %}</a>
+                        <a href="{% url 'projects:test-take' test.id %}" class="btn btn-outline-primary px-4 py-2 rounded-pill">{% trans "Retake this test" %}</a>
                     </div>
                 </div>
             </div>
@@ -72,7 +73,7 @@
             <form method="post" class="bg-light p-4 p-md-5 rounded shadow-sm wow fadeInUp" data-wow-delay="0.1s">
                 {% csrf_token %}
                 {{ user_form.website }}{{ user_form.fax }}{{ user_form.company }}
-                <h4 class="mb-4 pb-2 border-bottom">Məlumatlarınız</h4>
+                <h4 class="mb-4 pb-2 border-bottom">{% trans "Your information" %}</h4>
                 <div class="row g-3 mb-4">
                     <div class="col-md-6">
                         <label class="form-label">{{ user_form.first_name.label }}</label>
@@ -90,7 +91,7 @@
                     </div>
                 </div>
 
-                <h4 class="mb-4 pb-2 border-bottom">Suallar</h4>
+                <h4 class="mb-4 pb-2 border-bottom">{% trans "Questions" %}</h4>
                 {% for q in test.questions %}
                 <div class="mb-4 p-4 border rounded bg-white shadow-sm">
                     <p class="fw-bold mb-3 text-primary">{{ forloop.counter }}. {{ q.text }}</p>
@@ -102,10 +103,10 @@
                     {% endfor %}
                 </div>
                 {% empty %}
-                <div class="alert alert-warning mb-0">Bu test üçün sual tapılmadı.</div>
+                <div class="alert alert-warning mb-0">{% trans "No questions were found for this test." %}</div>
                 {% endfor %}
 
-                <button type="submit" class="btn btn-primary px-5 py-2 mt-3 rounded-pill">Testi bitir</button>
+                <button type="submit" class="btn btn-primary px-5 py-2 mt-3 rounded-pill">{% trans "Finish test" %}</button>
             </form>
             {% endif %}
         </div>

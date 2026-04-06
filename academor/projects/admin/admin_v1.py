@@ -28,7 +28,6 @@ class MediaAdmin(admin.ModelAdmin):
         'is_project_page_background_image',
         'is_courses_page_background_image',
         'is_tests_page_background_image',
-        'is_vacany_page_background_image',
         'is_service_page_background_image',
         'created_at',
     )
@@ -46,7 +45,6 @@ class MediaAdmin(admin.ModelAdmin):
                 'is_project_page_background_image',
                 'is_courses_page_background_image',
                 'is_tests_page_background_image',
-                'is_vacany_page_background_image',
                 'is_service_page_background_image',
             ),
         }),
@@ -67,7 +65,6 @@ class MediaAdmin(admin.ModelAdmin):
             | Q(is_project_page_background_image=True)
             | Q(is_courses_page_background_image=True)
             | Q(is_tests_page_background_image=True)
-            | Q(is_vacany_page_background_image=True)
             | Q(is_service_page_background_image=True)
         )
 
@@ -103,8 +100,6 @@ class MediaAdmin(admin.ModelAdmin):
             flags.append("📚 Courses page")
         if obj.is_tests_page_background_image:
             flags.append("📝 Tests pages")
-        if obj.is_vacany_page_background_image:
-            flags.append("💼 Vacancies page")
         if obj.is_service_page_background_image:
             flags.append("🛠️ Services page")
         return " | ".join(flags) if flags else "-"
@@ -131,15 +126,6 @@ class MediaInlineBase(admin.TabularInline):
             )
         return "-"
     thumbnail_preview.short_description = "Preview"
-
-
-class MediaInlineProject(MediaInlineBase):
-    fk_name = 'project'
-    fields = ('image', 'thumbnail_preview', 'created_at')
-    
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        return qs.select_related('project')
 
 
 class MediaInlinePartner(MediaInlineBase):
@@ -197,50 +183,55 @@ class MediaInlineAbout(MediaInlineBase):
         return super().get_formset(request, obj, **kwargs)
 
 
-class MediaInlineVacancy(MediaInlineBase):
-    max_num = 1
-    fields = ('image', 'thumbnail_preview', 'created_at')
-
-
-class MediaInlineService(MediaInlineBase):
-    fk_name = 'service'
-    max_num = 1
-    fields = ('image', 'thumbnail_preview', 'created_at')
-    extra = 0
-
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        return qs.select_related('service')
-
-
 class MediaInlineCategory(MediaInlineBase):
     fk_name = 'category'
-    max_num = 1
+    max_num = 30
     fields = ('image', 'thumbnail_preview', 'created_at')
-    extra = 0
+    extra = 1
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         return qs.select_related('category')
 
 
+class ServiceCategoryAdminForm(forms.ModelForm):
+    class Meta:
+        model = ServiceCategory
+        fields = '__all__'
+        widgets = {
+            'description_az': CKEditorWidget(),
+            'description_en': CKEditorWidget(),
+            'description_ru': CKEditorWidget(),
+        }
+
+
 @admin.register(ServiceCategory)
 class ServiceCategoryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'category_thumb', 'name_link', 'name_en', 'name_ru', 'projects_count')
+    form = ServiceCategoryAdminForm
+    list_display = ('id', 'category_thumb', 'name_link', 'name_en', 'name_ru', 'is_active', 'created_at')
     list_display_links = ('id',)
-    search_fields = ('name_az', 'name_en', 'name_ru')
+    list_filter = ('is_active', 'created_at')
+    search_fields = (
+        'name_az', 'name_en', 'name_ru',
+        'description_az', 'description_en', 'description_ru',
+    )
     list_per_page = 25
+    exclude = ('slug',)
+    readonly_fields = ('created_at',)
     inlines = [MediaInlineCategory]
 
     fieldsets = (
         ('Azerbaijani', {
-            'fields': ('name_az',)
+            'fields': ('name_az', 'description_az')
         }),
         ('English', {
-            'fields': ('name_en',)
+            'fields': ('name_en', 'description_en')
         }),
         ('Русский', {
-            'fields': ('name_ru',)
+            'fields': ('name_ru', 'description_ru')
+        }),
+        ('Status', {
+            'fields': ('is_active', 'created_at')
         }),
     )
 
@@ -261,170 +252,54 @@ class ServiceCategoryAdmin(admin.ModelAdmin):
         return format_html('<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; font-size: 14px;">🔗 {}</a>', url, name)
     name_link.short_description = "Name (AZ)"
     name_link.admin_order_field = 'name_az'
-    
-    def projects_count(self, obj):
-        count = obj.services.count()
-        if count > 0:
-            url = reverse('admin:projects_service_changelist') + f'?category__id__exact={obj.id}'
-            return format_html('<a href="{}" style="color: #28a745; text-decoration: none;">📁 {} projects</a>', url, count)
-        return "0 projects"
-    projects_count.short_description = "Projects"
-
-# Project 
-class ServiceAdminForm(forms.ModelForm):
-    """Service (project) admin form."""
-
-    class Meta:
-        model = Service
-        fields = '__all__'
-
-    def clean(self):
-        cleaned_data = super().clean()
-
-        category = cleaned_data.get('category')
-        on_main_page = cleaned_data.get('on_main_page')
-        speacial_project = cleaned_data.get('speacial_project')
-
-        errors = {}
-
-        if speacial_project:
-            if not on_main_page:
-                errors['on_main_page'] = (
-                    '⚠️ When “Featured project” is enabled, “Show on home page” must also be checked. '
-                    'Featured projects are shown on the home page.'
-                )
-
-            qs = Service.objects.filter(speacial_project=True, on_main_page=True)
-            if self.instance and self.instance.pk:
-                qs = qs.exclude(pk=self.instance.pk)
-
-            if qs.count() >= 9:
-                errors['speacial_project'] = (
-                    '⚠️ At most 9 featured projects are allowed. '
-                    'Uncheck “Featured project” on an existing project before adding another.'
-                )
-
-        if on_main_page:
-            if category is None:
-                errors['category'] = 'Select a category to show this project on the home page.'
-            else:
-                qs = Service.objects.filter(on_main_page=True, category=category)
-                if self.instance and self.instance.pk:
-                    qs = qs.exclude(pk=self.instance.pk)
-
-                if qs.count() >= 9:
-                    errors['on_main_page'] = (
-                        f'⚠️ At most 9 home-page projects are allowed in category “{category}”. '
-                        'Uncheck “Show on home page” on an existing project in this category first.'
-                    )
-
-        if errors:
-            raise ValidationError(errors)
-
-        return cleaned_data
 
 
-@admin.register(Service)
-class ServiceAdmin(admin.ModelAdmin):
-    form = ServiceAdminForm
+@admin.register(ServiceHighlight)
+class ServiceHighlightAdmin(admin.ModelAdmin):
     list_display = (
         'id',
-        'name_link',
-        'category_display',
-        'status_badges',
-        'project_date',
+        'title_link',
+        'title_en',
+        'title_ru',
+        'order',
+        'is_active',
+        'created_at',
     )
     list_display_links = ('id',)
-    list_filter = (
-        'category',
-        'is_completed',
-        'is_active',
-        'on_main_page',
-        'speacial_project',
-        'project_date',
+    list_filter = ('is_active', 'created_at')
+    search_fields = (
+        'title_az', 'title_en', 'title_ru',
+        'description_az', 'description_en', 'description_ru',
     )
-    search_fields = ('name_az', 'name_en', 'name_ru', 'description_az', 'description_en', 'description_ru')
-    exclude = ('slug',)
-    inlines = [MediaInlineProject]
+    list_editable = ('order', 'is_active')
     readonly_fields = ('created_at',)
-    ordering = ('-project_date', '-created_at')
     list_per_page = 25
-    
+
     fieldsets = (
-        ('Main details', {
-            'fields': ('category', 'url')
-        }),
         ('Azerbaijani', {
-            'fields': ('name_az', 'description_az')
+            'fields': ('title_az', 'description_az')
         }),
         ('English', {
-            'fields': ('name_en', 'description_en')
+            'fields': ('title_en', 'description_en')
         }),
         ('Русский', {
-            'fields': ('name_ru', 'description_ru')
+            'fields': ('title_ru', 'description_ru')
         }),
         ('Status', {
-            'fields': ('is_completed', 'is_active', 'on_main_page', 'speacial_project')
-        }),
-        ('Date', {
-            'fields': ('project_date', 'created_at')
+            'fields': ('order', 'is_active', 'created_at')
         }),
     )
-    
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        return qs.select_related('category')
-    
-    def response_delete(self, request, obj_display, obj_id):
-        try:
-            return super().response_delete(request, obj_display, obj_id)
-        except Exception as e:
-            from django.contrib import messages
-            from django.http import HttpResponseRedirect
-            from django.urls import reverse
-            
-            try:
-                from projects.models import Media
-                Media.objects.filter(project_id=obj_id).delete()
-            except Exception:
-                pass
-            
-            messages.success(request, f'"{obj_display}" was deleted successfully.')
-            return HttpResponseRedirect(reverse('admin:projects_service_changelist'))
-    
-    def name_link(self, obj):
-        url = reverse('admin:projects_service_change', args=[obj.pk])
-        return format_html('<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; font-size: 14px;">🔗 {}</a>', url, obj.name_az)
-    name_link.short_description = "Project name"
-    name_link.admin_order_field = 'name_az'
-    
-    def category_display(self, obj):
-        if obj.category:
-            return obj.category.name_az or '-'
-        return '-'
-    category_display.short_description = "Category"
-    category_display.admin_order_field = 'category'
-    
-    def status_badges(self, obj):
-        badges = []
-        if obj.is_active:
-            badges.append('<span style="background: #28a745; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;">✓ Active</span>')
-        else:
-            badges.append('<span style="background: #dc3545; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;">✗ Inactive</span>')
-        
-        if obj.is_completed:
-            badges.append('<span style="background: #17a2b8; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;">✓ Completed</span>')
-        else:
-            badges.append('<span style="background: #ffc107; color: #333; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;">🔄 In progress</span>')
-        
-        if obj.on_main_page:
-            badges.append('<span style="background: #6f42c1; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;">🏠 On home page</span>')
-        
-        if obj.speacial_project:
-            badges.append('<span style="background: #e83e8c; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;">⭐ Featured</span>')
-        
-        return format_html(' '.join(badges))
-    status_badges.short_description = "Status"
+
+    def title_link(self, obj):
+        url = reverse('admin:projects_servicehighlight_change', args=[obj.pk])
+        name = obj.title_az or obj.title_en or obj.title_ru or 'Service highlight'
+        return format_html(
+            '<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; font-size: 14px;">🔗 {}</a>',
+            url,
+            name,
+        )
+    title_link.short_description = "Title (AZ)"
+    title_link.admin_order_field = 'title_az'
 
 @admin.register(Instructor)
 class InstructorAdmin(admin.ModelAdmin):
@@ -542,55 +417,6 @@ class AboutAdmin(admin.ModelAdmin):
             return obj.updated_at.strftime('%d.%m.%Y %H:%M') if obj.updated_at else "-"
         return "-"
     updated_info.short_description = "Last updated"
-
-
-@admin.register(Program)
-class ProgramAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title_link', 'media_count', 'active_status', 'created_at')
-    list_display_links = ('id',)
-    list_filter = ('is_active', 'created_at')
-    search_fields = ('title_az', 'title_en', 'title_ru', 'description_az', 'description_en', 'description_ru')
-    inlines = [MediaInlineService]
-    list_per_page = 25
-
-    fieldsets = (
-        ('Azerbaijani', {
-            'fields': ('title_az', 'description_az')
-        }),
-        ('English', {
-            'fields': ('title_en', 'description_en')
-        }),
-        ('Русский', {
-            'fields': ('title_ru', 'description_ru')
-        }),
-        ('Link', {
-            'fields': ('url',),
-            'description': 'The “Learn more” button links to this URL. Leave blank to hide the button.'
-        }),
-        ('Status', {
-            'fields': ('is_active',)
-        }),
-    )
-
-    def title_link(self, obj):
-        url = reverse('admin:projects_program_change', args=[obj.pk])
-        title = obj.title_az or 'Service'
-        return format_html('<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; font-size: 14px;">🔗 {}</a>', url, title)
-    title_link.short_description = "Name (AZ)"
-    title_link.admin_order_field = 'title_az'
-
-    def media_count(self, obj):
-        count = obj.medias.count()
-        if count > 0:
-            return format_html('<span style="background: #007bff; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px;">📷 {} images</span>', count)
-        return "📷 0 images"
-    media_count.short_description = "Media"
-
-    def active_status(self, obj):
-        if obj.is_active:
-            return format_html('<span style="background: #28a745; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">✓ Active</span>')
-        return format_html('<span style="background: #dc3545; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">✗ Inactive</span>')
-    active_status.short_description = "Status"
 
 
 # Contact 
@@ -784,71 +610,6 @@ class UserResultAdmin(admin.ModelAdmin):
     ordering = ('-created_at',)
     list_per_page = 25
 
-@admin.register(CareerOpening)
-class CareerOpeningAdmin(admin.ModelAdmin):
-    inlines = [MediaInlineVacancy]
-    list_display = (
-        'id',
-        'title_link',
-        'vacancy_status',
-        'appeals_count',
-        'created_at',
-    )
-    list_display_links = ('id',)
-    list_filter = ('is_active', 'created_at')
-    search_fields = ('title_az', 'title_en', 'title_ru', 'description_az', 'description_en', 'description_ru')
-    exclude = ('slug',)
-    readonly_fields = ('created_at',)
-    ordering = ('-created_at',)
-    list_per_page = 25
-    
-    fieldsets = (
-        ('Azerbaijani', {
-            'fields': ('title_az', 'description_az')
-        }),
-        ('English', {
-            'fields': ('title_en', 'description_en')
-        }),
-        ('Русский', {
-            'fields': ('title_ru', 'description_ru')
-        }),
-        ('Status', {
-            'fields': ('is_active',)
-        }),
-        ('Date', {
-            'fields': ('created_at',)
-        }),
-    )
-    
-    def title_link(self, obj):
-        url = reverse('admin:projects_careeropening_change', args=[obj.pk])
-        return format_html('<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; font-size: 14px;">🔗 {}</a>', url, obj.title_az)
-    title_link.short_description = "Vacancy title"
-    title_link.admin_order_field = 'title_az'
-    
-    def vacancy_status(self, obj):
-        if obj.is_active:
-            return format_html('<span style="background: #28a745; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">✓ Active</span>')
-        return format_html('<span style="background: #dc3545; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">✗ Inactive</span>')
-    vacancy_status.short_description = "Status"
-    
-    def appeals_count(self, obj):
-        count = obj.appeal_set.count()
-        read_count = obj.appeal_set.filter(is_read=True).count()
-        unread_count = count - read_count
-        
-        if count > 0:
-            url = reverse('admin:projects_jobapplication_changelist') + f'?vacancy__id__exact={obj.id}'
-            badge_html = f'<a href="{url}" style="text-decoration: none;">'
-            if unread_count > 0:
-                badge_html += f'<span style="background: #dc3545; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">📄 {count} CV ({unread_count} unread)</span>'
-            else:
-                badge_html += f'<span style="background: #28a745; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">📄 {count} CV (all read)</span>'
-            badge_html += '</a>'
-            return format_html(badge_html)
-        return format_html('<span style="color: #6c757d;">📄 0 CV</span>')
-    appeals_count.short_description = "Applications"
-
 @admin.register(Tagline)
 class TaglineAdmin(admin.ModelAdmin):
     list_display = (
@@ -907,219 +668,6 @@ class TaglineAdmin(admin.ModelAdmin):
         if Tagline.objects.exists():
             return False
         return super().has_add_permission(request)
-
-@admin.register(JobApplication)
-class JobApplicationAdmin(admin.ModelAdmin):
-    list_display = (
-        'candidate_info',
-        'vacancy_info',
-        'contact_info',
-        'cv_download',
-        'is_read',
-        'read_status_badge',
-        'created_at_formatted',
-    )
-
-    list_display_links = None
-    list_editable = ('is_read',)
-    list_filter = ('is_read', 'created_at', 'vacancy')
-    readonly_fields = ('created_at', 'cv_preview')
-    search_fields = (
-        'full_name',
-        'email',
-        'phone_number',
-        'vacancy__title_az',
-        'vacancy__title_en',
-        'vacancy__title_ru',
-    )
-    ordering = ('-created_at',)
-    list_per_page = 25
-    date_hierarchy = 'created_at'
-
-    fieldsets = (
-        ('Vacancy', {
-            'fields': ('vacancy',)
-        }),
-        ('Candidate', {
-            'fields': ('full_name', 'email', 'phone_number', 'info')
-        }),
-        ('CV file', {
-            'fields': ('cv', 'cv_preview')
-        }),
-        ('Status', {
-            'fields': ('is_read',)
-        }),
-        ('Date', {
-            'fields': ('created_at',)
-        }),
-    )
-
-    def candidate_info(self, obj):
-        detail_url = reverse('admin:projects_jobapplication_change', args=[obj.pk])
-        name = obj.full_name or "No name"
-        
-        return format_html(
-            '<div style="padding: 8px 0;">'
-            '<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; '
-            'font-size: 15px; display: block; line-height: 1.4;">'
-            '👤 {}</a>'
-            '</div>',
-            detail_url,
-            name
-        )
-    candidate_info.short_description = "Candidate"
-    candidate_info.admin_order_field = 'full_name'
-
-    def vacancy_info(self, obj):
-        if obj.vacancy:
-            vacancy_url = reverse('admin:projects_careeropening_change', args=[obj.vacancy.pk])
-            detail_url = reverse('admin:projects_jobapplication_change', args=[obj.pk])
-            
-            return format_html(
-                '<div style="padding: 8px 0;">'
-                '<a href="{}" style="color: #417690; text-decoration: none; font-weight: 500; '
-                'font-size: 14px; display: block; margin-bottom: 4px; line-height: 1.4;">'
-                '💼 {}</a>'
-                '<a href="{}" style="color: #6c757d; text-decoration: none; font-size: 11px; '
-                'opacity: 0.8;">→ View vacancy</a>'
-                '</div>',
-                detail_url,
-                obj.vacancy.title_az[:50] + ('...' if len(obj.vacancy.title_az) > 50 else ''),
-                vacancy_url
-            )
-        return format_html('<span style="color: #999; font-size: 13px;">No vacancy</span>')
-    vacancy_info.short_description = "Vacancy"
-    vacancy_info.admin_order_field = 'vacancy__title_az'
-
-    def contact_info(self, obj):
-        contact_items = []
-        
-        if obj.email:
-            contact_items.append(
-                format_html(
-                    '<div style="margin-bottom: 4px;">'
-                    '<span style="color: #666; font-size: 12px;">✉️</span> '
-                    '<a href="mailto:{}" style="color: #417690; text-decoration: none; '
-                    'font-size: 13px;">{}</a>'
-                    '</div>',
-                    obj.email,
-                    obj.email[:30] + ('...' if len(obj.email) > 30 else '')
-                )
-            )
-        
-        if obj.phone_number:
-            contact_items.append(
-                format_html(
-                    '<div>'
-                    '<span style="color: #666; font-size: 12px;">📞</span> '
-                    '<span style="color: #333; font-size: 13px;">{}</span>'
-                    '</div>',
-                    obj.phone_number
-                )
-            )
-        
-        if not contact_items:
-            return format_html('<span style="color: #999; font-size: 12px;">No contact info</span>')
-        
-        return format_html(
-            '<div style="padding: 8px 0; line-height: 1.6;">{}</div>',
-            format_html(''.join(contact_items))
-        )
-    contact_info.short_description = "Contact"
-
-    def cv_download(self, obj):
-        detail_url = reverse('admin:projects_jobapplication_change', args=[obj.pk])
-        
-        if obj.cv:
-            file_name = obj.cv.name.split('/')[-1]
-            file_size = obj.cv.size if hasattr(obj.cv, 'size') else None
-            size_text = f"{round(file_size / 1024, 1)} KB" if isinstance(file_size, (int, float)) else "N/A"
-            
-            return format_html(
-                '<div style="padding: 8px 0;">'
-                '<a href="{}" target="_blank" '
-                'style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); '
-                'color: white; padding: 8px 14px; border-radius: 6px; text-decoration: none; '
-                'font-size: 12px; font-weight: 600; display: inline-block; margin-bottom: 4px; '
-                'box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: all 0.2s;">'
-                '📎 Download CV</a>'
-                '<div style="color: #666; font-size: 11px; margin-top: 4px;">'
-                '📄 {} <span style="opacity: 0.7;">({})</span>'
-                '</div>'
-                '</div>',
-                obj.cv.url,
-                file_name[:25] + ('...' if len(file_name) > 25 else ''),
-                size_text
-            )
-        
-        return format_html(
-            '<div style="padding: 8px 0;">'
-            '<a href="{}" style="color: #999; text-decoration: none; font-size: 12px;">'
-            'No CV file</a>'
-            '</div>',
-            detail_url
-        )
-    cv_download.short_description = "CV"
-
-    def read_status_badge(self, obj):
-        if obj.is_read:
-            return format_html(
-                '<div style="padding: 8px 0;">'
-                '<span style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); '
-                'color: white; padding: 6px 12px; border-radius: 8px; font-size: 11px; '
-                'font-weight: 600; display: inline-block; box-shadow: 0 2px 4px rgba(40,167,69,0.3);">'
-                '✓ Read</span>'
-                '</div>'
-            )
-        return format_html(
-            '<div style="padding: 8px 0;">'
-            '<span style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); '
-            'color: white; padding: 6px 12px; border-radius: 8px; font-size: 11px; '
-            'font-weight: 600; display: inline-block; box-shadow: 0 2px 4px rgba(220,53,69,0.3);">'
-            '🔴 Unread</span>'
-            '</div>'
-        )
-    read_status_badge.short_description = "Status"
-    read_status_badge.admin_order_field = 'is_read'
-
-    def created_at_formatted(self, obj):
-        if obj.created_at:
-            date_str = obj.created_at.strftime('%d.%m.%Y')
-            time_str = obj.created_at.strftime('%H:%M')
-            return format_html(
-                '<div style="padding: 8px 0;">'
-                '<div style="color: #333; font-size: 13px; font-weight: 500; margin-bottom: 2px;">{}</div>'
-                '<div style="color: #999; font-size: 11px;">{}</div>'
-                '</div>',
-                date_str,
-                time_str
-            )
-        return "-"
-    created_at_formatted.short_description = "Date"
-    created_at_formatted.admin_order_field = 'created_at'
-
-    def cv_preview(self, obj):
-        if obj.cv:
-            file_name = obj.cv.name.split('/')[-1]
-            file_size = obj.cv.size if hasattr(obj.cv, 'size') else None
-
-            return format_html(
-                '<div style="padding:12px;background:#e3f2fd;border-radius:4px;'
-                'border-left:3px solid #2196f3;">'
-                '<span style="color:#1976d2;font-weight:500;">📄 {}</span> '
-                '<span style="color:#666;font-size:12px;">({} KB)</span>'
-                '<a href="{}" target="_blank" '
-                'style="color:#2196f3;text-decoration:none;margin-left:8px;font-weight:500;">'
-                '📥 Download</a>'
-                '</div>',
-                file_name,
-                round(file_size / 1024, 2) if isinstance(file_size, (int, float)) else 'N/A',
-                obj.cv.url
-            )
-        return "-"
-
-    cv_preview.short_description = "CV preview"
-
 
 @admin.register(ContactInquiry)
 class ContactInquiryAdmin(admin.ModelAdmin):
@@ -1222,26 +770,6 @@ class ContactInquiryAdmin(admin.ModelAdmin):
     created_at_formatted.short_description = "Date"
     created_at_formatted.admin_order_field = 'created_at'
 
-@admin.register(AcademyStatistic)
-class AcademyStatisticAdmin(admin.ModelAdmin):
-    list_display = (
-        'id',
-        'value_one',
-        'value_two',
-        'value_three',
-    )
-    list_display_links = ('id',)
-    fieldsets = (
-        ('Statistics', {
-            'fields': (
-                'value_one',
-                'value_two',
-                'value_three',
-            ),
-        }),
-    )
-
-
 # Admin Site Customization
 admin.site.site_header = "Academor Admin Panel"
 admin.site.site_title = "Academor Admin"
@@ -1259,22 +787,18 @@ def _sorted_get_app_list(request, app_label=None):
         "Media": 10,
         "About": 20,
         "Contact": 30,
-        "AcademyStatistic": 40,
         "Tagline": 50,
 
         # Team / reviews
         "Team": 100,
         "Review": 110,
 
-        # Services / programs
+        # Service categories
         "ServiceCategory": 200,
-        "Service": 210,
-        "Program": 220,
+        "ServiceHighlight": 210,
         "Instructor": 230,
 
-        # Careers / inbound
-        "CareerOpening": 300,
-        "JobApplication": 310,
+        # Inbound
         "ContactInquiry": 320,
 
         # Tests

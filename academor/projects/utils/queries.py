@@ -57,50 +57,44 @@ def get_localized_field_name(field_base, lang):
         return f'{field_base}_az'
 
 
+def _localized_value(obj, base_field, lang, default_lang='az'):
+    order = {
+        'az': ('az', 'en', 'ru'),
+        'en': ('en', 'az', 'ru'),
+        'ru': ('ru', 'az', 'en'),
+    }.get((lang or '').lower(), ('az', 'en', 'ru'))
+    for code in order:
+        val = getattr(obj, f'{base_field}_{code}', None)
+        if val is not None and str(val).strip():
+            return str(val).strip()
+    fallback = getattr(obj, f'{base_field}_{default_lang}', None)
+    return str(fallback).strip() if fallback else ''
+
+
+_category_media_prefetch = Prefetch(
+    'medias',
+    queryset=Media.objects.filter(image__isnull=False).exclude(image='').order_by('id'),
+)
+
+
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
 def get_project_categories(lang='az'):
-    """Layihə kateqoriyalarını qaytarır"""
-    name_field = get_localized_field_name('name', lang)
-    return ServiceCategory.objects.all().order_by('id').prefetch_related(
-        Prefetch(
-            'medias',
-            queryset=Media.objects.filter(image__isnull=False).exclude(image=''),
-        )
+    """Aktiv service kateqoriyaları (courses)."""
+    return ServiceCategory.objects.filter(is_active=True).order_by('id').prefetch_related(
+        _category_media_prefetch,
     )
 
 
-def get_projects(lang='az', category_slug=None, is_active=True, is_completed=None, on_main_page=None, speacial_project=None):
-    queryset = Service.objects.select_related('category').prefetch_related(
-        Prefetch('medias', queryset=Media.objects.filter(image__isnull=False))
-    )
-    
-    if is_active is not None:
-        queryset = queryset.filter(is_active=is_active)
-    
-    if is_completed is not None:
-        queryset = queryset.filter(is_completed=is_completed)
-    
-    if category_slug:
-        queryset = queryset.filter(category__slug=category_slug)
-    
-    if on_main_page is not None:
-        queryset = queryset.filter(on_main_page=on_main_page)
-    
-    if speacial_project is not None:
-        queryset = queryset.filter(speacial_project=speacial_project)
-    
-    return queryset.order_by('-created_at')
-
-
-@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
-def get_project_by_slug(slug, lang='az'):
-    try:
-        project = Service.objects.select_related('category').prefetch_related(
-            Prefetch('medias', queryset=Media.objects.filter(image__isnull=False))
-        ).get(slug=slug, is_active=True)
-        return project
-    except Service.DoesNotExist:
+@cached_query(timeout='CACHE_TIMEOUT_LONG')
+def get_active_project_category_by_slug(slug):
+    """Tək aktiv kateqoriya (detal səhifə) — şəkillər id sırası ilə."""
+    if not slug:
         return None
+    return (
+        ServiceCategory.objects.filter(slug=slug, is_active=True)
+        .prefetch_related(_category_media_prefetch)
+        .first()
+    )
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
@@ -269,38 +263,6 @@ def get_contact(lang='az'):
     return Contact.objects.first()
 
 
-@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
-def get_services(lang='az', is_active=True):
-    queryset = Program.objects.prefetch_related(
-        Prefetch('medias', queryset=Media.objects.filter(image__isnull=False))
-    )
-    if is_active is not None:
-        queryset = queryset.filter(is_active=is_active)
-    return list(queryset.order_by('-created_at'))
-
-
-def get_vacancies(lang='az', is_active=True):
-    queryset = CareerOpening.objects.prefetch_related(
-        Prefetch('medias', queryset=Media.objects.filter(image__isnull=False))
-    )
-    
-    if is_active is not None:
-        queryset = queryset.filter(is_active=is_active)
-    
-    return queryset.order_by('-created_at')
-
-
-@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
-def get_vacancy_by_slug(slug, lang='az'):
-    try:
-        vacancy = CareerOpening.objects.prefetch_related(
-            Prefetch('medias', queryset=Media.objects.filter(image__isnull=False))
-        ).get(slug=slug, is_active=True)
-        return vacancy
-    except CareerOpening.DoesNotExist:
-        return None
-
-
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
 def get_background_image(page_type):
     image_map = {
@@ -311,7 +273,6 @@ def get_background_image(page_type):
         'project': 'is_project_page_background_image',
         'courses': 'is_courses_page_background_image',
         'tests': 'is_tests_page_background_image',
-        'vacancy': 'is_vacany_page_background_image',
         'service': 'is_service_page_background_image',
     }
     
@@ -353,81 +314,57 @@ def get_motto(lang='az'):
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
-@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
-def get_statistics():
-
-    statistic = AcademyStatistic.objects.first()
-    
-    if statistic:
-        return {
-            'client_count': statistic.value_one,
-            'project_count': statistic.value_two,
-            'partner_count': statistic.value_three,
-        }
-    
-    from projects.models import JobApplication
-    
-    client_count = JobApplication.objects.values('email', 'phone_number').distinct().count()
-    project_count = Service.objects.filter(is_active=True).count()
-    partner_count = Instructor.objects.filter(is_active=True).count()
-    
-    return {
-        # 'client_count': client_count,
-        'project_count': project_count,
-        'partner_count': partner_count,
-    }
+def get_service_highlights(is_active=True):
+    qs = ServiceHighlight.objects.all()
+    if is_active is not None:
+        qs = qs.filter(is_active=is_active)
+    return list(qs.order_by('order', 'id'))
 
 
-def serialize_project(project, lang='az'):
-    if project is None:
+def serialize_service_highlight(item, lang='az'):
+    if item is None:
         return None
-    
-    name_field = get_localized_field_name('name', lang)
-    desc_field = get_localized_field_name('description', lang)
-    cat_name_field = get_localized_field_name('name', lang)
-    
     return {
-        'id': project.id,
-        'slug': project.slug,
-        'name': getattr(project, name_field, project.name_az),
-        'description': getattr(project, desc_field, project.description_az),
-        'url': project.url,
-        'is_completed': project.is_completed,
-        'is_active': project.is_active,
-        'speacial_project': project.speacial_project,
-        'on_main_page': project.on_main_page,
-        'project_date': project.project_date,
-        'created_at': project.created_at,
-        'category': {
-            'id': project.category.id,
-            'slug': project.category.slug,
-            'name': getattr(project.category, cat_name_field, project.category.name_az),
-        },
-        'medias': [
-            {
-                'id': media.id,
-                'image': media.image.url if media.image else None,
-                'video': media.video.url if media.video else None,
-            }
-            for media in project.medias.all()
-        ]
+        'id': item.id,
+        'title': _localized_value(item, 'title', lang),
+        'description': _localized_value(item, 'description', lang),
+        'order': item.order,
     }
 
 
 def serialize_project_category(category, lang='az'):
     name_field = get_localized_field_name('name', lang)
+    desc_field = get_localized_field_name('description', lang)
     first_image = None
     for media in category.medias.all():
         if media.image:
             first_image = media.image.url
             break
 
+    raw_desc = getattr(category, desc_field, None)
+    if raw_desc is None:
+        raw_desc = category.description_az or ''
+
     return {
         'id': category.id,
         'slug': category.slug,
         'name': getattr(category, name_field, category.name_az),
         'image': first_image,
+        'description_html': raw_desc or '',
     }
+
+
+def serialize_project_category_detail(category, lang='az'):
+    """Kurs detalı: bütün şəkil URL-ləri (siyahı səhifələrdə yalnız `image` istifadə olunur)."""
+    if category is None:
+        return None
+    data = serialize_project_category(category, lang)
+    data['images'] = [
+        media.image.url
+        for media in category.medias.all()
+        if media.image
+    ]
+    return data
 
 
 def _about_plain_excerpt(html, max_chars=300):
@@ -464,21 +401,6 @@ def serialize_about(about, lang='az'):
         'description_excerpt': _about_plain_excerpt(raw_desc),
         'first_image': first_image,
         'medias': medias,
-    }
-
-
-def serialize_service(service, lang='az'):
-    if service is None:
-        return None
-    title_field = get_localized_field_name('title', lang)
-    desc_field = get_localized_field_name('description', lang)
-    first_media = service.medias.filter(image__isnull=False).first()
-    return {
-        'id': service.id,
-        'title': getattr(service, title_field, service.title_az),
-        'description': getattr(service, desc_field, service.description_az),
-        'image': first_media.image.url if first_media and first_media.image else None,
-        'url': service.url if getattr(service, 'url', None) else None,
     }
 
 
@@ -543,26 +465,6 @@ def serialize_contact(contact, lang='az'):
     }
 
 
-def serialize_vacancy(vacancy, lang='az'):
-    if vacancy is None:
-        return None
-    
-    title_field = get_localized_field_name('title', lang)
-    desc_field = get_localized_field_name('description', lang)
-    
-    media = vacancy.medias.first()
-    
-    return {
-        'id': vacancy.id,
-        'slug': vacancy.slug,
-        'title': getattr(vacancy, title_field, vacancy.title_az),
-        'description': getattr(vacancy, desc_field, vacancy.description_az),
-        'is_active': vacancy.is_active,
-        'created_at': vacancy.created_at,
-        'image': media.image.url if media and media.image else None,
-    }
-
-
 def paginate_queryset(queryset, page, per_page):
     paginator = Paginator(queryset, per_page)
     try:
@@ -588,55 +490,9 @@ def get_pagination_data(page_obj, paginator):
 
 @cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_home_page_data(request, lang):
-    category_slug = request.GET.get('slug')  # category_slug -> slug
-    is_completed = request.GET.get('is_completed')
+    category_slug = request.GET.get('slug')
     is_active = request.GET.get('is_active', 'true').lower() == 'true'
-    special_filter = request.GET.get('special')  # "Seçilmiş" filteri üçün
-    
-    if is_completed is not None:
-        is_completed = is_completed.lower() == 'true'
-    else:
-        is_completed = None
-    
-    projects_page = request.GET.get('page', 1)
-    projects_per_page = int(request.GET.get('per_page', 9))
-    
-    if special_filter == 'true':
-        # "Seçilmiş" filterində: həm speacial_project=True, həm də on_main_page=True olanlar
-        projects = get_projects(
-            lang=lang,
-            category_slug=None,
-            is_active=is_active,
-            is_completed=is_completed,
-            on_main_page=True,         # on_main_page=True olmalıdır
-            speacial_project=True
-        )[:9]  # Ümumi maksimum 9 layihə
-    else:
-        all_main_page_projects = get_projects(
-            lang=lang,
-            category_slug=None,         # bütün kateqoriyalar
-            is_active=is_active,
-            is_completed=is_completed,
-            on_main_page=True,
-            speacial_project=None
-        )
 
-        from collections import defaultdict
-
-        projects_by_category = defaultdict(list)
-        for project in all_main_page_projects:
-            cat_id = project.category_id
-            if len(projects_by_category[cat_id]) < 9:
-                projects_by_category[cat_id].append(project)
-
-        projects = []
-        for cat_id in sorted(projects_by_category.keys()):
-            projects.extend(projects_by_category[cat_id])
-
-    serialized_projects = [serialize_project(project, lang) for project in projects]
-    projects_paginator = None
-    projects_page_obj = None
-    
     categories = get_project_categories(lang)
     serialized_categories = [
         serialize_project_category(category, lang)
@@ -653,16 +509,6 @@ def get_home_page_data(request, lang):
         for partner in partners_page_obj
     ]
     
-    vacancies_page = request.GET.get('vacancies_page', 1)
-    vacancies_per_page = int(request.GET.get('vacancies_per_page', 9))
-    
-    all_vacancies = get_vacancies(lang=lang, is_active=True)
-    vacancies_page_obj, vacancies_paginator = paginate_queryset(all_vacancies, vacancies_page, vacancies_per_page)
-    serialized_vacancies = [
-        serialize_vacancy(vacancy, lang)
-        for vacancy in vacancies_page_obj
-    ]
-    
     about = get_about(lang)
     serialized_about = serialize_about(about, lang) if about else None
     
@@ -674,63 +520,40 @@ def get_home_page_data(request, lang):
     
     # Motto modelindən deviz
     motto = get_motto(lang)
+    service_highlights = get_service_highlights(is_active=True)
     
     return {
-        'projects': serialized_projects,
+        'projects': [],
         'categories': serialized_categories,
         'partners': serialized_partners,
-        'vacancies': serialized_vacancies,
         'about': serialized_about,
         'contact': serialized_contact,
-        'projects_pagination': get_pagination_data(projects_page_obj, projects_paginator) if projects_paginator else None,
+        'projects_pagination': None,
         'partners_pagination': get_pagination_data(partners_page_obj, partners_paginator),
-        'vacancies_pagination': get_pagination_data(vacancies_page_obj, vacancies_paginator),
         'filters': {
-            'slug': category_slug,  # category_slug -> slug
-            'is_completed': is_completed,
+            'slug': category_slug,
+            'is_completed': None,
             'is_active': is_active,
         },
         'background_image': get_background_image('home'),
         'hero_background_images': hero_background_images,
         'motto': motto,
-        'statistics': get_statistics(),
+        'service_highlights': [serialize_service_highlight(s, lang) for s in service_highlights],
         'team': [serialize_team_member(m) for m in get_team_members()],
         'reviews': [serialize_review(r) for r in get_reviews()],
     }
 
 
 def _get_project_list_data_impl(request, lang):
-    category_slug = request.GET.get('slug')  # category_slug -> slug
-    is_completed = request.GET.get('is_completed')
+    category_slug = request.GET.get('slug')
     is_active = request.GET.get('is_active', 'true').lower() == 'true'
-    
-    if is_completed is not None:
-        is_completed = is_completed.lower() == 'true'
-    else:
-        is_completed = None
-    
-    page = request.GET.get('page', 1)
-    per_page = int(request.GET.get('per_page', 10))
-    
-    projects = get_projects(
-        lang=lang,
-        category_slug=category_slug,
-        is_active=is_active,
-        is_completed=is_completed
-    )
-    
-    projects_page_obj, projects_paginator = paginate_queryset(projects, page, per_page)
-    serialized_projects = [
-        serialize_project(project, lang)
-        for project in projects_page_obj
-    ]
-    
+
     categories = get_project_categories(lang)
     serialized_categories = [
         serialize_project_category(category, lang)
         for category in categories
     ]
-    
+
     selected_category = None
     if category_slug:
         try:
@@ -739,19 +562,28 @@ def _get_project_list_data_impl(request, lang):
                 selected_category = serialize_project_category(category_obj, lang)
         except (ValueError, TypeError):
             pass
-    
+
     contact = get_contact(lang)
     serialized_contact = serialize_contact(contact, lang) if contact else None
-    
+
+    empty_pagination = {
+        'current_page': 1,
+        'total_pages': 1,
+        'total_count': 0,
+        'per_page': 10,
+        'has_next': False,
+        'has_previous': False,
+    }
+
     return {
-        'projects': serialized_projects,
+        'projects': [],
         'categories': serialized_categories,
         'selected_category': selected_category,
         'contact': serialized_contact,
-        'pagination': get_pagination_data(projects_page_obj, projects_paginator),
+        'pagination': empty_pagination,
         'filters': {
-            'slug': category_slug,  # category_slug -> slug
-            'is_completed': is_completed,
+            'slug': category_slug,
+            'is_completed': None,
             'is_active': is_active,
         },
         'background_image': get_background_image('courses'),
@@ -770,26 +602,9 @@ def get_courses_list_data(request, lang):
     return _get_project_list_data_impl(request, lang)
 
 
-@cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')
-def get_vacancy_list_data(request, lang):
-    is_active = request.GET.get('is_active', 'true').lower() == 'true'
-    page = request.GET.get('page', 1)
-    per_page = int(request.GET.get('per_page', 10))
-    
-    vacancies = get_vacancies(lang=lang, is_active=is_active)
-    vacancies_page_obj, vacancies_paginator = paginate_queryset(vacancies, page, per_page)
-    
-    serialized_vacancies = [
-        serialize_vacancy(vacancy, lang)
-        for vacancy in vacancies_page_obj
-    ]
-    
-    contact = get_contact(lang)
-    serialized_contact = serialize_contact(contact, lang) if contact else None
-    
-    return {
-        'vacancies': serialized_vacancies,
-        'contact': serialized_contact,
-        'pagination': get_pagination_data(vacancies_page_obj, vacancies_paginator),
-        'background_image': get_background_image('vacancy'),
-    }
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_nav_courses(lang='az'):
+    """Aktiv kateqoriyalar — header Courses dropdown (slug + ad)."""
+    cats = get_project_categories(lang)
+    return [serialize_project_category(c, lang) for c in cats]
+

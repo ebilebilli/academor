@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+{% load i18n %}
+<html lang="en">
+<head>
+    {% include "includes/site_layout_head.html" with page_title=page_title %}
+</head>
+<body>
+    {% include "includes/site_spinner.html" %}
+
+    {% include "includes/site_navbar.html" %}
+
+    <!-- Header Start -->
+    <div class="container-fluid bg-primary mb-5 page-header page-header-hero-band"{% include "includes/page_header_dynamic_bg.html" %}></div>
+    <!-- Header End -->
+
+    <div class="container-xxl py-5 course-detail-page">
+        <div class="container">
+            <nav aria-label="{% trans 'breadcrumb' %}" class="course-detail-breadcrumb mb-4 wow fadeInUp" data-wow-delay="0.05s">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="{% url 'projects:home-page' %}">{% trans "Home" %}</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'projects:courses-page' %}">{% trans "Courses" %}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ course.name }}</li>
+                </ol>
+            </nav>
+
+            <div class="text-center text-md-start wow fadeInUp mb-4 pb-2" data-wow-delay="0.1s">
+                <h6 class="section-title bg-white text-primary px-3 text-start d-inline-block">{% trans "Courses" %}</h6>
+                <h1 class="display-6 mb-0">{{ course.name }}</h1>
+            </div>
+
+            <div class="row g-4 g-lg-5 align-items-start">
+                <div class="col-lg-5">
+                    <div class="course-detail-visual wow fadeInUp" data-wow-delay="0.1s">
+                        <div
+                            class="course-detail-gallery bg-light shadow-sm rounded-3 border border-light overflow-hidden"
+                            id="course-detail-gallery"
+                            role="region"
+                            aria-label="{% trans 'Course images' %}"
+                            tabindex="0"
+                        >
+                            {{ course.images|json_script:"course-detail-gallery-data" }}
+                            <div class="course-detail-gallery__viewport position-relative">
+                                <div class="ratio ratio-4x3 bg-white course-detail-gallery__frame">
+                                    {% if course.images %}
+                                    <img
+                                        src="{{ course.images.0 }}"
+                                        alt="{{ course.name }}"
+                                        class="course-detail-gallery__img w-100 h-100"
+                                        width="800"
+                                        height="600"
+                                        decoding="async"
+                                    >
+                                    {% else %}
+                                    <img
+                                        src=""
+                                        alt=""
+                                        class="course-detail-gallery__img w-100 h-100 d-none"
+                                        width="800"
+                                        height="600"
+                                        decoding="async"
+                                    >
+                                    {% endif %}
+                                    <div class="course-detail-gallery__empty {% if course.images %}d-none{% else %}d-flex{% endif %} align-items-center justify-content-center flex-column text-muted p-4 w-100 h-100 position-absolute top-0 start-0 bg-light">
+                                        <i class="fa fa-th-large fa-3x opacity-25 mb-3"></i>
+                                        <span class="small">{% trans "No images for this category yet." %}</span>
+                                    </div>
+                                </div>
+                                {% if course.images|length > 1 %}
+                                <button type="button" class="course-detail-gallery__arrow course-detail-gallery__arrow--prev" data-gallery-prev aria-label="{% trans 'Previous image' %}">
+                                    <i class="fa fa-chevron-left"></i>
+                                </button>
+                                <button type="button" class="course-detail-gallery__arrow course-detail-gallery__arrow--next" data-gallery-next aria-label="{% trans 'Next image' %}">
+                                    <i class="fa fa-chevron-right"></i>
+                                </button>
+                                {% endif %}
+                            </div>
+
+                            {% if course.images|length > 1 %}
+                            <div class="course-detail-gallery__meta d-flex align-items-center justify-content-center gap-3 py-3 px-3 border-top bg-white">
+                                <span class="small text-muted fw-semibold tabular-nums" data-gallery-counter aria-live="polite"></span>
+                            </div>
+                            {% if course.images|length <= 14 %}
+                            <div class="course-detail-gallery__dots pb-3 px-3" role="tablist" aria-label="{% trans 'Image slides' %}">
+                                {% for url in course.images %}
+                                <button type="button" class="course-detail-gallery__dot{% if forloop.first %} is-active{% endif %}" data-dot-idx="{{ forloop.counter0 }}" aria-label="{% blocktrans %}Image {{ forloop.counter }}{% endblocktrans %}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"></button>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="bg-light shadow-sm rounded-3 p-4 p-md-5 border border-light wow fadeInUp" data-wow-delay="0.15s">
+                        {% if course.description_html %}
+                        <h4 class="mb-4 pb-3 border-bottom text-dark">{% trans "About this course" %}</h4>
+                        <div class="course-detail-description-scroll" tabindex="0" role="region" aria-label="{% trans 'Course description' %}">
+                            <div class="course-detail-description text-secondary mb-0">{{ course.description_html|safe }}</div>
+                        </div>
+                        {% else %}
+                        <p class="text-muted mb-0 fst-italic">{% trans "No description has been added for this category yet." %}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-flex flex-column flex-sm-row flex-wrap gap-3 mt-4 pt-2">
+                        <a href="{% url 'projects:courses-page' %}" class="btn btn-outline-primary px-4 py-2 rounded-pill">
+                            <i class="fa fa-arrow-left me-2"></i>{% trans "All courses" %}
+                        </a>
+                        <a href="{% url 'projects:contact-page' %}" class="btn btn-primary px-4 py-2 rounded-pill">
+                            <i class="fa fa-envelope me-2"></i>{% trans "Contact us" %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include "includes/site_footer.html" %}
+    {% include "includes/site_scripts.html" %}
+    <script>
+    (function () {
+        var root = document.getElementById('course-detail-gallery');
+        if (!root) return;
+        var dataEl = document.getElementById('course-detail-gallery-data');
+        var images = [];
+        try {
+            images = dataEl ? JSON.parse(dataEl.textContent) : [];
+        } catch (e) { images = []; }
+        var img = root.querySelector('.course-detail-gallery__img');
+        var empty = root.querySelector('.course-detail-gallery__empty');
+        var prev = root.querySelector('[data-gallery-prev]');
+        var next = root.querySelector('[data-gallery-next]');
+        var counter = root.querySelector('[data-gallery-counter]');
+        var dots = root.querySelectorAll('.course-detail-gallery__dot');
+        var title = "{{ course.name|escapejs }}";
+        var imageLabelBase = "{% trans 'Image' %}";
+
+        function setNavState() {
+            var n = images.length;
+            var disabled = n <= 1;
+            if (prev) { prev.disabled = disabled; prev.setAttribute('aria-disabled', disabled ? 'true' : 'false'); prev.classList.toggle('is-disabled', disabled); }
+            if (next) { next.disabled = disabled; next.setAttribute('aria-disabled', disabled ? 'true' : 'false'); next.classList.toggle('is-disabled', disabled); }
+        }
+
+        function syncDots(idx) {
+            for (var d = 0; d < dots.length; d++) {
+                var on = d === idx;
+                dots[d].classList.toggle('is-active', on);
+                dots[d].setAttribute('aria-selected', on ? 'true' : 'false');
+            }
+        }
+
+        var galleryInitialized = false;
+
+        function show(i) {
+            if (!images.length) {
+                if (img) img.classList.add('d-none');
+                if (empty) { empty.classList.remove('d-none'); empty.classList.add('d-flex'); }
+                if (counter) counter.textContent = '';
+                setNavState();
+                return;
+            }
+            var idx = ((i % images.length) + images.length) % images.length;
+            if (empty) { empty.classList.add('d-none'); empty.classList.remove('d-flex'); }
+            if (img) {
+                img.classList.remove('d-none');
+                var alt = title ? (title + ' — ' + (idx + 1)) : (imageLabelBase + ' ' + (idx + 1));
+                var useFade = galleryInitialized && images.length > 1;
+                if (useFade) {
+                    img.classList.add('is-fading');
+                    window.setTimeout(function () {
+                        img.src = images[idx];
+                        img.alt = alt;
+                        img.classList.remove('is-fading');
+                    }, 100);
+                } else {
+                    img.src = images[idx];
+                    img.alt = alt;
+                }
+            }
+            if (counter) counter.textContent = (idx + 1) + ' / ' + images.length;
+            root.dataset.galleryIndex = String(idx);
+            syncDots(idx);
+            setNavState();
+            galleryInitialized = true;
+        }
+
+        show(0);
+
+        if (prev) prev.addEventListener('click', function () {
+            var idx = parseInt(root.dataset.galleryIndex || '0', 10);
+            show(idx - 1);
+        });
+        if (next) next.addEventListener('click', function () {
+            var idx = parseInt(root.dataset.galleryIndex || '0', 10);
+            show(idx + 1);
+        });
+        for (var di = 0; di < dots.length; di++) {
+            dots[di].addEventListener('click', function () {
+                var j = parseInt(this.getAttribute('data-dot-idx'), 10);
+                if (!isNaN(j)) show(j);
+            });
+        }
+        root.addEventListener('keydown', function (e) {
+            if (images.length <= 1) return;
+            if (e.key === 'ArrowLeft') { e.preventDefault(); prev && prev.click(); }
+            if (e.key === 'ArrowRight') { e.preventDefault(); next && next.click(); }
+        });
+    })();
+    </script>
+</body>
+</html>

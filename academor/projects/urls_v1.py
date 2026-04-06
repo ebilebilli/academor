@@ -7,8 +7,6 @@ from projects.views.views_v1 import (
     AboutPageView,
     ServicesPageView,
     ContactPageView,
-    VacancyPageView,
-    VacancyDetailPageView,
     TeamPageView,
     TeamDetailPageView,
     ReviewsPageView,
@@ -48,16 +46,6 @@ urlpatterns = [
         'contact/', 
         ContactPageView.as_view(), 
         name='contact-page'
-    ),
-    path(
-        'vacancies/', 
-        VacancyPageView.as_view(), 
-        name='vacancy-page'
-    ),
-    path(
-        'vacancies/<slug:slug>/', 
-        VacancyDetailPageView.as_view(), 
-        name='vacancy-detail'
     ),
     path(
         'team/',

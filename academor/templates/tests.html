@@ -1,21 +1,22 @@
 <!DOCTYPE html>
-{% load static %}
+{% load static i18n %}
 <html lang="en">
 <head>
-    {% include "includes/site_layout_head.html" with page_title="Academor - Testlər" %}
+    {% trans "Academor - Tests" as tests_page_title %}
+    {% include "includes/site_layout_head.html" with page_title=tests_page_title %}
 </head>
 <body>
     {% include "includes/site_spinner.html" %}
 
-    {% include "includes/site_navbar.html" with nav_active="tests" %}
+    {% include "includes/site_navbar.html" %}
 
     <div class="container-fluid bg-primary mb-5 page-header page-header-hero-band"{% include "includes/page_header_dynamic_bg.html" %}></div>
 
     <div class="container-xxl py-5">
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-center text-primary px-3">Testlər</h6>
-                <h1 class="mb-5">Uyğun testi seçin</h1>
+                <h6 class="section-title bg-white text-center text-primary px-3">{% trans "Tests" %}</h6>
+                <h1 class="mb-5">{% trans "Choose a suitable test" %}</h1>
             </div>
 
             <div class="row g-4 justify-content-center">
@@ -27,12 +28,13 @@
                                 <i class="fa fa-clipboard-list fa-2x"></i>
                             </div>
                             <h5 class="mb-3">{{ test.title }}</h5>
-                            <p class="mb-3 text-muted">{{ test.description|default:"Bu test sizin səviyyənizi ölçmək üçündür." }}</p>
+                            {% trans "This test is designed to measure your level." as default_test_desc %}
+                            <p class="mb-3 text-muted">{{ test.description|default:default_test_desc }}</p>
                             <p class="small text-muted mb-4">
-                                <i class="fa fa-question-circle text-primary me-2"></i>{{ test.question_count }} sual
+                                <i class="fa fa-question-circle text-primary me-2"></i>{{ test.question_count }} {% trans "questions" %}
                             </p>
                             <a href="{% url 'projects:test-take' test.id %}" class="btn btn-primary px-4 py-2 rounded-pill">
-                                Testə başla
+                                {% trans "Start test" %}
                             </a>
                         </div>
                     </div>
@@ -40,7 +42,7 @@
                 {% empty %}
                 <div class="col-12 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="alert alert-info text-center mb-0 py-4">
-                        <i class="fa fa-info-circle me-2"></i>Hazırda aktiv test yoxdur.
+                        <i class="fa fa-info-circle me-2"></i>{% trans "There is no active test at the moment." %}
                     </div>
                 </div>
                 {% endfor %}

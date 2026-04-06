@@ -182,7 +182,7 @@
     }
 
 
-    // Testimonials carousel (pages that include reviews section only)
+    // Reviews carousel (pages that include reviews section only)
     var $testimonialCarousel = $(".testimonial-carousel");
     if ($testimonialCarousel.length) {
         $testimonialCarousel.owlCarousel({

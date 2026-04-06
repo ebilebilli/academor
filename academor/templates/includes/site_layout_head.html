@@ -1,15 +1,44 @@
 {% load static %}
 <meta charset="utf-8">
-<title>{{ page_title|default:"Academor" }}</title>
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
-<meta content="" name="keywords">
-<meta content="" name="description">
+<title>{{ page_title|default:seo_home_title|default:"Academor" }}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% with effective_keywords=page_keywords|default:site_seo_keywords %}
+{% if effective_keywords %}
+<meta name="keywords" content="{{ effective_keywords }}">
+{% endif %}
+{% endwith %}
+{% with effective_description=page_description|default:seo_home_description %}
+{% if effective_description %}
+<meta name="description" content="{{ effective_description }}">
+{% endif %}
+{% endwith %}
+{% if request %}
+<link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{ page_title|default:seo_home_title|default:'Academor' }}">
+{% with effective_description=page_description|default:seo_home_description %}
+{% if effective_description %}
+<meta property="og:description" content="{{ effective_description }}">
+{% endif %}
+{% endwith %}
+<meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
+<meta property="og:locale" content="{{ page_og_locale|default:seo_og_locale|default:'en_US' }}">
+<meta name="geo.region" content="{{ page_geo_region|default:seo_geo_region|default:'AZ' }}">
+<meta name="geo.placename" content="{{ page_geo_placename|default:seo_geo_placename|default:'Baku' }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ page_title|default:seo_home_title|default:'Academor' }}">
+{% with effective_description=page_description|default:seo_home_description %}
+{% if effective_description %}
+<meta name="twitter:description" content="{{ effective_description }}">
+{% endif %}
+{% endwith %}
+{% endif %}
 
 <link href="{% static 'assets/img/favicon.ico' %}" rel="icon">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Roboto:wght@500;700;900&family=Work+Sans:wght@500;600;700&display=swap" rel="stylesheet">
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
