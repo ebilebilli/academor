@@ -1,5 +1,5 @@
 {% load static i18n %}
-<div class="container-xxl py-5">
+<div class="container-xxl py-5 about-intro-section">
     <div class="container">
         <div class="row g-5">
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s" style="min-height: 400px;">
@@ -12,7 +12,6 @@
                 </div>
             </div>
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
-                <h6 class="section-title bg-white text-start text-primary pe-3">{% trans "About Us" %}</h6>
                 {% if main_heading_is_h1 %}
                 <h1 class="mb-4">Academor</h1>
                 {% else %}
@@ -20,14 +19,14 @@
                 {% endif %}
                 {% if about and about.description %}
                     {% if show_read_more_link %}
-                    <p class="about-page-description text-secondary mb-0">{{ about.description_excerpt }}</p>
+                    <p class="about-page-description mb-0">{{ about.description_excerpt }}</p>
                     {% else %}
-                    <div class="about-page-description text-secondary">{{ about.description|safe }}</div>
+                    <div class="about-page-description">{{ about.description|safe }}</div>
                     {% endif %}
                 {% elif about %}
-                <p class="text-muted mb-0">{% trans "No description for this language yet." %}</p>
+                <p class="about-page-description mb-0">{% trans "No description for this language yet." %}</p>
                 {% else %}
-                <p class="text-muted mb-0">{% trans "No about content has been added yet." %}</p>
+                <p class="about-page-description mb-0">{% trans "No about content has been added yet." %}</p>
                 {% endif %}
                 {% if show_read_more_link %}
                 <a class="btn btn-primary py-3 px-5 mt-3" href="{% url 'projects:about-page' %}">{% trans "Read More" %}</a>

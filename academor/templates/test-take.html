@@ -16,7 +16,6 @@
         <div class="container">
             {% if not result and test %}
             <div class="text-center wow fadeInUp mb-4" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-center text-primary px-3">{% trans "Test" %}</h6>
                 <h1 class="mb-2">{{ test.title }}</h1>
                 {% if test.description %}
                 <p class="text-muted mx-auto mb-0" style="max-width: 640px;">{{ test.description }}</p>
@@ -36,7 +35,6 @@
             <div class="row justify-content-center wow fadeInUp" data-wow-delay="0.1s">
                 <div class="col-lg-8">
                     <div class="text-center mb-4">
-                        <h6 class="section-title bg-white text-center text-primary px-3 d-inline-block">{% trans "Result" %}</h6>
                     </div>
                     <div class="bg-light rounded shadow-sm p-4 p-md-5 text-center border-0">
                         <h3 class="mb-3">{{ result.first_name }} {{ result.last_name }}</h3>
