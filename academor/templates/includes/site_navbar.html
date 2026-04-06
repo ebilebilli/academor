@@ -3,7 +3,7 @@
 {% with u=nav_url_name|default:'' slug_kw=nav_course_slug|default:'' %}
 <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
     <a href="{% url 'projects:home-page' %}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-        <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>Academor</h2>
+        <img src="{% static 'assets/img/new_logo.png' %}" alt="Academor" class="site-logo" loading="eager" decoding="async">
     </a>
     <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
@@ -38,13 +38,13 @@
                     {% endif %}
                 </a>
                 <div class="dropdown-menu fade-down m-0">
-                    <a href="{% url 'set_language' %}?language=en&next={{ request.get_full_path|urlencode }}" class="dropdown-item d-flex align-items-center">
+                    <a href="{% url 'set_language' %}?language=en&next={{ request.get_full_path|urlencode }}" class="dropdown-item d-flex align-items-center lang-option{% if LANG == 'en' %} active{% endif %}"{% if LANG == 'en' %} aria-current="true"{% endif %}>
                         <img src="{% static 'assets/img/united-kingdom.png' %}" alt="EN" style="width: 18px; height: 12px; object-fit: cover; margin-right: 8px;">{% trans "English" %}
                     </a>
-                    <a href="{% url 'set_language' %}?language=az&next={{ request.get_full_path|urlencode }}" class="dropdown-item d-flex align-items-center">
+                    <a href="{% url 'set_language' %}?language=az&next={{ request.get_full_path|urlencode }}" class="dropdown-item d-flex align-items-center lang-option{% if LANG == 'az' %} active{% endif %}"{% if LANG == 'az' %} aria-current="true"{% endif %}>
                         <img src="{% static 'assets/img/azerbaijan.png' %}" alt="AZ" style="width: 18px; height: 12px; object-fit: cover; margin-right: 8px;">{% trans "Azerbaijani" %}
                     </a>
-                    <a href="{% url 'set_language' %}?language=ru&next={{ request.get_full_path|urlencode }}" class="dropdown-item d-flex align-items-center">
+                    <a href="{% url 'set_language' %}?language=ru&next={{ request.get_full_path|urlencode }}" class="dropdown-item d-flex align-items-center lang-option{% if LANG == 'ru' %} active{% endif %}"{% if LANG == 'ru' %} aria-current="true"{% endif %}>
                         <img src="{% static 'assets/img/russia.png' %}" alt="RU" style="width: 18px; height: 12px; object-fit: cover; margin-right: 8px;">{% trans "Russian" %}
                     </a>
                 </div>

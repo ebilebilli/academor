@@ -6,6 +6,29 @@ from django.core.cache import cache
 from django.conf import settings
 # from django.utils.cache import get_cache_key
 import hashlib
+_CACHE_MISS = object()
+
+
+def _resolve_cache_timeout(timeout, timeout_settings_key=None):
+    """Resolve cache timeout from literal/callable/settings key with safe fallback."""
+    try:
+        if timeout_settings_key:
+            return getattr(settings, timeout_settings_key, getattr(settings, 'CACHE_TIMEOUT_MEDIUM', 300))
+        if callable(timeout):
+            return timeout()
+        if timeout is None:
+            return getattr(settings, 'CACHE_TIMEOUT_MEDIUM', 300)
+        return int(timeout)
+    except Exception:
+        return getattr(settings, 'CACHE_TIMEOUT_MEDIUM', 300)
+
+
+def _get_cache_version():
+    try:
+        return cache.get('cache_version', 0)
+    except Exception:
+        return 0
+
 # import json
 
 
@@ -105,30 +128,11 @@ def cached_query(timeout=None):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            # Get timeout value - handle all cases
-            try:
-                if timeout_settings_key:
-                    # Read from settings dynamically
-                    cache_timeout = getattr(settings, timeout_settings_key, getattr(settings, 'CACHE_TIMEOUT_MEDIUM', 300))
-                elif callable(timeout):
-                    # Callable function (e.g., lambda)
-                    cache_timeout = timeout()
-                elif timeout is None:
-                    # Default timeout from settings
-                    cache_timeout = getattr(settings, 'CACHE_TIMEOUT_MEDIUM', 300)
-                else:
-                    # Fixed timeout value
-                    cache_timeout = int(timeout)
-            except Exception:
-                # Fallback to default timeout if any error
-                cache_timeout = getattr(settings, 'CACHE_TIMEOUT_MEDIUM', 300)
+            cache_timeout = _resolve_cache_timeout(timeout, timeout_settings_key)
             
             # Generate cache key from function name and arguments
             # Include cache version for invalidation support
-            try:
-                cache_version = cache.get('cache_version', 0)
-            except Exception:
-                cache_version = 0
+            cache_version = _get_cache_version()
             
             # Generate cache key with all parameters
             try:
@@ -144,8 +148,8 @@ def cached_query(timeout=None):
             
             # Try to get from cache
             try:
-                result = cache.get(cache_key)
-                if result is not None:
+                result = cache.get(cache_key, _CACHE_MISS)
+                if result is not _CACHE_MISS:
                     return result
             except Exception:
                 # If cache read fails, continue without cache
@@ -166,7 +170,7 @@ def cached_query(timeout=None):
                     # If cache write fails, just return result without caching
                     pass
                 return result
-            except Exception as e:
+            except Exception:
                 # If function fails, don't cache the error, just raise it
                 raise
         return wrapper
@@ -231,30 +235,11 @@ def cached_page_data(timeout=None):
     def decorator(func):
         @wraps(func)
         def wrapper(request, lang, *args, **kwargs):
-            # Get timeout value - handle all cases
-            try:
-                if timeout_settings_key:
-                    # Read from settings dynamically
-                    cache_timeout = getattr(settings, timeout_settings_key, getattr(settings, 'CACHE_TIMEOUT_MEDIUM', 300))
-                elif callable(timeout):
-                    # Callable function (e.g., lambda)
-                    cache_timeout = timeout()
-                elif timeout is None:
-                    # Default timeout from settings
-                    cache_timeout = getattr(settings, 'CACHE_TIMEOUT_MEDIUM', 300)
-                else:
-                    # Fixed timeout value
-                    cache_timeout = int(timeout)
-            except Exception:
-                # Fallback to default timeout if any error
-                cache_timeout = getattr(settings, 'CACHE_TIMEOUT_MEDIUM', 300)
+            cache_timeout = _resolve_cache_timeout(timeout, timeout_settings_key)
             
             # Generate cache key from function name, language, and query parameters
             # Include cache version for invalidation support
-            try:
-                cache_version = cache.get('cache_version', 0)
-            except Exception:
-                cache_version = 0
+            cache_version = _get_cache_version()
             
             try:
                 query_params = dict(request.GET.items())
@@ -266,8 +251,8 @@ def cached_page_data(timeout=None):
             
             # Try to get from cache
             try:
-                result = cache.get(cache_key)
-                if result is not None:
+                result = cache.get(cache_key, _CACHE_MISS)
+                if result is not _CACHE_MISS:
                     return result
             except Exception:
                 # If cache read fails, continue without cache
@@ -286,7 +271,7 @@ def cached_page_data(timeout=None):
                     # If cache write fails, just return result without caching
                     pass
                 return result
-            except Exception as e:
+            except Exception:
                 # If function fails, don't cache the error, just raise it
                 raise
         return wrapper
