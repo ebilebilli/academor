@@ -114,11 +114,6 @@
                 var inputName = $input.attr('name') || '';
                 var inputId = $input.attr('id') || '';
                 
-                // Yalnız image field-ləri
-                if (!inputName.toLowerCase().includes('image') && !inputId.toLowerCase().includes('image')) {
-                    return;
-                }
-                
                 // Əgər artıq işləyirsə, təkrarlanmasın
                 if ($input.data('compression-processing')) {
                     return;
@@ -328,11 +323,6 @@
                     var $input = $(this);
                     var inputName = $input.attr('name') || '';
                     var inputId = $input.attr('id') || '';
-                    
-                    // Yalnız image field-ləri
-                    if (!inputName.toLowerCase().includes('image') && !inputId.toLowerCase().includes('image')) {
-                        return;
-                    }
                     
                     // Əgər artıq event listener var, təkrarlanmasın
                     if ($input.data('compression-initialized')) {

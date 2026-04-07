@@ -94,16 +94,16 @@ h1, h2, h3, h4, h5, h6,
 
 /*** Spinner ***/
 #spinner {
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity .5s ease-out, visibility 0s linear .5s;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.4s ease-out, visibility 0s linear 0.4s;
     z-index: 99999;
+    pointer-events: none;
 }
 
-#spinner.show {
-    transition: opacity .5s ease-out, visibility 0s linear 0s;
-    visibility: visible;
-    opacity: 1;
+#spinner.hide {
+    opacity: 0;
+    visibility: hidden;
 }
 
 
@@ -476,7 +476,10 @@ h1, h2, h3, h4, h5, h6,
 .navbar-light.sticky-top {
     top: -100px;
     transition: top .5s ease;
-    will-change: top;
+}
+
+.navbar-light.sticky-top.sticky-navbar--revealed {
+    top: 0;
 }
 
 @media (min-width: 992px) {
@@ -736,7 +739,7 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .service-item:hover {
-    margin-top: -10px;
+    transform: translateY(-10px);
     background: var(--primary);
 }
 
@@ -1769,7 +1772,6 @@ h1, h2, h3, h4, h5, h6,
     width: max-content;
     flex-wrap: nowrap;
     animation: universities-carousel-scroll 28s linear infinite;
-    will-change: transform;
 }
 
 @keyframes universities-carousel-scroll {
@@ -1779,10 +1781,6 @@ h1, h2, h3, h4, h5, h6,
     to {
         transform: translateX(calc(-50% - 7px));
     }
-}
-
-.universities-carousel:hover .universities-list__track {
-    animation-play-state: paused;
 }
 
 .university-flag-card {

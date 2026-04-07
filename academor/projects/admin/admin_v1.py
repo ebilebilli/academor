@@ -11,9 +11,14 @@ from ckeditor.widgets import CKEditorWidget
 from projects.models import *
 
 
+class AdminImageCompressMixin:
+    class Media:
+        js = ('assets/js/admin_image_compress.js',)
+
+
 # Media
 @admin.register(Media)
-class MediaAdmin(admin.ModelAdmin):
+class MediaAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     list_display = (
         'id',
         'media_preview',
@@ -54,9 +59,6 @@ class MediaAdmin(admin.ModelAdmin):
 
     ordering = ('-created_at',)
     list_per_page = 25
-
-    class Media:
-        js = ('assets/js/admin_image_compress.js',)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -112,16 +114,13 @@ class MediaAdmin(admin.ModelAdmin):
 
 
 
-class MediaInlineBase(admin.TabularInline):
+class MediaInlineBase(AdminImageCompressMixin, admin.TabularInline):
     model = Media
     extra = 1
     readonly_fields = ('created_at', 'thumbnail_preview')
     fields = ('image', 'video', 'thumbnail_preview', 'created_at')
     verbose_name = "Media"
     verbose_name_plural = "Media"
-    
-    class Media:
-        js = ('assets/js/admin_image_compress.js',)
     
     def thumbnail_preview(self, obj):
         if obj and obj.image:
@@ -211,7 +210,7 @@ class ServiceCategoryAdminForm(forms.ModelForm):
 
 
 @admin.register(ServiceCategory)
-class ServiceCategoryAdmin(admin.ModelAdmin):
+class ServiceCategoryAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     form = ServiceCategoryAdminForm
     list_display = ('id', 'category_thumb', 'name_link', 'name_en', 'name_ru', 'is_active', 'created_at')
     list_display_links = ('id',)
@@ -260,7 +259,7 @@ class ServiceCategoryAdmin(admin.ModelAdmin):
 
 
 @admin.register(ServiceHighlight)
-class ServiceHighlightAdmin(admin.ModelAdmin):
+class ServiceHighlightAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     list_display = (
         'id',
         'title_link',
@@ -319,7 +318,7 @@ class AbroadModelAdminForm(forms.ModelForm):
 
 
 @admin.register(AbroadModel)
-class AbroadModelAdmin(admin.ModelAdmin):
+class AbroadModelAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     form = AbroadModelAdminForm
     list_display = ('id', 'name', 'preview_image', 'is_active', 'created_at')
     list_filter = ('is_active', 'created_at')
@@ -365,7 +364,7 @@ class AbroadModelAdmin(admin.ModelAdmin):
 
 
 @admin.register(University)
-class UniversityAdmin(admin.ModelAdmin):
+class UniversityAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     list_display = ('id', 'flag_preview', 'is_active')
     list_filter = ('is_active',)
     list_editable = ('is_active',)
@@ -399,7 +398,7 @@ class UniversityAdmin(admin.ModelAdmin):
     flag_preview_large.short_description = "Preview"
 
 @admin.register(Instructor)
-class InstructorAdmin(admin.ModelAdmin):
+class InstructorAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     list_display = (
         'id',
         'partner_logo',
@@ -474,7 +473,7 @@ class InstructorAdmin(admin.ModelAdmin):
 
 # About 
 @admin.register(About)
-class AboutAdmin(admin.ModelAdmin):
+class AboutAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     list_display = ('id', 'title_link', 'media_count', 'updated_info')
     list_display_links = ('id',)
     search_fields = ('description_az', 'description_en', 'description_ru')
@@ -518,7 +517,7 @@ class AboutAdmin(admin.ModelAdmin):
 
 # Contact 
 @admin.register(Contact)
-class ContactAdmin(admin.ModelAdmin):
+class ContactAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     list_display = (
         'id',
         'address_link',
@@ -601,7 +600,7 @@ class TeamAdminForm(forms.ModelForm):
 
 
 @admin.register(Team)
-class TeamAdmin(admin.ModelAdmin):
+class TeamAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     form = TeamAdminForm
     list_display = ('id', 'name', 'role')
     search_fields = ('name', 'role', 'description', 'instagram', 'facebook', 'linkedin', 'tiktok', 'youtube')
@@ -609,7 +608,7 @@ class TeamAdmin(admin.ModelAdmin):
 
 
 @admin.register(Review)
-class ReviewAdmin(admin.ModelAdmin):
+class ReviewAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     list_display = ('id', 'name', 'is_active', 'created_at')
     list_filter = ('is_active', 'created_at')
     search_fields = ('name', 'message')
@@ -639,7 +638,7 @@ class OptionInlineFormSet(BaseInlineFormSet):
             raise ValidationError('Each question can have at most 5 options.')
 
 
-class OptionInline(admin.TabularInline):
+class OptionInline(AdminImageCompressMixin, admin.TabularInline):
     model = Option
     formset = OptionInlineFormSet
     extra = 1
@@ -656,7 +655,7 @@ class OptionInline(admin.TabularInline):
 
 
 @admin.register(Test)
-class TestAdmin(admin.ModelAdmin):
+class TestAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     list_display = ('id', 'list_title', 'is_active', 'created_at')
     list_filter = ('is_active', 'created_at')
     search_fields = (
@@ -684,7 +683,7 @@ class TestAdmin(admin.ModelAdmin):
 
 
 @admin.register(Question)
-class QuestionAdmin(admin.ModelAdmin):
+class QuestionAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     list_display = ('id', 'test', 'order', 'text')
     list_filter = ('test',)
     search_fields = (
@@ -699,7 +698,7 @@ class QuestionAdmin(admin.ModelAdmin):
 
 
 @admin.register(UserResult)
-class UserResultAdmin(admin.ModelAdmin):
+class UserResultAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     list_display = ('id', 'test', 'first_name', 'last_name', 'number', 'email', 'score', 'level', 'created_at')
     list_filter = ('test', 'level', 'created_at')
     search_fields = ('first_name', 'last_name', 'number', 'email', 'level')
@@ -708,7 +707,7 @@ class UserResultAdmin(admin.ModelAdmin):
     list_per_page = 25
 
 @admin.register(Tagline)
-class TaglineAdmin(admin.ModelAdmin):
+class TaglineAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     list_display = (
         'id',
         'text_preview_az',
@@ -767,7 +766,7 @@ class TaglineAdmin(admin.ModelAdmin):
         return super().has_add_permission(request)
 
 @admin.register(ContactInquiry)
-class ContactInquiryAdmin(admin.ModelAdmin):
+class ContactInquiryAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     list_display = (
         'sender_info',
         'subject_preview',

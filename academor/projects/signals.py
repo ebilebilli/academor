@@ -77,12 +77,14 @@ def invalidate_service_highlight_cache(sender, instance, **kwargs):
 @receiver(post_save, sender=AbroadModel)
 @receiver(post_delete, sender=AbroadModel)
 def invalidate_abroad_cache(sender, instance, **kwargs):
+    """Clears query + page cache (incl. Study Abroad list/detail, home abroad grid, nav dropdown)."""
     _invalidate_on_commit('AbroadModel')
 
 
 @receiver(post_save, sender=University)
 @receiver(post_delete, sender=University)
 def invalidate_university_cache(sender, instance, **kwargs):
+    """Clears cache for university flags marquee on home + Study Abroad page."""
     _invalidate_on_commit('University')
 
 

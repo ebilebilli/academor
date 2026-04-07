@@ -610,6 +610,45 @@ def get_home_page_data(request, lang):
     }
 
 
+@cached_page_data(timeout='CACHE_TIMEOUT_LONG')
+def get_abroad_page_data(request, lang):
+    """Study Abroad listing — full page context (cached; invalidated via AbroadModel / University signals)."""
+    contact = get_contact(lang)
+    categories = get_project_categories(lang)
+    return {
+        'contact': serialize_contact(contact, lang) if contact else None,
+        'categories': [serialize_project_category(category, lang) for category in categories],
+        'abroad_items': get_serialized_abroad_items(lang=lang, is_active=True),
+        'universities': get_serialized_universities(is_active=True),
+        'background_image': get_background_image('about'),
+    }
+
+
+@cached_query(timeout='CACHE_TIMEOUT_LONG')
+def get_abroad_detail_view_context(lang, pk):
+    """Study Abroad detail — cached per (lang, pk); None if not found."""
+    items = get_abroad_items(is_active=True)
+    item = next((i for i in items if i.id == pk), None)
+    if not item:
+        return None
+    item_data = serialize_abroad_item(item, lang=lang)
+    other_items = [
+        serialize_abroad_item(i, lang=lang)
+        for i in items
+        if i.id != pk
+    ]
+    contact = get_contact(lang)
+    categories = get_project_categories(lang)
+    return {
+        'abroad_item': item_data,
+        'other_abroad_items': other_items,
+        'contact': serialize_contact(contact, lang) if contact else None,
+        'categories': [serialize_project_category(category, lang) for category in categories],
+        'background_image': get_background_image('about'),
+        'page_title': f'{item_data["name"]} | Academor',
+    }
+
+
 def _get_project_list_data_impl(request, lang):
     category_slug = request.GET.get('slug')
     is_active = request.GET.get('is_active', 'true').lower() == 'true'

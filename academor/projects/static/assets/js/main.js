@@ -2,14 +2,11 @@
     "use strict";
 
     // Spinner
-    var spinner = function () {
-        setTimeout(function () {
-            if ($('#spinner').length > 0) {
-                $('#spinner').removeClass('show');
-            }
-        }, 1);
-    };
-    spinner();
+    $(window).on('load', function () {
+        var $sp = $('#spinner');
+        $sp.css('opacity', '0');
+        setTimeout(function () { $sp.css('display', 'none'); }, 400);
+    });
     
     
     // Initiate wowjs (skip on small screens / reduced motion)
@@ -22,25 +19,16 @@
     }
 
 
-    // Sticky Navbar (throttled via requestAnimationFrame + avoid redundant writes)
-    var stickyTicking = false;
+    // Sticky Navbar (one rAF with back-to-top; class toggle avoids inline style churn)
     var stickyVisible = null;
     function updateStickyNavbar() {
         var y = window.pageYOffset || document.documentElement.scrollTop || 0;
         var nextVisible = y > 300;
         if (stickyVisible !== nextVisible) {
-            $('.sticky-top').css('top', nextVisible ? '0px' : '-100px');
+            $('.navbar-light.sticky-top').toggleClass('sticky-navbar--revealed', nextVisible);
             stickyVisible = nextVisible;
         }
-        stickyTicking = false;
     }
-    window.addEventListener('scroll', function () {
-        if (!stickyTicking) {
-            window.requestAnimationFrame(updateStickyNavbar);
-            stickyTicking = true;
-        }
-    }, { passive: true });
-    updateStickyNavbar();
     
     
     // Dropdown on mouse hover (bind once per mode)
@@ -101,17 +89,22 @@
         }
         backToTopVisible = nextVisible;
     }
-    var backToTopTicking = false;
+    var scrollTicking = false;
     window.addEventListener('scroll', function () {
-        if (!backToTopTicking) {
+        if (!scrollTicking) {
+            scrollTicking = true;
             window.requestAnimationFrame(function () {
+                updateStickyNavbar();
                 updateBackToTop();
-                backToTopTicking = false;
+                scrollTicking = false;
             });
-            backToTopTicking = true;
         }
     }, { passive: true });
-    $(window).on('load.backToTop', updateBackToTop);
+    $(window).on('load.backToTop', function () {
+        updateStickyNavbar();
+        updateBackToTop();
+    });
+    updateStickyNavbar();
     updateBackToTop();
 
     $backToTop.on('click', function (e) {
@@ -264,12 +257,22 @@
         });
     }
 
-    // Core Web Vitals-style console metrics (console only; no UI)
+    // LCP, CLS, FCP via PerformanceObserver — console only
     (function initPerfObservers() {
-        if (!('PerformanceObserver' in window)) return;
+        if (!('PerformanceObserver' in window)) {
+            console.warn('[Perf] PerformanceObserver not supported');
+            return;
+        }
 
         var clsValue = 0;
         var lcpEntry = null;
+        var fcpMs = null;
+
+        function logPerfSnapshot(reason) {
+            var lcpStr = lcpEntry ? Math.round(lcpEntry.startTime) + ' ms' : 'n/a';
+            var fcpStr = fcpMs != null ? Math.round(fcpMs) + ' ms' : 'n/a';
+            console.log('[Perf] snapshot (' + reason + ') — FCP:', fcpStr, '| LCP:', lcpStr, '| CLS:', Number(clsValue.toFixed(4)));
+        }
 
         try {
             var fcpObserver = new PerformanceObserver(function (list) {
@@ -277,7 +280,8 @@
                 for (var i = 0; i < entries.length; i++) {
                     var entry = entries[i];
                     if (entry.name === 'first-contentful-paint') {
-                        console.log('[Perf] FCP:', Math.round(entry.startTime), 'ms');
+                        fcpMs = entry.startTime;
+                        console.log('[Perf] FCP:', Math.round(fcpMs), 'ms');
                     }
                 }
             });
@@ -293,7 +297,6 @@
                         clsValue += entry.value;
                     }
                 }
-                console.log('[Perf] CLS:', Number(clsValue.toFixed(4)));
             });
             clsObserver.observe({ type: 'layout-shift', buffered: true });
         } catch (e) {}
@@ -304,19 +307,13 @@
                 lcpEntry = entries[entries.length - 1] || lcpEntry;
             });
             lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true });
-
-            function logLcpOnPageHide() {
-                if (lcpEntry) {
-                    console.log('[Perf] LCP:', Math.round(lcpEntry.startTime), 'ms');
-                }
-            }
-            document.addEventListener('visibilitychange', function () {
-                if (document.visibilityState === 'hidden') {
-                    logLcpOnPageHide();
-                }
-            });
-            window.addEventListener('pagehide', logLcpOnPageHide);
         } catch (e) {}
+
+        document.addEventListener('visibilitychange', function () {
+            if (document.visibilityState === 'hidden') {
+                logPerfSnapshot('tab hidden / navigating away');
+            }
+        });
     })();
     
 })(jQuery);
