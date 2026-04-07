@@ -14,6 +14,12 @@ class ContactInquiry(models.Model):
         blank=True,
         verbose_name='Email'
     )
+    mobile_number = models.CharField(
+        max_length=30,
+        null=True,
+        blank=True,
+        verbose_name='Mobile number'
+    )
     subject = models.CharField(
         null=True,
         blank=True,

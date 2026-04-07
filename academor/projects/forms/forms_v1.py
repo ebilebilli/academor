@@ -36,8 +36,17 @@ class AppealContactForm(forms.ModelForm):
             'class': 'form-control',
             'placeholder': _('Email address')
         }),
-        required=True,
+        required=False,
         label=_('Email address')
+    )
+    mobile_number = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': _('Mobile number')
+        }),
+        required=False,
+        label=_('Mobile number'),
+        max_length=30
     )
     subject = forms.CharField(
         widget=forms.TextInput(attrs={
@@ -65,6 +74,7 @@ class AppealContactForm(forms.ModelForm):
         fields = [
             'full_name',
             'email',
+            'mobile_number',
             'subject',
             'info'
         ]
@@ -84,6 +94,18 @@ class AppealContactForm(forms.ModelForm):
         if self.cleaned_data.get('company'):
             raise ValidationError(_('Something went wrong. Please try again.'))
         return ''
+
+    def clean(self):
+        cleaned_data = super().clean()
+        email = (cleaned_data.get('email') or '').strip()
+        mobile_number = (cleaned_data.get('mobile_number') or '').strip()
+
+        if not email and not mobile_number:
+            msg = _('Please provide either an email address or a mobile number.')
+            self.add_error('email', msg)
+            self.add_error('mobile_number', msg)
+
+        return cleaned_data
 
 
 class ReviewForm(forms.ModelForm):

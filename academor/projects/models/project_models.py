@@ -140,3 +140,22 @@ class AbroadModel(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class University(models.Model):
+    flag = models.ImageField(
+        upload_to='universities/',
+        verbose_name='Flag image'
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name='Active'
+    )
+
+    class Meta:
+        verbose_name = 'University'
+        verbose_name_plural = 'Universities'
+        ordering = ('id',)
+
+    def __str__(self):
+        return f'University #{self.pk}'

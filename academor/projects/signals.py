@@ -10,6 +10,7 @@ from projects.models import (
     ServiceCategory,
     ServiceHighlight,
     AbroadModel,
+    University,
     Team,
     Review,
     Instructor,
@@ -79,6 +80,12 @@ def invalidate_abroad_cache(sender, instance, **kwargs):
     _invalidate_on_commit('AbroadModel')
 
 
+@receiver(post_save, sender=University)
+@receiver(post_delete, sender=University)
+def invalidate_university_cache(sender, instance, **kwargs):
+    _invalidate_on_commit('University')
+
+
 @receiver(post_save, sender=Instructor)
 @receiver(post_delete, sender=Instructor)
 def invalidate_partner_cache(sender, instance, **kwargs):
@@ -128,8 +135,10 @@ def invalidate_media_cache(sender, instance, **kwargs):
     if getattr(instance, 'about_id', None):
         _invalidate_on_commit('About')
 
-    # If media is a background image for home page, invalidate home page cache
+    # If media is used as background image anywhere, keep page fragments fresh
     if instance.is_home_page_background_image:
+        _invalidate_on_commit('Media')
+    if getattr(instance, 'is_footer_background_image', False):
         _invalidate_on_commit('Media')
 
 

@@ -22,48 +22,64 @@
     }
 
 
-    // Sticky Navbar (throttled via requestAnimationFrame)
+    // Sticky Navbar (throttled via requestAnimationFrame + avoid redundant writes)
     var stickyTicking = false;
+    var stickyVisible = null;
     function updateStickyNavbar() {
         var y = window.pageYOffset || document.documentElement.scrollTop || 0;
-        $('.sticky-top').css('top', y > 300 ? '0px' : '-100px');
+        var nextVisible = y > 300;
+        if (stickyVisible !== nextVisible) {
+            $('.sticky-top').css('top', nextVisible ? '0px' : '-100px');
+            stickyVisible = nextVisible;
+        }
         stickyTicking = false;
     }
-    $(window).on('scroll.stickyNavbar', function () {
+    window.addEventListener('scroll', function () {
         if (!stickyTicking) {
             window.requestAnimationFrame(updateStickyNavbar);
             stickyTicking = true;
         }
-    });
+    }, { passive: true });
     updateStickyNavbar();
     
     
-    // Dropdown on mouse hover
+    // Dropdown on mouse hover (bind once per mode)
     const $dropdown = $(".dropdown");
     const $dropdownToggle = $(".dropdown-toggle");
     const $dropdownMenu = $(".dropdown-menu");
     const showClass = "show";
-    
-    $(window).on("load resize", function() {
-        if (this.matchMedia("(min-width: 992px)").matches) {
-            $dropdown.hover(
-            function() {
+    var menuHoverEnabled = null;
+    function syncMenuHoverMode() {
+        var shouldEnable = window.matchMedia("(min-width: 992px)").matches;
+        if (menuHoverEnabled === shouldEnable) return;
+        $dropdown.off(".menuHover");
+        if (shouldEnable) {
+            $dropdown.on("mouseenter.menuHover", function () {
                 const $this = $(this);
                 $this.addClass(showClass);
                 $this.find($dropdownToggle).attr("aria-expanded", "true");
                 $this.find($dropdownMenu).addClass(showClass);
-            },
-            function() {
+            });
+            $dropdown.on("mouseleave.menuHover", function () {
                 const $this = $(this);
                 $this.removeClass(showClass);
                 $this.find($dropdownToggle).attr("aria-expanded", "false");
                 $this.find($dropdownMenu).removeClass(showClass);
-            }
-            );
-        } else {
-            $dropdown.off("mouseenter mouseleave");
+            });
+        }
+        menuHoverEnabled = shouldEnable;
+    }
+    var resizeTicking = false;
+    $(window).on("load.menuHover resize.menuHover", function () {
+        if (!resizeTicking) {
+            window.requestAnimationFrame(function () {
+                syncMenuHoverMode();
+                resizeTicking = false;
+            });
+            resizeTicking = true;
         }
     });
+    syncMenuHoverMode();
     
     
     // Back to top — class toggles display:flex (see style.css); robust scrollTop for document/body
@@ -74,15 +90,19 @@
             || document.body.scrollTop
             || 0;
     }
+    var backToTopVisible = null;
     function updateBackToTop() {
-        if (getScrollTop() > 300) {
+        var nextVisible = getScrollTop() > 300;
+        if (backToTopVisible === nextVisible) return;
+        if (nextVisible) {
             $backToTop.addClass('back-to-top--visible').attr({ tabindex: '0', 'aria-hidden': 'false' });
         } else {
             $backToTop.removeClass('back-to-top--visible').attr({ tabindex: '-1', 'aria-hidden': 'true' });
         }
+        backToTopVisible = nextVisible;
     }
     var backToTopTicking = false;
-    $(window).on('scroll.backToTop', function () {
+    window.addEventListener('scroll', function () {
         if (!backToTopTicking) {
             window.requestAnimationFrame(function () {
                 updateBackToTop();
@@ -90,7 +110,7 @@
             });
             backToTopTicking = true;
         }
-    });
+    }, { passive: true });
     $(window).on('load.backToTop', updateBackToTop);
     updateBackToTop();
 
@@ -132,7 +152,9 @@
     if ($catCarousel.length) {
         var catCount = $catCarousel.find(".item").length;
         $catCarousel.owlCarousel({
-            autoplay: false,
+            autoplay: !prefersReducedMotion && catCount > 1,
+            autoplayTimeout: 3200,
+            autoplayHoverPause: true,
             smartSpeed: 420,
             margin: 20,
             dots: true,
@@ -145,7 +167,7 @@
                 '<i class="bi bi-chevron-left"></i>',
                 '<i class="bi bi-chevron-right"></i>'
             ],
-            loop: catCount > 4,
+            loop: catCount > 1,
             responsive: {
                 0: {
                     items: 1,
@@ -166,7 +188,6 @@
             }
         });
     }
-
 
     // Team members carousel (index + team page)
     var $teamCarousel = $(".team-carousel");
@@ -242,6 +263,61 @@
             }
         });
     }
+
+    // Core Web Vitals-style console metrics (console only; no UI)
+    (function initPerfObservers() {
+        if (!('PerformanceObserver' in window)) return;
+
+        var clsValue = 0;
+        var lcpEntry = null;
+
+        try {
+            var fcpObserver = new PerformanceObserver(function (list) {
+                var entries = list.getEntries();
+                for (var i = 0; i < entries.length; i++) {
+                    var entry = entries[i];
+                    if (entry.name === 'first-contentful-paint') {
+                        console.log('[Perf] FCP:', Math.round(entry.startTime), 'ms');
+                    }
+                }
+            });
+            fcpObserver.observe({ type: 'paint', buffered: true });
+        } catch (e) {}
+
+        try {
+            var clsObserver = new PerformanceObserver(function (list) {
+                var entries = list.getEntries();
+                for (var i = 0; i < entries.length; i++) {
+                    var entry = entries[i];
+                    if (!entry.hadRecentInput) {
+                        clsValue += entry.value;
+                    }
+                }
+                console.log('[Perf] CLS:', Number(clsValue.toFixed(4)));
+            });
+            clsObserver.observe({ type: 'layout-shift', buffered: true });
+        } catch (e) {}
+
+        try {
+            var lcpObserver = new PerformanceObserver(function (list) {
+                var entries = list.getEntries();
+                lcpEntry = entries[entries.length - 1] || lcpEntry;
+            });
+            lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true });
+
+            function logLcpOnPageHide() {
+                if (lcpEntry) {
+                    console.log('[Perf] LCP:', Math.round(lcpEntry.startTime), 'ms');
+                }
+            }
+            document.addEventListener('visibilitychange', function () {
+                if (document.visibilityState === 'hidden') {
+                    logLcpOnPageHide();
+                }
+            });
+            window.addEventListener('pagehide', logLcpOnPageHide);
+        } catch (e) {}
+    })();
     
 })(jQuery);
 

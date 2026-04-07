@@ -72,6 +72,10 @@ class Media(models.Model):
         default=False,
         verbose_name='Tests pages background image'
     )
+    is_footer_background_image = models.BooleanField(
+        default=False,
+        verbose_name='Footer background image'
+    )
 
     created_at = models.DateTimeField(
         auto_now_add=True,

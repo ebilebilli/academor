@@ -1,4 +1,4 @@
-from projects.utils.queries import get_contact, get_nav_courses, serialize_contact
+from projects.utils.queries import get_background_image, get_contact, get_nav_courses, serialize_contact
 
 
 SEO_HOME = {
@@ -84,6 +84,7 @@ def site_footer_context(request):
         nav_course_slug = rm.kwargs.get('slug') or ''
     return {
         'footer_contact': serialize_contact(contact, lang) if contact else None,
+        'footer_background_image': get_background_image('footer'),
         'nav_courses': get_nav_courses(lang),
         'nav_url_name': nav_url_name,
         'nav_course_slug': nav_course_slug,

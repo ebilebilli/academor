@@ -135,6 +135,13 @@
                                 </div>
                                 {% if form.email.errors %}<div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>{% endif %}
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    {{ form.mobile_number }}
+                                    <label for="{{ form.mobile_number.id_for_label }}">{{ form.mobile_number.label }}</label>
+                                </div>
+                                {% if form.mobile_number.errors %}<div class="text-danger small mt-1">{{ form.mobile_number.errors.0 }}</div>{% endif %}
+                            </div>
                             <div class="col-12">
                                 <div class="form-floating">
                                     {{ form.subject }}

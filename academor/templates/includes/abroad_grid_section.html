@@ -1,13 +1,37 @@
 {% load i18n static %}
 <div class="container-xxl py-5 abroad-section">
     <div class="container">
-        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+        <div class="text-center">
             <h1 class="mb-5 fw-bold text-dark">{% trans "Study in Abroad" %}</h1>
         </div>
+        {% if universities %}
+        <div class="universities-list universities-carousel mb-5" aria-label="{% trans 'Partner universities' %}">
+            <div class="universities-list__track">
+                {% for uni in universities %}
+                <div class="universities-list__item">
+                    <div class="university-flag-card">
+                        {% if uni.flag %}
+                        <img src="{{ uni.flag }}" alt="" class="university-flag-card__img" loading="lazy" decoding="async">
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+                {% for uni in universities %}
+                <div class="universities-list__item" aria-hidden="true">
+                    <div class="university-flag-card">
+                        {% if uni.flag %}
+                        <img src="{{ uni.flag }}" alt="" class="university-flag-card__img" loading="lazy" decoding="async">
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
         {% if abroad_items %}
         <div class="row g-4">
             {% for item in abroad_items %}
-            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="{% widthratio forloop.counter 1 2 %}00ms">
+            <div class="col-lg-4 col-md-6">
                 <div class="abroad-card h-100 text-center">
                     <div class="abroad-card__icon-wrap">
                         {% if item.img %}

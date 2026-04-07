@@ -29,6 +29,7 @@ class MediaAdmin(admin.ModelAdmin):
         'is_courses_page_background_image',
         'is_tests_page_background_image',
         'is_service_page_background_image',
+        'is_footer_background_image',
         'created_at',
     )
     readonly_fields = ('created_at', 'media_preview_detailed')
@@ -46,6 +47,7 @@ class MediaAdmin(admin.ModelAdmin):
                 'is_courses_page_background_image',
                 'is_tests_page_background_image',
                 'is_service_page_background_image',
+                'is_footer_background_image',
             ),
         }),
     )
@@ -66,6 +68,7 @@ class MediaAdmin(admin.ModelAdmin):
             | Q(is_courses_page_background_image=True)
             | Q(is_tests_page_background_image=True)
             | Q(is_service_page_background_image=True)
+            | Q(is_footer_background_image=True)
         )
 
     def media_preview(self, obj):
@@ -102,6 +105,8 @@ class MediaAdmin(admin.ModelAdmin):
             flags.append("📝 Tests pages")
         if obj.is_service_page_background_image:
             flags.append("🛠️ Services page")
+        if obj.is_footer_background_image:
+            flags.append("🔻 Footer")
         return " | ".join(flags) if flags else "-"
     background_flags.short_description = "Background"
 
@@ -336,6 +341,41 @@ class AbroadModelAdmin(admin.ModelAdmin):
             )
         return "—"
     preview_image_large.short_description = "Preview"
+
+
+@admin.register(University)
+class UniversityAdmin(admin.ModelAdmin):
+    list_display = ('id', 'flag_preview', 'is_active')
+    list_filter = ('is_active',)
+    list_editable = ('is_active',)
+    readonly_fields = ('flag_preview_large',)
+    list_per_page = 25
+    fieldsets = (
+        ('Content', {
+            'fields': ('flag', 'flag_preview_large')
+        }),
+        ('Status', {
+            'fields': ('is_active',)
+        }),
+    )
+
+    def flag_preview(self, obj):
+        if obj.flag:
+            return format_html(
+                '<img src="{}" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover;" />',
+                obj.flag.url,
+            )
+        return "—"
+    flag_preview.short_description = "Flag"
+
+    def flag_preview_large(self, obj):
+        if obj.flag:
+            return format_html(
+                '<img src="{}" style="width: 96px; height: 96px; border-radius: 50%; object-fit: cover;" />',
+                obj.flag.url,
+            )
+        return "—"
+    flag_preview_large.short_description = "Preview"
 
 @admin.register(Instructor)
 class InstructorAdmin(admin.ModelAdmin):
@@ -723,6 +763,7 @@ class ContactInquiryAdmin(admin.ModelAdmin):
     search_fields = (
         'full_name',
         'email',
+        'mobile_number',
         'subject',
         'info',
     )
@@ -732,7 +773,7 @@ class ContactInquiryAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('Sender', {
-            'fields': ('full_name', 'email')
+            'fields': ('full_name', 'email', 'mobile_number')
         }),
         ('Message', {
             'fields': ('subject', 'info')
@@ -749,6 +790,16 @@ class ContactInquiryAdmin(admin.ModelAdmin):
         detail_url = reverse('admin:projects_contactinquiry_change', args=[obj.pk])
         name = obj.full_name or "No name"
         email = obj.email or "No email"
+        if obj.mobile_number:
+            mobile_html = format_html(
+                '<a href="tel:{}" style="color: #666; text-decoration: none; font-size: 13px;">📱 {}</a>',
+                obj.mobile_number,
+                obj.mobile_number[:30] + ('...' if len(obj.mobile_number) > 30 else '')
+            )
+        else:
+            mobile_html = format_html(
+                '<span style="color: #666; font-size: 13px;">📱 No mobile number</span>'
+            )
         
         return format_html(
             '<div style="padding: 8px 0;">'
@@ -756,12 +807,15 @@ class ContactInquiryAdmin(admin.ModelAdmin):
             'font-size: 15px; display: block; line-height: 1.4; margin-bottom: 4px;">'
             '👤 {}</a>'
             '<a href="mailto:{}" style="color: #666; text-decoration: none; font-size: 13px;">'
-            '✉️ {}</a>'
+            '✉️ {}</a><br>'
+            '{}'
             '</div>',
             detail_url,
             name,
             email,
-            email[:30] + ('...' if len(email) > 30 else '')
+            email,
+            email[:30] + ('...' if len(email) > 30 else ''),
+            mobile_html
         )
     sender_info.short_description = "Sender"
     sender_info.admin_order_field = 'full_name'
@@ -833,6 +887,7 @@ def _sorted_get_app_list(request, app_label=None):
         "ServiceCategory": 200,
         "ServiceHighlight": 210,
         "AbroadModel": 220,
+        "University": 225,
         "Instructor": 230,
 
         # Inbound

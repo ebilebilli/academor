@@ -28,7 +28,13 @@
             {% if hero_background_images %}
             {% for img_url in hero_background_images %}
             <div class="owl-carousel-item position-relative">
-                <img class="img-fluid w-100" src="{{ img_url }}" alt="" loading="eager" decoding="async">
+                <img
+                    class="img-fluid w-100"
+                    src="{{ img_url }}"
+                    alt=""
+                    loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                    decoding="async"
+                    fetchpriority="{% if forloop.first %}high{% else %}low{% endif %}">
                 <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
                     <div class="container">
                         <div class="row justify-content-start">
@@ -64,7 +70,7 @@
             {% endfor %}
             {% elif background_image %}
             <div class="owl-carousel-item position-relative">
-                <img class="img-fluid w-100" src="{{ background_image }}" alt="" loading="eager" decoding="async">
+                <img class="img-fluid w-100" src="{{ background_image }}" alt="" loading="eager" decoding="async" fetchpriority="high">
                 <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
                     <div class="container">
                         <div class="row justify-content-start">
@@ -99,7 +105,7 @@
             </div>
             {% else %}
             <div class="owl-carousel-item position-relative">
-                <img class="img-fluid" src="{% static 'assets/img/banner.png' %}" alt="" loading="eager" decoding="async">
+                <img class="img-fluid" src="{% static 'assets/img/banner.png' %}" alt="" loading="eager" decoding="async" fetchpriority="high">
                 <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
                     <div class="container">
                         <div class="row justify-content-start">
@@ -186,32 +192,36 @@
 
 
     <!-- Categories Start -->
-    <div class="container-xxl py-5 category">
+    <div class="container-xxl py-5 category courses-alt">
         <div class="container">
-            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h1 class="mb-5">{% trans "Courses" %}</h1>
+            <div class="text-center wow fadeInUp courses-alt__heading" data-wow-delay="0.1s">
+                <h1 class="mb-0">{% trans "Courses" %}</h1>
             </div>
             {% if categories %}
-            <div class="categories-carousel owl-carousel owl-theme position-relative px-lg-2">
+            <div class="courses-alt__carousel-shell wow fadeInUp" data-wow-delay="0.2s">
+            <div class="categories-carousel owl-carousel owl-theme position-relative">
                 {% for cat in categories %}
                 <div class="item">
-                    <a href="{% url 'projects:course-detail' slug=cat.slug %}" class="category-square-card d-block text-decoration-none text-dark h-100">
-                        <div class="ratio ratio-1x1 rounded-3 overflow-hidden shadow-sm border border-light category-square-card__media">
-                            {% if cat.image %}
-                            <img src="{{ cat.image }}" alt="{{ cat.name }}" class="w-100 h-100" style="object-fit: cover;" loading="lazy" decoding="async">
-                            {% else %}
-                            <div class="w-100 h-100 bg-light d-flex align-items-center justify-content-center text-muted">
-                                <i class="fa fa-th-large fa-3x opacity-25"></i>
+                    <article class="course-alt-card h-100">
+                        <a href="{% url 'projects:course-detail' slug=cat.slug %}" class="category-square-card course-alt-card__link d-flex flex-column text-decoration-none h-100">
+                            <div class="ratio ratio-1x1 overflow-hidden course-alt-card__media">
+                                {% if cat.image %}
+                                <img src="{{ cat.image }}" alt="{{ cat.name }}" class="w-100 h-100" style="object-fit: cover;" loading="lazy" decoding="async">
+                                {% else %}
+                                <div class="w-100 h-100 bg-light d-flex align-items-center justify-content-center text-muted">
+                                    <i class="fa fa-th-large fa-3x opacity-25"></i>
+                                </div>
+                                {% endif %}
                             </div>
-                            {% endif %}
-                        </div>
-                        <div class="text-center mt-3 px-1">
-                            <h5 class="mb-1 text-truncate" title="{{ cat.name }}">{{ cat.name }}</h5>
-                            <small class="text-primary">{% trans "View courses" %}</small>
-                        </div>
-                    </a>
+                            <div class="course-alt-card__body">
+                                <h5 class="mb-2 text-truncate" title="{{ cat.name }}">{{ cat.name }}</h5>
+                                <span class="course-alt-card__cta"><i class="fa fa-arrow-right" aria-hidden="true"></i></span>
+                            </div>
+                        </a>
+                    </article>
                 </div>
                 {% endfor %}
+            </div>
             </div>
             {% else %}
             <p class="text-center text-muted mb-0">{% trans "No categories yet." %}</p>

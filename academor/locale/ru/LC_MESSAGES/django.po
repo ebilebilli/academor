@@ -210,6 +210,9 @@ msgstr "Academor - Тест"
 msgid "Test"
 msgstr "Тест"
 
+msgid "Level Test"
+msgstr "Уровневый тест"
+
 msgid "Result"
 msgstr "Результат"
 
@@ -347,3 +350,27 @@ msgstr "Карточек обучения за рубежом пока нет."
 
 msgid "Study in Abroad"
 msgstr "Обучение за рубежом"
+
+msgid "Full name"
+msgstr "Полное имя"
+
+msgid "Email address"
+msgstr "Адрес эл. почты"
+
+msgid "Subject"
+msgstr "Тема"
+
+msgid "Your message"
+msgstr "Ваше сообщение"
+
+msgid "Mobile number"
+msgstr "Мобильный номер"
+
+msgid "Please provide either an email address or a mobile number."
+msgstr "Укажите адрес эл. почты или мобильный номер."
+
+msgid "Your message has been sent successfully."
+msgstr "Ваше сообщение успешно отправлено."
+
+msgid "Something went wrong. Please try again."
+msgstr "Что-то пошло не так. Пожалуйста, попробуйте снова."

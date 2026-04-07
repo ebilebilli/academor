@@ -210,6 +210,9 @@ msgstr "Academor - Test"
 msgid "Test"
 msgstr "Test"
 
+msgid "Level Test"
+msgstr "Level Test"
+
 msgid "Result"
 msgstr "Nəticə"
 
@@ -347,3 +350,27 @@ msgstr "Hələ xaricdə təhsil kartı yoxdur."
 
 msgid "Study in Abroad"
 msgstr "Xaricdə Təhsil"
+
+msgid "Full name"
+msgstr "Ad və soyad"
+
+msgid "Email address"
+msgstr "E-poçt ünvanı"
+
+msgid "Subject"
+msgstr "Mövzu"
+
+msgid "Your message"
+msgstr "Mesajınız"
+
+msgid "Mobile number"
+msgstr "Mobil nömrə"
+
+msgid "Please provide either an email address or a mobile number."
+msgstr "Zəhmət olmasa e-poçt ünvanı və ya mobil nömrə daxil edin."
+
+msgid "Your message has been sent successfully."
+msgstr "Mesajınız uğurla göndərildi."
+
+msgid "Something went wrong. Please try again."
+msgstr "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin."

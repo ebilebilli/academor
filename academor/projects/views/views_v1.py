@@ -11,15 +11,14 @@ from projects.utils.queries import (
     get_language_from_request, get_home_page_data,
     get_courses_list_data,
     get_background_image,
-    get_about, serialize_about, get_partners, serialize_partner,
+    get_about, serialize_about, get_serialized_partners,
     get_contact, serialize_contact,
     get_project_categories, serialize_project_category,
     serialize_project_category_detail,
     get_active_project_category_by_slug,
     get_team_members, serialize_team_member,
     get_reviews, serialize_review,
-    get_service_highlights, serialize_service_highlight,
-    get_abroad_items, serialize_abroad_item,
+    get_serialized_service_highlights,
 )
 
 
@@ -74,7 +73,6 @@ class AboutPageView(View):
         lang = get_language_from_request(request)
         is_active = request.GET.get('is_active', 'true').lower() == 'true'
         about = get_about(lang)
-        partners = get_partners(lang=lang, is_active=is_active)
         contact = get_contact(lang)
         categories = get_project_categories(lang)
         serialized_categories = [
@@ -83,10 +81,10 @@ class AboutPageView(View):
         ]
         context = {
             'about': serialize_about(about, lang) if about else None,
-            'partners': [serialize_partner(p, lang) for p in partners],
+            'partners': get_serialized_partners(lang=lang, is_active=is_active),
             'contact': serialize_contact(contact, lang) if contact else None,
             'categories': serialized_categories,
-            'service_highlights': [serialize_service_highlight(s, lang) for s in get_service_highlights(is_active=True)],
+            'service_highlights': get_serialized_service_highlights(lang=lang, is_active=True),
             'language': lang,
             'background_image': get_background_image('about'),
         }
@@ -146,18 +144,18 @@ class ContactPageView(View):
         if form.is_valid():
             try:
                 form.save()
-                msg = 'Your message has been sent successfully.'
+                msg = _('Your message has been sent successfully.')
                 if is_ajax:
                     return JsonResponse({'success': True, 'message': msg})
                 messages.success(request, msg)
                 return redirect('projects:contact-page')
             except Exception:
-                err_msg = 'Something went wrong. Please try again.'
+                err_msg = _('Something went wrong. Please try again.')
                 if is_ajax:
                     return JsonResponse({'success': False, 'message': err_msg}, status=500)
                 messages.error(request, err_msg)
         else:
-            err_msg = 'Please correct the errors in the form.'
+            err_msg = _('Please correct the errors in the form.')
             if is_ajax:
                 errors = {k: [str(e) for e in v] for k, v in form.errors.items()}
                 return JsonResponse(
