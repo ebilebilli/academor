@@ -1,4 +1,10 @@
-from projects.utils.queries import get_background_image, get_contact, get_nav_courses, serialize_contact
+from projects.utils.queries import (
+    get_background_image,
+    get_contact,
+    get_nav_courses,
+    get_nav_abroad_items,
+    serialize_contact,
+)
 
 
 SEO_HOME = {
@@ -80,12 +86,16 @@ def site_footer_context(request):
     rm = getattr(request, 'resolver_match', None)
     nav_url_name = getattr(rm, 'url_name', '') if rm else ''
     nav_course_slug = ''
+    nav_abroad_pk = None
     if rm and getattr(rm, 'kwargs', None):
         nav_course_slug = rm.kwargs.get('slug') or ''
+        nav_abroad_pk = rm.kwargs.get('pk')
     return {
         'footer_contact': serialize_contact(contact, lang) if contact else None,
         'footer_background_image': get_background_image('footer'),
         'nav_courses': get_nav_courses(lang),
+        'nav_abroad_items': get_nav_abroad_items(lang=lang, is_active=True),
         'nav_url_name': nav_url_name,
         'nav_course_slug': nav_course_slug,
+        'nav_abroad_pk': nav_abroad_pk,
     }

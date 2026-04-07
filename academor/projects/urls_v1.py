@@ -6,6 +6,8 @@ from projects.views.views_v1 import (
     CourseDetailPageView,
     AboutPageView,
     ServicesPageView,
+    AbroadPageView,
+    AbroadDetailPageView,
     ContactPageView,
     TeamPageView,
     TeamDetailPageView,
@@ -41,6 +43,16 @@ urlpatterns = [
         'services/', 
         ServicesPageView.as_view(), 
         name='services-page'
+    ),
+    path(
+        'abroad/',
+        AbroadPageView.as_view(),
+        name='abroad-page'
+    ),
+    path(
+        'abroad/<int:pk>/',
+        AbroadDetailPageView.as_view(),
+        name='abroad-detail'
     ),
     path(
         'contact/', 

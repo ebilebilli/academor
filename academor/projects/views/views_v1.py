@@ -19,6 +19,10 @@ from projects.utils.queries import (
     get_team_members, serialize_team_member,
     get_reviews, serialize_review,
     get_serialized_service_highlights,
+    get_serialized_abroad_items,
+    get_serialized_universities,
+    get_abroad_items,
+    serialize_abroad_item,
 )
 
 
@@ -108,6 +112,53 @@ class ServicesPageView(View):
             'categories': serialized_categories,
             'language': lang,
             'background_image': get_background_image('service'),
+        }
+        return render(request, self.template_name, context)
+
+
+class AbroadPageView(View):
+    template_name = 'abroad.html'
+
+    def get(self, request):
+        lang = get_language_from_request(request)
+        contact = get_contact(lang)
+        categories = get_project_categories(lang)
+        context = {
+            'contact': serialize_contact(contact, lang) if contact else None,
+            'categories': [serialize_project_category(category, lang) for category in categories],
+            'abroad_items': get_serialized_abroad_items(lang=lang, is_active=True),
+            'universities': get_serialized_universities(is_active=True),
+            'language': lang,
+            'background_image': get_background_image('about'),
+        }
+        return render(request, self.template_name, context)
+
+
+class AbroadDetailPageView(View):
+    template_name = 'abroad-detail.html'
+
+    def get(self, request, pk: int):
+        lang = get_language_from_request(request)
+        item = next((i for i in get_abroad_items(is_active=True) if i.id == pk), None)
+        if not item:
+            raise Http404(_("Abroad item not found"))
+
+        contact = get_contact(lang)
+        categories = get_project_categories(lang)
+        item_data = serialize_abroad_item(item, lang=lang)
+        other_items = [
+            serialize_abroad_item(i, lang=lang)
+            for i in get_abroad_items(is_active=True)
+            if i.id != item.id
+        ]
+        context = {
+            'abroad_item': item_data,
+            'other_abroad_items': other_items,
+            'contact': serialize_contact(contact, lang) if contact else None,
+            'categories': [serialize_project_category(category, lang) for category in categories],
+            'language': lang,
+            'background_image': get_background_image('about'),
+            'page_title': f'{item_data["name"]} | Academor',
         }
         return render(request, self.template_name, context)
 

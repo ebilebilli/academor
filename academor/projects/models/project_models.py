@@ -58,19 +58,19 @@ class ServiceCategory(SluggedModel):
 
 class ServiceHighlight(models.Model):
     title_az = models.CharField(
-        max_length=100,
+        max_length=160,
         null=True,
         blank=True,
         verbose_name='Title (AZ)'
     )
     title_en = models.CharField(
-        max_length=100,
+        max_length=160,
         null=True,
         blank=True,
         verbose_name='Title (EN)'
     )
     title_ru = models.CharField(
-        max_length=100,
+        max_length=160,
         null=True,
         blank=True,
         verbose_name='Title (RU)'
@@ -78,19 +78,19 @@ class ServiceHighlight(models.Model):
     description_az = models.TextField(
         null=True,
         blank=True,
-        max_length=100,
+        max_length=200,
         verbose_name='Description (AZ)'
     )
     description_en = models.TextField(
         null=True,
         blank=True,
-        max_length=100,
+        max_length=200,
         verbose_name='Description (EN)'
     )
     description_ru = models.TextField(
         null=True,
         blank=True,
-        max_length=100,
+        max_length=200,
         verbose_name='Description (RU)'
     )
     order = models.PositiveIntegerField(
@@ -119,6 +119,18 @@ class AbroadModel(models.Model):
     name = models.CharField(
         max_length=120,
         verbose_name='Name'
+    )
+    description_az = RichTextField(
+        blank=True,
+        verbose_name='Description (AZ)'
+    )
+    description_en = RichTextField(
+        blank=True,
+        verbose_name='Description (EN)'
+    )
+    description_ru = RichTextField(
+        blank=True,
+        verbose_name='Description (RU)'
     )
     img = models.ImageField(
         upload_to='abroad/',

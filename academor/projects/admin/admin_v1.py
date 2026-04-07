@@ -307,17 +307,38 @@ class ServiceHighlightAdmin(admin.ModelAdmin):
     title_link.admin_order_field = 'title_az'
 
 
+class AbroadModelAdminForm(forms.ModelForm):
+    class Meta:
+        model = AbroadModel
+        fields = '__all__'
+        widgets = {
+            'description_az': CKEditorWidget(),
+            'description_en': CKEditorWidget(),
+            'description_ru': CKEditorWidget(),
+        }
+
+
 @admin.register(AbroadModel)
 class AbroadModelAdmin(admin.ModelAdmin):
+    form = AbroadModelAdminForm
     list_display = ('id', 'name', 'preview_image', 'is_active', 'created_at')
     list_filter = ('is_active', 'created_at')
-    search_fields = ('name',)
+    search_fields = ('name', 'description_az', 'description_en', 'description_ru')
     list_editable = ('is_active',)
     readonly_fields = ('created_at', 'preview_image_large')
     list_per_page = 25
     fieldsets = (
         ('Content', {
             'fields': ('name', 'img')
+        }),
+        ('Azerbaijani', {
+            'fields': ('description_az',)
+        }),
+        ('English', {
+            'fields': ('description_en',)
+        }),
+        ('Русский', {
+            'fields': ('description_ru',)
         }),
         ('Status', {
             'fields': ('is_active', 'created_at', 'preview_image_large')

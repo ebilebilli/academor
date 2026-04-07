@@ -13,6 +13,18 @@
             <a href="{% url 'projects:home-page' %}" class="nav-item nav-link{% if u == 'home-page' %} active{% endif %}">{% trans "Home" %}</a>
             <a href="{% url 'projects:about-page' %}" class="nav-item nav-link{% if u == 'about-page' %} active{% endif %}">{% trans "About" %}</a>
             <div class="nav-item dropdown">
+                <a href="{% url 'projects:abroad-page' %}" class="nav-link dropdown-toggle{% if u == 'abroad-page' or u == 'abroad-detail' %} active{% endif %}" data-bs-toggle="dropdown" aria-expanded="false">{% trans "Study in Abroad" %}</a>
+                <div class="dropdown-menu fade-down m-0 nav-courses-dropdown shadow-sm">
+                    <a href="{% url 'projects:abroad-page' %}" class="dropdown-item fw-semibold">{% trans "All study abroad" %}</a>
+                    {% if nav_abroad_items %}
+                    <div class="dropdown-divider"></div>
+                    {% for item in nav_abroad_items %}
+                    <a href="{% url 'projects:abroad-detail' pk=item.id %}" class="dropdown-item text-wrap{% if u == 'abroad-detail' and nav_abroad_pk == item.id %} active{% endif %}">{{ item.name }}</a>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="nav-item dropdown">
                 <a href="{% url 'projects:courses-page' %}" class="nav-link dropdown-toggle{% if u == 'courses-page' or u == 'course-detail' %} active{% endif %}" data-bs-toggle="dropdown" aria-expanded="false">{% trans "Courses" %}</a>
                 <div class="dropdown-menu fade-down m-0 nav-courses-dropdown shadow-sm">
                     <a href="{% url 'projects:courses-page' %}" class="dropdown-item fw-semibold">{% trans "All courses" %}</a>

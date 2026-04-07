@@ -1812,12 +1812,15 @@ h1, h2, h3, h4, h5, h6,
     padding: 26px 20px;
     color: var(--dark);
     box-shadow: 0 6px 16px rgba(24, 29, 56, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     content-visibility: auto;
     contain-intrinsic-size: 220px;
 }
 
 .abroad-card:hover {
     border-color: rgba(0, 49, 61, 0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(24, 29, 56, 0.1);
 }
 
 .abroad-card__icon-wrap {
@@ -1848,8 +1851,23 @@ h1, h2, h3, h4, h5, h6,
 .abroad-card__title {
     font-size: 1.45rem;
     font-weight: 700;
-    margin-bottom: 0;
+    margin-bottom: 0.35rem;
     letter-spacing: 0;
+}
+
+.abroad-card__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    opacity: 0.85;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.abroad-card:hover .abroad-card__cta,
+.abroad-card:focus-visible .abroad-card__cta {
+    transform: translateX(5px);
+    opacity: 1;
 }
 
 .abroad-card__subtitle {

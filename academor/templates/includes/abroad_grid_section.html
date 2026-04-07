@@ -32,7 +32,7 @@
         <div class="row g-4">
             {% for item in abroad_items %}
             <div class="col-lg-4 col-md-6">
-                <div class="abroad-card h-100 text-center">
+                <a href="{% url 'projects:abroad-detail' pk=item.id %}" class="abroad-card h-100 text-center d-block text-decoration-none">
                     <div class="abroad-card__icon-wrap">
                         {% if item.img %}
                         <img src="{{ item.img }}" alt="{{ item.name }}" class="abroad-card__thumb">
@@ -41,7 +41,8 @@
                         {% endif %}
                     </div>
                     <h4 class="abroad-card__title">{{ item.name }}</h4>
-                </div>
+                    <span class="abroad-card__cta" aria-hidden="true"><i class="fa fa-arrow-right"></i></span>
+                </a>
             </div>
             {% endfor %}
         </div>

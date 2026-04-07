@@ -341,19 +341,31 @@ def serialize_service_highlight(item, lang='az'):
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
 def get_abroad_items(is_active=True):
-    qs = AbroadModel.objects.only('id', 'name', 'img', 'is_active')
+    qs = AbroadModel.objects.only(
+        'id',
+        'name',
+        'description_az',
+        'description_en',
+        'description_ru',
+        'img',
+        'is_active',
+        'created_at',
+    )
     if is_active is not None:
         qs = qs.filter(is_active=is_active)
     return list(qs.order_by('id'))
 
 
-def serialize_abroad_item(item):
+def serialize_abroad_item(item, lang='az'):
     if item is None:
         return None
     return {
         'id': item.id,
         'name': item.name,
+        'description': _localized_value(item, 'description', lang),
         'img': item.img.url if item.img else None,
+        'is_active': item.is_active,
+        'created_at': item.created_at,
     }
 
 
@@ -375,8 +387,13 @@ def serialize_university(item):
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
-def get_serialized_abroad_items(is_active=True):
-    return [serialize_abroad_item(i) for i in get_abroad_items(is_active=is_active)]
+def get_serialized_abroad_items(lang='az', is_active=True):
+    return [serialize_abroad_item(i, lang=lang) for i in get_abroad_items(is_active=is_active)]
+
+
+@cached_query(timeout='CACHE_TIMEOUT_LONG')
+def get_nav_abroad_items(lang='az', is_active=True):
+    return [serialize_abroad_item(i, lang=lang) for i in get_abroad_items(is_active=is_active)]
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
@@ -586,7 +603,7 @@ def get_home_page_data(request, lang):
         'hero_background_images': hero_background_images,
         'motto': motto,
         'service_highlights': serialized_service_highlights,
-        'abroad_items': get_serialized_abroad_items(is_active=True),
+        'abroad_items': get_serialized_abroad_items(lang=lang, is_active=True),
         'universities': get_serialized_universities(is_active=True),
         'team': [serialize_team_member(m) for m in get_team_members()],
         'reviews': [serialize_review(r) for r in get_reviews()],
@@ -636,7 +653,7 @@ def _get_project_list_data_impl(request, lang):
             'is_active': is_active,
         },
         'background_image': get_background_image('courses'),
-        'abroad_items': get_serialized_abroad_items(is_active=True),
+        'abroad_items': get_serialized_abroad_items(lang=lang, is_active=True),
     }
 
 
