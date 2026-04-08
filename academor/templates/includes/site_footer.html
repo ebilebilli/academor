@@ -1,17 +1,19 @@
 {% load static i18n %}
-<div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn"{% if footer_background_image %} style="--footer-bg-image: url('{{ footer_background_image }}');"{% endif %} data-wow-delay="0.1s">
+<div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
     <div class="container py-5">
         <div class="row g-5 footer-content-row">
             <div class="col-md-6 col-lg-6 footer-links-col">
                 <h4 class="text-white mb-3 footer-title">{% trans "Quick Link" %}</h4>
-                <a class="btn btn-link text-start d-block px-0 footer-quick-link" href="{% url 'projects:home-page' %}">{% trans "Home" %}</a>
-                <a class="btn btn-link text-start d-block px-0 footer-quick-link" href="{% url 'projects:about-page' %}">{% trans "About" %}</a>
-                <a class="btn btn-link text-start d-block px-0 footer-quick-link" href="{% url 'projects:abroad-page' %}">{% trans "Study in Abroad" %}</a>
-                <a class="btn btn-link text-start d-block px-0 footer-quick-link" href="{% url 'projects:courses-page' %}">{% trans "Courses" %}</a>
-                <a class="btn btn-link text-start d-block px-0 footer-quick-link" href="{% url 'projects:team-page' %}">{% trans "Our Team" %}</a>
-                <a class="btn btn-link text-start d-block px-0 footer-quick-link" href="{% url 'projects:reviews-page' %}">{% trans "Reviews" %}</a>
-                <a class="btn btn-link text-start d-block px-0 footer-quick-link" href="{% url 'projects:tests-page' %}">{% trans "Test" %}</a>
-                <a class="btn btn-link text-start d-block px-0 footer-quick-link" href="{% url 'projects:contact-page' %}">{% trans "Contact" %}</a>
+                <div class="footer-links-grid">
+                    <a class="btn btn-link text-start d-block px-0 footer-quick-link" href="{% url 'projects:home-page' %}">{% trans "Home" %}</a>
+                    <a class="btn btn-link text-start d-block px-0 footer-quick-link" href="{% url 'projects:about-page' %}">{% trans "About" %}</a>
+                    <a class="btn btn-link text-start d-block px-0 footer-quick-link" href="{% url 'projects:abroad-page' %}">{% trans "Study in Abroad" %}</a>
+                    <a class="btn btn-link text-start d-block px-0 footer-quick-link" href="{% url 'projects:courses-page' %}">{% trans "Courses" %}</a>
+                    <a class="btn btn-link text-start d-block px-0 footer-quick-link" href="{% url 'projects:team-page' %}">{% trans "Our Team" %}</a>
+                    <a class="btn btn-link text-start d-block px-0 footer-quick-link" href="{% url 'projects:reviews-page' %}">{% trans "Reviews" %}</a>
+                    <a class="btn btn-link text-start d-block px-0 footer-quick-link" href="{% url 'projects:tests-page' %}">{% trans "Test" %}</a>
+                    <a class="btn btn-link text-start d-block px-0 footer-quick-link" href="{% url 'projects:contact-page' %}">{% trans "Contact" %}</a>
+                </div>
             </div>
             <div class="col-md-6 col-lg-6 footer-contact-col">
                 <h4 class="text-white mb-3 footer-title">{% trans "Contact" %}</h4>
@@ -67,6 +69,12 @@
             <p class="text-center text-white-50 mb-0 py-3 small footer-copy">@Academor 2026. {% trans "All rights reserved." %}</p>
         </div>
     </div>
+
+    <img src="{% static 'assets/img/footer-formula.png' %}"
+         alt=""
+         class="footer-formula-img"
+         aria-hidden="true"
+         loading="lazy">
 </div>
 
 <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top" role="button" tabindex="-1" aria-hidden="true" aria-label="{% trans 'Back to top' %}"><i class="bi bi-arrow-up" aria-hidden="true"></i></a>

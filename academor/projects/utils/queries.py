@@ -277,10 +277,10 @@ def get_background_image(page_type):
         'service': 'is_service_page_background_image',
         'footer': 'is_footer_background_image',
     }
-    
+
     if page_type not in image_map:
         return None
-    
+
     media = Media.objects.filter(**{image_map[page_type]: True}).first()
     if media and media.image:
         return media.image.url
