@@ -136,6 +136,12 @@ class AbroadModel(models.Model):
         upload_to='abroad/',
         verbose_name='Image'
     )
+    detail_page_img = models.ImageField(
+        upload_to='abroad/detail/',
+        null=True,
+        blank=True,
+        verbose_name='Detail page image'
+    )
     is_active = models.BooleanField(
         default=True,
         verbose_name='Active'
@@ -152,6 +158,28 @@ class AbroadModel(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class StudyAbroadSection(models.Model):
+    text_az = RichTextField(
+        blank=True,
+        verbose_name='Text (AZ)'
+    )
+    text_en = RichTextField(
+        blank=True,
+        verbose_name='Text (EN)'
+    )
+    text_ru = RichTextField(
+        blank=True,
+        verbose_name='Text (RU)'
+    )
+
+    class Meta:
+        verbose_name = 'Study Abroad Section Text'
+        verbose_name_plural = 'Study Abroad Section Text'
+
+    def __str__(self):
+        return 'Study Abroad Section'
 
 
 class University(models.Model):

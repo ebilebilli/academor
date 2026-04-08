@@ -25,14 +25,14 @@
     <div class="header-carousel-section mb-5">
         <div class="container-xxl px-3 px-md-4 px-lg-5">
         <div class="owl-carousel header-carousel position-relative">
-            {% if hero_background_images %}
-            {% for img_url in hero_background_images %}
+            {% if hero_slides %}
+            {% for slide in hero_slides %}
             <div class="owl-carousel-item position-relative">
                 <img
                     class="img-fluid w-100"
-                    src="{{ img_url }}"
-                    alt=""
-                    {% if forloop.first %}width="1920" height="1080"{% endif %}
+                    src="{{ slide.image_url }}"
+                    alt="{{ slide.heading_main|default:'' }}"
+                    width="1920" height="1080"
                     loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
                     decoding="async"
                     fetchpriority="{% if forloop.first %}high{% else %}low{% endif %}">
@@ -41,28 +41,38 @@
                         <div class="row justify-content-start">
                             <div class="col-sm-10 col-lg-8">
                                 <h5 class="text-primary text-uppercase mb-3 animated slideInDown">
-                                    {% if motto and motto.heading_small %}
-                                        {{ motto.heading_small }}
-                                    {% else %}
-                                        {% trans "Best Online Courses" %}
-                                    {% endif %}
+                                    {% if slide.heading_small %}{{ slide.heading_small }}{% else %}{% trans "Best Online Courses" %}{% endif %}
                                 </h5>
                                 <h1 class="display-3 text-white animated slideInDown">
-                                    {% if motto and motto.heading_main %}
-                                        {{ motto.heading_main }}
-                                    {% else %}
-                                        {{ seo_home_h1 }}
-                                    {% endif %}
+                                    {% if slide.heading_main %}{{ slide.heading_main }}{% else %}{{ seo_home_h1 }}{% endif %}
                                 </h1>
                                 <p class="fs-5 text-white mb-4 pb-2">
-                                    {% if motto and motto.body %}
-                                        {{ motto.body }}
-                                    {% else %}
-                                        {% trans "Learn English effectively with Academor in Baku, Azerbaijan: General English, Speaking, IELTS, GMAT, GRE, and study abroad support." %}
-                                    {% endif %}
+                                    {% if slide.body %}{{ slide.body }}{% else %}{% trans "Learn English effectively with Academor in Baku, Azerbaijan: General English, Speaking, IELTS, GMAT, GRE, and study abroad support." %}{% endif %}
                                 </p>
                                 <a href="{% url 'projects:about-page' %}" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">{% trans "Read More" %}</a>
                                 <a href="{% url 'projects:contact-page' %}" class="btn btn-light py-md-3 px-md-5 animated slideInRight">{% trans "Contact" %}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% elif hero_background_images %}
+            {% for img_url in hero_background_images %}
+            <div class="owl-carousel-item position-relative">
+                <img
+                    class="img-fluid w-100"
+                    src="{{ img_url }}"
+                    alt=""
+                    width="1920" height="1080"
+                    loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                    decoding="async"
+                    fetchpriority="{% if forloop.first %}high{% else %}low{% endif %}">
+                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
+                    <div class="container">
+                        <div class="row justify-content-start">
+                            <div class="col-sm-10 col-lg-8">
+                                {% include "includes/_carousel_text_block.html" %}
                             </div>
                         </div>
                     </div>
@@ -76,29 +86,7 @@
                     <div class="container">
                         <div class="row justify-content-start">
                             <div class="col-sm-10 col-lg-8">
-                                <h5 class="text-primary text-uppercase mb-3 animated slideInDown">
-                                    {% if motto and motto.heading_small %}
-                                        {{ motto.heading_small }}
-                                    {% else %}
-                                        {% trans "Best Online Courses" %}
-                                    {% endif %}
-                                </h5>
-                                <h1 class="display-3 text-white animated slideInDown">
-                                    {% if motto and motto.heading_main %}
-                                        {{ motto.heading_main }}
-                                    {% else %}
-                                        {{ seo_home_h1 }}
-                                    {% endif %}
-                                </h1>
-                                <p class="fs-5 text-white mb-4 pb-2">
-                                    {% if motto and motto.body %}
-                                        {{ motto.body }}
-                                    {% else %}
-                                        {% trans "Learn English effectively with Academor in Baku, Azerbaijan: General English, Speaking, IELTS, GMAT, GRE, and study abroad support." %}
-                                    {% endif %}
-                                </p>
-                                <a href="{% url 'projects:about-page' %}" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">{% trans "Read More" %}</a>
-                                <a href="{% url 'projects:contact-page' %}" class="btn btn-light py-md-3 px-md-5 animated slideInRight">{% trans "Contact" %}</a>
+                                {% include "includes/_carousel_text_block.html" %}
                             </div>
                         </div>
                     </div>
@@ -111,36 +99,14 @@
                     <div class="container">
                         <div class="row justify-content-start">
                             <div class="col-sm-10 col-lg-8">
-                                <h5 class="text-primary text-uppercase mb-3 animated slideInDown">
-                                    {% if motto and motto.heading_small %}
-                                        {{ motto.heading_small }}
-                                    {% else %}
-                                        {% trans "Best Online Courses" %}
-                                    {% endif %}
-                                </h5>
-                                <h1 class="display-3 text-white animated slideInDown">
-                                    {% if motto and motto.heading_main %}
-                                        {{ motto.heading_main }}
-                                    {% else %}
-                                        {{ seo_home_h1 }}
-                                    {% endif %}
-                                </h1>
-                                <p class="fs-5 text-white mb-4 pb-2">
-                                    {% if motto and motto.body %}
-                                        {{ motto.body }}
-                                    {% else %}
-                                        {% trans "Learn English effectively with Academor in Baku, Azerbaijan: General English, Speaking, IELTS, GMAT, GRE, and study abroad support." %}
-                                    {% endif %}
-                                </p>
-                                <a href="{% url 'projects:about-page' %}" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">{% trans "Read More" %}</a>
-                                <a href="{% url 'projects:contact-page' %}" class="btn btn-light py-md-3 px-md-5 animated slideInRight">{% trans "Contact" %}</a>
+                                {% include "includes/_carousel_text_block.html" %}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="owl-carousel-item position-relative">
-                <img class="img-fluid" src="{% static 'assets/img/carousel-2.jpg' %}" alt="" loading="lazy" decoding="async">
+                <img class="img-fluid w-100" src="{% static 'assets/img/carousel-2.jpg' %}" alt="" width="1920" height="1080" loading="lazy" decoding="async">
                 <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
                     <div class="container">
                         <div class="row justify-content-start">
@@ -185,37 +151,34 @@
     <!-- Service End -->
 
 
-    <!-- About Start (same CMS content as About page; scroll + Read More on home) -->
-    {% if about %}
-    {% include "includes/about_intro_section.html" with about=about show_read_more_link=True %}
-    {% endif %}
-    <!-- About End -->
+    <!-- Abroad programs grid -->
+    {% include "includes/abroad_grid_section.html" %}
 
 
-    <!-- Categories Start -->
-    <div class="container-xxl py-5 category courses-alt">
+    <!-- Teachers Start -->
+    <div class="container-xxl py-5 category courses-alt index-teachers-section">
         <div class="container">
             <div class="text-center wow fadeInUp courses-alt__heading" data-wow-delay="0.1s">
-                <h1 class="mb-0">{% trans "Courses" %}</h1>
+                <h1 class="mb-0">{% trans "Our Team" %}</h1>
             </div>
-            {% if categories %}
+            {% if team %}
             <div class="courses-alt__carousel-shell wow fadeInUp" data-wow-delay="0.2s">
             <div class="categories-carousel owl-carousel owl-theme position-relative">
-                {% for cat in categories %}
+                {% for member in team %}
                 <div class="item">
                     <article class="course-alt-card h-100">
-                        <a href="{% url 'projects:course-detail' slug=cat.slug %}" class="category-square-card course-alt-card__link d-flex flex-column text-decoration-none h-100">
+                        <a href="{% url 'projects:team-detail' member.id %}" class="category-square-card course-alt-card__link d-flex flex-column text-decoration-none h-100">
                             <div class="ratio ratio-1x1 overflow-hidden course-alt-card__media">
-                                {% if cat.image %}
-                                <img src="{{ cat.image }}" alt="{{ cat.name }}" class="w-100 h-100" style="object-fit: cover;" loading="lazy" decoding="async">
+                                {% if member.image %}
+                                <img src="{{ member.image }}" alt="{{ member.name }}" class="w-100 h-100" style="object-fit: cover;" loading="{% if forloop.counter <= 4 %}eager{% else %}lazy{% endif %}" decoding="async" width="400" height="400">
                                 {% else %}
                                 <div class="w-100 h-100 bg-light d-flex align-items-center justify-content-center text-muted">
-                                    <i class="fa fa-th-large fa-3x opacity-25"></i>
+                                    <i class="fa fa-user fa-3x opacity-25"></i>
                                 </div>
                                 {% endif %}
                             </div>
                             <div class="course-alt-card__body">
-                                <h5 class="mb-2 text-truncate" title="{{ cat.name }}">{{ cat.name }}</h5>
+                                <h5 class="mb-2 text-truncate" title="{{ member.name }}">{{ member.name }}</h5>
                                 <span class="course-alt-card__cta"><i class="fa fa-arrow-right" aria-hidden="true"></i></span>
                             </div>
                         </a>
@@ -225,27 +188,11 @@
             </div>
             </div>
             {% else %}
-            <p class="text-center text-muted mb-0">{% trans "No categories yet." %}</p>
+            <p class="text-center text-muted mb-0">{% trans "No teachers yet." %}</p>
             {% endif %}
         </div>
     </div>
-    <!-- Categories End -->
-
-    <!-- Abroad programs grid -->
-    {% include "includes/abroad_grid_section.html" %}
-
-
-    <!-- Team Start -->
-    <div class="container-xxl py-5 index-team-section">
-        <div class="container">
-            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h1 class="mb-4 mb-lg-5">{% trans "Expert Instructors" %}</h1>
-            </div>
-
-            {% include "includes/team_carousel.html" %}
-        </div>
-    </div>
-    <!-- Team End -->
+    <!-- Teachers End -->
 
 
     <!-- Reviews Start -->

@@ -10,6 +10,7 @@ from projects.models import (
     ServiceCategory,
     ServiceHighlight,
     AbroadModel,
+    StudyAbroadSection,
     University,
     Team,
     Review,
@@ -86,6 +87,13 @@ def invalidate_abroad_cache(sender, instance, **kwargs):
 def invalidate_university_cache(sender, instance, **kwargs):
     """Clears cache for university flags marquee on home + Study Abroad page."""
     _invalidate_on_commit('University')
+
+
+@receiver(post_save, sender=StudyAbroadSection)
+@receiver(post_delete, sender=StudyAbroadSection)
+def invalidate_study_abroad_section_cache(sender, instance, **kwargs):
+    """Clears cache for Study Abroad intro text on the Study Abroad page."""
+    _invalidate_on_commit('StudyAbroadSection')
 
 
 @receiver(post_save, sender=Instructor)

@@ -42,20 +42,20 @@
                             {% endif %}
                             <h6 class="text-primary text-uppercase mb-3 small fw-bold">{% trans "Connect" %}</h6>
                             <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-md-start">
-                                {% if member.facebook %}
-                                <a class="btn btn-sm-square btn-primary" href="{{ member.facebook }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'Facebook' %}"><i class="fab fa-facebook-f"></i></a>
+                                {% if contact.facebook %}
+                                <a class="btn btn-sm-square btn-primary" href="{{ contact.facebook }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'Facebook' %}"><i class="fab fa-facebook-f"></i></a>
                                 {% endif %}
-                                {% if member.instagram %}
-                                <a class="btn btn-sm-square btn-primary" href="{{ member.instagram }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'Instagram' %}"><i class="fab fa-instagram"></i></a>
+                                {% if contact.instagram %}
+                                <a class="btn btn-sm-square btn-primary" href="{{ contact.instagram }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'Instagram' %}"><i class="fab fa-instagram"></i></a>
                                 {% endif %}
-                                {% if member.linkedin %}
-                                <a class="btn btn-sm-square btn-primary" href="{{ member.linkedin }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'LinkedIn' %}"><i class="fab fa-linkedin-in"></i></a>
+                                {% if contact.linkedn %}
+                                <a class="btn btn-sm-square btn-primary" href="{{ contact.linkedn }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'LinkedIn' %}"><i class="fab fa-linkedin-in"></i></a>
                                 {% endif %}
-                                {% if member.youtube %}
-                                <a class="btn btn-sm-square btn-primary" href="{{ member.youtube }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'YouTube' %}"><i class="fab fa-youtube"></i></a>
+                                {% if contact.youtube %}
+                                <a class="btn btn-sm-square btn-primary" href="{{ contact.youtube }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'YouTube' %}"><i class="fab fa-youtube"></i></a>
                                 {% endif %}
-                                {% if member.tiktok %}
-                                <a class="btn btn-sm-square btn-primary" href="{{ member.tiktok }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'TikTok' %}"><i class="fab fa-tiktok"></i></a>
+                                {% if contact.tiktok %}
+                                <a class="btn btn-sm-square btn-primary" href="{{ contact.tiktok }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'TikTok' %}"><i class="fab fa-tiktok"></i></a>
                                 {% endif %}
                             </div>
 
@@ -73,7 +73,7 @@
                     <div class="bg-light shadow-sm rounded-3 p-4 p-md-5 border border-light wow fadeInUp" data-wow-delay="0.1s">
                         <h4 class="mb-4 pb-3 border-bottom text-dark">{% trans "About" %}</h4>
                         {% if member.description %}
-                        <div class="team-detail-description-scroll" tabindex="0" role="region" aria-label="{% trans 'Biography' %}">
+                        <div class="team-detail-description-scroll custom-scroll" tabindex="0" role="region" aria-label="{% trans 'Biography' %}">
                             <div class="team-detail-description text-secondary mb-0">{{ member.description|safe }}</div>
                         </div>
                         {% else %}

@@ -19,6 +19,14 @@
 
     {% include "includes/abroad_grid_section.html" %}
 
+    {% if abroad_intro_text %}
+    <div class="container-xxl pb-5">
+        <div class="container">
+            <div class="abroad-intro-text">{{ abroad_intro_text|safe }}</div>
+        </div>
+    </div>
+    {% endif %}
+
     {% include "includes/site_footer.html" %}
 
     {% include "includes/site_scripts.html" %}

@@ -316,6 +316,43 @@ def get_motto(lang='az'):
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
+def get_mottos(lang='az'):
+    """Bütün Tagline obyektlərini carousel slide kimi qaytarır."""
+    taglines = Tagline.objects.all()
+    small_field = get_localized_field_name('heading_small', lang)
+    main_field = get_localized_field_name('heading_main', lang)
+    body_field = get_localized_field_name('body', lang)
+    result = []
+    for t in taglines:
+        result.append({
+            'heading_small': getattr(t, small_field, t.heading_small_az),
+            'heading_main': getattr(t, main_field, t.heading_main_az),
+            'body': getattr(t, body_field, t.body_az),
+        })
+    return result
+
+
+@cached_query(timeout='CACHE_TIMEOUT_LONG')
+def get_hero_slides(lang='az'):
+    """Ana səhifə hero karuseli üçün slide-ları (şəkil + başlıqlar) qaytarır."""
+    slides = HeroSlide.objects.filter(is_active=True, image__isnull=False).order_by('order', 'id')
+    result = []
+    for slide in slides:
+        if not slide.image:
+            continue
+        small_field = get_localized_field_name('heading_small', lang)
+        main_field = get_localized_field_name('heading_main', lang)
+        body_field = get_localized_field_name('body', lang)
+        result.append({
+            'image_url': slide.image.url,
+            'heading_small': getattr(slide, small_field, slide.heading_small_az) or slide.heading_small_az,
+            'heading_main': getattr(slide, main_field, slide.heading_main_az) or slide.heading_main_az,
+            'body': getattr(slide, body_field, slide.body_az) or slide.body_az,
+        })
+    return result
+
+
+@cached_query(timeout='CACHE_TIMEOUT_LONG')
 def get_service_highlights(is_active=True):
     qs = ServiceHighlight.objects.all()
     if is_active is not None:
@@ -340,6 +377,14 @@ def serialize_service_highlight(item, lang='az'):
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
+def get_study_abroad_section(lang='az'):
+    obj = StudyAbroadSection.objects.first()
+    if not obj:
+        return None
+    return _localized_value(obj, 'text', lang)
+
+
+@cached_query(timeout='CACHE_TIMEOUT_LONG')
 def get_abroad_items(is_active=True):
     qs = AbroadModel.objects.only(
         'id',
@@ -348,6 +393,7 @@ def get_abroad_items(is_active=True):
         'description_en',
         'description_ru',
         'img',
+        'detail_page_img',
         'is_active',
         'created_at',
     )
@@ -364,6 +410,7 @@ def serialize_abroad_item(item, lang='az'):
         'name': item.name,
         'description': _localized_value(item, 'description', lang),
         'img': item.img.url if item.img else None,
+        'detail_page_img': item.detail_page_img.url if item.detail_page_img else None,
         'is_active': item.is_active,
         'created_at': item.created_at,
     }
@@ -579,11 +626,28 @@ def get_home_page_data(request, lang):
     contact = get_contact(lang)
     serialized_contact = serialize_contact(contact, lang) if contact else None
     
-    # Hero carousel üçün 6 ədəd background image
+    # Hero carousel üçün 6 ədəd background image (köhnə fallback)
     hero_background_images = get_home_background_images(limit=6)
-    
-    # Motto modelindən deviz
+
+    # Motto modelindən deviz (köhnə fallback — background_image branch üçün)
     motto = get_motto(lang)
+
+    # Yeni HeroSlide sistemi: hər slide-ın öz şəkli və başlıqları var
+    # Mutasiya etməmək üçün list() ilə kopyalayırıq
+    hero_slides = list(get_hero_slides(lang))
+
+    # Bütün Tagline-ları hero_slides siyahısına əlavə edirik (background image istifadə edərək)
+    mottos = get_mottos(lang)
+    if mottos and hero_background_images:
+        for i, motto_dict in enumerate(mottos):
+            bg_img = hero_background_images[i % len(hero_background_images)]
+            hero_slides.append({
+                'image_url': bg_img,
+                'heading_small': motto_dict['heading_small'],
+                'heading_main': motto_dict['heading_main'],
+                'body': motto_dict['body'],
+            })
+
     serialized_service_highlights = get_serialized_service_highlights(lang=lang, is_active=True)
     
     return {
@@ -602,6 +666,7 @@ def get_home_page_data(request, lang):
         'background_image': get_background_image('home'),
         'hero_background_images': hero_background_images,
         'motto': motto,
+        'hero_slides': hero_slides,
         'service_highlights': serialized_service_highlights,
         'abroad_items': get_serialized_abroad_items(lang=lang, is_active=True),
         'universities': get_serialized_universities(is_active=True),
@@ -621,6 +686,7 @@ def get_abroad_page_data(request, lang):
         'abroad_items': get_serialized_abroad_items(lang=lang, is_active=True),
         'universities': get_serialized_universities(is_active=True),
         'background_image': get_background_image('about'),
+        'abroad_intro_text': get_study_abroad_section(lang=lang),
     }
 
 
@@ -632,16 +698,10 @@ def get_abroad_detail_view_context(lang, pk):
     if not item:
         return None
     item_data = serialize_abroad_item(item, lang=lang)
-    other_items = [
-        serialize_abroad_item(i, lang=lang)
-        for i in items
-        if i.id != pk
-    ]
     contact = get_contact(lang)
     categories = get_project_categories(lang)
     return {
         'abroad_item': item_data,
-        'other_abroad_items': other_items,
         'contact': serialize_contact(contact, lang) if contact else None,
         'categories': [serialize_project_category(category, lang) for category in categories],
         'background_image': get_background_image('about'),

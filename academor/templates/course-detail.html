@@ -94,7 +94,7 @@
                     <div class="bg-light shadow-sm rounded-3 p-4 p-md-5 border border-light wow fadeInUp" data-wow-delay="0.15s">
                         {% if course.description_html %}
                         <h4 class="mb-4 pb-3 border-bottom text-dark">{% trans "About this course" %}</h4>
-                        <div class="course-detail-description-scroll" tabindex="0" role="region" aria-label="{% trans 'Course description' %}">
+                        <div class="course-detail-description-scroll custom-scroll" tabindex="0" role="region" aria-label="{% trans 'Course description' %}">
                             <div class="course-detail-description text-secondary mb-0">{{ course.description_html|safe }}</div>
                         </div>
                         {% else %}

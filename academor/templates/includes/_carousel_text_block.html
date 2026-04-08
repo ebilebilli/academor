@@ -1,0 +1,12 @@
+{% load i18n %}
+<h5 class="text-primary text-uppercase mb-3 animated slideInDown">
+    {% if motto and motto.heading_small %}{{ motto.heading_small }}{% else %}{% trans "Best Online Courses" %}{% endif %}
+</h5>
+<h1 class="display-3 text-white animated slideInDown">
+    {% if motto and motto.heading_main %}{{ motto.heading_main }}{% else %}{{ seo_home_h1 }}{% endif %}
+</h1>
+<p class="fs-5 text-white mb-4 pb-2">
+    {% if motto and motto.body %}{{ motto.body }}{% else %}{% trans "Learn English effectively with Academor in Baku, Azerbaijan: General English, Speaking, IELTS, GMAT, GRE, and study abroad support." %}{% endif %}
+</p>
+<a href="{% url 'projects:about-page' %}" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">{% trans "Read More" %}</a>
+<a href="{% url 'projects:contact-page' %}" class="btn btn-light py-md-3 px-md-5 animated slideInRight">{% trans "Contact" %}</a>

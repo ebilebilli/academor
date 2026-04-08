@@ -233,9 +233,11 @@ class TeamDetailPageView(View):
 
         categories = get_project_categories(lang)
         member_data = serialize_team_member(member)
+        contact = get_contact(lang)
         context = {
             'member': member_data,
             'categories': [serialize_project_category(c, lang) for c in categories],
+            'contact': serialize_contact(contact, lang) if contact else None,
             'language': lang,
             'background_image': get_background_image('about'),
             'page_title': f'{member_data["name"]} | Academor',

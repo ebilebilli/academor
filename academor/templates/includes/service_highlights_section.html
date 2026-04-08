@@ -1,33 +1,39 @@
 {% load i18n %}
-{# Shared 4-card highlights: same on home and About page #}
 <div class="container-xxl py-5">
     <div class="container">
-        {% if service_highlights %}
+        <div class="text-center wow fadeInUp mb-5" data-wow-delay="0.1s">
+            <h1 class="mb-0">{% trans "Our Services" %}</h1>
+        </div>
+        {% if categories %}
         <div class="row g-4 service-highlights-grid">
-            {% for item in service_highlights %}
-            <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="{% widthratio forloop.counter 1 2 %}00ms">
-                <div class="service-item text-center pt-3">
-                    <div class="p-4">
-                        {% if forloop.counter0|divisibleby:4 %}
-                        <i class="fa fa-3x fa-graduation-cap text-primary mb-4"></i>
-                        {% elif forloop.counter0|add:"-1"|divisibleby:4 %}
-                        <i class="fa fa-3x fa-globe text-primary mb-4"></i>
-                        {% elif forloop.counter0|add:"-2"|divisibleby:4 %}
-                        <i class="fa fa-3x fa-clipboard-check text-primary mb-4"></i>
+            {% for cat in categories %}
+            <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
+                <a href="{% url 'projects:course-detail' slug=cat.slug %}" class="svc-card-link">
+                    <div class="svc-card">
+                        {% if cat.image %}
+                        <img
+                            src="{{ cat.image }}"
+                            alt="{{ cat.name }}"
+                            class="svc-card__img"
+                            loading="{% if forloop.counter <= 4 %}eager{% else %}lazy{% endif %}"
+                            fetchpriority="{% if forloop.counter <= 4 %}high{% else %}auto{% endif %}"
+                            decoding="async">
                         {% else %}
-                        <i class="fa fa-3x fa-plane text-primary mb-4"></i>
+                        <div class="svc-card__img svc-card__img--placeholder"></div>
                         {% endif %}
-                        <h5 class="mb-3">{{ item.title }}</h5>
-                        <p class="service-highlight-desc">{{ item.description|truncatechars:200 }}</p>
+                        <div class="svc-card__overlay"></div>
+                        <div class="svc-card__body">
+                            <h5 class="svc-card__title">{{ cat.name }}</h5>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
             {% endfor %}
         </div>
         {% else %}
         <div class="row g-4">
             <div class="col-12">
-                <p class="text-center text-muted mb-0">{% trans "No service highlights have been added yet." %}</p>
+                <p class="text-center text-muted mb-0">{% trans "No categories yet." %}</p>
             </div>
         </div>
         {% endif %}

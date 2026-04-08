@@ -36,21 +36,39 @@
 
 <link href="{% static 'assets/img/banner.png' %}" rel="icon" type="image/png">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="dns-prefetch" href="//code.jquery.com">
-<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
-<link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
-<link rel="preconnect" href="https://code.jquery.com" crossorigin>
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Roboto:wght@500;700;900&family=Work+Sans:wght@500;600;700&display=swap" rel="stylesheet">
-
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-<link href="{% static 'assets/lib/animate/animate.min.css' %}" rel="stylesheet">
-<link href="{% static 'assets/lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
-
+<!-- Critical layout CSS — synchronous (render-blocking is acceptable) -->
 <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet">
 <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+
+<!-- DNS + connection hints for external resources -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="dns-prefetch" href="//code.jquery.com">
+
+<!-- Non-critical CSS — async (loaded after paint; icons/fonts/animations not layout-critical) -->
+<link rel="preload" as="style"
+      href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700;800&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700;800&display=swap"></noscript>
+
+<link rel="preload" as="style"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"></noscript>
+
+<link rel="preload" as="style"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"></noscript>
+
+<link rel="preload" as="style"
+      href="{% static 'assets/lib/animate/animate.min.css' %}"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{% static 'assets/lib/animate/animate.min.css' %}"></noscript>
+
+<link rel="preload" as="style"
+      href="{% static 'assets/lib/owlcarousel/assets/owl.carousel.min.css' %}"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{% static 'assets/lib/owlcarousel/assets/owl.carousel.min.css' %}"></noscript>

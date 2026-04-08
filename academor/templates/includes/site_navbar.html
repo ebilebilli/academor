@@ -3,7 +3,7 @@
 {% with u=nav_url_name|default:'' slug_kw=nav_course_slug|default:'' %}
 <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
     <a href="{% url 'projects:home-page' %}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-        <img src="{% static 'assets/img/new_logo.png' %}" alt="Academor" class="site-logo" loading="eager" decoding="async">
+        <img src="{% static 'assets/img/new_logo.png' %}" alt="Academor" class="site-logo" width="276" height="92" loading="eager" decoding="async">
     </a>
     <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
@@ -12,18 +12,6 @@
         <div class="navbar-nav ms-auto p-4 p-lg-0">
             <a href="{% url 'projects:home-page' %}" class="nav-item nav-link{% if u == 'home-page' %} active{% endif %}">{% trans "Home" %}</a>
             <a href="{% url 'projects:about-page' %}" class="nav-item nav-link{% if u == 'about-page' %} active{% endif %}">{% trans "About" %}</a>
-            <div class="nav-item dropdown">
-                <a href="{% url 'projects:abroad-page' %}" class="nav-link dropdown-toggle{% if u == 'abroad-page' or u == 'abroad-detail' %} active{% endif %}" data-bs-toggle="dropdown" aria-expanded="false">{% trans "Study in Abroad" %}</a>
-                <div class="dropdown-menu fade-down m-0 nav-courses-dropdown shadow-sm">
-                    <a href="{% url 'projects:abroad-page' %}" class="dropdown-item fw-semibold">{% trans "All study abroad" %}</a>
-                    {% if nav_abroad_items %}
-                    <div class="dropdown-divider"></div>
-                    {% for item in nav_abroad_items %}
-                    <a href="{% url 'projects:abroad-detail' pk=item.id %}" class="dropdown-item text-wrap{% if u == 'abroad-detail' and nav_abroad_pk == item.id %} active{% endif %}">{{ item.name }}</a>
-                    {% endfor %}
-                    {% endif %}
-                </div>
-            </div>
             <div class="nav-item dropdown">
                 <a href="{% url 'projects:courses-page' %}" class="nav-link dropdown-toggle{% if u == 'courses-page' or u == 'course-detail' %} active{% endif %}" data-bs-toggle="dropdown" aria-expanded="false">{% trans "Courses" %}</a>
                 <div class="dropdown-menu fade-down m-0 nav-courses-dropdown shadow-sm">
@@ -36,8 +24,19 @@
                     {% endif %}
                 </div>
             </div>
+            <div class="nav-item dropdown">
+                <a href="{% url 'projects:abroad-page' %}" class="nav-link dropdown-toggle{% if u == 'abroad-page' or u == 'abroad-detail' %} active{% endif %}" data-bs-toggle="dropdown" aria-expanded="false">{% trans "Study Abroad" %}</a>
+                <div class="dropdown-menu fade-down m-0 nav-courses-dropdown shadow-sm">
+                    <a href="{% url 'projects:abroad-page' %}" class="dropdown-item fw-semibold">{% trans "All study abroad" %}</a>
+                    {% if nav_abroad_items %}
+                    <div class="dropdown-divider"></div>
+                    {% for item in nav_abroad_items %}
+                    <a href="{% url 'projects:abroad-detail' pk=item.id %}" class="dropdown-item text-wrap{% if u == 'abroad-detail' and nav_abroad_pk == item.id %} active{% endif %}">{{ item.name }}</a>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
             <a href="{% url 'projects:team-page' %}" class="nav-item nav-link{% if u == 'team-page' or u == 'team-detail' %} active{% endif %}">{% trans "Our Team" %}</a>
-            <a href="{% url 'projects:reviews-page' %}" class="nav-item nav-link{% if u == 'reviews-page' %} active{% endif %}">{% trans "Reviews" %}</a>
             <a href="{% url 'projects:tests-page' %}" class="nav-item nav-link{% if u == 'tests-page' or u == 'test-take' %} active{% endif %}">{% trans "Level Test" %}</a>
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">

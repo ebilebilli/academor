@@ -1,12 +1,16 @@
 (function ($) {
     "use strict";
 
-    // Spinner
-    $(window).on('load', function () {
-        var $sp = $('#spinner');
-        $sp.css('opacity', '0');
-        setTimeout(function () { $sp.css('display', 'none'); }, 400);
-    });
+    // Spinner: hide on load, but no longer than 1.5s regardless
+    var $sp = $('#spinner');
+    var _spinnerHidden = false;
+    function _hideSpinner() {
+        if (_spinnerHidden) return;
+        _spinnerHidden = true;
+        setTimeout(function () { $sp.addClass('hide'); }, 50);
+    }
+    $(window).on('load', _hideSpinner);
+    setTimeout(_hideSpinner, 1500);
     
     
     // Initiate wowjs (skip on small screens / reduced motion)
@@ -14,7 +18,7 @@
     if (!prefersReducedMotion && window.innerWidth >= 768) {
         new WOW({
             mobile: false,
-            offset: 40
+            offset: 0
         }).init();
     }
 
@@ -59,13 +63,12 @@
     }
     var resizeTicking = false;
     $(window).on("load.menuHover resize.menuHover", function () {
-        if (!resizeTicking) {
-            window.requestAnimationFrame(function () {
-                syncMenuHoverMode();
-                resizeTicking = false;
-            });
-            resizeTicking = true;
-        }
+        if (resizeTicking) return;
+        resizeTicking = true;
+        window.requestAnimationFrame(function () {
+            syncMenuHoverMode();
+            resizeTicking = false;
+        });
     });
     syncMenuHoverMode();
     
@@ -129,7 +132,7 @@
             dots: false,
             loop: true,
             nav: true,
-            lazyLoad: true,
+            lazyLoad: false,
             mouseDrag: true,
             touchDrag: true,
             navText: [
@@ -152,7 +155,7 @@
             margin: 20,
             dots: true,
             nav: true,
-            lazyLoad: true,
+            lazyLoad: false,
             mouseDrag: catCount > 1,
             touchDrag: catCount > 1,
             slideBy: 1,
@@ -194,7 +197,7 @@
             margin: 24,
             dots: true,
             nav: true,
-            lazyLoad: true,
+            lazyLoad: false,
             mouseDrag: teamCount > 1,
             touchDrag: teamCount > 1,
             navText: [
@@ -202,7 +205,7 @@
                 '<i class="bi bi-chevron-right"></i>'
             ],
             loop: teamCount > 4,
-            rewind: true,
+            rewind: teamCount <= 4,
             responsive: {
                 0: {
                     items: 1,
@@ -242,7 +245,7 @@
             dots: true,
             loop: true,
             nav: false,
-            lazyLoad: true,
+            lazyLoad: false,
             responsive: {
                 0: {
                     items: 1
@@ -257,8 +260,8 @@
         });
     }
 
-    // LCP, CLS, FCP via PerformanceObserver — console only
-    (function initPerfObservers() {
+    // LCP, CLS, FCP via PerformanceObserver — console only (dev mode only)
+    if (typeof __DEV__ !== 'undefined' && __DEV__) (function initPerfObservers() {
         if (!('PerformanceObserver' in window)) {
             console.warn('[Perf] PerformanceObserver not supported');
             return;

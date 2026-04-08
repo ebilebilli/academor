@@ -328,7 +328,7 @@ class AbroadModelAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     list_per_page = 25
     fieldsets = (
         ('Content', {
-            'fields': ('name', 'img')
+            'fields': ('name', 'img', 'detail_page_img')
         }),
         ('Azerbaijani', {
             'fields': ('description_az',)
@@ -396,6 +396,31 @@ class UniversityAdmin(AdminImageCompressMixin, admin.ModelAdmin):
             )
         return "—"
     flag_preview_large.short_description = "Preview"
+
+
+class StudyAbroadSectionAdminForm(forms.ModelForm):
+    class Meta:
+        model = StudyAbroadSection
+        fields = '__all__'
+        widgets = {
+            'text_az': CKEditorWidget(),
+            'text_en': CKEditorWidget(),
+            'text_ru': CKEditorWidget(),
+        }
+
+
+@admin.register(StudyAbroadSection)
+class StudyAbroadSectionAdmin(admin.ModelAdmin):
+    form = StudyAbroadSectionAdminForm
+    fieldsets = (
+        ('Azerbaijani', {'fields': ('text_az',)}),
+        ('English', {'fields': ('text_en',)}),
+        ('Русский', {'fields': ('text_ru',)}),
+    )
+
+    def has_add_permission(self, request):
+        return not StudyAbroadSection.objects.exists()
+
 
 @admin.register(Instructor)
 class InstructorAdmin(AdminImageCompressMixin, admin.ModelAdmin):
@@ -760,10 +785,47 @@ class TaglineAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     text_preview_ru.short_description = "Hero (RU)"
     text_preview_ru.admin_order_field = 'heading_main_ru'
 
-    def has_add_permission(self, request):
-        if Tagline.objects.exists():
-            return False
-        return super().has_add_permission(request)
+
+
+@admin.register(HeroSlide)
+class HeroSlideAdmin(AdminImageCompressMixin, admin.ModelAdmin):
+    list_display = ('id', 'slide_preview', 'heading_main_az', 'order', 'is_active', 'created_at')
+    list_display_links = ('slide_preview',)
+    list_editable = ('order', 'is_active')
+    list_per_page = 20
+    search_fields = (
+        'heading_small_az', 'heading_main_az',
+        'heading_small_en', 'heading_main_en',
+        'heading_small_ru', 'heading_main_ru',
+    )
+    fieldsets = (
+        ('Image & Settings', {
+            'fields': ('image', 'order', 'is_active')
+        }),
+        ('Azerbaijani', {
+            'fields': ('heading_small_az', 'heading_main_az', 'body_az')
+        }),
+        ('English', {
+            'fields': ('heading_small_en', 'heading_main_en', 'body_en')
+        }),
+        ('Русский', {
+            'fields': ('heading_small_ru', 'heading_main_ru', 'body_ru')
+        }),
+    )
+
+    def slide_preview(self, obj):
+        url = reverse('admin:projects_heroslide_change', args=[obj.pk])
+        title = obj.heading_main_az or obj.heading_main_en or f'Slide #{obj.pk}'
+        if obj.image:
+            return format_html(
+                '<a href="{}" style="display:flex;align-items:center;gap:8px;text-decoration:none;">'
+                '<img src="{}" style="height:40px;width:70px;object-fit:cover;border-radius:4px;">'
+                '<span style="color:#417690;font-weight:600;">{}</span></a>',
+                url, obj.image.url, title,
+            )
+        return format_html('<a href="{}" style="color:#417690;font-weight:600;">{}</a>', url, title)
+    slide_preview.short_description = 'Slide'
+
 
 @admin.register(ContactInquiry)
 class ContactInquiryAdmin(AdminImageCompressMixin, admin.ModelAdmin):
