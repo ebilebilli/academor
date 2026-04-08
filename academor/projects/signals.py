@@ -2,6 +2,7 @@ from django.db.models.signals import post_save, post_delete, pre_save
 from django.dispatch import receiver
 from django.conf import settings
 from django.db import transaction
+from django.db.models import F
 
 # from projects.utils import send_mail_func
 from projects.utils.cache_utils import invalidate_model_cache
@@ -56,6 +57,35 @@ from projects.models import (
 #         attachment_name=instance.cv.name 
 #     )
 
+
+# ── Order auto-shift signals ──────────────────────────────────────────────────
+
+def _shift_order(model, instance, field='order'):
+    """
+    When saving `instance` with a given order value, push all OTHER records
+    whose order >= new_order up by 1 so there are no duplicates.
+    Only fires when a conflict actually exists (no unnecessary DB writes).
+    """
+    new_order = getattr(instance, field)
+    exclude_pk = instance.pk or 0
+    conflict_qs = model.objects.exclude(pk=exclude_pk).filter(**{field: new_order})
+    if conflict_qs.exists():
+        model.objects.exclude(pk=exclude_pk).filter(
+            **{f'{field}__gte': new_order}
+        ).update(**{field: F(field) + 1})
+
+
+@receiver(pre_save, sender=ServiceCategory)
+def auto_shift_service_category_order(sender, instance, **kwargs):
+    _shift_order(ServiceCategory, instance)
+
+
+@receiver(pre_save, sender=Team)
+def auto_shift_team_order(sender, instance, **kwargs):
+    _shift_order(Team, instance)
+
+
+# ── Cache invalidation signals ────────────────────────────────────────────────
 
 # Cache invalidation signals for models
 

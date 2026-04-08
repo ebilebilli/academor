@@ -36,6 +36,58 @@ class ServiceCategory(SluggedModel):
         blank=True,
         verbose_name='Description (RU)'
     )
+    duration_months_az = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+        verbose_name='Duration (AZ)'
+    )
+    duration_months_en = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+        verbose_name='Duration (EN)'
+    )
+    duration_months_ru = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+        verbose_name='Duration (RU)'
+    )
+    lesson_count_az = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+        verbose_name='Lesson counts (AZ)'
+    )
+    lesson_count_en = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+        verbose_name='Lesson counts (EN)'
+    )
+    lesson_count_ru = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+        verbose_name='Lesson counts (RU)'
+    )
+    has_certificate = models.BooleanField(
+        default=True,
+        verbose_name='Certificate'
+    )
+    is_online = models.BooleanField(
+        default=True,
+        verbose_name='Online'
+    )
+    is_offline = models.BooleanField(
+        default=True,
+        verbose_name='Offline'
+    )
+    order = models.PositiveIntegerField(
+        default=0,
+        verbose_name='Order'
+    )
     is_active = models.BooleanField(
         default=True,
         verbose_name='Active'
@@ -46,14 +98,15 @@ class ServiceCategory(SluggedModel):
     )
 
     class Meta:
-        verbose_name = 'Service category'
-        verbose_name_plural = 'Service categories'
+        verbose_name = 'Service'
+        verbose_name_plural = 'Services'
+        ordering = ('order', 'id')
 
     def get_slug_source(self) -> str:
         return self.name_az
 
     def __str__(self):
-        return self.name_az or 'Category'
+        return self.name_az or 'Service'
 
 
 class ServiceHighlight(models.Model):

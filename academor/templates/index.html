@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-{% load static i18n %}
-<html lang="en">
+{% load static i18n %}{% get_current_language as LANG_CODE %}
+<html lang="{{ LANG_CODE }}">
 
 <head>
     {% include "includes/site_layout_head.html" with page_title=seo_home_title page_description=seo_home_description page_keywords=site_seo_keywords %}
@@ -36,19 +36,13 @@
                     loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
                     decoding="async"
                     fetchpriority="{% if forloop.first %}high{% else %}low{% endif %}">
-                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
+                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7); padding-top: 15%;">
                     <div class="container">
                         <div class="row justify-content-start">
                             <div class="col-sm-10 col-lg-8">
-                                <h5 class="text-primary text-uppercase mb-3 animated slideInDown">
-                                    {% if slide.heading_small %}{{ slide.heading_small }}{% else %}{% trans "Best Online Courses" %}{% endif %}
-                                </h5>
-                                <h1 class="display-3 text-white animated slideInDown">
-                                    {% if slide.heading_main %}{{ slide.heading_main }}{% else %}{{ seo_home_h1 }}{% endif %}
-                                </h1>
-                                <p class="fs-5 text-white mb-4 pb-2">
-                                    {% if slide.body %}{{ slide.body }}{% else %}{% trans "Learn English effectively with Academor in Baku, Azerbaijan: General English, Speaking, IELTS, GMAT, GRE, and study abroad support." %}{% endif %}
-                                </p>
+                                {% if slide.heading_small %}<h5 class="text-primary text-uppercase mb-3 animated slideInDown">{{ slide.heading_small }}</h5>{% endif %}
+                                {% if slide.heading_main %}<h1 class="display-3 text-white animated slideInDown">{{ slide.heading_main }}</h1>{% endif %}
+                                {% if slide.body %}<p class="fs-5 text-white mb-4 pb-2">{{ slide.body }}</p>{% endif %}
                                 <a href="{% url 'projects:about-page' %}" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">{% trans "Read More" %}</a>
                                 <a href="{% url 'projects:contact-page' %}" class="btn btn-light py-md-3 px-md-5 animated slideInRight">{% trans "Contact" %}</a>
                             </div>
@@ -68,7 +62,7 @@
                     loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
                     decoding="async"
                     fetchpriority="{% if forloop.first %}high{% else %}low{% endif %}">
-                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
+                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7); padding-top: 15%;">
                     <div class="container">
                         <div class="row justify-content-start">
                             <div class="col-sm-10 col-lg-8">
@@ -82,7 +76,7 @@
             {% elif background_image %}
             <div class="owl-carousel-item position-relative">
                 <img class="img-fluid w-100" src="{{ background_image }}" alt="" width="1920" height="1080" loading="eager" decoding="async" fetchpriority="high">
-                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
+                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7); padding-top: 15%;">
                     <div class="container">
                         <div class="row justify-content-start">
                             <div class="col-sm-10 col-lg-8">
@@ -95,7 +89,7 @@
             {% else %}
             <div class="owl-carousel-item position-relative">
                 <img class="img-fluid w-100" src="{% static 'assets/img/new_baner.png' %}" alt="" width="1920" height="1080" loading="eager" decoding="async" fetchpriority="high">
-                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
+                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7); padding-top: 15%;">
                     <div class="container">
                         <div class="row justify-content-start">
                             <div class="col-sm-10 col-lg-8">
@@ -107,31 +101,13 @@
             </div>
             <div class="owl-carousel-item position-relative">
                 <img class="img-fluid w-100" src="{% static 'assets/img/carousel-2.jpg' %}" alt="" width="1920" height="1080" loading="lazy" decoding="async">
-                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
+                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7); padding-top: 15%;">
                     <div class="container">
                         <div class="row justify-content-start">
                             <div class="col-sm-10 col-lg-8">
-                                <h5 class="text-primary text-uppercase mb-3 animated slideInDown">
-                                    {% if motto and motto.heading_small %}
-                                        {{ motto.heading_small }}
-                                    {% else %}
-                                        {% trans "Best Online Courses" %}
-                                    {% endif %}
-                                </h5>
-                                <h1 class="display-3 text-white animated slideInDown">
-                                    {% if motto and motto.heading_main %}
-                                        {{ motto.heading_main }}
-                                    {% else %}
-                                        {% trans "Get Educated Online From Your Home" %}
-                                    {% endif %}
-                                </h1>
-                                <p class="fs-5 text-white mb-4 pb-2">
-                                    {% if motto and motto.body %}
-                                        {{ motto.body }}
-                                    {% else %}
-                                        {% trans "Learn English effectively with Academor in Baku, Azerbaijan: General English, Speaking, IELTS, GMAT, GRE, and study abroad support." %}
-                                    {% endif %}
-                                </p>
+                                {% if motto and motto.heading_small %}<h5 class="text-primary text-uppercase mb-3 animated slideInDown">{{ motto.heading_small }}</h5>{% endif %}
+                                {% if motto and motto.heading_main %}<h1 class="display-3 text-white animated slideInDown">{{ motto.heading_main }}</h1>{% endif %}
+                                {% if motto and motto.body %}<p class="fs-5 text-white mb-4 pb-2">{{ motto.body }}</p>{% endif %}
                                 <a href="{% url 'projects:about-page' %}" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">{% trans "Read More" %}</a>
                                 <a href="{% url 'projects:contact-page' %}" class="btn btn-light py-md-3 px-md-5 animated slideInRight">{% trans "Contact" %}</a>
                             </div>

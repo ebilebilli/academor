@@ -212,13 +212,15 @@ class ServiceCategoryAdminForm(forms.ModelForm):
 @admin.register(ServiceCategory)
 class ServiceCategoryAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     form = ServiceCategoryAdminForm
-    list_display = ('id', 'category_thumb', 'name_link', 'name_en', 'name_ru', 'is_active', 'created_at')
+    list_display = ('id', 'category_thumb', 'name_link', 'name_en', 'name_ru', 'order', 'is_active', 'created_at')
     list_display_links = ('id',)
+    list_editable = ('order', 'is_active')
     list_filter = ('is_active', 'created_at')
     search_fields = (
         'name_az', 'name_en', 'name_ru',
         'description_az', 'description_en', 'description_ru',
     )
+    ordering = ('order', 'id')
     list_per_page = 25
     exclude = ('slug',)
     readonly_fields = ('created_at',)
@@ -226,16 +228,19 @@ class ServiceCategoryAdmin(AdminImageCompressMixin, admin.ModelAdmin):
 
     fieldsets = (
         ('Azerbaijani', {
-            'fields': ('name_az', 'description_az')
+            'fields': ('name_az', 'description_az', 'duration_months_az', 'lesson_count_az')
         }),
         ('English', {
-            'fields': ('name_en', 'description_en')
+            'fields': ('name_en', 'description_en', 'duration_months_en', 'lesson_count_en')
         }),
         ('Русский', {
-            'fields': ('name_ru', 'description_ru')
+            'fields': ('name_ru', 'description_ru', 'duration_months_ru', 'lesson_count_ru')
+        }),
+        ('Course details', {
+            'fields': ('has_certificate', 'is_online', 'is_offline')
         }),
         ('Status', {
-            'fields': ('is_active', 'created_at')
+            'fields': ('order', 'is_active', 'created_at')
         }),
     )
 
@@ -627,7 +632,9 @@ class TeamAdminForm(forms.ModelForm):
 @admin.register(Team)
 class TeamAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     form = TeamAdminForm
-    list_display = ('id', 'name', 'role')
+    list_display = ('id', 'name', 'role', 'order')
+    list_editable = ('order',)
+    ordering = ('order', 'id')
     search_fields = ('name', 'role', 'description', 'instagram', 'facebook', 'linkedin', 'tiktok', 'youtube')
     list_per_page = 25
 

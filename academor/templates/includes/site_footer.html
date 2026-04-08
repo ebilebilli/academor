@@ -50,25 +50,25 @@
                 <a href="{% url 'projects:home-page' %}" class="footer-logo-link d-inline-block mb-3">
                     <img src="{% static 'assets/img/logo.png' %}" alt="Academor" class="footer-logo">
                 </a>
-                <p class="footer-tagline mb-3">{% trans "Learn" %}<span class="footer-dot" style="color:#FF6B35;">.</span> {% trans "Speak" %}<span class="footer-dot" style="color:#FFD700;">.</span> {% trans "Achieve" %}<span class="footer-dot" style="color:#FF6B35;">.</span></p>
+                <p class="footer-tagline mb-3">{% trans "Learn" %}<span class="footer-dot" style="color:#FF6B35;">.</span> {% trans "Speak" %}<span class="footer-dot" style="color:#FFE500;">.</span> {% trans "Achieve" %}<span class="footer-dot" style="color:#3DFF7A;">.</span></p>
                 {% if footer_contact %}
                 {% if footer_contact.instagram or footer_contact.facebook or footer_contact.youtube or footer_contact.linkedn or footer_contact.tiktok %}
                 <h6 class="text-white mb-2 footer-social-title">{% trans "Follow us" %}</h6>
                 <div class="d-flex flex-wrap gap-2">
                     {% if footer_contact.instagram %}
-                    <a class="btn btn-outline-light btn-social" href="{{ footer_contact.instagram }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a class="btn btn-outline-light btn-social" href="{{ footer_contact.instagram }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'Instagram' %}"><i class="fab fa-instagram"></i></a>
                     {% endif %}
                     {% if footer_contact.linkedn %}
-                    <a class="btn btn-outline-light btn-social" href="{{ footer_contact.linkedn }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-outline-light btn-social" href="{{ footer_contact.linkedn }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'LinkedIn' %}"><i class="fab fa-linkedin-in"></i></a>
                     {% endif %}
                     {% if footer_contact.facebook %}
-                    <a class="btn btn-outline-light btn-social" href="{{ footer_contact.facebook }}" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-outline-light btn-social" href="{{ footer_contact.facebook }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'Facebook' %}"><i class="fab fa-facebook-f"></i></a>
                     {% endif %}
                     {% if footer_contact.youtube %}
-                    <a class="btn btn-outline-light btn-social" href="{{ footer_contact.youtube }}" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a class="btn btn-outline-light btn-social" href="{{ footer_contact.youtube }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'YouTube' %}"><i class="fab fa-youtube"></i></a>
                     {% endif %}
                     {% if footer_contact.tiktok %}
-                    <a class="btn btn-outline-light btn-social" href="{{ footer_contact.tiktok }}" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a class="btn btn-outline-light btn-social" href="{{ footer_contact.tiktok }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'TikTok' %}"><i class="fab fa-tiktok"></i></a>
                     {% endif %}
                 </div>
                 {% endif %}

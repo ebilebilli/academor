@@ -54,11 +54,15 @@ class Team(models.Model):
         blank=True,
         verbose_name='Description file',
     )
+    order = models.PositiveIntegerField(
+        default=0,
+        verbose_name='Order',
+    )
 
     class Meta:
         verbose_name = 'Team member'
         verbose_name_plural = 'Team'
-        ordering = ('id',)
+        ordering = ('order', 'id')
 
     def __str__(self):
         return f'{self.name} ({self.role})'

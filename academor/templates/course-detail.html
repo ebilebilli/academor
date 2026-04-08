@@ -88,6 +88,72 @@
                             {% endif %}
                         </div>
                     </div>
+                    {% if course.duration_months or course.lesson_hours or course.has_certificate or course.is_online or course.is_offline %}
+                    <div class="course-detail-badges mt-3 wow fadeInUp" data-wow-delay="0.15s">
+                        <div class="row g-2">
+                            {% if course.duration_months %}
+                            <div class="col-6">
+                                <div class="course-detail-badge">
+                                    <div class="course-detail-badge__icon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <div class="course-detail-badge__text">
+                                        <span class="course-detail-badge__label">{% trans "Duration" %}</span>
+                                        <span class="course-detail-badge__value">{{ course.duration_months }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if course.lesson_hours %}
+                            <div class="col-6">
+                                <div class="course-detail-badge">
+                                    <div class="course-detail-badge__icon">
+                                        <i class="fa fa-book"></i>
+                                    </div>
+                                    <div class="course-detail-badge__text">
+                                        <span class="course-detail-badge__label">{% trans "Lessons" %}</span>
+                                        <span class="course-detail-badge__value">{{ course.lesson_hours }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if course.has_certificate %}
+                            <div class="col-6">
+                                <div class="course-detail-badge">
+                                    <div class="course-detail-badge__icon">
+                                        <i class="fa fa-certificate"></i>
+                                    </div>
+                                    <div class="course-detail-badge__text">
+                                        <span class="course-detail-badge__label">{% trans "Certificate" %}</span>
+                                        <span class="course-detail-badge__value">{% trans "Yes" %}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if course.is_online or course.is_offline %}
+                            <div class="col-6">
+                                <div class="course-detail-badge">
+                                    <div class="course-detail-badge__icon">
+                                        {% if course.is_online and course.is_offline %}
+                                        <i class="fa fa-globe"></i>
+                                        {% elif course.is_online %}
+                                        <i class="fa fa-globe"></i>
+                                        {% else %}
+                                        <i class="fa fa-map-marker"></i>
+                                        {% endif %}
+                                    </div>
+                                    <div class="course-detail-badge__text">
+                                        <span class="course-detail-badge__label">{% trans "Format" %}</span>
+                                        <span class="course-detail-badge__value">
+                                            {% if course.is_online and course.is_offline %}{% trans "Online & Offline" %}{% elif course.is_online %}{% trans "Online" %}{% else %}{% trans "Offline" %}{% endif %}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
 
                 <div class="col-lg-7">

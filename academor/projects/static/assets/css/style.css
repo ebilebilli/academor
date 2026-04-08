@@ -795,6 +795,7 @@ h1.animated, h2.animated, h3.animated,
     max-height: none;
     overflow: hidden;
     box-sizing: border-box;
+    background-image: var(--page-header-image, url(../img/carousel-1.jpg));
 }
 
 @media (min-width: 992px) {
@@ -854,6 +855,13 @@ h1.animated, h2.animated, h3.animated,
 /*** Service Category Cards ***/
 .service-highlights-grid > [class*="col-"] {
     display: block;
+}
+
+@media (max-width: 575.98px) {
+    .service-highlights-grid {
+        --bs-gutter-x: 0.6rem;
+        --bs-gutter-y: 0.6rem;
+    }
 }
 
 .service-highlights-grid a.svc-card-link {
@@ -1396,6 +1404,30 @@ h1.animated, h2.animated, h3.animated,
 
 .testimonial-carousel .owl-item.center .testimonial-text * {
     color: #FFFFFF !important;
+}
+
+/* Standart kart ölçüsü */
+.testimonial-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.testimonial-item .testimonial-text {
+    flex: 1;
+    min-height: 160px;
+    max-height: 160px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.testimonial-item .testimonial-text p {
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 0;
 }
 
 .testimonial-carousel .owl-dots {
@@ -2196,4 +2228,55 @@ h1.animated, h2.animated, h3.animated,
         animation: none !important;
         transform: none !important;
     }
+}
+
+/* Course detail badges (below image) */
+.course-detail-badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 14px 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.05);
+}
+
+.course-detail-badge__icon {
+    width: 58px;
+    height: 58px;
+    min-width: 58px;
+    border-radius: 12px;
+    background: rgba(var(--bs-primary-rgb), .1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    color: var(--bs-primary);
+}
+
+.course-detail-badge__text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.course-detail-badge__label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: #999;
+    line-height: 1;
+}
+
+.course-detail-badge__value {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #222;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

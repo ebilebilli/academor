@@ -7,7 +7,7 @@
         {% if categories %}
         <div class="row g-4 service-highlights-grid">
             {% for cat in categories %}
-            <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
+            <div class="col-6 col-lg-3 wow fadeInUp" data-wow-delay="0.1s">
                 <a href="{% url 'projects:course-detail' slug=cat.slug %}" class="svc-card-link">
                     <div class="svc-card">
                         {% if cat.image %}

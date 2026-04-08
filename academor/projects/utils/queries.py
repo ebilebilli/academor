@@ -80,7 +80,7 @@ _category_media_prefetch = Prefetch(
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
 def get_project_categories(lang='az'):
     """Aktiv service kateqoriyaları (courses)."""
-    return ServiceCategory.objects.filter(is_active=True).order_by('id').prefetch_related(
+    return ServiceCategory.objects.filter(is_active=True).order_by('order', 'id').prefetch_related(
         _category_media_prefetch,
     )
 
@@ -124,7 +124,7 @@ def get_team_members(is_active=True):
     queryset = Team.objects.all()
     if is_active is not None and hasattr(Team, 'is_active'):
         queryset = queryset.filter(is_active=is_active)
-    return list(queryset.order_by('id'))
+    return list(queryset.order_by('order', 'id'))
 
 
 def serialize_team_member(member):
@@ -485,6 +485,27 @@ def serialize_project_category_detail(category, lang='az'):
         for media in category.medias.all()
         if media.image
     ]
+
+    dur_field = get_localized_field_name('duration_months', lang)
+    les_field = get_localized_field_name('lesson_count', lang)
+    data['duration_months'] = (
+        getattr(category, dur_field, None)
+        or getattr(category, 'duration_months_az', None)
+        or getattr(category, 'duration_months_en', None)
+        or getattr(category, 'duration_months_ru', None)
+        or ''
+    )
+    data['lesson_hours'] = (
+        getattr(category, les_field, None)
+        or getattr(category, 'lesson_count_az', None)
+        or getattr(category, 'lesson_count_en', None)
+        or getattr(category, 'lesson_count_ru', None)
+        or ''
+    )
+    data['has_certificate'] = category.has_certificate
+    data['is_online'] = category.is_online
+    data['is_offline'] = category.is_offline
+
     return data
 
 
