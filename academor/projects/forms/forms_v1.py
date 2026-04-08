@@ -2,10 +2,10 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from projects.models import ContactInquiry, Review
+from projects.utils.normalize_phone_number import validate_phone_number
 
 # Bot honeypots: must stay empty (hidden inputs; tabindex -1 for keyboard users).
 _HP = {'autocomplete': 'off', 'tabindex': '-1', 'aria-hidden': 'true'}
-
 
 class AppealContactForm(forms.ModelForm):
     website = forms.CharField(
@@ -106,6 +106,12 @@ class AppealContactForm(forms.ModelForm):
             self.add_error('mobile_number', msg)
 
         return cleaned_data
+
+    def clean_mobile_number(self):
+        value = (self.cleaned_data.get('mobile_number') or '').strip()
+        if value and not validate_phone_number(value):
+            raise ValidationError(_('Düzgün nömrə daxil edin'))
+        return value
 
 
 class ReviewForm(forms.ModelForm):
@@ -223,3 +229,9 @@ class TestUserForm(forms.Form):
         if self.cleaned_data.get('company'):
             raise ValidationError(_('Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.'))
         return ''
+
+    def clean_number(self):
+        value = (self.cleaned_data.get('number') or '').strip()
+        if not validate_phone_number(value):
+            raise ValidationError(_('Düzgün nömrə daxil edin'))
+        return value
