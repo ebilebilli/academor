@@ -60,6 +60,23 @@ class MediaAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     ordering = ('-created_at',)
     list_per_page = 25
 
+    _NON_HOME_HEADER_BG_FIELDS = (
+        'is_about_page_background_image',
+        'is_contact_page_background_image',
+        'is_project_page_background_image',
+        'is_courses_page_background_image',
+        'is_tests_page_background_image',
+        'is_service_page_background_image',
+        'is_footer_background_image',
+    )
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        if obj and any(getattr(obj, f, False) for f in self._NON_HOME_HEADER_BG_FIELDS):
+            if 'image' in form.base_fields:
+                form.base_fields['image'].widget.attrs['data-no-compress'] = '1'
+        return form
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         return qs.filter(

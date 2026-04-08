@@ -37,25 +37,14 @@
                 {% for cat in categories %}
                 <div class="col-lg-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
                     <a href="{% url 'projects:course-detail' slug=cat.slug %}" class="svc-card-link">
-                        <div class="svc-card{% if filters.slug == cat.slug %} svc-card--active{% endif %}">
-                            {% if cat.image %}
-                            <img
-                                src="{{ cat.image }}"
-                                alt="{{ cat.name }}"
-                                class="svc-card__img"
-                                loading="{% if forloop.counter <= 4 %}eager{% else %}lazy{% endif %}"
-                                fetchpriority="{% if forloop.counter <= 4 %}high{% else %}auto{% endif %}"
-                                decoding="async">
-                            {% else %}
-                            <div class="svc-card__img svc-card__img--placeholder"></div>
-                            {% endif %}
-                            <div class="svc-card__overlay"></div>
+                        <div class="svc-card svc-card--text-only{% if filters.slug == cat.slug %} svc-card--active{% endif %}">
                             {% if filters.slug == cat.slug %}
                             <span class="svc-card__pill"><i class="fa fa-check-circle me-1"></i>{% trans "Selected" %}</span>
                             {% endif %}
                             <div class="svc-card__body">
                                 <h5 class="svc-card__title">{{ cat.name }}</h5>
                             </div>
+                            <span class="svc-card__cta" aria-hidden="true"><i class="fa fa-arrow-right"></i></span>
                         </div>
                     </a>
                 </div>

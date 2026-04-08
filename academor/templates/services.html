@@ -27,11 +27,6 @@
                 {% for cat in categories %}
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="service-item h-100 bg-light rounded overflow-hidden shadow-sm p-4">
-                        {% if cat.image %}
-                        <div class="ratio ratio-16x9 rounded-2 overflow-hidden mb-3">
-                            <img class="w-100 h-100" src="{{ cat.image }}" alt="{{ cat.name }}" style="object-fit: cover;">
-                        </div>
-                        {% endif %}
                         <h4 class="mb-3"><a href="{% url 'projects:course-detail' slug=cat.slug %}" class="text-dark text-decoration-none">{{ cat.name }}</a></h4>
                         {% if cat.description_html %}
                         <div class="text-secondary small services-category-desc">{{ cat.description_html|safe }}</div>

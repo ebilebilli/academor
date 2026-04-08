@@ -108,12 +108,44 @@
                 });
             }
 
+            // Index xaric səhifələrin header background şəkilləri — browser compress olmasın
+            var NON_HOME_HEADER_BG_FIELDS = [
+                'is_about_page_background_image',
+                'is_contact_page_background_image',
+                'is_project_page_background_image',
+                'is_courses_page_background_image',
+                'is_tests_page_background_image',
+                'is_service_page_background_image',
+                'is_footer_background_image',
+            ];
+
+            function syncHeaderBgNoCompress() {
+                var isNonHomeHeader = NON_HOME_HEADER_BG_FIELDS.some(function(name) {
+                    return !!$('input[name="' + name + '"]').prop('checked');
+                });
+                var $img = $('input[type="file"][name="image"]');
+                if (isNonHomeHeader) {
+                    $img.attr('data-no-compress', '1');
+                } else {
+                    $img.removeAttr('data-no-compress');
+                }
+            }
+
+            NON_HOME_HEADER_BG_FIELDS.forEach(function(name) {
+                $(document).on('change', 'input[name="' + name + '"]', syncHeaderBgNoCompress);
+            });
+
             // Şəkil compress handler funksiyası
             function handleImageCompression(e) {
                 var $input = $(e.target);
                 var inputName = $input.attr('name') || '';
                 var inputId = $input.attr('id') || '';
-                
+
+                if ($input.attr('data-no-compress') === '1') {
+                    console.log('[Image Compress] Skipping (non-index page header background):', inputName || inputId);
+                    return;
+                }
+
                 // Əgər artıq işləyirsə, təkrarlanmasın
                 if ($input.data('compression-processing')) {
                     return;
@@ -379,7 +411,9 @@
             // Django admin ready - BÜTÜN KOD IIFE İÇİNDƏ
             $(document).ready(function() {
                 console.log('[Image Compress] Script loaded');
-                
+
+                syncHeaderBgNoCompress();
+
                 // İlkin initialization
                 setTimeout(function() {
                     initImageCompression();
@@ -391,6 +425,7 @@
                 // Inline formlar üçün (əlavə təhlükəsizlik)
                 $(document).on('formset:added', function() {
                     setTimeout(function() {
+                        syncHeaderBgNoCompress();
                         initImageCompression();
                     }, 200);
                 });

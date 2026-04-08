@@ -68,7 +68,7 @@
                 </div>
             </div>
             {% else %}
-            <form method="post" class="bg-light p-4 p-md-5 rounded shadow-sm wow fadeInUp" data-wow-delay="0.1s">
+            <form method="post" id="test-take-form" class="bg-light p-4 p-md-5 rounded shadow-sm wow fadeInUp" data-wow-delay="0.1s">
                 {% csrf_token %}
                 {{ user_form.website }}{{ user_form.fax }}{{ user_form.company }}
                 <h4 class="mb-4 pb-2 border-bottom">{% trans "Your information" %}</h4>
@@ -89,22 +89,41 @@
                     </div>
                 </div>
 
-                <h4 class="mb-4 pb-2 border-bottom">{% trans "Questions" %}</h4>
-                {% for q in test.questions %}
-                <div class="mb-4 p-4 border rounded bg-white shadow-sm">
-                    <p class="fw-bold mb-3 text-primary">{{ forloop.counter }}. {{ q.text }}</p>
-                    {% for opt in q.options %}
-                    <div class="form-check mb-2 ps-4">
-                        <input class="form-check-input" type="radio" name="q_{{ q.id }}" id="q{{ q.id }}o{{ opt.id }}" value="{{ opt.id }}">
-                        <label class="form-check-label" for="q{{ q.id }}o{{ opt.id }}">{{ opt.text }}</label>
+                <h4 class="mb-3 pb-2 border-bottom">{% trans "Questions" %}</h4>
+                {% if test.questions %}
+                <div class="test-questions-toolbar d-flex justify-content-end align-items-center flex-wrap gap-2 mb-3">
+                    <button type="submit" class="btn btn-outline-accent rounded-pill px-4 py-2" id="test-finish-early">{% trans "Finish test" %}</button>
+                </div>
+                <div class="test-questions-wizard" data-current-step="0"
+                    data-label-answered="{% trans 'Answered' %}"
+                    data-label-unanswered="{% trans 'Not answered' %}">
+                    <div class="test-stepper" role="tablist" aria-label="{% trans 'Question progress' %}">
+                        {% for q in test.questions %}
+                        <button type="button" class="test-stepper-num{% if forloop.first %} is-active{% endif %}" data-step-index="{{ forloop.counter0 }}" role="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="test-q-step-{{ forloop.counter0 }}" id="test-step-tab-{{ forloop.counter0 }}">{{ forloop.counter }}</button>
+                        {% endfor %}
+                    </div>
+                    {% for q in test.questions %}
+                    <div class="test-question-step mb-0 p-4 border rounded bg-white shadow-sm{% if forloop.first %} is-active{% endif %}" id="test-q-step-{{ forloop.counter0 }}" role="tabpanel" data-step="{{ forloop.counter0 }}" aria-labelledby="test-step-tab-{{ forloop.counter0 }}">
+                        <p class="fw-bold mb-3 text-primary">{{ forloop.counter }}. {{ q.text }}</p>
+                        {% for opt in q.options %}
+                        <div class="form-check mb-2 ps-4">
+                            <input class="form-check-input" type="radio" name="q_{{ q.id }}" id="q{{ q.id }}o{{ opt.id }}" value="{{ opt.id }}">
+                            <label class="form-check-label" for="q{{ q.id }}o{{ opt.id }}">{{ opt.text }}</label>
+                        </div>
+                        {% endfor %}
                     </div>
                     {% endfor %}
+                    <div class="test-question-nav mt-4">
+                        <button type="button" class="btn btn-outline-secondary rounded-pill px-4 py-2" id="test-q-back" disabled>{% trans "Back" %}</button>
+                        <button type="button" class="btn btn-primary rounded-pill px-4 py-2" id="test-q-next"
+                            data-next-label="{% trans 'Next' %}"
+                            data-finish-label="{% trans 'Finish test' %}">{% trans "Next" %}</button>
+                    </div>
                 </div>
-                {% empty %}
+                {% else %}
                 <div class="alert alert-warning mb-0">{% trans "No questions were found for this test." %}</div>
-                {% endfor %}
-
                 <button type="submit" class="btn btn-primary px-5 py-2 mt-3 rounded-pill">{% trans "Finish test" %}</button>
+                {% endif %}
             </form>
             {% endif %}
         </div>
@@ -112,5 +131,80 @@
 
     {% include "includes/site_footer.html" %}
     {% include "includes/site_scripts.html" %}
+    {% if not result and test and test.questions %}
+    <script>
+    (function () {
+        var root = document.querySelector('.test-questions-wizard');
+        if (!root) return;
+        var steps = root.querySelectorAll('.test-question-step');
+        var nums = root.querySelectorAll('.test-stepper-num');
+        var btnBack = document.getElementById('test-q-back');
+        var btnNext = document.getElementById('test-q-next');
+        var form = document.getElementById('test-take-form');
+        var total = steps.length;
+        if (!total || !form || !btnBack || !btnNext) return;
+
+        var finishLabel = btnNext.getAttribute('data-finish-label') || 'Finish test';
+        var nextLabel = btnNext.getAttribute('data-next-label') || 'Next';
+
+        function syncAnsweredStates() {
+            var la = root.getAttribute('data-label-answered') || '';
+            var lu = root.getAttribute('data-label-unanswered') || '';
+            steps.forEach(function (step, j) {
+                var answered = !!step.querySelector('input[type="radio"]:checked');
+                if (nums[j]) {
+                    nums[j].classList.toggle('is-answered', answered);
+                    var n = nums[j].textContent.trim();
+                    nums[j].setAttribute('aria-label', n + ' — ' + (answered ? la : lu));
+                }
+            });
+        }
+
+        function setStep(i) {
+            i = Math.max(0, Math.min(total - 1, i));
+            root.dataset.currentStep = String(i);
+            steps.forEach(function (el, j) {
+                el.classList.toggle('is-active', j === i);
+            });
+            nums.forEach(function (el, j) {
+                el.classList.toggle('is-active', j === i);
+                el.setAttribute('aria-selected', j === i ? 'true' : 'false');
+            });
+            btnBack.disabled = i === 0;
+            btnNext.textContent = (i === total - 1) ? finishLabel : nextLabel;
+        }
+
+        btnBack.addEventListener('click', function () {
+            setStep(parseInt(root.dataset.currentStep || '0', 10) - 1);
+        });
+        btnNext.addEventListener('click', function () {
+            var cur = parseInt(root.dataset.currentStep || '0', 10);
+            if (cur < total - 1) {
+                setStep(cur + 1);
+            } else {
+                form.requestSubmit();
+            }
+        });
+
+        nums.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var idx = parseInt(btn.getAttribute('data-step-index'), 10);
+                if (!isNaN(idx)) {
+                    setStep(idx);
+                }
+            });
+        });
+
+        root.addEventListener('change', function (e) {
+            if (e.target && e.target.matches && e.target.matches('input[type="radio"]')) {
+                syncAnsweredStates();
+            }
+        });
+
+        setStep(0);
+        syncAnsweredStates();
+    })();
+    </script>
+    {% endif %}
 </body>
 </html>

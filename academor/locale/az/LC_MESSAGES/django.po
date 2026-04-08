@@ -211,7 +211,7 @@ msgid "Test"
 msgstr "Test"
 
 msgid "Level Test"
-msgstr "Level Test"
+msgstr "Səviyyə testi"
 
 msgid "Result"
 msgstr "Nəticə"
@@ -235,7 +235,7 @@ msgid "Other tests"
 msgstr "Digər testlər"
 
 msgid "Retake this test"
-msgstr "Bu testi yenidən"
+msgstr "Yenidən test edin"
 
 msgid "Your information"
 msgstr "Məlumatlarınız"
@@ -247,7 +247,7 @@ msgid "No questions were found for this test."
 msgstr "Bu test üçün sual tapılmadı."
 
 msgid "Finish test"
-msgstr "Testi bitir"
+msgstr "Testi bitirin"
 
 msgid "Contact details will appear here once they are added in the admin panel."
 msgstr "Əlaqə məlumatları admin paneldə əlavə olunduqdan sonra burada görünəcək."
@@ -422,3 +422,18 @@ msgstr "Oflayn"
 
 msgid "Online & Offline"
 msgstr "Onlayn & Oflayn"
+
+msgid "Next"
+msgstr "Növbəti"
+
+msgid "Back"
+msgstr "Geri"
+
+msgid "Question progress"
+msgstr "Sual irəliləyişi"
+
+msgid "Answered"
+msgstr "Cavab verilib"
+
+msgid "Not answered"
+msgstr "Cavab yoxdur"
