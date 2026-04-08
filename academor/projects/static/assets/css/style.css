@@ -1479,6 +1479,55 @@ h1.animated, h2.animated, h3.animated,
     color: var(--accent);
 }
 
+/* Brand column (right) */
+.footer .footer-brand-col {
+    max-width: 100%;
+}
+
+/* Footer logo */
+.footer .footer-logo {
+    height: 36px;
+    width: auto;
+    transition: opacity 0.2s ease;
+}
+
+@media (min-width: 576px) {
+    .footer .footer-logo {
+        height: 46px;
+    }
+}
+
+@media (min-width: 992px) {
+    .footer .footer-logo {
+        height: 58px;
+    }
+}
+
+.footer .footer-logo-link:hover .footer-logo {
+    opacity: 0.75;
+}
+
+.footer .footer-tagline {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+    color: #ffffff;
+}
+
+/* Copyright logo */
+.footer .footer-copy-logo {
+    height: 20px;
+    width: auto;
+    filter: brightness(0) invert(1);
+    opacity: 0.45;
+}
+
+/* Social column */
+.footer .footer-social-col .footer-title {
+    font-size: clamp(1.1rem, 1.2rem, 1.35rem);
+}
+
 .footer .footer-social-wrap {
     margin-top: 0.35rem;
 }
@@ -1637,48 +1686,19 @@ h1.animated, h2.animated, h3.animated,
     }
 }
 
-@media (max-width: 767.98px) {
-    .footer {
-        margin-top: 2.75rem !important;
-        padding-top: 0.45rem !important;
-    }
-
-    .footer .footer-links-col,
-    .footer .footer-contact-col {
-        max-width: 34rem;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    /* Quick links: 2-column grid on mobile */
-    .footer .footer-links-col {
-        text-align: left;
-    }
-
-    .footer .footer-links-col .footer-title {
-        text-align: left;
-    }
-
+/* Quick links: 2-col grid on md+ */
+@media (min-width: 576px) {
     .footer .footer-links-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 0 1rem;
     }
-
-    .footer .footer-links-grid .footer-quick-link {
-        margin-left: 0;
-        margin-right: 0;
-    }
-
-    .footer .footer-contact-col .footer-title {
-        text-align: left;
-    }
-
 }
 
-@media (min-width: 768px) {
-    .footer .footer-links-grid {
-        display: block;
+@media (max-width: 767.98px) {
+    .footer {
+        margin-top: 2.75rem !important;
+        padding-top: 0.45rem !important;
     }
 }
 
@@ -1686,6 +1706,10 @@ h1.animated, h2.animated, h3.animated,
     .footer .container {
         padding-left: 1rem;
         padding-right: 1rem;
+    }
+
+    .footer .footer-tagline {
+        font-size: 1.05rem;
     }
 
     .footer .footer-contact-item {
@@ -1698,9 +1722,9 @@ h1.animated, h2.animated, h3.animated,
         font-size: 0.92rem;
     }
 
-    /* Tighten quick links grid on small phones */
     .footer .footer-links-grid {
-        gap: 0 0.6rem;
+        grid-template-columns: 1fr 1fr;
+        gap: 0 0.75rem;
     }
 }
 

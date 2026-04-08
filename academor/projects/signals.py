@@ -19,6 +19,7 @@ from projects.models import (
     Contact,
     Media,
     Tagline,
+    HeroSlide,
     Test,
     Question,
     Option,
@@ -145,27 +146,20 @@ def invalidate_media_cache(sender, instance, **kwargs):
     if getattr(instance, 'about_id', None):
         _invalidate_on_commit('About')
 
-    # If media is used as background image anywhere, keep page fragments fresh
-    if instance.is_home_page_background_image:
-        _invalidate_on_commit('Media')
-    if getattr(instance, 'is_footer_background_image', False):
-        _invalidate_on_commit('Media')
 
 
 @receiver(post_save, sender=Tagline)
 @receiver(post_delete, sender=Tagline)
 def invalidate_motto_cache(sender, instance, **kwargs):
-    """Invalidate cache when Motto is saved or deleted."""
+    """Invalidate cache when Tagline is saved or deleted."""
     _invalidate_on_commit('Tagline')
-    # Motto affects home page, so invalidate home page cache
-    _invalidate_on_commit('Media')
 
 
-@receiver(post_save, sender=ContactInquiry)
-@receiver(post_delete, sender=ContactInquiry)
-def invalidate_appeal_contact_cache(sender, instance, **kwargs):
-    """Invalidate cache when AppealContact is saved or deleted."""
-    _invalidate_on_commit('ContactInquiry')
+@receiver(post_save, sender=HeroSlide)
+@receiver(post_delete, sender=HeroSlide)
+def invalidate_hero_slide_cache(sender, instance, **kwargs):
+    """Invalidate cache when a HeroSlide is saved or deleted."""
+    _invalidate_on_commit('HeroSlide')
 
 
 @receiver(post_save, sender=Test)
@@ -188,8 +182,3 @@ def invalidate_option_cache(sender, instance, **kwargs):
     _invalidate_on_commit('Question')
     _invalidate_on_commit('Test')
 
-
-@receiver(post_save, sender=UserResult)
-@receiver(post_delete, sender=UserResult)
-def invalidate_user_result_cache(sender, instance, **kwargs):
-    _invalidate_on_commit('UserResult')

@@ -177,39 +177,34 @@ def cached_query(timeout=None):
     return decorator
 
 
+def _bump_cache_version():
+    """Increment global cache version to invalidate all versioned cache entries."""
+    try:
+        current_version = cache.get('cache_version', 0)
+        cache.set('cache_version', current_version + 1, None)
+    except Exception:
+        pass
+
+
 def invalidate_page_cache(view_names=None):
     """
-    Invalidate cache for specific pages or all pages.
+    Invalidate all page caches via version bump.
     
-    Args:
-        view_names: List of view names to invalidate. If None, invalidates all pages.
+    Note: locmem/Redis backends don't support key-pattern deletion, so this
+    always does a full version-based invalidation regardless of view_names.
+    Sessions and other non-versioned keys are NOT affected.
     """
-    if view_names is None:
-        # Invalidate all page caches (using a pattern - simple but works with locmem)
-        # For production with Redis, you could use pattern matching
-        cache.clear()
-    else:
-        # For specific views, we'd need to track keys or use version-based invalidation
-        # For now, we'll use a version-based approach
-        cache.set('cache_version', cache.get('cache_version', 0) + 1, None)
+    _bump_cache_version()
 
 
 def invalidate_query_cache(query_names=None):
     """
-    Invalidate cache for specific queries or all queries.
+    Invalidate all query caches via version bump.
     
-    Args:
-        query_names: List of query names to invalidate. If None, invalidates all queries.
+    Note: locmem/Redis backends don't support key-pattern deletion, so this
+    always does a full version-based invalidation regardless of query_names.
     """
-    if query_names is None:
-        # Increment cache version to invalidate all queries
-        current_version = cache.get('cache_version', 0)
-        cache.set('cache_version', current_version + 1, None)
-    else:
-        # Increment cache version to invalidate specific queries
-        # Since we can't pattern match with locmem cache, we invalidate all
-        current_version = cache.get('cache_version', 0)
-        cache.set('cache_version', current_version + 1, None)
+    _bump_cache_version()
 
 
 def cached_page_data(timeout=None):
@@ -280,20 +275,10 @@ def cached_page_data(timeout=None):
 
 def invalidate_model_cache(model_name):
     """
-    Invalidate all cache entries related to a specific model.
+    Invalidate all versioned cache entries by bumping the global cache version.
     
     Args:
-        model_name: Name of the model (e.g., 'Project', 'Vacancy', 'About', 'Media', 'Motto')
+        model_name: Name of the model that changed (used for logging/tracing only).
     """
-    # Increment cache version to invalidate all related caches
-    # This ensures all cache keys with cache_version parameter are invalidated
-    try:
-        current_version = cache.get('cache_version', 0)
-        cache.set('cache_version', current_version + 1, None)
-    except Exception:
-        # If cache version update fails, clear all cache as fallback
-        try:
-            cache.clear()
-        except Exception:
-            pass
+    _bump_cache_version()
 
