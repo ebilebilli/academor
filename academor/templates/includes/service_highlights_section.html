@@ -2,7 +2,11 @@
 <div class="container-xxl py-5">
     <div class="container">
         <div class="text-center wow fadeInUp mb-5" data-wow-delay="0.1s">
+            {% if use_h2_for_section_titles %}
+            <h2 class="mb-0 h1">{% trans "Our Services" %}</h2>
+            {% else %}
             <h1 class="mb-0">{% trans "Our Services" %}</h1>
+            {% endif %}
         </div>
         {% if categories %}
         <div class="row g-4 service-highlights-grid">

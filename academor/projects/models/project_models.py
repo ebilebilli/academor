@@ -169,9 +169,23 @@ class ServiceHighlight(models.Model):
 
 
 class AbroadModel(models.Model):
-    name = models.CharField(
+    name_az = models.CharField(
         max_length=120,
-        verbose_name='Name'
+        blank=True,
+        default='',
+        verbose_name='Name (AZ)'
+    )
+    name_en = models.CharField(
+        max_length=120,
+        blank=True,
+        default='',
+        verbose_name='Name (EN)'
+    )
+    name_ru = models.CharField(
+        max_length=120,
+        blank=True,
+        default='',
+        verbose_name='Name (RU)'
     )
     description_az = RichTextField(
         blank=True,
@@ -210,7 +224,7 @@ class AbroadModel(models.Model):
         ordering = ('id',)
 
     def __str__(self):
-        return self.name
+        return self.name_az or self.name_en or self.name_ru or f'Abroad item #{self.pk}'
 
 
 class StudyAbroadSection(models.Model):

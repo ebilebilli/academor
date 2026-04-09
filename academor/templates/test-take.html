@@ -115,9 +115,7 @@
                     {% endfor %}
                     <div class="test-question-nav mt-4">
                         <button type="button" class="btn btn-outline-secondary rounded-pill px-4 py-2" id="test-q-back" disabled>{% trans "Back" %}</button>
-                        <button type="button" class="btn btn-primary rounded-pill px-4 py-2" id="test-q-next"
-                            data-next-label="{% trans 'Next' %}"
-                            data-finish-label="{% trans 'Finish test' %}">{% trans "Next" %}</button>
+                        <button type="button" class="btn btn-primary rounded-pill px-4 py-2" id="test-q-next">{% trans "Next" %}</button>
                     </div>
                 </div>
                 {% else %}
@@ -140,12 +138,8 @@
         var nums = root.querySelectorAll('.test-stepper-num');
         var btnBack = document.getElementById('test-q-back');
         var btnNext = document.getElementById('test-q-next');
-        var form = document.getElementById('test-take-form');
         var total = steps.length;
-        if (!total || !form || !btnBack || !btnNext) return;
-
-        var finishLabel = btnNext.getAttribute('data-finish-label') || 'Finish test';
-        var nextLabel = btnNext.getAttribute('data-next-label') || 'Next';
+        if (!total || !btnBack || !btnNext) return;
 
         function syncAnsweredStates() {
             var la = root.getAttribute('data-label-answered') || '';
@@ -171,7 +165,7 @@
                 el.setAttribute('aria-selected', j === i ? 'true' : 'false');
             });
             btnBack.disabled = i === 0;
-            btnNext.textContent = (i === total - 1) ? finishLabel : nextLabel;
+            btnNext.hidden = i === total - 1;
         }
 
         btnBack.addEventListener('click', function () {
@@ -181,8 +175,6 @@
             var cur = parseInt(root.dataset.currentStep || '0', 10);
             if (cur < total - 1) {
                 setStep(cur + 1);
-            } else {
-                form.requestSubmit();
             }
         });
 

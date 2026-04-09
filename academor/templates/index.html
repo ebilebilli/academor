@@ -7,20 +7,11 @@
 </head>
 
 <body>
-    <!-- Spinner Start -->
-    <div id="spinner" class="bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-            <span class="sr-only">{% trans "Loading..." %}</span>
-        </div>
-    </div>
-    <!-- Spinner End -->
+    {% include "includes/site_spinner.html" %}
 
-
-    <!-- Navbar Start -->
     {% include "includes/site_navbar.html" %}
-    <!-- Navbar End -->
 
-
+    <main id="main-content">
     <!-- Carousel Start -->
     <div class="header-carousel-section mb-5">
         <div class="container-xxl px-3 px-md-4 px-lg-5">
@@ -41,7 +32,7 @@
                         <div class="row justify-content-start">
                             <div class="col-sm-10 col-lg-8">
                                 {% if slide.heading_small %}<h5 class="text-primary text-uppercase mb-3 animated slideInDown">{{ slide.heading_small }}</h5>{% endif %}
-                                {% if slide.heading_main %}<h1 class="display-3 text-white animated slideInDown">{{ slide.heading_main }}</h1>{% endif %}
+                                {% if slide.heading_main %}{% if forloop.first %}<h1 class="display-3 text-white animated slideInDown">{{ slide.heading_main }}</h1>{% else %}<h2 class="display-3 text-white animated slideInDown">{{ slide.heading_main }}</h2>{% endif %}{% endif %}
                                 {% if slide.body %}<p class="fs-5 text-white mb-4 pb-2">{{ slide.body }}</p>{% endif %}
                                 <a href="{% url 'projects:about-page' %}" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">{% trans "Read More" %}</a>
                                 <a href="{% url 'projects:contact-page' %}" class="btn btn-light py-md-3 px-md-5 animated slideInRight">{% trans "Contact" %}</a>
@@ -66,7 +57,7 @@
                     <div class="container">
                         <div class="row justify-content-start">
                             <div class="col-sm-10 col-lg-8">
-                                {% include "includes/_carousel_text_block.html" %}
+                                {% include "includes/_carousel_text_block.html" with carousel_is_first=forloop.first %}
                             </div>
                         </div>
                     </div>
@@ -80,7 +71,7 @@
                     <div class="container">
                         <div class="row justify-content-start">
                             <div class="col-sm-10 col-lg-8">
-                                {% include "includes/_carousel_text_block.html" %}
+                                {% include "includes/_carousel_text_block.html" with carousel_is_first=True %}
                             </div>
                         </div>
                     </div>
@@ -93,7 +84,7 @@
                     <div class="container">
                         <div class="row justify-content-start">
                             <div class="col-sm-10 col-lg-8">
-                                {% include "includes/_carousel_text_block.html" %}
+                                {% include "includes/_carousel_text_block.html" with carousel_is_first=True %}
                             </div>
                         </div>
                     </div>
@@ -106,7 +97,7 @@
                         <div class="row justify-content-start">
                             <div class="col-sm-10 col-lg-8">
                                 {% if motto and motto.heading_small %}<h5 class="text-primary text-uppercase mb-3 animated slideInDown">{{ motto.heading_small }}</h5>{% endif %}
-                                {% if motto and motto.heading_main %}<h1 class="display-3 text-white animated slideInDown">{{ motto.heading_main }}</h1>{% endif %}
+                                {% if motto and motto.heading_main %}<h2 class="display-3 text-white animated slideInDown">{{ motto.heading_main }}</h2>{% endif %}
                                 {% if motto and motto.body %}<p class="fs-5 text-white mb-4 pb-2">{{ motto.body }}</p>{% endif %}
                                 <a href="{% url 'projects:about-page' %}" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">{% trans "Read More" %}</a>
                                 <a href="{% url 'projects:contact-page' %}" class="btn btn-light py-md-3 px-md-5 animated slideInRight">{% trans "Contact" %}</a>
@@ -135,7 +126,11 @@
     <div class="container-xxl py-5 category courses-alt index-teachers-section">
         <div class="container">
             <div class="text-center wow fadeInUp courses-alt__heading" data-wow-delay="0.1s">
+                {% if use_h2_for_section_titles %}
+                <h2 class="mb-0 h1">{% trans "Our Team" %}</h2>
+                {% else %}
                 <h1 class="mb-0">{% trans "Our Team" %}</h1>
+                {% endif %}
             </div>
             {% if team %}
             <div class="courses-alt__carousel-shell wow fadeInUp" data-wow-delay="0.2s">
@@ -174,7 +169,8 @@
     <!-- Reviews Start -->
     {% include "includes/reviews_testimonial_section.html" %}
     <!-- Reviews End -->
-        
+
+    </main>
 
     {% include "includes/site_footer.html" %}
 

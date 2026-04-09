@@ -3,7 +3,11 @@
 <h5 class="text-primary text-uppercase mb-3 animated slideInDown">{{ motto.heading_small }}</h5>
 {% endif %}
 {% if motto and motto.heading_main %}
+{% if carousel_is_first %}
 <h1 class="display-3 text-white animated slideInDown">{{ motto.heading_main }}</h1>
+{% else %}
+<h2 class="display-3 text-white animated slideInDown">{{ motto.heading_main }}</h2>
+{% endif %}
 {% endif %}
 {% if motto and motto.body %}
 <p class="fs-5 text-white mb-4 pb-2">{{ motto.body }}</p>

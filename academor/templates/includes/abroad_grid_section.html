@@ -2,7 +2,11 @@
 <div class="container-xxl py-5 abroad-section">
     <div class="container">
         <div class="text-center">
+            {% if use_h2_for_section_titles %}
+            <h2 class="mb-5 fw-bold text-dark h1">{% trans "Study Abroad" %}</h2>
+            {% else %}
             <h1 class="mb-5 fw-bold text-dark">{% trans "Study Abroad" %}</h1>
+            {% endif %}
         </div>
         {% if universities %}
         <div class="universities-list universities-carousel mb-5" aria-label="{% trans 'Partner universities' %}">

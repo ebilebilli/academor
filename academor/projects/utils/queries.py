@@ -276,6 +276,7 @@ def get_background_image(page_type):
         'tests': 'is_tests_page_background_image',
         'service': 'is_service_page_background_image',
         'footer': 'is_footer_background_image',
+        'abroad': 'is_abroad_page_background_image',
     }
 
     if page_type not in image_map:
@@ -333,26 +334,6 @@ def get_mottos(lang='az'):
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
-def get_hero_slides(lang='az'):
-    """Ana səhifə hero karuseli üçün slide-ları (şəkil + başlıqlar) qaytarır."""
-    slides = HeroSlide.objects.filter(is_active=True, image__isnull=False).order_by('order', 'id')
-    result = []
-    for slide in slides:
-        if not slide.image:
-            continue
-        small_field = get_localized_field_name('heading_small', lang)
-        main_field = get_localized_field_name('heading_main', lang)
-        body_field = get_localized_field_name('body', lang)
-        result.append({
-            'image_url': slide.image.url,
-            'heading_small': getattr(slide, small_field, slide.heading_small_az) or slide.heading_small_az,
-            'heading_main': getattr(slide, main_field, slide.heading_main_az) or slide.heading_main_az,
-            'body': getattr(slide, body_field, slide.body_az) or slide.body_az,
-        })
-    return result
-
-
-@cached_query(timeout='CACHE_TIMEOUT_LONG')
 def get_service_highlights(is_active=True):
     qs = ServiceHighlight.objects.all()
     if is_active is not None:
@@ -388,7 +369,9 @@ def get_study_abroad_section(lang='az'):
 def get_abroad_items(is_active=True):
     qs = AbroadModel.objects.only(
         'id',
-        'name',
+        'name_az',
+        'name_en',
+        'name_ru',
         'description_az',
         'description_en',
         'description_ru',
@@ -407,7 +390,7 @@ def serialize_abroad_item(item, lang='az'):
         return None
     return {
         'id': item.id,
-        'name': item.name,
+        'name': _localized_value(item, 'name', lang),
         'description': _localized_value(item, 'description', lang),
         'img': item.img.url if item.img else None,
         'detail_page_img': item.detail_page_img.url if item.detail_page_img else None,
@@ -653,11 +636,8 @@ def get_home_page_data(request, lang):
     # Motto modelindən deviz (köhnə fallback — background_image branch üçün)
     motto = get_motto(lang)
 
-    # Yeni HeroSlide sistemi: hər slide-ın öz şəkli və başlıqları var
-    # Mutasiya etməmək üçün list() ilə kopyalayırıq
-    hero_slides = list(get_hero_slides(lang))
-
-    # Bütün Tagline-ları hero_slides siyahısına əlavə edirik (background image istifadə edərək)
+    # Tagline + Media ana səhifə fon şəkilləri ilə hero karusel slaydları
+    hero_slides = []
     mottos = get_mottos(lang)
     if mottos and hero_background_images:
         for i, motto_dict in enumerate(mottos):
@@ -670,8 +650,9 @@ def get_home_page_data(request, lang):
             })
 
     serialized_service_highlights = get_serialized_service_highlights(lang=lang, is_active=True)
-    
+
     return {
+        'use_h2_for_section_titles': True,
         'projects': [],
         'categories': serialized_categories,
         'partners': [],
@@ -706,7 +687,7 @@ def get_abroad_page_data(request, lang):
         'categories': [serialize_project_category(category, lang) for category in categories],
         'abroad_items': get_serialized_abroad_items(lang=lang, is_active=True),
         'universities': get_serialized_universities(is_active=True),
-        'background_image': get_background_image('about'),
+        'background_image': get_background_image('abroad') or get_background_image('about'),
         'abroad_intro_text': get_study_abroad_section(lang=lang),
     }
 
@@ -725,7 +706,7 @@ def get_abroad_detail_view_context(lang, pk):
         'abroad_item': item_data,
         'contact': serialize_contact(contact, lang) if contact else None,
         'categories': [serialize_project_category(category, lang) for category in categories],
-        'background_image': get_background_image('about'),
+        'background_image': get_background_image('abroad') or get_background_image('about'),
         'page_title': f'{item_data["name"]} | Academor',
     }
 

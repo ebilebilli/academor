@@ -108,7 +108,9 @@
                 });
             }
 
-            // Index xaric səhifələrin header background şəkilləri — browser compress olmasın
+            // Ana səhifə xaric header background şəkilləri — browser WebP compress olmasın
+            // is_tests_page_background_image: /tests/ və test keçmə (level) səhifələri
+            // is_abroad_page_background_image: /abroad/ və abroad detal header
             var NON_HOME_HEADER_BG_FIELDS = [
                 'is_about_page_background_image',
                 'is_contact_page_background_image',
@@ -117,6 +119,7 @@
                 'is_tests_page_background_image',
                 'is_service_page_background_image',
                 'is_footer_background_image',
+                'is_abroad_page_background_image',
             ];
 
             function syncHeaderBgNoCompress() {
@@ -142,7 +145,7 @@
                 var inputId = $input.attr('id') || '';
 
                 if ($input.attr('data-no-compress') === '1') {
-                    console.log('[Image Compress] Skipping (non-index page header background):', inputName || inputId);
+                    console.log('[Image Compress] Skipping (header background image, no compress):', inputName || inputId);
                     return;
                 }
 

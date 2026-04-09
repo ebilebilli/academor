@@ -39,6 +39,9 @@
 <!-- Critical layout CSS — synchronous (render-blocking is acceptable) -->
 <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet">
 <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+<!-- Host Grotesk: sinxron yüklənmə — asinxron olanda ilk paint-də fallback şrift, sonra webfont gələndə
+     navbar/body mətn ölçüsü və eni dəyişirdi (FOUT). -->
+<link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <!-- DNS + connection hints for external resources -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -47,12 +50,7 @@
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="dns-prefetch" href="//code.jquery.com">
 
-<!-- Non-critical CSS — async (loaded after paint; icons/fonts/animations not layout-critical) -->
-<link rel="preload" as="style"
-      href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700;800&display=swap"
-      onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700;800&display=swap"></noscript>
-
+<!-- Non-critical CSS — async (icons / animations; mətn şrifti yuxarıda sinxron) -->
 <link rel="preload" as="style"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
       onload="this.onload=null;this.rel='stylesheet'">

@@ -35,6 +35,7 @@ class MediaAdmin(AdminImageCompressMixin, admin.ModelAdmin):
         'is_tests_page_background_image',
         'is_service_page_background_image',
         'is_footer_background_image',
+        'is_abroad_page_background_image',
         'created_at',
     )
     readonly_fields = ('created_at', 'media_preview_detailed')
@@ -44,6 +45,11 @@ class MediaAdmin(AdminImageCompressMixin, admin.ModelAdmin):
             'fields': ('image', 'media_preview_detailed')
         }),
         ('Background assignments', {
+            'description': (
+                'Tick exactly one role per image where possible. '
+                'Study abroad page background image: header on /abroad/ and abroad detail pages '
+                '(if unset, the About page background image is used).'
+            ),
             'fields': (
                 'is_home_page_background_image',
                 'is_about_page_background_image',
@@ -53,6 +59,7 @@ class MediaAdmin(AdminImageCompressMixin, admin.ModelAdmin):
                 'is_tests_page_background_image',
                 'is_service_page_background_image',
                 'is_footer_background_image',
+                'is_abroad_page_background_image',
             ),
         }),
     )
@@ -68,6 +75,7 @@ class MediaAdmin(AdminImageCompressMixin, admin.ModelAdmin):
         'is_tests_page_background_image',
         'is_service_page_background_image',
         'is_footer_background_image',
+        'is_abroad_page_background_image',
     )
 
     def get_form(self, request, obj=None, **kwargs):
@@ -88,6 +96,7 @@ class MediaAdmin(AdminImageCompressMixin, admin.ModelAdmin):
             | Q(is_tests_page_background_image=True)
             | Q(is_service_page_background_image=True)
             | Q(is_footer_background_image=True)
+            | Q(is_abroad_page_background_image=True)
         )
 
     def media_preview(self, obj):
@@ -126,6 +135,8 @@ class MediaAdmin(AdminImageCompressMixin, admin.ModelAdmin):
             flags.append("🛠️ Services page")
         if obj.is_footer_background_image:
             flags.append("🔻 Footer")
+        if obj.is_abroad_page_background_image:
+            flags.append("🌍 Study abroad page")
         return " | ".join(flags) if flags else "-"
     background_flags.short_description = "Background"
 
@@ -280,54 +291,6 @@ class ServiceCategoryAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     name_link.admin_order_field = 'name_az'
 
 
-@admin.register(ServiceHighlight)
-class ServiceHighlightAdmin(AdminImageCompressMixin, admin.ModelAdmin):
-    list_display = (
-        'id',
-        'title_link',
-        'title_en',
-        'title_ru',
-        'order',
-        'is_active',
-        'created_at',
-    )
-    list_display_links = ('id',)
-    list_filter = ('is_active', 'created_at')
-    search_fields = (
-        'title_az', 'title_en', 'title_ru',
-        'description_az', 'description_en', 'description_ru',
-    )
-    list_editable = ('order', 'is_active')
-    readonly_fields = ('created_at',)
-    list_per_page = 25
-
-    fieldsets = (
-        ('Azerbaijani', {
-            'fields': ('title_az', 'description_az')
-        }),
-        ('English', {
-            'fields': ('title_en', 'description_en')
-        }),
-        ('Русский', {
-            'fields': ('title_ru', 'description_ru')
-        }),
-        ('Status', {
-            'fields': ('order', 'is_active', 'created_at')
-        }),
-    )
-
-    def title_link(self, obj):
-        url = reverse('admin:projects_servicehighlight_change', args=[obj.pk])
-        name = obj.title_az or obj.title_en or obj.title_ru or 'Service highlight'
-        return format_html(
-            '<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; font-size: 14px;">🔗 {}</a>',
-            url,
-            name,
-        )
-    title_link.short_description = "Title (AZ)"
-    title_link.admin_order_field = 'title_az'
-
-
 class AbroadModelAdminForm(forms.ModelForm):
     class Meta:
         model = AbroadModel
@@ -342,24 +305,24 @@ class AbroadModelAdminForm(forms.ModelForm):
 @admin.register(AbroadModel)
 class AbroadModelAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     form = AbroadModelAdminForm
-    list_display = ('id', 'name', 'preview_image', 'is_active', 'created_at')
+    list_display = ('id', 'name_az', 'name_en', 'name_ru', 'preview_image', 'is_active', 'created_at')
     list_filter = ('is_active', 'created_at')
-    search_fields = ('name', 'description_az', 'description_en', 'description_ru')
+    search_fields = ('name_az', 'name_en', 'name_ru', 'description_az', 'description_en', 'description_ru')
     list_editable = ('is_active',)
     readonly_fields = ('created_at', 'preview_image_large')
     list_per_page = 25
     fieldsets = (
         ('Content', {
-            'fields': ('name', 'img', 'detail_page_img')
+            'fields': ('img', 'detail_page_img')
         }),
         ('Azerbaijani', {
-            'fields': ('description_az',)
+            'fields': ('name_az', 'description_az')
         }),
         ('English', {
-            'fields': ('description_en',)
+            'fields': ('name_en', 'description_en')
         }),
         ('Русский', {
-            'fields': ('description_ru',)
+            'fields': ('name_ru', 'description_ru')
         }),
         ('Status', {
             'fields': ('is_active', 'created_at', 'preview_image_large')
@@ -810,47 +773,6 @@ class TaglineAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     text_preview_ru.admin_order_field = 'heading_main_ru'
 
 
-
-@admin.register(HeroSlide)
-class HeroSlideAdmin(AdminImageCompressMixin, admin.ModelAdmin):
-    list_display = ('id', 'slide_preview', 'heading_main_az', 'order', 'is_active', 'created_at')
-    list_display_links = ('slide_preview',)
-    list_editable = ('order', 'is_active')
-    list_per_page = 20
-    search_fields = (
-        'heading_small_az', 'heading_main_az',
-        'heading_small_en', 'heading_main_en',
-        'heading_small_ru', 'heading_main_ru',
-    )
-    fieldsets = (
-        ('Image & Settings', {
-            'fields': ('image', 'order', 'is_active')
-        }),
-        ('Azerbaijani', {
-            'fields': ('heading_small_az', 'heading_main_az', 'body_az')
-        }),
-        ('English', {
-            'fields': ('heading_small_en', 'heading_main_en', 'body_en')
-        }),
-        ('Русский', {
-            'fields': ('heading_small_ru', 'heading_main_ru', 'body_ru')
-        }),
-    )
-
-    def slide_preview(self, obj):
-        url = reverse('admin:projects_heroslide_change', args=[obj.pk])
-        title = obj.heading_main_az or obj.heading_main_en or f'Slide #{obj.pk}'
-        if obj.image:
-            return format_html(
-                '<a href="{}" style="display:flex;align-items:center;gap:8px;text-decoration:none;">'
-                '<img src="{}" style="height:40px;width:70px;object-fit:cover;border-radius:4px;">'
-                '<span style="color:#417690;font-weight:600;">{}</span></a>',
-                url, obj.image.url, title,
-            )
-        return format_html('<a href="{}" style="color:#417690;font-weight:600;">{}</a>', url, title)
-    slide_preview.short_description = 'Slide'
-
-
 @admin.register(ContactInquiry)
 class ContactInquiryAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     list_display = (
@@ -991,8 +913,8 @@ def _sorted_get_app_list(request, app_label=None):
 
         # Service categories
         "ServiceCategory": 200,
-        "ServiceHighlight": 210,
         "AbroadModel": 220,
+        "StudyAbroadSection": 222,
         "University": 225,
         "Instructor": 230,
 

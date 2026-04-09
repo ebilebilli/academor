@@ -20,7 +20,6 @@ from projects.models import (
     Contact,
     Media,
     Tagline,
-    HeroSlide,
     Test,
     Question,
     Option,
@@ -183,13 +182,6 @@ def invalidate_media_cache(sender, instance, **kwargs):
 def invalidate_motto_cache(sender, instance, **kwargs):
     """Invalidate cache when Tagline is saved or deleted."""
     _invalidate_on_commit('Tagline')
-
-
-@receiver(post_save, sender=HeroSlide)
-@receiver(post_delete, sender=HeroSlide)
-def invalidate_hero_slide_cache(sender, instance, **kwargs):
-    """Invalidate cache when a HeroSlide is saved or deleted."""
-    _invalidate_on_commit('HeroSlide')
 
 
 @receiver(post_save, sender=Test)
