@@ -3,7 +3,7 @@
     {% if member.image %}
     <a href="{% url 'projects:team-detail' member.id %}" class="team-item-photo-link">
         <div class="team-item-photo-wrap">
-            <img src="{{ member.image }}" alt="{{ member.name }}" class="team-item-photo-img w-100 h-100" loading="lazy" decoding="async">
+            <img src="{{ member.image }}" alt="{{ member.name }}" class="team-item-photo-img w-100 h-100" width="600" height="800" loading="lazy" decoding="async">
         </div>
     </a>
     {% endif %}

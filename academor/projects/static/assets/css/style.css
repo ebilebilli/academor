@@ -676,6 +676,115 @@ h1.animated, h2.animated, h3.animated,
     box-shadow: 0 0.25rem 1rem rgba(24, 29, 56, 0.12);
 }
 
+@media (max-width: 767.98px) {
+    .header-carousel-section .container-xxl {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        max-width: 100%;
+    }
+
+    .header-carousel-section .container-xxl > .header-carousel {
+        box-shadow: none;
+        border-radius: 0;
+    }
+
+    .header-carousel-section {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    .header-carousel-section.mb-5 {
+        margin-bottom: 1.5rem !important;
+    }
+}
+
+/* Hero overlay: desktop tint; mobile clear so the photo reads without bars or heavy wash */
+.carousel-hero-overlay {
+    background: rgba(24, 29, 56, 0.7);
+    padding-top: 15%;
+}
+
+@media (max-width: 767.98px) {
+    .carousel-hero-overlay {
+        background: transparent;
+        padding-top: 6%;
+        align-items: flex-end !important;
+        padding-bottom: 0.85rem;
+    }
+
+    .carousel-hero-overlay .text-white {
+        text-shadow:
+            0 1px 2px rgba(0, 0, 0, 0.65),
+            0 2px 12px rgba(0, 0, 0, 0.35);
+    }
+}
+
+/* Owl: before JS runs, hide extra slides so N× hero height is not stacked (major CLS + LCP jump) */
+.header-carousel.owl-carousel:not(.owl-loaded) .owl-carousel-item:not(:first-of-type) {
+    display: none;
+}
+
+/* Mirror .header-carousel .owl-carousel-item height breakpoints so the track matches before Owl paints */
+.header-carousel.owl-carousel:not(.owl-loaded) {
+    min-height: clamp(390px, 56vh, 560px);
+    min-width: 0;
+}
+
+@media (min-width: 576px) {
+    .header-carousel.owl-carousel:not(.owl-loaded) {
+        min-height: clamp(430px, 58vh, 620px);
+    }
+}
+
+@media (max-width: 767.98px) {
+    /* Short band: height tracks width (~2.06:1) so portrait phones are not “too tall”; cap by vh + px */
+    .header-carousel.owl-carousel:not(.owl-loaded) {
+        min-height: clamp(200px, calc(100vw / 2.06), min(40vh, 288px));
+    }
+}
+
+@media (min-width: 992px) {
+    .header-carousel.owl-carousel:not(.owl-loaded) {
+        min-height: clamp(500px, 63vh, 720px);
+    }
+}
+
+.categories-carousel.owl-carousel:not(.owl-loaded) .item:not(:first-of-type),
+.team-carousel.owl-carousel:not(.owl-loaded) .item:not(:first-of-type),
+.testimonial-carousel.owl-carousel:not(.owl-loaded) .testimonial-item:not(:first-of-type) {
+    display: none;
+}
+
+.courses-alt__carousel-shell .categories-carousel.owl-carousel:not(.owl-loaded) {
+    min-height: 22rem;
+}
+
+.team-carousel-wrap .team-carousel.owl-carousel:not(.owl-loaded) {
+    min-height: 24rem;
+}
+
+.testimonial-carousel.owl-carousel:not(.owl-loaded) {
+    min-height: 14rem;
+}
+
+.contact-map-embed {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    min-height: 280px;
+    min-width: 0;
+    aspect-ratio: 4 / 3;
+}
+
+.contact-map-embed > iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 280px;
+    border: 0;
+}
+
 .header-carousel .owl-carousel-item {
     position: relative;
     height: clamp(390px, 56vh, 560px);
@@ -700,13 +809,14 @@ h1.animated, h2.animated, h3.animated,
 
 @media (max-width: 767.98px) {
     .header-carousel .owl-carousel-item {
-        height: clamp(330px, 52vh, 420px);
-        background-color: #0f2b33;
+        height: clamp(200px, calc(100vw / 2.06), min(40vh, 288px));
+        background-color: transparent;
     }
 
+    /* Slight top bias: more of the upper “hero” area stays visible when the band is short */
     .header-carousel .owl-carousel-item img {
-        object-fit: contain;
-        object-position: center center;
+        object-fit: cover;
+        object-position: center 30%;
     }
 }
 
@@ -719,6 +829,27 @@ h1.animated, h2.animated, h3.animated,
 /* Hero titles + buttons: slight right and down together */
 .header-carousel .owl-carousel-item .position-absolute .container > .row > [class*="col-"] {
     transform: translate(clamp(0.45rem, 1.5vw, 1.1rem), clamp(0.5rem, 1.8vh, 1.35rem));
+}
+
+@media (max-width: 767.98px) {
+    .header-carousel .owl-carousel-item .position-absolute .container > .row > [class*="col-"] {
+        transform: translate(clamp(0.35rem, 1.1vw, 0.65rem), 0);
+    }
+
+    .header-carousel .owl-carousel-item .position-absolute h1.display-3,
+    .header-carousel .owl-carousel-item .position-absolute h2.display-3 {
+        margin-bottom: 0.35rem !important;
+    }
+
+    .header-carousel .owl-carousel-item .position-absolute p.fs-5 {
+        margin-bottom: 0.55rem !important;
+        font-size: 0.82rem !important;
+        line-height: 1.45;
+    }
+
+    .header-carousel .owl-carousel-item .position-absolute h5.text-primary {
+        margin-bottom: 0.25rem !important;
+    }
 }
 
 @media (min-width: 768px) {
@@ -736,7 +867,8 @@ h1.animated, h2.animated, h3.animated,
     margin-bottom: 0.4rem !important;
 }
 
-.header-carousel .owl-carousel-item .position-absolute h1.display-3 {
+.header-carousel .owl-carousel-item .position-absolute h1.display-3,
+.header-carousel .owl-carousel-item .position-absolute h2.display-3 {
     font-family: 'Host Grotesk', sans-serif;
     font-size: clamp(1.5rem, 4vw, 2.15rem);
     font-weight: 800;
@@ -751,7 +883,8 @@ h1.animated, h2.animated, h3.animated,
 }
 
 @media (min-width: 768px) {
-    .header-carousel .owl-carousel-item .position-absolute h1.display-3 {
+    .header-carousel .owl-carousel-item .position-absolute h1.display-3,
+    .header-carousel .owl-carousel-item .position-absolute h2.display-3 {
         font-size: clamp(1.75rem, 3.5vw, 2.35rem);
     }
 
@@ -761,7 +894,8 @@ h1.animated, h2.animated, h3.animated,
 }
 
 @media (min-width: 992px) {
-    .header-carousel .owl-carousel-item .position-absolute h1.display-3 {
+    .header-carousel .owl-carousel-item .position-absolute h1.display-3,
+    .header-carousel .owl-carousel-item .position-absolute h2.display-3 {
         font-size: 2.5rem;
         max-width: 36rem;
     }
@@ -778,6 +912,21 @@ h1.animated, h2.animated, h3.animated,
     padding-bottom: 0.55rem !important;
     padding-left: 1.1rem !important;
     padding-right: 1.1rem !important;
+}
+
+@media (max-width: 767.98px) {
+    .header-carousel .owl-carousel-item .position-absolute .btn {
+        font-size: 0.78rem;
+        padding-top: 0.35rem !important;
+        padding-bottom: 0.35rem !important;
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+        line-height: 1.25;
+    }
+
+    .header-carousel .owl-carousel-item .position-absolute .btn.me-3 {
+        margin-right: 0.4rem !important;
+    }
 }
 
 @media (min-width: 768px) {
@@ -817,6 +966,21 @@ h1.animated, h2.animated, h3.animated,
 .header-carousel .owl-nav .owl-next:hover {
     background: var(--accent);
     border-color: var(--accent);
+}
+
+@media (max-width: 767.98px) {
+    .header-carousel .owl-nav {
+        top: 50%;
+        right: 0.35rem;
+    }
+
+    .header-carousel .owl-nav .owl-prev,
+    .header-carousel .owl-nav .owl-next {
+        width: 34px;
+        height: 34px;
+        margin: 4px 0;
+        font-size: 16px;
+    }
 }
 
 .page-header {
@@ -1388,6 +1552,7 @@ h1.animated, h2.animated, h3.animated,
 .about-intro-image-card {
     position: relative;
     width: 100%;
+    min-width: 0;
     height: clamp(320px, 44vw, 460px);
     border-radius: 0.6rem;
     overflow: hidden;
@@ -2189,6 +2354,8 @@ h1.animated, h2.animated, h3.animated,
 
 .abroad-card__icon-wrap--detail {
     width: min(100%, 980px);
+    min-width: 0;
+    min-height: 200px;
     height: auto;
     aspect-ratio: 16 / 9;
     border-radius: 14px;

@@ -15,7 +15,7 @@
                 <div class="universities-list__item">
                     <div class="university-flag-card">
                         {% if uni.flag %}
-                        <img src="{{ uni.flag }}" alt="" class="university-flag-card__img" loading="lazy" decoding="async">
+                        <img src="{{ uni.flag }}" alt="" class="university-flag-card__img" width="80" height="80" loading="lazy" decoding="async">
                         {% endif %}
                     </div>
                 </div>
@@ -24,7 +24,7 @@
                 <div class="universities-list__item" aria-hidden="true">
                     <div class="university-flag-card">
                         {% if uni.flag %}
-                        <img src="{{ uni.flag }}" alt="" class="university-flag-card__img" loading="lazy" decoding="async">
+                        <img src="{{ uni.flag }}" alt="" class="university-flag-card__img" width="80" height="80" loading="lazy" decoding="async">
                         {% endif %}
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                 <a href="{% url 'projects:abroad-detail' pk=item.id %}" class="abroad-card h-100 text-center d-block text-decoration-none">
                     <div class="abroad-card__icon-wrap">
                         {% if item.img %}
-                        <img src="{{ item.img }}" alt="{{ item.name }}" class="abroad-card__thumb">
+                        <img src="{{ item.img }}" alt="{{ item.name }}" class="abroad-card__thumb" width="90" height="90">
                         {% else %}
                         <i class="fa fa-angle-left abroad-card__icon" aria-hidden="true"></i>
                         {% endif %}

@@ -24,9 +24,9 @@
                     <article class="abroad-card abroad-card--detail">
                         <div class="abroad-card__icon-wrap abroad-card__icon-wrap--detail">
                             {% if abroad_item.detail_page_img %}
-                            <img src="{{ abroad_item.detail_page_img }}" alt="{{ abroad_item.name }}" class="abroad-card__thumb">
+                            <img src="{{ abroad_item.detail_page_img }}" alt="{{ abroad_item.name }}" class="abroad-card__thumb" width="1280" height="720">
                             {% elif abroad_item.img %}
-                            <img src="{{ abroad_item.img }}" alt="{{ abroad_item.name }}" class="abroad-card__thumb">
+                            <img src="{{ abroad_item.img }}" alt="{{ abroad_item.name }}" class="abroad-card__thumb" width="1280" height="720">
                             {% else %}
                             <i class="fa fa-angle-left abroad-card__icon" aria-hidden="true"></i>
                             {% endif %}

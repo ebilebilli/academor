@@ -5,9 +5,9 @@
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="about-intro-image-card position-relative">
                     {% if about and about.first_image %}
-                    <img class="about-intro-image img-fluid position-absolute w-100 h-100" src="{{ about.first_image }}" alt="" loading="lazy" decoding="async">
+                    <img class="about-intro-image img-fluid position-absolute w-100 h-100" src="{{ about.first_image }}" alt="" width="800" height="600" loading="lazy" decoding="async">
                     {% else %}
-                    <img class="about-intro-image img-fluid position-absolute w-100 h-100" src="{% static 'assets/img/about.jpg' %}" alt="" loading="lazy" decoding="async">
+                    <img class="about-intro-image img-fluid position-absolute w-100 h-100" src="{% static 'assets/img/about.jpg' %}" alt="" width="800" height="600" loading="lazy" decoding="async">
                     {% endif %}
                 </div>
             </div>
