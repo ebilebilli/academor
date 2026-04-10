@@ -56,10 +56,10 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ../nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-      - ../academor/staticfiles:/app/static:ro
-      - ../academor/media:/app/media:ro
-      - ../nginx/ssl:/etc/nginx/ssl:ro
+    - ../nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    - /etc/letsencrypt:/etc/letsencrypt:ro
+    - ../academor/staticfiles:/app/static:ro
+    - ../academor/media:/app/media:ro
     depends_on:
       - web
     restart: unless-stopped
