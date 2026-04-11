@@ -70,7 +70,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
+
     # Third Packages
     'django_cleanup.apps.CleanupConfig',
     'ckeditor',
@@ -78,6 +80,8 @@ INSTALLED_APPS = [
     # Apps
     'projects'
 ]
+
+SITE_ID = 1
 
 CKEDITOR_CONFIGS = {
     'default': {
