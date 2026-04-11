@@ -1,13 +1,13 @@
 {% load static %}
 <meta charset="utf-8">
-<title>{{ page_title|default:seo_home_title|default:"Academor" }}</title>
+<title>{{ page_title|default:default_seo_title|default:seo_home_title|default:"Academor" }}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-{% with effective_keywords=page_keywords|default:site_seo_keywords %}
+{% with effective_keywords=page_keywords|default:default_seo_keywords|default:site_seo_keywords %}
 {% if effective_keywords %}
 <meta name="keywords" content="{{ effective_keywords }}">
 {% endif %}
 {% endwith %}
-{% with effective_description=page_description|default:seo_home_description %}
+{% with effective_description=page_description|default:default_seo_description|default:seo_home_description %}
 {% if effective_description %}
 <meta name="description" content="{{ effective_description }}">
 {% endif %}
@@ -15,8 +15,8 @@
 {% if request %}
 <link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
 <meta property="og:type" content="website">
-<meta property="og:title" content="{{ page_title|default:seo_home_title|default:'Academor' }}">
-{% with effective_description=page_description|default:seo_home_description %}
+<meta property="og:title" content="{{ page_title|default:default_seo_title|default:seo_home_title|default:'Academor' }}">
+{% with effective_description=page_description|default:default_seo_description|default:seo_home_description %}
 {% if effective_description %}
 <meta property="og:description" content="{{ effective_description }}">
 {% endif %}
@@ -26,8 +26,8 @@
 <meta name="geo.region" content="{{ page_geo_region|default:seo_geo_region|default:'AZ' }}">
 <meta name="geo.placename" content="{{ page_geo_placename|default:seo_geo_placename|default:'Baku' }}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{{ page_title|default:seo_home_title|default:'Academor' }}">
-{% with effective_description=page_description|default:seo_home_description %}
+<meta name="twitter:title" content="{{ page_title|default:default_seo_title|default:seo_home_title|default:'Academor' }}">
+{% with effective_description=page_description|default:default_seo_description|default:seo_home_description %}
 {% if effective_description %}
 <meta name="twitter:description" content="{{ effective_description }}">
 {% endif %}

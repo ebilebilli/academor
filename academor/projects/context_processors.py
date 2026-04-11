@@ -1,5 +1,6 @@
 from django.conf import settings
 
+from projects.seo_page_defaults import get_page_seo_defaults
 from projects.utils.queries import (
     get_background_image,
     get_contact,
@@ -17,6 +18,9 @@ SEO_HOME = {
             "General English, Speaking, IELTS, GMAT, GRE preparation and study abroad support."
         ),
         "keywords": (
+            "english language courses, learn english, english in baku, english course, study abroad, "
+            "english classes baku, english lessons baku, learn english baku, english language school baku, "
+            "english courses azerbaijan, study english baku, english tuition baku, english training baku, "
             "english course baku, english speaking classes baku, ielts preparation baku, "
             "general english baku, gmat preparation baku, gre course baku, "
             "yos preparation, ales course, study abroad support azerbaijan"
@@ -31,13 +35,16 @@ SEO_HOME = {
             "Bakı, Azərbaycan."
         ),
         "keywords": (
+            "ingilis dili kursları, ingilis dili öyrənmək, ingilis dili Bakı, ingilis dili kurs, "
+            "xaricdə təhsil, bakıda ingilis dili, ingilis dilində dərslər, ingilis dili dərsləri, "
+            "ingilis kursu Bakı, ingilis dili öyrənmək kursu, ingilis dili hazırlığı, "
             "ingilis dili kursu, english course baku, IELTS hazırlıq kursu, speaking dərsləri, "
-            "general english dərsləri, xaricdə təhsil, GMAT hazırlıq, GRE kursu, YÖS hazırlıq, "
+            "general english dərsləri, GMAT hazırlıq, GRE kursu, YÖS hazırlıq, "
             "ALES kursu, bakıda ən yaxşı ingilis dili kursu, IELTS kursu qiymetleri baku, "
             "speaking club baku, online ingilis dili dərsləri azərbaycan, "
             "xaricdə təhsil üçün hazırlıq kursu, GMAT və GRE hazırlıq kursu baku, "
             "YÖS imtahanına hazırlıq kursu, ALES kursu azərbaycan, "
-            "ingilis dili danışıq dərsləri bakı"
+            "ingilis dili danışıq dərsləri bakı, ingilis dilində öyrənmək, ingilis dili mərkəzi Bakı"
         ),
         "h1": "Academor English Courses - Sənin Uğura Gedən Yolun",
     },
@@ -48,6 +55,10 @@ SEO_HOME = {
             "General English, Speaking, подготовка к IELTS, GMAT, GRE и поддержка по обучению за рубежом."
         ),
         "keywords": (
+            "курсы английского языка, выучить английский, английский язык баку, курс английского, "
+            "обучение за рубежом, курсы английского в баку, изучение английского в баку, "
+            "школа английского баку, уроки английского баку, английский для взрослых баку, "
+            "языковые курсы баку, подготовка по английскому баку, английский азербайджан, "
             "english course baku, курсы английского в баку, подготовка ielts баку, "
             "speaking club baku, gmat gre подготовка баку, обучение за рубежом азербайджан"
         ),
@@ -72,6 +83,9 @@ def _request_lang(request):
 def site_seo_context(request):
     lang = _request_lang(request)
     data = SEO_HOME.get(lang) or SEO_HOME["en"]
+    rm = getattr(request, "resolver_match", None)
+    url_name = getattr(rm, "url_name", None) or ""
+    page_defaults = get_page_seo_defaults(url_name, lang)
     return {
         "seo_home_title": data["title"],
         "seo_home_description": data["description"],
@@ -80,6 +94,9 @@ def site_seo_context(request):
         "seo_og_locale": SEO_LOCALE.get(lang, "en_US"),
         "seo_geo_region": "AZ",
         "seo_geo_placename": "Baku",
+        "default_seo_title": page_defaults.get("title"),
+        "default_seo_description": page_defaults.get("description"),
+        "default_seo_keywords": page_defaults.get("keywords"),
     }
 
 
