@@ -701,7 +701,7 @@ h1.animated, h2.animated, h3.animated,
 /* Hero overlay: no color wash over the photo; text-shadow keeps titles readable */
 .carousel-hero-overlay {
     background: transparent;
-    padding-top: 15%;
+    padding-top: 18%;
 }
 
 .carousel-hero-overlay .text-white {
@@ -827,12 +827,12 @@ h1.animated, h2.animated, h3.animated,
 
 /* Hero titles + buttons: slight right and down together */
 .header-carousel .owl-carousel-item .position-absolute .container > .row > [class*="col-"] {
-    transform: translate(clamp(0.45rem, 1.5vw, 1.1rem), clamp(0.5rem, 1.8vh, 1.35rem));
+    transform: translate(clamp(0.45rem, 1.5vw, 1.1rem), clamp(0.85rem, 2.5vh, 1.85rem));
 }
 
 @media (max-width: 767.98px) {
     .header-carousel .owl-carousel-item .position-absolute .container > .row > [class*="col-"] {
-        transform: translate(clamp(0.35rem, 1.1vw, 0.65rem), 0);
+        transform: translate(clamp(0.35rem, 1.1vw, 0.65rem), clamp(0.2rem, 0.9vh, 0.55rem));
     }
 
     .header-carousel .owl-carousel-item .position-absolute h1.display-3,
@@ -853,7 +853,7 @@ h1.animated, h2.animated, h3.animated,
 
 @media (min-width: 768px) {
     .header-carousel .owl-carousel-item .position-absolute .container > .row > [class*="col-"] {
-        transform: translate(clamp(0.65rem, 2vw, 1.5rem), clamp(0.65rem, 2vh, 1.6rem));
+        transform: translate(clamp(0.65rem, 2vw, 1.5rem), clamp(1rem, 2.8vh, 2.1rem));
     }
 }
 

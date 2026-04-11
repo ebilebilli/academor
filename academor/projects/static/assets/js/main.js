@@ -123,18 +123,20 @@
     // Header carousel (index only — other pages have no .header-carousel)
     var $headerCarousel = $(".header-carousel");
     if ($headerCarousel.length) {
+        var headerSlideCount = $headerCarousel.find(".owl-carousel-item").length;
+        var headerMulti = headerSlideCount > 1;
         $headerCarousel.owlCarousel({
-            autoplay: !prefersReducedMotion,
+            autoplay: !prefersReducedMotion && headerMulti,
             autoplayTimeout: 5000,
             autoplayHoverPause: true,
             smartSpeed: 850,
             items: 1,
             dots: false,
-            loop: true,
-            nav: true,
+            loop: headerMulti,
+            nav: headerMulti,
             lazyLoad: false,
-            mouseDrag: true,
-            touchDrag: true,
+            mouseDrag: headerMulti,
+            touchDrag: headerMulti,
             navText: [
                 '<i class="bi bi-chevron-left"></i>',
                 '<i class="bi bi-chevron-right"></i>'

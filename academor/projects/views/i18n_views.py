@@ -11,7 +11,9 @@ def set_language(request):
 
     if language and language in dict(settings.LANGUAGES):
         if is_admin:
-            request.session['admin_language'] = settings.LANGUAGE_CODE
+            admin_lang = getattr(settings, 'ADMIN_LANGUAGE_CODE', 'en')
+            request.session['admin_language'] = admin_lang
+            translation.activate(admin_lang)
         else:
             request.session['django_language'] = language
             request.session['language'] = language  

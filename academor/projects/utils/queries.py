@@ -4,7 +4,8 @@ from django.db.models import Q, Prefetch
 from django.utils.html import strip_tags
 from django.utils import translation
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-# from django.conf import settings
+from django.conf import settings
+from django.templatetags.static import static
 
 from projects.models import *
 from projects.utils.cache_utils import cached_query, get_query_cache_key, cached_page_data
@@ -32,20 +33,22 @@ def get_language_from_request(request):
         translation.activate(lang)
         return lang
     
-    lang = getattr(request, 'LANGUAGE_CODE', 'en')
+    lang = getattr(request, 'LANGUAGE_CODE', settings.LANGUAGE_CODE)
     if lang in ['az', 'en', 'ru']:
         request.session['django_language'] = lang
         request.session['language'] = lang
         request.session.modified = True
         translation.activate(lang)
         return lang
-    
-    # Default olaraq en
-    request.session['django_language'] = 'en'
-    request.session['language'] = 'en'
+
+    default_lang = getattr(settings, 'LANGUAGE_CODE', 'az')
+    if default_lang not in ('az', 'en', 'ru'):
+        default_lang = 'az'
+    request.session['django_language'] = default_lang
+    request.session['language'] = default_lang
     request.session.modified = True
-    translation.activate('en')
-    return 'en'
+    translation.activate(default_lang)
+    return default_lang
 
 
 def get_localized_field_name(field_base, lang):
@@ -190,7 +193,7 @@ def get_test_by_id(test_id: int, is_active=True):
 
 def _norm_ui_lang(lang):
     if not lang:
-        return 'en'
+        return getattr(settings, 'LANGUAGE_CODE', 'az')
     return str(lang).lower().split('-')[0][:2]
 
 
@@ -636,14 +639,28 @@ def get_home_page_data(request, lang):
     # Motto modelindən deviz (köhnə fallback — background_image branch üçün)
     motto = get_motto(lang)
 
-    # Tagline + Media ana səhifə fon şəkilləri ilə hero karusel slaydları
-    hero_slides = []
+    # Tagline(lar) varsa: hər biri üçün slayd (şəkil siyahısı boş olsa belə — tək home bg və ya statik fallback)
     mottos = get_mottos(lang)
-    if mottos and hero_background_images:
+
+    def _hero_image_urls_for_taglines():
+        urls = [u for u in hero_background_images if u]
+        if not urls:
+            single_home = get_background_image('home')
+            if single_home:
+                urls = [single_home]
+        if not urls:
+            urls = [
+                static('assets/img/new_baner.png'),
+                static('assets/img/carousel-2.jpg'),
+            ]
+        return urls
+
+    hero_slides = []
+    if mottos:
+        imgs = _hero_image_urls_for_taglines()
         for i, motto_dict in enumerate(mottos):
-            bg_img = hero_background_images[i % len(hero_background_images)]
             hero_slides.append({
-                'image_url': bg_img,
+                'image_url': imgs[i % len(imgs)],
                 'heading_small': motto_dict['heading_small'],
                 'heading_main': motto_dict['heading_main'],
                 'body': motto_dict['body'],

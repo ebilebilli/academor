@@ -164,7 +164,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en'
+# Public site default UI language
+LANGUAGE_CODE = 'az'
+
+# Django admin stays English (see academor.middleware.CustomLocaleMiddleware)
+ADMIN_LANGUAGE_CODE = 'en'
 
 LANGUAGES = [
     ('az', 'Azərbaycan'),

@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from projects.utils.queries import (
     get_background_image,
     get_contact,
@@ -63,7 +65,8 @@ def _request_lang(request):
     session_lang = (request.session.get('django_language') or request.session.get('language') or '').lower().split('-')[0]
     if session_lang in {'az', 'en', 'ru'}:
         return session_lang
-    return 'en'
+    default_lang = getattr(settings, 'LANGUAGE_CODE', 'az')
+    return default_lang if default_lang in {'az', 'en', 'ru'} else 'az'
 
 
 def site_seo_context(request):
