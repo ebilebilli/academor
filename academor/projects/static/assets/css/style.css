@@ -698,24 +698,23 @@ h1.animated, h2.animated, h3.animated,
     }
 }
 
-/* Hero overlay: desktop tint; mobile clear so the photo reads without bars or heavy wash */
+/* Hero overlay: no color wash over the photo; text-shadow keeps titles readable */
 .carousel-hero-overlay {
-    background: rgba(24, 29, 56, 0.7);
+    background: transparent;
     padding-top: 15%;
+}
+
+.carousel-hero-overlay .text-white {
+    text-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.65),
+        0 2px 12px rgba(0, 0, 0, 0.35);
 }
 
 @media (max-width: 767.98px) {
     .carousel-hero-overlay {
-        background: transparent;
         padding-top: 6%;
         align-items: flex-end !important;
         padding-bottom: 0.85rem;
-    }
-
-    .carousel-hero-overlay .text-white {
-        text-shadow:
-            0 1px 2px rgba(0, 0, 0, 0.65),
-            0 2px 12px rgba(0, 0, 0, 0.35);
     }
 }
 

@@ -35,6 +35,14 @@
                         <div class="about-page-description abroad-detail-page__content mb-1">
                             {{ abroad_item.description|safe }}
                         </div>
+                        <div class="d-flex flex-column flex-sm-row flex-wrap gap-3 mt-4 pt-3 justify-content-center">
+                            <a href="{% url 'projects:abroad-page' %}" class="btn btn-outline-primary px-4 py-2 rounded-pill">
+                                <i class="fa fa-arrow-left me-2" aria-hidden="true"></i>{% trans "All study abroad" %}
+                            </a>
+                            <a href="{% url 'projects:contact-page' %}" class="btn btn-primary px-4 py-2 rounded-pill">
+                                <i class="fa fa-envelope me-2" aria-hidden="true"></i>{% trans "Contact us" %}
+                            </a>
+                        </div>
                     </article>
                 </div>
             </div>
