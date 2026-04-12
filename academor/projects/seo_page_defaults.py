@@ -6,6 +6,8 @@ Home uses SEO_HOME from context_processors instead (no entry for home-page).
 
 from __future__ import annotations
 
+from django.conf import settings
+
 # Appended to Azerbaijani keywords on all AZ routes (core commercial / local phrases).
 _AZ_KW_CORE = (
     "ingilis dili kursları, ingilis dili öyrənmək, ingilis dili Bakı, ingilis dili kurs, "
@@ -299,7 +301,10 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
 def get_page_seo_defaults(url_name: str, lang: str) -> dict[str, str]:
     if not url_name or url_name == "home-page":
         return {}
-    lang_key = lang if lang in SEO_PAGE_DEFAULTS else "en"
-    table = SEO_PAGE_DEFAULTS.get(lang_key) or SEO_PAGE_DEFAULTS["en"]
+    site_lang = getattr(settings, "LANGUAGE_CODE", "az")
+    if site_lang not in SEO_PAGE_DEFAULTS:
+        site_lang = "az"
+    lang_key = lang if lang in SEO_PAGE_DEFAULTS else site_lang
+    table = SEO_PAGE_DEFAULTS.get(lang_key) or SEO_PAGE_DEFAULTS.get(site_lang) or SEO_PAGE_DEFAULTS["az"]
     row = table.get(url_name)
     return dict(row) if row else {}

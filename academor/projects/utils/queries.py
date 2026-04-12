@@ -16,7 +16,8 @@ def get_language_from_request(request):
     lang = request.GET.get('lang', '').lower() or request.GET.get('language', '').lower()
     if lang in ['az', 'en', 'ru']:
         request.session['django_language'] = lang
-        request.session['language'] = lang 
+        request.session['language'] = lang
+        request.session['language_user_chosen'] = True
         request.session.modified = True
         translation.activate(lang)
         return lang

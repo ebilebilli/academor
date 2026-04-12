@@ -736,9 +736,9 @@ h1.animated, h2.animated, h3.animated,
 }
 
 @media (max-width: 767.98px) {
-    /* Short band: height tracks width (~2.06:1) so portrait phones are not “too tall”; cap by vh + px */
+    /* Short band: height tracks width (~1.94:1); slightly taller than before for more hero image */
     .header-carousel.owl-carousel:not(.owl-loaded) {
-        min-height: clamp(200px, calc(100vw / 2.06), min(40vh, 288px));
+        min-height: clamp(218px, calc(100vw / 1.94), min(42vh, 308px));
     }
 }
 
@@ -808,7 +808,7 @@ h1.animated, h2.animated, h3.animated,
 
 @media (max-width: 767.98px) {
     .header-carousel .owl-carousel-item {
-        height: clamp(200px, calc(100vw / 2.06), min(40vh, 288px));
+        height: clamp(218px, calc(100vw / 1.94), min(42vh, 308px));
         background-color: transparent;
     }
 
@@ -996,6 +996,12 @@ h1.animated, h2.animated, h3.animated,
     overflow: hidden;
     box-sizing: border-box;
     background-image: var(--page-header-image, url(../img/carousel-1.jpg));
+}
+
+@media (max-width: 767.98px) {
+    .page-header.page-header-hero-band {
+        min-height: 440px;
+    }
 }
 
 @media (min-width: 992px) {

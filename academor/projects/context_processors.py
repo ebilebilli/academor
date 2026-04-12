@@ -28,7 +28,7 @@ SEO_HOME = {
         "h1": "Academor English Courses - Your Path to Success",
     },
     "az": {
-        "title": "Academor English Courses | IELTS, Speaking, GMAT, GRE, Xaricdə Təhsil",
+        "title": "İngilis dili kursları Bakıda | Academor — IELTS, GMAT, GRE, xaricdə təhsil",
         "description": (
             "Academor ilə ingilis dilini sürətli və effektiv öyrən! General English, "
             "Speaking dərsləri, IELTS, GMAT, GRE hazırlığı və xaricdə təhsil dəstəyi. "
@@ -46,7 +46,7 @@ SEO_HOME = {
             "YÖS imtahanına hazırlıq kursu, ALES kursu azərbaycan, "
             "ingilis dili danışıq dərsləri bakı, ingilis dilində öyrənmək, ingilis dili mərkəzi Bakı"
         ),
-        "h1": "Academor English Courses - Sənin Uğura Gedən Yolun",
+        "h1": "Academor — Bakıda ingilis dili kursları və uğura gedən yolun",
     },
     "ru": {
         "title": "Academor English Courses | IELTS, Speaking, GMAT, GRE, Обучение за рубежом",
@@ -69,6 +69,24 @@ SEO_HOME = {
 SEO_LOCALE = {"en": "en_US", "az": "az_AZ", "ru": "ru_RU"}
 
 
+def _site_content_lang():
+    code = getattr(settings, "LANGUAGE_CODE", "az")
+    return code if code in {"az", "en", "ru"} else "az"
+
+
+def _seo_lang(request):
+    """Meta title/description üçün dil: yalnız istifadəçi dil seçəndə en/ru; əks halda əsas dil (az).
+
+    Beləliklə Google və ilk ziyarətçilər üçün default snippet azərbaycanca qalır; brauzer dilinə görə
+    sessiyaya yazılan avtomatik \"en\" SEO-nu ingiliscə etməz.
+    """
+    if request.session.get("language_user_chosen"):
+        v = (request.session.get("django_language") or "").lower().split("-")[0]
+        if v in {"az", "en", "ru"}:
+            return v
+    return _site_content_lang()
+
+
 def _request_lang(request):
     lang = (getattr(request, 'LANGUAGE_CODE', '') or '').lower().split('-')[0]
     if lang in {'az', 'en', 'ru'}:
@@ -81,8 +99,10 @@ def _request_lang(request):
 
 
 def site_seo_context(request):
-    lang = _request_lang(request)
-    data = SEO_HOME.get(lang) or SEO_HOME["en"]
+    lang = _seo_lang(request)
+    site_lang = _site_content_lang()
+    # Saytın əsas dili (az) — naməlum dildə ingiliscə yox, azərbaycanca fallback
+    data = SEO_HOME.get(lang) or SEO_HOME.get(site_lang) or SEO_HOME["az"]
     rm = getattr(request, "resolver_match", None)
     url_name = getattr(rm, "url_name", None) or ""
     page_defaults = get_page_seo_defaults(url_name, lang)
@@ -91,7 +111,7 @@ def site_seo_context(request):
         "seo_home_description": data["description"],
         "site_seo_keywords": data["keywords"],
         "seo_home_h1": data["h1"],
-        "seo_og_locale": SEO_LOCALE.get(lang, "en_US"),
+        "seo_og_locale": SEO_LOCALE.get(lang, "az_AZ"),
         "seo_geo_region": "AZ",
         "seo_geo_placename": "Baku",
         "default_seo_title": page_defaults.get("title"),

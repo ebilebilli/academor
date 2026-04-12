@@ -16,7 +16,8 @@ def set_language(request):
             translation.activate(admin_lang)
         else:
             request.session['django_language'] = language
-            request.session['language'] = language  
+            request.session['language'] = language
+            request.session['language_user_chosen'] = True
             request.session.modified = True
             request.session.save()
 
