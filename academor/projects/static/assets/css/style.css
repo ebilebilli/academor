@@ -990,23 +990,31 @@ h1.animated, h2.animated, h3.animated,
     background-attachment: scroll;
 }
 
+/* Inner-page hero band: mirror .header-carousel .owl-carousel-item heights + crop so the photo matches the home hero */
 .page-header.page-header-hero-band {
-    min-height: 220px;
+    min-height: clamp(315px, 45vh, 450px);
     max-height: none;
     overflow: hidden;
     box-sizing: border-box;
     background-image: var(--page-header-image, url(../img/carousel-1.jpg));
 }
 
+@media (min-width: 576px) {
+    .page-header.page-header-hero-band {
+        min-height: clamp(345px, 46vh, 495px);
+    }
+}
+
 @media (max-width: 767.98px) {
     .page-header.page-header-hero-band {
-        min-height: 440px;
+        min-height: clamp(180px, calc(100vw / 2.35), min(34vh, 248px));
+        background-position: center 30%;
     }
 }
 
 @media (min-width: 992px) {
     .page-header.page-header-hero-band {
-        min-height: 244px;
+        min-height: clamp(174px, 22vh, 250px);
         max-height: none;
     }
 }

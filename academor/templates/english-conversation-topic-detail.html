@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+{% load static i18n %}{% get_current_language as LANG_CODE %}
+<html lang="{{ LANG_CODE }}">
+<head>
+    {% include "includes/site_layout_head.html" with page_title=page_title page_description=page_description page_keywords=page_keywords %}
+</head>
+<body>
+    {% include "includes/site_spinner.html" %}
+    {% include "includes/site_navbar.html" %}
+
+    <div class="container-fluid bg-primary mb-5 page-header page-header-hero-band"{% include "includes/page_header_dynamic_bg.html" %}></div>
+
+    <article class="container-xxl py-5">
+        <div class="container">
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb mb-0 bg-light rounded-3 px-3 py-2">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'projects:english-conversation-topics' %}" class="text-decoration-none">{% trans "English conversation topics" %}</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ topic.title }}</li>
+                </ol>
+            </nav>
+
+            <header class="mb-4">
+                <div class="bg-white shadow-sm rounded-4 p-4 p-md-5 border border-light">
+                    <h1 class="h2 mb-0 text-dark">{{ topic.title }}</h1>
+                </div>
+            </header>
+
+            <section class="mb-4" aria-labelledby="overview-heading">
+                <div class="section-card bg-white shadow-sm rounded-4 border border-light p-4 p-md-5">
+                    <h2 id="overview-heading" class="h5 text-primary mb-3 d-flex align-items-center gap-2">
+                        <i class="fa fa-lightbulb-o text-primary" aria-hidden="true"></i>
+                        {% trans "How to use this topic" %}
+                    </h2>
+                    {% for p in topic.overview_paragraphs %}
+                    <p class="text-muted mb-3 last-mb-0">{{ p }}</p>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section class="mb-4" aria-labelledby="vocab-heading">
+                <div class="section-card bg-white shadow-sm rounded-4 border border-light p-4 p-md-5">
+                    <h2 id="vocab-heading" class="h5 text-primary mb-3 d-flex align-items-center gap-2">
+                        <i class="fa fa-book text-primary" aria-hidden="true"></i>
+                        {% trans "Vocabulary" %}
+                    </h2>
+                    <p class="small text-muted mb-4">{% trans "Headwords stay in English; the short explanations follow your language." %}</p>
+                    <ul class="list-unstyled row g-3 mb-0">
+                        {% for v in topic.vocabulary %}
+                        <li class="col-md-6">
+                            <div class="vocab-tile h-100 p-3 rounded-3 border border-light bg-light bg-opacity-50 border-start border-4 border-primary">
+                                <strong class="d-block text-dark font-monospace small mb-1">{{ v.term }}</strong>
+                                <span class="text-muted small d-block">{{ v.gloss }}</span>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </section>
+
+            <section class="mb-4" aria-labelledby="phrases-heading">
+                <div class="section-card bg-white shadow-sm rounded-4 border border-light p-4 p-md-5">
+                    <h2 id="phrases-heading" class="h5 text-primary mb-3 d-flex align-items-center gap-2">
+                        <i class="fa fa-quote-left text-primary" aria-hidden="true"></i>
+                        {% trans "Useful phrases" %}
+                    </h2>
+                    <p class="small text-muted border-start border-3 border-primary ps-3 mb-4">{% trans "These lines are in English so you can use them directly in class." %}</p>
+                    <ul class="list-group list-group-flush rounded-3 border shadow-sm mb-0">
+                        {% for phrase in topic.useful_phrases %}
+                        <li class="list-group-item py-3 font-monospace small">{{ phrase }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </section>
+
+            <section class="mb-4" aria-labelledby="sentences-heading">
+                <div class="section-card bg-white shadow-sm rounded-4 border border-light p-4 p-md-5">
+                    <h2 id="sentences-heading" class="h5 text-primary mb-3 d-flex align-items-center gap-2">
+                        <i class="fa fa-list-ol text-primary" aria-hidden="true"></i>
+                        {% trans "Example sentences" %}
+                    </h2>
+                    <p class="small text-muted border-start border-3 border-primary ps-3 mb-4">{% trans "Model sentences in English; try adapting them with your own details." %}</p>
+                    <ol class="list-group list-group-numbered rounded-3 border shadow-sm mb-0">
+                        {% for s in topic.example_sentences %}
+                        <li class="list-group-item py-3">{{ s }}</li>
+                        {% endfor %}
+                    </ol>
+                </div>
+            </section>
+
+            <section class="mb-4" aria-labelledby="questions-heading">
+                <div class="section-card bg-white shadow-sm rounded-4 border border-light p-4 p-md-5">
+                    <h2 id="questions-heading" class="h5 text-primary mb-3 d-flex align-items-center gap-2">
+                        <i class="fa fa-question-circle text-primary" aria-hidden="true"></i>
+                        {% trans "Discussion questions" %}
+                    </h2>
+                    <p class="small text-muted border-start border-3 border-primary ps-3 mb-4">{% trans "Questions are in English to match oral practice." %}</p>
+                    <ul class="list-group list-group-flush rounded-3 border shadow-sm mb-0">
+                        {% for q in topic.discussion_questions %}
+                        <li class="list-group-item py-3">{{ q }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </section>
+
+            <section class="mb-4" aria-labelledby="writing-heading">
+                <div class="section-card bg-white shadow-sm rounded-4 border border-light p-4 p-md-5">
+                    <h2 id="writing-heading" class="h5 text-primary mb-3 d-flex align-items-center gap-2">
+                        <i class="fa fa-pencil text-primary" aria-hidden="true"></i>
+                        {% trans "Writing prompts" %}
+                    </h2>
+                    <p class="small text-muted border-start border-3 border-primary ps-3 mb-4">{% trans "Prompts are in English for written practice." %}</p>
+                    <ul class="list-group list-group-flush rounded-3 border shadow-sm mb-0">
+                        {% for w in topic.writing_prompts %}
+                        <li class="list-group-item py-3">{{ w }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </section>
+
+            <p class="mb-0">
+                <a href="{% url 'projects:english-conversation-topics' %}" class="btn btn-primary rounded-pill px-4">{% trans "All topics" %}</a>
+            </p>
+        </div>
+    </article>
+
+    <style>
+        .last-mb-0:last-child { margin-bottom: 0 !important; }
+    </style>
+
+    {% include "includes/site_footer.html" %}
+    {% include "includes/site_scripts.html" %}
+</body>
+</html>

@@ -14,6 +14,11 @@ from projects.views.views_v1 import (
     ReviewsPageView,
 )
 from projects.views.test_views import TestListPageView, TestTakePageView
+from projects.views.conversation_topics_views import (
+    EnglishConversationTopicsListView,
+    EnglishConversationTopicDetailView,
+    LegacyTopicTwoRedirectView,
+)
 
 
 app_name = 'projects'
@@ -83,5 +88,20 @@ urlpatterns = [
         'tests/<int:test_id>/',
         TestTakePageView.as_view(),
         name='test-take',
+    ),
+    path(
+        'learn/english-conversation-topics/',
+        EnglishConversationTopicsListView.as_view(),
+        name='english-conversation-topics',
+    ),
+    path(
+        'learn/english-conversation-topics/two/',
+        LegacyTopicTwoRedirectView.as_view(),
+        name='english-conversation-topic-two-legacy',
+    ),
+    path(
+        'learn/english-conversation-topics/<slug:slug>/',
+        EnglishConversationTopicDetailView.as_view(),
+        name='english-conversation-topic-detail',
     ),
 ]   

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+{% load static i18n %}{% get_current_language as LANG_CODE %}
+<html lang="{{ LANG_CODE }}">
+<head>
+    {% include "includes/site_layout_head.html" with page_title=page_title page_description=page_description page_keywords=page_keywords %}
+</head>
+<body>
+    {% include "includes/site_spinner.html" %}
+    {% include "includes/site_navbar.html" %}
+
+    <div class="container-fluid bg-primary mb-5 page-header page-header-hero-band"{% include "includes/page_header_dynamic_bg.html" %}></div>
+
+    <div class="container-xxl py-5 pb-5">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-10 col-xl-9">
+                    <div class="bg-white shadow rounded-4 p-4 p-md-5 border border-light">
+                        <div class="d-flex flex-column flex-md-row align-items-center align-items-md-start gap-4 mb-0">
+                            <a href="{% url 'projects:home-page' %}" class="flex-shrink-0 topic-list-brand d-flex align-items-center justify-content-center" aria-label="{% trans 'Home' %}">
+                                <img src="{% static 'assets/img/banner.png' %}" alt="Academor" class="topic-list-logo" width="192" height="192" loading="eager" decoding="async">
+                            </a>
+                            <div class="flex-grow-1 text-center text-md-start w-100">
+                                <h1 class="h2 mb-2 text-dark">{{ list_h1 }}</h1>
+                                <p class="lead text-muted mb-0">{{ list_lead }}</p>
+                                <p class="text-primary small fw-semibold mt-3 mb-0">{{ topics_count_label }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                {% for item in topics %}
+                <div class="col-lg-4 col-md-6">
+                    <a href="{% url 'projects:english-conversation-topic-detail' item.slug %}" class="text-decoration-none topic-card-link">
+                        <div class="topic-card card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                            <div class="card-body p-4 d-flex align-items-center gap-3">
+                                <span class="topic-card-icon flex-shrink-0 rounded-circle bg-primary bg-opacity-10 text-primary d-inline-flex align-items-center justify-content-center" style="width: 2.5rem; height: 2.5rem;" aria-hidden="true">
+                                    <i class="fa fa-angle-right"></i>
+                                </span>
+                                <span class="fw-semibold text-dark topic-card-title">{{ item.title }}</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* banner.png — bir az daha böyük, kvadrata yaxın ölçü */
+        .topic-list-logo {
+            height: 64px;
+            width: auto;
+            max-width: 128px;
+            object-fit: contain;
+        }
+        @media (min-width: 576px) {
+            .topic-list-logo {
+                height: 80px;
+                max-width: 160px;
+            }
+        }
+        @media (min-width: 992px) {
+            .topic-list-logo {
+                height: 96px;
+                max-width: 192px;
+            }
+        }
+        .topic-card-link:hover .topic-card {
+            transform: translateY(-4px);
+            box-shadow: 0 0.75rem 2rem rgba(6, 120, 236, 0.12) !important;
+        }
+        .topic-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .topic-card-link:hover .topic-card-title {
+            color: var(--bs-primary) !important;
+        }
+    </style>
+
+    {% include "includes/site_footer.html" %}
+    {% include "includes/site_scripts.html" %}
+</body>
+</html>
