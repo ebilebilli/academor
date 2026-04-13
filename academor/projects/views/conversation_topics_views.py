@@ -5,7 +5,12 @@ from django.utils.translation import gettext as _
 from django.views import View
 
 from projects import conversation_topics_locale as ct_loc
-from projects.conversation_topics_data import RAW_TOPIC_TITLES, TITLE_TO_SLUG, topic_by_slug
+from projects.conversation_topics_data import (
+    LEGACY_TOPIC_SLUG_REDIRECTS,
+    RAW_TOPIC_TITLES,
+    TITLE_TO_SLUG,
+    topic_by_slug,
+)
 from projects.utils.queries import (
     get_background_image,
     get_language_from_request,
@@ -21,6 +26,17 @@ class LegacyTopicTwoRedirectView(View):
         url = reverse(
             "projects:english-conversation-topic-detail",
             kwargs={"slug": "talk-about-two-things"},
+        )
+        return HttpResponsePermanentRedirect(url)
+
+
+class LegacyLearnEnglishConversationTopicRedirectView(View):
+    """301 from ``/learn/english-conversation-topics/<slug>/`` → ``/topics/<slug>/``."""
+
+    def get(self, request, slug, *args, **kwargs):
+        url = reverse(
+            "projects:english-conversation-topic-detail",
+            kwargs={"slug": slug},
         )
         return HttpResponsePermanentRedirect(url)
 
@@ -57,6 +73,14 @@ class EnglishConversationTopicDetailView(View):
     template_name = "english-conversation-topic-detail.html"
 
     def get(self, request, slug):
+        new_slug = LEGACY_TOPIC_SLUG_REDIRECTS.get(slug)
+        if new_slug:
+            return HttpResponsePermanentRedirect(
+                reverse(
+                    "projects:english-conversation-topic-detail",
+                    kwargs={"slug": new_slug},
+                )
+            )
         lang = get_language_from_request(request)
         topic = topic_by_slug(slug, lang)
         if topic is None:

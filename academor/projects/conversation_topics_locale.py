@@ -26,7 +26,12 @@ def list_topics_count_label(count: int, lang: str) -> str:
     if lang == "az":
         return f"{count} mövzu"
     if lang == "ru":
-        return f"{count} тем"
+        if count % 10 == 1 and count % 100 != 11:
+            return f"{count} тема"
+        elif 2 <= count % 10 <= 4 and not (12 <= count % 100 <= 14):
+            return f"{count} темы"
+        else:
+            return f"{count} тем"
     return f"{count} topics"
 
 
@@ -51,12 +56,13 @@ _LIST_PAGE_LEAD = {
         "study tips, useful phrases, model sentences, questions, and short writing tasks."
     ),
     "az": (
-        "Danışıq və ya yazı üçün mövzu seçin. Hər mövzunun səhifəsində izahlı lüğət, tədris qeydləri, "
-        "faydalı ifadələr, nümunə cümlələr, suallar və qısa yazı tapşırıqları var."
+        "Danışıq və ya yazı üçün mövzu seçin. Hər mövzunun səhifəsində sözlərin izahı, tədris üçün qısa "
+        "qeydlər, faydalı ifadələr, nümunə cümlələr, müzakirə sualları və qısa yazı tapşırıqları var."
     ),
     "ru": (
-        "Выберите тему для говорения или письма. На странице каждой темы — словарь с пояснениями, "
-        "учебные советы, полезные фразы, примеры предложений, вопросы и короткие письменные задания."
+        "Выберите тему для устной или письменной практики. На каждой странице темы вы найдёте "
+        "словарь с объяснениями, советы по учёбе, полезные фразы, образцы предложений, "
+        "вопросы для обсуждения и короткие письменные задания."
     ),
 }
 
@@ -72,12 +78,12 @@ _LIST_META_DESCRIPTION = {
         "English headwords and practice lines stay in English for the classroom."
     ),
     "az": (
-        "Lüğət izahları, tədris qeydləri və bölmə başlıqları sayt dilinizə uyğundur; "
-        "ingilis sözləri və dərsdə istifadə üçün nümunə sətirlər ingilis dilində qalır."
+        "Sözlərin qısa izahı, tədris məsləhətləri və bölmə başlıqları saytın seçdiyiniz dilində göstərilir; "
+        "ingilis dilindəki sözlər və dərsdə birbaşa işlənən nümunə cümlələr isə ingilis dilində saxlanılır."
     ),
     "ru": (
-        "Пояснения к словам, учебные подсказки и заголовки — на языке сайта; "
-        "английские слова и фразы для занятий остаются на английском."
+        "Пояснения к словам, учебные подсказки и заголовки разделов отображаются на языке сайта; "
+        "английские слова и практические фразы для занятий остаются на английском языке."
     ),
 }
 
@@ -87,7 +93,7 @@ def theme_keyword_gloss(title: str, lang: str) -> str:
     if lang == "en":
         return f'A key word connected to the theme "{title}".'
     if lang == "az":
-        return f"«{title}» mövzusu ilə bağlı əsas söz."
+        return f"«{title}» mövzusuna uyğun əsas açar söz."
     return f'Ключевое слово, связанное с темой «{title}».'
 
 
@@ -117,12 +123,12 @@ _OVERVIEW_P1 = {
         "and build paragraphs you could use in conversation, interviews, or presentations."
     ),
     "az": (
-        'Bu danışıq vahidi «{title}» mövzusuna həsr olunub. Məqsəd qısa cavablardan kənara çıxmaq və '
-        "danışıq, müsahibə və ya təqdimatlarda istifadə edə biləcəyiniz abzaslar qurmaqdır."
+        'Bu danışıq mövzusu «{title}» üzrə qurulub. Məqsəd yalnız bir-iki kəlməlik cavablarda qalmamaq, '
+        "həmçinin sərbəst danışıq, müsahibə və ya təqdimat üçün yetərincə aydın və geniş cavablar hazırlamaqdır."
     ),
     "ru": (
-        'Этот блок разговорной практики посвящён теме «{title}». Цель — выйти за рамки коротких ответов '
-        "и строить развёрнутые реплики для беседы, собеседований и презентаций."
+        'Этот разговорный блок посвящён теме «{title}». Цель — не ограничиваться краткими ответами, '
+        "а строить развёрнутые высказывания, которые можно использовать в беседе, на собеседовании или при презентации."
     ),
 }
 
@@ -132,12 +138,13 @@ _OVERVIEW_P2 = {
         "and evaluation (what you think now). Try to use at least three new words from the list below."
     ),
     "az": (
-        "Güclü cavablar adətən təsviri (nə baş verib), izahı (niyə vacibdir) və qiymətləndirməni "
-        "(indi nə düşünürsünüz) birləşdirir. Aşağıdakı siyahıdan ən azı üç yeni söz işlədin."
+        "Yaxşı cavablar adətən təsviri (nə baş verib), səbəb–nəticə izahını (niyə vacibdir) və şəxsi "
+        "qiymətləndirməni (indi necə düşünürsünüz) birlikdə verir. Aşağıdakı siyahıdan ən azı üç yeni söz "
+        "işlətməyə çalışın."
     ),
     "ru": (
-        "Сильные ответы обычно сочетают описание (что произошло), объяснение (почему это важно) "
-        "и оценку (что вы думаете сейчас). Постарайтесь использовать не меньше трёх новых слов из списка ниже."
+        "Сильные ответы, как правило, сочетают в себе описание (что произошло), объяснение (почему это важно) "
+        "и оценку (ваше нынешнее отношение к этому). Постарайтесь употребить не менее трёх новых слов из списка ниже."
     ),
 }
 
@@ -147,90 +154,96 @@ _STUDY_TIP = {
         "then invite your partner to respond with a question."
     ),
     "az": (
-        "Dərsdə aydın struktur hədəfləyin: bir əsas fikir deyin, bir konkret nümunə gətirin, "
-        "sonra həmsöhbətinizi sualla cavaba dəvət edin."
+        "Dərsdə aydın quruluş saxlayın: əvvəlcə bir əsas fikir söyləyin, sonra bir konkret nümunə gətirin, "
+        "sonda isə həmsöhbətinizi cavab verməsi üçün sualla dəvət edin."
     ),
     "ru": (
-        "На занятии держите ясную структуру: назовите одну главную мысль, приведите один конкретный пример, "
-        "затем предложите собеседнику ответить вопросом."
+        "На занятии придерживайтесь чёткой структуры: выскажите одну главную мысль, "
+        "подкрепите её конкретным примером, а затем задайте собеседнику вопрос, чтобы услышать его мнение."
     ),
 }
 
 _CLUSTER_NOTES: dict[str, dict[str, str]] = {
     "grammar_time": {
         "en": "Pay special attention to time expressions and how they change verb forms.",
-        "az": "Zaman ifadələrinə və onların fel formalarını necə dəyişdirdiyinə xüsusi diqqət yetirin.",
-        "ru": "Обратите особое внимание на выражения времени и то, как они меняют формы глаголов.",
+        "az": "Zamanı bildirən ifadələrə və onların felin zamanına təsir etməsinə xüsusi diqqət yetirin.",
+        "ru": "Уделите особое внимание временны́м выражениям и тому, как они влияют на форму глагола.",
     },
     "hypothetical_drill": {
         "en": "Practice both quick reactions and slower, reasoned answers; examiners reward both.",
-        "az": "Həm tez reaksiyaları, həm də yavaş, əsaslandırılmış cavabları məşq edin; hər ikisi qiymətləndirilir.",
-        "ru": "Тренируйте и быстрые реакции, и вдумчивые ответы; экзаменаторы ценят оба стиля.",
+        "az": "Həm ani, qısa cavabları, həm də yavaş, düşünülmüş və əsaslandırılmış cavabları məşq edin; "
+        "hər iki üslub da yüksək qiymətləndirilə bilər.",
+        "ru": "Тренируйте как быстрые, спонтанные реакции, так и обдуманные, аргументированные ответы — экзаменаторы ценят оба стиля.",
     },
     "usa_geo": {
         "en": "Balance facts you have learned with careful language—hedge when you are not sure.",
-        "az": "Öyrəndiyiniz faktları ehtiyatlı dil ilə balanslaşdırın — əmin deyilsinizsə, yumşaldıcı ifadələr işlədin.",
-        "ru": "Сочетайте изученные факты с осторожной формулировкой — смягчайте формулировки, если вы не уверены.",
+        "az": "Öyrəndiyiniz faktları ehtiyatlı ifadələrlə çatdırın; əmin olmadığınız yerdə “bəlkə”, “güman ki” kimi "
+        "yumşaldıcı sözlərdən istifadə edin.",
+        "ru": "Подкрепляйте изученные факты осторожными формулировками — используйте смягчающие обороты там, где не уверены.",
     },
     "safety_disaster": {
         "en": "Use calm, precise vocabulary; avoid exaggeration unless you are telling a story.",
-        "az": "Sakit və dəqiq leksika işlədin; hekayə danışmırsaqsınız, həddi artırmayın.",
-        "ru": "Используйте спокойную и точную лексику; избегайте преувеличений, если вы не рассказываете историю.",
+        "az": "Sakit, aydın sözlər seçin; hekayə danışmırsınızsa, hadisələri şişirtməyin.",
+        "ru": "Используйте спокойную, точную лексику; избегайте преувеличений, если только не рассказываете историю.",
     },
     "media_tech": {
         "en": "Be ready to compare benefits and risks without relying only on slogans.",
-        "az": "Faydaları və riskləri yalnız şüarlarla deyil, əsaslandırılmış şəkildə müqayisə etməyə hazır olun.",
-        "ru": "Будьте готовы сравнивать плюсы и минусы, опираясь не только на лозунги.",
+        "az": "Faydaları və riskləri yalnız şüarlara söykənmədən, arqumentlərlə müqayisə edə bilməyə hazır olun.",
+        "ru": "Будьте готовы взвешенно сравнивать плюсы и минусы, не ограничиваясь расхожими лозунгами.",
     },
     "money_consumer": {
         "en": "Numbers and examples make abstract money topics easier to follow.",
-        "az": "Rəqəmlər və nümunələr pul mövzularını daha aydın edir.",
-        "ru": "Цифры и примеры делают абстрактные темы про деньги понятнее.",
+        "az": "Rəqəm və konkret nümunələr pul, xərcləmə kimi mövzuları daha aydın və başa düşülən edir.",
+        "ru": "Конкретные цифры и примеры делают абстрактные денежные темы понятнее и убедительнее.",
     },
     "leisure_travel": {
         "en": "Sensory details (sights, sounds, routines) make travel stories memorable.",
-        "az": "Hiss detalları (mənzərələr, səslər, gündəlik rutin) səyahət hekayələrini yaddaqalan edir.",
-        "ru": "Сенсорные детали (звуки, картинки, распорядок дня) делают рассказы о поездках запоминающимися.",
+        "az": "Gördükləriniz, eşitdikləriniz və gündəlik təfərrüat kimi hisslərə aid detallar səyahət hekayəsini "
+        "yaddaqalan edir.",
+        "ru": "Сенсорные детали — виды, звуки, привычный распорядок — делают рассказы о поездках живыми и запоминающимися.",
     },
     "family_social": {
         "en": "Respect privacy: share what you are comfortable discussing and invite others to do the same.",
-        "az": "Məxfiliyə hörmət edin: danışmağa hazır olduğunuzu paylaşın və başqalarını da eyni şəkildə dəvət edin.",
-        "ru": "Уважайте личные границы: делитесь тем, о чём готовы говорить, и предложите то же другим.",
+        "az": "Şəxsi həyata hörmət edin: yalnız danışmağa hazır olduğunuz şeyləri paylaşın və qarşı tərəfə də eyni "
+        "həssaslığı göstərməyə dəvət edin.",
+        "ru": "Уважайте личные границы: говорите лишь о том, о чём готовы рассказывать, и предложите то же самое собеседнику.",
     },
     "work_study": {
         "en": "Link habits (revision, feedback) to outcomes (grades, confidence, career).",
-        "az": "Vərdişləri (təkrar, rəy) nəticələrlə (qiymət, özgüvən, karyera) əlaqələndirin.",
-        "ru": "Связывайте привычки (повторение, обратная связь) с результатами (оценки, уверенность, карьера).",
+        "az": "Təkrar, müəllim rəyi kimi vərdişləri qiymət, özgüvən və gələcək peşə ilə birbaşa əlaqələndirin.",
+        "ru": "Связывайте учебные привычки (повторение, обратная связь) с конкретными результатами: оценками, уверенностью в себе, карьерными перспективами.",
     },
     "health": {
         "en": "Stay factual and kind; health topics can be sensitive for classmates.",
-        "az": "Faktual və nəzakətli olun; sağlamlıq mövzuları sinif yoldaşlarınız üçün həssas ola bilər.",
-        "ru": "Оставайтесь добрыми и опирайтесь на факты: темы здоровья могут быть деликатными.",
+        "az": "Faktlara söykənin və nəzakətli olun; sağlamlıq mövzuları sinif yoldaşlarınız üçün həssas ola bilər.",
+        "ru": "Опирайтесь на факты и будьте тактичны — темы здоровья могут оказаться болезненными для некоторых одноклассников.",
     },
     "society": {
         "en": "Acknowledge different viewpoints before you argue against them.",
-        "az": "Etiraz etməzdən əvvəl fərqli baxışları etiraf edin.",
-        "ru": "Признайте разные точки зрения, прежде чем возражать против них.",
+        "az": "Etiraz etməzdən əvvəl digər baxış bucaqlarını qəbul etdiyinizi və başa düşdüyünüzü göstərin.",
+        "ru": "Сначала покажите, что вы понимаете и признаёте другие точки зрения, и только потом приводите свои контраргументы.",
     },
     "environment_science": {
         "en": "Separate what is widely accepted from what is still debated.",
-        "az": "Geniş qəbul ediləni hələ mübahisəli olanından ayırın.",
-        "ru": "Разделяйте общепринятое и то, что всё ещё обсуждается.",
+        "az": "Elm dünyasında artıq geniş qəbul edilən fikirləri hələ mübahisə mövzusu olanlardan ayırd edin.",
+        "ru": "Чётко разграничивайте то, что признано наукой, и то, что по-прежнему остаётся предметом дискуссий.",
     },
     "arts_culture": {
         "en": 'Describe what you notice before you judge whether something is "good."',
-        "az": 'Bir şeyin "yaxşı" olub-olmadığına qərar verməzdən əvvəl nə gördüyünüzü təsvir edin.',
-        "ru": "Сначала опишьте, что замечаете, и только потом оценивайте, «хорошо» это или нет.",
+        "az": "Əvvəlcə əsərdə və ya hadisədə nə gördüyünüzü təsvir edin, sonra onun “yaxşı” və ya “pis” "
+        "olması haqqında qərar verin.",
+        "ru": "Сначала опишите, что вы замечаете в произведении, и лишь затем выносите суждение о том, «хорошо» это или нет.",
     },
     "emotion_behavior": {
         "en": "Name emotions precisely; it helps listeners understand you.",
-        "az": "Emosiyaları dəqiq adlandırın; bu, dinləyicilərin sizi başa düşməsinə kömək edir.",
-        "ru": "Называйте эмоции точно — так слушателям проще вас понять.",
+        "az": "Hisslərinizi dəqiq adlarla ifadə edin; bu, sizi dinləyənlərin sizi daha yaxşı anlamasına kömək edir.",
+        "ru": "Называйте эмоции точно и конкретно — так слушателям гораздо легче вас понять.",
     },
     "general": {
         "en": "Almost any topic can connect to values, habits, and future plans—use those bridges.",
-        "az": "Demək olar ki, hər mövzu dəyərlər, vərdişlər və gələcək planlarla bağlana bilər — bu körpülərdən istifadə edin.",
-        "ru": "Почти любую тему можно связать с ценностями, привычками и планами на будущее — используйте эти связи.",
+        "az": "Demək olar ki, hər mövzunu dəyərləriniz, gündəlik vərdişləriniz və gələcək planlarınızla əlaqələndirmək "
+        "olar; bu əlaqələrdən istifadə edin.",
+        "ru": "Почти любую тему можно связать с личными ценностями, повседневными привычками и планами на будущее — используйте эти мостики в разговоре.",
     },
 }
 
@@ -238,515 +251,515 @@ _CLUSTER_NOTES: dict[str, dict[str, str]] = {
 # English gloss (msgid) -> (Azerbaijani, Russian)
 _GLOSSES: dict[str, tuple[str, str]] = {
     "make something easier to understand by explaining it": (
-        "izah etməklə bir şeyi başa düşülməsi asanlaşdırmaq",
-        "объяснить что-то так, чтобы это стало понятнее",
+        "bir şeyi izah etməklə daha aydın və başa düşülən etmək",
+        "сделать что-то понятнее, объяснив подробнее",
     ),
     "add more detail to what you are saying": (
-        "dediklərinizə daha çox detal əlavə etmək",
-        "добавить больше деталей к тому, что вы говорите",
+        "söylədiklərinizə əlavə təfərrüat və ya izah vermək",
+        "добавить подробности к тому, что вы говорите",
     ),
     "a personal opinion or way of seeing a topic": (
-        "şəxsi fikir və ya mövzuya baxış tərzi",
-        "личное мнение или способ видеть тему",
+        "mövzuya şəxsi münasibət və ya baxış bucağı",
+        "личная точка зрения или способ смотреть на тему",
     ),
     "something you accept as true without proof": (
-        "sübut olmadan doğru qəbul etdiyiniz bir şey",
+        "sübutu olmadan doğru hesab etdiyiniz qəbul",
         "то, что вы принимаете за истину без доказательств",
     ),
     "a small, subtle difference in meaning or feeling": (
-        "mənada və ya hisdə kiçik, incə fərq",
-        "тонкое отличие в значении или оттенке чувства",
+        "mənada və ya duyğuda nazik, kiçik fərq",
+        "тонкое смысловое или эмоциональное различие",
     ),
     "using careful language so you do not sound too absolute": (
-        "çox kategorik səslənməmək üçün ehtiyatlı dil işlətmək",
-        "осторожные формулировки, чтобы не звучать категорично",
+        "çox birmənalı və kategorik səslənməmək üçün ehtiyatlı ifadələr seçmək",
+        "выбор осторожных формулировок, чтобы не звучать категорично",
     ),
     "a reason against an idea you have mentioned": (
-        "qeyd etdiyiniz fikrə qarşı arqument",
-        "довод против упомянутой вами идеи",
+        "demək istədiyiniz fikrə qarşı çıxan arqument",
+        "контраргумент против упомянутой вами идеи",
     ),
     "a short personal story used to illustrate a point": (
-        "bir fikri nümayiş etdirmək üçün qısa şəxsi hekayə",
-        "короткая личная история, иллюстрирующая мысль",
+        "fikrinizi nümayiş etdirmək üçün danışdığınız qısa şəxsi hadisə",
+        "короткий личный рассказ, иллюстрирующий мысль",
     ),
     "closely connected to the subject you are discussing": (
-        "müzakirə etdiyiniz mövzuya sıx bağlı",
-        "тесно связано с обсуждаемой темой",
+        "müzakirə etdiyiniz mövzuya birbaşa bağlı olan",
+        "непосредственно связанное с обсуждаемой темой",
     ),
     "something that you have lived through": (
-        "özünüzün yaşadığı bir təcrübə",
-        "то, что вы пережили сами",
+        "özünüzün şəxsən yaşadığı təcrübə",
+        "то, через что вы сами прошли",
     ),
     "what you think about a topic, not necessarily a fact": (
-        "mövzuda nə düşündüyünüz; həmişə fakt olmaya bilər",
-        "то, что вы думаете по теме; это не обязательно факт",
+        "mövzu barədə şəxsi fikriniz; həmişə obyektiv fakt olmaya bilər",
+        "ваше мнение по теме — не обязательно объективный факт",
     ),
     "earlier events or context that help explain a situation": (
-        "vəziyyəti izah etməyə kömək edən əvvəlki hadisələr və ya kontekst",
-        "предыдущие события или контекст, помогающие объяснить ситуацию",
+        "cari vəziyyəti başa düşdürmək üçün əvvəlki hadisələr və ümumi məzmun (kontekst)",
+        "предшествующие события или контекст, помогающие объяснить ситуацию",
     ),
     "look at two things to see how they are similar or different": (
-        "oxşar və ya fərqli olduqlarını görmək üçün iki şeyə baxmaq",
-        "рассмотреть два объекта, чтобы увидеть сходства и различия",
+        "iki şeyi yan-yana qoyub oxşar və fərqli cəhətlərini müqayisə etmək",
+        "сопоставить два предмета, чтобы найти сходства и различия",
     ),
     "focus on differences between two things": (
-        "iki şey arasındakı fərqlərə diqqət yetirmək",
+        "iki şey arasındakı fərqləri əsas məqsəd kimi göstərmək",
         "сосредоточиться на различиях между двумя вещами",
     ),
     "give the main ideas in a short form": (
-        "əsas fikirləri qısa şəkildə vermək",
-        "кратко изложить основные идеи",
+        "əsas fikirləri qısa və ümumiləşdirilmiş şəkildə çatdırmaq",
+        "кратко изложить главные идеи",
     ),
     "a tendency to prefer one side or view unfairly": (
-        "bir tərəfə və ya baxışa haqsız üstünlük vermə meyli",
-        "несправедливая склонность к одной стороне или точке зрения",
+        "bir tərəfə və ya fikrə haqsız şəkildə üstünlük vermə meyli",
+        "предвзятая склонность к одной стороне или точке зрения",
     ),
     "help or encouragement you give to someone": (
-        "kiməsə göstərdiyiniz kömək və ya təşviqat",
-        "помощь или поддержка, которую вы даёте человеку",
+        "kiməsə göstərdiyiniz mənəvi və ya praktik dəstək",
+        "помощь или поддержка, которую вы оказываете кому-то",
     ),
     "limits about what behavior you accept from others": (
-        "başqalarından hansı davranışı qəbul etdiyiniz haqqında hədlər",
-        "границы допустимого поведения других по отношению к вам",
+        "başqalarının sizə qarşı hansı davranışını qəbul etdiyinizi göstərən sərhəd",
+        "границы допустимого поведения других людей по отношению к вам",
     ),
     "beliefs about what should happen or how people should act": (
-        "nə baş verməli və ya insanların necə davranmalı olduğu haqqında inanclar",
-        "представления о том, что должно происходить и как люди должны себя вести",
+        "nələrin baş verməli və ya insanların necə davranmalı olduğuna dair gözlənti",
+        "представления о том, что должно происходить и как следует себя вести",
     ),
     "an agreement where each side gives up something": (
-        "hər tərəfin bir şeydən güzəşt etdiyi razılıq",
-        "соглашение, в котором каждая сторону чем-то уступает",
+        "hər tərəfin müəyyən güzəştə getdiyi razılaşma",
+        "соглашение, в котором каждая сторона на что-то идёт ради другой",
     ),
     "belief that someone is honest and reliable": (
-        "kiminsə dürüst və etibarlı olduğuna inam",
-        "уверенность, что человек честен и надёжен",
+        "birinin dürüst və sözünün üstündə duran adam olduğuna olan inam",
+        "уверенность в том, что человек честен и надёжен",
     ),
     "serious disagreement or argument": (
-        "ciddi razılaşmazlıq və ya mübahisə",
-        "серьёзное несогласие или спор",
+        "dərin fikir ayrılığı və ya kəskin mübahisə",
+        "серьёзное разногласие или острый спор",
     ),
     "all the people living together in one home": (
-        "bir evdə birlikdə yaşayan bütün insanlar",
+        "eyni evdə birlikdə yaşayan ailə üzvləri və ya ev təsərrüfatı",
         "все люди, живущие вместе в одном доме",
     ),
     "the way you were cared for and taught as a child": (
-        "uşaqkən qayğı görmə və təhsil alma tərziniz",
-        "как вас воспитывали и чему учили в детстве",
+        "uşaq yaşlarında sizə necə qayğı göstərildiyi və nə öyrədildiyi",
+        "то, как вас воспитывали и чему учили в детстве",
     ),
     "a certificate, degree, or skill that proves ability": (
-        "bacarığı sübut edən sertifikat, dərəcə və ya bacarıq",
-        "диплом, сертификат или навык, подтверждающие компетенцию",
+        "bacarığınızı təsdiqləyən sənəd, dərəcə və ya praktiki vəsait",
+        "диплом, сертификат или навык, подтверждающие вашу компетентность",
     ),
     "the latest time something must be finished": (
-        "bir şeyin bitməli olduğu son vaxt",
-        "крайний срок завершения чего-либо",
+        "işin və ya tapşırığın son icra müddəti",
+        "крайний срок, к которому что-то должно быть завершено",
     ),
     "comments about how well you did and how to improve": (
-        "nə qədər yaxşı etdiyiniz və təkmilləşmə yolları haqqında rəylər",
-        "комментарии о том, как вы справились и как улучшить результат",
+        "gördüyünüz iş haqqında rəy və təkmilləşmə üçün məsləhət",
+        "отзыв о том, как вы справились, и советы по улучшению",
     ),
     "the full set of subjects or topics in a course": (
-        "kursda öyrənilən fənlər və ya mövzuların tam siyahısı",
-        "полный набор предметов или тем курса",
+        "kursda keçilən bütün fənlər və ya dərs mövzuları",
+        "полный перечень предметов или тем учебного курса",
     ),
     "a person of the same age or level as you in school or work": (
-        "məktəbdə və ya işdə sizinlə eyni yaş və ya səviyyədə olan şəxs",
-        "человек того же возраста или уровня, что и вы в учёбе или работе",
+        "məktəbdə və ya işdə sizinlə eyni yaşda və ya oxşar səviyyədə olan həmkar",
+        "человек того же возраста или уровня в учёбе или работе",
     ),
     "using someone else's work as if it were your own": (
-        "başqasının işini öz işinizmiş kimi təqdim etmək",
-        "выдавать чужую работу за свою",
+        "başqasının əməyini özünüzmüş kimi təqdim etmək",
+        "выдавать чужую работу за свою собственную",
     ),
     "studying material again before a test": (
-        "imtahandan əvvəl materialı təkrar öyrənmək",
-        "повторение материала перед экзаменом",
+        "imtahan və ya yoxlama öncəsi materialı təkrarlamaq",
+        "повторение пройденного материала перед экзаменом",
     ),
     "a short period of training work, often for students": (
-        "tez-tez tələbələr üçün qısa müddətli təcrübə işi",
-        "короткий период стажировки, часто для студентов",
+        "adətən tələbələr üçün təyin olunan qısa müddətli təcrübə (staj)",
+        "короткий период практики или стажировки, как правило для студентов",
     ),
     "a sign that you might be ill or stressed": (
-        "xəstə və ya stressli ola biləcəyinizin əlaməti",
-        "признак того, что вы можете быть больны или в стрессе",
+        "xəstəlik və ya gərginlik ola biləcəyinizi düşündürən əlamət",
+        "признак возможной болезни или стресса",
     ),
     "actions that stop a problem before it starts": (
-        "problem başlamazdan əvvəl onu dayandıran tədbirlər",
-        "действия, предотвращающие проблему до её появления",
+        "problem yaranmazdan əvvəl onun qarşısını alan tədbirlər",
+        "меры, предотвращающие проблему до её возникновения",
     ),
     "your general state of health and happiness": (
-        "sağlamlıq və xoşbəxtliyinizin ümumi vəziyyəti",
-        "общее состояние здоровья и благополучия",
+        "fiziki sağlamlıq və ümumi əhval-ruhiyyənizin vəziyyəti",
+        "общее состояние здоровья и самочувствия",
     ),
     "continuing for a long time, not just once": (
-        "yalnız bir dəfə deyil, uzun müddət davam edən",
-        "длящееся долго, а не разово",
+        "təkcə bir dəfəlik deyil, uzun müddət davam edən",
+        "продолжающееся долгое время, а не разовое",
     ),
     "the process of getting better after illness or injury": (
-        "xəstəlik və ya zədədən sonra yaxşılaşma prosesi",
+        "xəstəlik və ya bədən xəsarətindən sonra sağalma və bərpa mərhələsi",
         "процесс восстановления после болезни или травмы",
     ),
     "the food you eat and how it affects your body": (
-        "yediyiniz qida və onun bədəninizə təsiri",
-        "питание и его влияние на организм",
+        "qəbul etdiyiniz qida və onun orqanizmə təsiri",
+        "питание и его влияние на ваш организм",
     ),
     "involving a lot of sitting and little physical activity": (
-        "çox oturmaq və az fiziki fəaliyyət deməkdir",
-        "много сидения и мало физической активности",
+        "çox oturmaq, az hərəkət və fiziki fəaliyyət deməkdir",
+        "предполагающий много сидения и мало физической активности",
     ),
     "ability to recover from difficulties": (
-        "çətinliklərdən sonra ayağa qalma qabiliyyəti",
-        "способность восстанавливаться после трудностей",
+        "çətinliklərdən sonra yenidən ayağa qalma və uyğunlaşma bacarığı",
+        "способность восстанавливаться после трудностей и невзгод",
     ),
     "something that can cause harm or danger": (
-        "zərər və ya təhlükə yarada bilən bir şey",
-        "то, что может причинить вред или опасность",
+        "zərər və ya təhlükə törədə bilən amil",
+        "то, что способно причинить вред или создать опасность",
     ),
     "organized movement of people away from danger": (
-        "təhlükədən insanların təşkilı şəkildə çıxarılması",
-        "организованная эвакуация людей из опасной зоны",
+        "təhlükəli zonadan insanların təşkilatlı şəkildə təxliyyəsi",
+        "организованное перемещение людей прочь от опасности",
     ),
     "simple medical care given immediately after an injury": (
-        "zədədən dərhal sonra göstərilən sadə tibbi yardım",
-        "простая неотложная медицинская помощь после травмы",
+        "xəsarətdən dərhal sonra göstərilən ilkin və sadə tibbi yardım",
+        "первая медицинская помощь, оказываемая сразу после травмы",
     ),
     "an agreement that pays money if you have a loss": (
-        "itkə düşsəniz pul ödəyən müqavilə",
-        "договор, по которому выплачивают деньги при убытке",
+        "zərər baş verdikdə ödəniş vəd edən sığorta müqaviləsi",
+        "договор, по которому выплачивается возмещение при наступлении ущерба",
     ),
     "basic supplies kept ready for a crisis": (
-        "fövqəladə hallar üçün hazır saxlanılan əsas ləvaqemat",
-        "базовый набор припасов на случай кризиса",
+        "fövqəladə hallar üçün əvvəlcədən saxlanılan əsas ləvazimatlar",
+        "базовый набор предметов первой необходимости на случай кризиса",
     ),
     "a smaller earthquake following a larger one": (
-        "böyük zəlzələdən sonra gələn daha kiçik təkan",
+        "güclü zəlzələdən sonra qeydə alınan daha zəif təkanlar",
         "более слабое землетрясение после сильного",
     ),
     "a safe place that protects you from weather or danger": (
-        "hava və ya təhlükədən qoruyan təhlükəsiz yer",
+        "hava şəraitindən və ya təhlükədən mühafizə verən təhlükəsiz sığınacaq",
         "безопасное место, защищающее от погоды или опасности",
     ),
     "steps that reduce the seriousness of a future risk": (
-        "gələcək riskin ağırlığını azaldan addımlar",
+        "gələcəkdə ehtimal olunan riskin təsirini azaldan addımlar",
         "меры, снижающие тяжесть будущего риска",
     ),
     "a set of rules a computer uses to sort or show content": (
-        "kompüterin məzmunu sıralaması və ya göstərməsi üçün istifadə etdiyi qaydalar",
-        "набор правил, по которым компьютер сортирует или показывает контент",
+        "kompüterin məzmunu necə sıralayacağını və ya göstərəcəyini müəyyən edən qaydalar dəsti",
+        "набор правил, по которым компьютер сортирует или отображает контент",
     ),
     "control over who sees your personal information": (
-        "şəxsi məlumatınızı kimin görəcəyinə nəzarət",
-        "контроль над тем, кто видит ваши личные данные",
+        "şəxsi məlumatlarınızı kimin görə biləcəyinə nəzarət",
+        "контроль над тем, кто имеет доступ к вашим личным данным",
     ),
     "false information spread without intending to lie": (
-        "yalan demək niyyəti olmadan yayılan yanlış məlumat",
-        "ложная информация, распространяемая без намерения обманывать",
+        "yalan danışmaq niyyəti olmadan yayılan səhv məlumat",
+        "недостоверная информация, распространяемая без умысла обмануть",
     ),
     "false information spread on purpose to mislead": (
-        "aldatmaq məqsədi ilə qəsdən yayılan yanlış məlumat",
-        "ложная информация, распространяемая намеренно, чтобы ввести в заблуждение",
+        "insanları qəsdən yanlış istiqamətə yönəltmək üçün yayılan yalan məlumat",
+        "заведомо ложная информация, намеренно распространяемая с целью ввести в заблуждение",
     ),
     "an alert on your phone or computer": (
-        "telefon və ya kompüterdə bildiriş",
-        "уведомление на телефоне или компьютере",
+        "telefon və ya kompüterdə gələn xəbərdarlıq bildirişi",
+        "оповещение на телефоне или компьютере",
     ),
     "hours spent using phones, TVs, or computers": (
-        "telefon, TV və ya kompüter qarşısında keçirilən saatlar",
-        "часы, проведённые за телефоном, ТВ или компьютером",
+        "telefon, televizor və ya kompüterlə keçirilən vaxt",
+        "время, проведённое за телефоном, телевизором или компьютером",
     ),
     "the record of your activity left online": (
-        "onlayn qalan fəaliyyət iziniz",
-        "след вашей активности в интернете",
+        "internetdə sizin fəaliyyətiniz barədə qalan iz və ya tarixçə",
+        "след вашей активности, оставленный в интернете",
     ),
     "using digital tools to harass or threaten someone": (
-        "kimisə təqib və ya hədələmək üçün rəqəmsal alətlərdən istifadə",
-        "преследование или угрозы с помощью цифровых средств",
+        "rəqəmsal vasitələrlə kimisə təqib etmək və ya hədələmək",
+        "использование цифровых средств для преследования или запугивания кого-либо",
     ),
     "an unfair difference between groups": (
-        "qruplar arasında ədalətsiz fərq",
-        "несправедливое неравенство между группами",
+        "qruplar arasında ədalətsiz ayrı-seçkilik və ya bərabərsizlik",
+        "несправедливое неравенство между группами людей",
     ),
     "a fixed, oversimplified idea about a group of people": (
-        "insan qrupu haqqında sabit, sadələşdirilmiş fikir",
-        "упрощённый стереотип о группе людей",
+        "insan qrupu haqqında həqiqəti əks etdirməyən sadələşdirilmiş stereotip",
+        "устойчивое упрощённое представление о группе людей",
     ),
     "unfair negative attitudes not based on real evidence": (
-        "real sübutlara əsaslanmayan ədalətsiz mənfi münasibət",
-        "несправедливый негатив без реальных оснований",
+        "real faktlara söykənməyən, ədalətsiz mənfi münasibət",
+        "предвзятое негативное отношение, не основанное на реальных фактах",
     ),
     "laws made by a government": (
-        "hökumət tərəfindən qəbul edilən qanunlar",
-        "законы, принятые правительством",
+        "dövlət orqanları tərəfindən qəbul edilmiş normativ aktlar",
+        "законы, принятые государственными органами",
     ),
     "organized efforts to bring social or political change": (
-        "ictimai və ya siyasi dəyişiklik üçün təşkilı səylər",
-        "организованные усилия ради социальных или политических перемен",
+        "ictimai və ya siyasi dəyişiklik üçün planlı və təşkil olunmuş fəaliyyət",
+        "организованные действия ради социальных или политических преобразований",
     ),
     "the process of becoming part of a larger community": (
-        "daha böyük icmanın bir hissəsinə çevrilmə prosesi",
-        "процесс включения в более широкое сообщество",
+        "daha geniş cəmiyyətin tamhüquqlu üzvünə çevrilmə prosesi",
+        "процесс вхождения в более широкое сообщество",
     ),
     "treated as unimportant and pushed to the edge of society": (
-        "cəmiyyətin kənarına itələnmiş və əhəmiyyətsiz sayılmış",
-        "вынесенные на периферию общества и обесцененные",
+        "cəmiyyətin mərkəzindən kənara itələnmiş və əhəmiyyətsiz sayılmış kimi hiss etdirilən",
+        "оттеснённые на обочину общества и лишённые голоса",
     ),
     "being responsible for your actions and their results": (
-        "hərəkətləriniz və nəticələri üçün məsuliyyət daşımaq",
-        "ответственность за свои действия и их последствия",
+        "öz hərəkətlərinizin və onların nəticəsinin məsuliyyətini üzərinizə götürmək",
+        "готовность нести ответственность за свои поступки и их последствия",
     ),
     "a planned route or list of places and times for a trip": (
-        "səfər üçün planlaşdırılmış marşrut və ya yer və vaxtlar siyahısı",
-        "план маршрута и расписание поездки",
+        "səfərin marşrutu və gediləcək yerlərin vaxt cədvəli",
+        "заранее составленный маршрут и расписание поездки",
     ),
     "an object you buy to remember a place you visited": (
-        "getdiyiniz yeri xatırlamaq üçün aldığınız əşya",
-        "предмет, купленный на память о посещённом месте",
+        "ziyarət etdiyiniz yeri xatırlatmaq üçün aldığınız xatirə əşyası",
+        "сувенир, купленный на память о посещённом месте",
     ),
     "tiredness after flying across many time zones": (
-        "bir neçə saat qurşağından uçuşdan sonra yorğunluq",
-        "усталость после перелёта через несколько часовых поясов",
+        "bir neçə saat qurşağını dəyişən uçuşdan sonra yaranan yorğunluq",
+        "усталость от перелёта через несколько часовых поясов",
     ),
     "the place where your bags are checked when you enter a country": (
-        "ölkəyə daxil olanda çantalarınızın yoxlandığı yer",
-        "пункт досмотра багажа при въезде в страну",
+        "ölkəyə girişdə baqajınızın gömrük yoxlamasından keçdiyi məntəqə",
+        "пункт таможенного досмотра багажа при въезде в страну",
     ),
     "inexpensive lodging, often with shared rooms": (
-        "tez-tez paylaşılan otaqlar olan ucuz yaşayış",
-        "недорогое жильё, часто с общими комнатами",
+        "adətən otağı başqaları ilə paylaşdığınız münasib qiymətli yaşayış yeri",
+        "недорогое жильё, нередко с общими комнатами",
     ),
     "a famous building or natural feature that helps you navigate": (
-        "naviqasiyaya kömək edən məşhur bina və ya təbiət obyekti",
-        "известное здание или природный объект, помогающий ориентироваться",
+        "orientasiya üçün istifadə etdiyiniz məşhur bina və ya təbiət nişanı",
+        "известное здание или природный объект, служащий ориентиром",
     ),
     "a short trip for pleasure, often as part of a holiday": (
-        "tez-tez tətilin bir hissəsi olan qısa zövq səfəri",
-        "короткая поездка для удовольствия, часто в рамках отпуска",
+        "adətən tətil planının içində olan qısa məsafəli ekskursiya",
+        "небольшая поездка для удовольствия, часто в рамках отпуска",
     ),
     "too many visitors causing harm to a place": (
-        "bir yerə zərər vuran çoxsaylı turistlər",
-        "чрезмерный поток туристов, вредящий месту",
+        "həddindən artıq turist axını nəticəsində yerə və mühitə zərər",
+        "избыточный поток туристов, наносящий ущерб месту",
     ),
     "a plan for how you will spend or save money": (
-        "pulunuzu necə xərcləyəcəyiniz və ya yığacağınız haqqında plan",
-        "план расходов и сбережений",
+        "gəlirinizi necə xərcləyəcəyiniz və ya qənaət edəcəyinizə dair plan",
+        "план распределения доходов: на что тратить и что откладывать",
     ),
     "money you have to pay for something": (
-        "bir şey üçün ödəməli olduğunuz pul",
-        "деньги, которые нужно заплатить за что-то",
+        "bir xidmət və ya məhsul üçün ödəməli olduğunuz məbləğ",
+        "сумма, которую необходимо заплатить за что-либо",
     ),
     "something bought for less than the usual price": (
-        "adətən qiymətindən ucuz alınan şey",
-        "покупка дешевле обычной цены",
+        "adətən satılan qiymətdən ucuz başa gələn alış",
+        "покупка по цене ниже обычной",
     ),
     "money given back when you return a product": (
-        "məhsulu qaytardıqda qaytarılan pul",
+        "məhsulu qaytardığınız halda geri ödənilən məbləğ",
         "возврат денег при возврате товара",
     ),
     "regular payment for a continuing service": (
-        "davamlı xidmət üçün müntəzəm ödəniş",
-        "регулярная плата за продолжающуюся услугу",
+        "davamlı göstərilən xidmətə görə aylıq və ya dövri ödəniş",
+        "регулярная плата за пользование продолжающейся услугой",
     ),
     "buying suddenly without careful thought": (
-        "düşünmədən qəfil alış",
-        "импульсивная покупка без обдумывания",
+        "əvvəlcədən düşünmədən qəfil edilən alış-veriş",
+        "импульсивная покупка без предварительного обдумывания",
     ),
     "always choosing products from the same company": (
-        "həmişə eyni şirkətin məhsullarını seçmək",
-        "постоянный выбор продуктов одной и той же компании",
+        "həmişə eyni brend və ya şirkətin məhsullarını üstün tutmaq",
+        "постоянное предпочтение продуктов одной и той же компании",
     ),
     "legal protections for people who buy goods or services": (
-        "mallar və ya xidmətlər alan insanlar üçün hüquqi müdafiə",
+        "alıcıların hüquqlarını qoruyan qanuni təminat",
         "правовая защита покупателей товаров и услуг",
     ),
     "something that causes a strong emotional reaction": (
-        "güclü emosional reaksiya yaradan bir şey",
-        "то, что вызывает сильную эмоциональную реакцию",
+        "güclü emosiya və ya reaksiya doğuran təkanverici amil",
+        "то, что вызывает сильный эмоциональный отклик",
     ),
     "a healthy way you deal with stress or pain": (
-        "stress və ya ağrı ilə mübarizədə sağlam üsul",
-        "здоровый способ справляться со стрессом или болью",
+        "stress və ya ağrı ilə sağlam və təhlükəsiz üsulla başa çıxmaq",
+        "здоровый способ справляться со стрессом или душевной болью",
     ),
     "understanding and sharing another person's feelings": (
-        "başqa birinin hisslərini başa düşmək və paylaşmaq",
-        "понимание и разделение чувств другого человека",
+        "başqasının hisslərini dərk etmək və özünüzü onun yerinə qoymaq",
+        "способность понимать и разделять чувства другого человека",
     ),
     "accepted rules for polite behavior in a society": (
-        "cəmiyyətdə nəzakətli davranış üçün qəbul edilmiş qaydalar",
-        "принятые нормы вежливого поведения в обществе",
+        "ictimai mühitdə qəbul olunmuş nəzakət və davranış normaları",
+        "общепринятые нормы вежливого поведения в обществе",
     ),
     "the way your voice sounds, showing attitude or emotion": (
-        "münasibət və ya emosiya göstərən səsinizin sədası",
-        "тембр и интонация голоса, передающие отношение или эмоцию",
+        "səsinizin tonu və intoniyası ilə ifadə etdiyiniz münasibət və ya hiss",
+        "звучание вашего голоса, выражающее отношение или эмоцию",
     ),
     "messages sent by posture, gestures, and facial expressions": (
-        "durğu, jestlər və üz ifadələri ilə ötürülən mesajlar",
-        "сигналы осанки, жестов и мимики",
+        "durğu, əl hərəkətləri və mimika ilə ötürülən qarşılıqlı siqnallar",
+        "сигналы, передаваемые позой, жестами и мимикой",
     ),
     "long-lasting angry feelings after unfair treatment": (
-        "ədalətsiz rəftardan sonra uzun müddət qalan qəzəb",
-        "длительное чувство обиды после несправедливого обращения",
+        "ədalətsiz rəftardan sonra uzun müddət çəkən inciklik və ya qəzəb",
+        "длительная обида или гнев, вызванные несправедливым обращением",
     ),
     "understanding your own emotions and habits": (
-        "öz emosiyalarınızı və vərdişlərinizi başa düşmək",
-        "понимание собственных эмоций и привычек",
+        "öz daxili dünyanızı, emosiyalarınızı və davranış vərdişlərinizi tanımaq",
+        "осознание собственных эмоций и поведенческих привычек",
     ),
     "harmful substances added to air, water, or soil": (
-        "hava, su və ya torpağa əlavə edilən zərərli maddələr",
+        "hava, su və ya torpağa düşən zərərli maddələr",
         "вредные вещества, попадающие в воздух, воду или почву",
     ),
     "energy from sources that are naturally replaced": (
-        "təbii olaraq bərpa olunan mənbələrdən enerji",
-        "энергия из возобновляемых природных источников",
+        "təbii yolla yenilənən mənbələrdən əldə olunan enerji",
+        "энергия, получаемая из природно восполняемых источников",
     ),
     "total greenhouse gases caused by a person or activity": (
-        "şəxs və ya fəaliyyətin törətdiyi ümumi istixana qazları",
-        "совокупный выброс парниковых газов от человека или деятельности",
+        "fərdi və ya fəaliyyət nəticəsində atmosferə buraxılan istixana qazlarının ümumi həcmi",
+        "суммарный выброс парниковых газов от человека или деятельности",
     ),
     "the variety of living species in an area": (
-        "bir ərazidə yaşayan növlərin müxtəlifliyi",
-        "разнообразие живых видов в регионе",
+        "müəyyən ərazidə yaşayan canlı növlərinin müxtəlifliyi",
+        "разнообразие живых видов на определённой территории",
     ),
     "using resources in a way that protects the future": (
-        "gələcəyi qoruyaraq resurslardan istifadə",
-        "использование ресурсов с заботой о будущем",
+        "təbii ehtiyatlardan gələcək nəsillər üçün zərər vermədən istifadə",
+        "использование ресурсов так, чтобы не навредить будущим поколениям",
     ),
     "a new idea, device, or method that improves something": (
-        "bir şeyi təkmilləşdirən yeni fikir, cihaz və ya üsul",
-        "новая идея, устройство или метод, улучшающие что-то",
+        "mövcud vəziyyəti yaxşılaşdıran yeni texniki həll və ya üsul",
+        "новая идея, устройство или метод, улучшающие что-либо",
     ),
     "ideas about what is morally right or wrong in research": (
-        "tədqiqatda nəyin əxlaqi cəhətdən düzgün və ya yanlış olduğu haqqında fikirlər",
-        "представления о морально допустимом в исследованиях",
+        "elmi tədqiqatda nəyin əxlaqi cəhətdən qəbul edilə bilən olduğu barədə baxış",
+        "представления о том, что допустимо и недопустимо в научных исследованиях",
     ),
     "a testable prediction in a scientific investigation": (
-        "elmi araşdırmada yoxlanıla bilən proqnoz",
-        "проверяемое предположение в научном исследовании",
+        "təcrübə və ya müşahidə ilə yoxlana bilən elmi fərziyyə",
+        "проверяемое предположение в рамках научного исследования",
     ),
     "the way parts are arranged in a picture, song, or text": (
-        "şəkildə, mahnıda və ya mətnində hissələrin düzülüşü",
-        "расположение частей в картине, музыке или тексте",
+        "əsərdə, mahnıda və ya mətnində hissələrin kompozisiya üzrə düzülüşü",
+        "композиционное расположение частей в картине, музыке или тексте",
     ),
     "your personal explanation of the meaning of art": (
-        "incəsənətin mənasını şəxsən izah etməyiniz",
-        "ваше личное толкование смысла произведения",
+        "yaradıcılıq nümunəsinin sizin üçün daşıdığı mənanı şərh etmək",
+        "ваше собственное толкование смысла художественного произведения",
     ),
     "a category such as comedy, thriller, or portrait": (
-        "komediya, triller və ya portret kimi janr",
-        "категория вроде комедии, триллера или портрета",
+        "komediya, triller, portret kimi janr və ya alt janr",
+        "жанровая категория: например, комедия, триллер или портрет",
     ),
     "a public show of paintings, photos, or objects": (
-        "rəsm, foto və ya əşyaların ictimai sərgisi",
-        "публичная выставка картин, фото или предметов",
+        "rəsm əsərlərinin, foto və ya eksponatların ictimai nümayişi",
+        "публичная выставка картин, фотографий или предметов",
     ),
     "official control over what art or media may appear": (
-        "hansı incəsənət və ya media görünə biləcəyinə rəsmi nəzarət",
-        "официальный контроль над тем, какое искусство или медиа допускается",
+        "hansı bədii və ya media məzmununun ictimaiyyətə açıq ola biləcəyinə dövlət nəzarəti",
+        "государственный контроль над тем, какое искусство или медиаконтент допускается к показу",
     ),
     "traditions and objects passed down from past generations": (
-        "əvvəlki nəsillərdən ötürülən ənənələr və əşyalar",
-        "традиции и предметы, передаваемые из поколения в поколение",
+        "nəsillərdən-nəsillərə ötürülən mədəni irs və maddi nişanələr",
+        "традиции и предметы, переходящие от поколения к поколению",
     ),
     "related to beauty or taste in art and design": (
-        "incəsənət və dizaynda gözəllik və ya zövq ilə bağlı",
-        "связанное с красотой и вкусом в искусстве и дизайне",
+        "incəsənət və dizaynda estetik zövq və gözəllik anlayışı ilə bağlı",
+        "связанное с красотой и художественным вкусом в искусстве и дизайне",
     ),
     "something that gives you new creative ideas": (
-        "sizə yeni yaradıcı fikirlər verən bir şey",
-        "то, что вдохновляет на новые творческие идеи",
+        "yaradıcı düşüncənizi stimullaşdıran ilham mənbəyi",
+        "то, что даёт толчок новым творческим идеям",
     ),
     "form a picture or idea in your mind": (
-        "ağlınızda şəkil və ya fikir formalaşdırmaq",
-        "представить образ или идею в уме",
+        "zəhninizdə canlı təsəvvür və ya mental obraz yaratmaq",
+        "мысленно представить образ или идею",
     ),
     "a situation imagined to explore possibilities, not real": (
-        "mümkünlükləri araşdırmaq üçün təsəvvür olunan, real olmayan vəziyyət",
-        "воображаемая ситуация для обсуждения возможностей, не реальность",
+        "real həyatda olmayan, yalnız mümkün ssenariləri müzakirə üçün qurulan vəziyyət",
+        "воображаемая ситуация для исследования возможностей, не реальность",
     ),
     "decide which things are most important first": (
-        "əvvəlcə hansı şeylərin ən vacib olduğuna qərar vermək",
-        "решить, что важнее всего сделать в первую очередь",
+        "vaciblik dərəcəsinə görə prioritetləri müəyyənləşdirmək",
+        "определить, что важнее всего, и заняться этим в первую очередь",
     ),
     "accepting a disadvantage to gain an advantage": (
-        "üstünlük qazanmaq üçün çatışmazlığı qəbul etmək",
-        "принять минус ради получения плюса",
+        "daha böyük fayda əldə etmək üçün müəyyən güzəştə getmək",
+        "согласиться на издержки ради получения выгоды",
     ),
     "a result that follows from an action or choice": (
-        "hərəkət və ya seçimin nəticəsi",
-        "результат действия или выбора",
+        "hərəkət və ya seçimin birbaşa nəticəsi və ya təsiri",
+        "следствие, вытекающее из действия или решения",
     ),
     "something you like more than other options": (
-        "digər variantlardan daha çox bəyəndiyiniz şey",
+        "digər alternativlərə nisbətən üstün tutduğunuz seçim",
         "то, что вы предпочитаете другим вариантам",
     ),
     "how likely something is to happen": (
-        "bir şeyin baş verəcəyinin nə qədər ehtimal olduğu",
-        "насколько вероятно, что что-то произойдёт",
+        "hadisənin baş vermə ehtimalının yüksək və ya aşağı olması",
+        "степень вероятности того, что что-то произойдёт",
     ),
     "reasons you give to support a decision": (
-        "qərarı dəstəkləmək üçün gətirdiyiniz səbəblər",
-        "аргументы в пользу принятого решения",
+        "verdiyiniz qərarı əsaslandıran arqumentlər və sübutlar",
+        "доводы, которые вы приводите в поддержку своего решения",
     ),
     "how often something happens": (
-        "bir şeyin nə tez-tez baş verdiyi",
-        "как часто что-то происходит",
+        "hadisənin müəyyən zaman kəsiyində nə tez-tez təkrarlandığı",
+        "то, как часто что-то происходит",
     ),
     "how long something continues": (
-        "bir şeyin nə qədər davam etdiyi",
-        "как долго что-то длится",
+        "prosesin və ya vəziyyətin nə qədər müddət davam etdiyi",
+        "то, как долго что-то продолжается",
     ),
     "the order in which events happen": (
-        "hadisələrin baş verdiyi ardıcıllıq",
-        "порядок, в котором происходят события",
+        "hadisələrin bir-birini əvəz etmə ardıcıllığı",
+        "последовательность, в которой происходят события",
     ),
     "things you do regularly in a fixed order": (
-        "müəyyən ardıcıllıqla müntəzəm etdiyiniz işlər",
-        "регулярные действия в установленном порядке",
+        "hər gün və ya həftə eyni ardıcıllıqla təkrarlanan gündəlik işlər",
+        "действия, выполняемые регулярно в одном и том же порядке",
     ),
     "a planned meeting at an agreed time": (
-        "razılaşdırılmış vaxtda planlaşdırılmış görüş",
-        "запланированная встреча в согласованное время",
+        "əvvəlcədən razılaşdırılmış vaxtda görüşmək",
+        "заранее намеченная встреча в согласованное время",
     ),
     "arriving at the correct time, not late": (
-        "gecikmədən düzgün vaxtda çatmaq",
-        "приходить вовремя, без опоздания",
+        "müəyyən edilmiş vaxtda, gecikmədən yetişmək",
+        "приходить вовремя, не опаздывая",
     ),
     "a region where the same standard time is used": (
-        "eyni standart vaxtın istifadə olunduğu region",
-        "регион с одинаковым стандартным временем",
+        "eyni rəsmi yerli vaxtın tətbiq olunduğu coğrafi zona",
+        "территория, на которой действует единое поясное время",
     ),
     "the latest time by which something must be done": (
-        "bir şeyin görülməli olduğu son vaxt",
+        "tapşırığın və ya işin son icra tarixi",
         "крайний срок, к которому что-то должно быть сделано",
     ),
     "relating to the national government, not only one state": (
-        "yalnız bir ştat deyil, milli hökumətlə bağlı",
-        "относящееся к федеральному правительству, а не только к штату",
+        "tək ştat yox, bütövlükdə ölkənin mərkəzi idarəetmə orqanlarına aid olan",
+        "относящееся к федеральному правительству страны, а не к отдельному штату",
     ),
     "one of the major regions with its own local government": (
-        "öz yerli hökuməti olan əsas regionlardan biri",
-        "крупный регион с собственным местным правительством",
+        "öz yerli özünüidarə orqanları olan iri inzibati ərazi vahidi",
+        "крупный регион со своими органами местного самоуправления",
     ),
     "an official count of the population": (
-        "əhalinin rəsmi sayımı",
-        "официальный перепись населения",
+        "əhalinin dövlət tərəfindən aparılan rəsmi siyahıyaalınması",
+        "официальная перепись населения",
     ),
     "roads, bridges, and systems a country relies on": (
-        "ölkənin güvəndiyi yollar, körpülər və sistemlər",
-        "дороги, мосты и системы, от которых зависит страна",
+        "ölkənin dayanıqlı inkişafı üçün zəruri olan yol, nəqliyyat və kommunikasiya infrastrukturu",
+        "дороги, мосты и системы жизнеобеспечения, от которых зависит страна",
     ),
     "a large area with shared geographic or cultural features": (
-        "ümumi coğrafi və ya mədəni xüsusiyyətləri olan geniş ərazi",
-        "обширная зона с общими географическими или культурными чертами",
+        "ümumi təbii və ya mədəni xüsusiyyətləri bölüşən geniş coğrafi region",
+        "обширная территория с общими географическими или культурными чертами",
     ),
     "typical weather patterns in an area over many years": (
-        "bir ərazidə illər boyu tipik hava şəraiti",
-        "типичные погодные условия региона за длительный период",
+        "müəyyən ərazidə uzun illər ərzində müşahidə olunan iqlim tipi və hava rejimi",
+        "характерные погодные условия для данного региона, сложившиеся за многие годы",
     ),
     "the official line between two countries or states": (
-        "iki ölkə və ya ştat arasındakı rəsmi sərhəd xətti",
-        "официальная граница между странами или штатами",
+        "iki dövlət və ya inzibati vahid arasındakı beynəlxalq və ya daxili sərhəd xətti",
+        "официальная граница между двумя странами или штатами",
     ),
     "a famous place that represents a city or country": (
-        "şəhər və ya ölkəni təmsil edən məşhur yer",
-        "известное место, символизирующее город или страну",
+        "şəhər və ya ölkənin simvoluna çevrilmiş məşhur məkan",
+        "известное место, ставшее символом города или страны",
     ),
 }

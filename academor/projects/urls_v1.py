@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.generic import RedirectView
 
 from projects.views.views_v1 import (
     HomePageView,
@@ -17,6 +18,7 @@ from projects.views.test_views import TestListPageView, TestTakePageView
 from projects.views.conversation_topics_views import (
     EnglishConversationTopicsListView,
     EnglishConversationTopicDetailView,
+    LegacyLearnEnglishConversationTopicRedirectView,
     LegacyTopicTwoRedirectView,
 )
 
@@ -90,18 +92,33 @@ urlpatterns = [
         name='test-take',
     ),
     path(
-        'learn/english-conversation-topics/',
+        'topics/',
         EnglishConversationTopicsListView.as_view(),
         name='english-conversation-topics',
     ),
     path(
-        'learn/english-conversation-topics/two/',
+        'topics/two/',
         LegacyTopicTwoRedirectView.as_view(),
         name='english-conversation-topic-two-legacy',
     ),
     path(
-        'learn/english-conversation-topics/<slug:slug>/',
+        'topics/<slug:slug>/',
         EnglishConversationTopicDetailView.as_view(),
         name='english-conversation-topic-detail',
+    ),
+    path(
+        'learn/english-conversation-topics/two/',
+        LegacyTopicTwoRedirectView.as_view(),
+    ),
+    path(
+        'learn/english-conversation-topics/<slug:slug>/',
+        LegacyLearnEnglishConversationTopicRedirectView.as_view(),
+    ),
+    path(
+        'learn/english-conversation-topics/',
+        RedirectView.as_view(
+            pattern_name='english-conversation-topics',
+            permanent=True,
+        ),
     ),
 ]   

@@ -445,23 +445,26 @@ msgid ""
 "Vocabulary glosses, study tips, and section headings follow your site language; "
 "English headwords and practice lines stay in English for the classroom."
 msgstr ""
-"Lüğət izahları, tədris qeydləri və bölmə başlıqları sayt dilinizə uyğun göstərilir; "
-"ingilis sözləri və dərsdə istifadə üçün nümunə cümlələr ingilis dilində qalır."
+"Sözlərin qısa izahı, tədris məsləhətləri və bölmə başlıqları saytın seçdiyiniz dilində göstərilir; "
+"ingilis dilindəki sözlər və dərsdə birbaşa işlənən nümunə sətirlər isə ingilis dilində saxlanılır."
 
 msgid "english conversation, speaking practice, esl topics, vocabulary, academor"
-msgstr "ingilis danışıq, danışıq praktikası, esl mövzuları, lüğət, academor"
+msgstr ""
+"ingilis dilində danışıq, danışıq təcrübəsi, ingilis dili öyrənənlər üçün mövzular, lüğət, academor"
 
 msgid "%(count)s topics"
 msgstr "%(count)s mövzu"
 
 msgid "%(topic)s | English conversation | Academor"
-msgstr "%(topic)s | İngilis danışığı | Academor"
+msgstr "%(topic)s | İngilis dilində danışıq | Academor"
 
 msgid "Model sentences and questions in English; localized tips and vocabulary glosses."
-msgstr "Nümunə cümlələr və suallar ingilis dilindədir; tədris qeydləri və lüğət izahları lokalizə olunur."
+msgstr ""
+"Nümunə cümlələr və suallar ingilis dilindədir; tədris üçün qısa qeydlər və sözlərin izahı isə seçdiyiniz "
+"dildə verilir."
 
 msgid "english conversation, speaking practice, esl, %(topic)s"
-msgstr "ingilis danışığı, danışıq praktikası, esl, %(topic)s"
+msgstr "ingilis dilində danışıq, danışıq təcrübəsi, ingilis dili, %(topic)s"
 
 msgid "Topic not found"
 msgstr "Mövzu tapılmadı"
@@ -472,41 +475,44 @@ msgstr "İngilis dilində danışıq mövzuları"
 msgid ""
 "Pick a theme for speaking or writing. Each topic page has vocabulary with explanations, study tips, useful phrases, model sentences, questions, and short writing tasks."
 msgstr ""
-"Danışıq və ya yazı üçün mövzu seçin. Hər mövzu səhifəsində izahlı lüğət, tədris qeydləri, faydalı ifadələr, "
-"nümunə cümlələr, suallar və qısa yazı tapşırıqları var."
+"Danışıq və ya yazı üçün mövzu seçin. Hər mövzunun səhifəsində sözlərin izahı, tədris üçün qısa qeydlər, "
+"faydalı ifadələr, nümunə cümlələr, müzakirə sualları və qısa yazı tapşırıqları var."
 
 msgid "How to use this topic"
-msgstr "Bu mövzudan necə istifadə etmək olar"
+msgstr "Bu mövzunu necə işlətmək olar"
 
 msgid "Vocabulary"
 msgstr "Lüğət"
 
 msgid "Headwords stay in English; the short explanations follow your language."
-msgstr "Baş sözlər ingilis dilində qalır; qısa izahlar seçdiyiniz dilə uyğundur."
+msgstr ""
+"İngilis dilindəki baş sözlər olduğu kimi saxlanılır; onların qısa izahı isə saytın seçdiyiniz dilində "
+"göstərilir."
 
 msgid "Useful phrases"
 msgstr "Faydalı ifadələr"
 
 msgid "These lines are in English so you can use them directly in class."
-msgstr "Bu sətirlər ingilis dilindədir ki, birbaşa dərsdə işlədə biləsiniz."
+msgstr "Bu ifadələr ingilis dilindədir ki, onları dərsdə dəyişdirmədən birbaşa işlədə biləsiniz."
 
 msgid "Example sentences"
 msgstr "Nümunə cümlələr"
 
 msgid "Model sentences in English; try adapting them with your own details."
-msgstr "Nümunə cümlələr ingilis dilindədir; öz təfərrüatlarınızla uyğunlaşdırmağa çalışın."
+msgstr ""
+"Nümunə cümlələr ingilis dilindədir; öz həyatınızdan təfərrüat əlavə edərək onları uyğunlaşdırmağa çalışın."
 
 msgid "Discussion questions"
 msgstr "Müzakirə sualları"
 
 msgid "Questions are in English to match oral practice."
-msgstr "Suallar şifahi praktikaya uyğun olaraq ingilis dilindədir."
+msgstr "Suallar şifahi məşqlə uyğunluq üçün ingilis dilində saxlanılır."
 
 msgid "Writing prompts"
 msgstr "Yazı tapşırıqları"
 
 msgid "Prompts are in English for written practice."
-msgstr "Tapşırıqlar yazılı praktika üçün ingilis dilindədir."
+msgstr "Yazılı məşq üçün tapşırıqlar ingilis dilində verilir."
 
 msgid "All topics"
 msgstr "Bütün mövzular"

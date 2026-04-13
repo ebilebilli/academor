@@ -131,7 +131,7 @@ RAW_TOPIC_TITLES: tuple[str, ...] = (
     "Gambling",
     "Garage sale",
     "Gardening",
-    "Gay Community",
+    "Sexual and Gender Minorities",
     "Gender Roles",
     "Generation Gap",
     "Gestures",
@@ -313,6 +313,12 @@ def _unique_slugs(titles: Iterable[str]) -> dict[str, str]:
 
 
 TITLE_TO_SLUG: dict[str, str] = _unique_slugs(RAW_TOPIC_TITLES)
+
+# Renamed topics: old URL slug → current slug (301 from the detail view).
+LEGACY_TOPIC_SLUG_REDIRECTS: dict[str, str] = {
+    "gay-community": TITLE_TO_SLUG["Sexual and Gender Minorities"],
+    "lgbtq-community": TITLE_TO_SLUG["Sexual and Gender Minorities"],
+}
 
 
 # --- Shared vocabulary banks (term, gloss) ---
@@ -523,7 +529,19 @@ CLUSTER_RULES: tuple[tuple[tuple[str, ...], str], ...] = (
     (("movies", "music", "entertainment", "comics", "super heroes", "celebrities", "movie industry"), "arts_culture"),
     (("art", "painting", "photography", "fashion", "beauty", "makeup", "clothes"), "arts_culture"),
     (("crime", "police", "corruption", "terror", "war"), "society"),
-    (("discrimination", "race", "prejudice", "stereotypes", "gender roles", "gay community", "religion", "faith"), "society"),
+    (
+        (
+            "discrimination",
+            "race",
+            "prejudice",
+            "stereotypes",
+            "gender roles",
+            "sexual and gender minorities",
+            "religion",
+            "faith",
+        ),
+        "society",
+    ),
     (("politics", "news", "immigration", "russia & the world", "world peace"), "society"),
     (("emotion", "anger", "fear", "stress", "happiness", "feelings", "humor", "manners", "behavior"), "emotion_behavior"),
 )

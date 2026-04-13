@@ -19,10 +19,18 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True').lower() in ('true', '1', 'yes')
 
-ALLOWED_HOSTS = [
-    "academor.az",
-    "www.academor.az",
-]
+# Base hosts + optional extra from Docker / hosting (comma-separated). Empty env keeps defaults only.
+_ALLOWED_BASE = ["academor.az", "www.academor.az"]
+_extra_hosts = os.getenv("ALLOWED_HOSTS", "")
+if _extra_hosts.strip():
+    _from_env = [h.strip() for h in _extra_hosts.split(",") if h.strip()]
+    ALLOWED_HOSTS = list(dict.fromkeys(_ALLOWED_BASE + _from_env))
+else:
+    ALLOWED_HOSTS = _ALLOWED_BASE
+
+# Behind Nginx + Cloudflare: correct scheme for redirects, cookies, and security checks.
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 CSRF_TRUSTED_ORIGINS = [
     "https://www.academor.az",
