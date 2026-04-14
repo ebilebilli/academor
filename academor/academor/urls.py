@@ -6,11 +6,13 @@ from django.conf.urls.static import static
 
 from projects.sitemaps import SITEMAPS
 from projects.views.i18n_views import set_language
+from projects.views.robots_txt import robots_txt
 
 
 urlpatterns = [
     path(f'{settings.ADMIN_URL}', admin.site.urls),
     path('i18n/setlang/', set_language, name='set_language'),
+    path('robots.txt', robots_txt, name='robots_txt'),
     path(
         'sitemap.xml',
         sitemap,

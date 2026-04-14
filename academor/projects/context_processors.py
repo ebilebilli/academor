@@ -12,55 +12,57 @@ from projects.utils.queries import (
 
 SEO_HOME = {
     "en": {
-        "title": "Academor English Courses | IELTS, Speaking, GMAT, GRE, Study Abroad",
+        "title": "Academor | English lessons, IELTS, GMAT, SAT, GRE, YÖS, ALES, Study abroad, Only Speaking",
         "description": (
             "Learn English fast and effectively with Academor in Baku, Azerbaijan. "
-            "General English, Speaking, IELTS, GMAT, GRE preparation and study abroad support."
+            "English lessons, IELTS, GMAT, SAT, GRE, YÖS, ALES, study abroad support and Only Speaking."
         ),
         "keywords": (
-            "english language courses, learn english, english in baku, english course, study abroad, "
+            "english lessons, english language courses, learn english, english in baku, english course, study abroad, "
             "english classes baku, english lessons baku, learn english baku, english language school baku, "
             "english courses azerbaijan, study english baku, english tuition baku, english training baku, "
             "english course baku, english speaking classes baku, ielts preparation baku, "
-            "general english baku, gmat preparation baku, gre course baku, "
-            "yos preparation, ales course, study abroad support azerbaijan"
+            "general english baku, gmat preparation baku, gre course baku, sat preparation baku, "
+            "yos preparation, ales course, study abroad support azerbaijan, only speaking"
         ),
         "h1": "Academor English Courses - Your Path to Success",
     },
     "az": {
-        "title": "İngilis dili kursları Bakıda | Academor — IELTS, GMAT, GRE, xaricdə təhsil",
+        "title": (
+            "İngilis dili dərsləri, IELTS, GMAT, SAT, GRE, YÖS, ALES, Xaricdə təhsil, Only Speaking | Academor"
+        ),
         "description": (
-            "Academor ilə ingilis dilini sürətli və effektiv öyrən! General English, "
-            "Speaking dərsləri, IELTS, GMAT, GRE hazırlığı və xaricdə təhsil dəstəyi. "
-            "Bakı, Azərbaycan."
+            "Academor Bakıda: ingilis dili dərsləri, IELTS, GMAT, SAT, GRE, YÖS və ALES hazırlığı, "
+            "xaricdə təhsil dəstəyi və Only Speaking. Sürətli və effektiv öyrənmə — Azərbaycan."
         ),
         "keywords": (
+            "ingilis dili dərsləri, IELTS, GMAT, SAT, GRE, YÖS, ALES, xaricdə təhsil, Only Speaking, "
             "ingilis dili kursları, ingilis dili öyrənmək, ingilis dili Bakı, ingilis dili kurs, "
-            "xaricdə təhsil, bakıda ingilis dili, ingilis dilində dərslər, ingilis dili dərsləri, "
-            "ingilis kursu Bakı, ingilis dili öyrənmək kursu, ingilis dili hazırlığı, "
-            "ingilis dili kursu, english course baku, IELTS hazırlıq kursu, speaking dərsləri, "
-            "general english dərsləri, GMAT hazırlıq, GRE kursu, YÖS hazırlıq, "
-            "ALES kursu, bakıda ən yaxşı ingilis dili kursu, IELTS kursu qiymetleri baku, "
-            "speaking club baku, online ingilis dili dərsləri azərbaycan, "
-            "xaricdə təhsil üçün hazırlıq kursu, GMAT və GRE hazırlıq kursu baku, "
-            "YÖS imtahanına hazırlıq kursu, ALES kursu azərbaycan, "
-            "ingilis dili danışıq dərsləri bakı, ingilis dilində öyrənmək, ingilis dili mərkəzi Bakı"
+            "bakıda ingilis dili, ingilis dilində dərslər, ingilis kursu Bakı, ingilis dili hazırlığı, "
+            "IELTS hazırlıq kursu, speaking dərsləri, general english dərsləri, GMAT hazırlıq, GRE kursu, "
+            "SAT hazırlıq, YÖS hazırlıq, ALES kursu, bakıda ən yaxşı ingilis dili kursu, "
+            "online ingilis dili dərsləri azərbaycan, xaricdə təhsil üçün hazırlıq kursu, "
+            "ingilis dili mərkəzi Bakı"
         ),
-        "h1": "Academor — Bakıda ingilis dili kursları və uğura gedən yolun",
+        "h1": (
+            "İngilis dili dərsləri, IELTS, GMAT, SAT, GRE, YÖS, ALES, xaricdə təhsil və Only Speaking"
+        ),
     },
     "ru": {
-        "title": "Academor English Courses | IELTS, Speaking, GMAT, GRE, Обучение за рубежом",
+        "title": (
+            "Academor | Уроки английского, IELTS, GMAT, SAT, GRE, YÖS, ALES, обучение за рубежом, Only Speaking"
+        ),
         "description": (
             "Изучайте английский быстрее и эффективнее с Academor в Баку, Азербайджан. "
-            "General English, Speaking, подготовка к IELTS, GMAT, GRE и поддержка по обучению за рубежом."
+            "Уроки английского, IELTS, GMAT, SAT, GRE, YÖS, ALES, поддержка по обучению за рубежом и Only Speaking."
         ),
         "keywords": (
-            "курсы английского языка, выучить английский, английский язык баку, курс английского, "
+            "уроки английского, курсы английского языка, выучить английский, английский язык баку, курс английского, "
             "обучение за рубежом, курсы английского в баку, изучение английского в баку, "
             "школа английского баку, уроки английского баку, английский для взрослых баку, "
             "языковые курсы баку, подготовка по английскому баку, английский азербайджан, "
-            "english course baku, курсы английского в баку, подготовка ielts баку, "
-            "speaking club baku, gmat gre подготовка баку, обучение за рубежом азербайджан"
+            "english course baku, подготовка ielts баку, подготовка sat баку, "
+            "gmat gre подготовка баку, yos ales подготовка, обучение за рубежом азербайджан, only speaking"
         ),
         "h1": "Academor English Courses - Твой путь к успеху",
     },
