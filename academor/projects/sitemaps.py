@@ -1,12 +1,37 @@
+from django.conf import settings
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
 
-from projects.models import AbroadModel, ServiceCategory, Team, Test
+from projects.models import ServiceCategory, Team, Test
 
 
-class StaticViewSitemap(Sitemap):
-    changefreq = 'weekly'
+class AcademorSitemap(Sitemap):
+    """https:// + canonical host; never rely on django.contrib.sites (example.com)."""
 
+    protocol = 'https'
+
+    def get_domain(self, site=None):
+        domain = (getattr(settings, 'SITE_CANONICAL_DOMAIN', '') or '').strip()
+        if domain:
+            return domain
+        return 'academor.az'
+
+
+# Home 1.0 · main hubs 0.8 · courses index 0.7 · study-abroad hub 0.6 (detail URLs omitted on purpose).
+_STATIC_PRIORITY = {
+    'projects:home-page': 1.0,
+    'projects:about-page': 0.8,
+    'projects:services-page': 0.8,
+    'projects:contact-page': 0.8,
+    'projects:team-page': 0.8,
+    'projects:reviews-page': 0.8,
+    'projects:tests-page': 0.8,
+    'projects:courses-page': 0.7,
+    'projects:abroad-page': 0.6,
+}
+
+
+class StaticViewSitemap(AcademorSitemap):
     def items(self):
         return [
             'projects:home-page',
@@ -24,10 +49,16 @@ class StaticViewSitemap(Sitemap):
         return reverse(item)
 
     def priority(self, item):
-        return 1.0 if item == 'projects:home-page' else 0.8
+        return _STATIC_PRIORITY.get(item, 0.8)
+
+    def changefreq(self, item):
+        return 'daily' if item == 'projects:home-page' else 'weekly'
+
+    def lastmod(self, item):
+        return getattr(settings, 'SITEMAP_STATIC_LASTMOD', None)
 
 
-class CourseSitemap(Sitemap):
+class CourseSitemap(AcademorSitemap):
     changefreq = 'weekly'
     priority = 0.7
 
@@ -41,23 +72,9 @@ class CourseSitemap(Sitemap):
         return obj.created_at
 
 
-class AbroadSitemap(Sitemap):
-    changefreq = 'monthly'
-    priority = 0.6
-
-    def items(self):
-        return AbroadModel.objects.filter(is_active=True).order_by('id')
-
-    def location(self, obj):
-        return reverse('projects:abroad-detail', kwargs={'pk': obj.pk})
-
-    def lastmod(self, obj):
-        return obj.created_at
-
-
-class TeamSitemap(Sitemap):
-    changefreq = 'monthly'
-    priority = 0.5
+class TeamSitemap(AcademorSitemap):
+    changefreq = 'weekly'
+    priority = 0.55
 
     def items(self):
         return Team.objects.order_by('order', 'id')
@@ -65,8 +82,12 @@ class TeamSitemap(Sitemap):
     def location(self, obj):
         return reverse('projects:team-detail', kwargs={'pk': obj.pk})
 
+    def lastmod(self, obj):
+        # Team has no created_at; align with static hub refresh date.
+        return getattr(settings, 'SITEMAP_STATIC_LASTMOD', None)
 
-class TestSitemap(Sitemap):
+
+class TestSitemap(AcademorSitemap):
     changefreq = 'weekly'
     priority = 0.6
 
@@ -83,7 +104,6 @@ class TestSitemap(Sitemap):
 SITEMAPS = {
     'static': StaticViewSitemap,
     'courses': CourseSitemap,
-    'abroad': AbroadSitemap,
     'team': TeamSitemap,
     'tests': TestSitemap,
 }

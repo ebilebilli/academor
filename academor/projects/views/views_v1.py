@@ -2,10 +2,11 @@ from django.views import View
 from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.http import Http404, JsonResponse
+from django.http import Http404, HttpResponsePermanentRedirect, JsonResponse
+from django.urls import reverse
 from django.utils.translation import gettext as _
 
-from projects.models import Team
+from projects.models import AbroadModel, Team
 from projects.forms.forms_v1 import ReviewForm
 from projects.utils.queries import (
     get_language_from_request, get_home_page_data,
@@ -124,12 +125,24 @@ class AbroadPageView(View):
         return render(request, self.template_name, context)
 
 
+class AbroadDetailLegacyPkRedirectView(View):
+    """301 from /abroad/<pk>/ (old URLs) to /abroad/<slug>/."""
+
+    def get(self, request, pk: int):
+        obj = AbroadModel.objects.filter(pk=pk, is_active=True).only('slug').first()
+        if not obj or not obj.slug:
+            raise Http404(_("Abroad item not found"))
+        return HttpResponsePermanentRedirect(
+            reverse('projects:abroad-detail', kwargs={'slug': obj.slug})
+        )
+
+
 class AbroadDetailPageView(View):
     template_name = 'abroad-detail.html'
 
-    def get(self, request, pk: int):
+    def get(self, request, slug: str):
         lang = get_language_from_request(request)
-        context = get_abroad_detail_view_context(lang, pk)
+        context = get_abroad_detail_view_context(lang, slug)
         if not context:
             raise Http404(_("Abroad item not found"))
         context['language'] = lang

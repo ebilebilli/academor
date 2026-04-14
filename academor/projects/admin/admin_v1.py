@@ -305,9 +305,9 @@ class AbroadModelAdminForm(forms.ModelForm):
 @admin.register(AbroadModel)
 class AbroadModelAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     form = AbroadModelAdminForm
-    list_display = ('id', 'name_az', 'name_en', 'name_ru', 'preview_image', 'is_active', 'created_at')
+    list_display = ('id', 'name_az', 'slug', 'name_en', 'name_ru', 'preview_image', 'is_active', 'created_at')
     list_filter = ('is_active', 'created_at')
-    search_fields = ('name_az', 'name_en', 'name_ru', 'description_az', 'description_en', 'description_ru')
+    search_fields = ('name_az', 'name_en', 'name_ru', 'slug', 'description_az', 'description_en', 'description_ru')
     list_editable = ('is_active',)
     readonly_fields = ('created_at', 'preview_image_large')
     list_per_page = 25
@@ -316,7 +316,7 @@ class AbroadModelAdmin(AdminImageCompressMixin, admin.ModelAdmin):
             'fields': ('img', 'detail_page_img')
         }),
         ('Azerbaijani', {
-            'fields': ('name_az', 'description_az')
+            'fields': ('name_az', 'slug', 'description_az')
         }),
         ('English', {
             'fields': ('name_en', 'description_en')

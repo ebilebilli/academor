@@ -1,3 +1,4 @@
+from datetime import date
 from pathlib import Path
 import os
 from dotenv import load_dotenv
@@ -39,6 +40,18 @@ CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:8080',
  
 ]
+
+# Absolute URLs in sitemap.xml (django.contrib.sites default is often example.com).
+_ccd = (os.getenv('SITE_CANONICAL_DOMAIN') or 'academor.az').strip()
+_ccd = _ccd.removeprefix('https://').removeprefix('http://').strip().rstrip('/')
+SITE_CANONICAL_DOMAIN = _ccd or 'academor.az'
+
+# Date-only lastmod for static URLs in sitemap (bump when static copy/nav changes meaningfully).
+_slm = (os.getenv('SITEMAP_STATIC_LASTMOD') or '2026-04-14').strip()
+try:
+    SITEMAP_STATIC_LASTMOD = date.fromisoformat(_slm)
+except ValueError:
+    SITEMAP_STATIC_LASTMOD = date(2026, 4, 14)
 
 # CSRF Cookie Settings
 CSRF_COOKIE_SECURE = True  

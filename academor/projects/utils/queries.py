@@ -373,6 +373,7 @@ def get_study_abroad_section(lang='az'):
 def get_abroad_items(is_active=True):
     qs = AbroadModel.objects.only(
         'id',
+        'slug',
         'name_az',
         'name_en',
         'name_ru',
@@ -394,6 +395,7 @@ def serialize_abroad_item(item, lang='az'):
         return None
     return {
         'id': item.id,
+        'slug': item.slug,
         'name': _localized_value(item, 'name', lang),
         'description': _localized_value(item, 'description', lang),
         'img': item.img.url if item.img else None,
@@ -711,10 +713,10 @@ def get_abroad_page_data(request, lang):
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
-def get_abroad_detail_view_context(lang, pk):
-    """Study Abroad detail — cached per (lang, pk); None if not found."""
+def get_abroad_detail_view_context(lang, slug):
+    """Study Abroad detail — cached per (lang, slug); None if not found."""
     items = get_abroad_items(is_active=True)
-    item = next((i for i in items if i.id == pk), None)
+    item = next((i for i in items if i.slug == slug), None)
     if not item:
         return None
     item_data = serialize_abroad_item(item, lang=lang)

@@ -168,7 +168,7 @@ class ServiceHighlight(models.Model):
         return self.title_az or self.title_en or self.title_ru or f'Highlight #{self.pk}'
 
 
-class AbroadModel(models.Model):
+class AbroadModel(SluggedModel):
     name_az = models.CharField(
         max_length=120,
         blank=True,
@@ -222,6 +222,14 @@ class AbroadModel(models.Model):
         verbose_name = 'Abroad item'
         verbose_name_plural = 'Abroad items'
         ordering = ('id',)
+
+    def get_slug_source(self) -> str:
+        base = (self.name_az or self.name_en or self.name_ru or '').strip()
+        if base:
+            return base
+        if self.pk:
+            return f'abroad-{self.pk}'
+        return 'abroad'
 
     def __str__(self):
         return self.name_az or self.name_en or self.name_ru or f'Abroad item #{self.pk}'
