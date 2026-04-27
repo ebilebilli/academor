@@ -39,23 +39,23 @@
                         >
                             {{ course.images|json_script:"course-detail-gallery-data" }}
                             <div class="course-detail-gallery__viewport position-relative">
-                                <div class="ratio ratio-4x3 bg-white course-detail-gallery__frame">
+                                <div class="bg-white course-detail-gallery__frame">
                                     {% if course.images %}
                                     <img
                                         src="{{ course.images.0 }}"
                                         alt="{{ course.name }}"
-                                        class="course-detail-gallery__img w-100 h-100"
-                                        width="800"
-                                        height="600"
+                                        class="course-detail-gallery__img"
+                                        width="1080"
+                                        height="1350"
                                         decoding="async"
                                     >
                                     {% else %}
                                     <img
                                         src=""
                                         alt=""
-                                        class="course-detail-gallery__img w-100 h-100 d-none"
-                                        width="800"
-                                        height="600"
+                                        class="course-detail-gallery__img d-none"
+                                        width="1080"
+                                        height="1350"
                                         decoding="async"
                                     >
                                     {% endif %}
@@ -90,9 +90,9 @@
                     </div>
                     {% if course.duration_months or course.lesson_hours or course.has_certificate or course.is_online or course.is_offline %}
                     <div class="course-detail-badges mt-3 wow fadeInUp" data-wow-delay="0.15s">
-                        <div class="row g-2">
+                        <div class="row g-2 g-sm-3">
                             {% if course.duration_months %}
-                            <div class="col-6">
+                            <div class="col-12 col-sm-6">
                                 <div class="course-detail-badge">
                                     <div class="course-detail-badge__icon">
                                         <i class="fa fa-calendar"></i>
@@ -105,7 +105,7 @@
                             </div>
                             {% endif %}
                             {% if course.lesson_hours %}
-                            <div class="col-6">
+                            <div class="col-12 col-sm-6">
                                 <div class="course-detail-badge">
                                     <div class="course-detail-badge__icon">
                                         <i class="fa fa-book"></i>
@@ -118,7 +118,7 @@
                             </div>
                             {% endif %}
                             {% if course.has_certificate %}
-                            <div class="col-6">
+                            <div class="col-12 col-sm-6">
                                 <div class="course-detail-badge">
                                     <div class="course-detail-badge__icon">
                                         <i class="fa fa-certificate"></i>
@@ -131,7 +131,7 @@
                             </div>
                             {% endif %}
                             {% if course.is_online or course.is_offline %}
-                            <div class="col-6">
+                            <div class="col-12 col-sm-6">
                                 <div class="course-detail-badge">
                                     <div class="course-detail-badge__icon">
                                         {% if course.is_online and course.is_offline %}
@@ -192,6 +192,7 @@
         try {
             images = dataEl ? JSON.parse(dataEl.textContent) : [];
         } catch (e) { images = []; }
+        var frame = root.querySelector('.course-detail-gallery__frame');
         var img = root.querySelector('.course-detail-gallery__img');
         var empty = root.querySelector('.course-detail-gallery__empty');
         var prev = root.querySelector('[data-gallery-prev]');
@@ -218,11 +219,32 @@
 
         var galleryInitialized = false;
 
+        function applyFrameAspectFromImg() {
+            if (!frame || !img || img.classList.contains('d-none')) return;
+            var w = img.naturalWidth;
+            var h = img.naturalHeight;
+            if (w > 0 && h > 0) {
+                frame.style.aspectRatio = w + ' / ' + h;
+            }
+        }
+
+        function resetFrameAspect() {
+            if (frame) frame.style.removeProperty('aspect-ratio');
+        }
+
+        if (img) {
+            img.addEventListener('load', applyFrameAspectFromImg);
+            img.addEventListener('error', function () {
+                resetFrameAspect();
+            });
+        }
+
         function show(i) {
             if (!images.length) {
                 if (img) img.classList.add('d-none');
                 if (empty) { empty.classList.remove('d-none'); empty.classList.add('d-flex'); }
                 if (counter) counter.textContent = '';
+                resetFrameAspect();
                 setNavState();
                 return;
             }
@@ -238,10 +260,16 @@
                         img.src = images[idx];
                         img.alt = alt;
                         img.classList.remove('is-fading');
+                        window.requestAnimationFrame(function () {
+                            if (img.complete && img.naturalWidth) applyFrameAspectFromImg();
+                        });
                     }, 100);
                 } else {
                     img.src = images[idx];
                     img.alt = alt;
+                    window.requestAnimationFrame(function () {
+                        if (img.complete && img.naturalWidth) applyFrameAspectFromImg();
+                    });
                 }
             }
             if (counter) counter.textContent = (idx + 1) + ' / ' + images.length;
@@ -252,6 +280,9 @@
         }
 
         show(0);
+        window.requestAnimationFrame(function () {
+            if (img && img.complete && img.naturalWidth) applyFrameAspectFromImg();
+        });
 
         if (prev) prev.addEventListener('click', function () {
             var idx = parseInt(root.dataset.galleryIndex || '0', 10);
