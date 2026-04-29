@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from projects.models import ContactInquiry, Review
 from projects.utils.normalize_phone_number import validate_phone_number
 
-# Bot honeypots: must stay empty (hidden inputs; tabindex -1 for keyboard users).
+# Bot honeypots: must stay empty (hidden inputs; tabindex -1).
 _HP = {'autocomplete': 'off', 'tabindex': '-1', 'aria-hidden': 'true'}
 
 class AppealContactForm(forms.ModelForm):
@@ -130,16 +130,21 @@ class ReviewForm(forms.ModelForm):
         widget=forms.HiddenInput(attrs=_HP),
         label='',
     )
+    hp_address = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(attrs=_HP),
+        label='',
+    )
     name = forms.CharField(
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control form-control-lg',
-                'placeholder': _('Ad və soyad'),
+                'placeholder': _('Ad Soyad'),
                 'autocomplete': 'name',
             }
         ),
         required=True,
-        label=_('Ad və soyad'),
+        label=_('Ad Soyad'),
         max_length=120,
     )
     message = forms.CharField(
@@ -147,12 +152,12 @@ class ReviewForm(forms.ModelForm):
             attrs={
                 'class': 'form-control',
                 'rows': 5,
-                'placeholder': _('Rəyiniz'),
+                'placeholder': _('Your review'),
                 'style': 'min-height: 148px;',
             }
         ),
         required=True,
-        label=_('Rəy'),
+        label=_('Your review'),
         max_length=1000,
     )
     rating = forms.TypedChoiceField(
@@ -178,17 +183,22 @@ class ReviewForm(forms.ModelForm):
     def clean_website(self):
         value = self.cleaned_data.get('website')
         if value:
-            raise ValidationError(_('Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.'))
+            raise ValidationError(_('Something went wrong. Please try again.'))
         return value
 
     def clean_fax(self):
         if self.cleaned_data.get('fax'):
-            raise ValidationError(_('Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.'))
+            raise ValidationError(_('Something went wrong. Please try again.'))
         return ''
 
     def clean_company(self):
         if self.cleaned_data.get('company'):
-            raise ValidationError(_('Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.'))
+            raise ValidationError(_('Something went wrong. Please try again.'))
+        return ''
+
+    def clean_hp_address(self):
+        if self.cleaned_data.get('hp_address'):
+            raise ValidationError(_('Something went wrong. Please try again.'))
         return ''
 
 

@@ -1,5 +1,4 @@
 from django.views import View
-from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import Http404, HttpResponsePermanentRedirect, JsonResponse
@@ -263,17 +262,38 @@ class TeamDetailPageView(View):
 class ReviewsPageView(View):
     template_name = 'testimonial.html'
 
-    def get(self, request):
+    def _build_context(self, request, form=None):
         lang = get_language_from_request(request)
         reviews = get_reviews()
         categories = get_project_categories(lang)
-        context = {
+        return {
             'reviews': [serialize_review(r) for r in reviews],
-            'form': ReviewForm(),
+            'form': form if form is not None else ReviewForm(),
             'categories': [serialize_project_category(c, lang) for c in categories],
             'language': lang,
             'background_image': get_background_image('about'),
         }
-        return render(request, self.template_name, context)
+
+    def get(self, request):
+        return render(request, self.template_name, self._build_context(request))
+
+    def post(self, request):
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            try:
+                form.save()
+                messages.success(
+                    request,
+                    _(
+                        'Your review has been submitted successfully. '
+                        'It will appear after moderation.'
+                    ),
+                )
+                return redirect('projects:reviews-page')
+            except Exception:
+                messages.error(request, _('Something went wrong. Please try again.'))
+                return redirect('projects:reviews-page')
+        messages.error(request, _('Please correct the errors in the form.'))
+        return render(request, self.template_name, self._build_context(request, form=form))
 
 
