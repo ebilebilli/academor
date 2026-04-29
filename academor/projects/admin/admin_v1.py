@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.db.models import Q
 from django.db import models
 from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 from django.urls import reverse
 from django import forms
 from django.core.exceptions import ValidationError
@@ -657,13 +658,27 @@ class TeamAdmin(AdminImageCompressMixin, admin.ModelAdmin):
 
 @admin.register(Review)
 class ReviewAdmin(AdminImageCompressMixin, admin.ModelAdmin):
-    list_display = ('id', 'name', 'is_active', 'created_at')
-    list_filter = ('is_active', 'created_at')
+    list_display = ('id', 'name', 'rating_stars', 'is_active', 'created_at')
+    list_filter = ('is_active', 'rating', 'created_at')
     search_fields = ('name', 'message')
     list_editable = ('is_active',)
     readonly_fields = ('created_at',)
     ordering = ('-created_at',)
     list_per_page = 25
+    fields = ('name', 'message', 'rating', 'is_active', 'created_at')
+
+    @admin.display(description='Stars')
+    def rating_stars(self, obj):
+        n = int(obj.rating or 0)
+        star_on = '<i class="fas fa-star" style="color:#ffb800;font-size:13px;"></i>'
+        star_off = '<i class="far fa-star" style="color:#ccc;font-size:13px;"></i>'
+        return mark_safe(
+            '<span aria-label="{}/5">{}{}</span>'.format(
+                n,
+                star_on * n,
+                star_off * (5 - n),
+            )
+        )
 
 
 class OptionInlineFormSet(BaseInlineFormSet):

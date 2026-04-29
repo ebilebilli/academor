@@ -40,16 +40,17 @@
     <!-- Reviews End -->
 
     {% if form %}
-    <section class="review-form-section py-5 border-top border-light">
+    <section class="review-form-section py-5">
         <div class="container-xxl">
             <div class="container">
                 <div class="text-center mb-4 mb-lg-5 wow fadeInUp" data-wow-delay="0.05s">
-                    <h2 class="mb-0">{% trans "Share your opinion with us" %}</h2>
+                    <h2 class="mb-2 review-form-section__title">{% trans "Share your opinion with us" %}</h2>
+                    <p class="review-form-section__subtitle text-muted mb-0 mx-auto">{% trans "What did you like, or what do you think we could improve? We read all your messages carefully." %}</p>
                 </div>
                 <div class="row justify-content-center wow fadeInUp" data-wow-delay="0.1s">
                     <div class="col-lg-7 col-xl-6">
-                        <div class="card review-form-card border-0 shadow rounded-3 overflow-hidden">
-                            <div class="card-body p-4 p-md-5">
+                        <div class="card review-form-card border-0 rounded-4 overflow-hidden">
+                            <div class="card-body p-4 p-md-5 review-form-card__body">
                                 <form method="post" novalidate id="review-form" class="review-form">
                                     {% csrf_token %}
                                     {{ form.website }}{{ form.fax }}{{ form.company }}
@@ -62,6 +63,11 @@
                                         {{ form.name }}
                                         <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
                                         {% if form.name.errors %}<div class="text-danger small mt-2">{{ form.name.errors.0 }}</div>{% endif %}
+                                    </div>
+                                    <div class="review-form-rating-wrap mb-4">
+                                        <label class="form-label fw-semibold review-form-rating-wrap__label" for="{{ form.rating.id_for_label }}">{{ form.rating.label }}</label>
+                                        {{ form.rating }}
+                                        {% if form.rating.errors %}<div class="text-danger small mt-2">{{ form.rating.errors.0 }}</div>{% endif %}
                                     </div>
                                     <div class="form-floating mb-4 review-form-floating-textarea">
                                         {{ form.message }}

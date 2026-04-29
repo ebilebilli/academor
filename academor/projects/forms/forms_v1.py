@@ -155,10 +155,25 @@ class ReviewForm(forms.ModelForm):
         label=_('Rəy'),
         max_length=1000,
     )
+    rating = forms.TypedChoiceField(
+        coerce=int,
+        initial=5,
+        choices=[
+            (5, _('★★★★★ · 5')),
+            (4, _('★★★★☆ · 4')),
+            (3, _('★★★☆☆ · 3')),
+            (2, _('★★☆☆☆ · 2')),
+            (1, _('★☆☆☆☆ · 1')),
+        ],
+        label=_('Star rating'),
+        widget=forms.Select(
+            attrs={'class': 'form-select form-select-lg review-form-rating-select'},
+        ),
+    )
 
     class Meta:
         model = Review
-        fields = ['name', 'message']
+        fields = ['name', 'message', 'rating']
 
     def clean_website(self):
         value = self.cleaned_data.get('website')

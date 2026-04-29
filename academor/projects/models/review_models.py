@@ -1,5 +1,5 @@
+from django.core.validators import MaxLengthValidator, MinValueValidator, MaxValueValidator
 from django.db import models
-from django.core.validators import MaxLengthValidator
 
 
 class Review(models.Model):
@@ -10,6 +10,15 @@ class Review(models.Model):
     message = models.TextField(
         validators=[MaxLengthValidator(1000)],
         verbose_name='Review',
+    )
+    rating = models.PositiveSmallIntegerField(
+        default=5,
+        validators=[
+            MinValueValidator(1),
+            MaxValueValidator(5),
+        ],
+        verbose_name='Rating (1–5)',
+        help_text='Stars from 1 to 5.',
     )
     is_active = models.BooleanField(
         default=False,

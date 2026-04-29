@@ -237,17 +237,25 @@
     // Reviews carousel (pages that include reviews section only)
     var $testimonialCarousel = $(".testimonial-carousel");
     if ($testimonialCarousel.length) {
+        var testimonialCount = $testimonialCarousel.find(".testimonial-item").length;
         $testimonialCarousel.owlCarousel({
-            autoplay: !prefersReducedMotion,
+            autoplay: !prefersReducedMotion && testimonialCount > 1,
             autoplayTimeout: 4200,
             autoplayHoverPause: true,
             smartSpeed: 700,
             center: true,
             margin: 24,
             dots: true,
-            loop: true,
-            nav: false,
+            nav: testimonialCount > 1,
+            navText: [
+                '<i class="bi bi-chevron-left" aria-hidden="true"></i>',
+                '<i class="bi bi-chevron-right" aria-hidden="true"></i>'
+            ],
+            loop: testimonialCount > 2,
+            rewind: testimonialCount <= 2,
             lazyLoad: false,
+            mouseDrag: testimonialCount > 1,
+            touchDrag: testimonialCount > 1,
             responsive: {
                 0: {
                     items: 1

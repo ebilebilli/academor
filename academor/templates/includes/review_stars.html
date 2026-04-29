@@ -1,0 +1,13 @@
+{% comment %} Used by render_review_stars (rating-driven filled/empty stars). {% endcomment %}
+{% load i18n %}
+<div class="review-card__stars d-flex flex-wrap justify-content-center align-items-center gap-1 mx-auto mb-0"
+     role="img"
+     aria-label="{{ rating }} {% trans 'out of five stars' %}">
+    {% for star in stars %}
+        {% if star.filled %}
+            <i class="fas fa-star review-card__star review-card__star--on" aria-hidden="true"></i>
+        {% else %}
+            <i class="far fa-star review-card__star review-card__star--off" aria-hidden="true"></i>
+        {% endif %}
+    {% endfor %}
+</div>
