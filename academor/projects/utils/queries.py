@@ -438,6 +438,44 @@ def get_serialized_universities(is_active=True):
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
+def get_site_faq_entries(is_active=True):
+    qs = SiteFaqEntry.objects.only(
+        'id',
+        'question_az',
+        'question_en',
+        'question_ru',
+        'answer_az',
+        'answer_en',
+        'answer_ru',
+        'order',
+        'is_active',
+    )
+    if is_active is not None:
+        qs = qs.filter(is_active=is_active)
+    return list(qs.order_by('order', 'id'))
+
+
+def serialize_site_faq_entry(entry, lang='az'):
+    if entry is None:
+        return None
+    return {
+        'id': entry.id,
+        'question': _localized_value(entry, 'question', lang),
+        'answer': _localized_value(entry, 'answer', lang),
+    }
+
+
+@cached_query(timeout='CACHE_TIMEOUT_LONG')
+def get_serialized_site_faq_entries(lang='az', is_active=True):
+    result = []
+    for entry in get_site_faq_entries(is_active=is_active):
+        row = serialize_site_faq_entry(entry, lang=lang)
+        if row and row['question'].strip() and row['answer'].strip():
+            result.append(row)
+    return result
+
+
+@cached_query(timeout='CACHE_TIMEOUT_LONG')
 def get_serialized_partners(lang='az', is_active=True):
     return [serialize_partner(p, lang) for p in get_partners(lang=lang, is_active=is_active)]
 

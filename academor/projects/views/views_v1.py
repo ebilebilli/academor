@@ -22,6 +22,7 @@ from projects.utils.queries import (
     get_serialized_service_highlights,
     get_abroad_page_data,
     get_abroad_detail_view_context,
+    get_serialized_site_faq_entries,
 )
 
 
@@ -90,6 +91,7 @@ class AboutPageView(View):
             'service_highlights': get_serialized_service_highlights(lang=lang, is_active=True),
             'language': lang,
             'background_image': get_background_image('about'),
+            'site_faqs': get_serialized_site_faq_entries(lang=lang, is_active=True),
         }
 
         return render(request, self.template_name, context)

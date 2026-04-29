@@ -525,6 +525,42 @@ class AboutAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     updated_info.short_description = "Last updated"
 
 
+@admin.register(SiteFaqEntry)
+class SiteFaqEntryAdmin(admin.ModelAdmin):
+    list_display = ('order', 'question_short', 'is_active')
+    list_display_links = ('question_short',)
+    list_filter = ('is_active',)
+    list_editable = ('order', 'is_active')
+    ordering = ('order', 'id')
+    search_fields = (
+        'question_az', 'question_en', 'question_ru',
+        'answer_az', 'answer_en', 'answer_ru',
+    )
+
+    fieldsets = (
+        ('Display', {
+            'fields': ('order', 'is_active'),
+            'description': 'Lower order numbers appear first on the About page. Duplicate orders are shifted automatically on save.',
+        }),
+        ('Azerbaijani', {
+            'fields': ('question_az', 'answer_az'),
+        }),
+        ('English', {
+            'fields': ('question_en', 'answer_en'),
+        }),
+        ('Russian', {
+            'fields': ('question_ru', 'answer_ru'),
+        }),
+    )
+
+    def question_short(self, obj):
+        q = (obj.question_az or obj.question_en or obj.question_ru or '').strip()
+        if len(q) > 72:
+            return q[:69] + '…'
+        return q or '—'
+    question_short.short_description = 'Question'
+
+
 # Contact 
 @admin.register(Contact)
 class ContactAdmin(AdminImageCompressMixin, admin.ModelAdmin):
@@ -904,6 +940,7 @@ def _sorted_get_app_list(request, app_label=None):
         # Content / landing
         "Media": 10,
         "About": 20,
+        "SiteFaqEntry": 25,
         "Contact": 30,
         "Tagline": 50,
 

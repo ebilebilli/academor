@@ -20,6 +20,7 @@ from projects.models import (
     Contact,
     Media,
     Tagline,
+    SiteFaqEntry,
     Test,
     Question,
     Option,
@@ -138,6 +139,17 @@ def invalidate_partner_cache(sender, instance, **kwargs):
 def invalidate_about_cache(sender, instance, **kwargs):
     """Invalidate cache when About is saved or deleted."""
     _invalidate_on_commit('About')
+
+
+@receiver(pre_save, sender=SiteFaqEntry)
+def auto_shift_site_faq_entry_order(sender, instance, **kwargs):
+    _shift_order(SiteFaqEntry, instance)
+
+
+@receiver(post_save, sender=SiteFaqEntry)
+@receiver(post_delete, sender=SiteFaqEntry)
+def invalidate_site_faq_cache(sender, instance, **kwargs):
+    _invalidate_on_commit('SiteFaqEntry')
 
 
 @receiver(post_save, sender=Contact)

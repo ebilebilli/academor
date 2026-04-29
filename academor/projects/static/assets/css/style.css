@@ -2676,3 +2676,100 @@ h1.animated, h2.animated, h3.animated,
     cursor: not-allowed;
     pointer-events: none;
 }
+
+/* FAQ (Haqqımızda — site paleti: primary #00313D, accent #FF5414, light #F4F3FF) */
+/* FAQ — bölmənin ümumi fonu body ilə eyni */
+.home-faq {
+    background-color: #ffffff;
+}
+
+.home-faq__title {
+    color: var(--primary);
+    font-weight: 700;
+    font-size: clamp(1.15rem, 2.35vw, 1.48rem);
+    letter-spacing: -0.025em;
+    line-height: 1.35;
+    margin: 0 auto 1.25rem;
+    padding-bottom: 0.6rem;
+    max-width: 28rem;
+    border-bottom: 1px solid rgba(0, 49, 61, 0.12);
+    position: relative;
+}
+
+.home-faq__title::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -1px;
+    transform: translateX(-50%);
+    width: 2.75rem;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 2px;
+}
+
+.home-faq__accordion .accordion-item {
+    background: linear-gradient(160deg, rgba(244, 243, 255, 0.75) 0%, #fbfcfe 40%, #ffffff 100%);
+    border: 1px solid rgba(0, 49, 61, 0.12) !important;
+    box-shadow: 0 8px 28px rgba(0, 49, 61, 0.07);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.home-faq__accordion .accordion-item:has(.accordion-button:not(.collapsed)) {
+    border-color: rgba(255, 84, 20, 0.35) !important;
+    box-shadow: 0 10px 32px rgba(0, 49, 61, 0.09);
+}
+
+.home-faq__accordion .accordion-button {
+    background: linear-gradient(95deg, rgba(0, 49, 61, 0.05) 0%, rgba(244, 243, 255, 0.55) 28%, rgba(255, 255, 255, 0.92) 65%, #ffffff 100%) !important;
+    color: var(--primary) !important;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 1.1rem 1.25rem;
+    box-shadow: inset 3px 0 0 rgba(0, 49, 61, 0.14) !important;
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Bağlı (default) — zəif accent işıqlandırması */
+.home-faq__accordion .accordion-button.collapsed {
+    background: linear-gradient(95deg, rgba(255, 84, 20, 0.06) 0%, rgba(0, 49, 61, 0.04) 12%, rgba(244, 243, 255, 0.58) 40%, #ffffff 85%) !important;
+    box-shadow: inset 3px 0 0 rgba(255, 84, 20, 0.22) !important;
+}
+
+.home-faq__accordion .accordion-button:hover {
+    background: linear-gradient(95deg, rgba(255, 84, 20, 0.09) 0%, rgba(0, 49, 61, 0.05) 15%, rgba(244, 243, 255, 0.72) 45%, #ffffff 90%) !important;
+}
+
+.home-faq__accordion .accordion-button:not(.collapsed) {
+    background: linear-gradient(105deg, rgba(255, 84, 20, 0.1) 0%, rgba(244, 243, 255, 0.55) 38%, #ffffff 72%) !important;
+    color: var(--primary) !important;
+    box-shadow: inset 4px 0 0 var(--accent) !important;
+}
+
+.home-faq__accordion .accordion-button:focus {
+    border-color: transparent;
+    box-shadow: 0 0 0 0.2rem rgba(255, 84, 20, 0.22) !important;
+}
+
+.home-faq__accordion .accordion-button:not(.collapsed):focus {
+    box-shadow: inset 4px 0 0 var(--accent), 0 0 0 0.2rem rgba(255, 84, 20, 0.22) !important;
+}
+
+/* Ox: təxmini primary ton */
+.home-faq__accordion .accordion-button::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2300313D'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    opacity: 0.85;
+}
+
+.home-faq__accordion .accordion-button:not(.collapsed)::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23FF5414'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    opacity: 1;
+}
+
+.home-faq__accordion .accordion-body {
+    padding: 1rem 1.25rem 1.25rem;
+    color: rgba(0, 49, 61, 0.78) !important;
+    line-height: 1.65;
+    border-top: 1px solid rgba(0, 49, 61, 0.08);
+    background: linear-gradient(180deg, rgba(244, 243, 255, 0.35) 0%, #fff 100%);
+}

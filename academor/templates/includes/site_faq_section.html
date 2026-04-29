@@ -1,0 +1,28 @@
+{% load i18n %}
+{% if site_faqs %}
+<section class="home-faq container-xxl py-4 wow fadeInUp" data-wow-delay="0.1s" aria-labelledby="site-faq-heading">
+    <div class="container">
+        <h2 id="site-faq-heading" class="home-faq__title text-center mx-auto">{% trans "Common questions" %}</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-8">
+                <div class="accordion home-faq__accordion" id="siteFaqAccordion">
+                    {% for item in site_faqs %}
+                    <div class="accordion-item border-0 shadow-sm {% if not forloop.last %}mb-3{% endif %} rounded-3 overflow-hidden">
+                        <h3 class="accordion-header" id="siteFaqHeading{{ item.id }}">
+                            <button class="accordion-button fw-semibold{% if not forloop.first %} collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#siteFaqCollapse{{ item.id }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="siteFaqCollapse{{ item.id }}">
+                                {{ item.question }}
+                            </button>
+                        </h3>
+                        <div id="siteFaqCollapse{{ item.id }}" class="accordion-collapse collapse{% if forloop.first %} show{% endif %}" aria-labelledby="siteFaqHeading{{ item.id }}" data-bs-parent="#siteFaqAccordion">
+                            <div class="accordion-body">
+                                {{ item.answer|linebreaksbr }}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
