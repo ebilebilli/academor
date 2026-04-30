@@ -692,7 +692,7 @@ def get_home_page_data(request, lang):
         if not urls:
             urls = [
                 static('assets/img/new_baner.png'),
-                static('assets/img/carousel-2.jpg'),
+                static('assets/img/banner-landscape-1536x1024.png'),
             ]
         return urls
 
