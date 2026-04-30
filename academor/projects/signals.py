@@ -1,13 +1,25 @@
+"""
+ORM signals: ordering helpers + cache invalidation.
+
+All @cached_query / @cached_page_data in projects.utils.queries use a global
+cache_version key. invalidate_model_cache() bumps that version, so every
+persisted model that feeds those queries must call _invalidate_on_commit here.
+
+Keep in sync with queries.py (add a receiver when a new cached query reads a model):
+  ServiceCategory, ServiceHighlight, AbroadModel, StudyAbroadSection, University,
+  Team, Review, Instructor, About, Contact, Media, Tagline, SiteFaqEntry,
+  Test, Question, Option
+
+Not cached (no invalidation needed for public query cache): ContactInquiry, UserResult.
+"""
 from django.db.models.signals import post_save, post_delete, pre_save
 from django.dispatch import receiver
-from django.conf import settings
 from django.db import transaction
 from django.db.models import F
 
 # from projects.utils import send_mail_func
 from projects.utils.cache_utils import invalidate_model_cache
 from projects.models import (
-    ContactInquiry,
     ServiceCategory,
     ServiceHighlight,
     AbroadModel,
@@ -24,7 +36,6 @@ from projects.models import (
     Test,
     Question,
     Option,
-    UserResult,
 )
 
 
@@ -174,18 +185,9 @@ def invalidate_review_cache(sender, instance, **kwargs):
 @receiver(post_save, sender=Media)
 @receiver(post_delete, sender=Media)
 def invalidate_media_cache(sender, instance, **kwargs):
-    """Invalidate cache when Media is saved or deleted."""
-    # Media can affect multiple models, so invalidate all related caches
+    """Invalidate cache when Media is saved or deleted (hero bg, category imgs, partner logos, etc.)."""
+    # Single bump: invalidate_model_cache only raises global cache_version — one call is enough.
     _invalidate_on_commit('Media')
-    
-    # Also invalidate related model caches if media belongs to them
-    # IMPORTANT: use *_id to avoid DoesNotExist during cascaded deletes
-    if getattr(instance, 'category_id', None):
-        _invalidate_on_commit('ServiceCategory')
-    if getattr(instance, 'partner_id', None):
-        _invalidate_on_commit('Instructor')
-    if getattr(instance, 'about_id', None):
-        _invalidate_on_commit('About')
 
 
 

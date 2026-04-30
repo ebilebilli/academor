@@ -17,7 +17,7 @@ from projects.utils.queries import (
     serialize_project_category_detail,
     get_active_project_category_by_slug,
     get_team_members, serialize_team_member,
-    get_reviews, serialize_review,
+    get_reviews_page_data,
     get_serialized_service_highlights,
     get_abroad_page_data,
     get_abroad_detail_view_context,
@@ -264,15 +264,9 @@ class ReviewsPageView(View):
 
     def _build_context(self, request, form=None):
         lang = get_language_from_request(request)
-        reviews = get_reviews()
-        categories = get_project_categories(lang)
-        return {
-            'reviews': [serialize_review(r) for r in reviews],
-            'form': form if form is not None else ReviewForm(),
-            'categories': [serialize_project_category(c, lang) for c in categories],
-            'language': lang,
-            'background_image': get_background_image('about'),
-        }
+        context = get_reviews_page_data(request, lang)
+        context['form'] = form if form is not None else ReviewForm()
+        return context
 
     def get(self, request):
         return render(request, self.template_name, self._build_context(request))

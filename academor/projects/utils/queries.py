@@ -8,10 +8,6 @@ from django.conf import settings
 from django.templatetags.static import static
 
 from projects.models import *
-from projects.utils.cache_utils import cached_query, get_query_cache_key, cached_page_data
-from django.core.cache import cache
-
-
 def get_language_from_request(request):
     lang = request.GET.get('lang', '').lower() or request.GET.get('language', '').lower()
     if lang in ['az', 'en', 'ru']:
@@ -164,6 +160,7 @@ def serialize_review(review):
         'id': review.id,
         'name': review.name,
         'message': review.message,
+        'rating': review.rating,
         'created_at': review.created_at,
     }
 
@@ -732,6 +729,22 @@ def get_home_page_data(request, lang):
         'universities': get_serialized_universities(is_active=True),
         'team': [serialize_team_member(m) for m in get_team_members()],
         'reviews': [serialize_review(r) for r in get_reviews()],
+    }
+
+
+@cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_reviews_page_data(request, lang):
+    """
+    Reviews / testimonials page context (cached).
+    Invalidated when cache_version bumps — e.g. Review, ServiceCategory, Tagline, Media signals.
+    """
+    categories = get_project_categories(lang)
+    return {
+        'use_h2_for_section_titles': False,
+        'reviews': [serialize_review(r) for r in get_reviews()],
+        'categories': [serialize_project_category(c, lang) for c in categories],
+        'language': lang,
+        'background_image': get_background_image('about'),
     }
 
 

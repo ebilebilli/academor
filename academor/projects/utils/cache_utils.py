@@ -1,5 +1,15 @@
 """
 Cache utilities for page-level caching and cache invalidation.
+
+Versioned keys: @cached_query and @cached_page_data embed cache.get('cache_version').
+invalidate_model_cache (and invalidate_*_cache) bumps that integer so all such entries miss.
+
+When adding a new cached function that reads the DB, register post_save/post_delete in
+projects.signals so content changes are visible (see module docstring there).
+
+Note: QuerySet.update() / bulk_create(..., ignore_conflicts) bypass model signals;
+prefer Model.save() in admin or call invalidate_page_cache manually after bulk ops.
+LocMemCache is per-process; use a shared backend if you run multiple workers.
 """
 from functools import wraps
 from django.core.cache import cache
@@ -275,10 +285,10 @@ def cached_page_data(timeout=None):
 
 def invalidate_model_cache(model_name):
     """
-    Invalidate all versioned cache entries by bumping the global cache version.
-    
+    Bump global cache_version so all @cached_query / @cached_page_data keys miss.
+
     Args:
-        model_name: Name of the model that changed (used for logging/tracing only).
+        model_name: Which model changed (documentation / future metrics only; not used for keying).
     """
     _bump_cache_version()
 
