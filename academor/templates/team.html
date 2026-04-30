@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load static i18n %}{% get_current_language as LANG_CODE %}
+{% load static i18n academor_lazy_tags %}{% get_current_language as LANG_CODE %}
 <html lang="{{ LANG_CODE }}">
 
 <head>
@@ -7,13 +7,7 @@
 </head>
 
 <body>
-    <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-            <span class="sr-only">{% trans "Loading..." %}</span>
-        </div>
-    </div>
-    <!-- Spinner End -->
+    {% include "includes/site_spinner.html" %}
 
 
     <!-- Navbar Start -->
@@ -41,7 +35,11 @@
                         <a href="{% url 'projects:team-detail' member.id %}" class="category-square-card course-alt-card__link d-flex flex-column text-decoration-none h-100">
                             <div class="ratio ratio-1x1 overflow-hidden course-alt-card__media">
                                 {% if member.image %}
-                                <img src="{{ member.image }}" alt="{{ member.name }}" class="w-100 h-100" style="object-fit: cover;" loading="{% if forloop.counter <= 4 %}eager{% else %}lazy{% endif %}" fetchpriority="{% if forloop.counter <= 4 %}high{% else %}auto{% endif %}" decoding="async" width="400" height="400">
+                                {% if forloop.counter > 4 %}
+                                {% academor_branded_lazy_img member.image member.name img_class='w-100 h-100' layout='cover' width='400' height='400' loading='lazy' %}
+                                {% else %}
+                                <img src="{{ member.image }}" alt="{{ member.name }}" class="w-100 h-100" style="object-fit: cover;" loading="eager" fetchpriority="high" decoding="async" width="400" height="400">
+                                {% endif %}
                                 {% else %}
                                 <div class="w-100 h-100 bg-light d-flex align-items-center justify-content-center text-muted">
                                     <i class="fa fa-user fa-3x opacity-25"></i>

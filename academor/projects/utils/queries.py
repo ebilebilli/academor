@@ -8,6 +8,9 @@ from django.conf import settings
 from django.templatetags.static import static
 
 from projects.models import *
+from projects.utils.cache_utils import cached_query, cached_page_data
+
+
 def get_language_from_request(request):
     lang = request.GET.get('lang', '').lower() or request.GET.get('language', '').lower()
     if lang in ['az', 'en', 'ru']:

@@ -1,9 +1,10 @@
 {# member: dict from serialize_team_member (image = URL string or None) #}
+{% load academor_lazy_tags %}
 <div class="team-item bg-light h-100 overflow-hidden {% if not member.image %}team-item--no-photo{% endif %}">
     {% if member.image %}
     <a href="{% url 'projects:team-detail' member.id %}" class="team-item-photo-link">
         <div class="team-item-photo-wrap">
-            <img src="{{ member.image }}" alt="{{ member.name }}" class="team-item-photo-img w-100 h-100" width="600" height="800" loading="lazy" decoding="async">
+            {% academor_branded_lazy_img member.image member.name img_class='team-item-photo-img w-100 h-100' layout='cover' width='600' height='800' loading='lazy' %}
         </div>
     </a>
     {% endif %}

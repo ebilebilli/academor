@@ -1,4 +1,4 @@
-{% load i18n static %}
+{% load i18n static academor_lazy_tags %}
 <div class="container-xxl py-5 abroad-section">
     <div class="container">
         <div class="text-center">
@@ -15,7 +15,7 @@
                 <div class="universities-list__item">
                     <div class="university-flag-card">
                         {% if uni.flag %}
-                        <img src="{{ uni.flag }}" alt="" class="university-flag-card__img" width="80" height="80" loading="lazy" decoding="async">
+                        {% academor_branded_lazy_img uni.flag '' img_class='university-flag-card__img' layout='circle' width='80' height='80' loading='lazy' %}
                         {% endif %}
                     </div>
                 </div>
@@ -24,7 +24,7 @@
                 <div class="universities-list__item" aria-hidden="true">
                     <div class="university-flag-card">
                         {% if uni.flag %}
-                        <img src="{{ uni.flag }}" alt="" class="university-flag-card__img" width="80" height="80" loading="lazy" decoding="async">
+                        {% academor_branded_lazy_img uni.flag '' img_class='university-flag-card__img' layout='circle' width='80' height='80' loading='lazy' %}
                         {% endif %}
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                 <a href="{% url 'projects:abroad-detail' slug=item.slug %}" class="abroad-card h-100 text-center d-block text-decoration-none">
                     <div class="abroad-card__icon-wrap">
                         {% if item.img %}
-                        <img src="{{ item.img }}" alt="{{ item.name }}" class="abroad-card__thumb" width="90" height="90">
+                        {% academor_branded_lazy_img item.img item.name img_class='abroad-card__thumb' layout='circle' width='90' height='90' loading='lazy' %}
                         {% else %}
                         <i class="fa fa-angle-left abroad-card__icon" aria-hidden="true"></i>
                         {% endif %}

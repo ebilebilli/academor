@@ -1,6 +1,25 @@
-{% load i18n %}
-<div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-        <span class="sr-only">{% trans "Loading..." %}</span>
+{% load static i18n %}
+{# Tam ekran yüklənmə: dairəvi kadrda banner + fırlanan halqa. main.js #spinner-ə .hide əlavə edir. #}
+<div
+    id="spinner"
+    class="site-page-loader show position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+    aria-busy="true"
+>
+    <div class="site-page-loader__inner text-center px-3" role="status" aria-live="polite">
+        <div class="site-page-loader__dial">
+            <div class="site-page-loader__halo" aria-hidden="true"></div>
+            <div class="site-page-loader__face">
+                <img
+                    src="{% static 'assets/img/banner-landscape-1536x1024.png' %}"
+                    alt=""
+                    class="site-page-loader__banner"
+                    width="1536"
+                    height="1024"
+                    decoding="async"
+                    fetchpriority="high"
+                >
+            </div>
+        </div>
+        <span class="visually-hidden">{% trans "Loading..." %}</span>
     </div>
 </div>

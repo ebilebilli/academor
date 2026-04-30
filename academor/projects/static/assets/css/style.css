@@ -125,8 +125,134 @@ h1.animated, h2.animated, h3.animated,
 }
 
 
-/*** Spinner ***/
-#spinner {
+/*** Spinner — dairəvi banner + fırlanan accent halqa ***/
+#spinner.site-page-loader {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.45s ease-out, visibility 0s linear 0.45s;
+    z-index: 99999;
+    pointer-events: none;
+    background: radial-gradient(
+            ellipse 85% 55% at 50% 42%,
+            rgba(255, 255, 255, 0.97) 0%,
+            rgba(244, 243, 255, 0.94) 38%,
+            rgba(255, 255, 255, 0.99) 100%
+        ),
+        linear-gradient(168deg, #ffffff 0%, rgba(232, 236, 244, 0.55) 100%);
+}
+
+#spinner.site-page-loader.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.site-page-loader__inner {
+    max-width: min(92vw, 420px);
+}
+
+.site-page-loader__dial {
+    position: relative;
+    width: min(178px, 42vw);
+    height: min(178px, 42vw);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .site-page-loader__dial {
+        animation: site-page-loader-dial-float 2.8s ease-in-out infinite;
+    }
+}
+
+@keyframes site-page-loader-dial-float {
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-4px) scale(1.01);
+    }
+}
+
+/* Xarici fırlanan halqa (şəklin ətrafında) */
+.site-page-loader__halo {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 3px solid rgba(0, 49, 61, 0.07);
+    border-top-color: var(--accent);
+    border-right-color: rgba(255, 84, 20, 0.55);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.6) inset,
+        0 10px 36px rgba(0, 49, 61, 0.08);
+    transform-origin: 50% 50%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .site-page-loader__halo {
+        animation: site-page-loader-halo-spin 1.05s cubic-bezier(0.58, 0.12, 0.36, 0.88) infinite;
+    }
+}
+
+@keyframes site-page-loader-halo-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Dairəvi pəncərə: landscape banner mərkəzdən cover */
+.site-page-loader__face {
+    position: absolute;
+    inset: clamp(8px, 2.6vw, 13px);
+    border-radius: 50%;
+    overflow: hidden;
+    z-index: 1;
+    background: rgba(0, 49, 61, 0.06);
+    box-shadow:
+        0 0 0 2px rgba(255, 255, 255, 0.92),
+        0 0 0 4px rgba(0, 49, 61, 0.06),
+        0 14px 40px rgba(0, 49, 61, 0.14);
+}
+
+.site-page-loader__banner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 45%;
+    transform: scale(1.05) translate3d(-1%, -0.5%, 0);
+    will-change: transform;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .site-page-loader__banner {
+        animation: site-page-loader-banner-drift 4.2s ease-in-out infinite alternate;
+    }
+}
+
+@keyframes site-page-loader-banner-drift {
+    0% {
+        transform: scale(1.05) translate3d(-1.2%, -1%, 0);
+    }
+    100% {
+        transform: scale(1.1) translate3d(1.2%, 0.8%, 0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .site-page-loader__dial,
+    .site-page-loader__halo,
+    .site-page-loader__banner {
+        animation: none !important;
+    }
+
+    .site-page-loader__banner {
+        transform: scale(1.06) translate3d(0, 0, 0);
+    }
+}
+
+/*** Spinner (legacy #spinner — yalnız .hide) ***/
+#spinner:not(.site-page-loader) {
     opacity: 1;
     visibility: visible;
     transition: opacity 0.4s ease-out, visibility 0s linear 0.4s;
@@ -134,7 +260,7 @@ h1.animated, h2.animated, h3.animated,
     pointer-events: none;
 }
 
-#spinner.hide {
+#spinner:not(.site-page-loader).hide {
     opacity: 0;
     visibility: hidden;
 }
@@ -3166,4 +3292,113 @@ h1.animated, h2.animated, h3.animated,
     line-height: 1.65;
     border-top: 1px solid rgba(0, 49, 61, 0.08);
     background: linear-gradient(180deg, rgba(244, 243, 255, 0.35) 0%, #fff 100%);
+}
+
+/* —— Branded lazy-load (header logo as soft placeholder) —— */
+.academor-branded-lazy {
+    --academor-brand-ph: none;
+    position: relative;
+    display: block;
+    overflow: hidden;
+    background: linear-gradient(
+        145deg,
+        rgba(244, 243, 255, 0.92) 0%,
+        rgba(232, 236, 244, 0.95) 45%,
+        rgba(246, 247, 251, 0.98) 100%
+    );
+}
+
+.academor-branded-lazy::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: var(--academor-brand-ph) center / min(38%, 200px) no-repeat;
+    opacity: 0.11;
+    pointer-events: none;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .academor-branded-lazy:not(.academor-branded-lazy--loaded)::after {
+        animation: academor-brand-ph-pulse 1.75s ease-in-out infinite;
+    }
+}
+
+.academor-branded-lazy--loaded::after {
+    opacity: 0;
+    animation: none;
+    transform: scale(1.04);
+}
+
+.academor-branded-lazy__img {
+    position: relative;
+    z-index: 1;
+    display: block;
+    opacity: 0;
+    transition: opacity 0.45s ease;
+}
+
+.academor-branded-lazy--loaded .academor-branded-lazy__img {
+    opacity: 1;
+}
+
+.header-carousel .owl-carousel-item > .academor-branded-lazy--cover {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.academor-branded-lazy--cover .academor-branded-lazy__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.team-item-photo-wrap > .academor-branded-lazy--cover,
+.ratio > .academor-branded-lazy--cover {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.abroad-card__icon-wrap > .academor-branded-lazy--circle {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.abroad-card__icon-wrap > .academor-branded-lazy--circle .academor-branded-lazy__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.university-flag-card > .academor-branded-lazy--circle {
+    flex: 1 1 auto;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    border-radius: 50%;
+}
+
+.university-flag-card > .academor-branded-lazy--circle .academor-branded-lazy__img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+@keyframes academor-brand-ph-pulse {
+    0%,
+    100% {
+        opacity: 0.09;
+    }
+    50% {
+        opacity: 0.16;
+    }
 }

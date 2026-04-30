@@ -1,0 +1,13 @@
+{% load static %}
+<div class="academor-branded-lazy{% if layout %} academor-branded-lazy--{{ layout }}{% endif %}" style="--academor-brand-ph: url('{% static 'assets/img/new_logo.png' %}');" data-academor-lazy-brand>
+    <img
+        src="{{ src }}"
+        alt="{{ alt }}"
+        {% if width %}width="{{ width }}"{% endif %}
+        {% if height %}height="{{ height }}"{% endif %}
+        class="academor-branded-lazy__img{% if img_class %} {{ img_class }}{% endif %}"
+        loading="{{ loading }}"
+        decoding="async"
+        {% if fetchpriority and fetchpriority != 'auto' %}fetchpriority="{{ fetchpriority }}"{% endif %}
+    >
+</div>
