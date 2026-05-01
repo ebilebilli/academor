@@ -1,5 +1,5 @@
 /**
- * Branded lazy frames: fade real image in when loaded (capture phase so Owl clones work).
+ * Branded lazy frames: fade real image in when loaded (per-img load/error listeners; IMG load does not bubble).
  */
 (function () {
     'use strict';
@@ -28,6 +28,14 @@
             if (img.complete && img.naturalWidth) {
                 markLoaded(img);
             } else {
+                /* IMG "load" does not bubble; document capture listener never sees it */
+                img.addEventListener(
+                    'load',
+                    function () {
+                        markLoaded(img);
+                    },
+                    { once: true }
+                );
                 img.addEventListener(
                     'error',
                     function () {

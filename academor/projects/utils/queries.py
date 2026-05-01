@@ -323,7 +323,7 @@ def get_motto(lang='az'):
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
 def get_mottos(lang='az'):
     """Bütün Tagline obyektlərini carousel slide kimi qaytarır."""
-    taglines = Tagline.objects.all()
+    taglines = Tagline.objects.all().order_by('pk')
     small_field = get_localized_field_name('heading_small', lang)
     main_field = get_localized_field_name('heading_main', lang)
     body_field = get_localized_field_name('body', lang)
