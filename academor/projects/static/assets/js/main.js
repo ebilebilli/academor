@@ -23,15 +23,27 @@
     }
 
 
-    // Sticky Navbar (one rAF with back-to-top; class toggle avoids inline style churn)
-    var stickyVisible = null;
+    // Sticky navbar + reading progress
+    var stickyScrolled = null;
+    var $scrollProgressBar = $('#scrollProgressBar');
     function updateStickyNavbar() {
         var y = window.pageYOffset || document.documentElement.scrollTop || 0;
-        var nextVisible = y > 300;
-        if (stickyVisible !== nextVisible) {
-            $('.navbar-light.sticky-top').toggleClass('sticky-navbar--revealed', nextVisible);
-            stickyVisible = nextVisible;
+        var isScrolled = y > 8;
+        if (stickyScrolled !== isScrolled) {
+            $('.navbar-light.sticky-top').toggleClass('sticky-navbar--scrolled', isScrolled);
+            stickyScrolled = isScrolled;
         }
+    }
+
+    function updateScrollProgress() {
+        if (!$scrollProgressBar.length) return;
+
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        var doc = document.documentElement;
+        var scrollable = Math.max(doc.scrollHeight - window.innerHeight, 0);
+        var progress = scrollable > 0 ? Math.min(Math.max(scrollTop / scrollable, 0), 1) : 0;
+
+        $scrollProgressBar.css('transform', 'scaleX(' + progress + ')');
     }
     
     
@@ -99,16 +111,26 @@
             window.requestAnimationFrame(function () {
                 updateStickyNavbar();
                 updateBackToTop();
+                updateScrollProgress();
                 scrollTicking = false;
             });
         }
     }, { passive: true });
+    window.addEventListener('resize', function () {
+        window.requestAnimationFrame(function () {
+            updateStickyNavbar();
+            updateBackToTop();
+            updateScrollProgress();
+        });
+    }, { passive: true });
     $(window).on('load.backToTop', function () {
         updateStickyNavbar();
         updateBackToTop();
+        updateScrollProgress();
     });
     updateStickyNavbar();
     updateBackToTop();
+    updateScrollProgress();
 
     $backToTop.on('click', function (e) {
         e.preventDefault();
