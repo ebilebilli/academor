@@ -844,6 +844,24 @@ h1.animated, h2.animated, h3.animated,
     }
 }
 
+/* Home hero: copy above full-bleed media; disable Animate.css on hero (slide 2+ stayed transformed / clipped). */
+.header-carousel .owl-carousel-item > .img-fluid,
+.header-carousel .owl-carousel-item > .academor-branded-lazy--cover {
+    z-index: 0;
+}
+
+.header-carousel .owl-carousel-item .carousel-hero-overlay {
+    z-index: 2;
+}
+
+.header-carousel .carousel-hero-overlay .animated {
+    animation: none !important;
+    animation-delay: 0s !important;
+    transform: none !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
 /* Owl: before JS runs, hide extra slides so N× hero height is not stacked (major CLS + LCP jump) */
 .header-carousel.owl-carousel:not(.owl-loaded) .owl-carousel-item:not(:first-of-type) {
     display: none;
