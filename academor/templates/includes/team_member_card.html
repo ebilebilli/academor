@@ -2,7 +2,7 @@
 {% load academor_lazy_tags %}
 <div class="team-item bg-light h-100 overflow-hidden {% if not member.image %}team-item--no-photo{% endif %}">
     {% if member.image %}
-    <a href="{% url 'projects:team-detail' member.id %}" class="team-item-photo-link">
+    <a href="{% url 'projects:team-detail' member.slug %}" class="team-item-photo-link">
         <div class="team-item-photo-wrap">
             {% academor_branded_lazy_img member.image member.name img_class='team-item-photo-img w-100 h-100' layout='cover' width='600' height='800' loading='lazy' %}
         </div>
@@ -32,10 +32,10 @@
     </div>
     <div class="text-center p-4">
         <h5 class="mb-0">
-            <a href="{% url 'projects:team-detail' member.id %}" class="text-decoration-none text-dark">
+            <a href="{% url 'projects:team-detail' member.slug %}" class="text-decoration-none text-dark">
                 {{ member.name }}
             </a>
         </h5>
-        <small>{{ member.role }}</small>
+        {% if member.role %}<small class="course-alt-card__role d-block mt-1">{{ member.role }}</small>{% endif %}
     </div>
 </div>

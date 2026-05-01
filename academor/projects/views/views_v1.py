@@ -235,23 +235,32 @@ class TeamPageView(View):
         return render(request, self.template_name, context)
 
 
+class TeamDetailLegacyPkRedirectView(View):
+    """301 from /team/<pk>/ (legacy) to /team/<slug>/."""
+
+    def get(self, request, pk: int):
+        obj = Team.objects.filter(pk=pk).only('slug').first()
+        if not obj or not obj.slug:
+            raise Http404(_("Team member not found"))
+        return HttpResponsePermanentRedirect(
+            reverse('projects:team-detail', kwargs={'slug': obj.slug})
+        )
+
+
 class TeamDetailPageView(View):
     template_name = 'team-detail.html'
 
-    def get(self, request, pk: int):
+    def get(self, request, slug: str):
         lang = get_language_from_request(request)
-        try:
-            member = Team.objects.get(pk=pk)
-        except Team.DoesNotExist:
+        member = Team.objects.filter(slug=slug).first()
+        if not member:
             raise Http404(_("Team member not found"))
 
         categories = get_project_categories(lang)
         member_data = serialize_team_member(member)
-        contact = get_contact(lang)
         context = {
             'member': member_data,
             'categories': [serialize_project_category(c, lang) for c in categories],
-            'contact': serialize_contact(contact, lang) if contact else None,
             'language': lang,
             'background_image': get_background_image('about'),
             'page_title': f'{member_data["name"]} | Academor',

@@ -649,10 +649,11 @@ class TeamAdminForm(forms.ModelForm):
 @admin.register(Team)
 class TeamAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     form = TeamAdminForm
-    list_display = ('id', 'name', 'role', 'order')
+    list_display = ('id', 'name', 'slug', 'role', 'order')
     list_editable = ('order',)
+    readonly_fields = ('slug',)
     ordering = ('order', 'id')
-    search_fields = ('name', 'role', 'description', 'instagram', 'facebook', 'linkedin', 'tiktok', 'youtube')
+    search_fields = ('name', 'slug', 'role', 'description', 'instagram', 'facebook', 'linkedin', 'tiktok', 'youtube')
     list_per_page = 25
 
 

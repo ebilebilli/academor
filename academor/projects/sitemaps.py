@@ -80,7 +80,7 @@ class TeamSitemap(AcademorSitemap):
         return Team.objects.order_by('order', 'id')
 
     def location(self, obj):
-        return reverse('projects:team-detail', kwargs={'pk': obj.pk})
+        return reverse('projects:team-detail', kwargs={'slug': obj.slug})
 
     def lastmod(self, obj):
         # Team has no created_at; align with static hub refresh date.

@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 from ckeditor.fields import RichTextField
 
 
@@ -12,6 +13,11 @@ class Team(models.Model):
     name = models.CharField(
         max_length=120,
         verbose_name='Name',
+    )
+    slug = models.SlugField(
+        max_length=150,
+        unique=True,
+        verbose_name='URL slug',
     )
     role = models.CharField(
         max_length=120,
@@ -66,3 +72,20 @@ class Team(models.Model):
 
     def __str__(self):
         return f'{self.name} ({self.role})'
+
+    def _unique_slug_from_name(self) -> str:
+        base = slugify(self.name.strip()) or 'member'
+        if len(base) > 140:
+            base = base[:140]
+        slug = base
+        n = 2
+        qs = Team.objects.exclude(pk=self.pk) if self.pk else Team.objects.all()
+        while qs.filter(slug=slug).exists():
+            suffix = f'-{n}'
+            slug = (base[: max(1, 150 - len(suffix))] + suffix)[:150]
+            n += 1
+        return slug
+
+    def save(self, *args, **kwargs):
+        self.slug = self._unique_slug_from_name()
+        super().save(*args, **kwargs)

@@ -32,7 +32,7 @@
                 {% for member in team %}
                 <div class="col-lg-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay="{% cycle '0.05s' '0.1s' '0.15s' '0.2s' %}">
                     <article class="course-alt-card h-100">
-                        <a href="{% url 'projects:team-detail' member.id %}" class="category-square-card course-alt-card__link d-flex flex-column text-decoration-none h-100">
+                        <a href="{% url 'projects:team-detail' member.slug %}" class="category-square-card course-alt-card__link d-flex flex-column text-decoration-none h-100">
                             <div class="ratio ratio-1x1 overflow-hidden course-alt-card__media">
                                 {% if member.image %}
                                 {% if forloop.counter > 4 %}
@@ -48,7 +48,7 @@
                             </div>
                             <div class="course-alt-card__body">
                                 <h5 class="mb-1 text-truncate" title="{{ member.name }}">{{ member.name }}</h5>
-                                {% if member.role %}<small class="text-muted d-block mb-2 text-truncate">{{ member.role }}</small>{% endif %}
+                                {% if member.role %}<small class="course-alt-card__role d-block mb-2 text-truncate">{{ member.role }}</small>{% endif %}
                                 <span class="course-alt-card__cta"><i class="fa fa-arrow-right" aria-hidden="true"></i></span>
                             </div>
                         </a>

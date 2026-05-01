@@ -12,6 +12,7 @@ from projects.views.views_v1 import (
     AbroadDetailPageView,
     ContactPageView,
     TeamPageView,
+    TeamDetailLegacyPkRedirectView,
     TeamDetailPageView,
     ReviewsPageView,
 )
@@ -78,6 +79,10 @@ urlpatterns = [
     ),
     path(
         'team/<int:pk>/',
+        TeamDetailLegacyPkRedirectView.as_view(),
+    ),
+    path(
+        'team/<slug:slug>/',
         TeamDetailPageView.as_view(),
         name='team-detail',
     ),

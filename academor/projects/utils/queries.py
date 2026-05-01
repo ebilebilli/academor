@@ -9,6 +9,7 @@ from django.templatetags.static import static
 
 from projects.models import *
 from projects.utils.cache_utils import cached_query, cached_page_data
+from projects.utils.media_cache_bust import media_url
 
 
 def get_language_from_request(request):
@@ -133,9 +134,18 @@ def get_team_members(is_active=True):
 def serialize_team_member(member):
     if member is None:
         return None
+    social_urls = [
+        getattr(member, 'facebook', None) or '',
+        getattr(member, 'instagram', None) or '',
+        getattr(member, 'linkedin', None) or '',
+        getattr(member, 'youtube', None) or '',
+        getattr(member, 'tiktok', None) or '',
+    ]
+    social_count = sum(1 for u in social_urls if u.strip())
     return {
         'id': member.id,
-        'image': member.image.url if member.image else None,
+        'slug': member.slug,
+        'image': media_url(member.image) if member.image else None,
         'name': member.name,
         'role': member.role,
         'description': member.description,
@@ -144,7 +154,8 @@ def serialize_team_member(member):
         'linkedin': getattr(member, 'linkedin', None),
         'tiktok': getattr(member, 'tiktok', None),
         'youtube': getattr(member, 'youtube', None),
-        'descriptor': member.descriptor.url if getattr(member, 'descriptor', None) else None,
+        'descriptor': media_url(member.descriptor) if member.descriptor else None,
+        'social_count': social_count,
     }
 
 
@@ -288,7 +299,7 @@ def get_background_image(page_type):
 
     media = Media.objects.filter(**{image_map[page_type]: True}).first()
     if media and media.image:
-        return media.image.url
+        return media_url(media.image)
     return None
 
 
@@ -300,7 +311,7 @@ def get_home_background_images(limit=6):
         image__isnull=False
     ).order_by('-created_at')[:limit]
     
-    return [media.image.url for media in media_list if media.image]
+    return [media_url(m.image) for m in media_list if m.image]
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
@@ -398,8 +409,8 @@ def serialize_abroad_item(item, lang='az'):
         'slug': item.slug,
         'name': _localized_value(item, 'name', lang),
         'description': _localized_value(item, 'description', lang),
-        'img': item.img.url if item.img else None,
-        'detail_page_img': item.detail_page_img.url if item.detail_page_img else None,
+        'img': media_url(item.img) if item.img else None,
+        'detail_page_img': media_url(item.detail_page_img) if item.detail_page_img else None,
         'is_active': item.is_active,
         'created_at': item.created_at,
     }
@@ -418,7 +429,7 @@ def serialize_university(item):
         return None
     return {
         'id': item.id,
-        'flag': item.flag.url if item.flag else None,
+        'flag': media_url(item.flag) if item.flag else None,
     }
 
 
@@ -486,7 +497,7 @@ def serialize_project_category(category, lang='az'):
     first_image = None
     for media in category.medias.all():
         if media.image:
-            first_image = media.image.url
+            first_image = media_url(media.image)
             break
 
     raw_desc = getattr(category, desc_field, None)
@@ -508,7 +519,7 @@ def serialize_project_category_detail(category, lang='az'):
         return None
     data = serialize_project_category(category, lang)
     data['images'] = [
-        media.image.url
+        media_url(media.image)
         for media in category.medias.all()
         if media.image
     ]
@@ -557,8 +568,8 @@ def serialize_about(about, lang='az'):
     medias = [
         {
             'id': media.id,
-            'image': media.image.url if media.image else None,
-            'video': media.video.url if media.video else None,
+            'image': media_url(media.image) if media.image else None,
+            'video': media_url(media.video) if media.video else None,
         }
         for media in about.medias.all()
     ]
@@ -589,7 +600,7 @@ def serialize_partner(partner, lang='az'):
         'linkedn': partner.linkedn,
         'is_active': partner.is_active,
         'created_at': partner.created_at,
-        'logo': media.image.url if media and media.image else None,
+        'logo': media_url(media.image) if media and media.image else None,
     }
 
 
