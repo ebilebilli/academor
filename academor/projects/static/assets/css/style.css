@@ -913,13 +913,12 @@ h1.animated, h2.animated, h3.animated,
     }
 }
 
-.categories-swiper:not(.swiper-initialized) .swiper-slide:not(:first-child),
 .team-swiper:not(.swiper-initialized) .swiper-slide:not(:first-child),
 .testimonial-swiper:not(.swiper-initialized) .swiper-slide:not(:first-child) {
     display: none;
 }
 
-.courses-alt__carousel-shell .categories-swiper:not(.swiper-initialized) {
+.courses-alt__carousel-shell .team-swiper:not(.swiper-initialized) {
     min-height: 23.5rem;
 }
 
@@ -1599,7 +1598,7 @@ h1.animated, h2.animated, h3.animated,
     box-shadow: 0 12px 30px rgba(16, 24, 40, 0.1);
 }
 
-/*** Categories carousel (square cards) ***/
+/*** Square course/team cards (carousel = .team-swiper) ***/
 .category-square-card__media img {
     transition: transform .45s ease;
 }
@@ -1607,64 +1606,6 @@ h1.animated, h2.animated, h3.animated,
 .category-square-card:hover .category-square-card__media img {
     transform: scale(1.08);
 }
-
-.categories-swiper {
-    position: relative;
-    padding-bottom: 5rem;
-}
-
-.categories-swiper .swiper-button-prev,
-.categories-swiper .swiper-button-next {
-    top: auto;
-    bottom: 0;
-    margin-top: 0;
-    width: 44px;
-    height: 44px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: var(--accent);
-    color: #fff;
-    font-size: 1.25rem;
-    line-height: 1;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.categories-swiper .swiper-button-prev::after,
-.categories-swiper .swiper-button-next::after {
-    display: none;
-}
-
-.categories-swiper .swiper-button-prev i,
-.categories-swiper .swiper-button-next i {
-    font-size: 1.25rem;
-}
-
-.categories-swiper .swiper-button-prev {
-    left: calc(50% - 52px);
-    right: auto;
-}
-
-.categories-swiper .swiper-button-next {
-    left: calc(50% + 8px);
-    right: auto;
-}
-
-.categories-swiper .swiper-button-prev:hover,
-.categories-swiper .swiper-button-next:hover {
-    opacity: 0.9;
-    transform: scale(1.05);
-}
-
-.categories-swiper .swiper-pagination {
-    bottom: 3rem;
-}
-
-.categories-swiper .swiper-pagination-bullet-active {
-    background: var(--neon-blue);
-}
-
 
 /*** Team (photos: portrait area; reviews have no avatars) ***/
 .team-item-photo-link {
@@ -1724,7 +1665,7 @@ h1.animated, h2.animated, h3.animated,
 
 .team-swiper {
     position: relative;
-    padding-bottom: 5rem;
+    padding-bottom: 4rem;
 }
 
 .team-swiper .swiper-button-prev,
@@ -1734,7 +1675,8 @@ h1.animated, h2.animated, h3.animated,
     margin-top: 0;
     width: 44px;
     height: 44px;
-    display: inline-flex;
+    /* Swiper bundle loads after this file; !important beats its .swiper-button-* display. */
+    display: none !important;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
@@ -1769,6 +1711,18 @@ h1.animated, h2.animated, h3.animated,
 .team-swiper .swiper-button-next:hover {
     opacity: 0.92;
     transform: scale(1.05);
+}
+
+/* Team carousel: prev/next arrows only on small viewports (mobile). */
+@media (max-width: 767.98px) {
+    .team-swiper .swiper-button-prev,
+    .team-swiper .swiper-button-next {
+        display: inline-flex !important;
+    }
+
+    .team-swiper {
+        padding-bottom: 5rem;
+    }
 }
 
 .team-swiper .swiper-pagination {
@@ -2341,14 +2295,15 @@ h1.animated, h2.animated, h3.animated,
     height: 10px;
     margin: 4px !important;
     border-radius: 50%;
-    background: rgba(0, 49, 61, 0.2);
+    background: rgba(255, 84, 20, 0.35);
+    background: color-mix(in srgb, var(--accent) 38%, transparent);
     opacity: 1;
     transition: transform 0.2s ease, background 0.2s ease;
 }
 
 .testimonial-swiper.testimonial-carousel .swiper-pagination-bullet-active,
 .testimonial-swiper.testimonial-carousel .swiper-pagination-bullet:hover {
-    background: var(--neon-blue);
+    background: var(--accent);
     transform: scale(1.12);
 }
 

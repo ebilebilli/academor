@@ -247,40 +247,24 @@
         });
     }
 
-    var catEl = qs(".categories-swiper");
-    if (catEl) {
-        var catCount = catEl.querySelectorAll(".swiper-slide").length;
-        var catMulti = catCount > 1;
-        new Swiper(".categories-swiper", {
-            slidesPerView: 1,
-            spaceBetween: 16,
-            loop: catCount > 4,
-            rewind: catCount <= 4,
-            autoplay:
-                !prefersReducedMotion && catMulti
-                    ? { delay: 3200, disableOnInteraction: false }
-                    : false,
-            pagination: {
-                el: ".categories-swiper .swiper-pagination",
-                clickable: true,
-            },
-            navigation: {
-                nextEl: ".categories-swiper .swiper-button-next",
-                prevEl: ".categories-swiper .swiper-button-prev",
-            },
-            watchOverflow: true,
-            breakpoints: {
-                576: { slidesPerView: 2, spaceBetween: 20 },
-                768: { slidesPerView: 3, spaceBetween: 20 },
-                992: { slidesPerView: 4, spaceBetween: 20 },
-            },
-        });
-    }
-
     var teamSwiperEl = qs(".team-swiper");
     if (teamSwiperEl && teamSwiperEl.querySelectorAll(".swiper-slide").length) {
         var teamCount = teamSwiperEl.querySelectorAll(".swiper-slide").length;
-        new Swiper(".team-swiper", {
+        function syncTeamCarouselNavButtons() {
+            var mobile =
+                window.matchMedia &&
+                window.matchMedia("(max-width: 767.98px)").matches;
+            qsa(".swiper-button-prev, .swiper-button-next", teamSwiperEl).forEach(
+                function (btn) {
+                    if (mobile) {
+                        btn.style.removeProperty("display");
+                    } else {
+                        btn.style.setProperty("display", "none", "important");
+                    }
+                }
+            );
+        }
+        var teamSwiper = new Swiper(".team-swiper", {
             slidesPerView: 1,
             spaceBetween: 16,
             loop: teamCount > 4,
@@ -299,10 +283,20 @@
             watchOverflow: true,
             breakpoints: {
                 576: { slidesPerView: 2, spaceBetween: 20 },
-                992: { slidesPerView: 3, spaceBetween: 22 },
-                1200: { slidesPerView: 4, spaceBetween: 24 },
+                768: { slidesPerView: 3, spaceBetween: 20 },
+                992: { slidesPerView: 4, spaceBetween: 20 },
             },
         });
+        syncTeamCarouselNavButtons();
+        teamSwiper.on("breakpoint", syncTeamCarouselNavButtons);
+        teamSwiper.on("update", syncTeamCarouselNavButtons);
+        var teamNavMq = window.matchMedia("(max-width: 767.98px)");
+        if (teamNavMq.addEventListener) {
+            teamNavMq.addEventListener("change", syncTeamCarouselNavButtons);
+        } else if (teamNavMq.addListener) {
+            teamNavMq.addListener(syncTeamCarouselNavButtons);
+        }
+        window.requestAnimationFrame(syncTeamCarouselNavButtons);
     }
 
     var testimonialEl = qs(".testimonial-swiper");
