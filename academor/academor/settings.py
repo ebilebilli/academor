@@ -219,10 +219,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Static file dirs: do NOT list projects/static here — the `projects` app already exposes it via
-# AppDirectoriesFinder; duplicating it caused collectstatic "Found another file with the same path" warnings.
-_static_root_extra = BASE_DIR / 'static'
-STATICFILES_DIRS = [str(_static_root_extra)] if _static_root_extra.is_dir() else []
+# Static files directories (only paths that exist — avoids staticfiles.W004 in Docker)
+_candidate_static_dirs = (BASE_DIR / 'static', BASE_DIR / 'projects' / 'static')
+STATICFILES_DIRS = [str(d) for d in _candidate_static_dirs if d.is_dir()]
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
