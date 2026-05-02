@@ -1,12 +1,185 @@
 {% load i18n static academor_lazy_tags %}
 <div class="container-xxl py-5 abroad-section">
     <div class="container">
-        <div class="text-center">
-            {% if use_h2_for_section_titles %}
-            <h2 class="mb-5 fw-bold text-dark h1">{% trans "Study Abroad" %}</h2>
-            {% else %}
-            <h1 class="mb-5 fw-bold text-dark">{% trans "Study Abroad" %}</h1>
-            {% endif %}
+        <div class="abroad-hero mb-5">
+            <div class="abroad-hero__card">
+                <div class="abroad-hero__glow abroad-hero__glow--one" aria-hidden="true"></div>
+                <div class="abroad-hero__glow abroad-hero__glow--two" aria-hidden="true"></div>
+                <div class="row align-items-center g-4 position-relative">
+                    <div class="col-lg-7">
+                        <div class="abroad-hero__content">
+                            <p class="abroad-hero__badge"><span class="abroad-hero__badge-dot" aria-hidden="true"></span>{% trans "Applications, programs & visa guidance" %}</p>
+                            {% if use_h2_for_section_titles %}
+                            <h2 class="abroad-hero__title">{% trans "Study Abroad — Your Global Education Journey" %}</h2>
+                            {% else %}
+                            <h1 class="abroad-hero__title">{% trans "Study Abroad — Your Global Education Journey" %}</h1>
+                            {% endif %}
+                            {% if abroad_intro_text %}
+                            <div class="abroad-hero__rich abroad-hero__lead">{{ abroad_intro_text|safe }}</div>
+                            {% else %}
+                            <p class="abroad-hero__lead">{% blocktrans trimmed %}Discover the world while you reach your education goals! We help students find the right universities, choose programs, prepare applications, and understand visa requirements. Gain international experience by studying in leading countries such as the USA, Canada, the United Kingdom, France, or Ireland, and build a successful future. Start your journey today.{% endblocktrans %}</p>
+                            {% endif %}
+                            {% if not abroad_hero_on_listing_page %}
+                            <div class="abroad-hero__actions">
+                                <a href="{% url 'projects:abroad-page' %}" class="btn btn-primary btn-lg rounded-pill px-4 abroad-hero__btn-primary">{% trans "Explore study abroad programs" %}</a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-lg-5 text-center text-lg-end">
+                        <div class="abroad-hero__visual">
+                            <div class="abroad-hero__orb abroad-hero__orb--stack">
+                                <svg class="abroad-hero__globe-svg abroad-hero__globe-svg--world" width="230" height="230" viewBox="0 0 230 230" xmlns="http://www.w3.org/2000/svg" focusable="false" role="img" aria-label="{% trans 'Globe with Europe map — study abroad destinations' %}">
+                                    <defs>
+                                        <clipPath id="abroadHeroGlobeClip"><circle cx="112" cy="112" r="108"></circle></clipPath>
+                                        <radialGradient id="abroadHeroGlobeBgGrad" cx="38%" cy="32%">
+                                            <stop offset="0%" stop-color="#8cc8f0"></stop>
+                                            <stop offset="45%" stop-color="#4a9fe0"></stop>
+                                            <stop offset="100%" stop-color="#2a78c4"></stop>
+                                        </radialGradient>
+                                        <radialGradient id="abroadHeroGlobeShineGrad" cx="30%" cy="26%">
+                                            <stop offset="0%" stop-color="rgba(255,255,255,0.35)"></stop>
+                                            <stop offset="50%" stop-color="rgba(180,220,255,0.12)"></stop>
+                                            <stop offset="100%" stop-color="rgba(255,255,255,0)"></stop>
+                                        </radialGradient>
+                                        <radialGradient id="abroadHeroGlobeRimGrad" cx="50%" cy="50%">
+                                            <stop offset="72%" stop-color="transparent"></stop>
+                                            <stop offset="100%" stop-color="rgba(60,140,210,0.35)"></stop>
+                                        </radialGradient>
+                                        <radialGradient id="abroadHeroGlobeLogoGlow" cx="50%" cy="50%">
+                                            <stop offset="0%" stop-color="rgba(255,255,255,0.45)"></stop>
+                                            <stop offset="55%" stop-color="rgba(180,225,255,0.2)"></stop>
+                                            <stop offset="100%" stop-color="rgba(255,255,255,0)"></stop>
+                                        </radialGradient>
+                                    </defs>
+                                    <circle cx="112" cy="112" r="108" fill="url(#abroadHeroGlobeBgGrad)"></circle>
+                                    <g clip-path="url(#abroadHeroGlobeClip)">
+                                        <g class="abroad-hero__globe-map-layer" transform="translate(112,112) scale(1.24) translate(-112,-112)">
+                                            <image class="abroad-hero__globe-map"
+                                                href="{% static 'assets/img/abroad-hero-europe-map.png' %}"
+                                                x="29.9"
+                                                y="41.9"
+                                                width="164.2"
+                                                height="140.3"
+                                                preserveAspectRatio="xMidYMid meet"></image>
+                                        </g>
+                                        <g fill="none" stroke="#5a9fd4" stroke-width="0.5" opacity="0.38">
+                                            <ellipse cx="112" cy="112" rx="108" ry="36"></ellipse>
+                                            <ellipse cx="112" cy="112" rx="108" ry="72"></ellipse>
+                                            <ellipse cx="112" cy="112" rx="72" ry="108"></ellipse>
+                                            <ellipse cx="112" cy="112" rx="36" ry="108"></ellipse>
+                                            <line x1="4" y1="76" x2="220" y2="76"></line>
+                                            <line x1="4" y1="148" x2="220" y2="148"></line>
+                                            <line x1="4" y1="42" x2="220" y2="42"></line>
+                                            <line x1="4" y1="182" x2="220" y2="182"></line>
+                                        </g>
+                                        <g fill="none" stroke-linecap="round" pointer-events="none">
+                                            <line x1="4" y1="112" x2="220" y2="112" stroke="rgba(255,255,255,0.62)" stroke-width="1.25" opacity="0.95"></line>
+                                            <line x1="112" y1="4" x2="112" y2="220" stroke="rgba(255,255,255,0.45)" stroke-width="0.95" opacity="0.85"></line>
+                                            <line x1="4" y1="94" x2="220" y2="94" stroke="rgba(255,255,255,0.32)" stroke-width="0.45" stroke-dasharray="4 6" opacity="0.7"></line>
+                                            <line x1="4" y1="130" x2="220" y2="130" stroke="rgba(255,255,255,0.32)" stroke-width="0.45" stroke-dasharray="4 6" opacity="0.7"></line>
+                                            <line x1="196" y1="4" x2="196" y2="220" stroke="rgba(255,255,255,0.28)" stroke-width="0.4" stroke-dasharray="3 5" opacity="0.55"></line>
+                                        </g>
+                                        <g class="abroad-hero__globe-spin" style="transform-origin:112px 112px">
+                                            <circle cx="112" cy="112" r="82" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="0.65" stroke-dasharray="5 7"></circle>
+                                        </g>
+                                        <g class="abroad-hero__globe-spin-rev" style="transform-origin:112px 112px">
+                                            <ellipse cx="112" cy="112" rx="82" ry="28" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="0.65" stroke-dasharray="3 9"></ellipse>
+                                        </g>
+                                        <g class="abroad-hero__globe-network" opacity="0.92">
+                                            <line x1="44.8" y1="87.7" x2="50.9" y2="98.1" stroke="#FF4D00" stroke-width="0.85" stroke-dasharray="13" stroke-dashoffset="13" class="abroad-hero__globe-dash abroad-hero__globe-dash--1"></line>
+                                            <line x1="50.9" y1="98.1" x2="87.6" y2="86" stroke="#FF4D00" stroke-width="0.85" stroke-dasharray="39" stroke-dashoffset="39" class="abroad-hero__globe-dash abroad-hero__globe-dash--2"></line>
+                                            <line x1="87.6" y1="86" x2="97.7" y2="89.4" stroke="#FF6620" stroke-width="0.85" stroke-dasharray="11" stroke-dashoffset="11" class="abroad-hero__globe-dash abroad-hero__globe-dash--3"></line>
+                                            <line x1="97.7" y1="89.4" x2="112" y2="84.2" stroke="#FF6620" stroke-width="0.85" stroke-dasharray="15" stroke-dashoffset="15" class="abroad-hero__globe-dash abroad-hero__globe-dash--4"></line>
+                                            <line x1="97.7" y1="89.4" x2="81.5" y2="108.6" stroke="#FF4D00" stroke-width="0.85" stroke-dasharray="26" stroke-dashoffset="26" class="abroad-hero__globe-dash abroad-hero__globe-dash--5"></line>
+                                            <line x1="81.5" y1="108.6" x2="50.9" y2="126" stroke="#FF8040" stroke-width="0.8" stroke-dasharray="36" stroke-dashoffset="36" class="abroad-hero__globe-dash abroad-hero__globe-dash--6"></line>
+                                            <line x1="81.5" y1="108.6" x2="105.9" y2="132.9" stroke="#FF6620" stroke-width="0.75" stroke-dasharray="35" stroke-dashoffset="35" class="abroad-hero__globe-dash abroad-hero__globe-dash--7"></line>
+                                            <line x1="97.7" y1="89.4" x2="105.9" y2="132.9" stroke="#FF4D00" stroke-width="0.7" stroke-dasharray="45" stroke-dashoffset="45" class="abroad-hero__globe-dash abroad-hero__globe-dash--8" opacity="0.85"></line>
+                                            <line x1="105.9" y1="132.9" x2="120.1" y2="150.3" stroke="#FF8040" stroke-width="0.75" stroke-dasharray="23" stroke-dashoffset="23" class="abroad-hero__globe-dash abroad-hero__globe-dash--9"></line>
+                                            <line x1="95.7" y1="56.4" x2="97.7" y2="89.4" stroke="#FF6620" stroke-width="0.7" stroke-dasharray="34" stroke-dashoffset="34" class="abroad-hero__globe-dash abroad-hero__globe-dash--10"></line>
+                                            <line x1="50.9" y1="126" x2="105.9" y2="132.9" stroke="#FF6620" stroke-width="0.65" stroke-dasharray="56" stroke-dashoffset="56" class="abroad-hero__globe-dash abroad-hero__globe-dash--11" opacity="0.75"></line>
+                                            <line x1="120.1" y1="150.3" x2="136.4" y2="126" stroke="#FF4D00" stroke-width="0.75" stroke-dasharray="30" stroke-dashoffset="30" class="abroad-hero__globe-dash abroad-hero__globe-dash--12"></line>
+                                            <line x1="105.9" y1="132.9" x2="136.4" y2="126" stroke="#FF8040" stroke-width="0.68" stroke-dasharray="32" stroke-dashoffset="32" class="abroad-hero__globe-dash abroad-hero__globe-dash--13" opacity="0.82"></line>
+                                        </g>
+                                        <g class="abroad-hero__globe-hubs">
+                                            <circle cx="50.9" cy="98.1" r="5" fill="#FF4D00" opacity="0.95"></circle>
+                                            <circle cx="50.9" cy="98.1" r="5" fill="none" stroke="#FF4D00" stroke-width="1.4" opacity="0.35" class="abroad-hero__globe-ping abroad-hero__globe-ping--0"></circle>
+                                            <circle cx="50.9" cy="98.1" r="2.2" fill="white" opacity="0.92"></circle>
+                                            <circle cx="44.8" cy="87.7" r="4.2" fill="#FF6620" opacity="0.95"></circle>
+                                            <circle cx="44.8" cy="87.7" r="4.2" fill="none" stroke="#FF6620" stroke-width="1.35" opacity="0.35" class="abroad-hero__globe-ping abroad-hero__globe-ping--1"></circle>
+                                            <circle cx="44.8" cy="87.7" r="1.8" fill="white" opacity="0.92"></circle>
+                                            <circle cx="87.6" cy="86" r="4.2" fill="#FF4D00" opacity="0.95"></circle>
+                                            <circle cx="87.6" cy="86" r="4.2" fill="none" stroke="#FF4D00" stroke-width="1.35" opacity="0.35" class="abroad-hero__globe-ping abroad-hero__globe-ping--2"></circle>
+                                            <circle cx="87.6" cy="86" r="1.8" fill="white" opacity="0.92"></circle>
+                                            <circle cx="97.7" cy="89.4" r="5.2" fill="#FF6620" opacity="0.95"></circle>
+                                            <circle cx="97.7" cy="89.4" r="5.2" fill="none" stroke="#FF6620" stroke-width="1.45" opacity="0.35" class="abroad-hero__globe-ping abroad-hero__globe-ping--3"></circle>
+                                            <circle cx="97.7" cy="89.4" r="2.3" fill="white" opacity="0.92"></circle>
+                                            <circle cx="81.5" cy="108.6" r="4.8" fill="#FF4D00" opacity="0.95"></circle>
+                                            <circle cx="81.5" cy="108.6" r="4.8" fill="none" stroke="#FF4D00" stroke-width="1.4" opacity="0.35" class="abroad-hero__globe-ping abroad-hero__globe-ping--4"></circle>
+                                            <circle cx="81.5" cy="108.6" r="2.1" fill="white" opacity="0.92"></circle>
+                                            <circle cx="105.9" cy="132.9" r="4.8" fill="#FF8040" opacity="0.95"></circle>
+                                            <circle cx="105.9" cy="132.9" r="4.8" fill="none" stroke="#FF8040" stroke-width="1.4" opacity="0.35" class="abroad-hero__globe-ping abroad-hero__globe-ping--5"></circle>
+                                            <circle cx="105.9" cy="132.9" r="2.1" fill="white" opacity="0.92"></circle>
+                                            <circle cx="50.9" cy="126" r="4.5" fill="#FF6620" opacity="0.95"></circle>
+                                            <circle cx="50.9" cy="126" r="4.5" fill="none" stroke="#FF6620" stroke-width="1.35" opacity="0.35" class="abroad-hero__globe-ping abroad-hero__globe-ping--6"></circle>
+                                            <circle cx="50.9" cy="126" r="1.9" fill="white" opacity="0.92"></circle>
+                                            <circle cx="112" cy="84.2" r="4.2" fill="#FF4D00" opacity="0.95"></circle>
+                                            <circle cx="112" cy="84.2" r="4.2" fill="none" stroke="#FF4D00" stroke-width="1.35" opacity="0.35" class="abroad-hero__globe-ping abroad-hero__globe-ping--7"></circle>
+                                            <circle cx="112" cy="84.2" r="1.8" fill="white" opacity="0.92"></circle>
+                                            <circle cx="120.1" cy="150.3" r="4.2" fill="#FF8040" opacity="0.95"></circle>
+                                            <circle cx="120.1" cy="150.3" r="4.2" fill="none" stroke="#FF8040" stroke-width="1.35" opacity="0.35" class="abroad-hero__globe-ping abroad-hero__globe-ping--8"></circle>
+                                            <circle cx="120.1" cy="150.3" r="1.8" fill="white" opacity="0.92"></circle>
+                                            <circle cx="95.7" cy="56.4" r="3.8" fill="#FF6620" opacity="0.95"></circle>
+                                            <circle cx="95.7" cy="56.4" r="3.8" fill="none" stroke="#FF6620" stroke-width="1.25" opacity="0.35" class="abroad-hero__globe-ping abroad-hero__globe-ping--9"></circle>
+                                            <circle cx="95.7" cy="56.4" r="1.6" fill="white" opacity="0.92"></circle>
+                                            <circle cx="136.4" cy="126" r="5" fill="#FF4D00" opacity="0.95"></circle>
+                                            <circle cx="136.4" cy="126" r="5" fill="none" stroke="#FF4D00" stroke-width="1.4" opacity="0.35" class="abroad-hero__globe-ping abroad-hero__globe-ping--10"></circle>
+                                            <circle cx="136.4" cy="126" r="2.2" fill="white" opacity="0.92"></circle>
+                                        </g>
+                                        <g class="abroad-hero__globe-travel-hint">
+                                            <g transform="translate(34.6, 101.6) rotate(-18)">
+                                                <path d="M0 1.5 L12 0 L22 1.5 L12 3 Z" fill="#FF4D00" opacity="0.92"></path>
+                                                <path d="M10 -2 L18 -8 L22 -4 L16 0 Z" fill="#FF6620" opacity="0.88"></path>
+                                                <path d="M10 5 L18 11 L22 7 L16 3 Z" fill="#FF6620" opacity="0.88"></path>
+                                            </g>
+                                            <path d="M 42 118 Q 58 108 76 102" fill="none" stroke="rgba(255,255,255,0.38)" stroke-width="0.55" stroke-dasharray="3 5" stroke-linecap="round"></path>
+                                        </g>
+                                        <circle cx="112" cy="112" r="36" fill="url(#abroadHeroGlobeLogoGlow)" opacity="0.8"></circle>
+                                        <g class="abroad-hero__globe-logo-pulse" style="transform-origin:112px 112px">
+                                            <image class="abroad-hero__globe-center-logo"
+                                                href="{% static 'assets/img/abroad-hero-center-logo.png' %}"
+                                                x="79"
+                                                y="70"
+                                                width="66"
+                                                height="84"
+                                                preserveAspectRatio="xMidYMid meet"></image>
+                                        </g>
+                                    </g>
+                                    <circle cx="112" cy="112" r="108" fill="url(#abroadHeroGlobeShineGrad)"></circle>
+                                    <circle cx="112" cy="112" r="108" fill="url(#abroadHeroGlobeRimGrad)"></circle>
+                                    <circle cx="112" cy="112" r="108" fill="none" stroke="rgba(45,120,190,0.55)" stroke-width="1.5"></circle>
+                                </svg>
+                                {% if abroad_items %}
+                                <div class="abroad-hero__orbit" aria-hidden="true">
+                                    <div class="abroad-hero__orbit-spin">
+                                        {% with n=abroad_items|length %}
+                                        {% for item in abroad_items %}
+                                        <div class="abroad-hero__orbit-item" style="--orbit-a: {% widthratio forloop.counter0 n 360 %}deg; --sat-i: {{ forloop.counter0 }};">
+                                            <span class="abroad-hero__orbit-sat">
+                                                <span class="abroad-hero__orbit-sat-body" aria-hidden="true"></span>
+                                                <span class="abroad-hero__orbit-sat-label">{{ item.name }}</span>
+                                            </span>
+                                        </div>
+                                        {% endfor %}
+                                        {% endwith %}
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         {% if universities %}
         <div class="universities-list universities-carousel mb-5" aria-label="{% trans 'Partner universities' %}">
@@ -15,7 +188,7 @@
                 <div class="universities-list__item">
                     <div class="university-flag-card">
                         {% if uni.flag %}
-                        {% academor_branded_lazy_img uni.flag '' img_class='university-flag-card__img' layout='circle' width='80' height='80' loading='lazy' %}
+                        {% academor_branded_lazy_img uni.flag '' img_class='university-flag-card__img' layout='circle' width='80' height='80' loading='eager' reveal='immediate' decoding='sync' %}
                         {% endif %}
                     </div>
                 </div>
@@ -24,7 +197,7 @@
                 <div class="universities-list__item" aria-hidden="true">
                     <div class="university-flag-card">
                         {% if uni.flag %}
-                        {% academor_branded_lazy_img uni.flag '' img_class='university-flag-card__img' layout='circle' width='80' height='80' loading='lazy' %}
+                        {% academor_branded_lazy_img uni.flag '' img_class='university-flag-card__img' layout='circle' width='80' height='80' loading='eager' reveal='immediate' decoding='sync' %}
                         {% endif %}
                     </div>
                 </div>
@@ -33,7 +206,7 @@
         </div>
         {% endif %}
         {% if abroad_items %}
-        <div class="row g-4">
+        <div class="row g-4" id="abroad-destinations">
             {% for item in abroad_items %}
             <div class="col-lg-4 col-md-6">
                 <a href="{% url 'projects:abroad-detail' slug=item.slug %}" class="abroad-card h-100 text-center d-block text-decoration-none">

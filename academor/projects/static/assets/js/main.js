@@ -1,129 +1,209 @@
-(function ($) {
+(function () {
     "use strict";
 
-    // Spinner: hide on load, but no longer than 1.5s regardless
-    var $sp = $('#spinner');
-    var _spinnerHidden = false;
-    function _hideSpinner() {
-        if (_spinnerHidden) return;
-        _spinnerHidden = true;
-        setTimeout(function () { $sp.addClass('hide'); }, 50);
-    }
-    $(window).on('load', _hideSpinner);
-    setTimeout(_hideSpinner, 1500);
-    
-    
-    // Initiate wowjs (skip on small screens / reduced motion)
-    var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!prefersReducedMotion && window.innerWidth >= 768) {
-        new WOW({
-            mobile: false,
-            offset: 0
-        }).init();
+    function qs(sel, root) {
+        return (root || document).querySelector(sel);
     }
 
+    function qsa(sel, root) {
+        return Array.prototype.slice.call((root || document).querySelectorAll(sel));
+    }
 
-    // Sticky navbar + reading progress
+    var prefersReducedMotion =
+        window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    /* Spinner */
+    var sp = qs("#spinner");
+    var spinnerHidden = false;
+    function hideSpinner() {
+        if (spinnerHidden || !sp) return;
+        spinnerHidden = true;
+        setTimeout(function () {
+            sp.classList.add("hide");
+        }, 50);
+    }
+    window.addEventListener("load", hideSpinner);
+    setTimeout(hideSpinner, 1500);
+
+    /* WOW → IntersectionObserver + Animate.css (.wow.* → add .animated when visible) */
+    function initWowReplacement() {
+        var narrow = window.innerWidth < 768;
+        var disabled = prefersReducedMotion || narrow;
+        qsa(".wow").forEach(function (el) {
+            var delay = el.getAttribute("data-wow-delay") || "0s";
+            el.style.animationDelay = delay;
+            if (disabled) {
+                el.style.opacity = "";
+                el.classList.add("animated");
+                return;
+            }
+            el.style.opacity = "0";
+            var obs = new IntersectionObserver(
+                function (entries, o) {
+                    entries.forEach(function (entry) {
+                        if (!entry.isIntersecting) return;
+                        el.style.opacity = "";
+                        el.classList.add("animated");
+                        o.disconnect();
+                    });
+                },
+                { threshold: 0.15 }
+            );
+            obs.observe(el);
+        });
+    }
+    initWowReplacement();
+
+    /* Sticky navbar + reading progress */
     var stickyScrolled = null;
-    var $scrollProgressBar = $('#scrollProgressBar');
+    var scrollProgressBar = qs("#scrollProgressBar");
     function updateStickyNavbar() {
         var y = window.pageYOffset || document.documentElement.scrollTop || 0;
         var isScrolled = y > 8;
-        if (stickyScrolled !== isScrolled) {
-            $('.navbar-light.sticky-top').toggleClass('sticky-navbar--scrolled', isScrolled);
-            stickyScrolled = isScrolled;
-        }
+        if (stickyScrolled === isScrolled) return;
+        qsa(".navbar-light.sticky-top").forEach(function (nav) {
+            nav.classList.toggle("sticky-navbar--scrolled", isScrolled);
+        });
+        stickyScrolled = isScrolled;
     }
 
     function updateScrollProgress() {
-        if (!$scrollProgressBar.length) return;
-
-        var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        if (!scrollProgressBar) return;
+        var scrollTop =
+            window.pageYOffset ||
+            document.documentElement.scrollTop ||
+            document.body.scrollTop ||
+            0;
         var doc = document.documentElement;
         var scrollable = Math.max(doc.scrollHeight - window.innerHeight, 0);
-        var progress = scrollable > 0 ? Math.min(Math.max(scrollTop / scrollable, 0), 1) : 0;
-
-        $scrollProgressBar.css('transform', 'scaleX(' + progress + ')');
+        var progress =
+            scrollable > 0 ? Math.min(Math.max(scrollTop / scrollable, 0), 1) : 0;
+        scrollProgressBar.style.transform = "scaleX(" + progress + ")";
     }
-    
-    
-    // Dropdown on mouse hover (bind once per mode)
-    const $dropdown = $(".dropdown");
-    const $dropdownToggle = $(".dropdown-toggle");
-    const $dropdownMenu = $(".dropdown-menu");
-    const showClass = "show";
+
+    /* Dropdown hover (lg+) */
+    var hoverBindings = typeof WeakMap !== "undefined" ? new WeakMap() : null;
     var menuHoverEnabled = null;
+
+    function setDropdownOpen(dropdown, open) {
+        dropdown.classList.toggle("show", open);
+        var toggle = dropdown.querySelector(".dropdown-toggle");
+        var menu = dropdown.querySelector(".dropdown-menu");
+        if (toggle) toggle.setAttribute("aria-expanded", open ? "true" : "false");
+        if (menu) menu.classList.toggle("show", open);
+    }
+
     function syncMenuHoverMode() {
         var shouldEnable = window.matchMedia("(min-width: 992px)").matches;
         if (menuHoverEnabled === shouldEnable) return;
-        $dropdown.off(".menuHover");
+
+        var dropdowns = qsa(".dropdown");
+        dropdowns.forEach(function (dropdown) {
+            if (hoverBindings) {
+                var prev = hoverBindings.get(dropdown);
+                if (prev) {
+                    dropdown.removeEventListener("mouseenter", prev.enter);
+                    dropdown.removeEventListener("mouseleave", prev.leave);
+                    hoverBindings.delete(dropdown);
+                }
+            }
+            if (!shouldEnable) {
+                setDropdownOpen(dropdown, false);
+            }
+        });
+
         if (shouldEnable) {
-            $dropdown.on("mouseenter.menuHover", function () {
-                const $this = $(this);
-                $this.addClass(showClass);
-                $this.find($dropdownToggle).attr("aria-expanded", "true");
-                $this.find($dropdownMenu).addClass(showClass);
-            });
-            $dropdown.on("mouseleave.menuHover", function () {
-                const $this = $(this);
-                $this.removeClass(showClass);
-                $this.find($dropdownToggle).attr("aria-expanded", "false");
-                $this.find($dropdownMenu).removeClass(showClass);
+            dropdowns.forEach(function (dropdown) {
+                function enter() {
+                    setDropdownOpen(dropdown, true);
+                }
+                function leave() {
+                    setDropdownOpen(dropdown, false);
+                }
+                dropdown.addEventListener("mouseenter", enter);
+                dropdown.addEventListener("mouseleave", leave);
+                if (hoverBindings) {
+                    hoverBindings.set(dropdown, { enter: enter, leave: leave });
+                }
             });
         }
+
         menuHoverEnabled = shouldEnable;
     }
+
     var resizeTicking = false;
-    $(window).on("load.menuHover resize.menuHover", function () {
-        if (resizeTicking) return;
-        resizeTicking = true;
-        window.requestAnimationFrame(function () {
-            syncMenuHoverMode();
-            resizeTicking = false;
-        });
+    window.addEventListener("load", function () {
+        syncMenuHoverMode();
     });
+    window.addEventListener(
+        "resize",
+        function () {
+            if (resizeTicking) return;
+            resizeTicking = true;
+            window.requestAnimationFrame(function () {
+                syncMenuHoverMode();
+                resizeTicking = false;
+            });
+        },
+        { passive: true }
+    );
     syncMenuHoverMode();
-    
-    
-    // Back to top — class toggles display:flex (see style.css); robust scrollTop for document/body
-    var $backToTop = $('.back-to-top');
+
+    /* Back to top */
+    var backToTop = qs(".back-to-top");
     function getScrollTop() {
-        return window.pageYOffset
-            || document.documentElement.scrollTop
-            || document.body.scrollTop
-            || 0;
+        return (
+            window.pageYOffset ||
+            document.documentElement.scrollTop ||
+            document.body.scrollTop ||
+            0
+        );
     }
     var backToTopVisible = null;
     function updateBackToTop() {
+        if (!backToTop) return;
         var nextVisible = getScrollTop() > 300;
         if (backToTopVisible === nextVisible) return;
         if (nextVisible) {
-            $backToTop.addClass('back-to-top--visible').attr({ tabindex: '0', 'aria-hidden': 'false' });
+            backToTop.classList.add("back-to-top--visible");
+            backToTop.setAttribute("tabindex", "0");
+            backToTop.setAttribute("aria-hidden", "false");
         } else {
-            $backToTop.removeClass('back-to-top--visible').attr({ tabindex: '-1', 'aria-hidden': 'true' });
+            backToTop.classList.remove("back-to-top--visible");
+            backToTop.setAttribute("tabindex", "-1");
+            backToTop.setAttribute("aria-hidden", "true");
         }
         backToTopVisible = nextVisible;
     }
+
     var scrollTicking = false;
-    window.addEventListener('scroll', function () {
-        if (!scrollTicking) {
-            scrollTicking = true;
+    window.addEventListener(
+        "scroll",
+        function () {
+            if (!scrollTicking) {
+                scrollTicking = true;
+                window.requestAnimationFrame(function () {
+                    updateStickyNavbar();
+                    updateBackToTop();
+                    updateScrollProgress();
+                    scrollTicking = false;
+                });
+            }
+        },
+        { passive: true }
+    );
+    window.addEventListener(
+        "resize",
+        function () {
             window.requestAnimationFrame(function () {
                 updateStickyNavbar();
                 updateBackToTop();
                 updateScrollProgress();
-                scrollTicking = false;
             });
-        }
-    }, { passive: true });
-    window.addEventListener('resize', function () {
-        window.requestAnimationFrame(function () {
-            updateStickyNavbar();
-            updateBackToTop();
-            updateScrollProgress();
-        });
-    }, { passive: true });
-    $(window).on('load.backToTop', function () {
+        },
+        { passive: true }
+    );
+    window.addEventListener("load", function () {
         updateStickyNavbar();
         updateBackToTop();
         updateScrollProgress();
@@ -132,224 +212,197 @@
     updateBackToTop();
     updateScrollProgress();
 
-    $backToTop.on('click', function (e) {
-        e.preventDefault();
-        if ('scrollBehavior' in document.documentElement.style) {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
-            $('html, body').stop(true).animate({ scrollTop: 0 }, 600, 'swing');
-        }
-    });
-
-
-    // Header carousel (index only — other pages have no .header-carousel)
-    var $headerCarousel = $(".header-carousel");
-    if ($headerCarousel.length) {
-        var headerSlideCount = $headerCarousel.find(".owl-carousel-item").length;
-        var headerMulti = headerSlideCount > 1;
-        $headerCarousel.owlCarousel({
-            autoplay: !prefersReducedMotion && headerMulti,
-            autoplayTimeout: 5000,
-            autoplayHoverPause: true,
-            smartSpeed: 850,
-            items: 1,
-            dots: false,
-            loop: headerMulti,
-            nav: headerMulti,
-            lazyLoad: false,
-            mouseDrag: headerMulti,
-            touchDrag: headerMulti,
-            navText: [
-                '<i class="bi bi-chevron-left"></i>',
-                '<i class="bi bi-chevron-right"></i>'
-            ]
-        });
-    }
-
-
-    // Course categories carousel (index)
-    var $catCarousel = $(".categories-carousel");
-    if ($catCarousel.length) {
-        var catCount = $catCarousel.find(".item").length;
-        $catCarousel.owlCarousel({
-            autoplay: !prefersReducedMotion && catCount > 1,
-            autoplayTimeout: 3200,
-            autoplayHoverPause: true,
-            smartSpeed: 420,
-            margin: 20,
-            dots: true,
-            nav: true,
-            lazyLoad: false,
-            mouseDrag: catCount > 1,
-            touchDrag: catCount > 1,
-            slideBy: 1,
-            navText: [
-                '<i class="bi bi-chevron-left"></i>',
-                '<i class="bi bi-chevron-right"></i>'
-            ],
-            loop: catCount > 1,
-            responsive: {
-                0: {
-                    items: 1,
-                    stagePadding: 24
-                },
-                576: {
-                    items: 2,
-                    stagePadding: 16
-                },
-                768: {
-                    items: 3,
-                    stagePadding: 12
-                },
-                992: {
-                    items: 4,
-                    stagePadding: 0
-                }
+    if (backToTop) {
+        backToTop.addEventListener("click", function (e) {
+            e.preventDefault();
+            if ("scrollBehavior" in document.documentElement.style) {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            } else {
+                window.scrollTo(0, 0);
             }
         });
     }
 
-    // Team members carousel (index + team page)
-    var $teamCarousel = $(".team-carousel");
-    if ($teamCarousel.length && $teamCarousel.find(".item").length) {
-        var teamCount = $teamCarousel.find(".item").length;
-        $teamCarousel.owlCarousel({
-            autoplay: !prefersReducedMotion,
-            autoplayTimeout: 4500,
-            autoplayHoverPause: true,
-            smartSpeed: 650,
-            margin: 24,
-            dots: true,
-            nav: true,
-            lazyLoad: false,
-            mouseDrag: teamCount > 1,
-            touchDrag: teamCount > 1,
-            navText: [
-                '<i class="bi bi-chevron-left"></i>',
-                '<i class="bi bi-chevron-right"></i>'
-            ],
+    /* Swiper carousels */
+    if (typeof Swiper !== "undefined") {
+    var heroEl = qs(".header-swiper");
+    if (heroEl) {
+        var headerSlides = heroEl.querySelectorAll(".swiper-slide");
+        var headerMulti = headerSlides.length > 1;
+        new Swiper(".header-swiper", {
+            loop: headerMulti,
+            autoplay:
+                !prefersReducedMotion && headerMulti
+                    ? { delay: 5000, disableOnInteraction: false }
+                    : false,
+            pagination: {
+                el: ".header-swiper .swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".header-swiper .swiper-button-next",
+                prevEl: ".header-swiper .swiper-button-prev",
+            },
+            watchOverflow: true,
+        });
+    }
+
+    var catEl = qs(".categories-swiper");
+    if (catEl) {
+        var catCount = catEl.querySelectorAll(".swiper-slide").length;
+        var catMulti = catCount > 1;
+        new Swiper(".categories-swiper", {
+            slidesPerView: 1,
+            spaceBetween: 16,
+            loop: catCount > 4,
+            rewind: catCount <= 4,
+            autoplay:
+                !prefersReducedMotion && catMulti
+                    ? { delay: 3200, disableOnInteraction: false }
+                    : false,
+            pagination: {
+                el: ".categories-swiper .swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".categories-swiper .swiper-button-next",
+                prevEl: ".categories-swiper .swiper-button-prev",
+            },
+            watchOverflow: true,
+            breakpoints: {
+                576: { slidesPerView: 2, spaceBetween: 20 },
+                768: { slidesPerView: 3, spaceBetween: 20 },
+                992: { slidesPerView: 4, spaceBetween: 20 },
+            },
+        });
+    }
+
+    var teamSwiperEl = qs(".team-swiper");
+    if (teamSwiperEl && teamSwiperEl.querySelectorAll(".swiper-slide").length) {
+        var teamCount = teamSwiperEl.querySelectorAll(".swiper-slide").length;
+        new Swiper(".team-swiper", {
+            slidesPerView: 1,
+            spaceBetween: 16,
             loop: teamCount > 4,
             rewind: teamCount <= 4,
-            responsive: {
-                0: {
-                    items: 1,
-                    stagePadding: 28,
-                    margin: 16
-                },
-                576: {
-                    items: 2,
-                    stagePadding: 16,
-                    margin: 20
-                },
-                992: {
-                    items: 3,
-                    stagePadding: 8,
-                    margin: 22
-                },
-                1200: {
-                    items: 4,
-                    stagePadding: 0,
-                    margin: 24
-                }
-            }
+            autoplay: !prefersReducedMotion
+                ? { delay: 4500, disableOnInteraction: false }
+                : false,
+            pagination: {
+                el: ".team-swiper .swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".team-swiper .swiper-button-next",
+                prevEl: ".team-swiper .swiper-button-prev",
+            },
+            watchOverflow: true,
+            breakpoints: {
+                576: { slidesPerView: 2, spaceBetween: 20 },
+                992: { slidesPerView: 3, spaceBetween: 22 },
+                1200: { slidesPerView: 4, spaceBetween: 24 },
+            },
         });
     }
 
-
-    // Reviews carousel (pages that include reviews section only)
-    var $testimonialCarousel = $(".testimonial-carousel");
-    if ($testimonialCarousel.length) {
-        var testimonialCount = $testimonialCarousel.find(".testimonial-item").length;
-        $testimonialCarousel.owlCarousel({
-            autoplay: !prefersReducedMotion && testimonialCount > 1,
-            autoplayTimeout: 4200,
-            autoplayHoverPause: true,
-            smartSpeed: 700,
-            center: true,
-            margin: 24,
-            dots: true,
-            nav: testimonialCount > 1,
-            navText: [
-                '<i class="bi bi-chevron-left" aria-hidden="true"></i>',
-                '<i class="bi bi-chevron-right" aria-hidden="true"></i>'
-            ],
+    var testimonialEl = qs(".testimonial-swiper");
+    if (testimonialEl) {
+        var testimonialCount =
+            testimonialEl.querySelectorAll(".swiper-slide").length;
+        var tMulti = testimonialCount > 1;
+        new Swiper(".testimonial-swiper", {
+            centeredSlides: true,
+            spaceBetween: 24,
             loop: testimonialCount > 2,
             rewind: testimonialCount <= 2,
-            lazyLoad: false,
-            mouseDrag: testimonialCount > 1,
-            touchDrag: testimonialCount > 1,
-            responsive: {
-                0: {
-                    items: 1
-                },
-                768: {
-                    items: 2
-                },
-                992: {
-                    items: 3
-                }
-            }
+            autoplay:
+                !prefersReducedMotion && tMulti
+                    ? { delay: 4200, disableOnInteraction: false }
+                    : false,
+            pagination: {
+                el: ".testimonial-swiper .swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".testimonial-swiper .swiper-button-next",
+                prevEl: ".testimonial-swiper .swiper-button-prev",
+            },
+            watchOverflow: true,
+            breakpoints: {
+                0: { slidesPerView: 1 },
+                768: { slidesPerView: 2 },
+                992: { slidesPerView: 3 },
+            },
         });
     }
+    }
 
-    // LCP, CLS, FCP via PerformanceObserver — console only (dev mode only)
-    if (typeof __DEV__ !== 'undefined' && __DEV__) (function initPerfObservers() {
-        if (!('PerformanceObserver' in window)) {
-            console.warn('[Perf] PerformanceObserver not supported');
-            return;
-        }
-
-        var clsValue = 0;
-        var lcpEntry = null;
-        var fcpMs = null;
-
-        function logPerfSnapshot(reason) {
-            var lcpStr = lcpEntry ? Math.round(lcpEntry.startTime) + ' ms' : 'n/a';
-            var fcpStr = fcpMs != null ? Math.round(fcpMs) + ' ms' : 'n/a';
-            console.log('[Perf] snapshot (' + reason + ') — FCP:', fcpStr, '| LCP:', lcpStr, '| CLS:', Number(clsValue.toFixed(4)));
-        }
-
-        try {
-            var fcpObserver = new PerformanceObserver(function (list) {
-                var entries = list.getEntries();
-                for (var i = 0; i < entries.length; i++) {
-                    var entry = entries[i];
-                    if (entry.name === 'first-contentful-paint') {
-                        fcpMs = entry.startTime;
-                        console.log('[Perf] FCP:', Math.round(fcpMs), 'ms');
-                    }
-                }
-            });
-            fcpObserver.observe({ type: 'paint', buffered: true });
-        } catch (e) {}
-
-        try {
-            var clsObserver = new PerformanceObserver(function (list) {
-                var entries = list.getEntries();
-                for (var i = 0; i < entries.length; i++) {
-                    var entry = entries[i];
-                    if (!entry.hadRecentInput) {
-                        clsValue += entry.value;
-                    }
-                }
-            });
-            clsObserver.observe({ type: 'layout-shift', buffered: true });
-        } catch (e) {}
-
-        try {
-            var lcpObserver = new PerformanceObserver(function (list) {
-                var entries = list.getEntries();
-                lcpEntry = entries[entries.length - 1] || lcpEntry;
-            });
-            lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true });
-        } catch (e) {}
-
-        document.addEventListener('visibilitychange', function () {
-            if (document.visibilityState === 'hidden') {
-                logPerfSnapshot('tab hidden / navigating away');
+    /* LCP, CLS, FCP via PerformanceObserver — dev only */
+    if (typeof __DEV__ !== "undefined" && __DEV__)
+        (function initPerfObservers() {
+            if (!("PerformanceObserver" in window)) {
+                console.warn("[Perf] PerformanceObserver not supported");
+                return;
             }
-        });
-    })();
-    
-})(jQuery);
 
+            var clsValue = 0;
+            var lcpEntry = null;
+            var fcpMs = null;
+
+            function logPerfSnapshot(reason) {
+                var lcpStr = lcpEntry ? Math.round(lcpEntry.startTime) + " ms" : "n/a";
+                var fcpStr = fcpMs != null ? Math.round(fcpMs) + " ms" : "n/a";
+                console.log(
+                    "[Perf] snapshot (" +
+                        reason +
+                        ") — FCP:",
+                    fcpStr,
+                    "| LCP:",
+                    lcpStr,
+                    "| CLS:",
+                    Number(clsValue.toFixed(4))
+                );
+            }
+
+            try {
+                var fcpObserver = new PerformanceObserver(function (list) {
+                    var entries = list.getEntries();
+                    for (var i = 0; i < entries.length; i++) {
+                        var entry = entries[i];
+                        if (entry.name === "first-contentful-paint") {
+                            fcpMs = entry.startTime;
+                            console.log("[Perf] FCP:", Math.round(fcpMs), "ms");
+                        }
+                    }
+                });
+                fcpObserver.observe({ type: "paint", buffered: true });
+            } catch (e) {}
+
+            try {
+                var clsObserver = new PerformanceObserver(function (list) {
+                    var entries = list.getEntries();
+                    for (var i = 0; i < entries.length; i++) {
+                        var entry = entries[i];
+                        if (!entry.hadRecentInput) {
+                            clsValue += entry.value;
+                        }
+                    }
+                });
+                clsObserver.observe({ type: "layout-shift", buffered: true });
+            } catch (e) {}
+
+            try {
+                var lcpObserver = new PerformanceObserver(function (list) {
+                    var entries = list.getEntries();
+                    lcpEntry = entries[entries.length - 1] || lcpEntry;
+                });
+                lcpObserver.observe({ type: "largest-contentful-paint", buffered: true });
+            } catch (e) {}
+
+            document.addEventListener("visibilitychange", function () {
+                if (document.visibilityState === "hidden") {
+                    logPerfSnapshot("tab hidden / navigating away");
+                }
+            });
+        })();
+})();

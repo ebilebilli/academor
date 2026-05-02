@@ -1,14 +1,19 @@
 {% load i18n %}
 {% if team %}
 <div class="position-relative team-carousel-wrap px-lg-1">
-    <div class="owl-carousel owl-theme team-carousel">
-        {% for member in team %}
-        <div class="item">
-            <div class="team-carousel-item-inner h-100">
-                {% include "includes/team_member_card.html" %}
+    <div class="swiper team-swiper team-carousel">
+        <div class="swiper-wrapper">
+            {% for member in team %}
+            <div class="swiper-slide">
+                <div class="team-carousel-item-inner h-100">
+                    {% include "includes/team_member_card.html" %}
+                </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev" aria-label="{% trans 'Previous' %}"><i class="bi bi-chevron-left" aria-hidden="true"></i></div>
+        <div class="swiper-button-next" aria-label="{% trans 'Next' %}"><i class="bi bi-chevron-right" aria-hidden="true"></i></div>
     </div>
 </div>
 {% else %}

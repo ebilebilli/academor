@@ -26,8 +26,10 @@
                 class="testimonial-carousel-shell position-relative wow fadeInUp {% if reviews_section_variant == 'home' %}testimonial-carousel-shell--home{% endif %}"
                 data-wow-delay="0.1s"
             >
-                <div class="owl-carousel testimonial-carousel position-relative">
+                <div class="swiper testimonial-swiper testimonial-carousel position-relative">
+                    <div class="swiper-wrapper">
                     {% for review in reviews %}
+                    <div class="swiper-slide">
                     <div class="testimonial-item h-100">
                         <article class="review-card h-100 {% if reviews_section_variant == 'home' %}review-card--home{% endif %}">
                             <header class="review-card__header text-center review-card__header--stars">
@@ -54,7 +56,12 @@
                             </div>
                         </article>
                     </div>
+                    </div>
                     {% endfor %}
+                    </div>
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-prev" aria-label="{% trans 'Previous' %}"><i class="bi bi-chevron-left" aria-hidden="true"></i></div>
+                    <div class="swiper-button-next" aria-label="{% trans 'Next' %}"><i class="bi bi-chevron-right" aria-hidden="true"></i></div>
                 </div>
             </div>
             {% endif %}

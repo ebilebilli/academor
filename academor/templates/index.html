@@ -15,10 +15,11 @@
     <!-- Carousel Start -->
     <div class="header-carousel-section mb-5">
         <div class="container-xxl px-3 px-md-4 px-lg-5">
-        <div class="owl-carousel header-carousel position-relative">
+        <div class="swiper header-swiper header-carousel position-relative">
+            <div class="swiper-wrapper">
             {% if hero_slides %}
             {% for slide in hero_slides %}
-            <div class="owl-carousel-item position-relative">
+            <div class="swiper-slide position-relative">
                 {% if forloop.first %}
                 <img
                     class="img-fluid w-100"
@@ -48,7 +49,7 @@
             {% endfor %}
             {% elif hero_background_images %}
             {% for img_url in hero_background_images %}
-            <div class="owl-carousel-item position-relative">
+            <div class="swiper-slide position-relative">
                 {% if forloop.first %}
                 <img
                     class="img-fluid w-100"
@@ -73,7 +74,7 @@
             </div>
             {% endfor %}
             {% elif background_image %}
-            <div class="owl-carousel-item position-relative">
+            <div class="swiper-slide position-relative">
                 <img class="img-fluid w-100" src="{{ background_image }}" alt="" width="1920" height="1080" loading="eager" decoding="async" fetchpriority="high">
                 <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center carousel-hero-overlay">
                     <div class="container">
@@ -86,7 +87,7 @@
                 </div>
             </div>
             {% else %}
-            <div class="owl-carousel-item position-relative">
+            <div class="swiper-slide position-relative">
                 <img class="img-fluid w-100" src="{% static 'assets/img/new_baner.png' %}" alt="" width="1920" height="1080" loading="eager" decoding="async" fetchpriority="high">
                 <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center carousel-hero-overlay">
                     <div class="container">
@@ -99,7 +100,7 @@
                 </div>
             </div>
             {% static 'assets/img/banner-landscape-1536x1024.png' as carousel2_src %}
-            <div class="owl-carousel-item position-relative">
+            <div class="swiper-slide position-relative">
                 {% academor_branded_lazy_img carousel2_src '' layout='cover' width=1920 height=1080 loading='lazy' %}
                 <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center carousel-hero-overlay">
                     <div class="container">
@@ -116,6 +117,10 @@
                 </div>
             </div>
             {% endif %}
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-prev" aria-label="{% trans 'Previous' %}"><i class="bi bi-chevron-left" aria-hidden="true"></i></div>
+            <div class="swiper-button-next" aria-label="{% trans 'Next' %}"><i class="bi bi-chevron-right" aria-hidden="true"></i></div>
         </div>
         </div>
     </div>
@@ -144,9 +149,10 @@
             </div>
             {% if team %}
             <div class="courses-alt__carousel-shell wow fadeInUp" data-wow-delay="0.2s">
-            <div class="categories-carousel owl-carousel owl-theme position-relative">
+            <div class="swiper categories-swiper categories-carousel position-relative">
+                <div class="swiper-wrapper">
                 {% for member in team %}
-                <div class="item">
+                <div class="swiper-slide">
                     <article class="course-alt-card h-100">
                         <a href="{% url 'projects:team-detail' member.slug %}" class="category-square-card course-alt-card__link d-flex flex-column text-decoration-none h-100">
                             <div class="ratio ratio-1x1 overflow-hidden course-alt-card__media">
@@ -171,6 +177,10 @@
                     </article>
                 </div>
                 {% endfor %}
+                </div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-prev" aria-label="{% trans 'Previous' %}"><i class="bi bi-chevron-left" aria-hidden="true"></i></div>
+                <div class="swiper-button-next" aria-label="{% trans 'Next' %}"><i class="bi bi-chevron-right" aria-hidden="true"></i></div>
             </div>
             </div>
             {% else %}

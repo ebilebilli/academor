@@ -1,5 +1,5 @@
 {% load static %}
-<div class="academor-branded-lazy{% if layout %} academor-branded-lazy--{{ layout }}{% endif %}" style="--academor-brand-ph: url('{% static 'assets/img/new_logo.png' %}');" data-academor-lazy-brand>
+<div class="academor-branded-lazy{% if layout %} academor-branded-lazy--{{ layout }}{% endif %}{% if reveal == 'immediate' %} academor-branded-lazy--reveal-immediate{% endif %}" style="--academor-brand-ph: url('{% static 'assets/img/new_logo.png' %}');" data-academor-lazy-brand>
     <img
         src="{{ src }}"
         alt="{{ alt }}"
@@ -7,7 +7,7 @@
         {% if height %}height="{{ height }}"{% endif %}
         class="academor-branded-lazy__img{% if img_class %} {{ img_class }}{% endif %}"
         loading="{{ loading }}"
-        decoding="async"
+        decoding="{{ decoding }}"
         {% if fetchpriority and fetchpriority != 'auto' %}fetchpriority="{{ fetchpriority }}"{% endif %}
     >
 </div>

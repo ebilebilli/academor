@@ -11,6 +11,10 @@ echo "PostgreSQL is ready!"
 echo "Running migrations..."
 python academor/manage.py migrate --noinput
 
+# Compressed JS/CSS bundles (django-compressor offline manifest + CACHE/*)
+echo "Compressing static assets..."
+python academor/manage.py compress --force
+
 # Collect static files
 echo "Collecting static files..."
 python academor/manage.py collectstatic --noinput

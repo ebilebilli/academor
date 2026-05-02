@@ -741,6 +741,7 @@ def get_home_page_data(request, lang):
         'service_highlights': serialized_service_highlights,
         'abroad_items': get_serialized_abroad_items(lang=lang, is_active=True),
         'universities': get_serialized_universities(is_active=True),
+        'abroad_intro_text': get_study_abroad_section(lang=lang),
         'team': [serialize_team_member(m) for m in get_team_members()],
         'reviews': [serialize_review(r) for r in get_reviews()],
     }
@@ -774,6 +775,7 @@ def get_abroad_page_data(request, lang):
         'universities': get_serialized_universities(is_active=True),
         'background_image': get_background_image('abroad') or get_background_image('about'),
         'abroad_intro_text': get_study_abroad_section(lang=lang),
+        'abroad_hero_on_listing_page': True,
     }
 
 

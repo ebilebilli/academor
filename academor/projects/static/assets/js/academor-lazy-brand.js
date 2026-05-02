@@ -25,7 +25,7 @@
     function sweep(root) {
         var scope = root || document;
         scope.querySelectorAll('img.academor-branded-lazy__img').forEach(function (img) {
-            if (img.complete && img.naturalWidth) {
+            if (img.complete) {
                 markLoaded(img);
             } else {
                 /* IMG "load" does not bubble; document capture listener never sees it */
@@ -43,6 +43,11 @@
                     },
                     { once: true }
                 );
+                if (typeof img.decode === 'function') {
+                    img.decode().then(function () {
+                        markLoaded(img);
+                    }).catch(function () {});
+                }
             }
         });
     }
@@ -54,4 +59,9 @@
     } else {
         sweep();
     }
+
+    /* Late completions (e.g. network) + lazy quirks: re-check when window fully loaded */
+    window.addEventListener('load', function () {
+        sweep();
+    });
 })();

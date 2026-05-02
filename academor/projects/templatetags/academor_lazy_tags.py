@@ -16,6 +16,8 @@ def academor_branded_lazy_img(
     height=None,
     loading='lazy',
     fetchpriority='auto',
+    reveal='fade',
+    decoding='async',
 ):
     """
     Wrap an image with a site-branded placeholder until load (same asset as header logo).
@@ -24,10 +26,20 @@ def academor_branded_lazy_img(
       ''        — block, full width of parent
       'cover'   — fill absolute hero / carousel / ratio box (object-fit cover on img)
       'circle'  — fill circular frame (abroad cards, university flags)
+
+    reveal:
+      'fade'      — hide img until loaded (default)
+      'immediate' — show img while loading (marquee logos; avoids stuck invisible frames)
     """
     allowed = ('', 'cover', 'circle')
     if layout not in allowed:
         layout = ''
+    reveal = (reveal or 'fade').lower()
+    if reveal not in ('fade', 'immediate'):
+        reveal = 'fade'
+    decoding = decoding or 'async'
+    if decoding not in ('async', 'auto', 'sync'):
+        decoding = 'async'
     return {
         'src': src,
         'alt': alt or '',
@@ -37,4 +49,6 @@ def academor_branded_lazy_img(
         'height': height,
         'loading': loading,
         'fetchpriority': fetchpriority,
+        'reveal': reveal,
+        'decoding': decoding,
     }

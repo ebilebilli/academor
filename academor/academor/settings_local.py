@@ -72,7 +72,8 @@ INSTALLED_APPS = [
     # Third Packages
     'django_cleanup.apps.CleanupConfig',
     'ckeditor',
-    
+    'compressor',
+
     # Apps
     'projects'
 ]
@@ -215,6 +216,14 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # Static files directories (only paths that exist — avoids staticfiles.W004 in Docker)
 _candidate_static_dirs = (BASE_DIR / 'static', BASE_DIR / 'projects' / 'static')
 STATICFILES_DIRS = [str(d) for d in _candidate_static_dirs if d.is_dir()]
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+)
+
+COMPRESS_OFFLINE = not DEBUG
 
 STORAGES = {
     'default': {

@@ -21,14 +21,12 @@ RUN apt-get update && apt-get install -y \
     gettext \
     && rm -rf /var/lib/apt/lists/*
 
-# Install uv for faster package management
-RUN pip install uv
-
-# Copy dependency files
+# Copy dependency files (uv.lock is not valid input for `uv pip sync`; export first).
 COPY pyproject.toml uv.lock ./
 
-# Install Python dependencies using uv
-RUN uv pip sync uv.lock --system || uv pip install --system -e .
+RUN pip install --upgrade uv && \
+    uv export --frozen --format requirements-txt --no-hashes -o /tmp/requirements.txt && \
+    uv pip sync /tmp/requirements.txt --system
 
 # Copy project
 COPY . .
