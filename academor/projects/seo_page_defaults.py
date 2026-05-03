@@ -298,6 +298,21 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
 }
 
 
+GENERIC_ROUTE_DESCRIPTION_FALLBACK = {
+    "en": (
+        "Academor — English lessons, exams (IELTS, GMAT, GRE, SAT, YÖS, ALES) and study-abroad "
+        "support from Baku, Azerbaijan."
+    ),
+    "az": (
+        "Academor Bakıdan ingilis dili, imtahan hazırlığı (IELTS, GMAT və s.) və xaricdə təhsil dəstəyi təklif edir."
+    ),
+    "ru": (
+        "Academor — занятия английским, подготовка к экзаменам (IELTS, GMAT и др.) и поддержка учёбы "
+        "за рубежом в Баку, Азербайджан."
+    ),
+}
+
+
 def get_page_seo_defaults(url_name: str, lang: str) -> dict[str, str]:
     if not url_name or url_name == "home-page":
         return {}
@@ -307,4 +322,10 @@ def get_page_seo_defaults(url_name: str, lang: str) -> dict[str, str]:
     lang_key = lang if lang in SEO_PAGE_DEFAULTS else site_lang
     table = SEO_PAGE_DEFAULTS.get(lang_key) or SEO_PAGE_DEFAULTS.get(site_lang) or SEO_PAGE_DEFAULTS["az"]
     row = table.get(url_name)
-    return dict(row) if row else {}
+    out: dict[str, str] = dict(row) if row else {}
+    if not out.get("description"):
+        out["description"] = GENERIC_ROUTE_DESCRIPTION_FALLBACK.get(
+            lang_key,
+            GENERIC_ROUTE_DESCRIPTION_FALLBACK["az"],
+        )
+    return out

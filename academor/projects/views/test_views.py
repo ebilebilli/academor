@@ -16,7 +16,29 @@ from projects.utils.queries import (
     serialize_test_for_list,
     get_background_image,
 )
+from projects.utils.seo_text import meta_plain_excerpt
 from projects.utils.test_scoring import calculate_level
+
+
+def _serialize_take_test(lang, test):
+    return serialize_test_for_taking(test, lang)
+
+
+def _take_meta(lang, serialized: dict):
+    excerpt = meta_plain_excerpt(serialized.get("description") or "")
+    if not excerpt.strip():
+        excerpt = _("Interactive English placement / practice test at Academor: %(title)s.") % {
+            "title": serialized["title"],
+        }
+    return {
+        "page_title": f'{serialized["title"]} | Academor',
+        "page_description": excerpt[:320],
+    }
+
+
+def _categories_ctx(lang):
+    categories = get_project_categories(lang)
+    return [serialize_project_category(c, lang) for c in categories]
 
 
 class TestListPageView(View):
@@ -44,13 +66,14 @@ class TestTakePageView(View):
         test = get_test_by_id(test_id, is_active=True)
         if not test:
             raise Http404(_("Test not found"))
-        categories = get_project_categories(lang)
+        ser = _serialize_take_test(lang, test)
         context = {
-            'test': serialize_test_for_taking(test, lang),
+            'test': ser,
             'user_form': TestUserForm(),
-            'categories': [serialize_project_category(c, lang) for c in categories],
+            'categories': _categories_ctx(lang),
             'language': lang,
             'background_image': get_background_image('tests'),
+            **_take_meta(lang, ser),
         }
         return render(request, self.template_name, context)
 
@@ -63,13 +86,14 @@ class TestTakePageView(View):
         user_form = TestUserForm(request.POST)
         if not user_form.is_valid():
             messages.error(request, _('Formda xəta var. Zəhmət olmasa düzəldin.'))
-            categories = get_project_categories(lang)
+            ser = _serialize_take_test(lang, test)
             return render(request, self.template_name, {
-                'test': serialize_test_for_taking(test, lang),
+                'test': ser,
                 'user_form': user_form,
-                'categories': [serialize_project_category(c, lang) for c in categories],
+                'categories': _categories_ctx(lang),
                 'language': lang,
                 'background_image': get_background_image('tests'),
+                **_take_meta(lang, ser),
             })
         user_data = user_form.cleaned_data
 
@@ -99,15 +123,16 @@ class TestTakePageView(View):
         )
         total_questions = total
         percentage = int((result.score / total_questions) * 100) if total_questions else 0
-        categories = get_project_categories(lang)
+        ser = _serialize_take_test(lang, test)
         return render(request, self.template_name, {
-            'test': serialize_test_for_taking(test, lang),
+            'test': ser,
             'user_form': TestUserForm(),
             'result': result,
             'total_questions': total_questions,
             'percentage': percentage,
-            'categories': [serialize_project_category(c, lang) for c in categories],
+            'categories': _categories_ctx(lang),
             'language': lang,
             'background_image': get_background_image('tests'),
+            **_take_meta(lang, ser),
         })
 

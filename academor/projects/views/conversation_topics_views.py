@@ -17,6 +17,7 @@ from projects.utils.queries import (
     get_project_categories,
     serialize_project_category,
 )
+from projects.utils.seo_text import topic_overview_preview
 
 
 class LegacyTopicTwoRedirectView(View):
@@ -86,12 +87,14 @@ class EnglishConversationTopicDetailView(View):
         if topic is None:
             raise Http404(_("Topic not found"))
         categories = get_project_categories(lang)
+        preview = topic_overview_preview(topic.overview_paragraphs)
+        if not preview.strip():
+            preview = _(
+                "English conversation speaking topic %(topic)s — questions, vocabulary and prompts at Academor, Baku."
+            ) % {"topic": topic.title}
         context = {
-            "page_title": _("%(topic)s | English conversation | Academor")
-            % {"topic": topic.title},
-            "page_description": _(
-                "Model sentences and questions in English; localized tips and vocabulary glosses."
-            ),
+            "page_title": _("%(topic)s | English conversation | Academor") % {"topic": topic.title},
+            "page_description": preview[:320],
             "page_keywords": _("english conversation, speaking practice, esl, %(topic)s")
             % {"topic": topic.title},
             "topic": topic,

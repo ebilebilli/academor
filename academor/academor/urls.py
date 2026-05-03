@@ -7,6 +7,7 @@ from django.conf.urls.static import static
 from projects.sitemaps import SITEMAPS
 from projects.views.i18n_views import set_language
 from projects.views.robots_txt import robots_txt
+from projects.views.errors import handler404
 
 
 urlpatterns = [

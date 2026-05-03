@@ -7,6 +7,7 @@ from django.utils.translation import gettext as _
 
 from projects.models import AbroadModel, Team
 from projects.forms.forms_v1 import ReviewForm
+from projects.utils.seo_text import meta_plain_excerpt
 from projects.utils.queries import (
     get_language_from_request, get_home_page_data,
     get_courses_list_data,
@@ -59,12 +60,18 @@ class CourseDetailPageView(View):
             raise Http404(_("Category not found"))
         course = serialize_project_category_detail(category, lang)
         categories = get_project_categories(lang)
+        excerpt = meta_plain_excerpt(course.get('description_html') or '')
+        if not excerpt.strip():
+            excerpt = _('%(course)s — programme details at Academor, Baku, Azerbaijan.') % {
+                'course': course['name'],
+            }
         context = {
             'course': course,
             'categories': [serialize_project_category(c, lang) for c in categories],
             'language': lang,
             'background_image': get_background_image('courses'),
             'page_title': f'{course["name"]} | Academor',
+            'page_description': excerpt[:320],
         }
         return render(request, self.template_name, context)
 
@@ -146,6 +153,13 @@ class AbroadDetailPageView(View):
         context = get_abroad_detail_view_context(lang, slug)
         if not context:
             raise Http404(_("Abroad item not found"))
+        item_data = context['abroad_item']
+        excerpt = meta_plain_excerpt(item_data.get('description') or '')
+        if not excerpt.strip():
+            excerpt = _('Study abroad pathway: %(name)s — guidance from Academor, Baku.') % {
+                'name': item_data['name'],
+            }
+        context['page_description'] = excerpt[:320]
         context['language'] = lang
         return render(request, self.template_name, context)
 
@@ -258,12 +272,20 @@ class TeamDetailPageView(View):
 
         categories = get_project_categories(lang)
         member_data = serialize_team_member(member)
+        excerpt = meta_plain_excerpt(member_data.get('description') or '')
+        if not excerpt.strip():
+            role = (member_data.get('role') or '').strip()
+            excerpt = _('%(name)s%(role_suffix)s — team profile at Academor, Baku.') % {
+                'name': member_data['name'],
+                'role_suffix': (f', {role}' if role else ''),
+            }
         context = {
             'member': member_data,
             'categories': [serialize_project_category(c, lang) for c in categories],
             'language': lang,
             'background_image': get_background_image('about'),
             'page_title': f'{member_data["name"]} | Academor',
+            'page_description': excerpt[:320],
         }
         return render(request, self.template_name, context)
 

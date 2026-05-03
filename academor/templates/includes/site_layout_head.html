@@ -1,37 +1,75 @@
 {% load static %}
 <meta charset="utf-8">
-<title>{{ page_title|default:default_seo_title|default:seo_home_title|default:"Academor" }}</title>
+{% if seo_noindex %}
+<meta name="robots" content="noindex,follow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }} | Academor</title>
+{% if page_description %}
+<meta name="description" content="{{ page_description }}">
+{% endif %}
+<link rel="canonical" href="{{ canonical_url }}">
+{% else %}
+<title>{% if seo_route_url_name == 'home-page' %}
+{{ page_title|default:seo_home_title|default:"Academor" }}
+{% else %}
+{{ page_title|default:default_seo_title|default:"Academor" }}
+{% endif %}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 {% with effective_keywords=page_keywords|default:default_seo_keywords|default:site_seo_keywords %}
 {% if effective_keywords %}
 <meta name="keywords" content="{{ effective_keywords }}">
 {% endif %}
 {% endwith %}
-{% with effective_description=page_description|default:default_seo_description|default:seo_home_description %}
+{% if seo_route_url_name == 'home-page' %}
+{% with effective_description=page_description|default:seo_home_description %}
 {% if effective_description %}
 <meta name="description" content="{{ effective_description }}">
 {% endif %}
 {% endwith %}
+{% else %}
+{% with effective_description=page_description|default:default_seo_description %}
+{% if effective_description %}
+<meta name="description" content="{{ effective_description }}">
+{% endif %}
+{% endwith %}
+{% endif %}
 {% if request %}
-<link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
+<link rel="canonical" href="{{ canonical_url }}">
 <meta property="og:type" content="website">
-<meta property="og:title" content="{{ page_title|default:default_seo_title|default:seo_home_title|default:'Academor' }}">
-{% with effective_description=page_description|default:default_seo_description|default:seo_home_description %}
+<meta property="og:title" content="{% if seo_route_url_name == 'home-page' %}{{ page_title|default:seo_home_title|default:'Academor' }}{% else %}{{ page_title|default:default_seo_title|default:'Academor' }}{% endif %}">
+{% if seo_route_url_name == 'home-page' %}
+{% with effective_description=page_description|default:seo_home_description %}
 {% if effective_description %}
 <meta property="og:description" content="{{ effective_description }}">
 {% endif %}
 {% endwith %}
-<meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
+{% else %}
+{% with effective_description=page_description|default:default_seo_description %}
+{% if effective_description %}
+<meta property="og:description" content="{{ effective_description }}">
+{% endif %}
+{% endwith %}
+{% endif %}
+<meta property="og:url" content="{{ canonical_url }}">
 <meta property="og:locale" content="{{ page_og_locale|default:seo_og_locale|default:'az_AZ' }}">
 <meta name="geo.region" content="{{ page_geo_region|default:seo_geo_region|default:'AZ' }}">
 <meta name="geo.placename" content="{{ page_geo_placename|default:seo_geo_placename|default:'Baku' }}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{{ page_title|default:default_seo_title|default:seo_home_title|default:'Academor' }}">
-{% with effective_description=page_description|default:default_seo_description|default:seo_home_description %}
+<meta name="twitter:title" content="{% if seo_route_url_name == 'home-page' %}{{ page_title|default:seo_home_title|default:'Academor' }}{% else %}{{ page_title|default:default_seo_title|default:'Academor' }}{% endif %}">
+{% if seo_route_url_name == 'home-page' %}
+{% with effective_description=page_description|default:seo_home_description %}
 {% if effective_description %}
 <meta name="twitter:description" content="{{ effective_description }}">
 {% endif %}
 {% endwith %}
+{% else %}
+{% with effective_description=page_description|default:default_seo_description %}
+{% if effective_description %}
+<meta name="twitter:description" content="{{ effective_description }}">
+{% endif %}
+{% endwith %}
+{% endif %}
+{% endif %}
 {% endif %}
 
 <link href="{% static 'assets/img/banner.png' %}" rel="icon" type="image/png">

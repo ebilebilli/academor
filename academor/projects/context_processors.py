@@ -1,5 +1,6 @@
 from django.conf import settings
 
+from projects.utils.canonical import canonical_url_for_request
 from projects.seo_page_defaults import get_page_seo_defaults
 from projects.utils.queries import (
     get_background_image,
@@ -109,6 +110,8 @@ def site_seo_context(request):
     url_name = getattr(rm, "url_name", None) or ""
     page_defaults = get_page_seo_defaults(url_name, lang)
     return {
+        "canonical_url": canonical_url_for_request(request),
+        "seo_route_url_name": url_name,
         "seo_home_title": data["title"],
         "seo_home_description": data["description"],
         "site_seo_keywords": data["keywords"],
