@@ -240,8 +240,8 @@
                 clickable: true,
             },
             navigation: {
-                nextEl: ".header-swiper .swiper-button-next",
-                prevEl: ".header-swiper .swiper-button-prev",
+                nextEl: ".header-swiper .header-carousel-owl-nav .swiper-button-next",
+                prevEl: ".header-swiper .header-carousel-owl-nav .swiper-button-prev",
             },
             watchOverflow: true,
         });
@@ -251,16 +251,23 @@
         var teamSlides = teamRoot.querySelectorAll(".swiper-slide");
         if (!teamSlides.length) return;
         var teamCount = teamSlides.length;
+        var teamPagParent = teamRoot.parentElement;
+        var teamPagEl =
+            teamPagParent &&
+            teamPagParent.querySelector(".team-swiper-pagination-outer");
+        if (!teamPagEl) {
+            teamPagEl = teamRoot.querySelector(".swiper-pagination");
+        }
+        var teamPagConfig = teamPagEl
+            ? { el: teamPagEl, clickable: true }
+            : false;
         new Swiper(teamRoot, {
             slidesPerView: 1,
             spaceBetween: 16,
             loop: teamCount > 4,
             rewind: teamCount <= 4,
             autoplay: false,
-            pagination: {
-                el: teamRoot.querySelector(".swiper-pagination"),
-                clickable: true,
-            },
+            pagination: teamPagConfig,
             navigation: {
                 nextEl: teamRoot.querySelector(".swiper-button-next"),
                 prevEl: teamRoot.querySelector(".swiper-button-prev"),

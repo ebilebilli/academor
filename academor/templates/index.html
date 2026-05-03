@@ -119,8 +119,10 @@
             {% endif %}
             </div>
             <div class="swiper-pagination"></div>
-            <div class="swiper-button-prev" aria-label="{% trans 'Previous' %}"><i class="bi bi-chevron-left" aria-hidden="true"></i></div>
-            <div class="swiper-button-next" aria-label="{% trans 'Next' %}"><i class="bi bi-chevron-right" aria-hidden="true"></i></div>
+            <div class="header-carousel-owl-nav">
+                <div class="swiper-button-prev" aria-label="{% trans 'Previous' %}"><i class="fas fa-angle-left" aria-hidden="true"></i></div>
+                <div class="swiper-button-next" aria-label="{% trans 'Next' %}"><i class="fas fa-angle-right" aria-hidden="true"></i></div>
+            </div>
         </div>
         </div>
     </div>
@@ -178,14 +180,20 @@
                 </div>
                 {% endfor %}
                 </div>
-                <div class="swiper-pagination"></div>
                 <div class="swiper-button-prev" aria-label="{% trans 'Previous' %}"><i class="bi bi-chevron-left" aria-hidden="true"></i></div>
                 <div class="swiper-button-next" aria-label="{% trans 'Next' %}"><i class="bi bi-chevron-right" aria-hidden="true"></i></div>
             </div>
+            <div class="team-swiper-pagination-outer"></div>
             </div>
             {% else %}
             <p class="text-center text-muted mb-0">{% trans "No teachers yet." %}</p>
             {% endif %}
+            <div class="text-center mt-4 pt-2 wow fadeInUp index-team-see-all-wrap" data-wow-delay="0.25s">
+                <a href="{% url 'projects:team-page' %}" class="btn btn-outline-accent rounded-pill px-4 px-md-5 fw-semibold">
+                    {% trans "Meet our full team" %}
+                    <i class="fas fa-arrow-right ms-2 small" aria-hidden="true"></i>
+                </a>
+            </div>
         </div>
     </div>
     <!-- Teachers End -->

@@ -1101,14 +1101,28 @@ h1.animated, h2.animated, h3.animated,
     }
 }
 
-.header-swiper .swiper-button-prev,
-.header-swiper .swiper-button-next {
+/* Home hero nav: Owl Carousel template — vertical stack at ~70%, right (~8%), square outlined buttons */
+.header-carousel .header-carousel-owl-nav {
     position: absolute;
     top: 70%;
     right: 8%;
-    left: auto;
-    margin: 0;
     transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.header-carousel .header-carousel-owl-nav .swiper-button-prev,
+.header-carousel .header-carousel-owl-nav .swiper-button-next {
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    margin: 7px 0 !important;
+    transform: none !important;
     width: 45px;
     height: 45px;
     display: flex;
@@ -1119,101 +1133,43 @@ h1.animated, h2.animated, h3.animated,
     border: 1px solid #ffffff;
     border-radius: 0;
     transition: 0.5s;
-    z-index: 10;
     pointer-events: auto;
 }
 
-.header-swiper .swiper-button-prev {
-    top: calc(70% - 29px);
-}
-
-.header-swiper .swiper-button-next {
-    top: calc(70% + 29px);
-}
-
-.header-swiper .swiper-button-prev::after,
-.header-swiper .swiper-button-next::after {
+.header-carousel .header-carousel-owl-nav .swiper-button-prev::after,
+.header-carousel .header-carousel-owl-nav .swiper-button-next::after {
     display: none;
 }
 
-.header-swiper .swiper-button-prev i,
-.header-swiper .swiper-button-next i {
+.header-carousel .header-carousel-owl-nav .swiper-button-prev i,
+.header-carousel .header-carousel-owl-nav .swiper-button-next i {
     font-size: 22px;
     line-height: 1;
 }
 
-.header-swiper .swiper-button-prev:hover,
-.header-swiper .swiper-button-next:hover {
+.header-carousel .header-carousel-owl-nav .swiper-button-prev:hover,
+.header-carousel .header-carousel-owl-nav .swiper-button-next:hover {
     background: var(--accent);
     border-color: var(--accent);
     color: #ffffff;
 }
 
-/* Desktop hero: stacked nav on right */
-@media (min-width: 768px) {
-    .header-swiper .swiper-button-prev,
-    .header-swiper .swiper-button-next {
-        left: auto !important;
-        right: 8%;
-        width: 45px;
-        height: 45px;
-        border-radius: 0;
-        background: transparent;
-        border: 1px solid #ffffff;
-        color: #ffffff;
-        z-index: 10;
-    }
-
-    .header-swiper .swiper-button-prev {
-        top: calc(70% - 29px);
-        transform: translateY(-50%);
-    }
-
-    .header-swiper .swiper-button-next {
-        top: calc(70% + 29px);
-        transform: translateY(-50%);
-    }
-
-    .header-swiper .swiper-button-prev i,
-    .header-swiper .swiper-button-next i {
-        font-size: 22px;
-    }
-}
-
 @media (max-width: 767.98px) {
-    /* Side arrows, vertically centered on slide; beat Swiper inline + hero overlay stacking */
-    .header-swiper .swiper-button-prev,
-    .header-swiper .swiper-button-next {
-        top: 50% !important;
-        bottom: auto !important;
-        margin-top: 0 !important;
-        transform: translateY(-50%) !important;
-        z-index: 10;
+    /* Same Owl layout as desktop; tighter inset on notch devices */
+    .header-carousel .header-carousel-owl-nav {
+        right: max(8%, env(safe-area-inset-right, 0px));
     }
 
-    .header-swiper .swiper-button-prev {
-        left: max(0.35rem, env(safe-area-inset-left, 0px)) !important;
-        right: auto !important;
+    .header-carousel .header-carousel-owl-nav .swiper-button-prev,
+    .header-carousel .header-carousel-owl-nav .swiper-button-next {
+        width: 38px;
+        height: 38px;
+        margin: 5px 0 !important;
     }
 
-    .header-swiper .swiper-button-next {
-        right: max(0.35rem, env(safe-area-inset-right, 0px)) !important;
-        left: auto !important;
-    }
-
-    .header-swiper .swiper-button-prev,
-    .header-swiper .swiper-button-next {
-        width: 34px;
-        height: 34px;
-    }
-
-    .header-swiper .swiper-button-prev i,
-    .header-swiper .swiper-button-next i {
-        font-size: 16px;
-    }
-
-    .header-swiper .swiper-pagination {
-        display: none !important;
+    .header-carousel .header-carousel-owl-nav .swiper-button-prev i,
+    .header-carousel .header-carousel-owl-nav .swiper-button-next i {
+        font-size: 18px;
     }
 }
 
@@ -1738,8 +1694,7 @@ h1.animated, h2.animated, h3.animated,
     /* Horizontal gutters so arrows sit beside slides, not on cards */
     padding-left: clamp(2.85rem, 5.5vw, 3.75rem);
     padding-right: clamp(2.85rem, 5.5vw, 3.75rem);
-    /* Reserved strip below slides — pagination bullets must not overlap cards */
-    padding-bottom: clamp(6.5rem, 14vw, 8rem);
+    padding-bottom: clamp(1.25rem, 3.2vw, 1.85rem);
 }
 
 .team-swiper .swiper-button-prev,
@@ -1801,46 +1756,50 @@ h1.animated, h2.animated, h3.animated,
     .team-swiper {
         padding-left: clamp(2rem, 4.5vw, 2.5rem);
         padding-right: clamp(2rem, 4.5vw, 2.5rem);
-        padding-bottom: clamp(6.85rem, 17vw, 8.35rem);
+        padding-bottom: clamp(1rem, 3.5vw, 1.65rem);
     }
 
     .team-swiper .swiper-button-prev,
     .team-swiper .swiper-button-next {
-        width: 34px;
-        height: 34px;
-        font-size: 1rem;
+        width: 40px;
+        height: 40px;
+        font-size: 1.125rem;
     }
 
     .team-swiper .swiper-button-prev i,
     .team-swiper .swiper-button-next i {
-        font-size: 1rem;
+        font-size: 1.125rem;
     }
 
-    .team-swiper .swiper-pagination-bullet {
+    .team-swiper-pagination-outer .swiper-pagination-bullet {
         width: 4px;
         height: 4px;
         margin: 0 2px !important;
     }
 
-    .team-swiper .swiper-pagination-bullet-active,
-    .team-swiper .swiper-pagination-bullet:hover {
+    .team-swiper-pagination-outer .swiper-pagination-bullet-active,
+    .team-swiper-pagination-outer .swiper-pagination-bullet:hover {
         transform: scale(1.06);
     }
 }
 
-.team-swiper .swiper-pagination {
-    bottom: 0.35rem;
+/* Pagination lives outside .team-swiper (sibling below slides) — flow layout */
+.team-swiper-pagination-outer {
+    position: relative;
     left: 0;
     right: 0;
-    width: auto;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
     gap: 4px;
+    margin-top: clamp(1rem, 2.75vw, 1.85rem);
+    padding-bottom: 0.35rem;
     z-index: 2;
 }
 
-.team-swiper .swiper-pagination-bullet {
+.team-swiper-pagination-outer .swiper-pagination-bullet {
     width: 10px;
     height: 10px;
     margin: 0 4px !important;
@@ -1852,8 +1811,8 @@ h1.animated, h2.animated, h3.animated,
     transition: transform 0.2s ease, background 0.2s ease;
 }
 
-.team-swiper .swiper-pagination-bullet-active,
-.team-swiper .swiper-pagination-bullet:hover {
+.team-swiper-pagination-outer .swiper-pagination-bullet-active,
+.team-swiper-pagination-outer .swiper-pagination-bullet:hover {
     background: var(--accent);
     transform: scale(1.12);
 }
@@ -2418,13 +2377,14 @@ h1.animated, h2.animated, h3.animated,
 
     .testimonial-swiper.testimonial-carousel .swiper-button-prev,
     .testimonial-swiper.testimonial-carousel .swiper-button-next {
-        width: 34px;
-        height: 34px;
+        width: 40px;
+        height: 40px;
+        font-size: 1.125rem;
     }
 
     .testimonial-swiper.testimonial-carousel .swiper-button-prev i,
     .testimonial-swiper.testimonial-carousel .swiper-button-next i {
-        font-size: 1rem;
+        font-size: 1.125rem;
     }
 
     .testimonial-swiper.testimonial-carousel .swiper-button-prev:hover,
@@ -2446,7 +2406,7 @@ h1.animated, h2.animated, h3.animated,
 
 /* Dot indicators — circular */
 .testimonial-swiper.testimonial-carousel .swiper-pagination {
-    bottom: 2.62rem;
+    bottom: 1.35rem;
     display: flex;
     align-items: center;
     justify-content: center;
