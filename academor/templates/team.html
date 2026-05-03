@@ -6,7 +6,7 @@
     {% include "includes/site_layout_head.html" %}
 </head>
 
-<body>
+<body class="page-team">
     {% include "includes/site_spinner.html" %}
 
 
@@ -30,7 +30,7 @@
             {% if team %}
             <div class="row g-4">
                 {% for member in team %}
-                <div class="col-lg-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay="{% cycle '0.05s' '0.1s' '0.15s' '0.2s' %}">
+                <div class="col-6 col-md-4 col-lg-3 wow fadeInUp" data-wow-delay="{% cycle '0.05s' '0.1s' '0.15s' '0.2s' %}">
                     <article class="course-alt-card h-100">
                         <a href="{% url 'projects:team-detail' member.slug %}" class="category-square-card course-alt-card__link d-flex flex-column text-decoration-none h-100">
                             <div class="ratio ratio-1x1 overflow-hidden course-alt-card__media">
