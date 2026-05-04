@@ -1176,9 +1176,12 @@ h1.animated, h2.animated, h3.animated,
 .header-swiper .swiper-pagination {
     bottom: 0.72rem;
     z-index: 10;
+    /* Let taps reach hero CTAs on narrow screens (overlay is flex-end); bullets stay clickable below. */
+    pointer-events: none;
 }
 
 .header-swiper .swiper-pagination-bullet {
+    pointer-events: auto;
     background: rgba(255, 84, 20, 0.45);
     opacity: 1;
 }
