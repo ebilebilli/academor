@@ -1532,8 +1532,13 @@ h1.animated, h2.animated, h3.animated,
 }
 
 .course-alt-card__media.ratio-1x1 {
-    /* Taller portrait than 1:1 for team grids (home + team page) */
-    --bs-aspect-ratio: 133%;
+    /* Match team detail photo box exactly (3:4) */
+    --bs-aspect-ratio: 133.3333%;
+}
+
+.course-alt-card__media img,
+.course-alt-card__media .academor-branded-lazy__img {
+    object-position: center top;
 }
 
 .course-alt-card__media::after {
