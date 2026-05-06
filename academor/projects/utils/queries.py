@@ -12,42 +12,52 @@ from projects.utils.cache_utils import cached_query, cached_page_data
 from projects.utils.media_cache_bust import media_url
 
 
+def _session_set_lang(session, lang):
+    """Write language to session only when it actually differs — prevents DB writes on every request."""
+    changed = False
+    if session.get('django_language') != lang:
+        session['django_language'] = lang
+        changed = True
+    if session.get('language') != lang:
+        session['language'] = lang
+        changed = True
+    if changed:
+        session.modified = True
+
+
 def get_language_from_request(request):
     lang = request.GET.get('lang', '').lower() or request.GET.get('language', '').lower()
     if lang in ['az', 'en', 'ru']:
-        request.session['django_language'] = lang
-        request.session['language'] = lang
-        request.session['language_user_chosen'] = True
-        request.session.modified = True
+        _session_set_lang(request.session, lang)
+        if not request.session.get('language_user_chosen'):
+            request.session['language_user_chosen'] = True
+            request.session.modified = True
         translation.activate(lang)
         return lang
-    
+
     lang = request.session.get('django_language', '').lower()
     if lang in ['az', 'en', 'ru']:
         translation.activate(lang)
         return lang
-    
+
     lang = request.session.get('language', '').lower()
     if lang in ['az', 'en', 'ru']:
-        request.session['django_language'] = lang
-        request.session.modified = True
+        if request.session.get('django_language') != lang:
+            request.session['django_language'] = lang
+            request.session.modified = True
         translation.activate(lang)
         return lang
-    
+
     lang = getattr(request, 'LANGUAGE_CODE', settings.LANGUAGE_CODE)
     if lang in ['az', 'en', 'ru']:
-        request.session['django_language'] = lang
-        request.session['language'] = lang
-        request.session.modified = True
+        _session_set_lang(request.session, lang)
         translation.activate(lang)
         return lang
 
     default_lang = getattr(settings, 'LANGUAGE_CODE', 'az')
     if default_lang not in ('az', 'en', 'ru'):
         default_lang = 'az'
-    request.session['django_language'] = default_lang
-    request.session['language'] = default_lang
-    request.session.modified = True
+    _session_set_lang(request.session, default_lang)
     translation.activate(default_lang)
     return default_lang
 

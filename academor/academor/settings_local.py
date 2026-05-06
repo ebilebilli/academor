@@ -136,6 +136,11 @@ DATABASES = {
         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
         'HOST': os.getenv('POSTGRES_HOST'),
         'PORT': os.getenv('POSTGRES_PORT'),
+        'CONN_MAX_AGE': 60,
+        'CONN_HEALTH_CHECKS': True,
+        'OPTIONS': {
+            'connect_timeout': 10,
+        },
     }
 }
 
@@ -149,10 +154,13 @@ CACHES = {
         'LOCATION': 'academor-cache',
         'TIMEOUT': 7200,  # 2 hours default timeout
         'OPTIONS': {
-            'MAX_ENTRIES': 1000
+            'MAX_ENTRIES': 3000,
+            'CULL_FREQUENCY': 4,
         }
     }
 }
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 
 # Cache timeout settings (in seconds)
 CACHE_TIMEOUT_SHORT = 1800  # 30 minutes for occasionally changing data

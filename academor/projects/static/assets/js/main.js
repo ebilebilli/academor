@@ -23,7 +23,7 @@
         }, 50);
     }
     window.addEventListener("load", hideSpinner);
-    setTimeout(hideSpinner, 1500);
+    setTimeout(hideSpinner, 800);
 
     /* WOW → IntersectionObserver + Animate.css (.wow.* → add .animated when visible) */
     function initWowReplacement() {

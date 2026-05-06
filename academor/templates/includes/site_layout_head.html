@@ -74,18 +74,22 @@
 
 <link href="{% static 'assets/img/banner.png' %}" rel="icon" type="image/png">
 
+<!-- DNS + connection hints — must come before any request to these origins -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="dns-prefetch" href="https://fonts.googleapis.com">
+<link rel="dns-prefetch" href="https://fonts.gstatic.com">
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
 <!-- Critical layout CSS — synchronous (render-blocking is acceptable) -->
 <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet">
 <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
 <!-- Host Grotesk: sinxron yüklənmə — asinxron olanda ilk paint-də fallback şrift, sonra webfont gələndə
      navbar/body mətn ölçüsü və eni dəyişirdi (FOUT). -->
 <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-<!-- DNS + connection hints for external resources -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
 <!-- Non-critical CSS — async (icons / animations; mətn şrifti yuxarıda sinxron) -->
 <link rel="preload" as="style"
