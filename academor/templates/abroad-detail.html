@@ -15,33 +15,47 @@
 
     <div class="container-xxl py-5 abroad-detail-page">
         <div class="container">
-            <div class="row g-4">
-                <div class="col-12">
-                    <article class="abroad-card abroad-card--detail">
-                        <div class="abroad-card__icon-wrap abroad-card__icon-wrap--detail">
-                            {% if abroad_item.detail_page_img %}
-                            <img src="{{ abroad_item.detail_page_img }}" alt="{{ abroad_item.name }}" class="abroad-card__thumb" width="1280" height="720">
-                            {% elif abroad_item.img %}
-                            <img src="{{ abroad_item.img }}" alt="{{ abroad_item.name }}" class="abroad-card__thumb" width="1280" height="720">
-                            {% else %}
-                            <i class="fa fa-angle-left abroad-card__icon" aria-hidden="true"></i>
-                            {% endif %}
-                        </div>
-                        <h2 class="abroad-card__title abroad-card__title--detail mb-4">{{ abroad_item.name }}</h2>
-                        <div class="about-page-description abroad-detail-page__content mb-1">
-                            {{ abroad_item.description|safe }}
-                        </div>
-                        <div class="d-flex flex-column flex-sm-row flex-wrap gap-3 mt-4 pt-3 justify-content-center">
-                            <a href="{% url 'projects:abroad-page' %}" class="btn btn-outline-primary px-4 py-2 rounded-pill">
-                                <i class="fa fa-arrow-left me-2" aria-hidden="true"></i>{% trans "All study abroad" %}
-                            </a>
-                            <a href="{% url 'projects:contact-page' %}" class="btn btn-primary px-4 py-2 rounded-pill">
-                                <i class="fa fa-envelope me-2" aria-hidden="true"></i>{% trans "Contact us" %}
-                            </a>
-                        </div>
-                    </article>
+
+            <div class="abroad-detail-hero wow fadeInUp{% if not abroad_item.detail_page_img and not abroad_item.img %} abroad-detail-hero--no-img{% endif %}" data-wow-delay="0.05s">
+                {% if abroad_item.detail_page_img %}
+                <img src="{{ abroad_item.detail_page_img }}" alt="{{ abroad_item.name }}" class="abroad-detail-hero__img" width="1280" height="640" decoding="async">
+                {% elif abroad_item.img %}
+                <img src="{{ abroad_item.img }}" alt="{{ abroad_item.name }}" class="abroad-detail-hero__img" width="1280" height="640" decoding="async">
+                {% endif %}
+                <div class="abroad-detail-hero__overlay">
+                    <div class="abroad-detail-hero__content">
+                        <span class="abroad-detail-hero__badge">
+                            <i class="fa fa-globe" aria-hidden="true"></i>
+                            {% trans "Study Abroad" %}
+                        </span>
+                        <h1 class="abroad-detail-hero__title">{{ abroad_item.name }}</h1>
+                    </div>
                 </div>
             </div>
+
+            <div class="row g-4 g-xl-5 align-items-start abroad-detail-page__layout">
+                <div class="{% if universities %}col-lg-8{% else %}col-12{% endif %} wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="abroad-detail-prose">
+                        {{ abroad_item.description|safe }}
+                    </div>
+                    <div class="d-flex flex-wrap gap-3 mt-5 pt-1">
+                        <a href="{% url 'projects:abroad-page' %}" class="btn btn-header px-4 py-2 rounded-pill">
+                            <i class="fa fa-arrow-left me-2" aria-hidden="true"></i>{% trans "Back" %}
+                        </a>
+                        <a href="{% url 'projects:contact-page' %}" class="btn btn-primary px-4 py-2 rounded-pill">
+                            <i class="fa fa-envelope me-2" aria-hidden="true"></i>{% trans "Contact us" %}
+                        </a>
+                    </div>
+                </div>
+                {% if universities %}
+                <div class="col-lg-4 abroad-detail-page__aside wow fadeInUp" data-wow-delay="0.15s">
+                    <div class="abroad-detail-page__aside-inner">
+                        {% include "includes/abroad_detail_universities_section.html" with country_name=abroad_item.name sidebar=True compact_header=True %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
         </div>
     </div>
 

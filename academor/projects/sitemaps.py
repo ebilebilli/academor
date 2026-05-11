@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
 
-from projects.models import ServiceCategory, Team, Test
+from projects.models import ServiceCategory, Team, Test, University
 
 
 class AcademorSitemap(Sitemap):
@@ -101,9 +101,29 @@ class TestSitemap(AcademorSitemap):
         return obj.created_at
 
 
+class UniversitySitemap(AcademorSitemap):
+    changefreq = 'weekly'
+    priority = 0.5
+
+    def items(self):
+        return (
+            University.objects.filter(is_active=True)
+            .exclude(slug__isnull=True)
+            .exclude(slug='')
+            .order_by('id')
+        )
+
+    def location(self, obj):
+        return reverse('projects:abroad-university-detail', kwargs={'slug': obj.slug})
+
+    def lastmod(self, obj):
+        return getattr(settings, 'SITEMAP_STATIC_LASTMOD', None)
+
+
 SITEMAPS = {
     'static': StaticViewSitemap,
     'courses': CourseSitemap,
     'team': TeamSitemap,
     'tests': TestSitemap,
+    'universities': UniversitySitemap,
 }

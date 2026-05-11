@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+{% load i18n static %}{% get_current_language as LANG_CODE %}
+<html lang="{{ LANG_CODE }}">
+
+<head>
+    {% include "includes/site_layout_head.html" with page_title=page_title %}
+</head>
+
+<body>
+    {% include "includes/site_spinner.html" %}
+
+    {% include "includes/site_navbar.html" %}
+
+    <div class="container-fluid bg-primary mb-5 page-header page-header-hero-band"{% include "includes/page_header_dynamic_bg.html" %}></div>
+
+    <div class="container-xxl py-5 university-detail-page">
+        <div class="container">
+
+            <div class="uni-profile-hero wow fadeInUp" data-wow-delay="0.05s">
+                <div class="uni-profile-hero__deco" aria-hidden="true"></div>
+                <img src="{% static 'assets/img/logon.png' %}" alt="" class="uni-profile-hero__brand-logo" aria-hidden="true" decoding="async">
+                <div class="uni-profile-hero__logo-wrap">
+                    {% if university.flag %}
+                    <img src="{{ university.flag }}" alt="{{ university.name }}" class="uni-profile-hero__logo" width="160" height="160" decoding="async">
+                    {% else %}
+                    <span class="uni-profile-hero__logo-placeholder"><i class="fa fa-graduation-cap"></i></span>
+                    {% endif %}
+                </div>
+                <div class="uni-profile-hero__info">
+                    <h1 class="uni-profile-hero__name">{{ university.name }}</h1>
+                    <div class="uni-profile-hero__badges">
+                        {% if university.study_abroad %}
+                        <a href="{% url 'projects:abroad-detail' slug=university.study_abroad.slug %}" class="uni-profile-hero__country-link">
+                            <i class="fa fa-map-marker-alt" aria-hidden="true"></i>
+                            <span>{{ university.study_abroad.name }}</span>
+                        </a>
+                        {% endif %}
+                        {% if university.website %}
+                        <a href="{{ university.website }}" target="_blank" rel="noopener noreferrer" class="uni-profile-hero__website-link">
+                            <i class="fa fa-external-link-alt" aria-hidden="true"></i>
+                            <span>{% trans "Visit website" %}</span>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 g-lg-5 justify-content-center">
+                <div class="col-12 col-lg-10">
+                    <div class="university-detail-content-card p-4 p-md-5 wow fadeInUp" data-wow-delay="0.12s">
+                        {% if university.description %}
+                        <h2 class="university-detail-section-title h6 mb-3">{% trans "About this university" %}</h2>
+                        <div class="about-page-description university-detail-description custom-scroll" tabindex="0" role="region" aria-label="{% trans 'About this university' %}">
+                            <div class="mb-0">{{ university.description|safe }}</div>
+                        </div>
+                        {% else %}
+                        <p class="university-detail-empty text-muted mb-0 fst-italic">{% trans "More information coming soon." %}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-3 mt-4 pt-1 wow fadeInUp" data-wow-delay="0.15s">
+                        {% if university.study_abroad %}
+                        <a href="{% url 'projects:abroad-detail' slug=university.study_abroad.slug %}" class="btn btn-header px-4 py-2 rounded-pill">
+                            <i class="fa fa-arrow-left me-2" aria-hidden="true"></i>{% trans "Back" %}
+                        </a>
+                        {% else %}
+                        <a href="{% url 'projects:abroad-page' %}" class="btn btn-header px-4 py-2 rounded-pill">
+                            <i class="fa fa-arrow-left me-2" aria-hidden="true"></i>{% trans "Back" %}
+                        </a>
+                        {% endif %}
+                        <a href="{% url 'projects:contact-page' %}" class="btn btn-primary px-4 py-2 rounded-pill">
+                            <i class="fa fa-envelope me-2" aria-hidden="true"></i>{% trans "Contact us" %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    {% include "includes/site_footer.html" %}
+    {% include "includes/site_scripts.html" %}
+</body>
+
+</html>

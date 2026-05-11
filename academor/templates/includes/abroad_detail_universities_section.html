@@ -1,0 +1,108 @@
+{% load i18n static academor_lazy_tags %}
+{% trans "Partner university" as partner_university_label %}
+{% trans "View university profile" as view_university_profile_label %}
+<section
+    class="abroad-detail-universities abroad-detail-universities--panel{% if sidebar %} abroad-detail-universities--sidebar{% endif %}{% if compact_header %} abroad-detail-universities--compact-rail{% endif %}"
+    aria-labelledby="abroad-detail-uni-heading"
+>
+    {% if sidebar and compact_header %}
+    <header class="abroad-detail-universities__header abroad-detail-universities__header--page-aside">
+        <h3 id="abroad-detail-uni-heading" class="abroad-detail-universities__title">
+            {% trans "Partner universities" %}
+        </h3>
+        {% if country_name %}
+        <p class="abroad-detail-universities__subtitle">
+            {% blocktranslate trimmed with place=country_name %}
+                Institutions we collaborate with for study in {{ place }}.
+            {% endblocktranslate %}
+        </p>
+        {% endif %}
+    </header>
+    {% elif sidebar %}
+    <div class="abroad-detail-universities__top-band">
+        <div class="abroad-detail-universities__formula" aria-hidden="true">
+            <img src="{% static 'assets/img/footer-formula.png' %}" alt="" width="220" height="56" loading="eager" decoding="async" class="abroad-detail-universities__formula-img">
+        </div>
+        <header class="abroad-detail-universities__header abroad-detail-universities__header--band abroad-detail-universities__header--sidebar">
+            <h3 id="abroad-detail-uni-heading" class="abroad-detail-universities__title">
+                {% trans "Partner universities" %}
+            </h3>
+            {% if country_name %}
+            <p class="abroad-detail-universities__subtitle">
+                {% blocktranslate trimmed with place=country_name %}
+                    Institutions we collaborate with for study in {{ place }}.
+                {% endblocktranslate %}
+            </p>
+            {% endif %}
+        </header>
+    </div>
+    {% else %}
+    <header class="abroad-detail-universities__header">
+        <h3 id="abroad-detail-uni-heading" class="abroad-detail-universities__title">
+            {% trans "Partner universities" %}
+        </h3>
+        {% if country_name %}
+        <p class="abroad-detail-universities__subtitle">
+            {% blocktranslate trimmed with place=country_name %}
+                Institutions we collaborate with for study in {{ place }}.
+            {% endblocktranslate %}
+        </p>
+        {% endif %}
+    </header>
+    {% endif %}
+
+    <p class="visually-hidden">
+        {% blocktranslate trimmed count counter=universities|length %}
+            One partner institution
+        {% plural %}
+            {{ counter }} partner institutions
+        {% endblocktranslate %}
+    </p>
+
+    <ul class="abroad-detail-universities__list {% if sidebar %}abroad-detail-universities__list--stack{% else %}abroad-detail-universities__grid{% endif %}" role="list">
+        {% for uni in universities %}
+        <li class="abroad-detail-universities__item">
+            {% if uni.slug %}
+            <a href="{% url 'projects:abroad-university-detail' slug=uni.slug %}" class="abroad-detail-uni-card-link" aria-label="{% if uni.name %}{{ uni.name }} — {% else %}{{ partner_university_label }} — {% endif %}{{ view_university_profile_label }}">
+            {% endif %}
+            <figure class="abroad-detail-uni-card{% if sidebar %} abroad-detail-uni-card--rail{% endif %}">
+                <div class="abroad-detail-uni-card__frame">
+                    {% if uni.flag %}
+                        {% if uni.name %}
+                            {% if sidebar %}
+                                {% academor_branded_lazy_img uni.flag '' img_class='abroad-detail-uni-card__media' layout='circle' width='56' height='56' loading='eager' reveal='immediate' %}
+                            {% else %}
+                                {% academor_branded_lazy_img uni.flag '' img_class='abroad-detail-uni-card__media' layout='circle' width='88' height='88' loading='eager' reveal='immediate' %}
+                            {% endif %}
+                        {% else %}
+                            {% if sidebar %}
+                                {% academor_branded_lazy_img uni.flag partner_university_label img_class='abroad-detail-uni-card__media' layout='circle' width='56' height='56' loading='eager' reveal='immediate' %}
+                            {% else %}
+                                {% academor_branded_lazy_img uni.flag partner_university_label img_class='abroad-detail-uni-card__media' layout='circle' width='88' height='88' loading='eager' reveal='immediate' %}
+                            {% endif %}
+                        {% endif %}
+                    {% elif uni.name %}
+                        <span class="abroad-detail-uni-card__initials" aria-hidden="true">{{ uni.name|slice:':2'|upper }}</span>
+                        <span class="visually-hidden">{{ uni.name }}</span>
+                    {% else %}
+                        <span class="abroad-detail-uni-card__placeholder-icon" aria-hidden="true"><i class="fa fa-graduation-cap"></i></span>
+                        <span class="visually-hidden">{{ partner_university_label }}</span>
+                    {% endif %}
+                </div>
+                {% if uni.name %}
+                <figcaption class="abroad-detail-uni-card__caption">
+                    <span class="abroad-detail-uni-card__name">{{ uni.name }}</span>
+                </figcaption>
+                {% elif uni.slug %}
+                <figcaption class="abroad-detail-uni-card__caption">
+                    <span class="abroad-detail-uni-card__name">{{ partner_university_label }}</span>
+                </figcaption>
+                {% endif %}
+            </figure>
+            {% if uni.slug %}
+            </a>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</section>

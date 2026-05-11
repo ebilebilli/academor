@@ -9,6 +9,7 @@ Keep in sync with queries.py (add a receiver when a new cached query reads a mod
   ServiceCategory, ServiceHighlight, AbroadModel, StudyAbroadSection, University,
   Team, Review, Instructor, About, Contact, Media, Tagline, SiteFaqEntry,
   Test, Question, Option
+  (University: pre_save fills unique slug from name — university_slug_from_name.)
 
 Not cached (no invalidation needed for public query cache): ContactInquiry, UserResult.
 """
@@ -16,6 +17,7 @@ from django.db.models.signals import post_save, post_delete, pre_save
 from django.dispatch import receiver
 from django.db import transaction
 from django.db.models import F
+from django.utils.text import slugify
 
 # from projects.utils import send_mail_func
 from projects.utils.cache_utils import invalidate_model_cache
@@ -127,8 +129,29 @@ def invalidate_abroad_cache(sender, instance, **kwargs):
 @receiver(post_save, sender=University)
 @receiver(post_delete, sender=University)
 def invalidate_university_cache(sender, instance, **kwargs):
-    """Clears cache for university flags marquee on home + Study Abroad page."""
+    """Bumps global cache version — clears university flags marquee (home/abroad listing),
+    abroad-detail partner sidebar, university-detail profile, and any page that embeds
+    university data (get_abroad_detail_view_context, get_university_detail_view_context, etc.)."""
     _invalidate_on_commit('University')
+
+
+@receiver(pre_save, sender=University)
+def university_slug_from_name(sender, instance, **kwargs):
+    """Unique slug from name (mirrors Team); skipped when name is empty — slug may stay null."""
+    name = (instance.name or '').strip()
+    if not name:
+        return
+    base = slugify(name) or 'university'
+    if len(base) > 140:
+        base = base[:140]
+    slug = base
+    n = 2
+    qs = University.objects.exclude(pk=instance.pk) if instance.pk else University.objects.all()
+    while qs.filter(slug=slug).exists():
+        suffix = f'-{n}'
+        slug = (base[: max(1, 150 - len(suffix))] + suffix)[:150]
+        n += 1
+    instance.slug = slug
 
 
 @receiver(post_save, sender=StudyAbroadSection)

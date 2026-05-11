@@ -661,3 +661,28 @@ msgstr "Təcrübəli və peşəkar müəllimlər"
 
 msgid "Your future starts here"
 msgstr "Gələcəyinizə buradan başlayın"
+
+msgid "Partner universities"
+msgstr "Tərəfdaş universitetlər"
+
+msgid "Partner university"
+msgstr "Tərəfdaş universitet"
+
+msgid "View university profile"
+msgstr "Universitet profilinə bax"
+
+#, python-format
+msgid "Institutions we collaborate with for study in %(place)s."
+msgstr "%(place)s üzrə əməkdaşlıq etdiyimiz təhsil müəssisələri."
+
+#, python-format
+msgid "One partner institution"
+msgid_plural "%(counter)s partner institutions"
+msgstr[0] "1 tərəfdaş müəssisə"
+msgstr[1] "%(counter)s tərəfdaş müəssisə"
+
+msgid "Page actions"
+msgstr "Səhifə əməliyyatları"
+
+msgid "About this university"
+msgstr "Bu universitet haqqında"

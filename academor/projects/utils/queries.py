@@ -3,6 +3,7 @@ import re
 from django.db.models import Q, Prefetch
 from django.utils.html import strip_tags
 from django.utils import translation
+from django.utils.translation import gettext as _
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
 from django.templatetags.static import static
@@ -83,6 +84,28 @@ def _localized_value(obj, base_field, lang, default_lang='az'):
             return str(val).strip()
     fallback = getattr(obj, f'{base_field}_{default_lang}', None)
     return str(fallback).strip() if fallback else ''
+
+
+def apply_university_study_abroad_localized_name(university_dict, lang):
+    """
+    Refresh `study_abroad['name']` from AbroadModel using name_az / name_en / name_ru.
+
+    Called after cached `get_university_detail_view_context` so the label always matches
+    the active UI language for this request (avoids stale country name if session lang
+    changed without a cache miss).
+    """
+    if not university_dict:
+        return
+    block = university_dict.get('study_abroad')
+    if not block or not block.get('slug'):
+        return
+    row = (
+        AbroadModel.objects.filter(slug=block['slug'], is_active=True)
+        .only('name_az', 'name_en', 'name_ru')
+        .first()
+    )
+    if row:
+        block['name'] = _localized_value(row, 'name', lang)
 
 
 _category_media_prefetch = Prefetch(
@@ -428,7 +451,13 @@ def serialize_abroad_item(item, lang='az'):
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
 def get_universities(is_active=True):
-    qs = University.objects.only('id', 'flag', 'is_active')
+    qs = University.objects.only(
+        'id',
+        'flag',
+        'is_active',
+        'name',
+        'slug',
+    )
     if is_active is not None:
         qs = qs.filter(is_active=is_active)
     return list(qs.order_by('id'))
@@ -437,9 +466,27 @@ def get_universities(is_active=True):
 def serialize_university(item):
     if item is None:
         return None
-    return {
+    row = {
         'id': item.id,
         'flag': media_url(item.flag) if item.flag else None,
+    }
+    name = (getattr(item, 'name', None) or '').strip()
+    if name:
+        row['name'] = name
+    slug = getattr(item, 'slug', None) or ''
+    if slug:
+        row['slug'] = slug
+    return row
+
+
+def _serialize_university_for_abroad_country_page(u):
+    """Template dict for partner cards on a study-abroad country detail page."""
+    name = (u.name or '').strip() or None
+    return {
+        'id': u.id,
+        'name': name,
+        'flag': media_url(u.flag) if u.flag else None,
+        'slug': (u.slug or '').strip(),
     }
 
 
@@ -799,12 +846,58 @@ def get_abroad_detail_view_context(lang, slug):
     item_data = serialize_abroad_item(item, lang=lang)
     contact = get_contact(lang)
     categories = get_project_categories(lang)
+    uni_qs = (
+        University.objects.filter(study_abroad_id=item.id, is_active=True)
+        .only('id', 'name', 'slug', 'flag')
+        .order_by('id')
+    )
+    universities_for_country = [_serialize_university_for_abroad_country_page(u) for u in uni_qs]
     return {
         'abroad_item': item_data,
+        'universities': universities_for_country,
         'contact': serialize_contact(contact, lang) if contact else None,
         'categories': [serialize_project_category(category, lang) for category in categories],
         'background_image': get_background_image('abroad') or get_background_image('about'),
         'page_title': f'{item_data["name"]} | Academor',
+    }
+
+
+@cached_query(timeout='CACHE_TIMEOUT_LONG')
+def get_university_detail_view_context(lang, slug):
+    """Partner university detail — cached per (lang, slug); None if not found."""
+    translation.activate(lang)
+    u = (
+        University.objects.filter(slug=slug, is_active=True)
+        .select_related('study_abroad')
+        .first()
+    )
+    if not u:
+        return None
+    contact = get_contact(lang)
+    categories = get_project_categories(lang)
+    abroad = u.study_abroad
+    study_block = None
+    if abroad and abroad.is_active:
+        study_block = {
+            'slug': abroad.slug,
+            'name': _localized_value(abroad, 'name', lang),
+        }
+    display_name = (u.name or '').strip() or _('Partner university')
+    university_data = {
+        'id': u.id,
+        'name': display_name,
+        'slug': u.slug,
+        'description': u.description or '',
+        'flag': media_url(u.flag) if u.flag else None,
+        'website': (u.website or '').strip() or None,
+        'study_abroad': study_block,
+    }
+    return {
+        'university': university_data,
+        'contact': serialize_contact(contact, lang) if contact else None,
+        'categories': [serialize_project_category(category, lang) for category in categories],
+        'background_image': get_background_image('abroad') or get_background_image('about'),
+        'page_title': f'{display_name} | Academor',
     }
 
 

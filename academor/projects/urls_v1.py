@@ -8,6 +8,7 @@ from projects.views.views_v1 import (
     AboutPageView,
     ServicesPageView,
     AbroadPageView,
+    AbroadUniversityDetailPageView,
     AbroadDetailLegacyPkRedirectView,
     AbroadDetailPageView,
     ContactPageView,
@@ -61,6 +62,11 @@ urlpatterns = [
     path(
         'abroad/<int:pk>/',
         AbroadDetailLegacyPkRedirectView.as_view(),
+    ),
+    path(
+        'abroad/universities/<slug:slug>/',
+        AbroadUniversityDetailPageView.as_view(),
+        name='abroad-university-detail',
     ),
     path(
         'abroad/<slug:slug>/',

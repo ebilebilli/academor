@@ -22,6 +22,8 @@ from projects.utils.queries import (
     get_serialized_service_highlights,
     get_abroad_page_data,
     get_abroad_detail_view_context,
+    get_university_detail_view_context,
+    apply_university_study_abroad_localized_name,
     get_serialized_site_faq_entries,
 )
 
@@ -158,6 +160,26 @@ class AbroadDetailPageView(View):
         if not excerpt.strip():
             excerpt = _('Study abroad pathway: %(name)s — guidance from Academor, Baku.') % {
                 'name': item_data['name'],
+            }
+        context['page_description'] = excerpt[:320]
+        context['language'] = lang
+        return render(request, self.template_name, context)
+
+
+class AbroadUniversityDetailPageView(View):
+    template_name = 'university-detail.html'
+
+    def get(self, request, slug: str):
+        lang = get_language_from_request(request)
+        context = get_university_detail_view_context(lang, slug)
+        if not context:
+            raise Http404(_("University not found"))
+        apply_university_study_abroad_localized_name(context['university'], lang)
+        uni = context['university']
+        excerpt = meta_plain_excerpt(uni.get('description') or '')
+        if not excerpt.strip():
+            excerpt = _('Partner university profile: %(name)s — Academor study abroad support, Baku.') % {
+                'name': uni['name'],
             }
         context['page_description'] = excerpt[:320]
         context['language'] = lang

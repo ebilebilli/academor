@@ -349,21 +349,44 @@ class AbroadModelAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     preview_image_large.short_description = "Preview"
 
 
+class UniversityAdminForm(forms.ModelForm):
+    class Meta:
+        model = University
+        fields = '__all__'
+        widgets = {
+            'description': CKEditorWidget(),
+        }
+
+
 @admin.register(University)
 class UniversityAdmin(AdminImageCompressMixin, admin.ModelAdmin):
-    list_display = ('id', 'flag_preview', 'is_active')
-    list_filter = ('is_active',)
+    form = UniversityAdminForm
+    list_display = ('id', 'name', 'slug', 'study_abroad', 'website_link', 'flag_preview', 'is_active')
+    list_filter = ('is_active', 'study_abroad')
     list_editable = ('is_active',)
-    readonly_fields = ('flag_preview_large',)
+    readonly_fields = ('slug', 'flag_preview_large')
+    search_fields = ('name', 'slug', 'description')
+    autocomplete_fields = ('study_abroad',)
     list_per_page = 25
     fieldsets = (
         ('Content', {
-            'fields': ('flag', 'flag_preview_large')
+            'fields': ('name', 'slug', 'study_abroad', 'website', 'description', 'flag', 'flag_preview_large')
         }),
         ('Status', {
             'fields': ('is_active',)
         }),
     )
+
+    def website_link(self, obj):
+        if obj.website:
+            return format_html(
+                '<a href="{}" target="_blank" rel="noopener noreferrer" '
+                'style="color: #417690; text-decoration: none; font-size: 13px;">🌐 {}</a>',
+                obj.website,
+                (obj.website.replace('https://', '').replace('http://', '').rstrip('/'))[:40],
+            )
+        return '—'
+    website_link.short_description = 'Website'
 
     def flag_preview(self, obj):
         if obj.flag:

@@ -655,3 +655,29 @@ msgstr "Опытные и квалифицированные преподава�
 
 msgid "Your future starts here"
 msgstr "Начните своё будущее здесь"
+
+msgid "Partner universities"
+msgstr "Партнёрские университеты"
+
+msgid "Partner university"
+msgstr "Партнёрский университет"
+
+msgid "View university profile"
+msgstr "Профиль университета"
+
+#, python-format
+msgid "Institutions we collaborate with for study in %(place)s."
+msgstr "Учебные заведения, с которыми мы сотрудничаем для обучения в %(place)s."
+
+#, python-format
+msgid "One partner institution"
+msgid_plural "%(counter)s partner institutions"
+msgstr[0] "%(counter)s партнёрское учебное заведение"
+msgstr[1] "%(counter)s партнёрских учебных заведения"
+msgstr[2] "%(counter)s партнёрских учебных заведений"
+
+msgid "Page actions"
+msgstr "Действия на странице"
+
+msgid "About this university"
+msgstr "Об этом университете"

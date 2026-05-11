@@ -336,6 +336,32 @@ h1.animated, h2.animated, h3.animated,
     border-color: var(--accent) !important;
 }
 
+/* Solid teal like site header / navbar background */
+.btn-header {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+}
+
+.btn-header:hover,
+.btn-header:focus:not(:focus-visible),
+.btn-header:active {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: var(--accent) !important;
+    box-shadow: none !important;
+}
+
+.btn-header:focus-visible {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: #ffffff !important;
+    outline: 2px solid rgba(255, 255, 255, 0.55);
+    outline-offset: 2px;
+    box-shadow: none !important;
+}
+
 .btn-square {
     width: 38px;
     height: 38px;
@@ -2286,6 +2312,7 @@ h1.animated, h2.animated, h3.animated,
 .testimonial-item .testimonial-text .review-card__message {
     display: -webkit-box;
     -webkit-line-clamp: 6;
+    line-clamp: 6;
     -webkit-box-orient: vertical;
     overflow: hidden;
     flex: 1 1 auto;
@@ -2297,6 +2324,7 @@ h1.animated, h2.animated, h3.animated,
 @media (min-width: 576px) {
     .testimonial-item .testimonial-text .review-card__message {
         -webkit-line-clamp: 7;
+        line-clamp: 7;
     }
 }
 
@@ -2308,6 +2336,7 @@ h1.animated, h2.animated, h3.animated,
 
     .testimonial-item .testimonial-text .review-card__message {
         -webkit-line-clamp: 8;
+        line-clamp: 8;
     }
 }
 
@@ -3724,6 +3753,174 @@ h1.animated, h2.animated, h3.animated,
     border-radius: 50%;
 }
 
+/* Study abroad — country detail page (abroad-detail.html) */
+.abroad-detail-page {
+    background: linear-gradient(180deg, #e4eef3 0%, #eef4f7 18%, #f6f9fb 45%, #ffffff 100%);
+}
+
+/* ── ABROAD DETAIL: hero (16/9, capped height, bottom-left text on gradient) ── */
+.abroad-detail-hero {
+    position: relative;
+    width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    max-height: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    background: linear-gradient(135deg, #00313D 0%, #00475a 60%, #005566 100%);
+    margin-bottom: 1.75rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.abroad-detail-hero__img {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.abroad-detail-hero__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, transparent 60%);
+}
+
+.abroad-detail-hero--no-img .abroad-detail-hero__overlay {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.45) 0%, transparent 55%);
+}
+
+.abroad-detail-hero__content {
+    position: absolute;
+    z-index: 2;
+    left: clamp(1rem, 3vw, 1.75rem);
+    bottom: clamp(1rem, 3vw, 1.75rem);
+    right: clamp(1rem, 4vw, 2.5rem);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    max-width: min(100%, 36rem);
+    pointer-events: none;
+}
+
+.abroad-detail-hero__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: #ffffff;
+    background: var(--accent);
+    border-radius: 999px;
+    padding: 0.28rem 0.85rem;
+    width: fit-content;
+}
+
+.abroad-detail-hero__title {
+    color: #ffffff;
+    font-size: clamp(1.45rem, 2.4vw + 0.55rem, 2.5rem);
+    font-weight: 800;
+    line-height: 1.12;
+    margin: 0;
+    letter-spacing: -0.02em;
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.45);
+}
+
+@media (max-width: 767.98px) {
+    .abroad-detail-hero {
+        aspect-ratio: 4 / 3;
+        max-height: 360px;
+        border-radius: 16px;
+        margin-bottom: 1.35rem;
+    }
+
+    .abroad-detail-hero__content {
+        left: clamp(0.85rem, 3.5vw, 1.25rem);
+        bottom: clamp(0.85rem, 3.5vw, 1.25rem);
+        right: clamp(0.85rem, 3.5vw, 1.25rem);
+        gap: 0.4rem;
+        max-width: none;
+    }
+
+    .abroad-detail-hero__title {
+        font-size: clamp(1.15rem, 4vw + 0.35rem, 1.65rem);
+    }
+
+    .abroad-detail-hero__badge {
+        font-size: 0.62rem;
+        padding: 0.22rem 0.65rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .abroad-detail-hero {
+        max-height: 280px;
+        margin-bottom: 1.15rem;
+    }
+
+    .abroad-detail-hero__title {
+        font-size: clamp(1.05rem, 4.5vw + 0.2rem, 1.4rem);
+    }
+
+    .abroad-detail-hero__badge {
+        font-size: 0.58rem;
+        padding: 0.2rem 0.55rem;
+    }
+}
+
+/* ── ABROAD DETAIL: prose content area ── */
+.abroad-detail-prose {
+    color: rgba(0, 49, 61, 0.85);
+    line-height: 1.9;
+    font-size: 1.06rem;
+}
+
+.abroad-detail-prose p {
+    margin-bottom: 1rem;
+}
+
+.abroad-detail-prose h2,
+.abroad-detail-prose h3,
+.abroad-detail-prose h4 {
+    color: var(--primary);
+    margin-top: 1.6rem;
+    margin-bottom: 0.85rem;
+    font-weight: 700;
+}
+
+.abroad-detail-prose a {
+    color: var(--accent);
+    text-underline-offset: 0.15em;
+}
+
+.abroad-detail-prose a:hover {
+    color: var(--accent-hover);
+}
+
+@media (max-width: 575.98px) {
+    .abroad-detail-prose {
+        font-size: 1rem;
+        line-height: 1.8;
+    }
+}
+
+.abroad-detail-page__content a {
+    color: var(--accent);
+    text-underline-offset: 0.15em;
+}
+
+.abroad-detail-page__content a:hover {
+    color: var(--accent-hover);
+}
+
 .abroad-card {
     background: #fff;
     border: 1px solid rgba(0, 49, 61, 0.12);
@@ -3763,6 +3960,11 @@ h1.animated, h2.animated, h3.animated,
     aspect-ratio: 16 / 9;
     border-radius: 14px;
     margin: 0 auto 22px;
+    background: linear-gradient(160deg, #f5fafc 0%, #e8f2f6 100%);
+    border: 1px solid rgba(0, 49, 61, 0.12);
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.75) inset,
+        0 10px 32px rgba(0, 49, 61, 0.08);
 }
 
 .abroad-card__icon {
@@ -3789,6 +3991,7 @@ h1.animated, h2.animated, h3.animated,
     letter-spacing: 0.01em;
     font-size: clamp(1.8rem, 3.1vw, 2.8rem);
     font-weight: 800;
+    color: var(--primary);
 }
 
 .abroad-card--detail {
@@ -3796,14 +3999,25 @@ h1.animated, h2.animated, h3.animated,
     margin: 0 auto;
     padding: 36px 34px;
     border-radius: 18px;
-    box-shadow: 0 12px 34px rgba(24, 29, 56, 0.08);
+    background: linear-gradient(165deg, #ffffff 0%, #f7fbfd 48%, #f0f6f9 100%);
+    border: 1px solid rgba(0, 49, 61, 0.1);
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.9) inset,
+        0 4px 0 0 rgba(0, 49, 61, 0.06),
+        0 16px 42px rgba(0, 49, 61, 0.08);
+}
+
+.abroad-card--detail .abroad-detail-page__content + .d-flex {
+    border-top: 1px solid rgba(0, 49, 61, 0.08);
+    margin-top: 1.75rem;
+    padding-top: 1.75rem;
 }
 
 .abroad-detail-page__content {
     max-width: 1000px;
     margin-left: auto;
     margin-right: auto;
-    color: #27313a;
+    color: rgba(0, 49, 61, 0.84);
     line-height: 1.9;
     font-size: 1.06rem;
 }
@@ -3815,9 +4029,723 @@ h1.animated, h2.animated, h3.animated,
 .abroad-detail-page__content h2,
 .abroad-detail-page__content h3,
 .abroad-detail-page__content h4 {
-    color: #00313d;
+    color: var(--primary);
     margin-top: 1.4rem;
     margin-bottom: 0.85rem;
+}
+
+/* Study abroad detail — main + partner universities (right rail on lg+) */
+.abroad-detail-page__layout {
+    --abroad-rail-accent: var(--accent);
+    --abroad-rail-primary: var(--primary);
+}
+
+.abroad-detail-page__aside-inner {
+    position: sticky;
+    top: 1.25rem;
+}
+
+@media (max-width: 991.98px) {
+    .abroad-detail-page__aside-inner {
+        position: static;
+    }
+}
+
+/* Study abroad — partner universities on country detail */
+.abroad-detail-universities {
+    margin-top: 0.5rem;
+    padding: 28px 24px 32px;
+    border-radius: 18px;
+    background: linear-gradient(165deg, #ffffff 0%, #f2f7fa 55%, #eaf2f6 100%);
+    border: 1px solid rgba(0, 49, 61, 0.08);
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.85) inset,
+        0 10px 32px rgba(0, 49, 61, 0.07);
+}
+
+.abroad-detail-universities--compact-rail {
+    margin-top: 0;
+    padding: 0 0 22px;
+    border-radius: 16px;
+    background: linear-gradient(180deg, #ffffff 0%, #f4f8fb 100%);
+    border: 1px solid rgba(0, 49, 61, 0.1);
+    box-shadow:
+        0 4px 0 0 var(--accent),
+        0 14px 36px rgba(0, 49, 61, 0.08);
+    overflow: hidden;
+}
+
+/* Aside card header: match site navbar (`.navbar.navbar-light` — primary bar + nav-link white) */
+.abroad-detail-universities__header--page-aside .abroad-detail-universities__title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    color: #ffffff;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.abroad-detail-universities__header--page-aside .abroad-detail-universities__subtitle {
+    margin-left: 0;
+    margin-right: 0;
+    max-width: none;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+.abroad-detail-universities--compact-rail .abroad-detail-universities__list--stack {
+    padding: 0 0.75rem 0.25rem;
+    gap: 0.65rem;
+}
+
+.abroad-detail-universities--compact-rail .abroad-detail-universities__item {
+    max-width: none;
+    width: 100%;
+}
+
+.abroad-detail-universities--compact-rail .abroad-detail-uni-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    gap: 0.9rem;
+    padding: 0.55rem 1rem 0.55rem 0.65rem;
+    border: 1px solid rgba(0, 49, 61, 0.08);
+    border-left: 3px solid rgba(0, 49, 61, 0.14);
+    border-radius: 12px;
+    background: linear-gradient(105deg, rgba(255, 255, 255, 0.98) 0%, rgba(245, 249, 252, 0.96) 100%);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.85) inset;
+}
+
+.abroad-detail-universities--compact-rail .abroad-detail-uni-card-link .abroad-detail-uni-card::after {
+    content: '\2192';
+    margin-left: auto;
+    align-self: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.85rem;
+    height: 1.85rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1;
+    border-radius: 999px;
+    background: rgba(0, 49, 61, 0.07);
+    color: var(--primary);
+    opacity: 1;
+}
+
+.abroad-detail-universities--compact-rail .abroad-detail-uni-card-link:hover .abroad-detail-uni-card::after,
+.abroad-detail-universities--compact-rail .abroad-detail-uni-card-link:focus-visible .abroad-detail-uni-card::after {
+    background: rgba(255, 84, 20, 0.14);
+    color: var(--accent-hover);
+}
+
+.abroad-detail-universities--compact-rail .abroad-detail-uni-card__frame {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    margin: 0;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow:
+        inset 0 0 0 1px rgba(0, 49, 61, 0.1),
+        0 2px 8px rgba(0, 49, 61, 0.06);
+}
+
+.abroad-detail-universities--compact-rail .abroad-detail-uni-card__caption {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+}
+
+.abroad-detail-universities--compact-rail .abroad-detail-uni-card__name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--primary);
+    line-height: 1.35;
+}
+
+.abroad-detail-universities--compact-rail .abroad-detail-uni-card-link:hover .abroad-detail-uni-card__name,
+.abroad-detail-universities--compact-rail .abroad-detail-uni-card-link:focus-visible .abroad-detail-uni-card__name {
+    color: var(--accent);
+}
+
+.abroad-detail-universities--compact-rail .abroad-detail-uni-card-link:hover .abroad-detail-uni-card,
+.abroad-detail-universities--compact-rail .abroad-detail-uni-card-link:focus-visible .abroad-detail-uni-card {
+    border-color: rgba(0, 49, 61, 0.12);
+    border-left-color: var(--accent);
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.85) inset,
+        0 6px 18px rgba(0, 49, 61, 0.1);
+}
+
+.abroad-detail-universities--compact-rail .abroad-detail-uni-card__initials {
+    color: var(--accent);
+    font-size: 1.05rem;
+}
+
+.abroad-detail-universities--compact-rail .abroad-detail-uni-card__placeholder-icon {
+    color: var(--accent);
+    font-size: 1.35rem;
+}
+
+.abroad-detail-universities__header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.abroad-detail-universities__title {
+    font-size: clamp(1.25rem, 2.2vw, 1.65rem);
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 0.35rem;
+}
+
+.abroad-detail-universities__subtitle {
+    color: rgba(0, 49, 61, 0.62);
+    font-size: 1rem;
+    margin-bottom: 0;
+    max-width: 52ch;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.abroad-detail-universities__header.abroad-detail-universities__header--page-aside {
+    padding: 1rem 1.25rem 1.1rem;
+    margin: 0 0 1rem;
+    text-align: left;
+    background-color: var(--primary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.abroad-detail-universities__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.abroad-detail-universities__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1.25rem 1rem;
+    justify-items: center;
+}
+
+.abroad-detail-universities__item {
+    width: 100%;
+    max-width: 200px;
+}
+
+.abroad-detail-uni-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 16px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.abroad-detail-uni-card-link:hover .abroad-detail-uni-card,
+.abroad-detail-uni-card-link:focus-visible .abroad-detail-uni-card {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(0, 49, 61, 0.1);
+}
+
+.abroad-detail-uni-card-link:focus-visible {
+    outline: 2px solid var(--accent, #ff6b35);
+    outline-offset: 3px;
+}
+
+.abroad-detail-uni-card {
+    margin: 0;
+    text-align: center;
+    padding: 14px 12px 16px;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 49, 61, 0.08);
+    background: linear-gradient(185deg, rgba(255, 255, 255, 1) 0%, rgba(248, 251, 253, 1) 55%, rgba(241, 246, 250, 1) 100%);
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.9) inset,
+        0 4px 14px rgba(0, 49, 61, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.abroad-detail-uni-card__frame {
+    width: 88px;
+    height: 88px;
+    margin: 0 auto 10px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border: 1px solid rgba(0, 49, 61, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 49, 61, 0.05);
+    overflow: hidden;
+}
+
+.abroad-detail-uni-card__media {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Partner uni logos: square tile (country cards keep circular .abroad-card__icon-wrap) */
+.abroad-detail-uni-card__frame > .academor-branded-lazy--circle {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+}
+
+.abroad-detail-uni-card__frame > .academor-branded-lazy--circle .academor-branded-lazy__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+}
+
+.abroad-detail-uni-card__initials {
+    font-weight: 800;
+    font-size: 1.35rem;
+    color: var(--primary);
+    letter-spacing: 0.02em;
+}
+
+.abroad-detail-uni-card__placeholder-icon {
+    font-size: 1.75rem;
+    color: rgba(0, 49, 61, 0.28);
+}
+
+.abroad-detail-uni-card__caption {
+    padding: 0 4px;
+}
+
+.abroad-detail-uni-card__name {
+    display: block;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--primary);
+    line-height: 1.35;
+}
+
+/* Partner university detail — səliqəli, zəif vurğular (primary / accent) */
+/* ── UNIVERSITY DETAIL: profile hero card ── */
+.uni-profile-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #00313D 0%, #004455 55%, #005262 100%);
+    padding: clamp(1.35rem, 3.2vw, 2.35rem) clamp(1.25rem, 3.2vw, 2.35rem);
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 2.5vw, 1.85rem);
+    margin-bottom: 1.5rem;
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.07) inset,
+        0 8px 40px rgba(0, 49, 61, 0.20);
+}
+
+.uni-profile-hero__deco {
+    position: absolute;
+    right: -70px;
+    top: -70px;
+    width: 340px;
+    height: 340px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    pointer-events: none;
+}
+
+.uni-profile-hero__deco::after {
+    content: '';
+    position: absolute;
+    inset: 45px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.uni-profile-hero__brand-logo {
+    position: absolute;
+    bottom: 1.25rem;
+    right: 1.75rem;
+    height: 80px;
+    width: auto;
+    max-width: 260px;
+    object-fit: contain;
+    opacity: 0.9;
+    pointer-events: none;
+    user-select: none;
+    border-radius: 8px;
+}
+
+@media (max-width: 991.98px) {
+    .uni-profile-hero__brand-logo {
+        height: 66px;
+        max-width: 210px;
+        bottom: 1rem;
+        right: 1.25rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .uni-profile-hero__brand-logo {
+        height: 36px;
+        max-width: 120px;
+        bottom: 0.75rem;
+        right: 50%;
+        transform: translateX(50%);
+    }
+}
+
+.uni-profile-hero__logo-wrap {
+    flex-shrink: 0;
+    width: clamp(76px, 12vw, 112px);
+    height: clamp(76px, 12vw, 112px);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.22);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow:
+        0 0 0 6px rgba(255, 255, 255, 0.05),
+        0 8px 24px rgba(0, 0, 0, 0.25);
+    position: relative;
+    z-index: 1;
+}
+
+.uni-profile-hero__logo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.uni-profile-hero__logo-placeholder {
+    font-size: clamp(2.2rem, 5.5vw, 3.5rem);
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.uni-profile-hero__info {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.uni-profile-hero__name {
+    color: #ffffff;
+    font-size: clamp(1.2rem, 2.6vw, 1.95rem);
+    font-weight: 800;
+    line-height: 1.15;
+    margin: 0 0 0.85rem;
+    letter-spacing: -0.01em;
+}
+
+.uni-profile-hero__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    align-items: center;
+}
+
+.uni-profile-hero__country-link,
+.uni-profile-hero__website-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #ffffff;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 999px;
+    padding: 0.4rem 1rem 0.4rem 0.75rem;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.uni-profile-hero__country-link:hover,
+.uni-profile-hero__country-link:focus-visible,
+.uni-profile-hero__website-link:hover,
+.uni-profile-hero__website-link:focus-visible {
+    background: rgba(255, 84, 20, 0.35);
+    border-color: rgba(255, 84, 20, 0.6);
+    color: #ffffff;
+}
+
+.uni-profile-hero__country-link .fa-map-marker-alt,
+.uni-profile-hero__website-link .fa-external-link-alt {
+    color: var(--accent);
+    font-size: 0.95rem;
+}
+
+@media (max-width: 767.98px) {
+    .uni-profile-hero {
+        padding: 1.15rem 1.1rem;
+        margin-bottom: 1.25rem;
+        border-radius: 16px;
+        gap: 0.85rem;
+    }
+
+    .uni-profile-hero__logo-wrap {
+        width: 72px;
+        height: 72px;
+    }
+
+    .uni-profile-hero__logo-placeholder {
+        font-size: 1.85rem;
+    }
+
+    .uni-profile-hero__name {
+        font-size: 1.2rem;
+        margin-bottom: 0.55rem;
+    }
+
+    .uni-profile-hero__country-link,
+    .uni-profile-hero__website-link {
+        font-size: 0.8rem;
+        padding: 0.32rem 0.75rem 0.32rem 0.6rem;
+    }
+
+    .uni-profile-hero__deco {
+        width: 220px;
+        height: 220px;
+        right: -50px;
+        top: -50px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .uni-profile-hero {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+        border-radius: 14px;
+        padding: 1rem 0.9rem 2.65rem;
+        margin-bottom: 1rem;
+        gap: 0.65rem;
+    }
+
+    .uni-profile-hero__logo-wrap {
+        width: 64px;
+        height: 64px;
+    }
+
+    .uni-profile-hero__logo-placeholder {
+        font-size: 1.55rem;
+    }
+
+    .uni-profile-hero__info {
+        text-align: center;
+    }
+
+    .uni-profile-hero__name {
+        font-size: 1.08rem;
+        margin-bottom: 0.45rem;
+        line-height: 1.2;
+    }
+
+    .uni-profile-hero__badges {
+        justify-content: center;
+        gap: 0.4rem;
+    }
+
+    .uni-profile-hero__country-link,
+    .uni-profile-hero__website-link {
+        font-size: 0.74rem;
+        padding: 0.28rem 0.65rem 0.28rem 0.5rem;
+        gap: 0.35rem;
+    }
+
+    .uni-profile-hero__country-link .fa-map-marker-alt,
+    .uni-profile-hero__website-link .fa-external-link-alt {
+        font-size: 0.82rem;
+    }
+}
+
+.university-detail-page {
+    color: #27313a;
+}
+
+.university-detail-breadcrumb__list {
+    font-size: 0.9rem;
+}
+
+.university-detail-breadcrumb__list .breadcrumb-item a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.university-detail-breadcrumb__list .breadcrumb-item a:hover,
+.university-detail-breadcrumb__list .breadcrumb-item a:focus-visible {
+    color: var(--accent);
+}
+
+.university-detail-name {
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1.2;
+}
+
+.university-detail-country-badge {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--primary);
+    background: color-mix(in srgb, var(--bs-light) 88%, white);
+    border: 1px solid rgba(var(--bs-primary-rgb), 0.14);
+    border-radius: 999px;
+    padding: 0.4rem 0.95rem 0.4rem 0.7rem;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset;
+}
+
+.university-detail-country-badge .fa-map-marker-alt {
+    color: var(--accent);
+    font-size: 1rem;
+}
+
+@media (max-width: 575.98px) {
+    .university-detail-breadcrumb__list {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        gap: 0.35rem;
+        padding-bottom: 0.35rem;
+        margin-bottom: 0;
+        white-space: nowrap;
+        scrollbar-width: thin;
+    }
+
+    .university-detail-breadcrumb__list .breadcrumb-item {
+        flex-shrink: 0;
+    }
+}
+
+.university-detail-photo-wrap {
+    border-radius: 14px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 180px;
+    background: #f5f7f9;
+    border: 1px solid rgba(0, 49, 61, 0.08);
+    box-shadow: 0 4px 18px rgba(0, 49, 61, 0.05);
+}
+
+.university-detail-photo-wrap--no-image {
+    min-height: 200px;
+}
+
+.university-detail-photo {
+    width: min(100%, 260px);
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #fff;
+    box-shadow: 0 4px 16px rgba(0, 49, 61, 0.08);
+}
+
+.university-detail-photo-placeholder {
+    font-size: 3rem;
+    color: rgba(0, 49, 61, 0.25);
+}
+
+.university-detail-page .row > [class*='col-'] {
+    min-width: 0;
+}
+
+.university-detail-content-card {
+    border-radius: 14px;
+    background: #fff;
+    border: 1px solid rgba(0, 49, 61, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 49, 61, 0.05);
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.university-detail-section-title {
+    font-weight: 700;
+    color: var(--primary);
+    border-left: 3px solid var(--accent);
+    padding-left: 0.65rem;
+}
+
+.university-detail-description {
+    line-height: 1.8;
+    font-size: 1rem;
+    color: #27313a;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    -webkit-overflow-scrolling: touch;
+}
+
+.university-detail-description > .mb-0 {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.university-detail-description img,
+.university-detail-description iframe,
+.university-detail-description video,
+.university-detail-description embed,
+.university-detail-description object {
+    max-width: 100%;
+    height: auto;
+}
+
+.university-detail-description table {
+    width: 100%;
+    max-width: 100%;
+    table-layout: fixed;
+    word-break: break-word;
+}
+
+.university-detail-description pre {
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.university-detail-description h2,
+.university-detail-description h3,
+.university-detail-description h4 {
+    color: var(--primary);
+    scroll-margin-top: 5.75rem;
+}
+
+.university-detail-description a {
+    color: var(--accent);
+}
+
+.university-detail-description a:hover {
+    color: var(--accent-hover);
+}
+
+.university-detail-empty {
+    font-size: 1rem;
+}
+
+@media (max-width: 767.98px) {
+    .abroad-detail-universities__grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+
+    .abroad-detail-uni-card__frame {
+        width: 76px;
+        height: 76px;
+    }
 }
 
 .abroad-card__cta {

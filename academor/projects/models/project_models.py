@@ -258,6 +258,38 @@ class StudyAbroadSection(models.Model):
 
 
 class University(models.Model):
+    name = models.CharField(
+        max_length=200,
+        null=True,
+        blank=True,
+        verbose_name='Name',
+    )
+    slug = models.SlugField(
+        max_length=150,
+        null=True,
+        blank=True,
+        unique=True,
+        verbose_name='URL slug',
+    )
+    description = RichTextField(
+        null=True,
+        blank=True,
+        verbose_name='Description',
+    )
+    study_abroad = models.ForeignKey(
+        'AbroadModel',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='universities',
+        verbose_name='Study abroad country',
+    )
+    website = models.URLField(
+        max_length=300,
+        null=True,
+        blank=True,
+        verbose_name='Website URL',
+    )
     flag = models.ImageField(
         upload_to='universities/',
         verbose_name='Flag image'
@@ -273,4 +305,6 @@ class University(models.Model):
         ordering = ('id',)
 
     def __str__(self):
+        if self.name and str(self.name).strip():
+            return str(self.name).strip()
         return f'University #{self.pk}'
