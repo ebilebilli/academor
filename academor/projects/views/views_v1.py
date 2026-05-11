@@ -263,7 +263,7 @@ class TeamPageView(View):
         members = get_team_members()
         categories = get_project_categories(lang)
         context = {
-            'team': [serialize_team_member(m) for m in members],
+            'team': [serialize_team_member(m, lang=lang) for m in members],
             'categories': [serialize_project_category(c, lang) for c in categories],
             'language': lang,
             'background_image': get_background_image('about'),
@@ -293,7 +293,7 @@ class TeamDetailPageView(View):
             raise Http404(_("Team member not found"))
 
         categories = get_project_categories(lang)
-        member_data = serialize_team_member(member)
+        member_data = serialize_team_member(member, lang=lang)
         excerpt = meta_plain_excerpt(member_data.get('description') or '')
         if not excerpt.strip():
             role = (member_data.get('role') or '').strip()

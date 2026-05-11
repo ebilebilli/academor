@@ -665,7 +665,9 @@ class TeamAdminForm(forms.ModelForm):
         model = Team
         fields = '__all__'
         widgets = {
-            'description': CKEditorWidget(),
+            'description_az': CKEditorWidget(),
+            'description_en': CKEditorWidget(),
+            'description_ru': CKEditorWidget(),
         }
 
 
@@ -676,7 +678,31 @@ class TeamAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     list_editable = ('order',)
     readonly_fields = ('slug',)
     ordering = ('order', 'id')
-    search_fields = ('name', 'slug', 'role', 'description', 'instagram', 'facebook', 'linkedin', 'tiktok', 'youtube')
+    search_fields = (
+        'name', 'slug', 'role',
+        'description_az', 'description_en', 'description_ru',
+        'instagram', 'facebook', 'linkedin', 'tiktok', 'youtube',
+    )
+    fieldsets = (
+        (None, {
+            'fields': ('image', 'name', 'slug', 'role', 'order'),
+        }),
+        ('Azerbaijani', {
+            'fields': ('description_az',),
+        }),
+        ('English', {
+            'fields': ('description_en',),
+        }),
+        ('Russian', {
+            'fields': ('description_ru',),
+        }),
+        ('Social & files', {
+            'fields': (
+                'instagram', 'facebook', 'linkedin', 'tiktok', 'youtube',
+                'descriptor',
+            ),
+        }),
+    )
     list_per_page = 25
 
 

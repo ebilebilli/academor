@@ -164,7 +164,7 @@ def get_team_members(is_active=True):
     return list(queryset.order_by('order', 'id'))
 
 
-def serialize_team_member(member):
+def serialize_team_member(member, lang='az'):
     if member is None:
         return None
     social_urls = [
@@ -175,13 +175,14 @@ def serialize_team_member(member):
         getattr(member, 'tiktok', None) or '',
     ]
     social_count = sum(1 for u in social_urls if u.strip())
+    desc_html = _localized_value(member, 'description', lang)
     return {
         'id': member.id,
         'slug': member.slug,
         'image': media_url(member.image) if member.image else None,
         'name': member.name,
         'role': member.role,
-        'description': member.description,
+        'description': desc_html or None,
         'instagram': getattr(member, 'instagram', None),
         'facebook': getattr(member, 'facebook', None),
         'linkedin': getattr(member, 'linkedin', None),
@@ -799,8 +800,9 @@ def get_home_page_data(request, lang):
         'abroad_items': get_serialized_abroad_items(lang=lang, is_active=True),
         'universities': get_serialized_universities(is_active=True),
         'abroad_intro_text': get_study_abroad_section(lang=lang),
-        'team': [serialize_team_member(m) for m in get_team_members()],
+        'team': [serialize_team_member(m, lang=lang) for m in get_team_members()],
         'reviews': [serialize_review(r) for r in get_reviews()],
+        'site_faqs': get_serialized_site_faq_entries(lang=lang, is_active=True),
     }
 
 

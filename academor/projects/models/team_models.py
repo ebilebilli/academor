@@ -23,10 +23,20 @@ class Team(models.Model):
         max_length=120,
         verbose_name='Role',
     )
-    description = RichTextField(
+    description_az = RichTextField(
         null=True,
         blank=True,
-        verbose_name='Description',
+        verbose_name='Description (AZ)',
+    )
+    description_en = RichTextField(
+        null=True,
+        blank=True,
+        verbose_name='Description (EN)',
+    )
+    description_ru = RichTextField(
+        null=True,
+        blank=True,
+        verbose_name='Description (RU)',
     )
     instagram = models.URLField(
         null=True,
