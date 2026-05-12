@@ -210,7 +210,6 @@
             {% for item in abroad_items %}
             <div class="col-lg-4 col-md-6">
                 <a href="{% url 'projects:abroad-detail' slug=item.slug %}" class="abroad-card h-100 text-center d-block text-decoration-none">
-                    <span class="visually-hidden">{{ item.name }}</span>
                     <div class="abroad-card__icon-wrap">
                         {% if item.img %}
                         {% academor_branded_lazy_img item.img item.name img_class='abroad-card__thumb' layout='circle' width='90' height='90' loading='lazy' %}
@@ -218,6 +217,11 @@
                         <i class="fa fa-angle-left abroad-card__icon" aria-hidden="true"></i>
                         {% endif %}
                     </div>
+                    {% if item.name %}
+                    <span class="abroad-card__title abroad-card__title--grid">{{ item.name }}</span>
+                    {% else %}
+                    <span class="visually-hidden">{% trans "Study abroad" %}</span>
+                    {% endif %}
                     <span class="abroad-card__cta" aria-hidden="true"><i class="fa fa-arrow-right"></i></span>
                 </a>
             </div>

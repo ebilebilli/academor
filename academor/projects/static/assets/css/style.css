@@ -1740,7 +1740,7 @@ h1.animated, h2.animated, h3.animated,
     z-index: 3;
     width: 44px;
     height: 44px;
-    /* Swiper bundle loads after this file; watchOverflow hides nav unless overridden in JS/CSS */
+    /* Strong display so theme wins over Swiper; .swiper-button-lock overrides when overflow is off */
     display: inline-flex !important;
     visibility: visible !important;
     align-items: center;
@@ -1777,6 +1777,14 @@ h1.animated, h2.animated, h3.animated,
 .team-swiper .swiper-button-next:hover {
     opacity: 0.92;
     transform: translateY(-50%) scale(1.05);
+}
+
+/* Respect Swiper watchOverflow: base rules use !important, so locked nav must win */
+.team-swiper .swiper-button-prev.swiper-button-lock,
+.team-swiper .swiper-button-next.swiper-button-lock {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none;
 }
 
 .team-swiper .swiper-button-disabled {
@@ -3984,6 +3992,16 @@ h1.animated, h2.animated, h3.animated,
     font-weight: 700;
     margin-bottom: 0.35rem;
     letter-spacing: 0;
+}
+
+.abroad-card__title--grid {
+    display: block;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    max-width: 100%;
+    line-height: 1.25;
+    word-break: break-word;
+    hyphens: auto;
 }
 
 .abroad-card__title--detail {

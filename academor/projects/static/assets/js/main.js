@@ -272,8 +272,8 @@
                 nextEl: teamRoot.querySelector(".swiper-button-next"),
                 prevEl: teamRoot.querySelector(".swiper-button-prev"),
             },
-            /* default true hides prev/next when all slides fit the viewport */
-            watchOverflow: false,
+            /* Hide prev/next when all slides fit (e.g. 4 members on desktop at slidesPerView 4) */
+            watchOverflow: true,
             breakpoints: {
                 576: { slidesPerView: 2, spaceBetween: 20 },
                 768: { slidesPerView: 3, spaceBetween: 20 },
