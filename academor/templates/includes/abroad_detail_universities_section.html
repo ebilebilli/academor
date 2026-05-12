@@ -1,5 +1,5 @@
 {% load i18n static academor_lazy_tags %}
-{% trans "Partner university" as partner_university_label %}
+{% trans "University" as university_fallback_label %}
 {% trans "View university profile" as view_university_profile_label %}
 <section
     class="abroad-detail-universities abroad-detail-universities--panel{% if sidebar %} abroad-detail-universities--sidebar{% endif %}{% if compact_header %} abroad-detail-universities--compact-rail{% endif %}"
@@ -8,12 +8,12 @@
     {% if sidebar and compact_header %}
     <header class="abroad-detail-universities__header abroad-detail-universities__header--page-aside">
         <h3 id="abroad-detail-uni-heading" class="abroad-detail-universities__title">
-            {% trans "Partner universities" %}
+            {% trans "Universities" %}
         </h3>
         {% if country_name %}
         <p class="abroad-detail-universities__subtitle">
             {% blocktranslate trimmed with place=country_name %}
-                Institutions we collaborate with for study in {{ place }}.
+                Selected educational institutions in {{ place }}.
             {% endblocktranslate %}
         </p>
         {% endif %}
@@ -25,12 +25,12 @@
         </div>
         <header class="abroad-detail-universities__header abroad-detail-universities__header--band abroad-detail-universities__header--sidebar">
             <h3 id="abroad-detail-uni-heading" class="abroad-detail-universities__title">
-                {% trans "Partner universities" %}
+                {% trans "Universities" %}
             </h3>
             {% if country_name %}
             <p class="abroad-detail-universities__subtitle">
                 {% blocktranslate trimmed with place=country_name %}
-                    Institutions we collaborate with for study in {{ place }}.
+                    Selected educational institutions in {{ place }}.
                 {% endblocktranslate %}
             </p>
             {% endif %}
@@ -39,12 +39,12 @@
     {% else %}
     <header class="abroad-detail-universities__header">
         <h3 id="abroad-detail-uni-heading" class="abroad-detail-universities__title">
-            {% trans "Partner universities" %}
+            {% trans "Universities" %}
         </h3>
         {% if country_name %}
         <p class="abroad-detail-universities__subtitle">
             {% blocktranslate trimmed with place=country_name %}
-                Institutions we collaborate with for study in {{ place }}.
+                Selected educational institutions in {{ place }}.
             {% endblocktranslate %}
         </p>
         {% endif %}
@@ -53,9 +53,9 @@
 
     <p class="visually-hidden">
         {% blocktranslate trimmed count counter=universities|length %}
-            One partner institution
+            One institution
         {% plural %}
-            {{ counter }} partner institutions
+            {{ counter }} institutions
         {% endblocktranslate %}
     </p>
 
@@ -63,7 +63,7 @@
         {% for uni in universities %}
         <li class="abroad-detail-universities__item">
             {% if uni.slug %}
-            <a href="{% url 'projects:abroad-university-detail' slug=uni.slug %}" class="abroad-detail-uni-card-link" aria-label="{% if uni.name %}{{ uni.name }} — {% else %}{{ partner_university_label }} — {% endif %}{{ view_university_profile_label }}">
+            <a href="{% url 'projects:abroad-university-detail' slug=uni.slug %}" class="abroad-detail-uni-card-link" aria-label="{% if uni.name %}{{ uni.name }} — {% else %}{{ university_fallback_label }} — {% endif %}{{ view_university_profile_label }}">
             {% endif %}
             <figure class="abroad-detail-uni-card{% if sidebar %} abroad-detail-uni-card--rail{% endif %}">
                 <div class="abroad-detail-uni-card__frame">
@@ -76,9 +76,9 @@
                             {% endif %}
                         {% else %}
                             {% if sidebar %}
-                                {% academor_branded_lazy_img uni.flag partner_university_label img_class='abroad-detail-uni-card__media' layout='circle' width='56' height='56' loading='eager' reveal='immediate' %}
+                                {% academor_branded_lazy_img uni.flag university_fallback_label img_class='abroad-detail-uni-card__media' layout='circle' width='56' height='56' loading='eager' reveal='immediate' %}
                             {% else %}
-                                {% academor_branded_lazy_img uni.flag partner_university_label img_class='abroad-detail-uni-card__media' layout='circle' width='88' height='88' loading='eager' reveal='immediate' %}
+                                {% academor_branded_lazy_img uni.flag university_fallback_label img_class='abroad-detail-uni-card__media' layout='circle' width='88' height='88' loading='eager' reveal='immediate' %}
                             {% endif %}
                         {% endif %}
                     {% elif uni.name %}
@@ -86,7 +86,7 @@
                         <span class="visually-hidden">{{ uni.name }}</span>
                     {% else %}
                         <span class="abroad-detail-uni-card__placeholder-icon" aria-hidden="true"><i class="fa fa-graduation-cap"></i></span>
-                        <span class="visually-hidden">{{ partner_university_label }}</span>
+                        <span class="visually-hidden">{{ university_fallback_label }}</span>
                     {% endif %}
                 </div>
                 {% if uni.name %}
@@ -95,7 +95,7 @@
                 </figcaption>
                 {% elif uni.slug %}
                 <figcaption class="abroad-detail-uni-card__caption">
-                    <span class="abroad-detail-uni-card__name">{{ partner_university_label }}</span>
+                    <span class="abroad-detail-uni-card__name">{{ university_fallback_label }}</span>
                 </figcaption>
                 {% endif %}
             </figure>

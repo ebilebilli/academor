@@ -69,7 +69,7 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
         "abroad-page": {
             "title": "Study Abroad | Academor — Programs from Baku",
             "description": (
-                "Study abroad options with Academor: destinations, partner universities, "
+                "Study abroad options with Academor: destinations, university profiles, "
                 "and step-by-step support for students from Azerbaijan."
             ),
             "keywords": "study abroad baku, academor abroad, universities overseas, azerbaijan students, " + _EN_KW_CORE,
@@ -82,9 +82,9 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
         },
         "abroad-university-detail": {
             "description": (
-                "Partner university profile: programs, highlights, and how Academor supports your application from Baku."
+                "University profile: programs, highlights, and how Academor supports your application from Baku."
             ),
-            "keywords": "partner university, study abroad baku, academor, university profile, " + _EN_KW_CORE,
+            "keywords": "university profile, study abroad baku, academor, " + _EN_KW_CORE,
         },
         "contact-page": {
             "title": "Contact | Academor — Baku",
@@ -165,15 +165,15 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
         "abroad-page": {
             "title": "Xaricdə təhsil | Academor — Bakı",
             "description": (
-                "Academor ilə xaricdə təhsil: istiqamətlər, tərəfdaş universitetlər və Azərbaycan tələbələri üçün addım-addım dəstək."
+                "Academor ilə xaricdə təhsil: istiqamətlər, universitet profilləri və Azərbaycan tələbələri üçün addım-addım dəstək."
             ),
             "keywords": "xaricdə təhsil bakı, academor, universitet seçimi, qəbul dəstəyi, " + _AZ_KW_CORE,
         },
         "abroad-university-detail": {
             "description": (
-                "Tərəfdaş universitet profili: proqramlar və Academor-un Bakıdan müraciət və qəbul dəstəyi."
+                "Universitet profili: proqramlar və Academor-un Bakıdan müraciət və qəbul dəstəyi."
             ),
-            "keywords": "universitet tərəfdaş, xaricdə təhsil bakı, academor, " + _AZ_KW_CORE,
+            "keywords": "universitet profili, xaricdə təhsil bakı, academor, " + _AZ_KW_CORE,
         },
         "abroad-detail": {
             "description": (
@@ -256,7 +256,7 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
         "abroad-page": {
             "title": "Обучение за рубежом | Academor — Баку",
             "description": (
-                "Программы обучения за рубежом с Academor: направления, вузы-партнёры и сопровождение из Азербайджана."
+                "Программы обучения за рубежом с Academor: направления, профили вузов и сопровождение из Азербайджана."
             ),
             "keywords": "учёба за рубежом баку, academor, поступление за границу, " + _RU_KW_CORE,
         },
@@ -268,9 +268,9 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
         },
         "abroad-university-detail": {
             "description": (
-                "Профиль вуза-партнёра: программы и сопровождение заявки от Academor в Баку."
+                "Профиль вуза: программы и сопровождение заявки от Academor в Баку."
             ),
-            "keywords": "вуз партнёр, учёба за рубежом баку, academor, " + _RU_KW_CORE,
+            "keywords": "профиль вуза, учёба за рубежом баку, academor, " + _RU_KW_CORE,
         },
         "contact-page": {
             "title": "Контакты | Academor — Баку",

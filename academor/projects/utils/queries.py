@@ -866,7 +866,7 @@ def get_abroad_detail_view_context(lang, slug):
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
 def get_university_detail_view_context(lang, slug):
-    """Partner university detail — cached per (lang, slug); None if not found."""
+    """University detail page — cached per (lang, slug); None if not found."""
     translation.activate(lang)
     u = (
         University.objects.filter(slug=slug, is_active=True)
@@ -884,7 +884,7 @@ def get_university_detail_view_context(lang, slug):
             'slug': abroad.slug,
             'name': _localized_value(abroad, 'name', lang),
         }
-    display_name = (u.name or '').strip() or _('Partner university')
+    display_name = (u.name or '').strip() or _('University')
     university_data = {
         'id': u.id,
         'name': display_name,

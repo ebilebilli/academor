@@ -662,27 +662,31 @@ msgstr "Təcrübəli və peşəkar müəllimlər"
 msgid "Your future starts here"
 msgstr "Gələcəyinizə buradan başlayın"
 
-msgid "Partner universities"
-msgstr "Tərəfdaş universitetlər"
+msgid "Universities"
+msgstr "Universitetlər"
 
-msgid "Partner university"
-msgstr "Tərəfdaş universitet"
+msgid "University"
+msgstr "Universitet"
 
 msgid "View university profile"
 msgstr "Universitet profilinə bax"
 
 #, python-format
-msgid "Institutions we collaborate with for study in %(place)s."
-msgstr "%(place)s üzrə əməkdaşlıq etdiyimiz təhsil müəssisələri."
+msgid "Selected educational institutions in %(place)s."
+msgstr "%(place)s üzrə seçilmiş təhsil müəssisələri."
 
 #, python-format
-msgid "One partner institution"
-msgid_plural "%(counter)s partner institutions"
-msgstr[0] "1 tərəfdaş müəssisə"
-msgstr[1] "%(counter)s tərəfdaş müəssisə"
+msgid "One institution"
+msgid_plural "%(counter)s institutions"
+msgstr[0] "1 təhsil müəssisəsi"
+msgstr[1] "%(counter)s təhsil müəssisəsi"
 
 msgid "Page actions"
 msgstr "Səhifə əməliyyatları"
 
 msgid "About this university"
 msgstr "Bu universitet haqqında"
+
+#, python-format
+msgid "University profile: %(name)s — Academor study abroad support, Baku."
+msgstr "Universitet profili: %(name)s — Academor-un Bakıdan xaricdə təhsil dəstəyi."

@@ -653,27 +653,31 @@ msgstr "Expert teachers"
 msgid "Your future starts here"
 msgstr "Your future starts here"
 
-msgid "Partner universities"
-msgstr "Partner universities"
+msgid "Universities"
+msgstr "Universities"
 
-msgid "Partner university"
-msgstr "Partner university"
+msgid "University"
+msgstr "University"
 
 msgid "View university profile"
 msgstr "View university profile"
 
 #, python-format
-msgid "Institutions we collaborate with for study in %(place)s."
-msgstr "Institutions we collaborate with for study in %(place)s."
+msgid "Selected educational institutions in %(place)s."
+msgstr "Selected educational institutions in %(place)s."
 
 #, python-format
-msgid "One partner institution"
-msgid_plural "%(counter)s partner institutions"
-msgstr[0] "One partner institution"
-msgstr[1] "%(counter)s partner institutions"
+msgid "One institution"
+msgid_plural "%(counter)s institutions"
+msgstr[0] "One institution"
+msgstr[1] "%(counter)s institutions"
 
 msgid "Page actions"
 msgstr "Page actions"
 
 msgid "About this university"
 msgstr "About this university"
+
+#, python-format
+msgid "University profile: %(name)s — Academor study abroad support, Baku."
+msgstr "University profile: %(name)s — Academor study abroad support, Baku."

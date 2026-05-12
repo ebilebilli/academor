@@ -4705,12 +4705,19 @@ h1.animated, h2.animated, h3.animated,
     overflow-x: auto;
     overflow-wrap: anywhere;
     word-break: break-word;
+    /* WebKit: overflow-x:auto can steal vertical pans; pan-y restores page scroll on touch. */
+    touch-action: pan-y pinch-zoom;
     -webkit-overflow-scrolling: touch;
 }
 
 .university-detail-description > .mb-0 {
     min-width: 0;
     max-width: 100%;
+}
+
+/* No inner vertical scroll box: let touch scroll chain to the page (custom-scroll adds contain). */
+.university-detail-page .university-detail-description.custom-scroll {
+    overscroll-behavior: auto;
 }
 
 .university-detail-description img,

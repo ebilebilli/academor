@@ -178,7 +178,7 @@ class AbroadUniversityDetailPageView(View):
         uni = context['university']
         excerpt = meta_plain_excerpt(uni.get('description') or '')
         if not excerpt.strip():
-            excerpt = _('Partner university profile: %(name)s — Academor study abroad support, Baku.') % {
+            excerpt = _('University profile: %(name)s — Academor study abroad support, Baku.') % {
                 'name': uni['name'],
             }
         context['page_description'] = excerpt[:320]
