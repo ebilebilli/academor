@@ -4177,9 +4177,9 @@ h1.animated, h2.animated, h3.animated,
 }
 
 .abroad-detail-universities--compact-rail .abroad-detail-uni-card__frame {
-    width: 48px;
-    height: 48px;
-    min-width: 48px;
+    width: 72px;
+    height: 72px;
+    min-width: 72px;
     margin: 0;
     border-radius: 12px;
     background: #fff;
@@ -4218,12 +4218,12 @@ h1.animated, h2.animated, h3.animated,
 
 .abroad-detail-universities--compact-rail .abroad-detail-uni-card__initials {
     color: var(--accent);
-    font-size: 1.05rem;
+    font-size: 1.25rem;
 }
 
 .abroad-detail-universities--compact-rail .abroad-detail-uni-card__placeholder-icon {
     color: var(--accent);
-    font-size: 1.35rem;
+    font-size: 1.6rem;
 }
 
 .abroad-detail-universities__header {
