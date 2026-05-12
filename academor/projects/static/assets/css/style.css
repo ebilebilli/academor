@@ -585,6 +585,71 @@ h1.animated, h2.animated, h3.animated,
     min-width: 12rem;
 }
 
+/* Header: Study Abroad dropdown — ölkə + universitet sub-listi */
+.nav-abroad-dropdown {
+    max-height: min(75vh, 480px);
+    overflow-y: auto;
+    min-width: 16rem;
+}
+
+.nav-abroad-country {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+}
+
+.nav-abroad-country__link {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.nav-abroad-country__toggle {
+    flex: 0 0 auto;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    padding: 0 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: color 0.15s ease, background-color 0.15s ease, transform 0.2s ease;
+}
+
+.nav-abroad-country__toggle:hover,
+.nav-abroad-country__toggle:focus-visible {
+    background-color: #FFF0EB;
+    color: var(--accent);
+    outline: none;
+}
+
+.nav-abroad-country__toggle .fa-chevron-down {
+    transition: transform 0.2s ease;
+    font-size: 0.75rem;
+}
+
+.nav-abroad-country__toggle[aria-expanded="true"] .fa-chevron-down {
+    transform: rotate(180deg);
+}
+
+.nav-abroad-unis {
+    background-color: #fafafa;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.nav-abroad-uni {
+    padding-left: 2rem !important;
+    font-size: 0.9rem;
+    color: #4a5d63;
+}
+
+.nav-abroad-uni::before {
+    content: "•";
+    margin-right: 0.5rem;
+    color: var(--accent);
+}
+
 
 /*** Navbar ***/
 .navbar .dropdown-toggle::after {

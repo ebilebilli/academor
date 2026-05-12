@@ -523,6 +523,43 @@ def get_nav_abroad_items(lang='az', is_active=True):
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
+def get_nav_abroad_items_with_universities(lang='az', is_active=True):
+    """Header dropdown: hər ölkə üçün aktiv universitet siyahısı (id, slug, name)."""
+    items = get_abroad_items(is_active=is_active)
+    if not items:
+        return []
+    item_ids = [i.id for i in items]
+    uni_qs = (
+        University.objects.filter(
+            study_abroad_id__in=item_ids,
+            is_active=True,
+        )
+        .exclude(slug__isnull=True)
+        .exclude(slug='')
+        .only('id', 'name', 'slug', 'study_abroad_id')
+        .order_by('id')
+    )
+    unis_by_country = {}
+    for u in uni_qs:
+        name = (u.name or '').strip()
+        if not name:
+            continue
+        unis_by_country.setdefault(u.study_abroad_id, []).append({
+            'id': u.id,
+            'slug': u.slug,
+            'name': name,
+        })
+    result = []
+    for i in items:
+        data = serialize_abroad_item(i, lang=lang)
+        if not data:
+            continue
+        data['universities'] = unis_by_country.get(i.id, [])
+        result.append(data)
+    return result
+
+
+@cached_query(timeout='CACHE_TIMEOUT_LONG')
 def get_serialized_universities(is_active=True, study_abroad_show_on_main_page=None):
     return [
         serialize_university(u)

@@ -6,7 +6,7 @@ from projects.utils.queries import (
     get_background_image,
     get_contact,
     get_nav_courses,
-    get_nav_abroad_items,
+    get_nav_abroad_items_with_universities,
     serialize_contact,
 )
 
@@ -132,17 +132,21 @@ def site_footer_context(request):
     nav_url_name = getattr(rm, 'url_name', '') if rm else ''
     nav_course_slug = ''
     nav_abroad_slug = ''
+    nav_university_slug = ''
     if rm and getattr(rm, 'kwargs', None):
         if nav_url_name == 'course-detail':
             nav_course_slug = rm.kwargs.get('slug') or ''
         elif nav_url_name == 'abroad-detail':
             nav_abroad_slug = rm.kwargs.get('slug') or ''
+        elif nav_url_name == 'abroad-university-detail':
+            nav_university_slug = rm.kwargs.get('slug') or ''
     return {
         'footer_contact': serialize_contact(contact, lang) if contact else None,
         'footer_background_image': get_background_image('footer'),
         'nav_courses': get_nav_courses(lang),
-        'nav_abroad_items': get_nav_abroad_items(lang=lang, is_active=True),
+        'nav_abroad_items': get_nav_abroad_items_with_universities(lang=lang, is_active=True),
         'nav_url_name': nav_url_name,
         'nav_course_slug': nav_course_slug,
         'nav_abroad_slug': nav_abroad_slug,
+        'nav_university_slug': nav_university_slug,
     }
