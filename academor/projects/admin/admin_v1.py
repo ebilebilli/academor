@@ -241,10 +241,20 @@ class ServiceCategoryAdminForm(forms.ModelForm):
 @admin.register(ServiceCategory)
 class ServiceCategoryAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     form = ServiceCategoryAdminForm
-    list_display = ('id', 'category_thumb', 'name_link', 'name_en', 'name_ru', 'order', 'is_active', 'created_at')
+    list_display = (
+        'id',
+        'category_thumb',
+        'name_link',
+        'name_en',
+        'name_ru',
+        'order',
+        'is_active',
+        'show_on_main_page',
+        'created_at',
+    )
     list_display_links = ('id',)
-    list_editable = ('order', 'is_active')
-    list_filter = ('is_active', 'created_at')
+    list_editable = ('order', 'is_active', 'show_on_main_page')
+    list_filter = ('is_active', 'show_on_main_page', 'created_at')
     search_fields = (
         'name_az', 'name_en', 'name_ru',
         'description_az', 'description_en', 'description_ru',
@@ -269,7 +279,7 @@ class ServiceCategoryAdmin(AdminImageCompressMixin, admin.ModelAdmin):
             'fields': ('has_certificate', 'is_online', 'is_offline')
         }),
         ('Status', {
-            'fields': ('order', 'is_active', 'created_at')
+            'fields': ('order', 'is_active', 'show_on_main_page', 'created_at')
         }),
     )
 
@@ -306,10 +316,10 @@ class AbroadModelAdminForm(forms.ModelForm):
 @admin.register(AbroadModel)
 class AbroadModelAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     form = AbroadModelAdminForm
-    list_display = ('id', 'name_az', 'slug', 'name_en', 'name_ru', 'preview_image', 'is_active', 'created_at')
-    list_filter = ('is_active', 'created_at')
+    list_display = ('id', 'name_az', 'slug', 'name_en', 'name_ru', 'preview_image', 'is_active', 'show_on_main_page', 'created_at')
+    list_filter = ('is_active', 'show_on_main_page', 'created_at')
     search_fields = ('name_az', 'name_en', 'name_ru', 'slug', 'description_az', 'description_en', 'description_ru')
-    list_editable = ('is_active',)
+    list_editable = ('is_active', 'show_on_main_page')
     readonly_fields = ('created_at', 'preview_image_large')
     list_per_page = 25
     fieldsets = (
@@ -326,7 +336,7 @@ class AbroadModelAdmin(AdminImageCompressMixin, admin.ModelAdmin):
             'fields': ('name_ru', 'description_ru')
         }),
         ('Status', {
-            'fields': ('is_active', 'created_at', 'preview_image_large')
+            'fields': ('is_active', 'show_on_main_page', 'created_at', 'preview_image_large')
         }),
     )
 

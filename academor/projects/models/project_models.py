@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from ckeditor.fields import RichTextField
 
@@ -91,6 +92,13 @@ class ServiceCategory(SluggedModel):
     is_active = models.BooleanField(
         default=True,
         verbose_name='Active'
+    )
+    show_on_main_page = models.BooleanField(
+        default=True,
+        verbose_name=_('Show on home page'),
+        help_text=_(
+            'If enabled, this course appears in the "Our Services" grid on the homepage.'
+        ),
     )
     created_at = models.DateTimeField(
         auto_now_add=True,
@@ -212,6 +220,13 @@ class AbroadModel(SluggedModel):
     is_active = models.BooleanField(
         default=True,
         verbose_name='Active'
+    )
+    show_on_main_page = models.BooleanField(
+        default=True,
+        verbose_name=_('Show on home page'),
+        help_text=_(
+            'If enabled, this country and its linked universities appear in the study-abroad block on the homepage.'
+        ),
     )
     created_at = models.DateTimeField(
         auto_now_add=True,

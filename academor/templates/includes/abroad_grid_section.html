@@ -21,7 +21,10 @@
                             {% endif %}
                             {% if not abroad_hero_on_listing_page %}
                             <div class="abroad-hero__actions">
-                                <a href="{% url 'projects:abroad-page' %}" class="btn btn-primary btn-lg rounded-pill px-4 abroad-hero__btn-primary">{% trans "Explore study abroad programs" %}</a>
+                                <a href="{% url 'projects:abroad-page' %}" class="btn btn-outline-accent rounded-pill px-4 px-md-5 fw-semibold">
+                                    {% trans "All study abroad information" %}
+                                    <i class="fas fa-arrow-right ms-2 small" aria-hidden="true"></i>
+                                </a>
                             </div>
                             {% endif %}
                         </div>

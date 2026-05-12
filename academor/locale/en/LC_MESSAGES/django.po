@@ -488,6 +488,20 @@ msgstr "Turkey"
 msgid "Explore study abroad programs"
 msgstr "Study abroad"
 
+msgid "All study abroad information"
+msgstr "All study abroad information"
+
+msgid "Show on home page"
+msgstr "Show on home page"
+
+msgid "If enabled, this country and its linked universities appear in the study-abroad block on the homepage."
+msgstr ""
+"If enabled, this country and its linked universities appear in the study-abroad block on the homepage."
+
+msgid "If enabled, this course appears in the \"Our Services\" grid on the homepage."
+msgstr ""
+"If enabled, this course appears in the \"Our Services\" grid on the homepage."
+
 msgid "Browse destinations"
 msgstr "Browse destinations"
 
@@ -497,6 +511,7 @@ msgstr "Globe with Europe map — study abroad destinations"
 msgid "Next"
 msgstr "Next"
 
+#. Navigation: return to the previous page or list (team, abroad, university, test).
 msgid "Back"
 msgstr "Back"
 

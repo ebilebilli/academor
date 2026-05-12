@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-{% load i18n %}
-<html lang="en">
+{% load i18n %}{% get_current_language as LANG_CODE %}
+<html lang="{{ LANG_CODE }}">
 <head>
     {% include "includes/site_layout_head.html" with page_title=page_title %}
 </head>
@@ -74,8 +74,8 @@
                     </div>
 
                     <div class="d-flex flex-column flex-sm-row flex-wrap gap-3 mt-4 pt-2">
-                        <a href="{% url 'projects:team-page' %}" class="btn btn-outline-primary px-4 py-2 rounded-pill">
-                            <i class="fa fa-arrow-left me-2"></i>{% trans "Back to team" %}
+                        <a href="{% url 'projects:team-page' %}" class="btn btn-outline-header px-4 py-2 rounded-pill">
+                            <i class="fa fa-arrow-left me-2" aria-hidden="true"></i>{% trans "Back" %}
                         </a>
                         <a href="{% url 'projects:contact-page' %}" class="btn btn-primary px-4 py-2 rounded-pill">
                             {% trans "Contact us" %}

@@ -115,11 +115,14 @@ _category_media_prefetch = Prefetch(
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
-def get_project_categories(lang='az'):
+def get_project_categories(lang='az', show_on_main_page=None):
     """Aktiv service kateqoriyaları (courses)."""
-    return ServiceCategory.objects.filter(is_active=True).order_by('order', 'id').prefetch_related(
+    qs = ServiceCategory.objects.filter(is_active=True).order_by('order', 'id').prefetch_related(
         _category_media_prefetch,
     )
+    if show_on_main_page is not None:
+        qs = qs.filter(show_on_main_page=show_on_main_page)
+    return qs
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
@@ -415,7 +418,7 @@ def get_study_abroad_section(lang='az'):
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
-def get_abroad_items(is_active=True):
+def get_abroad_items(is_active=True, show_on_main_page=None):
     qs = AbroadModel.objects.only(
         'id',
         'slug',
@@ -428,10 +431,13 @@ def get_abroad_items(is_active=True):
         'img',
         'detail_page_img',
         'is_active',
+        'show_on_main_page',
         'created_at',
     )
     if is_active is not None:
         qs = qs.filter(is_active=is_active)
+    if show_on_main_page is not None:
+        qs = qs.filter(show_on_main_page=show_on_main_page)
     return list(qs.order_by('id'))
 
 
@@ -451,16 +457,28 @@ def serialize_abroad_item(item, lang='az'):
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
-def get_universities(is_active=True):
+def get_universities(is_active=True, study_abroad_show_on_main_page=None):
     qs = University.objects.only(
         'id',
         'flag',
         'is_active',
         'name',
         'slug',
+        'study_abroad_id',
     )
     if is_active is not None:
         qs = qs.filter(is_active=is_active)
+    if study_abroad_show_on_main_page is True:
+        qs = qs.filter(
+            study_abroad_id__isnull=False,
+            study_abroad__show_on_main_page=True,
+            study_abroad__is_active=True,
+        )
+    elif study_abroad_show_on_main_page is False:
+        qs = qs.filter(
+            Q(study_abroad_id__isnull=True)
+            | Q(study_abroad__show_on_main_page=False)
+        )
     return list(qs.order_by('id'))
 
 
@@ -492,8 +510,11 @@ def _serialize_university_for_abroad_country_page(u):
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
-def get_serialized_abroad_items(lang='az', is_active=True):
-    return [serialize_abroad_item(i, lang=lang) for i in get_abroad_items(is_active=is_active)]
+def get_serialized_abroad_items(lang='az', is_active=True, show_on_main_page=None):
+    return [
+        serialize_abroad_item(i, lang=lang)
+        for i in get_abroad_items(is_active=is_active, show_on_main_page=show_on_main_page)
+    ]
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
@@ -502,8 +523,14 @@ def get_nav_abroad_items(lang='az', is_active=True):
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
-def get_serialized_universities(is_active=True):
-    return [serialize_university(u) for u in get_universities(is_active=is_active)]
+def get_serialized_universities(is_active=True, study_abroad_show_on_main_page=None):
+    return [
+        serialize_university(u)
+        for u in get_universities(
+            is_active=is_active,
+            study_abroad_show_on_main_page=study_abroad_show_on_main_page,
+        )
+    ]
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
@@ -731,12 +758,12 @@ def get_home_page_data(request, lang):
     category_slug = request.GET.get('slug')
     is_active = request.GET.get('is_active', 'true').lower() == 'true'
 
-    categories = get_project_categories(lang)
+    categories = get_project_categories(lang, show_on_main_page=True)
     serialized_categories = [
         serialize_project_category(category, lang)
         for category in categories
     ]
-    
+
     about = get_about(lang)
     serialized_about = serialize_about(about, lang) if about else None
     
@@ -797,8 +824,12 @@ def get_home_page_data(request, lang):
         'motto': motto,
         'hero_slides': hero_slides,
         'service_highlights': serialized_service_highlights,
-        'abroad_items': get_serialized_abroad_items(lang=lang, is_active=True),
-        'universities': get_serialized_universities(is_active=True),
+        'abroad_items': get_serialized_abroad_items(
+            lang=lang, is_active=True, show_on_main_page=True
+        ),
+        'universities': get_serialized_universities(
+            is_active=True, study_abroad_show_on_main_page=True
+        ),
         'abroad_intro_text': get_study_abroad_section(lang=lang),
         'team': [serialize_team_member(m, lang=lang) for m in get_team_members()],
         'reviews': [serialize_review(r) for r in get_reviews()],

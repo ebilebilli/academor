@@ -458,6 +458,20 @@ msgstr "Türkiyə"
 msgid "Explore study abroad programs"
 msgstr "Xaricdə təhsil"
 
+msgid "All study abroad information"
+msgstr "Bütün xaricdə təhsil məlumatı"
+
+msgid "Show on home page"
+msgstr "Ana səhifədə göstər"
+
+msgid "If enabled, this country and its linked universities appear in the study-abroad block on the homepage."
+msgstr ""
+"Aktiv olduqda, bu ölkə və ona bağlı universitetlər ana səhifədə xaricdə təhsil bölməsində görünür."
+
+msgid "If enabled, this course appears in the \"Our Services\" grid on the homepage."
+msgstr ""
+"Aktiv olduqda, bu kurs ana səhifədə «Xidmətlərimiz» şəbəkəsində görünür."
+
 msgid "Browse destinations"
 msgstr "İstiqamətlərə baxın"
 
@@ -497,6 +511,7 @@ msgstr "Onlayn & Oflayn"
 msgid "Next"
 msgstr "Növbəti"
 
+#. Navigation: return to the previous page or list (team, abroad, university, test).
 msgid "Back"
 msgstr "Geri"
 

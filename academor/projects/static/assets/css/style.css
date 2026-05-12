@@ -362,6 +362,21 @@ h1.animated, h2.animated, h3.animated,
     box-shadow: none !important;
 }
 
+/* Outline using site header teal (same as .btn-header fill) */
+.btn-outline-header {
+    color: var(--primary) !important;
+    border-color: var(--primary) !important;
+    background-color: transparent !important;
+}
+
+.btn-outline-header:hover,
+.btn-outline-header:focus,
+.btn-outline-header:active {
+    color: #ffffff !important;
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+}
+
 .btn-square {
     width: 38px;
     height: 38px;
