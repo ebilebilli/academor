@@ -354,7 +354,9 @@ class UniversityAdminForm(forms.ModelForm):
         model = University
         fields = '__all__'
         widgets = {
-            'description': CKEditorWidget(),
+            'description_az': CKEditorWidget(),
+            'description_en': CKEditorWidget(),
+            'description_ru': CKEditorWidget(),
         }
 
 
@@ -365,12 +367,21 @@ class UniversityAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     list_filter = ('is_active', 'study_abroad')
     list_editable = ('is_active',)
     readonly_fields = ('slug', 'flag_preview_large')
-    search_fields = ('name', 'slug', 'description')
+    search_fields = ('name', 'slug', 'description_az', 'description_en', 'description_ru')
     autocomplete_fields = ('study_abroad',)
     list_per_page = 25
     fieldsets = (
         ('Content', {
-            'fields': ('name', 'slug', 'study_abroad', 'website', 'description', 'flag', 'flag_preview_large')
+            'fields': ('name', 'slug', 'study_abroad', 'website', 'flag', 'flag_preview_large')
+        }),
+        ('Azerbaijani', {
+            'fields': ('description_az',)
+        }),
+        ('English', {
+            'fields': ('description_en',)
+        }),
+        ('Русский', {
+            'fields': ('description_ru',)
         }),
         ('Status', {
             'fields': ('is_active',)

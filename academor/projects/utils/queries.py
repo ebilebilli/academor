@@ -889,7 +889,7 @@ def get_university_detail_view_context(lang, slug):
         'id': u.id,
         'name': display_name,
         'slug': u.slug,
-        'description': u.description or '',
+        'description': _localized_value(u, 'description', lang) or '',
         'flag': media_url(u.flag) if u.flag else None,
         'website': (u.website or '').strip() or None,
         'study_abroad': study_block,

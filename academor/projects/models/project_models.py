@@ -271,10 +271,20 @@ class University(models.Model):
         unique=True,
         verbose_name='URL slug',
     )
-    description = RichTextField(
+    description_az = RichTextField(
         null=True,
         blank=True,
-        verbose_name='Description',
+        verbose_name='Description (AZ)',
+    )
+    description_en = RichTextField(
+        null=True,
+        blank=True,
+        verbose_name='Description (EN)',
+    )
+    description_ru = RichTextField(
+        null=True,
+        blank=True,
+        verbose_name='Description (RU)',
     )
     study_abroad = models.ForeignKey(
         'AbroadModel',
