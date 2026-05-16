@@ -46,7 +46,7 @@ msgid "No about content has been added yet."
 msgstr "Hələlik haqqında bölməsi üçün məzmun əlavə edilməyib."
 
 msgid "Read More"
-msgstr "Ətraflı Oxu"
+msgstr "Ətraflı"
 
 msgid "Best Online Courses"
 msgstr "Ən Yaxşı Onlayn Kurslar"
@@ -161,6 +161,9 @@ msgstr "Komandamız"
 
 msgid "Meet our full team"
 msgstr "Bütün komandamızla tanış olun"
+
+msgid "Meet experienced mentors committed to your goals."
+msgstr "Hədəfləriniz üçün çalışan təcrübəli müəllim və mentorlarla tanış olun."
 
 msgid "Connect"
 msgstr "Əlaqə"
@@ -484,6 +487,12 @@ msgstr "Bizi izləyin"
 msgid "Our Services"
 msgstr "Xidmətlərimiz"
 
+msgid "View all services"
+msgstr "Bütün xidmətlər"
+
+msgid "Explore categories and find the right course for you."
+msgstr "Kateqoriyalara baxın və özünüzə uyğun kursu seçin."
+
 msgid "Duration"
 msgstr "Müddət"
 
@@ -705,3 +714,69 @@ msgstr "Bu universitet haqqında"
 #, python-format
 msgid "University profile: %(name)s — Academor study abroad support, Baku."
 msgstr "Universitet profili: %(name)s — Academor-un Bakıdan xaricdə təhsil dəstəyi."
+
+msgid "Blog"
+msgstr "Bloq"
+
+msgid "Featured Posts"
+msgstr "Seçilmiş Yazılar"
+
+msgid "Featured"
+msgstr "Seçilmiş"
+
+msgid "Most Recent"
+msgstr "Ən Son"
+
+msgid "Read more"
+msgstr "Daha çox oxu"
+
+msgid "No blog posts have been published yet."
+msgstr "Hələ heç bir bloq yazısı yayımlanmayıb."
+
+msgid "Other Posts"
+msgstr "Digər Yazılar"
+
+msgid "No other posts yet."
+msgstr "Hələ başqa yazı yoxdur."
+
+msgid "Back to Blog"
+msgstr "Bloqa qayıt"
+
+msgid "Gallery"
+msgstr "Qalereya"
+
+msgid "No content yet."
+msgstr "Hələ məzmun yoxdur."
+
+msgid "Image viewer"
+msgstr "Şəkil görüntüləyicisi"
+
+msgid "Previous"
+msgstr "Əvvəlki"
+
+msgid "Latest from Academor"
+msgstr "Academorun ən son xəbərləri"
+
+msgid "News, tips and academic insights from our team."
+msgstr "Komandamızdan xəbərlər, məsləhətlər və akademik fikirlər."
+
+msgid "View all posts"
+msgstr "Bütün yazılara bax"
+
+msgid "Stay up to date with Academor"
+msgstr "Academor ilə xəbərdar olun"
+
+msgid "Details"
+msgstr "Ətraflı"
+
+msgid "All blogs"
+msgstr "Bütün bloqlar"
+
+msgid "Learn"
+msgstr "Öyrən"
+
+msgid "Speak"
+msgstr "Danış"
+
+msgid "Achieve"
+msgstr "Nail ol"

@@ -1,0 +1,316 @@
+{% load static i18n %}
+{% if blog_posts or blog_featured %}
+<section class="home-blog-section position-relative overflow-hidden" aria-labelledby="home-blog-heading">
+
+    <!-- Subtle decorative background -->
+    <div class="home-blog-section__bg" aria-hidden="true"></div>
+
+    <style>
+        /* ── Section bg ── */
+        .home-blog-section {
+            background: #f7f9fb;
+            padding: 5rem 0 5.5rem;
+        }
+        .home-blog-section__bg {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 60% 50% at 0% 0%, rgba(255,84,20,.07) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 60% at 100% 100%, rgba(0,49,61,.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* ── Section header ── */
+        .home-blog__eyebrow {
+            display: inline-flex; align-items: center; gap: .45rem;
+            background: rgba(255,84,20,.1);
+            color: var(--accent, #FF5414);
+            font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+            padding: .35rem .9rem;
+            border-radius: 30px;
+            border: 1px solid rgba(255,84,20,.2);
+            margin-bottom: 1rem;
+        }
+        .home-blog__title {
+            font-size: clamp(1.7rem, 3.5vw, 2.5rem);
+            font-weight: 800;
+            color: var(--bs-primary, #00313D);
+            line-height: 1.2;
+            margin-bottom: .6rem;
+        }
+        .home-blog__sub {
+            color: #6b7a99;
+            font-size: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* ── Featured hero cards ── */
+        .hb-hero {
+            display: block;
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            height: 360px;
+            text-decoration: none;
+            box-shadow: 0 8px 32px rgba(0,0,0,.13);
+            transition: transform .35s ease, box-shadow .35s ease;
+        }
+        .hb-hero:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(0,0,0,.2); }
+        .hb-hero__img {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform .5s ease;
+        }
+        .hb-hero:hover .hb-hero__img { transform: scale(1.05); }
+        .hb-hero__no-img {
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, var(--bs-primary,#00313D) 0%, #0e5060 100%);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .hb-hero__overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 1.75rem 1.5rem 1.5rem;
+            background: linear-gradient(to top, rgba(0,0,0,.88) 0%, rgba(0,0,0,.3) 60%, transparent 100%);
+        }
+        .hb-hero__badge {
+            display: inline-flex; align-items: center; gap: .3rem;
+            background: var(--accent,#FF5414);
+            color: #fff;
+            font-size: .68rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+            padding: .22rem .65rem;
+            border-radius: 4px;
+            margin-bottom: .65rem;
+        }
+        .hb-hero__date {
+            display: inline-flex; align-items: center; gap: .3rem;
+            background: rgba(255,255,255,.18);
+            color: rgba(255,255,255,.9);
+            font-size: .7rem; font-weight: 600;
+            padding: .2rem .6rem;
+            border-radius: 4px;
+            margin-bottom: .65rem;
+            margin-left: .4rem;
+            backdrop-filter: blur(4px);
+        }
+        .hb-hero__title {
+            font-size: 1.18rem;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.4;
+            margin-bottom: .5rem;
+            text-shadow: 0 1px 6px rgba(0,0,0,.4);
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .hb-hero__excerpt {
+            font-size: .82rem;
+            color: rgba(255,255,255,.72);
+            line-height: 1.55;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+            margin-bottom: 0;
+        }
+        .hb-hero__arrow {
+            position: absolute; top: 1.1rem; right: 1.1rem;
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.15);
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: .85rem;
+            backdrop-filter: blur(4px);
+            transition: background .25s, transform .25s;
+        }
+        .hb-hero:hover .hb-hero__arrow { background: var(--accent,#FF5414); transform: rotate(-45deg); }
+
+        /* ── Regular post cards ── */
+        .hb-card {
+            display: flex;
+            align-items: stretch;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #fff;
+            border: 1px solid rgba(0,0,0,.07);
+            box-shadow: 0 2px 12px rgba(0,0,0,.06);
+            text-decoration: none;
+            transition: transform .3s ease, box-shadow .3s ease;
+        }
+        .hb-card:hover { transform: translateY(-4px); box-shadow: 0 10px 32px rgba(0,0,0,.11); }
+        .hb-card__thumb {
+            flex-shrink: 0;
+            width: 110px;
+            overflow: hidden;
+            position: relative;
+        }
+        .hb-card__thumb img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform .4s ease;
+        }
+        .hb-card:hover .hb-card__thumb img { transform: scale(1.07); }
+        .hb-card__thumb-placeholder {
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(0,49,61,.08), rgba(0,49,61,.16));
+            display: flex; align-items: center; justify-content: center;
+        }
+        .hb-card__body {
+            flex: 1;
+            padding: 1rem 1.15rem;
+            display: flex; flex-direction: column; justify-content: center;
+            min-width: 0;
+        }
+        .hb-card__date {
+            display: inline-flex; align-items: center; gap: .28rem;
+            color: #fff;
+            background: var(--accent,#FF5414);
+            font-size: .68rem; font-weight: 600;
+            padding: .18rem .55rem; border-radius: 4px;
+            margin-bottom: .5rem;
+            align-self: flex-start;
+        }
+        .hb-card__title {
+            font-size: .9rem; font-weight: 700;
+            color: var(--bs-primary,#00313D);
+            line-height: 1.4; margin-bottom: .35rem;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .hb-card__excerpt {
+            font-size: .78rem; color: #8a9ab5; line-height: 1.5;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+            margin-bottom: 0;
+        }
+        .hb-card__cta-arrow {
+            align-self: flex-end;
+            margin-top: .5rem;
+            color: var(--accent,#FF5414);
+            font-size: .8rem;
+            transition: transform .2s;
+        }
+        .hb-card:hover .hb-card__cta-arrow { transform: translateX(4px); }
+
+        /* ── CTA button ── */
+        .hb-cta {
+            display: inline-flex; align-items: center; gap: .55rem;
+            padding: .75rem 2rem;
+            border-radius: 50px;
+            background: var(--bs-primary,#00313D);
+            color: #fff;
+            font-size: .9rem; font-weight: 700; letter-spacing: .02em;
+            text-decoration: none;
+            border: 2px solid var(--bs-primary,#00313D);
+            transition: background .25s, color .25s, transform .25s, box-shadow .25s;
+        }
+        .hb-cta:hover {
+            background: var(--accent,#FF5414);
+            border-color: var(--accent,#FF5414);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,84,20,.3);
+        }
+        .hb-cta .hb-cta__dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--accent,#FF5414);
+            transition: background .25s;
+        }
+        .hb-cta:hover .hb-cta__dot { background: #fff; }
+
+        /* ── Divider line between featured & grid ── */
+        .hb-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(0,49,61,.12), transparent);
+            margin: 2.5rem 0;
+        }
+
+        @media (max-width: 575.98px) {
+            .hb-hero { height: 260px; }
+            .hb-card__thumb { width: 88px; }
+        }
+    </style>
+
+    <div class="container-xxl">
+        <div class="container">
+
+            <!-- ── Section header ── -->
+            <div class="text-center wow fadeInUp mb-5" data-wow-delay="0.05s">
+                <span class="home-blog__eyebrow">
+                    <i class="fa fa-newspaper" style="font-size:.7rem;"></i>
+                    {% trans "Blog" %}
+                </span>
+                <h2 id="home-blog-heading" class="home-blog__title">{% trans "Latest from Academor" %}</h2>
+                <p class="home-blog__sub">{% trans "News, tips and academic insights from our team." %}</p>
+            </div>
+
+            <!-- ── Featured (on_top) cards ── -->
+            {% if blog_featured %}
+            <div class="row g-4 mb-0 wow fadeInUp" data-wow-delay="0.1s">
+                {% for post in blog_featured %}
+                <div class="col-md-6">
+                    <a href="{% url 'projects:blog-detail' post.slug %}" class="hb-hero">
+                        {% if post.cover %}
+                        <img src="{{ post.cover }}" alt="{{ post.name }}" class="hb-hero__img" loading="lazy" decoding="async">
+                        {% else %}
+                        <div class="hb-hero__no-img"><i class="fa fa-newspaper fa-3x text-white opacity-15"></i></div>
+                        {% endif %}
+                        <div class="hb-hero__arrow"><i class="fa fa-arrow-right"></i></div>
+                        <div class="hb-hero__overlay">
+                            <div class="d-flex align-items-center flex-wrap gap-1 mb-1">
+                                <span class="hb-hero__badge"><i class="fa fa-star" style="font-size:.6rem;"></i>{% trans "Featured" %}</span>
+                                {% if post.date %}
+                                <span class="hb-hero__date">
+                                    <i class="fa fa-calendar-alt" style="font-size:.62rem;"></i>
+                                    <time datetime="{{ post.date|date:'Y-m-d' }}">{{ post.date|date:"d M Y" }}</time>
+                                </span>
+                                {% endif %}
+                            </div>
+                            <h3 class="hb-hero__title">{{ post.name }}</h3>
+                            {% if post.description %}<p class="hb-hero__excerpt">{{ post.description|striptags|truncatewords:18 }}</p>{% endif %}
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- ── Divider ── -->
+            {% if blog_featured and blog_posts %}<div class="hb-divider wow fadeIn" data-wow-delay="0.05s"></div>{% endif %}
+
+            <!-- ── Regular post cards ── -->
+            {% if blog_posts %}
+            <div class="row g-3 wow fadeInUp" data-wow-delay="0.15s">
+                {% for post in blog_posts %}
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <a href="{% url 'projects:blog-detail' post.slug %}" class="hb-card h-100">
+                        <div class="hb-card__thumb">
+                            {% if post.cover %}
+                            <img src="{{ post.cover }}" alt="{{ post.name }}" loading="lazy" decoding="async">
+                            {% else %}
+                            <div class="hb-card__thumb-placeholder"><i class="fa fa-newspaper text-muted opacity-25"></i></div>
+                            {% endif %}
+                        </div>
+                        <div class="hb-card__body">
+                            {% if post.date %}
+                            <time class="hb-card__date"><i class="fa fa-calendar-alt" style="font-size:.62rem;"></i>{{ post.date|date:"d M Y" }}</time>
+                            {% endif %}
+                            <p class="hb-card__title">{{ post.name }}</p>
+                            {% if post.description %}<p class="hb-card__excerpt">{{ post.description|striptags|truncatewords:14 }}</p>{% endif %}
+                            <span class="hb-card__cta-arrow"><i class="fa fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- ── CTA ── -->
+            <div class="text-center mt-5 pt-2 wow fadeInUp" data-wow-delay="0.2s">
+                <a href="{% url 'projects:blog-page' %}" class="hb-cta">
+                    <span class="hb-cta__dot"></span>
+                    {% trans "View all posts" %}
+                    <i class="fa fa-arrow-right" style="font-size:.8rem;"></i>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endif %}

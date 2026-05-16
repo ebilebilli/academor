@@ -7,7 +7,7 @@ persisted model that feeds those queries must call _invalidate_on_commit here.
 
 Keep in sync with queries.py (add a receiver when a new cached query reads a model):
   ServiceCategory, ServiceHighlight, AbroadModel, StudyAbroadSection, University,
-  Team, Review, Instructor, About, Contact, Media, Tagline, SiteFaqEntry,
+  Team, Review, BlogPost, BlogPostImage, Instructor, About, Contact, Media, Tagline, SiteFaqEntry,
   Test, Question, Option
   (University: pre_save fills unique slug from name — university_slug_from_name.)
 
@@ -29,6 +29,8 @@ from projects.models import (
     University,
     Team,
     Review,
+    BlogPost,
+    BlogPostImage,
     Instructor,
     About,
     Contact,
@@ -203,6 +205,18 @@ def invalidate_team_cache(sender, instance, **kwargs):
 @receiver(post_delete, sender=Review)
 def invalidate_review_cache(sender, instance, **kwargs):
     _invalidate_on_commit('Review')
+
+
+@receiver(post_save, sender=BlogPost)
+@receiver(post_delete, sender=BlogPost)
+def invalidate_blog_post_cache(sender, instance, **kwargs):
+    _invalidate_on_commit('BlogPost')
+
+
+@receiver(post_save, sender=BlogPostImage)
+@receiver(post_delete, sender=BlogPostImage)
+def invalidate_blog_post_image_cache(sender, instance, **kwargs):
+    _invalidate_on_commit('BlogPost')
 
 
 @receiver(post_save, sender=Media)

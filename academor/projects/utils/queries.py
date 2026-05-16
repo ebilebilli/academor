@@ -217,6 +217,74 @@ def serialize_review(review):
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
+def get_blog_posts(is_active=True, on_main_page=None):
+    queryset = BlogPost.objects.prefetch_related('images')
+    if is_active is not None:
+        queryset = queryset.filter(is_active=is_active)
+    if on_main_page is not None:
+        queryset = queryset.filter(on_main_page=on_main_page)
+    return list(queryset.order_by('-on_top', '-date', '-id'))
+
+
+@cached_query(timeout='CACHE_TIMEOUT_LONG')
+def get_blog_post_by_slug(slug, is_active=True):
+    queryset = BlogPost.objects.prefetch_related('images').filter(slug=slug)
+    if is_active is not None:
+        queryset = queryset.filter(is_active=is_active)
+    return queryset.first()
+
+
+def serialize_blog_post(post, lang='az'):
+    if post is None:
+        return None
+    images = [media_url(img.image) for img in post.images.all() if img.image]
+    return {
+        'id': post.id,
+        'slug': post.slug,
+        'name': _localized_value(post, 'name', lang),
+        'description': _localized_value(post, 'description', lang) or None,
+        'date': post.date,
+        'created_at': post.created_at,
+        'on_top': post.on_top,
+        'on_main_page': post.on_main_page,
+        'cover': images[0] if images else None,
+        'images': images,
+    }
+
+
+@cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_blog_page_data(request, lang):
+    all_posts = get_blog_posts(is_active=True)
+    featured = [p for p in all_posts if p.on_top][:2]
+    regular = [p for p in all_posts if not p.on_top]
+    categories = get_project_categories(lang)
+    return {
+        'featured_posts': [serialize_blog_post(p, lang=lang) for p in featured],
+        'posts': [serialize_blog_post(p, lang=lang) for p in regular],
+        'categories': [serialize_project_category(c, lang) for c in categories],
+        'language': lang,
+        'background_image': get_background_image('about'),
+    }
+
+
+@cached_query(timeout='CACHE_TIMEOUT_LONG')
+def get_blog_detail_view_context(lang, slug):
+    post = get_blog_post_by_slug(slug, is_active=True)
+    if not post:
+        return None
+    all_posts = get_blog_posts(is_active=True)
+    other_posts = [p for p in all_posts if p.slug != slug][:6]
+    categories = get_project_categories(lang)
+    return {
+        'post': serialize_blog_post(post, lang=lang),
+        'other_posts': [serialize_blog_post(p, lang=lang) for p in other_posts],
+        'categories': [serialize_project_category(c, lang) for c in categories],
+        'language': lang,
+        'background_image': get_background_image('about'),
+    }
+
+
+@cached_query(timeout='CACHE_TIMEOUT_LONG')
 def get_tests(is_active=True):
     queryset = Test.objects.all()
     if is_active is not None:
@@ -613,8 +681,25 @@ def get_serialized_partners(lang='az', is_active=True):
     return [serialize_partner(p, lang) for p in get_partners(lang=lang, is_active=is_active)]
 
 
-def serialize_project_category(category, lang='az'):
+def _service_category_display_name(category, lang='az'):
+    """Localized name with fallbacks — DB allows NULL per language field."""
     name_field = get_localized_field_name('name', lang)
+    for candidate in (
+        getattr(category, name_field, None),
+        category.name_az,
+        category.name_en,
+        category.name_ru,
+    ):
+        if candidate is not None and str(candidate).strip():
+            return str(candidate).strip()
+    slug = getattr(category, 'slug', None) or ''
+    slug = slug.strip()
+    if slug:
+        return slug.replace('-', ' ').title()
+    return ''
+
+
+def serialize_project_category(category, lang='az'):
     desc_field = get_localized_field_name('description', lang)
     first_image = None
     for media in category.medias.all():
@@ -629,7 +714,7 @@ def serialize_project_category(category, lang='az'):
     return {
         'id': category.id,
         'slug': category.slug,
-        'name': getattr(category, name_field, category.name_az),
+        'name': _service_category_display_name(category, lang),
         'image': first_image,
         'description_html': raw_desc or '',
     }
@@ -871,6 +956,16 @@ def get_home_page_data(request, lang):
         'team': [serialize_team_member(m, lang=lang) for m in get_team_members()],
         'reviews': [serialize_review(r) for r in get_reviews()],
         'site_faqs': get_serialized_site_faq_entries(lang=lang, is_active=True),
+        'blog_featured': [
+            serialize_blog_post(p, lang=lang)
+            for p in get_blog_posts(is_active=True, on_main_page=True)
+            if p.on_top
+        ][:2],
+        'blog_posts': [
+            serialize_blog_post(p, lang=lang)
+            for p in get_blog_posts(is_active=True, on_main_page=True)
+            if not p.on_top
+        ],
     }
 
 

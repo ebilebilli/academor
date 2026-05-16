@@ -5,7 +5,7 @@ from django.http import Http404, HttpResponsePermanentRedirect, JsonResponse
 from django.urls import reverse
 from django.utils.translation import gettext as _
 
-from projects.models import AbroadModel, Team
+from projects.models import AbroadModel, Team, BlogPost
 from projects.forms.forms_v1 import ReviewForm
 from projects.utils.seo_text import meta_plain_excerpt
 from projects.utils.queries import (
@@ -19,6 +19,8 @@ from projects.utils.queries import (
     get_active_project_category_by_slug,
     get_team_members, serialize_team_member,
     get_reviews_page_data,
+    get_blog_page_data,
+    get_blog_detail_view_context,
     get_serialized_service_highlights,
     get_abroad_page_data,
     get_abroad_detail_view_context,
@@ -309,6 +311,45 @@ class TeamDetailPageView(View):
             'page_title': f'{member_data["name"]} | Academor',
             'page_description': excerpt[:320],
         }
+        return render(request, self.template_name, context)
+
+
+class BlogPageView(View):
+    template_name = 'blog.html'
+
+    def get(self, request):
+        lang = get_language_from_request(request)
+        context = get_blog_page_data(request, lang)
+        return render(request, self.template_name, context)
+
+
+class BlogDetailLegacyPkRedirectView(View):
+    """301 from /blog/<pk>/ (legacy) to /blog/<slug>/."""
+
+    def get(self, request, pk: int):
+        obj = BlogPost.objects.filter(pk=pk).only('slug').first()
+        if not obj or not obj.slug:
+            raise Http404(_("Blog post not found"))
+        return HttpResponsePermanentRedirect(
+            reverse('projects:blog-detail', kwargs={'slug': obj.slug})
+        )
+
+
+class BlogDetailPageView(View):
+    template_name = 'blog-detail.html'
+
+    def get(self, request, slug: str):
+        lang = get_language_from_request(request)
+        context = get_blog_detail_view_context(lang, slug)
+        if not context:
+            raise Http404(_("Blog post not found"))
+
+        post = context['post']
+        excerpt = meta_plain_excerpt(post.get('description') or '')
+        if not excerpt.strip():
+            excerpt = post.get('name') or ''
+        context['page_title'] = f'{post["name"]} | Academor'
+        context['page_description'] = excerpt[:320]
         return render(request, self.template_name, context)
 
 

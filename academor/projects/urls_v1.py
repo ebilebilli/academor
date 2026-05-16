@@ -16,6 +16,9 @@ from projects.views.views_v1 import (
     TeamDetailLegacyPkRedirectView,
     TeamDetailPageView,
     ReviewsPageView,
+    BlogPageView,
+    BlogDetailLegacyPkRedirectView,
+    BlogDetailPageView,
 )
 from projects.views.test_views import TestListPageView, TestTakePageView
 from projects.views.conversation_topics_views import (
@@ -96,6 +99,20 @@ urlpatterns = [
         'reviews/',
         ReviewsPageView.as_view(),
         name='reviews-page',
+    ),
+    path(
+        'blog/',
+        BlogPageView.as_view(),
+        name='blog-page',
+    ),
+    path(
+        'blog/<int:pk>/',
+        BlogDetailLegacyPkRedirectView.as_view(),
+    ),
+    path(
+        'blog/<slug:slug>/',
+        BlogDetailPageView.as_view(),
+        name='blog-detail',
     ),
     path(
         'tests/',

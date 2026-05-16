@@ -1,5 +1,5 @@
 {% load i18n static academor_lazy_tags %}
-<div class="container-xxl py-5 abroad-section">
+<div class="container-xxl py-5 abroad-section{% if abroad_section_modifier %} {{ abroad_section_modifier }}{% endif %}">
     <div class="container">
         <div class="abroad-hero mb-5">
             <div class="abroad-hero__card">

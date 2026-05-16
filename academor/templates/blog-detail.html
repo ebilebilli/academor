@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+{% load i18n %}{% get_current_language as LANG_CODE %}
+<html lang="{{ LANG_CODE }}">
+<head>
+    {% include "includes/site_layout_head.html" with page_title=page_title %}
+    <style>
+        /* ── Sidebar ── */
+        .blog-sidebar {
+            position: sticky;
+            top: 90px;
+        }
+        .blog-sidebar__heading {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--bs-primary, #00313D);
+            padding-left: .85rem;
+            border-left: 4px solid var(--accent, #FF5414);
+            margin-bottom: 1.25rem;
+        }
+        .blog-sidebar-card {
+            display: flex;
+            gap: .85rem;
+            align-items: flex-start;
+            text-decoration: none;
+            padding: .85rem;
+            border-radius: 10px;
+            border: 1px solid rgba(0,0,0,.07);
+            background: #fff;
+            transition: background .2s, box-shadow .2s, transform .2s;
+        }
+        .blog-sidebar-card:hover {
+            background: #f7fafc;
+            box-shadow: 0 4px 16px rgba(0,0,0,.08);
+            transform: translateX(3px);
+        }
+        .blog-sidebar-card__thumb {
+            flex-shrink: 0;
+            width: 76px; height: 60px;
+            border-radius: 7px;
+            overflow: hidden;
+        }
+        .blog-sidebar-card__thumb img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+        .blog-sidebar-card__thumb-placeholder {
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(0,49,61,.08), rgba(0,49,61,.15));
+            display: flex; align-items: center; justify-content: center;
+        }
+        .blog-sidebar-card__title {
+            font-size: .88rem;
+            font-weight: 600;
+            color: var(--bs-primary, #00313D);
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: .25rem;
+        }
+        .blog-sidebar-card__date {
+            font-size: .75rem;
+            color: #8a9ab5;
+        }
+
+        /* ── Detail content ── */
+        .blog-detail__cover {
+            border-radius: 14px;
+            overflow: hidden;
+            max-height: 420px;
+            box-shadow: 0 6px 24px rgba(0,0,0,.13);
+        }
+        .blog-detail__cover img {
+            width: 100%;
+            max-height: 420px;
+            object-fit: cover;
+            display: block;
+        }
+        .blog-detail-content { line-height: 1.85; color: #2d3a52; }
+        .blog-detail-content p { margin-bottom: 1.1rem; }
+        .blog-detail-content h2,
+        .blog-detail-content h3 { color: var(--bs-primary, #00313D); margin-top: 1.6rem; margin-bottom: .7rem; }
+        .blog-detail-content img { max-width: 100%; border-radius: 8px; margin: .5rem 0; }
+
+        /* ── Gallery ── */
+        .blog-gallery__item {
+            border-radius: 9px;
+            overflow: hidden;
+            height: 150px;
+            cursor: pointer;
+            position: relative;
+        }
+        .blog-gallery__item img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform .35s ease;
+        }
+        .blog-gallery__item:hover img { transform: scale(1.06); }
+
+        /* ── Lightbox ── */
+        #blog-lightbox {
+            display: none;
+            position: fixed; inset: 0; z-index: 9999;
+            background: rgba(0,0,0,.92);
+            align-items: center; justify-content: center;
+            animation: lbFadeIn .22s ease;
+        }
+        #blog-lightbox.is-open { display: flex; }
+        @keyframes lbFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        #blog-lightbox img {
+            max-width: 90vw;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 6px;
+            box-shadow: 0 8px 48px rgba(0,0,0,.6);
+            user-select: none;
+            animation: lbImgIn .2s ease;
+        }
+        @keyframes lbImgIn { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: scale(1); } }
+
+        .lb-btn {
+            position: absolute;
+            background: rgba(255,255,255,.12);
+            border: none; outline: none; cursor: pointer;
+            color: #fff;
+            border-radius: 50%;
+            width: 48px; height: 48px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem;
+            transition: background .2s, transform .2s;
+            backdrop-filter: blur(4px);
+        }
+        .lb-btn:hover { background: var(--accent, #FF5414); transform: scale(1.08); }
+
+        #lb-close { top: 1.2rem; right: 1.2rem; font-size: 1.25rem; }
+        #lb-prev  { left: 1.2rem;  top: 50%; transform: translateY(-50%); }
+        #lb-next  { right: 1.2rem; top: 50%; transform: translateY(-50%); }
+        #lb-prev:hover, #lb-next:hover { transform: translateY(-50%) scale(1.08); }
+
+        #lb-counter {
+            position: absolute; bottom: 1.2rem; left: 50%; transform: translateX(-50%);
+            color: rgba(255,255,255,.7); font-size: .82rem; letter-spacing: .05em;
+            background: rgba(0,0,0,.4); padding: .25rem .75rem; border-radius: 20px;
+            pointer-events: none;
+        }
+
+        /* ── Divider ── */
+        .blog-detail-divider {
+            border: none;
+            border-top: 1px solid rgba(0,0,0,.08);
+            margin: 1.75rem 0;
+        }
+    </style>
+</head>
+<body class="page-blog-detail">
+    {% include "includes/site_spinner.html" %}
+    {% include "includes/site_navbar.html" %}
+
+    <div class="container-fluid bg-primary mb-5 page-header page-header-hero-band"{% include "includes/page_header_dynamic_bg.html" %}></div>
+
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-5 align-items-start">
+
+                <!-- ── LEFT: Other posts sidebar ─────────────────────────── -->
+                <div class="col-lg-4 order-lg-1 order-2">
+                    <aside class="blog-sidebar wow fadeInUp" data-wow-delay="0.05s">
+                        <p class="blog-sidebar__heading">{% trans "Other Posts" %}</p>
+
+                        {% if other_posts %}
+                        <div class="d-flex flex-column gap-3">
+                            {% for other in other_posts %}
+                            <a href="{% url 'projects:blog-detail' other.slug %}" class="blog-sidebar-card">
+                                <div class="blog-sidebar-card__thumb">
+                                    {% if other.cover %}
+                                    <img src="{{ other.cover }}" alt="{{ other.name }}" loading="lazy" decoding="async">
+                                    {% else %}
+                                    <div class="blog-sidebar-card__thumb-placeholder">
+                                        <i class="fa fa-newspaper text-muted opacity-25"></i>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div style="min-width:0;">
+                                    <p class="blog-sidebar-card__title">{{ other.name }}</p>
+                                    {% if other.date %}
+                                    <time class="blog-sidebar-card__date">
+                                        <i class="fa fa-calendar-alt me-1"></i>{{ other.date|date:"d M Y" }}
+                                    </time>
+                                    {% endif %}
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <p class="text-muted small fst-italic mb-0">{% trans "No other posts yet." %}</p>
+                        {% endif %}
+                    </aside>
+                </div>
+
+                <!-- ── RIGHT: Post content ───────────────────────────────── -->
+                <div class="col-lg-8 order-lg-2 order-1">
+                    <article>
+
+                        <!-- Cover image -->
+                        {% if post.cover %}
+                        <div class="blog-detail__cover mb-4 wow fadeInUp" data-wow-delay="0.05s"
+                             style="cursor:pointer;" onclick="lbOpen(0)">
+                            <img src="{{ post.cover }}" alt="{{ post.name }}"
+                                 loading="eager" decoding="async"
+                                 data-lb-src="{{ post.cover }}">
+                        </div>
+                        {% endif %}
+
+                        <!-- Header -->
+                        <header class="mb-3 wow fadeInUp" data-wow-delay="0.1s">
+                            <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+                                {% if post.on_top %}
+                                <span style="display:inline-flex;align-items:center;gap:.3rem;background:var(--accent,#FF5414);color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.04em;padding:.28rem .75rem;border-radius:5px;">
+                                    <i class="fa fa-star" style="font-size:.62rem;"></i>{% trans "Featured" %}
+                                </span>
+                                {% endif %}
+                                {% if post.date %}
+                                <span style="display:inline-flex;align-items:center;gap:.3rem;background:var(--accent,#FF5414);color:#fff;font-size:.72rem;font-weight:600;padding:.28rem .7rem;border-radius:5px;">
+                                    <i class="fa fa-calendar-alt" style="font-size:.65rem;"></i>
+                                    <time datetime="{{ post.date|date:'Y-m-d' }}">{{ post.date|date:"d M Y" }}</time>
+                                </span>
+                                {% endif %}
+                            </div>
+                            <h1 class="mb-0 lh-base" style="font-size:1.85rem;color:var(--bs-primary,#00313D);">{{ post.name }}</h1>
+                        </header>
+
+                        <hr class="blog-detail-divider">
+
+                        <!-- Description (rich text) -->
+                        <div class="blog-detail-content wow fadeInUp" data-wow-delay="0.15s">
+                            {% if post.description %}
+                            {{ post.description|safe }}
+                            {% else %}
+                            <p class="text-muted fst-italic">{% trans "No content yet." %}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Image gallery (images 2–6) -->
+                        {% if post.images|length > 1 %}
+                        <div class="mt-4 wow fadeInUp" data-wow-delay="0.2s">
+                            <hr class="blog-detail-divider">
+                            <p class="blog-sidebar__heading" style="margin-bottom:1rem;">{% trans "Gallery" %}</p>
+                            <div class="row g-3">
+                                {% for img in post.images %}
+                                {% if not forloop.first %}
+                                <div class="col-6 col-sm-4">
+                                    <div class="blog-gallery__item"
+                                         onclick="lbOpen({{ forloop.counter0 }})"
+                                         data-lb-src="{{ img }}">
+                                        <img src="{{ img }}" alt="{{ post.name }}" loading="lazy" decoding="async">
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- Action buttons -->
+                        <div class="d-flex flex-wrap gap-3 mt-5 pt-2 wow fadeInUp" data-wow-delay="0.2s">
+                            <a href="{% url 'projects:blog-page' %}" class="btn btn-outline-header px-4 py-2 rounded-pill">
+                                <i class="fa fa-arrow-left me-2" aria-hidden="true"></i>{% trans "Back to Blog" %}
+                            </a>
+                            <a href="{% url 'projects:contact-page' %}" class="btn btn-primary px-4 py-2 rounded-pill">
+                                {% trans "Contact us" %}
+                            </a>
+                        </div>
+
+                    </article>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Lightbox overlay ── -->
+    <div id="blog-lightbox" role="dialog" aria-modal="true" aria-label="{% trans 'Image viewer' %}"
+         onclick="lbBgClick(event)">
+        <button class="lb-btn" id="lb-close" onclick="lbClose()" aria-label="{% trans 'Close' %}">
+            <i class="fa fa-times"></i>
+        </button>
+        <button class="lb-btn" id="lb-prev" onclick="lbStep(-1)" aria-label="{% trans 'Previous' %}">
+            <i class="fa fa-chevron-left"></i>
+        </button>
+        <img id="lb-img" src="" alt="">
+        <button class="lb-btn" id="lb-next" onclick="lbStep(1)" aria-label="{% trans 'Next' %}">
+            <i class="fa fa-chevron-right"></i>
+        </button>
+        <span id="lb-counter"></span>
+    </div>
+
+    {% include "includes/site_footer.html" %}
+    {% include "includes/site_scripts.html" %}
+
+    <script>
+    (function () {
+        /* Collect all lightbox images in order: cover first, then gallery */
+        var _srcs = [];
+
+        function _collect() {
+            _srcs = [];
+            /* cover — data-lb-src is on the img tag inside .blog-detail__cover */
+            var coverImg = document.querySelector('.blog-detail__cover img[data-lb-src]');
+            if (coverImg) _srcs.push(coverImg.getAttribute('data-lb-src'));
+            /* gallery items — data-lb-src is on .blog-gallery__item divs */
+            document.querySelectorAll('.blog-gallery__item[data-lb-src]').forEach(function (el) {
+                _srcs.push(el.getAttribute('data-lb-src'));
+            });
+        }
+
+        var _cur  = 0;
+        var _lb   = null;
+        var _img  = null;
+        var _cnt  = null;
+        var _prev = null;
+        var _next = null;
+
+        function _init() {
+            _lb   = document.getElementById('blog-lightbox');
+            _img  = document.getElementById('lb-img');
+            _cnt  = document.getElementById('lb-counter');
+            _prev = document.getElementById('lb-prev');
+            _next = document.getElementById('lb-next');
+        }
+
+        function _show(index) {
+            if (!_srcs.length) return;
+            _cur = ((index % _srcs.length) + _srcs.length) % _srcs.length;
+            _img.src = _srcs[_cur];
+            _img.alt = '';
+            /* re-trigger animation */
+            _img.style.animation = 'none';
+            void _img.offsetWidth;
+            _img.style.animation = '';
+            _cnt.textContent = (_cur + 1) + ' / ' + _srcs.length;
+            _prev.style.display = _srcs.length > 1 ? 'flex' : 'none';
+            _next.style.display = _srcs.length > 1 ? 'flex' : 'none';
+        }
+
+        window.lbOpen = function (index) {
+            if (!_lb) _init();
+            _collect();
+            if (!_srcs.length) return;
+            _lb.classList.add('is-open');
+            document.body.style.overflow = 'hidden';
+            _show(index);
+            _lb.focus();
+        };
+
+        window.lbClose = function () {
+            if (!_lb) return;
+            _lb.classList.remove('is-open');
+            document.body.style.overflow = '';
+            _img.src = '';
+        };
+
+        window.lbStep = function (dir) { _show(_cur + dir); };
+
+        window.lbBgClick = function (e) {
+            if (e.target === _lb) lbClose();
+        };
+
+        /* Keyboard navigation */
+        document.addEventListener('keydown', function (e) {
+            if (!_lb || !_lb.classList.contains('is-open')) return;
+            if (e.key === 'Escape')       lbClose();
+            if (e.key === 'ArrowRight')   lbStep(1);
+            if (e.key === 'ArrowLeft')    lbStep(-1);
+        });
+    })();
+    </script>
+</body>
+</html>

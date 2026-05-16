@@ -12,7 +12,12 @@
                 data-wow-delay="0.05s"
                 {% if reviews_section_variant != 'home' %}style="max-width: 640px;"{% endif %}
             >
-                {% if reviews_section_variant != 'home' %}
+                {% if reviews_section_variant == 'home' %}
+                <p class="reviews-home__eyebrow mx-auto mb-3">
+                    <span class="reviews-home__eyebrow-dot" aria-hidden="true"></span>
+                    {% trans "Testimonials" %}
+                </p>
+                {% else %}
                 <p class="reviews-section__eyebrow text-uppercase small fw-semibold letter-spacing mb-2">{% trans "Testimonials" %}</p>
                 {% endif %}
                 {% if use_h2_for_section_titles %}

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+{% load static i18n academor_lazy_tags %}{% get_current_language as LANG_CODE %}
+<html lang="{{ LANG_CODE }}">
+
+<head>
+    {% include "includes/site_layout_head.html" %}
+    <style>
+        .blog-featured-card {
+            display: block;
+            border-radius: 12px;
+            overflow: hidden;
+            height: 340px;
+            position: relative;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(0,0,0,.15);
+            transition: transform .3s ease, box-shadow .3s ease;
+        }
+        .blog-featured-card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(0,0,0,.22); }
+        .blog-featured-card__img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            position: absolute; top: 0; left: 0;
+            transition: transform .45s ease;
+        }
+        .blog-featured-card:hover .blog-featured-card__img { transform: scale(1.04); }
+        .blog-featured-card__overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 1.5rem;
+            background: linear-gradient(to top, rgba(0,0,0,.82) 0%, transparent 100%);
+        }
+        .blog-featured-card__no-img {
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, var(--bs-primary, #00313D) 0%, rgba(0,49,61,.6) 100%);
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .blog-card {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,.07);
+            box-shadow: 0 2px 10px rgba(0,0,0,.06);
+            transition: transform .3s ease, box-shadow .3s ease;
+            background: #fff;
+        }
+        .blog-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0,0,0,.12); }
+        .blog-card__img { height: 210px; overflow: hidden; }
+        .blog-card__img img { width: 100%; height: 100%; object-fit: cover; transition: transform .45s ease; }
+        .blog-card:hover .blog-card__img img { transform: scale(1.05); }
+        .blog-card__img-placeholder {
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .blog-card__body { padding: 1.25rem 1.4rem 1.4rem; }
+        .blog-card__date {
+            display: inline-flex; align-items: center; gap: .3rem;
+            font-size: .72rem; font-weight: 600; letter-spacing: .03em;
+            color: #fff;
+            background: var(--accent, #FF5414);
+            padding: .22rem .6rem;
+            border-radius: 5px;
+            margin-bottom: .55rem;
+        }
+        .blog-card__title { font-size: 1rem; font-weight: 600; color: var(--bs-primary, #00313D); line-height: 1.45; margin-bottom: .6rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .blog-card__excerpt { font-size: .84rem; color: #6b7a99; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: .9rem; }
+        .blog-card__cta {
+            display: inline-flex; align-items: center; gap: .4rem;
+            font-size: .8rem; font-weight: 700; letter-spacing: .03em;
+            color: #fff;
+            background: var(--accent, #FF5414);
+            padding: .35rem .9rem;
+            border-radius: 20px;
+            transition: background .2s, transform .2s;
+            align-self: flex-start;
+        }
+        .blog-card:hover .blog-card__cta { background: var(--accent-hover, #E04A10); transform: translateX(2px); }
+
+        .blog-section-label {
+            font-size: 1.05rem; font-weight: 700; color: var(--bs-primary, #00313D);
+            padding-left: .9rem;
+            border-left: 4px solid var(--accent, #FF5414);
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+
+<body class="page-blog">
+    {% include "includes/site_spinner.html" %}
+    {% include "includes/site_navbar.html" %}
+
+    <div class="container-fluid bg-primary mb-5 page-header page-header-hero-band d-flex align-items-center"{% include "includes/page_header_dynamic_bg.html" %}>
+        <div class="container">
+            <nav aria-label="breadcrumb" class="wow fadeInDown" data-wow-delay="0.05s">
+                <ol class="breadcrumb mb-2" style="background:none;padding:0;">
+                    <li class="breadcrumb-item"><a href="{% url 'projects:home-page' %}" class="text-white-50 text-decoration-none small">{% trans "Home" %}</a></li>
+                    <li class="breadcrumb-item active text-white small" aria-current="page">{% trans "Blog" %}</li>
+                </ol>
+            </nav>
+            <h1 class="text-white fw-bold mb-0 wow fadeInUp" data-wow-delay="0.1s" style="font-size:clamp(1.8rem,4vw,2.8rem);text-shadow:0 2px 12px rgba(0,0,0,.35);">{% trans "Blog" %}</h1>
+        </div>
+    </div>
+
+    <div class="container-xxl py-5">
+        <div class="container">
+
+            <!-- ── Featured Posts (on_top, max 2) ─────────────────────────── -->
+            {% if featured_posts %}
+            <div class="wow fadeInUp mb-5" data-wow-delay="0.1s">
+                <p class="blog-section-label">{% trans "Featured Posts" %}</p>
+                <div class="row g-4">
+                    {% for post in featured_posts %}
+                    <div class="col-md-6">
+                        <a href="{% url 'projects:blog-detail' post.slug %}" class="blog-featured-card">
+                            {% if post.cover %}
+                            <img
+                                src="{{ post.cover }}"
+                                alt="{{ post.name }}"
+                                class="blog-featured-card__img"
+                                {% if forloop.first %}loading="eager"{% else %}loading="lazy"{% endif %}
+                                decoding="async">
+                            {% else %}
+                            <div class="blog-featured-card__no-img">
+                                <i class="fa fa-newspaper fa-3x text-white opacity-25"></i>
+                            </div>
+                            {% endif %}
+                            <div class="blog-featured-card__overlay">
+                                <span style="display:inline-flex;align-items:center;gap:.3rem;background:var(--accent,#FF5414);color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.04em;padding:.25rem .7rem;border-radius:5px;margin-bottom:.55rem;">
+                                    <i class="fa fa-star" style="font-size:.62rem;"></i>{% trans "Featured" %}
+                                </span>
+                                <h2 class="h5 text-white mb-1 lh-base" style="text-shadow:0 1px 4px rgba(0,0,0,.4);">{{ post.name }}</h2>
+                                {% if post.date %}
+                                <div style="display:inline-flex;align-items:center;gap:.3rem;background:var(--accent,#FF5414);color:#fff;font-size:.72rem;font-weight:600;padding:.22rem .65rem;border-radius:5px;">
+                                    <i class="fa fa-calendar-alt" style="font-size:.65rem;"></i>
+                                    <time datetime="{{ post.date|date:'Y-m-d' }}">{{ post.date|date:"d M Y" }}</time>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- ── All Posts Grid ────────────────────────────────────────── -->
+            {% if posts %}
+            <div class="wow fadeInUp" data-wow-delay="0.15s">
+                <p class="blog-section-label">{% trans "Most Recent" %}</p>
+            </div>
+            <div class="row g-4">
+                {% for post in posts %}
+                <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="{% cycle '0.05s' '0.1s' '0.15s' %}">
+                    <article class="blog-card h-100">
+                        <a href="{% url 'projects:blog-detail' post.slug %}" class="d-flex flex-column h-100 text-decoration-none">
+                            <div class="blog-card__img">
+                                {% if post.cover %}
+                                {% if forloop.counter > 6 %}
+                                {% academor_branded_lazy_img post.cover post.name img_class='w-100 h-100' layout='cover' width='560' height='210' loading='lazy' %}
+                                {% else %}
+                                <img src="{{ post.cover }}" alt="{{ post.name }}" loading="lazy" decoding="async" width="560" height="210">
+                                {% endif %}
+                                {% else %}
+                                <div class="blog-card__img-placeholder">
+                                    <i class="fa fa-newspaper fa-2x text-muted opacity-25"></i>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="blog-card__body d-flex flex-column flex-grow-1">
+                                {% if post.date %}
+                                <time class="blog-card__date">
+                                    <i class="fa fa-calendar-alt" style="font-size:.65rem;"></i>{{ post.date|date:"d M Y" }}
+                                </time>
+                                {% endif %}
+                                <h3 class="blog-card__title">{{ post.name }}</h3>
+                                {% if post.description %}
+                                <p class="blog-card__excerpt flex-grow-1">{{ post.description|striptags|truncatewords:22 }}</p>
+                                {% endif %}
+                                <span class="blog-card__cta mt-auto">
+                                    {% trans "Read more" %} <i class="fa fa-arrow-right ms-1" style="font-size:.75rem;"></i>
+                                </span>
+                            </div>
+                        </a>
+                    </article>
+                </div>
+                {% endfor %}
+            </div>
+            {% elif not featured_posts %}
+            <p class="text-center text-muted mb-0 py-5">{% trans "No blog posts have been published yet." %}</p>
+            {% endif %}
+
+        </div>
+    </div>
+
+    {% include "includes/site_footer.html" %}
+    {% include "includes/site_scripts.html" %}
+</body>
+</html>

@@ -727,6 +727,83 @@ class TeamAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     list_per_page = 25
 
 
+class BlogPostAdminForm(forms.ModelForm):
+    class Meta:
+        model = BlogPost
+        fields = '__all__'
+        widgets = {
+            'description_az': CKEditorWidget(),
+            'description_en': CKEditorWidget(),
+            'description_ru': CKEditorWidget(),
+        }
+
+
+class BlogPostImageInline(AdminImageCompressMixin, admin.TabularInline):
+    model = BlogPostImage
+    extra = 1
+    max_num = 6
+    fields = ('image', 'order', 'image_preview')
+    readonly_fields = ('image_preview',)
+    ordering = ('order', 'id')
+
+    @admin.display(description='Preview')
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html(
+                '<img src="{}" style="height:56px;width:84px;object-fit:cover;border-radius:4px;">',
+                obj.image.url,
+            )
+        return '-'
+
+
+@admin.register(BlogPost)
+class BlogPostAdmin(admin.ModelAdmin):
+    form = BlogPostAdminForm
+    inlines = [BlogPostImageInline]
+    list_display = (
+        'cover_preview', 'name_az', 'slug', 'date',
+        'is_active', 'on_top', 'on_main_page', 'created_at',
+    )
+    list_display_links = ('cover_preview', 'name_az')
+    list_editable = ('is_active', 'on_top', 'on_main_page')
+    list_filter = ('is_active', 'on_top', 'on_main_page', 'date', 'created_at')
+    search_fields = (
+        'name_az', 'name_en', 'name_ru', 'slug',
+        'description_az', 'description_en', 'description_ru',
+    )
+    readonly_fields = ('slug', 'created_at')
+    ordering = ('-on_top', '-date', '-id')
+    list_per_page = 25
+    fieldsets = (
+        (None, {
+            'fields': ('slug', 'date', 'is_active', 'on_top', 'on_main_page'),
+        }),
+        ('Azerbaijani', {
+            'fields': ('name_az', 'description_az'),
+        }),
+        ('English', {
+            'fields': ('name_en', 'description_en'),
+        }),
+        ('Russian', {
+            'fields': ('name_ru', 'description_ru'),
+        }),
+        ('Timestamps', {
+            'fields': ('created_at',),
+            'classes': ('collapse',),
+        }),
+    )
+
+    @admin.display(description='Cover')
+    def cover_preview(self, obj):
+        first = obj.images.order_by('order', 'id').first()
+        if first and first.image:
+            return format_html(
+                '<img src="{}" style="height:48px;width:72px;object-fit:cover;border-radius:4px;">',
+                first.image.url,
+            )
+        return '-'
+
+
 @admin.register(Review)
 class ReviewAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     list_display = ('id', 'name', 'rating_stars', 'is_active', 'created_at')
@@ -1030,9 +1107,10 @@ def _sorted_get_app_list(request, app_label=None):
         "Contact": 30,
         "Tagline": 50,
 
-        # Team / reviews
+        # Team / reviews / blog
         "Team": 100,
         "Review": 110,
+        "BlogPost": 115,
 
         # Service categories
         "ServiceCategory": 200,

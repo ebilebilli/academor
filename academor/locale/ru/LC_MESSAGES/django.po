@@ -162,6 +162,9 @@ msgstr "Наша команда"
 msgid "Meet our full team"
 msgstr "Познакомьтесь со всей нашей командой"
 
+msgid "Meet experienced mentors committed to your goals."
+msgstr "Познакомьтесь с опытными преподавателями и наставниками, которые помогут достичь ваших целей."
+
 msgid "Connect"
 msgstr "Связаться"
 
@@ -484,6 +487,12 @@ msgstr "Подписывайтесь"
 msgid "Our Services"
 msgstr "Наши услуги"
 
+msgid "View all services"
+msgstr "Все услуги"
+
+msgid "Explore categories and find the right course for you."
+msgstr "Просмотрите категории и подберите подходящий курс."
+
 msgid "Duration"
 msgstr "Длительность"
 
@@ -700,3 +709,69 @@ msgstr "Об этом университете"
 #, python-format
 msgid "University profile: %(name)s — Academor study abroad support, Baku."
 msgstr "Профиль вуза: %(name)s — поддержка Academor при поступлении из Баку."
+
+msgid "Blog"
+msgstr "Блог"
+
+msgid "Featured Posts"
+msgstr "Избранные публикации"
+
+msgid "Featured"
+msgstr "Избранное"
+
+msgid "Most Recent"
+msgstr "Последние"
+
+msgid "Read more"
+msgstr "Читать далее"
+
+msgid "No blog posts have been published yet."
+msgstr "Публикации пока отсутствуют."
+
+msgid "Other Posts"
+msgstr "Другие публикации"
+
+msgid "No other posts yet."
+msgstr "Других публикаций пока нет."
+
+msgid "Back to Blog"
+msgstr "Вернуться к блогу"
+
+msgid "Gallery"
+msgstr "Галерея"
+
+msgid "No content yet."
+msgstr "Контент пока отсутствует."
+
+msgid "Image viewer"
+msgstr "Просмотр изображений"
+
+msgid "Previous"
+msgstr "Предыдущий"
+
+msgid "Latest from Academor"
+msgstr "Последнее от Academor"
+
+msgid "News, tips and academic insights from our team."
+msgstr "Новости, советы и академические материалы от нашей команды."
+
+msgid "View all posts"
+msgstr "Все публикации"
+
+msgid "Stay up to date with Academor"
+msgstr "Будьте в курсе с Academor"
+
+msgid "Details"
+msgstr "Подробнее"
+
+msgid "All blogs"
+msgstr "Все блоги"
+
+msgid "Learn"
+msgstr "Учись"
+
+msgid "Speak"
+msgstr "Говори"
+
+msgid "Achieve"
+msgstr "Достигай"
