@@ -102,6 +102,8 @@
 .hbh-grid {
     display: grid;
     gap: 1.25rem;
+    /* Hover zamanı kölgə/transform kəsinə dəyəndə titrəməni azaltmaq üçün */
+    padding-block: 6px;
 }
 
 /* 1 featured post */
@@ -124,9 +126,10 @@
     text-decoration: none;
     min-height: 536px;
     box-shadow: 0 12px 40px rgba(0,0,0,.35);
-    transition: transform .35s ease, box-shadow .35s ease;
+    transition: box-shadow .35s ease;
     background: var(--bs-primary, #00313d);
     isolation: isolate;
+    backface-visibility: hidden;
 }
 .hbh-featured-media {
     position: absolute;
@@ -135,11 +138,10 @@
 }
 .hbh-card--featured .hbh-card__img {
     position: absolute;
-    left: 50%;
-    top: 50%;
+    inset: 0;
     width: 100%;
     height: 100%;
-    transform: translate(-50%, -50%) scale(1.09);
+    transform: scale(1.04);
     object-fit: cover;
     object-position: center center;
     transition: transform .55s ease;
@@ -238,6 +240,7 @@
 }
 .hbh-card--regular .hbh-card__thumb img {
     width: 100%; height: 100%; object-fit: cover;
+    transform: scale(1);
     transition: transform .4s ease;
 }
 .hbh-card--regular .hbh-card__thumb-ph {
@@ -398,12 +401,12 @@
 
 /* ── Hover: yalnız siçan/trackpad — mobil toxunuşda "stuck" hover və fon rəngi əyrilikləri olmasın ── */
 @media (hover: hover) and (pointer: fine) {
+    /* Kartı yuxarı itələmə: kursor hover sərhədində titrəmə yaradır; yalnız kölgə + şəkil zoom */
     .hbh-card--featured:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 20px 56px rgba(0,0,0,.45);
+        box-shadow: 0 22px 58px rgba(0,0,0,.48);
     }
     .hbh-card--featured:hover .hbh-card__img {
-        transform: translate(-50%, -50%) scale(1.16);
+        transform: scale(1.1);
     }
     .hbh-card--featured:hover .hbh-arrow-btn {
         background: var(--accent,#FF5414);

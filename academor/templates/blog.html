@@ -344,7 +344,7 @@
 
             <!-- ── Featured Posts (on_top, max 2) ─────────────────────────── -->
             {% if featured_posts %}
-            <div class="wow fadeInUp mb-5" data-wow-delay="0.1s">
+            <div class="d-none d-md-block wow fadeInUp mb-5" data-wow-delay="0.1s">
                 <p class="blog-section-label">{% trans "Featured Posts" %}</p>
                 <div class="blog-featured-grid blog-featured-grid--{% if featured_posts|length == 1 %}one{% else %}two{% endif %}">
                     {% for post in featured_posts %}
@@ -397,15 +397,15 @@
             </div>
             <div class="row g-4">
                 {% for post in posts %}
-                <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="{% cycle '0.05s' '0.1s' '0.15s' %}">
+                <div class="col-6 col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="{% cycle '0.05s' '0.1s' '0.15s' %}">
                     <article class="blog-card">
                         <a href="{% url 'projects:blog-detail' post.slug %}" class="blog-card__link text-decoration-none stretched-link">
                             <div class="blog-card__media ratio ratio-1x1">
                                 {% if post.cover %}
                                     {% if forloop.counter > 6 %}
-                                    {% academor_branded_lazy_img post.cover post.name img_class='blog-card-cover-img' layout='cover' width='800' height='800' sizes='(max-width: 575.98px) 100vw, (max-width: 991.98px) 50vw, 33vw' loading='lazy' %}
+                                    {% academor_branded_lazy_img post.cover post.name img_class='blog-card-cover-img' layout='cover' width='800' height='800' sizes='(max-width: 991.98px) 50vw, 33vw' loading='lazy' %}
                                     {% else %}
-                                    <img src="{{ post.cover }}" alt="{{ post.name }}" class="blog-card-cover-img" loading="lazy" decoding="async" width="800" height="800" sizes="(max-width: 575.98px) 100vw, (max-width: 991.98px) 50vw, 33vw">
+                                    <img src="{{ post.cover }}" alt="{{ post.name }}" class="blog-card-cover-img" loading="lazy" decoding="async" width="800" height="800" sizes="(max-width: 991.98px) 50vw, 33vw">
                                     {% endif %}
                                 {% else %}
                                 <div class="blog-card__media-ph">
