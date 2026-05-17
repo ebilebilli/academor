@@ -11,7 +11,7 @@ from django.templatetags.static import static
 from projects.models import *
 from projects.utils.cache_utils import cached_query, cached_page_data
 from projects.utils.media_cache_bust import media_url
-from projects.utils.seo_text import blog_intro_plain, richtext_plain_text
+from projects.utils.seo_text import richtext_plain_text
 
 
 def _session_set_lang(session, lang):
@@ -241,14 +241,12 @@ def serialize_blog_post(post, lang='az'):
     images = [media_url(img.image) for img in post.images.all() if img.image]
     desc_html = _localized_value(post, 'description', lang) or None
     desc_plain = richtext_plain_text(desc_html) if desc_html else ''
-    desc_lead = blog_intro_plain(desc_html, max_words=42) if desc_html else ''
     return {
         'id': post.id,
         'slug': post.slug,
         'name': _localized_value(post, 'name', lang),
         'description': desc_html,
         'description_plain': desc_plain or None,
-        'description_lead': desc_lead or None,
         'date': post.date,
         'created_at': post.created_at,
         'on_top': post.on_top,

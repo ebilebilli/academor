@@ -32,20 +32,6 @@ def richtext_plain_text(html_or_plain: str | None) -> str:
     return plain
 
 
-def truncate_words_plain(plain: str, max_words: int, *, ellipsis: str = "…") -> str:
-    if not plain or max_words < 1:
-        return ""
-    words = plain.split()
-    if len(words) <= max_words:
-        return plain
-    return " ".join(words[:max_words]) + ellipsis
-
-
-def blog_intro_plain(html_or_plain: str | None, *, max_words: int = 42) -> str:
-    """First paragraph-worth of plain text for article lead / dek under the title."""
-    return truncate_words_plain(richtext_plain_text(html_or_plain), max_words)
-
-
 def meta_plain_excerpt(html_or_plain: str | None, *, max_len: int = 158, ellipsis: str = "…") -> str:
     plain = richtext_plain_text(html_or_plain)
     if not plain:
