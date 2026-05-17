@@ -307,8 +307,18 @@
 }
 
 .hbh-title--sm {
-    font-size: 1.06rem; font-weight: 700; color: #fff; line-height: 1.4; margin-bottom: 0;
+    font-size: 1.06rem; font-weight: 700; color: #fff; line-height: 1.4; margin-bottom: .28rem;
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.hbh-excerpt--reg {
+    font-size: .78rem;
+    color: rgba(255,255,255,.52);
+    line-height: 1.45;
+    margin: 0 0 .4rem 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 .hbh-date--sm {
     font-size: .785rem; color: rgba(255,255,255,.52);
@@ -497,8 +507,8 @@
                     <div class="hbh-arrow-btn" aria-hidden="true"><i class="fa fa-arrow-right"></i></div>
                     <div class="hbh-card__overlay">
                         <h2 class="hbh-title--lg">{{ post.name }}</h2>
-                        {% if post.description %}
-                        <p class="hbh-excerpt">{{ post.description|striptags|truncatewords:20 }}</p>
+                        {% if post.description_plain %}
+                        <p class="hbh-excerpt">{{ post.description_plain|truncatewords:20 }}</p>
                         {% endif %}
                     </div>
                 </a>
@@ -532,6 +542,9 @@
                         </div>
                         {% endif %}
                         <p class="hbh-title--sm">{{ post.name }}</p>
+                        {% if post.description_plain %}
+                        <p class="hbh-excerpt--reg">{{ post.description_plain|truncatewords:14 }}</p>
+                        {% endif %}
                         <span class="hbh-reg-arrow mt-1 d-inline-flex align-items-center gap-1" style="font-size:.72rem;">
                             <i class="fa fa-arrow-right" style="font-size:.62rem;"></i>{% trans "Details" %}
                         </span>

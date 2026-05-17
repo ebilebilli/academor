@@ -279,7 +279,7 @@
                                 {% endif %}
                             </div>
                             <h3 class="hb-hero__title">{{ post.name }}</h3>
-                            {% if post.description %}<p class="hb-hero__excerpt">{{ post.description|striptags|truncatewords:18 }}</p>{% endif %}
+                            {% if post.description_plain %}<p class="hb-hero__excerpt">{{ post.description_plain|truncatewords:18 }}</p>{% endif %}
                         </div>
                     </a>
                 </div>
@@ -308,7 +308,7 @@
                             <time class="hb-card__date"><i class="fa fa-calendar-alt" style="font-size:.62rem;"></i>{{ post.date|date:"d M Y" }}</time>
                             {% endif %}
                             <p class="hb-card__title">{{ post.name }}</p>
-                            {% if post.description %}<p class="hb-card__excerpt">{{ post.description|striptags|truncatewords:14 }}</p>{% endif %}
+                            {% if post.description_plain %}<p class="hb-card__excerpt">{{ post.description_plain|truncatewords:14 }}</p>{% endif %}
                             <span class="hb-card__cta-arrow"><i class="fa fa-arrow-right"></i></span>
                         </div>
                     </a>

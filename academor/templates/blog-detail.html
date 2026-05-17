@@ -95,6 +95,12 @@
         .blog-detail__cover:hover img {
             transform: scale(1.02);
         }
+        .blog-detail-lead {
+            font-size: 1.05rem;
+            line-height: 1.62;
+            color: #56667f;
+            max-width: 42rem;
+        }
         .blog-detail-content { line-height: 1.85; color: #2d3a52; font-size: 1rem; }
         .blog-detail-content p { margin-bottom: 1.1rem; }
         .blog-detail-content h2,
@@ -383,6 +389,9 @@
                                 {% endif %}
                             </div>
                             <h1 class="mb-0 lh-base" style="font-size:1.85rem;color:var(--bs-primary,#00313D);">{{ post.name }}</h1>
+                            {% if post.description_lead %}
+                            <p class="blog-detail-lead mt-3 mb-0 wow fadeInUp" data-wow-delay="0.12s">{{ post.description_lead }}</p>
+                            {% endif %}
                         </header>
 
                         <hr class="blog-detail-divider">

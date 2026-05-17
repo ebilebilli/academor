@@ -78,6 +78,18 @@
             text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
             margin-bottom: 0.5rem;
         }
+        .blog-featured-card__excerpt {
+            font-size: 0.875rem;
+            font-weight: 500;
+            line-height: 1.52;
+            color: rgba(255, 255, 255, 0.82);
+            text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
+            margin: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
         .blog-featured-arrow {
             position: absolute;
             top: 1.2rem;
@@ -346,6 +358,9 @@
                             <div class="blog-featured-arrow" aria-hidden="true"><i class="fa fa-arrow-right"></i></div>
                             <div class="blog-featured-card__overlay">
                                 <h2 class="blog-featured-card__title">{{ post.name }}</h2>
+                                {% if post.description_plain %}
+                                <p class="blog-featured-card__excerpt">{{ post.description_plain|truncatewords:22 }}</p>
+                                {% endif %}
                             </div>
                         </a>
                     {% endfor %}
@@ -383,8 +398,8 @@
                                 </time>
                                 {% endif %}
                                 <h3 class="blog-card__title">{{ post.name }}</h3>
-                                {% if post.description %}
-                                <p class="blog-card__excerpt flex-grow-1">{{ post.description|striptags|truncatewords:22 }}</p>
+                                {% if post.description_plain %}
+                                <p class="blog-card__excerpt flex-grow-1">{{ post.description_plain|truncatewords:22 }}</p>
                                 {% endif %}
                                 <span class="blog-card__cta mt-auto">
                                     {% trans "Read more" %} <i class="fa fa-arrow-right ms-1" style="font-size:.75rem;"></i>
