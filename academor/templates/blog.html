@@ -41,25 +41,24 @@
         }
         .blog-featured-card__img {
             position: absolute;
-            left: 50%;
-            top: 50%;
+            inset: 0;
             width: 100%;
             height: 100%;
-            transform: translate(-50%, -50%) scale(1.09);
             object-fit: cover;
             object-position: center center;
+            transform: scale(1);
             transition: transform 0.55s ease;
         }
         .blog-featured-card:hover .blog-featured-card__img {
-            transform: translate(-50%, -50%) scale(1.16);
+            transform: scale(1.05);
         }
         .blog-featured-card__overlay {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            padding: 2.5rem 1.8rem 1.8rem;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.45) 55%, transparent 100%);
+            padding: 1.35rem 1.25rem 1.25rem;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.38) 50%, transparent 100%);
             z-index: 1;
         }
         .blog-featured-card__no-img {
@@ -71,22 +70,22 @@
             justify-content: center;
         }
         .blog-featured-card__title {
-            font-size: clamp(1.1rem, 2.5vw, 1.45rem);
+            font-size: clamp(1rem, 2.1vw, 1.28rem);
             font-weight: 800;
-            line-height: 1.35;
+            line-height: 1.32;
             color: #fff;
             text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.35rem;
         }
         .blog-featured-card__excerpt {
-            font-size: 0.875rem;
+            font-size: 0.8rem;
             font-weight: 500;
-            line-height: 1.52;
+            line-height: 1.45;
             color: rgba(255, 255, 255, 0.82);
             text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
             margin: 0;
             display: -webkit-box;
-            -webkit-line-clamp: 3;
+            -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
@@ -154,7 +153,7 @@
                 width: 100%;
             }
             .blog-featured-card .blog-featured-card__overlay {
-                padding: 1.5rem 1.15rem 1.35rem;
+                padding: 1.1rem 1rem 1.1rem;
             }
         }
         @media (min-width: 768px) and (max-width: 991.98px) {
@@ -178,7 +177,7 @@
             box-shadow: 0 14px 36px rgba(0, 0, 0, 0.09);
             border-color: rgba(255, 84, 20, 0.22);
         }
-        /* Şəkil: Bootstrap `ratio` — en dəyişəndə blok hündürlüyü dəqiq, şəkil həmişə doldurur */
+        /* Şəkil: Bootstrap `ratio` — çərçivə eni ilə müəyyən; şəkil həmişə tam doldurur (cover) */
         .blog-card__link {
             display: flex;
             flex-direction: column;
@@ -186,21 +185,41 @@
             min-height: 0;
             color: inherit;
         }
+        .blog-card__media.ratio {
+            max-width: 100%;
+            overflow: hidden;
+        }
         .blog-card__media {
             flex-shrink: 0;
             width: 100%;
+            max-width: 100%;
             background: linear-gradient(145deg, #eef2f6 0%, #e2e8f0 100%);
         }
-        .blog-card__media img {
+        /* Birbaşa img — ratio uşağı */
+        .blog-card__media > img.blog-card-cover-img {
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
+            max-width: none;
             object-fit: cover;
             object-position: center center;
             transition: transform 0.48s ease;
-            transform: scale(1.03);
+            transform: scale(1);
         }
-        .blog-card:hover .blog-card__media img {
-            transform: scale(1.07);
+        .blog-card:hover .blog-card__media > img.blog-card-cover-img {
+            transform: scale(1.04);
+        }
+        /* Lazy wrapper + içindəki şəkil */
+        .blog-card__media > .academor-branded-lazy--cover {
+            margin: 0;
+        }
+        .blog-card__media .academor-branded-lazy--cover .blog-card-cover-img {
+            transition: transform 0.48s ease;
+            transform: scale(1);
+        }
+        .blog-card:hover .blog-card__media .academor-branded-lazy--cover .blog-card-cover-img {
+            transform: scale(1.04);
         }
         .blog-card__media-ph {
             display: flex;
@@ -211,51 +230,51 @@
             background: linear-gradient(145deg, #eef2f6 0%, #e2e8f0 100%);
         }
         .blog-card__body {
-            flex: 1 1 auto;
+            flex: 0 0 auto;
             display: flex;
             flex-direction: column;
-            padding: 1.35rem 1.35rem 1.45rem;
+            padding: 0.75rem 0.95rem 0.9rem;
             border-top: 1px solid rgba(0, 49, 61, 0.06);
         }
         .blog-card__date {
             display: inline-flex;
             align-items: center;
             gap: 0.32rem;
-            font-size: 0.7rem;
+            font-size: 0.62rem;
             font-weight: 700;
             letter-spacing: 0.04em;
             text-transform: uppercase;
             color: rgba(0, 49, 61, 0.55);
             background: transparent;
             padding: 0;
-            margin-bottom: 0.45rem;
+            margin-bottom: 0.28rem;
         }
         .blog-card__title {
-            font-size: 1.05rem;
+            font-size: 0.92rem;
             font-weight: 700;
             color: var(--bs-primary, #00313d);
-            line-height: 1.42;
-            margin-bottom: 0.65rem;
+            line-height: 1.38;
+            margin-bottom: 0.35rem;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
         .blog-card__excerpt {
-            font-size: 0.84rem;
+            font-size: 0.76rem;
             color: #5c6d8a;
-            line-height: 1.62;
+            line-height: 1.5;
             display: -webkit-box;
-            -webkit-line-clamp: 3;
+            -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            margin-bottom: 1rem;
+            margin-bottom: 0.45rem;
         }
         .blog-card__cta {
             display: inline-flex;
             align-items: center;
             gap: 0.42rem;
-            font-size: 0.8rem;
+            font-size: 0.72rem;
             font-weight: 700;
             letter-spacing: 0.02em;
             color: var(--accent, #ff5414);
@@ -336,8 +355,11 @@
                                 src="{{ post.cover }}"
                                 alt="{{ post.name }}"
                                 class="blog-featured-card__img"
-                                {% if forloop.first %}loading="eager"{% else %}loading="lazy"{% endif %}
-                                decoding="async">
+                                {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+                                decoding="async"
+                                width="1200"
+                                height="800"
+                                sizes="(max-width: 767px) 100vw, (max-width: 991px) min(90vw, 720px), {% if featured_posts|length == 1 %}min(1140px, 100vw){% else %}min(55vw, 700px){% endif %}">
                             </div>
                             {% else %}
                             <div class="blog-featured-card__no-img">
@@ -359,7 +381,7 @@
                             <div class="blog-featured-card__overlay">
                                 <h2 class="blog-featured-card__title">{{ post.name }}</h2>
                                 {% if post.description_plain %}
-                                <p class="blog-featured-card__excerpt">{{ post.description_plain|truncatewords:22 }}</p>
+                                <p class="blog-featured-card__excerpt">{{ post.description_plain|truncatewords:14 }}</p>
                                 {% endif %}
                             </div>
                         </a>
@@ -376,14 +398,14 @@
             <div class="row g-4">
                 {% for post in posts %}
                 <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="{% cycle '0.05s' '0.1s' '0.15s' %}">
-                    <article class="blog-card h-100">
+                    <article class="blog-card">
                         <a href="{% url 'projects:blog-detail' post.slug %}" class="blog-card__link text-decoration-none stretched-link">
-                            <div class="blog-card__media ratio ratio-4x3">
+                            <div class="blog-card__media ratio ratio-1x1">
                                 {% if post.cover %}
                                     {% if forloop.counter > 6 %}
-                                    {% academor_branded_lazy_img post.cover post.name img_class='blog-card-cover-img' layout='cover' width='640' height='480' loading='lazy' %}
+                                    {% academor_branded_lazy_img post.cover post.name img_class='blog-card-cover-img' layout='cover' width='800' height='800' sizes='(max-width: 575.98px) 100vw, (max-width: 991.98px) 50vw, 33vw' loading='lazy' %}
                                     {% else %}
-                                    <img src="{{ post.cover }}" alt="{{ post.name }}" class="blog-card-cover-img" loading="lazy" decoding="async" width="640" height="480">
+                                    <img src="{{ post.cover }}" alt="{{ post.name }}" class="blog-card-cover-img" loading="lazy" decoding="async" width="800" height="800" sizes="(max-width: 575.98px) 100vw, (max-width: 991.98px) 50vw, 33vw">
                                     {% endif %}
                                 {% else %}
                                 <div class="blog-card__media-ph">
@@ -399,7 +421,7 @@
                                 {% endif %}
                                 <h3 class="blog-card__title">{{ post.name }}</h3>
                                 {% if post.description_plain %}
-                                <p class="blog-card__excerpt flex-grow-1">{{ post.description_plain|truncatewords:22 }}</p>
+                                <p class="blog-card__excerpt">{{ post.description_plain|truncatewords:12 }}</p>
                                 {% endif %}
                                 <span class="blog-card__cta mt-auto">
                                     {% trans "Read more" %} <i class="fa fa-arrow-right ms-1" style="font-size:.75rem;"></i>
