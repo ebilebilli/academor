@@ -252,8 +252,33 @@ def serialize_blog_post(post, lang='az'):
     }
 
 
+def _fresh_home_blog_context(lang):
+    """Home hero + blog section bypass the cached page blob so edits show on the next reload."""
+    posts = list(
+        BlogPost.objects.filter(is_active=True, on_main_page=True)
+        .prefetch_related('images')
+        .order_by('-on_top', '-date', '-id')
+    )
+    return {
+        'blog_featured': [
+            serialize_blog_post(p, lang=lang) for p in posts if p.on_top
+        ][:2],
+        'blog_posts': [
+            serialize_blog_post(p, lang=lang) for p in posts if not p.on_top
+        ],
+    }
+
+
 @cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_blog_page_data(request, lang):
+    """
+    Full context for `/blog/` (blog.html).
+
+    Cached per (request GET params, lang) with TTL ``CACHE_TIMEOUT_MEDIUM``.
+    Depends on cached ``get_blog_posts(is_active=True)`` (featured = ``on_top``[:2]; rest = regular posts)
+    plus ``get_project_categories`` / ``get_background_image``. Any ``BlogPost`` or ``BlogPostImage``
+    change bumps global ``cache_version`` via signals in ``projects.signals`` so listings stay current.
+    """
     all_posts = get_blog_posts(is_active=True)
     featured = [p for p in all_posts if p.on_top][:2]
     regular = [p for p in all_posts if not p.on_top]
@@ -876,7 +901,7 @@ def get_pagination_data(page_obj, paginator):
 
 
 @cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')
-def get_home_page_data(request, lang):
+def _get_home_page_data_cached(request, lang):
     category_slug = request.GET.get('slug')
     is_active = request.GET.get('is_active', 'true').lower() == 'true'
 
@@ -956,17 +981,13 @@ def get_home_page_data(request, lang):
         'team': [serialize_team_member(m, lang=lang) for m in get_team_members()],
         'reviews': [serialize_review(r) for r in get_reviews()],
         'site_faqs': get_serialized_site_faq_entries(lang=lang, is_active=True),
-        'blog_featured': [
-            serialize_blog_post(p, lang=lang)
-            for p in get_blog_posts(is_active=True, on_main_page=True)
-            if p.on_top
-        ][:2],
-        'blog_posts': [
-            serialize_blog_post(p, lang=lang)
-            for p in get_blog_posts(is_active=True, on_main_page=True)
-            if not p.on_top
-        ],
     }
+
+
+def get_home_page_data(request, lang):
+    ctx = _get_home_page_data_cached(request, lang)
+    ctx.update(_fresh_home_blog_context(lang))
+    return ctx
 
 
 @cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')

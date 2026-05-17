@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load i18n %}{% get_current_language as LANG_CODE %}
+{% load i18n static %}{% get_current_language as LANG_CODE %}
 <html lang="{{ LANG_CODE }}">
 <head>
     {% include "includes/site_layout_head.html" with page_title=page_title %}
@@ -65,45 +65,87 @@
 
         /* ── Detail content ── */
         .blog-detail__cover {
-            border-radius: 14px;
+            border-radius: 16px;
             overflow: hidden;
-            max-height: 420px;
-            box-shadow: 0 6px 24px rgba(0,0,0,.13);
+            box-shadow: 0 12px 48px rgba(0,0,0,.18);
+            background: linear-gradient(135deg, #eef2f6, #e8ecf2);
+            max-width: 100%;
+            margin-bottom: 2rem;
+            transition: box-shadow .3s ease, transform .3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 280px;
+        }
+        .blog-detail__cover:hover {
+            box-shadow: 0 16px 64px rgba(0,0,0,.22);
+            transform: translateY(-2px);
         }
         .blog-detail__cover img {
             width: 100%;
-            max-height: 420px;
-            object-fit: cover;
+            max-width: 100%;
+            height: auto;
             display: block;
+            aspect-ratio: auto;
+            object-fit: contain;
+            transition: transform .4s ease;
+            min-height: 250px;
+            max-height: 700px;
         }
-        .blog-detail-content { line-height: 1.85; color: #2d3a52; }
+        .blog-detail__cover:hover img {
+            transform: scale(1.02);
+        }
+        .blog-detail-content { line-height: 1.85; color: #2d3a52; font-size: 1rem; }
         .blog-detail-content p { margin-bottom: 1.1rem; }
         .blog-detail-content h2,
         .blog-detail-content h3 { color: var(--bs-primary, #00313D); margin-top: 1.6rem; margin-bottom: .7rem; }
-        .blog-detail-content img { max-width: 100%; border-radius: 8px; margin: .5rem 0; }
+        .blog-detail-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            box-shadow: 0 8px 32px rgba(0,0,0,.12);
+            transition: transform .35s ease, box-shadow .35s ease;
+            display: block;
+            max-height: 700px;
+            object-fit: contain;
+        }
+        .blog-detail-content img:hover {
+            transform: scale(1.01);
+            box-shadow: 0 12px 48px rgba(0,0,0,.18);
+        }
 
         /* ── Gallery ── */
         .blog-gallery__item {
-            border-radius: 9px;
+            border-radius: 12px;
             overflow: hidden;
-            height: 150px;
             cursor: pointer;
             position: relative;
+            box-shadow: 0 6px 20px rgba(0,0,0,.1);
+            transition: box-shadow .35s ease, transform .35s ease;
+            background: #f0f2f5;
+            aspect-ratio: 4 / 3;
+            width: 100%;
+        }
+        .blog-gallery__item:hover {
+            box-shadow: 0 12px 40px rgba(0,0,0,.18);
+            transform: translateY(-4px);
         }
         .blog-gallery__item img {
             width: 100%; height: 100%;
             object-fit: cover;
             transition: transform .35s ease;
         }
-        .blog-gallery__item:hover img { transform: scale(1.06); }
+        .blog-gallery__item:hover img { transform: scale(1.08); }
 
         /* ── Lightbox ── */
         #blog-lightbox {
             display: none;
             position: fixed; inset: 0; z-index: 9999;
-            background: rgba(0,0,0,.92);
+            background: rgba(0,0,0,.94);
             align-items: center; justify-content: center;
-            animation: lbFadeIn .22s ease;
+            animation: lbFadeIn .28s ease;
+            backdrop-filter: blur(2px);
         }
         #blog-lightbox.is-open { display: flex; }
         @keyframes lbFadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -112,37 +154,43 @@
             max-width: 90vw;
             max-height: 85vh;
             object-fit: contain;
-            border-radius: 6px;
-            box-shadow: 0 8px 48px rgba(0,0,0,.6);
+            border-radius: 8px;
+            box-shadow: 0 12px 80px rgba(0,0,0,.8);
             user-select: none;
-            animation: lbImgIn .2s ease;
+            animation: lbImgIn .25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        @keyframes lbImgIn { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: scale(1); } }
+        @keyframes lbImgIn { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: scale(1); } }
 
         .lb-btn {
             position: absolute;
-            background: rgba(255,255,255,.12);
-            border: none; outline: none; cursor: pointer;
+            background: rgba(255,255,255,.15);
+            border: 1px solid rgba(255,255,255,.2); 
+            outline: none; cursor: pointer;
             color: #fff;
             border-radius: 50%;
-            width: 48px; height: 48px;
+            width: 52px; height: 52px;
             display: flex; align-items: center; justify-content: center;
             font-size: 1.1rem;
-            transition: background .2s, transform .2s;
-            backdrop-filter: blur(4px);
+            transition: background .25s, transform .25s, border-color .25s;
+            backdrop-filter: blur(8px);
         }
-        .lb-btn:hover { background: var(--accent, #FF5414); transform: scale(1.08); }
+        .lb-btn:hover { 
+            background: var(--accent, #FF5414); 
+            transform: scale(1.12);
+            border-color: rgba(255,255,255,.4);
+        }
 
-        #lb-close { top: 1.2rem; right: 1.2rem; font-size: 1.25rem; }
-        #lb-prev  { left: 1.2rem;  top: 50%; transform: translateY(-50%); }
-        #lb-next  { right: 1.2rem; top: 50%; transform: translateY(-50%); }
-        #lb-prev:hover, #lb-next:hover { transform: translateY(-50%) scale(1.08); }
+        #lb-close { top: 1.5rem; right: 1.5rem; font-size: 1.3rem; }
+        #lb-prev  { left: 1.5rem;  top: 50%; transform: translateY(-50%); }
+        #lb-next  { right: 1.5rem; top: 50%; transform: translateY(-50%); }
+        #lb-prev:hover, #lb-next:hover { transform: translateY(-50%) scale(1.12); }
 
         #lb-counter {
-            position: absolute; bottom: 1.2rem; left: 50%; transform: translateX(-50%);
-            color: rgba(255,255,255,.7); font-size: .82rem; letter-spacing: .05em;
-            background: rgba(0,0,0,.4); padding: .25rem .75rem; border-radius: 20px;
+            position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+            color: rgba(255,255,255,.8); font-size: .85rem; letter-spacing: .06em;
+            background: rgba(0,0,0,.5); padding: .35rem .9rem; border-radius: 24px;
             pointer-events: none;
+            border: 1px solid rgba(255,255,255,.1);
         }
 
         /* ── Divider ── */
@@ -150,6 +198,111 @@
             border: none;
             border-top: 1px solid rgba(0,0,0,.08);
             margin: 1.75rem 0;
+        }
+        .featured-badge-icon {
+            width: 0.95rem;
+            height: auto;
+            flex-shrink: 0;
+            display: block;
+            object-fit: contain;
+        }
+        /* On white page chrome — teal pill so orange banner glyph reads clearly */
+        .blog-badge-featured-on-light {
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem;
+            background: var(--bs-primary, #00313d);
+            color: #fff;
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .04em;
+            padding: .28rem .75rem .26rem .68rem;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 2px 10px rgba(0, 49, 61, 0.12);
+        }
+
+        /* ── Responsive adjustments ── */
+        @media (max-width: 480px) {
+            .blog-detail__cover {
+                border-radius: 12px;
+                margin-bottom: 1.5rem;
+                box-shadow: 0 8px 32px rgba(0,0,0,.15);
+            }
+            .blog-detail__cover img {
+                aspect-ratio: auto;
+                min-height: 280px;
+                max-height: 550px;
+                object-fit: contain;
+            }
+            .blog-gallery__item {
+                aspect-ratio: 4 / 3;
+                border-radius: 10px;
+            }
+            .blog-detail-content img {
+                border-radius: 10px;
+                margin: 1.2rem 0;
+                max-height: 450px;
+                object-fit: contain;
+            }
+            #lb-prev, #lb-next {
+                width: 44px;
+                height: 44px;
+                font-size: 0.9rem;
+            }
+            #lb-close {
+                width: 44px;
+                height: 44px;
+                font-size: 1.1rem;
+                top: 1rem;
+                right: 1rem;
+            }
+            #lb-prev { left: 0.75rem; }
+            #lb-next { right: 0.75rem; }
+            .page-blog-detail header h1 {
+                font-size: 1.45rem !important;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .blog-detail__cover {
+                border-radius: 12px;
+                margin-bottom: 1.5rem;
+            }
+            .blog-detail__cover img {
+                aspect-ratio: auto;
+                min-height: 300px;
+                max-height: 570px;
+                object-fit: contain;
+            }
+            .blog-gallery__item {
+                aspect-ratio: 4 / 3;
+            }
+            .blog-detail-content img {
+                border-radius: 10px;
+                margin: 1.2rem 0;
+                max-height: 480px;
+                object-fit: contain;
+            }
+            .page-blog-detail header h1 {
+                font-size: 1.6rem !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .blog-gallery__item {
+                aspect-ratio: 4 / 3;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .blog-gallery__item {
+                aspect-ratio: 4 / 3;
+            }
+            .blog-detail__cover img {
+                aspect-ratio: auto;
+                object-fit: contain;
+            }
         }
     </style>
 </head>
@@ -161,7 +314,8 @@
 
     <div class="container-xxl py-5">
         <div class="container">
-            <div class="row g-5 align-items-start">
+            <div class="row g-5 align-items-start"
+                 style="--bs-gutter-y: 2rem;">
 
                 <!-- ── LEFT: Other posts sidebar ─────────────────────────── -->
                 <div class="col-lg-4 order-lg-1 order-2">
@@ -208,7 +362,8 @@
                              style="cursor:pointer;" onclick="lbOpen(0)">
                             <img src="{{ post.cover }}" alt="{{ post.name }}"
                                  loading="eager" decoding="async"
-                                 data-lb-src="{{ post.cover }}">
+                                 data-lb-src="{{ post.cover }}"
+                                 width="800" height="450">
                         </div>
                         {% endif %}
 
@@ -216,8 +371,8 @@
                         <header class="mb-3 wow fadeInUp" data-wow-delay="0.1s">
                             <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
                                 {% if post.on_top %}
-                                <span style="display:inline-flex;align-items:center;gap:.3rem;background:var(--accent,#FF5414);color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.04em;padding:.28rem .75rem;border-radius:5px;">
-                                    <i class="fa fa-star" style="font-size:.62rem;"></i>{% trans "Featured" %}
+                                <span class="blog-badge-featured-on-light">
+                                    <img src="{% static 'assets/img/banner.png' %}" alt="" class="featured-badge-icon" width="14" height="14" decoding="async">{% trans "Featured" %}
                                 </span>
                                 {% endif %}
                                 {% if post.date %}
@@ -243,13 +398,13 @@
 
                         <!-- Image gallery (images 2–6) -->
                         {% if post.images|length > 1 %}
-                        <div class="mt-4 wow fadeInUp" data-wow-delay="0.2s">
+                        <div class="mt-5 wow fadeInUp" data-wow-delay="0.2s">
                             <hr class="blog-detail-divider">
-                            <p class="blog-sidebar__heading" style="margin-bottom:1rem;">{% trans "Gallery" %}</p>
-                            <div class="row g-3">
+                            <p class="blog-sidebar__heading" style="margin-bottom:1.5rem;">{% trans "Gallery" %}</p>
+                            <div class="row g-4">
                                 {% for img in post.images %}
                                 {% if not forloop.first %}
-                                <div class="col-6 col-sm-4">
+                                <div class="col-12 col-sm-6 col-md-4">
                                     <div class="blog-gallery__item"
                                          onclick="lbOpen({{ forloop.counter0 }})"
                                          data-lb-src="{{ img }}">

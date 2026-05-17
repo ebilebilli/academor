@@ -10,6 +10,12 @@ Keep in sync with queries.py (add a receiver when a new cached query reads a mod
   Team, Review, BlogPost, BlogPostImage, Instructor, About, Contact, Media, Tagline, SiteFaqEntry,
   Test, Question, Option
   (University: pre_save fills unique slug from name — university_slug_from_name.)
+  Homepage blog hero + section preview rows use `_fresh_home_blog_context()` merged into `get_home_page_data()`
+  (fresh on every GET; not stored inside the page blob).
+
+  Blog index (`projects:blog-page`, blog.html): `get_blog_page_data()` uses `@cached_page_data(CACHE_TIMEOUT_MEDIUM)`
+  and calls cached `get_blog_posts(is_active=True)` (featured = `on_top`[:2], rest = listing). Invalidate via
+  `invalidate_blog_post_cache` / `invalidate_blog_post_image_cache` so `cache_version` bumps and blog list + detail caches miss.
 
 Not cached (no invalidation needed for public query cache): ContactInquiry, UserResult.
 """
@@ -210,12 +216,17 @@ def invalidate_review_cache(sender, instance, **kwargs):
 @receiver(post_save, sender=BlogPost)
 @receiver(post_delete, sender=BlogPost)
 def invalidate_blog_post_cache(sender, instance, **kwargs):
+    """
+    Blog index (`get_blog_page_data`), post detail sidebar lists (`get_blog_detail_view_context`),
+    and any other `@cached_*` helpers that pull `BlogPost` / `get_blog_posts`.
+    """
     _invalidate_on_commit('BlogPost')
 
 
 @receiver(post_save, sender=BlogPostImage)
 @receiver(post_delete, sender=BlogPostImage)
 def invalidate_blog_post_image_cache(sender, instance, **kwargs):
+    """Cover/order changes affect serialized posts on blog listing and home fresh query reads same DB."""
     _invalidate_on_commit('BlogPost')
 
 

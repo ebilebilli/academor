@@ -69,15 +69,34 @@
 @keyframes hbhPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
 
 .hbh-see-all {
-    display: inline-flex; align-items: center; gap: .4rem;
-    color: rgba(255,255,255,.65);
-    font-size: .78rem; font-weight: 600; letter-spacing: .03em;
-    text-decoration: none;
-    border-bottom: 1px solid rgba(255,255,255,.2);
-    padding-bottom: 1px;
-    transition: color .2s, border-color .2s;
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    background: var(--accent, #FF5414);
+    color: #fff !important;
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    text-decoration: none !important;
+    padding: .5rem 1.15rem;
+    border-radius: 999px;
+    border: 2px solid var(--accent, #FF5414);
+    box-shadow: 0 4px 18px rgba(255, 84, 20, 0.4);
+    transition: background .2s, border-color .2s, color .2s, transform .2s, box-shadow .2s;
 }
-.hbh-see-all:hover { color: var(--accent, #FF5414); border-color: var(--accent, #FF5414); }
+.hbh-see-all:hover,
+.hbh-see-all:focus {
+    background: #fff;
+    border-color: #fff;
+    color: var(--bs-primary, #00313D) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.22);
+}
+.hbh-see-all:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.95);
+    outline-offset: 3px;
+}
 
 /* ── Main grid ── */
 .hbh-grid {
@@ -93,8 +112,8 @@
     grid-template-columns: 3fr 2fr;
     grid-template-rows: 1fr;
 }
-.hbh-grid--two .hbh-card--featured:first-child { min-height: 460px; }
-.hbh-grid--two .hbh-card--featured:last-child  { min-height: 360px; }
+.hbh-grid--two .hbh-card--featured:first-child { min-height: 558px; }
+.hbh-grid--two .hbh-card--featured:last-child  { min-height: 450px; }
 
 /* ── Featured Card ── */
 .hbh-card--featured {
@@ -103,21 +122,28 @@
     border-radius: 18px;
     overflow: hidden;
     text-decoration: none;
-    min-height: 440px;
+    min-height: 536px;
     box-shadow: 0 12px 40px rgba(0,0,0,.35);
     transition: transform .35s ease, box-shadow .35s ease;
+    background: var(--bs-primary, #00313d);
+    isolation: isolate;
 }
-.hbh-card--featured:hover {
-    transform: translateY(-5px) scale(1.005);
-    box-shadow: 0 20px 56px rgba(0,0,0,.45);
+.hbh-featured-media {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
 }
 .hbh-card--featured .hbh-card__img {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%) scale(1.09);
     object-fit: cover;
+    object-position: center center;
     transition: transform .55s ease;
 }
-.hbh-card--featured:hover .hbh-card__img { transform: scale(1.06); }
 
 .hbh-card--featured .hbh-card__no-img {
     position: absolute; inset: 0;
@@ -128,6 +154,27 @@
     position: absolute; bottom: 0; left: 0; right: 0;
     padding: 2.5rem 1.8rem 1.8rem;
     background: linear-gradient(to top, rgba(0,0,0,.92) 0%, rgba(0,0,0,.45) 50%, transparent 100%);
+    z-index: 1;
+}
+
+/* Featured — badge + date pinned to card top (left), clear of arrow button */
+.hbh-card__meta-top {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    right: calc(40px + 2rem + 10px); /* hbh-arrow width + gutters */
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .35rem;
+    pointer-events: none;
+}
+.hbh-card__meta-top .hbh-badge,
+.hbh-card__meta-top .hbh-date {
+    margin-bottom: 0;
+    margin-left: 0;
+    pointer-events: auto;
 }
 
 /* ── Regular posts scroll wrapper ── */
@@ -136,7 +183,7 @@
 }
 .hbh-reg-track {
     display: flex;
-    gap: 1.05rem;
+    gap: 1.22rem;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
@@ -168,27 +215,24 @@
 
 /* ── Regular Card ── */
 .hbh-card--regular {
-    flex: 0 0 304px;
+    flex: 0 0 358px;
     scroll-snap-align: start;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 1.18rem;
     border-radius: 15px;
     overflow: hidden;
     text-decoration: none;
     background: rgba(255,255,255,.06);
     border: 1px solid rgba(255,255,255,.1);
-    padding: 1rem 1.15rem;
+    padding: 1.18rem 1.32rem;
     transition: background .25s, border-color .25s;
     backdrop-filter: blur(8px);
-}
-.hbh-card--regular:hover {
-    background: rgba(255,255,255,.1);
-    border-color: rgba(255,84,20,.4);
+    isolation: isolate;
 }
 .hbh-card--regular .hbh-card__thumb {
     flex-shrink: 0;
-    width: 80px; height: 80px;
+    width: 96px; height: 96px;
     border-radius: 11px;
     overflow: hidden;
 }
@@ -196,21 +240,36 @@
     width: 100%; height: 100%; object-fit: cover;
     transition: transform .4s ease;
 }
-.hbh-card--regular:hover .hbh-card__thumb img { transform: scale(1.08); }
 .hbh-card--regular .hbh-card__thumb-ph {
     width: 100%; height: 100%;
     background: rgba(255,255,255,.08);
     display: flex; align-items: center; justify-content: center;
 }
 
-/* ── Shared card elements ── */
+/* ── Featured chip: light pill so accent banner icon contrasts ── */
 .hbh-badge {
-    display: inline-flex; align-items: center; gap: .3rem;
-    background: var(--accent, #FF5414);
-    color: #fff;
-    font-size: .66rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase;
-    padding: .2rem .6rem; border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: .32rem;
+    background: rgba(255, 255, 255, 0.94);
+    color: var(--bs-primary, #00313d);
+    font-size: .66rem;
+    font-weight: 800;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    padding: .22rem .62rem .2rem .55rem;
+    border-radius: 6px;
     margin-bottom: .55rem;
+    border: 1px solid rgba(0, 49, 61, 0.12);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(6px);
+}
+.hbh-badge .featured-badge-icon {
+    width: 0.9rem;
+    height: auto;
+    flex-shrink: 0;
+    display: block;
+    object-fit: contain;
 }
 .hbh-date {
     display: inline-flex; align-items: center; gap: .28rem;
@@ -244,18 +303,15 @@
     color: #fff; font-size: .85rem;
     backdrop-filter: blur(6px);
     transition: background .25s, transform .25s;
-}
-.hbh-card--featured:hover .hbh-arrow-btn {
-    background: var(--accent,#FF5414);
-    transform: rotate(-45deg);
+    z-index: 3;
 }
 
 .hbh-title--sm {
-    font-size: .97rem; font-weight: 700; color: #fff; line-height: 1.4; margin-bottom: 0;
+    font-size: 1.06rem; font-weight: 700; color: #fff; line-height: 1.4; margin-bottom: 0;
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
 .hbh-date--sm {
-    font-size: .72rem; color: rgba(255,255,255,.5);
+    font-size: .785rem; color: rgba(255,255,255,.52);
     display: flex; align-items: center; gap: .28rem;
     margin-bottom: .35rem;
 }
@@ -264,10 +320,6 @@
     color: rgba(255,255,255,.35);
     font-size: .8rem;
     transition: color .2s, transform .2s;
-}
-.hbh-card--regular:hover .hbh-reg-arrow {
-    color: var(--accent,#FF5414);
-    transform: translateX(3px);
 }
 
 /* ── Bottom CTA strip ── */
@@ -334,20 +386,73 @@
     box-shadow: 0 6px 20px rgba(0,0,0,.18);
 }
 
+/* ── Hover: yalnız siçan/trackpad — mobil toxunuşda "stuck" hover və fon rəngi əyrilikləri olmasın ── */
+@media (hover: hover) and (pointer: fine) {
+    .hbh-card--featured:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 56px rgba(0,0,0,.45);
+    }
+    .hbh-card--featured:hover .hbh-card__img {
+        transform: translate(-50%, -50%) scale(1.16);
+    }
+    .hbh-card--featured:hover .hbh-arrow-btn {
+        background: var(--accent,#FF5414);
+        transform: rotate(-45deg);
+    }
+    .hbh-card--regular:hover {
+        background: rgba(255,255,255,.1);
+        border-color: rgba(255,84,20,.4);
+    }
+    .hbh-card--regular:hover .hbh-card__thumb img {
+        transform: scale(1.08);
+    }
+    .hbh-card--regular:hover .hbh-reg-arrow {
+        color: var(--accent,#FF5414);
+        transform: translateX(3px);
+    }
+}
+
 /* ── Responsive ── */
-@media (max-width: 767.98px) {
+@media (max-width: 480px) {
     .hbh-grid--two { grid-template-columns: 1fr; }
+    .hbh-card--featured,
     .hbh-grid--two .hbh-card--featured:first-child,
-    .hbh-grid--two .hbh-card--featured:last-child { min-height: 260px; }
-    .hbh-card--featured { min-height: 260px; }
-    .hbh-inner { padding: 2rem 0 3rem; }
+    .hbh-grid--two .hbh-card--featured:last-child {
+        min-height: 0;
+        aspect-ratio: 6 / 7;
+        width: 100%;
+        max-height: 320px;
+    }
+    .hbh-inner { padding: 1.5rem 0 2.5rem; }
     .hbh-cta-strip { justify-content: center; text-align: center; }
-    .hbh-card--regular { flex: 0 0 268px; }
+    .hbh-card--regular { flex: 0 0 280px; }
+    .hbh-card--featured .hbh-card__overlay {
+        padding: 1.2rem 1rem 1rem;
+    }
+    .hbh-title--lg { font-size: 1rem; }
+    .hbh-excerpt { font-size: .75rem; }
+}
+@media (min-width: 481px) and (max-width: 767.98px) {
+    .hbh-grid--two { grid-template-columns: 1fr; }
+    .hbh-card--featured,
+    .hbh-grid--two .hbh-card--featured:first-child,
+    .hbh-grid--two .hbh-card--featured:last-child {
+        min-height: 0;
+        aspect-ratio: 5 / 6;
+        width: 100%;
+        max-height: 380px;
+    }
+    .hbh-inner { padding: 2rem 0 2.8rem; }
+    .hbh-cta-strip { justify-content: center; text-align: center; }
+    .hbh-card--regular { flex: 0 0 304px; }
+    .hbh-card--featured .hbh-card__overlay {
+        padding: 1.5rem 1.15rem 1.35rem;
+    }
 }
 @media (min-width: 768px) and (max-width: 991.98px) {
     .hbh-grid--two { grid-template-columns: 3fr 2fr; }
-    .hbh-card--featured { min-height: 340px; }
-    .hbh-card--regular { flex: 0 0 282px; }
+    .hbh-card--featured { min-height: 420px; }
+    .hbh-card--regular { flex: 0 0 324px; }
 }
 </style>
 
@@ -371,24 +476,26 @@
                 {% for post in blog_featured %}
                 <a href="{% url 'projects:blog-detail' post.slug %}" class="hbh-card--featured">
                     {% if post.cover %}
+                    <div class="hbh-featured-media">
                     <img src="{{ post.cover }}" alt="{{ post.name }}" class="hbh-card__img"
                          {% if forloop.first %}loading="eager"{% else %}loading="lazy"{% endif %} decoding="async">
+                    </div>
                     {% else %}
                     <div class="hbh-card__no-img">
                         <i class="fa fa-newspaper fa-4x text-white opacity-10"></i>
                     </div>
                     {% endif %}
+                    <div class="hbh-card__meta-top">
+                        <span class="hbh-badge"><img src="{% static 'assets/img/banner.png' %}" alt="" class="featured-badge-icon" width="14" height="14" decoding="async">{% trans "Featured" %}</span>
+                        {% if post.date %}
+                        <span class="hbh-date">
+                            <i class="fa fa-calendar-alt" style="font-size:.6rem;"></i>
+                            <time datetime="{{ post.date|date:'Y-m-d' }}">{{ post.date|date:"d M Y" }}</time>
+                        </span>
+                        {% endif %}
+                    </div>
                     <div class="hbh-arrow-btn" aria-hidden="true"><i class="fa fa-arrow-right"></i></div>
                     <div class="hbh-card__overlay">
-                        <div class="d-flex flex-wrap align-items-center gap-1 mb-1">
-                            <span class="hbh-badge"><i class="fa fa-star" style="font-size:.58rem;"></i>{% trans "Featured" %}</span>
-                            {% if post.date %}
-                            <span class="hbh-date">
-                                <i class="fa fa-calendar-alt" style="font-size:.6rem;"></i>
-                                <time datetime="{{ post.date|date:'Y-m-d' }}">{{ post.date|date:"d M Y" }}</time>
-                            </span>
-                            {% endif %}
-                        </div>
                         <h2 class="hbh-title--lg">{{ post.name }}</h2>
                         {% if post.description %}
                         <p class="hbh-excerpt">{{ post.description|striptags|truncatewords:20 }}</p>
@@ -439,7 +546,7 @@
             <script>
             function hbhScroll(dir) {
                 var t = document.getElementById('hbh-track');
-                if (t) t.scrollBy({ left: dir * 320, behavior: 'smooth' });
+                if (t) t.scrollBy({ left: dir * 380, behavior: 'smooth' });
             }
             </script>
             {% endif %}
