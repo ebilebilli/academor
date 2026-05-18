@@ -327,17 +327,7 @@
     {% include "includes/site_spinner.html" %}
     {% include "includes/site_navbar.html" %}
 
-    <div class="container-fluid bg-primary mb-5 page-header page-header-hero-band d-flex align-items-center"{% include "includes/page_header_dynamic_bg.html" %}>
-        <div class="container">
-            <nav aria-label="breadcrumb" class="wow fadeInDown" data-wow-delay="0.05s">
-                <ol class="breadcrumb mb-2" style="background:none;padding:0;">
-                    <li class="breadcrumb-item"><a href="{% url 'projects:home-page' %}" class="text-white-50 text-decoration-none small">{% trans "Home" %}</a></li>
-                    <li class="breadcrumb-item active text-white small" aria-current="page">{% trans "Blog" %}</li>
-                </ol>
-            </nav>
-            <h1 class="text-white fw-bold mb-0 wow fadeInUp" data-wow-delay="0.1s" style="font-size:clamp(1.8rem,4vw,2.8rem);text-shadow:0 2px 12px rgba(0,0,0,.35);">{% trans "Blog" %}</h1>
-        </div>
-    </div>
+    <div class="container-fluid bg-primary mb-5 page-header page-header-hero-band"{% include "includes/page_header_dynamic_bg.html" %}></div>
 
     <div class="container-xxl py-5">
         <div class="container">
