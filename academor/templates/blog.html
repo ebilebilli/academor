@@ -344,7 +344,7 @@
 
             <!-- ── Featured Posts (on_top, max 2) ─────────────────────────── -->
             {% if featured_posts %}
-            <div class="d-none d-md-block wow fadeInUp mb-5" data-wow-delay="0.1s">
+            <div class="wow fadeInUp mb-5" data-wow-delay="0.1s">
                 <p class="blog-section-label">{% trans "Featured Posts" %}</p>
                 <div class="blog-featured-grid blog-featured-grid--{% if featured_posts|length == 1 %}one{% else %}two{% endif %}">
                     {% for post in featured_posts %}
