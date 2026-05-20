@@ -142,26 +142,6 @@
         menuHoverEnabled = shouldEnable;
     }
 
-    /* Language switcher */
-    qsa(".lang-switch-form").forEach(function (form) {
-        var btn = form.querySelector("button");
-        if (btn) {
-            btn.addEventListener("click", function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                var dropdown = form.closest(".nav-lang-dropdown");
-                var toggle = dropdown ? dropdown.querySelector(".dropdown-toggle") : null;
-                form.submit();
-                if (toggle && typeof bootstrap !== "undefined" && bootstrap.Dropdown) {
-                    var dropdownInstance = bootstrap.Dropdown.getInstance(toggle);
-                    if (dropdownInstance) {
-                        dropdownInstance.hide();
-                    }
-                }
-            });
-        }
-    });
-
     var resizeTicking = false;
     window.addEventListener("load", function () {
         syncMenuHoverMode();

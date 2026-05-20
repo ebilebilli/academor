@@ -34,16 +34,19 @@ def get_language_from_request(request):
 
     Uses the same resolution order as CustomLocaleMiddleware so Django cache
     entries always match the language shown in templates ({% trans %} / nav).
+
+    URL ?lang= is ignored after the user picked a language in the navbar — otherwise
+    redirect ?next= could immediately override the new choice.
     """
-    for key in ('lang', 'language'):
-        lang = normalize_lang(request.GET.get(key, ''))
-        if lang:
-            _session_set_lang(request.session, lang)
-            if not request.session.get('language_user_chosen'):
+    if not request.session.get('language_user_chosen'):
+        for key in ('lang', 'language'):
+            lang = normalize_lang(request.GET.get(key, ''))
+            if lang:
+                _session_set_lang(request.session, lang)
                 request.session['language_user_chosen'] = True
                 request.session.modified = True
-            translation.activate(lang)
-            return lang
+                translation.activate(lang)
+                return lang
 
     lang = resolve_public_language(request)
     translation.activate(lang)
