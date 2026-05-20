@@ -280,7 +280,9 @@ CACHES = {
     }
 }
 
-SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+# DB only — cached_db + LocMemCache breaks language across gunicorn workers (each
+# worker keeps its own stale session copy; F5 alternates az/en/ru randomly).
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 # Cache timeout settings (in seconds)
 CACHE_TIMEOUT_SHORT = 1800  # 30 minutes for occasionally changing data

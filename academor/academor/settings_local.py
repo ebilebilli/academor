@@ -159,7 +159,7 @@ CACHES = {
     }
 }
 
-SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 # Cache timeout settings (in seconds)
 CACHE_TIMEOUT_SHORT = 1800  # 30 minutes for occasionally changing data

@@ -45,12 +45,4 @@ class CustomLocaleMiddleware:
         request.LANGUAGE_CODE = language
 
         response = self.get_response(request)
-        response = sync_language_cookie_on_response(request, response)
-
-        if request.session.pop('_lang_switched', None):
-            response['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
-            response['Pragma'] = 'no-cache'
-            if 'Vary' not in response:
-                response['Vary'] = 'Cookie'
-
-        return response
+        return sync_language_cookie_on_response(request, response)
