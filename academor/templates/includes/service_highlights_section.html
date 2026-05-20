@@ -1,256 +1,36 @@
 {% load i18n %}
 <section class="hsvc-section{% if service_section_full_page %} hsvc-section--standalone{% endif %}" aria-labelledby="hsvc-heading">
-<style>
-/* ══════════════════════════════════════════════════
-   HOME SERVICES — shell + scoped orange cards for dark bg
-   ══════════════════════════════════════════════════ */
-.hsvc-section {
-    position: relative;
-    background: var(--bs-primary, #00313D);
-    overflow: hidden;
-}
-
-.hsvc-section::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-        radial-gradient(ellipse 50% 65% at 0% 0%, rgba(255,84,20,.16) 0%, transparent 62%),
-        radial-gradient(ellipse 48% 58% at 100% 100%, rgba(255,84,20,.1) 0%, transparent 68%),
-        radial-gradient(ellipse 35% 45% at 50% 50%, rgba(255,255,255,.03) 0%, transparent 55%);
-    pointer-events: none;
-    z-index: 0;
-}
-
-.hsvc-section::after {
-    content: '';
-    position: absolute;
-    bottom: -100px;
-    left: -80px;
-    width: 420px;
-    height: 420px;
-    border-radius: 50%;
-    border: 1px solid rgba(255,255,255,.06);
-    pointer-events: none;
-    z-index: 0;
-}
-
-.hsvc-inner {
-    position: relative;
-    z-index: 1;
-    padding: 4.25rem 0 4.75rem;
-}
-
-.hsvc-section--standalone .hsvc-inner {
-    padding-top: clamp(3rem, 8vw, 4.5rem);
-    padding-bottom: clamp(4rem, 10vw, 5.5rem);
-}
-
-.hsvc-top-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 2.25rem;
-}
-
-.hsvc-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: .5rem;
-    background: var(--accent, #FF5414);
-    color: #fff;
-    font-size: .72rem;
-    font-weight: 800;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    padding: .35rem 1rem .35rem .8rem;
-    border-radius: 4px;
-    box-shadow: 0 3px 14px rgba(255,84,20,.38);
-}
-
-.hsvc-eyebrow .hsvc-eyebrow__dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: rgba(255,255,255,.65);
-    animation: hsvcPulse 1.8s ease-in-out infinite;
-}
-
-@keyframes hsvcPulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: .4; transform: scale(.7); }
-}
-
-.hsvc-see-all {
-    display: inline-flex;
-    align-items: center;
-    gap: .4rem;
-    color: rgba(255,255,255,.65);
-    font-size: .78rem;
-    font-weight: 600;
-    letter-spacing: .03em;
-    text-decoration: none;
-    border-bottom: 1px solid rgba(255,255,255,.22);
-    padding-bottom: 1px;
-    transition: color .2s, border-color .2s;
-}
-
-.hsvc-see-all:hover {
-    color: var(--accent, #FF5414);
-    border-color: var(--accent, #FF5414);
-}
-
-.hsvc-heading-area {
-    margin-bottom: 2.75rem;
-}
-
-.hsvc-title {
-    font-size: clamp(1.65rem, 3.8vw, 2.65rem);
-    font-weight: 800;
-    color: #fff !important;
-    letter-spacing: -.02em;
-    line-height: 1.15;
-}
-
-.hsvc-subtitle {
-    font-size: clamp(.95rem, 2vw, 1.08rem);
-    color: rgba(255,255,255,.62);
-    max-width: 34rem;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: 1.55;
-}
-
-.hsvc-empty {
-    color: rgba(255,255,255,.55) !important;
-    font-size: 1.05rem;
-}
-
-/* Orange service cards — visible on dark section (courses page unchanged) */
-.hsvc-section .svc-card.svc-card--text-only {
-    background: linear-gradient(148deg, #ff5414 0%, #ea4a12 42%, #c73c0d 100%);
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    box-shadow:
-        0 10px 32px rgba(255, 84, 20, 0.42),
-        inset 0 1px 0 rgba(255, 255, 255, 0.14);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.25s ease;
-}
-
-.hsvc-section .svc-card--text-only:hover {
-    filter: brightness(1.05);
-}
-
-.hsvc-section .svc-card-link:hover .svc-card--text-only,
-.hsvc-section .svc-card-link:focus-visible .svc-card--text-only {
-    transform: translateY(-4px);
-    box-shadow:
-        0 16px 44px rgba(255, 84, 20, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-.hsvc-section .svc-card__title {
-    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
-}
-
-/* CTA pill: light badge so it reads on orange (matches contact-style contrast) */
-.hsvc-section .svc-card__cta {
-    border-color: rgba(255, 255, 255, 0.92);
-    background: rgba(255, 255, 255, 0.96);
-    color: var(--bs-primary, #00313d);
-    box-shadow:
-        0 4px 16px rgba(0, 49, 61, 0.22),
-        inset 0 1px 0 rgba(255, 255, 255, 0.85);
-}
-
-.hsvc-section .svc-card__cta i {
-    color: var(--bs-primary, #00313d);
-    filter: none;
-}
-
-.hsvc-section .svc-card-link:hover .svc-card__cta,
-.hsvc-section .svc-card-link:focus-visible .svc-card__cta {
-    border-color: #fff;
-    background: #fff;
-    color: var(--bs-primary, #00313d);
-    box-shadow:
-        0 6px 22px rgba(0, 49, 61, 0.28),
-        inset 0 1px 0 #fff;
-}
-
-.hsvc-section .svc-card-link:hover .svc-card__cta i,
-.hsvc-section .svc-card-link:focus-visible .svc-card__cta i {
-    color: var(--bs-primary, #00313d);
-}
-
-@media (max-width: 575.98px) {
-    .hsvc-inner {
-        padding: 3rem 0 3.5rem;
-    }
-    .hsvc-heading-area {
-        margin-bottom: 2rem;
-    }
-    .hsvc-top-bar {
-        margin-bottom: 1.75rem;
-    }
-}
-</style>
+{% include "includes/hsvc_cards_styles.html" %}
 
 <div class="hsvc-inner">
     <div class="container-xxl">
         <div class="container">
 
-            <div class="hsvc-top-bar wow fadeInDown" data-wow-delay="0.05s">
-                <span class="hsvc-eyebrow">
-                    <span class="hsvc-eyebrow__dot" aria-hidden="true"></span>
-                    {% trans "Services" %}
-                </span>
+            <header class="hsvc-header wow fadeInUp" data-wow-delay="0.05s">
+                <div>
+                    <span class="hsvc-eyebrow">{% trans "Services" %}</span>
+                    {% if service_section_full_page %}
+                    <h1 id="hsvc-heading" class="hsvc-title">{% trans "Our Services" %}</h1>
+                    {% elif use_h2_for_section_titles %}
+                    <h2 id="hsvc-heading" class="hsvc-title">{% trans "Our Services" %}</h2>
+                    {% else %}
+                    <h1 id="hsvc-heading" class="hsvc-title">{% trans "Our Services" %}</h1>
+                    {% endif %}
+                </div>
                 {% if service_section_full_page %}
-                <a href="{% url 'projects:courses-page' %}" class="hsvc-see-all">
+                <a href="{% url 'projects:courses-page' %}" class="btn btn-outline-accent rounded-pill px-4 px-md-5 fw-semibold">
                     {% trans "All courses" %}
-                    <i class="fa fa-arrow-right" style="font-size:.7rem;"></i>
+                    <i class="fas fa-arrow-right ms-2 small" aria-hidden="true"></i>
                 </a>
                 {% else %}
-                <a href="{% url 'projects:services-page' %}" class="hsvc-see-all">
+                <a href="{% url 'projects:services-page' %}" class="btn btn-outline-accent rounded-pill px-4 px-md-5 fw-semibold">
                     {% trans "View all services" %}
-                    <i class="fa fa-arrow-right" style="font-size:.7rem;"></i>
+                    <i class="fas fa-arrow-right ms-2 small" aria-hidden="true"></i>
                 </a>
                 {% endif %}
-            </div>
+            </header>
 
-            <div class="hsvc-heading-area text-center wow fadeInUp" data-wow-delay="0.08s">
-                {% if service_section_full_page %}
-                <h1 id="hsvc-heading" class="hsvc-title mb-0">{% trans "Our Services" %}</h1>
-                {% elif use_h2_for_section_titles %}
-                <h2 id="hsvc-heading" class="hsvc-title mb-0">{% trans "Our Services" %}</h2>
-                {% else %}
-                <h1 id="hsvc-heading" class="hsvc-title mb-0">{% trans "Our Services" %}</h1>
-                {% endif %}
-            </div>
-
-            {% if categories %}
-            <div class="row g-4 service-highlights-grid wow fadeInUp" data-wow-delay="0.12s">
-                {% for cat in categories %}
-                <div class="col-6 col-lg-3 wow fadeInUp" data-wow-delay="0.1s">
-                    <a href="{% url 'projects:course-detail' slug=cat.slug %}" class="svc-card-link">
-                        <div class="svc-card svc-card--text-only">
-                            <div class="svc-card__body">
-                                <h5 class="svc-card__title">{{ cat.name }}</h5>
-                            </div>
-                            <span class="svc-card__cta" aria-hidden="true"><i class="fa fa-arrow-right"></i></span>
-                        </div>
-                    </a>
-                </div>
-                {% endfor %}
-            </div>
-            {% else %}
-            <div class="row g-4 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="col-12">
-                    <p class="text-center hsvc-empty mb-0">{% trans "No categories yet." %}</p>
-                </div>
-            </div>
-            {% endif %}
+            {% include "includes/hsvc_cards_grid.html" %}
 
         </div>
     </div>

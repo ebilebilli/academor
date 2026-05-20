@@ -52,8 +52,13 @@
                 </div>
             </div>
             <a href="{% url 'projects:team-page' %}" class="nav-item nav-link{% if u == 'team-page' or u == 'team-detail' %} active{% endif %}">{% trans "Our Team" %}</a>
-            <a href="{% url 'projects:tests-page' %}" class="nav-item nav-link{% if u == 'tests-page' or u == 'test-take' %} active{% endif %}">{% trans "Level Test" %}</a>
-            <a href="{% url 'projects:english-conversation-topics' %}" class="nav-item nav-link{% if u == 'english-conversation-topics' or u == 'english-conversation-topic-detail' %} active{% endif %}">{% trans "Topics" %}</a>
+            <div class="nav-item dropdown">
+                <a href="{% url 'projects:tests-page' %}" class="nav-link dropdown-toggle{% if u == 'tests-page' or u == 'test-take' or u == 'english-conversation-topics' or u == 'english-conversation-topic-detail' %} active{% endif %}" data-bs-toggle="dropdown" aria-expanded="false">{% trans "More" %}</a>
+                <div class="dropdown-menu fade-down m-0 shadow-sm">
+                    <a href="{% url 'projects:tests-page' %}" class="dropdown-item{% if u == 'tests-page' or u == 'test-take' %} active{% endif %}">{% trans "Level Test" %}</a>
+                    <a href="{% url 'projects:english-conversation-topics' %}" class="dropdown-item{% if u == 'english-conversation-topics' or u == 'english-conversation-topic-detail' %} active{% endif %}">{% trans "Topics" %}</a>
+                </div>
+            </div>
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
                     {% if LANG == 'az' %}

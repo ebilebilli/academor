@@ -9,47 +9,21 @@
 <body>
     {% include "includes/site_spinner.html" %}
 
-
-    <!-- Navbar Start -->
     {% include "includes/site_navbar.html" %}
-    <!-- Navbar End -->
 
-
-    <!-- Header Start -->
     <div class="container-fluid bg-primary mb-5 page-header page-header-hero-band"{% include "includes/page_header_dynamic_bg.html" %}></div>
-    <!-- Header End -->
 
-
-    <!-- Categories Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="text-center wow fadeInUp mb-5" data-wow-delay="0.1s">
-                <h1 class="mb-0">{% trans "Our Services" %}</h1>
-            </div>
-            {% if categories %}
-            <div class="row g-4 service-highlights-grid">
-                {% for cat in categories %}
-                <div class="col-lg-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <a href="{% url 'projects:course-detail' slug=cat.slug %}" class="svc-card-link">
-                        <div class="svc-card svc-card--text-only{% if filters.slug == cat.slug %} svc-card--active{% endif %}">
-                            {% if filters.slug == cat.slug %}
-                            <span class="svc-card__pill"><i class="fa fa-check-circle me-1"></i>{% trans "Selected" %}</span>
-                            {% endif %}
-                            <div class="svc-card__body">
-                                <h5 class="svc-card__title">{{ cat.name }}</h5>
-                            </div>
-                            <span class="svc-card__cta" aria-hidden="true"><i class="fa fa-arrow-right"></i></span>
-                        </div>
-                    </a>
+    <section class="hsvc-section hsvc-section--courses-page" aria-labelledby="courses-heading">
+        {% include "includes/hsvc_cards_styles.html" %}
+        <div class="hsvc-inner">
+            <div class="container-xxl">
+                <div class="container">
+                    <h1 id="courses-heading" class="hsvc-title hsvc-title--centered wow fadeInUp" data-wow-delay="0.05s">{% trans "Our Services" %}</h1>
+                    {% include "includes/hsvc_cards_grid.html" with active_slug=filters.slug|default:"" %}
                 </div>
-                {% endfor %}
             </div>
-            {% else %}
-            <p class="text-center text-muted mb-0">{% trans "No categories yet." %}</p>
-            {% endif %}
         </div>
-    </div>
-    <!-- Categories End -->
+    </section>
 
     {% if selected_category and selected_category.description_html %}
     <div class="container-xxl pb-5">
@@ -62,10 +36,7 @@
     </div>
     {% endif %}
 
-
-
     {% include "includes/site_footer.html" %}
-
 
     {% include "includes/site_scripts.html" %}
 </body>
