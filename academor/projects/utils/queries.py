@@ -10,6 +10,7 @@ from django.templatetags.static import static
 
 from projects.models import *
 from projects.utils.cache_utils import cached_query, cached_page_data
+from projects.utils.i18n import normalize_lang, resolve_public_language
 from projects.utils.media_cache_bust import media_url
 from projects.utils.seo_text import richtext_plain_text
 
@@ -28,40 +29,25 @@ def _session_set_lang(session, lang):
 
 
 def get_language_from_request(request):
-    lang = request.GET.get('lang', '').lower() or request.GET.get('language', '').lower()
-    if lang in ['az', 'en', 'ru']:
-        _session_set_lang(request.session, lang)
-        if not request.session.get('language_user_chosen'):
-            request.session['language_user_chosen'] = True
-            request.session.modified = True
-        translation.activate(lang)
-        return lang
+    """
+    Active UI language for views and @cached_page_data keys.
 
-    lang = request.session.get('django_language', '').lower()
-    if lang in ['az', 'en', 'ru']:
-        translation.activate(lang)
-        return lang
+    Uses the same resolution order as CustomLocaleMiddleware so Django cache
+    entries always match the language shown in templates ({% trans %} / nav).
+    """
+    for key in ('lang', 'language'):
+        lang = normalize_lang(request.GET.get(key, ''))
+        if lang:
+            _session_set_lang(request.session, lang)
+            if not request.session.get('language_user_chosen'):
+                request.session['language_user_chosen'] = True
+                request.session.modified = True
+            translation.activate(lang)
+            return lang
 
-    lang = request.session.get('language', '').lower()
-    if lang in ['az', 'en', 'ru']:
-        if request.session.get('django_language') != lang:
-            request.session['django_language'] = lang
-            request.session.modified = True
-        translation.activate(lang)
-        return lang
-
-    lang = getattr(request, 'LANGUAGE_CODE', settings.LANGUAGE_CODE)
-    if lang in ['az', 'en', 'ru']:
-        _session_set_lang(request.session, lang)
-        translation.activate(lang)
-        return lang
-
-    default_lang = getattr(settings, 'LANGUAGE_CODE', 'az')
-    if default_lang not in ('az', 'en', 'ru'):
-        default_lang = 'az'
-    _session_set_lang(request.session, default_lang)
-    translation.activate(default_lang)
-    return default_lang
+    lang = resolve_public_language(request)
+    translation.activate(lang)
+    return lang
 
 
 def get_localized_field_name(field_base, lang):

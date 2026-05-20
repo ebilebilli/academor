@@ -1,6 +1,8 @@
 from django.utils import translation
 from django.conf import settings
 
+from projects.utils.i18n import normalize_lang, resolve_public_language
+
 
 class PublicHtmlCacheControlMiddleware:
     """
@@ -27,40 +29,18 @@ class PublicHtmlCacheControlMiddleware:
 
 
 class CustomLocaleMiddleware:
-    LANGUAGES = {
-        'az': 'Azərbaycan',
-        'en': 'English',
-        'ru': 'Русский',
-    }
-
     def __init__(self, get_response):
         self.get_response = get_response
 
     def __call__(self, request):
         admin_prefix = f'/{settings.ADMIN_URL.strip("/")}'
         if request.path.startswith(admin_prefix):
-            admin_lang = getattr(settings, 'ADMIN_LANGUAGE_CODE', 'en')
+            admin_lang = normalize_lang(getattr(settings, 'ADMIN_LANGUAGE_CODE', 'en')) or 'en'
             translation.activate(admin_lang)
             request.LANGUAGE_CODE = admin_lang
             return self.get_response(request)
 
-        language = None
-        if request.session.get('language_user_chosen'):
-            language = request.session.get('django_language') or request.session.get('language')
-        if not language:
-            cookie_lang = request.COOKIES.get(settings.LANGUAGE_COOKIE_NAME, '')
-            if cookie_lang in self.LANGUAGES:
-                language = cookie_lang
-        if not language:
-            language = request.session.get('django_language') or request.session.get('language')
-        if language and language in self.LANGUAGES:
-            translation.activate(language)
-            request.LANGUAGE_CODE = language
-        else:
-            site_default = getattr(settings, 'LANGUAGE_CODE', 'az')
-            if site_default not in self.LANGUAGES:
-                site_default = 'az'
-            translation.activate(site_default)
-            request.LANGUAGE_CODE = site_default
-
+        language = resolve_public_language(request)
+        translation.activate(language)
+        request.LANGUAGE_CODE = language
         return self.get_response(request)

@@ -2,6 +2,7 @@ from django.conf import settings
 
 from projects.utils.canonical import canonical_url_for_request
 from projects.seo_page_defaults import get_page_seo_defaults
+from projects.utils.i18n import resolve_public_language
 from projects.utils.queries import (
     get_background_image,
     get_contact,
@@ -91,14 +92,7 @@ def _seo_lang(request):
 
 
 def _request_lang(request):
-    lang = (getattr(request, 'LANGUAGE_CODE', '') or '').lower().split('-')[0]
-    if lang in {'az', 'en', 'ru'}:
-        return lang
-    session_lang = (request.session.get('django_language') or request.session.get('language') or '').lower().split('-')[0]
-    if session_lang in {'az', 'en', 'ru'}:
-        return session_lang
-    default_lang = getattr(settings, 'LANGUAGE_CODE', 'az')
-    return default_lang if default_lang in {'az', 'en', 'ru'} else 'az'
+    return resolve_public_language(request)
 
 
 def site_seo_context(request):
