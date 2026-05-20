@@ -59,8 +59,8 @@
                     <a href="{% url 'projects:english-conversation-topics' %}" class="dropdown-item{% if u == 'english-conversation-topics' or u == 'english-conversation-topic-detail' %} active{% endif %}">{% trans "Topics" %}</a>
                 </div>
             </div>
-            <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="nav-item dropdown nav-lang-dropdown">
+                <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
                     {% if LANG == 'az' %}
                     <img src="{% static 'assets/img/azerbaijan.png' %}" alt="AZ" width="18" height="12" style="width: 18px; height: 12px; object-fit: cover; margin-right: 6px;">AZ
                     {% elif LANG == 'ru' %}
@@ -70,15 +70,30 @@
                     {% endif %}
                 </a>
                 <div class="dropdown-menu fade-down m-0">
-                    <a href="{% url 'set_language' %}?language=en&next={{ request.get_full_path|urlencode }}" class="dropdown-item d-flex align-items-center lang-option{% if LANG == 'en' %} active{% endif %}"{% if LANG == 'en' %} aria-current="true"{% endif %}>
-                        <img src="{% static 'assets/img/united-kingdom.png' %}" alt="EN" width="18" height="12" style="width: 18px; height: 12px; object-fit: cover; margin-right: 8px;">{% trans "English" %}
-                    </a>
-                    <a href="{% url 'set_language' %}?language=az&next={{ request.get_full_path|urlencode }}" class="dropdown-item d-flex align-items-center lang-option{% if LANG == 'az' %} active{% endif %}"{% if LANG == 'az' %} aria-current="true"{% endif %}>
-                        <img src="{% static 'assets/img/azerbaijan.png' %}" alt="AZ" width="18" height="12" style="width: 18px; height: 12px; object-fit: cover; margin-right: 8px;">{% trans "Azerbaijani" %}
-                    </a>
-                    <a href="{% url 'set_language' %}?language=ru&next={{ request.get_full_path|urlencode }}" class="dropdown-item d-flex align-items-center lang-option{% if LANG == 'ru' %} active{% endif %}"{% if LANG == 'ru' %} aria-current="true"{% endif %}>
-                        <img src="{% static 'assets/img/russia.png' %}" alt="RU" width="18" height="12" style="width: 18px; height: 12px; object-fit: cover; margin-right: 8px;">{% trans "Russian" %}
-                    </a>
+                    <form action="{% url 'set_language' %}" method="post" class="lang-switch-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                        <input type="hidden" name="language" value="en">
+                        <button type="submit" class="dropdown-item d-flex align-items-center lang-option{% if LANG == 'en' %} active{% endif %}"{% if LANG == 'en' %} aria-current="true"{% endif %}>
+                            <img src="{% static 'assets/img/united-kingdom.png' %}" alt="EN" width="18" height="12" style="width: 18px; height: 12px; object-fit: cover; margin-right: 8px;">{% trans "English" %}
+                        </button>
+                    </form>
+                    <form action="{% url 'set_language' %}" method="post" class="lang-switch-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                        <input type="hidden" name="language" value="az">
+                        <button type="submit" class="dropdown-item d-flex align-items-center lang-option{% if LANG == 'az' %} active{% endif %}"{% if LANG == 'az' %} aria-current="true"{% endif %}>
+                            <img src="{% static 'assets/img/azerbaijan.png' %}" alt="AZ" width="18" height="12" style="width: 18px; height: 12px; object-fit: cover; margin-right: 8px;">{% trans "Azerbaijani" %}
+                        </button>
+                    </form>
+                    <form action="{% url 'set_language' %}" method="post" class="lang-switch-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                        <input type="hidden" name="language" value="ru">
+                        <button type="submit" class="dropdown-item d-flex align-items-center lang-option{% if LANG == 'ru' %} active{% endif %}"{% if LANG == 'ru' %} aria-current="true"{% endif %}>
+                            <img src="{% static 'assets/img/russia.png' %}" alt="RU" width="18" height="12" style="width: 18px; height: 12px; object-fit: cover; margin-right: 8px;">{% trans "Russian" %}
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

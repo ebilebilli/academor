@@ -93,11 +93,13 @@
         if (menu) menu.classList.toggle("show", open);
     }
 
+    var hoverCloseDelayMs = 180;
+
     function syncMenuHoverMode() {
         var shouldEnable = window.matchMedia("(min-width: 992px)").matches;
         if (menuHoverEnabled === shouldEnable) return;
 
-        var dropdowns = qsa(".dropdown");
+        var dropdowns = qsa(".dropdown:not(.nav-lang-dropdown)");
         dropdowns.forEach(function (dropdown) {
             if (hoverBindings) {
                 var prev = hoverBindings.get(dropdown);
@@ -114,11 +116,20 @@
 
         if (shouldEnable) {
             dropdowns.forEach(function (dropdown) {
+                var closeTimer = null;
                 function enter() {
+                    if (closeTimer) {
+                        clearTimeout(closeTimer);
+                        closeTimer = null;
+                    }
                     setDropdownOpen(dropdown, true);
                 }
                 function leave() {
-                    setDropdownOpen(dropdown, false);
+                    if (closeTimer) clearTimeout(closeTimer);
+                    closeTimer = setTimeout(function () {
+                        setDropdownOpen(dropdown, false);
+                        closeTimer = null;
+                    }, hoverCloseDelayMs);
                 }
                 dropdown.addEventListener("mouseenter", enter);
                 dropdown.addEventListener("mouseleave", leave);

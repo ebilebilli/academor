@@ -44,7 +44,15 @@ class CustomLocaleMiddleware:
             request.LANGUAGE_CODE = admin_lang
             return self.get_response(request)
 
-        language = request.session.get('django_language') or request.session.get('language')
+        language = None
+        if request.session.get('language_user_chosen'):
+            language = request.session.get('django_language') or request.session.get('language')
+        if not language:
+            cookie_lang = request.COOKIES.get(settings.LANGUAGE_COOKIE_NAME, '')
+            if cookie_lang in self.LANGUAGES:
+                language = cookie_lang
+        if not language:
+            language = request.session.get('django_language') or request.session.get('language')
         if language and language in self.LANGUAGES:
             translation.activate(language)
             request.LANGUAGE_CODE = language

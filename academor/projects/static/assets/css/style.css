@@ -809,6 +809,23 @@ h1.animated, h2.animated, h3.animated,
     font-weight: 600;
 }
 
+.navbar .lang-switch-form {
+    margin: 0;
+}
+
+.navbar .lang-switch-form button.lang-option {
+    width: 100%;
+    border: 0;
+    cursor: pointer;
+}
+
+.navbar .lang-switch-form button.lang-option:hover,
+.navbar .lang-switch-form button.lang-option:focus-visible {
+    color: var(--accent);
+    background-color: #FFF0EB;
+    outline: none;
+}
+
 .navbar-light .navbar-toggler {
     color: rgba(255, 255, 255, 0.75);
     border-color: rgba(255, 255, 255, 0.35);
