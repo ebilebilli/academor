@@ -441,7 +441,18 @@
     .hbh-card--featured .hbh-card__overlay {
         padding: 1.2rem 1rem 1rem;
     }
-    .hbh-title--lg { font-size: 1rem; }
+    .hbh-title--lg {
+        font-size: 0.88rem;
+        line-height: 1.32;
+        -webkit-line-clamp: 3;
+        word-break: break-word;
+    }
+    .hbh-title--sm {
+        font-size: 0.82rem;
+        line-height: 1.32;
+        -webkit-line-clamp: 3;
+        word-break: break-word;
+    }
     .hbh-excerpt { font-size: .75rem; }
 }
 @media (min-width: 481px) and (max-width: 767.98px) {
@@ -459,6 +470,17 @@
     .hbh-card--regular { flex: 0 0 304px; }
     .hbh-card--featured .hbh-card__overlay {
         padding: 1.5rem 1.15rem 1.35rem;
+    }
+    .hbh-title--lg {
+        font-size: 0.92rem;
+        line-height: 1.32;
+        -webkit-line-clamp: 3;
+    }
+    .hbh-title--sm {
+        font-size: 0.88rem;
+        line-height: 1.32;
+        -webkit-line-clamp: 3;
+        word-break: break-word;
     }
 }
 @media (min-width: 768px) and (max-width: 991.98px) {
