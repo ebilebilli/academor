@@ -77,14 +77,16 @@
                         </div>
                     </div>
                     {% endif %}
-                    {% if contact.email %}
+                    {% if contact.email or contact.email_2 or contact.email_3 %}
                     <div class="d-flex align-items-center mb-3">
                         <div class="d-flex align-items-center justify-content-center flex-shrink-0 bg-primary" style="width: 50px; height: 50px;">
                             <i class="fa fa-envelope-open text-white"></i>
                         </div>
                         <div class="ms-3">
                             <h5 class="text-primary">{% trans "Email" %}</h5>
-                            <p class="mb-0"><a class="text-body" href="mailto:{{ contact.email }}">{{ contact.email }}</a></p>
+                            {% if contact.email %}<p class="mb-0"><a class="text-body" href="mailto:{{ contact.email }}">{{ contact.email }}</a></p>{% endif %}
+                            {% if contact.email_2 %}<p class="mb-0"><a class="text-body" href="mailto:{{ contact.email_2 }}">{{ contact.email_2 }}</a></p>{% endif %}
+                            {% if contact.email_3 %}<p class="mb-0"><a class="text-body" href="mailto:{{ contact.email_3 }}">{{ contact.email_3 }}</a></p>{% endif %}
                         </div>
                     </div>
                     {% endif %}

@@ -620,7 +620,7 @@ class ContactAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     search_fields = (
         'address_az', 'address_en', 'address_ru',
         'phone', 'whatsapp_number',
-        'email',
+        'email', 'email_2', 'email_3',
     )
     list_per_page = 25
     
@@ -636,7 +636,7 @@ class ContactAdmin(AdminImageCompressMixin, admin.ModelAdmin):
             'fields': ('phone', 'whatsapp_number', 'whatsapp_number_2', 'phone_three')
         }),
         ('Email', {
-            'fields': ('email',)
+            'fields': ('email', 'email_2', 'email_3'),
         }),
         ('Social networks', {
             'fields': ('instagram', 'facebook', 'youtube', 'linkedn', 'tiktok')
@@ -660,9 +660,17 @@ class ContactAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     contact_phone.short_description = "Phones"
     
     def contact_email(self, obj):
-        if obj.email:
-            return format_html('<a href="mailto:{}" style="color: #417690; text-decoration: none;">✉️ {}</a>', obj.email, obj.email)
-        return "-"
+        lines = []
+        for addr in (obj.email, obj.email_2, obj.email_3):
+            if addr:
+                lines.append(
+                    format_html(
+                        '<a href="mailto:{}" style="color: #417690; text-decoration: none;">✉️ {}</a>',
+                        addr,
+                        addr,
+                    )
+                )
+        return format_html('<br>'.join(lines)) if lines else '-'
     contact_email.short_description = "Email"
     
     def social_links(self, obj):

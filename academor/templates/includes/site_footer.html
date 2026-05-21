@@ -43,6 +43,12 @@
                 {% if footer_contact.email %}
                 <p class="mb-2 footer-contact-item"><i class="fa fa-envelope" aria-hidden="true"></i><a class="text-light text-decoration-none footer-contact-link" href="mailto:{{ footer_contact.email }}">{{ footer_contact.email }}</a></p>
                 {% endif %}
+                {% if footer_contact.email_2 %}
+                <p class="mb-2 footer-contact-item"><i class="fa fa-envelope" aria-hidden="true"></i><a class="text-light text-decoration-none footer-contact-link" href="mailto:{{ footer_contact.email_2 }}">{{ footer_contact.email_2 }}</a></p>
+                {% endif %}
+                {% if footer_contact.email_3 %}
+                <p class="mb-2 footer-contact-item"><i class="fa fa-envelope" aria-hidden="true"></i><a class="text-light text-decoration-none footer-contact-link" href="mailto:{{ footer_contact.email_3 }}">{{ footer_contact.email_3 }}</a></p>
+                {% endif %}
                 {% else %}
                 <p class="mb-2 text-white-50">{% trans "Contact details will be available soon." %}</p>
                 {% endif %}

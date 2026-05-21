@@ -861,6 +861,8 @@ def serialize_contact(contact, lang='az'):
         'phone_href': _tel_href(contact.phone),
         'phone_three_href': _tel_href(contact.phone_three),
         'email': contact.email,
+        'email_2': contact.email_2,
+        'email_3': contact.email_3,
         'instagram': contact.instagram,
         'facebook': contact.facebook,
         'youtube': contact.youtube,

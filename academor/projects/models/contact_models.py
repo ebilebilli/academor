@@ -45,6 +45,16 @@ class Contact(models.Model):
         blank=True,
         verbose_name='Email'
     )
+    email_2 = models.EmailField(
+        null=True,
+        blank=True,
+        verbose_name='Email 2'
+    )
+    email_3 = models.EmailField(
+        null=True,
+        blank=True,
+        verbose_name='Email 3'
+    )
     instagram = models.URLField(
         null=True,
         blank=True,
