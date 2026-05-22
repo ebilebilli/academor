@@ -85,6 +85,13 @@ class ServiceCategory(SluggedModel):
         default=True,
         verbose_name='Offline'
     )
+    instructors = models.ManyToManyField(
+        'Team',
+        blank=True,
+        related_name='service_categories',
+        verbose_name='Trainers',
+        help_text='Team members shown on the course detail page (Trainers tab).',
+    )
     order = models.PositiveIntegerField(
         default=0,
         verbose_name='Order'

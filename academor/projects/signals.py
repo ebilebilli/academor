@@ -9,6 +9,10 @@ Keep in sync with queries.py (add a receiver when a new cached query reads a mod
   ServiceCategory, ServiceHighlight, AbroadModel, StudyAbroadSection, University,
   Team, Review, BlogPost, BlogPostImage, Instructor, About, AboutWhyItem, Contact, Media, Tagline, SiteFaqEntry,
   Test, Question, Option
+
+  Course detail (`course-detail.html`): `get_active_project_category_by_slug` + trainers M2M — invalidate
+  `ServiceCategory` on category save/delete and on `instructors` M2M changes; `Team` save/delete bumps all caches
+  (including stale category detail with embedded trainer rows).
   (University: pre_save fills unique slug from name — university_slug_from_name.)
   Homepage blog hero + section preview rows use `_fresh_home_blog_context()` merged into `get_home_page_data()`
   (fresh on every GET; not stored inside the page blob).
@@ -19,7 +23,7 @@ Keep in sync with queries.py (add a receiver when a new cached query reads a mod
 
 Not cached (no invalidation needed for public query cache): ContactInquiry, UserResult.
 """
-from django.db.models.signals import post_save, post_delete, pre_save
+from django.db.models.signals import post_save, post_delete, pre_save, m2m_changed
 from django.dispatch import receiver
 from django.db import transaction
 from django.db.models import F
@@ -122,6 +126,14 @@ def invalidate_course_category_cache(sender, instance, **kwargs):
     _invalidate_on_commit('ServiceCategory')
 
 
+@receiver(m2m_changed, sender=ServiceCategory.instructors.through)
+def invalidate_course_category_instructors_m2m(sender, instance, **kwargs):
+    """Admin filter_horizontal / M2M-only trainer links — no post_save on ServiceCategory."""
+    if kwargs.get('action') not in ('post_add', 'post_remove', 'post_clear'):
+        return
+    _invalidate_on_commit('ServiceCategory')
+
+
 @receiver(post_save, sender=ServiceHighlight)
 @receiver(post_delete, sender=ServiceHighlight)
 def invalidate_service_highlight_cache(sender, instance, **kwargs):
@@ -211,6 +223,7 @@ def invalidate_contact_cache(sender, instance, **kwargs):
 @receiver(post_save, sender=Team)
 @receiver(post_delete, sender=Team)
 def invalidate_team_cache(sender, instance, **kwargs):
+    """Home/team pages + course detail Trainers tab (via cached category-by-slug)."""
     _invalidate_on_commit('Team')
 
 

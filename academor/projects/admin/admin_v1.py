@@ -218,13 +218,57 @@ class MediaInlineAbout(MediaInlineBase):
 
 class MediaInlineCategory(MediaInlineBase):
     fk_name = 'category'
-    max_num = 30
+    max_num = 1
+    extra = 0
+    can_delete = True
     fields = ('image', 'thumbnail_preview', 'created_at')
-    extra = 1
+    verbose_name = 'Image'
+    verbose_name_plural = 'Image'
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         return qs.select_related('category')
+
+    def get_formset(self, request, obj=None, **kwargs):
+        from django.forms import BaseInlineFormSet
+        from django.core.exceptions import ValidationError
+
+        class MediaCategoryFormSet(BaseInlineFormSet):
+            def clean(self):
+                super().clean()
+                image_count = 0
+                deleted_images = 0
+                existing_images = 0
+                if obj:
+                    existing_images = obj.medias.filter(
+                        image__isnull=False,
+                    ).exclude(image='').count()
+
+                for form in self.forms:
+                    if not form.cleaned_data:
+                        continue
+                    if form.cleaned_data.get('DELETE', False):
+                        if form.instance and form.instance.pk and form.instance.image:
+                            deleted_images += 1
+                        continue
+                    if form.cleaned_data.get('image'):
+                        is_new = not form.instance.pk
+                        is_replaced = (
+                            form.instance.pk
+                            and form.cleaned_data.get('image') != form.instance.image
+                        )
+                        if is_new or is_replaced:
+                            image_count += 1
+
+                total_images = existing_images - deleted_images + image_count
+                if total_images > 1:
+                    raise ValidationError(
+                        'Each service may have only one image. '
+                        'Remove the extra image or replace the existing one.'
+                    )
+
+        kwargs['formset'] = MediaCategoryFormSet
+        return super().get_formset(request, obj, **kwargs)
 
 
 class ServiceCategoryAdminForm(forms.ModelForm):
@@ -245,6 +289,7 @@ class ServiceCategoryAdmin(AdminImageCompressMixin, admin.ModelAdmin):
         'id',
         'category_thumb',
         'name_link',
+        'instructors_display',
         'name_en',
         'name_ru',
         'order',
@@ -254,11 +299,13 @@ class ServiceCategoryAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     )
     list_display_links = ('id',)
     list_editable = ('order', 'is_active', 'show_on_main_page')
-    list_filter = ('is_active', 'show_on_main_page', 'created_at')
+    list_filter = ('is_active', 'show_on_main_page', 'instructors', 'created_at')
     search_fields = (
         'name_az', 'name_en', 'name_ru',
         'description_az', 'description_en', 'description_ru',
+        'instructors__name',
     )
+    filter_horizontal = ('instructors',)
     ordering = ('order', 'id')
     list_per_page = 25
     exclude = ('slug',)
@@ -276,7 +323,7 @@ class ServiceCategoryAdmin(AdminImageCompressMixin, admin.ModelAdmin):
             'fields': ('name_ru', 'description_ru', 'duration_months_ru', 'lesson_count_ru')
         }),
         ('Course details', {
-            'fields': ('has_certificate', 'is_online', 'is_offline')
+            'fields': ('instructors', 'has_certificate', 'is_online', 'is_offline')
         }),
         ('Status', {
             'fields': ('order', 'is_active', 'show_on_main_page', 'created_at')
@@ -300,6 +347,18 @@ class ServiceCategoryAdmin(AdminImageCompressMixin, admin.ModelAdmin):
         return format_html('<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; font-size: 14px;">🔗 {}</a>', url, name)
     name_link.short_description = "Name (AZ)"
     name_link.admin_order_field = 'name_az'
+
+    def instructors_display(self, obj):
+        names = list(obj.instructors.values_list('name', flat=True)[:3])
+        if not names:
+            return '—'
+        extra = obj.instructors.count() - len(names)
+        text = ', '.join(names)
+        if extra > 0:
+            text += f' (+{extra})'
+        return text
+
+    instructors_display.short_description = 'Trainers'
 
 
 class AbroadModelAdminForm(forms.ModelForm):

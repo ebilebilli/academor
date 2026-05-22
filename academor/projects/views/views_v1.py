@@ -69,9 +69,11 @@ class CourseDetailPageView(View):
             excerpt = _('%(course)s — programme details at Academor, Baku, Azerbaijan.') % {
                 'course': course['name'],
             }
+        all_categories = [serialize_project_category(c, lang) for c in categories]
         context = {
             'course': course,
-            'categories': [serialize_project_category(c, lang) for c in categories],
+            'categories': all_categories,
+            'other_categories': [c for c in all_categories if c['slug'] != course['slug']],
             'language': lang,
             'background_image': get_background_image('courses'),
             'page_title': f'{course["name"]} | Academor',

@@ -1,0 +1,71 @@
+{% load i18n %}
+<div class="course-detail-aside__card">
+    <div
+        class="course-detail-gallery bg-light shadow-sm rounded-3 border border-light overflow-hidden"
+        id="course-detail-gallery"
+        role="region"
+        aria-label="{% trans 'Course images' %}"
+        tabindex="0"
+    >
+        {{ course.images|json_script:"course-detail-gallery-data" }}
+        <div class="course-detail-gallery__viewport position-relative">
+            <div class="course-detail-gallery__frame">
+                {% if course.images %}
+                <img
+                    src="{{ course.images.0 }}"
+                    alt="{{ course.name }}"
+                    class="course-detail-gallery__img"
+                    width="1080"
+                    height="1350"
+                    decoding="async"
+                >
+                {% else %}
+                <img
+                    src=""
+                    alt=""
+                    class="course-detail-gallery__img d-none"
+                    width="1080"
+                    height="1350"
+                    decoding="async"
+                >
+                {% endif %}
+                <div class="course-detail-gallery__empty {% if course.images %}d-none{% else %}d-flex{% endif %} align-items-center justify-content-center flex-column text-muted p-4 w-100 h-100 position-absolute top-0 start-0">
+                    <i class="fa fa-th-large fa-2x opacity-25 mb-2" aria-hidden="true"></i>
+                    <span class="small">{% trans "No images for this category yet." %}</span>
+                </div>
+            </div>
+            {% if course.images|length > 1 %}
+            <button type="button" class="course-detail-gallery__arrow course-detail-gallery__arrow--prev" data-gallery-prev aria-label="{% trans 'Previous image' %}">
+                <i class="fa fa-chevron-left" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="course-detail-gallery__arrow course-detail-gallery__arrow--next" data-gallery-next aria-label="{% trans 'Next image' %}">
+                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+            </button>
+            {% endif %}
+        </div>
+        {% if course.images|length > 1 %}
+        <div class="course-detail-gallery__meta d-flex align-items-center justify-content-between px-3 py-2 border-top">
+            <span class="small text-muted fw-semibold tabular-nums" data-gallery-counter aria-live="polite"></span>
+            {% if course.images|length <= 14 %}
+            <div class="course-detail-gallery__dots mb-0" role="tablist" aria-label="{% trans 'Image slides' %}">
+                {% for url in course.images %}
+                <button type="button" class="course-detail-gallery__dot{% if forloop.first %} is-active{% endif %}" data-dot-idx="{{ forloop.counter0 }}" aria-label="{% blocktrans %}Image {{ forloop.counter }}{% endblocktrans %}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"></button>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="course-detail-aside__body d-flex flex-column gap-2">
+        <a href="{% url 'projects:contact-page' %}" class="btn btn-outline-accent rounded-pill px-4 fw-semibold w-100">
+            {% trans "Contact us" %}
+            <i class="fas fa-arrow-right ms-2 small" aria-hidden="true"></i>
+        </a>
+        {% if footer_contact.whatsapp_number_me %}
+        <a href="https://wa.me/{{ footer_contact.whatsapp_number_me }}" class="course-detail-cta-whatsapp w-100" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-whatsapp" aria-hidden="true"></i>{% trans "WhatsApp" %}
+        </a>
+        {% endif %}
+    </div>
+</div>

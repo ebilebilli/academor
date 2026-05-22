@@ -122,7 +122,7 @@ def get_active_project_category_by_slug(slug):
         return None
     return (
         ServiceCategory.objects.filter(slug=slug, is_active=True)
-        .prefetch_related(_category_media_prefetch)
+        .prefetch_related(_category_media_prefetch, 'instructors')
         .first()
     )
 
@@ -768,6 +768,10 @@ def serialize_project_category_detail(category, lang='az'):
     data['has_certificate'] = category.has_certificate
     data['is_online'] = category.is_online
     data['is_offline'] = category.is_offline
+    data['instructors'] = [
+        serialize_team_member(member, lang)
+        for member in category.instructors.all().order_by('order', 'id')
+    ]
 
     return data
 

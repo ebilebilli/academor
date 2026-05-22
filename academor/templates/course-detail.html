@@ -1,101 +1,31 @@
 <!DOCTYPE html>
-{% load i18n %}
-<html lang="en">
+{% load i18n %}{% get_current_language as LANG_CODE %}
+<html lang="{{ LANG_CODE }}">
 <head>
     {% include "includes/site_layout_head.html" with page_title=page_title %}
 </head>
 <body>
     {% include "includes/site_spinner.html" %}
-
     {% include "includes/site_navbar.html" %}
 
-    <!-- Header Start -->
     <div class="container-fluid bg-primary mb-5 page-header page-header-hero-band"{% include "includes/page_header_dynamic_bg.html" %}></div>
-    <!-- Header End -->
 
-    <div class="container-xxl py-5 course-detail-page">
-        <div class="container">
-            <nav aria-label="{% trans 'breadcrumb' %}" class="course-detail-breadcrumb mb-4 wow fadeInUp" data-wow-delay="0.05s">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="{% url 'projects:home-page' %}">{% trans "Home" %}</a></li>
-                    <li class="breadcrumb-item"><a href="{% url 'projects:courses-page' %}">{% trans "Courses" %}</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ course.name }}</li>
-                </ol>
-            </nav>
+    <div class="course-detail-page">
+        <div class="container-xxl py-4 py-lg-5">
+            <div class="container">
+                <div class="row g-4 g-xl-5 course-detail-layout align-items-start">
+                    <div class="col-lg-7 course-detail-layout__main">
+                        <header class="course-detail-head wow fadeInUp" data-wow-delay="0.06s">
+                            <h1 class="course-detail-head__title">{{ course.name }}</h1>
+                        </header>
 
-            <div class="text-center text-md-start wow fadeInUp mb-4 pb-2" data-wow-delay="0.1s">
-                <h1 class="display-6 mb-0">{{ course.name }}</h1>
-            </div>
-
-            <div class="row g-4 g-lg-5 align-items-start">
-                <div class="col-lg-5">
-                    <div class="course-detail-visual wow fadeInUp" data-wow-delay="0.1s">
-                        <div
-                            class="course-detail-gallery bg-light shadow-sm rounded-3 border border-light overflow-hidden"
-                            id="course-detail-gallery"
-                            role="region"
-                            aria-label="{% trans 'Course images' %}"
-                            tabindex="0"
-                        >
-                            {{ course.images|json_script:"course-detail-gallery-data" }}
-                            <div class="course-detail-gallery__viewport position-relative">
-                                <div class="bg-white course-detail-gallery__frame">
-                                    {% if course.images %}
-                                    <img
-                                        src="{{ course.images.0 }}"
-                                        alt="{{ course.name }}"
-                                        class="course-detail-gallery__img"
-                                        width="1080"
-                                        height="1350"
-                                        decoding="async"
-                                    >
-                                    {% else %}
-                                    <img
-                                        src=""
-                                        alt=""
-                                        class="course-detail-gallery__img d-none"
-                                        width="1080"
-                                        height="1350"
-                                        decoding="async"
-                                    >
-                                    {% endif %}
-                                    <div class="course-detail-gallery__empty {% if course.images %}d-none{% else %}d-flex{% endif %} align-items-center justify-content-center flex-column text-muted p-4 w-100 h-100 position-absolute top-0 start-0 bg-light">
-                                        <i class="fa fa-th-large fa-3x opacity-25 mb-3"></i>
-                                        <span class="small">{% trans "No images for this category yet." %}</span>
-                                    </div>
-                                </div>
-                                {% if course.images|length > 1 %}
-                                <button type="button" class="course-detail-gallery__arrow course-detail-gallery__arrow--prev" data-gallery-prev aria-label="{% trans 'Previous image' %}">
-                                    <i class="fa fa-chevron-left"></i>
-                                </button>
-                                <button type="button" class="course-detail-gallery__arrow course-detail-gallery__arrow--next" data-gallery-next aria-label="{% trans 'Next image' %}">
-                                    <i class="fa fa-chevron-right"></i>
-                                </button>
-                                {% endif %}
-                            </div>
-
-                            {% if course.images|length > 1 %}
-                            <div class="course-detail-gallery__meta d-flex align-items-center justify-content-center gap-3 py-3 px-3 border-top bg-white">
-                                <span class="small text-muted fw-semibold tabular-nums" data-gallery-counter aria-live="polite"></span>
-                            </div>
-                            {% if course.images|length <= 14 %}
-                            <div class="course-detail-gallery__dots pb-3 px-3" role="tablist" aria-label="{% trans 'Image slides' %}">
-                                {% for url in course.images %}
-                                <button type="button" class="course-detail-gallery__dot{% if forloop.first %} is-active{% endif %}" data-dot-idx="{{ forloop.counter0 }}" aria-label="{% blocktrans %}Image {{ forloop.counter }}{% endblocktrans %}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"></button>
-                                {% endfor %}
-                            </div>
-                            {% endif %}
-                            {% endif %}
-                        </div>
-                    </div>
-                    {% if course.duration_months or course.lesson_hours or course.has_certificate or course.is_online or course.is_offline %}
-                    <div class="course-detail-badges mt-3 wow fadeInUp" data-wow-delay="0.15s">
-                        <div class="row g-2 g-sm-3">
+                        {% if course.duration_months or course.lesson_hours or course.has_certificate or course.is_online or course.is_offline %}
+                        <div class="row g-2 g-sm-3 course-detail-features wow fadeInUp" data-wow-delay="0.1s">
                             {% if course.duration_months %}
-                            <div class="col-12 col-sm-6">
-                                <div class="course-detail-badge">
+                            <div class="col-6">
+                                <div class="course-detail-badge course-detail-badge--feature">
                                     <div class="course-detail-badge__icon">
-                                        <i class="fa fa-calendar"></i>
+                                        <i class="fa fa-calendar" aria-hidden="true"></i>
                                     </div>
                                     <div class="course-detail-badge__text">
                                         <span class="course-detail-badge__label">{% trans "Duration" %}</span>
@@ -105,10 +35,10 @@
                             </div>
                             {% endif %}
                             {% if course.lesson_hours %}
-                            <div class="col-12 col-sm-6">
-                                <div class="course-detail-badge">
+                            <div class="col-6">
+                                <div class="course-detail-badge course-detail-badge--feature">
                                     <div class="course-detail-badge__icon">
-                                        <i class="fa fa-book"></i>
+                                        <i class="fa fa-book" aria-hidden="true"></i>
                                     </div>
                                     <div class="course-detail-badge__text">
                                         <span class="course-detail-badge__label">{% trans "Lessons" %}</span>
@@ -118,10 +48,10 @@
                             </div>
                             {% endif %}
                             {% if course.has_certificate %}
-                            <div class="col-12 col-sm-6">
-                                <div class="course-detail-badge">
+                            <div class="col-6">
+                                <div class="course-detail-badge course-detail-badge--feature">
                                     <div class="course-detail-badge__icon">
-                                        <i class="fa fa-certificate"></i>
+                                        <i class="fa fa-certificate" aria-hidden="true"></i>
                                     </div>
                                     <div class="course-detail-badge__text">
                                         <span class="course-detail-badge__label">{% trans "Certificate" %}</span>
@@ -131,15 +61,15 @@
                             </div>
                             {% endif %}
                             {% if course.is_online or course.is_offline %}
-                            <div class="col-12 col-sm-6">
-                                <div class="course-detail-badge">
+                            <div class="col-6">
+                                <div class="course-detail-badge course-detail-badge--feature">
                                     <div class="course-detail-badge__icon">
                                         {% if course.is_online and course.is_offline %}
-                                        <i class="fa fa-globe"></i>
+                                        <i class="fa fa-globe" aria-hidden="true"></i>
                                         {% elif course.is_online %}
-                                        <i class="fa fa-globe"></i>
+                                        <i class="fa fa-globe" aria-hidden="true"></i>
                                         {% else %}
-                                        <i class="fa fa-map-marker"></i>
+                                        <i class="fa fa-map-marker" aria-hidden="true"></i>
                                         {% endif %}
                                     </div>
                                     <div class="course-detail-badge__text">
@@ -152,31 +82,90 @@
                             </div>
                             {% endif %}
                         </div>
-                    </div>
-                    {% endif %}
-                </div>
-
-                <div class="col-lg-7">
-                    <div class="bg-light shadow-sm rounded-3 p-4 p-md-5 border border-light wow fadeInUp" data-wow-delay="0.15s">
-                        {% if course.description_html %}
-                        <h4 class="mb-4 pb-3 border-bottom text-dark">{% trans "About this course" %}</h4>
-                        <div class="course-detail-description-scroll custom-scroll" tabindex="0" role="region" aria-label="{% trans 'Course description' %}">
-                            <div class="course-detail-description text-secondary mb-0">{{ course.description_html|safe }}</div>
-                        </div>
-                        {% else %}
-                        <p class="text-muted mb-0 fst-italic">{% trans "No description has been added for this category yet." %}</p>
                         {% endif %}
+
+                        <div class="course-detail-main wow fadeInUp" data-wow-delay="0.12s">
+                            <ul class="nav nav-tabs course-detail-tabs" id="courseDetailTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="course-tab-overview" data-bs-toggle="tab" data-bs-target="#course-panel-overview" type="button" role="tab" aria-controls="course-panel-overview" aria-selected="true">
+                                        <i class="fa fa-file-text-o me-2" aria-hidden="true"></i>{% trans "Overview" %}
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="course-tab-instructor" data-bs-toggle="tab" data-bs-target="#course-panel-instructor" type="button" role="tab" aria-controls="course-panel-instructor" aria-selected="false">
+                                        <i class="fa fa-user me-2" aria-hidden="true"></i>{% trans "Trainer" %}
+                                    </button>
+                                </li>
+                            </ul>
+                            <div class="tab-content course-detail-tab-panels" id="courseDetailTabContent">
+                                <div class="tab-pane fade show active" id="course-panel-overview" role="tabpanel" aria-labelledby="course-tab-overview" tabindex="0">
+                                    {% if course.description_html %}
+                                    <div class="course-detail-description course-detail-prose mb-0">{{ course.description_html|safe }}</div>
+                                    {% else %}
+                                    <p class="text-muted mb-0 fst-italic">{% trans "No description has been added for this category yet." %}</p>
+                                    {% endif %}
+                                </div>
+                                <div class="tab-pane fade" id="course-panel-instructor" role="tabpanel" aria-labelledby="course-tab-instructor" tabindex="0">
+                                    {% if course.instructors %}
+                                    <div class="row g-4 course-detail-trainers page-team">
+                                        {% for trainer in course.instructors %}
+                                        <div class="col-6 col-md-4 col-lg-4">
+                                            <article class="course-alt-card course-detail-trainer-card h-100 d-flex flex-column">
+                                                <a href="{% url 'projects:team-detail' trainer.slug %}" class="category-square-card course-alt-card__link d-flex flex-column text-decoration-none flex-grow-1">
+                                                    <div class="ratio ratio-1x1 overflow-hidden course-alt-card__media">
+                                                        {% if trainer.image %}
+                                                        <img src="{{ trainer.image }}" alt="{{ trainer.name }}" class="w-100 h-100" style="object-fit: cover;" loading="lazy" decoding="async" width="400" height="400">
+                                                        {% else %}
+                                                        <div class="w-100 h-100 bg-light d-flex align-items-center justify-content-center text-muted">
+                                                            <i class="fa fa-user fa-3x opacity-25" aria-hidden="true"></i>
+                                                        </div>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="course-alt-card__body">
+                                                        <h5 class="mb-1 text-truncate" title="{{ trainer.name }}">{{ trainer.name }}</h5>
+                                                        {% if trainer.role %}<small class="course-alt-card__role d-block mb-0 text-truncate">{{ trainer.role }}</small>{% endif %}
+                                                    </div>
+                                                </a>
+                                                <a href="{% url 'projects:team-detail' slug=trainer.slug %}" class="btn btn-outline-accent rounded-pill px-4 fw-semibold w-100 mt-2">
+                                                    {% trans "View profile" %}
+                                                    <i class="fas fa-arrow-right ms-2 small" aria-hidden="true"></i>
+                                                </a>
+                                            </article>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                    <p class="course-detail-tab__text">{% trans "Our experienced teachers guide this programme. Meet the Academor team and find the right specialist for you." %}</p>
+                                    <a href="{% url 'projects:team-page' %}" class="btn btn-outline-accent rounded-pill px-4 px-md-5 fw-semibold">
+                                        {% trans "Meet our team" %}
+                                        <i class="fas fa-arrow-right ms-2 small" aria-hidden="true"></i>
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="course-detail-actions d-flex flex-wrap gap-3 mt-4 wow fadeInUp" data-wow-delay="0.15s">
+                            <a href="{% url 'projects:courses-page' %}" class="btn btn-outline-header px-4 py-2 rounded-pill">
+                                <i class="fa fa-arrow-left me-2" aria-hidden="true"></i>{% trans "All courses" %}
+                            </a>
+                        </div>
                     </div>
 
-                    <div class="d-flex flex-column flex-sm-row flex-wrap gap-3 mt-4 pt-2">
-                        <a href="{% url 'projects:courses-page' %}" class="btn btn-outline-primary px-4 py-2 rounded-pill">
-                            <i class="fa fa-arrow-left me-2"></i>{% trans "All courses" %}
-                        </a>
-                        <a href="{% url 'projects:contact-page' %}" class="btn btn-primary px-4 py-2 rounded-pill">
-                            <i class="fa fa-envelope me-2"></i>{% trans "Contact us" %}
-                        </a>
+                    <div class="col-lg-5 course-detail-layout__aside">
+                        <aside class="course-detail-aside wow fadeInUp" data-wow-delay="0.08s">
+                            {% include "includes/course_detail_aside.html" %}
+                        </aside>
                     </div>
                 </div>
+
+                {% if other_categories %}
+                <section class="course-detail-related mt-5 pt-2 wow fadeInUp" data-wow-delay="0.12s" aria-labelledby="course-detail-related-heading">
+                    {% include "includes/hsvc_cards_styles.html" %}
+                    <h2 id="course-detail-related-heading" class="course-detail-related__title h4 text-primary mb-4">{% trans "Other courses" %}</h2>
+                    {% include "includes/hsvc_cards_grid.html" with categories=other_categories active_slug=course.slug %}
+                </section>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -223,9 +212,7 @@
             if (!frame || !img || img.classList.contains('d-none')) return;
             var w = img.naturalWidth;
             var h = img.naturalHeight;
-            if (w > 0 && h > 0) {
-                frame.style.aspectRatio = w + ' / ' + h;
-            }
+            if (w > 0 && h > 0) frame.style.aspectRatio = w + ' / ' + h;
         }
 
         function resetFrameAspect() {
@@ -234,9 +221,7 @@
 
         if (img) {
             img.addEventListener('load', applyFrameAspectFromImg);
-            img.addEventListener('error', function () {
-                resetFrameAspect();
-            });
+            img.addEventListener('error', resetFrameAspect);
         }
 
         function show(i) {
@@ -285,12 +270,10 @@
         });
 
         if (prev) prev.addEventListener('click', function () {
-            var idx = parseInt(root.dataset.galleryIndex || '0', 10);
-            show(idx - 1);
+            show(parseInt(root.dataset.galleryIndex || '0', 10) - 1);
         });
         if (next) next.addEventListener('click', function () {
-            var idx = parseInt(root.dataset.galleryIndex || '0', 10);
-            show(idx + 1);
+            show(parseInt(root.dataset.galleryIndex || '0', 10) + 1);
         });
         for (var di = 0; di < dots.length; di++) {
             dots[di].addEventListener('click', function () {
