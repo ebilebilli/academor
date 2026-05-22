@@ -2,7 +2,7 @@
 {% if categories %}
 <ul class="hsvc-grid wow fadeInUp" data-wow-delay="0.1s" role="list">
     {% for cat in categories %}
-    <li class="hsvc-grid__item wow fadeInUp" data-wow-delay="0.{% if forloop.counter < 10 %}{{ forloop.counter }}{% else %}9{% endif %}s">
+    <li class="hsvc-grid__item">
         <a href="{% url 'projects:course-detail' slug=cat.slug %}" class="hsvc-card{% if active_slug == cat.slug %} hsvc-card--active{% endif %}">
             <h3 class="hsvc-card__title">{{ cat.name }}</h3>
             <span class="hsvc-card__arrow" aria-hidden="true"><i class="fa fa-arrow-right"></i></span>

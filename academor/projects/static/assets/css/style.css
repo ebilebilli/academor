@@ -938,7 +938,7 @@ h1.animated, h2.animated, h3.animated,
     transform-origin: 0 50%;
     transform: scaleX(0);
     background: linear-gradient(90deg, var(--accent) 0%, #ff8a5d 100%);
-    transition: transform 0.1s linear;
+    will-change: transform;
 }
 
 @media (min-width: 992px) {
@@ -5490,66 +5490,66 @@ h1.animated, h2.animated, h3.animated,
     height: 3px;
     bottom: -0.35rem;
 }
-/********** Scroll Reveal Animations **********/
-
-/* Initial state for scroll-reveal elements */
-section,
-.card,
-.hsvc-card,
-.course-alt-card,
+/********** Scroll reveal (CSS transitions + scroll-reveal.js, single IO) **********/
+.scroll-reveal,
 [data-scroll-reveal] {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Pre-animation state for elements before they're revealed */
-section:not(.is-revealed),
-.card:not(.is-revealed),
-.hsvc-card:not(.is-revealed),
-.course-alt-card:not(.is-revealed),
-[data-scroll-reveal]:not(.is-revealed) {
     opacity: 0;
     transform: translateY(30px);
+    will-change: transform;
+    transition:
+        opacity 0.6s ease-out,
+        transform 0.6s ease-out;
+    transition-delay: var(--reveal-delay, 0ms);
 }
 
-/* Animate elements when revealed */
-section.is-revealed,
-.card.is-revealed,
-.hsvc-card.is-revealed,
-.course-alt-card.is-revealed,
+.scroll-reveal.is-revealed,
 [data-scroll-reveal].is-revealed {
-    animation: scrollReveal 0.6s ease-out forwards;
+    opacity: 1;
+    transform: translateY(0);
+    will-change: auto;
 }
 
-@keyframes scrollReveal {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Respect prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
-    section,
-    .card,
-    .hsvc-card,
-    .course-alt-card,
+    .scroll-reveal,
     [data-scroll-reveal] {
         opacity: 1 !important;
-        transform: translateY(0) !important;
-        animation: none !important;
+        transform: none !important;
+        transition: none !important;
+        will-change: auto !important;
     }
+}
 
-    section:not(.is-revealed),
-    .card:not(.is-revealed),
-    .hsvc-card:not(.is-revealed),
-    .course-alt-card:not(.is-revealed),
-    [data-scroll-reveal]:not(.is-revealed) {
-        opacity: 1 !important;
-        transform: translateY(0) !important;
+/* Pause heavy CSS loops when off-screen (class toggled from main.js) */
+.motion-paused .home-marquee__track,
+.home-marquee.motion-paused .home-marquee__track {
+    animation-play-state: paused;
+}
+
+.motion-paused .universities-list__track,
+.universities-carousel.motion-paused .universities-list__track {
+    animation-play-state: paused;
+}
+
+.motion-paused .abroad-hero__globe-spin,
+.motion-paused .abroad-hero__globe-spin-rev,
+.motion-paused .abroad-hero__globe-dash,
+.motion-paused .abroad-hero__globe-ping,
+.motion-paused .abroad-hero__globe-glow-dot,
+.motion-paused .abroad-hero__globe-logo-pulse,
+.motion-paused .abroad-hero__orbit-spin,
+.motion-paused .abroad-hero__orbit-sat,
+.motion-paused .abroad-hero__orbit-sat-body {
+    animation-play-state: paused;
+}
+
+/* Home: below-fold sections skip layout/paint work while scrolling */
+@media (max-width: 991.98px) {
+    .home-page-main .hsvc-section,
+    .home-page-main .abroad-section,
+    .home-page-main .home-team-section,
+    .home-page-main .reviews-testimonials-section--home,
+    .home-page-main .home-faq {
+        content-visibility: auto;
+        contain-intrinsic-size: auto 420px;
     }
 }

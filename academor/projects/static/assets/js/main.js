@@ -25,34 +25,75 @@
     window.addEventListener("load", hideSpinner);
     setTimeout(hideSpinner, 800);
 
-    /* WOW → IntersectionObserver + Animate.css (.wow.* → add .animated when visible) */
+    /* WOW → fallback for any .wow not converted by scroll-reveal.js */
     function initWowReplacement() {
+        var els = qsa(".wow").filter(function (el) {
+            return !el.classList.contains("scroll-reveal");
+        });
+        if (!els.length) return;
+
         var narrow = window.innerWidth < 768;
         var disabled = prefersReducedMotion || narrow;
-        qsa(".wow").forEach(function (el) {
-            var delay = el.getAttribute("data-wow-delay") || "0s";
-            el.style.animationDelay = delay;
-            if (disabled) {
+
+        if (disabled) {
+            els.forEach(function (el) {
                 el.style.opacity = "";
                 el.classList.add("animated");
-                return;
-            }
+            });
+            return;
+        }
+
+        var wowObserver = new IntersectionObserver(
+            function (entries, observer) {
+                entries.forEach(function (entry) {
+                    if (!entry.isIntersecting) return;
+                    var el = entry.target;
+                    el.style.opacity = "";
+                    el.classList.add("animated");
+                    observer.unobserve(el);
+                });
+            },
+            { threshold: 0.12, rootMargin: "0px 0px -48px 0px" }
+        );
+
+        els.forEach(function (el) {
+            el.style.animationDelay = el.getAttribute("data-wow-delay") || "0s";
             el.style.opacity = "0";
-            var obs = new IntersectionObserver(
-                function (entries, o) {
-                    entries.forEach(function (entry) {
-                        if (!entry.isIntersecting) return;
-                        el.style.opacity = "";
-                        el.classList.add("animated");
-                        o.disconnect();
-                    });
-                },
-                { threshold: 0.15 }
-            );
-            obs.observe(el);
+            wowObserver.observe(el);
         });
     }
     initWowReplacement();
+
+    /* Pause marquee / globe / orbit / uni ticker when off-screen */
+    function initPausableMotion() {
+        if (prefersReducedMotion || !("IntersectionObserver" in window)) return;
+
+        var roots = [];
+        qsa(".home-marquee").forEach(function (el) {
+            roots.push(el);
+        });
+        qsa(".abroad-hero__visual").forEach(function (el) {
+            roots.push(el);
+        });
+        qsa(".universities-carousel").forEach(function (el) {
+            roots.push(el);
+        });
+        if (!roots.length) return;
+
+        var motionObserver = new IntersectionObserver(
+            function (entries) {
+                entries.forEach(function (entry) {
+                    entry.target.classList.toggle("motion-paused", !entry.isIntersecting);
+                });
+            },
+            { threshold: 0, rootMargin: "64px 0px" }
+        );
+
+        roots.forEach(function (el) {
+            motionObserver.observe(el);
+        });
+    }
+    initPausableMotion();
 
     /* Sticky navbar + reading progress */
     var stickyScrolled = null;
@@ -67,6 +108,7 @@
         stickyScrolled = isScrolled;
     }
 
+    var lastScrollProgress = -1;
     function updateScrollProgress() {
         if (!scrollProgressBar) return;
         var scrollTop =
@@ -78,6 +120,8 @@
         var scrollable = Math.max(doc.scrollHeight - window.innerHeight, 0);
         var progress =
             scrollable > 0 ? Math.min(Math.max(scrollTop / scrollable, 0), 1) : 0;
+        if (Math.abs(progress - lastScrollProgress) < 0.002) return;
+        lastScrollProgress = progress;
         scrollProgressBar.style.transform = "scaleX(" + progress + ")";
     }
 
