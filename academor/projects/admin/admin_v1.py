@@ -570,6 +570,26 @@ class AboutAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     updated_info.short_description = "Last updated"
 
 
+@admin.register(AboutWhyItem)
+class AboutWhyItemAdmin(admin.ModelAdmin):
+    list_display = ('order', 'title_az', 'icon', 'is_active')
+    list_display_links = ('title_az',)
+    list_editable = ('order', 'is_active')
+    list_filter = ('is_active',)
+    ordering = ('order', 'id')
+    search_fields = ('title_az', 'title_en', 'title_ru', 'text_az', 'text_en', 'text_ru')
+
+    fieldsets = (
+        ('Display', {
+            'fields': ('order', 'is_active', 'icon'),
+            'description': 'Font Awesome 5 icon class (e.g. fa-graduation-cap). Shown under the About page image.',
+        }),
+        ('Azerbaijani', {'fields': ('title_az', 'text_az')}),
+        ('English', {'fields': ('title_en', 'text_en')}),
+        ('Russian', {'fields': ('title_ru', 'text_ru')}),
+    )
+
+
 @admin.register(SiteFaqEntry)
 class SiteFaqEntryAdmin(admin.ModelAdmin):
     list_display = ('order', 'question_short', 'is_active')
@@ -1111,6 +1131,7 @@ def _sorted_get_app_list(request, app_label=None):
         # Content / landing
         "Media": 10,
         "About": 20,
+        "AboutWhyItem": 21,
         "SiteFaqEntry": 25,
         "Contact": 30,
         "Tagline": 50,

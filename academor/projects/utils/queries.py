@@ -783,6 +783,23 @@ def _about_plain_excerpt(html, max_chars=300):
     return (cut or text[:max_chars]).rstrip(',;—') + '…'
 
 
+def serialize_about_why_item(item, lang='az'):
+    return {
+        'id': item.id,
+        'icon': (item.icon or 'fa-star').strip(),
+        'title': _localized_value(item, 'title', lang),
+        'text': _localized_value(item, 'text', lang),
+    }
+
+
+@cached_query(timeout='CACHE_TIMEOUT_LONG')
+def get_serialized_about_why_items(lang='az', is_active=True):
+    qs = AboutWhyItem.objects.all()
+    if is_active:
+        qs = qs.filter(is_active=True)
+    return [serialize_about_why_item(row, lang) for row in qs.order_by('order', 'id')]
+
+
 def serialize_about(about, lang='az'):
     if about is None:
         return None

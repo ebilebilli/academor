@@ -7,7 +7,7 @@ persisted model that feeds those queries must call _invalidate_on_commit here.
 
 Keep in sync with queries.py (add a receiver when a new cached query reads a model):
   ServiceCategory, ServiceHighlight, AbroadModel, StudyAbroadSection, University,
-  Team, Review, BlogPost, BlogPostImage, Instructor, About, Contact, Media, Tagline, SiteFaqEntry,
+  Team, Review, BlogPost, BlogPostImage, Instructor, About, AboutWhyItem, Contact, Media, Tagline, SiteFaqEntry,
   Test, Question, Option
   (University: pre_save fills unique slug from name — university_slug_from_name.)
   Homepage blog hero + section preview rows use `_fresh_home_blog_context()` merged into `get_home_page_data()`
@@ -39,6 +39,7 @@ from projects.models import (
     BlogPostImage,
     Instructor,
     About,
+    AboutWhyItem,
     Contact,
     Media,
     Tagline,
@@ -181,6 +182,12 @@ def invalidate_partner_cache(sender, instance, **kwargs):
 def invalidate_about_cache(sender, instance, **kwargs):
     """Invalidate cache when About is saved or deleted."""
     _invalidate_on_commit('About')
+
+
+@receiver(post_save, sender=AboutWhyItem)
+@receiver(post_delete, sender=AboutWhyItem)
+def invalidate_about_why_cache(sender, instance, **kwargs):
+    _invalidate_on_commit('AboutWhyItem')
 
 
 @receiver(pre_save, sender=SiteFaqEntry)

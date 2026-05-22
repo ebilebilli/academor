@@ -2124,6 +2124,90 @@ h1.animated, h2.animated, h3.animated,
     line-height: 1.65;
 }
 
+.about-why-academor__title {
+    font-size: 1.18rem;
+    font-weight: 800;
+    color: var(--bs-primary, #00313d);
+    letter-spacing: -0.02em;
+}
+
+.about-why-academor__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem 0.78rem;
+}
+
+.about-why-academor__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    padding: 0.75rem 0.88rem;
+    border-radius: 0.7rem;
+    background: #fff;
+    border: 1px solid rgba(0, 49, 61, 0.08);
+    box-shadow: 0 3px 10px rgba(0, 49, 61, 0.05);
+}
+
+.about-why-academor__icon {
+    flex-shrink: 0;
+    width: 2.3rem;
+    height: 2.3rem;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 84, 20, 0.12);
+    color: var(--accent, #ff5414);
+    font-size: 1rem;
+}
+
+.about-why-academor__item-title {
+    font-size: 0.96rem;
+    font-weight: 700;
+    color: var(--bs-primary, #00313d);
+    margin: 0 0 0.15rem;
+    line-height: 1.3;
+}
+
+.about-why-academor__item-text {
+    font-size: 0.88rem;
+    line-height: 1.4;
+    color: #5c6d8a;
+}
+
+@media (max-width: 575.98px) {
+    .about-why-academor__title {
+        font-size: 0.95rem;
+    }
+
+    .about-why-academor__list {
+        gap: 0.45rem 0.5rem;
+    }
+
+    .about-why-academor__item {
+        padding: 0.5rem 0.55rem;
+        gap: 0.45rem;
+        border-radius: 0.55rem;
+    }
+
+    .about-why-academor__icon {
+        width: 1.65rem;
+        height: 1.65rem;
+        font-size: 0.72rem;
+    }
+
+    .about-why-academor__item-title {
+        font-size: 0.74rem;
+        margin-bottom: 0.08rem;
+        line-height: 1.25;
+    }
+
+    .about-why-academor__item-text {
+        font-size: 0.68rem;
+        line-height: 1.35;
+    }
+}
+
 .about-intro-image-card {
     position: relative;
     width: 100%;
@@ -5003,12 +5087,12 @@ h1.animated, h2.animated, h3.animated,
     height: clamp(44px, 12vw, 58px);
     min-width: clamp(44px, 12vw, 58px);
     border-radius: 12px;
-    background: rgba(var(--bs-primary-rgb), .1);
+    background: rgba(255, 84, 20, 0.12);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: clamp(1.2rem, 4.2vw, 1.6rem);
-    color: var(--bs-primary);
+    color: var(--accent, #ff5414);
 }
 
 .course-detail-badge__text {
