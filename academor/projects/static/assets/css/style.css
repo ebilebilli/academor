@@ -1925,21 +1925,21 @@ h1.animated, h2.animated, h3.animated,
 
 @media (max-width: 767.98px) {
     .team-swiper {
-        padding-left: clamp(2rem, 4.5vw, 2.5rem);
-        padding-right: clamp(2rem, 4.5vw, 2.5rem);
+        padding-left: clamp(2.5rem, 6vw, 3.1rem);
+        padding-right: clamp(2.5rem, 6vw, 3.1rem);
         padding-bottom: clamp(1rem, 3.5vw, 1.65rem);
     }
 
     .team-swiper .swiper-button-prev,
     .team-swiper .swiper-button-next {
-        width: 40px;
-        height: 40px;
-        font-size: 1.125rem;
+        width: 50px;
+        height: 50px;
+        font-size: 1.35rem;
     }
 
     .team-swiper .swiper-button-prev i,
     .team-swiper .swiper-button-next i {
-        font-size: 1.125rem;
+        font-size: 1.35rem;
     }
 
     .team-swiper-pagination-outer .swiper-pagination-bullet {
@@ -5489,4 +5489,67 @@ h1.animated, h2.animated, h3.animated,
     width: 3.25rem;
     height: 3px;
     bottom: -0.35rem;
+}
+/********** Scroll Reveal Animations **********/
+
+/* Initial state for scroll-reveal elements */
+section,
+.card,
+.hsvc-card,
+.course-alt-card,
+[data-scroll-reveal] {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Pre-animation state for elements before they're revealed */
+section:not(.is-revealed),
+.card:not(.is-revealed),
+.hsvc-card:not(.is-revealed),
+.course-alt-card:not(.is-revealed),
+[data-scroll-reveal]:not(.is-revealed) {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+/* Animate elements when revealed */
+section.is-revealed,
+.card.is-revealed,
+.hsvc-card.is-revealed,
+.course-alt-card.is-revealed,
+[data-scroll-reveal].is-revealed {
+    animation: scrollReveal 0.6s ease-out forwards;
+}
+
+@keyframes scrollReveal {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+    section,
+    .card,
+    .hsvc-card,
+    .course-alt-card,
+    [data-scroll-reveal] {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+        animation: none !important;
+    }
+
+    section:not(.is-revealed),
+    .card:not(.is-revealed),
+    .hsvc-card:not(.is-revealed),
+    .course-alt-card:not(.is-revealed),
+    [data-scroll-reveal]:not(.is-revealed) {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
 }
