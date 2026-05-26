@@ -117,7 +117,8 @@ INSTALLED_APPS = [
     'compressor',
 
     # Apps
-    'projects'
+    'projects',
+    'payments',
 ]
 
 SITE_ID = 1
@@ -298,3 +299,10 @@ CACHE_TIMEOUT_LONG = 86400  # 24 hours for stable data (about, contact, backgrou
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Kapital API settings
+KAPITAL_USERNAME     = os.getenv("KAPITAL_USERNAME")
+KAPITAL_PASSWORD     = os.getenv("KAPITAL_PASSWORD")
+KAPITAL_BASE_URL     = os.getenv("KAPITAL_BASE_URL")
+KAPITAL_REDIRECT_URL = os.getenv("KAPITAL_REDIRECT_URL")

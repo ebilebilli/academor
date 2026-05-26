@@ -2,8 +2,8 @@
 {# Tam ekran yüklənmə: dairəvi kadrda banner + fırlanan halqa. main.js #spinner-ə .hide əlavə edir. #}
 <div
     id="spinner"
-    class="site-page-loader show position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
-    aria-busy="true"
+    class="site-page-loader{% if spinner_hidden %} hide{% else %} show{% endif %} position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+    aria-busy="{% if spinner_hidden %}false{% else %}true{% endif %}"
 >
     <div class="site-page-loader__inner text-center px-3" role="status" aria-live="polite">
         <div class="site-page-loader__dial">

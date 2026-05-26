@@ -181,6 +181,7 @@
 /* ── Regular posts scroll wrapper ── */
 .hbh-reg-wrap {
     position: relative;
+    overflow-x: clip;
 }
 .hbh-reg-track {
     display: flex;
@@ -210,8 +211,8 @@
     z-index: 2;
 }
 .hbh-scroll-btn:hover { background: var(--accent,#FF5414); border-color: var(--accent,#FF5414); }
-.hbh-scroll-btn--prev { left: -18px; }
-.hbh-scroll-btn--next { right: -18px; }
+.hbh-scroll-btn--prev { left: 0; }
+.hbh-scroll-btn--next { right: 0; }
 @media (min-width: 576px) { .hbh-scroll-btn { display: flex; } }
 
 /* ── Regular Card ── */

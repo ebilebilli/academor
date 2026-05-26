@@ -47,10 +47,16 @@
     font-weight: 700 !important;
 }
 
+html {
+    overflow-x: clip;
+    scrollbar-gutter: stable;
+}
+
 body {
     font-family: 'Host Grotesk', sans-serif;
     background-color: var(--site-surface);
     color: #00313D;
+    overflow-x: clip;
 }
 
 a:not(.btn) {
@@ -4530,12 +4536,10 @@ h1.animated, h2.animated, h3.animated,
     }
 }
 
-/* Universities — full viewport width (breaks out of .container-xxl) */
-.universities-carousel-shell--fullbleed {
-    width: 100vw;
-    max-width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
+/* Universities — edge-to-edge within .abroad-section (no vw breakout — avoids page horizontal scroll) */
+.universities-carousel-shell {
+    width: 100%;
+    max-width: 100%;
     padding-inline: 0;
     padding-block: clamp(1rem, 2.2vw, 1.35rem);
     overflow: hidden;
@@ -6079,6 +6083,7 @@ a.university-carousel-card:focus-visible .university-flag-card {
 .home-page-main {
     --home-section-bg: var(--site-surface);
     background-color: var(--home-section-bg);
+    overflow-x: clip;
 }
 
 /* Blog listing cards — contrast on site surface */
@@ -6132,7 +6137,7 @@ a.university-carousel-card:focus-visible .university-flag-card {
 .home-page-main .abroad-section.home-abroad-band {
     position: relative;
     background: var(--home-section-bg);
-    overflow-x: visible;
+    overflow-x: clip;
 }
 
 .home-page-main .abroad-section.home-abroad-band .abroad-hero__visual {

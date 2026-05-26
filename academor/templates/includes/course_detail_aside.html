@@ -58,6 +58,11 @@
     </div>
 
     <div class="course-detail-aside__body d-flex flex-column gap-2">
+        {% if course.price %}
+        <a href="{% url 'payment_start' amount=course.price %}?description={{ course.name|urlencode }}" class="btn btn-primary rounded-pill px-4 fw-semibold w-100">
+            {{ course.price }} AZN {% trans "Pay" %}
+        </a>
+        {% endif %}
         <a href="{% url 'projects:contact-page' %}" class="btn btn-outline-accent rounded-pill px-4 fw-semibold w-100">
             {% trans "Contact us" %}
             <i class="fas fa-arrow-right ms-2 small" aria-hidden="true"></i>

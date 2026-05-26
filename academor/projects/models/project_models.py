@@ -107,6 +107,12 @@ class ServiceCategory(SluggedModel):
             'If enabled, this course appears in the "Our Services" grid on the homepage.'
         ),
     )
+    price = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        verbose_name=_('Price (AZN)'),
+        help_text=_('Course fee in AZN. Leave empty to hide the pay button.'),
+    )
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name='Created at'

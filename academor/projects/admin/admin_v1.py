@@ -323,7 +323,7 @@ class ServiceCategoryAdmin(AdminImageCompressMixin, admin.ModelAdmin):
             'fields': ('name_ru', 'description_ru', 'duration_months_ru', 'lesson_count_ru')
         }),
         ('Course details', {
-            'fields': ('instructors', 'has_certificate', 'is_online', 'is_offline')
+            'fields': ('instructors', 'has_certificate', 'is_online', 'is_offline', 'price')
         }),
         ('Status', {
             'fields': ('order', 'is_active', 'show_on_main_page', 'created_at')

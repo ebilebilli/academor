@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+{% load static i18n %}
+{% get_current_language as LANG_CODE %}
+<html lang="{{ LANG_CODE }}">
+<head>
+{% include "includes/site_layout_head.html" %}
+</head>
+<body class="bg-light">
+    {% include "includes/site_spinner.html" with spinner_hidden=True %}
+    {% include "includes/site_navbar.html" %}
+    <main id="main-content" class="container-xxl py-5 text-center">
+        <div class="py-5 px-3">
+            <p class="text-danger text-uppercase small mb-2">Xəta</p>
+            <h1 class="h2 mb-3">Ödəniş uğursuz oldu</h1>
+            <p class="text-muted mb-4 col-lg-8 mx-auto">{{ message }}</p>
+            <a href="{% url 'projects:home-page' %}" class="btn btn-primary px-4 rounded-pill">Ana səhifəyə qayıt</a>
+        </div>
+    </main>
+    {% include "includes/site_footer.html" %}
+    {% include "includes/site_scripts.html" %}
+</body>
+</html>

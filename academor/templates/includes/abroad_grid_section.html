@@ -1,5 +1,6 @@
 {% load i18n static academor_lazy_tags %}
-<div class="container-xxl py-5 abroad-section{% if abroad_section_modifier %} {{ abroad_section_modifier }}{% endif %}">
+<section class="abroad-section{% if abroad_section_modifier %} {{ abroad_section_modifier }}{% endif %} py-5">
+    <div class="container-xxl">
     <div class="container">
         <div class="abroad-hero mb-5">
             <div class="abroad-hero__card">
@@ -185,8 +186,9 @@
             </div>
         </div>
     </div>
+    </div>
     {% if universities %}
-    <div class="universities-carousel-shell universities-carousel-shell--fullbleed mb-4 mb-md-5">
+    <div class="universities-carousel-shell mb-4 mb-md-5">
         <div class="universities-carousel universities-carousel--home" aria-label="{% trans 'Universities' %}">
             <div class="universities-list__track">
                 {% for uni in universities %}
@@ -231,6 +233,7 @@
         </div>
     </div>
     {% endif %}
+    <div class="container-xxl">
     <div class="container">
         {% if abroad_items %}
         <div class="row g-4" id="abroad-destinations">
@@ -258,4 +261,5 @@
         <p class="text-center text-muted mb-0">{% trans "No abroad items yet." %}</p>
         {% endif %}
     </div>
-</div>
+    </div>
+</section>

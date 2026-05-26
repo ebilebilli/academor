@@ -768,6 +768,7 @@ def serialize_project_category_detail(category, lang='az'):
     data['has_certificate'] = category.has_certificate
     data['is_online'] = category.is_online
     data['is_offline'] = category.is_offline
+    data['price'] = category.price
     data['instructors'] = [
         serialize_team_member(member, lang)
         for member in category.instructors.all().order_by('order', 'id')
