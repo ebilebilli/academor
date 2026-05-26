@@ -1006,22 +1006,6 @@ def get_home_page_data(request, lang):
     return ctx
 
 
-@cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')
-def get_reviews_page_data(request, lang):
-    """
-    Reviews / testimonials page context (cached).
-    Invalidated when cache_version bumps — e.g. Review, ServiceCategory, Tagline, Media signals.
-    """
-    categories = get_project_categories(lang)
-    return {
-        'use_h2_for_section_titles': False,
-        'reviews': [serialize_review(r) for r in get_reviews()],
-        'categories': [serialize_project_category(c, lang) for c in categories],
-        'language': lang,
-        'background_image': get_background_image('about'),
-    }
-
-
 @cached_page_data(timeout='CACHE_TIMEOUT_LONG')
 def get_abroad_page_data(request, lang):
     """Study Abroad listing — full page context (cached; invalidated via AbroadModel / University signals)."""

@@ -24,7 +24,6 @@ _STATIC_PRIORITY = {
     'projects:services-page': 0.8,
     'projects:contact-page': 0.8,
     'projects:team-page': 0.8,
-    'projects:reviews-page': 0.8,
     'projects:tests-page': 0.8,
     'projects:courses-page': 0.7,
     'projects:abroad-page': 0.6,
@@ -41,7 +40,6 @@ class StaticViewSitemap(AcademorSitemap):
             'projects:abroad-page',
             'projects:contact-page',
             'projects:team-page',
-            'projects:reviews-page',
             'projects:tests-page',
         ]
 

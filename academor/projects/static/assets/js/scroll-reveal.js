@@ -23,6 +23,8 @@
         if (!el || el.classList.contains("is-revealed")) return true;
         if (el.closest(SKIP_ANCESTOR)) return true;
         if (el.classList.contains("swiper-slide-duplicate")) return true;
+        /* Cards inside review carousel: hidden until Swiper inits — reveal via shell + main.js */
+        if (el.matches(".testimonial-item") && el.closest(".testimonial-swiper")) return true;
         return false;
     }
 

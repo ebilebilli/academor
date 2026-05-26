@@ -15,7 +15,6 @@ from projects.views.views_v1 import (
     TeamPageView,
     TeamDetailLegacyPkRedirectView,
     TeamDetailPageView,
-    ReviewsPageView,
     BlogPageView,
     BlogDetailLegacyPkRedirectView,
     BlogDetailPageView,
@@ -97,8 +96,7 @@ urlpatterns = [
     ),
     path(
         'reviews/',
-        ReviewsPageView.as_view(),
-        name='reviews-page',
+        RedirectView.as_view(pattern_name='home-page', permanent=True),
     ),
     path(
         'blog/',

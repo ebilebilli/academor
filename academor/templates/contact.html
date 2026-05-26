@@ -31,7 +31,19 @@
     {% endif %}
 
     <!-- Contact Start -->
-    <div class="container-xxl py-5">
+    <section class="contact-page-section" aria-label="{% trans 'Contact' %}">
+        <img
+            class="contact-page-section__bg"
+            src="{% static 'assets/img/backgorund.svg.PNG' %}"
+            alt=""
+            width="1080"
+            height="1350"
+            decoding="async"
+            fetchpriority="low"
+            aria-hidden="true"
+        >
+        <div class="contact-page-section__veil" aria-hidden="true"></div>
+        <div class="container-xxl py-5 contact-page-section__inner">
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
                 <h1 class="mb-5">{% trans "Contact For Any Query" %}</h1>
@@ -124,35 +136,55 @@
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     {{ form.full_name }}
-                                    <label for="{{ form.full_name.id_for_label }}">{{ form.full_name.label }}</label>
+                                    <label for="{{ form.full_name.id_for_label }}">
+                                        {{ form.full_name.label }}
+                                        <i class="fas fa-star form-field-required" aria-hidden="true"></i>
+                                        <span class="visually-hidden">{% trans "Required field" %}</span>
+                                    </label>
                                 </div>
                                 {% if form.full_name.errors %}<div class="text-danger small mt-1">{{ form.full_name.errors.0 }}</div>{% endif %}
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     {{ form.email }}
-                                    <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                                    <label for="{{ form.email.id_for_label }}">
+                                        {{ form.email.label }}
+                                        <i class="fas fa-star form-field-required" aria-hidden="true"></i>
+                                        <span class="visually-hidden">{% trans "Required field" %}</span>
+                                    </label>
                                 </div>
                                 {% if form.email.errors %}<div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>{% endif %}
                             </div>
                             <div class="col-12">
                                 <div class="form-floating">
                                     {{ form.mobile_number }}
-                                    <label for="{{ form.mobile_number.id_for_label }}">{{ form.mobile_number.label }}</label>
+                                    <label for="{{ form.mobile_number.id_for_label }}">
+                                        {{ form.mobile_number.label }}
+                                        <i class="fas fa-star form-field-required" aria-hidden="true"></i>
+                                        <span class="visually-hidden">{% trans "Required field" %}</span>
+                                    </label>
                                 </div>
                                 {% if form.mobile_number.errors %}<div class="text-danger small mt-1">{{ form.mobile_number.errors.0 }}</div>{% endif %}
                             </div>
                             <div class="col-12">
                                 <div class="form-floating">
                                     {{ form.subject }}
-                                    <label for="{{ form.subject.id_for_label }}">{{ form.subject.label }}</label>
+                                    <label for="{{ form.subject.id_for_label }}">
+                                        {{ form.subject.label }}
+                                        <i class="fas fa-star form-field-required" aria-hidden="true"></i>
+                                        <span class="visually-hidden">{% trans "Required field" %}</span>
+                                    </label>
                                 </div>
                                 {% if form.subject.errors %}<div class="text-danger small mt-1">{{ form.subject.errors.0 }}</div>{% endif %}
                             </div>
                             <div class="col-12">
                                 <div class="form-floating">
                                     {{ form.info }}
-                                    <label for="{{ form.info.id_for_label }}">{{ form.info.label }}</label>
+                                    <label for="{{ form.info.id_for_label }}">
+                                        {{ form.info.label }}
+                                        <i class="fas fa-star form-field-required" aria-hidden="true"></i>
+                                        <span class="visually-hidden">{% trans "Required field" %}</span>
+                                    </label>
                                 </div>
                                 {% if form.info.errors %}<div class="text-danger small mt-1">{{ form.info.errors.0 }}</div>{% endif %}
                             </div>
@@ -167,7 +199,8 @@
                 </div>
             </div>
         </div>
-    </div>
+        </div>
+    </section>
     <!-- Contact End -->
 
 

@@ -107,13 +107,6 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
             ),
             "keywords": "academor teacher, english tutor baku, instructor profile, " + _EN_KW_CORE,
         },
-        "reviews-page": {
-            "title": "Reviews & Testimonials | Academor",
-            "description": (
-                "Read student reviews of Academor courses, exam preparation, and support — from learners in Baku and beyond."
-            ),
-            "keywords": "academor reviews, student testimonials, english school feedback baku, " + _EN_KW_CORE,
-        },
         "tests-page": {
             "title": "English Tests | Academor — Practice & Placement",
             "description": (
@@ -201,13 +194,6 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
             ),
             "keywords": "academor müəllim, ingilis təlimçi bakı, profil, " + _AZ_KW_CORE,
         },
-        "reviews-page": {
-            "title": "Rəylər | Academor",
-            "description": (
-                "Tələbələrin Academor kursları, imtahan hazırlığı və dəstək haqqında rəyləri — Bakı və digər şəhərlər."
-            ),
-            "keywords": "academor rəylər, şərhlər, təlim rəyi bakı, " + _AZ_KW_CORE,
-        },
         "tests-page": {
             "title": "Testlər | Academor — səviyyə və praktika",
             "description": (
@@ -291,13 +277,6 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
                 "Профиль преподавателя Academor: опыт, предметы и как он помогает достичь целей в Баку."
             ),
             "keywords": "преподаватель academor, репетитор английского баку, " + _RU_KW_CORE,
-        },
-        "reviews-page": {
-            "title": "Отзывы | Academor",
-            "description": (
-                "Отзывы учеников Academor о курсах, подготовке к экзаменам и поддержке — Баку и другие города."
-            ),
-            "keywords": "отзывы academor, школа английского баку отзывы, " + _RU_KW_CORE,
         },
         "tests-page": {
             "title": "Тесты по английскому | Academor",

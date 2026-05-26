@@ -87,8 +87,19 @@
     <!-- Teachers End -->
 
 
+    {% if messages %}
+    <div class="container-xxl pt-3 home-messages-wrap">
+        <div class="container">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags|default:'info' }} mb-2 shadow-sm" role="alert">{{ message }}</div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
     <!-- Reviews Start -->
-    {% include "includes/reviews_testimonial_section.html" with reviews_section_variant="home" %}
+    {% include "includes/reviews_testimonial_section.html" %}
+    {% include "includes/review_form_modal.html" %}
     <!-- Reviews End -->
 
     {% include "includes/site_faq_section.html" %}
@@ -99,6 +110,16 @@
 
 
     {% include "includes/site_scripts.html" %}
+    {% if open_review_modal %}
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var modalEl = document.getElementById('reviewFormModal');
+        if (modalEl && window.bootstrap && bootstrap.Modal) {
+            bootstrap.Modal.getOrCreateInstance(modalEl).show();
+        }
+    });
+    </script>
+    {% endif %}
 </body>
 
 </html>

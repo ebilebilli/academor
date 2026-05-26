@@ -138,7 +138,7 @@ class ReviewForm(forms.ModelForm):
     name = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                'class': 'form-control form-control-lg',
+                'class': 'form-control',
                 'placeholder': _('Ad Soyad'),
                 'autocomplete': 'name',
             }
@@ -147,38 +147,52 @@ class ReviewForm(forms.ModelForm):
         label=_('Ad Soyad'),
         max_length=120,
     )
+    phone = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': _('Mobile number'),
+                'autocomplete': 'tel',
+                'inputmode': 'tel',
+            }
+        ),
+        required=True,
+        label=_('Mobile number'),
+        max_length=30,
+    )
     message = forms.CharField(
         widget=forms.Textarea(
             attrs={
                 'class': 'form-control',
-                'rows': 5,
+                'rows': 4,
                 'placeholder': _('Your review'),
-                'style': 'min-height: 148px;',
             }
         ),
         required=True,
         label=_('Your review'),
         max_length=1000,
     )
-    rating = forms.TypedChoiceField(
-        coerce=int,
+    rating = forms.IntegerField(
+        min_value=1,
+        max_value=5,
         initial=5,
-        choices=[
-            (5, _('★★★★★ · 5')),
-            (4, _('★★★★☆ · 4')),
-            (3, _('★★★☆☆ · 3')),
-            (2, _('★★☆☆☆ · 2')),
-            (1, _('★☆☆☆☆ · 1')),
-        ],
         label=_('Star rating'),
-        widget=forms.Select(
-            attrs={'class': 'form-select form-select-lg review-form-rating-select'},
+        widget=forms.HiddenInput(
+            attrs={'class': 'review-form-rating-input'},
         ),
     )
 
     class Meta:
         model = Review
-        fields = ['name', 'message', 'rating']
+        fields = ['name', 'phone', 'message', 'rating']
+
+    def clean_phone(self):
+        value = (self.cleaned_data.get('phone') or '').strip()
+        if not value:
+            raise ValidationError(_('Please enter your mobile number.'))
+        if not validate_phone_number(value):
+            raise ValidationError(_('Düzgün nömrə daxil edin'))
+        return value
 
     def clean_website(self):
         value = self.cleaned_data.get('website')

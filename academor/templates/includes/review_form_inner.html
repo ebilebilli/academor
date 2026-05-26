@@ -1,0 +1,58 @@
+{% load i18n %}
+<form method="post" novalidate id="review-form" class="review-form" action="{% url 'projects:home-page' %}">
+    {% csrf_token %}
+    <input type="hidden" name="review_submit" value="1">
+    <div class="d-none" aria-hidden="true">{{ review_form.website }}{{ review_form.fax }}{{ review_form.company }}{{ review_form.hp_address }}</div>
+    {% if review_form.non_field_errors %}
+    <div class="alert alert-danger py-2 small mb-3" role="alert">
+        {% for err in review_form.non_field_errors %}<div>{{ err }}</div>{% endfor %}
+    </div>
+    {% endif %}
+    <div class="form-floating mb-3">
+        {{ review_form.name }}
+        <label for="{{ review_form.name.id_for_label }}">
+            {{ review_form.name.label }}
+            <i class="fas fa-star form-field-required" aria-hidden="true"></i>
+            <span class="visually-hidden">{% trans "Required field" %}</span>
+        </label>
+        {% if review_form.name.errors %}<div class="text-danger small mt-2">{{ review_form.name.errors.0 }}</div>{% endif %}
+    </div>
+    <div class="form-floating mb-3">
+        {{ review_form.phone }}
+        <label for="{{ review_form.phone.id_for_label }}">
+            {{ review_form.phone.label }}
+            <i class="fas fa-star form-field-required" aria-hidden="true"></i>
+            <span class="visually-hidden">{% trans "Required field" %}</span>
+        </label>
+        {% if review_form.phone.errors %}<div class="text-danger small mt-2">{{ review_form.phone.errors.0 }}</div>{% endif %}
+    </div>
+    <div class="review-form-rating-wrap mb-3">
+        <span class="form-label fw-semibold review-form-rating-wrap__label d-block mb-1" id="reviewFormRatingLabel">{{ review_form.rating.label }}</span>
+        <div class="review-form-star-rating" data-review-star-rating role="group" aria-labelledby="reviewFormRatingLabel">
+            {{ review_form.rating }}
+            <div class="review-form-star-rating__stars">
+                {% for star in "12345" %}
+                <button
+                    type="button"
+                    class="review-form-star-rating__star"
+                    data-rating-value="{{ forloop.counter }}"
+                    aria-label="{{ forloop.counter }}"
+                    aria-pressed="false"
+                >
+                    <i class="far fa-star review-form-star-rating__icon review-form-star-rating__icon--off" aria-hidden="true"></i>
+                    <i class="fas fa-star review-form-star-rating__icon review-form-star-rating__icon--on" aria-hidden="true"></i>
+                </button>
+                {% endfor %}
+            </div>
+        </div>
+        {% if review_form.rating.errors %}<div class="text-danger small mt-2">{{ review_form.rating.errors.0 }}</div>{% endif %}
+    </div>
+    <div class="form-floating mb-3 review-form-floating-textarea">
+        {{ review_form.message }}
+        <label for="{{ review_form.message.id_for_label }}">{{ review_form.message.label }}</label>
+        {% if review_form.message.errors %}<div class="text-danger small mt-2">{{ review_form.message.errors.0 }}</div>{% endif %}
+    </div>
+    <button type="submit" class="btn btn-primary w-100 py-2 rounded-pill fw-semibold shadow-sm">
+        <i class="fa fa-paper-plane me-2" aria-hidden="true"></i>{% trans "Send review" %}
+    </button>
+</form>

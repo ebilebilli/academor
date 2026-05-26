@@ -337,35 +337,88 @@
         });
     });
 
+    function revealTestimonialSlides(swiperRoot) {
+        if (!swiperRoot) return;
+        qsa(".testimonial-item", swiperRoot).forEach(function (item) {
+            item.classList.remove("scroll-reveal");
+            item.classList.add("is-revealed");
+            item.style.opacity = "";
+            item.style.transform = "";
+        });
+    }
+
     var testimonialEl = qs(".testimonial-swiper");
     if (testimonialEl) {
         var testimonialCount =
             testimonialEl.querySelectorAll(".swiper-slide").length;
         var tMulti = testimonialCount > 1;
-        new Swiper(".testimonial-swiper", {
-            centeredSlides: true,
-            spaceBetween: 24,
-            loop: testimonialCount > 2,
-            rewind: testimonialCount <= 2,
-            autoplay:
-                !prefersReducedMotion && tMulti
-                    ? { delay: 4200, disableOnInteraction: false }
-                    : false,
-            pagination: {
-                el: ".testimonial-swiper .swiper-pagination",
-                clickable: true,
-            },
-            navigation: {
-                nextEl: ".testimonial-swiper .swiper-button-next",
-                prevEl: ".testimonial-swiper .swiper-button-prev",
-            },
-            watchOverflow: true,
-            breakpoints: {
-                0: { slidesPerView: 1 },
-                768: { slidesPerView: 2 },
-                992: { slidesPerView: 3 },
-            },
-        });
+        var isReviewsHome = testimonialEl.classList.contains("testimonial-swiper--home");
+        var swiperOpts = isReviewsHome
+            ? {
+                  centeredSlides: true,
+                  centerInsufficientSlides: true,
+                  slidesPerView: 1.12,
+                  spaceBetween: 12,
+                  loop: testimonialCount > 5,
+                  rewind: testimonialCount <= 5,
+                  slideToClickedSlide: true,
+                  autoplay:
+                      !prefersReducedMotion && tMulti
+                          ? { delay: 4200, disableOnInteraction: false }
+                          : false,
+                  pagination: {
+                      el: ".testimonial-swiper .swiper-pagination",
+                      clickable: true,
+                  },
+                  navigation: {
+                      nextEl: ".testimonial-swiper .swiper-button-next",
+                      prevEl: ".testimonial-swiper .swiper-button-prev",
+                  },
+                  watchOverflow: true,
+                  breakpoints: {
+                      0: { slidesPerView: 1.12, spaceBetween: 10 },
+                      576: { slidesPerView: 2, spaceBetween: 12 },
+                      768: { slidesPerView: 3, spaceBetween: 14 },
+                      992: { slidesPerView: 4, spaceBetween: 16 },
+                      1200: { slidesPerView: 5, spaceBetween: 16 },
+                  },
+                  on: {
+                      init: function () {
+                          revealTestimonialSlides(testimonialEl);
+                      },
+                  },
+              }
+            : {
+                  centeredSlides: true,
+                  spaceBetween: 24,
+                  loop: testimonialCount > 2,
+                  rewind: testimonialCount <= 2,
+                  autoplay:
+                      !prefersReducedMotion && tMulti
+                          ? { delay: 4200, disableOnInteraction: false }
+                          : false,
+                  pagination: {
+                      el: ".testimonial-swiper .swiper-pagination",
+                      clickable: true,
+                  },
+                  navigation: {
+                      nextEl: ".testimonial-swiper .swiper-button-next",
+                      prevEl: ".testimonial-swiper .swiper-button-prev",
+                  },
+                  watchOverflow: true,
+                  breakpoints: {
+                      0: { slidesPerView: 1 },
+                      768: { slidesPerView: 2 },
+                      992: { slidesPerView: 3 },
+                  },
+                  on: {
+                      init: function () {
+                          revealTestimonialSlides(testimonialEl);
+                      },
+                  },
+              };
+        new Swiper(".testimonial-swiper", swiperOpts);
+        revealTestimonialSlides(testimonialEl);
     }
     }
 
@@ -437,4 +490,45 @@
                 }
             });
         })();
+
+    /* Review form — interactive star rating */
+    function initReviewStarRating(root) {
+        qsa("[data-review-star-rating]", root).forEach(function (wrap) {
+            if (wrap.dataset.starRatingInit === "1") return;
+            var input = wrap.querySelector(".review-form-rating-input");
+            if (!input) return;
+            wrap.dataset.starRatingInit = "1";
+
+            var stars = qsa("[data-rating-value]", wrap);
+            var min = 1;
+            var max = 5;
+
+            function setRating(n) {
+                n = Math.max(min, Math.min(max, parseInt(n, 10) || min));
+                input.value = String(n);
+                stars.forEach(function (btn) {
+                    var v = parseInt(btn.getAttribute("data-rating-value"), 10);
+                    var on = v <= n;
+                    btn.classList.toggle("is-active", on);
+                    btn.setAttribute("aria-pressed", on ? "true" : "false");
+                });
+            }
+
+            stars.forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    setRating(btn.getAttribute("data-rating-value"));
+                });
+            });
+
+            setRating(parseInt(input.value, 10) || max);
+        });
+    }
+
+    initReviewStarRating(document);
+    var reviewFormModal = qs("#reviewFormModal");
+    if (reviewFormModal) {
+        reviewFormModal.addEventListener("shown.bs.modal", function () {
+            initReviewStarRating(reviewFormModal);
+        });
+    }
 })();

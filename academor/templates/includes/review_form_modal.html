@@ -1,0 +1,17 @@
+{% load i18n %}
+<div class="modal fade review-form-modal" id="reviewFormModal" tabindex="-1" aria-labelledby="reviewFormModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 rounded-4 overflow-hidden shadow-lg">
+            <div class="modal-header border-0 review-form-modal__header px-4 pt-4 pb-0">
+                <div class="pe-3">
+                    <h2 class="modal-title h4 mb-2 review-form-modal__title" id="reviewFormModalLabel">{% trans "Share your opinion with us" %}</h2>
+                    <p class="review-form-modal__subtitle text-muted small mb-0">{% trans "What did you like, or what do you think we could improve? We read all your messages carefully." %}</p>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans 'Close' %}"></button>
+            </div>
+            <div class="modal-body review-form-modal__body px-4 pb-4 pt-3">
+                {% include "includes/review_form_inner.html" %}
+            </div>
+        </div>
+    </div>
+</div>

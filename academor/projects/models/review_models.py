@@ -7,6 +7,10 @@ class Review(models.Model):
         max_length=120,
         verbose_name='Name',
     )
+    phone = models.CharField(
+        max_length=30,
+        verbose_name='Mobile number',
+    )
     message = models.TextField(
         validators=[MaxLengthValidator(1000)],
         verbose_name='Review',

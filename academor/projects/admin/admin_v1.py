@@ -895,12 +895,12 @@ class BlogPostAdmin(admin.ModelAdmin):
 class ReviewAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     list_display = ('id', 'name', 'rating_stars', 'is_active', 'created_at')
     list_filter = ('is_active', 'rating', 'created_at')
-    search_fields = ('name', 'message')
+    search_fields = ('name', 'phone', 'message')
     list_editable = ('is_active',)
     readonly_fields = ('created_at',)
     ordering = ('-created_at',)
     list_per_page = 25
-    fields = ('name', 'message', 'rating', 'is_active', 'created_at')
+    fields = ('name', 'phone', 'message', 'rating', 'is_active', 'created_at')
 
     @admin.display(description='Stars')
     def rating_stars(self, obj):

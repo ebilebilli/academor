@@ -18,7 +18,6 @@ from projects.utils.queries import (
     serialize_project_category_detail,
     get_active_project_category_by_slug,
     get_team_members, serialize_team_member,
-    get_reviews_page_data,
     get_blog_page_data,
     get_blog_detail_view_context,
     get_serialized_service_highlights,
@@ -32,12 +31,42 @@ from projects.utils.queries import (
 
 class HomePageView(View):
     template_name = 'index.html'
-    
-    def get(self, request):
-        lang = get_language_from_request(request)
+
+    def _home_context(self, request, lang, review_form=None, open_review_modal=False):
         context = get_home_page_data(request, lang)
         context['language'] = lang
-        return render(request, self.template_name, context)
+        context['review_form'] = review_form if review_form is not None else ReviewForm()
+        context['open_review_modal'] = open_review_modal
+        return context
+
+    def get(self, request):
+        lang = get_language_from_request(request)
+        return render(request, self.template_name, self._home_context(request, lang))
+
+    def post(self, request):
+        if not request.POST.get('review_submit'):
+            return redirect('projects:home-page')
+        lang = get_language_from_request(request)
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            try:
+                form.save()
+                messages.success(
+                    request,
+                    _(
+                        'Your review has been submitted successfully. '
+                        'It will appear after moderation.'
+                    ),
+                )
+            except Exception:
+                messages.error(request, _('Something went wrong. Please try again.'))
+            return redirect(reverse('projects:home-page') + '#reviews')
+        messages.error(request, _('Please correct the errors in the form.'))
+        return render(
+            request,
+            self.template_name,
+            self._home_context(request, lang, review_form=form, open_review_modal=True),
+        )
 
 
 class CoursesPageView(View):
@@ -354,37 +383,5 @@ class BlogDetailPageView(View):
         context['page_title'] = f'{post["name"]} | Academor'
         context['page_description'] = excerpt[:320]
         return render(request, self.template_name, context)
-
-
-class ReviewsPageView(View):
-    template_name = 'testimonial.html'
-
-    def _build_context(self, request, form=None):
-        lang = get_language_from_request(request)
-        context = get_reviews_page_data(request, lang)
-        context['form'] = form if form is not None else ReviewForm()
-        return context
-
-    def get(self, request):
-        return render(request, self.template_name, self._build_context(request))
-
-    def post(self, request):
-        form = ReviewForm(request.POST)
-        if form.is_valid():
-            try:
-                form.save()
-                messages.success(
-                    request,
-                    _(
-                        'Your review has been submitted successfully. '
-                        'It will appear after moderation.'
-                    ),
-                )
-                return redirect('projects:reviews-page')
-            except Exception:
-                messages.error(request, _('Something went wrong. Please try again.'))
-                return redirect('projects:reviews-page')
-        messages.error(request, _('Please correct the errors in the form.'))
-        return render(request, self.template_name, self._build_context(request, form=form))
 
 
