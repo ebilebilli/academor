@@ -74,14 +74,6 @@
 
 <link href="{% static 'assets/img/banner.png' %}" rel="icon" type="image/png">
 
-{% if seo_route_url_name == 'home-page' %}
-{% with lcp_post=blog_featured|first %}
-{% if lcp_post.cover %}
-<link rel="preload" as="image" href="{{ lcp_post.cover }}">
-{% endif %}
-{% endwith %}
-{% endif %}
-
 <!-- DNS + connection hints — must come before any request to these origins -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

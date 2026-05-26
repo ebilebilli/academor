@@ -514,7 +514,7 @@
                     {% if post.cover %}
                     <div class="hbh-featured-media">
                     <img src="{{ post.cover }}" alt="{{ post.name }}" class="hbh-card__img"
-                         {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %} decoding="async">
+                         {% if forloop.first %}loading="eager"{% else %}loading="lazy"{% endif %} decoding="async">
                     </div>
                     {% else %}
                     <div class="hbh-card__no-img">
