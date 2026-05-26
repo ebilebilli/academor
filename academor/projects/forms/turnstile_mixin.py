@@ -1,5 +1,5 @@
 from django.core.exceptions import ValidationError
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext
 
 from projects.utils.turnstile import is_turnstile_configured, verify_turnstile_response
 
@@ -23,7 +23,7 @@ class TurnstileFormMixin:
 
         if not verify_turnstile_response(token, remote_ip):
             raise ValidationError(
-                _('Please complete the security check.'),
+                gettext('Please complete the security check.'),
                 code='turnstile',
             )
         return cleaned_data
