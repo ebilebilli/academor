@@ -192,6 +192,9 @@
                             <div class="col-12"><div class="text-danger small">{{ form.non_field_errors }}</div></div>
                             {% endif %}
                             <div class="col-12">
+                                {% include "includes/turnstile_widget.html" %}
+                            </div>
+                            <div class="col-12">
                                 <button class="btn btn-primary w-100 py-3" type="submit" id="contact-form-submit">{% trans "Send Message" %}</button>
                             </div>
                         </div>
@@ -208,6 +211,7 @@
 
 
     {% include "includes/site_scripts.html" %}
+    {% include "includes/turnstile_script.html" %}
     <script>
     (function () {
         var form = document.getElementById('contact-form');
@@ -251,9 +255,16 @@
                 if (res.data && res.data.success) {
                     showAlert('success', res.data.message || '');
                     form.reset();
+                    var tsWidget = form.querySelector('.cf-turnstile');
+                    if (window.turnstile && tsWidget) {
+                        try { turnstile.reset(tsWidget); } catch (err) {}
+                    }
                     return;
                 }
                 var msg = (res.data && res.data.message) ? res.data.message : '{% trans "Please correct the errors in the form." %}';
+                if (res.data && res.data.errors && res.data.errors.__all__ && res.data.errors.__all__[0]) {
+                    msg = res.data.errors.__all__[0];
+                }
                 showAlert('danger', msg);
                 if (res.data && res.data.errors) {
                     Object.keys(res.data.errors).forEach(function (field) {

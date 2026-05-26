@@ -1,6 +1,7 @@
 from django.conf import settings
 
 from projects.utils.canonical import canonical_url_for_request
+from projects.utils.turnstile import is_turnstile_configured
 from projects.seo_page_defaults import get_page_seo_defaults
 from projects.utils.i18n import resolve_public_language
 from projects.utils.queries import (
@@ -143,4 +144,12 @@ def site_footer_context(request):
         'nav_course_slug': nav_course_slug,
         'nav_abroad_slug': nav_abroad_slug,
         'nav_university_slug': nav_university_slug,
+    }
+
+
+def turnstile_context(request):
+    enabled = is_turnstile_configured()
+    return {
+        'turnstile_enabled': enabled,
+        'turnstile_site_key': settings.TURNSTILE_SITE_KEY if enabled else '',
     }

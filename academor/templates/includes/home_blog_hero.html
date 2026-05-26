@@ -224,11 +224,12 @@
     border-radius: 15px;
     overflow: hidden;
     text-decoration: none;
-    background: rgba(255,255,255,.06);
-    border: 1px solid rgba(255,255,255,.1);
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.22);
     padding: 1.18rem 1.32rem;
-    transition: background .25s, border-color .25s;
-    backdrop-filter: blur(8px);
+    transition: background .25s, border-color .25s, box-shadow .25s;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
     isolation: isolate;
 }
 .hbh-card--regular .hbh-card__thumb {
@@ -412,8 +413,9 @@
         transform: rotate(-45deg);
     }
     .hbh-card--regular:hover {
-        background: rgba(255,255,255,.1);
-        border-color: rgba(255,84,20,.4);
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 84, 20, 0.55);
+        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.24);
     }
     .hbh-card--regular:hover .hbh-card__thumb img {
         transform: scale(1.08);

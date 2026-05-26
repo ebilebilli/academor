@@ -1,13 +1,14 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+from projects.forms.turnstile_mixin import TurnstileFormMixin
 from projects.models import ContactInquiry, Review
 from projects.utils.normalize_phone_number import validate_phone_number
 
 # Bot honeypots: must stay empty (hidden inputs; tabindex -1).
 _HP = {'autocomplete': 'off', 'tabindex': '-1', 'aria-hidden': 'true'}
 
-class AppealContactForm(forms.ModelForm):
+class AppealContactForm(TurnstileFormMixin, forms.ModelForm):
     website = forms.CharField(
         required=False,
         widget=forms.HiddenInput(attrs=_HP),
@@ -114,7 +115,7 @@ class AppealContactForm(forms.ModelForm):
         return value
 
 
-class ReviewForm(forms.ModelForm):
+class ReviewForm(TurnstileFormMixin, forms.ModelForm):
     website = forms.CharField(
         required=False,
         widget=forms.HiddenInput(attrs=_HP),

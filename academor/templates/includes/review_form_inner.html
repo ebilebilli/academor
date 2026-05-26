@@ -52,6 +52,7 @@
         <label for="{{ review_form.message.id_for_label }}">{{ review_form.message.label }}</label>
         {% if review_form.message.errors %}<div class="text-danger small mt-2">{{ review_form.message.errors.0 }}</div>{% endif %}
     </div>
+    {% include "includes/turnstile_widget.html" with turnstile_defer_render=True turnstile_widget_id="review-turnstile" %}
     <button type="submit" class="btn btn-primary w-100 py-2 rounded-pill fw-semibold shadow-sm">
         <i class="fa fa-paper-plane me-2" aria-hidden="true"></i>{% trans "Send review" %}
     </button>

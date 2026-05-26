@@ -35,7 +35,7 @@ class HomePageView(View):
     def _home_context(self, request, lang, review_form=None, open_review_modal=False):
         context = get_home_page_data(request, lang)
         context['language'] = lang
-        context['review_form'] = review_form if review_form is not None else ReviewForm()
+        context['review_form'] = review_form if review_form is not None else ReviewForm(request=request)
         context['open_review_modal'] = open_review_modal
         return context
 
@@ -47,7 +47,7 @@ class HomePageView(View):
         if not request.POST.get('review_submit'):
             return redirect('projects:home-page')
         lang = get_language_from_request(request)
-        form = ReviewForm(request.POST)
+        form = ReviewForm(request.POST, request=request)
         if form.is_valid():
             try:
                 form.save()
@@ -232,7 +232,7 @@ class ContactPageView(View):
             for category in categories
         ]
         from projects.forms.forms_v1 import AppealContactForm
-        form = AppealContactForm()
+        form = AppealContactForm(request=request)
         context = {
             'contact': serialize_contact(contact, lang) if contact else None,
             'categories': serialized_categories,
@@ -246,7 +246,7 @@ class ContactPageView(View):
     def post(self, request):
         lang = get_language_from_request(request)
         from projects.forms.forms_v1 import AppealContactForm
-        form = AppealContactForm(request.POST)
+        form = AppealContactForm(request.POST, request=request)
         is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
 
         if form.is_valid():

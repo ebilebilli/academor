@@ -1,0 +1,15 @@
+{% load i18n %}
+{% if turnstile_enabled %}
+<div class="turnstile-widget mb-3" data-turnstile-widget>
+    {% if turnstile_defer_render %}
+    <div id="{{ turnstile_widget_id|default:'turnstile-deferred' }}" data-turnstile-deferred></div>
+    {% else %}
+    <div
+        class="cf-turnstile"
+        data-sitekey="{{ turnstile_site_key }}"
+        data-theme="light"
+        data-size="normal"
+    ></div>
+    {% endif %}
+</div>
+{% endif %}

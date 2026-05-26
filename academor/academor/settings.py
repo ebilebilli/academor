@@ -1,10 +1,10 @@
 from datetime import date
 from pathlib import Path
 import os
-from dotenv import load_dotenv
+from academor.env_load import load_project_dotenv
 
 
-load_dotenv('')
+load_project_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,6 +23,10 @@ if not (SECRET_KEY and str(SECRET_KEY).strip()):
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True').lower() in ('true', '1', 'yes')
+
+# Cloudflare Turnstile (contact + review forms). Leave empty to disable widget/validation.
+TURNSTILE_SITE_KEY = (os.getenv('TURNSTILE_SITE_KEY') or '').strip()
+TURNSTILE_SECRET_KEY = (os.getenv('TURNSTILE_SECRET_KEY') or '').strip()
 
 # Base hosts + optional extra from Docker / hosting (comma-separated). Empty env keeps defaults only.
 _ALLOWED_BASE = ["academor.az", "www.academor.az"]
@@ -154,6 +158,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'projects.context_processors.site_footer_context',
                 'projects.context_processors.site_seo_context',
+                'projects.context_processors.turnstile_context',
             ],
         },
     },

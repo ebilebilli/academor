@@ -1,10 +1,10 @@
 from datetime import date
 from pathlib import Path
 import os
-from dotenv import load_dotenv
+from academor.env_load import load_project_dotenv
 
 
-load_dotenv('')
+load_project_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -18,6 +18,9 @@ SECRET_KEY = 'django-insecure-^-6d&m5n+l-@6yp#i+8))br#o%&tb+a&55nk8j%zh=480(^c@e
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+TURNSTILE_SITE_KEY = (os.getenv('TURNSTILE_SITE_KEY') or '').strip()
+TURNSTILE_SECRET_KEY = (os.getenv('TURNSTILE_SECRET_KEY') or '').strip()
 
 ALLOWED_HOSTS = []
 
@@ -115,6 +118,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'projects.context_processors.site_footer_context',
                 'projects.context_processors.site_seo_context',
+                'projects.context_processors.turnstile_context',
             ],
         },
     },
