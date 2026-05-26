@@ -75,7 +75,7 @@
         qsa(".abroad-hero__visual").forEach(function (el) {
             roots.push(el);
         });
-        qsa(".universities-carousel").forEach(function (el) {
+        qsa(".universities-carousel--home").forEach(function (el) {
             roots.push(el);
         });
         if (!roots.length) return;

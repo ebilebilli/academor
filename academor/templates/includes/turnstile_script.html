@@ -1,5 +1,4 @@
 {% if turnstile_enabled %}
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script>
 (function () {
     var sitekey = "{{ turnstile_site_key|escapejs }}";
@@ -18,13 +17,24 @@
         } catch (e) {}
     }
 
+    function loadTurnstileScript(cb) {
+        if (window.turnstile) { cb(); return; }
+        var s = document.createElement("script");
+        s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+        s.async = true;
+        s.onload = cb;
+        document.head.appendChild(s);
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
         var reviewModal = document.getElementById("reviewFormModal");
         if (!reviewModal) {
             return;
         }
         reviewModal.addEventListener("shown.bs.modal", function () {
-            renderDeferred(document.getElementById("review-turnstile"));
+            loadTurnstileScript(function () {
+                renderDeferred(document.getElementById("review-turnstile"));
+            });
         });
     });
 })();
