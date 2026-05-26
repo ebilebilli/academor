@@ -8,7 +8,7 @@
     var BLOCK_SELECTORS =
         ".hsvc-header, .hsvc-empty, .courses-alt__heading, .courses-alt__carousel-shell, " +
         ".index-team-see-all-wrap, .testimonial-carousel-shell, .reviews-home-cta, " +
-        ".home-faq, .abroad-hero__card, .universities-carousel";
+        ".home-faq, .abroad-hero__card";
     var STAGGER_PARENTS = ".hsvc-grid, .row, .swiper-wrapper, #abroad-destinations";
     var SKIP_ANCESTOR = ".hbh-section, .footer, footer";
 
@@ -25,6 +25,8 @@
         if (el.classList.contains("swiper-slide-duplicate")) return true;
         /* Cards inside review carousel: hidden until Swiper inits — reveal via shell + main.js */
         if (el.matches(".testimonial-item") && el.closest(".testimonial-swiper")) return true;
+        /* Uni marquee: no reveal transform (keeps full-bleed width + CSS animation smooth) */
+        if (el.matches(".universities-carousel-shell")) return true;
         return false;
     }
 

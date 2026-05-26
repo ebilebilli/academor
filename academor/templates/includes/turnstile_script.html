@@ -1,8 +1,9 @@
 {% if turnstile_enabled %}
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script>
 (function () {
     var sitekey = "{{ turnstile_site_key|escapejs }}";
+    var API_URL = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+    var apiLoadPromise = null;
 
     function renderDeferred(el) {
         if (!window.turnstile || !el || el.getAttribute("data-turnstile-rendered") === "1") {
@@ -18,14 +19,47 @@
         } catch (e) {}
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
-        var reviewModal = document.getElementById("reviewFormModal");
-        if (!reviewModal) {
-            return;
+    function loadTurnstileApi() {
+        if (window.turnstile) {
+            return Promise.resolve();
         }
-        reviewModal.addEventListener("shown.bs.modal", function () {
-            renderDeferred(document.getElementById("review-turnstile"));
+        if (apiLoadPromise) {
+            return apiLoadPromise;
+        }
+        apiLoadPromise = new Promise(function (resolve, reject) {
+            var existing = document.querySelector('script[src="' + API_URL + '"]');
+            if (existing) {
+                existing.addEventListener("load", resolve, { once: true });
+                existing.addEventListener("error", reject, { once: true });
+                return;
+            }
+            var script = document.createElement("script");
+            script.src = API_URL;
+            script.async = true;
+            script.defer = true;
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
         });
+        return apiLoadPromise;
+    }
+
+    var contactWidget = document.querySelector(".cf-turnstile[data-sitekey]");
+    var reviewModal = document.getElementById("reviewFormModal");
+
+    if (contactWidget) {
+        loadTurnstileApi();
+        return;
+    }
+
+    if (!reviewModal) {
+        return;
+    }
+
+    reviewModal.addEventListener("show.bs.modal", function () {
+        loadTurnstileApi().then(function () {
+            renderDeferred(document.getElementById("review-turnstile"));
+        }).catch(function () {});
     });
 })();
 </script>

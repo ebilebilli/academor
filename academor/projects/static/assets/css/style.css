@@ -3994,6 +3994,7 @@ h1.animated, h2.animated, h3.animated,
 /*** Abroad cards ***/
 .abroad-section {
     position: relative;
+    background-color: var(--site-surface);
 }
 
 .abroad-section::before {
@@ -4529,31 +4530,40 @@ h1.animated, h2.animated, h3.animated,
     }
 }
 
-.universities-list {
-    margin-top: -10px;
+/* Universities — full viewport width (breaks out of .container-xxl) */
+.universities-carousel-shell--fullbleed {
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    padding-inline: 0;
+    padding-block: clamp(1rem, 2.2vw, 1.35rem);
+    overflow: hidden;
+    background-color: transparent;
 }
 
-.universities-list__track {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 14px;
-}
-
-.universities-list__item {
-    flex: 0 0 auto;
-    display: flex;
-    justify-content: center;
-}
-
-.universities-carousel {
+.universities-carousel--home {
+    width: 100%;
     overflow: hidden;
 }
 
-.universities-carousel .universities-list__track {
-    width: max-content;
+.universities-carousel--home .universities-list__track {
+    display: flex;
     flex-wrap: nowrap;
+    align-items: center;
+    width: max-content;
+    gap: 14px;
     animation: universities-carousel-scroll 28s linear infinite;
+}
+
+.universities-carousel--home:hover .universities-list__track {
+    animation-play-state: paused;
+}
+
+.universities-carousel--home .universities-list__item {
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: center;
 }
 
 @keyframes universities-carousel-scroll {
@@ -4566,9 +4576,23 @@ h1.animated, h2.animated, h3.animated,
     }
 }
 
+.university-carousel-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.35rem 0.15rem;
+    transition: transform 0.28s ease;
+}
+
+a.university-carousel-card:hover,
+a.university-carousel-card:focus-visible {
+    transform: translateY(-4px);
+}
+
 .university-flag-card {
     width: 108px;
     height: 108px;
+    flex-shrink: 0;
     border-radius: 50%;
     background: #fff;
     border: 1px solid rgba(0, 49, 61, 0.12);
@@ -4577,6 +4601,15 @@ h1.animated, h2.animated, h3.animated,
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: box-shadow 0.28s ease, border-color 0.28s ease;
+}
+
+a.university-carousel-card:hover .university-flag-card,
+a.university-carousel-card:focus-visible .university-flag-card {
+    border-color: rgba(255, 84, 20, 0.35);
+    box-shadow:
+        0 10px 26px rgba(0, 49, 61, 0.1),
+        0 16px 36px rgba(255, 84, 20, 0.12);
 }
 
 .university-flag-card__img {
@@ -4584,6 +4617,23 @@ h1.animated, h2.animated, h3.animated,
     height: 100%;
     object-fit: contain;
     border-radius: 50%;
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+    .universities-carousel--home .universities-list__track {
+        animation: none !important;
+        transform: none !important;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .universities-carousel--home .universities-list__item[aria-hidden="true"] {
+        display: none;
+    }
 }
 
 /* Study abroad — country detail page (abroad-detail.html) */
@@ -5652,35 +5702,6 @@ h1.animated, h2.animated, h3.animated,
     }
 }
 
-@media (max-width: 767.98px) {
-    .universities-list {
-        overflow-x: auto;
-        padding-bottom: 4px;
-    }
-
-    .universities-list__track {
-        flex-wrap: nowrap;
-        justify-content: flex-start;
-        min-width: max-content;
-    }
-
-    .universities-carousel {
-        overflow: hidden;
-    }
-
-    .universities-carousel .universities-list__track {
-        animation-duration: 24s;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .universities-carousel .universities-list__track,
-    .universities-list__track {
-        animation: none !important;
-        transform: none !important;
-    }
-}
-
 /* Course detail badges (below image) */
 .course-detail-badge {
     display: flex;
@@ -6111,6 +6132,11 @@ h1.animated, h2.animated, h3.animated,
 .home-page-main .abroad-section.home-abroad-band {
     position: relative;
     background: var(--home-section-bg);
+    overflow-x: visible;
+}
+
+.home-page-main .abroad-section.home-abroad-band .abroad-hero__visual {
+    overflow: hidden;
 }
 
 .home-page-main .abroad-section.home-abroad-band::after {
@@ -6230,8 +6256,8 @@ h1.animated, h2.animated, h3.animated,
     animation-play-state: paused;
 }
 
-.motion-paused .universities-list__track,
-.universities-carousel.motion-paused .universities-list__track {
+.motion-paused .universities-carousel--home .universities-list__track,
+.universities-carousel--home.motion-paused .universities-list__track {
     animation-play-state: paused;
 }
 

@@ -990,9 +990,7 @@ def _get_home_page_data_cached(request, lang):
         'abroad_items': get_serialized_abroad_items(
             lang=lang, is_active=True, show_on_main_page=True
         ),
-        'universities': get_serialized_universities(
-            is_active=True, study_abroad_show_on_main_page=True
-        ),
+        'universities': get_serialized_universities(is_active=True),
         'abroad_intro_text': get_study_abroad_section(lang=lang),
         'team': [serialize_team_member(m, lang=lang) for m in get_team_members()],
         'reviews': [serialize_review(r) for r in get_reviews()],

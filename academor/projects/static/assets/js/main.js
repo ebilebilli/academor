@@ -75,7 +75,7 @@
         qsa(".abroad-hero__visual").forEach(function (el) {
             roots.push(el);
         });
-        qsa(".universities-carousel").forEach(function (el) {
+        qsa(".universities-carousel--home").forEach(function (el) {
             roots.push(el);
         });
         if (!roots.length) return;
@@ -302,38 +302,59 @@
         });
     }
 
-    qsa(".team-swiper").forEach(function (teamRoot) {
-        var teamSlides = teamRoot.querySelectorAll(".swiper-slide");
-        if (!teamSlides.length) return;
-        var teamCount = teamSlides.length;
-        var teamPagParent = teamRoot.parentElement;
-        var teamPagEl =
-            teamPagParent &&
-            teamPagParent.querySelector(".team-swiper-pagination-outer");
-        if (!teamPagEl) {
-            teamPagEl = teamRoot.querySelector(".swiper-pagination");
+    function lazyInitSwiperWhenVisible(root, initFn) {
+        if (!root) return;
+        if (typeof IntersectionObserver === "undefined") {
+            initFn();
+            return;
         }
-        var teamPagConfig = teamPagEl
-            ? { el: teamPagEl, clickable: true }
-            : false;
-        new Swiper(teamRoot, {
-            slidesPerView: 1,
-            spaceBetween: 16,
-            loop: teamCount > 4,
-            rewind: teamCount <= 4,
-            autoplay: false,
-            pagination: teamPagConfig,
-            navigation: {
-                nextEl: teamRoot.querySelector(".swiper-button-next"),
-                prevEl: teamRoot.querySelector(".swiper-button-prev"),
+        var observer = new IntersectionObserver(
+            function (entries, obs) {
+                entries.forEach(function (entry) {
+                    if (!entry.isIntersecting) return;
+                    obs.disconnect();
+                    initFn();
+                });
             },
-            /* Hide prev/next when all slides fit (e.g. 4 members on desktop at slidesPerView 4) */
-            watchOverflow: true,
-            breakpoints: {
-                576: { slidesPerView: 2, spaceBetween: 20 },
-                768: { slidesPerView: 3, spaceBetween: 20 },
-                992: { slidesPerView: 4, spaceBetween: 20 },
-            },
+            { threshold: 0.1 }
+        );
+        observer.observe(root);
+    }
+
+    qsa(".team-swiper").forEach(function (teamRoot) {
+        lazyInitSwiperWhenVisible(teamRoot, function () {
+            var teamSlides = teamRoot.querySelectorAll(".swiper-slide");
+            if (!teamSlides.length) return;
+            var teamCount = teamSlides.length;
+            var teamPagParent = teamRoot.parentElement;
+            var teamPagEl =
+                teamPagParent &&
+                teamPagParent.querySelector(".team-swiper-pagination-outer");
+            if (!teamPagEl) {
+                teamPagEl = teamRoot.querySelector(".swiper-pagination");
+            }
+            var teamPagConfig = teamPagEl
+                ? { el: teamPagEl, clickable: true }
+                : false;
+            new Swiper(teamRoot, {
+                slidesPerView: 1,
+                spaceBetween: 16,
+                loop: teamCount > 4,
+                rewind: teamCount <= 4,
+                autoplay: false,
+                pagination: teamPagConfig,
+                navigation: {
+                    nextEl: teamRoot.querySelector(".swiper-button-next"),
+                    prevEl: teamRoot.querySelector(".swiper-button-prev"),
+                },
+                /* Hide prev/next when all slides fit (e.g. 4 members on desktop at slidesPerView 4) */
+                watchOverflow: true,
+                breakpoints: {
+                    576: { slidesPerView: 2, spaceBetween: 20 },
+                    768: { slidesPerView: 3, spaceBetween: 20 },
+                    992: { slidesPerView: 4, spaceBetween: 20 },
+                },
+            });
         });
     });
 
@@ -349,77 +370,80 @@
 
     var testimonialEl = qs(".testimonial-swiper");
     if (testimonialEl) {
-        var testimonialCount =
-            testimonialEl.querySelectorAll(".swiper-slide").length;
-        var tMulti = testimonialCount > 1;
-        var isReviewsHome = testimonialEl.classList.contains("testimonial-swiper--home");
-        var swiperOpts = isReviewsHome
-            ? {
-                  centeredSlides: true,
-                  centerInsufficientSlides: true,
-                  slidesPerView: 1.12,
-                  spaceBetween: 12,
-                  loop: testimonialCount > 5,
-                  rewind: testimonialCount <= 5,
-                  slideToClickedSlide: true,
-                  autoplay:
-                      !prefersReducedMotion && tMulti
-                          ? { delay: 4200, disableOnInteraction: false }
-                          : false,
-                  pagination: {
-                      el: ".testimonial-swiper .swiper-pagination",
-                      clickable: true,
-                  },
-                  navigation: {
-                      nextEl: ".testimonial-swiper .swiper-button-next",
-                      prevEl: ".testimonial-swiper .swiper-button-prev",
-                  },
-                  watchOverflow: true,
-                  breakpoints: {
-                      0: { slidesPerView: 1.12, spaceBetween: 10 },
-                      576: { slidesPerView: 2, spaceBetween: 12 },
-                      768: { slidesPerView: 3, spaceBetween: 14 },
-                      992: { slidesPerView: 4, spaceBetween: 16 },
-                      1200: { slidesPerView: 5, spaceBetween: 16 },
-                  },
-                  on: {
-                      init: function () {
-                          revealTestimonialSlides(testimonialEl);
+        lazyInitSwiperWhenVisible(testimonialEl, function () {
+            var testimonialCount =
+                testimonialEl.querySelectorAll(".swiper-slide").length;
+            var tMulti = testimonialCount > 1;
+            var isReviewsHome = testimonialEl.classList.contains("testimonial-swiper--home");
+            var swiperOpts = isReviewsHome
+                ? {
+                      centeredSlides: true,
+                      centerInsufficientSlides: true,
+                      slidesPerView: 1.12,
+                      spaceBetween: 12,
+                      loop: testimonialCount > 5,
+                      rewind: testimonialCount <= 5,
+                      slideToClickedSlide: true,
+                      autoplay:
+                          !prefersReducedMotion && tMulti
+                              ? { delay: 4200, disableOnInteraction: false }
+                              : false,
+                      pagination: {
+                          el: ".testimonial-swiper .swiper-pagination",
+                          clickable: true,
                       },
-                  },
-              }
-            : {
-                  centeredSlides: true,
-                  spaceBetween: 24,
-                  loop: testimonialCount > 2,
-                  rewind: testimonialCount <= 2,
-                  autoplay:
-                      !prefersReducedMotion && tMulti
-                          ? { delay: 4200, disableOnInteraction: false }
-                          : false,
-                  pagination: {
-                      el: ".testimonial-swiper .swiper-pagination",
-                      clickable: true,
-                  },
-                  navigation: {
-                      nextEl: ".testimonial-swiper .swiper-button-next",
-                      prevEl: ".testimonial-swiper .swiper-button-prev",
-                  },
-                  watchOverflow: true,
-                  breakpoints: {
-                      0: { slidesPerView: 1 },
-                      768: { slidesPerView: 2 },
-                      992: { slidesPerView: 3 },
-                  },
-                  on: {
-                      init: function () {
-                          revealTestimonialSlides(testimonialEl);
+                      navigation: {
+                          nextEl: ".testimonial-swiper .swiper-button-next",
+                          prevEl: ".testimonial-swiper .swiper-button-prev",
                       },
-                  },
-              };
-        new Swiper(".testimonial-swiper", swiperOpts);
-        revealTestimonialSlides(testimonialEl);
+                      watchOverflow: true,
+                      breakpoints: {
+                          0: { slidesPerView: 1.12, spaceBetween: 10 },
+                          576: { slidesPerView: 2, spaceBetween: 12 },
+                          768: { slidesPerView: 3, spaceBetween: 14 },
+                          992: { slidesPerView: 4, spaceBetween: 16 },
+                          1200: { slidesPerView: 5, spaceBetween: 16 },
+                      },
+                      on: {
+                          init: function () {
+                              revealTestimonialSlides(testimonialEl);
+                          },
+                      },
+                  }
+                : {
+                      centeredSlides: true,
+                      spaceBetween: 24,
+                      loop: testimonialCount > 2,
+                      rewind: testimonialCount <= 2,
+                      autoplay:
+                          !prefersReducedMotion && tMulti
+                              ? { delay: 4200, disableOnInteraction: false }
+                              : false,
+                      pagination: {
+                          el: ".testimonial-swiper .swiper-pagination",
+                          clickable: true,
+                      },
+                      navigation: {
+                          nextEl: ".testimonial-swiper .swiper-button-next",
+                          prevEl: ".testimonial-swiper .swiper-button-prev",
+                      },
+                      watchOverflow: true,
+                      breakpoints: {
+                          0: { slidesPerView: 1 },
+                          768: { slidesPerView: 2 },
+                          992: { slidesPerView: 3 },
+                      },
+                      on: {
+                          init: function () {
+                              revealTestimonialSlides(testimonialEl);
+                          },
+                      },
+                  };
+            new Swiper(".testimonial-swiper", swiperOpts);
+            revealTestimonialSlides(testimonialEl);
+        });
     }
+
     }
 
     /* LCP, CLS, FCP via PerformanceObserver — dev only */
