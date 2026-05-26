@@ -3,12 +3,13 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("start/<int:amount>/", views.payment_start, name="payment_start"),
-    # Köhnə linklər (kurs adı URL-də): /payment/start/150/Kurs adı/
+    path('start/<int:amount>/', views.payment_start, name='payment_start'),
     path(
-        "start/<int:amount>/<str:description>/",
+        'start/<int:amount>/<str:description>/',
         views.payment_start,
-        name="payment_start_with_description",
+        name='payment_start_with_description',
     ),
-    path("result/", views.payment_result, name="payment_result"),
+    path('success/', views.payment_success, name='payment_success'),
+    path('cancel/', views.payment_cancel, name='payment_cancel'),
+    path('decline/', views.payment_decline, name='payment_decline'),
 ]
