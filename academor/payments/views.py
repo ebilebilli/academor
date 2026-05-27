@@ -2,10 +2,12 @@ import base64
 import json
 import uuid
 from decimal import Decimal
+from urllib.parse import urlencode, urlsplit, urlunsplit, parse_qsl
 
 from django.conf import settings
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_GET
+from django.utils import timezone
 
 from .models import Payment
 from .services import (
@@ -127,7 +129,44 @@ def _sync_payment_from_api(payment):
     return result
 
 
+def _store_callback_payload(request, payment):
+    raw_up = _raw_up_payload(request)
+    if not raw_up:
+        return
+    payment.callback_up = raw_up
+    payment.callback_payload = _data_from_up_param(request) or {}
+    payment.callback_received_at = timezone.now()
+    payment.save(update_fields=['callback_up', 'callback_payload', 'callback_received_at', 'updated_at'])
+
+
+def _build_frontend_redirect_url(payment, failed_title):
+    base = (getattr(settings, 'PAYMENT_FRONTEND_RETURN_URL', '') or '').strip()
+    if not base:
+        return None
+
+    status = payment.status
+    params = {
+        'payment_id': str(payment.pk),
+        'transaction_id': payment.transaction_id,
+        'status': status,
+        'title': failed_title if status != Payment.Status.SUCCESS else 'Ödəniş nəticəsi',
+    }
+    if payment.callback_up:
+        params['up'] = payment.callback_up
+
+    parts = urlsplit(base)
+    existing = dict(parse_qsl(parts.query, keep_blank_values=True))
+    existing.update({k: v for k, v in params.items() if v is not None})
+    query = urlencode(existing, doseq=True)
+    return urlunsplit((parts.scheme, parts.netloc, parts.path, query, parts.fragment))
+
+
 def _render_callback_result(request, payment, result, failed_title):
+    _store_callback_payload(request, payment)
+    frontend_url = _build_frontend_redirect_url(payment, failed_title)
+    if frontend_url:
+        return redirect(frontend_url)
+
     if payment.status == Payment.Status.SUCCESS:
         return render(
             request,
@@ -162,7 +201,6 @@ def payment_start(request, amount, description=None):
     )
 
     payment = Payment.objects.create(
-        user=request.user if request.user.is_authenticated else None,
         transaction_id=f'pending-{uuid.uuid4().hex}',
         amount=Decimal(amount),
         description=description[:255],

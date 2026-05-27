@@ -4,22 +4,16 @@
 <html lang="{{ LANG_CODE }}">
 <head>
 {% include "includes/site_layout_head.html" %}
+{% include "includes/payment_ui_head.html" %}
 </head>
 <body class="bg-light">
     {% include "includes/site_spinner.html" with spinner_hidden=True %}
     {% include "includes/site_navbar.html" %}
-    <main id="main-content" class="container-xxl py-5 text-center">
-        <div class="py-5 px-3">
-            <p class="text-warning text-uppercase small mb-2">Uğursuz</p>
-            <h1 class="h2 mb-3">Ödəniş tamamlanmadı</h1>
-            <p class="text-muted mb-4 col-lg-8 mx-auto">
-                Ödəniş prosesi bitməyib və ya ləğv edilib.
-                {% if status %}
-                <br><span class="small">Status: {{ status }}</span>
-                {% endif %}
-            </p>
-            <a href="{% url 'projects:home-page' %}" class="btn btn-primary px-4 rounded-pill">Ana səhifəyə qayıt</a>
-        </div>
+    <main id="main-content" class="container-xxl py-5">
+        {% trans "Unsuccessful" as eyebrow %}
+        {% trans "Payment not completed" as title %}
+        {% trans "The payment was not completed or was cancelled. You can try again from the course page." as message %}
+        {% include "includes/payment_result_card.html" with variant="failed" eyebrow=eyebrow title=title message=message status=status %}
     </main>
     {% include "includes/site_footer.html" %}
     {% include "includes/site_scripts.html" %}

@@ -27,15 +27,26 @@
     }
 
     document.addEventListener("DOMContentLoaded", function () {
-        var reviewModal = document.getElementById("reviewFormModal");
-        if (!reviewModal) {
-            return;
-        }
-        reviewModal.addEventListener("shown.bs.modal", function () {
-            loadTurnstileScript(function () {
-                renderDeferred(document.getElementById("review-turnstile"));
-            });
+        // If any Turnstile widget exists on the page, ensure api.js is loaded.
+        // - Inline widgets: <div class="cf-turnstile" ...> are auto-rendered by api.js.
+        // - Deferred widgets: <div data-turnstile-deferred> need explicit render().
+        var hasInline = document.querySelector(".cf-turnstile");
+        var deferred = Array.prototype.slice.call(document.querySelectorAll("[data-turnstile-deferred]"));
+        if (!hasInline && deferred.length === 0) return;
+
+        loadTurnstileScript(function () {
+            deferred.forEach(function (el) { renderDeferred(el); });
         });
+
+        // If a deferred widget is inside a Bootstrap modal, render it when shown too.
+        var reviewModal = document.getElementById("reviewFormModal");
+        if (reviewModal) {
+            reviewModal.addEventListener("shown.bs.modal", function () {
+                loadTurnstileScript(function () {
+                    deferred.forEach(function (el) { renderDeferred(el); });
+                });
+            });
+        }
     });
 })();
 </script>

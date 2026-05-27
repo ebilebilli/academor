@@ -309,3 +309,8 @@ UNITED_PAYMENT_BASE_URL = os.getenv('UNITED_PAYMENT_BASE_URL')
 UNITED_PAYMENT_SUCCESS_URL = os.getenv('UNITED_PAYMENT_SUCCESS_URL')
 UNITED_PAYMENT_CANCEL_URL = os.getenv('UNITED_PAYMENT_CANCEL_URL')
 UNITED_PAYMENT_DECLINE_URL = os.getenv('UNITED_PAYMENT_DECLINE_URL')
+
+# Optional: where to redirect user after bank callback.
+# If empty, backend will render payment/success.html or payment/failed.html.
+# Example: https://academor.az/payment-result
+PAYMENT_FRONTEND_RETURN_URL = (os.getenv('PAYMENT_FRONTEND_RETURN_URL') or '').strip()

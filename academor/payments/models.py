@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.db import models
 
 
@@ -10,13 +9,6 @@ class Payment(models.Model):
         DECLINED = 'declined', 'Rədd'
         FAILED = 'failed', 'Uğursuz'
 
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='payments',
-    )
     transaction_id = models.CharField(max_length=64, unique=True, db_index=True)
     client_order_id = models.CharField(max_length=64, blank=True, db_index=True)
     amount = models.DecimalField(max_digits=12, decimal_places=2)
@@ -28,6 +20,9 @@ class Payment(models.Model):
         db_index=True,
     )
     description = models.CharField(max_length=255, blank=True)
+    callback_up = models.TextField(blank=True)
+    callback_payload = models.JSONField(default=dict, blank=True)
+    callback_received_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

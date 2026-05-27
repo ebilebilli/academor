@@ -735,6 +735,7 @@ def serialize_project_category(category, lang='az'):
         'name': _service_category_display_name(category, lang),
         'image': first_image,
         'description_html': raw_desc or '',
+        'price': category.price,
     }
 
 

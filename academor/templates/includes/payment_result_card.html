@@ -1,0 +1,26 @@
+{% load i18n %}
+{# variant: success | failed | error #}
+<div class="payment-result-card text-center">
+    <div class="payment-result-card__icon payment-result-card__icon--{{ variant }}" aria-hidden="true">
+        {% if variant == 'success' %}
+        <i class="fas fa-check"></i>
+        {% elif variant == 'error' %}
+        <i class="fas fa-exclamation"></i>
+        {% else %}
+        <i class="fas fa-times"></i>
+        {% endif %}
+    </div>
+    <p class="payment-result-card__eyebrow payment-result-card__eyebrow--{{ variant }} mb-0">{{ eyebrow }}</p>
+    <h1 class="h3 mb-3">{{ title }}</h1>
+    <p class="text-muted mb-0">{{ message }}</p>
+    {% if order_id %}
+    <p class="payment-result-card__meta mb-0">{% trans "Transaction" %}: <strong>{{ order_id }}</strong></p>
+    {% endif %}
+    {% if status %}
+    <p class="payment-result-card__meta mb-0">{% trans "Status" %}: <strong>{{ status }}</strong></p>
+    {% endif %}
+    <div class="d-flex flex-column flex-sm-row gap-2 justify-content-center mt-4">
+        <a href="{% url 'projects:home-page' %}" class="btn btn-primary rounded-pill px-4">{% trans "Home" %}</a>
+        <a href="{% url 'projects:courses-page' %}" class="btn btn-outline-accent rounded-pill px-4">{% trans "Courses" %}</a>
+    </div>
+</div>
