@@ -166,8 +166,22 @@ class MediaInlinePartner(MediaInlineBase):
 
 
 class MediaInlineAbout(MediaInlineBase):
-    fields = ('image', 'video', 'thumbnail_preview', 'created_at')
-    max_num = 12
+    fields = (
+        'image',
+        'thumbnail_preview',
+        'gallery_order',
+        'gallery_name_az',
+        'gallery_role_az',
+        'gallery_tag_az',
+        'gallery_name_en',
+        'gallery_role_en',
+        'gallery_tag_en',
+        'gallery_name_ru',
+        'gallery_role_ru',
+        'gallery_tag_ru',
+        'created_at',
+    )
+    max_num = 8
     extra = 1
     
     def get_formset(self, request, obj=None, **kwargs):
@@ -177,7 +191,6 @@ class MediaInlineAbout(MediaInlineBase):
         class MediaAboutFormSet(BaseInlineFormSet):
             def clean(self):
                 super().clean()
-                video_count = 0
                 image_count = 0
                 deleted_images = 0
                 
@@ -195,14 +208,9 @@ class MediaInlineAbout(MediaInlineBase):
                             if form.instance and form.instance.pk and form.instance.image:
                                 deleted_images += 1
                         else:
-                            if form.cleaned_data.get('video'):
-                                video_count += 1
                             if form.cleaned_data.get('image'):
                                 if not form.instance.pk or (form.instance.pk and form.cleaned_data.get('image') != form.instance.image):
                                     image_count += 1
-                
-                if video_count > 1:
-                    raise ValidationError('Only one video may be uploaded. Please add a video to a single media row only.')
                 
                 total_images = existing_images - deleted_images + image_count
                 
@@ -588,13 +596,18 @@ class InstructorAdmin(AdminImageCompressMixin, admin.ModelAdmin):
 # About 
 @admin.register(About)
 class AboutAdmin(AdminImageCompressMixin, admin.ModelAdmin):
-    list_display = ('id', 'title_link', 'media_count', 'updated_info')
+    list_display = ('id', 'title_link', 'show_on_homepage', 'media_count', 'video_status', 'updated_info')
     list_display_links = ('id',)
     search_fields = ('description_az', 'description_en', 'description_ru')
     inlines = [MediaInlineAbout]
     list_per_page = 25
+    readonly_fields = ('video_cover_preview',)
 
     fieldsets = (
+        ('Homepage', {
+            'fields': ('show_on_homepage',),
+            'description': 'Control whether the About section appears on the home page.',
+        }),
         ('Description — Azerbaijani', {
             'fields': ('description_az',)
         }),
@@ -603,6 +616,13 @@ class AboutAdmin(AdminImageCompressMixin, admin.ModelAdmin):
         }),
         ('Description — Russian', {
             'fields': ('description_ru',)
+        }),
+        ('About page video', {
+            'fields': ('video', 'video_cover', 'video_cover_preview'),
+            'description': (
+                'Upload a cover image (poster) and video file for the About page. '
+                'The cover is shown until the visitor presses play.'
+            ),
         }),
     )
 
@@ -621,6 +641,33 @@ class AboutAdmin(AdminImageCompressMixin, admin.ModelAdmin):
             return format_html('<span style="background: #007bff; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px;">📷 {} images</span>', count)
         return "📷 0 images"
     media_count.short_description = "Media"
+
+    def video_status(self, obj):
+        has_video = bool(obj.video)
+        has_cover = bool(obj.video_cover)
+        if has_video and has_cover:
+            return format_html(
+                '<span style="background: #28a745; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px;">🎬 Video + cover</span>'
+            )
+        if has_video:
+            return format_html(
+                '<span style="background: #ffc107; color: #212529; padding: 3px 8px; border-radius: 12px; font-size: 11px;">🎬 Video only</span>'
+            )
+        if has_cover:
+            return format_html(
+                '<span style="background: #6c757d; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px;">🖼 Cover only</span>'
+            )
+        return "—"
+    video_status.short_description = "Video"
+
+    def video_cover_preview(self, obj):
+        if obj and obj.video_cover:
+            return format_html(
+                '<img src="{}" style="max-width: 320px; max-height: 180px; border-radius: 8px; object-fit: cover;" />',
+                obj.video_cover.url,
+            )
+        return "—"
+    video_cover_preview.short_description = "Cover preview"
     
     def updated_info(self, obj):
         if hasattr(obj, 'updated_at'):

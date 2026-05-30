@@ -1,8 +1,15 @@
 {% load static i18n %}
-<div class="container-xxl py-5 about-intro-section">
+<div class="container-xxl py-5 about-intro-section{% if home_about_block %} about-intro-section--home{% endif %}">
     <div class="container">
-        <div class="row g-5">
+        <div class="row g-5 align-items-start">
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                {% if show_about_video and about and about.video %}
+                {% include "includes/about_video_player.html" %}
+                {% elif show_about_video and about and about.video_cover %}
+                <div class="about-intro-image-card position-relative">
+                    <img class="about-intro-image img-fluid position-absolute w-100 h-100" src="{{ about.video_cover }}" alt="" width="800" height="600" loading="lazy" decoding="async">
+                </div>
+                {% else %}
                 <div class="about-intro-image-card position-relative">
                     {% if about and about.first_image %}
                     <img class="about-intro-image img-fluid position-absolute w-100 h-100" src="{{ about.first_image }}" alt="" width="800" height="600" loading="lazy" decoding="async">
@@ -10,6 +17,7 @@
                     <img class="about-intro-image img-fluid position-absolute w-100 h-100" src="{% static 'assets/img/about.jpg' %}" alt="" width="800" height="600" loading="lazy" decoding="async">
                     {% endif %}
                 </div>
+                {% endif %}
                 {% if show_why_academor and about_why_items %}
                 {% include "includes/about_why_academor.html" %}
                 {% endif %}
@@ -22,7 +30,7 @@
                 {% endif %}
                 {% if about and about.description %}
                     {% if show_read_more_link %}
-                    <p class="about-page-description mb-0">{{ about.description_excerpt }}</p>
+                    <p class="about-page-description about-page-description--teaser mb-0">{% if use_short_excerpt %}{{ about.description_excerpt_short }}{% else %}{{ about.description_excerpt }}{% endif %}</p>
                     {% else %}
                     <div class="about-page-description">{{ about.description|safe }}</div>
                     {% endif %}
@@ -32,7 +40,9 @@
                 <p class="about-page-description mb-0">{% trans "No about content has been added yet." %}</p>
                 {% endif %}
                 {% if show_read_more_link %}
-                <a class="btn btn-primary py-3 px-5 mt-3" href="{% url 'projects:about-page' %}">{% trans "Read More" %}</a>
+                <a href="{% url 'projects:about-page' %}" class="hbh-see-all mt-4">
+                    {% trans "Read More" %} <i class="fa fa-arrow-right" style="font-size:.7rem;" aria-hidden="true"></i>
+                </a>
                 {% endif %}
             </div>
         </div>

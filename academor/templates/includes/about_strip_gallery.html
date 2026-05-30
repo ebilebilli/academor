@@ -1,0 +1,39 @@
+{% load static i18n %}
+{% if about_gallery_items %}
+<section class="ag-section">
+
+    <div class="ag-head">
+        <div class="ag-controls">
+            <button id="agPrev" class="ag-nav-btn" aria-label="{% trans 'Previous' %}" disabled>&#8249;</button>
+            <button id="agNext" class="ag-nav-btn" aria-label="{% trans 'Next' %}">&#8250;</button>
+        </div>
+    </div>
+
+    <div class="ag-slider">
+        <div class="ag-track" id="agTrack">
+            {% for item in about_gallery_items %}
+            <article class="ag-card{% if forloop.first %} ag-card--active{% endif %}">
+                {% if item.image %}
+                <img class="ag-card__bg" src="{{ item.image }}" alt="{{ item.name|default:'' }}"
+                     loading="{% if forloop.first %}eager{% else %}lazy{% endif %}" decoding="async">
+                {% endif %}
+                <div class="ag-card__body">
+                    <div class="ag-card__side-label">
+                        <span>{{ item.name|default:'' }}</span>
+                    </div>
+                    <div class="ag-card__info">
+                        {% if item.tag %}<span class="ag-card__tag">{{ item.tag }}</span>{% endif %}
+                        <h3 class="ag-card__title">{{ item.name|default:'' }}</h3>
+                        {% if item.role %}<p class="ag-card__desc">{{ item.role }}</p>{% endif %}
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="ag-dots" id="agDots"></div>
+
+</section>
+<script src="{% static 'assets/js/about_strip_gallery.js' %}"></script>
+{% endif %}

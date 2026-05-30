@@ -12,7 +12,8 @@ from projects.utils.queries import (
     get_language_from_request, get_home_page_data,
     get_courses_list_data,
     get_background_image,
-    get_about, serialize_about, get_serialized_about_why_items, get_serialized_partners,
+    get_about, serialize_about, get_serialized_about_why_items, get_about_page_gallery_items,
+    get_serialized_partners,
     get_contact, serialize_contact,
     get_project_categories, serialize_project_category,
     serialize_project_category_detail,
@@ -127,6 +128,7 @@ class AboutPageView(View):
         context = {
             'about': serialize_about(about, lang) if about else None,
             'about_why_items': get_serialized_about_why_items(lang=lang, is_active=True),
+            'about_gallery_items': get_about_page_gallery_items(lang=lang),
             'partners': get_serialized_partners(lang=lang, is_active=is_active),
             'contact': serialize_contact(contact, lang) if contact else None,
             'categories': serialized_categories,

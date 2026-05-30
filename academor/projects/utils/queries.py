@@ -1,7 +1,6 @@
 import re
 
 from django.db.models import Q, Prefetch
-from django.utils.html import strip_tags
 from django.utils import translation
 from django.utils.translation import gettext as _
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -779,10 +778,10 @@ def serialize_project_category_detail(category, lang='az'):
 
 
 def _about_plain_excerpt(html, max_chars=300):
-    if not html:
+    """Plain teaser from CKEditor HTML (decoded entities, no double-escaping in templates)."""
+    text = richtext_plain_text(html)
+    if not text:
         return ''
-    text = strip_tags(str(html))
-    text = ' '.join(text.split())
     if len(text) <= max_chars:
         return text
     cut = text[:max_chars].rsplit(' ', 1)[0]
@@ -806,6 +805,32 @@ def get_serialized_about_why_items(lang='az', is_active=True):
     return [serialize_about_why_item(row, lang) for row in qs.order_by('order', 'id')]
 
 
+def serialize_about_media_strip_item(media, lang='az'):
+    name = _localized_value(media, 'gallery_name', lang)
+    first = (name or '').strip().split()
+    return {
+        'id': media.id,
+        'name': name,
+        'role': _localized_value(media, 'gallery_role', lang),
+        'tag': _localized_value(media, 'gallery_tag', lang),
+        'image': media_url(media.image) if media.image else None,
+        'first_name': first[0] if first else (name or ''),
+    }
+
+
+def get_about_page_gallery_items(lang='az', limit=8):
+    """About page strip gallery from About → Media inline (images only, max 8)."""
+    about = get_about(lang)
+    if not about:
+        return []
+    medias = (
+        about.medias.filter(image__isnull=False)
+        .exclude(image='')
+        .order_by('gallery_order', 'created_at', 'id')[:limit]
+    )
+    return [serialize_about_media_strip_item(media, lang) for media in medias]
+
+
 def serialize_about(about, lang='az'):
     if about is None:
         return None
@@ -823,11 +848,23 @@ def serialize_about(about, lang='az'):
     ]
     first_image = next((m['image'] for m in medias if m.get('image')), None)
 
+    video = media_url(about.video) if about.video else None
+    if not video:
+        video = next((m['video'] for m in medias if m.get('video')), None)
+
+    video_cover = media_url(about.video_cover) if about.video_cover else None
+    if not video_cover:
+        video_cover = first_image
+
     return {
         'id': about.id,
         'description': raw_desc,
         'description_excerpt': _about_plain_excerpt(raw_desc),
+        'description_excerpt_short': _about_plain_excerpt(raw_desc, max_chars=200),
+        'show_on_homepage': about.show_on_homepage,
         'first_image': first_image,
+        'video': video,
+        'video_cover': video_cover,
         'medias': medias,
     }
 
@@ -931,6 +968,8 @@ def _get_home_page_data_cached(request, lang):
 
     about = get_about(lang)
     serialized_about = serialize_about(about, lang) if about else None
+    if serialized_about and not serialized_about.get('show_on_homepage'):
+        serialized_about = None
     
     contact = get_contact(lang)
     serialized_contact = serialize_contact(contact, lang) if contact else None
@@ -953,7 +992,7 @@ def _get_home_page_data_cached(request, lang):
         if not urls:
             urls = [
                 static('assets/img/new_baner.png'),
-                static('assets/img/banner-landscape-1536x1024.png'),
+                static('assets/img/banner-landscape-1536x1024.webp'),
             ]
         return urls
 

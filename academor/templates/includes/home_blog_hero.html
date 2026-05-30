@@ -67,35 +67,7 @@
 }
 @keyframes hbhPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
 
-.hbh-see-all {
-    display: inline-flex;
-    align-items: center;
-    gap: .45rem;
-    background: var(--accent, #FF5414);
-    color: #fff !important;
-    font-size: .78rem;
-    font-weight: 700;
-    letter-spacing: .05em;
-    text-transform: uppercase;
-    text-decoration: none !important;
-    padding: .5rem 1.15rem;
-    border-radius: 999px;
-    border: 2px solid var(--accent, #FF5414);
-    box-shadow: 0 4px 18px rgba(255, 84, 20, 0.4);
-    transition: background .2s, border-color .2s, color .2s, transform .2s, box-shadow .2s;
-}
-.hbh-see-all:hover,
-.hbh-see-all:focus {
-    background: #fff;
-    border-color: #fff;
-    color: var(--bs-primary, #00313D) !important;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.22);
-}
-.hbh-see-all:focus-visible {
-    outline: 2px solid rgba(255, 255, 255, 0.95);
-    outline-offset: 3px;
-}
+/* .hbh-see-all — see style.css */
 
 /* ── Main grid ── */
 .hbh-grid {
@@ -355,28 +327,7 @@
     margin: 0;
 }
 .hbh-tagline .hbh-dot { font-size: 1.3rem; font-weight: 900; line-height: 1; }
-/* "Bütün bloqlar" — solid white, dark text, accent hover */
-.hbh-cta-btn {
-    display: inline-flex; align-items: center; gap: .6rem;
-    background: #ffffff !important;
-    color: var(--bs-primary, #00313D) !important;
-    font-size: .9rem; font-weight: 700; letter-spacing: .02em;
-    padding: .72rem 1.8rem;
-    border-radius: 50px;
-    text-decoration: none;
-    border: 2px solid #ffffff !important;
-    box-shadow: 0 4px 18px rgba(0,0,0,.2);
-    transition: background .25s, color .25s, border-color .25s, transform .25s, box-shadow .25s;
-}
-.hbh-cta-btn:hover,
-.hbh-cta-btn:focus,
-.hbh-cta-btn:active {
-    background: var(--accent, #FF5414) !important;
-    border-color: var(--accent, #FF5414) !important;
-    color: #fff !important;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 26px rgba(255,84,20,.45);
-}
+/* .hbh-cta-btn — see style.css */
 
 /* "Əlaqə saxla" — white outline */
 .hbh-cta-contact {
@@ -523,7 +474,7 @@
                     </div>
                     {% endif %}
                     <div class="hbh-card__meta-top">
-                        <span class="hbh-badge"><img src="{% static 'assets/img/banner.png' %}" alt="" class="featured-badge-icon" width="14" height="14" decoding="async">{% trans "Featured" %}</span>
+                        <span class="hbh-badge"><img src="{% static 'assets/img/banner.webp' %}" alt="" class="featured-badge-icon" width="14" height="14" decoding="async">{% trans "Featured" %}</span>
                         {% if post.date %}
                         <span class="hbh-date">
                             <i class="fa fa-calendar-alt" style="font-size:.6rem;"></i>
@@ -598,15 +549,9 @@
                     Speak<span class="hbh-dot" style="color:#FFE500;">.</span>
                     Achieve<span class="hbh-dot" style="color:#3DFF7A;">.</span>
                 </p>
-                <div class="d-flex flex-wrap gap-2">
-                    <a href="{% url 'projects:about-page' %}" class="hbh-cta-btn">
-                        {% trans "Read More" %}
-                        <i class="fa fa-long-arrow-alt-right"></i>
-                    </a>
-                    <a href="{% url 'projects:contact-page' %}" class="hbh-cta-contact">
-                        <i class="fa fa-envelope" style="font-size:.8rem;"></i>{% trans "Contact us" %}
-                    </a>
-                </div>
+                <a href="{% url 'projects:contact-page' %}" class="hbh-cta-contact">
+                    <i class="fa fa-envelope" style="font-size:.8rem;"></i>{% trans "Contact us" %}
+                </a>
             </div>
 
             {% else %}

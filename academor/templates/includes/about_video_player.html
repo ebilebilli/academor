@@ -1,0 +1,26 @@
+{% load static i18n %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css">
+<div class="about-vp about-intro-image-card" data-about-vp>
+    <video
+        class="about-vp__video"
+        playsinline
+        preload="metadata"
+        {% if about.video_cover %}poster="{{ about.video_cover }}"{% endif %}
+    >
+        <source src="{{ about.video }}" type="video/mp4">
+    </video>
+
+    {% if about.video_cover %}
+    <div class="about-vp__cover" aria-hidden="true">
+        <img src="{{ about.video_cover }}" alt="" class="about-vp__cover-img">
+        <button class="about-vp__play-btn" type="button" aria-label="{% trans 'Play video' %}">
+            <span class="about-vp__ripple"></span>
+            <svg class="about-vp__play-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M8 5v14l11-7z"/>
+            </svg>
+        </button>
+    </div>
+    {% endif %}
+</div>
+<script src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.min.js"></script>
+<script src="{% static 'assets/js/about_video_player.js' %}" data-plyr-icon="{% static 'assets/vendor/plyr.svg' %}"></script>

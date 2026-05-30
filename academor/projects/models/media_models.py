@@ -85,6 +85,21 @@ class Media(models.Model):
         auto_now_add=True,
         verbose_name='Created at'
     )
+    gallery_order = models.PositiveIntegerField(
+        default=0,
+        db_index=True,
+        verbose_name='Gallery order',
+        help_text='About page strip gallery sort order (lower first). Only used for About media.',
+    )
+    gallery_name_az = models.CharField(max_length=120, blank=True, verbose_name='Gallery name (AZ)')
+    gallery_name_en = models.CharField(max_length=120, blank=True, verbose_name='Gallery name (EN)')
+    gallery_name_ru = models.CharField(max_length=120, blank=True, verbose_name='Gallery name (RU)')
+    gallery_role_az = models.CharField(max_length=160, blank=True, verbose_name='Gallery role (AZ)')
+    gallery_role_en = models.CharField(max_length=160, blank=True, verbose_name='Gallery role (EN)')
+    gallery_role_ru = models.CharField(max_length=160, blank=True, verbose_name='Gallery role (RU)')
+    gallery_tag_az = models.CharField(max_length=60, blank=True, verbose_name='Gallery tag (AZ)')
+    gallery_tag_en = models.CharField(max_length=60, blank=True, verbose_name='Gallery tag (EN)')
+    gallery_tag_ru = models.CharField(max_length=60, blank=True, verbose_name='Gallery tag (RU)')
 
     class Meta:
         verbose_name = 'Media'

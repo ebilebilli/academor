@@ -6,6 +6,25 @@ class About(models.Model):
     description_az = RichTextField(verbose_name='Text (AZ)')
     description_en = RichTextField(verbose_name='Text (EN)')
     description_ru = RichTextField(verbose_name='Text (RU)')
+    video = models.FileField(
+        upload_to='videos/about/',
+        blank=True,
+        null=True,
+        verbose_name='Video',
+        help_text='Promotional video shown on the About page.',
+    )
+    video_cover = models.ImageField(
+        upload_to='images/about_video_cover/',
+        blank=True,
+        null=True,
+        verbose_name='Video cover',
+        help_text='Poster image displayed before the video is played.',
+    )
+    show_on_homepage = models.BooleanField(
+        default=True,
+        verbose_name='Show on homepage',
+        help_text='When enabled, the About block is shown on the home page (after the blog hero).',
+    )
 
     class Meta:
         verbose_name = 'About'
@@ -40,3 +59,4 @@ class AboutWhyItem(models.Model):
 
     def __str__(self):
         return (self.title_az or self.title_en or f'Why #{self.pk}')[:80]
+

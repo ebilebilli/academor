@@ -16,12 +16,15 @@
     <!-- Blog Hero (first visible section) -->
     {% include "includes/home_blog_hero.html" %}
 
+    {% if about and about.show_on_homepage %}
+    {% include "includes/about_intro_section.html" with about=about show_read_more_link=True show_about_video=True use_short_excerpt=True home_about_block=True %}
+    {% endif %}
+
     {% include "includes/home_marquee_strip.html" %}
 
     <!-- Service Start -->
     {% include "includes/service_highlights_section.html" %}
     <!-- Service End -->
-
 
     <!-- Abroad programs grid -->
     {% include "includes/abroad_grid_section.html" with abroad_section_modifier="home-abroad-band" %}
