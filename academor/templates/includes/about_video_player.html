@@ -1,23 +1,12 @@
 {% load static i18n %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css">
 <div class="about-vp about-intro-image-card" data-about-vp>
-    <video
-        class="about-vp__video"
-        playsinline
-        preload="metadata"
-        {% if about.video_cover %}poster="{{ about.video_cover }}"{% endif %}
-    >
-        <source src="{{ about.video }}" type="video/mp4">
-    </video>
-
     <div class="about-vp__cover" aria-hidden="false">
         {% if about.video_cover %}
         <img
             src="{{ about.video_cover }}"
             alt=""
             class="about-vp__cover-img"
-            width="800"
-            height="450"
             {% if home_about_block %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
             decoding="async"
         >
@@ -29,6 +18,15 @@
             </svg>
         </button>
     </div>
+
+    <video
+        class="about-vp__video"
+        playsinline
+        preload="metadata"
+        {% if about.video_cover %}poster="{{ about.video_cover }}"{% endif %}
+    >
+        <source src="{{ about.video }}" type="video/mp4">
+    </video>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.min.js"></script>
 <script src="{% static 'assets/js/about_video_player.js' %}" data-plyr-icon="{% static 'assets/vendor/plyr.svg' %}"></script>

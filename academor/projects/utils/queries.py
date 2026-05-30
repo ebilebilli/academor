@@ -261,6 +261,20 @@ def _fresh_home_blog_context(lang):
     }
 
 
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_home_about_context(lang='az'):
+    """
+    Homepage About block (intro, video, cover) — cached per language, not inside the page blob.
+
+    Bumps with global cache_version when About, AboutWhyItem, or related Media rows change.
+    """
+    about = get_about(lang)
+    serialized_about = serialize_about(about, lang) if about else None
+    if serialized_about and not serialized_about.get('show_on_homepage'):
+        serialized_about = None
+    return {'about': serialized_about}
+
+
 @cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_blog_page_data(request, lang):
     """
@@ -966,11 +980,6 @@ def _get_home_page_data_cached(request, lang):
         for category in categories
     ]
 
-    about = get_about(lang)
-    serialized_about = serialize_about(about, lang) if about else None
-    if serialized_about and not serialized_about.get('show_on_homepage'):
-        serialized_about = None
-    
     contact = get_contact(lang)
     serialized_contact = serialize_contact(contact, lang) if contact else None
     
@@ -1014,7 +1023,6 @@ def _get_home_page_data_cached(request, lang):
         'projects': [],
         'categories': serialized_categories,
         'partners': [],
-        'about': serialized_about,
         'contact': serialized_contact,
         'projects_pagination': None,
         'partners_pagination': None,
@@ -1042,6 +1050,7 @@ def _get_home_page_data_cached(request, lang):
 def get_home_page_data(request, lang):
     ctx = _get_home_page_data_cached(request, lang)
     ctx.update(_fresh_home_blog_context(lang))
+    ctx.update(get_home_about_context(lang))
     return ctx
 
 

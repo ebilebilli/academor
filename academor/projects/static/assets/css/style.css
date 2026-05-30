@@ -2613,16 +2613,14 @@ h1.animated, h2.animated, h3.animated,
    ============================================================ */
 .about-vp.about-intro-image-card {
     position: relative;
-    display: grid;
-    grid-template: 1fr / 1fr;
+    display: block;
     width: 100%;
-  /* Reserve space before video metadata / cover load (prevents 0-height overlay). */
-    min-height: clamp(240px, 44vw, 460px);
-    aspect-ratio: 16 / 9;
-    max-height: 520px;
+    height: auto;
+    min-height: 0;
+    max-height: none;
     padding: 0;
     overflow: hidden;
-    background: #e9ecef;
+    background: transparent;
     box-shadow: none;
 }
 
@@ -2631,16 +2629,17 @@ h1.animated, h2.animated, h3.animated,
     position: relative;
 }
 
+/* Video / Plyr fills the box sized by the cover image */
 .about-vp > .plyr,
 .about-vp > video.about-vp__video {
-    grid-area: 1 / 1;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
     width: 100%;
-    min-width: 0;
-    min-height: 0;
+    height: 100%;
 }
 
 .about-vp .plyr {
-    height: 100%;
     border-radius: 0.6rem;
     overflow: hidden;
     box-shadow: 0 0.35rem 1.2rem rgba(24, 29, 56, 0.12);
@@ -2656,18 +2655,21 @@ h1.animated, h2.animated, h3.animated,
     display: none !important;
 }
 
-/* Cover overlay — grid-stacked above Plyr, fades out on play */
+/* Cover image is in-flow — its intrinsic size defines the container */
 .about-vp__cover {
-    grid-area: 1 / 1;
     position: relative;
     z-index: 10;
-    align-self: stretch;
-    justify-self: stretch;
-    min-height: 100%;
+    display: block;
+    width: 100%;
     border-radius: 0.6rem;
     overflow: hidden;
     cursor: pointer;
     transition: opacity 0.45s ease, visibility 0.45s ease;
+}
+
+.about-vp__cover:not(:has(.about-vp__cover-img)) {
+    min-height: 240px;
+    background: #e9ecef;
 }
 
 .about-vp.is-playing .about-vp__cover {
@@ -2677,10 +2679,11 @@ h1.animated, h2.animated, h3.animated,
 }
 
 .about-vp__cover-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
     display: block;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    vertical-align: middle;
 }
 
 /* Play button */
