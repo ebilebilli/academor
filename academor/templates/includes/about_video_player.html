@@ -10,9 +10,18 @@
         <source src="{{ about.video }}" type="video/mp4">
     </video>
 
-    {% if about.video_cover %}
-    <div class="about-vp__cover" aria-hidden="true">
-        <img src="{{ about.video_cover }}" alt="" class="about-vp__cover-img">
+    <div class="about-vp__cover" aria-hidden="false">
+        {% if about.video_cover %}
+        <img
+            src="{{ about.video_cover }}"
+            alt=""
+            class="about-vp__cover-img"
+            width="800"
+            height="450"
+            {% if home_about_block %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+            decoding="async"
+        >
+        {% endif %}
         <button class="about-vp__play-btn" type="button" aria-label="{% trans 'Play video' %}">
             <span class="about-vp__ripple"></span>
             <svg class="about-vp__play-icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -20,7 +29,6 @@
             </svg>
         </button>
     </div>
-    {% endif %}
 </div>
 <script src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.min.js"></script>
 <script src="{% static 'assets/js/about_video_player.js' %}" data-plyr-icon="{% static 'assets/vendor/plyr.svg' %}"></script>

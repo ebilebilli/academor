@@ -2612,11 +2612,17 @@ h1.animated, h2.animated, h3.animated,
    About page — Video player
    ============================================================ */
 .about-vp.about-intro-image-card {
-    height: auto;
-    min-height: 0;
+    position: relative;
+    display: grid;
+    grid-template: 1fr / 1fr;
+    width: 100%;
+  /* Reserve space before video metadata / cover load (prevents 0-height overlay). */
+    min-height: clamp(240px, 44vw, 460px);
+    aspect-ratio: 16 / 9;
+    max-height: 520px;
     padding: 0;
-    overflow: visible;
-    background: transparent;
+    overflow: hidden;
+    background: #e9ecef;
     box-shadow: none;
 }
 
@@ -2625,17 +2631,39 @@ h1.animated, h2.animated, h3.animated,
     position: relative;
 }
 
+.about-vp > .plyr,
+.about-vp > video.about-vp__video {
+    grid-area: 1 / 1;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+}
+
 .about-vp .plyr {
+    height: 100%;
     border-radius: 0.6rem;
     overflow: hidden;
     box-shadow: 0 0.35rem 1.2rem rgba(24, 29, 56, 0.12);
 }
 
-/* Cover overlay — sits above Plyr, fades out on play */
+.about-vp .plyr__video-wrapper,
+.about-vp .plyr video {
+    height: 100%;
+}
+
+/* Plyr’s default big play sits under our cover; hide to avoid double-control flicker */
+.about-vp .plyr__control--overlaid {
+    display: none !important;
+}
+
+/* Cover overlay — grid-stacked above Plyr, fades out on play */
 .about-vp__cover {
-    position: absolute;
-    inset: 0;
-    z-index: 5;
+    grid-area: 1 / 1;
+    position: relative;
+    z-index: 10;
+    align-self: stretch;
+    justify-self: stretch;
+    min-height: 100%;
     border-radius: 0.6rem;
     overflow: hidden;
     cursor: pointer;
@@ -2660,6 +2688,7 @@ h1.animated, h2.animated, h3.animated,
     position: absolute;
     top: 50%;
     left: 50%;
+    z-index: 2;
     transform: translate(-50%, -50%);
     width: 72px;
     height: 72px;
