@@ -837,3 +837,275 @@ msgstr "Speak"
 
 msgid "Achieve"
 msgstr "Achieve"
+
+# Payments (site + payments app)
+msgid "Course fee"
+msgstr "Course fee"
+
+msgid "Pay securely"
+msgstr "Pay securely"
+
+msgid "Pay"
+msgstr "Pay"
+
+msgid "You will be redirected to the bank's secure payment page. Card details are not stored on our site."
+msgstr "You will be redirected to the bank's secure payment page. Card details are not stored on our site."
+
+msgid "Secure payment"
+msgstr "Secure payment"
+
+msgid "We will send enrollment confirmation to this address."
+msgstr "We will send enrollment confirmation to this address."
+
+msgid "Continue to bank payment"
+msgstr "Continue to bank payment"
+
+msgid "Successful"
+msgstr "Successful"
+
+msgid "Payment completed"
+msgstr "Payment completed"
+
+msgid "Payment completed. You are enrolled in «%(course)s»."
+msgstr "Payment completed. You are enrolled in «%(course)s»."
+
+msgid "Confirmation will be sent to %(email)s."
+msgstr "Confirmation will be sent to %(email)s."
+
+msgid "Your payment was successful. We will contact you if any further steps are required."
+msgstr "Your payment was successful. We will contact you if any further steps are required."
+
+msgid "Unsuccessful"
+msgstr "Unsuccessful"
+
+msgid "Payment not completed"
+msgstr "Payment not completed"
+
+msgid "The payment was not completed or was cancelled. You can try again from the course page."
+msgstr "The payment was not completed or was cancelled. You can try again from the course page."
+
+msgid "Error"
+msgstr "Error"
+
+msgid "Payment could not be started"
+msgstr "Payment could not be started"
+
+msgid "Transaction"
+msgstr "Transaction"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Payment error"
+msgstr "Payment error"
+
+msgid "Payment result"
+msgstr "Payment result"
+
+msgid "Payment — %(course)s"
+msgstr "Payment — %(course)s"
+
+msgid "Please enter a valid email address."
+msgstr "Please enter a valid email address."
+
+msgid "Order could not be created."
+msgstr "Order could not be created."
+
+msgid "This payment link is outdated. Please use the Pay button on the course page."
+msgstr "This payment link is outdated. Please use the Pay button on the course page."
+
+msgid "Order not found."
+msgstr "Order not found."
+
+msgid "Order could not be verified."
+msgstr "Order could not be verified."
+
+msgid "Payment cancelled"
+msgstr "Payment cancelled"
+
+msgid "Payment declined"
+msgstr "Payment declined"
+
+msgid "Course not found or is not active."
+msgstr "Course not found or is not active."
+
+msgid "Payment is not available for this course."
+msgstr "Payment is not available for this course."
+
+msgid "Payment system is not configured (UNITED_PAYMENT_*)."
+msgstr "Payment system is not configured (UNITED_PAYMENT_*)."
+
+msgid "Could not connect to the payment system."
+msgstr "Could not connect to the payment system."
+
+msgid "Unexpected response from payment API (HTTP %(code)s)."
+msgstr "Unexpected response from payment API (HTTP %(code)s)."
+
+msgid "JWT token was not received."
+msgstr "JWT token was not received."
+
+msgid "Payment transaction could not be created."
+msgstr "Payment transaction could not be created."
+
+msgid "Payment link or transaction ID was not received."
+msgstr "Payment link or transaction ID was not received."
+
+msgid "Transaction status could not be verified."
+msgstr "Transaction status could not be verified."
+
+msgid "Generic"
+msgstr "Generic"
+
+msgid "Pending"
+msgstr "Pending"
+
+msgid "Cancelled"
+msgstr "Cancelled"
+
+msgid "Declined"
+msgstr "Declined"
+
+msgid "Failed"
+msgstr "Failed"
+
+msgid "Active"
+msgstr "Active"
+
+msgid "Course enrollment"
+msgstr "Course enrollment"
+
+msgid "Course enrollments"
+msgstr "Course enrollments"
+
+msgid "Phone number"
+msgstr "Phone number"
+
+msgid "Phone number (optional)"
+msgstr "Phone number (optional)"
+
+msgid "Full name is required."
+msgstr "Full name is required."
+
+msgid "Please enter a valid phone number."
+msgstr "Please enter a valid phone number."
+
+msgid "Our team will contact you shortly to confirm the next steps."
+msgstr "Our team will contact you shortly to confirm the next steps."
+
+msgid "Redirecting to secure payment…"
+msgstr "Redirecting to secure payment…"
+
+msgid "Choose your package"
+msgstr "Training packages and prices"
+
+msgid "Most popular"
+msgstr "Most popular"
+
+msgid "Payment details"
+msgstr "Payment details"
+
+msgid "Confirm and pay"
+msgstr "Confirm and pay"
+
+msgid "Order summary"
+msgstr "Order summary"
+
+msgid "First name"
+msgstr "First name"
+
+msgid "Last name"
+msgstr "Last name"
+
+msgid "First name is required."
+msgstr "First name is required."
+
+msgid "Last name is required."
+msgstr "Last name is required."
+
+msgid "Phone number is required."
+msgstr "Phone number is required."
+
+msgid "Email address is required."
+msgstr "Email address is required."
+
+msgid "Provide an email address or phone number (at least one)."
+msgstr "Provide an email address or phone number (at least one)."
+
+msgid "Please provide an email address or phone number."
+msgstr "Please provide an email address or phone number."
+
+msgid "Secure enrollment via bank payment"
+msgstr "Secure enrollment via bank payment"
+
+msgid "Secure payment via United Payment"
+msgstr "Secure payment via United Payment"
+
+msgid "We will use your email to contact you about your enrollment."
+msgstr "We will use your email to contact you about your enrollment."
+
+msgid "Make payment"
+msgstr "Make payment"
+
+# Course payment / price packages
+
+msgid "Price packages"
+msgstr "Price packages"
+
+msgid "Please select a price package."
+msgstr "Please select a price package."
+
+msgid "Number of lessons"
+msgstr "Number of lessons"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Invalid price package."
+msgstr "Invalid price package."
+
+msgid "Payment packages are not configured for this course."
+msgstr "Payment packages are not configured for this course."
+
+msgid "Selected price package is not available."
+msgstr "Selected price package is not available."
+
+msgid "Price package"
+msgstr "Price package"
+
+msgid "Course price package"
+msgstr "Course price package"
+
+msgid "Course price packages"
+msgstr "Course price packages"
+
+msgid "Price (AZN)"
+msgstr "Price (AZN)"
+
+msgid "e.g. 3 months"
+msgstr "e.g. 3 months"
+
+msgid "Minutes per lesson"
+msgstr "Minutes per lesson"
+
+msgid "%(counter)s minute"
+msgid_plural "%(counter)s minutes"
+msgstr[0] "%(counter)s minute"
+msgstr[1] "%(counter)s minutes"
+
+msgid "Duration of a single lesson in minutes."
+msgstr "Duration of a single lesson in minutes."
+
+msgid "Name (AZ)"
+msgstr "Name (AZ)"
+
+msgid "Name (EN)"
+msgstr "Name (EN)"
+
+msgid "Name (RU)"
+msgstr "Name (RU)"
+
+msgid "Created at"
+msgstr "Created at"
+
+msgid "Order"
+msgstr "Order"

@@ -149,7 +149,9 @@ def site_footer_context(request):
 
 def turnstile_context(request):
     enabled = is_turnstile_configured()
+    payment_enabled = enabled and getattr(settings, 'PAYMENT_TURNSTILE_ENABLED', False)
     return {
         'turnstile_enabled': enabled,
         'turnstile_site_key': settings.TURNSTILE_SITE_KEY if enabled else '',
+        'payment_turnstile_enabled': payment_enabled,
     }

@@ -3,6 +3,16 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path(
+        'course/<slug:slug>/',
+        views.payment_start_course,
+        name='payment_start_course',
+    ),
+    path(
+        'checkout/course/<slug:slug>/',
+        views.payment_start_course,
+        name='payment_checkout_course',
+    ),
     path('start/<int:amount>/', views.payment_start, name='payment_start'),
     path(
         'start/<int:amount>/<str:description>/',

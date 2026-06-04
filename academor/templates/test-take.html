@@ -61,7 +61,8 @@
                             </div>
                         </div>
 
-                        <a href="{% url 'projects:tests-page' %}" class="btn btn-primary px-4 py-2 me-2 rounded-pill">{% trans "Other tests" %}</a>
+                        {% url 'projects:tests-page' as tests_list_url %}
+                        {% include "includes/detail_back_button.html" with fallback_url=tests_list_url extra_classes="me-2" %}
                         <a href="{% url 'projects:test-take' test.id %}" class="btn btn-outline-primary px-4 py-2 rounded-pill">{% trans "Retake this test" %}</a>
                     </div>
                 </div>

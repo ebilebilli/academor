@@ -841,3 +841,275 @@ msgstr "Говори"
 
 msgid "Achieve"
 msgstr "Достигай"
+
+# Payments (site + payments app)
+msgid "Course fee"
+msgstr "Стоимость курса"
+
+msgid "Pay securely"
+msgstr "Безопасная оплата"
+
+msgid "Pay"
+msgstr "Оплатить"
+
+msgid "You will be redirected to the bank's secure payment page. Card details are not stored on our site."
+msgstr "Вы будете перенаправлены на защищённую страницу оплаты банка. Данные карты на нашем сайте не сохраняются."
+
+msgid "Secure payment"
+msgstr "Безопасная оплата"
+
+msgid "We will send enrollment confirmation to this address."
+msgstr "Подтверждение записи будет отправлено на этот адрес."
+
+msgid "Continue to bank payment"
+msgstr "Перейти к оплате в банке"
+
+msgid "Successful"
+msgstr "Успешно"
+
+msgid "Payment completed"
+msgstr "Оплата завершена"
+
+msgid "Payment completed. You are enrolled in «%(course)s»."
+msgstr "Оплата завершена. Вы записаны на курс «%(course)s»."
+
+msgid "Confirmation will be sent to %(email)s."
+msgstr "Подтверждение будет отправлено на %(email)s."
+
+msgid "Your payment was successful. We will contact you if any further steps are required."
+msgstr "Оплата прошла успешно. Если потребуются дополнительные шаги, мы свяжемся с вами."
+
+msgid "Unsuccessful"
+msgstr "Неуспешно"
+
+msgid "Payment not completed"
+msgstr "Оплата не завершена"
+
+msgid "The payment was not completed or was cancelled. You can try again from the course page."
+msgstr "Оплата не была завершена или была отменена. Попробуйте снова со страницы курса."
+
+msgid "Error"
+msgstr "Ошибка"
+
+msgid "Payment could not be started"
+msgstr "Не удалось начать оплату"
+
+msgid "Transaction"
+msgstr "Транзакция"
+
+msgid "Status"
+msgstr "Статус"
+
+msgid "Payment error"
+msgstr "Ошибка оплаты"
+
+msgid "Payment result"
+msgstr "Результат оплаты"
+
+msgid "Payment — %(course)s"
+msgstr "Оплата — %(course)s"
+
+msgid "Please enter a valid email address."
+msgstr "Пожалуйста, введите корректный адрес эл. почты."
+
+msgid "Order could not be created."
+msgstr "Не удалось создать заказ."
+
+msgid "This payment link is outdated. Please use the Pay button on the course page."
+msgstr "Ссылка на оплату устарела. Используйте кнопку «Оплатить» на странице курса."
+
+msgid "Order not found."
+msgstr "Заказ не найден."
+
+msgid "Order could not be verified."
+msgstr "Не удалось проверить заказ."
+
+msgid "Payment cancelled"
+msgstr "Оплата отменена"
+
+msgid "Payment declined"
+msgstr "Оплата отклонена"
+
+msgid "Course not found or is not active."
+msgstr "Курс не найден или неактивен."
+
+msgid "Payment is not available for this course."
+msgstr "Оплата для этого курса недоступна."
+
+msgid "Payment system is not configured (UNITED_PAYMENT_*)."
+msgstr "Платёжная система не настроена (UNITED_PAYMENT_*)."
+
+msgid "Could not connect to the payment system."
+msgstr "Не удалось подключиться к платёжной системе."
+
+msgid "Unexpected response from payment API (HTTP %(code)s)."
+msgstr "Неожиданный ответ платёжного API (HTTP %(code)s)."
+
+msgid "JWT token was not received."
+msgstr "JWT-токен не получен."
+
+msgid "Payment transaction could not be created."
+msgstr "Не удалось создать платёжную транзакцию."
+
+msgid "Payment link or transaction ID was not received."
+msgstr "Не получена ссылка на оплату или ID транзакции."
+
+msgid "Transaction status could not be verified."
+msgstr "Не удалось проверить статус транзакции."
+
+msgid "Generic"
+msgstr "Общий"
+
+msgid "Pending"
+msgstr "В ожидании"
+
+msgid "Cancelled"
+msgstr "Отменено"
+
+msgid "Declined"
+msgstr "Отклонено"
+
+msgid "Failed"
+msgstr "Неудача"
+
+msgid "Active"
+msgstr "Активен"
+
+msgid "Course enrollment"
+msgstr "Запись на курс"
+
+msgid "Course enrollments"
+msgstr "Записи на курсы"
+
+msgid "Phone number"
+msgstr "Номер телефона"
+
+msgid "Phone number (optional)"
+msgstr "Номер телефона (необязательно)"
+
+msgid "Full name is required."
+msgstr "Укажите имя и фамилию."
+
+msgid "Please enter a valid phone number."
+msgstr "Введите корректный номер телефона."
+
+msgid "Our team will contact you shortly to confirm the next steps."
+msgstr "Наша команда скоро свяжется с вами для подтверждения следующих шагов."
+
+msgid "Redirecting to secure payment…"
+msgstr "Перенаправление на безопасную оплату…"
+
+msgid "Choose your package"
+msgstr "Учебные пакеты и цены"
+
+msgid "Most popular"
+msgstr "Самый популярный"
+
+msgid "Payment details"
+msgstr "Данные для оплаты"
+
+msgid "Confirm and pay"
+msgstr "Подтвердить и оплатить"
+
+msgid "Order summary"
+msgstr "Сводка заказа"
+
+msgid "First name"
+msgstr "Имя"
+
+msgid "Last name"
+msgstr "Фамилия"
+
+msgid "First name is required."
+msgstr "Имя обязательно."
+
+msgid "Last name is required."
+msgstr "Фамилия обязательна."
+
+msgid "Phone number is required."
+msgstr "Номер телефона обязателен."
+
+msgid "Email address is required."
+msgstr "Укажите адрес электронной почты."
+
+msgid "Provide an email address or phone number (at least one)."
+msgstr "Укажите e-mail или номер телефона (хотя бы одно)."
+
+msgid "Please provide an email address or phone number."
+msgstr "Укажите e-mail или номер телефона."
+
+msgid "Secure enrollment via bank payment"
+msgstr "Безопасная запись через банковский платёж"
+
+msgid "Secure payment via United Payment"
+msgstr "Безопасная оплата через United Payment"
+
+msgid "We will use your email to contact you about your enrollment."
+msgstr "Мы используем ваш e-mail для связи по поводу записи на курс."
+
+msgid "Make payment"
+msgstr "Оплатить"
+
+# Course payment / price packages
+
+msgid "Price packages"
+msgstr "Ценовые пакеты"
+
+msgid "Please select a price package."
+msgstr "Пожалуйста, выберите ценовой пакет."
+
+msgid "Number of lessons"
+msgstr "Количество уроков"
+
+msgid "Cancel"
+msgstr "Отмена"
+
+msgid "Invalid price package."
+msgstr "Некорректный ценовой пакет."
+
+msgid "Payment packages are not configured for this course."
+msgstr "Для этого курса не настроены платёжные пакеты."
+
+msgid "Selected price package is not available."
+msgstr "Выбранный ценовой пакет недоступен."
+
+msgid "Price package"
+msgstr "Ценовой пакет"
+
+msgid "Course price package"
+msgstr "Ценовой пакет курса"
+
+msgid "Course price packages"
+msgstr "Ценовые пакеты курса"
+
+msgid "Price (AZN)"
+msgstr "Цена (AZN)"
+
+msgid "e.g. 3 months"
+msgstr "напр. 3 месяца"
+
+msgid "Minutes per lesson"
+msgstr "Минут на урок"
+
+msgid "%(counter)s minute"
+msgid_plural "%(counter)s minutes"
+msgstr[0] "%(counter)s минута"
+msgstr[1] "%(counter)s минут"
+
+msgid "Duration of a single lesson in minutes."
+msgstr "Длительность одного урока в минутах."
+
+msgid "Name (AZ)"
+msgstr "Название (AZ)"
+
+msgid "Name (EN)"
+msgstr "Название (EN)"
+
+msgid "Name (RU)"
+msgstr "Название (RU)"
+
+msgid "Created at"
+msgstr "Дата создания"
+
+msgid "Order"
+msgstr "Порядок"

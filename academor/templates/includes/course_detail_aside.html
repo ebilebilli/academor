@@ -6,6 +6,8 @@
         role="region"
         aria-label="{% trans 'Course images' %}"
         tabindex="0"
+        data-gallery-title="{{ course.name }}"
+        data-image-label="{% trans 'Image' %}"
     >
         {{ course.images|json_script:"course-detail-gallery-data" }}
         <div class="course-detail-gallery__viewport position-relative">
@@ -58,9 +60,6 @@
     </div>
 
     <div class="course-detail-aside__body d-flex flex-column gap-2">
-        {% if course.price %}
-        {% include "includes/course_detail_payment_box.html" %}
-        {% endif %}
         <a href="{% url 'projects:contact-page' %}" class="btn btn-outline-accent rounded-pill px-4 fw-semibold w-100">
             {% trans "Contact us" %}
             <i class="fas fa-arrow-right ms-2 small" aria-hidden="true"></i>

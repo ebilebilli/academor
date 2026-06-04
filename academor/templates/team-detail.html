@@ -74,9 +74,8 @@
                     </div>
 
                     <div class="d-flex flex-column flex-sm-row flex-wrap gap-3 mt-4 pt-2">
-                        <a href="{% url 'projects:team-page' %}" class="btn btn-outline-header px-4 py-2 rounded-pill">
-                            <i class="fa fa-arrow-left me-2" aria-hidden="true"></i>{% trans "Back" %}
-                        </a>
+                        {% url 'projects:team-page' as team_list_url %}
+                        {% include "includes/detail_back_button.html" with fallback_url=team_list_url %}
                         <a href="{% url 'projects:contact-page' %}" class="btn btn-primary px-4 py-2 rounded-pill">
                             {% trans "Contact us" %}
                         </a>

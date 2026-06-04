@@ -1,4 +1,11 @@
-from .project_models import ServiceCategory, ServiceHighlight, AbroadModel, University, StudyAbroadSection
+from .project_models import (
+    ServiceCategory,
+    CoursePricePackage,
+    ServiceHighlight,
+    AbroadModel,
+    University,
+    StudyAbroadSection,
+)
 from .media_models import Media
 from .partner_models import Instructor
 from .about_models import About, AboutWhyItem

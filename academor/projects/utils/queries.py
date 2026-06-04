@@ -108,6 +108,7 @@ def get_project_categories(lang='az', show_on_main_page=None):
     """Aktiv service kateqoriyaları (courses)."""
     qs = ServiceCategory.objects.filter(is_active=True).order_by('order', 'id').prefetch_related(
         _category_media_prefetch,
+        'price_packages',
     )
     if show_on_main_page is not None:
         qs = qs.filter(show_on_main_page=show_on_main_page)
@@ -121,7 +122,11 @@ def get_active_project_category_by_slug(slug):
         return None
     return (
         ServiceCategory.objects.filter(slug=slug, is_active=True)
-        .prefetch_related(_category_media_prefetch, 'instructors')
+        .prefetch_related(
+            _category_media_prefetch,
+            'instructors',
+            'price_packages',
+        )
         .first()
     )
 
@@ -712,6 +717,40 @@ def get_serialized_partners(lang='az', is_active=True):
     return [serialize_partner(p, lang) for p in get_partners(lang=lang, is_active=is_active)]
 
 
+def _price_package_display_name(package, lang='az'):
+    name_field = get_localized_field_name('name', lang)
+    for candidate in (
+        getattr(package, name_field, None),
+        package.name_az,
+        package.name_en,
+        package.name_ru,
+    ):
+        if candidate is not None and str(candidate).strip():
+            return str(candidate).strip()
+    return ''
+
+
+def price_package_display_name(package, lang='az'):
+    return _price_package_display_name(package, lang)
+
+
+def serialize_price_package(package, lang='az'):
+    price = package.price
+    if price == price.to_integral_value():
+        price_display = str(int(price))
+    else:
+        price_display = str(price).rstrip('0').rstrip('.')
+    return {
+        'id': package.id,
+        'name': _price_package_display_name(package, lang),
+        'duration': package.duration or '',
+        'lesson_count': package.lesson_count,
+        'lesson_minutes': package.lesson_minutes,
+        'price': price,
+        'price_display': price_display,
+    }
+
+
 def _service_category_display_name(category, lang='az'):
     """Localized name with fallbacks — DB allows NULL per language field."""
     name_field = get_localized_field_name('name', lang)
@@ -742,13 +781,24 @@ def serialize_project_category(category, lang='az'):
     if raw_desc is None:
         raw_desc = category.description_az or ''
 
+    active_packages = [
+        p for p in category.price_packages.all()
+        if p.is_active and p.price and p.price > 0
+    ]
+    min_price = None
+    if active_packages:
+        min_price = min(p.price for p in active_packages)
+    elif category.price and category.price > 0:
+        min_price = category.price
+
     return {
         'id': category.id,
         'slug': category.slug,
         'name': _service_category_display_name(category, lang),
         'image': first_image,
         'description_html': raw_desc or '',
-        'price': category.price,
+        'price': int(min_price) if min_price is not None and min_price == int(min_price) else min_price,
+        'has_payment': bool(active_packages),
     }
 
 
@@ -782,7 +832,21 @@ def serialize_project_category_detail(category, lang='az'):
     data['has_certificate'] = category.has_certificate
     data['is_online'] = category.is_online
     data['is_offline'] = category.is_offline
-    data['price'] = category.price
+    packages = [
+        serialize_price_package(p, lang)
+        for p in category.price_packages.filter(is_active=True, price__gt=0).order_by('order', 'id')
+    ]
+    data['price_packages'] = packages
+    data['has_payment'] = bool(packages)
+    if packages:
+        min_pkg_price = min(p['price'] for p in packages)
+        data['price'] = (
+            int(min_pkg_price)
+            if min_pkg_price == int(min_pkg_price)
+            else min_pkg_price
+        )
+    else:
+        data['price'] = category.price
     data['instructors'] = [
         serialize_team_member(member, lang)
         for member in category.instructors.all().order_by('order', 'id')

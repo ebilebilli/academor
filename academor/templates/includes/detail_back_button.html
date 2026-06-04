@@ -1,0 +1,8 @@
+{% load i18n %}
+<a
+    href="{{ fallback_url }}"
+    class="btn btn-outline-accent px-4 py-2 rounded-pill{% if extra_classes %} {{ extra_classes }}{% endif %}"
+    data-history-back
+>
+    <i class="fa fa-arrow-left me-2" aria-hidden="true"></i>{% trans "Back" %}
+</a>

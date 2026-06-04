@@ -100,14 +100,35 @@ class CourseDetailPageView(View):
                 'course': course['name'],
             }
         all_categories = [serialize_project_category(c, lang) for c in categories]
+        payment_form = None
+        if course.get('has_payment'):
+            from payments.forms import CoursePaymentForm
+
+            session_data = request.session.pop('course_payment_form_data', None)
+            if session_data is not None:
+                data = dict(session_data)
+                if not (data.get('buyer_name') or '').strip():
+                    first = (data.get('buyer_first_name') or '').strip()
+                    last = (data.get('buyer_last_name') or '').strip()
+                    data['buyer_name'] = f'{first} {last}'.strip()
+                payment_form = CoursePaymentForm(data, request=request)
+                payment_form.is_valid()
+            else:
+                payment_form = CoursePaymentForm(request=request)
+
+        pkg_count = len(course.get('price_packages') or [])
+        default_package_index = 1 if pkg_count > 1 else 0
+
         context = {
             'course': course,
+            'default_package_index': default_package_index,
             'categories': all_categories,
             'other_categories': [c for c in all_categories if c['slug'] != course['slug']],
             'language': lang,
             'background_image': get_background_image('courses'),
             'page_title': f'{course["name"]} | Academor',
             'page_description': excerpt[:320],
+            'payment_form': payment_form,
         }
         return render(request, self.template_name, context)
 

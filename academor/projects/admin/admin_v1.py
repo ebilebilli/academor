@@ -279,6 +279,55 @@ class MediaInlineCategory(MediaInlineBase):
         return super().get_formset(request, obj, **kwargs)
 
 
+class CoursePricePackageInline(admin.TabularInline):
+    model = CoursePricePackage
+    extra = 0
+    classes = ('collapse',)
+    fields = (
+        'name_az',
+        'name_en',
+        'name_ru',
+        'duration',
+        'lesson_count',
+        'lesson_minutes',
+        'price',
+        'order',
+        'is_active',
+    )
+    ordering = ('order', 'id')
+
+
+@admin.register(CoursePricePackage)
+class CoursePricePackageAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'course',
+        'name_az',
+        'duration',
+        'lesson_count',
+        'lesson_minutes',
+        'price',
+        'order',
+        'is_active',
+    )
+    list_filter = ('is_active', 'course')
+    search_fields = ('name_az', 'name_en', 'name_ru', 'course__name_az', 'course__slug')
+    list_editable = ('order', 'is_active')
+    ordering = ('course', 'order', 'id')
+    autocomplete_fields = ('course',)
+    fieldsets = (
+        (None, {
+            'fields': ('course', 'order', 'is_active'),
+        }),
+        ('Names', {
+            'fields': ('name_az', 'name_en', 'name_ru'),
+        }),
+        ('Package details', {
+            'fields': ('duration', 'lesson_count', 'lesson_minutes', 'price'),
+        }),
+    )
+
+
 class ServiceCategoryAdminForm(forms.ModelForm):
     class Meta:
         model = ServiceCategory
@@ -316,9 +365,9 @@ class ServiceCategoryAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     filter_horizontal = ('instructors',)
     ordering = ('order', 'id')
     list_per_page = 25
-    exclude = ('slug',)
+    exclude = ('slug', 'price')
     readonly_fields = ('created_at',)
-    inlines = [MediaInlineCategory]
+    inlines = [CoursePricePackageInline, MediaInlineCategory]
 
     fieldsets = (
         ('Azerbaijani', {
@@ -331,7 +380,11 @@ class ServiceCategoryAdmin(AdminImageCompressMixin, admin.ModelAdmin):
             'fields': ('name_ru', 'description_ru', 'duration_months_ru', 'lesson_count_ru')
         }),
         ('Course details', {
-            'fields': ('instructors', 'has_certificate', 'is_online', 'is_offline', 'price')
+            'fields': ('instructors', 'has_certificate', 'is_online', 'is_offline'),
+            'description': (
+                'Add one or more price packages below. '
+                'Legacy “Price (AZN)” on the model is deprecated; use packages instead.'
+            ),
         }),
         ('Status', {
             'fields': ('order', 'is_active', 'show_on_main_page', 'created_at')
@@ -1249,6 +1302,7 @@ def _sorted_get_app_list(request, app_label=None):
 
         # Service categories
         "ServiceCategory": 200,
+        "CoursePricePackage": 201,
         "AbroadModel": 220,
         "StudyAbroadSection": 222,
         "University": 225,

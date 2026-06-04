@@ -129,6 +129,66 @@ class ServiceCategory(SluggedModel):
     def __str__(self):
         return self.name_az or 'Service'
 
+    @property
+    def has_active_price_packages(self):
+        return self.price_packages.filter(is_active=True, price__gt=0).exists()
+
+
+class CoursePricePackage(models.Model):
+    """Payable pricing option for a course (one course may have several packages)."""
+
+    course = models.ForeignKey(
+        ServiceCategory,
+        on_delete=models.CASCADE,
+        related_name='price_packages',
+        verbose_name=_('Course'),
+    )
+    name_az = models.CharField(max_length=255, verbose_name=_('Name (AZ)'))
+    name_en = models.CharField(
+        max_length=255,
+        blank=True,
+        verbose_name=_('Name (EN)'),
+    )
+    name_ru = models.CharField(
+        max_length=255,
+        blank=True,
+        verbose_name=_('Name (RU)'),
+    )
+    duration = models.CharField(
+        max_length=100,
+        blank=True,
+        verbose_name=_('Duration'),
+        help_text=_('e.g. 3 months'),
+    )
+    lesson_count = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        verbose_name=_('Number of lessons'),
+    )
+    lesson_minutes = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        verbose_name=_('Minutes per lesson'),
+        help_text=_('Duration of a single lesson in minutes.'),
+    )
+    price = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        verbose_name=_('Price (AZN)'),
+    )
+    order = models.PositiveIntegerField(default=0, verbose_name=_('Order'))
+    is_active = models.BooleanField(default=True, verbose_name=_('Active'))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created at'))
+
+    class Meta:
+        verbose_name = _('Course price package')
+        verbose_name_plural = _('Course price packages')
+        ordering = ('order', 'id')
+
+    def __str__(self):
+        label = self.name_az or self.name_en or self.name_ru or f'Package #{self.pk}'
+        return f'{label} — {self.price} AZN'
+
 
 class ServiceHighlight(models.Model):
     title_az = models.CharField(

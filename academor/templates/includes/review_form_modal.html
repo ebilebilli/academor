@@ -1,5 +1,5 @@
 {% load i18n %}
-<div class="modal fade review-form-modal" id="reviewFormModal" tabindex="-1" aria-labelledby="reviewFormModalLabel" aria-hidden="true">
+<div class="modal fade review-form-modal" id="reviewFormModal" tabindex="-1" aria-labelledby="reviewFormModalLabel" aria-hidden="true"{% if turnstile_enabled %} data-turnstile-site-key="{{ turnstile_site_key }}"{% endif %}>
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content border-0 rounded-4 overflow-hidden shadow-lg">
             <div class="modal-header border-0 review-form-modal__header px-4 pt-4 pb-0">

@@ -855,3 +855,275 @@ msgstr "Danış"
 
 msgid "Achieve"
 msgstr "Nail ol"
+
+# Payments (site + payments app)
+msgid "Course fee"
+msgstr "Kurs haqqı"
+
+msgid "Pay securely"
+msgstr "Təhlükəsiz ödə"
+
+msgid "Pay"
+msgstr "Ödə"
+
+msgid "You will be redirected to the bank's secure payment page. Card details are not stored on our site."
+msgstr "Bankın təhlükəsiz ödəniş səhifəsinə yönləndiriləcəksiniz. Kart məlumatları saytımızda saxlanılmır."
+
+msgid "Secure payment"
+msgstr "Təhlükəsiz ödəniş"
+
+msgid "We will send enrollment confirmation to this address."
+msgstr "Qeydiyyat təsdiqi bu ünvana göndəriləcək."
+
+msgid "We will use your email to contact you about your enrollment."
+msgstr "Qeydiyyat və əlaqə üçün e-poçt ünvanınızdan istifadə edəcəyik."
+
+msgid "Make payment"
+msgstr "Ödəniş et"
+
+msgid "Continue to bank payment"
+msgstr "Bank ödənişinə keç"
+
+msgid "Successful"
+msgstr "Uğurlu"
+
+msgid "Payment completed"
+msgstr "Ödəniş tamamlandı"
+
+msgid "Payment completed. You are enrolled in «%(course)s»."
+msgstr "Ödəniş tamamlandı. «%(course)s» kursuna qeydiyyatınız yaradıldı."
+
+msgid "Confirmation will be sent to %(email)s."
+msgstr "Təsdiq %(email)s ünvanına göndəriləcək."
+
+msgid "Your payment was successful. We will contact you if any further steps are required."
+msgstr "Ödənişiniz uğurla tamamlandı. Əlavə addım lazım olsa, sizinlə əlaqə saxlayacağıq."
+
+msgid "Unsuccessful"
+msgstr "Uğursuz"
+
+msgid "Payment not completed"
+msgstr "Ödəniş tamamlanmadı"
+
+msgid "The payment was not completed or was cancelled. You can try again from the course page."
+msgstr "Ödəniş tamamlanmadı və ya ləğv edildi. Kurs səhifəsindən yenidən cəhd edə bilərsiniz."
+
+msgid "Error"
+msgstr "Xəta"
+
+msgid "Payment could not be started"
+msgstr "Ödəniş başladıla bilmədi"
+
+msgid "Transaction"
+msgstr "Əməliyyat"
+
+msgid "Status"
+msgstr "Vəziyyət"
+
+msgid "Payment error"
+msgstr "Ödəniş xətası"
+
+msgid "Payment result"
+msgstr "Ödəniş nəticəsi"
+
+msgid "Payment — %(course)s"
+msgstr "Ödəniş — %(course)s"
+
+msgid "Please enter a valid email address."
+msgstr "Zəhmət olmasa düzgün e-poçt ünvanı daxil edin."
+
+msgid "Order could not be created."
+msgstr "Sifariş yaradıla bilmədi."
+
+msgid "This payment link is outdated. Please use the Pay button on the course page."
+msgstr "Ödəniş linki köhnəlib. Kurs səhifəsindən «Ödə» düyməsini istifadə edin."
+
+msgid "Order not found."
+msgstr "Sifariş tapılmadı."
+
+msgid "Order could not be verified."
+msgstr "Sifariş yoxlanıla bilmədi."
+
+msgid "Payment cancelled"
+msgstr "Ödəniş ləğv edildi"
+
+msgid "Payment declined"
+msgstr "Ödəniş rədd edildi"
+
+msgid "Course not found or is not active."
+msgstr "Kurs tapılmadı və ya aktiv deyil."
+
+msgid "Payment is not available for this course."
+msgstr "Bu kurs üçün ödəniş mövcud deyil."
+
+msgid "Payment system is not configured (UNITED_PAYMENT_*)."
+msgstr "Ödəniş sistemi konfiqurasiya edilməyib (UNITED_PAYMENT_*)."
+
+msgid "Could not connect to the payment system."
+msgstr "Ödəniş sisteminə qoşulmaq mümkün olmadı."
+
+msgid "Unexpected response from payment API (HTTP %(code)s)."
+msgstr "Ödəniş API-dən gözlənilməyən cavab (HTTP %(code)s)."
+
+msgid "JWT token was not received."
+msgstr "JWT token alınmadı."
+
+msgid "Payment transaction could not be created."
+msgstr "Ödəniş əməliyyatı yaradıla bilmədi."
+
+msgid "Payment link or transaction ID was not received."
+msgstr "Ödəniş linki və ya əməliyyat ID alınmadı."
+
+msgid "Transaction status could not be verified."
+msgstr "Əməliyyat statusu yoxlanıla bilmədi."
+
+msgid "Generic"
+msgstr "Ümumi"
+
+msgid "Pending"
+msgstr "Gözləyir"
+
+msgid "Cancelled"
+msgstr "Ləğv"
+
+msgid "Declined"
+msgstr "Rədd"
+
+msgid "Failed"
+msgstr "Uğursuz"
+
+msgid "Active"
+msgstr "Aktiv"
+
+msgid "Course enrollment"
+msgstr "Kurs qeydiyyatı"
+
+msgid "Course enrollments"
+msgstr "Kurs qeydiyyatları"
+
+msgid "Phone number"
+msgstr "Telefon nömrəsi"
+
+msgid "Phone number (optional)"
+msgstr "Telefon nömrəsi (istəyə görə)"
+
+msgid "Full name is required."
+msgstr "Ad və soyad mütləqdir."
+
+msgid "Please enter a valid phone number."
+msgstr "Zəhmət olmasa düzgün telefon nömrəsi daxil edin."
+
+msgid "Our team will contact you shortly to confirm the next steps."
+msgstr "Komandamız növbəti addımları təsdiqləmək üçün tezliklə sizinlə əlaqə saxlayacaq."
+
+msgid "Redirecting to secure payment…"
+msgstr "Təhlükəsiz ödənişə yönləndirilir…"
+
+msgid "Choose your package"
+msgstr "Tədris paketləri və qiymətlər"
+
+msgid "Most popular"
+msgstr "Ən populyar"
+
+msgid "Payment details"
+msgstr "Ödəniş məlumatları"
+
+msgid "Confirm and pay"
+msgstr "Təsdiqlə və ödə"
+
+msgid "Order summary"
+msgstr "Sifariş xülasəsi"
+
+msgid "First name"
+msgstr "Ad"
+
+msgid "Last name"
+msgstr "Soyad"
+
+msgid "First name is required."
+msgstr "Ad mütləqdir."
+
+msgid "Last name is required."
+msgstr "Soyad mütləqdir."
+
+msgid "Phone number is required."
+msgstr "Telefon nömrəsi mütləqdir."
+
+msgid "Email address is required."
+msgstr "E-poçt ünvanı mütləqdir."
+
+msgid "Provide an email address or phone number (at least one)."
+msgstr "E-poçt ünvanı və ya telefon nömrəsi daxil edin (ən azı biri)."
+
+msgid "Please provide an email address or phone number."
+msgstr "E-poçt ünvanı və ya telefon nömrəsi daxil edin."
+
+msgid "Secure enrollment via bank payment"
+msgstr "Bank ödənişi ilə təhlükəsiz qeydiyyat"
+
+msgid "Secure payment via United Payment"
+msgstr "United Payment vasitəsilə təhlükəsiz ödəniş"
+
+# Course payment / price packages
+
+msgid "Price packages"
+msgstr "Qiymət paketləri"
+
+msgid "Please select a price package."
+msgstr "Zəhmət olmasa qiymət paketi seçin."
+
+msgid "Number of lessons"
+msgstr "Dərs sayı"
+
+msgid "Cancel"
+msgstr "Ləğv et"
+
+msgid "Invalid price package."
+msgstr "Yanlış qiymət paketi."
+
+msgid "Payment packages are not configured for this course."
+msgstr "Bu kurs üçün ödəniş paketləri konfiqurasiya edilməyib."
+
+msgid "Selected price package is not available."
+msgstr "Seçilmiş qiymət paketi mövcud deyil."
+
+msgid "Price package"
+msgstr "Qiymət paketi"
+
+msgid "Course price package"
+msgstr "Kurs qiymət paketi"
+
+msgid "Course price packages"
+msgstr "Kurs qiymət paketləri"
+
+msgid "Price (AZN)"
+msgstr "Qiymət (AZN)"
+
+msgid "e.g. 3 months"
+msgstr "məs. 3 ay"
+
+msgid "Minutes per lesson"
+msgstr "Bir dərsin müddəti (dəqiqə)"
+
+msgid "%(counter)s minute"
+msgid_plural "%(counter)s minutes"
+msgstr[0] "%(counter)s dəqiqə"
+msgstr[1] "%(counter)s dəqiqə"
+
+msgid "Duration of a single lesson in minutes."
+msgstr "Hər bir dərsin davametməsi dəqiqə ilə."
+
+msgid "Name (AZ)"
+msgstr "Ad (AZ)"
+
+msgid "Name (EN)"
+msgstr "Ad (EN)"
+
+msgid "Name (RU)"
+msgstr "Ad (RU)"
+
+msgid "Created at"
+msgstr "Yaradılma tarixi"
+
+msgid "Order"
+msgstr "Sıra"

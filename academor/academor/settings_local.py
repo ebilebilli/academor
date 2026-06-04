@@ -21,6 +21,11 @@ DEBUG = True
 
 TURNSTILE_SITE_KEY = (os.getenv('TURNSTILE_SITE_KEY') or '').strip()
 TURNSTILE_SECRET_KEY = (os.getenv('TURNSTILE_SECRET_KEY') or '').strip()
+PAYMENT_TURNSTILE_ENABLED = os.getenv('PAYMENT_TURNSTILE_ENABLED', '').lower() in (
+    '1',
+    'true',
+    'yes',
+)
 
 ALLOWED_HOSTS = []
 

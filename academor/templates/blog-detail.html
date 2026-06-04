@@ -419,9 +419,8 @@
 
                         <!-- Action buttons -->
                         <div class="d-flex flex-wrap gap-3 mt-5 pt-2 wow fadeInUp" data-wow-delay="0.2s">
-                            <a href="{% url 'projects:blog-page' %}" class="btn btn-outline-header px-4 py-2 rounded-pill">
-                                <i class="fa fa-arrow-left me-2" aria-hidden="true"></i>{% trans "Back to Blog" %}
-                            </a>
+                            {% url 'projects:blog-page' as blog_list_url %}
+                            {% include "includes/detail_back_button.html" with fallback_url=blog_list_url %}
                             <a href="{% url 'projects:contact-page' %}" class="btn btn-primary px-4 py-2 rounded-pill">
                                 {% trans "Contact us" %}
                             </a>

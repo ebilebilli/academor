@@ -11,20 +11,46 @@ _ON_TOP_MAX = 2
 
 
 class BlogPost(SluggedModel):
-    name_az = models.CharField(max_length=200, verbose_name='Name (AZ)')
-    name_en = models.CharField(max_length=200, blank=True, verbose_name='Name (EN)')
-    name_ru = models.CharField(max_length=200, blank=True, verbose_name='Name (RU)')
-    description_az = RichTextField(blank=True, verbose_name='Description (AZ)')
-    description_en = RichTextField(blank=True, verbose_name='Description (EN)')
-    description_ru = RichTextField(blank=True, verbose_name='Description (RU)')
+    name_az = models.CharField(
+        max_length=200, 
+        verbose_name='Name (AZ)'
+    )
+    name_en = models.CharField(
+        max_length=200, 
+        blank=True, 
+        verbose_name='Name (EN)'
+    )
+    name_ru = models.CharField(
+        max_length=200, 
+        blank=True, 
+        verbose_name='Name (RU)'
+    )
+    description_az = RichTextField(
+        blank=True, 
+        verbose_name='Description (AZ)'
+    )
+    description_en = RichTextField(
+        blank=True, 
+        verbose_name='Description (EN)'
+    )
+    description_ru = RichTextField(
+        blank=True, 
+        verbose_name='Description (RU)'
+    )
     date = models.DateField(
         null=True,
         blank=True,
         verbose_name='Date',
         help_text='Display date (set manually).',
     )
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created at')
-    is_active = models.BooleanField(default=True, verbose_name='Active')
+    created_at = models.DateTimeField(
+        auto_now_add=True, 
+        verbose_name='Created at'
+    )
+    is_active = models.BooleanField(
+        default=True, 
+        verbose_name='Active'
+    )
     on_top = models.BooleanField(
         default=False,
         verbose_name='On top',

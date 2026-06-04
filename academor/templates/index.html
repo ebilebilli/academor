@@ -115,31 +115,7 @@
     {% include "includes/site_scripts.html" %}
     {% include "includes/turnstile_script.html" %}
     {% if open_review_modal %}
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var modalEl = document.getElementById('reviewFormModal');
-        if (modalEl && window.bootstrap && bootstrap.Modal) {
-            var modal = bootstrap.Modal.getOrCreateInstance(modalEl);
-            modal.show();
-            modalEl.addEventListener('shown.bs.modal', function onShown() {
-                modalEl.removeEventListener('shown.bs.modal', onShown);
-                if (window.turnstile && document.getElementById('review-turnstile')) {
-                    var el = document.getElementById('review-turnstile');
-                    if (el.getAttribute('data-turnstile-rendered') !== '1') {
-                        try {
-                            turnstile.render(el, {
-                                sitekey: "{{ turnstile_site_key|escapejs }}",
-                                theme: "light",
-                                size: "normal",
-                            });
-                            el.setAttribute('data-turnstile-rendered', '1');
-                        } catch (e) {}
-                    }
-                }
-            }, { once: true });
-        }
-    });
-    </script>
+    <script defer src="{% static 'assets/js/review-modal-open.js' %}"></script>
     {% endif %}
 </body>
 

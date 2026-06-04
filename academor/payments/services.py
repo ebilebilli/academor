@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 
 import requests
 from django.conf import settings
+from django.utils.translation import gettext as _
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +28,9 @@ def _parse_json(response):
         return response.json()
     except ValueError:
         return {
-            'error': f'Bank API-dən gözlənilməyən cavab (HTTP {response.status_code})',
+            'error': _('Unexpected response from payment API (HTTP %(code)s).') % {
+                'code': response.status_code,
+            },
         }
 
 
@@ -90,7 +93,7 @@ def _transaction_id_payload(transaction_id):
 
 def _interpret_status(data):
     """
-    United Payment cavabı (Postman):
+    United Payment status payload (simple and detailed):
     - isSuccess: true
     - orderStatus / status: APPROVED
     - errorCode / status: 00
@@ -138,7 +141,10 @@ def get_token():
     global _token, _token_expiry
 
     if not _configured():
-        return {'ok': False, 'error': 'Ödəniş sistemi konfiqurasiya edilməyib (UNITED_PAYMENT_*).'}
+        return {
+            'ok': False,
+            'error': _('Payment system is not configured (UNITED_PAYMENT_*).'),
+        }
 
     if _token and _token_expiry and datetime.now() < _token_expiry:
         return {'ok': True, 'token': _token}
@@ -158,7 +164,7 @@ def get_token():
         )
     except requests.RequestException:
         logger.exception('United Payment login failed')
-        return {'ok': False, 'error': 'Ödəniş sisteminə qoşulmaq mümkün olmadı.'}
+        return {'ok': False, 'error': _('Could not connect to the payment system.')}
 
     data = _parse_json(response)
     if not response.ok:
@@ -170,7 +176,7 @@ def get_token():
 
     token = _extract_token(data)
     if not token:
-        return {'ok': False, 'error': 'JWT token alınmadı', 'detail': data}
+        return {'ok': False, 'error': _('JWT token was not received.'), 'detail': data}
 
     _token = token
     _token_expiry = datetime.now() + timedelta(minutes=55)
@@ -214,7 +220,7 @@ def create_transaction(
         )
     except requests.RequestException:
         logger.exception('United Payment create_transaction failed')
-        return {'ok': False, 'error': 'Ödəniş əməliyyatı yaradıla bilmədi.'}
+        return {'ok': False, 'error': _('Payment transaction could not be created.')}
 
     data = _parse_json(response)
     if not response.ok:
@@ -229,7 +235,7 @@ def create_transaction(
     if not payment_url or not transaction_id:
         return {
             'ok': False,
-            'error': 'Ödəniş linki və ya əməliyyat ID alınmadı',
+            'error': _('Payment link or transaction ID was not received.'),
             'detail': data,
         }
 
@@ -261,7 +267,7 @@ def get_transaction_status(transaction_id):
         )
     except requests.RequestException:
         logger.exception('United Payment get_transaction_status failed')
-        return {'ok': False, 'error': 'Əməliyyat statusu yoxlanıla bilmədi.'}
+        return {'ok': False, 'error': _('Transaction status could not be verified.')}
 
     data = _parse_json(response)
     if not response.ok:
@@ -301,7 +307,7 @@ def get_transaction_status_by_client_order(client_order_id):
         )
     except requests.RequestException:
         logger.exception('United Payment status by client order failed')
-        return {'ok': False, 'error': 'Əməliyyat statusu yoxlanıla bilmədi.'}
+        return {'ok': False, 'error': _('Transaction status could not be verified.')}
 
     data = _parse_json(response)
     if not response.ok:

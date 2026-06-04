@@ -6,12 +6,14 @@ cache_version key. invalidate_model_cache() bumps that version, so every
 persisted model that feeds those queries must call _invalidate_on_commit here.
 
 Keep in sync with queries.py (add a receiver when a new cached query reads a model):
-  ServiceCategory, ServiceHighlight, AbroadModel, StudyAbroadSection, University,
+  ServiceCategory, CoursePricePackage (→ ServiceCategory: packages in course list/detail + payments catalog),
+  ServiceHighlight, AbroadModel, StudyAbroadSection, University,
   Team, Review, BlogPost, BlogPostImage, Instructor, About, AboutWhyItem, Contact, Media, Tagline, SiteFaqEntry,
   Test, Question, Option
 
   Course detail (`course-detail.html`): `get_active_project_category_by_slug` + trainers M2M — invalidate
-  `ServiceCategory` on category save/delete and on `instructors` M2M changes; `Team` save/delete bumps all caches
+  `ServiceCategory` on category save/delete and on `instructors` M2M changes; `CoursePricePackage` save/delete
+  (admin inline does not save the parent course); `Team` save/delete bumps all caches
   (including stale category detail with embedded trainer rows).
   (University: pre_save fills unique slug from name — university_slug_from_name.)
   Homepage blog hero + section preview rows use `_fresh_home_blog_context()` merged into `get_home_page_data()`
@@ -34,6 +36,7 @@ from django.utils.text import slugify
 from projects.utils.cache_utils import invalidate_model_cache
 from projects.models import (
     ServiceCategory,
+    CoursePricePackage,
     ServiceHighlight,
     AbroadModel,
     StudyAbroadSection,
@@ -132,6 +135,17 @@ def invalidate_course_category_instructors_m2m(sender, instance, **kwargs):
     """Admin filter_horizontal / M2M-only trainer links — no post_save on ServiceCategory."""
     if kwargs.get('action') not in ('post_add', 'post_remove', 'post_clear'):
         return
+    _invalidate_on_commit('ServiceCategory')
+
+
+@receiver(post_save, sender=CoursePricePackage)
+@receiver(post_delete, sender=CoursePricePackage)
+def invalidate_course_price_package_cache(sender, instance, **kwargs):
+    """
+    Price packages are prefetched on cached `get_project_categories` /
+    `get_active_project_category_by_slug` and serialized into course cards/detail.
+    Inline admin edits packages without touching ServiceCategory.post_save.
+    """
     _invalidate_on_commit('ServiceCategory')
 
 

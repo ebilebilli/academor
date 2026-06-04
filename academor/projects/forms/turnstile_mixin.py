@@ -11,9 +11,12 @@ class TurnstileFormMixin:
         self._request = request
         super().__init__(*args, **kwargs)
 
+    def turnstile_required(self):
+        return is_turnstile_configured()
+
     def clean(self):
         cleaned_data = super().clean()
-        if not is_turnstile_configured():
+        if not self.turnstile_required():
             return cleaned_data
 
         token = (self.data.get('cf-turnstile-response') or '').strip()

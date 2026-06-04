@@ -120,7 +120,8 @@
             </section>
 
             <p class="mb-0">
-                <a href="{% url 'projects:english-conversation-topics' %}" class="btn btn-primary rounded-pill px-4">{% trans "All topics" %}</a>
+                {% url 'projects:english-conversation-topics' as topics_list_url %}
+                {% include "includes/detail_back_button.html" with fallback_url=topics_list_url %}
             </p>
         </div>
     </article>

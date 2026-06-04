@@ -27,6 +27,12 @@ DEBUG = os.getenv('DEBUG', 'True').lower() in ('true', '1', 'yes')
 # Cloudflare Turnstile (contact + review forms). Leave empty to disable widget/validation.
 TURNSTILE_SITE_KEY = (os.getenv('TURNSTILE_SITE_KEY') or '').strip()
 TURNSTILE_SECRET_KEY = (os.getenv('TURNSTILE_SECRET_KEY') or '').strip()
+# Course payment form Turnstile (off by default; set PAYMENT_TURNSTILE_ENABLED=true to enable).
+PAYMENT_TURNSTILE_ENABLED = os.getenv('PAYMENT_TURNSTILE_ENABLED', '').lower() in (
+    '1',
+    'true',
+    'yes',
+)
 
 # Base hosts + optional extra from Docker / hosting (comma-separated). Empty env keeps defaults only.
 _ALLOWED_BASE = ["academor.az", "www.academor.az"]
