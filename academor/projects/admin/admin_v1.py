@@ -345,6 +345,7 @@ class ServiceCategoryAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     list_display = (
         'id',
         'category_thumb',
+        'card_icon_preview',
         'name_link',
         'instructors_display',
         'name_en',
@@ -386,6 +387,14 @@ class ServiceCategoryAdmin(AdminImageCompressMixin, admin.ModelAdmin):
                 'Legacy “Price (AZN)” on the model is deprecated; use packages instead.'
             ),
         }),
+        ('Service card (home & courses list)', {
+            'fields': ('card_icon',),
+            'description': (
+                'Icon shown on service cards. Presets match Academor programs from SEO: '
+                'General English, Speaking, IELTS, GMAT, GRE, YÖS, ALES, study abroad, etc. '
+                'Leave “Default” to auto-detect from the URL slug when possible.'
+            ),
+        }),
         ('Status', {
             'fields': ('order', 'is_active', 'show_on_main_page', 'created_at')
         }),
@@ -401,6 +410,19 @@ class ServiceCategoryAdmin(AdminImageCompressMixin, admin.ModelAdmin):
         return '—'
 
     category_thumb.short_description = 'Thumbnail'
+
+    def card_icon_preview(self, obj):
+        from projects.service_category_icons import resolve_service_category_icon
+
+        icon = resolve_service_category_icon(obj.card_icon or '', obj.slug or '')
+        return format_html(
+            '<span style="display:inline-flex;align-items:center;justify-content:center;'
+            'width:2rem;height:2rem;border-radius:50%;background:rgba(255,84,20,.12);'
+            'color:#ff5414;"><i class="fa {}" aria-hidden="true"></i></span>',
+            icon,
+        )
+
+    card_icon_preview.short_description = 'Card icon'
 
     def name_link(self, obj):
         url = reverse('admin:projects_servicecategory_change', args=[obj.pk])

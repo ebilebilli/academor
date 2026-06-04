@@ -12,6 +12,7 @@ from projects.utils.cache_utils import cached_query, cached_page_data
 from projects.utils.i18n import normalize_lang, resolve_public_language
 from projects.utils.media_cache_bust import media_url
 from projects.utils.seo_text import richtext_plain_text
+from projects.service_category_icons import resolve_service_category_icon
 
 
 def _session_set_lang(session, lang):
@@ -795,6 +796,10 @@ def serialize_project_category(category, lang='az'):
         'id': category.id,
         'slug': category.slug,
         'name': _service_category_display_name(category, lang),
+        'icon': resolve_service_category_icon(
+            getattr(category, 'card_icon', '') or '',
+            category.slug or '',
+        ),
         'image': first_image,
         'description_html': raw_desc or '',
         'price': int(min_price) if min_price is not None and min_price == int(min_price) else min_price,

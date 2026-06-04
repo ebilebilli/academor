@@ -93,13 +93,11 @@ class CourseDetailPageView(View):
         if not category:
             raise Http404(_("Category not found"))
         course = serialize_project_category_detail(category, lang)
-        categories = get_project_categories(lang)
         excerpt = meta_plain_excerpt(course.get('description_html') or '')
         if not excerpt.strip():
             excerpt = _('%(course)s — programme details at Academor, Baku, Azerbaijan.') % {
                 'course': course['name'],
             }
-        all_categories = [serialize_project_category(c, lang) for c in categories]
         payment_form = None
         if course.get('has_payment'):
             from payments.forms import CoursePaymentForm
@@ -122,8 +120,6 @@ class CourseDetailPageView(View):
         context = {
             'course': course,
             'default_package_index': default_package_index,
-            'categories': all_categories,
-            'other_categories': [c for c in all_categories if c['slug'] != course['slug']],
             'language': lang,
             'background_image': get_background_image('courses'),
             'page_title': f'{course["name"]} | Academor',

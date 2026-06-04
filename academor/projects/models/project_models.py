@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 from ckeditor.fields import RichTextField
 
+from projects.service_category_icons import SERVICE_CATEGORY_ICON_CHOICES
 from projects.utils import SluggedModel
 
 
@@ -105,6 +106,17 @@ class ServiceCategory(SluggedModel):
         verbose_name=_('Show on home page'),
         help_text=_(
             'If enabled, this course appears in the "Our Services" grid on the homepage.'
+        ),
+    )
+    card_icon = models.CharField(
+        max_length=80,
+        blank=True,
+        default='',
+        choices=SERVICE_CATEGORY_ICON_CHOICES,
+        verbose_name=_('Card icon'),
+        help_text=_(
+            'Font Awesome 5 icon on service cards (home page and courses list). '
+            'Choose a preset matching the program (IELTS, GMAT, Speaking, etc.).'
         ),
     )
     price = models.PositiveIntegerField(

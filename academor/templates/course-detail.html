@@ -158,14 +158,6 @@
                         </aside>
                     </div>
                 </div>
-
-                {% if other_categories %}
-                <section class="course-detail-related mt-5 pt-2 wow fadeInUp" data-wow-delay="0.12s" aria-labelledby="course-detail-related-heading">
-                    {% include "includes/hsvc_cards_styles.html" %}
-                    <h2 id="course-detail-related-heading" class="course-detail-related__title h4 text-primary mb-4">{% trans "Other courses" %}</h2>
-                    {% include "includes/hsvc_cards_grid.html" with categories=other_categories active_slug=course.slug %}
-                </section>
-                {% endif %}
             </div>
         </div>
 
