@@ -6,7 +6,8 @@ cache_version key. invalidate_model_cache() bumps that version, so every
 persisted model that feeds those queries must call _invalidate_on_commit here.
 
 Keep in sync with queries.py (add a receiver when a new cached query reads a model):
-  ServiceCategory, CoursePricePackage (→ ServiceCategory: packages in course list/detail + payments catalog),
+  ServiceCategory (incl. card_icon → serialize_project_category `icon` on home + /courses/),
+  CoursePricePackage (→ ServiceCategory: packages in course list/detail + payments catalog),
   ServiceHighlight, AbroadModel, StudyAbroadSection, University,
   Team, Review, BlogPost, BlogPostImage, Instructor, About, AboutWhyItem, Contact, Media, Tagline, SiteFaqEntry,
   Test, Question, Option
@@ -126,7 +127,11 @@ def _invalidate_on_commit(model_name):
 @receiver(post_save, sender=ServiceCategory)
 @receiver(post_delete, sender=ServiceCategory)
 def invalidate_course_category_cache(sender, instance, **kwargs):
-    """Invalidate cache when a course category (ServiceCategory) is saved or deleted."""
+    """
+    Home / courses list / nav: cached `get_project_categories` and page blobs
+    (`_get_home_page_data_cached`, `get_project_list_data`, …) embed serialized
+    categories including `icon` from `card_icon` + slug hints.
+    """
     _invalidate_on_commit('ServiceCategory')
 
 
