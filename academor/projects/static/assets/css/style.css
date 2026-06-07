@@ -1995,6 +1995,14 @@ h1.animated, h2.animated, h3.animated,
 .course-alt-card__media img,
 .course-alt-card__media .academor-branded-lazy__img {
     object-position: center top;
+    transition: transform .45s ease;
+}
+
+.course-alt-card:hover .course-alt-card__media img,
+.course-alt-card:hover .course-alt-card__media .academor-branded-lazy__img,
+.course-alt-card:focus-within .course-alt-card__media img,
+.course-alt-card:focus-within .course-alt-card__media .academor-branded-lazy__img {
+    transform: scale(1.08);
 }
 
 .course-alt-card__media::after {
@@ -2058,6 +2066,10 @@ h1.animated, h2.animated, h3.animated,
 }
 
 /* Team listing page — narrow two-up cards on mobile need tighter type */
+.page-team .row.g-4 {
+    padding-top: clamp(10px, 2vw, 18px);
+}
+
 @media (max-width: 767.98px) {
     .page-team .course-alt-card__body {
         padding: 0.52rem 0.42rem 0.58rem;
@@ -2140,8 +2152,6 @@ h1.animated, h2.animated, h3.animated,
 
 .team-carousel.team-swiper .swiper-wrapper {
     padding-top: 4px;
-    /* Space between card row and pager zone */
-    padding-bottom: clamp(14px, 2.25vw, 22px);
 }
 
 .team-carousel .swiper-slide {
@@ -2158,7 +2168,6 @@ h1.animated, h2.animated, h3.animated,
     /* Horizontal gutters so arrows sit beside slides, not on cards */
     padding-left: clamp(2.85rem, 5.5vw, 3.75rem);
     padding-right: clamp(2.85rem, 5.5vw, 3.75rem);
-    padding-bottom: clamp(1.25rem, 3.2vw, 1.85rem);
 }
 
 .team-swiper .swiper-button-prev,
@@ -2228,7 +2237,6 @@ h1.animated, h2.animated, h3.animated,
     .team-swiper {
         padding-left: clamp(2.5rem, 6vw, 3.1rem);
         padding-right: clamp(2.5rem, 6vw, 3.1rem);
-        padding-bottom: clamp(1rem, 3.5vw, 1.65rem);
     }
 
     .team-swiper .swiper-button-prev,
@@ -2236,6 +2244,8 @@ h1.animated, h2.animated, h3.animated,
         width: 50px;
         height: 50px;
         font-size: 1.35rem;
+        /* Align to slide/card vertical center (not padded swiper box) */
+        top: calc(50% - 2px);
     }
 
     .team-swiper .swiper-button-prev i,
@@ -6835,6 +6845,15 @@ a.university-carousel-card:focus-visible .university-flag-card {
     opacity: 1;
     transform: translateY(0);
     will-change: auto;
+}
+
+/* course-alt-card hover must beat scroll-reveal transform (home team + team listing page) */
+.course-alt-card.scroll-reveal.is-revealed:hover,
+.course-alt-card.scroll-reveal.is-revealed:focus-within {
+    transform: translateY(-8px) rotate(-0.6deg);
+    box-shadow: 0 20px 42px rgba(16, 24, 40, 0.18);
+    border-color: rgba(255, 84, 20, 0.45);
+    transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
