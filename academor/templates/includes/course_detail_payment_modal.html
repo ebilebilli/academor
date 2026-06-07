@@ -1,89 +1,89 @@
-{% load i18n %}
-{# Body-level modal: must not sit inside .scroll-reveal / transform ancestors (breaks Bootstrap fixed positioning). #}
-<div
-    class="modal fade course-pay-modal"
-    id="coursePayModal"
-    tabindex="-1"
-    aria-labelledby="coursePayModalLabel"
-    aria-hidden="true"
-    data-pay-modal
-    data-open-on-load="{% if payment_form.errors %}true{% else %}false{% endif %}"
-    {% if payment_turnstile_enabled %}data-turnstile-site-key="{{ turnstile_site_key }}"{% endif %}
->
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content border-0 rounded-4 overflow-hidden shadow-lg course-pay-modal__content">
-            <div class="modal-header border-0 course-pay-modal__header px-4 pt-4 pb-0">
-                <div class="pe-3">
-                    <h2 class="modal-title h4 mb-2 course-pay-modal__title" id="coursePayModalLabel">
-                        {% trans "Payment details" %}
-                    </h2>
-                    <p class="course-pay-modal__package small mb-0" id="course-pay-modal-package" hidden></p>
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans 'Close' %}"></button>
-            </div>
-            <div class="modal-body course-pay-modal__body px-4 pb-4 pt-3">
-                <div id="course-pay-modal-alert" class="alert py-2 small mb-3 d-none" role="alert" aria-live="polite"></div>
-
-                <form
-                    method="post"
-                    action="{% url 'payment_start_course' slug=course.slug %}"
-                    class="course-pay-modal__form"
-                    id="course-pay-form"
-                    novalidate
-                    data-msg-network="{% trans 'Network error. Please try again.' %}"
-                    data-msg-generic="{% trans 'Please correct the errors in the form.' %}"
-                    data-msg-redirecting="{% trans 'Redirecting to secure payment…' %}"
-                    data-msg-select-package="{% trans 'Please select a price package.' %}"
-                >
-                    {% csrf_token %}
-                    <input type="hidden" name="price_package_id" id="id_price_package_id" value="">
-
-                    <div class="mb-2 course-pay-modal__field">
-                        <label for="id_buyer_name" class="form-label small fw-semibold mb-1">
-                            {{ payment_form.buyer_name.label }}
-                            <span class="text-danger" aria-hidden="true">*</span>
-                        </label>
-                        {{ payment_form.buyer_name }}
-                        {% if payment_form.buyer_name.errors %}
-                        <div class="text-danger small mt-1 js-field-error" data-server-error>{{ payment_form.buyer_name.errors.0 }}</div>
-                        {% endif %}
-                    </div>
-                    <p class="course-pay-contact-hint small text-muted mb-2">
-                        {% trans "Provide an email address or phone number (at least one)." %}
-                    </p>
-                    <div class="mb-2 course-pay-modal__field">
-                        <label for="id_buyer_email" class="form-label small fw-semibold mb-1">
-                            {{ payment_form.buyer_email.label }}
-                        </label>
-                        {{ payment_form.buyer_email }}
-                        {% if payment_form.buyer_email.errors %}
-                        <div class="text-danger small mt-1 js-field-error" data-server-error>{{ payment_form.buyer_email.errors.0 }}</div>
-                        {% endif %}
-                    </div>
-                    <div class="mb-2 course-pay-modal__field">
-                        <label for="id_buyer_phone" class="form-label small fw-semibold mb-1">
-                            {{ payment_form.buyer_phone.label }}
-                        </label>
-                        {{ payment_form.buyer_phone }}
-                        {% if payment_form.buyer_phone.errors %}
-                        <div class="text-danger small mt-1 js-field-error" data-server-error>{{ payment_form.buyer_phone.errors.0 }}</div>
-                        {% endif %}
-                    </div>
-
-                    {% if payment_turnstile_enabled %}
-                    {% include "includes/turnstile_widget.html" with turnstile_enabled=payment_turnstile_enabled turnstile_defer_render=True turnstile_widget_id="course-pay-turnstile" %}
-                    {% endif %}
-
-                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-semibold w-100" id="course-pay-submit">
-                        <i class="fas fa-lock me-2 small" aria-hidden="true"></i>
-                        <span class="course-pay-modal__submit-label">{% trans "Confirm and pay" %}</span>
-                    </button>
-                    <p class="course-pay-block__secure-note small mb-0 mt-3 text-center text-muted">
-                        <i class="fas fa-shield-alt me-1" aria-hidden="true"></i>
-                        {% trans "Secure payment via United Payment" %}
-                    </p>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+{% load i18n %}
+{# Body-level modal: must not sit inside .scroll-reveal / transform ancestors (breaks Bootstrap fixed positioning). #}
+<div
+    class="modal fade course-pay-modal"
+    id="coursePayModal"
+    tabindex="-1"
+    aria-labelledby="coursePayModalLabel"
+    aria-hidden="true"
+    data-pay-modal
+    data-open-on-load="{% if payment_form.errors %}true{% else %}false{% endif %}"
+    {% if payment_turnstile_enabled %}data-turnstile-site-key="{{ turnstile_site_key }}"{% endif %}
+>
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 rounded-4 overflow-hidden shadow-lg course-pay-modal__content">
+            <div class="modal-header border-0 course-pay-modal__header px-4 pt-4 pb-0">
+                <div class="pe-3">
+                    <h2 class="modal-title h4 mb-2 course-pay-modal__title" id="coursePayModalLabel">
+                        {% trans "Payment details" %}
+                    </h2>
+                    <p class="course-pay-modal__package small mb-0" id="course-pay-modal-package" hidden></p>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans 'Close' %}"></button>
+            </div>
+            <div class="modal-body course-pay-modal__body px-4 pb-4 pt-3">
+                <div id="course-pay-modal-alert" class="alert py-2 small mb-3 d-none" role="alert" aria-live="polite"></div>
+
+                <form
+                    method="post"
+                    action="{% url 'payment_start_course' slug=course.slug %}"
+                    class="course-pay-modal__form"
+                    id="course-pay-form"
+                    novalidate
+                    data-msg-network="{% trans 'Network error. Please try again.' %}"
+                    data-msg-generic="{% trans 'Please correct the errors in the form.' %}"
+                    data-msg-redirecting="{% trans 'Redirecting to secure payment…' %}"
+                    data-msg-select-package="{% trans 'Please select a price package.' %}"
+                >
+                    {% csrf_token %}
+                    <input type="hidden" name="price_package_id" id="id_price_package_id" value="{% if payment_form.price_package_id.value %}{{ payment_form.price_package_id.value }}{% endif %}">
+
+                    <div class="mb-2 course-pay-modal__field">
+                        <label for="id_buyer_name" class="form-label small fw-semibold mb-1">
+                            {{ payment_form.buyer_name.label }}
+                            <span class="text-danger" aria-hidden="true">*</span>
+                        </label>
+                        {{ payment_form.buyer_name }}
+                        {% if payment_form.buyer_name.errors %}
+                        <div class="text-danger small mt-1 js-field-error" data-server-error>{{ payment_form.buyer_name.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <p class="course-pay-contact-hint small text-muted mb-2">
+                        {% trans "Provide an email address or phone number (at least one)." %}
+                    </p>
+                    <div class="mb-2 course-pay-modal__field">
+                        <label for="id_buyer_email" class="form-label small fw-semibold mb-1">
+                            {{ payment_form.buyer_email.label }}
+                        </label>
+                        {{ payment_form.buyer_email }}
+                        {% if payment_form.buyer_email.errors %}
+                        <div class="text-danger small mt-1 js-field-error" data-server-error>{{ payment_form.buyer_email.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-2 course-pay-modal__field">
+                        <label for="id_buyer_phone" class="form-label small fw-semibold mb-1">
+                            {{ payment_form.buyer_phone.label }}
+                        </label>
+                        {{ payment_form.buyer_phone }}
+                        {% if payment_form.buyer_phone.errors %}
+                        <div class="text-danger small mt-1 js-field-error" data-server-error>{{ payment_form.buyer_phone.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    {% if payment_turnstile_enabled %}
+                    {% include "includes/turnstile_widget.html" with turnstile_enabled=payment_turnstile_enabled turnstile_defer_render=True turnstile_widget_id="course-pay-turnstile" %}
+                    {% endif %}
+
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-semibold w-100" id="course-pay-submit">
+                        <i class="fas fa-lock me-2 small" aria-hidden="true"></i>
+                        <span class="course-pay-modal__submit-label">{% trans "Confirm and pay" %}</span>
+                    </button>
+                    <p class="course-pay-block__secure-note small mb-0 mt-3 text-center text-muted">
+                        <i class="fas fa-shield-alt me-1" aria-hidden="true"></i>
+                        {% trans "Secure payment via United Payment" %}
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

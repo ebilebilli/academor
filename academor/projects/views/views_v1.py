@@ -100,11 +100,15 @@ class CourseDetailPageView(View):
             }
         payment_form = None
         if course.get('has_payment'):
+            from payments.catalog import default_price_package_index
             from payments.forms import CoursePaymentForm
 
             session_data = request.session.pop('course_payment_form_data', None)
+            packages = course.get('price_packages') or []
+            preferred_package_id = None
             if session_data is not None:
                 data = dict(session_data)
+                preferred_package_id = data.get('price_package_id')
                 if not (data.get('buyer_name') or '').strip():
                     first = (data.get('buyer_first_name') or '').strip()
                     last = (data.get('buyer_last_name') or '').strip()
@@ -114,8 +118,12 @@ class CourseDetailPageView(View):
             else:
                 payment_form = CoursePaymentForm(request=request)
 
-        pkg_count = len(course.get('price_packages') or [])
-        default_package_index = 1 if pkg_count > 1 else 0
+            default_package_index = default_price_package_index(
+                packages,
+                preferred_package_id,
+            )
+        else:
+            default_package_index = 0
 
         context = {
             'course': course,

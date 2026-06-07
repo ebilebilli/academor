@@ -1,86 +1,86 @@
-{% load i18n %}
-<div
-    class="course-pay-block"
-    data-default-index="{{ default_package_index|default:0 }}"
->
-    <header class="course-pay-block__head text-center mb-3">
-        <h2 class="course-pay-block__title h4 fw-bold text-primary mb-1" id="course-detail-payment-heading">
-            {% trans "Choose your package" %}
-        </h2>
-    </header>
-
-    <div id="course-pay-alert" class="alert py-2 small mb-3 d-none" role="alert" aria-live="polite"></div>
-
-    <ul
-        class="course-pay-packages list-unstyled mb-0"
-        data-course-pay-packages
-        role="listbox"
-        aria-label="{% trans 'Price packages' %}"
-    >
-        {% for pkg in course.price_packages %}
-        <li
-            class="course-pay-packages__item"
-            data-package-item
-            data-package-index="{{ forloop.counter0 }}"
-            role="option"
-            aria-selected="{% if forloop.counter0 == default_package_index|default:0 %}true{% else %}false{% endif %}"
-        >
-            <article
-                class="course-pay-card{% if forloop.counter0 == default_package_index|default:0 %} is-active{% endif %}"
-                data-package-card
-                tabindex="0"
-            >
-                <input
-                    type="radio"
-                    name="price_package_choice"
-                    class="visually-hidden course-pay-card__radio"
-                    value="{{ pkg.id }}"
-                    data-price="{{ pkg.price_display }}"
-                    data-name="{{ pkg.name }}"
-                    {% if forloop.counter0 == default_package_index|default:0 %}checked{% endif %}
-                >
-                <div class="course-pay-card__header">
-                    <h3 class="course-pay-card__name h6 mb-0">{{ pkg.name }}</h3>
-                </div>
-
-                <p class="course-pay-card__price mb-0">
-                    <span class="course-pay-card__amount">{{ pkg.price_display }}</span>
-                    <span class="course-pay-card__currency">AZN</span>
-                </p>
-
-                {% if pkg.lesson_count or pkg.lesson_minutes %}
-                <ul class="course-pay-card__features list-unstyled mb-0">
-                    {% if pkg.lesson_count %}
-                    <li>
-                        <i class="fas fa-check-circle" aria-hidden="true"></i>
-                        <span>
-                            <span class="course-pay-card__feature-label">{% trans "Number of lessons" %}:</span>
-                            {{ pkg.lesson_count }}
-                        </span>
-                    </li>
-                    {% endif %}
-                    {% if pkg.lesson_minutes %}
-                    <li>
-                        <i class="fas fa-check-circle" aria-hidden="true"></i>
-                        <span>
-                            {% blocktrans count counter=pkg.lesson_minutes %}{{ counter }} minute{% plural %}{{ counter }} minutes{% endblocktrans %}
-                        </span>
-                    </li>
-                    {% endif %}
-                </ul>
-                {% endif %}
-
-                <div class="course-pay-card__cta-slot">
-                    <button
-                        type="button"
-                        class="btn btn-primary rounded-pill fw-semibold w-100 course-pay-card__cta"
-                        data-pay-open
-                    >
-                        {% trans "Make payment" %}
-                    </button>
-                </div>
-            </article>
-        </li>
-        {% endfor %}
-    </ul>
-</div>
+{% load i18n %}
+<div
+    class="course-pay-block"
+    data-default-index="{{ default_package_index|default:0 }}"
+>
+    <header class="course-pay-block__head text-center mb-3">
+        <h2 class="course-pay-block__title h4 fw-bold text-primary mb-1" id="course-detail-payment-heading">
+            {% trans "Choose your package" %}
+        </h2>
+    </header>
+
+    <div id="course-pay-alert" class="alert py-2 small mb-3 d-none" role="alert" aria-live="polite"></div>
+
+    <ul
+        class="course-pay-packages list-unstyled mb-0{% if payment_form.price_package_id.errors %} is-invalid{% endif %}"
+        data-course-pay-packages
+        role="listbox"
+        aria-label="{% trans 'Price packages' %}"
+    >
+        {% for pkg in course.price_packages %}
+        <li
+            class="course-pay-packages__item"
+            data-package-item
+            data-package-index="{{ forloop.counter0 }}"
+            role="option"
+            aria-selected="{% if forloop.counter0 == default_package_index|default:0 %}true{% else %}false{% endif %}"
+        >
+            <article
+                class="course-pay-card{% if forloop.counter0 == default_package_index|default:0 %} is-active{% endif %}"
+                data-package-card
+                tabindex="0"
+            >
+                <input
+                    type="radio"
+                    name="price_package_choice"
+                    class="visually-hidden course-pay-card__radio"
+                    value="{{ pkg.id }}"
+                    data-price="{{ pkg.price_display }}"
+                    data-name="{{ pkg.name }}"
+                    {% if forloop.counter0 == default_package_index|default:0 %}checked{% endif %}
+                >
+                <div class="course-pay-card__header">
+                    <h3 class="course-pay-card__name h6 mb-0">{{ pkg.name }}</h3>
+                </div>
+
+                <p class="course-pay-card__price mb-0">
+                    <span class="course-pay-card__amount">{{ pkg.price_display }}</span>
+                    <span class="course-pay-card__currency">AZN</span>
+                </p>
+
+                {% if pkg.lesson_count or pkg.lesson_minutes %}
+                <ul class="course-pay-card__features list-unstyled mb-0">
+                    {% if pkg.lesson_count %}
+                    <li>
+                        <i class="fas fa-check-circle" aria-hidden="true"></i>
+                        <span>
+                            <span class="course-pay-card__feature-label">{% trans "Number of lessons" %}:</span>
+                            {{ pkg.lesson_count }}
+                        </span>
+                    </li>
+                    {% endif %}
+                    {% if pkg.lesson_minutes %}
+                    <li>
+                        <i class="fas fa-check-circle" aria-hidden="true"></i>
+                        <span>
+                            {% blocktrans count counter=pkg.lesson_minutes %}{{ counter }} minute{% plural %}{{ counter }} minutes{% endblocktrans %}
+                        </span>
+                    </li>
+                    {% endif %}
+                </ul>
+                {% endif %}
+
+                <div class="course-pay-card__cta-slot">
+                    <button
+                        type="button"
+                        class="btn btn-primary rounded-pill fw-semibold w-100 course-pay-card__cta"
+                        data-pay-open
+                    >
+                        {% trans "Make payment" %}
+                    </button>
+                </div>
+            </article>
+        </li>
+        {% endfor %}
+    </ul>
+</div>

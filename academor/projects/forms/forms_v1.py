@@ -167,11 +167,12 @@ class ReviewForm(TurnstileFormMixin, forms.ModelForm):
                 'class': 'form-control',
                 'rows': 4,
                 'placeholder': _('Your review'),
+                'maxlength': '276',
             }
         ),
         required=True,
         label=_('Your review'),
-        max_length=1000,
+        max_length=276,
     )
     rating = forms.IntegerField(
         min_value=1,

@@ -279,14 +279,43 @@
                     }
                 });
                 card.addEventListener('keydown', function (e) {
+                    var idx = parseInt(
+                        item.getAttribute('data-package-index'),
+                        10
+                    );
+                    if (isNaN(idx)) {
+                        return;
+                    }
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        var idx = parseInt(
-                            item.getAttribute('data-package-index'),
-                            10
-                        );
-                        if (!isNaN(idx)) {
-                            selectPackage(idx);
+                        selectPackage(idx);
+                        return;
+                    }
+                    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                        e.preventDefault();
+                        var next = Math.min(logicalIndex + 1, n - 1);
+                        if (next !== logicalIndex) {
+                            selectPackage(next);
+                            var nextCard = items[next].querySelector(
+                                '[data-package-card]'
+                            );
+                            if (nextCard) {
+                                nextCard.focus();
+                            }
+                        }
+                        return;
+                    }
+                    if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        var prev = Math.max(logicalIndex - 1, 0);
+                        if (prev !== logicalIndex) {
+                            selectPackage(prev);
+                            var prevCard = items[prev].querySelector(
+                                '[data-package-card]'
+                            );
+                            if (prevCard) {
+                                prevCard.focus();
+                            }
                         }
                     }
                 });

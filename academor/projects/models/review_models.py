@@ -12,7 +12,7 @@ class Review(models.Model):
         verbose_name='Mobile number',
     )
     message = models.TextField(
-        validators=[MaxLengthValidator(1000)],
+        validators=[MaxLengthValidator(276)],
         verbose_name='Review',
     )
     rating = models.PositiveSmallIntegerField(

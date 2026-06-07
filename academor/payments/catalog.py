@@ -76,3 +76,19 @@ def course_payment_description(
 
 def package_amount(package: CoursePricePackage) -> Decimal:
     return Decimal(package.price)
+
+
+def default_price_package_index(packages, preferred_package_id=None) -> int:
+    """Index into serialized package list; restores session choice when possible."""
+    if not packages:
+        return 0
+    if preferred_package_id is not None:
+        try:
+            pkg_id = int(preferred_package_id)
+        except (TypeError, ValueError):
+            return 0
+        for index, pkg in enumerate(packages):
+            candidate_id = pkg.get('id') if isinstance(pkg, dict) else getattr(pkg, 'pk', None)
+            if candidate_id == pkg_id:
+                return index
+    return 0

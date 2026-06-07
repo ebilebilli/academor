@@ -19,11 +19,9 @@
 
 .course-pay-block {
     --course-pay-ease: cubic-bezier(0.4, 0, 0.2, 1);
-    --course-pay-ease-spring: cubic-bezier(0.34, 1.2, 0.64, 1);
     --course-pay-transition-fast: 120ms var(--course-pay-ease);
     --course-pay-transition: 180ms var(--course-pay-ease);
     --course-pay-transition-hover: 480ms ease-out;
-    --course-pay-transition-slow: 320ms var(--course-pay-ease);
     --course-pay-card-radius: 1.125rem;
     --course-pay-border: rgba(var(--bs-primary-rgb), 0.12);
     --course-pay-gap: 1rem;
@@ -34,7 +32,6 @@
     --course-pay-card-border: var(--primary);
     --course-pay-shadow: 0 4px 20px rgba(var(--bs-primary-rgb), 0.08);
     --course-pay-shadow-hover: 0 14px 36px rgba(var(--bs-primary-rgb), 0.14);
-    --course-pay-shadow-active: 0 18px 44px rgba(var(--bs-primary-rgb), 0.22);
     max-width: 100%;
 }
 
@@ -60,14 +57,14 @@
     display: flex;
 }
 
-.course-pay-block .btn:focus,
-.course-pay-block .btn:focus-visible,
-.course-pay-block .btn:active {
+.course-pay-block .btn:focus:not(:focus-visible) {
     outline: none !important;
+    box-shadow: none !important;
 }
 
-.course-pay-block .btn:focus:not(:focus-visible) {
-    box-shadow: none !important;
+.course-pay-block .btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
 }
 
 .course-pay-card {
@@ -200,11 +197,17 @@
         border-color var(--course-pay-transition-hover);
 }
 
-.course-pay-card__cta.btn-primary:focus,
-.course-pay-card__cta.btn-primary:focus-visible,
-.course-pay-card__cta.btn-primary:active {
+.course-pay-card__cta.btn-primary:focus:not(:focus-visible) {
     outline: none !important;
     box-shadow: none !important;
+}
+
+.course-pay-card__cta.btn-primary:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+.course-pay-card__cta.btn-primary:active {
     background-color: var(--accent) !important;
     border-color: var(--accent) !important;
     color: #fff !important;
@@ -231,28 +234,6 @@
     border-color: var(--bs-danger, #dc3545);
 }
 
-.course-pay-summary {
-    background: #fff;
-    border: 1px solid var(--course-pay-border);
-    box-shadow: var(--course-pay-shadow);
-}
-
-.course-pay-summary__label {
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    font-weight: 600;
-}
-
-.course-pay-summary__package {
-    color: var(--primary);
-    display: block;
-}
-
-.course-pay-summary__price {
-    color: var(--primary);
-    font-size: 1.1rem;
-}
-
 .course-pay-packages.is-invalid {
     outline: 2px solid var(--bs-danger, #dc3545);
     outline-offset: 4px;
@@ -277,7 +258,8 @@
         max-width: none;
     }
 
-    .course-pay-packages__item:only-child {
+    .course-pay-packages__item:only-child,
+    .course-pay-packages__item:last-child:nth-child(odd):not(:only-child) {
         grid-column: 1 / -1;
         justify-self: center;
         width: min(100%, var(--course-pay-card-width));
@@ -306,28 +288,64 @@
     }
 }
 
-/* Payment result pages (success / fail) */
-.payment-result {
+/* Payment result pages (success / fail / error) */
+.payment-result-card {
     background: var(--site-surface);
     border: 1px solid var(--course-pay-border);
     border-radius: var(--course-pay-card-radius);
     padding: 2rem 1.5rem;
-    text-align: center;
+    max-width: 36rem;
+    margin-inline: auto;
 }
 
-.payment-result__icon {
-    font-size: 2.5rem;
-    color: var(--accent);
+.payment-result-card__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    font-size: 1.75rem;
     margin-bottom: 1rem;
 }
 
-.payment-result__title {
-    font-weight: 800;
-    color: var(--primary);
-    margin-bottom: 0.5rem;
+.payment-result-card__icon--success {
+    background: rgba(var(--bs-primary-rgb), 0.08);
+    color: var(--accent);
 }
 
-.payment-result__text {
+.payment-result-card__icon--failed {
+    background: rgba(220, 53, 69, 0.1);
+    color: var(--bs-danger, #dc3545);
+}
+
+.payment-result-card__icon--error {
+    background: rgba(255, 193, 7, 0.15);
+    color: #b8860b;
+}
+
+.payment-result-card__eyebrow {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 0.35rem;
+}
+
+.payment-result-card__eyebrow--success {
+    color: var(--accent);
+}
+
+.payment-result-card__eyebrow--failed {
+    color: var(--bs-danger, #dc3545);
+}
+
+.payment-result-card__eyebrow--error {
+    color: #b8860b;
+}
+
+.payment-result-card__meta {
+    font-size: 0.875rem;
     color: rgba(var(--bs-primary-rgb), 0.72);
-    margin-bottom: 1.25rem;
+    margin-top: 0.75rem;
 }
