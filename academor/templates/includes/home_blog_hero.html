@@ -34,6 +34,19 @@
     pointer-events: none;
 }
 
+.hbh-skyline-bg {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: min(100%, 390px);
+    aspect-ratio: 750 / 500;
+    background: url("{% static 'assets/img/Capture.svg' %}") center bottom / 100% auto no-repeat;
+    opacity: 0.32;
+    filter: brightness(0) invert(1);
+    pointer-events: none;
+    z-index: 0;
+}
 .hbh-inner {
     position: relative;
     z-index: 1;
@@ -442,8 +455,18 @@
     .hbh-card--featured { min-height: 420px; }
     .hbh-card--regular { flex: 0 0 324px; }
 }
+@media (min-width: 768px) {
+    .hbh-skyline-bg { width: min(100%, 768px); }
+}
+@media (min-width: 1024px) {
+    .hbh-skyline-bg {
+        bottom: -72px;
+        transform: translateX(-50%) translateY(8%);
+    }
+}
 </style>
 
+<div class="hbh-skyline-bg" aria-hidden="true"></div>
 <div class="hbh-inner">
     <div class="container-xxl">
         <div class="container">

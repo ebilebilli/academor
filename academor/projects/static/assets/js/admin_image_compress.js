@@ -138,6 +138,22 @@
                 $(document).on('change', 'input[name="' + name + '"]', syncHeaderBgNoCompress);
             });
 
+            // Field-specific max dimensions (display size × 2 for retina).
+            var FIELD_MAX_DIMENSIONS = {
+                flag: { width: 384, height: 384 },
+                card_icon: { width: 256, height: 256 },
+                img: { width: 512, height: 512 },
+                detail_page_img: { width: 1024, height: 1024 },
+                image: { width: 1920, height: 1080 },
+            };
+
+            function getMaxDimensions(inputName) {
+                if (!inputName) {
+                    return { width: 1920, height: 1080 };
+                }
+                return FIELD_MAX_DIMENSIONS[inputName] || { width: 1920, height: 1080 };
+            }
+
             // Şəkil compress handler funksiyası
             function handleImageCompression(e) {
                 var $input = $(e.target);
@@ -161,6 +177,8 @@
                     return;
                 }
                 
+                var maxDims = getMaxDimensions(inputName);
+
                 // Şəkil fayllarını filtrlə
                 var imageFiles = [];
                 for (var i = 0; i < files.length; i++) {
@@ -168,12 +186,6 @@
                     
                     // Yalnız şəkil faylları
                     if (!file.type.match(/^image\//)) {
-                        continue;
-                    }
-                    
-                    // Əgər artıq WebP-dirsə, dəyişmə
-                    if (file.type === 'image/webp') {
-                        console.log('[Image Compress] Already WebP, skipping:', file.name);
                         continue;
                     }
                     
@@ -214,7 +226,7 @@
                 
                 // Bütün şəkilləri paralel compress et (hər birinin uğursuzluğunu ayrıca idarə et)
                 var compressPromises = imageFiles.map(function(file, index) {
-                    return compressImageToWebP(file, 1920, 1080, 0.8)
+                    return compressImageToWebP(file, maxDims.width, maxDims.height, 0.82)
                         .then(function(compressedFile) {
                             return { success: true, file: compressedFile, originalFile: file, index: index };
                         })
@@ -241,10 +253,10 @@
                     // Yeni FileList yarat - bütün faylları əlavə et
                     var dataTransfer = new DataTransfer();
                     
-                    // Əvvəlcə WebP olmayan və ya şəkil olmayan faylları əlavə et
+                    // Şəkil olmayan faylları saxla (şəkillər aşağıda compress olunmuş versiya ilə əvəz olunur)
                     for (var i = 0; i < files.length; i++) {
                         var file = files[i];
-                        if (!file.type.match(/^image\//) || file.type === 'image/webp') {
+                        if (!file.type.match(/^image\//)) {
                             dataTransfer.items.add(file);
                         }
                     }

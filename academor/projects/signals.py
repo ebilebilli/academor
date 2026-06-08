@@ -35,6 +35,7 @@ from django.utils.text import slugify
 
 # from projects.utils import send_mail_func
 from projects.utils.cache_utils import invalidate_model_cache
+from projects.utils.image_resize import resize_image_field
 from projects.models import (
     ServiceCategory,
     CoursePricePackage,
@@ -174,6 +175,29 @@ def invalidate_university_cache(sender, instance, **kwargs):
     abroad-detail partner sidebar, university-detail profile, and any page that embeds
     university data (get_abroad_detail_view_context, get_university_detail_view_context, etc.)."""
     _invalidate_on_commit('University')
+
+
+# University logos display at 80–192 px; 384 px covers 2× retina for the largest slot.
+UNIVERSITY_FLAG_MAX_PX = 384
+
+
+@receiver(pre_save, sender=University)
+def resize_university_flag_on_upload(sender, instance, **kwargs):
+    """Downscale oversized flag uploads before they hit storage / the public site."""
+    if not instance.flag:
+        return
+    if instance.pk:
+        try:
+            old = University.objects.only('flag').get(pk=instance.pk)
+            if old.flag.name == instance.flag.name:
+                return
+        except University.DoesNotExist:
+            pass
+    resize_image_field(
+        instance.flag,
+        max_width=UNIVERSITY_FLAG_MAX_PX,
+        max_height=UNIVERSITY_FLAG_MAX_PX,
+    )
 
 
 @receiver(pre_save, sender=University)
