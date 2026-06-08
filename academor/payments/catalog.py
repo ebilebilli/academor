@@ -4,7 +4,7 @@ from decimal import Decimal
 
 from django.utils.translation import gettext as _, get_language
 
-from projects.models import CoursePricePackage, ServiceCategory
+from projects.models import CoursePricePackage, Service
 from projects.utils.queries import (
     _service_category_display_name,
     get_active_project_category_by_slug,
@@ -20,11 +20,11 @@ class PricePackageNotFoundError(Exception):
     """Package missing, inactive, or does not belong to the course."""
 
 
-def course_has_payable_packages(course: ServiceCategory) -> bool:
+def course_has_payable_packages(course: Service) -> bool:
     return course.price_packages.filter(is_active=True, price__gt=0).exists()
 
 
-def get_payable_course(slug: str) -> ServiceCategory:
+def get_payable_course(slug: str) -> Service:
     course = get_active_project_category_by_slug(slug)
     if not course:
         raise CourseNotPayableError(_('Course not found or is not active.'))
@@ -37,7 +37,7 @@ def get_payable_course(slug: str) -> ServiceCategory:
     return course
 
 
-def get_payable_price_package(course: ServiceCategory, package_id) -> CoursePricePackage:
+def get_payable_price_package(course: Service, package_id) -> CoursePricePackage:
     if not package_id:
         raise PricePackageNotFoundError(_('Please select a price package.'))
     try:
@@ -58,13 +58,13 @@ def get_payable_price_package(course: ServiceCategory, package_id) -> CoursePric
     return package
 
 
-def course_display_name(course: ServiceCategory, lang: str | None = None) -> str:
+def course_display_name(course: Service, lang: str | None = None) -> str:
     lang = lang or (get_language() or 'az')[:2]
     return _service_category_display_name(course, lang)
 
 
 def course_payment_description(
-    course: ServiceCategory,
+    course: Service,
     package: CoursePricePackage,
     lang: str | None = None,
 ) -> str:

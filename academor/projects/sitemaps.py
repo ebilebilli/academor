@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
 
-from projects.models import ServiceCategory, Team, Test, University
+from projects.models import Service, Team, Test, University
 
 
 class AcademorSitemap(Sitemap):
@@ -61,7 +61,7 @@ class CourseSitemap(AcademorSitemap):
     priority = 0.7
 
     def items(self):
-        return ServiceCategory.objects.filter(is_active=True).order_by('order', 'id')
+        return Service.objects.filter(is_active=True).order_by('order', 'id')
 
     def location(self, obj):
         return reverse('projects:course-detail', kwargs={'slug': obj.slug})

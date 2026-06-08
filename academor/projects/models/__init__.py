@@ -1,13 +1,11 @@
-from .project_models import (
-    ServiceCategory,
-    CoursePricePackage,
-    ServiceHighlight,
+from .service_models import Service, CoursePricePackage
+from .study_abroad_models import (
     AbroadModel,
     University,
     StudyAbroadSection,
+    StudyAbroadAdvantage,
 )
 from .media_models import Media
-from .partner_models import Instructor
 from .about_models import About, AboutWhyItem
 from .contact_models import Contact
 from .team_models import Team

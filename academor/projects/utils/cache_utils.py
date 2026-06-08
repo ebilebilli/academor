@@ -290,7 +290,7 @@ def invalidate_model_cache(model_name):
     Args:
         model_name: Which model changed (documentation / future metrics only; not used for keying).
 
-    ServiceCategory (e.g. admin ``card_icon`` dropdown) uses the same bump — see
+    Service (e.g. admin ``card_icon`` dropdown) uses the same bump — see
     ``projects.signals.invalidate_course_category_cache``.
     """
     _bump_cache_version()

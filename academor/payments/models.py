@@ -49,7 +49,7 @@ class Payment(models.Model):
         db_index=True,
     )
     course = models.ForeignKey(
-        'projects.ServiceCategory',
+        'projects.Service',
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
@@ -104,7 +104,7 @@ class CourseEnrollment(models.Model):
         related_name='enrollment',
     )
     course = models.ForeignKey(
-        'projects.ServiceCategory',
+        'projects.Service',
         on_delete=models.PROTECT,
         related_name='enrollments',
     )

@@ -2,8 +2,7 @@ from django.db import models
 from django.core.files.storage import default_storage
 import logging
 
-from .project_models import ServiceCategory
-from .partner_models import Instructor
+from .service_models import Service
 from .about_models import About
 
 logger = logging.getLogger(__name__)
@@ -19,20 +18,12 @@ class Media(models.Model):
         verbose_name='About'
     )
     category = models.ForeignKey(
-        ServiceCategory,
+        Service,
         related_name='medias',
         on_delete=models.CASCADE,
         null=True,
         blank=True,
-        verbose_name='Service category'
-    )
-    partner = models.ForeignKey(
-        Instructor,
-        related_name='medias',
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        verbose_name='Partner'
+        verbose_name='Service'
     )
     image = models.ImageField(
         upload_to='images/',

@@ -4635,6 +4635,143 @@ h1.animated, h2.animated, h3.animated,
     color: var(--accent-hover);
 }
 
+/* Study abroad — icon advantages row (home + /abroad/) */
+.abroad-advantages {
+    position: relative;
+    z-index: 1;
+    margin-top: clamp(1.35rem, 3vw, 2rem);
+    padding-top: clamp(1.35rem, 3vw, 2rem);
+    border-top: 1px solid rgba(0, 49, 61, 0.08);
+}
+
+.abroad-advantages__title {
+    font-size: clamp(1.05rem, 2vw, 1.28rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--primary);
+    text-align: center;
+    margin: 0 0 1.15rem;
+}
+
+.abroad-advantages__grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 0.85rem 0.65rem;
+}
+
+.abroad-advantages__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.55rem;
+    padding: 0.85rem 0.55rem;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(0, 49, 61, 0.08);
+    box-shadow: 0 4px 14px rgba(0, 49, 61, 0.05);
+    transition:
+        transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.28s ease,
+        border-color 0.28s ease;
+}
+
+.abroad-advantages__item:hover,
+.abroad-advantages__item:focus-within {
+    transform: translateY(-3px);
+    border-color: rgba(255, 84, 20, 0.28);
+    box-shadow: 0 10px 22px rgba(0, 49, 61, 0.1);
+}
+
+.abroad-advantages__icon {
+    flex-shrink: 0;
+    width: 2.65rem;
+    height: 2.65rem;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 84, 20, 0.12);
+    color: var(--accent, #ff5414);
+    font-size: 1.05rem;
+    transition:
+        transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+        background-color 0.28s ease,
+        color 0.28s ease;
+}
+
+.abroad-advantages__item:hover .abroad-advantages__icon,
+.abroad-advantages__item:focus-within .abroad-advantages__icon {
+    background: rgba(255, 84, 20, 0.18);
+    color: var(--accent-hover, #e04a10);
+    transform: scale(1.06);
+}
+
+.abroad-advantages__label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--primary);
+    transition: color 0.28s ease;
+}
+
+.abroad-advantages__item:hover .abroad-advantages__label,
+.abroad-advantages__item:focus-within .abroad-advantages__label {
+    color: var(--accent, #ff5414);
+}
+
+@media (max-width: 991.98px) {
+    .abroad-advantages__grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 575.98px) {
+    .abroad-advantages__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.55rem 0.45rem;
+    }
+
+    .abroad-advantages__item {
+        padding: 0.65rem 0.4rem;
+        border-radius: 12px;
+    }
+
+    .abroad-advantages__icon {
+        width: 2.2rem;
+        height: 2.2rem;
+        font-size: 0.9rem;
+    }
+
+    .abroad-advantages__label {
+        font-size: 0.72rem;
+    }
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .abroad-advantages__item:hover {
+        transform: translateY(-3px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .abroad-advantages__item,
+    .abroad-advantages__icon,
+    .abroad-advantages__label {
+        transition: none;
+    }
+
+    .abroad-advantages__item:hover,
+    .abroad-advantages__item:focus-within {
+        transform: none;
+    }
+
+    .abroad-advantages__item:hover .abroad-advantages__icon,
+    .abroad-advantages__item:focus-within .abroad-advantages__icon {
+        transform: none;
+    }
+}
+
 .abroad-hero__actions {
     display: flex;
     flex-wrap: wrap;

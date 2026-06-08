@@ -107,7 +107,7 @@ _category_media_prefetch = Prefetch(
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
 def get_project_categories(lang='az', show_on_main_page=None):
     """Aktiv service kateqoriyaları (courses)."""
-    qs = ServiceCategory.objects.filter(is_active=True).order_by('order', 'id').prefetch_related(
+    qs = Service.objects.filter(is_active=True).order_by('order', 'id').prefetch_related(
         _category_media_prefetch,
         'price_packages',
     )
@@ -122,7 +122,7 @@ def get_active_project_category_by_slug(slug):
     if not slug:
         return None
     return (
-        ServiceCategory.objects.filter(slug=slug, is_active=True)
+        Service.objects.filter(slug=slug, is_active=True)
         .prefetch_related(
             _category_media_prefetch,
             'instructors',
@@ -140,18 +140,6 @@ def get_about(lang='az'):
         ))
     ).first()
     return about
-
-
-@cached_query(timeout='CACHE_TIMEOUT_LONG')
-def get_partners(lang='az', is_active=True):
-    queryset = Instructor.objects.prefetch_related(
-        Prefetch('medias', queryset=Media.objects.filter(image__isnull=False))
-    )
-    
-    if is_active is not None:
-        queryset = queryset.filter(is_active=is_active)
-    
-    return list(queryset.order_by('-created_at'))
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
@@ -491,35 +479,44 @@ def get_mottos(lang='az'):
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
-def get_service_highlights(is_active=True):
-    qs = ServiceHighlight.objects.all()
-    if is_active is not None:
-        qs = qs.filter(is_active=is_active)
-    return list(qs.order_by('order', 'id'))
-
-
-@cached_query(timeout='CACHE_TIMEOUT_LONG')
-def get_serialized_service_highlights(lang='az', is_active=True):
-    return [serialize_service_highlight(s, lang) for s in get_service_highlights(is_active=is_active)]
-
-
-def serialize_service_highlight(item, lang='az'):
-    if item is None:
-        return None
-    return {
-        'id': item.id,
-        'title': _localized_value(item, 'title', lang),
-        'description': _localized_value(item, 'description', lang),
-        'order': item.order,
-    }
-
-
-@cached_query(timeout='CACHE_TIMEOUT_LONG')
 def get_study_abroad_section(lang='az'):
     obj = StudyAbroadSection.objects.first()
     if not obj:
         return None
     return _localized_value(obj, 'text', lang)
+
+
+def serialize_study_abroad_advantage(item, lang='az'):
+    if item is None:
+        return None
+    icon = (item.icon or 'fa-star').strip()
+    if icon.startswith('fa '):
+        icon = icon.replace('fa ', 'fa-', 1).replace(' ', '')
+    return {
+        'id': item.id,
+        'icon': icon,
+        'title': _localized_value(item, 'title', lang),
+    }
+
+
+@cached_query(timeout='CACHE_TIMEOUT_LONG')
+def get_study_abroad_advantages_block(lang='az'):
+    section = StudyAbroadSection.objects.first()
+    if not section:
+        return None
+    title = (_localized_value(section, 'advantages_title', lang) or '').strip()
+    if not title:
+        title = _('Advantages of Studying Abroad')
+    items = [
+        serialize_study_abroad_advantage(row, lang)
+        for row in section.advantage_items.filter(is_active=True).order_by('order', 'id')
+    ]
+    if not title and not items:
+        return None
+    return {
+        'title': title,
+        'items': items,
+    }
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
@@ -714,10 +711,6 @@ def get_serialized_site_faq_entries(lang='az', is_active=True):
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
-def get_serialized_partners(lang='az', is_active=True):
-    return [serialize_partner(p, lang) for p in get_partners(lang=lang, is_active=is_active)]
-
-
 def _price_package_display_name(package, lang='az'):
     name_field = get_localized_field_name('name', lang)
     for candidate in (
@@ -952,26 +945,6 @@ def serialize_about(about, lang='az'):
     }
 
 
-def serialize_partner(partner, lang='az'):
-    if partner is None:
-        return None
-    
-    name_field = get_localized_field_name('name', lang)
-    
-    media = next((m for m in partner.medias.all()), None)
-    
-    return {
-        'id': partner.id,
-        'name': getattr(partner, name_field, partner.name_az),
-        'instagram': partner.instagram,
-        'facebook': partner.facebook,
-        'linkedn': partner.linkedn,
-        'is_active': partner.is_active,
-        'created_at': partner.created_at,
-        'logo': media_url(media.image) if media and media.image else None,
-    }
-
-
 def _whatsapp_me_digits(value):
     if not value:
         return None
@@ -1085,16 +1058,12 @@ def _get_home_page_data_cached(request, lang):
                 'body': motto_dict['body'],
             })
 
-    serialized_service_highlights = get_serialized_service_highlights(lang=lang, is_active=True)
-
     return {
         'use_h2_for_section_titles': True,
         'projects': [],
         'categories': serialized_categories,
-        'partners': [],
         'contact': serialized_contact,
         'projects_pagination': None,
-        'partners_pagination': None,
         'filters': {
             'slug': category_slug,
             'is_completed': None,
@@ -1104,12 +1073,12 @@ def _get_home_page_data_cached(request, lang):
         'hero_background_images': hero_background_images,
         'motto': motto,
         'hero_slides': hero_slides,
-        'service_highlights': serialized_service_highlights,
         'abroad_items': get_serialized_abroad_items(
             lang=lang, is_active=True, show_on_main_page=True
         ),
         'universities': get_serialized_universities(is_active=True),
         'abroad_intro_text': get_study_abroad_section(lang=lang),
+        'abroad_advantages': get_study_abroad_advantages_block(lang=lang),
         'team': [serialize_team_member(m, lang=lang) for m in get_team_members()],
         'reviews': [serialize_review(r) for r in get_reviews()],
         'site_faqs': get_serialized_site_faq_entries(lang=lang, is_active=True),
@@ -1135,6 +1104,7 @@ def get_abroad_page_data(request, lang):
         'universities': get_serialized_universities(is_active=True),
         'background_image': get_background_image('abroad') or get_background_image('about'),
         'abroad_intro_text': get_study_abroad_section(lang=lang),
+        'abroad_advantages': get_study_abroad_advantages_block(lang=lang),
         'abroad_hero_on_listing_page': True,
     }
 

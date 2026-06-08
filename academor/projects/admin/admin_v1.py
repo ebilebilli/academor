@@ -28,14 +28,12 @@ class MediaAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     )
     list_display_links = ('media_preview',)
     list_filter = (
-        'is_home_page_background_image',
         'is_about_page_background_image',
         'is_contact_page_background_image',
         'is_project_page_background_image',
         'is_courses_page_background_image',
         'is_tests_page_background_image',
         'is_service_page_background_image',
-        'is_footer_background_image',
         'is_abroad_page_background_image',
         'created_at',
     )
@@ -52,14 +50,12 @@ class MediaAdmin(AdminImageCompressMixin, admin.ModelAdmin):
                 '(if unset, the About page background image is used).'
             ),
             'fields': (
-                'is_home_page_background_image',
                 'is_about_page_background_image',
                 'is_contact_page_background_image',
                 'is_project_page_background_image',
                 'is_courses_page_background_image',
                 'is_tests_page_background_image',
                 'is_service_page_background_image',
-                'is_footer_background_image',
                 'is_abroad_page_background_image',
             ),
         }),
@@ -89,14 +85,12 @@ class MediaAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         return qs.filter(
-            Q(is_home_page_background_image=True)
-            | Q(is_about_page_background_image=True)
+            Q(is_about_page_background_image=True)
             | Q(is_contact_page_background_image=True)
             | Q(is_project_page_background_image=True)
             | Q(is_courses_page_background_image=True)
             | Q(is_tests_page_background_image=True)
             | Q(is_service_page_background_image=True)
-            | Q(is_footer_background_image=True)
             | Q(is_abroad_page_background_image=True)
         )
 
@@ -120,8 +114,6 @@ class MediaAdmin(AdminImageCompressMixin, admin.ModelAdmin):
 
     def background_flags(self, obj):
         flags = []
-        if obj.is_home_page_background_image:
-            flags.append("🏠 Home page")
         if obj.is_about_page_background_image:
             flags.append("ℹ️ About page")
         if obj.is_contact_page_background_image:
@@ -134,8 +126,6 @@ class MediaAdmin(AdminImageCompressMixin, admin.ModelAdmin):
             flags.append("📝 Tests pages")
         if obj.is_service_page_background_image:
             flags.append("🛠️ Services page")
-        if obj.is_footer_background_image:
-            flags.append("🔻 Footer")
         if obj.is_abroad_page_background_image:
             flags.append("🌍 Study abroad page")
         return " | ".join(flags) if flags else "-"
@@ -159,10 +149,6 @@ class MediaInlineBase(AdminImageCompressMixin, admin.TabularInline):
             )
         return "-"
     thumbnail_preview.short_description = "Preview"
-
-
-class MediaInlinePartner(MediaInlineBase):
-    fields = ('image', 'thumbnail_preview', 'created_at')
 
 
 class MediaInlineAbout(MediaInlineBase):
@@ -328,9 +314,9 @@ class CoursePricePackageAdmin(admin.ModelAdmin):
     )
 
 
-class ServiceCategoryAdminForm(forms.ModelForm):
+class ServiceAdminForm(forms.ModelForm):
     class Meta:
-        model = ServiceCategory
+        model = Service
         fields = '__all__'
         widgets = {
             'description_az': CKEditorWidget(),
@@ -339,9 +325,9 @@ class ServiceCategoryAdminForm(forms.ModelForm):
         }
 
 
-@admin.register(ServiceCategory)
-class ServiceCategoryAdmin(AdminImageCompressMixin, admin.ModelAdmin):
-    form = ServiceCategoryAdminForm
+@admin.register(Service)
+class ServiceAdmin(AdminImageCompressMixin, admin.ModelAdmin):
+    form = ServiceAdminForm
     list_display = (
         'id',
         'category_thumb',
@@ -425,8 +411,8 @@ class ServiceCategoryAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     card_icon_preview.short_description = 'Card icon'
 
     def name_link(self, obj):
-        url = reverse('admin:projects_servicecategory_change', args=[obj.pk])
-        name = obj.name_az or 'Category'
+        url = reverse('admin:projects_service_change', args=[obj.pk])
+        name = obj.name_az or 'Service'
         return format_html('<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; font-size: 14px;">🔗 {}</a>', url, name)
     name_link.short_description = "Name (AZ)"
     name_link.admin_order_field = 'name_az'
@@ -581,92 +567,33 @@ class StudyAbroadSectionAdminForm(forms.ModelForm):
         }
 
 
+class StudyAbroadAdvantageInline(admin.TabularInline):
+    model = StudyAbroadAdvantage
+    extra = 0
+    fields = ('order', 'is_active', 'icon', 'title_az', 'title_en', 'title_ru')
+    ordering = ('order', 'id')
+
+
 @admin.register(StudyAbroadSection)
 class StudyAbroadSectionAdmin(admin.ModelAdmin):
     form = StudyAbroadSectionAdminForm
+    inlines = (StudyAbroadAdvantageInline,)
     fieldsets = (
         ('Azerbaijani', {'fields': ('text_az',)}),
         ('English', {'fields': ('text_en',)}),
         ('Русский', {'fields': ('text_ru',)}),
+        ('Advantages block', {
+            'fields': ('advantages_title_az', 'advantages_title_en', 'advantages_title_ru'),
+            'description': (
+                'Heading above the icon row on the study-abroad section (home + /abroad/). '
+                'Edit icons and labels in the table below.'
+            ),
+        }),
     )
 
     def has_add_permission(self, request):
         return not StudyAbroadSection.objects.exists()
 
-
-@admin.register(Instructor)
-class InstructorAdmin(AdminImageCompressMixin, admin.ModelAdmin):
-    list_display = (
-        'id',
-        'partner_logo',
-        'name_link',
-        'active_status',
-        'created_at',
-    )
-    list_display_links = ('name_link',)
-    list_filter = ('is_active', 'created_at')
-    search_fields = ('name_az', 'name_en', 'name_ru')
-    ordering = ('-created_at',)
-    inlines = [MediaInlinePartner]
-    readonly_fields = ('created_at', 'logo_preview')
-    list_per_page = 25
-    
-    fieldsets = (
-        ('Azerbaijani', {
-            'fields': ('name_az',)
-        }),
-        ('English', {
-            'fields': ('name_en',)
-        }),
-        ('Русский', {
-            'fields': ('name_ru',)
-        }),
-        ('Social links', {
-            'fields': ('instagram', 'facebook', 'linkedn')
-        }),
-        ('Status', {
-            'fields': ('is_active',)
-        }),
-        ('Logo', {
-            'fields': ('logo_preview',)
-        }),
-        ('Date', {
-            'fields': ('created_at',)
-        }),
-    )
-    
-    def partner_logo(self, obj):
-        media = obj.medias.first()
-        if media and media.image:
-            return format_html(
-                '<img src="{}" style="max-width: 60px; max-height: 60px; border-radius: 4px; object-fit: contain;" />',
-                media.image.url
-            )
-        return "❌"
-    partner_logo.short_description = "Logo"
-    
-    def name_link(self, obj):
-        url = reverse('admin:projects_instructor_change', args=[obj.pk])
-        name = obj.name_az or 'Instructor'
-        return format_html('<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; font-size: 14px;">🔗 {}</a>', url, name)
-    name_link.short_description = "Name"
-    name_link.admin_order_field = 'name_az'
-    
-    def logo_preview(self, obj):
-        media = obj.medias.first()
-        if media and media.image:
-            return format_html(
-                '<img src="{}" style="max-width: 250px; max-height: 250px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />',
-                media.image.url
-            )
-        return "No logo"
-    logo_preview.short_description = "Logo preview"
-    
-    def active_status(self, obj):
-        if obj.is_active:
-            return format_html('<span style="background: #28a745; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">✓ Active</span>')
-        return format_html('<span style="background: #dc3545; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">✗ Inactive</span>')
-    active_status.short_description = "Status"
 
 # About 
 @admin.register(About)
@@ -1126,61 +1053,6 @@ class UserResultAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     ordering = ('-created_at',)
     list_per_page = 25
 
-@admin.register(Tagline)
-class TaglineAdmin(AdminImageCompressMixin, admin.ModelAdmin):
-    list_display = (
-        'id',
-        'text_preview_az',
-        'text_preview_en',
-        'text_preview_ru',
-    )
-    list_display_links = ('text_preview_az',)
-    search_fields = (
-        'heading_small_az', 'heading_main_az', 'body_az',
-        'heading_small_en', 'heading_main_en', 'body_en',
-        'heading_small_ru', 'heading_main_ru', 'body_ru',
-    )
-    list_per_page = 25
-    
-    fieldsets = (
-        ('Azerbaijani', {
-            'fields': ('heading_small_az', 'heading_main_az', 'body_az')
-        }),
-        ('English', {
-            'fields': ('heading_small_en', 'heading_main_en', 'body_en')
-        }),
-        ('Русский', {
-            'fields': ('heading_small_ru', 'heading_main_ru', 'body_ru')
-        }),
-    )
-    
-    def text_preview_az(self, obj):
-        url = reverse('admin:projects_tagline_change', args=[obj.pk])
-        base = obj.heading_main_az or obj.heading_small_az or obj.body_az or ''
-        preview = base[:100] + '...' if len(base) > 100 else base
-        return format_html(
-            '<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; font-size: 14px;">🔗 {}</a>',
-            url,
-            preview or 'Tagline (AZ)',
-        )
-    text_preview_az.short_description = "Hero (AZ)"
-    text_preview_az.admin_order_field = 'heading_main_az'
-    
-    def text_preview_en(self, obj):
-        base = obj.heading_main_en or obj.heading_small_en or obj.body_en or ''
-        preview = base[:100] + '...' if len(base) > 100 else base
-        return preview or "-"
-    text_preview_en.short_description = "Hero (EN)"
-    text_preview_en.admin_order_field = 'heading_main_en'
-    
-    def text_preview_ru(self, obj):
-        base = obj.heading_main_ru or obj.heading_small_ru or obj.body_ru or ''
-        preview = base[:100] + '...' if len(base) > 100 else base
-        return preview or "-"
-    text_preview_ru.short_description = "Hero (RU)"
-    text_preview_ru.admin_order_field = 'heading_main_ru'
-
-
 @admin.register(ContactInquiry)
 class ContactInquiryAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     list_display = (
@@ -1315,20 +1187,19 @@ def _sorted_get_app_list(request, app_label=None):
         "AboutWhyItem": 21,
         "SiteFaqEntry": 25,
         "Contact": 30,
-        "Tagline": 50,
 
         # Team / reviews / blog
         "Team": 100,
         "Review": 110,
         "BlogPost": 115,
 
-        # Service categories
-        "ServiceCategory": 200,
+        # Services / study abroad
+        "Service": 200,
         "CoursePricePackage": 201,
         "AbroadModel": 220,
         "StudyAbroadSection": 222,
+        "StudyAbroadAdvantage": 223,
         "University": 225,
-        "Instructor": 230,
 
         # Inbound
         "ContactInquiry": 320,

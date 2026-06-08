@@ -6,14 +6,14 @@ cache_version key. invalidate_model_cache() bumps that version, so every
 persisted model that feeds those queries must call _invalidate_on_commit here.
 
 Keep in sync with queries.py (add a receiver when a new cached query reads a model):
-  ServiceCategory (incl. card_icon → serialize_project_category `icon` on home + /courses/),
-  CoursePricePackage (→ ServiceCategory: packages in course list/detail + payments catalog),
-  ServiceHighlight, AbroadModel, StudyAbroadSection, University,
-  Team, Review, BlogPost, BlogPostImage, Instructor, About, AboutWhyItem, Contact, Media, Tagline, SiteFaqEntry,
+  Service (incl. card_icon → serialize_project_category `icon` on home + /courses/),
+  CoursePricePackage (→ Service: packages in course list/detail + payments catalog),
+  AbroadModel, StudyAbroadSection, StudyAbroadAdvantage, University,
+  Team, Review, BlogPost, BlogPostImage, About, AboutWhyItem, Contact, Media, Tagline, SiteFaqEntry,
   Test, Question, Option
 
   Course detail (`course-detail.html`): `get_active_project_category_by_slug` + trainers M2M — invalidate
-  `ServiceCategory` on category save/delete and on `instructors` M2M changes; `CoursePricePackage` save/delete
+  `Service` on save/delete and on `instructors` M2M changes; `CoursePricePackage` save/delete
   (admin inline does not save the parent course); `Team` save/delete bumps all caches
   (including stale category detail with embedded trainer rows).
   (University: pre_save fills unique slug from name — university_slug_from_name.)
@@ -37,17 +37,16 @@ from django.utils.text import slugify
 from projects.utils.cache_utils import invalidate_model_cache
 from projects.utils.image_resize import resize_image_field
 from projects.models import (
-    ServiceCategory,
+    Service,
     CoursePricePackage,
-    ServiceHighlight,
     AbroadModel,
     StudyAbroadSection,
+    StudyAbroadAdvantage,
     University,
     Team,
     Review,
     BlogPost,
     BlogPostImage,
-    Instructor,
     About,
     AboutWhyItem,
     Contact,
@@ -107,9 +106,9 @@ def _shift_order(model, instance, field='order'):
         ).update(**{field: F(field) + 1})
 
 
-@receiver(pre_save, sender=ServiceCategory)
-def auto_shift_service_category_order(sender, instance, **kwargs):
-    _shift_order(ServiceCategory, instance)
+@receiver(pre_save, sender=Service)
+def auto_shift_service_order(sender, instance, **kwargs):
+    _shift_order(Service, instance)
 
 
 @receiver(pre_save, sender=Team)
@@ -125,23 +124,23 @@ def _invalidate_on_commit(model_name):
     transaction.on_commit(lambda: invalidate_model_cache(model_name))
 
 
-@receiver(post_save, sender=ServiceCategory)
-@receiver(post_delete, sender=ServiceCategory)
-def invalidate_course_category_cache(sender, instance, **kwargs):
+@receiver(post_save, sender=Service)
+@receiver(post_delete, sender=Service)
+def invalidate_service_cache(sender, instance, **kwargs):
     """
     Home / courses list / nav: cached `get_project_categories` and page blobs
     (`_get_home_page_data_cached`, `get_project_list_data`, …) embed serialized
     categories including `icon` from `card_icon` + slug hints.
     """
-    _invalidate_on_commit('ServiceCategory')
+    _invalidate_on_commit('Service')
 
 
-@receiver(m2m_changed, sender=ServiceCategory.instructors.through)
-def invalidate_course_category_instructors_m2m(sender, instance, **kwargs):
-    """Admin filter_horizontal / M2M-only trainer links — no post_save on ServiceCategory."""
+@receiver(m2m_changed, sender=Service.instructors.through)
+def invalidate_service_instructors_m2m(sender, instance, **kwargs):
+    """Admin filter_horizontal / M2M-only trainer links — no post_save on Service."""
     if kwargs.get('action') not in ('post_add', 'post_remove', 'post_clear'):
         return
-    _invalidate_on_commit('ServiceCategory')
+    _invalidate_on_commit('Service')
 
 
 @receiver(post_save, sender=CoursePricePackage)
@@ -150,15 +149,9 @@ def invalidate_course_price_package_cache(sender, instance, **kwargs):
     """
     Price packages are prefetched on cached `get_project_categories` /
     `get_active_project_category_by_slug` and serialized into course cards/detail.
-    Inline admin edits packages without touching ServiceCategory.post_save.
+    Inline admin edits packages without touching Service.post_save.
     """
-    _invalidate_on_commit('ServiceCategory')
-
-
-@receiver(post_save, sender=ServiceHighlight)
-@receiver(post_delete, sender=ServiceHighlight)
-def invalidate_service_highlight_cache(sender, instance, **kwargs):
-    _invalidate_on_commit('ServiceHighlight')
+    _invalidate_on_commit('Service')
 
 
 @receiver(post_save, sender=AbroadModel)
@@ -226,11 +219,10 @@ def invalidate_study_abroad_section_cache(sender, instance, **kwargs):
     _invalidate_on_commit('StudyAbroadSection')
 
 
-@receiver(post_save, sender=Instructor)
-@receiver(post_delete, sender=Instructor)
-def invalidate_partner_cache(sender, instance, **kwargs):
-    """Invalidate cache when Partner is saved or deleted."""
-    _invalidate_on_commit('Instructor')
+@receiver(post_save, sender=StudyAbroadAdvantage)
+@receiver(post_delete, sender=StudyAbroadAdvantage)
+def invalidate_study_abroad_advantage_cache(sender, instance, **kwargs):
+    _invalidate_on_commit('StudyAbroadAdvantage')
 
 
 @receiver(post_save, sender=About)
@@ -297,7 +289,7 @@ def invalidate_blog_post_image_cache(sender, instance, **kwargs):
 @receiver(post_save, sender=Media)
 @receiver(post_delete, sender=Media)
 def invalidate_media_cache(sender, instance, **kwargs):
-    """Invalidate cache when Media is saved or deleted (hero bg, category imgs, partner logos, etc.)."""
+    """Invalidate cache when Media is saved or deleted (hero bg, service imgs, etc.)."""
     # Single bump: invalidate_model_cache only raises global cache_version — one call is enough.
     _invalidate_on_commit('Media')
 
