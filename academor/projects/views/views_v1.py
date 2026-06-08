@@ -21,6 +21,7 @@ from projects.utils.queries import (
     get_blog_page_data,
     get_blog_detail_view_context,
     get_abroad_page_data,
+    _fresh_abroad_advantages_context,
     get_abroad_detail_view_context,
     get_university_detail_view_context,
     apply_university_study_abroad_localized_name,
@@ -188,6 +189,7 @@ class AbroadPageView(View):
     def get(self, request):
         lang = get_language_from_request(request)
         context = get_abroad_page_data(request, lang)
+        context.update(_fresh_abroad_advantages_context(lang))
         context['language'] = lang
         return render(request, self.template_name, context)
 

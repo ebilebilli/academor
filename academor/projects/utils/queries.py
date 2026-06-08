@@ -13,6 +13,10 @@ from projects.utils.i18n import normalize_lang, resolve_public_language
 from projects.utils.media_cache_bust import media_url
 from projects.utils.seo_text import richtext_plain_text
 from projects.service_category_icons import resolve_service_category_icon
+from projects.study_abroad_advantage_icons import (
+    normalize_study_abroad_advantage_icon,
+    resolve_study_abroad_advantage_icon,
+)
 
 
 def _session_set_lang(session, lang):
@@ -235,6 +239,13 @@ def serialize_blog_post(post, lang='az'):
         'on_main_page': post.on_main_page,
         'cover': images[0] if images else None,
         'images': images,
+    }
+
+
+def _fresh_abroad_advantages_context(lang):
+    """Study-abroad icon row — cached query, merged after page blob (home + /abroad/)."""
+    return {
+        'abroad_advantages': get_study_abroad_advantages_block(lang=lang),
     }
 
 
@@ -489,12 +500,11 @@ def get_study_abroad_section(lang='az'):
 def serialize_study_abroad_advantage(item, lang='az'):
     if item is None:
         return None
-    icon = (item.icon or 'fa-star').strip()
-    if icon.startswith('fa '):
-        icon = icon.replace('fa ', 'fa-', 1).replace(' ', '')
+    icon = normalize_study_abroad_advantage_icon(item.icon)
     return {
         'id': item.id,
         'icon': icon,
+        'icon_svg': resolve_study_abroad_advantage_icon(icon),
         'title': _localized_value(item, 'title', lang),
     }
 
@@ -1078,7 +1088,6 @@ def _get_home_page_data_cached(request, lang):
         ),
         'universities': get_serialized_universities(is_active=True),
         'abroad_intro_text': get_study_abroad_section(lang=lang),
-        'abroad_advantages': get_study_abroad_advantages_block(lang=lang),
         'team': [serialize_team_member(m, lang=lang) for m in get_team_members()],
         'reviews': [serialize_review(r) for r in get_reviews()],
         'site_faqs': get_serialized_site_faq_entries(lang=lang, is_active=True),
@@ -1089,6 +1098,7 @@ def get_home_page_data(request, lang):
     ctx = _get_home_page_data_cached(request, lang)
     ctx.update(_fresh_home_blog_context(lang))
     ctx.update(get_home_about_context(lang))
+    ctx.update(_fresh_abroad_advantages_context(lang))
     return ctx
 
 
@@ -1104,7 +1114,6 @@ def get_abroad_page_data(request, lang):
         'universities': get_serialized_universities(is_active=True),
         'background_image': get_background_image('abroad') or get_background_image('about'),
         'abroad_intro_text': get_study_abroad_section(lang=lang),
-        'abroad_advantages': get_study_abroad_advantages_block(lang=lang),
         'abroad_hero_on_listing_page': True,
     }
 

@@ -19,6 +19,8 @@ Keep in sync with queries.py (add a receiver when a new cached query reads a mod
   (University: pre_save fills unique slug from name — university_slug_from_name.)
   Homepage blog hero + section preview rows use `_fresh_home_blog_context()` merged into `get_home_page_data()`
   (fresh on every GET; not stored inside the page blob).
+  Study-abroad advantages row uses `_fresh_abroad_advantages_context()` merged into home + `/abroad/` views
+  (`@cached_query` on `get_study_abroad_advantages_block`, not inside the page blob).
   Homepage About block uses `get_home_about_context()` (`@cached_query`, per lang; not stored inside the page blob).
 
   Blog index (`projects:blog-page`, blog.html): `get_blog_page_data()` uses `@cached_page_data(CACHE_TIMEOUT_MEDIUM)`
@@ -215,14 +217,16 @@ def university_slug_from_name(sender, instance, **kwargs):
 @receiver(post_save, sender=StudyAbroadSection)
 @receiver(post_delete, sender=StudyAbroadSection)
 def invalidate_study_abroad_section_cache(sender, instance, **kwargs):
-    """Clears cache for Study Abroad intro text on the Study Abroad page."""
+    """Intro text + advantages heading row (home + /abroad/)."""
     _invalidate_on_commit('StudyAbroadSection')
+    _invalidate_on_commit('StudyAbroadAdvantage')
 
 
 @receiver(post_save, sender=StudyAbroadAdvantage)
 @receiver(post_delete, sender=StudyAbroadAdvantage)
 def invalidate_study_abroad_advantage_cache(sender, instance, **kwargs):
     _invalidate_on_commit('StudyAbroadAdvantage')
+    _invalidate_on_commit('StudyAbroadSection')
 
 
 @receiver(post_save, sender=About)

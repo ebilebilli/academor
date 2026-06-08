@@ -10,7 +10,7 @@
         {% for item in abroad_advantages.items %}
         <li class="abroad-advantages__item">
             <span class="abroad-advantages__icon" aria-hidden="true">
-                <i class="fa {{ item.icon }}" aria-hidden="true"></i>
+                {{ item.icon_svg }}
             </span>
             <span class="abroad-advantages__label">{{ item.title }}</span>
         </li>

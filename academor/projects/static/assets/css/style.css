@@ -4700,6 +4700,13 @@ h1.animated, h2.animated, h3.animated,
         color 0.28s ease;
 }
 
+.abroad-advantages__icon svg {
+    width: 1.15em;
+    height: 1.15em;
+    display: block;
+    flex-shrink: 0;
+}
+
 .abroad-advantages__item:hover .abroad-advantages__icon,
 .abroad-advantages__item:focus-within .abroad-advantages__icon {
     background: rgba(255, 84, 20, 0.18);
