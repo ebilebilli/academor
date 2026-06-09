@@ -339,13 +339,57 @@
     gap: 1rem;
 }
 .hbh-tagline {
-    font-size: 1.2rem;
+    font-size: clamp(1.15rem, 2.4vw, 1.55rem);
     font-weight: 700;
-    color: rgba(255,255,255,.85);
+    color: rgba(255,255,255,.9);
     letter-spacing: .01em;
     margin: 0;
+    line-height: 1.35;
 }
-.hbh-tagline .hbh-dot { font-size: 1.3rem; font-weight: 900; line-height: 1; }
+.hbh-tagline-reveal {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: inherit;
+    gap: 0.35rem 0.5rem;
+    min-height: 1.35em;
+}
+.hbh-tagline-reveal .hbh-word {
+    display: inline-flex;
+    align-items: baseline;
+    white-space: nowrap;
+    opacity: 1;
+    transform: none;
+}
+.hbh-tagline-reveal.hbh-tagline-reveal--pending .hbh-word {
+    opacity: 0;
+    transform: translate3d(0, 0.35em, 0);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+    will-change: opacity, transform;
+}
+.hbh-tagline-reveal.hbh-tagline-reveal--pending.is-revealed .hbh-word {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    will-change: auto;
+}
+.hbh-tagline-reveal.hbh-tagline-reveal--pending.is-revealed .hbh-word:nth-child(1) { transition-delay: 0s; }
+.hbh-tagline-reveal.hbh-tagline-reveal--pending.is-revealed .hbh-word:nth-child(2) { transition-delay: 0.12s; }
+.hbh-tagline-reveal.hbh-tagline-reveal--pending.is-revealed .hbh-word:nth-child(3) { transition-delay: 0.24s; }
+.hbh-tagline .hbh-dot {
+    font-size: 1.2em;
+    font-weight: 900;
+    line-height: 1;
+}
+.hbh-dot--learn { color: #FF6B35; }
+.hbh-dot--speak { color: #FFE500; }
+.hbh-dot--achieve { color: #3DFF7A; }
+@media (prefers-reduced-motion: reduce) {
+    .hbh-tagline-reveal.hbh-tagline-reveal--pending .hbh-word {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
 /* .hbh-cta-btn — see style.css */
 
 /* "Əlaqə saxla" — white outline */
@@ -574,12 +618,13 @@
             {% endif %}
 
             <!-- CTA strip -->
-            <div class="hbh-cta-strip wow fadeInUp" data-wow-delay="0.25s">
-                <p class="hbh-tagline mb-0">
-                    Learn<span class="hbh-dot" style="color:#FF6B35;">.</span>
-                    Speak<span class="hbh-dot" style="color:#FFE500;">.</span>
-                    Achieve<span class="hbh-dot" style="color:#3DFF7A;">.</span>
-                </p>
+            <noscript><style>.hbh-tagline-reveal--pending .hbh-word{opacity:1!important;transform:none!important;}</style></noscript>
+            <div class="hbh-cta-strip">
+                <h2 class="hbh-tagline hbh-tagline-reveal hbh-tagline-reveal--pending mb-0" id="hbh-motto" aria-label="Learn. Speak. Achieve.">
+                    <span class="hbh-word">Learn<span class="hbh-dot hbh-dot--learn" aria-hidden="true">.</span></span>
+                    <span class="hbh-word">Speak<span class="hbh-dot hbh-dot--speak" aria-hidden="true">.</span></span>
+                    <span class="hbh-word">Achieve<span class="hbh-dot hbh-dot--achieve" aria-hidden="true">.</span></span>
+                </h2>
                 <a href="{% url 'projects:contact-page' %}" class="hbh-cta-contact">
                     <i class="fa fa-envelope" style="font-size:.8rem;"></i>{% trans "Contact us" %}
                 </a>
