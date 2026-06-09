@@ -5224,7 +5224,7 @@ h1.animated, h2.animated, h3.animated,
 .universities-carousel--home .universities-list__track {
     display: flex;
     flex-wrap: nowrap;
-    align-items: center;
+    align-items: flex-start;
     width: max-content;
     gap: 14px;
     animation: universities-carousel-scroll 28s linear infinite;
@@ -5252,10 +5252,51 @@ h1.animated, h2.animated, h3.animated,
 
 .university-carousel-card {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 0.35rem 0.15rem;
+    justify-content: flex-start;
+    gap: 0.55rem;
+    width: 118px;
+    padding: 0.35rem 0.15rem 0.15rem;
     transition: transform 0.28s ease;
+}
+
+.university-carousel-card__name {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    width: 100%;
+    min-height: 2.5em;
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+    text-align: center;
+    color: var(--primary, #00313D);
+    opacity: 1;
+    transform: none;
+}
+
+.universities-carousel-shell--reveal-pending .university-carousel-card__name {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+    transition-delay: var(--uni-name-delay, 0ms);
+}
+
+.universities-carousel-shell--reveal-pending.is-revealed .university-carousel-card__name {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .universities-carousel-shell--reveal-pending .university-carousel-card__name {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
 }
 
 a.university-carousel-card:hover,

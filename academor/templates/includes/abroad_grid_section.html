@@ -193,7 +193,7 @@
     </div>
     </div>
     {% if universities %}
-    <div class="universities-carousel-shell mb-4 mb-md-5">
+    <div class="universities-carousel-shell universities-carousel-shell--reveal-pending mb-4 mb-md-5">
         <div class="universities-carousel universities-carousel--home" aria-label="{% trans 'Universities' %}">
             <div class="universities-list__track">
                 {% for uni in universities %}
@@ -208,6 +208,9 @@
                             {% academor_branded_lazy_img uni.flag uni.name|default:'University' img_class='university-flag-card__img' layout='circle' width='80' height='80' loading='eager' reveal='immediate' decoding='sync' %}
                             {% endif %}
                         </div>
+                        {% if uni.name %}
+                        <span class="university-carousel-card__name" style="--uni-name-delay: {{ forloop.counter0 }}60ms">{{ uni.name }}</span>
+                        {% endif %}
                     {% if uni.slug %}
                     </a>
                     {% else %}
@@ -218,7 +221,7 @@
                 {% for uni in universities %}
                 <div class="universities-list__item" aria-hidden="true">
                     {% if uni.slug %}
-                    <a href="{% url 'projects:abroad-university-detail' slug=uni.slug %}" class="university-carousel-card text-decoration-none" tabindex="-1">
+                    <a href="{% url 'projects:abroad-university-detail' slug=uni.slug %}" class="university-carousel-card text-decoration-none" tabindex="-1"{% if uni.name %} aria-label="{{ uni.name }}"{% endif %}>
                     {% else %}
                     <div class="university-carousel-card">
                     {% endif %}
@@ -227,6 +230,9 @@
                             {% academor_branded_lazy_img uni.flag '' img_class='university-flag-card__img' layout='circle' width='80' height='80' loading='eager' reveal='immediate' decoding='sync' %}
                             {% endif %}
                         </div>
+                        {% if uni.name %}
+                        <span class="university-carousel-card__name" aria-hidden="true" style="--uni-name-delay: {{ forloop.counter0 }}60ms">{{ uni.name }}</span>
+                        {% endif %}
                     {% if uni.slug %}
                     </a>
                     {% else %}
