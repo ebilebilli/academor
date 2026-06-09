@@ -98,12 +98,12 @@
             </div>
         </div>
         <div class="nav-contact-mobile-wrap d-lg-none">
-            <a href="{% url 'projects:contact-page' %}" class="btn btn-primary nav-contact-mobile{% if u == 'contact-page' %} active{% endif %}{% if u == 'home-page' %} nav-contact--static-hover{% endif %}">
+            <a href="{% url 'projects:contact-page' %}" class="btn btn-primary nav-contact-mobile{% if u == 'contact-page' %} active{% endif %}">
                 <span class="nav-contact-mobile__label">{% trans "Contact" %}</span>
                 <span class="nav-contact-mobile__icon" aria-hidden="true"><i class="fa fa-arrow-right"></i></span>
             </a>
         </div>
-        <a href="{% url 'projects:contact-page' %}" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block{% if u == 'home-page' %} nav-contact--static-hover{% endif %}">{% trans "Contact" %}<i class="fa fa-arrow-right ms-3"></i></a>
+        <a href="{% url 'projects:contact-page' %}" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">{% trans "Contact" %}<i class="fa fa-arrow-right ms-3"></i></a>
     </div>
     <div class="scroll-progress" aria-hidden="true">
         <div id="scrollProgressBar" class="scroll-progress__bar"></div>

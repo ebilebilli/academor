@@ -338,6 +338,14 @@
     flex-wrap: wrap;
     gap: 1rem;
 }
+.hbh-cta-strip__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+}
 .hbh-tagline {
     font-size: clamp(1.15rem, 2.4vw, 1.55rem);
     font-weight: 700;
@@ -345,6 +353,7 @@
     letter-spacing: .01em;
     margin: 0;
     line-height: 1.35;
+<<<<<<< HEAD
 }
 .hbh-tagline-reveal {
     display: inline-flex;
@@ -390,6 +399,72 @@
         transition: none;
     }
 }
+=======
+}
+.hbh-tagline-scramble {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem 0.5rem;
+    opacity: 0;
+}
+.hbh-tagline-scramble.is-running,
+.hbh-tagline-scramble.is-complete {
+    opacity: 1;
+    transition: opacity 0.35s ease;
+}
+.hbh-tagline-scramble .word-wrapper {
+    display: inline-flex;
+    align-items: baseline;
+    white-space: nowrap;
+}
+.hbh-tagline-scramble .word-text {
+    font-variant-numeric: tabular-nums;
+    min-width: 0.5ch;
+}
+.hbh-tagline-scramble .hbh-dot {
+    font-size: 1.2em;
+    font-weight: 900;
+    line-height: 1;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+.hbh-tagline-scramble .hbh-dot.is-visible {
+    opacity: 1;
+}
+.hbh-tagline-scramble .hbh-dot--learn { color: #FF6B35; }
+.hbh-tagline-scramble .hbh-dot--speak { color: #FFE500; }
+.hbh-tagline-scramble .hbh-dot--achieve { color: #3DFF7A; }
+.hbh-tagline-cursor {
+    display: inline-block;
+    width: 3px;
+    height: 1.05em;
+    margin-left: 0.1rem;
+    background: var(--accent, #FF5414);
+    border-radius: 1px;
+    vertical-align: baseline;
+    opacity: 0;
+    transform: translateY(0.08em);
+}
+.hbh-tagline-cursor.is-active {
+    opacity: 1;
+    animation: hbhTaglineCursorBlink 0.95s step-end infinite;
+}
+.hbh-tagline-cursor.is-done {
+    opacity: 0;
+    animation: none;
+}
+@keyframes hbhTaglineCursorBlink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .hbh-tagline-cursor {
+        display: none;
+    }
+}
+
+>>>>>>> 00a1a625144eb723697e07f79c1b618ed4b3e63a
 /* .hbh-cta-btn — see style.css */
 
 /* "Əlaqə saxla" — white outline */
@@ -454,6 +529,7 @@
         max-height: 320px;
     }
     .hbh-inner { padding: 0.85rem 0 2rem; }
+    .hbh-cta-strip__content { justify-content: center; text-align: center; }
     .hbh-cta-strip { justify-content: center; text-align: center; }
     .hbh-card--regular { flex: 0 0 280px; }
     .hbh-card--featured .hbh-card__overlay {
@@ -484,6 +560,7 @@
         max-height: 380px;
     }
     .hbh-inner { padding: 1rem 0 2.25rem; }
+    .hbh-cta-strip__content { justify-content: center; text-align: center; }
     .hbh-cta-strip { justify-content: center; text-align: center; }
     .hbh-card--regular { flex: 0 0 304px; }
     .hbh-card--featured .hbh-card__overlay {
@@ -520,7 +597,7 @@
 <div class="hbh-skyline-bg" aria-hidden="true"></div>
 <div class="hbh-inner">
     <div class="container-xxl">
-        <div class="container">
+        <div class="container reveal-group">
 
             <!-- Top bar -->
             <div class="hbh-top-bar wow fadeInDown" data-wow-delay="0.05s">
@@ -618,6 +695,7 @@
             {% endif %}
 
             <!-- CTA strip -->
+<<<<<<< HEAD
             <noscript><style>.hbh-tagline-reveal--pending .hbh-word{opacity:1!important;transform:none!important;}</style></noscript>
             <div class="hbh-cta-strip">
                 <h2 class="hbh-tagline hbh-tagline-reveal hbh-tagline-reveal--pending mb-0" id="hbh-motto" aria-label="Learn. Speak. Achieve.">
@@ -628,6 +706,26 @@
                 <a href="{% url 'projects:contact-page' %}" class="hbh-cta-contact">
                     <i class="fa fa-envelope" style="font-size:.8rem;"></i>{% trans "Contact us" %}
                 </a>
+=======
+            <div class="hbh-cta-strip">
+                <div class="hbh-cta-strip__content">
+                    <h2 class="hbh-tagline hbh-tagline-scramble animated-text mb-0" id="hbh-motto" aria-label="Learn. Speak. Achieve.">
+                        <span class="word-wrapper word-wrapper--learn">
+                            <span class="word-text" data-word="Learn" aria-hidden="true">Learn</span><span class="hbh-dot hbh-dot--learn" aria-hidden="true">.</span>
+                        </span>
+                        <span class="word-wrapper word-wrapper--speak">
+                            <span class="word-text" data-word="Speak" aria-hidden="true">Speak</span><span class="hbh-dot hbh-dot--speak" aria-hidden="true">.</span>
+                        </span>
+                        <span class="word-wrapper word-wrapper--achieve">
+                            <span class="word-text" data-word="Achieve" aria-hidden="true">Achieve</span><span class="hbh-dot hbh-dot--achieve" aria-hidden="true">.</span>
+                        </span>
+                        <span class="hbh-tagline-cursor" aria-hidden="true"></span>
+                    </h2>
+                    <a href="{% url 'projects:contact-page' %}" class="hbh-cta-contact">
+                        <i class="fa fa-envelope" style="font-size:.8rem;"></i>{% trans "Contact us" %}
+                    </a>
+                </div>
+>>>>>>> 00a1a625144eb723697e07f79c1b618ed4b3e63a
             </div>
 
             {% else %}

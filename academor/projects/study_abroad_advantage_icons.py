@@ -13,7 +13,7 @@ STUDY_ABROAD_ADVANTAGE_SVGS = {
     ),
     'fa-briefcase': (
         '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">'
-        '<path fill="currentColor" d="M10 2h4a2 2 0 0 1 2 2h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h3a2 2 0 0 1 2-2zm4 2h-4v2h4V4zM5 8v12h14V8H5zm3 3h8v2H8v-2z"/>'
+        '<path fill="currentColor" d="M20 6h-3V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2zM9 4h6v2H9V4zm11 15H4V8h16v11z"/>'
         '</svg>'
     ),
     'fa-comments': (
