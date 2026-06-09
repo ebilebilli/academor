@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.text import slugify
 from ckeditor.fields import RichTextField
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFit
 
 
 class Team(models.Model):
@@ -9,6 +11,18 @@ class Team(models.Model):
         null=True,
         blank=True,
         verbose_name='Image',
+    )
+    image_card = ImageSpecField(
+        source='image',
+        processors=[ResizeToFit(400, 400)],
+        format='WEBP',
+        options={'quality': 75},
+    )
+    image_detail = ImageSpecField(
+        source='image',
+        processors=[ResizeToFit(640, 854)],
+        format='WEBP',
+        options={'quality': 80},
     )
     name = models.CharField(
         max_length=120,

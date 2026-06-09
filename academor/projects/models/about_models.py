@@ -1,5 +1,7 @@
 from django.db import models
 from ckeditor.fields import RichTextField
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFit
 
 
 class About(models.Model):
@@ -19,6 +21,12 @@ class About(models.Model):
         null=True,
         verbose_name='Video cover',
         help_text='Poster image displayed before the video is played.',
+    )
+    video_cover_display = ImageSpecField(
+        source='video_cover',
+        processors=[ResizeToFit(800, 600)],
+        format='WEBP',
+        options={'quality': 80},
     )
     show_on_homepage = models.BooleanField(
         default=True,

@@ -4,7 +4,7 @@
     {% if member.image %}
     <a href="{% url 'projects:team-detail' member.slug %}" class="team-item-photo-link">
         <div class="team-item-photo-wrap">
-            {% academor_branded_lazy_img member.image member.name img_class='team-item-photo-img w-100 h-100' layout='cover' width='600' height='800' loading='lazy' %}
+            {% academor_branded_lazy_img member.image_card|default:member.image member.name img_class='team-item-photo-img w-100 h-100' layout='cover' width='600' height='800' srcset=member.image_srcset sizes='(max-width: 600px) 50vw, 253px' loading='lazy' %}
         </div>
     </a>
     {% endif %}

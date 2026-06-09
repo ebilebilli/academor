@@ -10,7 +10,7 @@ from django.templatetags.static import static
 from projects.models import *
 from projects.utils.cache_utils import cached_query, cached_page_data
 from projects.utils.i18n import normalize_lang, resolve_public_language
-from projects.utils.media_cache_bust import media_url
+from projects.utils.media_cache_bust import media_url, image_spec_url, build_srcset
 from projects.utils.seo_text import richtext_plain_text
 from projects.service_category_icons import resolve_service_category_icon
 from projects.study_abroad_advantage_icons import build_static_study_abroad_advantages_block
@@ -163,10 +163,19 @@ def serialize_team_member(member, lang='az'):
     ]
     social_count = sum(1 for u in social_urls if u.strip())
     desc_html = _localized_value(member, 'description', lang)
+    image_full = media_url(member.image) if member.image else None
+    image_card = image_spec_url(member.image_card) if member.image else None
+    image_detail = image_spec_url(member.image_detail) if member.image else None
     return {
         'id': member.id,
         'slug': member.slug,
-        'image': media_url(member.image) if member.image else None,
+        'image': image_detail or image_card or image_full,
+        'image_card': image_card or image_full,
+        'image_full': image_full,
+        'image_srcset': build_srcset(
+            (image_card, 400),
+            (image_detail, 640),
+        ) if member.image else None,
         'name': member.name,
         'role': member.role,
         'description': desc_html or None,
@@ -221,7 +230,12 @@ def get_blog_post_by_slug(slug, is_active=True):
 def serialize_blog_post(post, lang='az'):
     if post is None:
         return None
-    images = [media_url(img.image) for img in post.images.all() if img.image]
+    image_rows = [img for img in post.images.all() if img.image]
+    images = [media_url(img.image) for img in image_rows]
+    first_img = image_rows[0] if image_rows else None
+    cover_card = image_spec_url(first_img.image_card) if first_img else None
+    cover_large = image_spec_url(first_img.image_large) if first_img else None
+    cover_full = images[0] if images else None
     desc_html = _localized_value(post, 'description', lang) or None
     desc_plain = richtext_plain_text(desc_html) if desc_html else ''
     return {
@@ -234,7 +248,12 @@ def serialize_blog_post(post, lang='az'):
         'created_at': post.created_at,
         'on_top': post.on_top,
         'on_main_page': post.on_main_page,
-        'cover': images[0] if images else None,
+        'cover': cover_large or cover_card or cover_full,
+        'cover_full': cover_full,
+        'cover_srcset': build_srcset(
+            (cover_card, 400),
+            (cover_large, 800),
+        ) if first_img else None,
         'images': images,
     }
 
@@ -291,12 +310,20 @@ def get_blog_page_data(request, lang):
     featured = [p for p in all_posts if p.on_top][:2]
     regular = [p for p in all_posts if not p.on_top]
     categories = get_project_categories(lang)
+    serialized_featured = [serialize_blog_post(p, lang=lang) for p in featured]
+    serialized_posts = [serialize_blog_post(p, lang=lang) for p in regular]
+    lcp_image_url = None
+    if serialized_featured and serialized_featured[0].get('cover'):
+        lcp_image_url = serialized_featured[0]['cover']
+    elif serialized_posts and serialized_posts[0].get('cover'):
+        lcp_image_url = serialized_posts[0]['cover']
     return {
-        'featured_posts': [serialize_blog_post(p, lang=lang) for p in featured],
-        'posts': [serialize_blog_post(p, lang=lang) for p in regular],
+        'featured_posts': serialized_featured,
+        'posts': serialized_posts,
         'categories': [serialize_project_category(c, lang) for c in categories],
         'language': lang,
         'background_image': get_background_image('about'),
+        'lcp_image_url': lcp_image_url,
     }
 
 
@@ -308,12 +335,14 @@ def get_blog_detail_view_context(lang, slug):
     all_posts = get_blog_posts(is_active=True)
     other_posts = [p for p in all_posts if p.slug != slug][:6]
     categories = get_project_categories(lang)
+    serialized_post = serialize_blog_post(post, lang=lang)
     return {
-        'post': serialize_blog_post(post, lang=lang),
+        'post': serialized_post,
         'other_posts': [serialize_blog_post(p, lang=lang) for p in other_posts],
         'categories': [serialize_project_category(c, lang) for c in categories],
         'language': lang,
         'background_image': get_background_image('about'),
+        'lcp_image_url': serialized_post.get('cover') if serialized_post else None,
     }
 
 
@@ -526,13 +555,19 @@ def get_abroad_items(is_active=True, show_on_main_page=None):
 def serialize_abroad_item(item, lang='az'):
     if item is None:
         return None
+    img_full = media_url(item.img) if item.img else None
+    img_thumb = image_spec_url(item.img_thumb) if item.img else None
+    detail_full = media_url(item.detail_page_img) if item.detail_page_img else None
+    detail_hero = image_spec_url(item.detail_page_img_hero) if item.detail_page_img else None
     return {
         'id': item.id,
         'slug': item.slug,
         'name': _localized_value(item, 'name', lang),
         'description': _localized_value(item, 'description', lang),
-        'img': media_url(item.img) if item.img else None,
-        'detail_page_img': media_url(item.detail_page_img) if item.detail_page_img else None,
+        'img': img_thumb or img_full,
+        'img_full': img_full,
+        'detail_page_img': detail_hero or detail_full or img_thumb or img_full,
+        'detail_page_img_full': detail_full or img_full,
         'is_active': item.is_active,
         'created_at': item.created_at,
     }
@@ -908,7 +943,10 @@ def serialize_about(about, lang='az'):
     if not video:
         video = next((m['video'] for m in medias if m.get('video')), None)
 
-    video_cover = media_url(about.video_cover) if about.video_cover else None
+    video_cover_full = media_url(about.video_cover) if about.video_cover else None
+    video_cover = image_spec_url(about.video_cover_display) if about.video_cover else None
+    if not video_cover:
+        video_cover = video_cover_full
     if not video_cover:
         video_cover = first_image
 
@@ -1069,6 +1107,9 @@ def get_home_page_data(request, lang):
     ctx.update(_fresh_home_blog_context(lang))
     ctx.update(get_home_about_context(lang))
     ctx.update(_fresh_abroad_advantages_context(lang))
+    featured = ctx.get('blog_featured') or []
+    if featured and featured[0].get('cover'):
+        ctx['lcp_image_url'] = featured[0]['cover']
     return ctx
 
 

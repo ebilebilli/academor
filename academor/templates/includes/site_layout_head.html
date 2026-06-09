@@ -87,9 +87,14 @@
 <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
-<!-- Critical layout CSS — synchronous (render-blocking is acceptable) -->
-<link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet">
+<!-- Bootstrap — non-blocking preload; style.css stays synchronous (layout tokens) -->
+<link rel="preload" href="{% static 'assets/css/bootstrap.min.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}"></noscript>
 <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+
+{% if lcp_image_url %}
+<link rel="preload" as="image" href="{{ lcp_image_url }}" fetchpriority="high">
+{% endif %}
 <!-- Host Grotesk: sinxron yüklənmə — asinxron olanda ilk paint-də fallback şrift, sonra webfont gələndə
      navbar/body mətn ölçüsü və eni dəyişirdi (FOUT). -->
 <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">

@@ -2,6 +2,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from ckeditor.fields import RichTextField
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFit
 
 from projects.utils import SluggedModel
 
@@ -41,11 +43,23 @@ class AbroadModel(SluggedModel):
         upload_to='abroad/',
         verbose_name='Image'
     )
+    img_thumb = ImageSpecField(
+        source='img',
+        processors=[ResizeToFit(180, 180)],
+        format='WEBP',
+        options={'quality': 75},
+    )
     detail_page_img = models.ImageField(
         upload_to='abroad/detail/',
         null=True,
         blank=True,
         verbose_name='Detail page image'
+    )
+    detail_page_img_hero = ImageSpecField(
+        source='detail_page_img',
+        processors=[ResizeToFit(1280, 640)],
+        format='WEBP',
+        options={'quality': 80},
     )
     is_active = models.BooleanField(
         default=True,

@@ -496,6 +496,7 @@
                     {% if post.cover %}
                     <div class="hbh-featured-media">
                     <img src="{{ post.cover }}" alt="{{ post.name }}" class="hbh-card__img"
+                         {% if post.cover_srcset %}srcset="{{ post.cover_srcset }}" sizes="(max-width: 767px) 100vw, 50vw"{% endif %}
                          {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %} decoding="async">
                     </div>
                     {% else %}

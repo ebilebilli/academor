@@ -2,7 +2,7 @@
 {% load i18n static %}{% get_current_language as LANG_CODE %}
 <html lang="{{ LANG_CODE }}">
 <head>
-    {% include "includes/site_layout_head.html" with page_title=page_title %}
+    {% include "includes/site_layout_head.html" with page_title=page_title lcp_image_url=lcp_image_url %}
     <style>
         /* ── Sidebar ── */
         .blog-sidebar {
@@ -361,8 +361,9 @@
                         <div class="blog-detail__cover mb-4 wow fadeInUp" data-wow-delay="0.05s"
                              style="cursor:pointer;" onclick="lbOpen(0)">
                             <img src="{{ post.cover }}" alt="{{ post.name }}"
-                                 loading="eager" decoding="async"
-                                 data-lb-src="{{ post.cover }}"
+                                 {% if post.cover_srcset %}srcset="{{ post.cover_srcset }}" sizes="(max-width: 991px) 100vw, 66vw"{% endif %}
+                                 loading="eager" fetchpriority="high" decoding="async"
+                                 data-lb-src="{{ post.cover_full|default:post.cover }}"
                                  width="800" height="450">
                         </div>
                         {% endif %}

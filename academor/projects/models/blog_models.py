@@ -4,6 +4,8 @@ from django.core.validators import MaxValueValidator
 from django.utils.text import format_lazy
 from django.utils.translation import gettext_lazy as _
 from ckeditor.fields import RichTextField
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFit
 
 from projects.utils.abstract_models import SluggedModel
 
@@ -104,6 +106,18 @@ class BlogPostImage(models.Model):
         verbose_name='Blog post',
     )
     image = models.ImageField(upload_to='blog/', verbose_name='Image')
+    image_card = ImageSpecField(
+        source='image',
+        processors=[ResizeToFit(400, 400)],
+        format='WEBP',
+        options={'quality': 75},
+    )
+    image_large = ImageSpecField(
+        source='image',
+        processors=[ResizeToFit(800, 800)],
+        format='WEBP',
+        options={'quality': 80},
+    )
     order = models.PositiveSmallIntegerField(
         default=0,
         validators=[MaxValueValidator(5)],

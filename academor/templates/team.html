@@ -35,10 +35,10 @@
                         <a href="{% url 'projects:team-detail' member.slug %}" class="category-square-card course-alt-card__link d-flex flex-column text-decoration-none h-100">
                             <div class="ratio ratio-1x1 overflow-hidden course-alt-card__media">
                                 {% if member.image %}
-                                {% if forloop.counter > 4 %}
-                                {% academor_branded_lazy_img member.image member.name img_class='w-100 h-100' layout='cover' width='400' height='400' loading='lazy' %}
+                                {% if forloop.first %}
+                                <img src="{{ member.image_card|default:member.image }}" {% if member.image_srcset %}srcset="{{ member.image_srcset }}" sizes="(max-width: 600px) 96px, 253px"{% endif %} alt="{{ member.name }}" class="w-100 h-100" style="object-fit: cover;" loading="eager" fetchpriority="high" decoding="async" width="400" height="400">
                                 {% else %}
-                                <img src="{{ member.image }}" alt="{{ member.name }}" class="w-100 h-100" style="object-fit: cover;" loading="eager" fetchpriority="high" decoding="async" width="400" height="400">
+                                {% academor_branded_lazy_img member.image_card|default:member.image member.name img_class='w-100 h-100' layout='cover' width='400' height='400' srcset=member.image_srcset sizes='(max-width: 600px) 96px, 253px' loading='lazy' %}
                                 {% endif %}
                                 {% else %}
                                 <div class="w-100 h-100 bg-light d-flex align-items-center justify-content-center text-muted">

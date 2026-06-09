@@ -119,6 +119,7 @@ INSTALLED_APPS = [
 
     # Third Packages
     'django_cleanup.apps.CleanupConfig',
+    'imagekit',
     'ckeditor',
     'compressor',
 

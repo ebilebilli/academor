@@ -3,7 +3,7 @@
 <html lang="{{ LANG_CODE }}">
 
 <head>
-    {% include "includes/site_layout_head.html" %}
+    {% include "includes/site_layout_head.html" with lcp_image_url=lcp_image_url %}
     <style>
         /* Featured top strip — sizing / grid match homepage `hbh-card--featured` */
         .blog-featured-grid {
@@ -362,6 +362,7 @@
                                 src="{{ post.cover }}"
                                 alt="{{ post.name }}"
                                 class="blog-featured-card__img"
+                                {% if post.cover_srcset %}srcset="{{ post.cover_srcset }}"{% endif %}
                                 {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
                                 decoding="async"
                                 width="1200"
@@ -409,11 +410,7 @@
                         <a href="{% url 'projects:blog-detail' post.slug %}" class="blog-card__link text-decoration-none stretched-link">
                             <div class="blog-card__media ratio ratio-1x1">
                                 {% if post.cover %}
-                                    {% if forloop.counter > 6 %}
-                                    {% academor_branded_lazy_img post.cover post.name img_class='blog-card-cover-img' layout='cover' width='800' height='800' sizes='(max-width: 991.98px) 50vw, 33vw' loading='lazy' %}
-                                    {% else %}
-                                    <img src="{{ post.cover }}" alt="{{ post.name }}" class="blog-card-cover-img" loading="lazy" decoding="async" width="800" height="800" sizes="(max-width: 991.98px) 50vw, 33vw">
-                                    {% endif %}
+                                    {% academor_branded_lazy_img post.cover post.name img_class='blog-card-cover-img' layout='cover' width='800' height='800' srcset=post.cover_srcset sizes='(max-width: 991.98px) 50vw, 33vw' loading='lazy' %}
                                 {% else %}
                                 <div class="blog-card__media-ph">
                                     <i class="fa fa-newspaper fa-2x text-muted opacity-35"></i>

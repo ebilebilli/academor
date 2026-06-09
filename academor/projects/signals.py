@@ -174,20 +174,68 @@ def invalidate_university_cache(sender, instance, **kwargs):
 
 # University logos display at 80–192 px; 384 px covers 2× retina for the largest slot.
 UNIVERSITY_FLAG_MAX_PX = 384
+TEAM_IMAGE_MAX_PX = 1200
+BLOG_IMAGE_MAX_PX = 1600
+ABROAD_IMAGE_MAX_PX = 1600
+
+
+def _image_field_changed(instance, field_name):
+    """True when an ImageField upload is new or replaced."""
+    field = getattr(instance, field_name, None)
+    if not field:
+        return False
+    if not instance.pk:
+        return True
+    try:
+        old = instance.__class__.objects.only(field_name).get(pk=instance.pk)
+        return getattr(old, field_name).name != field.name
+    except instance.__class__.DoesNotExist:
+        return True
+
+
+@receiver(pre_save, sender=Team)
+def resize_team_image_on_upload(sender, instance, **kwargs):
+    if not instance.image or not _image_field_changed(instance, 'image'):
+        return
+    resize_image_field(
+        instance.image,
+        max_width=TEAM_IMAGE_MAX_PX,
+        max_height=TEAM_IMAGE_MAX_PX,
+    )
+
+
+@receiver(pre_save, sender=BlogPostImage)
+def resize_blog_image_on_upload(sender, instance, **kwargs):
+    if not instance.image or not _image_field_changed(instance, 'image'):
+        return
+    resize_image_field(
+        instance.image,
+        max_width=BLOG_IMAGE_MAX_PX,
+        max_height=BLOG_IMAGE_MAX_PX,
+    )
+
+
+@receiver(pre_save, sender=AbroadModel)
+def resize_abroad_images_on_upload(sender, instance, **kwargs):
+    if instance.img and _image_field_changed(instance, 'img'):
+        resize_image_field(
+            instance.img,
+            max_width=ABROAD_IMAGE_MAX_PX,
+            max_height=ABROAD_IMAGE_MAX_PX,
+        )
+    if instance.detail_page_img and _image_field_changed(instance, 'detail_page_img'):
+        resize_image_field(
+            instance.detail_page_img,
+            max_width=ABROAD_IMAGE_MAX_PX,
+            max_height=int(ABROAD_IMAGE_MAX_PX * 0.5),
+        )
 
 
 @receiver(pre_save, sender=University)
 def resize_university_flag_on_upload(sender, instance, **kwargs):
     """Downscale oversized flag uploads before they hit storage / the public site."""
-    if not instance.flag:
+    if not instance.flag or not _image_field_changed(instance, 'flag'):
         return
-    if instance.pk:
-        try:
-            old = University.objects.only('flag').get(pk=instance.pk)
-            if old.flag.name == instance.flag.name:
-                return
-        except University.DoesNotExist:
-            pass
     resize_image_field(
         instance.flag,
         max_width=UNIVERSITY_FLAG_MAX_PX,
