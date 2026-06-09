@@ -1,11 +1,11 @@
 {% load i18n %}
-<div class="abroad-advantages wow fadeInUp" data-wow-delay="0.12s" aria-labelledby="abroad-advantages-heading">
-    <h2 id="abroad-advantages-heading" class="abroad-advantages__title">
+<div class="abroad-advantages" aria-labelledby="abroad-advantages-heading">
+    <h2 id="abroad-advantages-heading" class="abroad-advantages__title scroll-reveal reveal reveal--fade">
         {% if abroad_advantages.title %}{{ abroad_advantages.title }}{% else %}{% trans "Advantages of Studying Abroad" %}{% endif %}
     </h2>
-    <ul class="abroad-advantages__grid list-unstyled mb-0">
+    <ul class="abroad-advantages__grid reveal-group list-unstyled mb-0">
         {% for item in abroad_advantages.items %}
-        <li class="abroad-advantages__item">
+        <li class="abroad-advantages__item scroll-reveal reveal reveal--fade">
             <span class="abroad-advantages__icon" aria-hidden="true">
                 {{ item.icon_svg }}
             </span>

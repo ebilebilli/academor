@@ -474,6 +474,7 @@ h1.animated, h2.animated, h3.animated,
     background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%) !important;
 }
 
+.back-to-top.is-visible,
 .back-to-top.back-to-top--visible {
     opacity: 1;
     visibility: visible;
@@ -488,6 +489,7 @@ h1.animated, h2.animated, h3.animated,
 
 /* Hover yalnız real mouse olan cihazlarda (touch-da ilişib qalmır) */
 @media (hover: hover) and (pointer: fine) {
+    .back-to-top.is-visible:hover,
     .back-to-top.back-to-top--visible:hover {
         transform: translate3d(0, -3px, 0) scale(1.03);
         background: var(--accent-hover) !important;
@@ -505,6 +507,7 @@ h1.animated, h2.animated, h3.animated,
     }
 }
 
+.back-to-top.is-visible:active,
 .back-to-top.back-to-top--visible:active {
     transform: translate3d(0, -1px, 0) scale(0.98);
 }
@@ -548,6 +551,7 @@ h1.animated, h2.animated, h3.animated,
         pointer-events: none;
     }
 
+    .back-to-top.is-visible,
     .back-to-top.back-to-top--visible {
         opacity: 1;
         visibility: visible;
@@ -798,19 +802,6 @@ h1.animated, h2.animated, h3.animated,
             0 8px 22px rgba(255, 84, 20, 0.32) !important;
     }
 
-    .navbar-light .nav-contact-mobile.nav-contact--static-hover:hover,
-    .navbar-light .nav-contact-mobile.nav-contact--static-hover:focus-visible {
-        transform: none;
-        box-shadow:
-            0 1px 0 rgba(255, 255, 255, 0.12) inset,
-            0 8px 22px rgba(255, 84, 20, 0.32) !important;
-    }
-
-    .navbar-light .nav-contact-mobile.nav-contact--static-hover:hover .nav-contact-mobile__icon,
-    .navbar-light .nav-contact-mobile.nav-contact--static-hover:focus-visible .nav-contact-mobile__icon {
-        transform: none;
-        background: rgba(255, 255, 255, 0.22);
-    }
 }
 
 @media (max-width: 991.98px) and (prefers-reduced-motion: reduce) {
@@ -871,23 +862,6 @@ h1.animated, h2.animated, h3.animated,
     border-color: var(--accent-hover) !important;
     color: #ffffff !important;
     box-shadow: none !important;
-    outline: 2px solid rgba(255, 255, 255, 0.55);
-    outline-offset: 2px;
-}
-
-/* Home page: navbar Contact keeps accent color on hover (no shift to accent-hover) */
-.navbar-light a.btn.btn-primary.nav-contact--static-hover:hover,
-.navbar-light a.btn.btn-primary.nav-contact--static-hover:focus:not(:focus-visible),
-.navbar-light a.btn.btn-primary.nav-contact--static-hover:active {
-    background-color: var(--accent) !important;
-    border-color: var(--accent) !important;
-    color: #ffffff !important;
-}
-
-.navbar-light a.btn.btn-primary.nav-contact--static-hover:focus-visible {
-    background-color: var(--accent) !important;
-    border-color: var(--accent) !important;
-    color: #ffffff !important;
     outline: 2px solid rgba(255, 255, 255, 0.55);
     outline-offset: 2px;
 }
@@ -1138,12 +1112,12 @@ h1.animated, h2.animated, h3.animated,
 }
 
 .scroll-progress {
-    position: absolute;
+    position: fixed;
+    top: 0;
     left: 0;
-    bottom: 0;
-    z-index: 2;
-    width: 100%;
-    height: 3px;
+    right: 0;
+    z-index: 9999;
+    height: 4px;
     background: transparent;
     pointer-events: none;
 }
@@ -1154,7 +1128,8 @@ h1.animated, h2.animated, h3.animated,
     transform-origin: 0 50%;
     transform: scaleX(0);
     background: linear-gradient(90deg, var(--accent) 0%, #ff8a5d 100%);
-    will-change: transform;
+    box-shadow: 0 0 12px rgba(255, 84, 20, 0.45);
+    transition: transform 0.1s linear;
 }
 
 @media (min-width: 992px) {
@@ -1302,7 +1277,8 @@ h1.animated, h2.animated, h3.animated,
 }
 
 .testimonial-swiper.swiper-initialized .testimonial-item,
-.testimonial-carousel-shell.is-revealed .testimonial-item {
+.testimonial-carousel-shell.is-revealed .testimonial-item,
+.testimonial-carousel-shell.is-visible .testimonial-item {
     opacity: 1 !important;
     transform: none !important;
 }
@@ -4710,10 +4686,25 @@ h1.animated, h2.animated, h3.animated,
 }
 
 .abroad-advantages__icon svg {
-    width: 1.15em;
-    height: 1.15em;
+    width: 22px;
+    height: 22px;
     display: block;
     flex-shrink: 0;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+.abroad-advantages__item.scroll-reveal.is-revealed,
+.abroad-advantages__item.scroll-reveal.is-visible {
+    transform: none;
+    will-change: auto;
+}
+
+.abroad-advantages__item.scroll-reveal.is-revealed:hover,
+.abroad-advantages__item.scroll-reveal.is-visible:hover,
+.abroad-advantages__item.scroll-reveal.is-revealed:focus-within,
+.abroad-advantages__item.scroll-reveal.is-visible:focus-within {
+    transform: translateY(-3px);
 }
 
 .abroad-advantages__item:hover .abroad-advantages__icon,
@@ -6981,28 +6972,71 @@ a.university-carousel-card:focus-visible .university-flag-card {
     height: 3px;
     bottom: -0.35rem;
 }
-/********** Scroll reveal (CSS transitions + scroll-reveal.js, single IO) **********/
+/********** Premium scroll reveal (scroll-reveal.js + IntersectionObserver) **********/
+html.reveal-pending .scroll-reveal,
+html.reveal-pending .reveal,
+html.reveal-pending [data-scroll-reveal],
 .scroll-reveal,
+.reveal,
 [data-scroll-reveal] {
     opacity: 0;
-    transform: translateY(30px);
-    will-change: transform;
+    transform: translateY(48px);
     transition:
-        opacity 0.6s ease-out,
-        transform 0.6s ease-out;
+        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
     transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
 }
 
+.reveal-group > .scroll-reveal:nth-child(1),
+.reveal-group > .reveal:nth-child(1) { transition-delay: 0ms; }
+.reveal-group > .scroll-reveal:nth-child(2),
+.reveal-group > .reveal:nth-child(2) { transition-delay: 80ms; }
+.reveal-group > .scroll-reveal:nth-child(3),
+.reveal-group > .reveal:nth-child(3) { transition-delay: 160ms; }
+.reveal-group > .scroll-reveal:nth-child(4),
+.reveal-group > .reveal:nth-child(4) { transition-delay: 240ms; }
+.reveal-group > .scroll-reveal:nth-child(5),
+.reveal-group > .reveal:nth-child(5) { transition-delay: 320ms; }
+.reveal-group > .scroll-reveal:nth-child(6),
+.reveal-group > .reveal:nth-child(6) { transition-delay: 400ms; }
+.reveal-group > .scroll-reveal:nth-child(7),
+.reveal-group > .reveal:nth-child(7) { transition-delay: 480ms; }
+.reveal-group > .scroll-reveal:nth-child(8),
+.reveal-group > .reveal:nth-child(8) { transition-delay: 560ms; }
+
+.scroll-reveal.reveal--up,
+.reveal.reveal--up { transform: translateY(48px); }
+.scroll-reveal.reveal--down,
+.reveal.reveal--down { transform: translateY(-48px); }
+.scroll-reveal.reveal--left,
+.reveal.reveal--left { transform: translateX(-48px); }
+.scroll-reveal.reveal--right,
+.reveal.reveal--right { transform: translateX(48px); }
+.scroll-reveal.reveal--scale,
+.reveal.reveal--scale { transform: scale(0.9); opacity: 0; }
+.scroll-reveal.reveal--fade,
+.reveal.reveal--fade { transform: none; }
+
 .scroll-reveal.is-revealed,
-[data-scroll-reveal].is-revealed {
+.scroll-reveal.is-visible,
+.reveal.is-visible,
+[data-scroll-reveal].is-revealed,
+[data-scroll-reveal].is-visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) translateX(0) scale(1);
     will-change: auto;
+}
+
+.navbar-light .navbar-nav .nav-link.is-active {
+    color: var(--accent) !important;
 }
 
 /* course-alt-card hover must beat scroll-reveal transform (home team + team listing page) */
 .course-alt-card.scroll-reveal.is-revealed:hover,
-.course-alt-card.scroll-reveal.is-revealed:focus-within {
+.course-alt-card.scroll-reveal.is-visible:hover,
+.course-alt-card.scroll-reveal.is-revealed:focus-within,
+.course-alt-card.scroll-reveal.is-visible:focus-within {
     transform: translateY(-8px) rotate(-0.6deg);
     box-shadow: 0 20px 42px rgba(16, 24, 40, 0.18);
     border-color: rgba(255, 84, 20, 0.45);
@@ -7011,6 +7045,7 @@ a.university-carousel-card:focus-visible .university-flag-card {
 
 @media (prefers-reduced-motion: reduce) {
     .scroll-reveal,
+    .reveal,
     [data-scroll-reveal] {
         opacity: 1 !important;
         transform: none !important;

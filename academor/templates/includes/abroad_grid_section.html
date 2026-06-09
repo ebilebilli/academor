@@ -241,7 +241,7 @@
     <div class="container-xxl">
     <div class="container">
         {% if abroad_items %}
-        <div class="row g-4" id="abroad-destinations">
+        <div class="row g-4 reveal-group" id="abroad-destinations">
             {% for item in abroad_items %}
             <div class="col-lg-4 col-md-6">
                 <a href="{% url 'projects:abroad-detail' slug=item.slug %}" class="abroad-card h-100 text-center d-block text-decoration-none">
