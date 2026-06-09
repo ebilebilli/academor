@@ -10,7 +10,7 @@
                     <a class="btn btn-link text-start d-block px-0 footer-quick-link" href="{% url 'projects:home-page' %}">{% trans "Home" %}</a>
                     <a class="btn btn-link text-start d-block px-0 footer-quick-link" href="{% url 'projects:about-page' %}">{% trans "About" %}</a>
                     <a class="btn btn-link text-start d-block px-0 footer-quick-link" href="{% url 'projects:blog-page' %}">{% trans "Blog" %}</a>
-                    <a class="btn btn-link text-start d-block px-0 footer-quick-link" href="{% url 'projects:abroad-page' %}">{% trans "Study in Abroad" %}</a>
+                    <a class="btn btn-link text-start d-block px-0 footer-quick-link" href="{% url 'projects:abroad-page' %}">{% trans "Study Abroad" %}</a>
                     <a class="btn btn-link text-start d-block px-0 footer-quick-link" href="{% url 'projects:courses-page' %}">{% trans "Courses" %}</a>
                     <a class="btn btn-link text-start d-block px-0 footer-quick-link" href="{% url 'projects:services-page' %}">{% trans "Services" %}</a>
                     <a class="btn btn-link text-start d-block px-0 footer-quick-link" href="{% url 'projects:team-page' %}">{% trans "Our Team" %}</a>
@@ -98,8 +98,8 @@
 
 <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top" role="button" tabindex="-1" aria-hidden="true" aria-label="{% trans 'Back to top' %}"><i class="bi bi-arrow-up" aria-hidden="true"></i></a>
 {% if footer_contact and footer_contact.whatsapp_number_me %}
-<a href="https://wa.me/{{ footer_contact.whatsapp_number_me }}" class="btn btn-lg btn-lg-square fab-whatsapp" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true" aria-label="{% trans 'WhatsApp' %}"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
+<a href="https://wa.me/{{ footer_contact.whatsapp_number_me }}" class="btn btn-lg btn-lg-square fab-whatsapp" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'WhatsApp' %}"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
 {% endif %}
 {% if footer_contact and footer_contact.instagram %}
-<a href="{{ footer_contact.instagram }}" class="btn btn-lg btn-lg-square fab-instagram" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+<a href="{{ footer_contact.instagram }}" class="btn btn-lg btn-lg-square fab-instagram" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'Instagram' %}"><i class="fab fa-instagram" aria-hidden="true"></i></a>
 {% endif %}

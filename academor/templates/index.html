@@ -12,6 +12,7 @@
     {% include "includes/site_navbar.html" %}
 
     <main id="main-content" class="home-page-main">
+    <h1 class="visually-hidden">{% if seo_home_title %}{{ seo_home_title }}{% else %}{% trans "Academor" %}{% endif %}</h1>
 
     <!-- Blog Hero (first visible section) -->
     {% include "includes/home_blog_hero.html" %}

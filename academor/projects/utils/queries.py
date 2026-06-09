@@ -13,10 +13,7 @@ from projects.utils.i18n import normalize_lang, resolve_public_language
 from projects.utils.media_cache_bust import media_url
 from projects.utils.seo_text import richtext_plain_text
 from projects.service_category_icons import resolve_service_category_icon
-from projects.study_abroad_advantage_icons import (
-    normalize_study_abroad_advantage_icon,
-    resolve_study_abroad_advantage_icon,
-)
+from projects.study_abroad_advantage_icons import build_static_study_abroad_advantages_block
 
 
 def _session_set_lang(session, lang):
@@ -497,36 +494,9 @@ def get_study_abroad_section(lang='az'):
     return _localized_value(obj, 'text', lang)
 
 
-def serialize_study_abroad_advantage(item, lang='az'):
-    if item is None:
-        return None
-    icon = normalize_study_abroad_advantage_icon(item.icon)
-    return {
-        'id': item.id,
-        'icon': icon,
-        'icon_svg': resolve_study_abroad_advantage_icon(icon),
-        'title': _localized_value(item, 'title', lang),
-    }
-
-
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
 def get_study_abroad_advantages_block(lang='az'):
-    section = StudyAbroadSection.objects.first()
-    if not section:
-        return None
-    title = (_localized_value(section, 'advantages_title', lang) or '').strip()
-    if not title:
-        title = _('Advantages of Studying Abroad')
-    items = [
-        serialize_study_abroad_advantage(row, lang)
-        for row in section.advantage_items.filter(is_active=True).order_by('order', 'id')
-    ]
-    if not title and not items:
-        return None
-    return {
-        'title': title,
-        'items': items,
-    }
+    return build_static_study_abroad_advantages_block(lang=lang)
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')

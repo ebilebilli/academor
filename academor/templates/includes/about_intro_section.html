@@ -7,14 +7,14 @@
                 {% include "includes/about_video_player.html" with home_about_block=home_about_block %}
                 {% elif show_about_video and about and about.video_cover %}
                 <div class="about-intro-image-card position-relative">
-                    <img class="about-intro-image img-fluid position-absolute w-100 h-100" src="{{ about.video_cover }}" alt="" width="800" height="600" loading="lazy" decoding="async">
+                    <img class="about-intro-image img-fluid position-absolute w-100 h-100" src="{{ about.video_cover }}" alt="{% trans 'About Academor' %}" width="800" height="600" loading="lazy" decoding="async">
                 </div>
                 {% else %}
                 <div class="about-intro-image-card position-relative">
                     {% if about and about.first_image %}
-                    <img class="about-intro-image img-fluid position-absolute w-100 h-100" src="{{ about.first_image }}" alt="" width="800" height="600" loading="lazy" decoding="async">
+                    <img class="about-intro-image img-fluid position-absolute w-100 h-100" src="{{ about.first_image }}" alt="{% trans 'About Academor' %}" width="800" height="600" loading="lazy" decoding="async">
                     {% else %}
-                    <img class="about-intro-image img-fluid position-absolute w-100 h-100" src="{% static 'assets/img/about.jpg' %}" alt="" width="800" height="600" loading="lazy" decoding="async">
+                    <img class="about-intro-image img-fluid position-absolute w-100 h-100" src="{% static 'assets/img/banner-landscape-1536x1024.webp' %}" alt="{% trans 'About Academor' %}" width="800" height="600" loading="lazy" decoding="async">
                     {% endif %}
                 </div>
                 {% endif %}

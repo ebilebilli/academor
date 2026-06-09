@@ -1,12 +1,14 @@
-"""Inline SVG icons for study-abroad advantage cards (no Font Awesome CDN dependency)."""
+"""Inline SVG icons + static copy for study-abroad advantage cards."""
 
+from django.utils import translation
 from django.utils.safestring import mark_safe
+from django.utils.translation import gettext as _
 
-# Keys: Font Awesome 5 class without style prefix (e.g. fa-certificate).
+# Keys: Font Awesome 5 class without style prefix (e.g. fa-graduation-cap).
 STUDY_ABROAD_ADVANTAGE_SVGS = {
-    'fa-certificate': (
+    'fa-graduation-cap': (
         '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">'
-        '<path fill="currentColor" d="M14 2H6a2 2 0 0 0-2 2v16l4-2 4 2 4-2 4 2V8l-6-6zm-1 2.5L18.5 10H15V4.5zM8 12h8v1.5H8V12zm0 3h6v1.5H8V15z"/>'
+        '<path fill="currentColor" d="M12 3 1 9l4 2.18V17l7 4 7-4v-5.82L23 9 12 3zm0 2.27 6.99 3.81L12 12.9 5.01 9.08 12 5.27zM7 11.18l5 2.73 5-2.73v3.82L12 17.73 7 15v-3.82z"/>'
         '</svg>'
     ),
     'fa-briefcase': (
@@ -14,24 +16,14 @@ STUDY_ABROAD_ADVANTAGE_SVGS = {
         '<path fill="currentColor" d="M10 2h4a2 2 0 0 1 2 2h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h3a2 2 0 0 1 2-2zm4 2h-4v2h4V4zM5 8v12h14V8H5zm3 3h8v2H8v-2z"/>'
         '</svg>'
     ),
-    'fa-language': (
+    'fa-comments': (
         '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">'
-        '<path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1 4.1A12.9 12.9 0 0 0 5.1 11H3.1a8 8 0 0 1 7.9-4.9zM3.1 13h2a12.9 12.9 0 0 0 5.9 4.9A8 8 0 0 1 3.1 13zm9.9 4.9A12.9 12.9 0 0 0 18.9 13h2a8 8 0 0 1-7.9 4.9zM20.9 11h-2a12.9 12.9 0 0 0-5.9-4.9A8 8 0 0 1 20.9 11zM12 6.5c1.4 1.6 2.3 3.4 2.6 5.5h-5.2c.3-2.1 1.2-3.9 2.6-5.5z"/>'
+        '<path fill="currentColor" d="M4 2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H8.83L5 20.83V17H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm14 5h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-2.83L15 20.83V18h-2a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2z"/>'
         '</svg>'
     ),
-    'fa-globe-americas': (
+    'fa-users': (
         '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">'
-        '<path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm7.9 9H16.8a15.5 15.5 0 0 0-1.2-4.7A8 8 0 0 1 19.9 11zM12 4c.9 1.2 1.6 2.7 2 4.5H10c.4-1.8 1.1-3.3 2-4.5zM8.4 6.3A15.5 15.5 0 0 0 7.2 11H4.1a8 8 0 0 1 4.3-4.7zM4.1 13h3.1c.3 1.7.9 3.2 1.7 4.5A8 8 0 0 1 4.1 13zm7.9 6.5c-.9-1.2-1.6-2.7-2-4.5h4c-.4 1.8-1.1 3.3-2 4.5zm3.6-4.5a15.5 15.5 0 0 0 1.2 4.5 8 8 0 0 1-4.3-4.5h3.1zm1.5 0H19.9a8 8 0 0 1-4.3 4.5c.8-1.3 1.4-2.8 1.7-4.5z"/>'
-        '</svg>'
-    ),
-    'fa-hand-holding-usd': (
-        '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">'
-        '<path fill="currentColor" d="M11.8 10.9c-2.3-.6-3-1.2-3-2.2 0-1.1 1-2 2.6-2 1.5 0 2.4.7 2.7 1.8l2.1-.6c-.5-1.8-2-3.2-4.8-3.2-2.9 0-4.9 1.7-4.9 4.1 0 2.4 1.6 3.5 4.3 4.1 2.5.6 3.2 1.4 3.2 2.5 0 .9-.8 1.9-2.7 1.9-2 0-3-.9-3.3-2.2l-2.2.5c.4 2.2 2.1 3.7 5.4 3.7 3.2 0 5.3-1.7 5.3-4.3.1-2.5-1.5-3.6-4.4-4.1zM4 11V4h3V2h10v2h3v7h-2V6H6v5H4zm14 9H6v-2h12v2z"/>'
-        '</svg>'
-    ),
-    'fa-passport': (
-        '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">'
-        '<path fill="currentColor" d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm2 4v2h2V8H6zm0 4v2h6v-2H6zm8-4v6h6V8h-6z"/>'
+        '<path fill="currentColor" d="M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zm7.5 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM2 19.5C2 16.5 5.5 15 9 15s7 1.5 7 4.5V21H2v-1.5zM15.5 15.8c2.1.6 4.5 2.1 4.5 5.2V21h6v-1.5c0-2.8-3.4-4.4-6-4.7-.8.5-1.8.9-3 .9s-2.2-.4-3-.9c-.5.1-1 .2-1.5.4z"/>'
         '</svg>'
     ),
 }
@@ -40,6 +32,14 @@ _DEFAULT_SVG = (
     '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">'
     '<path fill="currentColor" d="M12 2l2.4 7.4H22l-6 4.6 2.3 7-6.3-4.6L5.7 21l2.3-7-6-4.6h7.6L12 2z"/>'
     '</svg>'
+)
+
+# Static advantages row (home + /abroad/). msgid values must match locale django.po entries.
+STUDY_ABROAD_ADVANTAGE_STATIC_ITEMS = (
+    {'icon': 'fa-graduation-cap', 'title_msgid': 'International Diploma'},
+    {'icon': 'fa-briefcase', 'title_msgid': 'Career Opportunities'},
+    {'icon': 'fa-comments', 'title_msgid': 'Language Skills'},
+    {'icon': 'fa-users', 'title_msgid': 'Global Network'},
 )
 
 
@@ -64,3 +64,19 @@ def resolve_study_abroad_advantage_icon(icon: str = '') -> str:
     """Safe inline SVG markup for templates (mark_safe in serializer)."""
     key = normalize_study_abroad_advantage_icon(icon)
     return mark_safe(STUDY_ABROAD_ADVANTAGE_SVGS.get(key, _DEFAULT_SVG))
+
+
+def build_static_study_abroad_advantages_block(lang='az'):
+    """Return heading + four static advantage items for the given language."""
+    with translation.override(lang):
+        return {
+            'title': _('Advantages of Studying Abroad'),
+            'items': [
+                {
+                    'icon': row['icon'],
+                    'icon_svg': resolve_study_abroad_advantage_icon(row['icon']),
+                    'title': _(row['title_msgid']),
+                }
+                for row in STUDY_ABROAD_ADVANTAGE_STATIC_ITEMS
+            ],
+        }

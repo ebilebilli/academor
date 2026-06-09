@@ -1,11 +1,8 @@
 {% load i18n %}
-{% if abroad_advantages and abroad_advantages.items %}
 <div class="abroad-advantages wow fadeInUp" data-wow-delay="0.12s" aria-labelledby="abroad-advantages-heading">
-    {% if abroad_advantages.title %}
-    <h2 id="abroad-advantages-heading" class="abroad-advantages__title">{{ abroad_advantages.title }}</h2>
-    {% else %}
-    <h2 id="abroad-advantages-heading" class="abroad-advantages__title">{% trans "Advantages of Studying Abroad" %}</h2>
-    {% endif %}
+    <h2 id="abroad-advantages-heading" class="abroad-advantages__title">
+        {% if abroad_advantages.title %}{{ abroad_advantages.title }}{% else %}{% trans "Advantages of Studying Abroad" %}{% endif %}
+    </h2>
     <ul class="abroad-advantages__grid list-unstyled mb-0">
         {% for item in abroad_advantages.items %}
         <li class="abroad-advantages__item">
@@ -17,4 +14,3 @@
         {% endfor %}
     </ul>
 </div>
-{% endif %}

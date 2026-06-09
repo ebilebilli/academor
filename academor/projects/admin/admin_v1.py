@@ -567,28 +567,13 @@ class StudyAbroadSectionAdminForm(forms.ModelForm):
         }
 
 
-class StudyAbroadAdvantageInline(admin.TabularInline):
-    model = StudyAbroadAdvantage
-    extra = 0
-    fields = ('order', 'is_active', 'icon', 'title_az', 'title_en', 'title_ru')
-    ordering = ('order', 'id')
-
-
 @admin.register(StudyAbroadSection)
 class StudyAbroadSectionAdmin(admin.ModelAdmin):
     form = StudyAbroadSectionAdminForm
-    inlines = (StudyAbroadAdvantageInline,)
     fieldsets = (
         ('Azerbaijani', {'fields': ('text_az',)}),
         ('English', {'fields': ('text_en',)}),
         ('Русский', {'fields': ('text_ru',)}),
-        ('Advantages block', {
-            'fields': ('advantages_title_az', 'advantages_title_en', 'advantages_title_ru'),
-            'description': (
-                'Heading above the icon row on the study-abroad section (home + /abroad/). '
-                'Edit icons and labels in the table below.'
-            ),
-        }),
     )
 
     def has_add_permission(self, request):

@@ -342,9 +342,11 @@
     {% include "includes/site_spinner.html" %}
     {% include "includes/site_navbar.html" %}
 
+    <main id="main-content">
     <div class="container-fluid bg-primary mb-5 page-header page-header-hero-band"{% include "includes/page_header_dynamic_bg.html" %}></div>
 
     <div class="container-xxl py-5">
+        <h1 class="visually-hidden">{% trans "Blog" %}</h1>
         <div class="container">
 
             <!-- ── Featured Posts (on_top, max 2) ─────────────────────────── -->
@@ -443,6 +445,7 @@
 
         </div>
     </div>
+    </main>
 
     {% include "includes/site_footer.html" %}
     {% include "includes/site_scripts.html" %}

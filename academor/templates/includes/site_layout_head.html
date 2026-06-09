@@ -51,10 +51,13 @@
 {% endwith %}
 {% endif %}
 <meta property="og:url" content="{{ canonical_url }}">
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'assets/img/banner.webp' %}">
+<meta property="og:image:alt" content="Academor">
 <meta property="og:locale" content="{{ page_og_locale|default:seo_og_locale|default:'az_AZ' }}">
 <meta name="geo.region" content="{{ page_geo_region|default:seo_geo_region|default:'AZ' }}">
 <meta name="geo.placename" content="{{ page_geo_placename|default:seo_geo_placename|default:'Baku' }}">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'assets/img/banner.webp' %}">
 <meta name="twitter:title" content="{% if seo_route_url_name == 'home-page' %}{{ page_title|default:seo_home_title|default:'Academor' }}{% else %}{{ page_title|default:default_seo_title|default:'Academor' }}{% endif %}">
 {% if seo_route_url_name == 'home-page' %}
 {% with effective_description=page_description|default:seo_home_description %}

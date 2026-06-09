@@ -12,6 +12,18 @@ from django.core.files.base import ContentFile
 from PIL import Image, ImageOps
 
 
+def _restore_upload_bytes(field_file, raw: bytes) -> None:
+    """Put upload bytes back so Django can read them during model save."""
+    try:
+        field_file.seek(0)
+    except Exception:
+        field_file.save(
+            os.path.basename(field_file.name),
+            ContentFile(raw),
+            save=False,
+        )
+
+
 def resize_image_field(
     field_file,
     *,
@@ -31,18 +43,20 @@ def resize_image_field(
 
     try:
         field_file.open('rb')
-        img = Image.open(field_file)
-        img.load()
+        raw = field_file.read()
     except Exception:
         return False
-    finally:
-        try:
-            field_file.close()
-        except Exception:
-            pass
+
+    try:
+        img = Image.open(BytesIO(raw))
+        img.load()
+    except Exception:
+        _restore_upload_bytes(field_file, raw)
+        return False
 
     width, height = img.size
     if not force and width <= max_width and height <= max_height:
+        _restore_upload_bytes(field_file, raw)
         return False
 
     img = ImageOps.exif_transpose(img)

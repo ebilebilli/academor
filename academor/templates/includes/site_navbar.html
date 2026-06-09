@@ -5,7 +5,7 @@
     <a href="{% url 'projects:home-page' %}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
         <img src="{% static 'assets/img/new_logo.webp' %}" alt="Academor" class="site-logo" width="276" height="92" loading="eager" decoding="async">
     </a>
-    <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+    <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="{% trans 'Toggle navigation' %}">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
