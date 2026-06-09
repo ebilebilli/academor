@@ -16,7 +16,11 @@
                             <h1 class="abroad-hero__title">{% trans "Study Abroad — Your Global Education Journey" %}</h1>
                             {% endif %}
                             {% if abroad_intro_text %}
+                            {% if use_short_abroad_intro and abroad_intro_teaser %}
+                            <p class="abroad-hero__lead mb-0">{{ abroad_intro_teaser }}</p>
+                            {% else %}
                             <div class="abroad-hero__rich abroad-hero__lead">{{ abroad_intro_text|safe }}</div>
+                            {% endif %}
                             {% else %}
                             <p class="abroad-hero__lead">{% blocktrans trimmed %}Discover the world while you reach your education goals! We help students find the right universities, choose programs, prepare applications, and understand visa requirements. Gain international experience by studying in leading countries such as the USA, Canada, the United Kingdom, France, or Ireland, and build a successful future. Start your journey today.{% endblocktrans %}</p>
                             {% endif %}

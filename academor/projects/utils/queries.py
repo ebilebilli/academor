@@ -879,6 +879,15 @@ def _about_plain_excerpt(html, max_chars=300):
     return (cut or text[:max_chars]).rstrip(',;—') + '…'
 
 
+def _richtext_ratio_excerpt(html, ratio=0.5):
+    """Plain teaser at a fraction of full rich-text length (e.g. home page hero)."""
+    text = richtext_plain_text(html)
+    if not text:
+        return ''
+    max_chars = max(1, int(len(text) * ratio))
+    return _about_plain_excerpt(html, max_chars=max_chars)
+
+
 def serialize_about_why_item(item, lang='az'):
     return {
         'id': item.id,
@@ -1076,6 +1085,8 @@ def _get_home_page_data_cached(request, lang):
                 'body': motto_dict['body'],
             })
 
+    abroad_intro_text = get_study_abroad_section(lang=lang)
+
     return {
         'use_h2_for_section_titles': True,
         'projects': [],
@@ -1095,7 +1106,8 @@ def _get_home_page_data_cached(request, lang):
             lang=lang, is_active=True, show_on_main_page=True
         ),
         'universities': get_serialized_universities(is_active=True),
-        'abroad_intro_text': get_study_abroad_section(lang=lang),
+        'abroad_intro_text': abroad_intro_text,
+        'abroad_intro_teaser': _richtext_ratio_excerpt(abroad_intro_text, ratio=0.5),
         'team': [serialize_team_member(m, lang=lang) for m in get_team_members()],
         'reviews': [serialize_review(r) for r in get_reviews()],
         'site_faqs': get_serialized_site_faq_entries(lang=lang, is_active=True),
