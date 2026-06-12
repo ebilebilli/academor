@@ -14,6 +14,12 @@ from projects.utils.media_cache_bust import media_url, image_spec_url, build_src
 from projects.utils.seo_text import richtext_plain_text
 from projects.service_category_icons import resolve_service_category_icon
 from projects.study_abroad_advantage_icons import build_static_study_abroad_advantages_block
+from projects.utils.pricing import (
+    apply_percent_discount,
+    format_decimal_price,
+    get_active_sale_discounts_by_service_id,
+    get_sale_percent_for_service,
+)
 
 
 def _session_set_lang(session, lang):
@@ -263,6 +269,71 @@ def _fresh_abroad_advantages_context(lang):
     return {
         'abroad_advantages': get_study_abroad_advantages_block(lang=lang),
     }
+
+
+def _sale_promo_image(sale):
+    prefetched = getattr(sale, '_prefetched_objects_cache', {}).get('medias')
+    if prefetched is not None:
+        medias = list(prefetched)
+    else:
+        medias = list(sale.medias.exclude(image='').order_by('id'))
+    for media in medias:
+        if media.image:
+            return media_url(media.image)
+    return None
+
+
+def serialize_sale(sale, lang='az'):
+    services = [
+        service for service in sale.services.all()
+        if service.is_active
+    ]
+    desc_html = _localized_value(sale, 'description', lang) or None
+    desc_plain = richtext_plain_text(desc_html) if desc_html else ''
+    name = _localized_value(sale, 'name', lang)
+    return {
+        'id': sale.id,
+        'name': name,
+        'description': desc_html,
+        'description_plain': desc_plain or None,
+        'percent': sale.percent,
+        'apply_to_service_prices': sale.apply_to_service_prices,
+        'image': _sale_promo_image(sale),
+        'image_alt': name or _('Special offer'),
+        'service_count': len(services),
+        'services': [
+            {
+                'slug': service.slug,
+                'name': _service_category_display_name(service, lang),
+            }
+            for service in services
+        ],
+    }
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_serialized_active_sales(lang='az'):
+    """Home sale cards — invalidated via Sale signals (and global bump on Service changes)."""
+    sales = (
+        Sale.objects.filter(is_active=True)
+        .prefetch_related(
+            Prefetch(
+                'services',
+                queryset=Service.objects.filter(is_active=True).order_by('order', 'id'),
+            ),
+            Prefetch(
+                'medias',
+                queryset=Media.objects.exclude(image='').order_by('id'),
+            ),
+        )
+        .order_by('-created_at')
+    )
+    return [serialize_sale(sale, lang=lang) for sale in sales]
+
+
+def get_home_sales_context(lang='az'):
+    """Homepage sale section — cached per language, merged after the page blob."""
+    return {'sales': get_serialized_active_sales(lang)}
 
 
 def _fresh_home_blog_context(lang):
@@ -743,12 +814,13 @@ def price_package_display_name(package, lang='az'):
     return _price_package_display_name(package, lang)
 
 
-def serialize_price_package(package, lang='az'):
-    price = package.price
-    if price == price.to_integral_value():
-        price_display = str(int(price))
-    else:
-        price_display = str(price).rstrip('0').rstrip('.')
+def serialize_price_package(package, lang='az', sale_percent=None):
+    original_price = package.price
+    price = original_price
+    has_discount = bool(sale_percent)
+    if has_discount:
+        price = apply_percent_discount(original_price, sale_percent)
+
     return {
         'id': package.id,
         'name': _price_package_display_name(package, lang),
@@ -756,7 +828,11 @@ def serialize_price_package(package, lang='az'):
         'lesson_count': package.lesson_count,
         'lesson_minutes': package.lesson_minutes,
         'price': price,
-        'price_display': price_display,
+        'price_display': format_decimal_price(price),
+        'original_price': original_price if has_discount else None,
+        'original_price_display': format_decimal_price(original_price) if has_discount else None,
+        'discount_percent': sale_percent if has_discount else None,
+        'has_discount': has_discount,
     }
 
 
@@ -778,7 +854,10 @@ def _service_category_display_name(category, lang='az'):
     return ''
 
 
-def serialize_project_category(category, lang='az'):
+def serialize_project_category(category, lang='az', discounts_map=None):
+    if discounts_map is None:
+        discounts_map = get_active_sale_discounts_by_service_id()
+
     desc_field = get_localized_field_name('description', lang)
     first_image = None
     for media in category.medias.all():
@@ -800,6 +879,11 @@ def serialize_project_category(category, lang='az'):
     elif category.price and category.price > 0:
         min_price = category.price
 
+    sale_percent = get_sale_percent_for_service(category.id, discounts_map)
+    original_min_price = min_price
+    if min_price is not None and sale_percent:
+        min_price = apply_percent_discount(min_price, sale_percent)
+
     return {
         'id': category.id,
         'slug': category.slug,
@@ -811,6 +895,13 @@ def serialize_project_category(category, lang='az'):
         'image': first_image,
         'description_html': raw_desc or '',
         'price': int(min_price) if min_price is not None and min_price == int(min_price) else min_price,
+        'original_price': (
+            int(original_min_price)
+            if sale_percent and original_min_price is not None and original_min_price == int(original_min_price)
+            else original_min_price if sale_percent else None
+        ),
+        'discount_percent': sale_percent,
+        'has_discount': bool(sale_percent and min_price is not None),
         'has_payment': bool(active_packages),
     }
 
@@ -845,8 +936,10 @@ def serialize_project_category_detail(category, lang='az'):
     data['has_certificate'] = category.has_certificate
     data['is_online'] = category.is_online
     data['is_offline'] = category.is_offline
+    discounts_map = get_active_sale_discounts_by_service_id()
+    sale_percent = get_sale_percent_for_service(category.id, discounts_map)
     packages = [
-        serialize_price_package(p, lang)
+        serialize_price_package(p, lang, sale_percent=sale_percent)
         for p in category.price_packages.filter(is_active=True, price__gt=0).order_by('order', 'id')
     ]
     data['price_packages'] = packages
@@ -1117,6 +1210,7 @@ def _get_home_page_data_cached(request, lang):
 def get_home_page_data(request, lang):
     ctx = _get_home_page_data_cached(request, lang)
     ctx.update(_fresh_home_blog_context(lang))
+    ctx.update(get_home_sales_context(lang))
     ctx.update(get_home_about_context(lang))
     ctx.update(_fresh_abroad_advantages_context(lang))
     featured = ctx.get('blog_featured') or []

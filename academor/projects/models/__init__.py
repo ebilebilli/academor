@@ -15,3 +15,4 @@ from .appeal_models import ContactInquiry
 from .motto_models import Tagline
 from .faq_models import SiteFaqEntry
 from .blog_models import BlogPost, BlogPostImage
+from .sale_models import Sale

@@ -41,9 +41,18 @@
                 >
                 <div class="course-pay-card__header">
                     <h3 class="course-pay-card__name h6 mb-0">{{ pkg.name }}</h3>
+                    {% if pkg.has_discount %}
+                    <span class="course-pay-card__badge badge rounded-pill">-{{ pkg.discount_percent }}%</span>
+                    {% endif %}
                 </div>
 
                 <p class="course-pay-card__price mb-0">
+                    {% if pkg.has_discount %}
+                    <span class="course-pay-card__original">
+                        <span class="course-pay-card__original-amount">{{ pkg.original_price_display }}</span>
+                        <span class="course-pay-card__original-currency">AZN</span>
+                    </span>
+                    {% endif %}
                     <span class="course-pay-card__amount">{{ pkg.price_display }}</span>
                     <span class="course-pay-card__currency">AZN</span>
                 </p>

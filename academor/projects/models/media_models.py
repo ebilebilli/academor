@@ -25,6 +25,14 @@ class Media(models.Model):
         blank=True,
         verbose_name='Service'
     )
+    sale = models.ForeignKey(
+        'Sale',
+        related_name='medias',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        verbose_name='Sale',
+    )
     image = models.ImageField(
         upload_to='images/',
         verbose_name='Image'

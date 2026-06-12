@@ -169,7 +169,6 @@
         id="course-pay"
         data-default-index="{{ default_package_index|default:0 }}"
         aria-labelledby="course-detail-payment-heading"
-        {% if payment_turnstile_enabled %}data-turnstile-site-key="{{ turnstile_site_key }}"{% endif %}
     >
         <div class="container-fluid px-3 px-md-4 px-lg-5">
             <div class="course-detail-payment-section__inner wow fadeInUp" data-wow-delay="0.1s">

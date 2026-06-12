@@ -8,7 +8,6 @@
     aria-hidden="true"
     data-pay-modal
     data-open-on-load="{% if payment_form.errors %}true{% else %}false{% endif %}"
-    {% if payment_turnstile_enabled %}data-turnstile-site-key="{{ turnstile_site_key }}"{% endif %}
 >
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content border-0 rounded-4 overflow-hidden shadow-lg course-pay-modal__content">
@@ -69,10 +68,6 @@
                         <div class="text-danger small mt-1 js-field-error" data-server-error>{{ payment_form.buyer_phone.errors.0 }}</div>
                         {% endif %}
                     </div>
-
-                    {% if payment_turnstile_enabled %}
-                    {% include "includes/turnstile_widget.html" with turnstile_enabled=payment_turnstile_enabled turnstile_defer_render=True turnstile_widget_id="course-pay-turnstile" %}
-                    {% endif %}
 
                     <button type="submit" class="btn btn-primary rounded-pill px-4 fw-semibold w-100" id="course-pay-submit">
                         <i class="fas fa-lock me-2 small" aria-hidden="true"></i>

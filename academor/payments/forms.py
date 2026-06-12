@@ -1,16 +1,13 @@
 from django import forms
-from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from projects.forms.turnstile_mixin import TurnstileFormMixin
 from projects.utils.normalize_phone_number import validate_phone_number
-from projects.utils.turnstile import is_turnstile_configured
 
 _FIELD_CLASS = 'form-control form-control-sm'
 
 
-class CoursePaymentForm(TurnstileFormMixin, forms.Form):
+class CoursePaymentForm(forms.Form):
     buyer_name = forms.CharField(
         max_length=255,
         required=True,
@@ -50,13 +47,8 @@ class CoursePaymentForm(TurnstileFormMixin, forms.Form):
     )
 
     def __init__(self, *args, request=None, **kwargs):
-        super().__init__(*args, request=request, **kwargs)
-
-    def turnstile_required(self):
-        return bool(
-            getattr(settings, 'PAYMENT_TURNSTILE_ENABLED', False)
-            and is_turnstile_configured()
-        )
+        self._request = request
+        super().__init__(*args, **kwargs)
 
     def clean(self):
         cleaned_data = super().clean()

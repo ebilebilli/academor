@@ -5,6 +5,10 @@ from decimal import Decimal
 from django.utils.translation import gettext as _, get_language
 
 from projects.models import CoursePricePackage, Service
+from projects.utils.pricing import (
+    fetch_active_sale_discounts_by_service_id,
+    package_payable_amount,
+)
 from projects.utils.queries import (
     _service_category_display_name,
     get_active_project_category_by_slug,
@@ -75,7 +79,9 @@ def course_payment_description(
 
 
 def package_amount(package: CoursePricePackage) -> Decimal:
-    return Decimal(package.price)
+    """Payable total for checkout — always uses a fresh sale discount lookup."""
+    discounts_map = fetch_active_sale_discounts_by_service_id()
+    return package_payable_amount(package, discounts_map=discounts_map)
 
 
 def default_price_package_index(packages, preferred_package_id=None) -> int:

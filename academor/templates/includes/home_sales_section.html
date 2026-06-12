@@ -1,0 +1,267 @@
+{% load i18n %}
+{% if sales %}
+<section id="home-sales" class="home-sales-section" aria-labelledby="home-sales-heading">
+<style>
+.home-sales-section {
+    position: relative;
+    background-color: var(--site-surface, #f7f9fb);
+    overflow: hidden;
+}
+.home-sales-section__inner {
+    position: relative;
+    z-index: 1;
+    padding: clamp(2.25rem, 5vw, 3.25rem) 0 clamp(2.5rem, 6vw, 3.5rem);
+}
+.home-sales-section__header {
+    margin-bottom: clamp(1.35rem, 3vw, 1.85rem);
+}
+.home-sales-section__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin: 0 0 0.35rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent, #ff5414);
+}
+.home-sales-section__eyebrow::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.75;
+}
+.home-sales-section__title {
+    margin: 0;
+    font-size: clamp(1.45rem, 3vw, 2rem);
+    font-weight: 800;
+    color: var(--bs-primary, #00313d);
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+}
+.home-sales-section__grid {
+    display: grid;
+    gap: clamp(1rem, 2.5vw, 1.35rem);
+    width: 100%;
+    max-width: 32rem;
+    margin-inline: auto;
+}
+
+.sale-card {
+    position: relative;
+    display: block;
+    width: 100%;
+    min-height: clamp(280px, 42vw, 420px);
+    border-radius: 18px;
+    overflow: hidden;
+    background: var(--bs-primary, #00313d);
+    box-shadow:
+        0 10px 28px rgba(0, 49, 61, 0.16),
+        0 0 0 2px rgba(0, 49, 61, 0.12);
+    transition: box-shadow 0.35s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    backface-visibility: hidden;
+    transform: translateZ(0);
+}
+.sale-card__media {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0e5060, #00313d);
+}
+.sale-card__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    transform: scale(1);
+    transition: transform 0.55s ease;
+    backface-visibility: hidden;
+}
+.sale-card__no-img {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background:
+        radial-gradient(circle at 85% 15%, rgba(255, 84, 20, 0.22) 0%, transparent 42%),
+        linear-gradient(135deg, #0e5060 0%, #00313d 100%);
+}
+.sale-card__no-img i {
+    font-size: 3rem;
+    color: rgba(255, 255, 255, 0.18);
+}
+.sale-card__shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 49, 61, 0.68) 0%,
+        rgba(0, 49, 61, 0.42) 55%,
+        rgba(0, 49, 61, 0.18) 100%
+    );
+    pointer-events: none;
+}
+.sale-card__hover-tint {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: var(--bs-primary, #00313d);
+    opacity: 0.42;
+    pointer-events: none;
+}
+.sale-card__badge {
+    position: absolute;
+    top: clamp(0.85rem, 2.5vw, 1.15rem);
+    right: clamp(0.85rem, 2.5vw, 1.15rem);
+    z-index: 4;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 4.35rem;
+    min-height: 4.35rem;
+    padding: 0.45rem 0.55rem;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #ff6b2e 0%, var(--accent, #ff5414) 48%, #e84a0a 100%);
+    color: #fff;
+    font-weight: 900;
+    font-size: 1.28rem;
+    line-height: 1;
+    border: 3px solid #fff;
+    box-shadow:
+        0 0 0 2px rgba(255, 84, 20, 0.45),
+        0 8px 22px rgba(255, 84, 20, 0.55),
+        0 3px 10px rgba(0, 0, 0, 0.28);
+    transform: rotate(-8deg);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.sale-card__badge small {
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+.sale-card__content {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 0.55rem;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    padding-right: 5.25rem;
+    pointer-events: none;
+}
+.sale-card__name {
+    margin: 0;
+    min-width: 0;
+    width: 100%;
+    max-width: calc(100% - 4.5rem);
+    font-size: clamp(1.15rem, 2.4vw, 1.65rem);
+    font-weight: 800;
+    line-height: 1.22;
+    letter-spacing: -0.03em;
+    color: #fff;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
+    word-break: break-word;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+.sale-card__desc {
+    margin: 0;
+    width: 100%;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.9);
+}
+.sale-card__desc--rich > *:first-child { margin-top: 0; }
+.sale-card__desc--rich > *:last-child { margin-bottom: 0; }
+.sale-card__desc--rich p { margin: 0 0 0.35rem; }
+.sale-card__desc--rich ul,
+.sale-card__desc--rich ol {
+    margin: 0 0 0.35rem;
+    padding-left: 1.1rem;
+}
+.sale-card__desc--rich li { margin-bottom: 0.1rem; }
+.sale-card__desc--rich strong { color: #fff; }
+
+@media (hover: hover) and (pointer: fine) {
+    .sale-card:hover {
+        transform: translateY(-4px);
+        box-shadow:
+            0 18px 40px rgba(0, 49, 61, 0.24),
+            0 0 0 2px rgba(0, 49, 61, 0.2);
+    }
+    .sale-card:hover .sale-card__img {
+        transform: scale(1.05);
+    }
+    .sale-card:hover .sale-card__badge {
+        transform: rotate(0deg) scale(1.05);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sale-card,
+    .sale-card__img,
+    .sale-card__shade,
+    .sale-card__badge {
+        transition: none;
+    }
+}
+</style>
+
+<div class="home-sales-section__inner">
+    <div class="container-xxl">
+        <div class="container">
+            <header class="home-sales-section__header wow fadeInUp" data-wow-delay="0.05s">
+                <p class="home-sales-section__eyebrow">{% trans "Promotions" %}</p>
+                <h2 id="home-sales-heading" class="home-sales-section__title">{% trans "Special offers" %}</h2>
+            </header>
+
+            <div class="home-sales-section__grid wow fadeInUp" data-wow-delay="0.1s">
+                {% for sale in sales %}
+                <article class="sale-card">
+                    <div class="sale-card__media">
+                        {% if sale.image %}
+                        <img src="{{ sale.image }}" alt="{{ sale.image_alt }}" class="sale-card__img" width="1200" height="675" loading="lazy" decoding="async">
+                        {% else %}
+                        <div class="sale-card__no-img" aria-hidden="true">
+                            <i class="fas fa-percent"></i>
+                        </div>
+                        {% endif %}
+                        <div class="sale-card__shade" aria-hidden="true"></div>
+                        <div class="sale-card__hover-tint" aria-hidden="true"></div>
+                    </div>
+                    <div class="sale-card__badge" aria-label="{% blocktrans with percent=sale.percent %}Discount {{ percent }} percent{% endblocktrans %}">
+                        -{{ sale.percent }}<small>%</small>
+                    </div>
+                    <div class="sale-card__content">
+                        <h3 class="sale-card__name">{{ sale.name }}</h3>
+                        {% if sale.description %}
+                        <div class="sale-card__desc sale-card__desc--rich">{{ sale.description|safe }}</div>
+                        {% elif sale.description_plain %}
+                        <p class="sale-card__desc">{{ sale.description_plain }}</p>
+                        {% endif %}
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+{% endif %}

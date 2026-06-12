@@ -141,6 +141,7 @@ def get_token():
     global _token, _token_expiry
 
     if not _configured():
+        logger.warning('United Payment not configured (missing UNITED_PAYMENT_* env vars)')
         return {
             'ok': False,
             'error': _('Payment system is not configured (UNITED_PAYMENT_*).'),
@@ -168,14 +169,17 @@ def get_token():
 
     data = _parse_json(response)
     if not response.ok:
+        error = data.get('message') or data.get('error') or f'HTTP {response.status_code}'
+        logger.warning('United Payment auth failed status=%s error=%s', response.status_code, error)
         return {
             'ok': False,
-            'error': data.get('message') or data.get('error') or f'HTTP {response.status_code}',
+            'error': error,
             'detail': data,
         }
 
     token = _extract_token(data)
     if not token:
+        logger.warning('United Payment auth missing token response=%s', data)
         return {'ok': False, 'error': _('JWT token was not received.'), 'detail': data}
 
     _token = token
@@ -195,6 +199,7 @@ def create_transaction(
 ):
     token_result = get_token()
     if not token_result.get('ok'):
+        logger.warning('United Payment create_transaction skipped: %s', token_result.get('error'))
         return token_result
 
     url = f"{settings.UNITED_PAYMENT_BASE_URL.rstrip('/')}/transactions/checkout"
@@ -224,15 +229,30 @@ def create_transaction(
 
     data = _parse_json(response)
     if not response.ok:
+        error = data.get('message') or data.get('error') or f'HTTP {response.status_code}'
+        logger.warning(
+            'United Payment checkout failed status=%s client_order_id=%s amount=%s error=%s detail=%s',
+            response.status_code,
+            client_order_id,
+            amount,
+            error,
+            data,
+        )
         return {
             'ok': False,
-            'error': data.get('message') or data.get('error') or f'HTTP {response.status_code}',
+            'error': error,
             'detail': data,
         }
 
     payment_url = _extract_payment_url(data)
     transaction_id = _extract_transaction_id(data)
     if not payment_url or not transaction_id:
+        logger.warning(
+            'United Payment checkout incomplete client_order_id=%s amount=%s response=%s',
+            client_order_id,
+            amount,
+            data,
+        )
         return {
             'ok': False,
             'error': _('Payment link or transaction ID was not received.'),

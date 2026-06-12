@@ -88,9 +88,7 @@
                 return;
             }
             form.querySelectorAll('.js-field-error').forEach(function (node) {
-                if (!node.hasAttribute('data-server-error')) {
-                    node.remove();
-                }
+                node.remove();
             });
             form.querySelectorAll('.course-pay-modal__field').forEach(function (wrap) {
                 wrap.classList.remove('is-invalid');
@@ -222,31 +220,6 @@
                 submitLabel.textContent = loading
                     ? (form && form.getAttribute('data-msg-redirecting')) || '…'
                     : defaultSubmitText;
-            }
-        }
-
-        function resetTurnstile() {
-            if (!form || !window.turnstile) {
-                return;
-            }
-            var tsWidget = form.querySelector('.cf-turnstile');
-            if (tsWidget) {
-                try {
-                    turnstile.reset(tsWidget);
-                } catch (err) {
-                    /* ignore */
-                }
-            }
-            var deferred = form.querySelector('[data-turnstile-deferred]');
-            if (deferred) {
-                var widgetId = deferred.getAttribute('data-turnstile-widget-id');
-                if (widgetId) {
-                    try {
-                        turnstile.reset(widgetId);
-                    } catch (err) {
-                        /* ignore */
-                    }
-                }
             }
         }
 
@@ -401,6 +374,15 @@
 
             var fd = new FormData(form);
             var token = form.querySelector('[name=csrfmiddlewaretoken]');
+            if (window.console && console.info) {
+                console.info('[course-pay] submit', {
+                    action: form.action,
+                    price_package_id: fd.get('price_package_id'),
+                    buyer_name: fd.get('buyer_name'),
+                    buyer_email: fd.get('buyer_email'),
+                    buyer_phone: fd.get('buyer_phone'),
+                });
+            }
             setLoading(true);
 
             fetch(form.action, {
@@ -424,31 +406,65 @@
                     });
                 })
                 .then(function (res) {
+                    if (window.console && console.info) {
+                        console.info('[course-pay] response', {
+                            ok: res.ok,
+                            data: res.data,
+                        });
+                    }
+
                     if (res.data && res.data.success && res.data.redirect_url) {
                         window.location.href = res.data.redirect_url;
                         return;
                     }
 
-                    var msg =
-                        (res.data && res.data.message) ||
-                        form.getAttribute('data-msg-generic') ||
-                        '';
-                    if (res.data && res.data.errors) {
+                    if (!res.data) {
+                        openPayModal();
+                        showAlert(
+                            'danger',
+                            form.getAttribute('data-msg-network') ||
+                                'Network error.',
+                            'modal'
+                        );
+                        setLoading(false);
+                        return;
+                    }
+
+                    var msg = res.data.message || '';
+                    if (
+                        !msg &&
+                        res.data.errors &&
+                        res.data.errors.__all__ &&
+                        res.data.errors.__all__[0]
+                    ) {
+                        msg = res.data.errors.__all__[0];
+                    }
+                    if (res.data.errors) {
                         var fields = Object.keys(res.data.errors);
                         if (!msg && fields.length) {
-                            var first = res.data.errors[fields[0]];
-                            msg = first && first[0] ? first[0] : msg;
+                            var firstKey = fields[0];
+                            if (firstKey !== '__all__') {
+                                var first = res.data.errors[firstKey];
+                                msg = first && first[0] ? first[0] : msg;
+                            }
                         }
                         fields.forEach(function (field) {
+                            if (field === '__all__') {
+                                return;
+                            }
                             var list = res.data.errors[field];
                             if (list && list[0]) {
                                 setFieldError(field, list[0]);
                             }
                         });
                     }
+                    if (!msg) {
+                        msg =
+                            form.getAttribute('data-msg-generic') ||
+                            'Please correct the errors in the form.';
+                    }
                     openPayModal();
                     showAlert('danger', msg, 'modal');
-                    resetTurnstile();
                     setLoading(false);
                 })
                 .catch(function () {
@@ -459,7 +475,6 @@
                             'Network error.',
                         'modal'
                     );
-                    resetTurnstile();
                     setLoading(false);
                 });
         });

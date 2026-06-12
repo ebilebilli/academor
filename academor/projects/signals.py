@@ -10,7 +10,7 @@ Keep in sync with queries.py (add a receiver when a new cached query reads a mod
   CoursePricePackage (→ Service: packages in course list/detail + payments catalog),
   AbroadModel, StudyAbroadSection, StudyAbroadAdvantage, University,
   Team, Review, BlogPost, BlogPostImage, About, AboutWhyItem, Contact, Media, Tagline, SiteFaqEntry,
-  Test, Question, Option
+  Test, Question, Option, Sale
 
   Course detail (`course-detail.html`): `get_active_project_category_by_slug` + trainers M2M — invalidate
   `Service` on save/delete and on `instructors` M2M changes; `CoursePricePackage` save/delete
@@ -22,6 +22,10 @@ Keep in sync with queries.py (add a receiver when a new cached query reads a mod
   Study-abroad advantages row uses `_fresh_abroad_advantages_context()` merged into home + `/abroad/` views
   (`@cached_query` on `get_study_abroad_advantages_block`, not inside the page blob).
   Homepage About block uses `get_home_about_context()` (`@cached_query`, per lang; not stored inside the page blob).
+  Homepage sale cards use `get_home_sales_context()` → `get_serialized_active_sales(lang)` (`@cached_query`, per lang).
+  Sale discounts on course prices: `projects.utils.pricing.get_active_sale_discounts_by_service_id` (`@cached_query`);
+  embedded in `serialize_project_category` / `serialize_price_package` inside cached page/query blobs — invalidate `Sale`
+  (and `Sale.services` M2M) on promo edits; `Service` / `CoursePricePackage` signals also bump the global version.
 
   Blog index (`projects:blog-page`, blog.html): `get_blog_page_data()` uses `@cached_page_data(CACHE_TIMEOUT_MEDIUM)`
   and calls cached `get_blog_posts(is_active=True)` (featured = `on_top`[:2], rest = listing). Invalidate via
@@ -58,6 +62,7 @@ from projects.models import (
     Test,
     Question,
     Option,
+    Sale,
 )
 
 
@@ -133,6 +138,7 @@ def invalidate_service_cache(sender, instance, **kwargs):
     Home / courses list / nav: cached `get_project_categories` and page blobs
     (`_get_home_page_data_cached`, `get_project_list_data`, …) embed serialized
     categories including `icon` from `card_icon` + slug hints.
+    Also refreshes `get_serialized_active_sales` (linked course names/slugs on sale cards).
     """
     _invalidate_on_commit('Service')
 
@@ -150,7 +156,8 @@ def invalidate_service_instructors_m2m(sender, instance, **kwargs):
 def invalidate_course_price_package_cache(sender, instance, **kwargs):
     """
     Price packages are prefetched on cached `get_project_categories` /
-    `get_active_project_category_by_slug` and serialized into course cards/detail.
+    `get_active_project_category_by_slug` and serialized into course cards/detail
+    (incl. Sale discount amounts when `apply_to_service_prices` is active).
     Inline admin edits packages without touching Service.post_save.
     """
     _invalidate_on_commit('Service')
@@ -344,6 +351,8 @@ def invalidate_media_cache(sender, instance, **kwargs):
     """Invalidate cache when Media is saved or deleted (hero bg, service imgs, etc.)."""
     # Single bump: invalidate_model_cache only raises global cache_version — one call is enough.
     _invalidate_on_commit('Media')
+    if getattr(instance, 'sale_id', None):
+        _invalidate_on_commit('Sale')
 
 
 
@@ -373,4 +382,23 @@ def invalidate_option_cache(sender, instance, **kwargs):
     _invalidate_on_commit('Option')
     _invalidate_on_commit('Question')
     _invalidate_on_commit('Test')
+
+
+@receiver(post_save, sender=Sale)
+@receiver(post_delete, sender=Sale)
+def invalidate_sale_cache(sender, instance, **kwargs):
+    """
+    Home sale cards (`get_serialized_active_sales`), discount map
+    (`get_active_sale_discounts_by_service_id`), and discounted prices on
+    course list/detail + checkout (`serialize_*` / `package_payable_amount`).
+    """
+    _invalidate_on_commit('Sale')
+
+
+@receiver(m2m_changed, sender=Sale.services.through)
+def invalidate_sale_services_m2m(sender, instance, **kwargs):
+    """Linked courses changed — refresh sale cards and per-service discount map."""
+    if kwargs.get('action') not in ('post_add', 'post_remove', 'post_clear'):
+        return
+    _invalidate_on_commit('Sale')
 

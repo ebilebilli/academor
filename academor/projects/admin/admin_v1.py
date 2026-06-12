@@ -217,6 +217,16 @@ class MediaInlineCategory(MediaInlineBase):
     can_delete = True
     fields = ('image', 'thumbnail_preview', 'created_at')
     verbose_name = 'Image'
+
+
+class MediaInlineSale(MediaInlineBase):
+    fk_name = 'sale'
+    max_num = 1
+    extra = 0
+    can_delete = True
+    fields = ('image', 'thumbnail_preview', 'created_at')
+    verbose_name = 'Card image'
+    verbose_name_plural = 'Card image'
     verbose_name_plural = 'Image'
 
     def get_queryset(self, request):
@@ -428,6 +438,98 @@ class ServiceAdmin(AdminImageCompressMixin, admin.ModelAdmin):
         return text
 
     instructors_display.short_description = 'Trainers'
+
+
+class SaleAdminForm(forms.ModelForm):
+    class Meta:
+        model = Sale
+        fields = '__all__'
+        widgets = {
+            'description_az': CKEditorWidget(),
+            'description_en': CKEditorWidget(),
+            'description_ru': CKEditorWidget(),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get('apply_to_service_prices') and not cleaned_data.get('services'):
+            raise ValidationError(
+                'Select at least one service when “Apply discount to service prices” is enabled.'
+            )
+        return cleaned_data
+
+
+@admin.register(Sale)
+class SaleAdmin(admin.ModelAdmin):
+    form = SaleAdminForm
+    inlines = (MediaInlineSale,)
+    list_display = (
+        'id',
+        'name_short',
+        'percent_display',
+        'apply_to_service_prices',
+        'services_count',
+        'is_active',
+        'created_at',
+    )
+    list_display_links = ('name_short',)
+    list_filter = ('is_active', 'apply_to_service_prices', 'created_at', 'services')
+    list_editable = ('is_active', 'apply_to_service_prices')
+    search_fields = (
+        'name_az', 'name_en', 'name_ru',
+        'description_az', 'description_en', 'description_ru',
+    )
+    filter_horizontal = ('services',)
+    readonly_fields = ('created_at',)
+    ordering = ('-created_at',)
+    list_per_page = 25
+
+    fieldsets = (
+        ('Promotion', {
+            'fields': (
+                'percent',
+                'apply_to_service_prices',
+                'services',
+                'is_active',
+                'created_at',
+            ),
+            'description': (
+                'Enable “Apply discount to service prices” to reduce the listed prices of '
+                'selected courses by the discount percentage. '
+                'Leave services empty only for a general homepage promotion without price changes.'
+            ),
+        }),
+        ('Azerbaijani', {
+            'fields': ('name_az', 'description_az'),
+        }),
+        ('English', {
+            'fields': ('name_en', 'description_en'),
+        }),
+        ('Russian', {
+            'fields': ('name_ru', 'description_ru'),
+        }),
+    )
+
+    @admin.display(description='Name')
+    def name_short(self, obj):
+        title = (obj.name_az or obj.name_en or obj.name_ru or '').strip()
+        if len(title) > 72:
+            return title[:69] + '…'
+        return title or '—'
+
+    @admin.display(description='Discount')
+    def percent_display(self, obj):
+        return format_html(
+            '<span style="font-weight:600;color:#ff5414;">{}%</span>',
+            obj.percent,
+        )
+
+    @admin.display(description='Services')
+    def services_count(self, obj):
+        count = obj.services.count()
+        if count == 0:
+            return '—'
+        return count
 
 
 class AbroadModelAdminForm(forms.ModelForm):

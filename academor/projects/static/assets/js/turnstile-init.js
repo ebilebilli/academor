@@ -45,6 +45,16 @@
                 sitekey: sitekey,
                 theme: 'light',
                 size: 'normal',
+                callback: function () {
+                    el.dispatchEvent(
+                        new CustomEvent('turnstile:success', { bubbles: true })
+                    );
+                },
+                'expired-callback': function () {
+                    el.dispatchEvent(
+                        new CustomEvent('turnstile:expired', { bubbles: true })
+                    );
+                },
             });
             el.setAttribute('data-turnstile-rendered', '1');
             el.setAttribute('data-turnstile-widget-id', String(widgetId));
@@ -111,6 +121,5 @@
         }
 
         bindDeferredTurnstileOnModal('reviewFormModal');
-        bindDeferredTurnstileOnModal('coursePayModal');
     });
 })();

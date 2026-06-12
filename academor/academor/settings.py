@@ -27,12 +27,6 @@ DEBUG = os.getenv('DEBUG', 'True').lower() in ('true', '1', 'yes')
 # Cloudflare Turnstile (contact + review forms). Leave empty to disable widget/validation.
 TURNSTILE_SITE_KEY = (os.getenv('TURNSTILE_SITE_KEY') or '').strip()
 TURNSTILE_SECRET_KEY = (os.getenv('TURNSTILE_SECRET_KEY') or '').strip()
-# Course payment form Turnstile (off by default; set PAYMENT_TURNSTILE_ENABLED=true to enable).
-PAYMENT_TURNSTILE_ENABLED = os.getenv('PAYMENT_TURNSTILE_ENABLED', '').lower() in (
-    '1',
-    'true',
-    'yes',
-)
 
 # Base hosts + optional extra from Docker / hosting (comma-separated). Empty env keeps defaults only.
 _ALLOWED_BASE = ["academor.az", "www.academor.az"]
@@ -321,3 +315,27 @@ UNITED_PAYMENT_DECLINE_URL = os.getenv('UNITED_PAYMENT_DECLINE_URL')
 # If empty, backend will render payment/success.html or payment/failed.html.
 # Example: https://academor.az/payment-result
 PAYMENT_FRONTEND_RETURN_URL = (os.getenv('PAYMENT_FRONTEND_RETURN_URL') or '').strip()
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {name} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'payments': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}

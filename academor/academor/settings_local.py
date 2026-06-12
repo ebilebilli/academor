@@ -21,11 +21,6 @@ DEBUG = True
 
 TURNSTILE_SITE_KEY = (os.getenv('TURNSTILE_SITE_KEY') or '').strip()
 TURNSTILE_SECRET_KEY = (os.getenv('TURNSTILE_SECRET_KEY') or '').strip()
-PAYMENT_TURNSTILE_ENABLED = os.getenv('PAYMENT_TURNSTILE_ENABLED', '').lower() in (
-    '1',
-    'true',
-    'yes',
-)
 
 ALLOWED_HOSTS = []
 
@@ -263,3 +258,27 @@ UNITED_PAYMENT_BASE_URL = os.getenv('UNITED_PAYMENT_BASE_URL')
 UNITED_PAYMENT_SUCCESS_URL = os.getenv('UNITED_PAYMENT_SUCCESS_URL')
 UNITED_PAYMENT_CANCEL_URL = os.getenv('UNITED_PAYMENT_CANCEL_URL')
 UNITED_PAYMENT_DECLINE_URL = os.getenv('UNITED_PAYMENT_DECLINE_URL')
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {name} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'payments': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
