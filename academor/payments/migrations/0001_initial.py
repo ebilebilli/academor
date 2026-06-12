@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('projects', '0084_media_sale'),
+        ('projects', '0070_course_price_packages'),
     ]
 
     operations = [
