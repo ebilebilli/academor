@@ -31,6 +31,7 @@ from .services import (
     get_transaction_status,
     get_transaction_status_by_client_order,
     payment_status_from_api,
+    united_payment_config_snapshot,
 )
 
 logger = logging.getLogger(__name__)
@@ -458,11 +459,14 @@ def payment_start_course(request, slug):
     request.session.pop('course_payment_form_data', None)
     redirect_url = result['payment_url']
     logger.info(
-        'course_payment success slug=%s payment_id=%s client_order_id=%s transaction_id=%s',
+        'course_payment success slug=%s payment_id=%s client_order_id=%s '
+        'transaction_id=%s united_payment_env=%s redirect_url=%s',
         slug,
         payment.pk,
         payment.client_order_id,
         payment.transaction_id,
+        united_payment_config_snapshot()['environment'],
+        redirect_url,
     )
     if ajax:
         return JsonResponse({'success': True, 'redirect_url': redirect_url})
