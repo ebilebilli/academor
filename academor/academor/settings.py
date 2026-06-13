@@ -315,27 +315,3 @@ UNITED_PAYMENT_DECLINE_URL = os.getenv('UNITED_PAYMENT_DECLINE_URL')
 # If empty, backend will render payment/success.html or payment/failed.html.
 # Example: https://academor.az/payment-result
 PAYMENT_FRONTEND_RETURN_URL = (os.getenv('PAYMENT_FRONTEND_RETURN_URL') or '').strip()
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {name} {message}',
-            'style': '{',
-        },
-    },
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
-        },
-    },
-    'loggers': {
-        'payments': {
-            'handlers': ['console'],
-            'level': 'INFO',
-            'propagate': False,
-        },
-    },
-}

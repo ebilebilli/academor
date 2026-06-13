@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.db.models import Q
-from django.db import models
+from django.db import models, transaction
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.urls import reverse
@@ -10,6 +10,7 @@ from django.forms.models import BaseInlineFormSet
 from ckeditor.widgets import CKEditorWidget
 
 from projects.models import *
+from projects.utils.cache_utils import invalidate_sale_cache
 
 
 class AdminImageCompressMixin:
@@ -452,9 +453,16 @@ class SaleAdminForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        if cleaned_data.get('apply_to_service_prices') and not cleaned_data.get('services'):
+        apply_prices = cleaned_data.get('apply_to_service_prices')
+        services = cleaned_data.get('services')
+        percent = cleaned_data.get('percent')
+        if apply_prices and not services:
             raise ValidationError(
                 'Select at least one service when “Apply discount to service prices” is enabled.'
+            )
+        if apply_prices and percent is None:
+            raise ValidationError(
+                'Enter a discount percentage when “Apply discount to service prices” is enabled.'
             )
         return cleaned_data
 
@@ -467,13 +475,14 @@ class SaleAdmin(admin.ModelAdmin):
         'id',
         'name_short',
         'percent_display',
+        'end_date',
         'apply_to_service_prices',
         'services_count',
         'is_active',
         'created_at',
     )
     list_display_links = ('name_short',)
-    list_filter = ('is_active', 'apply_to_service_prices', 'created_at', 'services')
+    list_filter = ('is_active', 'apply_to_service_prices', 'end_date', 'created_at', 'services')
     list_editable = ('is_active', 'apply_to_service_prices')
     search_fields = (
         'name_az', 'name_en', 'name_ru',
@@ -488,15 +497,17 @@ class SaleAdmin(admin.ModelAdmin):
         ('Promotion', {
             'fields': (
                 'percent',
+                'end_date',
                 'apply_to_service_prices',
                 'services',
                 'is_active',
                 'created_at',
             ),
             'description': (
+                'Leave “Discount (%)” empty for announcement-only promotions (event, campaign, etc.). '
                 'Enable “Apply discount to service prices” to reduce the listed prices of '
-                'selected courses by the discount percentage. '
-                'Leave services empty only for a general homepage promotion without price changes.'
+                'selected courses by the discount percentage — a discount value is then required. '
+                'Leave services empty for a general homepage promotion without price changes.'
             ),
         }),
         ('Azerbaijani', {
@@ -519,6 +530,8 @@ class SaleAdmin(admin.ModelAdmin):
 
     @admin.display(description='Discount')
     def percent_display(self, obj):
+        if obj.percent is None:
+            return '—'
         return format_html(
             '<span style="font-weight:600;color:#ff5414;">{}%</span>',
             obj.percent,
@@ -530,6 +543,15 @@ class SaleAdmin(admin.ModelAdmin):
         if count == 0:
             return '—'
         return count
+
+    def changelist_view(self, request, extra_context=None):
+        """
+        list_editable saves use QuerySet.update() and bypass Sale post_save signals.
+        """
+        response = super().changelist_view(request, extra_context=extra_context)
+        if request.method == 'POST' and '_save' in request.POST and response.status_code == 302:
+            transaction.on_commit(invalidate_sale_cache)
+        return response
 
 
 class AbroadModelAdminForm(forms.ModelForm):

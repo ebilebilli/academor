@@ -9,17 +9,6 @@ logger = logging.getLogger(__name__)
 
 _token = None
 _token_expiry = None
-_config_logged = False
-
-_UNITED_PAYMENT_KEYS = (
-    'UNITED_PAYMENT_AUTH_URL',
-    'UNITED_PAYMENT_USERNAME',
-    'UNITED_PAYMENT_PASSWORD',
-    'UNITED_PAYMENT_BASE_URL',
-    'UNITED_PAYMENT_SUCCESS_URL',
-    'UNITED_PAYMENT_CANCEL_URL',
-    'UNITED_PAYMENT_DECLINE_URL',
-)
 
 
 def _configured():
@@ -32,88 +21,6 @@ def _configured():
         settings.UNITED_PAYMENT_CANCEL_URL,
         settings.UNITED_PAYMENT_DECLINE_URL,
     ])
-
-
-def _is_set(value) -> bool:
-    return bool((value or '').strip())
-
-
-def _mask_username(value: str) -> str:
-    value = (value or '').strip()
-    if not value:
-        return '(empty)'
-    if '@' in value:
-        local, _, domain = value.partition('@')
-        if len(local) <= 2:
-            masked_local = '*'
-        else:
-            masked_local = f'{local[0]}***{local[-1]}'
-        return f'{masked_local}@{domain}'
-    return f'{value[:2]}***' if len(value) > 2 else '***'
-
-
-def _payment_environment_label() -> str:
-    base = (settings.UNITED_PAYMENT_BASE_URL or '').lower()
-    auth = (settings.UNITED_PAYMENT_AUTH_URL or '').lower()
-    if 'test-vpos' in base or 'test-vpos' in auth:
-        return 'test'
-    if base or auth:
-        return 'production'
-    return 'unset'
-
-
-def united_payment_config_snapshot() -> dict:
-    """Safe summary for logs — never includes passwords or tokens."""
-    missing = [
-        key for key in _UNITED_PAYMENT_KEYS
-        if not _is_set(getattr(settings, key, None))
-    ]
-    return {
-        'environment': _payment_environment_label(),
-        'configured': _configured(),
-        'missing_keys': missing,
-        'auth_url': (settings.UNITED_PAYMENT_AUTH_URL or '').strip() or None,
-        'base_url': (settings.UNITED_PAYMENT_BASE_URL or '').strip() or None,
-        'username': _mask_username(settings.UNITED_PAYMENT_USERNAME),
-        'password_set': _is_set(settings.UNITED_PAYMENT_PASSWORD),
-        'success_url': (settings.UNITED_PAYMENT_SUCCESS_URL or '').strip() or None,
-        'cancel_url': (settings.UNITED_PAYMENT_CANCEL_URL or '').strip() or None,
-        'decline_url': (settings.UNITED_PAYMENT_DECLINE_URL or '').strip() or None,
-    }
-
-
-def log_united_payment_config(reason: str = 'startup') -> None:
-    global _config_logged
-    if _config_logged:
-        return
-    _config_logged = True
-    snapshot = united_payment_config_snapshot()
-    if snapshot['configured']:
-        logger.info(
-            'United Payment config (%s): environment=%s auth_url=%s base_url=%s '
-            'username=%s password_set=%s callbacks=%s',
-            reason,
-            snapshot['environment'],
-            snapshot['auth_url'],
-            snapshot['base_url'],
-            snapshot['username'],
-            snapshot['password_set'],
-            {
-                'success': snapshot['success_url'],
-                'cancel': snapshot['cancel_url'],
-                'decline': snapshot['decline_url'],
-            },
-        )
-    else:
-        logger.warning(
-            'United Payment config (%s): NOT CONFIGURED missing_keys=%s '
-            'environment=%s auth_url=%s base_url=%s',
-            reason,
-            snapshot['missing_keys'],
-            snapshot['environment'],
-            snapshot['auth_url'],
-            snapshot['base_url'],
-        )
 
 
 def _parse_json(response):
@@ -233,31 +140,14 @@ def _interpret_status(data):
 def get_token():
     global _token, _token_expiry
 
-    log_united_payment_config(reason='get_token')
-
     if not _configured():
-        snapshot = united_payment_config_snapshot()
-        logger.warning(
-            'United Payment auth skipped: missing_keys=%s snapshot=%s',
-            snapshot['missing_keys'],
-            snapshot,
-        )
         return {
             'ok': False,
             'error': _('Payment system is not configured (UNITED_PAYMENT_*).'),
         }
 
     if _token and _token_expiry and datetime.now() < _token_expiry:
-        logger.debug('United Payment auth: reusing cached token')
         return {'ok': True, 'token': _token}
-
-    auth_url = settings.UNITED_PAYMENT_AUTH_URL
-    logger.info(
-        'United Payment auth request environment=%s url=%s username=%s',
-        _payment_environment_label(),
-        auth_url,
-        _mask_username(settings.UNITED_PAYMENT_USERNAME),
-    )
 
     payload = {
         'email': settings.UNITED_PAYMENT_USERNAME,
@@ -267,53 +157,29 @@ def get_token():
 
     try:
         response = requests.post(
-            auth_url,
+            settings.UNITED_PAYMENT_AUTH_URL,
             json=payload,
             headers={'Content-Type': 'application/json'},
             timeout=30,
         )
     except requests.RequestException:
-        logger.exception(
-            'United Payment login failed environment=%s url=%s',
-            _payment_environment_label(),
-            auth_url,
-        )
+        logger.exception('United Payment login failed')
         return {'ok': False, 'error': _('Could not connect to the payment system.')}
 
     data = _parse_json(response)
     if not response.ok:
-        error = data.get('message') or data.get('error') or f'HTTP {response.status_code}'
-        logger.warning(
-            'United Payment auth failed environment=%s status=%s url=%s error=%s response=%s',
-            _payment_environment_label(),
-            response.status_code,
-            auth_url,
-            error,
-            data,
-        )
         return {
             'ok': False,
-            'error': error,
+            'error': data.get('message') or data.get('error') or f'HTTP {response.status_code}',
             'detail': data,
         }
 
     token = _extract_token(data)
     if not token:
-        logger.warning(
-            'United Payment auth missing token environment=%s url=%s response=%s',
-            _payment_environment_label(),
-            auth_url,
-            data,
-        )
         return {'ok': False, 'error': _('JWT token was not received.'), 'detail': data}
 
     _token = token
     _token_expiry = datetime.now() + timedelta(minutes=55)
-    logger.info(
-        'United Payment auth ok environment=%s url=%s token_received=true',
-        _payment_environment_label(),
-        auth_url,
-    )
     return {'ok': True, 'token': token}
 
 
@@ -327,16 +193,8 @@ def create_transaction(
     client_order_id=None,
     currency='944',
 ):
-    log_united_payment_config(reason='create_transaction')
-
     token_result = get_token()
     if not token_result.get('ok'):
-        logger.warning(
-            'United Payment create_transaction skipped environment=%s error=%s config=%s',
-            _payment_environment_label(),
-            token_result.get('error'),
-            united_payment_config_snapshot(),
-        )
         return token_result
 
     url = f"{settings.UNITED_PAYMENT_BASE_URL.rstrip('/')}/transactions/checkout"
@@ -353,21 +211,6 @@ def create_transaction(
     if client_order_id is not None:
         payload['clientOrderId'] = str(client_order_id)
 
-    logger.info(
-        'United Payment checkout request environment=%s url=%s client_order_id=%s amount=%s '
-        'currency=%s callbacks=%s',
-        _payment_environment_label(),
-        url,
-        client_order_id,
-        amount,
-        currency,
-        {
-            'success': success_url,
-            'cancel': cancel_url,
-            'decline': decline_url,
-        },
-    )
-
     try:
         response = requests.post(
             url,
@@ -376,60 +219,25 @@ def create_transaction(
             timeout=30,
         )
     except requests.RequestException:
-        logger.exception(
-            'United Payment create_transaction failed environment=%s url=%s client_order_id=%s',
-            _payment_environment_label(),
-            url,
-            client_order_id,
-        )
+        logger.exception('United Payment create_transaction failed')
         return {'ok': False, 'error': _('Payment transaction could not be created.')}
 
     data = _parse_json(response)
     if not response.ok:
-        error = data.get('message') or data.get('error') or f'HTTP {response.status_code}'
-        logger.warning(
-            'United Payment checkout failed environment=%s status=%s url=%s '
-            'client_order_id=%s amount=%s error=%s detail=%s',
-            _payment_environment_label(),
-            response.status_code,
-            url,
-            client_order_id,
-            amount,
-            error,
-            data,
-        )
         return {
             'ok': False,
-            'error': error,
+            'error': data.get('message') or data.get('error') or f'HTTP {response.status_code}',
             'detail': data,
         }
 
     payment_url = _extract_payment_url(data)
     transaction_id = _extract_transaction_id(data)
     if not payment_url or not transaction_id:
-        logger.warning(
-            'United Payment checkout incomplete environment=%s url=%s '
-            'client_order_id=%s amount=%s response=%s',
-            _payment_environment_label(),
-            url,
-            client_order_id,
-            amount,
-            data,
-        )
         return {
             'ok': False,
             'error': _('Payment link or transaction ID was not received.'),
             'detail': data,
         }
-
-    logger.info(
-        'United Payment checkout ok environment=%s client_order_id=%s transaction_id=%s '
-        'payment_url=%s',
-        _payment_environment_label(),
-        client_order_id,
-        transaction_id,
-        payment_url,
-    )
 
     return {
         'ok': True,

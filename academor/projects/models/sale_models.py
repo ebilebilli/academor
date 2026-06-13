@@ -43,8 +43,16 @@ class Sale(models.Model):
             MinValueValidator(1),
             MaxValueValidator(100),
         ],
+        null=True,
+        blank=True,
         verbose_name=_('Discount (%)'),
-        help_text=_('Discount percentage from 1 to 100.'),
+        help_text=_('Optional. Leave empty for a general promotion or event without a discount.'),
+    )
+    end_date = models.DateField(
+        null=True,
+        blank=True,
+        verbose_name=_('End date'),
+        help_text=_('Optional. Promotion is hidden from the homepage after this date.'),
     )
     apply_to_service_prices = models.BooleanField(
         default=False,

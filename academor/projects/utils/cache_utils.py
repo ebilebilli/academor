@@ -295,3 +295,18 @@ def invalidate_model_cache(model_name):
     """
     _bump_cache_version()
 
+
+def invalidate_sale_cache():
+    """
+    Bump cache version for all homepage promotion + course discount data.
+
+    Invalidates:
+    - ``get_serialized_active_sales`` / ``get_home_sales_context`` (homepage banner)
+    - ``get_active_sale_discounts_by_service_id`` (course list/detail, checkout)
+    - Cached page blobs that embed ``serialize_project_category`` / ``serialize_price_package``
+
+    Called from Sale signals, Media linked to a Sale, and SaleAdmin list_editable saves
+    (QuerySet.update bypasses post_save).
+    """
+    _bump_cache_version()
+

@@ -42,184 +42,272 @@
     letter-spacing: -0.03em;
     line-height: 1.15;
 }
-.home-sales-section__grid {
+.home-sales-section__banners {
     display: grid;
     gap: clamp(1rem, 2.5vw, 1.35rem);
     width: 100%;
-    max-width: 32rem;
-    margin-inline: auto;
 }
-
-.sale-card {
+.discount-banner {
     position: relative;
-    display: block;
     width: 100%;
-    min-height: clamp(280px, 42vw, 420px);
-    border-radius: 18px;
+    min-height: clamp(200px, 24vw, 260px);
+    max-height: clamp(220px, 28vw, 280px);
+    border-radius: 12px;
     overflow: hidden;
-    background: var(--bs-primary, #00313d);
-    box-shadow:
-        0 10px 28px rgba(0, 49, 61, 0.16),
-        0 0 0 2px rgba(0, 49, 61, 0.12);
-    transition: box-shadow 0.35s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-    backface-visibility: hidden;
-    transform: translateZ(0);
+    border: 1px solid rgba(0, 49, 61, 0.14);
+    background-color: var(--primary, #00313d);
+    box-shadow: 0 8px 24px rgba(0, 49, 61, 0.1);
+    transition:
+        transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.35s ease;
+    will-change: transform;
 }
-.sale-card__media {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    background: linear-gradient(135deg, #0e5060, #00313d);
-}
-.sale-card__img {
+.discount-banner__img {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center center;
-    transform: scale(1);
-    transition: transform 0.55s ease;
-    backface-visibility: hidden;
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.sale-card__no-img {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    background:
-        radial-gradient(circle at 85% 15%, rgba(255, 84, 20, 0.22) 0%, transparent 42%),
-        linear-gradient(135deg, #0e5060 0%, #00313d 100%);
-}
-.sale-card__no-img i {
-    font-size: 3rem;
-    color: rgba(255, 255, 255, 0.18);
-}
-.sale-card__shade {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        to bottom,
-        rgba(0, 49, 61, 0.68) 0%,
-        rgba(0, 49, 61, 0.42) 55%,
-        rgba(0, 49, 61, 0.18) 100%
-    );
-    pointer-events: none;
-}
-.sale-card__hover-tint {
+.discount-banner__overlay {
     position: absolute;
     inset: 0;
     z-index: 1;
-    background: var(--bs-primary, #00313d);
-    opacity: 0.42;
+    background-color: rgba(0, 49, 61, 0.78);
+    transition: background-color 0.35s ease;
     pointer-events: none;
 }
-.sale-card__badge {
-    position: absolute;
-    top: clamp(0.85rem, 2.5vw, 1.15rem);
-    right: clamp(0.85rem, 2.5vw, 1.15rem);
-    z-index: 4;
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-width: 4.35rem;
-    min-height: 4.35rem;
-    padding: 0.45rem 0.55rem;
-    border-radius: 50%;
-    background: linear-gradient(145deg, #ff6b2e 0%, var(--accent, #ff5414) 48%, #e84a0a 100%);
-    color: #fff;
-    font-weight: 900;
-    font-size: 1.28rem;
-    line-height: 1;
-    border: 3px solid #fff;
-    box-shadow:
-        0 0 0 2px rgba(255, 84, 20, 0.45),
-        0 8px 22px rgba(255, 84, 20, 0.55),
-        0 3px 10px rgba(0, 0, 0, 0.28);
-    transform: rotate(-8deg);
-    transition: transform 0.35s ease, box-shadow 0.35s ease;
+.discount-banner:hover {
+    border-color: rgba(0, 49, 61, 0.42);
+    transform: translateY(-6px);
+    box-shadow: 0 22px 44px rgba(0, 49, 61, 0.22);
 }
-.sale-card__badge small {
-    font-size: 0.62rem;
-    font-weight: 800;
-    letter-spacing: 0.04em;
+.discount-banner:hover .discount-banner__overlay {
+    background-color: rgba(0, 49, 61, 0.88);
 }
-.sale-card__content {
-    position: absolute;
-    inset: 0;
-    z-index: 3;
+.discount-banner:hover .discount-banner__img {
+    transform: scale(1.05);
+}
+.discount-banner--no-image .discount-banner__overlay {
+    background-color: rgba(0, 49, 61, 0.28);
+}
+.discount-banner--no-image:hover .discount-banner__overlay {
+    background-color: rgba(0, 49, 61, 0.38);
+}
+.discount-banner__body {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    width: 100%;
+    height: 100%;
+    min-height: clamp(200px, 24vw, 260px);
+    max-height: clamp(220px, 28vw, 280px);
+}
+.discount-banner__content {
+    flex: 1 1 auto;
+    min-width: 0;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 0.55rem;
-    padding: clamp(1.25rem, 3vw, 2rem);
-    padding-right: 5.25rem;
-    pointer-events: none;
+    justify-content: center;
+    gap: 0.45rem;
+    padding: clamp(1rem, 2.2vw, 1.35rem) clamp(1.1rem, 2.5vw, 1.45rem);
+    background-color: transparent;
 }
-.sale-card__name {
+.discount-banner__title {
     margin: 0;
-    min-width: 0;
-    width: 100%;
-    max-width: calc(100% - 4.5rem);
-    font-size: clamp(1.15rem, 2.4vw, 1.65rem);
+    padding-right: 0;
+    font-size: clamp(1.05rem, 2.2vw, 1.35rem);
     font-weight: 800;
     line-height: 1.22;
-    letter-spacing: -0.03em;
-    color: #fff;
-    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
-    word-break: break-word;
+    color: #ffffff;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
 }
-.sale-card__desc {
+.discount-banner__desc {
     margin: 0;
-    width: 100%;
+    max-width: none;
+    font-size: clamp(0.84rem, 1.6vw, 0.92rem);
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.94);
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.28);
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     overflow: hidden;
-    font-size: 0.9rem;
-    line-height: 1.55;
-    color: rgba(255, 255, 255, 0.9);
 }
-.sale-card__desc--rich > *:first-child { margin-top: 0; }
-.sale-card__desc--rich > *:last-child { margin-bottom: 0; }
-.sale-card__desc--rich p { margin: 0 0 0.35rem; }
-.sale-card__desc--rich ul,
-.sale-card__desc--rich ol {
-    margin: 0 0 0.35rem;
-    padding-left: 1.1rem;
+.discount-banner__footer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.85rem;
+    width: 100%;
+    margin-top: 0.15rem;
+    padding-top: 0;
+    flex-shrink: 0;
 }
-.sale-card__desc--rich li { margin-bottom: 0.1rem; }
-.sale-card__desc--rich strong { color: #fff; }
-
-@media (hover: hover) and (pointer: fine) {
-    .sale-card:hover {
-        transform: translateY(-4px);
-        box-shadow:
-            0 18px 40px rgba(0, 49, 61, 0.24),
-            0 0 0 2px rgba(0, 49, 61, 0.2);
-    }
-    .sale-card:hover .sale-card__img {
-        transform: scale(1.05);
-    }
-    .sale-card:hover .sale-card__badge {
-        transform: rotate(0deg) scale(1.05);
-    }
+.discount-banner__cta {
+    margin: 0 0 0 auto;
+    flex-shrink: 0;
 }
-
+.discount-banner__deadline--placeholder {
+    display: none;
+}
+.discount-banner__deadline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0;
+    min-height: 1.15rem;
+    font-size: 0.78rem;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.78);
+    white-space: nowrap;
+}
+.discount-banner__deadline-icon {
+    font-size: 0.68rem;
+    color: var(--accent, #ff5414);
+    opacity: 0.95;
+}
+.discount-banner__deadline-label {
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.72);
+}
+.discount-banner__deadline-sep {
+    color: rgba(255, 255, 255, 0.35);
+    font-weight: 700;
+}
+.discount-banner__deadline-date {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.01em;
+}
+.discount-banner__badge {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    flex-shrink: 0;
+    width: clamp(96px, 14vw, 118px);
+    min-width: 96px;
+    padding: 0.65rem 0.55rem;
+    background-color: var(--accent, #ff5414);
+    border-left: 1px solid rgba(255, 255, 255, 0.22);
+    box-shadow: none;
+    text-align: center;
+    transition: filter 0.35s ease;
+}
+.discount-banner:hover .discount-banner__badge {
+    filter: brightness(1.05);
+}
+.discount-banner .hbh-see-all,
+.discount-banner .hbh-see-all:hover,
+.discount-banner .hbh-see-all:focus,
+.discount-banner .hbh-see-all:active,
+.discount-banner .hbh-see-all:visited {
+    background: var(--accent, #ff5414) !important;
+    border-color: var(--accent, #ff5414) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 18px rgba(255, 84, 20, 0.35);
+}
+.discount-banner .hbh-see-all:hover,
+.discount-banner .hbh-see-all:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 26px rgba(255, 84, 20, 0.45);
+}
+.discount-banner .hbh-see-all:hover .fa,
+.discount-banner .hbh-see-all:focus .fa {
+    transform: translateX(3px);
+}
+.discount-banner .hbh-see-all:focus-visible {
+    outline-color: rgba(255, 84, 20, 0.55);
+}
+.discount-banner__percent {
+    display: block;
+    font-size: clamp(1.45rem, 3.2vw, 1.85rem);
+    font-weight: 900;
+    line-height: 1;
+    color: #ffffff;
+    letter-spacing: -0.03em;
+}
+.discount-banner__percent-label {
+    display: block;
+    margin-top: 0.15rem;
+    font-size: clamp(0.62rem, 1.4vw, 0.72rem);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #ffffff;
+    white-space: nowrap;
+    opacity: 1;
+}
 @media (prefers-reduced-motion: reduce) {
-    .sale-card,
-    .sale-card__img,
-    .sale-card__shade,
-    .sale-card__badge {
+    .discount-banner,
+    .discount-banner__overlay,
+    .discount-banner__img,
+    .discount-banner__badge,
+    .discount-banner .hbh-see-all,
+    .discount-banner .hbh-see-all .fa {
         transition: none;
+    }
+    .discount-banner:hover {
+        transform: none;
+    }
+    .discount-banner:hover .discount-banner__img {
+        transform: none;
+    }
+    .discount-banner .hbh-see-all:hover,
+    .discount-banner .hbh-see-all:focus {
+        transform: none;
+    }
+    .discount-banner .hbh-see-all:hover .fa,
+    .discount-banner .hbh-see-all:focus .fa {
+        transform: none;
+    }
+}
+@media (max-width: 767.98px) {
+    .discount-banner,
+    .discount-banner__body {
+        min-height: clamp(210px, 58vw, 250px);
+        max-height: clamp(230px, 62vw, 270px);
+    }
+    .discount-banner__deadline {
+        white-space: normal;
+        flex-wrap: wrap;
+        row-gap: 0.15rem;
+    }
+    .discount-banner__body {
+        flex-direction: column;
+    }
+    .discount-banner__badge {
+        width: 100%;
+        min-width: 0;
+        flex-direction: row;
+        gap: 0.35rem;
+        padding: 0.55rem 0.85rem;
+        border-left: 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.22);
+    }
+    .discount-banner__percent-label {
+        margin-top: 0;
+    }
+    .discount-banner__desc {
+        -webkit-line-clamp: 3;
     }
 }
 </style>
@@ -232,32 +320,9 @@
                 <h2 id="home-sales-heading" class="home-sales-section__title">{% trans "Special offers" %}</h2>
             </header>
 
-            <div class="home-sales-section__grid wow fadeInUp" data-wow-delay="0.1s">
+            <div class="home-sales-section__banners wow fadeInUp" data-wow-delay="0.1s">
                 {% for sale in sales %}
-                <article class="sale-card">
-                    <div class="sale-card__media">
-                        {% if sale.image %}
-                        <img src="{{ sale.image }}" alt="{{ sale.image_alt }}" class="sale-card__img" width="1200" height="675" loading="lazy" decoding="async">
-                        {% else %}
-                        <div class="sale-card__no-img" aria-hidden="true">
-                            <i class="fas fa-percent"></i>
-                        </div>
-                        {% endif %}
-                        <div class="sale-card__shade" aria-hidden="true"></div>
-                        <div class="sale-card__hover-tint" aria-hidden="true"></div>
-                    </div>
-                    <div class="sale-card__badge" aria-label="{% blocktrans with percent=sale.percent %}Discount {{ percent }} percent{% endblocktrans %}">
-                        -{{ sale.percent }}<small>%</small>
-                    </div>
-                    <div class="sale-card__content">
-                        <h3 class="sale-card__name">{{ sale.name }}</h3>
-                        {% if sale.description %}
-                        <div class="sale-card__desc sale-card__desc--rich">{{ sale.description|safe }}</div>
-                        {% elif sale.description_plain %}
-                        <p class="sale-card__desc">{{ sale.description_plain }}</p>
-                        {% endif %}
-                    </div>
-                </article>
+                {% include "includes/discount_banner_horizontal.html" with sale=sale %}
                 {% endfor %}
             </div>
         </div>

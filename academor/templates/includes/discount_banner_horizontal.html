@@ -1,0 +1,42 @@
+{% load i18n %}
+<aside class="discount-banner{% if sale.image %} discount-banner--has-image{% else %} discount-banner--no-image{% endif %}{% if sale.percent %} discount-banner--has-badge{% endif %}" aria-label="{{ sale.name }}">
+    {% if sale.image %}
+    <img
+        class="discount-banner__img"
+        src="{{ sale.image }}"
+        alt="{{ sale.image_alt }}"
+        width="1200"
+        height="675"
+        loading="lazy"
+        decoding="async"
+    >
+    {% endif %}
+    <div class="discount-banner__overlay" aria-hidden="true"></div>
+    <div class="discount-banner__body">
+        <div class="discount-banner__content">
+            <h3 class="discount-banner__title">{{ sale.name }}</h3>
+            {% if sale.description_plain %}
+            <p class="discount-banner__desc">{{ sale.description_plain }}</p>
+            {% endif %}
+            <div class="discount-banner__footer">
+                <p class="discount-banner__deadline{% if not sale.end_date_display %} discount-banner__deadline--placeholder{% endif %}">
+                    {% if sale.end_date_display %}
+                    <i class="fa fa-calendar-alt discount-banner__deadline-icon" aria-hidden="true"></i>
+                    <span class="discount-banner__deadline-label">{% trans "Deadline" %}</span>
+                    <span class="discount-banner__deadline-sep" aria-hidden="true">·</span>
+                    <time class="discount-banner__deadline-date"{% if sale.end_date %} datetime="{{ sale.end_date }}"{% endif %}>{{ sale.end_date_display }}</time>
+                    {% endif %}
+                </p>
+                <a href="{% url 'projects:contact-page' %}" class="hbh-see-all discount-banner__cta">
+                    {% trans "Contact us" %} <i class="fa fa-arrow-right" style="font-size:.7rem;" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+        {% if sale.percent %}
+        <div class="discount-banner__badge" aria-label="{{ sale.discount_badge_aria }}">
+            <span class="discount-banner__percent">{{ sale.percent }}</span>
+            <span class="discount-banner__percent-label">{{ sale.percent_label }}</span>
+        </div>
+        {% endif %}
+    </div>
+</aside>

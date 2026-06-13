@@ -1,6 +1,5 @@
 import base64
 import json
-import logging
 import uuid
 from decimal import Decimal
 from urllib.parse import urlencode, urlsplit, urlunsplit, parse_qsl
@@ -31,21 +30,7 @@ from .services import (
     get_transaction_status,
     get_transaction_status_by_client_order,
     payment_status_from_api,
-    united_payment_config_snapshot,
 )
-
-logger = logging.getLogger(__name__)
-
-
-def _payment_form_post_snapshot(request) -> dict:
-    post = request.POST
-    return {
-        'price_package_id': post.get('price_package_id'),
-        'buyer_name': (post.get('buyer_name') or '').strip()[:120],
-        'buyer_email': (post.get('buyer_email') or '').strip(),
-        'buyer_phone': (post.get('buyer_phone') or '').strip(),
-        'post_keys': sorted(k for k in post.keys() if k != 'csrfmiddlewaretoken'),
-    }
 
 
 def _payment_error(request, message, status=200):
@@ -360,23 +345,10 @@ def payment_start_course(request, slug):
 
     ajax = _is_ajax(request)
     lang = (get_language() or 'az')[:2]
-    post_snapshot = _payment_form_post_snapshot(request)
-    logger.info(
-        'course_payment start slug=%s ajax=%s form=%s',
-        slug,
-        ajax,
-        post_snapshot,
-    )
 
     try:
         course = get_payable_course(slug)
     except CourseNotPayableError as exc:
-        logger.warning(
-            'course_payment course not payable slug=%s reason=%s form=%s',
-            slug,
-            exc,
-            post_snapshot,
-        )
         if ajax:
             return JsonResponse({'success': False, 'message': str(exc)}, status=400)
         messages.error(request, str(exc))
@@ -384,16 +356,8 @@ def payment_start_course(request, slug):
 
     form = CoursePaymentForm(request.POST, request=request)
     if not form.is_valid():
-        errors = _form_errors_payload(form)
-        logger.warning(
-            'course_payment form invalid slug=%s course_id=%s errors=%s form=%s',
-            slug,
-            course.pk,
-            errors,
-            post_snapshot,
-        )
         if ajax:
-            payload = {'success': False, 'errors': errors}
+            payload = {'success': False, 'errors': _form_errors_payload(form)}
             non_field = form.non_field_errors()
             if non_field:
                 payload['message'] = str(non_field[0])
@@ -406,14 +370,6 @@ def payment_start_course(request, slug):
             form.cleaned_data['price_package_id'],
         )
     except PricePackageNotFoundError as exc:
-        logger.warning(
-            'course_payment package not found slug=%s course_id=%s package_id=%s reason=%s form=%s',
-            slug,
-            course.pk,
-            form.cleaned_data.get('price_package_id'),
-            exc,
-            post_snapshot,
-        )
         if ajax:
             return JsonResponse({'success': False, 'message': str(exc)}, status=400)
         messages.error(request, str(exc))
@@ -421,15 +377,6 @@ def payment_start_course(request, slug):
 
     amount = package_amount(price_package)
     description = course_payment_description(course, price_package, lang)
-    logger.info(
-        'course_payment creating transaction slug=%s course_id=%s package_id=%s '
-        'base_price=%s amount=%s',
-        slug,
-        course.pk,
-        price_package.pk,
-        price_package.price,
-        amount,
-    )
     payment, result = _start_payment(
         amount=amount,
         description=description,
@@ -442,15 +389,6 @@ def payment_start_course(request, slug):
     )
     if payment is None:
         message = result.get('error') or _('Order could not be created.')
-        logger.error(
-            'course_payment gateway failed slug=%s course_id=%s package_id=%s amount=%s error=%s detail=%s',
-            slug,
-            course.pk,
-            price_package.pk,
-            amount,
-            message,
-            result.get('detail'),
-        )
         if ajax:
             return JsonResponse({'success': False, 'message': message}, status=502)
         messages.error(request, message)
@@ -458,16 +396,6 @@ def payment_start_course(request, slug):
 
     request.session.pop('course_payment_form_data', None)
     redirect_url = result['payment_url']
-    logger.info(
-        'course_payment success slug=%s payment_id=%s client_order_id=%s '
-        'transaction_id=%s united_payment_env=%s redirect_url=%s',
-        slug,
-        payment.pk,
-        payment.client_order_id,
-        payment.transaction_id,
-        united_payment_config_snapshot()['environment'],
-        redirect_url,
-    )
     if ajax:
         return JsonResponse({'success': True, 'redirect_url': redirect_url})
     return redirect(redirect_url)

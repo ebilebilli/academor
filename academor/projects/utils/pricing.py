@@ -1,11 +1,17 @@
 """
 Sale discount helpers — shared by public serialization and payment catalog.
 
-`get_active_sale_discounts_by_service_id` is @cached_query; bump via Sale signals in
-projects.signals (post_save/post_delete/M2M on Sale.services).
+Active sales exclude expired rows (``end_date`` before today).
+
+``get_active_sale_discounts_by_service_id`` is @cached_query; bump via
+``invalidate_sale_cache()`` in projects.signals (Sale save/delete/M2M, Media→Sale,
+SaleAdmin list_editable) and global bumps on Service / CoursePricePackage changes.
 """
 
 from decimal import Decimal, ROUND_HALF_UP
+
+from django.db.models import Q
+from django.utils import timezone
 
 from projects.models import Sale
 from projects.utils.cache_utils import cached_query
@@ -27,12 +33,17 @@ def apply_percent_discount(amount, percent: int) -> Decimal:
 def fetch_active_sale_discounts_by_service_id() -> dict[int, int]:
     """Map service PK → discount percent (highest active sale wins). Fresh DB read."""
     discounts: dict[int, int] = {}
+    today = timezone.localdate()
     sales = (
         Sale.objects.filter(is_active=True, apply_to_service_prices=True)
+        .filter(Q(end_date__isnull=True) | Q(end_date__gte=today))
+        .exclude(percent__isnull=True)
         .prefetch_related('services')
         .order_by('-percent', '-created_at')
     )
     for sale in sales:
+        if sale.percent is None:
+            continue
         for service in sale.services.all():
             service_id = service.pk
             current = discounts.get(service_id)

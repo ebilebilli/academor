@@ -22,10 +22,14 @@ Keep in sync with queries.py (add a receiver when a new cached query reads a mod
   Study-abroad advantages row uses `_fresh_abroad_advantages_context()` merged into home + `/abroad/` views
   (`@cached_query` on `get_study_abroad_advantages_block`, not inside the page blob).
   Homepage About block uses `get_home_about_context()` (`@cached_query`, per lang; not stored inside the page blob).
-  Homepage sale cards use `get_home_sales_context()` → `get_serialized_active_sales(lang)` (`@cached_query`, per lang).
-  Sale discounts on course prices: `projects.utils.pricing.get_active_sale_discounts_by_service_id` (`@cached_query`);
-  embedded in `serialize_project_category` / `serialize_price_package` inside cached page/query blobs — invalidate `Sale`
-  (and `Sale.services` M2M) on promo edits; `Service` / `CoursePricePackage` signals also bump the global version.
+  Homepage sale banners use `get_home_sales_context()` → `get_serialized_active_sales(lang)`
+  (`@cached_query`, per lang; merged after the home page blob — not stored inside it).
+  Serialized fields: name, description, percent, end_date_display,
+  linked services, promo image. Expired rows (`end_date` < today) are excluded at query time.
+  Sale discounts on course prices: `projects.utils.pricing.get_active_sale_discounts_by_service_id`
+  (`@cached_query`); embedded in `serialize_project_category` / `serialize_price_package` inside
+  cached page/query blobs — call `invalidate_sale_cache()` on Sale / Sale.services / Media→Sale edits;
+  `Service` / `CoursePricePackage` signals also bump the global version.
 
   Blog index (`projects:blog-page`, blog.html): `get_blog_page_data()` uses `@cached_page_data(CACHE_TIMEOUT_MEDIUM)`
   and calls cached `get_blog_posts(is_active=True)` (featured = `on_top`[:2], rest = listing). Invalidate via
@@ -40,7 +44,7 @@ from django.db.models import F
 from django.utils.text import slugify
 
 # from projects.utils import send_mail_func
-from projects.utils.cache_utils import invalidate_model_cache
+from projects.utils.cache_utils import invalidate_model_cache, invalidate_sale_cache
 from projects.utils.image_resize import resize_image_field
 from projects.models import (
     Service,
@@ -131,6 +135,11 @@ def _invalidate_on_commit(model_name):
     transaction.on_commit(lambda: invalidate_model_cache(model_name))
 
 
+def _invalidate_sale_cache_on_commit():
+    """Homepage promotion banners + per-service discount map + embedded course prices."""
+    transaction.on_commit(invalidate_sale_cache)
+
+
 @receiver(post_save, sender=Service)
 @receiver(post_delete, sender=Service)
 def invalidate_service_cache(sender, instance, **kwargs):
@@ -138,7 +147,7 @@ def invalidate_service_cache(sender, instance, **kwargs):
     Home / courses list / nav: cached `get_project_categories` and page blobs
     (`_get_home_page_data_cached`, `get_project_list_data`, …) embed serialized
     categories including `icon` from `card_icon` + slug hints.
-    Also refreshes `get_serialized_active_sales` (linked course names/slugs on sale cards).
+    Also refreshes homepage sale banners (`get_serialized_active_sales`: linked course names).
     """
     _invalidate_on_commit('Service')
 
@@ -348,11 +357,11 @@ def invalidate_blog_post_image_cache(sender, instance, **kwargs):
 @receiver(post_save, sender=Media)
 @receiver(post_delete, sender=Media)
 def invalidate_media_cache(sender, instance, **kwargs):
-    """Invalidate cache when Media is saved or deleted (hero bg, service imgs, etc.)."""
-    # Single bump: invalidate_model_cache only raises global cache_version — one call is enough.
-    _invalidate_on_commit('Media')
+    """Invalidate cache when Media is saved or deleted (hero bg, service imgs, sale promo, etc.)."""
     if getattr(instance, 'sale_id', None):
-        _invalidate_on_commit('Sale')
+        _invalidate_sale_cache_on_commit()
+    else:
+        _invalidate_on_commit('Media')
 
 
 
@@ -386,19 +395,19 @@ def invalidate_option_cache(sender, instance, **kwargs):
 
 @receiver(post_save, sender=Sale)
 @receiver(post_delete, sender=Sale)
-def invalidate_sale_cache(sender, instance, **kwargs):
+def invalidate_sale_cache_signal(sender, instance, **kwargs):
     """
-    Home sale cards (`get_serialized_active_sales`), discount map
+    Homepage promotion banners (`get_serialized_active_sales`), discount map
     (`get_active_sale_discounts_by_service_id`), and discounted prices on
     course list/detail + checkout (`serialize_*` / `package_payable_amount`).
     """
-    _invalidate_on_commit('Sale')
+    _invalidate_sale_cache_on_commit()
 
 
 @receiver(m2m_changed, sender=Sale.services.through)
 def invalidate_sale_services_m2m(sender, instance, **kwargs):
-    """Linked courses changed — refresh sale cards and per-service discount map."""
+    """Linked courses changed — refresh sale banners and per-service discount map."""
     if kwargs.get('action') not in ('post_add', 'post_remove', 'post_clear'):
         return
-    _invalidate_on_commit('Sale')
+    _invalidate_sale_cache_on_commit()
 

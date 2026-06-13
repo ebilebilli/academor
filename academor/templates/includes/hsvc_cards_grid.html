@@ -8,7 +8,15 @@
                 <span class="hsvc-card__icon" aria-hidden="true">
                     <i class="fa {{ cat.icon }}" aria-hidden="true"></i>
                 </span>
-                <h3 class="hsvc-card__title">{{ cat.name }}</h3>
+                <span class="hsvc-card__main">
+                    <h3 class="hsvc-card__title">{{ cat.name }}</h3>
+                    {% if cat.on_sale and cat.discount_percent %}
+                    <span class="hsvc-card__sale-badge" aria-label="{{ cat.sale_badge_aria }}">
+                        <span class="hsvc-card__sale-percent">{{ cat.discount_percent }}</span>
+                        <span class="hsvc-card__sale-label">{{ cat.sale_percent_label }}</span>
+                    </span>
+                    {% endif %}
+                </span>
                 <span class="hsvc-card__arrow" aria-hidden="true"><i class="fa fa-arrow-right"></i></span>
             </a>
         </div>

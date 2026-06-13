@@ -283,7 +283,49 @@ def _sale_promo_image(sale):
     return None
 
 
+_SALE_END_DATE_MONTHS = {
+    'az': (
+        '', 'Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'İyun',
+        'İyul', 'Avqust', 'Sentyabr', 'Oktyabr', 'Noyabr', 'Dekabr',
+    ),
+    'ru': (
+        '', 'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+        'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря',
+    ),
+}
+
+_SALE_PERCENT_LABELS = {
+    'az': '% endirim',
+    'en': '% discount',
+    'ru': '% скидка',
+}
+
+
+def _sale_percent_label(lang='az') -> str:
+    return _SALE_PERCENT_LABELS.get(normalize_lang(lang), _SALE_PERCENT_LABELS['en'])
+
+
+def _sale_discount_badge_aria(percent, lang='az') -> str:
+    lang = normalize_lang(lang)
+    if lang == 'az':
+        return f'{percent} faiz endirim'
+    if lang == 'ru':
+        return f'Скидка {percent}%'
+    return f'{percent} percent discount'
+
+
+def _format_sale_end_date(end_date, lang='az'):
+    if not end_date:
+        return None
+    lang = normalize_lang(lang)
+    if lang in _SALE_END_DATE_MONTHS:
+        months = _SALE_END_DATE_MONTHS[lang]
+        return f'{end_date.day} {months[end_date.month]} {end_date.year}'
+    return end_date.strftime('%B %d, %Y')
+
+
 def serialize_sale(sale, lang='az'):
+    """Homepage promotion banner payload — cache: ``invalidate_sale_cache()`` via Sale signals."""
     services = [
         service for service in sale.services.all()
         if service.is_active
@@ -291,12 +333,18 @@ def serialize_sale(sale, lang='az'):
     desc_html = _localized_value(sale, 'description', lang) or None
     desc_plain = richtext_plain_text(desc_html) if desc_html else ''
     name = _localized_value(sale, 'name', lang)
+    has_discount = sale.percent is not None
     return {
         'id': sale.id,
         'name': name,
         'description': desc_html,
         'description_plain': desc_plain or None,
         'percent': sale.percent,
+        'has_discount': has_discount,
+        'percent_label': _sale_percent_label(lang) if has_discount else None,
+        'discount_badge_aria': _sale_discount_badge_aria(sale.percent, lang) if has_discount else None,
+        'end_date': sale.end_date.isoformat() if sale.end_date else None,
+        'end_date_display': _format_sale_end_date(sale.end_date, lang),
         'apply_to_service_prices': sale.apply_to_service_prices,
         'image': _sale_promo_image(sale),
         'image_alt': name or _('Special offer'),
@@ -313,9 +361,13 @@ def serialize_sale(sale, lang='az'):
 
 @cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_serialized_active_sales(lang='az'):
-    """Home sale cards — invalidated via Sale signals (and global bump on Service changes)."""
+    """Homepage sale banners — active, non-expired rows; bump via ``invalidate_sale_cache()``."""
+    from django.utils import timezone
+
+    today = timezone.localdate()
     sales = (
         Sale.objects.filter(is_active=True)
+        .filter(Q(end_date__isnull=True) | Q(end_date__gte=today))
         .prefetch_related(
             Prefetch(
                 'services',
@@ -901,6 +953,9 @@ def serialize_project_category(category, lang='az', discounts_map=None):
             else original_min_price if sale_percent else None
         ),
         'discount_percent': sale_percent,
+        'on_sale': bool(sale_percent),
+        'sale_percent_label': _sale_percent_label(lang) if sale_percent else None,
+        'sale_badge_aria': _sale_discount_badge_aria(sale_percent, lang) if sale_percent else None,
         'has_discount': bool(sale_percent and min_price is not None),
         'has_payment': bool(active_packages),
     }

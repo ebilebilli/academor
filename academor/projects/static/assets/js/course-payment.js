@@ -374,15 +374,6 @@
 
             var fd = new FormData(form);
             var token = form.querySelector('[name=csrfmiddlewaretoken]');
-            if (window.console && console.info) {
-                console.info('[course-pay] submit', {
-                    action: form.action,
-                    price_package_id: fd.get('price_package_id'),
-                    buyer_name: fd.get('buyer_name'),
-                    buyer_email: fd.get('buyer_email'),
-                    buyer_phone: fd.get('buyer_phone'),
-                });
-            }
             setLoading(true);
 
             fetch(form.action, {
@@ -406,13 +397,6 @@
                     });
                 })
                 .then(function (res) {
-                    if (window.console && console.info) {
-                        console.info('[course-pay] response', {
-                            ok: res.ok,
-                            data: res.data,
-                        });
-                    }
-
                     if (res.data && res.data.success && res.data.redirect_url) {
                         window.location.href = res.data.redirect_url;
                         return;
