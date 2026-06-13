@@ -302,7 +302,7 @@ def invalidate_sale_cache():
 
     Invalidates:
     - ``get_serialized_active_sales`` / ``get_home_sales_context`` (homepage banner)
-    - ``get_active_sale_discounts_by_service_id`` (course list/detail, checkout)
+    - ``get_active_sale_discounts_by_service_id`` (service-card ``on_sale`` labels, checkout)
     - Cached page blobs that embed ``serialize_project_category`` / ``serialize_price_package``
 
     Called from Sale signals, Media linked to a Sale, and SaleAdmin list_editable saves

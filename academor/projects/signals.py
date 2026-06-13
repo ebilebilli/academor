@@ -26,6 +26,8 @@ Keep in sync with queries.py (add a receiver when a new cached query reads a mod
   (`@cached_query`, per lang; merged after the home page blob — not stored inside it).
   Serialized fields: name, description, percent, end_date_display,
   linked services, promo image. Expired rows (`end_date` < today) are excluded at query time.
+  Service cards (home + /courses/): ``serialize_project_category`` → ``on_sale``, ``discount_percent``,
+  ``sale_percent_label`` (from ``get_active_sale_discounts_by_service_id``).
   Sale discounts on course prices: `projects.utils.pricing.get_active_sale_discounts_by_service_id`
   (`@cached_query`); embedded in `serialize_project_category` / `serialize_price_package` inside
   cached page/query blobs — call `invalidate_sale_cache()` on Sale / Sale.services / Media→Sale edits;
@@ -136,7 +138,7 @@ def _invalidate_on_commit(model_name):
 
 
 def _invalidate_sale_cache_on_commit():
-    """Homepage promotion banners + per-service discount map + embedded course prices."""
+    """Homepage sale banners, service-card sale labels, per-service discount map, course prices."""
     transaction.on_commit(invalidate_sale_cache)
 
 
@@ -397,7 +399,8 @@ def invalidate_option_cache(sender, instance, **kwargs):
 @receiver(post_delete, sender=Sale)
 def invalidate_sale_cache_signal(sender, instance, **kwargs):
     """
-    Homepage promotion banners (`get_serialized_active_sales`), discount map
+    Homepage sale banners (`get_serialized_active_sales`), service-card sale labels
+    (`serialize_project_category` → ``on_sale``), discount map
     (`get_active_sale_discounts_by_service_id`), and discounted prices on
     course list/detail + checkout (`serialize_*` / `package_payable_amount`).
     """
