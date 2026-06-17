@@ -147,10 +147,7 @@
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     {{ form.email }}
-                                    <label for="{{ form.email.id_for_label }}">
-                                        {{ form.email.label }}
-                                        <span class="text-muted fw-normal">({% trans "optional" %})</span>
-                                    </label>
+                                    <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
                                 </div>
                                 {% if form.email.errors %}<div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>{% endif %}
                             </div>

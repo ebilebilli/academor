@@ -65,7 +65,6 @@
                     <div class="mb-2 course-pay-modal__field">
                         <label for="id_buyer_email" class="form-label small fw-semibold mb-1">
                             {{ payment_form.buyer_email.label }}
-                            <span class="text-muted fw-normal">({% trans "optional" %})</span>
                         </label>
                         {{ payment_form.buyer_email }}
                         {% if payment_form.buyer_email.errors %}
