@@ -1,0 +1,91 @@
+{% load i18n %}
+<div class="course-payment-contract__doc" data-contract-number="{{ contract_number }}">
+    <p class="course-payment-contract__meta text-end mb-3">
+        <strong>{% trans "Training agreement" %} № {{ contract_number }}</strong>
+    </p>
+
+    <p class="course-payment-contract__lead">
+        {% blocktrans trimmed %}
+        On one side, «Academor Training and Development Center» LLC (hereinafter — the Course),
+        and on the other side, the preparatory course learner (hereinafter — the Learner),
+        have entered into this agreement on the following terms:
+        {% endblocktrans %}
+    </p>
+
+    <section class="course-payment-contract__section">
+        <h4 class="course-payment-contract__heading">{% trans "1. Subject of the agreement" %}</h4>
+        <p class="mb-2">
+            <strong>1.1.</strong>
+            {% trans "The Course provides training services to the Learner under the selected programme. The Course training programmes include: foreign languages (English, Russian, German, French and other languages), international exam preparation (IELTS, SAT, GRE, GMAT, PMS) and other subjects. The subject the Learner registered for:" %}
+            <strong>{{ course.name }}</strong>{% if package_details %} ({{ package_details }}){% endif %}.
+        </p>
+        <p class="mb-0">
+            <strong>1.2.</strong>
+            {% trans "The training group is determined according to the selected programme, the Learner's level of knowledge and schedule." %}
+        </p>
+    </section>
+
+    <section class="course-payment-contract__section">
+        <h4 class="course-payment-contract__heading">{% trans "2. Payment terms" %}</h4>
+        <p class="mb-2">
+            <strong>2.1.</strong>
+            {{ payment_clause }}
+        </p>
+        <p class="mb-2">
+            <strong>2.2.</strong>
+            {% trans "Payment is made in cash or by bank transfer." %}
+        </p>
+        <p class="mb-0">
+            <strong>2.3.</strong>
+            {% trans "The amount paid is non-refundable if the Learner leaves the course of their own accord." %}
+        </p>
+    </section>
+
+    <section class="course-payment-contract__section">
+        <h4 class="course-payment-contract__heading">{% trans "3. Rights and obligations of the parties" %}</h4>
+        <p class="mb-1"><strong>{% trans "3.1. Rights and obligations of the Course:" %}</strong></p>
+        <ul class="course-payment-contract__list">
+            <li>{% trans "3.1.1. To provide the Learner with quality training services." %}</li>
+            <li>{% trans "3.1.2. To deliver the lesson schedule to the Learner on time." %}</li>
+            <li>{% trans "3.1.3. To replace the instructor when necessary." %}</li>
+            <li>{% trans "3.1.4. To issue an appropriate certificate to the Learner who successfully completes the course." %}</li>
+        </ul>
+        <p class="mb-1"><strong>{% trans "3.2. Rights and obligations of the Learner:" %}</strong></p>
+        <ul class="course-payment-contract__list">
+            <li>{% trans "3.2.1. To attend lessons on time according to the lesson schedule." %}</li>
+            <li>{% trans "3.2.2. The Learner may miss one (1) lesson per month without a valid excuse. In that case, no fee is charged for that lesson. Second and subsequent missed lessons are considered forfeited." %}</li>
+            <li>{% trans "3.2.3. If missing a lesson, to notify a Course representative at least one (1) day before the lesson. Notice given on the day of the lesson is grounds for the lesson to be considered forfeited." %}</li>
+            <li>{% trans "3.2.4. To complete the instructor's assignments and not disrupt the lesson schedule." %}</li>
+            <li>{% trans "3.2.5. To observe order and discipline in the classroom." %}</li>
+        </ul>
+    </section>
+
+    <section class="course-payment-contract__section">
+        <h4 class="course-payment-contract__heading">{% trans "4. General provisions" %}</h4>
+        <ul class="course-payment-contract__list mb-0">
+            <li>{% trans "4.1. This agreement enters into force from the moment of signing and remains in effect until the end of the training period." %}</li>
+            <li>{% trans "4.2. In cases not provided for in this agreement, the civil legislation of the Republic of Azerbaijan applies." %}</li>
+            <li>{% trans "4.3. Disputes that may arise between the parties shall be resolved through negotiations; if no agreement is reached, the matter shall be referred to court." %}</li>
+            <li>{% trans "4.4. This agreement is drawn up in two (2) copies; both copies have equal legal force." %}</li>
+        </ul>
+    </section>
+
+    <section class="course-payment-contract__section course-payment-contract__parties">
+        <h4 class="course-payment-contract__heading">{% trans "5. Details of the parties" %}</h4>
+        <div class="row g-3">
+            <div class="col-sm-6">
+                <p class="mb-1 fw-semibold">Academor Training and Development Center</p>
+                <p class="mb-0">{% trans "Phone" %}: +994 55 123 00 77</p>
+                <p class="mb-0">{% trans "TIN" %}: 1507376041</p>
+            </div>
+            <div class="col-sm-6">
+                <p class="mb-1 fw-semibold">{% trans "Learner" %}</p>
+                <p class="mb-0">{% trans "Full name" %}: {% if buyer_name %}<strong>{{ buyer_name }}</strong>{% else %}<span class="course-payment-contract__fill" data-contract-buyer-name>_______________</span>{% endif %}</p>
+                <p class="mb-0">{% trans "Phone" %}: {% if buyer_phone %}<strong>{{ buyer_phone }}</strong>{% else %}<span class="course-payment-contract__fill" data-contract-buyer-phone>_______________</span>{% endif %}</p>
+            </div>
+        </div>
+        <p class="text-muted mt-3 mb-0">
+            {% trans "Date" %}: {% if contract_date %}{{ contract_date|date:"d.m.Y" }}{% else %}{% now "d.m.Y" %}{% endif %}
+        </p>
+    </section>
+</div>

@@ -172,6 +172,12 @@ class CoursePricePackage(models.Model):
         verbose_name=_('Duration'),
         help_text=_('e.g. 3 months'),
     )
+    months = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        verbose_name=_('Months'),
+        help_text=_('Course length in months (used in the training agreement).'),
+    )
     lesson_count = models.PositiveIntegerField(
         null=True,
         blank=True,
@@ -190,6 +196,11 @@ class CoursePricePackage(models.Model):
     )
     order = models.PositiveIntegerField(default=0, verbose_name=_('Order'))
     is_active = models.BooleanField(default=True, verbose_name=_('Active'))
+    is_premium = models.BooleanField(
+        default=False,
+        verbose_name=_('Premium'),
+        help_text=_('Highlight this package with a distinct card style when selected.'),
+    )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created at'))
 
     class Meta:

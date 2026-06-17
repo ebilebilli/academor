@@ -38,16 +38,17 @@ class AppealContactForm(TurnstileFormMixin, forms.ModelForm):
             'placeholder': _('Email address')
         }),
         required=False,
-        label=_('Email address')
+        label=_('Email address'),
     )
     mobile_number = forms.CharField(
         widget=forms.TextInput(attrs={
             'class': 'form-control',
-            'placeholder': _('Mobile number')
+            'placeholder': _('Mobile number'),
+            'autocomplete': 'tel',
         }),
-        required=False,
+        required=True,
         label=_('Mobile number'),
-        max_length=30
+        max_length=30,
     )
     subject = forms.CharField(
         widget=forms.TextInput(attrs={
@@ -96,22 +97,16 @@ class AppealContactForm(TurnstileFormMixin, forms.ModelForm):
             raise ValidationError(_('Something went wrong. Please try again.'))
         return ''
 
-    def clean(self):
-        cleaned_data = super().clean()
-        email = (cleaned_data.get('email') or '').strip()
-        mobile_number = (cleaned_data.get('mobile_number') or '').strip()
-
-        if not email and not mobile_number:
-            msg = _('Please provide either an email address or a mobile number.')
-            self.add_error('email', msg)
-            self.add_error('mobile_number', msg)
-
-        return cleaned_data
+    def clean_email(self):
+        value = (self.cleaned_data.get('email') or '').strip()
+        return value or None
 
     def clean_mobile_number(self):
         value = (self.cleaned_data.get('mobile_number') or '').strip()
-        if value and not validate_phone_number(value):
-            raise ValidationError(_('Düzgün nömrə daxil edin'))
+        if not value:
+            raise ValidationError(_('Phone number is required.'))
+        if not validate_phone_number(value):
+            raise ValidationError(_('Please enter a valid phone number.'))
         return value
 
 

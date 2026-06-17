@@ -2,7 +2,7 @@ import re
 
 from django.db.models import Q, Prefetch
 from django.utils import translation
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext as _, ngettext
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
 from django.templatetags.static import static
@@ -16,8 +16,8 @@ from projects.service_category_icons import resolve_service_category_icon
 from projects.study_abroad_advantage_icons import build_static_study_abroad_advantages_block
 from projects.utils.pricing import (
     apply_percent_discount,
+    fetch_active_sale_discounts_by_service_id,
     format_decimal_price,
-    get_active_sale_discounts_by_service_id,
     get_sale_percent_for_service,
 )
 
@@ -149,8 +149,8 @@ def get_about(lang='az'):
     return about
 
 
-@cached_query(timeout='CACHE_TIMEOUT_LONG')
 def get_team_members(is_active=True):
+    """Active team rows — fresh read (homepage/team pages; not cached)."""
     queryset = Team.objects.all()
     if is_active is not None and hasattr(Team, 'is_active'):
         queryset = queryset.filter(is_active=is_active)
@@ -359,14 +359,13 @@ def serialize_sale(sale, lang='az'):
     }
 
 
-@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
-def get_serialized_active_sales(lang='az'):
-    """Homepage sale banners — active, non-expired rows; bump via ``invalidate_sale_cache()``."""
+def _fetch_serialized_active_sales(lang='az'):
+    """Active homepage sale banners — fresh DB read (is_active, show_on_homepage, not expired)."""
     from django.utils import timezone
 
     today = timezone.localdate()
     sales = (
-        Sale.objects.filter(is_active=True)
+        Sale.objects.filter(is_active=True, show_on_homepage=True)
         .filter(Q(end_date__isnull=True) | Q(end_date__gte=today))
         .prefetch_related(
             Prefetch(
@@ -383,8 +382,61 @@ def get_serialized_active_sales(lang='az'):
     return [serialize_sale(sale, lang=lang) for sale in sales]
 
 
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_serialized_active_sales(lang='az'):
+    """Cached sale banners — bump via ``invalidate_sale_cache()``."""
+    return _fetch_serialized_active_sales(lang)
+
+
+def _fresh_home_sales_context(lang='az'):
+    """Homepage sales — bypass query cache so admin edits show on next reload."""
+    return {'sales': _fetch_serialized_active_sales(lang)}
+
+
+def _fresh_home_team_context(lang='az'):
+    """Homepage team cards — fresh read, not inside the cached page blob."""
+    return {
+        'team': [serialize_team_member(m, lang=lang) for m in get_team_members()],
+    }
+
+
+def _serialized_categories_with_fresh_sales(lang, show_on_main_page=None):
+    """Service cards with current sale prices — always a fresh discount lookup."""
+    categories = get_project_categories(lang, show_on_main_page=show_on_main_page)
+    discounts_map = fetch_active_sale_discounts_by_service_id()
+    return [
+        serialize_project_category(category, lang, discounts_map=discounts_map)
+        for category in categories
+    ]
+
+
+def _fresh_home_categories_context(lang='az'):
+    """Homepage service cards — override stale categories from the page cache blob."""
+    return {
+        'categories': _serialized_categories_with_fresh_sales(
+            lang,
+            show_on_main_page=True,
+        ),
+    }
+
+
+def _merge_fresh_sale_categories(ctx, lang, show_on_main_page=None):
+    """Replace serialized categories in a page context with fresh sale pricing."""
+    ctx['categories'] = _serialized_categories_with_fresh_sales(
+        lang,
+        show_on_main_page=show_on_main_page,
+    )
+    slug = (ctx.get('filters') or {}).get('slug')
+    if slug:
+        for cat in ctx['categories']:
+            if cat.get('slug') == slug:
+                ctx['selected_category'] = cat
+                break
+    return ctx
+
+
 def get_home_sales_context(lang='az'):
-    """Homepage sale section — cached per language, merged after the page blob."""
+    """Homepage sale section — cached per language."""
     return {'sales': get_serialized_active_sales(lang)}
 
 
@@ -866,6 +918,32 @@ def price_package_display_name(package, lang='az'):
     return _price_package_display_name(package, lang)
 
 
+def _format_lesson_minutes_display(minutes, lang='az'):
+    if not minutes:
+        return ''
+    with translation.override(lang):
+        return ngettext(
+            '%(counter)s minute',
+            '%(counter)s minutes',
+            minutes,
+        ) % {'counter': minutes}
+
+
+def _format_months_display(months, lang='az'):
+    if not months:
+        return ''
+    with translation.override(lang):
+        return ngettext(
+            '%(counter)s month',
+            '%(counter)s months',
+            months,
+        ) % {'counter': months}
+
+
+def format_months_display(months, lang='az'):
+    return _format_months_display(months, lang)
+
+
 def serialize_price_package(package, lang='az', sale_percent=None):
     original_price = package.price
     price = original_price
@@ -877,14 +955,21 @@ def serialize_price_package(package, lang='az', sale_percent=None):
         'id': package.id,
         'name': _price_package_display_name(package, lang),
         'duration': package.duration or '',
+        'months': package.months,
+        'months_display': _format_months_display(package.months, lang),
         'lesson_count': package.lesson_count,
         'lesson_minutes': package.lesson_minutes,
+        'lesson_minutes_display': _format_lesson_minutes_display(
+            package.lesson_minutes,
+            lang,
+        ),
         'price': price,
         'price_display': format_decimal_price(price),
         'original_price': original_price if has_discount else None,
         'original_price_display': format_decimal_price(original_price) if has_discount else None,
         'discount_percent': sale_percent if has_discount else None,
         'has_discount': has_discount,
+        'is_premium': bool(package.is_premium),
     }
 
 
@@ -908,7 +993,7 @@ def _service_category_display_name(category, lang='az'):
 
 def serialize_project_category(category, lang='az', discounts_map=None):
     if discounts_map is None:
-        discounts_map = get_active_sale_discounts_by_service_id()
+        discounts_map = fetch_active_sale_discounts_by_service_id()
 
     desc_field = get_localized_field_name('description', lang)
     first_image = None
@@ -991,7 +1076,7 @@ def serialize_project_category_detail(category, lang='az'):
     data['has_certificate'] = category.has_certificate
     data['is_online'] = category.is_online
     data['is_offline'] = category.is_offline
-    discounts_map = get_active_sale_discounts_by_service_id()
+    discounts_map = fetch_active_sale_discounts_by_service_id()
     sale_percent = get_sale_percent_for_service(category.id, discounts_map)
     packages = [
         serialize_price_package(p, lang, sale_percent=sale_percent)
@@ -1191,12 +1276,6 @@ def _get_home_page_data_cached(request, lang):
     category_slug = request.GET.get('slug')
     is_active = request.GET.get('is_active', 'true').lower() == 'true'
 
-    categories = get_project_categories(lang, show_on_main_page=True)
-    serialized_categories = [
-        serialize_project_category(category, lang)
-        for category in categories
-    ]
-
     contact = get_contact(lang)
     serialized_contact = serialize_contact(contact, lang) if contact else None
     
@@ -1238,7 +1317,7 @@ def _get_home_page_data_cached(request, lang):
     return {
         'use_h2_for_section_titles': True,
         'projects': [],
-        'categories': serialized_categories,
+        'categories': [],
         'contact': serialized_contact,
         'projects_pagination': None,
         'filters': {
@@ -1256,7 +1335,6 @@ def _get_home_page_data_cached(request, lang):
         'universities': get_serialized_universities(is_active=True),
         'abroad_intro_text': abroad_intro_text,
         'abroad_intro_teaser': _richtext_ratio_excerpt(abroad_intro_text, ratio=0.5),
-        'team': [serialize_team_member(m, lang=lang) for m in get_team_members()],
         'reviews': [serialize_review(r) for r in get_reviews()],
         'site_faqs': get_serialized_site_faq_entries(lang=lang, is_active=True),
     }
@@ -1265,7 +1343,9 @@ def _get_home_page_data_cached(request, lang):
 def get_home_page_data(request, lang):
     ctx = _get_home_page_data_cached(request, lang)
     ctx.update(_fresh_home_blog_context(lang))
-    ctx.update(get_home_sales_context(lang))
+    ctx.update(_fresh_home_team_context(lang))
+    ctx.update(_fresh_home_categories_context(lang))
+    ctx.update(_fresh_home_sales_context(lang))
     ctx.update(get_home_about_context(lang))
     ctx.update(_fresh_abroad_advantages_context(lang))
     featured = ctx.get('blog_featured') or []
@@ -1403,15 +1483,25 @@ def _get_project_list_data_impl(request, lang):
 
 
 @cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')
-def get_project_list_data(request, lang):
-    # Backward-compatible name (used by older views/links)
+def _get_courses_list_data_cached(request, lang):
     return _get_project_list_data_impl(request, lang)
+
+
+def get_courses_list_data(request, lang):
+    ctx = _get_courses_list_data_cached(request, lang)
+    _merge_fresh_sale_categories(ctx, lang)
+    return ctx
 
 
 @cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')
-def get_courses_list_data(request, lang):
-    # Preferred name for the new "courses" route/view
+def _get_project_list_data_cached(request, lang):
     return _get_project_list_data_impl(request, lang)
+
+
+def get_project_list_data(request, lang):
+    ctx = _get_project_list_data_cached(request, lang)
+    _merge_fresh_sale_categories(ctx, lang)
+    return ctx
 
 
 @cached_query(timeout='CACHE_TIMEOUT_MEDIUM')

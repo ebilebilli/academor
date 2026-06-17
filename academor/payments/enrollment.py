@@ -5,9 +5,30 @@ import logging
 from django.db import transaction
 from django.utils import timezone
 
+from .contract import generate_contract_number, render_course_contract_html
 from .models import CourseEnrollment, Payment
 
 logger = logging.getLogger(__name__)
+
+
+def _persist_enrollment_contract(enrollment: CourseEnrollment, payment: Payment) -> None:
+    contract_number = (payment.contract_number or '').strip() or generate_contract_number()
+    if not payment.contract_number:
+        payment.contract_number = contract_number
+        payment.save(update_fields=['contract_number', 'updated_at'])
+
+    contract_html = render_course_contract_html(
+        course=enrollment.course,
+        package=enrollment.price_package,
+        contract_number=contract_number,
+        buyer_name=enrollment.buyer_name,
+        buyer_phone=enrollment.buyer_phone,
+        contract_date=timezone.localtime(payment.created_at).date(),
+        lang=(payment.contract_language or 'az')[:2],
+    )
+    enrollment.contract_number = contract_number
+    enrollment.contract_html = contract_html
+    enrollment.save(update_fields=['contract_number', 'contract_html'])
 
 
 def fulfill_course_enrollment(payment: Payment) -> CourseEnrollment | None:
@@ -17,8 +38,14 @@ def fulfill_course_enrollment(payment: Payment) -> CourseEnrollment | None:
     if not payment.course_id:
         return None
 
-    existing = CourseEnrollment.objects.filter(payment=payment).first()
+    existing = (
+        CourseEnrollment.objects.select_related('course', 'price_package')
+        .filter(payment=payment)
+        .first()
+    )
     if existing:
+        if not existing.contract_html:
+            _persist_enrollment_contract(existing, payment)
         return existing
 
     with transaction.atomic():
@@ -26,7 +53,13 @@ def fulfill_course_enrollment(payment: Payment) -> CourseEnrollment | None:
         if not locked or locked.status != Payment.Status.SUCCESS or not locked.course_id:
             return None
         if CourseEnrollment.objects.filter(payment=locked).exists():
-            return CourseEnrollment.objects.get(payment=locked)
+            enrollment = (
+                CourseEnrollment.objects.select_related('course', 'price_package')
+                .get(payment=locked)
+            )
+            if not enrollment.contract_html:
+                _persist_enrollment_contract(enrollment, locked)
+            return enrollment
 
         enrollment = CourseEnrollment.objects.create(
             payment=locked,
@@ -37,6 +70,12 @@ def fulfill_course_enrollment(payment: Payment) -> CourseEnrollment | None:
             buyer_phone=locked.buyer_phone,
             status=CourseEnrollment.Status.ACTIVE,
         )
+        enrollment = (
+            CourseEnrollment.objects.select_related('course', 'price_package')
+            .get(pk=enrollment.pk)
+        )
+        _persist_enrollment_contract(enrollment, locked)
+
         if not locked.enrollment_completed_at:
             locked.enrollment_completed_at = timezone.now()
             locked.save(update_fields=['enrollment_completed_at', 'updated_at'])

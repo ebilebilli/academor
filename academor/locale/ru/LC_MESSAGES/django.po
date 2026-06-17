@@ -1029,6 +1029,9 @@ msgstr "Самый популярный"
 msgid "Payment details"
 msgstr "Данные для оплаты"
 
+msgid "Contract and payment"
+msgstr "Договор и оплата"
+
 msgid "Confirm and pay"
 msgstr "Подтвердить и оплатить"
 
@@ -1050,6 +1053,9 @@ msgstr "Фамилия обязательна."
 msgid "Phone number is required."
 msgstr "Номер телефона обязателен."
 
+msgid "optional"
+msgstr "необязательно"
+
 msgid "Email address is required."
 msgstr "Укажите адрес электронной почты."
 
@@ -1065,10 +1071,28 @@ msgstr "Безопасная запись через банковский пла
 msgid "Secure payment via United Payment"
 msgstr "Безопасная оплата через United Payment"
 
+msgid "Training agreement"
+msgstr "Договор на обучение"
+
+msgid "Please read the agreement below. The course name and package details are filled in automatically."
+msgstr "Прочитайте договор ниже. Название курса и данные пакета заполняются автоматически."
+
+msgid "Please read the agreement before confirming."
+msgstr "Прочитайте договор перед подтверждением."
+
+msgid "I have read and accept the training agreement."
+msgstr "Я прочитал(а) договор и принимаю его условия."
+
+msgid "You must accept the training agreement to proceed."
+msgstr "Чтобы продолжить, необходимо принять договор."
+
+msgid "Date"
+msgstr "Дата"
+
 msgid "We will use your email to contact you about your enrollment."
 msgstr "Мы используем ваш e-mail для связи по поводу записи на курс."
 
-msgid "Make payment"
+msgid "Pay now"
 msgstr "Оплатить"
 
 # Course payment / price packages
@@ -1081,6 +1105,44 @@ msgstr "Пожалуйста, выберите ценовой пакет."
 
 msgid "Number of lessons"
 msgstr "Количество уроков"
+
+msgid "Months"
+msgstr "Месяцы"
+
+msgid "%(counter)s month"
+msgid_plural "%(counter)s months"
+msgstr[0] "%(counter)s месяц"
+msgstr[1] "%(counter)s месяца"
+
+msgid "%(counter)s lesson"
+msgid_plural "%(counter)s lessons"
+msgstr[0] "%(counter)s урок"
+msgstr[1] "%(counter)s урока"
+
+msgid "%(minutes)s per lesson"
+msgstr "%(minutes)s за урок"
+
+msgid "the agreed period"
+msgstr "согласованный срок"
+
+msgid "the agreed number of lessons"
+msgstr "согласованное количество уроков"
+
+msgid ", each lesson lasting %(minutes)s"
+msgstr ", каждый урок продолжительностью %(minutes)s"
+
+msgid ""
+"Upon payment of %(price)s AZN, the Learner is registered for a %(period)s "
+"training programme comprising %(lessons)s%(minutes_clause)s."
+msgstr ""
+"После оплаты %(price)s AZN Слушатель зачисляется на учебную программу "
+"продолжительностью %(period)s, включающую %(lessons)s%(minutes_clause)s."
+
+msgid "Premium"
+msgstr "Премиум"
+
+msgid "Highlight this package with a distinct card style when selected."
+msgstr "Выделяет этот пакет особым стилем карточки при выборе."
 
 msgid "Cancel"
 msgstr "Отмена"
@@ -1115,7 +1177,8 @@ msgstr "Минут на урок"
 msgid "%(counter)s minute"
 msgid_plural "%(counter)s minutes"
 msgstr[0] "%(counter)s минута"
-msgstr[1] "%(counter)s минут"
+msgstr[1] "%(counter)s минуты"
+msgstr[2] "%(counter)s минут"
 
 msgid "Duration of a single lesson in minutes."
 msgstr "Длительность одного урока в минутах."
@@ -1152,3 +1215,202 @@ msgstr "Смотреть все курсы"
 
 msgid "Discount %(percent)s percent"
 msgstr "Скидка %(percent)s процентов"
+
+# Training agreement — contract body
+
+msgid ""
+"On one side, «Academor Training and Development Center» LLC (hereinafter — "
+"the Course), and on the other side, the preparatory course learner "
+"(hereinafter — the Learner), have entered into this agreement on the "
+"following terms:"
+msgstr ""
+"С одной стороны, ООО «Academor Training and Development Center» (далее — "
+"Курс), и с другой стороны, слушатель подготовительного курса (далее — "
+"Слушатель), заключили настоящий договор на следующих условиях:"
+
+msgid "1. Subject of the agreement"
+msgstr "1. Предмет договора"
+
+msgid ""
+"The Course provides training services to the Learner under the selected "
+"programme. The Course training programmes include: foreign languages "
+"(English, Russian, German, French and other languages), international exam "
+"preparation (IELTS, SAT, GRE, GMAT, PMS) and other subjects. The subject "
+"the Learner registered for:"
+msgstr ""
+"Курс оказывает Слушателю учебные услуги по выбранной программе. В учебные "
+"программы Курса входят: иностранные языки (английский, русский, немецкий, "
+"французский и другие языки), подготовка к международным экзаменам (IELTS, "
+"SAT, GRE, GMAT, PMS) и другие предметы. Предмет, на который зарегистрировался "
+"Слушатель:"
+
+msgid ""
+"The training group is determined according to the selected programme, the "
+"Learner's level of knowledge and schedule."
+msgstr ""
+"Учебная группа определяется в соответствии с выбранной программой, уровнем "
+"знаний и расписанием Слушателя."
+
+msgid "2. Payment terms"
+msgstr "2. Порядок расчётов"
+
+msgid "Payment is made in cash or by bank transfer."
+msgstr "Оплата производится наличными или банковским переводом."
+
+msgid ""
+"The amount paid is non-refundable if the Learner leaves the course of their "
+"own accord."
+msgstr ""
+"Оплаченная сумма не возвращается, если Слушатель по собственному желанию "
+"прекращает обучение."
+
+msgid "3. Rights and obligations of the parties"
+msgstr "3. Права и обязанности сторон"
+
+msgid "3.1. Rights and obligations of the Course:"
+msgstr "3.1. Права и обязанности Курса:"
+
+msgid "3.1.1. To provide the Learner with quality training services."
+msgstr "3.1.1. Оказывать Слушателю качественные учебные услуги."
+
+msgid "3.1.2. To deliver the lesson schedule to the Learner on time."
+msgstr "3.1.2. Своевременно предоставлять Слушателю расписание занятий."
+
+msgid "3.1.3. To replace the instructor when necessary."
+msgstr "3.1.3. При необходимости заменять преподавателя."
+
+msgid ""
+"3.1.4. To issue an appropriate certificate to the Learner who successfully "
+"completes the course."
+msgstr ""
+"3.1.4. Выдавать соответствующий сертификат Слушателю, успешно завершившему "
+"курс."
+
+msgid "3.2. Rights and obligations of the Learner:"
+msgstr "3.2. Права и обязанности Слушателя:"
+
+msgid "3.2.1. To attend lessons on time according to the lesson schedule."
+msgstr "3.2.1. Своевременно посещать занятия в соответствии с расписанием."
+
+msgid ""
+"3.2.2. The Learner may miss one (1) lesson per month without a valid excuse. "
+"In that case, no fee is charged for that lesson. Second and subsequent "
+"missed lessons are considered forfeited."
+msgstr ""
+"3.2.2. Слушатель вправе один (1) раз в месяц пропустить занятие без "
+"уважительной причины. В этом случае плата за данное занятие не взимается. "
+"Второе и последующие пропущенные занятия считаются утраченными."
+
+msgid ""
+"3.2.3. If missing a lesson, to notify a Course representative at least one "
+"(1) day before the lesson. Notice given on the day of the lesson is grounds "
+"for the lesson to be considered forfeited."
+msgstr ""
+"3.2.3. При пропуске занятия уведомить представителя Курса не менее чем за "
+"один (1) день до занятия. Уведомление в день занятия является основанием "
+"для признания занятия утраченным."
+
+msgid ""
+"3.2.4. To complete the instructor's assignments and not disrupt the lesson "
+"schedule."
+msgstr ""
+"3.2.4. Выполнять задания преподавателя и не нарушать расписание занятий."
+
+msgid "3.2.5. To observe order and discipline in the classroom."
+msgstr "3.2.5. Соблюдать порядок и дисциплину в аудитории."
+
+msgid ""
+"The Learner shall conduct lessons on time according to the lesson schedule."
+msgstr ""
+"Слушатель должен посещать занятия своевременно в соответствии с расписанием."
+
+msgid ""
+"If the Learner fails to notify a Course representative that they will not "
+"attend lessons, that lesson is considered forfeited (notice must be given one "
+"day before the lesson; if notice is given on the day of the lesson, that "
+"lesson is forfeited)."
+msgstr ""
+"Если Слушатель не уведомил представителя Курса о пропуске занятий, "
+"соответствующее занятие считается утраченным (уведомление должно быть "
+"дано за один день до занятия; при уведомлении в день занятия оно "
+"считается утраченным)."
+
+msgid ""
+"To complete the instructor's assignments on time and not disrupt the lesson "
+"schedule."
+msgstr ""
+"Своевременно выполнять задания преподавателя и не нарушать расписание "
+"занятий."
+
+msgid "4. General provisions"
+msgstr "4. Общие положения"
+
+msgid ""
+"4.1. This agreement enters into force from the moment of signing and remains "
+"in effect until the end of the training period."
+msgstr ""
+"4.1. Настоящий договор вступает в силу с момента подписания и действует до "
+"окончания периода обучения."
+
+msgid ""
+"4.2. In cases not provided for in this agreement, the civil legislation of "
+"the Republic of Azerbaijan applies."
+msgstr ""
+"4.2. В случаях, не предусмотренных настоящим договором, применяется "
+"гражданское законодательство Азербайджанской Республики."
+
+msgid ""
+"4.3. Disputes that may arise between the parties shall be resolved through "
+"negotiations; if no agreement is reached, the matter shall be referred to "
+"court."
+msgstr ""
+"4.3. Споры между сторонами разрешаются путём переговоров; при недостижении "
+"соглашения вопрос передаётся в суд."
+
+msgid ""
+"4.4. This agreement is drawn up in two (2) copies; both copies have equal "
+"legal force."
+msgstr ""
+"4.4. Настоящий договор составлен в двух (2) экземплярах; оба экземпляра "
+"имеют равную юридическую силу."
+
+msgid "5. Details of the parties"
+msgstr "5. Реквизиты сторон"
+
+msgid "TIN"
+msgstr "ИНН"
+
+msgid "Learner"
+msgstr "Слушатель"
+
+msgid "The Learner, for a %(months)s-month course,"
+msgstr "Слушатель, за курс продолжительностью %(months)s мес.,"
+
+msgid "The Learner, for a %(duration)s course,"
+msgstr "Слушатель, за курс %(duration)s,"
+
+msgid "The Learner, for the selected training package,"
+msgstr "Слушатель, за выбранный учебный пакет,"
+
+msgid "within %(months)s months"
+msgstr "в течение %(months)s месяцев"
+
+msgid "for %(duration)s"
+msgstr "в течение %(duration)s"
+
+msgid "each lesson lasting %(minutes)s"
+msgstr "каждое занятие продолжительностью %(minutes)s"
+
+msgid "in lessons"
+msgstr "на занятиях"
+
+msgid "a total of %(count)s lessons"
+msgstr "всего %(count)s занятий"
+
+msgid "participates"
+msgstr "участвует"
+
+msgid ""
+"%(intro)s after paying the specified amount of %(price)s AZN, %(schedule)s."
+msgstr ""
+"%(intro)s после оплаты установленной суммы %(price)s AZN, %(schedule)s."

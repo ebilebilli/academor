@@ -14,14 +14,11 @@ from django.db.models import Q
 from django.utils import timezone
 
 from projects.models import Sale
-from projects.utils.cache_utils import cached_query
-
-
 def format_decimal_price(price) -> str:
     price = Decimal(price)
     if price == price.to_integral_value():
         return str(int(price))
-    return str(price).quantize(Decimal('0.01')).normalize()
+    return str(price.quantize(Decimal('0.01')).normalize())
 
 
 def apply_percent_discount(amount, percent: int) -> Decimal:
@@ -52,9 +49,8 @@ def fetch_active_sale_discounts_by_service_id() -> dict[int, int]:
     return discounts
 
 
-@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_active_sale_discounts_by_service_id() -> dict[int, int]:
-    """Cached wrapper for templates/lists; checkout uses ``fetch_*`` instead."""
+    """Fresh discount map — not cached (time-bound sales + multi-worker LocMem safety)."""
     return fetch_active_sale_discounts_by_service_id()
 
 

@@ -899,7 +899,7 @@ msgstr "Qeydiyyat təsdiqi bu ünvana göndəriləcək."
 msgid "We will use your email to contact you about your enrollment."
 msgstr "Qeydiyyat və əlaqə üçün e-poçt ünvanınızdan istifadə edəcəyik."
 
-msgid "Make payment"
+msgid "Pay now"
 msgstr "Ödəniş et"
 
 msgid "Continue to bank payment"
@@ -1049,6 +1049,9 @@ msgstr "Ən populyar"
 msgid "Payment details"
 msgstr "Ödəniş məlumatları"
 
+msgid "Contract and payment"
+msgstr "Müqavilə və ödəniş"
+
 msgid "Confirm and pay"
 msgstr "Təsdiqlə və ödə"
 
@@ -1070,6 +1073,9 @@ msgstr "Soyad mütləqdir."
 msgid "Phone number is required."
 msgstr "Telefon nömrəsi mütləqdir."
 
+msgid "optional"
+msgstr "istəyə bağlı"
+
 msgid "Email address is required."
 msgstr "E-poçt ünvanı mütləqdir."
 
@@ -1085,6 +1091,24 @@ msgstr "Bank ödənişi ilə təhlükəsiz qeydiyyat"
 msgid "Secure payment via United Payment"
 msgstr "United Payment vasitəsilə təhlükəsiz ödəniş"
 
+msgid "Training agreement"
+msgstr "Tədris müqaviləsi"
+
+msgid "Please read the agreement below. The course name and package details are filled in automatically."
+msgstr "Aşağıdakı müqaviləni oxuyun. Kurs adı və paket məlumatları avtomatik doldurulur."
+
+msgid "Please read the agreement before confirming."
+msgstr "Təsdiqləmədən əvvəl müqaviləni oxuyun."
+
+msgid "I have read and accept the training agreement."
+msgstr "Müqaviləni oxudum və qəbul edirəm."
+
+msgid "You must accept the training agreement to proceed."
+msgstr "Davam etmək üçün müqaviləni qəbul etməlisiniz."
+
+msgid "Date"
+msgstr "Tarix"
+
 # Course payment / price packages
 
 msgid "Price packages"
@@ -1095,6 +1119,44 @@ msgstr "Zəhmət olmasa qiymət paketi seçin."
 
 msgid "Number of lessons"
 msgstr "Dərs sayı"
+
+msgid "Months"
+msgstr "Ay"
+
+msgid "%(counter)s month"
+msgid_plural "%(counter)s months"
+msgstr[0] "%(counter)s ay"
+msgstr[1] "%(counter)s ay"
+
+msgid "%(counter)s lesson"
+msgid_plural "%(counter)s lessons"
+msgstr[0] "%(counter)s dərs"
+msgstr[1] "%(counter)s dərs"
+
+msgid "%(minutes)s per lesson"
+msgstr "hər dərs %(minutes)s"
+
+msgid "the agreed period"
+msgstr "razılaşdırılmış müddət"
+
+msgid "the agreed number of lessons"
+msgstr "razılaşdırılmış dərs sayı"
+
+msgid ", each lesson lasting %(minutes)s"
+msgstr ", hər dərs %(minutes)s davam etməklə"
+
+msgid ""
+"Upon payment of %(price)s AZN, the Learner is registered for a %(period)s "
+"training programme comprising %(lessons)s%(minutes_clause)s."
+msgstr ""
+"%(price)s AZN məbləğinin ödənilməsi ilə Dinləyici %(period)s müddətində "
+"keçiriləcək, %(lessons)s%(minutes_clause)s tədris proqramına qəbul olunur."
+
+msgid "Premium"
+msgstr "Premium"
+
+msgid "Highlight this package with a distinct card style when selected."
+msgstr "Seçildikdə bu paketi fərqli kart stili ilə vurğulayır."
 
 msgid "Cancel"
 msgstr "Ləğv et"
@@ -1172,3 +1234,204 @@ msgstr "Son tarix"
 
 msgid "Deadline: %(date)s"
 msgstr "Son tarix: %(date)s"
+
+# Training agreement — contract body
+
+msgid ""
+"On one side, «Academor Training and Development Center» LLC (hereinafter — "
+"the Course), and on the other side, the preparatory course learner "
+"(hereinafter — the Learner), have entered into this agreement on the "
+"following terms:"
+msgstr ""
+"Bir tərəfdən «Academor Training and Development Center» MMC-nin (bundan "
+"sonra – Kurs), digər tərəfdən isə hazırlıq kursunun dinləyicisi (bundan "
+"sonra – Dinləyici) bu müqaviləni aşağıdakı şərtlərlə bağladılar:"
+
+msgid "1. Subject of the agreement"
+msgstr "1. Müqavilənin predmeti"
+
+msgid ""
+"The Course provides training services to the Learner under the selected "
+"programme. The Course training programmes include: foreign languages "
+"(English, Russian, German, French and other languages), international exam "
+"preparation (IELTS, SAT, GRE, GMAT, PMS) and other subjects. The subject "
+"the Learner registered for:"
+msgstr ""
+"Kurs, Dinləyiciyə seçilmiş proqram üzrə tədris xidməti göstərir. Kursun "
+"tədris proqramlarına aşağıdakılar daxildir: xarici dillər (ingilis, rus, "
+"alman, fransız və digər dillər), beynəlxalq imtahanlara hazırlıq (IELTS, "
+"SAT, GRE, GMAT, PMS) və digər fənlər. Dinləyicinin qeydiyyatdan keçdiyi "
+"fənn:"
+
+msgid ""
+"The training group is determined according to the selected programme, the "
+"Learner's level of knowledge and schedule."
+msgstr ""
+"Tədris qrupu seçilmiş proqrama, Dinləyicinin bilik səviyyəsinə və cədvəlinə "
+"uyğun olaraq müəyyən edilir."
+
+msgid "2. Payment terms"
+msgstr "2. Hesablaşma qaydaları"
+
+msgid "Payment is made in cash or by bank transfer."
+msgstr "Ödəniş nağd şəkildə və ya bank köçürməsi vasitəsilə həyata keçirilir."
+
+msgid ""
+"The amount paid is non-refundable if the Learner leaves the course of their "
+"own accord."
+msgstr ""
+"Ödənilmiş məbləğ Dinləyicinin öz iradəsi ilə kursu tərk etməsi halında geri "
+"qaytarılmır."
+
+msgid "3. Rights and obligations of the parties"
+msgstr "3. Tərəflərin hüquq və vəzifələri"
+
+msgid "3.1. Rights and obligations of the Course:"
+msgstr "3.1. Kursun hüquq və vəzifələri:"
+
+msgid "3.1.1. To provide the Learner with quality training services."
+msgstr "3.1.1. Dinləyiciyə keyfiyyətli tədris xidməti göstərmək."
+
+msgid "3.1.2. To deliver the lesson schedule to the Learner on time."
+msgstr "3.1.2. Dərs cədvəlini vaxtında Dinləyiciyə çatdırmaq."
+
+msgid "3.1.3. To replace the instructor when necessary."
+msgstr "3.1.3. Zərurət yarandıqda müəllimi əvəz etmək."
+
+msgid ""
+"3.1.4. To issue an appropriate certificate to the Learner who successfully "
+"completes the course."
+msgstr ""
+"3.1.4. Kursu müvəffəqiyyətlə tamamlayan Dinləyiciyə müvafiq sertifikat "
+"vermək."
+
+msgid "3.2. Rights and obligations of the Learner:"
+msgstr "3.2. Dinləyicinin hüquq və vəzifələri:"
+
+msgid "3.2.1. To attend lessons on time according to the lesson schedule."
+msgstr "3.2.1. Dərs cədvəlinə uyğun olaraq dərslərə vaxtında gəlmək."
+
+msgid ""
+"3.2.2. The Learner may miss one (1) lesson per month without a valid excuse. "
+"In that case, no fee is charged for that lesson. Second and subsequent "
+"missed lessons are considered forfeited."
+msgstr ""
+"3.2.2. Dinləyici hər ay 1 (bir) dəfə üzürlü səbəb olmadan dərsi buraxmaq "
+"hüququna malikdir. Bu halda həmin dərsin haqqı tutulmur. İkinci və sonrakı "
+"buraxılan dərslər itirilmiş hesab edilir."
+
+msgid ""
+"3.2.3. If missing a lesson, to notify a Course representative at least one "
+"(1) day before the lesson. Notice given on the day of the lesson is grounds "
+"for the lesson to be considered forfeited."
+msgstr ""
+"3.2.3. Dərsi buraxacağı halda, dərsdən ən azı 1 (bir) gün əvvəl Kurs "
+"nümayəndəsinə məlumat vermək. Dərs günü edilən bildiriş dərsin itirilmiş "
+"sayılmasına əsas verir."
+
+msgid ""
+"3.2.4. To complete the instructor's assignments and not disrupt the lesson "
+"schedule."
+msgstr ""
+"3.2.4. Müəllimin tapşırıqlarını yerinə yetirmək, dərs cədvəlini pozmamaq."
+
+msgid "3.2.5. To observe order and discipline in the classroom."
+msgstr "3.2.5. Dərsin keçirildiyi otaqda nizam-intizama riayət etmək."
+
+msgid ""
+"The Learner shall conduct lessons on time according to the lesson schedule."
+msgstr ""
+"Dinləyicinin dərsi vaxta uyğun olaraq dərs cədvəlinə əsasən həyata "
+"keçirmək."
+
+msgid ""
+"If the Learner fails to notify a Course representative that they will not "
+"attend lessons, that lesson is considered forfeited (notice must be given one "
+"day before the lesson; if notice is given on the day of the lesson, that "
+"lesson is forfeited)."
+msgstr ""
+"Dinləyici dərslərə gəlməyəcəyi barədə Kurs nümayəndəsinə məlumat "
+"vermədiyi təqdirdə, həmin dərs itirilmiş hesab edilir (dərsdən bir gün "
+"əvvəl məlumat verilməlidir; dərs günü məlumat verilsə, həmin dərs "
+"itirilir)."
+
+msgid ""
+"To complete the instructor's assignments on time and not disrupt the lesson "
+"schedule."
+msgstr ""
+"Müəllimin tapşırıqlarını vaxtında yerinə yetirmək, dərs cədvəlini "
+"pozmamaq."
+
+msgid "4. General provisions"
+msgstr "4. Ümumi müddəalar"
+
+msgid ""
+"4.1. This agreement enters into force from the moment of signing and remains "
+"in effect until the end of the training period."
+msgstr ""
+"4.1. Bu müqavilə imzalandığı andan qüvvəyə minir və tədris dövrü başa "
+"çatana qədər qüvvədə qalır."
+
+msgid ""
+"4.2. In cases not provided for in this agreement, the civil legislation of "
+"the Republic of Azerbaijan applies."
+msgstr ""
+"4.2. Müqavilədə nəzərdə tutulmayan hallarda Azərbaycan Respublikasının "
+"mülki qanunvericiliyi tətbiq edilir."
+
+msgid ""
+"4.3. Disputes that may arise between the parties shall be resolved through "
+"negotiations; if no agreement is reached, the matter shall be referred to "
+"court."
+msgstr ""
+"4.3. Tərəflər arasında yarana biləcək mübahisələr danışıqlar yolu ilə həll "
+"edilir; razılığa gəlinmədikdə məsələ məhkəməyə verilir."
+
+msgid ""
+"4.4. This agreement is drawn up in two (2) copies; both copies have equal "
+"legal force."
+msgstr ""
+"4.4. Bu müqavilə 2 (iki) nüsxədə tərtib edilmişdir; hər iki nüsxə eyni "
+"hüquqi qüvvəyə malikdir."
+
+msgid "5. Details of the parties"
+msgstr "5. Tərəflərin rekvizitləri"
+
+msgid "TIN"
+msgstr "VÖEN"
+
+msgid "Learner"
+msgstr "Dinləyici"
+
+msgid "The Learner, for a %(months)s-month course,"
+msgstr "Dinləyici %(months)s ay müddətli kurs üçün"
+
+msgid "The Learner, for a %(duration)s course,"
+msgstr "Dinləyici %(duration)s kurs üçün"
+
+msgid "The Learner, for the selected training package,"
+msgstr "Dinləyici seçilmiş tədris paketi üzrə kurs üçün"
+
+msgid "within %(months)s months"
+msgstr "%(months)s ay müddətində"
+
+msgid "for %(duration)s"
+msgstr "%(duration)s müddətində"
+
+msgid "each lesson lasting %(minutes)s"
+msgstr "hər dərs %(minutes)s davam edən"
+
+msgid "in lessons"
+msgstr "dərslərə"
+
+msgid "a total of %(count)s lessons"
+msgstr "cəmi %(count)s dərs"
+
+msgid "participates"
+msgstr "iştirak edir"
+
+msgid ""
+"%(intro)s after paying the specified amount of %(price)s AZN, %(schedule)s."
+msgstr ""
+"%(intro)s müəyyən edilmiş %(price)s manat məbləğini ödədikdən sonra, "
+"%(schedule)s."

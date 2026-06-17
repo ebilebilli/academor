@@ -44,33 +44,21 @@
                 {% endif %}
             </div>
             {% if team %}
+            {% if team|length <= 4 %}
+            <div class="row g-4 justify-content-center home-team-grid wow fadeInUp" data-wow-delay="0.2s">
+                {% for member in team %}
+                <div class="col-6 col-md-4 col-lg-3">
+                    {% include "includes/home_team_member_card.html" with member=member eager_image=forloop.first %}
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
             <div class="courses-alt__carousel-shell wow fadeInUp" data-wow-delay="0.2s">
             <div class="swiper team-swiper team-carousel position-relative">
                 <div class="swiper-wrapper">
                 {% for member in team %}
                 <div class="swiper-slide">
-                    <article class="course-alt-card h-100">
-                        <a href="{% url 'projects:team-detail' member.slug %}" class="category-square-card course-alt-card__link d-flex flex-column text-decoration-none h-100">
-                            <div class="ratio ratio-1x1 overflow-hidden course-alt-card__media">
-                                {% if member.image %}
-                                    {% if forloop.first %}
-                                    <img src="{{ member.image_card|default:member.image }}" {% if member.image_srcset %}srcset="{{ member.image_srcset }}" sizes="(max-width: 600px) 96px, 253px"{% endif %} alt="{{ member.name }}" class="w-100 h-100" style="object-fit: cover;" loading="eager" decoding="async" fetchpriority="high" width="400" height="400">
-                                    {% else %}
-                                    {% academor_branded_lazy_img member.image_card|default:member.image member.name img_class='w-100 h-100' layout='cover' width='400' height='400' srcset=member.image_srcset sizes='(max-width: 600px) 96px, 253px' loading='lazy' %}
-                                    {% endif %}
-                                {% else %}
-                                <div class="w-100 h-100 bg-light d-flex align-items-center justify-content-center text-muted">
-                                    <i class="fa fa-user fa-3x opacity-25"></i>
-                                </div>
-                                {% endif %}
-                            </div>
-                            <div class="course-alt-card__body">
-                                <h5 class="mb-1 text-truncate" title="{{ member.name }}">{{ member.name }}</h5>
-                                {% if member.role %}<small class="course-alt-card__role d-block mb-2 text-truncate" title="{{ member.role }}">{{ member.role }}</small>{% endif %}
-                                <span class="course-alt-card__cta"><i class="fa fa-arrow-right" aria-hidden="true"></i></span>
-                            </div>
-                        </a>
-                    </article>
+                    {% include "includes/home_team_member_card.html" with member=member eager_image=forloop.first %}
                 </div>
                 {% endfor %}
                 </div>
@@ -79,6 +67,7 @@
             </div>
             <div class="team-swiper-pagination-outer"></div>
             </div>
+            {% endif %}
             {% else %}
             <p class="text-center text-muted mb-0">{% trans "No teachers yet." %}</p>
             {% endif %}

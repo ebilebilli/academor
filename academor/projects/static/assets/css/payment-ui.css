@@ -26,7 +26,7 @@
     --course-pay-border: rgba(var(--bs-primary-rgb), 0.12);
     --course-pay-gap: 1rem;
     --course-pay-card-width: 17.5rem;
-    --course-pay-card-min-height: 15.5rem;
+    --course-pay-card-min-height: 18.5rem;
     --course-pay-card-bg: var(--primary);
     --course-pay-card-bg-hover: color-mix(in srgb, var(--primary) 88%, #fff);
     --course-pay-card-border: var(--primary);
@@ -70,10 +70,10 @@
 .course-pay-card {
     display: flex;
     flex-direction: column;
-    gap: 0.65rem;
+    gap: 0.45rem;
     width: 100%;
     min-height: var(--course-pay-card-min-height);
-    padding: 1.15rem 1.2rem 1.25rem;
+    padding: 1.35rem 1.2rem 1.45rem;
     border-radius: var(--course-pay-card-radius);
     border: 1px solid var(--course-pay-card-border);
     background: var(--course-pay-card-bg);
@@ -93,9 +93,48 @@
     cursor: pointer;
 }
 
-/* is-active: seçim üçün JS; vizual fərq yoxdur */
+/* is-active: seçim üçün JS */
 .course-pay-card.is-active {
     z-index: 1;
+}
+
+.course-pay-card__name {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: inherit;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.course-pay-card__premium-tag {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 0.14rem 0.42rem;
+    font-size: 0.58rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1.15;
+    color: var(--accent);
+    background: rgba(255, 84, 20, 0.14);
+    border: 1px solid rgba(255, 84, 20, 0.55);
+    border-radius: 0.25rem;
+}
+
+.course-pay-card__badges {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+    flex: 0 0 4.25rem;
+    width: 4.25rem;
+    min-height: 1.35rem;
 }
 
 @media (hover: hover) {
@@ -117,18 +156,12 @@
     align-items: flex-start;
     justify-content: space-between;
     gap: 0.35rem;
-    min-height: 2rem;
-}
-
-.course-pay-card__name {
-    font-weight: 700;
-    line-height: 1.25;
-    color: inherit;
+    min-height: 0;
 }
 
 .course-pay-card__badge {
     flex-shrink: 0;
-    font-size: 0.65rem;
+    font-size: 0.72rem;
     padding: 0.2rem 0.5rem;
     background: var(--accent);
     color: #fff;
@@ -140,17 +173,26 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.15rem;
+    justify-content: flex-start;
+    gap: 0.1rem;
+    min-height: 0;
+    margin-top: -0.05rem;
 }
 
 .course-pay-card__original {
     display: block;
-    font-size: 0.78rem;
+    min-height: 1rem;
+    font-size: 0.85rem;
     font-weight: 600;
     line-height: 1.2;
     opacity: 0.72;
     text-decoration: line-through;
     text-decoration-thickness: 1.5px;
+}
+
+.course-pay-card__original[aria-hidden="true"] {
+    visibility: hidden;
+    text-decoration: none;
 }
 
 .course-pay-card__original-amount {
@@ -159,17 +201,17 @@
 
 .course-pay-card__original-currency {
     margin-left: 0.1rem;
-    font-size: 0.72rem;
+    font-size: 0.78rem;
 }
 
 .course-pay-card__amount {
-    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    font-size: clamp(1.65rem, 3vw, 2.3rem);
     font-weight: 800;
     letter-spacing: -0.03em;
 }
 
 .course-pay-card__currency {
-    font-size: 0.85rem;
+    font-size: 0.92rem;
     font-weight: 600;
     opacity: 0.85;
     margin-left: 0.15rem;
@@ -179,9 +221,10 @@
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
-    font-size: 0.78rem;
+    font-size: 0.86rem;
     font-weight: 600;
     flex: 1 1 auto;
+    min-height: 2.85rem;
 }
 
 .course-pay-card__features li {
@@ -211,7 +254,7 @@
 
 .course-pay-card__cta {
     flex: 1 1 auto;
-    font-size: 0.82rem;
+    font-size: 0.9rem;
     padding-top: 0.45rem;
     padding-bottom: 0.45rem;
     opacity: 1;
@@ -246,14 +289,192 @@
     }
 }
 
+.course-pay-modal {
+    --bs-font-sans-serif: 'Host Grotesk', sans-serif;
+    --bs-body-font-family: 'Host Grotesk', sans-serif;
+    font-family: 'Host Grotesk', sans-serif;
+    color: #00313D;
+}
+
 .course-pay-modal__title {
     color: var(--primary);
     letter-spacing: -0.02em;
 }
 
+.course-pay-modal__head {
+    min-width: 0;
+}
+
+.course-pay-modal__head-row {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.course-pay-modal__head-figure {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2.65rem;
+    height: 2.65rem;
+    border-radius: 0.65rem;
+    background: rgba(var(--bs-primary-rgb), 0.07);
+}
+
+.course-pay-modal__head-icon {
+    display: block;
+    width: 1.5rem;
+    height: 1.5rem;
+    object-fit: contain;
+}
+
+.course-pay-modal__head-text {
+    min-width: 0;
+}
+
 .course-pay-modal__package {
     color: var(--primary);
     font-weight: 600;
+}
+
+.course-pay-contract__title {
+    letter-spacing: -0.01em;
+}
+
+.course-pay-contract__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.65rem 0.9rem;
+    border: 1px solid var(--course-pay-border);
+    border-radius: 0.75rem;
+    background: #fff;
+    color: var(--primary);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: left;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.course-pay-contract__toggle:hover,
+.course-pay-contract__toggle:focus-visible {
+    border-color: rgba(var(--bs-primary-rgb), 0.45);
+    background: rgba(var(--bs-primary-rgb), 0.04);
+    color: var(--primary);
+}
+
+.course-pay-contract__toggle-icon {
+    flex-shrink: 0;
+    font-size: 0.75rem;
+    transition: transform 0.2s ease;
+}
+
+.course-pay-contract__toggle[aria-expanded="true"] .course-pay-contract__toggle-icon {
+    transform: rotate(180deg);
+}
+
+.course-pay-contract__scroll {
+    max-height: min(42vh, 18rem);
+    min-height: 8rem;
+    overflow-y: auto;
+    padding: 1rem 1.05rem;
+    border: 1px solid var(--course-pay-border);
+    border-radius: 0.75rem;
+    background: #fff;
+    color: var(--primary);
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.6;
+    -webkit-overflow-scrolling: touch;
+}
+
+.course-payment-contract__doc,
+.course-payment-contract__doc p,
+.course-payment-contract__doc li,
+.course-payment-contract__doc h4,
+.course-payment-contract__doc strong,
+.course-payment-contract__doc .fw-semibold,
+.course-payment-contract__doc .text-muted {
+    font-family: inherit;
+}
+
+.course-payment-contract__doc {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.course-payment-contract__heading {
+    color: var(--primary);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 0.45rem;
+}
+
+.course-payment-contract__section {
+    margin-top: 0.85rem;
+}
+
+.course-payment-contract__section:first-child {
+    margin-top: 0;
+}
+
+.course-payment-contract__list {
+    margin: 0 0 0.5rem;
+    padding-left: 1.1rem;
+}
+
+.course-payment-contract__list li + li {
+    margin-top: 0.2rem;
+}
+
+.course-payment-contract__fill {
+    font-weight: 600;
+    word-break: break-word;
+}
+
+.course-payment-contract__parties {
+    padding-top: 0.35rem;
+    border-top: 1px dashed rgba(var(--bs-primary-rgb), 0.18);
+}
+
+.course-pay-contract .form-check-label {
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.course-pay-contract .form-check-input {
+    accent-color: var(--accent);
+    border-color: rgba(var(--bs-primary-rgb), 0.35);
+}
+
+.course-pay-contract .form-check-input:checked {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+.course-pay-contract .form-check-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 0.2rem rgba(255, 84, 20, 0.28);
+}
+
+.course-pay-contract .form-check-input:active {
+    filter: brightness(0.95);
+}
+
+.course-pay-contract__hint {
+    font-family: inherit;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+}
+
+.course-pay-modal__field.is-invalid .form-check-input {
+    border-color: var(--bs-danger, #dc3545);
 }
 
 .course-pay-modal__field.is-invalid .form-control {
@@ -269,7 +490,7 @@
 @media (max-width: 767.98px) {
     .course-pay-block {
         --course-pay-gap: 0.65rem;
-        --course-pay-card-min-height: 13.5rem;
+        --course-pay-card-min-height: 16rem;
     }
 
     .course-pay-packages {
@@ -292,19 +513,19 @@
     }
 
     .course-pay-card {
-        padding: 0.95rem 0.85rem 1rem;
+        padding: 1.1rem 0.85rem 1.15rem;
     }
 
     .course-pay-card__amount {
-        font-size: clamp(1.25rem, 5vw, 1.65rem);
+        font-size: clamp(1.35rem, 5vw, 1.8rem);
     }
 
     .course-pay-card__features {
-        font-size: 0.72rem;
+        font-size: 0.8rem;
     }
 
     .course-pay-card__cta {
-        font-size: 0.75rem;
+        font-size: 0.82rem;
     }
 }
 
@@ -374,4 +595,8 @@
     font-size: 0.875rem;
     color: rgba(var(--bs-primary-rgb), 0.72);
     margin-top: 0.75rem;
+}
+
+.course-pay-block__secure-note {
+    line-height: 1.4;
 }

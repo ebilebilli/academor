@@ -66,6 +66,14 @@ class Sale(models.Model):
         default=True,
         verbose_name=_('Active'),
     )
+    show_on_homepage = models.BooleanField(
+        default=True,
+        verbose_name='Show on homepage',
+        help_text=(
+            'Admin only. When enabled, the promotion banner appears on the homepage. '
+            'When disabled, the sale stays active but the banner is hidden.'
+        ),
+    )
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name=_('Created at'),

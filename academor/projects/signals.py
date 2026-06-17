@@ -22,15 +22,19 @@ Keep in sync with queries.py (add a receiver when a new cached query reads a mod
   Study-abroad advantages row uses `_fresh_abroad_advantages_context()` merged into home + `/abroad/` views
   (`@cached_query` on `get_study_abroad_advantages_block`, not inside the page blob).
   Homepage About block uses `get_home_about_context()` (`@cached_query`, per lang; not stored inside the page blob).
-  Homepage sale banners use `get_home_sales_context()` → `get_serialized_active_sales(lang)`
-  (`@cached_query`, per lang; merged after the home page blob — not stored inside it).
+  Homepage team cards use `_fresh_home_team_context()` merged into `get_home_page_data()`
+  (fresh on every GET; not stored inside the page blob).
+  Homepage sale banners use `_fresh_home_sales_context()` → `_fetch_serialized_active_sales(lang)`
+  (fresh on every GET; not stored inside the page blob).
+  Homepage service cards use `_fresh_home_categories_context()` (fresh sale prices on every GET).
+  Courses list uses `_merge_fresh_sale_categories()` after the cached page blob.
   Serialized fields: name, description, percent, end_date_display,
   linked services, promo image. Expired rows (`end_date` < today) are excluded at query time.
   Service cards (home + /courses/): ``serialize_project_category`` → ``on_sale``, ``discount_percent``,
   ``sale_percent_label`` (from ``get_active_sale_discounts_by_service_id``).
-  Sale discounts on course prices: `projects.utils.pricing.get_active_sale_discounts_by_service_id`
-  (`@cached_query`); embedded in `serialize_project_category` / `serialize_price_package` inside
-  cached page/query blobs — call `invalidate_sale_cache()` on Sale / Sale.services / Media→Sale edits;
+  Sale discounts on course prices: `projects.utils.pricing.fetch_active_sale_discounts_by_service_id`
+  (fresh DB read; not cached). Embedded in `serialize_project_category` / `serialize_price_package`;
+  homepage and /courses/ merge fresh category rows after the page cache blob.
   `Service` / `CoursePricePackage` signals also bump the global version.
 
   Blog index (`projects:blog-page`, blog.html): `get_blog_page_data()` uses `@cached_page_data(CACHE_TIMEOUT_MEDIUM)`

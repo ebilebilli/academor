@@ -13,6 +13,16 @@
         var modalPackageEl = document.getElementById('course-pay-modal-package');
         var submitBtn = document.getElementById('course-pay-submit');
         var packageHidden = document.getElementById('id_price_package_id');
+        var contractNumberHidden = document.getElementById('id_contract_number');
+        var contractBodyEl = document.getElementById('course-pay-contract-body');
+        var contractPanelEl = document.getElementById('course-pay-contract-panel');
+        var contractToggleEl = document.getElementById('course-pay-contract-toggle');
+        var contractTemplatesEl = document.getElementById(
+            'course-pay-contract-templates'
+        );
+        var acceptContractEl = document.getElementById('id_accept_contract');
+        var buyerNameEl = document.getElementById('id_buyer_name');
+        var buyerPhoneEl = document.getElementById('id_buyer_phone');
         var submitLabel =
             submitBtn && submitBtn.querySelector('.course-pay-modal__submit-label');
         var defaultSubmitText = submitLabel ? submitLabel.textContent : '';
@@ -146,6 +156,85 @@
             modalPackageEl.hidden = !modalPackageEl.textContent;
         }
 
+        function resetAcceptContract() {
+            if (acceptContractEl) {
+                acceptContractEl.checked = false;
+            }
+            collapseContractPanel();
+        }
+
+        function getContractCollapse() {
+            if (
+                !contractPanelEl ||
+                !window.bootstrap ||
+                !bootstrap.Collapse
+            ) {
+                return null;
+            }
+            return bootstrap.Collapse.getOrCreateInstance(contractPanelEl, {
+                toggle: false,
+            });
+        }
+
+        function collapseContractPanel() {
+            var collapse = getContractCollapse();
+            if (collapse) {
+                collapse.hide();
+            }
+        }
+
+        function expandContractPanel() {
+            var collapse = getContractCollapse();
+            if (collapse) {
+                collapse.show();
+            }
+        }
+
+        function updateContractBuyerPreview() {
+            if (!contractBodyEl) {
+                return;
+            }
+            var nameTarget = contractBodyEl.querySelector(
+                '[data-contract-buyer-name]'
+            );
+            var phoneTarget = contractBodyEl.querySelector(
+                '[data-contract-buyer-phone]'
+            );
+            var name = buyerNameEl ? buyerNameEl.value.trim() : '';
+            var phone = buyerPhoneEl ? buyerPhoneEl.value.trim() : '';
+            if (nameTarget) {
+                nameTarget.textContent = name || '_______________';
+            }
+            if (phoneTarget) {
+                phoneTarget.textContent = phone || '_______________';
+            }
+        }
+
+        function syncContractBody() {
+            if (!contractBodyEl || !contractTemplatesEl) {
+                return;
+            }
+            var radio = getRadio(logicalIndex);
+            if (!radio) {
+                return;
+            }
+            var packageId =
+                radio.getAttribute('data-package-id') || radio.value || '';
+            var template = contractTemplatesEl.querySelector(
+                '[data-contract-package-id="' + packageId + '"]'
+            );
+            if (!template) {
+                return;
+            }
+            contractBodyEl.innerHTML = template.innerHTML;
+            var doc = contractBodyEl.querySelector('[data-contract-number]');
+            if (doc && contractNumberHidden) {
+                contractNumberHidden.value =
+                    doc.getAttribute('data-contract-number') || '';
+            }
+            updateContractBuyerPreview();
+        }
+
         function openPayModal() {
             var modal = getPayModal();
             if (!modal) {
@@ -153,6 +242,7 @@
             }
             syncSelectedPackage();
             updateModalPackageLabel();
+            syncContractBody();
             hideAlert('modal');
             modal.show();
         }
@@ -199,7 +289,8 @@
                 return;
             }
             index = Math.max(0, Math.min(index, n - 1));
-            if (index !== logicalIndex && !options.keepModal) {
+            var packageChanged = index !== logicalIndex;
+            if (packageChanged && !options.keepModal) {
                 closePayModal();
             }
             logicalIndex = index;
@@ -207,6 +298,10 @@
             syncSelectedPackage();
             if (payModalEl && payModalEl.classList.contains('show')) {
                 updateModalPackageLabel();
+                syncContractBody();
+                if (packageChanged) {
+                    resetAcceptContract();
+                }
             }
         }
 
@@ -233,6 +328,7 @@
             logicalIndex = defaultIndex;
             updateVisualStates();
             syncSelectedPackage();
+            syncContractBody();
 
             items.forEach(function (item) {
                 var card = item.querySelector('[data-package-card]');
@@ -321,8 +417,10 @@
                 hideAlert('modal');
                 clearFieldErrors();
                 setLoading(false);
+                collapseContractPanel();
             });
             payModalEl.addEventListener('shown.bs.modal', function () {
+                syncContractBody();
                 var first = form && form.querySelector('input:not([type="hidden"])');
                 if (first) {
                     first.focus();
@@ -348,6 +446,22 @@
             }
         });
 
+        if (contractPanelEl) {
+            contractPanelEl.addEventListener(
+                'shown.bs.collapse',
+                updateContractBuyerPreview
+            );
+        }
+
+        if (form) {
+            if (buyerNameEl) {
+                buyerNameEl.addEventListener('input', updateContractBuyerPreview);
+            }
+            if (buyerPhoneEl) {
+                buyerPhoneEl.addEventListener('input', updateContractBuyerPreview);
+            }
+        }
+
         if (!form) {
             return;
         }
@@ -370,6 +484,10 @@
 
             if (!payModalEl || !payModalEl.classList.contains('show')) {
                 openPayModal();
+            }
+
+            if (acceptContractEl && !acceptContractEl.checked) {
+                expandContractPanel();
             }
 
             var fd = new FormData(form);
@@ -425,6 +543,12 @@
                     }
                     if (res.data.errors) {
                         var fields = Object.keys(res.data.errors);
+                        if (
+                            res.data.errors.accept_contract &&
+                            res.data.errors.accept_contract[0]
+                        ) {
+                            expandContractPanel();
+                        }
                         if (!msg && fields.length) {
                             var firstKey = fields[0];
                             if (firstKey !== '__all__') {

@@ -149,8 +149,7 @@
                                     {{ form.email }}
                                     <label for="{{ form.email.id_for_label }}">
                                         {{ form.email.label }}
-                                        <i class="fas fa-star form-field-required" aria-hidden="true"></i>
-                                        <span class="visually-hidden">{% trans "Required field" %}</span>
+                                        <span class="text-muted fw-normal">({% trans "optional" %})</span>
                                     </label>
                                 </div>
                                 {% if form.email.errors %}<div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>{% endif %}

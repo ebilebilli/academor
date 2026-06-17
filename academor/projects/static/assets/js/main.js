@@ -287,6 +287,8 @@
                 nextEl: teamRoot.querySelector(".swiper-button-next"),
                 prevEl: teamRoot.querySelector(".swiper-button-prev"),
             },
+            /* Center cards when fewer members than visible slots (e.g. 2 on desktop). */
+            centerInsufficientSlides: true,
             /* Hide prev/next when all slides fit (e.g. 4 members on desktop at slidesPerView 4) */
             watchOverflow: true,
             breakpoints: {

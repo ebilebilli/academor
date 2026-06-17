@@ -64,9 +64,20 @@ class Payment(models.Model):
         related_name='payments',
         verbose_name=_('Price package'),
     )
-    buyer_email = models.EmailField(blank=True)
+    buyer_email = models.EmailField(blank=True, null=True)
     buyer_name = models.CharField(max_length=255, blank=True)
     buyer_phone = models.CharField(max_length=30, blank=True)
+    contract_number = models.CharField(
+        max_length=32,
+        blank=True,
+        verbose_name=_('Training agreement number'),
+    )
+    contract_language = models.CharField(
+        max_length=2,
+        blank=True,
+        default='az',
+        verbose_name=_('Contract language'),
+    )
     enrollment_completed_at = models.DateTimeField(null=True, blank=True)
     callback_up = models.TextField(
         blank=True
@@ -117,8 +128,9 @@ class CourseEnrollment(models.Model):
         verbose_name=_('Price package'),
     )
     buyer_email = models.EmailField(
-        blank=True, 
-        db_index=True
+        blank=True,
+        null=True,
+        db_index=True,
     )
     buyer_name = models.CharField(
         max_length=255, 
@@ -131,6 +143,15 @@ class CourseEnrollment(models.Model):
         db_index=True,
     )
     buyer_phone = models.CharField(max_length=30, blank=True)
+    contract_number = models.CharField(
+        max_length=32,
+        blank=True,
+        verbose_name=_('Training agreement number'),
+    )
+    contract_html = models.TextField(
+        blank=True,
+        verbose_name=_('Training agreement'),
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
 

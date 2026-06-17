@@ -175,9 +175,11 @@ def _start_payment(
     description: str,
     course=None,
     price_package=None,
-    buyer_email: str = '',
+    buyer_email: str | None = None,
     buyer_name: str = '',
     buyer_phone: str = '',
+    contract_number: str = '',
+    contract_language: str = 'az',
     product_type=Payment.ProductType.GENERIC,
 ):
     client_order_id = str(uuid.uuid4())
@@ -194,6 +196,8 @@ def _start_payment(
         buyer_email=buyer_email,
         buyer_name=buyer_name,
         buyer_phone=buyer_phone,
+        contract_number=contract_number,
+        contract_language=(contract_language or 'az')[:2],
     )
 
     # Include our clientOrderId in callback URLs so we can always find the Payment record
@@ -383,8 +387,10 @@ def payment_start_course(request, slug):
         course=course,
         price_package=price_package,
         buyer_name=form.cleaned_data['buyer_name'],
-        buyer_email=form.cleaned_data['buyer_email'],
+        buyer_email=form.cleaned_data.get('buyer_email'),
         buyer_phone=form.cleaned_data['buyer_phone'],
+        contract_number=form.cleaned_data['contract_number'],
+        contract_language=(get_language() or 'az')[:2],
         product_type=Payment.ProductType.COURSE,
     )
     if payment is None:

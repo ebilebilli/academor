@@ -1,0 +1,118 @@
+/* Off-screen render target — compact single-page A4 layout (browser PDF export only). */
+
+.enrollment-contract-pdf-export {
+    position: fixed;
+    left: -10000px;
+    top: 0;
+    width: 190mm;
+    background: #fff;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.enrollment-contract-pdf-export .course-payment-contract__doc {
+    box-sizing: border-box;
+    width: 190mm;
+    padding: 7mm 9mm 6mm;
+    font-family: 'Host Grotesk', sans-serif;
+    font-size: 6.6pt;
+    line-height: 1.2;
+    color: #00313D;
+    background: #fff;
+}
+
+.enrollment-contract-pdf-export .course-payment-contract__meta {
+    margin: 0 0 5pt !important;
+    text-align: right;
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+}
+
+.enrollment-contract-pdf-export .course-payment-contract__lead {
+    margin: 0 0 6pt !important;
+    text-align: justify;
+}
+
+.enrollment-contract-pdf-export .course-payment-contract__heading {
+    margin: 0 0 2pt !important;
+    padding-bottom: 1.5pt;
+    border-bottom: 0.4pt solid rgba(0, 49, 61, 0.18);
+    font-size: 7.1pt;
+    font-weight: 700;
+    line-height: 1.25;
+    color: #00313D;
+}
+
+.enrollment-contract-pdf-export .course-payment-contract__section {
+    margin-top: 4pt;
+    break-inside: avoid;
+}
+
+.enrollment-contract-pdf-export .course-payment-contract__section:first-of-type {
+    margin-top: 0;
+}
+
+.enrollment-contract-pdf-export p {
+    margin: 0 0 2pt !important;
+    text-align: justify;
+}
+
+.enrollment-contract-pdf-export .course-payment-contract__list {
+    margin: 0 0 3pt !important;
+    padding-left: 9pt !important;
+}
+
+.enrollment-contract-pdf-export .course-payment-contract__list li {
+    margin: 0 0 1pt;
+    text-align: justify;
+}
+
+.enrollment-contract-pdf-export .course-payment-contract__list li + li {
+    margin-top: 0;
+}
+
+/* Section 3 — two columns to save vertical space */
+.enrollment-contract-pdf-export .course-payment-contract__section:nth-of-type(3) {
+    column-count: 2;
+    column-gap: 9pt;
+}
+
+.enrollment-contract-pdf-export .course-payment-contract__section:nth-of-type(3) .course-payment-contract__heading {
+    column-span: all;
+}
+
+.enrollment-contract-pdf-export .course-payment-contract__parties {
+    margin-top: 5pt;
+    padding-top: 4pt;
+    border-top: 0.4pt dashed rgba(0, 49, 61, 0.2);
+}
+
+.enrollment-contract-pdf-export .course-payment-contract__parties .row {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 10pt;
+    margin: 0 !important;
+}
+
+.enrollment-contract-pdf-export .course-payment-contract__parties .col-sm-6 {
+    flex: 1 1 50% !important;
+    width: 50% !important;
+    max-width: 50% !important;
+    padding: 0 !important;
+}
+
+.enrollment-contract-pdf-export .fw-semibold {
+    font-weight: 600;
+}
+
+.enrollment-contract-pdf-export .text-muted {
+    margin-top: 4pt !important;
+    color: rgba(0, 49, 61, 0.62) !important;
+    font-size: 6.4pt;
+}
+
+.enrollment-contract-pdf-export strong {
+    font-weight: 700;
+}

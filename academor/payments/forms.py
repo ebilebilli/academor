@@ -4,6 +4,8 @@ from django.utils.translation import gettext_lazy as _
 
 from projects.utils.normalize_phone_number import validate_phone_number
 
+from payments.contract import is_valid_contract_number
+
 _FIELD_CLASS = 'form-control form-control-sm'
 
 
@@ -32,7 +34,7 @@ class CoursePaymentForm(forms.Form):
     )
     buyer_phone = forms.CharField(
         max_length=30,
-        required=False,
+        required=True,
         label=_('Phone number'),
         widget=forms.TextInput(
             attrs={
@@ -45,22 +47,25 @@ class CoursePaymentForm(forms.Form):
         required=True,
         widget=forms.HiddenInput(),
     )
+    accept_contract = forms.BooleanField(
+        required=True,
+        label=_('I have read and accept the training agreement.'),
+        error_messages={
+            'required': _('You must accept the training agreement to proceed.'),
+        },
+        widget=forms.CheckboxInput(
+            attrs={'class': 'form-check-input'},
+        ),
+    )
+    contract_number = forms.CharField(
+        max_length=32,
+        required=True,
+        widget=forms.HiddenInput(),
+    )
 
     def __init__(self, *args, request=None, **kwargs):
         self._request = request
         super().__init__(*args, **kwargs)
-
-    def clean(self):
-        cleaned_data = super().clean()
-        email = (cleaned_data.get('buyer_email') or '').strip()
-        phone = (cleaned_data.get('buyer_phone') or '').strip()
-        if not email and not phone:
-            msg = _('Please provide an email address or phone number.')
-            self.add_error('buyer_email', msg)
-            self.add_error('buyer_phone', msg)
-        cleaned_data['buyer_email'] = email
-        cleaned_data['buyer_phone'] = phone
-        return cleaned_data
 
     def clean_buyer_name(self):
         value = (self.cleaned_data.get('buyer_name') or '').strip()
@@ -78,10 +83,21 @@ class CoursePaymentForm(forms.Form):
             raise ValidationError(_('Invalid price package.'))
 
     def clean_buyer_email(self):
-        return (self.cleaned_data.get('buyer_email') or '').strip()
+        value = (self.cleaned_data.get('buyer_email') or '').strip()
+        return value or None
 
     def clean_buyer_phone(self):
         value = (self.cleaned_data.get('buyer_phone') or '').strip()
-        if value and not validate_phone_number(value):
+        if not value:
+            raise ValidationError(_('Phone number is required.'))
+        if not validate_phone_number(value):
             raise ValidationError(_('Please enter a valid phone number.'))
+        return value
+
+    def clean_contract_number(self):
+        value = (self.cleaned_data.get('contract_number') or '').strip()
+        if not value:
+            raise ValidationError(_('Training agreement number is missing.'))
+        if not is_valid_contract_number(value):
+            raise ValidationError(_('Invalid training agreement number.'))
         return value

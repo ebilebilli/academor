@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n payment_contract static %}
 {# Body-level modal: must not sit inside .scroll-reveal / transform ancestors (breaks Bootstrap fixed positioning). #}
 <div
     class="modal fade course-pay-modal"
@@ -9,14 +9,28 @@
     data-pay-modal
     data-open-on-load="{% if payment_form.errors %}true{% else %}false{% endif %}"
 >
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
         <div class="modal-content border-0 rounded-4 overflow-hidden shadow-lg course-pay-modal__content">
             <div class="modal-header border-0 course-pay-modal__header px-4 pt-4 pb-0">
-                <div class="pe-3">
-                    <h2 class="modal-title h4 mb-2 course-pay-modal__title" id="coursePayModalLabel">
-                        {% trans "Payment details" %}
-                    </h2>
-                    <p class="course-pay-modal__package small mb-0" id="course-pay-modal-package" hidden></p>
+                <div class="course-pay-modal__head pe-3">
+                    <div class="course-pay-modal__head-row">
+                        <span class="course-pay-modal__head-figure" aria-hidden="true">
+                            <img
+                                src="{% static 'assets/img/contract_small_icon.webp' %}"
+                                alt=""
+                                class="course-pay-modal__head-icon"
+                                width="24"
+                                height="24"
+                                decoding="async"
+                            >
+                        </span>
+                        <div class="course-pay-modal__head-text">
+                            <h2 class="modal-title h4 mb-1 course-pay-modal__title" id="coursePayModalLabel">
+                                {% trans "Contract and payment" %}
+                            </h2>
+                            <p class="course-pay-modal__package small mb-0" id="course-pay-modal-package" hidden></p>
+                        </div>
+                    </div>
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans 'Close' %}"></button>
             </div>
@@ -36,6 +50,7 @@
                 >
                     {% csrf_token %}
                     <input type="hidden" name="price_package_id" id="id_price_package_id" value="{% if payment_form.price_package_id.value %}{{ payment_form.price_package_id.value }}{% endif %}">
+                    <input type="hidden" name="contract_number" id="id_contract_number" value="{% if payment_form.contract_number.value %}{{ payment_form.contract_number.value }}{% endif %}">
 
                     <div class="mb-2 course-pay-modal__field">
                         <label for="id_buyer_name" class="form-label small fw-semibold mb-1">
@@ -47,12 +62,10 @@
                         <div class="text-danger small mt-1 js-field-error" data-server-error>{{ payment_form.buyer_name.errors.0 }}</div>
                         {% endif %}
                     </div>
-                    <p class="course-pay-contact-hint small text-muted mb-2">
-                        {% trans "Provide an email address or phone number (at least one)." %}
-                    </p>
                     <div class="mb-2 course-pay-modal__field">
                         <label for="id_buyer_email" class="form-label small fw-semibold mb-1">
                             {{ payment_form.buyer_email.label }}
+                            <span class="text-muted fw-normal">({% trans "optional" %})</span>
                         </label>
                         {{ payment_form.buyer_email }}
                         {% if payment_form.buyer_email.errors %}
@@ -62,12 +75,68 @@
                     <div class="mb-2 course-pay-modal__field">
                         <label for="id_buyer_phone" class="form-label small fw-semibold mb-1">
                             {{ payment_form.buyer_phone.label }}
+                            <span class="text-danger" aria-hidden="true">*</span>
                         </label>
                         {{ payment_form.buyer_phone }}
                         {% if payment_form.buyer_phone.errors %}
                         <div class="text-danger small mt-1 js-field-error" data-server-error>{{ payment_form.buyer_phone.errors.0 }}</div>
                         {% endif %}
                     </div>
+
+                    <section class="course-pay-contract mb-3" aria-labelledby="course-pay-contract-toggle">
+                        <button
+                            type="button"
+                            class="course-pay-contract__toggle w-100"
+                            id="course-pay-contract-toggle"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#course-pay-contract-panel"
+                            aria-expanded="{% if payment_form.accept_contract.errors %}true{% else %}false{% endif %}"
+                            aria-controls="course-pay-contract-panel"
+                        >
+                            <span class="course-pay-contract__toggle-text">
+                                {% trans "Training agreement" %}
+                            </span>
+                            <i class="fas fa-chevron-down course-pay-contract__toggle-icon" aria-hidden="true"></i>
+                        </button>
+                        <p class="course-pay-contract__hint small text-muted mb-0 mt-2">
+                            {% trans "Please read the agreement before confirming." %}
+                        </p>
+                        <div
+                            class="collapse{% if payment_form.accept_contract.errors %} show{% endif %}"
+                            id="course-pay-contract-panel"
+                        >
+                            <div
+                                class="course-pay-contract__scroll mt-2"
+                                id="course-pay-contract-body"
+                                tabindex="0"
+                                role="document"
+                                aria-labelledby="course-pay-contract-toggle"
+                            >
+                                {% for pkg in course.price_packages %}
+                                {% if forloop.counter0 == default_package_index|default:0 %}
+                                {% course_payment_contract course package=pkg %}
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div id="course-pay-contract-templates" class="d-none" aria-hidden="true">
+                            {% for pkg in course.price_packages %}
+                            <div data-contract-package-id="{{ pkg.id }}">
+                                {% course_payment_contract course package=pkg %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="form-check mt-2 course-pay-modal__field{% if payment_form.accept_contract.errors %} is-invalid{% endif %}">
+                            {{ payment_form.accept_contract }}
+                            <label class="form-check-label small" for="{{ payment_form.accept_contract.id_for_label }}">
+                                {{ payment_form.accept_contract.label }}
+                                <span class="text-danger" aria-hidden="true">*</span>
+                            </label>
+                            {% if payment_form.accept_contract.errors %}
+                            <div class="text-danger small mt-1 js-field-error" data-server-error>{{ payment_form.accept_contract.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </section>
 
                     <button type="submit" class="btn btn-primary rounded-pill px-4 fw-semibold w-100" id="course-pay-submit">
                         <i class="fas fa-lock me-2 small" aria-hidden="true"></i>

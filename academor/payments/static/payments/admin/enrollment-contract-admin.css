@@ -1,0 +1,45 @@
+.enrollment-contract-admin__actions {
+    margin: 0 0 12px;
+}
+
+.enrollment-contract-admin__scroll {
+    max-height: 520px;
+    overflow: auto;
+    padding: 1rem 1.05rem;
+    border: 1px solid #d9d9d9;
+    border-radius: 8px;
+    background: #fff;
+    font-family: 'Host Grotesk', sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #00313D;
+}
+
+#enrollment-contract-pdf-source,
+#enrollment-contract-pdf-source .course-payment-contract__doc,
+#enrollment-contract-pdf-source p,
+#enrollment-contract-pdf-source li,
+#enrollment-contract-pdf-source h4,
+#enrollment-contract-pdf-source strong {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+}
+
+#enrollment-contract-pdf-source .course-payment-contract__heading {
+    font-weight: 700;
+}
+
+#enrollment-contract-pdf-source .course-payment-contract__list {
+    padding-left: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+#enrollment-contract-pdf-source .course-payment-contract__section {
+    margin-top: 0.85rem;
+}
+
+#enrollment-contract-pdf-source .text-muted {
+    color: #6c757d !important;
+}
