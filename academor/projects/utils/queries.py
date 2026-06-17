@@ -238,12 +238,25 @@ def serialize_blog_post(post, lang='az'):
         return None
     image_rows = [img for img in post.images.all() if img.image]
     images = [media_url(img.image) for img in image_rows]
-    first_img = image_rows[0] if image_rows else None
-    cover_card = image_spec_url(first_img.image_card) if first_img else None
-    cover_large = image_spec_url(first_img.image_large) if first_img else None
-    cover_full = images[0] if images else None
+    video = media_url(post.video) if post.video else None
+    if post.cover:
+        cover_full = media_url(post.cover)
+        cover_large = image_spec_url(post.cover_display) or cover_full
+        cover_card = image_spec_url(post.cover_card) or cover_large
+        cover_srcset = build_srcset((cover_card, 400), (cover_large, 800))
+    else:
+        first_img = image_rows[0] if image_rows else None
+        cover_card = image_spec_url(first_img.image_card) if first_img else None
+        cover_large = image_spec_url(first_img.image_large) if first_img else None
+        cover_full = images[0] if images else None
+        cover_srcset = build_srcset(
+            (cover_card, 400),
+            (cover_large, 800),
+        ) if first_img else None
     desc_html = _localized_value(post, 'description', lang) or None
     desc_plain = richtext_plain_text(desc_html) if desc_html else ''
+    uses_gallery_cover = not post.cover and not video and bool(images)
+    gallery_images = images[1:] if uses_gallery_cover else images
     return {
         'id': post.id,
         'slug': post.slug,
@@ -254,13 +267,12 @@ def serialize_blog_post(post, lang='az'):
         'created_at': post.created_at,
         'on_top': post.on_top,
         'on_main_page': post.on_main_page,
+        'video': video,
         'cover': cover_large or cover_card or cover_full,
         'cover_full': cover_full,
-        'cover_srcset': build_srcset(
-            (cover_card, 400),
-            (cover_large, 800),
-        ) if first_img else None,
+        'cover_srcset': cover_srcset,
         'images': images,
+        'gallery_images': gallery_images,
     }
 
 

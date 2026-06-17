@@ -11,6 +11,7 @@ from ckeditor.widgets import CKEditorWidget
 
 from projects.models import *
 from projects.admin.mixins import AcademorModelAdmin, install_admin_help
+from projects.admin.order_fields import apply_order_choice_field
 from projects.utils.cache_utils import invalidate_sale_cache
 
 
@@ -339,6 +340,10 @@ class ServiceAdminForm(forms.ModelForm):
             'description_ru': CKEditorWidget(),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        apply_order_choice_field(self, model=Service, instance=self.instance)
+
 
 @admin.register(Service)
 class ServiceAdmin(AdminImageCompressMixin, AcademorModelAdmin):
@@ -397,7 +402,11 @@ class ServiceAdmin(AdminImageCompressMixin, AcademorModelAdmin):
             ),
         }),
         ('Status', {
-            'fields': ('order', 'is_active', 'show_on_main_page', 'created_at')
+            'fields': ('order', 'is_active', 'show_on_main_page', 'created_at'),
+            'description': (
+                'Order: 0 = first on the site, courses list, and header dropdown; '
+                '1 = next, and so on. Duplicate positions shift automatically on save.'
+            ),
         }),
     )
 
@@ -1057,11 +1066,11 @@ class BlogPostImageInline(AdminImageCompressMixin, admin.TabularInline):
 
 
 @admin.register(BlogPost)
-class BlogPostAdmin(AcademorModelAdmin):
+class BlogPostAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     form = BlogPostAdminForm
     inlines = [BlogPostImageInline]
     list_display = (
-        'cover_preview', 'name_az', 'slug', 'date',
+        'cover_preview', 'name_az', 'slug', 'date', 'video_status',
         'is_active', 'on_top', 'on_main_page', 'created_at',
     )
     list_display_links = ('cover_preview', 'name_az')
@@ -1071,12 +1080,19 @@ class BlogPostAdmin(AcademorModelAdmin):
         'name_az', 'name_en', 'name_ru', 'slug',
         'description_az', 'description_en', 'description_ru',
     )
-    readonly_fields = ('slug', 'created_at')
+    readonly_fields = ('slug', 'created_at', 'cover_preview_detail')
     ordering = ('-on_top', '-date', '-id')
     list_per_page = 25
     fieldsets = (
         (None, {
             'fields': ('slug', 'date', 'is_active', 'on_top', 'on_main_page'),
+        }),
+        ('Media', {
+            'fields': ('cover', 'cover_preview_detail', 'video'),
+            'description': (
+                'Upload a cover image for list cards and video poster. '
+                'If a video is set, it is shown large on the article page.'
+            ),
         }),
         ('Azerbaijani', {
             'fields': ('name_az', 'description_az'),
@@ -1095,12 +1111,33 @@ class BlogPostAdmin(AcademorModelAdmin):
 
     @admin.display(description='Cover')
     def cover_preview(self, obj):
+        if obj.cover:
+            return format_html(
+                '<img src="{}" style="height:48px;width:72px;object-fit:cover;border-radius:4px;">',
+                obj.cover.url,
+            )
         first = obj.images.order_by('order', 'id').first()
         if first and first.image:
             return format_html(
                 '<img src="{}" style="height:48px;width:72px;object-fit:cover;border-radius:4px;">',
                 first.image.url,
             )
+        return '-'
+
+    @admin.display(description='Cover preview')
+    def cover_preview_detail(self, obj):
+        return self.cover_preview(obj)
+
+    @admin.display(description='Video')
+    def video_status(self, obj):
+        has_video = bool(obj.video)
+        has_cover = bool(obj.cover)
+        if has_video and has_cover:
+            return format_html('<span style="color:#198754;">●</span> Video + cover')
+        if has_video:
+            return format_html('<span style="color:#fd7e14;">●</span> Video only')
+        if has_cover:
+            return format_html('<span style="color:#0d6efd;">●</span> Cover only')
         return '-'
 
 

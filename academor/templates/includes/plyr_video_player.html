@@ -1,0 +1,33 @@
+{% load static i18n %}
+<link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css"></noscript>
+<div class="about-vp{% if extra_class %} {{ extra_class }}{% endif %}" data-about-vp>
+    <div class="about-vp__cover" aria-hidden="false">
+        {% if cover_url %}
+        <img
+            src="{{ cover_url }}"
+            alt="{{ alt }}"
+            class="about-vp__cover-img"
+            {% if eager_load %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+            decoding="async"
+        >
+        {% endif %}
+        <button class="about-vp__play-btn" type="button" aria-label="{% trans 'Play video' %}">
+            <span class="about-vp__ripple"></span>
+            <svg class="about-vp__play-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M8 5v14l11-7z"/>
+            </svg>
+        </button>
+    </div>
+
+    <video
+        class="about-vp__video"
+        playsinline
+        preload="metadata"
+        {% if cover_url %}poster="{{ cover_url }}"{% endif %}
+    >
+        <source src="{{ video_url }}" type="video/mp4">
+    </video>
+</div>
+<script defer src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.min.js"></script>
+<script defer src="{% static 'assets/js/about_video_player.js' %}" data-plyr-icon="{% static 'assets/vendor/plyr.svg' %}"></script>

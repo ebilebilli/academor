@@ -95,6 +95,13 @@
         .blog-detail__cover:hover img {
             transform: scale(1.02);
         }
+        .blog-detail__cover .about-vp {
+            width: 100%;
+        }
+        .blog-detail__cover .about-vp__cover,
+        .blog-detail__cover .about-vp .plyr {
+            border-radius: 16px;
+        }
         .blog-detail-content { line-height: 1.85; color: #2d3a52; font-size: 1rem; }
         .blog-detail-content p { margin-bottom: 1.1rem; }
         .blog-detail-content h2,
@@ -356,8 +363,12 @@
                 <div class="col-lg-8 order-lg-2 order-1">
                     <article>
 
-                        <!-- Cover image -->
-                        {% if post.cover %}
+                        <!-- Cover / video -->
+                        {% if post.video %}
+                        <div class="blog-detail__cover mb-4 wow fadeInUp" data-wow-delay="0.05s">
+                            {% include "includes/plyr_video_player.html" with video_url=post.video cover_url=post.cover_full alt=post.name eager_load=True %}
+                        </div>
+                        {% elif post.cover %}
                         <div class="blog-detail__cover mb-4 wow fadeInUp" data-wow-delay="0.05s"
                              style="cursor:pointer;" onclick="lbOpen(0)">
                             <img src="{{ post.cover }}" alt="{{ post.name }}"
@@ -397,22 +408,20 @@
                             {% endif %}
                         </div>
 
-                        <!-- Image gallery (images 2–6) -->
-                        {% if post.images|length > 1 %}
+                        <!-- Image gallery -->
+                        {% if post.gallery_images %}
                         <div class="mt-5 wow fadeInUp" data-wow-delay="0.2s">
                             <hr class="blog-detail-divider">
                             <p class="blog-sidebar__heading" style="margin-bottom:1.5rem;">{% trans "Gallery" %}</p>
                             <div class="row g-4">
-                                {% for img in post.images %}
-                                {% if not forloop.first %}
+                                {% for img in post.gallery_images %}
                                 <div class="col-12 col-sm-6 col-md-4">
                                     <div class="blog-gallery__item"
-                                         onclick="lbOpen({{ forloop.counter0 }})"
+                                         onclick="lbOpen({% if post.video %}{{ forloop.counter0 }}{% else %}{{ forloop.counter }}{% endif %})"
                                          data-lb-src="{{ img }}">
                                         <img src="{{ img }}" alt="{{ post.name }}" loading="lazy" decoding="async">
                                     </div>
                                 </div>
-                                {% endif %}
                                 {% endfor %}
                             </div>
                         </div>
@@ -468,7 +477,6 @@
                 _srcs.push(el.getAttribute('data-lb-src'));
             });
         }
-
         var _cur  = 0;
         var _lb   = null;
         var _img  = null;

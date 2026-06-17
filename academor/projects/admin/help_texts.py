@@ -87,12 +87,14 @@ ADMIN_HELP = {
   },
   'BlogPost': {
     'title': 'Blog / news articles',
-    'summary': 'News posts with title, body, date, and up to 6 images.',
+    'summary': 'News posts with title, body, date, cover/video, and up to 6 gallery images.',
     'where': 'Blog list (/blog/) and article detail pages. "On main page" shows on homepage.',
     'tips': [
       '"On top" pins the post to the top of the blog list.',
       '"On main page" shows a card on the homepage.',
-      'First gallery image is used as the list thumbnail.',
+      'Cover image is used for list thumbnails and as the video poster.',
+      'If a video is uploaded, it is shown large at the top of the article.',
+      'Without a cover, the first gallery image is used as the thumbnail.',
       'Slug is auto-generated — do not change unless you know SEO implications.',
     ],
   },
@@ -112,7 +114,8 @@ ADMIN_HELP = {
       'Add price packages in the table below (duration, lessons, price in AZN).',
       'Upload ONE thumbnail image in the Media inline at the bottom.',
       'Card icon: shown on homepage and courses list; "Default" auto-detects from the URL slug.',
-      '"Show on main page" controls homepage visibility. "Order" controls sort position.',
+      '"Show on main page" controls homepage visibility. '
+      'Order: 0 = first, 1 = next (site, admin list, and Courses dropdown).',
       'Slug is hidden — it is set automatically from the Azerbaijani name.',
     ],
   },

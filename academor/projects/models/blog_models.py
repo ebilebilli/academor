@@ -66,6 +66,32 @@ class BlogPost(SluggedModel):
         verbose_name='On main page',
         help_text='Show this post on the homepage.',
     )
+    video = models.FileField(
+        upload_to='videos/blog/',
+        blank=True,
+        null=True,
+        verbose_name='Video',
+        help_text='Optional video shown large at the top of the article.',
+    )
+    cover = models.ImageField(
+        upload_to='blog/covers/',
+        blank=True,
+        null=True,
+        verbose_name='Cover',
+        help_text='Poster/thumbnail for the post or video.',
+    )
+    cover_display = ImageSpecField(
+        source='cover',
+        processors=[ResizeToFit(800, 600)],
+        format='WEBP',
+        options={'quality': 80},
+    )
+    cover_card = ImageSpecField(
+        source='cover',
+        processors=[ResizeToFit(400, 400)],
+        format='WEBP',
+        options={'quality': 75},
+    )
 
     class Meta:
         verbose_name = 'Blog post'
