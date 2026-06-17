@@ -1,0 +1,213 @@
+/* Academor Django admin — shared styles and help panels */
+
+/* ---- Help panel (top of every list/edit page) ---- */
+.admin-help-panel {
+  margin: 0 0 20px;
+  padding: 16px 20px;
+  border: 1px solid #c9daf8;
+  border-left: 4px solid #417690;
+  border-radius: 4px;
+  background: #f0f6fc;
+  color: #1a1a1a;
+  font-size: 13px;
+  line-height: 1.55;
+  max-width: 960px;
+}
+
+.admin-help-panel__title {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #205067;
+}
+
+.admin-help-panel__summary {
+  margin: 0 0 10px;
+}
+
+.admin-help-panel__label {
+  font-weight: 600;
+  color: #333;
+}
+
+.admin-help-panel__where {
+  margin: 0 0 10px;
+}
+
+.admin-help-panel__tips {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.admin-help-panel__tips li {
+  margin-bottom: 4px;
+}
+
+.admin-help-panel__tips li:last-child {
+  margin-bottom: 0;
+}
+
+/* ---- Admin index overview ---- */
+.admin-index-help {
+  margin: 0 0 24px;
+  padding: 18px 22px;
+  border: 1px solid #c9daf8;
+  border-radius: 6px;
+  background: #f0f6fc;
+  max-width: 900px;
+}
+
+.admin-index-help h2 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #205067;
+}
+
+.admin-index-help > p {
+  margin: 0 0 14px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.admin-index-help__sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.admin-index-help__sections li {
+  padding: 10px 12px;
+  border: 1px solid #dde8f5;
+  border-radius: 4px;
+  background: #fff;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.admin-index-help__sections strong {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 13px;
+  color: #205067;
+}
+
+.admin-index-help__sections em {
+  display: block;
+  margin-bottom: 4px;
+  font-style: normal;
+  font-size: 11px;
+  color: #666;
+}
+
+/* ---- List display helpers (replace broken emoji inline styles) ---- */
+.admin-link {
+  color: #417690;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.admin-link:hover {
+  text-decoration: underline;
+}
+
+.admin-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.admin-badge--blue {
+  background: #007bff;
+  color: #fff;
+}
+
+.admin-badge--green {
+  background: #28a745;
+  color: #fff;
+}
+
+.admin-badge--yellow {
+  background: #ffc107;
+  color: #212529;
+}
+
+.admin-badge--gray {
+  background: #6c757d;
+  color: #fff;
+}
+
+.admin-badge--red {
+  background: #dc3545;
+  color: #fff;
+}
+
+.admin-muted {
+  color: #666;
+  font-size: 13px;
+}
+
+.admin-phone {
+  color: #417690;
+}
+
+.admin-whatsapp {
+  color: #25d366;
+}
+
+.admin-social {
+  margin-right: 8px;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.admin-social--instagram { color: #e4405f; }
+.admin-social--facebook { color: #1877f2; }
+.admin-social--youtube { color: #ff0000; }
+.admin-social--linkedin { color: #0a66c2; }
+.admin-social--tiktok { color: #000; }
+
+.admin-sender-block {
+  padding: 8px 0;
+}
+
+.admin-sender-name {
+  display: block;
+  margin-bottom: 4px;
+  color: #417690;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.admin-sender-name:hover {
+  text-decoration: underline;
+}
+
+.admin-sender-email {
+  color: #666;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.admin-sender-email:hover {
+  text-decoration: underline;
+}
+
+.admin-flag-list {
+  font-size: 12px;
+  color: #444;
+}
+
+.admin-flag-list__item + .admin-flag-list__item::before {
+  content: " | ";
+  color: #999;
+}

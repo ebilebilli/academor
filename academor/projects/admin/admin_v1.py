@@ -10,6 +10,7 @@ from django.forms.models import BaseInlineFormSet
 from ckeditor.widgets import CKEditorWidget
 
 from projects.models import *
+from projects.admin.mixins import AcademorModelAdmin, install_admin_help
 from projects.utils.cache_utils import invalidate_sale_cache
 
 
@@ -20,7 +21,7 @@ class AdminImageCompressMixin:
 
 # Media
 @admin.register(Media)
-class MediaAdmin(AdminImageCompressMixin, admin.ModelAdmin):
+class MediaAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     list_display = (
         'id',
         'media_preview',
@@ -41,8 +42,12 @@ class MediaAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     readonly_fields = ('created_at', 'media_preview_detailed')
 
     fieldsets = (
-        ('Media file', {
-            'fields': ('image', 'media_preview_detailed')
+        (None, {
+            'fields': ('image', 'media_preview_detailed'),
+            'description': (
+                'Upload a wide banner image. Then assign it to exactly one page below. '
+                'This list only shows images already assigned to a page header.'
+            ),
         }),
         ('Background assignments', {
             'description': (
@@ -114,22 +119,17 @@ class MediaAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     media_preview_detailed.short_description = "Image preview"
 
     def background_flags(self, obj):
-        flags = []
-        if obj.is_about_page_background_image:
-            flags.append("Γä╣∩╕Å About page")
-        if obj.is_contact_page_background_image:
-            flags.append("≡ƒñ¥ Contact page")
-        if obj.is_project_page_background_image:
-            flags.append("≡ƒôü Projects page")
-        if obj.is_courses_page_background_image:
-            flags.append("≡ƒôÜ Courses page")
-        if obj.is_tests_page_background_image:
-            flags.append("≡ƒô¥ Tests pages")
-        if obj.is_service_page_background_image:
-            flags.append("≡ƒ¢á∩╕Å Services page")
-        if obj.is_abroad_page_background_image:
-            flags.append("≡ƒîì Study abroad page")
-        return " | ".join(flags) if flags else "-"
+        page_labels = (
+            ('is_about_page_background_image', 'About page'),
+            ('is_contact_page_background_image', 'Contact page'),
+            ('is_project_page_background_image', 'Projects page'),
+            ('is_courses_page_background_image', 'Courses page'),
+            ('is_tests_page_background_image', 'Tests pages'),
+            ('is_service_page_background_image', 'Services page'),
+            ('is_abroad_page_background_image', 'Study abroad page'),
+        )
+        flags = [label for field, label in page_labels if getattr(obj, field, False)]
+        return ' | '.join(flags) if flags else '-'
     background_flags.short_description = "Background"
 
 
@@ -203,7 +203,7 @@ class MediaInlineAbout(MediaInlineBase):
                 
                 if total_images > 12:
                     raise ValidationError(
-                        'About page allows at most 12 images. Currently: {} existing, {} removed, {} new ΓÇö total would be {}.'
+                        'About page allows at most 12 images. Currently: {} existing, {} removed, {} new - total would be {}.'
                         .format(existing_images, deleted_images, image_count, total_images)
                     )
         
@@ -227,8 +227,7 @@ class MediaInlineSale(MediaInlineBase):
     can_delete = True
     fields = ('image', 'thumbnail_preview', 'created_at')
     verbose_name = 'Card image'
-    verbose_name_plural = 'Card image'
-    verbose_name_plural = 'Image'
+    verbose_name_plural = 'Card images'
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -297,7 +296,7 @@ class CoursePricePackageInline(admin.TabularInline):
 
 
 @admin.register(CoursePricePackage)
-class CoursePricePackageAdmin(admin.ModelAdmin):
+class CoursePricePackageAdmin(AcademorModelAdmin):
     list_display = (
         'id',
         'course',
@@ -319,6 +318,7 @@ class CoursePricePackageAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': ('course', 'order', 'is_active', 'is_premium'),
+            'description': 'Each package is one pricing option on the course page and in the payment popup.',
         }),
         ('Names', {
             'fields': ('name_az', 'name_en', 'name_ru'),
@@ -341,7 +341,7 @@ class ServiceAdminForm(forms.ModelForm):
 
 
 @admin.register(Service)
-class ServiceAdmin(AdminImageCompressMixin, admin.ModelAdmin):
+class ServiceAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     form = ServiceAdminForm
     list_display = (
         'id',
@@ -378,22 +378,22 @@ class ServiceAdmin(AdminImageCompressMixin, admin.ModelAdmin):
         ('English', {
             'fields': ('name_en', 'description_en', 'duration_months_en', 'lesson_count_en')
         }),
-        ('╨á╤â╤ü╤ü╨║╨╕╨╣', {
+        ('Russian', {
             'fields': ('name_ru', 'description_ru', 'duration_months_ru', 'lesson_count_ru')
         }),
         ('Course details', {
             'fields': ('instructors', 'has_certificate', 'is_online', 'is_offline'),
             'description': (
                 'Add one or more price packages below. '
-                'Legacy ΓÇ£Price (AZN)ΓÇ¥ on the model is deprecated; use packages instead.'
+                'Legacy "Price (AZN)" on the model is deprecated; use packages instead.'
             ),
         }),
         ('Service card (home & courses list)', {
             'fields': ('card_icon',),
             'description': (
                 'Icon shown on service cards. Presets match Academor programs from SEO: '
-                'General English, Speaking, IELTS, GMAT, GRE, Y├ûS, ALES, study abroad, etc. '
-                'Leave ΓÇ£DefaultΓÇ¥ to auto-detect from the URL slug when possible.'
+                'General English, Speaking, IELTS, GMAT, GRE, YOS, ALES, study abroad, etc. '
+                'Leave "Default" to auto-detect from the URL slug when possible.'
             ),
         }),
         ('Status', {
@@ -408,7 +408,7 @@ class ServiceAdmin(AdminImageCompressMixin, admin.ModelAdmin):
                 '<img src="{}" style="max-width: 48px; max-height: 48px; border-radius: 4px; object-fit: cover;" />',
                 media.image.url,
             )
-        return 'ΓÇö'
+        return '-'
 
     category_thumb.short_description = 'Thumbnail'
 
@@ -428,14 +428,14 @@ class ServiceAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     def name_link(self, obj):
         url = reverse('admin:projects_service_change', args=[obj.pk])
         name = obj.name_az or 'Service'
-        return format_html('<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; font-size: 14px;">≡ƒöù {}</a>', url, name)
+        return format_html('<a href="{}" class="admin-link">{}</a>', url, name)
     name_link.short_description = "Name (AZ)"
     name_link.admin_order_field = 'name_az'
 
     def instructors_display(self, obj):
         names = list(obj.instructors.values_list('name', flat=True)[:3])
         if not names:
-            return 'ΓÇö'
+            return '-'
         extra = obj.instructors.count() - len(names)
         text = ', '.join(names)
         if extra > 0:
@@ -462,17 +462,17 @@ class SaleAdminForm(forms.ModelForm):
         percent = cleaned_data.get('percent')
         if apply_prices and not services:
             raise ValidationError(
-                'Select at least one service when ΓÇ£Apply discount to service pricesΓÇ¥ is enabled.'
+                'Select at least one service when "Apply discount to service prices" is enabled.'
             )
         if apply_prices and percent is None:
             raise ValidationError(
-                'Enter a discount percentage when ΓÇ£Apply discount to service pricesΓÇ¥ is enabled.'
+                'Enter a discount percentage when "Apply discount to service prices" is enabled.'
             )
         return cleaned_data
 
 
 @admin.register(Sale)
-class SaleAdmin(admin.ModelAdmin):
+class SaleAdmin(AcademorModelAdmin):
     form = SaleAdminForm
     inlines = (MediaInlineSale,)
     list_display = (
@@ -510,9 +510,9 @@ class SaleAdmin(admin.ModelAdmin):
                 'created_at',
             ),
             'description': (
-                'Leave ΓÇ£Discount (%)ΓÇ¥ empty for announcement-only promotions (event, campaign, etc.). '
-                'Enable ΓÇ£Apply discount to service pricesΓÇ¥ to reduce the listed prices of '
-                'selected courses by the discount percentage ΓÇö a discount value is then required. '
+                'Leave "Discount (%)" empty for announcement-only promotions (event, campaign, etc.). '
+                'Enable "Apply discount to service prices" to reduce the listed prices of '
+                'selected courses by the discount percentage - a discount value is then required. '
                 'Leave services empty for a general homepage promotion without price changes.'
             ),
         }),
@@ -531,13 +531,13 @@ class SaleAdmin(admin.ModelAdmin):
     def name_short(self, obj):
         title = (obj.name_az or obj.name_en or obj.name_ru or '').strip()
         if len(title) > 72:
-            return title[:69] + 'ΓÇª'
-        return title or 'ΓÇö'
+            return title[:69] + '...'
+        return title or '-'
 
     @admin.display(description='Discount')
     def percent_display(self, obj):
         if obj.percent is None:
-            return 'ΓÇö'
+            return '-'
         return format_html(
             '<span style="font-weight:600;color:#ff5414;">{}%</span>',
             obj.percent,
@@ -547,7 +547,7 @@ class SaleAdmin(admin.ModelAdmin):
     def services_count(self, obj):
         count = obj.services.count()
         if count == 0:
-            return 'ΓÇö'
+            return '-'
         return count
 
     def save_model(self, request, obj, form, change):
@@ -576,7 +576,7 @@ class AbroadModelAdminForm(forms.ModelForm):
 
 
 @admin.register(AbroadModel)
-class AbroadModelAdmin(AdminImageCompressMixin, admin.ModelAdmin):
+class AbroadModelAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     form = AbroadModelAdminForm
     list_display = ('id', 'name_az', 'slug', 'name_en', 'name_ru', 'preview_image', 'is_active', 'show_on_main_page', 'created_at')
     list_filter = ('is_active', 'show_on_main_page', 'created_at')
@@ -586,7 +586,11 @@ class AbroadModelAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     list_per_page = 25
     fieldsets = (
         ('Content', {
-            'fields': ('img', 'detail_page_img')
+            'fields': ('img', 'detail_page_img'),
+            'description': (
+                'Card image appears on /abroad/ list and homepage. '
+                'Detail page image is the header on the individual program page.'
+            ),
         }),
         ('Azerbaijani', {
             'fields': ('name_az', 'slug', 'description_az')
@@ -594,7 +598,7 @@ class AbroadModelAdmin(AdminImageCompressMixin, admin.ModelAdmin):
         ('English', {
             'fields': ('name_en', 'description_en')
         }),
-        ('╨á╤â╤ü╤ü╨║╨╕╨╣', {
+        ('Russian', {
             'fields': ('name_ru', 'description_ru')
         }),
         ('Status', {
@@ -608,7 +612,7 @@ class AbroadModelAdmin(AdminImageCompressMixin, admin.ModelAdmin):
                 '<img src="{}" style="max-width: 52px; max-height: 52px; border-radius: 6px; object-fit: cover;" />',
                 obj.img.url,
             )
-        return "ΓÇö"
+        return "-"
     preview_image.short_description = "Image"
 
     def preview_image_large(self, obj):
@@ -617,7 +621,7 @@ class AbroadModelAdmin(AdminImageCompressMixin, admin.ModelAdmin):
                 '<img src="{}" style="max-width: 280px; max-height: 220px; border-radius: 8px; object-fit: cover;" />',
                 obj.img.url,
             )
-        return "ΓÇö"
+        return "-"
     preview_image_large.short_description = "Preview"
 
 
@@ -633,7 +637,7 @@ class UniversityAdminForm(forms.ModelForm):
 
 
 @admin.register(University)
-class UniversityAdmin(AdminImageCompressMixin, admin.ModelAdmin):
+class UniversityAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     form = UniversityAdminForm
     list_display = ('id', 'name', 'slug', 'study_abroad', 'website_link', 'flag_preview', 'is_active')
     list_filter = ('is_active', 'study_abroad')
@@ -652,7 +656,7 @@ class UniversityAdmin(AdminImageCompressMixin, admin.ModelAdmin):
         ('English', {
             'fields': ('description_en',)
         }),
-        ('╨á╤â╤ü╤ü╨║╨╕╨╣', {
+        ('Russian', {
             'fields': ('description_ru',)
         }),
         ('Status', {
@@ -663,12 +667,11 @@ class UniversityAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     def website_link(self, obj):
         if obj.website:
             return format_html(
-                '<a href="{}" target="_blank" rel="noopener noreferrer" '
-                'style="color: #417690; text-decoration: none; font-size: 13px;">≡ƒîÉ {}</a>',
+                '<a href="{}" target="_blank" rel="noopener noreferrer" class="admin-link">{}</a>',
                 obj.website,
                 (obj.website.replace('https://', '').replace('http://', '').rstrip('/'))[:40],
             )
-        return 'ΓÇö'
+        return '-'
     website_link.short_description = 'Website'
 
     def flag_preview(self, obj):
@@ -677,7 +680,7 @@ class UniversityAdmin(AdminImageCompressMixin, admin.ModelAdmin):
                 '<img src="{}" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover;" />',
                 obj.flag.url,
             )
-        return "ΓÇö"
+        return "-"
     flag_preview.short_description = "Flag"
 
     def flag_preview_large(self, obj):
@@ -686,7 +689,7 @@ class UniversityAdmin(AdminImageCompressMixin, admin.ModelAdmin):
                 '<img src="{}" style="width: 96px; height: 96px; border-radius: 50%; object-fit: cover;" />',
                 obj.flag.url,
             )
-        return "ΓÇö"
+        return "-"
     flag_preview_large.short_description = "Preview"
 
 
@@ -702,21 +705,45 @@ class StudyAbroadSectionAdminForm(forms.ModelForm):
 
 
 @admin.register(StudyAbroadSection)
-class StudyAbroadSectionAdmin(admin.ModelAdmin):
+class StudyAbroadSectionAdmin(AcademorModelAdmin):
     form = StudyAbroadSectionAdminForm
+    search_fields = ('text_az', 'text_en', 'text_ru')
     fieldsets = (
         ('Azerbaijani', {'fields': ('text_az',)}),
         ('English', {'fields': ('text_en',)}),
-        ('╨á╤â╤ü╤ü╨║╨╕╨╣', {'fields': ('text_ru',)}),
+        ('Russian', {'fields': ('text_ru',)}),
     )
 
     def has_add_permission(self, request):
         return not StudyAbroadSection.objects.exists()
 
 
+@admin.register(StudyAbroadAdvantage)
+class StudyAbroadAdvantageAdmin(AcademorModelAdmin):
+    list_display = ('order', 'title_az', 'icon', 'section', 'is_active')
+    list_display_links = ('title_az',)
+    list_editable = ('order', 'is_active')
+    list_filter = ('is_active', 'section')
+    ordering = ('order', 'id')
+    search_fields = ('title_az', 'title_en', 'title_ru')
+    autocomplete_fields = ('section',)
+    fieldsets = (
+        ('Display', {
+            'fields': ('section', 'order', 'is_active', 'icon'),
+            'description': (
+                'Link to the Study Abroad Section. Icon = Font Awesome 5 class (e.g. fa-certificate). '
+                'Shown as a small highlight under the study abroad hero on the homepage and /abroad/.'
+            ),
+        }),
+        ('Azerbaijani', {'fields': ('title_az',)}),
+        ('English', {'fields': ('title_en',)}),
+        ('Russian', {'fields': ('title_ru',)}),
+    )
+
+
 # About 
 @admin.register(About)
-class AboutAdmin(AdminImageCompressMixin, admin.ModelAdmin):
+class AboutAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     list_display = ('id', 'title_link', 'show_on_homepage', 'media_count', 'video_status', 'updated_info')
     list_display_links = ('id',)
     search_fields = ('description_az', 'description_en', 'description_ru')
@@ -729,13 +756,13 @@ class AboutAdmin(AdminImageCompressMixin, admin.ModelAdmin):
             'fields': ('show_on_homepage',),
             'description': 'Control whether the About section appears on the home page.',
         }),
-        ('Description ΓÇö Azerbaijani', {
+        ('Description - Azerbaijani', {
             'fields': ('description_az',)
         }),
-        ('Description ΓÇö English', {
+        ('Description - English', {
             'fields': ('description_en',)
         }),
-        ('Description ΓÇö Russian', {
+        ('Description - Russian', {
             'fields': ('description_ru',)
         }),
         ('About page video', {
@@ -750,17 +777,19 @@ class AboutAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     def title_link(self, obj):
         url = reverse('admin:projects_about_change', args=[obj.pk])
         return format_html(
-            '<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; font-size: 14px;">≡ƒöù About #{}</a>',
+            '<a href="{}" class="admin-link">About #{}</a>',
             url,
             obj.pk,
         )
     title_link.short_description = 'About'
-    
+
     def media_count(self, obj):
         count = obj.medias.count()
         if count > 0:
-            return format_html('<span style="background: #007bff; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px;">≡ƒô╖ {} images</span>', count)
-        return "≡ƒô╖ 0 images"
+            return format_html(
+                '<span class="admin-badge admin-badge--blue">{} images</span>', count,
+            )
+        return format_html('<span class="admin-muted">0 images</span>')
     media_count.short_description = "Media"
 
     def video_status(self, obj):
@@ -768,17 +797,17 @@ class AboutAdmin(AdminImageCompressMixin, admin.ModelAdmin):
         has_cover = bool(obj.video_cover)
         if has_video and has_cover:
             return format_html(
-                '<span style="background: #28a745; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px;">≡ƒÄ¼ Video + cover</span>'
+                '<span class="admin-badge admin-badge--green">Video + cover</span>'
             )
         if has_video:
             return format_html(
-                '<span style="background: #ffc107; color: #212529; padding: 3px 8px; border-radius: 12px; font-size: 11px;">≡ƒÄ¼ Video only</span>'
+                '<span class="admin-badge admin-badge--yellow">Video only</span>'
             )
         if has_cover:
             return format_html(
-                '<span style="background: #6c757d; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px;">≡ƒû╝ Cover only</span>'
+                '<span class="admin-badge admin-badge--gray">Cover only</span>'
             )
-        return "ΓÇö"
+        return "-"
     video_status.short_description = "Video"
 
     def video_cover_preview(self, obj):
@@ -787,7 +816,7 @@ class AboutAdmin(AdminImageCompressMixin, admin.ModelAdmin):
                 '<img src="{}" style="max-width: 320px; max-height: 180px; border-radius: 8px; object-fit: cover;" />',
                 obj.video_cover.url,
             )
-        return "ΓÇö"
+        return "-"
     video_cover_preview.short_description = "Cover preview"
     
     def updated_info(self, obj):
@@ -798,7 +827,7 @@ class AboutAdmin(AdminImageCompressMixin, admin.ModelAdmin):
 
 
 @admin.register(AboutWhyItem)
-class AboutWhyItemAdmin(admin.ModelAdmin):
+class AboutWhyItemAdmin(AcademorModelAdmin):
     list_display = ('order', 'title_az', 'icon', 'is_active')
     list_display_links = ('title_az',)
     list_editable = ('order', 'is_active')
@@ -818,7 +847,7 @@ class AboutWhyItemAdmin(admin.ModelAdmin):
 
 
 @admin.register(SiteFaqEntry)
-class SiteFaqEntryAdmin(admin.ModelAdmin):
+class SiteFaqEntryAdmin(AcademorModelAdmin):
     list_display = ('order', 'question_short', 'is_active')
     list_display_links = ('question_short',)
     list_filter = ('is_active',)
@@ -848,14 +877,14 @@ class SiteFaqEntryAdmin(admin.ModelAdmin):
     def question_short(self, obj):
         q = (obj.question_az or obj.question_en or obj.question_ru or '').strip()
         if len(q) > 72:
-            return q[:69] + 'ΓÇª'
-        return q or 'ΓÇö'
+            return q[:69] + '...'
+        return q or '-'
     question_short.short_description = 'Question'
 
 
 # Contact 
 @admin.register(Contact)
-class ContactAdmin(AdminImageCompressMixin, admin.ModelAdmin):
+class ContactAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     list_display = (
         'id',
         'address_link',
@@ -877,7 +906,7 @@ class ContactAdmin(AdminImageCompressMixin, admin.ModelAdmin):
         }),
         ('Map', {
             'fields': ('map_embed_url',),
-            'description': 'Google Maps ΓåÆ Share ΓåÆ Embed map ΓåÆ paste only the iframe src URL.',
+            'description': 'Google Maps -> Share -> Embed map -> paste only the iframe src URL.',
         }),
         ('Phone numbers', {
             'fields': ('phone', 'whatsapp_number', 'whatsapp_number_2', 'phone_three')
@@ -893,45 +922,61 @@ class ContactAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     def address_link(self, obj):
         url = reverse('admin:projects_contact_change', args=[obj.pk])
         address = obj.address_az or 'Contact'
-        return format_html('<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; font-size: 14px;">≡ƒöù {}</a>', url, address[:50] + '...' if len(address) > 50 else address)
+        label = address[:50] + '...' if len(address) > 50 else address
+        return format_html('<a href="{}" class="admin-link">{}</a>', url, label)
     address_link.short_description = "Address"
     address_link.admin_order_field = 'address_az'
-    
+
     def contact_phone(self, obj):
         phones = []
         if obj.phone:
-            phones.append(format_html('<span style="color: #417690;">≡ƒô₧ {}</span>', obj.phone))
+            phones.append(format_html('<span class="admin-phone">{}</span>', obj.phone))
         if obj.whatsapp_number:
-            phones.append(format_html('<span style="color: #25D366;">≡ƒÆ¼ {}</span>', obj.whatsapp_number))
+            phones.append(format_html('<span class="admin-whatsapp">WA: {}</span>', obj.whatsapp_number))
         return format_html('<br>'.join(phones)) if phones else "-"
     contact_phone.short_description = "Phones"
-    
+
     def contact_email(self, obj):
         lines = []
         for addr in (obj.email, obj.email_2, obj.email_3):
             if addr:
                 lines.append(
                     format_html(
-                        '<a href="mailto:{}" style="color: #417690; text-decoration: none;">Γ£ë∩╕Å {}</a>',
+                        '<a href="mailto:{}" class="admin-sender-email">{}</a>',
                         addr,
                         addr,
                     )
                 )
         return format_html('<br>'.join(lines)) if lines else '-'
     contact_email.short_description = "Email"
-    
+
     def social_links(self, obj):
         links = []
         if obj.instagram:
-            links.append(format_html('<a href="{}" target="_blank" style="color: #E4405F; margin-right: 8px;">≡ƒô╖ Instagram</a>', obj.instagram))
+            links.append(format_html(
+                '<a href="{}" target="_blank" class="admin-social admin-social--instagram">Instagram</a>',
+                obj.instagram,
+            ))
         if obj.facebook:
-            links.append(format_html('<a href="{}" target="_blank" style="color: #1877F2; margin-right: 8px;">≡ƒæÑ Facebook</a>', obj.facebook))
+            links.append(format_html(
+                '<a href="{}" target="_blank" class="admin-social admin-social--facebook">Facebook</a>',
+                obj.facebook,
+            ))
         if obj.youtube:
-            links.append(format_html('<a href="{}" target="_blank" style="color: #FF0000; margin-right: 8px;">Γû╢∩╕Å YouTube</a>', obj.youtube))
+            links.append(format_html(
+                '<a href="{}" target="_blank" class="admin-social admin-social--youtube">YouTube</a>',
+                obj.youtube,
+            ))
         if obj.linkedn:
-            links.append(format_html('<a href="{}" target="_blank" style="color: #0A66C2; margin-right: 8px;">≡ƒÆ╝ LinkedIn</a>', obj.linkedn))
+            links.append(format_html(
+                '<a href="{}" target="_blank" class="admin-social admin-social--linkedin">LinkedIn</a>',
+                obj.linkedn,
+            ))
         if obj.tiktok:
-            links.append(format_html('<a href="{}" target="_blank" style="color: #000000; margin-right: 8px;">≡ƒÄ╡ TikTok</a>', obj.tiktok))
+            links.append(format_html(
+                '<a href="{}" target="_blank" class="admin-social admin-social--tiktok">TikTok</a>',
+                obj.tiktok,
+            ))
         return format_html(' '.join(links)) if links else "-"
     social_links.short_description = "Social links"
 
@@ -948,7 +993,7 @@ class TeamAdminForm(forms.ModelForm):
 
 
 @admin.register(Team)
-class TeamAdmin(AdminImageCompressMixin, admin.ModelAdmin):
+class TeamAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     form = TeamAdminForm
     list_display = ('id', 'name', 'slug', 'role', 'order')
     list_editable = ('order',)
@@ -1012,7 +1057,7 @@ class BlogPostImageInline(AdminImageCompressMixin, admin.TabularInline):
 
 
 @admin.register(BlogPost)
-class BlogPostAdmin(admin.ModelAdmin):
+class BlogPostAdmin(AcademorModelAdmin):
     form = BlogPostAdminForm
     inlines = [BlogPostImageInline]
     list_display = (
@@ -1060,7 +1105,7 @@ class BlogPostAdmin(admin.ModelAdmin):
 
 
 @admin.register(Review)
-class ReviewAdmin(AdminImageCompressMixin, admin.ModelAdmin):
+class ReviewAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     list_display = ('id', 'name', 'rating_stars', 'is_active', 'created_at')
     list_filter = ('is_active', 'rating', 'created_at')
     search_fields = ('name', 'phone', 'message')
@@ -1121,7 +1166,7 @@ class OptionInline(AdminImageCompressMixin, admin.TabularInline):
 
 
 @admin.register(Test)
-class TestAdmin(AdminImageCompressMixin, admin.ModelAdmin):
+class TestAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     list_display = ('id', 'list_title', 'is_active', 'created_at')
     list_filter = ('is_active', 'created_at')
     search_fields = (
@@ -1137,19 +1182,19 @@ class TestAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     ordering = ('-created_at',)
     list_per_page = 25
     fieldsets = (
-        ('Az╔Örbaycan', {'fields': ('title_az', 'description_az')}),
+        ('Azerbaijani', {'fields': ('title_az', 'description_az')}),
         ('English', {'fields': ('title_en', 'description_en')}),
-        ('╨á╤â╤ü╤ü╨║╨╕╨╣', {'fields': ('title_ru', 'description_ru')}),
+        ('Russian', {'fields': ('title_ru', 'description_ru')}),
         ('Other', {'fields': ('is_active', 'created_at')}),
     )
 
     @admin.display(description='Title')
     def list_title(self, obj):
-        return obj.display_title() or 'ΓÇö'
+        return obj.display_title() or '-'
 
 
 @admin.register(Question)
-class QuestionAdmin(AdminImageCompressMixin, admin.ModelAdmin):
+class QuestionAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     list_display = ('id', 'test', 'order', 'text')
     list_filter = ('test',)
     search_fields = (
@@ -1164,7 +1209,7 @@ class QuestionAdmin(AdminImageCompressMixin, admin.ModelAdmin):
 
 
 @admin.register(UserResult)
-class UserResultAdmin(AdminImageCompressMixin, admin.ModelAdmin):
+class UserResultAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     list_display = ('id', 'test', 'first_name', 'last_name', 'number', 'email', 'score', 'level', 'created_at')
     list_filter = ('test', 'level', 'created_at')
     search_fields = ('first_name', 'last_name', 'number', 'email', 'level')
@@ -1173,7 +1218,7 @@ class UserResultAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     list_per_page = 25
 
 @admin.register(ContactInquiry)
-class ContactInquiryAdmin(AdminImageCompressMixin, admin.ModelAdmin):
+class ContactInquiryAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     list_display = (
         'sender_info',
         'subject_preview',
@@ -1219,30 +1264,26 @@ class ContactInquiryAdmin(AdminImageCompressMixin, admin.ModelAdmin):
         email = obj.email or "No email"
         if obj.mobile_number:
             mobile_html = format_html(
-                '<a href="tel:{}" style="color: #666; text-decoration: none; font-size: 13px;">≡ƒô▒ {}</a>',
+                '<a href="tel:{}" class="admin-muted">{}</a>',
                 obj.mobile_number,
-                obj.mobile_number[:30] + ('...' if len(obj.mobile_number) > 30 else '')
+                obj.mobile_number[:30] + ('...' if len(obj.mobile_number) > 30 else ''),
             )
         else:
             mobile_html = format_html(
-                '<span style="color: #666; font-size: 13px;">≡ƒô▒ No mobile number</span>'
+                '<span class="admin-muted">No mobile number</span>',
             )
-        
+
         return format_html(
-            '<div style="padding: 8px 0;">'
-            '<a href="{}" style="color: #417690; text-decoration: none; font-weight: 600; '
-            'font-size: 15px; display: block; line-height: 1.4; margin-bottom: 4px;">'
-            '≡ƒæñ {}</a>'
-            '<a href="mailto:{}" style="color: #666; text-decoration: none; font-size: 13px;">'
-            'Γ£ë∩╕Å {}</a><br>'
+            '<div class="admin-sender-block">'
+            '<a href="{}" class="admin-sender-name">{}</a>'
+            '<a href="mailto:{}" class="admin-sender-email">{}</a><br>'
             '{}'
             '</div>',
             detail_url,
             name,
             email,
-            email,
             email[:30] + ('...' if len(email) > 30 else ''),
-            mobile_html
+            mobile_html,
         )
     sender_info.short_description = "Sender"
     sender_info.admin_order_field = 'full_name'
@@ -1272,12 +1313,10 @@ class ContactInquiryAdmin(AdminImageCompressMixin, admin.ModelAdmin):
     def read_status_badge(self, obj):
         if obj.is_read:
             return format_html(
-                '<span style="background: #28a745; color: white; padding: 4px 10px; '
-                'border-radius: 12px; font-size: 11px; font-weight: bold;">Γ£ô Read</span>'
+                '<span class="admin-badge admin-badge--green">Read</span>'
             )
         return format_html(
-            '<span style="background: #dc3545; color: white; padding: 4px 10px; '
-            'border-radius: 12px; font-size: 11px; font-weight: bold;">Γ£ù Unread</span>'
+            '<span class="admin-badge admin-badge--red">Unread</span>'
         )
     read_status_badge.short_description = "Status"
     read_status_badge.admin_order_field = 'is_read'
@@ -1337,3 +1376,5 @@ def _sorted_get_app_list(request, app_label=None):
 
 
 admin.site.get_app_list = _sorted_get_app_list
+
+install_admin_help()

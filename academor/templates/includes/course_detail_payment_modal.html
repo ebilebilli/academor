@@ -138,8 +138,11 @@
                         </div>
                     </section>
 
-                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-semibold w-100" id="course-pay-submit">
-                        <i class="fas fa-lock me-2 small" aria-hidden="true"></i>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-semibold w-100 course-pay-modal__submit" id="course-pay-submit">
+                        <span class="course-pay-modal__submit-spinner" aria-hidden="true">
+                            <i class="fas fa-circle-notch fa-spin"></i>
+                        </span>
+                        <i class="fas fa-lock course-pay-modal__submit-lock small" aria-hidden="true"></i>
                         <span class="course-pay-modal__submit-label">{% trans "Confirm and pay" %}</span>
                     </button>
                     <p class="course-pay-block__secure-note small mb-0 mt-3 text-center text-muted">

@@ -310,6 +310,7 @@
                 return;
             }
             submitBtn.disabled = loading;
+            submitBtn.classList.toggle('is-loading', loading);
             submitBtn.setAttribute('aria-busy', loading ? 'true' : 'false');
             if (submitLabel) {
                 submitLabel.textContent = loading

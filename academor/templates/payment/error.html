@@ -6,10 +6,10 @@
 {% include "includes/site_layout_head.html" %}
 {% include "includes/payment_ui_head.html" %}
 </head>
-<body class="bg-light">
+<body>
     {% include "includes/site_spinner.html" with spinner_hidden=True %}
     {% include "includes/site_navbar.html" %}
-    <main id="main-content" class="container-xxl py-5">
+    <main id="main-content" class="payment-result-page container-xxl py-5">
         {% trans "Error" as eyebrow %}
         {% trans "Payment could not be started" as title %}
         {% include "includes/payment_result_card.html" with variant="error" eyebrow=eyebrow title=title message=message %}

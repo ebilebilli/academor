@@ -1,0 +1,21 @@
+{% extends "admin/index.html" %}
+{% load i18n %}
+
+{% block content %}
+{% if admin_index_help %}
+<div class="admin-index-help">
+  <h2>{{ admin_index_help.title }}</h2>
+  <p>{{ admin_index_help.summary }}</p>
+  <ul class="admin-index-help__sections">
+    {% for section in admin_index_help.sections %}
+    <li>
+      <strong>{{ section.name }}</strong>
+      <em>{{ section.items }}</em>
+      {{ section.desc }}
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+{{ block.super }}
+{% endblock %}

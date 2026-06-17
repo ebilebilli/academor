@@ -6,10 +6,10 @@
 {% include "includes/site_layout_head.html" %}
 {% include "includes/payment_ui_head.html" %}
 </head>
-<body class="bg-light">
+<body>
     {% include "includes/site_spinner.html" with spinner_hidden=True %}
     {% include "includes/site_navbar.html" %}
-    <main id="main-content" class="container-xxl py-5">
+    <main id="main-content" class="payment-result-page container-xxl py-5">
         {% trans "Successful" as eyebrow %}
         {% trans "Payment completed" as title %}
         {% include "includes/payment_result_card.html" with variant="success" eyebrow=eyebrow title=title message=message order_id=order_id %}

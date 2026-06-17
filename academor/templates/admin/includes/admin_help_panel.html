@@ -1,0 +1,20 @@
+{% if admin_page_help %}
+<div class="admin-help-panel">
+  <p class="admin-help-panel__title">{{ admin_page_help.title }}</p>
+  <p class="admin-help-panel__summary">{{ admin_page_help.summary }}</p>
+  {% if admin_page_help.where %}
+  <p class="admin-help-panel__where">
+    <span class="admin-help-panel__label">Where on the site:</span>
+    {{ admin_page_help.where }}
+  </p>
+  {% endif %}
+  {% if admin_page_help.tips %}
+  <p class="admin-help-panel__label">Tips:</p>
+  <ul class="admin-help-panel__tips">
+    {% for tip in admin_page_help.tips %}
+    <li>{{ tip }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</div>
+{% endif %}

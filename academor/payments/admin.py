@@ -3,6 +3,7 @@ from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
+from projects.admin.mixins import AcademorModelAdmin
 from projects.admin.filters import (
     CreatedAtMonthFilter,
     CreatedAtPeriodFilter,
@@ -63,7 +64,7 @@ class CourseEnrollmentInline(admin.StackedInline):
 
 
 @admin.register(Payment)
-class PaymentAdmin(admin.ModelAdmin):
+class PaymentAdmin(AcademorModelAdmin):
     list_display = (
         'transaction_id',
         'amount',
@@ -119,7 +120,7 @@ class PaymentAdmin(admin.ModelAdmin):
 
 
 @admin.register(CourseEnrollment)
-class CourseEnrollmentAdmin(admin.ModelAdmin):
+class CourseEnrollmentAdmin(AcademorModelAdmin):
     change_form_template = 'admin/payments/courseenrollment/change_form.html'
 
     class Media:
