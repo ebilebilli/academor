@@ -120,6 +120,21 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
             ),
             "keywords": "online english test, academor placement, level assessment, " + _EN_KW_CORE,
         },
+        "blog-page": {
+            "title": "Blog | Academor — English & Study Abroad Tips",
+            "description": (
+                "Read Academor blog articles: English learning tips, IELTS and exam prep, study abroad guidance "
+                "and news for learners in Baku and Azerbaijan."
+            ),
+            "keywords": "academor blog, english tips baku, ielts articles, study abroad blog, " + _EN_KW_CORE,
+        },
+        "blog-detail": {
+            "keywords": "academor blog article, english learning baku, study tips, " + _EN_KW_CORE,
+        },
+        "blog-tag-page": {
+            "description": "Blog articles tagged with this topic at Academor, Baku.",
+            "keywords": "academor blog, english articles baku, " + _EN_KW_CORE,
+        },
     },
     "az": {
         "courses-page": {
@@ -207,6 +222,21 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
             ),
             "keywords": "online ingilis testi, academor, səviyyə yoxlaması, " + _AZ_KW_CORE,
         },
+        "blog-page": {
+            "title": "Bloq | Academor — ingilis dili və xaricdə təhsil",
+            "description": (
+                "Academor bloqu: ingilis dili məsləhətləri, IELTS və imtahan hazırlığı, xaricdə təhsil xəbərləri "
+                "— Bakı və Azərbaycan üçün."
+            ),
+            "keywords": "academor bloq, ingilis məqalələri bakı, IELTS məsləhətləri, xaricdə təhsil bloq, " + _AZ_KW_CORE,
+        },
+        "blog-detail": {
+            "keywords": "academor bloq məqalə, ingilis dili bakı, təhsil məsləhətləri, " + _AZ_KW_CORE,
+        },
+        "blog-tag-page": {
+            "description": "Bu mövzuya aid Academor bloq məqalələri — Bakı.",
+            "keywords": "academor bloq, ingilis məqalələri bakı, " + _AZ_KW_CORE,
+        },
     },
     "ru": {
         "courses-page": {
@@ -290,6 +320,21 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
                 "Пройдите онлайн-тест Academor; результаты помогут подобрать подходящий уровень курса."
             ),
             "keywords": "онлайн тест английского, academor, уровень, " + _RU_KW_CORE,
+        },
+        "blog-page": {
+            "title": "Блог | Academor — английский и учёба за рубежом",
+            "description": (
+                "Блог Academor: советы по английскому, подготовка к IELTS и экзаменам, обучение за рубежом — "
+                "для учащихся в Баку и Азербайджане."
+            ),
+            "keywords": "блог academor, статьи английский баку, ielts советы, учёба за рубежом блог, " + _RU_KW_CORE,
+        },
+        "blog-detail": {
+            "keywords": "статья блога academor, английский баку, советы по учёбе, " + _RU_KW_CORE,
+        },
+        "blog-tag-page": {
+            "description": "Статьи блога Academor с этой меткой — Баку.",
+            "keywords": "блог academor, статьи английский баку, " + _RU_KW_CORE,
         },
     },
 }

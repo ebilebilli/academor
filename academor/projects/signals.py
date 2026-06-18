@@ -9,7 +9,7 @@ Keep in sync with queries.py (add a receiver when a new cached query reads a mod
   Service (incl. card_icon → serialize_project_category `icon` on home + /courses/),
   CoursePricePackage (→ Service: packages in course list/detail + payments catalog),
   AbroadModel, StudyAbroadSection, StudyAbroadAdvantage, University,
-  Team, Review, BlogPost, BlogPostImage, About, AboutWhyItem, Contact, Media, Tagline, SiteFaqEntry,
+  BlogPost, BlogPostImage, ContentTag, About, AboutWhyItem, Contact, Media, Tagline, SiteFaqEntry,
   Test, Question, Option, Sale
 
   Course detail (`course-detail.html`): `get_active_project_category_by_slug` + trainers M2M — invalidate
@@ -39,7 +39,9 @@ Keep in sync with queries.py (add a receiver when a new cached query reads a mod
 
   Blog index (`projects:blog-page`, blog.html): `get_blog_page_data()` uses `@cached_page_data(CACHE_TIMEOUT_MEDIUM)`
   and calls cached `get_blog_posts(is_active=True)` (featured = `on_top`[:2], rest = listing). Invalidate via
-  `invalidate_blog_post_cache` / `invalidate_blog_post_image_cache` so `cache_version` bumps and blog list + detail caches miss.
+  `  invalidate_blog_post_cache` / `invalidate_blog_post_image_cache` so `cache_version` bumps and blog list + detail caches miss.
+  ContentTag + BlogPost.tags / Service.tags M2M: `invalidate_content_tag_cache`, `invalidate_blog_post_tags_m2m`
+  (clears `get_active_content_tags`, `_cached_blog_list_blob`, tag-filtered blog lists).
 
 Not cached (no invalidation needed for public query cache): ContactInquiry, UserResult.
 """
@@ -63,6 +65,7 @@ from projects.models import (
     Review,
     BlogPost,
     BlogPostImage,
+    ContentTag,
     About,
     AboutWhyItem,
     Contact,
@@ -348,9 +351,10 @@ def invalidate_review_cache(sender, instance, **kwargs):
 def invalidate_blog_post_cache(sender, instance, **kwargs):
     """
     Blog index (`get_blog_page_data`), post detail sidebar lists (`get_blog_detail_view_context`),
-    and any other `@cached_*` helpers that pull `BlogPost` / `get_blog_posts`.
+    tag-filtered lists (`_cached_blog_list_blob`), and any other `@cached_*` helpers that pull `BlogPost`.
     """
     _invalidate_on_commit('BlogPost')
+    _invalidate_on_commit('ContentTag')
 
 
 @receiver(post_save, sender=BlogPostImage)
@@ -358,6 +362,28 @@ def invalidate_blog_post_cache(sender, instance, **kwargs):
 def invalidate_blog_post_image_cache(sender, instance, **kwargs):
     """Cover/order changes affect serialized posts on blog listing and home fresh query reads same DB."""
     _invalidate_on_commit('BlogPost')
+
+
+@receiver(post_save, sender=ContentTag)
+@receiver(post_delete, sender=ContentTag)
+def invalidate_content_tag_cache(sender, instance, **kwargs):
+    _invalidate_on_commit('ContentTag')
+    _invalidate_on_commit('BlogPost')
+    _invalidate_on_commit('Service')
+
+
+@receiver(m2m_changed, sender=BlogPost.tags.through)
+def invalidate_blog_post_tags_m2m(sender, instance, action, **kwargs):
+    if action in ('post_add', 'post_remove', 'post_clear', 'pre_add', 'pre_remove', 'pre_clear'):
+        _invalidate_on_commit('BlogPost')
+        _invalidate_on_commit('ContentTag')
+
+
+@receiver(m2m_changed, sender=Service.tags.through)
+def invalidate_service_tags_m2m(sender, instance, action, **kwargs):
+    if action in ('post_add', 'post_remove', 'post_clear', 'pre_add', 'pre_remove', 'pre_clear'):
+        _invalidate_on_commit('Service')
+        _invalidate_on_commit('ContentTag')
 
 
 @receiver(post_save, sender=Media)

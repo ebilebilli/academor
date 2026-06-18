@@ -1,0 +1,93 @@
+{% load static i18n academor_lazy_tags %}
+{% if featured_posts %}
+<div class="mb-5">
+    <p class="blog-section-label">{% trans "Featured Posts" %}</p>
+    <div class="blog-featured-grid blog-featured-grid--{% if featured_posts|length == 1 %}one{% else %}two{% endif %}">
+        {% for post in featured_posts %}
+            <a href="{% url 'projects:blog-detail' post.slug %}" class="blog-featured-card">
+                {% if post.cover %}
+                <div class="blog-featured-media">
+                <img
+                    src="{{ post.cover }}"
+                    alt="{{ post.name }}"
+                    class="blog-featured-card__img"
+                    {% if post.cover_srcset %}srcset="{{ post.cover_srcset }}"{% endif %}
+                    {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+                    decoding="async"
+                    width="1200"
+                    height="800"
+                    sizes="(max-width: 767px) 100vw, (max-width: 991px) min(90vw, 720px), {% if featured_posts|length == 1 %}min(1140px, 100vw){% else %}min(55vw, 700px){% endif %}">
+                </div>
+                {% else %}
+                <div class="blog-featured-card__no-img">
+                    <i class="fa fa-newspaper fa-4x text-white opacity-10"></i>
+                </div>
+                {% endif %}
+                <div class="blog-meta-top">
+                    <span class="blog-badge-featured">
+                        <img src="{% static 'assets/img/banner.webp' %}" alt="" class="featured-badge-icon" width="14" height="14" decoding="async">{% trans "Featured" %}
+                    </span>
+                    {% if post.date %}
+                    <span class="blog-date-chip">
+                        <i class="fa fa-calendar-alt" style="font-size:.6rem;"></i>
+                        <time datetime="{{ post.date|date:'Y-m-d' }}">{{ post.date|date:"d M Y" }}</time>
+                    </span>
+                    {% endif %}
+                </div>
+                <div class="blog-featured-arrow" aria-hidden="true"><i class="fa fa-arrow-right"></i></div>
+                <div class="blog-featured-card__overlay">
+                    <h2 class="blog-featured-card__title">{{ post.name }}</h2>
+                    {% if post.description_plain %}
+                    <p class="blog-featured-card__excerpt">{{ post.description_plain|truncatewords:14 }}</p>
+                    {% endif %}
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% if posts %}
+<div>
+    <p class="blog-section-label">{% trans "Most Recent" %}</p>
+</div>
+<div class="row g-4">
+    {% for post in posts %}
+    <div class="col-6 col-md-6 col-lg-4">
+        <article class="blog-card">
+            <a href="{% url 'projects:blog-detail' post.slug %}" class="blog-card__link text-decoration-none stretched-link">
+                <div class="blog-card__media ratio ratio-1x1">
+                    {% if post.cover %}
+                        {% academor_branded_lazy_img post.cover post.name img_class='blog-card-cover-img' layout='cover' width='800' height='800' srcset=post.cover_srcset sizes='(max-width: 991.98px) 50vw, 33vw' loading='lazy' %}
+                    {% else %}
+                    <div class="blog-card__media-ph">
+                        <i class="fa fa-newspaper fa-2x text-muted opacity-35"></i>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="blog-card__body">
+                    {% if post.date %}
+                    <time class="blog-card__date">
+                        <i class="fa fa-calendar-alt" style="font-size:.65rem;"></i>{{ post.date|date:"d M Y" }}
+                    </time>
+                    {% endif %}
+                    <h3 class="blog-card__title">{{ post.name }}</h3>
+                    {% if post.description_plain %}
+                    <p class="blog-card__excerpt">{{ post.description_plain|truncatewords:12 }}</p>
+                    {% endif %}
+                    <span class="blog-card__cta mt-auto">
+                        {% trans "Read more" %} <i class="fa fa-arrow-right ms-1" style="font-size:.75rem;"></i>
+                    </span>
+                </div>
+            </a>
+        </article>
+    </div>
+    {% endfor %}
+</div>
+{% elif active_tags %}
+<p class="text-center text-muted mb-0 py-5">
+    {% trans "No blog posts match the selected topics yet." %}
+</p>
+{% elif not featured_posts %}
+<p class="text-center text-muted mb-0 py-5">{% trans "No blog posts have been published yet." %}</p>
+{% endif %}

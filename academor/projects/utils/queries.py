@@ -1,6 +1,7 @@
 import re
 
 from django.db.models import Q, Prefetch
+from django.urls import reverse
 from django.utils import translation
 from django.utils.translation import gettext as _, ngettext
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -112,14 +113,17 @@ _category_media_prefetch = Prefetch(
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
-def get_project_categories(lang='az', show_on_main_page=None):
+def get_project_categories(lang='az', show_on_main_page=None, tag_slug=None):
     """Aktiv service kateqoriyaları (courses)."""
     qs = Service.objects.filter(is_active=True).order_by('order', 'id').prefetch_related(
         _category_media_prefetch,
         'price_packages',
+        'tags',
     )
     if show_on_main_page is not None:
         qs = qs.filter(show_on_main_page=show_on_main_page)
+    if tag_slug:
+        qs = qs.filter(tags__slug=tag_slug, tags__is_active=True).distinct()
     return qs
 
 
@@ -134,6 +138,7 @@ def get_active_project_category_by_slug(slug):
             _category_media_prefetch,
             'instructors',
             'price_packages',
+            'tags',
         )
         .first()
     )
@@ -216,21 +221,79 @@ def serialize_review(review):
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
-def get_blog_posts(is_active=True, on_main_page=None):
-    queryset = BlogPost.objects.prefetch_related('images')
+def get_blog_posts(is_active=True, on_main_page=None, tag_slug=None, tag_slugs=None):
+    queryset = BlogPost.objects.prefetch_related('images', 'tags')
     if is_active is not None:
         queryset = queryset.filter(is_active=is_active)
     if on_main_page is not None:
         queryset = queryset.filter(on_main_page=on_main_page)
+    slugs = list(tag_slugs or [])
+    if tag_slug:
+        slugs = [tag_slug]
+    if slugs:
+        queryset = queryset.filter(
+            tags__slug__in=slugs,
+            tags__is_active=True,
+        ).distinct()
     return list(queryset.order_by('-on_top', '-date', '-id'))
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
 def get_blog_post_by_slug(slug, is_active=True):
-    queryset = BlogPost.objects.prefetch_related('images').filter(slug=slug)
+    queryset = BlogPost.objects.prefetch_related('images', 'tags').filter(slug=slug)
     if is_active is not None:
         queryset = queryset.filter(is_active=is_active)
     return queryset.first()
+
+
+def _active_tags_for_instance(instance):
+    return sorted(
+        (t for t in instance.tags.all() if t.is_active),
+        key=lambda t: (t.order, t.name_az or ''),
+    )
+
+
+def serialize_content_tag(tag, lang='az'):
+    """Public blog tag chip/link (includes URL)."""
+    if tag is None:
+        return None
+    return {
+        'id': tag.id,
+        'slug': tag.slug,
+        'name': _localized_value(tag, 'name', lang),
+        'url': reverse('projects:blog-tag-page', kwargs={'slug': tag.slug}),
+    }
+
+
+def _serialize_service_tags_for_seo(category, lang='az'):
+    """Service/course tags for meta keywords only — no public URL."""
+    return [
+        {
+            'id': t.id,
+            'slug': t.slug,
+            'name': _localized_value(t, 'name', lang),
+        }
+        for t in _active_tags_for_instance(category)
+    ]
+
+
+@cached_query(timeout='CACHE_TIMEOUT_LONG')
+def get_content_tag_by_slug(slug, is_active=True):
+    if not slug:
+        return None
+    qs = ContentTag.objects.filter(slug=slug)
+    if is_active is not None:
+        qs = qs.filter(is_active=is_active)
+    return qs.first()
+
+
+@cached_query(timeout='CACHE_TIMEOUT_LONG')
+def get_active_content_tags():
+    return list(
+        ContentTag.objects.filter(is_active=True, blog_posts__is_active=True)
+        .distinct()
+        .order_by('order', 'name_az', 'id')
+    )
 
 
 def serialize_blog_post(post, lang='az'):
@@ -273,6 +336,10 @@ def serialize_blog_post(post, lang='az'):
         'cover_srcset': cover_srcset,
         'images': images,
         'gallery_images': gallery_images,
+        'tags': [
+            serialize_content_tag(t, lang)
+            for t in _active_tags_for_instance(post)
+        ],
     }
 
 
@@ -483,20 +550,18 @@ def get_home_about_context(lang='az'):
     return {'about': serialized_about}
 
 
-@cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')
-def get_blog_page_data(request, lang):
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def _cached_blog_list_blob(lang, tags_key=None):
     """
-    Full context for `/blog/` (blog.html).
+    Blog list + tag-filtered list shared blob.
 
-    Cached per (request GET params, lang) with TTL ``CACHE_TIMEOUT_MEDIUM``.
-    Depends on cached ``get_blog_posts(is_active=True)`` (featured = ``on_top``[:2]; rest = regular posts)
-    plus ``get_project_categories`` / ``get_background_image``. Any ``BlogPost`` or ``BlogPostImage``
-    change bumps global ``cache_version`` via signals in ``projects.signals`` so listings stay current.
+    Cached per (lang, tags_key) where tags_key is comma-separated sorted slugs.
     """
-    all_posts = get_blog_posts(is_active=True)
+    tags_key = (tags_key or '').strip()
+    tag_slugs = [s for s in tags_key.split(',') if s] if tags_key else []
+    all_posts = get_blog_posts(is_active=True, tag_slugs=tag_slugs or None)
     featured = [p for p in all_posts if p.on_top][:2]
     regular = [p for p in all_posts if not p.on_top]
-    categories = get_project_categories(lang)
     serialized_featured = [serialize_blog_post(p, lang=lang) for p in featured]
     serialized_posts = [serialize_blog_post(p, lang=lang) for p in regular]
     lcp_image_url = None
@@ -504,14 +569,71 @@ def get_blog_page_data(request, lang):
         lcp_image_url = serialized_featured[0]['cover']
     elif serialized_posts and serialized_posts[0].get('cover'):
         lcp_image_url = serialized_posts[0]['cover']
+    active_tags = []
+    for slug in tag_slugs:
+        tag_obj = get_content_tag_by_slug(slug)
+        if tag_obj:
+            active_tags.append(serialize_content_tag(tag_obj, lang))
+    active_tag = active_tags[0] if len(active_tags) == 1 else None
     return {
         'featured_posts': serialized_featured,
         'posts': serialized_posts,
-        'categories': [serialize_project_category(c, lang) for c in categories],
+        'categories': [serialize_project_category(c, lang) for c in get_project_categories(lang)],
         'language': lang,
         'background_image': get_background_image('about'),
         'lcp_image_url': lcp_image_url,
+        'active_tags': active_tags,
+        'active_tag_slugs': tag_slugs,
+        'active_tag': active_tag,
+        'filter_tag_slug': tag_slugs[0] if len(tag_slugs) == 1 else None,
+        'filter_tag_slugs': tag_slugs,
+        'content_tags': [
+            serialize_content_tag(t, lang)
+            for t in get_active_content_tags()
+        ],
     }
+
+
+def _normalize_blog_tag_slugs(raw_slugs):
+    seen = set()
+    result = []
+    for raw in raw_slugs:
+        slug = (raw or '').strip()
+        if slug and slug not in seen:
+            seen.add(slug)
+            result.append(slug)
+    return result
+
+
+def parse_blog_tag_slugs_from_request(request):
+    return _normalize_blog_tag_slugs(request.GET.getlist('tag'))
+
+
+def resolve_blog_filter_tag_slugs(slugs):
+    valid = []
+    for slug in slugs:
+        if get_content_tag_by_slug(slug):
+            valid.append(slug)
+    return sorted(valid)
+
+
+def blog_list_tags_cache_key(slugs):
+    resolved = resolve_blog_filter_tag_slugs(slugs)
+    return ','.join(resolved) if resolved else None
+
+
+def get_blog_page_data(request, lang):
+    """Full context for `/blog/` (blog.html)."""
+    slugs = resolve_blog_filter_tag_slugs(parse_blog_tag_slugs_from_request(request))
+    return _cached_blog_list_blob(lang, blog_list_tags_cache_key(slugs))
+
+
+def get_blog_tag_page_data(request, lang, slug):
+    """Full context for `/blog/tag/<slug>/`."""
+    slug = (slug or '').strip()
+    if not slug or not get_content_tag_by_slug(slug):
+        return None
+    return _cached_blog_list_blob(lang, slug)
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
@@ -1055,6 +1177,7 @@ def serialize_project_category(category, lang='az', discounts_map=None):
         'sale_badge_aria': _sale_discount_badge_aria(sale_percent, lang) if sale_percent else None,
         'has_discount': bool(sale_percent and min_price is not None),
         'has_payment': bool(active_packages),
+        'tags': _serialize_service_tags_for_seo(category, lang),
     }
 
 
@@ -1478,6 +1601,12 @@ def _get_project_list_data_impl(request, lang):
         'has_previous': False,
     }
 
+    lcp_image_url = None
+    if selected_category and selected_category.get('image'):
+        lcp_image_url = selected_category['image']
+    elif serialized_categories:
+        lcp_image_url = serialized_categories[0].get('image')
+
     return {
         'projects': [],
         'categories': serialized_categories,
@@ -1491,6 +1620,7 @@ def _get_project_list_data_impl(request, lang):
         },
         'background_image': get_background_image('courses'),
         'abroad_items': get_serialized_abroad_items(lang=lang, is_active=True),
+        'lcp_image_url': lcp_image_url,
     }
 
 

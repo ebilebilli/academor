@@ -87,15 +87,31 @@ ADMIN_HELP = {
   },
   'BlogPost': {
     'title': 'Blog / news articles',
-    'summary': 'News posts with title, body, date, cover/video, and up to 6 gallery images.',
+    'summary': 'News posts with title, body, date, cover/video, tags, and up to 6 gallery images.',
     'where': 'Blog list (/blog/) and article detail pages. "On main page" shows on homepage.',
     'tips': [
       '"On top" pins the post to the top of the blog list.',
       '"On main page" shows a card on the homepage.',
+      'Tags: pick from Tags section (create tags first under Tags in admin).',
       'Cover image is used for list thumbnails and as the video poster.',
       'If a video is uploaded, it is shown large at the top of the article.',
       'Without a cover, the first gallery image is used as the thumbnail.',
       'Slug is auto-generated — do not change unless you know SEO implications.',
+    ],
+  },
+  'ContentTag': {
+    'title': 'Tags (blog)',
+    'summary': (
+      'Topic labels such as IELTS or Speaking for blog articles. '
+      'Shown on the blog list, article pages, and /blog/tag/… filters.'
+    ),
+    'where': 'Public blog pages only (not services/course cards on the site).',
+    'tips': [
+      'Create tags here first, then assign them on Blog posts.',
+      'Services can also use tags in admin for SEO keywords only (not shown on site).',
+      'Azerbaijani name is required; EN/RU names are optional.',
+      'Lower order number = listed first in tag filters.',
+      'Turn off Active to hide a tag without deleting it.',
     ],
   },
 
@@ -114,6 +130,7 @@ ADMIN_HELP = {
       'Add price packages in the table below (duration, lessons, price in AZN).',
       'Upload ONE thumbnail image in the Media inline at the bottom.',
       'Card icon: shown on homepage and courses list; "Default" auto-detects from the URL slug.',
+      'Tags: optional — used for SEO keywords on course pages (not shown to visitors).',
       '"Show on main page" controls homepage visibility. '
       'Order: 0 = first, 1 = next (site, admin list, and Courses dropdown).',
       'Slug is hidden — it is set automatically from the Azerbaijani name.',
@@ -276,8 +293,8 @@ ADMIN_INDEX_HELP = {
     },
     {
       'name': 'Team & marketing',
-      'items': 'Team, Reviews, Blog',
-      'desc': 'Staff profiles, testimonials, and news articles.',
+      'items': 'Team, Reviews, Blog, Tags',
+      'desc': 'Staff profiles, testimonials, news articles, and topic tags for blog/services.',
     },
     {
       'name': 'Courses & sales',

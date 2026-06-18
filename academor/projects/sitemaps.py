@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
 
-from projects.models import Service, Team, Test, University
+from projects.models import BlogPost, ContentTag, Service, Team, Test, University
 
 
 class AcademorSitemap(Sitemap):
@@ -27,6 +27,7 @@ _STATIC_PRIORITY = {
     'projects:tests-page': 0.8,
     'projects:courses-page': 0.7,
     'projects:abroad-page': 0.6,
+    'projects:blog-page': 0.75,
 }
 
 
@@ -41,6 +42,7 @@ class StaticViewSitemap(AcademorSitemap):
             'projects:contact-page',
             'projects:team-page',
             'projects:tests-page',
+            'projects:blog-page',
         ]
 
     def location(self, item):
@@ -118,9 +120,39 @@ class UniversitySitemap(AcademorSitemap):
         return getattr(settings, 'SITEMAP_STATIC_LASTMOD', None)
 
 
+class BlogSitemap(AcademorSitemap):
+    changefreq = 'weekly'
+    priority = 0.65
+
+    def items(self):
+        return BlogPost.objects.filter(is_active=True).order_by('-date', '-id')
+
+    def location(self, obj):
+        return reverse('projects:blog-detail', kwargs={'slug': obj.slug})
+
+    def lastmod(self, obj):
+        return obj.date or obj.created_at
+
+
+class BlogTagSitemap(AcademorSitemap):
+    changefreq = 'weekly'
+    priority = 0.5
+
+    def items(self):
+        return ContentTag.objects.filter(is_active=True).order_by('order', 'name_az', 'id')
+
+    def location(self, obj):
+        return reverse('projects:blog-tag-page', kwargs={'slug': obj.slug})
+
+    def lastmod(self, obj):
+        return getattr(settings, 'SITEMAP_STATIC_LASTMOD', None)
+
+
 SITEMAPS = {
     'static': StaticViewSitemap,
     'courses': CourseSitemap,
+    'blog': BlogSitemap,
+    'blog-tags': BlogTagSitemap,
     'team': TeamSitemap,
     'tests': TestSitemap,
     'universities': UniversitySitemap,

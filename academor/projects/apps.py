@@ -6,4 +6,5 @@ class ProjectsConfig(AppConfig):
     name = 'projects'
 
     def ready(self):
-        import projects.signals
+        import projects.signals  # noqa: F401
+        import projects.admin  # noqa: F401 — register all ModelAdmin classes

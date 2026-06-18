@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from projects.utils.canonical import canonical_url_for_request
+from projects.utils.canonical import canonical_url_for_request, _canonical_origin
 from projects.utils.turnstile import is_turnstile_configured
 from projects.seo_page_defaults import get_page_seo_defaults
 from projects.utils.i18n import resolve_public_language
@@ -117,6 +117,7 @@ def site_seo_context(request):
         "default_seo_title": page_defaults.get("title"),
         "default_seo_description": page_defaults.get("description"),
         "default_seo_keywords": page_defaults.get("keywords"),
+        "seo_origin": _canonical_origin(),
     }
 
 

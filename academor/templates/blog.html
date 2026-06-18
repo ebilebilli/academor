@@ -4,6 +4,7 @@
 
 <head>
     {% include "includes/site_layout_head.html" with lcp_image_url=lcp_image_url %}
+    <link href="{% static 'assets/css/blog-tags.css' %}" rel="stylesheet">
     <style>
         /* Featured top strip — sizing / grid match homepage `hbh-card--featured` */
         .blog-featured-grid {
@@ -345,100 +346,29 @@
     <main id="main-content">
     <div class="container-fluid bg-primary mb-5 page-header page-header-hero-band"{% include "includes/page_header_dynamic_bg.html" %}></div>
 
-    <div class="container-xxl py-5">
-        <h1 class="visually-hidden">{% trans "Blog" %}</h1>
+    <div class="container-xxl py-5 blog-page-shell">
+        <h1 class="visually-hidden">
+            {% if active_tags|length == 1 %}{{ active_tags.0.name }} — {% trans "Blog" %}
+            {% elif active_tags|length > 1 %}{% trans "Blog" %} — {% blocktrans count counter=active_tags|length %}{{ counter }} topics{% plural %}{{ counter }} topics{% endblocktrans %}
+            {% else %}{% trans "Blog" %}{% endif %}
+        </h1>
         <div class="container">
-
-            <!-- ── Featured Posts (on_top, max 2) ─────────────────────────── -->
-            {% if featured_posts %}
-            <div class="wow fadeInUp mb-5" data-wow-delay="0.1s">
-                <p class="blog-section-label">{% trans "Featured Posts" %}</p>
-                <div class="blog-featured-grid blog-featured-grid--{% if featured_posts|length == 1 %}one{% else %}two{% endif %}">
-                    {% for post in featured_posts %}
-                        <a href="{% url 'projects:blog-detail' post.slug %}" class="blog-featured-card">
-                            {% if post.cover %}
-                            <div class="blog-featured-media">
-                            <img
-                                src="{{ post.cover }}"
-                                alt="{{ post.name }}"
-                                class="blog-featured-card__img"
-                                {% if post.cover_srcset %}srcset="{{ post.cover_srcset }}"{% endif %}
-                                {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
-                                decoding="async"
-                                width="1200"
-                                height="800"
-                                sizes="(max-width: 767px) 100vw, (max-width: 991px) min(90vw, 720px), {% if featured_posts|length == 1 %}min(1140px, 100vw){% else %}min(55vw, 700px){% endif %}">
-                            </div>
-                            {% else %}
-                            <div class="blog-featured-card__no-img">
-                                <i class="fa fa-newspaper fa-4x text-white opacity-10"></i>
-                            </div>
-                            {% endif %}
-                            <div class="blog-meta-top">
-                                <span class="blog-badge-featured">
-                                    <img src="{% static 'assets/img/banner.webp' %}" alt="" class="featured-badge-icon" width="14" height="14" decoding="async">{% trans "Featured" %}
-                                </span>
-                                {% if post.date %}
-                                <span class="blog-date-chip">
-                                    <i class="fa fa-calendar-alt" style="font-size:.6rem;"></i>
-                                    <time datetime="{{ post.date|date:'Y-m-d' }}">{{ post.date|date:"d M Y" }}</time>
-                                </span>
-                                {% endif %}
-                            </div>
-                            <div class="blog-featured-arrow" aria-hidden="true"><i class="fa fa-arrow-right"></i></div>
-                            <div class="blog-featured-card__overlay">
-                                <h2 class="blog-featured-card__title">{{ post.name }}</h2>
-                                {% if post.description_plain %}
-                                <p class="blog-featured-card__excerpt">{{ post.description_plain|truncatewords:14 }}</p>
-                                {% endif %}
-                            </div>
-                        </a>
-                    {% endfor %}
+            <div class="blog-page-filter-sticky">
+                <div class="blog-page-filter-sentinel" data-blog-filter-sentinel aria-hidden="true"></div>
+                <div class="blog-page-filter-bar" data-blog-filter-bar aria-label="{% trans 'Blog topics' %}">
+                    {% include "includes/content_tag_filter.html" %}
                 </div>
             </div>
-            {% endif %}
 
-            <!-- ── All Posts Grid ────────────────────────────────────────── -->
-            {% if posts %}
-            <div class="wow fadeInUp" data-wow-delay="0.15s">
-                <p class="blog-section-label">{% trans "Most Recent" %}</p>
+            <div
+                id="blog-posts-root"
+                class="blog-posts-root"
+                data-blog-posts-root
+                aria-live="polite"
+                aria-busy="false"
+            >
+                {% include "includes/blog_posts_partial.html" %}
             </div>
-            <div class="row g-4">
-                {% for post in posts %}
-                <div class="col-6 col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="{% cycle '0.05s' '0.1s' '0.15s' %}">
-                    <article class="blog-card">
-                        <a href="{% url 'projects:blog-detail' post.slug %}" class="blog-card__link text-decoration-none stretched-link">
-                            <div class="blog-card__media ratio ratio-1x1">
-                                {% if post.cover %}
-                                    {% academor_branded_lazy_img post.cover post.name img_class='blog-card-cover-img' layout='cover' width='800' height='800' srcset=post.cover_srcset sizes='(max-width: 991.98px) 50vw, 33vw' loading='lazy' %}
-                                {% else %}
-                                <div class="blog-card__media-ph">
-                                    <i class="fa fa-newspaper fa-2x text-muted opacity-35"></i>
-                                </div>
-                                {% endif %}
-                            </div>
-                            <div class="blog-card__body">
-                                {% if post.date %}
-                                <time class="blog-card__date">
-                                    <i class="fa fa-calendar-alt" style="font-size:.65rem;"></i>{{ post.date|date:"d M Y" }}
-                                </time>
-                                {% endif %}
-                                <h3 class="blog-card__title">{{ post.name }}</h3>
-                                {% if post.description_plain %}
-                                <p class="blog-card__excerpt">{{ post.description_plain|truncatewords:12 }}</p>
-                                {% endif %}
-                                <span class="blog-card__cta mt-auto">
-                                    {% trans "Read more" %} <i class="fa fa-arrow-right ms-1" style="font-size:.75rem;"></i>
-                                </span>
-                            </div>
-                        </a>
-                    </article>
-                </div>
-                {% endfor %}
-            </div>
-            {% elif not featured_posts %}
-            <p class="text-center text-muted mb-0 py-5">{% trans "No blog posts have been published yet." %}</p>
-            {% endif %}
 
         </div>
     </div>
@@ -446,5 +376,6 @@
 
     {% include "includes/site_footer.html" %}
     {% include "includes/site_scripts.html" %}
+    <script src="{% static 'assets/js/blog-topic-filter.js' %}"></script>
 </body>
 </html>

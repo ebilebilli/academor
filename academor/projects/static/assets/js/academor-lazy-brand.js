@@ -64,4 +64,8 @@
     window.addEventListener('load', function () {
         sweep();
     });
+
+    document.addEventListener('academor:blog-posts-updated', function (e) {
+        sweep(e.detail && e.detail.root ? e.detail.root : document);
+    });
 })();

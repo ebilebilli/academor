@@ -129,6 +129,12 @@ class Service(SluggedModel):
         auto_now_add=True,
         verbose_name='Created at'
     )
+    tags = models.ManyToManyField(
+        'ContentTag',
+        blank=True,
+        related_name='services',
+        verbose_name='Tags',
+    )
 
     class Meta:
         verbose_name = 'Service'

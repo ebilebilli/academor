@@ -1,0 +1,84 @@
+{% load i18n %}
+{% if content_tags %}
+<div
+    class="blog-topic-dropdown{% if active_tag_slugs %} is-filtered{% endif %}"
+    data-blog-topic-filter
+    data-blog-page-url="{% url 'projects:blog-page' %}"
+    data-blog-api-url="{% url 'projects:blog-posts-partial' %}"
+    data-i18n-all="{% trans 'All' %}"
+    data-i18n-topic="{% trans 'topic' %}"
+    data-i18n-topics="{% trans 'topics' %}"
+>
+    <button
+        type="button"
+        class="blog-topic-dropdown__trigger"
+        id="blogTopicDropdown"
+        data-blog-topic-trigger
+        aria-expanded="false"
+        aria-controls="blogTopicMenu"
+        aria-haspopup="listbox"
+    >
+        <span class="blog-topic-dropdown__icon" aria-hidden="true">
+            <i class="fa fa-tags"></i>
+        </span>
+        <span class="blog-topic-dropdown__text" id="blogTopicDropdownLabel">
+            <span class="blog-topic-dropdown__label">{% trans "Topics" %}</span>
+            <span class="blog-topic-dropdown__sep" aria-hidden="true">·</span>
+            <span class="blog-topic-dropdown__value" data-blog-topic-value>
+                {% if active_tags|length == 1 %}
+                {{ active_tags.0.name }}
+                {% elif active_tags|length > 1 %}
+                {% blocktrans count counter=active_tags|length %}{{ counter }} topic{% plural %}{{ counter }} topics{% endblocktrans %}
+                {% else %}
+                {% trans "All" %}
+                {% endif %}
+            </span>
+        </span>
+        <span class="blog-topic-dropdown__chevron" aria-hidden="true">
+            <i class="fa fa-chevron-down"></i>
+        </span>
+    </button>
+
+    <ul
+        class="blog-topic-dropdown__menu"
+        id="blogTopicMenu"
+        data-blog-topic-menu
+        role="listbox"
+        aria-label="{% trans 'Blog topics' %}"
+        aria-multiselectable="true"
+        hidden
+    >
+        <li class="blog-topic-dropdown__row" role="option">
+            <button
+                type="button"
+                class="blog-topic-dropdown__option blog-topic-dropdown__option--all{% if not active_tag_slugs %} is-active{% endif %}"
+                data-blog-topic-all
+            >
+                <span class="blog-topic-dropdown__option-icon" aria-hidden="true">
+                    <i class="fa fa-th-large"></i>
+                </span>
+                <span class="blog-topic-dropdown__option-text">{% trans "All" %}</span>
+            </button>
+        </li>
+        {% for tag in content_tags %}
+        <li class="blog-topic-dropdown__row" role="option">
+            <label class="blog-topic-dropdown__option">
+                <input
+                    type="checkbox"
+                    class="blog-topic-dropdown__checkbox"
+                    name="blog_topic"
+                    value="{{ tag.slug }}"
+                    data-blog-topic-option
+                    {% if tag.slug in active_tag_slugs %}checked{% endif %}
+                >
+                <span class="blog-topic-dropdown__option-hash" aria-hidden="true">#</span>
+                <span class="blog-topic-dropdown__option-text">{{ tag.name }}</span>
+                <span class="blog-topic-dropdown__checkmark" aria-hidden="true">
+                    <i class="fa fa-check"></i>
+                </span>
+            </label>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}

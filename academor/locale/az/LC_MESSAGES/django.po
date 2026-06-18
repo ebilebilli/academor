@@ -690,6 +690,44 @@ msgstr "Bütün mövzular"
 msgid "Topics"
 msgstr "Mövzular"
 
+msgid "All"
+msgstr "Hamısı"
+
+msgid "Blog topics"
+msgstr "Blog mövzuları"
+
+msgid "Browse by topic"
+msgstr "Mövzuya görə seçin"
+
+msgid "Clear filter"
+msgstr "Süzgəci sıfırla"
+
+msgid "Clear"
+msgstr "Təmizlə"
+
+msgid "Showing: #%(name)s"
+msgstr "Göstərilir: #%(name)s"
+
+msgid "Filtered: <strong>#%(name)s</strong>"
+msgstr "Süzülür: <strong>#%(name)s</strong>"
+
+msgid "#%(name)s"
+msgstr "#%(name)s"
+
+msgid "%(counter)s topic"
+msgid_plural "%(counter)s topics"
+msgstr[0] "%(counter)s mövzu"
+msgstr[1] "%(counter)s mövzu"
+
+msgid "No blog posts match the selected topics yet."
+msgstr "Seçilmiş mövzular üçün blog yazısı tapılmadı."
+
+msgid "topic"
+msgstr "mövzu"
+
+msgid "topics"
+msgstr "mövzu"
+
 msgid "Common questions"
 msgstr "Tez-tez verilən suallar"
 

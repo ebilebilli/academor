@@ -92,6 +92,12 @@ class BlogPost(SluggedModel):
         format='WEBP',
         options={'quality': 75},
     )
+    tags = models.ManyToManyField(
+        'ContentTag',
+        blank=True,
+        related_name='blog_posts',
+        verbose_name='Tags',
+    )
 
     class Meta:
         verbose_name = 'Blog post'

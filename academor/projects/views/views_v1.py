@@ -8,6 +8,16 @@ from django.utils.translation import gettext as _
 from projects.models import AbroadModel, Team, BlogPost
 from projects.forms.forms_v1 import ReviewForm
 from projects.utils.seo_text import meta_plain_excerpt
+from projects.utils.canonical import canonical_url_for_request
+from projects.utils.seo_meta import (
+    blog_detail_seo,
+    course_detail_seo,
+    tag_archive_seo,
+    dumps_structured_data,
+    organization_json_ld,
+    website_json_ld,
+)
+from projects.seo_page_defaults import get_page_seo_defaults
 from projects.utils.queries import (
     get_language_from_request, get_home_page_data,
     get_courses_list_data,
@@ -20,6 +30,7 @@ from projects.utils.queries import (
     get_team_members, serialize_team_member,
     get_blog_page_data,
     get_blog_detail_view_context,
+    get_blog_tag_page_data,
     get_abroad_page_data,
     _fresh_abroad_advantages_context,
     get_abroad_detail_view_context,
@@ -37,6 +48,11 @@ class HomePageView(View):
         context['language'] = lang
         context['review_form'] = review_form if review_form is not None else ReviewForm(request=request)
         context['open_review_modal'] = open_review_modal
+        canonical = canonical_url_for_request(request)
+        context['structured_data_json'] = dumps_structured_data(
+            organization_json_ld(canonical_url=canonical, lang=lang),
+            website_json_ld(canonical_url=canonical),
+        )
         return context
 
     def get(self, request):
@@ -92,11 +108,6 @@ class CourseDetailPageView(View):
         if not category:
             raise Http404(_("Category not found"))
         course = serialize_project_category_detail(category, lang)
-        excerpt = meta_plain_excerpt(course.get('description_html') or '')
-        if not excerpt.strip():
-            excerpt = _('%(course)s — programme details at Academor, Baku, Azerbaijan.') % {
-                'course': course['name'],
-            }
         payment_form = None
         if course.get('has_payment'):
             from payments.catalog import default_price_package_index
@@ -124,15 +135,21 @@ class CourseDetailPageView(View):
         else:
             default_package_index = 0
 
+        seo_defaults = get_page_seo_defaults('course-detail', lang)
         context = {
             'course': course,
             'default_package_index': default_package_index,
             'language': lang,
             'background_image': get_background_image('courses'),
-            'page_title': f'{course["name"]} | Academor',
-            'page_description': excerpt[:320],
             'payment_form': payment_form,
         }
+        context.update(
+            course_detail_seo(
+                canonical_url=canonical_url_for_request(request),
+                course=course,
+                default_keywords=seo_defaults.get('keywords'),
+            )
+        )
         return render(request, self.template_name, context)
 
 
@@ -371,12 +388,50 @@ class TeamDetailPageView(View):
         return render(request, self.template_name, context)
 
 
+class BlogPostsPartialView(View):
+    """AJAX partial for blog list filtering (featured + grid HTML only)."""
+    template_name = 'includes/blog_posts_partial.html'
+
+    def get(self, request):
+        lang = get_language_from_request(request)
+        context = get_blog_page_data(request, lang)
+        return render(request, self.template_name, context)
+
+
 class BlogPageView(View):
     template_name = 'blog.html'
 
     def get(self, request):
         lang = get_language_from_request(request)
         context = get_blog_page_data(request, lang)
+        return render(request, self.template_name, context)
+
+
+class BlogTagPageView(View):
+    template_name = 'blog.html'
+
+    def get(self, request, slug: str):
+        lang = get_language_from_request(request)
+        context = get_blog_tag_page_data(request, lang, slug)
+        if not context:
+            raise Http404(_("Tag not found"))
+        tag = context.get('active_tag')
+        if not tag and context.get('active_tags'):
+            tag = context['active_tags'][0]
+        if not tag:
+            raise Http404(_("Tag not found"))
+        seo_defaults = get_page_seo_defaults('blog-tag-page', lang)
+        section = {'az': 'Bloq', 'en': 'Blog', 'ru': 'Блог'}.get(lang, 'Bloq')
+        description = seo_defaults.get('description', '')
+        context.update(
+            tag_archive_seo(
+                canonical_url=canonical_url_for_request(request),
+                tag_name=tag['name'],
+                section_label=section,
+                description=f'{tag["name"]}. {description}',
+                default_keywords=seo_defaults.get('keywords'),
+            )
+        )
         return render(request, self.template_name, context)
 
 
@@ -402,11 +457,15 @@ class BlogDetailPageView(View):
             raise Http404(_("Blog post not found"))
 
         post = context['post']
-        excerpt = meta_plain_excerpt(post.get('description') or '')
-        if not excerpt.strip():
-            excerpt = post.get('name') or ''
-        context['page_title'] = f'{post["name"]} | Academor'
-        context['page_description'] = excerpt[:320]
+        seo_defaults = get_page_seo_defaults('blog-detail', lang)
+        context.update(
+            blog_detail_seo(
+                canonical_url=canonical_url_for_request(request),
+                post=post,
+                lang=lang,
+                default_keywords=seo_defaults.get('keywords'),
+            )
+        )
         return render(request, self.template_name, context)
 
 

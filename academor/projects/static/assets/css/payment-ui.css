@@ -41,20 +41,36 @@
 
 .course-pay-packages {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
+    flex-wrap: nowrap;
     align-items: stretch;
     gap: var(--course-pay-gap);
     width: 100%;
+    max-width: 100%;
     padding: 0.25rem 0 0.5rem;
 }
 
 .course-pay-packages__item {
-    flex: 0 0 var(--course-pay-card-width);
-    width: var(--course-pay-card-width);
+    flex: none;
+    width: 100%;
     max-width: 100%;
+    min-width: 0;
     list-style: none;
     display: flex;
+}
+
+@media (min-width: 992px) {
+    .course-pay-packages {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .course-pay-packages__item {
+        flex: 0 0 var(--course-pay-card-width);
+        width: var(--course-pay-card-width);
+        max-width: var(--course-pay-card-width);
+    }
 }
 
 .course-pay-block .btn:focus:not(:focus-visible) {
@@ -486,45 +502,36 @@
     border-radius: var(--course-pay-card-radius);
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 991.98px) {
     .course-pay-block {
-        --course-pay-gap: 0.65rem;
-        --course-pay-card-min-height: 16rem;
-    }
-
-    .course-pay-packages {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        justify-content: stretch;
-    }
-
-    .course-pay-packages__item {
-        flex: none;
-        width: auto;
-        max-width: none;
-    }
-
-    .course-pay-packages__item:only-child,
-    .course-pay-packages__item:last-child:nth-child(odd):not(:only-child) {
-        grid-column: 1 / -1;
-        justify-self: center;
-        width: min(100%, var(--course-pay-card-width));
+        --course-pay-gap: 0.85rem;
+        --course-pay-card-min-height: auto;
     }
 
     .course-pay-card {
-        padding: 1.1rem 0.85rem 1.15rem;
+        padding: 1.15rem 1rem 1.2rem;
+        min-height: auto;
     }
 
-    .course-pay-card__amount {
-        font-size: clamp(1.35rem, 5vw, 1.8rem);
+    .course-pay-card__header {
+        min-height: auto;
+    }
+
+    .course-pay-card__price {
+        min-height: auto;
     }
 
     .course-pay-card__features {
-        font-size: 0.8rem;
+        min-height: auto;
+        font-size: 0.82rem;
+    }
+
+    .course-pay-card__amount {
+        font-size: clamp(1.5rem, 6vw, 1.85rem);
     }
 
     .course-pay-card__cta {
-        font-size: 0.82rem;
+        font-size: 0.88rem;
     }
 }
 

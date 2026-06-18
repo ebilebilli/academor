@@ -690,6 +690,44 @@ msgstr "Все темы"
 msgid "Topics"
 msgstr "Темы"
 
+msgid "All"
+msgstr "Все"
+
+msgid "Blog topics"
+msgstr "Темы блога"
+
+msgid "Browse by topic"
+msgstr "Выберите тему"
+
+msgid "Clear filter"
+msgstr "Сбросить фильтр"
+
+msgid "Clear"
+msgstr "Очистить"
+
+msgid "Showing: #%(name)s"
+msgstr "Показано: #%(name)s"
+
+msgid "Filtered: <strong>#%(name)s</strong>"
+msgstr "Фильтр: <strong>#%(name)s</strong>"
+
+msgid "#%(name)s"
+msgstr "#%(name)s"
+
+msgid "%(counter)s topic"
+msgid_plural "%(counter)s topics"
+msgstr[0] "%(counter)s тема"
+msgstr[1] "%(counter)s темы"
+
+msgid "No blog posts match the selected topics yet."
+msgstr "Нет записей по выбранным темам."
+
+msgid "topic"
+msgstr "тема"
+
+msgid "topics"
+msgstr "темы"
+
 msgid "Common questions"
 msgstr "Частые вопросы"
 

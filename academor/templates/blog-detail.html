@@ -2,7 +2,8 @@
 {% load i18n static %}{% get_current_language as LANG_CODE %}
 <html lang="{{ LANG_CODE }}">
 <head>
-    {% include "includes/site_layout_head.html" with page_title=page_title lcp_image_url=lcp_image_url %}
+    {% include "includes/site_layout_head.html" with page_title=page_title page_description=page_description page_keywords=page_keywords lcp_image_url=lcp_image_url og_image_url=og_image_url og_type=og_type og_article_published_time=og_article_published_time structured_data_json=structured_data_json %}
+    <link href="{% static 'assets/css/blog-tags.css' %}" rel="stylesheet">
     <style>
         /* ── Sidebar ── */
         .blog-sidebar {
@@ -394,7 +395,24 @@
                                 </span>
                                 {% endif %}
                             </div>
-                            <h1 class="mb-0 lh-base" style="font-size:1.85rem;color:var(--bs-primary,#00313D);">{{ post.name }}</h1>
+                            <h1 class="mb-2 lh-base" style="font-size:1.85rem;color:var(--bs-primary,#00313D);">{{ post.name }}</h1>
+                            {% if post.tags %}
+                            <div class="blog-tags-panel blog-tags-panel--inline wow fadeInUp" data-wow-delay="0.12s">
+                                <div class="blog-tags-panel__toolbar">
+                                    <div class="blog-tags-panel__head">
+                                        <span class="blog-tags-panel__icon" aria-hidden="true">
+                                            <i class="fa fa-tags"></i>
+                                        </span>
+                                        <div class="blog-tags-panel__titles">
+                                            <span class="blog-tags-panel__label">{% trans "Topics" %}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="blog-tags-panel__track">
+                                    {% include "includes/content_tag_chips.html" with tags=post.tags linkable=False %}
+                                </div>
+                            </div>
+                            {% endif %}
                         </header>
 
                         <hr class="blog-detail-divider">

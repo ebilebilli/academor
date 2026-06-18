@@ -1,0 +1,18 @@
+{% load i18n %}
+{% if tags %}
+<div class="content-tags content-tags--article{% if extra_class %} {{ extra_class }}{% endif %}"{% if aria_label %} aria-label="{{ aria_label }}"{% else %} aria-label="{% trans 'Article topics' %}"{% endif %}>
+    {% for tag in tags %}
+    {% if linkable and tag.url %}
+    <a href="{{ tag.url }}" class="content-tag-chip{% if active_tag and active_tag.slug == tag.slug %} is-active{% endif %}">
+        <span class="content-tag-chip__hash" aria-hidden="true">#</span>
+        <span>{{ tag.name }}</span>
+    </a>
+    {% else %}
+    <span class="content-tag-chip content-tag-chip--static{% if active_tag and active_tag.slug == tag.slug %} is-active{% endif %}">
+        <span class="content-tag-chip__hash" aria-hidden="true">#</span>
+        <span>{{ tag.name }}</span>
+    </span>
+    {% endif %}
+    {% endfor %}
+</div>
+{% endif %}

@@ -16,6 +16,8 @@ from projects.views.views_v1 import (
     TeamDetailLegacyPkRedirectView,
     TeamDetailPageView,
     BlogPageView,
+    BlogPostsPartialView,
+    BlogTagPageView,
     BlogDetailLegacyPkRedirectView,
     BlogDetailPageView,
 )
@@ -52,8 +54,8 @@ urlpatterns = [
         name='about-page'
     ),
     path(
-        'services/', 
-        ServicesPageView.as_view(), 
+        'services/',
+        ServicesPageView.as_view(),
         name='services-page'
     ),
     path(
@@ -99,9 +101,19 @@ urlpatterns = [
         RedirectView.as_view(pattern_name='home-page', permanent=True),
     ),
     path(
+        'blog/posts/',
+        BlogPostsPartialView.as_view(),
+        name='blog-posts-partial',
+    ),
+    path(
         'blog/',
         BlogPageView.as_view(),
         name='blog-page',
+    ),
+    path(
+        'blog/tag/<slug:slug>/',
+        BlogTagPageView.as_view(),
+        name='blog-tag-page',
     ),
     path(
         'blog/<int:pk>/',

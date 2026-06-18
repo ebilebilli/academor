@@ -369,7 +369,7 @@ class ServiceAdmin(AdminImageCompressMixin, AcademorModelAdmin):
         'description_az', 'description_en', 'description_ru',
         'instructors__name',
     )
-    filter_horizontal = ('instructors',)
+    filter_horizontal = ('instructors', 'tags')
     ordering = ('order', 'id')
     list_per_page = 25
     exclude = ('slug', 'price')
@@ -387,7 +387,7 @@ class ServiceAdmin(AdminImageCompressMixin, AcademorModelAdmin):
             'fields': ('name_ru', 'description_ru', 'duration_months_ru', 'lesson_count_ru')
         }),
         ('Course details', {
-            'fields': ('instructors', 'has_certificate', 'is_online', 'is_offline'),
+            'fields': ('instructors', 'tags', 'has_certificate', 'is_online', 'is_offline'),
             'description': (
                 'Add one or more price packages below. '
                 'Legacy "Price (AZN)" on the model is deprecated; use packages instead.'
@@ -452,6 +452,15 @@ class ServiceAdmin(AdminImageCompressMixin, AcademorModelAdmin):
         return text
 
     instructors_display.short_description = 'Trainers'
+
+
+@admin.register(ContentTag)
+class ContentTagAdmin(AcademorModelAdmin):
+    list_display = ('name_az', 'slug', 'name_en', 'name_ru', 'order', 'is_active')
+    list_editable = ('order', 'is_active')
+    search_fields = ('name_az', 'name_en', 'name_ru', 'slug')
+    ordering = ('order', 'name_az', 'id')
+    exclude = ('slug',)
 
 
 class SaleAdminForm(forms.ModelForm):
@@ -1069,6 +1078,7 @@ class BlogPostImageInline(AdminImageCompressMixin, admin.TabularInline):
 class BlogPostAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     form = BlogPostAdminForm
     inlines = [BlogPostImageInline]
+    filter_horizontal = ('tags',)
     list_display = (
         'cover_preview', 'name_az', 'slug', 'date', 'video_status',
         'is_active', 'on_top', 'on_main_page', 'created_at',
@@ -1085,7 +1095,7 @@ class BlogPostAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     list_per_page = 25
     fieldsets = (
         (None, {
-            'fields': ('slug', 'date', 'is_active', 'on_top', 'on_main_page'),
+            'fields': ('slug', 'date', 'is_active', 'on_top', 'on_main_page', 'tags'),
         }),
         ('Media', {
             'fields': ('cover', 'cover_preview_detail', 'video'),
