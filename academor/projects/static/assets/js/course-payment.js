@@ -732,6 +732,66 @@
                     setLoading(false);
                 });
         });
+
+        function scrollToPackagesSection() {
+            var navbar = document.querySelector('.navbar.sticky-top');
+            var offset = navbar ? navbar.offsetHeight + 16 : 96;
+            var top =
+                root.getBoundingClientRect().top + window.pageYOffset - offset;
+            var prefersReducedMotion =
+                window.matchMedia &&
+                window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            window.scrollTo({
+                top: Math.max(0, top),
+                behavior: prefersReducedMotion ? 'auto' : 'smooth',
+            });
+        }
+
+        function setPackagesCtaVisible(visible) {
+            var cta = document.getElementById('course-pay-sticky-cta');
+            if (!cta) return;
+            cta.classList.toggle('is-visible', visible);
+            cta.setAttribute('aria-hidden', visible ? 'false' : 'true');
+        }
+
+        function initPackagesStickyCta() {
+            var cta = document.getElementById('course-pay-sticky-cta');
+            if (!cta) {
+                return;
+            }
+
+            var jumpBtn = cta.querySelector('[data-course-pay-jump]');
+            if (jumpBtn) {
+                jumpBtn.addEventListener('click', function () {
+                    scrollToPackagesSection();
+                });
+            }
+
+            function syncCtaVisibility(isPackagesVisible) {
+                setPackagesCtaVisible(!isPackagesVisible);
+            }
+
+            if ('IntersectionObserver' in window) {
+                var observer = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            syncCtaVisibility(entry.isIntersecting);
+                        });
+                    },
+                    {
+                        root: null,
+                        rootMargin: '-96px 0px 0px 0px',
+                        threshold: 0,
+                    }
+                );
+                observer.observe(root);
+                return;
+            }
+
+            setPackagesCtaVisible(true);
+        }
+
+        initPackagesStickyCta();
     }
 
     if (document.readyState === 'loading') {

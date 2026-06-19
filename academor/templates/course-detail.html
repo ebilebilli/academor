@@ -101,7 +101,9 @@
                             <div class="tab-content course-detail-tab-panels" id="courseDetailTabContent">
                                 <div class="tab-pane fade show active" id="course-panel-overview" role="tabpanel" aria-labelledby="course-tab-overview" tabindex="0">
                                     {% if course.description_html %}
-                                    <div class="course-detail-description course-detail-prose mb-0">{{ course.description_html|safe }}</div>
+                                    <div class="course-detail-prose-wrap" data-prose-scroll>
+                                        <div class="course-detail-prose-wrap__inner course-detail-description course-detail-prose mb-0">{{ course.description_html|safe }}</div>
+                                    </div>
                                     {% else %}
                                     <p class="text-muted mb-0 fst-italic">{% trans "No description has been added for this category yet." %}</p>
                                     {% endif %}
@@ -178,6 +180,7 @@
         </div>
     </section>
     {% include "includes/course_detail_payment_modal.html" %}
+    {% include "includes/course_detail_payment_sticky_bar.html" %}
     {% endif %}
 
     {% include "includes/site_footer.html" %}

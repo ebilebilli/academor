@@ -1570,3 +1570,55 @@ msgstr "Full package — Group"
 #: projects/models/service_models.py
 msgid "Full package — Individual"
 msgstr "Full package — Individual"
+
+#: templates
+msgid "About Academor video"
+msgstr "About Academor video"
+
+msgid "Academor"
+msgstr "Academor"
+
+msgid "Article topics"
+msgstr "Article topics"
+
+msgid "Back to home"
+msgstr "Back to home"
+
+msgid "Deadline"
+msgstr "Deadline"
+
+msgid "Deadline: %(date)s"
+msgstr "Deadline: %(date)s"
+
+msgid "More information coming soon."
+msgstr "More information coming soon."
+
+msgid "No teachers yet."
+msgstr "No teachers yet."
+
+msgid "Page not found"
+msgstr "Page not found"
+
+msgid "Play video"
+msgstr "Play video"
+
+msgid "Show universities"
+msgstr "Show universities"
+
+msgid "The link may be broken or the page may have been removed."
+msgstr "The link may be broken or the page may have been removed."
+
+msgid "Toggle navigation"
+msgstr "Toggle navigation"
+
+msgid "Visit website"
+msgstr "Visit website"
+
+msgid "Quick access to packages"
+msgstr "Quick access to packages"
+
+msgid "Packages from %(price)s AZN"
+msgstr "Packages from %(price)s AZN"
+
+msgid "View packages"
+msgstr "View packages"

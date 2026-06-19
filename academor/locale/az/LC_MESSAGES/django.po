@@ -1593,3 +1593,49 @@ msgstr "Full paket — Qrup"
 #: projects/models/service_models.py
 msgid "Full package — Individual"
 msgstr "Full paket — Fərdi"
+
+#: templates
+msgid "About Academor video"
+msgstr "Academor haqqında video"
+
+msgid "Academor"
+msgstr "Academor"
+
+msgid "Article topics"
+msgstr "Məqalə mövzuları"
+
+msgid "Back to home"
+msgstr "Ana səhifəyə qayıt"
+
+msgid "More information coming soon."
+msgstr "Tezliklə əlavə məlumat paylaşılacaq."
+
+msgid "No teachers yet."
+msgstr "Hələ müəllim yoxdur."
+
+msgid "Page not found"
+msgstr "Səhifə tapılmadı"
+
+msgid "Play video"
+msgstr "Videonu oynat"
+
+msgid "Show universities"
+msgstr "Universitetləri göstər"
+
+msgid "The link may be broken or the page may have been removed."
+msgstr "Keçid səhv ola bilər və ya səhifə silinmiş ola bilər."
+
+msgid "Toggle navigation"
+msgstr "Naviqasiyanı aç/bağla"
+
+msgid "Visit website"
+msgstr "Sayta keç"
+
+msgid "Quick access to packages"
+msgstr "Paketlərə sürətli keçid"
+
+msgid "Packages from %(price)s AZN"
+msgstr "%(price)s AZN-dan paketlər"
+
+msgid "View packages"
+msgstr "Paketlərə bax"

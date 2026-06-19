@@ -23,8 +23,13 @@
             document.dispatchEvent(new CustomEvent("academor:page-ready"));
         }, 50);
     }
-    window.addEventListener("load", hideSpinner);
-    setTimeout(hideSpinner, 800);
+    function hideSpinnerAfterLayout() {
+        requestAnimationFrame(function () {
+            requestAnimationFrame(hideSpinner);
+        });
+    }
+    window.addEventListener("load", hideSpinnerAfterLayout);
+    setTimeout(hideSpinner, 4000);
 
     /* Pause marquee / globe / orbit / uni ticker when off-screen */
     function initPausableMotion() {

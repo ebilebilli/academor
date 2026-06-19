@@ -97,9 +97,8 @@
 <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
-<!-- Bootstrap — non-blocking preload; style.css stays synchronous (layout tokens) -->
-<link rel="preload" href="{% static 'assets/css/bootstrap.min.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}"></noscript>
+<!-- Bootstrap + site CSS — synchronous; async bootstrap caused broken layout on first paint (deploy/cold cache). -->
+<link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet">
 <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
 
 {% firstof lcp_image_url as lcp_preload %}

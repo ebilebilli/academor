@@ -17,6 +17,53 @@
     max-width: 100%;
 }
 
+.course-pay-sticky-cta {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1045;
+    display: flex;
+    justify-content: center;
+    padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom, 0px));
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.28s ease, visibility 0.28s ease;
+}
+
+.course-pay-sticky-cta.is-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.course-pay-sticky-cta__btn {
+    width: min(100%, 320px);
+    max-width: 100%;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+@media (hover: hover) {
+    .course-pay-sticky-cta__btn:hover {
+        background-color: var(--accent-hover) !important;
+        border-color: var(--accent-hover) !important;
+        box-shadow: 0 6px 18px rgba(255, 84, 20, 0.3);
+    }
+}
+
+.course-pay-sticky-cta__btn:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+}
+
+@media (min-width: 576px) {
+    .course-pay-sticky-cta__btn {
+        width: auto;
+        min-width: 220px;
+    }
+}
+
 .course-pay-block {
     --course-pay-ease: cubic-bezier(0.4, 0, 0.2, 1);
     --course-pay-transition-fast: 120ms var(--course-pay-ease);

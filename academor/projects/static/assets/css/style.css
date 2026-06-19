@@ -134,6 +134,14 @@ h1.animated, h2.animated, h3.animated,
 
 /*** Spinner — dairəvi banner + fırlanan accent halqa ***/
 #spinner.site-page-loader {
+    /* Bootstrap utilities may load after first paint — keep overlay full-screen without them */
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
     opacity: 1;
     visibility: visible;
     transition: opacity 0.45s ease-out, visibility 0s linear 0.45s;
@@ -4616,6 +4624,38 @@ h1.animated, h2.animated, h3.animated,
 
 .course-detail-prose p:last-child {
     margin-bottom: 0;
+}
+
+.course-detail-prose-wrap.is-scrollable .course-detail-prose-wrap__inner {
+    max-height: 22rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    padding-right: 0.35rem;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 84, 20, 0.55) transparent;
+}
+
+.course-detail-prose-wrap.is-scrollable .course-detail-prose-wrap__inner::-webkit-scrollbar {
+    width: 8px;
+}
+
+.course-detail-prose-wrap.is-scrollable .course-detail-prose-wrap__inner::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.course-detail-prose-wrap.is-scrollable .course-detail-prose-wrap__inner::-webkit-scrollbar-thumb {
+    background: rgba(255, 84, 20, 0.42);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+.course-detail-prose-wrap.is-scrollable .course-detail-prose-wrap__inner::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 84, 20, 0.68);
+    border: 2px solid transparent;
+    background-clip: padding-box;
 }
 
 .course-detail-aside {

@@ -1,5 +1,6 @@
 {% load static %}
 <script defer src="{% static 'assets/js/course-detail-gallery.js' %}"></script>
+<script defer src="{% static 'assets/js/course-detail-prose.js' %}"></script>
 {% if course.has_payment and payment_form %}
 {% include "includes/payment_ui_scripts.html" %}
 {% endif %}

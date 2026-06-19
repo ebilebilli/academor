@@ -1,0 +1,16 @@
+{% load i18n %}
+<div
+    id="course-pay-sticky-cta"
+    class="course-pay-sticky-cta is-visible"
+    role="region"
+    aria-label="{% trans 'Quick access to packages' %}"
+>
+    <button
+        type="button"
+        class="btn btn-primary rounded-pill fw-semibold course-pay-sticky-cta__btn"
+        data-course-pay-jump
+    >
+        {% trans "View packages" %}
+        <i class="fas fa-arrow-down ms-2 small" aria-hidden="true"></i>
+    </button>
+</div>

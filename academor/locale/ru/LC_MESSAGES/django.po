@@ -1572,3 +1572,55 @@ msgstr "Полный пакет — Группа"
 #: projects/models/service_models.py
 msgid "Full package — Individual"
 msgstr "Полный пакет — Индивидуальный"
+
+#: templates
+msgid "About Academor video"
+msgstr "Видео об Academor"
+
+msgid "Academor"
+msgstr "Academor"
+
+msgid "Article topics"
+msgstr "Темы статей"
+
+msgid "Back to home"
+msgstr "На главную"
+
+msgid "Deadline"
+msgstr "Срок"
+
+msgid "Deadline: %(date)s"
+msgstr "Срок: %(date)s"
+
+msgid "More information coming soon."
+msgstr "Скоро будет больше информации."
+
+msgid "No teachers yet."
+msgstr "Преподавателей пока нет."
+
+msgid "Page not found"
+msgstr "Страница не найдена"
+
+msgid "Play video"
+msgstr "Воспроизвести видео"
+
+msgid "Show universities"
+msgstr "Показать университеты"
+
+msgid "The link may be broken or the page may have been removed."
+msgstr "Ссылка может быть недействительной, или страница была удалена."
+
+msgid "Toggle navigation"
+msgstr "Открыть меню"
+
+msgid "Visit website"
+msgstr "Перейти на сайт"
+
+msgid "Quick access to packages"
+msgstr "Быстрый переход к пакетам"
+
+msgid "Packages from %(price)s AZN"
+msgstr "Пакеты от %(price)s AZN"
+
+msgid "View packages"
+msgstr "Смотреть пакеты"
