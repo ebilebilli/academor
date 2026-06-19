@@ -1520,3 +1520,55 @@ msgstr "Слоган баннера"
 #: projects/models/motto_models.py:44
 msgid "Taglines"
 msgstr "Слоганы баннеров"
+
+#: projects/models/service_models.py:161
+msgid "Group lessons — Standard"
+msgstr "Групповые занятия — Стандарт"
+
+#: projects/models/service_models.py:165
+msgid "Group lessons — Intensive"
+msgstr "Групповые занятия — Интенсив"
+
+#: projects/models/service_models.py:169
+msgid "Individual lessons — Standard"
+msgstr "Индивидуальные занятия — Стандарт"
+
+#: projects/models/service_models.py:173
+msgid "Individual lessons — Intensive"
+msgstr "Индивидуальные занятия — Интенсив"
+
+#: projects/models/service_models.py:177
+msgid "Full packages"
+msgstr "Полные пакеты"
+
+#: projects/models/service_models.py:181
+msgid "Full package — Installments"
+msgstr "Полный пакет — Рассрочка"
+
+#: projects/models/service_models.py:228
+msgid "Payment tab"
+msgstr "Вкладка оплаты"
+
+#: projects/models/service_models.py:230
+msgid "Which tab on the course payment section shows this package."
+msgstr "На какой вкладке раздела оплаты курса показывать этот пакет."
+
+#: templates/includes/course_detail_payment_box.html:18
+msgid "Package categories"
+msgstr "Категории пакетов"
+
+#: templates/includes/course_detail_payment_box.html:51
+msgid "Loading packages…"
+msgstr "Загрузка пакетов…"
+
+#: templates/includes/course_detail_payment_box.html:55
+msgid "No packages in this category yet."
+msgstr "В этой категории пока нет пакетов."
+
+#: projects/models/service_models.py
+msgid "Full package — Group"
+msgstr "Полный пакет — Группа"
+
+#: projects/models/service_models.py
+msgid "Full package — Individual"
+msgstr "Полный пакет — Индивидуальный"

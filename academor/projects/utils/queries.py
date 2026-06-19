@@ -1146,6 +1146,7 @@ def serialize_price_package(package, lang='az', sale_percent=None):
         'discount_percent': sale_percent if has_discount else None,
         'has_discount': has_discount,
         'is_premium': bool(package.is_premium),
+        'package_tab': package.package_tab,
     }
 
 

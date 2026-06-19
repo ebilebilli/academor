@@ -1,0 +1,6 @@
+{% load payment_contract %}
+{% for pkg in packages %}
+<div data-contract-package-id="{{ pkg.id }}">
+    {% course_payment_contract course package=pkg %}
+</div>
+{% endfor %}

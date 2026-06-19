@@ -155,6 +155,36 @@ class Service(SluggedModel):
 class CoursePricePackage(models.Model):
     """Payable pricing option for a course (one course may have several packages)."""
 
+    class PackageTab(models.TextChoices):
+        GROUP_STANDARD = (
+            'group_standard',
+            _('Group lessons — Standard'),
+        )
+        GROUP_INTENSIVE = (
+            'group_intensive',
+            _('Group lessons — Intensive'),
+        )
+        INDIVIDUAL_STANDARD = (
+            'individual_standard',
+            _('Individual lessons — Standard'),
+        )
+        INDIVIDUAL_INTENSIVE = (
+            'individual_intensive',
+            _('Individual lessons — Intensive'),
+        )
+        FULL_PACKAGE_GROUP = (
+            'full_package_group',
+            _('Full package — Group'),
+        )
+        FULL_PACKAGE_INDIVIDUAL = (
+            'full_package_individual',
+            _('Full package — Individual'),
+        )
+        FULL_PACKAGE_INSTALLMENT = (
+            'full_package_installment',
+            _('Full package — Installments'),
+        )
+
     course = models.ForeignKey(
         Service,
         on_delete=models.CASCADE,
@@ -193,6 +223,16 @@ class CoursePricePackage(models.Model):
         max_digits=12,
         decimal_places=2,
         verbose_name=_('Price (AZN)'),
+    )
+    package_tab = models.CharField(
+        max_length=32,
+        choices=PackageTab.choices,
+        default=PackageTab.GROUP_STANDARD,
+        db_index=True,
+        verbose_name=_('Payment tab'),
+        help_text=_(
+            'Which tab on the course payment section shows this package.'
+        ),
     )
     order = models.PositiveIntegerField(default=0, verbose_name=_('Order'))
     is_active = models.BooleanField(default=True, verbose_name=_('Active'))

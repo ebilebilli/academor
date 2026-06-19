@@ -1,0 +1,86 @@
+{% load i18n %}
+{% for pkg in packages %}
+<li
+    class="course-pay-packages__item"
+    data-package-item
+    data-package-index="{{ forloop.counter0 }}"
+    role="option"
+    aria-selected="{% if forloop.counter0 == default_package_index|default:0 %}true{% else %}false{% endif %}"
+>
+    <article
+        class="course-pay-card{% if forloop.counter0 == default_package_index|default:0 %} is-active{% endif %}{% if pkg.is_premium %} course-pay-card--premium{% endif %}"
+        data-package-card
+        tabindex="0"
+    >
+        <input
+            type="radio"
+            name="price_package_choice"
+            class="visually-hidden course-pay-card__radio"
+            value="{{ pkg.id }}"
+            data-package-id="{{ pkg.id }}"
+            data-price="{{ pkg.price_display }}"
+            data-name="{{ pkg.name }}"
+            {% if forloop.counter0 == default_package_index|default:0 %}checked{% endif %}
+        >
+        <div class="course-pay-card__header">
+            <h3 class="course-pay-card__name h6 mb-0">{{ pkg.name }}</h3>
+            <div class="course-pay-card__badges">
+                {% if pkg.is_premium %}
+                <span class="course-pay-card__premium-tag">{% trans "Premium" %}</span>
+                {% endif %}
+                {% if pkg.has_discount %}
+                <span class="course-pay-card__badge badge rounded-pill">-{{ pkg.discount_percent }}%</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <p class="course-pay-card__price mb-0">
+            <span class="course-pay-card__original"{% if not pkg.has_discount %} aria-hidden="true"{% endif %}>
+                {% if pkg.has_discount %}
+                <span class="course-pay-card__original-amount">{{ pkg.original_price_display }}</span>
+                <span class="course-pay-card__original-currency">AZN</span>
+                {% endif %}
+            </span>
+            <span class="course-pay-card__amount">{{ pkg.price_display }}</span>
+            <span class="course-pay-card__currency">AZN</span>
+        </p>
+
+        <ul class="course-pay-card__features list-unstyled mb-0">
+            {% if pkg.months_display %}
+            <li>
+                <i class="fas fa-check-circle" aria-hidden="true"></i>
+                <span>
+                    <span class="course-pay-card__feature-label">{% trans "Months" %}:</span>
+                    {{ pkg.months_display }}
+                </span>
+            </li>
+            {% endif %}
+            {% if pkg.lesson_count %}
+            <li>
+                <i class="fas fa-check-circle" aria-hidden="true"></i>
+                <span>
+                    <span class="course-pay-card__feature-label">{% trans "Number of lessons" %}:</span>
+                    {{ pkg.lesson_count }}
+                </span>
+            </li>
+            {% endif %}
+            {% if pkg.lesson_minutes_display %}
+            <li>
+                <i class="fas fa-check-circle" aria-hidden="true"></i>
+                <span>{{ pkg.lesson_minutes_display }}</span>
+            </li>
+            {% endif %}
+        </ul>
+
+        <div class="course-pay-card__cta-slot">
+            <button
+                type="button"
+                class="btn btn-primary rounded-pill fw-semibold w-100 course-pay-card__cta"
+                data-pay-open
+            >
+                {% trans "Buy now" %}
+            </button>
+        </div>
+    </article>
+</li>
+{% endfor %}

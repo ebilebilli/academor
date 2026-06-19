@@ -319,24 +319,40 @@ class MediaInlineSale(MediaInlineBase):
         return super().get_formset(request, obj, **kwargs)
 
 
-class CoursePricePackageInline(admin.TabularInline):
+class CoursePricePackageInline(admin.StackedInline):
     model = CoursePricePackage
     extra = 0
-    classes = ('collapse',)
-    fields = (
-        'name_az',
-        'name_en',
-        'name_ru',
-        'months',
-        'lesson_count',
-        'lesson_minutes',
-        'price',
-        'order',
-        'is_active',
-        'is_premium',
-        'show_on_homepage',
+    classes = ('wide', 'course-price-package-inline')
+    fieldsets = (
+        (None, {
+            'fields': (
+                'package_tab',
+                'name_az',
+                'name_en',
+                'name_ru',
+            ),
+            'description': (
+                'Pick the payment tab where this package appears on the course page.'
+            ),
+        }),
+        ('Package details', {
+            'fields': (
+                'months',
+                'lesson_count',
+                'lesson_minutes',
+                'price',
+            ),
+        }),
+        ('Display & status', {
+            'fields': (
+                'order',
+                'is_active',
+                'is_premium',
+                'show_on_homepage',
+            ),
+        }),
     )
-    ordering = ('order', 'id')
+    ordering = ('package_tab', 'order', 'id')
 
 
 @admin.register(CoursePricePackage)
@@ -344,6 +360,7 @@ class CoursePricePackageAdmin(AcademorModelAdmin):
     list_display = (
         'id',
         'course',
+        'package_tab_badge',
         'name_az',
         'months',
         'lesson_count',
@@ -354,15 +371,25 @@ class CoursePricePackageAdmin(AcademorModelAdmin):
         'is_premium',
         'show_on_homepage',
     )
-    list_filter = ('is_active', 'is_premium', 'show_on_homepage', 'course')
+    list_filter = ('package_tab', 'is_active', 'is_premium', 'show_on_homepage', 'course')
     search_fields = ('name_az', 'name_en', 'name_ru', 'course__name_az', 'course__slug')
     list_editable = ('order', 'is_active', 'show_on_homepage')
-    ordering = ('course', 'order', 'id')
+    ordering = ('course', 'package_tab', 'order', 'id')
     autocomplete_fields = ('course',)
     fieldsets = (
         (None, {
-            'fields': ('course', 'order', 'is_active', 'is_premium', 'show_on_homepage'),
-            'description': 'Each package is one pricing option on the course page and in the payment popup.',
+            'fields': (
+                'course',
+                'package_tab',
+                'order',
+                'is_active',
+                'is_premium',
+                'show_on_homepage',
+            ),
+            'description': (
+                'Each package is one pricing option on the course page payment tabs '
+                'and in the payment popup.'
+            ),
         }),
         ('Names', {
             'fields': ('name_az', 'name_en', 'name_ru'),
@@ -371,6 +398,27 @@ class CoursePricePackageAdmin(AcademorModelAdmin):
             'fields': ('months', 'lesson_count', 'lesson_minutes', 'price'),
         }),
     )
+
+    def package_tab_badge(self, obj):
+        colors = {
+            CoursePricePackage.PackageTab.GROUP_STANDARD: '#417690',
+            CoursePricePackage.PackageTab.GROUP_INTENSIVE: '#205067',
+            CoursePricePackage.PackageTab.INDIVIDUAL_STANDARD: '#6a8caf',
+            CoursePricePackage.PackageTab.INDIVIDUAL_INTENSIVE: '#4a6f8f',
+            CoursePricePackage.PackageTab.FULL_PACKAGE_GROUP: '#0d9488',
+            CoursePricePackage.PackageTab.FULL_PACKAGE_INDIVIDUAL: '#0891b2',
+            CoursePricePackage.PackageTab.FULL_PACKAGE_INSTALLMENT: '#7c3aed',
+        }
+        color = colors.get(obj.package_tab, '#6c757d')
+        label = obj.get_package_tab_display()
+        return format_html(
+            '<span class="admin-price-tab-badge" style="background:{};">{}</span>',
+            color,
+            label,
+        )
+
+    package_tab_badge.short_description = 'Payment tab'
+    package_tab_badge.admin_order_field = 'package_tab'
 
     def changelist_view(self, request, extra_context=None):
         """
@@ -445,7 +493,8 @@ class ServiceAdmin(AdminImageCompressMixin, AcademorModelAdmin):
         ('Course details', {
             'fields': ('instructors', 'tags', 'has_certificate', 'is_online', 'is_offline'),
             'description': (
-                'Add one or more price packages below. '
+                'Add price packages in the section below. Choose a payment tab for each '
+                '(group/individual, standard/intensive, full package, installments). '
                 'Legacy "Price (AZN)" on the model is deprecated; use packages instead.'
             ),
         }),

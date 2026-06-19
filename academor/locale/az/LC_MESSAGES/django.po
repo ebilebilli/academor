@@ -1541,3 +1541,55 @@ msgstr "Banner tagline-ı"
 #: projects/models/motto_models.py:44
 msgid "Taglines"
 msgstr "Banner tagline-ları"
+
+#: projects/models/service_models.py:161
+msgid "Group lessons — Standard"
+msgstr "Qrup dərsləri — Standart"
+
+#: projects/models/service_models.py:165
+msgid "Group lessons — Intensive"
+msgstr "Qrup dərsləri — İntensiv"
+
+#: projects/models/service_models.py:169
+msgid "Individual lessons — Standard"
+msgstr "Fərdi dərslər — Standart"
+
+#: projects/models/service_models.py:173
+msgid "Individual lessons — Intensive"
+msgstr "Fərdi dərslər — İntensiv"
+
+#: projects/models/service_models.py:177
+msgid "Full packages"
+msgstr "Full paketlər"
+
+#: projects/models/service_models.py:181
+msgid "Full package — Installments"
+msgstr "Full paket — Hissəli ödənişlər"
+
+#: projects/models/service_models.py:228
+msgid "Payment tab"
+msgstr "Ödəniş tabı"
+
+#: projects/models/service_models.py:230
+msgid "Which tab on the course payment section shows this package."
+msgstr "Bu paketin kurs ödəniş bölməsində hansı tabda göstəriləcəyini seçin."
+
+#: templates/includes/course_detail_payment_box.html:18
+msgid "Package categories"
+msgstr "Paket kateqoriyaları"
+
+#: templates/includes/course_detail_payment_box.html:51
+msgid "Loading packages…"
+msgstr "Paketlər yüklənir…"
+
+#: templates/includes/course_detail_payment_box.html:55
+msgid "No packages in this category yet."
+msgstr "Bu kateqoriyada hələ paket yoxdur."
+
+#: projects/models/service_models.py
+msgid "Full package — Group"
+msgstr "Full paket — Qrup"
+
+#: projects/models/service_models.py
+msgid "Full package — Individual"
+msgstr "Full paket — Fərdi"

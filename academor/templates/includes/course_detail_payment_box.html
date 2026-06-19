@@ -9,98 +9,68 @@
         </h2>
     </header>
 
+    {% if payment_tab_panels %}
+    <div class="course-pay-tabs-wrap mb-4">
+        <div
+            class="course-pay-tabs"
+            id="coursePayTabs"
+            role="tablist"
+            aria-label="{% trans 'Package categories' %}"
+            data-course-pay-tabs
+        >
+            <span class="course-pay-tabs__indicator" data-course-pay-indicator aria-hidden="true"></span>
+            {% for panel in payment_tab_panels %}
+            <button
+                type="button"
+                class="course-pay-tab{% if panel.is_active %} is-active{% endif %}"
+                id="course-pay-tab-{{ panel.key }}"
+                data-payment-tab="{{ panel.key }}"
+                role="tab"
+                aria-controls="course-pay-panel-{{ panel.key }}"
+                aria-selected="{% if panel.is_active %}true{% else %}false{% endif %}"
+            >
+                <i class="{{ panel.icon }} course-pay-tab__icon" aria-hidden="true"></i>
+                <span class="course-pay-tab__label">{{ panel.label }}</span>
+                <span class="course-pay-tab__count">{{ panel.count }}</span>
+            </button>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
     <div id="course-pay-alert" class="alert py-2 small mb-3 d-none" role="alert" aria-live="polite"></div>
 
-    <ul
-        class="course-pay-packages list-unstyled mb-0{% if payment_form.price_package_id.errors %} is-invalid{% endif %}"
-        data-course-pay-packages
-        role="listbox"
-        aria-label="{% trans 'Price packages' %}"
+    <div
+        class="course-pay-packages-panel"
+        id="course-pay-panel"
+        data-course-pay-panel
     >
-        {% for pkg in course.price_packages %}
-        <li
-            class="course-pay-packages__item"
-            data-package-item
-            data-package-index="{{ forloop.counter0 }}"
-            role="option"
-            aria-selected="{% if forloop.counter0 == default_package_index|default:0 %}true{% else %}false{% endif %}"
-        >
-            <article
-                class="course-pay-card{% if forloop.counter0 == default_package_index|default:0 %} is-active{% endif %}{% if pkg.is_premium %} course-pay-card--premium{% endif %}"
-                data-package-card
-                tabindex="0"
+        <div class="course-pay-tab-panels" data-course-pay-tab-panels>
+            {% for panel in payment_tab_panels %}
+            <div
+                class="course-pay-tab-panel{% if panel.is_active %} is-active{% endif %}"
+                id="course-pay-panel-{{ panel.key }}"
+                data-tab-panel="{{ panel.key }}"
+                data-default-index="{{ panel.default_index|default:0 }}"
+                role="tabpanel"
+                aria-labelledby="course-pay-tab-{{ panel.key }}"
             >
-                <input
-                    type="radio"
-                    name="price_package_choice"
-                    class="visually-hidden course-pay-card__radio"
-                    value="{{ pkg.id }}"
-                    data-package-id="{{ pkg.id }}"
-                    data-price="{{ pkg.price_display }}"
-                    data-name="{{ pkg.name }}"
-                    {% if forloop.counter0 == default_package_index|default:0 %}checked{% endif %}
+                {% if panel.packages %}
+                <ul
+                    class="course-pay-packages list-unstyled mb-0{% if payment_form.price_package_id.errors and panel.is_active %} is-invalid{% endif %}"
+                    data-course-pay-packages
+                    role="listbox"
+                    aria-label="{% trans 'Price packages' %}"
                 >
-                <div class="course-pay-card__header">
-                    <h3 class="course-pay-card__name h6 mb-0">{{ pkg.name }}</h3>
-                    <div class="course-pay-card__badges">
-                        {% if pkg.is_premium %}
-                        <span class="course-pay-card__premium-tag">{% trans "Premium" %}</span>
-                        {% endif %}
-                        {% if pkg.has_discount %}
-                        <span class="course-pay-card__badge badge rounded-pill">-{{ pkg.discount_percent }}%</span>
-                        {% endif %}
-                    </div>
-                </div>
-
-                <p class="course-pay-card__price mb-0">
-                    <span class="course-pay-card__original"{% if not pkg.has_discount %} aria-hidden="true"{% endif %}>
-                        {% if pkg.has_discount %}
-                        <span class="course-pay-card__original-amount">{{ pkg.original_price_display }}</span>
-                        <span class="course-pay-card__original-currency">AZN</span>
-                        {% endif %}
-                    </span>
-                    <span class="course-pay-card__amount">{{ pkg.price_display }}</span>
-                    <span class="course-pay-card__currency">AZN</span>
-                </p>
-
-                <ul class="course-pay-card__features list-unstyled mb-0">
-                    {% if pkg.months_display %}
-                    <li>
-                        <i class="fas fa-check-circle" aria-hidden="true"></i>
-                        <span>
-                            <span class="course-pay-card__feature-label">{% trans "Months" %}:</span>
-                            {{ pkg.months_display }}
-                        </span>
-                    </li>
-                    {% endif %}
-                    {% if pkg.lesson_count %}
-                    <li>
-                        <i class="fas fa-check-circle" aria-hidden="true"></i>
-                        <span>
-                            <span class="course-pay-card__feature-label">{% trans "Number of lessons" %}:</span>
-                            {{ pkg.lesson_count }}
-                        </span>
-                    </li>
-                    {% endif %}
-                    {% if pkg.lesson_minutes_display %}
-                    <li>
-                        <i class="fas fa-check-circle" aria-hidden="true"></i>
-                        <span>{{ pkg.lesson_minutes_display }}</span>
-                    </li>
-                    {% endif %}
+                    {% include "includes/course_detail_payment_packages_list.html" with packages=panel.packages default_package_index=panel.default_index %}
                 </ul>
-
-                <div class="course-pay-card__cta-slot">
-                    <button
-                        type="button"
-                        class="btn btn-primary rounded-pill fw-semibold w-100 course-pay-card__cta"
-                        data-pay-open
-                    >
-                        {% trans "Buy now" %}
-                    </button>
-                </div>
-            </article>
-        </li>
-        {% endfor %}
-    </ul>
+                {% else %}
+                <p class="course-pay-packages-empty text-center text-muted mb-0">
+                    {% trans "No packages in this category yet." %}
+                </p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>

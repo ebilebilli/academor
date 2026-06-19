@@ -156,15 +156,17 @@ ADMIN_HELP = {
   'CoursePricePackage': {
     'title': 'Course price packages',
     'summary': (
-      'Pricing tiers for a course: name, months, lesson count, lesson length, and price.'
+      'Pricing tiers for a course: tab category, name, months, lesson count, '
+      'lesson length, and price.'
     ),
     'where': (
-      'Course detail page pricing table, the payment popup, and the homepage '
+      'Course detail page payment tabs, the payment popup, and the homepage '
       '"Most in demand" price carousel (when "Show on homepage" is on).'
     ),
     'tips': [
+      'Payment tab: group/individual, standard/intensive, full package (group/individual), or installments.',
       'Link each package to the correct course.',
-      'Lower "Order" = appears first on the course page and in the homepage carousel.',
+      'Lower "Order" = appears first within the same tab on the course page.',
       '"Premium" marks a highlighted/recommended package in the UI.',
       '"Show on homepage" adds the package to the homepage price carousel (any course).',
       'Turn off "Active" to hide a package without deleting it.',

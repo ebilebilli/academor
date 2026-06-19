@@ -111,19 +111,13 @@
                                 role="document"
                                 aria-labelledby="course-pay-contract-toggle"
                             >
-                                {% for pkg in course.price_packages %}
-                                {% if forloop.counter0 == default_package_index|default:0 %}
-                                {% course_payment_contract course package=pkg %}
+                                {% if default_payment_package %}
+                                {% course_payment_contract course package=default_payment_package %}
                                 {% endif %}
-                                {% endfor %}
                             </div>
                         </div>
                         <div id="course-pay-contract-templates" class="d-none" aria-hidden="true">
-                            {% for pkg in course.price_packages %}
-                            <div data-contract-package-id="{{ pkg.id }}">
-                                {% course_payment_contract course package=pkg %}
-                            </div>
-                            {% endfor %}
+                            {% include "includes/course_detail_payment_contracts_partial.html" with packages=course.all_price_packages %}
                         </div>
                         <div class="form-check mt-2 course-pay-modal__field{% if payment_form.accept_contract.errors %} is-invalid{% endif %}">
                             {{ payment_form.accept_contract }}

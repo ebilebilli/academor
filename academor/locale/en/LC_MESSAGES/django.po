@@ -1518,3 +1518,55 @@ msgstr "Tagline"
 #: projects/models/motto_models.py:44
 msgid "Taglines"
 msgstr "Taglines"
+
+#: projects/models/service_models.py:161
+msgid "Group lessons — Standard"
+msgstr "Group lessons — Standard"
+
+#: projects/models/service_models.py:165
+msgid "Group lessons — Intensive"
+msgstr "Group lessons — Intensive"
+
+#: projects/models/service_models.py:169
+msgid "Individual lessons — Standard"
+msgstr "Individual lessons — Standard"
+
+#: projects/models/service_models.py:173
+msgid "Individual lessons — Intensive"
+msgstr "Individual lessons — Intensive"
+
+#: projects/models/service_models.py:177
+msgid "Full packages"
+msgstr "Full packages"
+
+#: projects/models/service_models.py:181
+msgid "Full package — Installments"
+msgstr "Full package — Installments"
+
+#: projects/models/service_models.py:228
+msgid "Payment tab"
+msgstr "Payment tab"
+
+#: projects/models/service_models.py:230
+msgid "Which tab on the course payment section shows this package."
+msgstr "Which tab on the course payment section shows this package."
+
+#: templates/includes/course_detail_payment_box.html:18
+msgid "Package categories"
+msgstr "Package categories"
+
+#: templates/includes/course_detail_payment_box.html:51
+msgid "Loading packages…"
+msgstr "Loading packages…"
+
+#: templates/includes/course_detail_payment_box.html:55
+msgid "No packages in this category yet."
+msgstr "No packages in this category yet."
+
+#: projects/models/service_models.py
+msgid "Full package — Group"
+msgstr "Full package — Group"
+
+#: projects/models/service_models.py
+msgid "Full package — Individual"
+msgstr "Full package — Individual"

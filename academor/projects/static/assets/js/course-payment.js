@@ -5,7 +5,11 @@
             return;
         }
 
-        var packagesEl = root.querySelector('[data-course-pay-packages]');
+        var tabsEl = root.querySelector('[data-course-pay-tabs]');
+        var tabIndicatorEl = tabsEl
+            ? tabsEl.querySelector('[data-course-pay-indicator]')
+            : null;
+        var tabPanelsEl = root.querySelector('[data-course-pay-tab-panels]');
         var payModalEl = document.getElementById('coursePayModal');
         var form = document.getElementById('course-pay-form');
         var sectionAlertEl = document.getElementById('course-pay-alert');
@@ -16,7 +20,6 @@
         var contractNumberHidden = document.getElementById('id_contract_number');
         var contractBodyEl = document.getElementById('course-pay-contract-body');
         var contractPanelEl = document.getElementById('course-pay-contract-panel');
-        var contractToggleEl = document.getElementById('course-pay-contract-toggle');
         var contractTemplatesEl = document.getElementById(
             'course-pay-contract-templates'
         );
@@ -27,6 +30,14 @@
             submitBtn && submitBtn.querySelector('.course-pay-modal__submit-label');
         var defaultSubmitText = submitLabel ? submitLabel.textContent : '';
         var payModalInstance = null;
+
+        var activeTab = root.getAttribute('data-default-tab') || '';
+        var activePanel = null;
+        var packagesEl = null;
+        var items = [];
+        var n = 0;
+        var logicalIndex = 0;
+        var defaultIndex = 0;
 
         if (payModalEl && payModalEl.parentElement !== document.body) {
             document.body.appendChild(payModalEl);
@@ -42,26 +53,35 @@
             return payModalInstance;
         }
 
-        var defaultIndex = parseInt(
-            root.getAttribute('data-default-index') ||
-                (root.querySelector('[data-default-index]') &&
-                    root.querySelector('[data-default-index]').getAttribute(
-                        'data-default-index'
-                    )) ||
-                '0',
-            10
-        );
-        if (isNaN(defaultIndex) || defaultIndex < 0) {
-            defaultIndex = 0;
+        function getActivePanel() {
+            if (!tabPanelsEl) {
+                return null;
+            }
+            return tabPanelsEl.querySelector('[data-tab-panel].is-active');
         }
 
-        var items = packagesEl
-            ? Array.prototype.slice.call(
-                  packagesEl.querySelectorAll('[data-package-item]')
-              )
-            : [];
-        var n = items.length;
-        var logicalIndex = 0;
+        function refreshActivePanelState() {
+            activePanel = getActivePanel();
+            packagesEl = activePanel
+                ? activePanel.querySelector('[data-course-pay-packages]')
+                : null;
+            defaultIndex = parseInt(
+                (activePanel &&
+                    activePanel.getAttribute('data-default-index')) ||
+                    root.getAttribute('data-default-index') ||
+                    '0',
+                10
+            );
+            if (isNaN(defaultIndex) || defaultIndex < 0) {
+                defaultIndex = 0;
+            }
+            items = packagesEl
+                ? Array.prototype.slice.call(
+                      packagesEl.querySelectorAll('[data-package-item]')
+                  )
+                : [];
+            n = items.length;
+        }
 
         function showAlert(kind, text, target) {
             var el = target === 'section' ? sectionAlertEl : modalAlertEl;
@@ -98,14 +118,16 @@
                 return;
             }
             form.querySelectorAll('.js-field-error').forEach(function (node) {
-                node.remove();
+                if (!node.hasAttribute('data-server-error')) {
+                    node.remove();
+                }
             });
             form.querySelectorAll('.course-pay-modal__field').forEach(function (wrap) {
                 wrap.classList.remove('is-invalid');
             });
-            if (packagesEl) {
-                packagesEl.classList.remove('is-invalid');
-            }
+            root.querySelectorAll('[data-course-pay-packages]').forEach(function (el) {
+                el.classList.remove('is-invalid');
+            });
         }
 
         function setFieldError(fieldName, message) {
@@ -257,6 +279,9 @@
         function syncSelectedPackage() {
             var radio = getRadio(logicalIndex);
             if (!radio) {
+                if (packageHidden) {
+                    packageHidden.value = '';
+                }
                 return null;
             }
             if (packageHidden) {
@@ -319,10 +344,82 @@
             }
         }
 
-        function initPackages() {
-            if (!n) {
+        function updateTabIndicator() {
+            if (!tabsEl || !tabIndicatorEl) {
                 return;
             }
+            var activeBtn = tabsEl.querySelector('[data-payment-tab].is-active');
+            if (!activeBtn) {
+                tabIndicatorEl.classList.add('is-hidden');
+                return;
+            }
+            tabIndicatorEl.classList.remove('is-hidden');
+            tabIndicatorEl.style.width = activeBtn.offsetWidth + 'px';
+            tabIndicatorEl.style.height = activeBtn.offsetHeight + 'px';
+            tabIndicatorEl.style.transform =
+                'translate3d(' +
+                activeBtn.offsetLeft +
+                'px,' +
+                activeBtn.offsetTop +
+                'px,0)';
+        }
+
+        function scrollActiveTabIntoView() {
+            if (!tabsEl) {
+                return;
+            }
+            var activeBtn = tabsEl.querySelector('[data-payment-tab].is-active');
+            if (
+                !activeBtn ||
+                !window.matchMedia('(max-width: 575.98px)').matches
+            ) {
+                return;
+            }
+            activeBtn.scrollIntoView({
+                behavior: 'auto',
+                block: 'nearest',
+                inline: 'center',
+            });
+        }
+
+        function setActiveTabButton(tabKey) {
+            if (!tabsEl) {
+                return;
+            }
+            tabsEl.querySelectorAll('[data-payment-tab]').forEach(function (btn) {
+                var isActive = btn.getAttribute('data-payment-tab') === tabKey;
+                btn.classList.toggle('is-active', isActive);
+                btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            });
+            window.requestAnimationFrame(function () {
+                updateTabIndicator();
+            });
+            scrollActiveTabIntoView();
+        }
+
+        function switchPaymentTab(tabKey) {
+            if (!tabKey || tabKey === activeTab || !tabPanelsEl) {
+                return;
+            }
+
+            hideAllAlerts();
+            closePayModal();
+
+            tabPanelsEl.querySelectorAll('[data-tab-panel]').forEach(function (panel) {
+                var isActive = panel.getAttribute('data-tab-panel') === tabKey;
+                panel.classList.toggle('is-active', isActive);
+            });
+
+            activeTab = tabKey;
+            setActiveTabButton(tabKey);
+            refreshActivePanelState();
+
+            if (!n) {
+                logicalIndex = 0;
+                syncSelectedPackage();
+                return;
+            }
+
             if (defaultIndex >= n) {
                 defaultIndex = 0;
             }
@@ -330,14 +427,21 @@
             updateVisualStates();
             syncSelectedPackage();
             syncContractBody();
+        }
 
-            items.forEach(function (item) {
+        function bindPackageInteractions() {
+            root.querySelectorAll('[data-package-item]').forEach(function (item) {
                 var card = item.querySelector('[data-package-card]');
-                if (!card) {
+                if (!card || card.getAttribute('data-bound') === '1') {
                     return;
                 }
+                card.setAttribute('data-bound', '1');
+
                 card.addEventListener('click', function (e) {
                     if (e.target.closest('[data-pay-open]')) {
+                        return;
+                    }
+                    if (!item.closest('[data-tab-panel].is-active')) {
                         return;
                     }
                     var index = parseInt(
@@ -345,10 +449,15 @@
                         10
                     );
                     if (!isNaN(index)) {
+                        refreshActivePanelState();
                         selectPackage(index);
                     }
                 });
+
                 card.addEventListener('keydown', function (e) {
+                    if (!item.closest('[data-tab-panel].is-active')) {
+                        return;
+                    }
                     var idx = parseInt(
                         item.getAttribute('data-package-index'),
                         10
@@ -358,11 +467,13 @@
                     }
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
+                        refreshActivePanelState();
                         selectPackage(idx);
                         return;
                     }
                     if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
                         e.preventDefault();
+                        refreshActivePanelState();
                         var next = Math.min(logicalIndex + 1, n - 1);
                         if (next !== logicalIndex) {
                             selectPackage(next);
@@ -377,6 +488,7 @@
                     }
                     if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
                         e.preventDefault();
+                        refreshActivePanelState();
                         var prev = Math.max(logicalIndex - 1, 0);
                         if (prev !== logicalIndex) {
                             selectPackage(prev);
@@ -392,6 +504,32 @@
             });
         }
 
+        function initPackages() {
+            refreshActivePanelState();
+            if (!n) {
+                logicalIndex = 0;
+                syncSelectedPackage();
+                return;
+            }
+            if (defaultIndex >= n) {
+                defaultIndex = 0;
+            }
+            logicalIndex = defaultIndex;
+            updateVisualStates();
+            syncSelectedPackage();
+            syncContractBody();
+        }
+
+        if (tabsEl) {
+            tabsEl.addEventListener('click', function (e) {
+                var btn = e.target.closest('[data-payment-tab]');
+                if (!btn) {
+                    return;
+                }
+                switchPaymentTab(btn.getAttribute('data-payment-tab'));
+            });
+        }
+
         root.addEventListener('click', function (e) {
             var btn = e.target.closest('[data-pay-open]');
             if (!btn) {
@@ -401,6 +539,7 @@
             e.stopPropagation();
             var item = btn.closest('[data-package-item]');
             if (item) {
+                refreshActivePanelState();
                 var index = parseInt(
                     item.getAttribute('data-package-index'),
                     10
@@ -429,7 +568,11 @@
             });
         }
 
+        bindPackageInteractions();
         initPackages();
+        updateTabIndicator();
+
+        window.addEventListener('resize', updateTabIndicator);
 
         if (
             payModalEl &&
@@ -443,6 +586,7 @@
                 setLoading(false);
                 hideAllAlerts();
                 clearFieldErrors();
+                refreshActivePanelState();
                 selectPackage(logicalIndex, { keepModal: true });
             }
         });
@@ -471,6 +615,7 @@
             e.preventDefault();
             hideAllAlerts();
             clearFieldErrors();
+            refreshActivePanelState();
 
             if (!syncSelectedPackage()) {
                 showAlert(

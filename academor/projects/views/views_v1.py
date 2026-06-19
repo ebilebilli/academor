@@ -38,6 +38,9 @@ from projects.utils.queries import (
     apply_university_study_abroad_localized_name,
     get_serialized_site_faq_entries,
 )
+from projects.utils.price_package_tabs import (
+    build_payment_tab_panels,
+)
 
 
 class HomePageView(View):
@@ -132,12 +135,14 @@ class CourseDetailPageView(View):
             raise Http404(_("Category not found"))
         course = serialize_project_category_detail(category, lang)
         payment_form = None
+        payment_tab_panels = []
+        default_payment_tab = None
+        all_packages = course.get('price_packages') or []
+
         if course.get('has_payment'):
-            from payments.catalog import default_price_package_index
             from payments.forms import CoursePaymentForm
 
             session_data = request.session.pop('course_payment_form_data', None)
-            packages = course.get('price_packages') or []
             preferred_package_id = None
             if session_data is not None:
                 data = dict(session_data)
@@ -154,10 +159,25 @@ class CourseDetailPageView(View):
                 if package_param:
                     preferred_package_id = package_param
 
-            default_package_index = default_price_package_index(
-                packages,
-                preferred_package_id,
+            payment_tab_panels, default_payment_tab = build_payment_tab_panels(
+                all_packages,
+                lang=lang,
+                preferred_package_id=preferred_package_id,
             )
+            course['all_price_packages'] = all_packages
+
+            active_panel = next(
+                (panel for panel in payment_tab_panels if panel['is_active']),
+                None,
+            )
+            default_package_index = (
+                active_panel['default_index'] if active_panel else 0
+            )
+            default_payment_package = None
+            if active_panel and active_panel['packages']:
+                packages_in_panel = active_panel['packages']
+                if default_package_index < len(packages_in_panel):
+                    default_payment_package = packages_in_panel[default_package_index]
             open_payment_modal = (
                 request.GET.get('pay') == '1'
                 and course.get('has_payment')
@@ -165,12 +185,16 @@ class CourseDetailPageView(View):
             )
         else:
             default_package_index = 0
+            default_payment_package = None
             open_payment_modal = False
 
         seo_defaults = get_page_seo_defaults('course-detail', lang)
         context = {
             'course': course,
             'default_package_index': default_package_index,
+            'default_payment_package': default_payment_package,
+            'default_payment_tab': default_payment_tab,
+            'payment_tab_panels': payment_tab_panels,
             'open_payment_modal': open_payment_modal,
             'language': lang,
             'background_image': get_background_image('courses'),
