@@ -1646,6 +1646,397 @@ h1.animated, h2.animated, h3.animated,
     overflow: hidden;
     box-sizing: border-box;
     background-image: var(--page-header-image, url(../img/banner-landscape-1536x1024.webp));
+    position: relative;
+}
+
+.page-header--tagline.page-header-hero-band {
+    display: flex;
+    flex-direction: column;
+}
+
+.page-header--tagline .page-header__overlay {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    min-height: inherit;
+    padding: clamp(1.25rem, 3.5vw, 2.5rem) 0;
+    background: linear-gradient(
+        180deg,
+        rgba(0, 49, 61, 0.12) 0%,
+        rgba(0, 49, 61, 0.38) 48%,
+        rgba(0, 49, 61, 0.58) 100%
+    );
+}
+
+.page-header__tagline-shell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: min(920px, 94%);
+    margin-inline: auto;
+}
+
+.page-header__tagline {
+    font-family: 'Host Grotesk', sans-serif;
+    font-size: clamp(1.2rem, 3vw, 1.85rem);
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: 0.01em;
+    color: rgba(255, 255, 255, 0.92);
+    text-align: center;
+    text-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.65),
+        0 2px 14px rgba(0, 0, 0, 0.38);
+}
+
+.page-header__tagline-accent {
+    display: block;
+    width: clamp(2.5rem, 8vw, 3.25rem);
+    height: 3px;
+    margin-top: 0.85rem;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent, #FF5414), rgba(255, 84, 20, 0.45));
+    opacity: 0;
+    transform: scaleX(0.55);
+    transition: opacity 0.45s ease 0.18s, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.18s;
+}
+
+.page-tagline-reveal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+    gap: 0.35rem 0.5rem;
+}
+
+.page-tagline-reveal__word {
+    display: inline-block;
+    opacity: 0;
+    transform: translate3d(0, 0.35em, 0);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+    transition-delay: var(--word-delay, 0ms);
+}
+
+.page-header__tagline-shell.is-revealed .page-tagline-reveal__word {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+}
+
+.page-header__tagline-shell.is-revealed .page-header__tagline-accent {
+    opacity: 1;
+    transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .page-tagline-reveal__word {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .page-header__tagline-accent {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .page-header__tagline {
+        font-size: clamp(1.05rem, 4.2vw, 1.35rem);
+        line-height: 1.4;
+    }
+
+    .page-header--tagline .page-header__overlay {
+        padding: clamp(1rem, 4vw, 1.5rem) 0;
+    }
+}
+
+/*** Homepage featured price packages carousel ***/
+.home-prices-section {
+    position: relative;
+    overflow: hidden;
+    background: var(--site-surface, #f7f9fb);
+    --course-pay-ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --course-pay-transition-fast: 120ms var(--course-pay-ease);
+    --course-pay-transition: 180ms var(--course-pay-ease);
+    --course-pay-transition-hover: 480ms ease-out;
+    --course-pay-card-radius: 1.125rem;
+    --course-pay-border: rgba(var(--bs-primary-rgb), 0.12);
+    --course-pay-gap: 1rem;
+    --course-pay-card-width: 17.5rem;
+    --course-pay-card-min-height: 18.5rem;
+    --course-pay-card-bg: var(--primary);
+    --course-pay-card-bg-hover: color-mix(in srgb, var(--primary) 88%, #fff);
+    --course-pay-card-border: var(--primary);
+    --course-pay-shadow: 0 4px 20px rgba(var(--bs-primary-rgb), 0.08);
+    --course-pay-shadow-hover: 0 14px 36px rgba(var(--bs-primary-rgb), 0.14);
+}
+
+.home-prices-section__inner {
+    padding: clamp(2rem, 4.5vw, 3rem) 0 clamp(2.5rem, 5.5vw, 3.75rem);
+}
+
+.home-prices-section__header {
+    margin-bottom: clamp(1.35rem, 3vw, 1.85rem);
+    text-align: center;
+}
+
+.home-prices-section__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin: 0 0 0.35rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent, #ff5414);
+}
+
+.home-prices-section__eyebrow::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.75;
+}
+
+.home-prices-section__title {
+    margin: 0;
+    font-size: clamp(1.45rem, 3vw, 2rem);
+    font-weight: 800;
+    color: var(--bs-primary, #00313d);
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+}
+
+.home-prices-carousel-wrap {
+    position: relative;
+    padding: 0 clamp(2.75rem, 5vw, 3.5rem);
+}
+
+.home-prices-swiper {
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.home-prices-swiper:not(.swiper-initialized) {
+    min-height: 21rem;
+}
+
+.home-prices-swiper:not(.swiper-initialized) .swiper-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.home-prices-swiper:not(.swiper-initialized) .swiper-slide:not(:first-child) {
+    display: none;
+}
+
+.home-prices-swiper .swiper-slide {
+    width: var(--course-pay-card-width, 17.5rem);
+    max-width: var(--course-pay-card-width, 17.5rem);
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+
+.home-prices-swiper .home-price-card {
+    width: 100%;
+    max-width: var(--course-pay-card-width, 17.5rem);
+    min-height: var(--course-pay-card-min-height, 18.5rem);
+    cursor: default;
+}
+
+.home-price-card__course {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.88);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.home-price-card.course-pay-card a.home-price-card__course,
+.home-price-card.course-pay-card a.home-price-card__course:visited {
+    color: rgba(255, 255, 255, 0.88);
+}
+
+.home-price-card.course-pay-card a.home-price-card__course:hover,
+.home-price-card.course-pay-card a.home-price-card__course:focus-visible {
+    color: var(--accent, #ff5414);
+    text-decoration: none;
+}
+
+.home-price-card__course:focus-visible {
+    outline: 2px solid var(--accent, #ff5414);
+    outline-offset: 3px;
+    border-radius: 0.25rem;
+}
+
+.home-price-card__course-name {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    font-size: clamp(0.9rem, 2.4vw, 1rem);
+    color: var(--accent, #ff5414);
+    letter-spacing: 0.03em;
+}
+
+.home-price-card__course:hover .home-price-card__course-name,
+.home-price-card__course:focus-visible .home-price-card__course-name {
+    color: color-mix(in srgb, var(--accent, #ff5414) 88%, #fff);
+}
+
+.home-price-card__course-arrow {
+    flex-shrink: 0;
+    font-size: 0.68rem;
+    color: var(--accent, #ff5414);
+    opacity: 0.9;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.home-price-card__course:hover .home-price-card__course-arrow,
+.home-price-card__course:focus-visible .home-price-card__course-arrow {
+    opacity: 1;
+    transform: translateX(2px);
+}
+
+.home-prices-swiper .course-pay-card__cta {
+    pointer-events: auto;
+}
+
+.home-prices-swiper .swiper-button-prev,
+.home-prices-swiper .swiper-button-next {
+    position: absolute;
+    top: 50%;
+    bottom: auto;
+    margin-top: 0;
+    transform: translateY(-50%);
+    z-index: 5;
+    width: 44px;
+    height: 44px;
+    display: inline-flex !important;
+    visibility: visible !important;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 1.25rem;
+    line-height: 1;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.home-prices-swiper .swiper-button-prev::after,
+.home-prices-swiper .swiper-button-next::after {
+    display: none;
+}
+
+.home-prices-swiper .swiper-button-prev i,
+.home-prices-swiper .swiper-button-next i {
+    font-size: 1.25rem;
+}
+
+.home-prices-swiper .swiper-button-prev {
+    left: clamp(0.25rem, 1.2vw, 0.6rem);
+    right: auto;
+}
+
+.home-prices-swiper .swiper-button-next {
+    right: clamp(0.25rem, 1.2vw, 0.6rem);
+    left: auto;
+}
+
+.home-prices-swiper .swiper-button-prev:hover,
+.home-prices-swiper .swiper-button-next:hover {
+    opacity: 0.92;
+    transform: translateY(-50%) scale(1.05);
+}
+
+.home-prices-swiper .swiper-button-prev.swiper-button-lock,
+.home-prices-swiper .swiper-button-next.swiper-button-lock {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none;
+}
+
+.home-prices-swiper .swiper-button-disabled {
+    opacity: 0.45;
+    cursor: default;
+    pointer-events: none;
+    transform: translateY(-50%);
+}
+
+.home-prices-swiper-pagination-outer {
+    display: flex;
+    justify-content: center;
+    gap: 0.35rem;
+    margin-top: 1.15rem;
+    padding: 0 1rem;
+}
+
+.home-prices-swiper-pagination-outer .swiper-pagination-bullet {
+    width: 0.45rem;
+    height: 0.45rem;
+    background: rgba(0, 49, 61, 0.22);
+    opacity: 1;
+}
+
+.home-prices-swiper-pagination-outer .swiper-pagination-bullet-active {
+    background: var(--accent, #ff5414);
+    transform: scale(1.15);
+}
+
+@media (max-width: 767.98px) {
+    .home-prices-carousel-wrap {
+        padding: 0 clamp(2.5rem, 5vw, 3rem);
+    }
+
+    .home-prices-swiper .swiper-slide {
+        width: min(var(--course-pay-card-width, 17.5rem), calc(100vw - 6.5rem));
+        max-width: min(var(--course-pay-card-width, 17.5rem), calc(100vw - 6.5rem));
+    }
+
+    .home-prices-swiper .home-price-card {
+        max-width: 100%;
+        min-height: auto;
+        padding: 1.15rem 1rem 1.2rem;
+    }
+
+    .home-prices-swiper .swiper-button-prev,
+    .home-prices-swiper .swiper-button-next {
+        width: 40px;
+        height: 40px;
+    }
+
+    .home-prices-swiper .swiper-button-prev i,
+    .home-prices-swiper .swiper-button-next i {
+        font-size: 1.15rem;
+    }
+
+    .home-prices-swiper .swiper-button-prev {
+        left: max(0.2rem, env(safe-area-inset-left, 0px));
+    }
+
+    .home-prices-swiper .swiper-button-next {
+        right: max(0.2rem, env(safe-area-inset-right, 0px));
+    }
 }
 
 @media (min-width: 576px) {
@@ -2644,6 +3035,24 @@ h1.animated, h2.animated, h3.animated,
 }
 
 /* Cover image is in-flow — its intrinsic size defines the container */
+.about-vp.is-playing .about-vp__cover {
+    display: none;
+}
+
+.about-vp.is-playing > .plyr {
+    position: relative;
+    inset: auto;
+    z-index: 11;
+    width: 100%;
+    min-height: 200px;
+    aspect-ratio: 16 / 9;
+}
+
+.about-vp.is-playing.about-intro-image-card {
+    overflow: visible;
+    min-height: 0;
+}
+
 .about-vp__cover {
     position: relative;
     z-index: 10;
@@ -2652,18 +3061,14 @@ h1.animated, h2.animated, h3.animated,
     border-radius: 0.6rem;
     overflow: hidden;
     cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
     transition: opacity 0.45s ease, visibility 0.45s ease;
 }
 
 .about-vp__cover:not(:has(.about-vp__cover-img)) {
     min-height: 240px;
     background: #e9ecef;
-}
-
-.about-vp.is-playing .about-vp__cover {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
 }
 
 .about-vp__cover-img {
@@ -2695,6 +3100,8 @@ h1.animated, h2.animated, h3.animated,
     justify-content: center;
     transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease;
     padding: 0;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .about-vp__play-btn:hover {
@@ -2734,6 +3141,17 @@ h1.animated, h2.animated, h3.animated,
 @keyframes avp-ripple {
     0%   { transform: scale(1); opacity: 1; }
     100% { transform: scale(1.6); opacity: 0; }
+}
+
+@media (max-width: 767.98px) {
+    .about-vp.is-playing > .plyr {
+        min-height: 220px;
+    }
+
+    .about-vp__play-btn {
+        width: 68px;
+        height: 68px;
+    }
 }
 
 
@@ -5232,6 +5650,26 @@ h1.animated, h2.animated, h3.animated,
 
 .universities-carousel--home:hover .universities-list__track {
     animation-play-state: paused;
+}
+
+.universities-carousel--home.universities-carousel--interactive {
+    cursor: grab;
+    touch-action: pan-y;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.universities-carousel--home.universities-carousel--interactive.is-dragging {
+    cursor: grabbing;
+}
+
+.universities-carousel--home.universities-carousel--interactive .universities-list__track {
+    animation: none !important;
+    will-change: transform;
+}
+
+.universities-carousel--home.universities-carousel--interactive.is-dragging a.university-carousel-card {
+    pointer-events: none;
 }
 
 .universities-carousel--home .universities-list__item {

@@ -4,13 +4,36 @@ from projects.utils.canonical import canonical_url_for_request, _canonical_origi
 from projects.utils.turnstile import is_turnstile_configured
 from projects.seo_page_defaults import get_page_seo_defaults
 from projects.utils.i18n import resolve_public_language
+from projects.models.motto_models import TaglinePage
 from projects.utils.queries import (
     get_background_image,
     get_contact,
     get_nav_courses,
     get_nav_abroad_items_with_universities,
+    get_page_tagline,
     serialize_contact,
 )
+
+URL_NAME_TO_TAGLINE_PAGE = {
+    'about-page': TaglinePage.ABOUT,
+    'contact-page': TaglinePage.CONTACT,
+    'services-page': TaglinePage.SERVICE,
+    'courses-page': TaglinePage.COURSES,
+    'course-detail': TaglinePage.COURSES,
+    'tests-page': TaglinePage.TESTS,
+    'test-take': TaglinePage.TESTS,
+    'english-conversation-topics': TaglinePage.TESTS,
+    'english-conversation-topic-detail': TaglinePage.TESTS,
+    'english-conversation-topic-two-legacy': TaglinePage.TESTS,
+    'abroad-page': TaglinePage.ABROAD,
+    'abroad-detail': TaglinePage.ABROAD,
+    'abroad-university-detail': TaglinePage.ABROAD,
+    'blog-page': TaglinePage.BLOG,
+    'blog-detail': TaglinePage.BLOG,
+    'blog-tag-page': TaglinePage.BLOG,
+    'team-page': TaglinePage.TEAM,
+    'team-detail': TaglinePage.TEAM,
+}
 
 
 SEO_HOME = {
@@ -153,4 +176,15 @@ def turnstile_context(request):
     return {
         'turnstile_enabled': enabled,
         'turnstile_site_key': settings.TURNSTILE_SITE_KEY if enabled else '',
+    }
+
+
+def page_banner_tagline_context(request):
+    lang = _request_lang(request)
+    rm = getattr(request, 'resolver_match', None)
+    url_name = getattr(rm, 'url_name', None) or ''
+    page_key = URL_NAME_TO_TAGLINE_PAGE.get(url_name)
+    tagline = get_page_tagline(page_key, lang) if page_key else None
+    return {
+        'page_tagline': tagline,
     }

@@ -172,12 +172,6 @@ class CoursePricePackage(models.Model):
         blank=True,
         verbose_name=_('Name (RU)'),
     )
-    duration = models.CharField(
-        max_length=100,
-        blank=True,
-        verbose_name=_('Duration'),
-        help_text=_('e.g. 3 months'),
-    )
     months = models.PositiveIntegerField(
         null=True,
         blank=True,
@@ -206,6 +200,13 @@ class CoursePricePackage(models.Model):
         default=False,
         verbose_name=_('Premium'),
         help_text=_('Highlight this package with a distinct card style when selected.'),
+    )
+    show_on_homepage = models.BooleanField(
+        default=False,
+        verbose_name=_('Show on homepage'),
+        help_text=_(
+            'If enabled, this package appears in the homepage "Most in demand" price carousel.'
+        ),
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created at'))
 

@@ -1,0 +1,38 @@
+{% load i18n static %}
+{% if home_featured_prices %}
+<link href="{% static 'assets/css/payment-ui.css' %}" rel="stylesheet">
+<section id="home-featured-prices" class="home-prices-section" aria-labelledby="home-prices-heading">
+    <div class="home-prices-section__inner">
+        <div class="container-xxl">
+            <div class="container">
+                <header class="home-prices-section__header wow fadeInUp" data-wow-delay="0.05s">
+                    <h2 id="home-prices-heading" class="home-prices-section__title">
+                        {% trans "Most in demand" %}
+                    </h2>
+                </header>
+            </div>
+
+            <div class="home-prices-carousel-wrap wow fadeInUp" data-wow-delay="0.12s">
+                <div class="swiper home-prices-swiper">
+                    <div class="swiper-wrapper">
+                        {% for pkg in home_featured_prices %}
+                        <div class="swiper-slide">
+                            {% include "includes/home_price_card.html" with pkg=pkg %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="swiper-button-prev" aria-label="{% trans 'Previous' %}">
+                        <i class="bi bi-chevron-left" aria-hidden="true"></i>
+                    </div>
+                    <div class="swiper-button-next" aria-label="{% trans 'Next' %}">
+                        <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <div class="home-prices-swiper-pagination-outer"></div>
+            </div>
+        </div>
+    </div>
+    {% include "includes/home_payment_modal.html" %}
+</section>
+<script defer src="{% static 'assets/js/home-payment.js' %}"></script>
+{% endif %}

@@ -86,6 +86,170 @@
     }
     initUniversitiesCarouselReveal();
 
+    function initUniversitiesCarouselDrag() {
+        if (prefersReducedMotion) return;
+
+        var SCROLL_MS = 28000;
+        var DRAG_THRESHOLD_PX = 6;
+
+        qsa(".universities-carousel--home").forEach(function (carousel) {
+            if (carousel.dataset.uniDragInit === "1") return;
+            var track = carousel.querySelector(".universities-list__track");
+            if (!track) return;
+            carousel.dataset.uniDragInit = "1";
+
+            var offset = 0;
+            var loopWidth = 0;
+            var dragging = false;
+            var suppressClick = false;
+            var startX = 0;
+            var startOffset = 0;
+            var hoverPaused = false;
+            var rafId = null;
+            var lastTs = null;
+            var activePointerId = null;
+
+            function measureLoopWidth() {
+                loopWidth = track.scrollWidth / 2;
+            }
+
+            function readTransformOffset() {
+                var matrix = window.getComputedStyle(track).transform;
+                if (!matrix || matrix === "none") return 0;
+                if (typeof DOMMatrixReadOnly !== "undefined") {
+                    return new DOMMatrixReadOnly(matrix).m41;
+                }
+                var match = matrix.match(/matrix\(([^)]+)\)/);
+                if (!match) return 0;
+                var parts = match[1].split(",");
+                return parseFloat(parts[parts.length - 2]) || 0;
+            }
+
+            function normalizeOffset() {
+                if (loopWidth <= 0) return;
+                while (offset <= -loopWidth) offset += loopWidth;
+                while (offset > 0) offset -= loopWidth;
+            }
+
+            function applyTransform() {
+                track.style.transform = "translate3d(" + offset + "px, 0, 0)";
+            }
+
+            function shouldAutoScroll() {
+                return (
+                    !dragging &&
+                    !hoverPaused &&
+                    !carousel.classList.contains("motion-paused") &&
+                    loopWidth > 0
+                );
+            }
+
+            function tick(ts) {
+                if (lastTs == null) lastTs = ts;
+                var dt = ts - lastTs;
+                lastTs = ts;
+
+                if (shouldAutoScroll()) {
+                    offset -= (loopWidth / SCROLL_MS) * dt;
+                    normalizeOffset();
+                    applyTransform();
+                }
+
+                rafId = window.requestAnimationFrame(tick);
+            }
+
+            function startManualControl() {
+                carousel.classList.add("universities-carousel--interactive");
+                offset = readTransformOffset();
+                track.style.animation = "none";
+                normalizeOffset();
+                applyTransform();
+                if (!rafId) {
+                    lastTs = null;
+                    rafId = window.requestAnimationFrame(tick);
+                }
+            }
+
+            function onPointerDown(e) {
+                if (e.pointerType === "mouse" && e.button !== 0) return;
+                dragging = true;
+                suppressClick = false;
+                activePointerId = e.pointerId;
+                startX = e.clientX;
+                startOffset = offset;
+                carousel.classList.add("is-dragging");
+                if (carousel.setPointerCapture) {
+                    carousel.setPointerCapture(e.pointerId);
+                }
+            }
+
+            function onPointerMove(e) {
+                if (!dragging || e.pointerId !== activePointerId) return;
+                var delta = e.clientX - startX;
+                if (Math.abs(delta) >= DRAG_THRESHOLD_PX) {
+                    suppressClick = true;
+                }
+                if (!suppressClick) return;
+                offset = startOffset + delta;
+                normalizeOffset();
+                applyTransform();
+            }
+
+            function endDrag(e) {
+                if (!dragging || (e && e.pointerId !== activePointerId)) return;
+                dragging = false;
+                activePointerId = null;
+                carousel.classList.remove("is-dragging");
+                if (suppressClick) {
+                    window.setTimeout(function () {
+                        suppressClick = false;
+                    }, 250);
+                }
+                if (carousel.releasePointerCapture && e && e.pointerId != null) {
+                    try {
+                        carousel.releasePointerCapture(e.pointerId);
+                    } catch (err) {}
+                }
+            }
+
+            carousel.addEventListener("pointerdown", onPointerDown);
+            carousel.addEventListener("pointermove", onPointerMove);
+            carousel.addEventListener("pointerup", endDrag);
+            carousel.addEventListener("pointercancel", endDrag);
+            carousel.addEventListener("lostpointercapture", endDrag);
+
+            carousel.addEventListener("mouseenter", function () {
+                hoverPaused = true;
+            });
+            carousel.addEventListener("mouseleave", function () {
+                hoverPaused = false;
+            });
+
+            track.addEventListener(
+                "click",
+                function (e) {
+                    if (!suppressClick) return;
+                    e.preventDefault();
+                    e.stopPropagation();
+                },
+                true
+            );
+
+            window.addEventListener("resize", function () {
+                measureLoopWidth();
+                normalizeOffset();
+                applyTransform();
+            });
+
+            window.requestAnimationFrame(function () {
+                measureLoopWidth();
+                if (loopWidth <= 0) return;
+                startManualControl();
+            });
+        });
+    }
+    initUniversitiesCarouselDrag();
+
     /* Sticky navbar */
     var stickyScrolled = null;
     function updateStickyNavbar() {
@@ -295,6 +459,47 @@
                 576: { slidesPerView: 2, spaceBetween: 20 },
                 768: { slidesPerView: 3, spaceBetween: 20 },
                 992: { slidesPerView: 4, spaceBetween: 20 },
+            },
+        });
+    });
+
+    qsa(".home-prices-swiper").forEach(function (pricesRoot) {
+        var priceSlides = pricesRoot.querySelectorAll(".swiper-slide");
+        if (!priceSlides.length) return;
+        var priceCount = priceSlides.length;
+        var priceWrap =
+            pricesRoot.closest(".home-prices-carousel-wrap") ||
+            pricesRoot.parentElement;
+        var pricePagEl =
+            priceWrap &&
+            priceWrap.querySelector(".home-prices-swiper-pagination-outer");
+        var pricePagConfig = pricePagEl
+            ? { el: pricePagEl, clickable: true }
+            : false;
+        new Swiper(pricesRoot, {
+            slidesPerView: "auto",
+            spaceBetween: 16,
+            centeredSlides: true,
+            centerInsufficientSlides: true,
+            slidesPerGroup: 1,
+            loop: priceCount > 4,
+            rewind: true,
+            autoplay:
+                !prefersReducedMotion && priceCount > 1
+                    ? { delay: 4800, disableOnInteraction: false }
+                    : false,
+            pagination: pricePagConfig,
+            navigation: {
+                nextEl: pricesRoot.querySelector(".swiper-button-next"),
+                prevEl: pricesRoot.querySelector(".swiper-button-prev"),
+            },
+            watchOverflow: true,
+            breakpoints: {
+                768: {
+                    centeredSlides: false,
+                    centerInsufficientSlides: true,
+                    spaceBetween: 20,
+                },
             },
         });
     });

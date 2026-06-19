@@ -145,6 +145,12 @@ def _form_errors_payload(form: CoursePaymentForm) -> dict:
 
 
 def _redirect_course_payment_form_errors(request, slug: str, form: CoursePaymentForm):
+    if request.POST.get('return_to') == 'home':
+        request.session['home_payment_form_data'] = form.data
+        for field_errors in form.errors.values():
+            for error in field_errors:
+                messages.error(request, error)
+        return redirect(reverse('projects:home-page') + '#home-featured-prices')
     request.session['course_payment_form_data'] = form.data
     for field_errors in form.errors.values():
         for error in field_errors:

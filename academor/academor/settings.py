@@ -161,6 +161,7 @@ TEMPLATES = [
                 'projects.context_processors.site_footer_context',
                 'projects.context_processors.site_seo_context',
                 'projects.context_processors.turnstile_context',
+                'projects.context_processors.page_banner_tagline_context',
             ],
         },
     },

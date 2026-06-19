@@ -186,6 +186,51 @@
 .hbh-reg-track::-webkit-scrollbar { height: 4px; }
 .hbh-reg-track::-webkit-scrollbar-track { background: rgba(255,255,255,.08); border-radius: 4px; }
 .hbh-reg-track::-webkit-scrollbar-thumb { background: rgba(255,84,20,.55); border-radius: 4px; }
+
+/* Mobil: native scrollbar gizlidir — xüsusi göstərici */
+.hbh-reg-scroll {
+    display: none;
+}
+@media (max-width: 767.98px) {
+    .hbh-reg-wrap {
+        padding-bottom: 2px;
+    }
+    .hbh-reg-track {
+        scrollbar-width: none;
+        padding-bottom: 0.35rem;
+        -ms-overflow-style: none;
+    }
+    .hbh-reg-track::-webkit-scrollbar {
+        display: none;
+        height: 0;
+    }
+    .hbh-reg-scroll {
+        display: block;
+        margin-top: 0.15rem;
+        padding-inline: 2px;
+    }
+    .hbh-reg-scroll.is-hidden {
+        display: none;
+    }
+    .hbh-reg-scroll__track {
+        position: relative;
+        height: 4px;
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.08);
+        overflow: hidden;
+    }
+    .hbh-reg-scroll__thumb {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        min-width: 36px;
+        border-radius: 4px;
+        background: rgba(255, 84, 20, 0.55);
+        transform: translateX(0);
+        will-change: transform, width;
+    }
+}
 /* Scroll nav arrows */
 .hbh-scroll-btn {
     display: none;
@@ -605,6 +650,11 @@
                 </a>
                 {% endfor %}
                 </div>
+                <div class="hbh-reg-scroll is-hidden" id="hbh-reg-scroll" aria-hidden="true">
+                    <div class="hbh-reg-scroll__track">
+                        <div class="hbh-reg-scroll__thumb" id="hbh-scroll-thumb"></div>
+                    </div>
+                </div>
                 <button class="hbh-scroll-btn hbh-scroll-btn--next" onclick="hbhScroll(1)" aria-label="{% trans 'Next' %}">
                     <i class="fa fa-chevron-right"></i>
                 </button>
@@ -614,6 +664,44 @@
                 var t = document.getElementById('hbh-track');
                 if (t) t.scrollBy({ left: dir * 380, behavior: 'smooth' });
             }
+            (function initHbhRegScrollBar() {
+                var track = document.getElementById('hbh-track');
+                var bar = document.getElementById('hbh-reg-scroll');
+                var thumb = document.getElementById('hbh-scroll-thumb');
+                if (!track || !bar || !thumb) return;
+
+                function isMobileBar() {
+                    return window.matchMedia('(max-width: 767.98px)').matches;
+                }
+
+                function updateBar() {
+                    if (!isMobileBar()) {
+                        bar.classList.add('is-hidden');
+                        return;
+                    }
+                    var maxScroll = track.scrollWidth - track.clientWidth;
+                    if (maxScroll <= 4) {
+                        bar.classList.add('is-hidden');
+                        return;
+                    }
+                    bar.classList.remove('is-hidden');
+                    var trackWidth = bar.querySelector('.hbh-reg-scroll__track').clientWidth;
+                    var ratio = track.clientWidth / track.scrollWidth;
+                    var thumbWidth = Math.max(ratio * trackWidth, 36);
+                    var maxThumbOffset = Math.max(trackWidth - thumbWidth, 0);
+                    var scrollRatio = track.scrollLeft / maxScroll;
+                    thumb.style.width = thumbWidth + 'px';
+                    thumb.style.transform = 'translateX(' + (scrollRatio * maxThumbOffset) + 'px)';
+                }
+
+                track.addEventListener('scroll', updateBar, { passive: true });
+                window.addEventListener('resize', updateBar, { passive: true });
+                window.addEventListener('load', updateBar);
+                if (typeof ResizeObserver !== 'undefined') {
+                    new ResizeObserver(updateBar).observe(track);
+                }
+                updateBar();
+            })();
             </script>
             {% endif %}
 

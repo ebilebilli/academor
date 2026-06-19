@@ -1,5 +1,7 @@
 import re
 
+from urllib.parse import urlencode
+
 from django.db.models import Q, Prefetch
 from django.urls import reverse
 from django.utils import translation
@@ -489,6 +491,62 @@ def _serialized_categories_with_fresh_sales(lang, show_on_main_page=None):
     ]
 
 
+def serialize_homepage_price_package(package, lang='az', discounts_map=None):
+    """Featured price card for the homepage carousel (may span multiple courses)."""
+    if discounts_map is None:
+        discounts_map = fetch_active_sale_discounts_by_service_id()
+    course = package.course
+    sale_percent = get_sale_percent_for_service(course.id, discounts_map)
+    data = serialize_price_package(package, lang, sale_percent=sale_percent)
+    detail_url = reverse('projects:course-detail', kwargs={'slug': course.slug})
+    data['course'] = {
+        'id': course.id,
+        'slug': course.slug,
+        'name': _service_category_display_name(course, lang),
+        'icon': resolve_service_category_icon(
+            getattr(course, 'card_icon', '') or '',
+            course.slug or '',
+        ),
+        'detail_url': detail_url,
+    }
+    data['buy_url'] = (
+        detail_url
+        + '?'
+        + urlencode({'package': package.id, 'pay': '1'})
+        + '#course-pay'
+    )
+    data['payment_start_url'] = reverse(
+        'payment_start_course',
+        kwargs={'slug': course.slug},
+    )
+    return data
+
+
+def _fetch_serialized_homepage_price_packages(lang='az'):
+    packages = (
+        CoursePricePackage.objects.filter(
+            is_active=True,
+            show_on_homepage=True,
+            price__gt=0,
+            course__is_active=True,
+        )
+        .select_related('course')
+        .order_by('order', 'id')
+    )
+    discounts_map = fetch_active_sale_discounts_by_service_id()
+    return [
+        serialize_homepage_price_package(package, lang, discounts_map=discounts_map)
+        for package in packages
+    ]
+
+
+def _fresh_home_featured_prices_context(lang='az'):
+    """Homepage featured price carousel — fresh read, not inside the cached page blob."""
+    return {
+        'home_featured_prices': _fetch_serialized_homepage_price_packages(lang),
+    }
+
+
 def _fresh_home_categories_context(lang='az'):
     """Homepage service cards — override stale categories from the page cache blob."""
     return {
@@ -790,38 +848,23 @@ def get_home_background_images(limit=6):
     return [media_url(m.image) for m in media_list if m.image]
 
 
-@cached_query(timeout='CACHE_TIMEOUT_LONG')
-def get_motto(lang='az'):
-    motto = Tagline.objects.first()
-    if not motto:
+def _serialize_tagline(tagline):
+    if not tagline:
         return None
-
-    small_field = get_localized_field_name('heading_small', lang)
-    main_field = get_localized_field_name('heading_main', lang)
-    body_field = get_localized_field_name('body', lang)
-
-    return {
-        'heading_small': getattr(motto, small_field, motto.heading_small_az),
-        'heading_main': getattr(motto, main_field, motto.heading_main_az),
-        'body': getattr(motto, body_field, motto.body_az),
-    }
+    text = (tagline.text or '').strip()
+    if not text:
+        return None
+    return {'text': text}
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
-def get_mottos(lang='az'):
-    """Bütün Tagline obyektlərini carousel slide kimi qaytarır."""
-    taglines = Tagline.objects.all().order_by('pk')
-    small_field = get_localized_field_name('heading_small', lang)
-    main_field = get_localized_field_name('heading_main', lang)
-    body_field = get_localized_field_name('body', lang)
-    result = []
-    for t in taglines:
-        result.append({
-            'heading_small': getattr(t, small_field, t.heading_small_az),
-            'heading_main': getattr(t, main_field, t.heading_main_az),
-            'body': getattr(t, body_field, t.body_az),
-        })
-    return result
+def get_page_tagline(page_key, lang='az'):
+    """Per-page banner text (AZ only) — invalidate via Tagline post_save/post_delete signals."""
+    del lang  # reserved for future i18n
+    if not page_key:
+        return None
+    tagline = Tagline.objects.filter(page=page_key, is_active=True).first()
+    return _serialize_tagline(tagline)
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
@@ -1088,7 +1131,6 @@ def serialize_price_package(package, lang='az', sale_percent=None):
     return {
         'id': package.id,
         'name': _price_package_display_name(package, lang),
-        'duration': package.duration or '',
         'months': package.months,
         'months_display': _format_months_display(package.months, lang),
         'lesson_count': package.lesson_count,
@@ -1417,36 +1459,6 @@ def _get_home_page_data_cached(request, lang):
     # Hero carousel üçün 6 ədəd background image (köhnə fallback)
     hero_background_images = get_home_background_images(limit=6)
 
-    # Motto modelindən deviz (köhnə fallback — background_image branch üçün)
-    motto = get_motto(lang)
-
-    # Tagline(lar) varsa: hər biri üçün slayd (şəkil siyahısı boş olsa belə — tək home bg və ya statik fallback)
-    mottos = get_mottos(lang)
-
-    def _hero_image_urls_for_taglines():
-        urls = [u for u in hero_background_images if u]
-        if not urls:
-            single_home = get_background_image('home')
-            if single_home:
-                urls = [single_home]
-        if not urls:
-            urls = [
-                static('assets/img/new_baner.png'),
-                static('assets/img/banner-landscape-1536x1024.webp'),
-            ]
-        return urls
-
-    hero_slides = []
-    if mottos:
-        imgs = _hero_image_urls_for_taglines()
-        for i, motto_dict in enumerate(mottos):
-            hero_slides.append({
-                'image_url': imgs[i % len(imgs)],
-                'heading_small': motto_dict['heading_small'],
-                'heading_main': motto_dict['heading_main'],
-                'body': motto_dict['body'],
-            })
-
     abroad_intro_text = get_study_abroad_section(lang=lang)
 
     return {
@@ -1462,8 +1474,6 @@ def _get_home_page_data_cached(request, lang):
         },
         'background_image': get_background_image('home'),
         'hero_background_images': hero_background_images,
-        'motto': motto,
-        'hero_slides': hero_slides,
         'abroad_items': get_serialized_abroad_items(
             lang=lang, is_active=True, show_on_main_page=True
         ),
@@ -1480,6 +1490,7 @@ def get_home_page_data(request, lang):
     ctx.update(_fresh_home_blog_context(lang))
     ctx.update(_fresh_home_team_context(lang))
     ctx.update(_fresh_home_categories_context(lang))
+    ctx.update(_fresh_home_featured_prices_context(lang))
     ctx.update(_fresh_home_sales_context(lang))
     ctx.update(get_home_about_context(lang))
     ctx.update(_fresh_abroad_advantages_context(lang))

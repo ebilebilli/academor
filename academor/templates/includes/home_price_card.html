@@ -1,0 +1,73 @@
+{% load i18n %}
+<article class="home-price-card course-pay-card{% if pkg.is_premium %} course-pay-card--premium{% endif %}">
+    <a href="{{ pkg.course.detail_url }}" class="home-price-card__course mb-0">
+        <span class="home-price-card__course-name">{{ pkg.course.name }}</span>
+        <i class="fas fa-arrow-right home-price-card__course-arrow" aria-hidden="true"></i>
+    </a>
+
+    <div class="course-pay-card__header">
+        <h3 class="course-pay-card__name h6 mb-0">{{ pkg.name }}</h3>
+        <div class="course-pay-card__badges">
+            {% if pkg.is_premium %}
+            <span class="course-pay-card__premium-tag">{% trans "Premium" %}</span>
+            {% endif %}
+            {% if pkg.has_discount %}
+            <span class="course-pay-card__badge badge rounded-pill">-{{ pkg.discount_percent }}%</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <p class="course-pay-card__price mb-0">
+        <span class="course-pay-card__original"{% if not pkg.has_discount %} aria-hidden="true"{% endif %}>
+            {% if pkg.has_discount %}
+            <span class="course-pay-card__original-amount">{{ pkg.original_price_display }}</span>
+            <span class="course-pay-card__original-currency">AZN</span>
+            {% endif %}
+        </span>
+        <span class="course-pay-card__amount">{{ pkg.price_display }}</span>
+        <span class="course-pay-card__currency">AZN</span>
+    </p>
+
+    <ul class="course-pay-card__features list-unstyled mb-0">
+        {% if pkg.months_display %}
+        <li>
+            <i class="fas fa-check-circle" aria-hidden="true"></i>
+            <span>
+                <span class="course-pay-card__feature-label">{% trans "Months" %}:</span>
+                {{ pkg.months_display }}
+            </span>
+        </li>
+        {% endif %}
+        {% if pkg.lesson_count %}
+        <li>
+            <i class="fas fa-check-circle" aria-hidden="true"></i>
+            <span>
+                <span class="course-pay-card__feature-label">{% trans "Number of lessons" %}:</span>
+                {{ pkg.lesson_count }}
+            </span>
+        </li>
+        {% endif %}
+        {% if pkg.lesson_minutes_display %}
+        <li>
+            <i class="fas fa-check-circle" aria-hidden="true"></i>
+            <span>{{ pkg.lesson_minutes_display }}</span>
+        </li>
+        {% endif %}
+    </ul>
+
+    <div class="course-pay-card__cta-slot">
+        <button
+            type="button"
+            class="btn btn-primary rounded-pill fw-semibold w-100 course-pay-card__cta"
+            data-home-pay-open
+            data-course-slug="{{ pkg.course.slug }}"
+            data-package-id="{{ pkg.id }}"
+            data-package-name="{{ pkg.name }}"
+            data-package-price="{{ pkg.price_display }}"
+            data-course-name="{{ pkg.course.name }}"
+            data-payment-url="{{ pkg.payment_start_url }}"
+        >
+            {% trans "Buy now" %}
+        </button>
+    </div>
+</article>

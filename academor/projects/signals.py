@@ -12,6 +12,10 @@ Keep in sync with queries.py (add a receiver when a new cached query reads a mod
   BlogPost, BlogPostImage, ContentTag, About, AboutWhyItem, Contact, Media, Tagline, SiteFaqEntry,
   Test, Question, Option, Sale
 
+  Tagline → ``get_page_tagline`` (page banner taglines via ``page_banner_tagline_context``).
+  CoursePricePackage → ``serialize_price_package`` (course cards, checkout, training agreements;
+  ``months`` / ``lesson_count`` for contract text).
+
   Course detail (`course-detail.html`): `get_active_project_category_by_slug` + trainers M2M — invalidate
   `Service` on save/delete and on `instructors` M2M changes; `CoursePricePackage` save/delete
   (admin inline does not save the parent course); `Team` save/delete bumps all caches
@@ -27,6 +31,8 @@ Keep in sync with queries.py (add a receiver when a new cached query reads a mod
   Homepage sale banners use `_fresh_home_sales_context()` → `_fetch_serialized_active_sales(lang)`
   (fresh on every GET; not stored inside the page blob).
   Homepage service cards use `_fresh_home_categories_context()` (fresh sale prices on every GET).
+  Homepage featured price carousel uses `_fresh_home_featured_prices_context()` (packages with
+  `show_on_homepage=True`; fresh on every GET).
   Courses list uses `_merge_fresh_sale_categories()` after the cached page blob.
   Serialized fields: name, description, percent, end_date_display,
   linked services, promo image. Expired rows (`end_date` < today) are excluded at query time.
@@ -176,6 +182,7 @@ def invalidate_course_price_package_cache(sender, instance, **kwargs):
     Price packages are prefetched on cached `get_project_categories` /
     `get_active_project_category_by_slug` and serialized into course cards/detail
     (incl. Sale discount amounts when `apply_to_service_prices` is active).
+    Also feeds checkout contracts via ``serialize_price_package`` (months, lessons).
     Inline admin edits packages without touching Service.post_save.
     """
     _invalidate_on_commit('Service')
@@ -320,6 +327,17 @@ def auto_shift_site_faq_entry_order(sender, instance, **kwargs):
     _shift_order(SiteFaqEntry, instance)
 
 
+@receiver(pre_save, sender=Tagline)
+def auto_shift_tagline_order(sender, instance, **kwargs):
+    """Order is scoped per page (About, Courses, Home carousel, etc.)."""
+    new_order = instance.order
+    exclude_pk = instance.pk or 0
+    base_qs = Tagline.objects.exclude(pk=exclude_pk).filter(page=instance.page)
+    if not base_qs.filter(order=new_order).exists():
+        return
+    base_qs.filter(order__gte=new_order).update(order=F('order') + 1)
+
+
 @receiver(post_save, sender=SiteFaqEntry)
 @receiver(post_delete, sender=SiteFaqEntry)
 def invalidate_site_faq_cache(sender, instance, **kwargs):
@@ -399,9 +417,13 @@ def invalidate_media_cache(sender, instance, **kwargs):
 
 @receiver(post_save, sender=Tagline)
 @receiver(post_delete, sender=Tagline)
-def invalidate_motto_cache(sender, instance, **kwargs):
-    """Invalidate cache when Tagline is saved or deleted."""
+def invalidate_tagline_cache(sender, instance, **kwargs):
+    """Page banner taglines (``get_page_tagline`` / context processor)."""
     _invalidate_on_commit('Tagline')
+
+
+# Backwards-compatible alias for grep / external references
+invalidate_motto_cache = invalidate_tagline_cache
 
 
 @receiver(post_save, sender=Test)

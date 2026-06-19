@@ -1,0 +1,19 @@
+{% load i18n %}
+<div class="container-fluid bg-primary page-header page-header-hero-band page-header--tagline {{ header_mb|default:'mb-5' }}"{% include "includes/page_header_dynamic_bg.html" %}>
+    {% if page_tagline and page_tagline.text %}
+    <div class="page-header__overlay" aria-hidden="false">
+        <div class="container-xxl h-100">
+            <div class="container h-100 d-flex align-items-center justify-content-center">
+                <div class="page-header__tagline-shell" data-page-tagline-block>
+                    <p
+                        class="page-header__tagline page-tagline-reveal mb-0"
+                        aria-label="{{ page_tagline.text }}"
+                    >{{ page_tagline.text }}</p>
+                    <span class="page-header__tagline-accent" aria-hidden="true"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<noscript><style>.page-tagline-reveal__word,.page-header__tagline-accent{opacity:1!important;transform:none!important;}</style></noscript>

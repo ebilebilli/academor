@@ -48,12 +48,35 @@ class HomePageView(View):
         context['language'] = lang
         context['review_form'] = review_form if review_form is not None else ReviewForm(request=request)
         context['open_review_modal'] = open_review_modal
+        context.update(self._home_payment_context(request, context))
         canonical = canonical_url_for_request(request)
         context['structured_data_json'] = dumps_structured_data(
             organization_json_ld(canonical_url=canonical, lang=lang),
             website_json_ld(canonical_url=canonical),
         )
         return context
+
+    def _home_payment_context(self, request, context):
+        featured = context.get('home_featured_prices') or []
+        if not featured:
+            return {}
+        from payments.forms import CoursePaymentForm
+
+        session_data = request.session.pop('home_payment_form_data', None)
+        if session_data is not None:
+            form = CoursePaymentForm(session_data, request=request)
+            form.is_valid()
+            package_id = session_data.get('price_package_id')
+            return {
+                'home_payment_form': form,
+                'open_home_payment_modal': True,
+                'home_payment_package_id': package_id,
+            }
+        return {
+            'home_payment_form': CoursePaymentForm(request=request),
+            'open_home_payment_modal': False,
+            'home_payment_package_id': None,
+        }
 
     def get(self, request):
         lang = get_language_from_request(request)
@@ -127,18 +150,28 @@ class CourseDetailPageView(View):
                 payment_form.is_valid()
             else:
                 payment_form = CoursePaymentForm(request=request)
+                package_param = request.GET.get('package')
+                if package_param:
+                    preferred_package_id = package_param
 
             default_package_index = default_price_package_index(
                 packages,
                 preferred_package_id,
             )
+            open_payment_modal = (
+                request.GET.get('pay') == '1'
+                and course.get('has_payment')
+                and not payment_form.errors
+            )
         else:
             default_package_index = 0
+            open_payment_modal = False
 
         seo_defaults = get_page_seo_defaults('course-detail', lang)
         context = {
             'course': course,
             'default_package_index': default_package_index,
+            'open_payment_modal': open_payment_modal,
             'language': lang,
             'background_image': get_background_image('courses'),
             'payment_form': payment_form,

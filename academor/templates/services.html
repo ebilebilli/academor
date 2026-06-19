@@ -1,35 +1,35 @@
-<!DOCTYPE html>
-{% load static i18n %}{% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
-
-<head>
-    {% include "includes/site_layout_head.html" %}
-</head>
-
-<body>
-    {% include "includes/site_spinner.html" %}
-
-    {% include "includes/site_navbar.html" %}
-
-    <main id="main-content">
-    <div class="container-fluid bg-primary mb-5 page-header page-header-hero-band"{% include "includes/page_header_dynamic_bg.html" %}></div>
-
-    <section class="hsvc-section hsvc-section--standalone" aria-labelledby="services-heading">
-        {% include "includes/hsvc_cards_styles.html" %}
-        <div class="hsvc-inner">
-            <div class="container-xxl">
-                <div class="container">
-                    <h1 id="services-heading" class="hsvc-title hsvc-title--centered wow fadeInUp" data-wow-delay="0.05s">{% trans "Our Services" %}</h1>
-                    {% include "includes/hsvc_cards_grid.html" %}
-                </div>
-            </div>
-        </div>
-    </section>
-    </main>
-
-    {% include "includes/site_footer.html" %}
-
-    {% include "includes/site_scripts.html" %}
-</body>
-
-</html>
+<!DOCTYPE html>
+{% load static i18n %}{% get_current_language as LANG_CODE %}
+<html lang="{{ LANG_CODE }}">
+
+<head>
+    {% include "includes/site_layout_head.html" %}
+</head>
+
+<body>
+    {% include "includes/site_spinner.html" %}
+
+    {% include "includes/site_navbar.html" %}
+
+    <main id="main-content">
+    {% include "includes/page_header_banner.html" %}
+
+    <section class="hsvc-section hsvc-section--standalone" aria-labelledby="services-heading">
+        {% include "includes/hsvc_cards_styles.html" %}
+        <div class="hsvc-inner">
+            <div class="container-xxl">
+                <div class="container">
+                    <h1 id="services-heading" class="hsvc-title hsvc-title--centered wow fadeInUp" data-wow-delay="0.05s">{% trans "Our Services" %}</h1>
+                    {% include "includes/hsvc_cards_grid.html" %}
+                </div>
+            </div>
+        </div>
+    </section>
+    </main>
+
+    {% include "includes/site_footer.html" %}
+
+    {% include "includes/site_scripts.html" %}
+</body>
+
+</html>

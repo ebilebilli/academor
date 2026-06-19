@@ -28,36 +28,46 @@ def _contract_lang(lang: str | None = None) -> str:
     return (lang or get_language() or 'az')[:2]
 
 
-def build_package_details_summary(package: dict, lang: str | None = None) -> str:
-    """Comma-separated package facts for clause 1.1 (months, lessons, duration)."""
-    lang = _contract_lang(lang)
+def _format_months_label(package: dict, lang: str) -> str:
+    months_display = (package.get('months_display') or '').strip()
+    if months_display:
+        return months_display
     months = package.get('months')
-    duration = (package.get('duration') or '').strip()
+    if not months:
+        return ''
+    with translation.override(lang):
+        return ngettext(
+            '%(counter)s month',
+            '%(counter)s months',
+            months,
+        ) % {'counter': months}
+
+
+def _format_lessons_label(package: dict, lang: str) -> str:
     lesson_count = package.get('lesson_count')
+    if not lesson_count:
+        return ''
+    with translation.override(lang):
+        return ngettext(
+            '%(counter)s lesson',
+            '%(counter)s lessons',
+            lesson_count,
+        ) % {'counter': lesson_count}
+
+
+def build_package_details_summary(package: dict, lang: str | None = None) -> str:
+    """Comma-separated package facts for clause 1.1 (e.g. 1 ay, 8 dərs)."""
+    lang = _contract_lang(lang)
     lesson_minutes_display = (package.get('lesson_minutes_display') or '').strip()
 
     with translation.override(lang):
         parts = []
-        if months:
-            parts.append(
-                ngettext(
-                    '%(counter)s month',
-                    '%(counter)s months',
-                    months,
-                )
-                % {'counter': months}
-            )
-        elif duration:
-            parts.append(duration)
-        if lesson_count:
-            parts.append(
-                ngettext(
-                    '%(counter)s lesson',
-                    '%(counter)s lessons',
-                    lesson_count,
-                )
-                % {'counter': lesson_count}
-            )
+        months_label = _format_months_label(package, lang)
+        lessons_label = _format_lessons_label(package, lang)
+        if months_label:
+            parts.append(months_label)
+        if lessons_label:
+            parts.append(lessons_label)
         if lesson_minutes_display:
             parts.append(
                 _('%(minutes)s per lesson') % {'minutes': lesson_minutes_display}
@@ -66,34 +76,14 @@ def build_package_details_summary(package: dict, lang: str | None = None) -> str
 
 
 def build_payment_clause(package: dict, lang: str | None = None) -> str:
-    """Clause 2.1 — amount, months, duration, lessons from serialized price package."""
+    """Clause 2.1 — amount, months, and lessons from serialized price package."""
     lang = _contract_lang(lang)
-    months = package.get('months')
-    duration = (package.get('duration') or '').strip()
     price = package.get('price_display') or ''
-    lesson_count = package.get('lesson_count')
     lesson_minutes_display = (package.get('lesson_minutes_display') or '').strip()
 
     with translation.override(lang):
-        if months:
-            period = ngettext(
-                '%(counter)s month',
-                '%(counter)s months',
-                months,
-            ) % {'counter': months}
-        elif duration:
-            period = duration
-        else:
-            period = _('the agreed period')
-
-        if lesson_count:
-            lessons = ngettext(
-                '%(counter)s lesson',
-                '%(counter)s lessons',
-                lesson_count,
-            ) % {'counter': lesson_count}
-        else:
-            lessons = _('the agreed number of lessons')
+        period = _format_months_label(package, lang) or _('the agreed period')
+        lessons = _format_lessons_label(package, lang) or _('the agreed number of lessons')
 
         if lesson_minutes_display:
             minutes_clause = _(

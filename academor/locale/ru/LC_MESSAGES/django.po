@@ -1452,3 +1452,71 @@ msgid ""
 "%(intro)s after paying the specified amount of %(price)s AZN, %(schedule)s."
 msgstr ""
 "%(intro)s после оплаты установленной суммы %(price)s AZN, %(schedule)s."
+
+msgid "Popular"
+msgstr "Популярное"
+
+msgid "Most in demand"
+msgstr "Самые востребованные"
+
+msgid "Show on homepage"
+msgstr "Показать на главной"
+
+msgid ""
+"If enabled, this package appears in the homepage \"Most in demand\" price "
+"carousel."
+msgstr ""
+"Если включено, пакет отображается в карусели цен «Самые востребованные» на "
+"главной странице."
+
+#: projects/models/motto_models.py:7
+msgid "About page"
+msgstr "Страница «О нас»"
+
+#: projects/models/motto_models.py:8
+msgid "Contact page"
+msgstr "Страница контактов"
+
+#: projects/models/motto_models.py:9
+msgid "Services page"
+msgstr "Страница услуг"
+
+#: projects/models/motto_models.py:10
+msgid "Courses page"
+msgstr "Страница курсов"
+
+#: projects/models/motto_models.py:11
+msgid "Tests page"
+msgstr "Страница тестов"
+
+#: projects/models/motto_models.py:12
+msgid "Study abroad page"
+msgstr "Страница обучения за границей"
+
+#: projects/models/motto_models.py:13
+msgid "Blog page"
+msgstr "Страница блога"
+
+#: projects/models/motto_models.py:14
+msgid "Team page"
+msgstr "Страница команды"
+
+#: projects/models/motto_models.py:24
+msgid "Page"
+msgstr "Страница"
+
+#: projects/models/motto_models.py:25
+msgid "Inner page whose banner shows this tagline."
+msgstr "Внутренняя страница, чей баннер показывает этот слоган."
+
+#: projects/models/motto_models.py:30
+msgid "Reserved for admin list sorting."
+msgstr "Зарезервировано для сортировки в списке админки."
+
+#: projects/models/motto_models.py:43
+msgid "Tagline"
+msgstr "Слоган баннера"
+
+#: projects/models/motto_models.py:44
+msgid "Taglines"
+msgstr "Слоганы баннеров"

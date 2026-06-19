@@ -1,65 +1,52 @@
 from django.db import models
 from django.core.validators import MaxLengthValidator
+from django.utils.translation import gettext_lazy as _
+
+
+class TaglinePage(models.TextChoices):
+    ABOUT = 'about', _('About page')
+    CONTACT = 'contact', _('Contact page')
+    SERVICE = 'service', _('Services page')
+    COURSES = 'courses', _('Courses page')
+    TESTS = 'tests', _('Tests page')
+    ABROAD = 'abroad', _('Study abroad page')
+    BLOG = 'blog', _('Blog page')
+    TEAM = 'team', _('Team page')
 
 
 class Tagline(models.Model):
-    # Small heading (e.g. "Best Online Courses")
-    heading_small_az = models.CharField(
-        max_length=150,
-        blank=True,
-        verbose_name='Hero small heading (AZ)',
+    page = models.CharField(
+        max_length=20,
+        choices=TaglinePage.choices,
+        default=TaglinePage.ABOUT,
+        db_index=True,
+        unique=True,
+        verbose_name=_('Page'),
+        help_text=_('Inner page whose banner shows this tagline.'),
     )
-    heading_small_en = models.CharField(
-        max_length=150,
-        blank=True,
-        verbose_name='Hero small heading (EN)',
+    order = models.PositiveIntegerField(
+        default=0,
+        verbose_name=_('Order'),
+        help_text=_('Reserved for admin list sorting.'),
     )
-    heading_small_ru = models.CharField(
-        max_length=150,
-        blank=True,
-        verbose_name='Hero small heading (RU)',
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name=_('Active'),
     )
-
-    # Main heading (e.g. "The Best Online Learning Platform")
-    heading_main_az = models.CharField(
-        max_length=200,
-        blank=True,
-        verbose_name='Hero main heading (AZ)',
-    )
-    heading_main_en = models.CharField(
-        max_length=200,
-        blank=True,
-        verbose_name='Hero main heading (EN)',
-    )
-    heading_main_ru = models.CharField(
-        max_length=200,
-        blank=True,
-        verbose_name='Hero main heading (RU)',
-    )
-
-    # Body/description text under the headings
-    body_az = models.TextField(
+    text = models.TextField(
         validators=[MaxLengthValidator(400)],
         blank=True,
-        verbose_name='Hero description (AZ)',
-    )
-    body_en = models.TextField(
-        validators=[MaxLengthValidator(400)],
-        blank=True,
-        verbose_name='Hero description (EN)',
-    )
-    body_ru = models.TextField(
-        validators=[MaxLengthValidator(400)],
-        blank=True,
-        verbose_name='Hero description (RU)',
+        verbose_name=_('Description (AZ)'),
     )
 
     class Meta:
-        verbose_name = 'Tagline'
-        verbose_name_plural = 'Tagline)'
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
+        verbose_name = _('Tagline')
+        verbose_name_plural = _('Taglines')
+        ordering = ('page', 'order', 'pk')
 
     def __str__(self):
-        return 'Tagline'
+        label = self.get_page_display()
+        snippet = (self.text or '').strip()
+        if snippet:
+            return f'{label} — {snippet[:60]}'
+        return label

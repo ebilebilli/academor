@@ -318,7 +318,7 @@
     {% include "includes/site_spinner.html" %}
     {% include "includes/site_navbar.html" %}
 
-    <div class="container-fluid bg-primary mb-5 page-header page-header-hero-band"{% include "includes/page_header_dynamic_bg.html" %}></div>
+    {% include "includes/page_header_banner.html" %}
 
     <div class="container-xxl py-5">
         <div class="container">
@@ -366,7 +366,7 @@
 
                         <!-- Cover / video -->
                         {% if post.video %}
-                        <div class="blog-detail__cover mb-4 wow fadeInUp" data-wow-delay="0.05s">
+                        <div class="blog-detail__cover mb-4">
                             {% include "includes/plyr_video_player.html" with video_url=post.video cover_url=post.cover_full alt=post.name eager_load=True %}
                         </div>
                         {% elif post.cover %}

@@ -1473,3 +1473,71 @@ msgid ""
 msgstr ""
 "%(intro)s müəyyən edilmiş %(price)s manat məbləğini ödədikdən sonra, "
 "%(schedule)s."
+
+msgid "Popular"
+msgstr "Məşhur"
+
+msgid "Most in demand"
+msgstr "Ən çox maraq göstərilənələr"
+
+msgid "Show on homepage"
+msgstr "Ana səhifədə göstər"
+
+msgid ""
+"If enabled, this package appears in the homepage \"Most in demand\" price "
+"carousel."
+msgstr ""
+"Aktiv olanda, paket ana səhifədəki «Ən çox maraq göstərilənələr» qiymət "
+"karuselində göstərilir."
+
+#: projects/models/motto_models.py:7
+msgid "About page"
+msgstr "Haqqımızda səhifəsi"
+
+#: projects/models/motto_models.py:8
+msgid "Contact page"
+msgstr "Əlaqə səhifəsi"
+
+#: projects/models/motto_models.py:9
+msgid "Services page"
+msgstr "Xidmətlər səhifəsi"
+
+#: projects/models/motto_models.py:10
+msgid "Courses page"
+msgstr "Kurslar səhifəsi"
+
+#: projects/models/motto_models.py:11
+msgid "Tests page"
+msgstr "Testlər səhifəsi"
+
+#: projects/models/motto_models.py:12
+msgid "Study abroad page"
+msgstr "Xaricdə təhsil səhifəsi"
+
+#: projects/models/motto_models.py:13
+msgid "Blog page"
+msgstr "Bloq səhifəsi"
+
+#: projects/models/motto_models.py:14
+msgid "Team page"
+msgstr "Komanda səhifəsi"
+
+#: projects/models/motto_models.py:24
+msgid "Page"
+msgstr "Səhifə"
+
+#: projects/models/motto_models.py:25
+msgid "Inner page whose banner shows this tagline."
+msgstr "Banner bu tagline-ı göstərən daxili səhifə."
+
+#: projects/models/motto_models.py:30
+msgid "Reserved for admin list sorting."
+msgstr "Admin siyahısı sıralaması üçün saxlanılır."
+
+#: projects/models/motto_models.py:43
+msgid "Tagline"
+msgstr "Banner tagline-ı"
+
+#: projects/models/motto_models.py:44
+msgid "Taglines"
+msgstr "Banner tagline-ları"

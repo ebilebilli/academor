@@ -1450,3 +1450,71 @@ msgid ""
 "%(intro)s after paying the specified amount of %(price)s AZN, %(schedule)s."
 msgstr ""
 "%(intro)s after paying the specified amount of %(price)s AZN, %(schedule)s."
+
+msgid "Popular"
+msgstr "Popular"
+
+msgid "Most in demand"
+msgstr "Most in demand"
+
+msgid "Show on homepage"
+msgstr "Show on homepage"
+
+msgid ""
+"If enabled, this package appears in the homepage \"Most in demand\" price "
+"carousel."
+msgstr ""
+"If enabled, this package appears in the homepage \"Most in demand\" price "
+"carousel."
+
+#: projects/models/motto_models.py:7
+msgid "About page"
+msgstr "About page"
+
+#: projects/models/motto_models.py:8
+msgid "Contact page"
+msgstr "Contact page"
+
+#: projects/models/motto_models.py:9
+msgid "Services page"
+msgstr "Services page"
+
+#: projects/models/motto_models.py:10
+msgid "Courses page"
+msgstr "Courses page"
+
+#: projects/models/motto_models.py:11
+msgid "Tests page"
+msgstr "Tests page"
+
+#: projects/models/motto_models.py:12
+msgid "Study abroad page"
+msgstr "Study abroad page"
+
+#: projects/models/motto_models.py:13
+msgid "Blog page"
+msgstr "Blog page"
+
+#: projects/models/motto_models.py:14
+msgid "Team page"
+msgstr "Team page"
+
+#: projects/models/motto_models.py:24
+msgid "Page"
+msgstr "Page"
+
+#: projects/models/motto_models.py:25
+msgid "Inner page whose banner shows this tagline."
+msgstr "Inner page whose banner shows this tagline."
+
+#: projects/models/motto_models.py:30
+msgid "Reserved for admin list sorting."
+msgstr "Reserved for admin list sorting."
+
+#: projects/models/motto_models.py:43
+msgid "Tagline"
+msgstr "Tagline"
+
+#: projects/models/motto_models.py:44
+msgid "Taglines"
+msgstr "Taglines"

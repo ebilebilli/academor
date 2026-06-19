@@ -12,7 +12,7 @@ from ckeditor.widgets import CKEditorWidget
 from projects.models import *
 from projects.admin.mixins import AcademorModelAdmin, install_admin_help
 from projects.admin.order_fields import apply_order_choice_field
-from projects.utils.cache_utils import invalidate_sale_cache
+from projects.utils.cache_utils import invalidate_sale_cache, invalidate_model_cache
 
 
 class AdminImageCompressMixin:
@@ -132,6 +132,49 @@ class MediaAdmin(AdminImageCompressMixin, AcademorModelAdmin):
         flags = [label for field, label in page_labels if getattr(obj, field, False)]
         return ' | '.join(flags) if flags else '-'
     background_flags.short_description = "Background"
+
+
+@admin.register(Tagline)
+class TaglineAdmin(AcademorModelAdmin):
+    list_display = (
+        'id',
+        'page',
+        'text_preview',
+        'is_active',
+    )
+    list_filter = ('is_active',)
+    list_editable = ('is_active',)
+    search_fields = ('text',)
+    ordering = ('page', 'id')
+    fieldsets = (
+        (None, {
+            'fields': ('page', 'is_active', 'text'),
+            'description': (
+                'One tagline per inner page banner (About, Courses, Blog, etc.). '
+                'Homepage is not included.'
+            ),
+        }),
+    )
+
+    @admin.display(description='Description (AZ)')
+    def text_preview(self, obj):
+        text = (obj.text or '').strip()
+        if not text:
+            return '-'
+        return text[:80] + ('…' if len(text) > 80 else '')
+
+    def changelist_view(self, request, extra_context=None):
+        """
+        list_editable (order, is_active) may batch-save without firing post_save on some setups.
+        """
+        response = super().changelist_view(request, extra_context=extra_context)
+        if (
+            request.method == 'POST'
+            and '_save' in request.POST
+            and response.status_code == 302
+        ):
+            transaction.on_commit(lambda: invalidate_model_cache('Tagline'))
+        return response
 
 
 
@@ -284,7 +327,6 @@ class CoursePricePackageInline(admin.TabularInline):
         'name_az',
         'name_en',
         'name_ru',
-        'duration',
         'months',
         'lesson_count',
         'lesson_minutes',
@@ -292,6 +334,7 @@ class CoursePricePackageInline(admin.TabularInline):
         'order',
         'is_active',
         'is_premium',
+        'show_on_homepage',
     )
     ordering = ('order', 'id')
 
@@ -302,7 +345,6 @@ class CoursePricePackageAdmin(AcademorModelAdmin):
         'id',
         'course',
         'name_az',
-        'duration',
         'months',
         'lesson_count',
         'lesson_minutes',
@@ -310,24 +352,38 @@ class CoursePricePackageAdmin(AcademorModelAdmin):
         'order',
         'is_active',
         'is_premium',
+        'show_on_homepage',
     )
-    list_filter = ('is_active', 'is_premium', 'course')
+    list_filter = ('is_active', 'is_premium', 'show_on_homepage', 'course')
     search_fields = ('name_az', 'name_en', 'name_ru', 'course__name_az', 'course__slug')
-    list_editable = ('order', 'is_active')
+    list_editable = ('order', 'is_active', 'show_on_homepage')
     ordering = ('course', 'order', 'id')
     autocomplete_fields = ('course',)
     fieldsets = (
         (None, {
-            'fields': ('course', 'order', 'is_active', 'is_premium'),
+            'fields': ('course', 'order', 'is_active', 'is_premium', 'show_on_homepage'),
             'description': 'Each package is one pricing option on the course page and in the payment popup.',
         }),
         ('Names', {
             'fields': ('name_az', 'name_en', 'name_ru'),
         }),
         ('Package details', {
-            'fields': ('months', 'duration', 'lesson_count', 'lesson_minutes', 'price'),
+            'fields': ('months', 'lesson_count', 'lesson_minutes', 'price'),
         }),
     )
+
+    def changelist_view(self, request, extra_context=None):
+        """
+        list_editable (order, is_active) can bypass post_save — bump cache for course prices.
+        """
+        response = super().changelist_view(request, extra_context=extra_context)
+        if (
+            request.method == 'POST'
+            and '_save' in request.POST
+            and response.status_code == 302
+        ):
+            transaction.on_commit(lambda: invalidate_model_cache('Service'))
+        return response
 
 
 class ServiceAdminForm(forms.ModelForm):
@@ -1391,6 +1447,7 @@ def _sorted_get_app_list(request, app_label=None):
         "About": 20,
         "AboutWhyItem": 21,
         "SiteFaqEntry": 25,
+        "Tagline": 26,
         "Contact": 30,
 
         # Team / reviews / blog

@@ -127,7 +127,7 @@ ADMIN_HELP = {
       'and the payment modal when a visitor buys a package.'
     ),
     'tips': [
-      'Add price packages in the table below (duration, lessons, price in AZN).',
+      'Add price packages in the table below (months, lessons, price in AZN).',
       'Upload ONE thumbnail image in the Media inline at the bottom.',
       'Card icon: shown on homepage and courses list; "Default" auto-detects from the URL slug.',
       'Tags: optional — used for SEO keywords on course pages (not shown to visitors).',
@@ -136,18 +136,37 @@ ADMIN_HELP = {
       'Slug is hidden — it is set automatically from the Azerbaijani name.',
     ],
   },
+
+  'Tagline': {
+    'title': 'Page banner taglines',
+    'summary': (
+      'Short Azerbaijani text shown on each inner page hero banner (animated). '
+      'One row per page — homepage is not included.'
+    ),
+    'where': (
+      'Top banner on About, Contact, Courses, Services, Tests, Study abroad, Blog, Team, '
+      'and detail pages that share those banners.'
+    ),
+    'tips': [
+      'Pick the page — only one tagline row per page.',
+      'Description (AZ) is the only field; keep it to one or two short lines.',
+      'Turn off Active to hide without deleting.',
+    ],
+  },
   'CoursePricePackage': {
     'title': 'Course price packages',
     'summary': (
-      'Pricing tiers for a course: name, duration, lesson count, lesson length, and price.'
+      'Pricing tiers for a course: name, months, lesson count, lesson length, and price.'
     ),
     'where': (
-      'Course detail page pricing table and the payment popup when a visitor selects a package.'
+      'Course detail page pricing table, the payment popup, and the homepage '
+      '"Most in demand" price carousel (when "Show on homepage" is on).'
     ),
     'tips': [
       'Link each package to the correct course.',
-      'Lower "Order" = appears first on the course page.',
+      'Lower "Order" = appears first on the course page and in the homepage carousel.',
       '"Premium" marks a highlighted/recommended package in the UI.',
+      '"Show on homepage" adds the package to the homepage price carousel (any course).',
       'Turn off "Active" to hide a package without deleting it.',
     ],
   },

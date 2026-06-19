@@ -2,7 +2,7 @@
 <div class="container-xxl py-5 about-intro-section{% if home_about_block %} about-intro-section--home{% endif %}">
     <div class="container">
         <div class="row g-5 align-items-start">
-            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+            <div class="col-lg-6{% if show_about_video and about and about.video %}{% else %} wow fadeInUp{% endif %}"{% if not show_about_video or not about.video %} data-wow-delay="0.1s"{% endif %}>
                 {% if show_about_video and about and about.video %}
                 {% include "includes/about_video_player.html" with home_about_block=home_about_block %}
                 {% elif show_about_video and about and about.video_cover %}

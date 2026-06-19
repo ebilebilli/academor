@@ -68,16 +68,8 @@
                     <li>
                         <i class="fas fa-check-circle" aria-hidden="true"></i>
                         <span>
-                            <span class="course-pay-card__feature-label">{% trans "Duration" %}:</span>
+                            <span class="course-pay-card__feature-label">{% trans "Months" %}:</span>
                             {{ pkg.months_display }}
-                        </span>
-                    </li>
-                    {% elif pkg.duration %}
-                    <li>
-                        <i class="fas fa-check-circle" aria-hidden="true"></i>
-                        <span>
-                            <span class="course-pay-card__feature-label">{% trans "Duration" %}:</span>
-                            {{ pkg.duration }}
                         </span>
                     </li>
                     {% endif %}
