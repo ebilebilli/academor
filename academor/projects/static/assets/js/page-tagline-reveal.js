@@ -50,6 +50,15 @@
                 return;
             }
 
+            /* Mobil: overlay artıq tam örtülür; animasiya dərhal başlasın */
+            if (
+                window.matchMedia &&
+                window.matchMedia("(max-width: 767.98px)").matches
+            ) {
+                reveal(block);
+                return;
+            }
+
             if (!("IntersectionObserver" in window)) {
                 reveal(block);
                 return;
