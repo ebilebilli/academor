@@ -44,6 +44,10 @@
                 root.classList.remove('is-playing');
             }
 
+            function setFullscreenState(active) {
+                root.classList.toggle('is-fullscreen', active);
+            }
+
             function runPlay(playFn) {
                 var result;
                 try {
@@ -66,8 +70,14 @@
                         iconUrl: getIconUrl() || 'https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.svg',
                         loadSprite: true,
                         clickToPlay: true,
+                        playsinline: true,
                         controls: ['play', 'progress', 'current-time', 'duration', 'mute', 'volume', 'fullscreen'],
                         resetOnEnd: true,
+                        fullscreen: {
+                            enabled: true,
+                            fallback: true,
+                            iosNative: true,
+                        },
                     });
                 } catch (err) {
                     player = null;
@@ -97,9 +107,16 @@
 
             if (player) {
                 player.on('play', revealPlayer);
+                player.on('enterfullscreen', function () {
+                    setFullscreenState(true);
+                });
+                player.on('exitfullscreen', function () {
+                    setFullscreenState(false);
+                });
                 player.on('ended', function () {
                     player.stop();
                     hidePlayer();
+                    setFullscreenState(false);
                 });
             } else {
                 video.addEventListener('play', revealPlayer);

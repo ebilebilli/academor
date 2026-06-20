@@ -3082,23 +3082,33 @@ h1.animated, h2.animated, h3.animated,
     display: none !important;
 }
 
-/* Cover image is in-flow — its intrinsic size defines the container */
+/* Keep cover in layout (visibility) so the container size stays stable on play */
 .about-vp.is-playing .about-vp__cover {
-    display: none;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
 }
 
 .about-vp.is-playing > .plyr {
-    position: relative;
-    inset: auto;
     z-index: 11;
-    width: 100%;
-    min-height: 200px;
-    aspect-ratio: 16 / 9;
 }
 
-/* Plyr fallback/native fullscreen — reset custom layout (iOS + mobile) */
+/* Fullscreen — release parent clipping and reset custom layout (iOS + mobile) */
+.about-vp.is-fullscreen,
+.about-vp:has(.plyr.plyr--fullscreen-fallback) {
+    overflow: visible !important;
+}
+
+.about-vp.is-fullscreen.about-intro-image-card,
+.about-vp:has(.plyr.plyr--fullscreen-fallback).about-intro-image-card {
+    overflow: visible !important;
+    min-height: 0 !important;
+}
+
+.about-vp.is-fullscreen > .plyr,
 .about-vp .plyr.plyr--fullscreen-fallback,
-.about-vp .plyr:fullscreen {
+.about-vp .plyr:fullscreen,
+.about-vp .plyr:-webkit-full-screen {
     position: fixed !important;
     inset: 0 !important;
     z-index: 10000000 !important;
@@ -3112,9 +3122,10 @@ h1.animated, h2.animated, h3.animated,
     box-shadow: none !important;
 }
 
-.about-vp.is-playing.about-intro-image-card {
-    overflow: visible;
-    min-height: 0;
+.about-vp .plyr.plyr--fullscreen-fallback .plyr__video-wrapper,
+.about-vp .plyr:fullscreen .plyr__video-wrapper,
+.about-vp .plyr:-webkit-full-screen .plyr__video-wrapper {
+    height: 100%;
 }
 
 .about-vp__cover {
@@ -3208,10 +3219,6 @@ h1.animated, h2.animated, h3.animated,
 }
 
 @media (max-width: 767.98px) {
-    .about-vp.is-playing > .plyr {
-        min-height: 220px;
-    }
-
     .about-vp__play-btn {
         width: 68px;
         height: 68px;
