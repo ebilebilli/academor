@@ -140,7 +140,7 @@ ADMIN_HELP = {
   'Tagline': {
     'title': 'Page banner taglines',
     'summary': (
-      'Short Azerbaijani text shown on each inner page hero banner (animated). '
+      'Short text shown on each inner page hero banner (animated). '
       'One row per page — homepage is not included.'
     ),
     'where': (
@@ -149,7 +149,7 @@ ADMIN_HELP = {
     ),
     'tips': [
       'Pick the page — only one tagline row per page.',
-      'Description (AZ) is the only field; keep it to one or two short lines.',
+      'Fill Description (AZ/EN/RU); keep each to one or two short lines.',
       'Turn off Active to hide without deleting.',
     ],
   },

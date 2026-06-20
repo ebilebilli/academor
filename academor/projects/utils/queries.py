@@ -848,10 +848,10 @@ def get_home_background_images(limit=6):
     return [media_url(m.image) for m in media_list if m.image]
 
 
-def _serialize_tagline(tagline):
+def _serialize_tagline(tagline, lang='az'):
     if not tagline:
         return None
-    text = (tagline.text or '').strip()
+    text = _localized_value(tagline, 'text', lang)
     if not text:
         return None
     return {'text': text}
@@ -859,12 +859,11 @@ def _serialize_tagline(tagline):
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
 def get_page_tagline(page_key, lang='az'):
-    """Per-page banner text (AZ only) — invalidate via Tagline post_save/post_delete signals."""
-    del lang  # reserved for future i18n
+    """Per-page banner text — invalidate via Tagline post_save/post_delete signals."""
     if not page_key:
         return None
     tagline = Tagline.objects.filter(page=page_key, is_active=True).first()
-    return _serialize_tagline(tagline)
+    return _serialize_tagline(tagline, lang)
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')

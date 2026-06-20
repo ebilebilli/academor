@@ -144,21 +144,24 @@ class TaglineAdmin(AcademorModelAdmin):
     )
     list_filter = ('is_active',)
     list_editable = ('is_active',)
-    search_fields = ('text',)
+    search_fields = ('text_az', 'text_en', 'text_ru')
     ordering = ('page', 'id')
     fieldsets = (
         (None, {
-            'fields': ('page', 'is_active', 'text'),
+            'fields': ('page', 'is_active'),
             'description': (
                 'One tagline per inner page banner (About, Courses, Blog, etc.). '
                 'Homepage is not included.'
             ),
         }),
+        ('Azerbaijani', {'fields': ('text_az',)}),
+        ('English', {'fields': ('text_en',)}),
+        ('Russian', {'fields': ('text_ru',)}),
     )
 
     @admin.display(description='Description (AZ)')
     def text_preview(self, obj):
-        text = (obj.text or '').strip()
+        text = (obj.text_az or '').strip()
         if not text:
             return '-'
         return text[:80] + ('…' if len(text) > 80 else '')

@@ -33,10 +33,20 @@ class Tagline(models.Model):
         default=True,
         verbose_name=_('Active'),
     )
-    text = models.TextField(
+    text_az = models.TextField(
         validators=[MaxLengthValidator(400)],
         blank=True,
         verbose_name=_('Description (AZ)'),
+    )
+    text_en = models.TextField(
+        validators=[MaxLengthValidator(400)],
+        blank=True,
+        verbose_name=_('Description (EN)'),
+    )
+    text_ru = models.TextField(
+        validators=[MaxLengthValidator(400)],
+        blank=True,
+        verbose_name=_('Description (RU)'),
     )
 
     class Meta:
@@ -46,7 +56,7 @@ class Tagline(models.Model):
 
     def __str__(self):
         label = self.get_page_display()
-        snippet = (self.text or '').strip()
+        snippet = (self.text_az or self.text_en or self.text_ru or '').strip()
         if snippet:
             return f'{label} — {snippet[:60]}'
         return label
