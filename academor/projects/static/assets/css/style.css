@@ -3096,6 +3096,22 @@ h1.animated, h2.animated, h3.animated,
     aspect-ratio: 16 / 9;
 }
 
+/* Plyr fallback/native fullscreen — reset custom layout (iOS + mobile) */
+.about-vp .plyr.plyr--fullscreen-fallback,
+.about-vp .plyr:fullscreen {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 10000000 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    aspect-ratio: auto !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+}
+
 .about-vp.is-playing.about-intro-image-card {
     overflow: visible;
     min-height: 0;
