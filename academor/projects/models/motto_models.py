@@ -59,4 +59,4 @@ class Tagline(models.Model):
         snippet = (self.text_az or self.text_en or self.text_ru or '').strip()
         if snippet:
             return f'{label} — {snippet[:60]}'
-        return label
+        return str(label)

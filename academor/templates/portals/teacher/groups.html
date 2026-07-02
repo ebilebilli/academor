@@ -1,0 +1,263 @@
+{% extends "portals/base.html" %}
+{% load i18n portal_tags static %}
+
+{% block title %}{% trans 'Groups' %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'portals/css/portal-teacher-groups.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'portals/js/portal-teacher-groups.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div
+  id="portal-teacher-groups"
+  data-total-groups="{{ groups|length }}"
+  data-label-showing="{% trans 'Showing' %}"
+  data-label-of="{% trans 'of' %}"
+>
+{% portal_page_heading icon="bi-people" eyebrow="Teacher" title="Groups" subtitle="All study groups assigned to you." %}
+
+<!-- Control Toolbar -->
+<div class="portal-toolbar mb-3">
+  <div class="portal-toolbar-left">
+    <!-- Search Box -->
+    <div class="portal-search-box">
+      <i class="bi bi-search" aria-hidden="true"></i>
+      <input type="text" id="group-search" class="form-control form-control-sm" placeholder="{% trans 'Search groups...' %}">
+    </div>
+
+    <!-- Filter Dropdown -->
+    <div class="dropdown">
+      <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+        <i class="bi bi-funnel me-1" aria-hidden="true"></i>{% trans 'Filter' %}
+      </button>
+      <ul class="dropdown-menu portal-filter-menu">
+        <li class="dropdown-header">{% trans 'Status' %}</li>
+        <li><a class="dropdown-item filter-option" href="#" data-portal-groups-filter="all">
+          <i class="bi bi-circle text-secondary me-2"></i>{% trans 'All groups' %}
+        </a></li>
+        <li><a class="dropdown-item filter-option" href="#" data-portal-groups-filter="active">
+          <i class="bi bi-check-circle text-success me-2"></i>{% trans 'Active only' %}
+        </a></li>
+        <li><a class="dropdown-item filter-option" href="#" data-portal-groups-filter="inactive">
+          <i class="bi bi-pause-circle text-muted me-2"></i>{% trans 'Inactive only' %}
+        </a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li class="dropdown-header">{% trans 'Sort by' %}</li>
+        <li><a class="dropdown-item" href="#" data-portal-groups-sort="name">
+          <i class="bi bi-sort-alpha-down me-2"></i>{% trans 'Name' %}
+        </a></li>
+        <li><a class="dropdown-item" href="#" data-portal-groups-sort="students">
+          <i class="bi bi-sort-numeric-down me-2"></i>{% trans 'Student count' %}
+        </a></li>
+        <li><a class="dropdown-item" href="#" data-portal-groups-sort="date">
+          <i class="bi bi-calendar me-2"></i>{% trans 'Start date' %}
+        </a></li>
+      </ul>
+    </div>
+
+    <!-- Course Type Filter -->
+    <div class="dropdown">
+      <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+        <i class="bi bi-book me-1" aria-hidden="true"></i>{% trans 'Course' %}
+      </button>
+      <ul class="dropdown-menu portal-filter-menu" id="course-filter-menu">
+        <li><a class="dropdown-item" href="#" data-portal-groups-course="all">{% trans 'All courses' %}</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <!-- Course options will be populated by JS -->
+      </ul>
+    </div>
+  </div>
+
+  <div class="portal-toolbar-right">
+    <!-- View Toggle -->
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-outline-secondary btn-sm active" id="view-table" data-portal-groups-view="table" title="{% trans 'Table view' %}">
+        <i class="bi bi-table"></i>
+      </button>
+      <button type="button" class="btn btn-outline-secondary btn-sm" id="view-cards" data-portal-groups-view="cards" title="{% trans 'Card view' %}">
+        <i class="bi bi-grid"></i>
+      </button>
+    </div>
+
+    <!-- Schedule shortcut -->
+    <a class="btn btn-outline-secondary btn-sm" href="{% url 'portals:teacher-schedule' %}">
+      <i class="bi bi-calendar-week me-1" aria-hidden="true"></i>{% trans 'View Schedule' %}
+    </a>
+  </div>
+</div>
+
+<!-- Stats Summary -->
+<div class="portal-stats-bar mb-3">
+  <span class="portal-stat-item">
+    <i class="bi bi-people text-primary"></i>
+    <strong id="total-groups">{{ groups|length }}</strong> {% trans 'groups' %}
+  </span>
+  <span class="portal-stat-item">
+    <i class="bi bi-check-circle text-success"></i>
+    <strong id="active-groups">0</strong> {% trans 'active' %}
+  </span>
+  <span class="portal-stat-item">
+    <i class="bi bi-mortarboard text-info"></i>
+    <strong id="total-students">0</strong> {% trans 'students total' %}
+  </span>
+  <span class="portal-stat-divider"></span>
+  <span class="portal-stat-item text-muted">
+    <span id="showing-text">{% trans 'Showing all' %}</span>
+  </span>
+</div>
+
+{% if groups %}
+<!-- Table View -->
+<section class="panel" id="groups-table-view">
+  <div class="table-responsive">
+    <table class="table align-middle mb-0 portal-data-table" id="groups-table">
+      <thead>
+        <tr>
+          <th scope="col" class="portal-col-sortable" data-portal-groups-sort="name">
+            {% trans 'Group' %} <i class="bi bi-arrow-down-up"></i>
+          </th>
+          <th scope="col">{% trans 'Course' %}</th>
+          <th scope="col" class="portal-col-sortable" data-portal-groups-sort="date">
+            {% trans 'Start date' %} <i class="bi bi-arrow-down-up"></i>
+          </th>
+          <th scope="col" class="portal-col-sortable text-center" data-portal-groups-sort="students">
+            {% trans 'Students' %} <i class="bi bi-arrow-down-up"></i>
+          </th>
+          <th scope="col">{% trans 'Status' %}</th>
+          <th scope="col" class="text-end">{% trans 'Actions' %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for group in groups %}
+        <tr class="group-row"
+            data-name="{{ group.name|lower }}"
+            data-course="{{ group.course_type_label }}"
+            data-status="{% if group.is_active %}active{% else %}inactive{% endif %}"
+            data-students="{{ group.student_count }}"
+            data-date="{{ group.start_date|default:"" }}">
+          <td class="fw-semibold">
+            <div class="d-flex align-items-center gap-2">
+              <div class="portal-group-avatar" style="background: {{ group.course_color|default:'#00313D' }}">
+                {{ group.name|slice:":2"|upper }}
+              </div>
+              <span>{{ group.name }}</span>
+            </div>
+          </td>
+          <td>
+            <span class="portal-course-badge" data-course="{{ group.course_type_label }}">
+              {{ group.course_type_label }}
+            </span>
+          </td>
+          <td>{{ group.start_date|default:"—" }}</td>
+          <td class="text-center">
+            <span class="portal-count-badge {% if group.student_count > 0 %}has-students{% endif %}">
+              {{ group.student_count }}
+            </span>
+          </td>
+          <td>
+            {% if group.is_active %}
+              <span class="portal-status-badge active">
+                <i class="bi bi-check-circle"></i>{% trans 'Active' %}
+              </span>
+            {% else %}
+              <span class="portal-status-badge inactive">
+                <i class="bi bi-pause-circle"></i>{% trans 'Inactive' %}
+              </span>
+            {% endif %}
+          </td>
+          <td class="text-end">
+            <div class="portal-row-actions">
+              <a class="btn btn-icon btn-light" href="{% url 'portals:teacher-group-detail' pk=group.id %}" title="{% trans 'View' %}">
+                <i class="bi bi-eye" aria-hidden="true"></i>
+              </a>
+              <div class="dropdown d-inline-block">
+                <button class="btn btn-icon btn-light" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{% trans 'More actions' %}">
+                  <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li><a class="dropdown-item" href="{% url 'portals:teacher-lesson-create' %}">
+                    <i class="bi bi-journal-plus text-primary me-2"></i>{% trans 'Add Lesson' %}
+                  </a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="{% url 'portals:teacher-schedule' %}">
+                    <i class="bi bi-calendar-check text-warning me-2"></i>{% trans 'Mark Attendance' %}
+                  </a></li>
+                </ul>
+              </div>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Card View (Hidden by default) -->
+<section class="row g-3" id="groups-cards-view" style="display: none;">
+  {% for group in groups %}
+  <div class="col-md-6 col-lg-4 group-card-item"
+       data-name="{{ group.name|lower }}"
+       data-course="{{ group.course_type_label }}"
+       data-status="{% if group.is_active %}active{% else %}inactive{% endif %}">
+    <article class="portal-card">
+      <div class="portal-card-header">
+        <div class="portal-group-avatar-lg" style="background: {{ group.course_color|default:'#00313D' }}">
+          {{ group.name|slice:":2"|upper }}
+        </div>
+        <div class="portal-card-info">
+          <h4 class="portal-card-title">{{ group.name }}</h4>
+          <span class="portal-course-badge">{{ group.course_type_label }}</span>
+        </div>
+        <div class="portal-card-status">
+          {% if group.is_active %}
+            <span class="portal-status-dot active" title="{% trans 'Active' %}"></span>
+          {% else %}
+            <span class="portal-status-dot inactive" title="{% trans 'Inactive' %}"></span>
+          {% endif %}
+        </div>
+      </div>
+      <div class="portal-card-body">
+        <div class="portal-card-stats">
+          <div class="portal-card-stat">
+            <i class="bi bi-mortarboard" aria-hidden="true"></i>
+            <span>{{ group.student_count }} {% trans 'students' %}</span>
+          </div>
+          <div class="portal-card-stat">
+            <i class="bi bi-calendar3" aria-hidden="true"></i>
+            <span>{{ group.start_date|default:"—" }}</span>
+          </div>
+        </div>
+        {% if group.start_date %}
+        <div class="portal-card-meta">
+          <i class="bi bi-calendar3" aria-hidden="true"></i>
+          <span>{% trans 'Started' %}: {{ group.start_date }}</span>
+        </div>
+        {% endif %}
+      </div>
+      <div class="portal-card-footer">
+        <a class="btn btn-primary btn-sm w-100" href="{% url 'portals:teacher-group-detail' pk=group.id %}">
+          <i class="bi bi-eye me-2" aria-hidden="true"></i>{% trans 'View Group' %}
+        </a>
+      </div>
+    </article>
+  </div>
+  {% endfor %}
+</section>
+{% else %}
+<!-- Empty State -->
+<section class="portal-empty-state">
+  <div class="portal-empty-icon">
+    <i class="bi bi-people" aria-hidden="true"></i>
+  </div>
+  <h3>{% trans 'No groups yet' %}</h3>
+  <p class="text-muted">{% trans 'Study groups are assigned by Academor administration.' %}</p>
+</section>
+{% endif %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% load i18n %}
+{% if children|length > 1 %}
+<nav class="p-child-nav" aria-label="{% trans 'Uşaq seçimi' %}">
+  {% for child in children %}
+  <a
+    class="p-child-nav__link{% if selected_student.id == child.id %} is-active{% endif %}"
+    href="{{ request.path }}?student={{ child.id }}"
+    {% if selected_student.id == child.id %}aria-current="page"{% endif %}
+  >
+    {{ child.full_name }}
+  </a>
+  {% endfor %}
+</nav>
+{% endif %}

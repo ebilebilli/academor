@@ -1,0 +1,9 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="portal-admin-wrap">
+{% include "admin/includes/portal_help_panel.html" %}
+{{ block.super }}
+</div>
+{% endblock %}

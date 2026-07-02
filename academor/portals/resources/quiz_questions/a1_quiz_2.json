@@ -1,0 +1,399 @@
+{
+  "level": "A1",
+  "quiz": 2,
+  "title": "A1 Grammar Quiz 2 — Present Simple, Plurals, Have/Has",
+  "service": "general_english",
+  "category_name": "A1",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Present Simple",
+      "question": "She ___ to school every day.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "goed"
+      ],
+      "answer": 1,
+      "explanation": "He/she/it → add -s or -es. 'Go' → 'goes'."
+    },
+    {
+      "id": 2,
+      "topic": "Present Simple",
+      "question": "I ___ coffee every morning.",
+      "options": [
+        "drink",
+        "drinks",
+        "drinking",
+        "drinked"
+      ],
+      "answer": 0,
+      "explanation": "'I' in Present Simple → base form: 'drink'."
+    },
+    {
+      "id": 3,
+      "topic": "Present Simple",
+      "question": "They ___ football on Sundays.",
+      "options": [
+        "play",
+        "plays",
+        "playing",
+        "played"
+      ],
+      "answer": 0,
+      "explanation": "'They' → base form: 'play'."
+    },
+    {
+      "id": 4,
+      "topic": "Present Simple",
+      "question": "He ___ in London.",
+      "options": [
+        "live",
+        "lives",
+        "living",
+        "lived"
+      ],
+      "answer": 1,
+      "explanation": "'He' → add -s: 'lives'."
+    },
+    {
+      "id": 5,
+      "topic": "Present Simple",
+      "question": "My dog ___ a lot.",
+      "options": [
+        "sleep",
+        "sleeps",
+        "sleeping",
+        "slept"
+      ],
+      "answer": 1,
+      "explanation": "'My dog' (= it) → add -s: 'sleeps'."
+    },
+    {
+      "id": 6,
+      "topic": "Present Simple (negative)",
+      "question": "I ___ like vegetables.",
+      "options": [
+        "don't",
+        "doesn't",
+        "not",
+        "no"
+      ],
+      "answer": 0,
+      "explanation": "Negative for I/you/we/they → 'don't + verb'."
+    },
+    {
+      "id": 7,
+      "topic": "Present Simple (negative)",
+      "question": "She ___ eat meat.",
+      "options": [
+        "don't",
+        "doesn't",
+        "not",
+        "no"
+      ],
+      "answer": 1,
+      "explanation": "Negative for he/she/it → 'doesn't + verb'."
+    },
+    {
+      "id": 8,
+      "topic": "Present Simple (question)",
+      "question": "___ you speak English?",
+      "options": [
+        "Do",
+        "Does",
+        "Are",
+        "Is"
+      ],
+      "answer": 0,
+      "explanation": "Question for I/you/we/they → 'Do + subject + verb?'"
+    },
+    {
+      "id": 9,
+      "topic": "Present Simple (question)",
+      "question": "___ she work here?",
+      "options": [
+        "Do",
+        "Does",
+        "Is",
+        "Has"
+      ],
+      "answer": 1,
+      "explanation": "Question for he/she/it → 'Does + subject + base verb?'"
+    },
+    {
+      "id": 10,
+      "topic": "Present Simple (spelling)",
+      "question": "He ___ TV every night. (watch)",
+      "options": [
+        "watch",
+        "watchs",
+        "watches",
+        "watchies"
+      ],
+      "answer": 2,
+      "explanation": "Verbs ending in -ch → add -es: 'watches'."
+    },
+    {
+      "id": 11,
+      "topic": "Plurals",
+      "question": "One cat, two ___.",
+      "options": [
+        "cat",
+        "cats",
+        "cates",
+        "caties"
+      ],
+      "answer": 1,
+      "explanation": "Most nouns → add -s for plural: 'cats'."
+    },
+    {
+      "id": 12,
+      "topic": "Plurals",
+      "question": "One bus, three ___.",
+      "options": [
+        "bus",
+        "buss",
+        "buses",
+        "busies"
+      ],
+      "answer": 2,
+      "explanation": "Nouns ending in -s/-ss/-sh/-ch/-x → add -es: 'buses'."
+    },
+    {
+      "id": 13,
+      "topic": "Plurals (irregular)",
+      "question": "One child, many ___.",
+      "options": [
+        "childs",
+        "childes",
+        "children",
+        "childrens"
+      ],
+      "answer": 2,
+      "explanation": "'Child' has an irregular plural: 'children'. Never add -s."
+    },
+    {
+      "id": 14,
+      "topic": "Plurals (irregular)",
+      "question": "One man, two ___.",
+      "options": [
+        "mans",
+        "manes",
+        "men",
+        "mens"
+      ],
+      "answer": 2,
+      "explanation": "'Man' → irregular plural 'men'. Vowel change, no -s."
+    },
+    {
+      "id": 15,
+      "topic": "Plurals (irregular)",
+      "question": "One tooth, many ___.",
+      "options": [
+        "tooths",
+        "teeth",
+        "teeths",
+        "toothes"
+      ],
+      "answer": 1,
+      "explanation": "'Tooth' → irregular plural 'teeth'. Vowel change."
+    },
+    {
+      "id": 16,
+      "topic": "Plurals",
+      "question": "One city, five ___.",
+      "options": [
+        "citys",
+        "cityes",
+        "cities",
+        "city's"
+      ],
+      "answer": 2,
+      "explanation": "Nouns ending in consonant + y → change y to i, add -es: 'cities'."
+    },
+    {
+      "id": 17,
+      "topic": "Have / Has",
+      "question": "I ___ two brothers.",
+      "options": [
+        "have",
+        "has",
+        "is",
+        "are"
+      ],
+      "answer": 0,
+      "explanation": "'Have' is used with I/you/we/they."
+    },
+    {
+      "id": 18,
+      "topic": "Have / Has",
+      "question": "She ___ a new car.",
+      "options": [
+        "have",
+        "has",
+        "is",
+        "are"
+      ],
+      "answer": 1,
+      "explanation": "'Has' is used with he/she/it."
+    },
+    {
+      "id": 19,
+      "topic": "Have / Has",
+      "question": "We ___ a big garden.",
+      "options": [
+        "have",
+        "has",
+        "is",
+        "does"
+      ],
+      "answer": 0,
+      "explanation": "'We' → 'have'."
+    },
+    {
+      "id": 20,
+      "topic": "Have / Has (negative)",
+      "question": "He ___ a pet.",
+      "options": [
+        "don't have",
+        "doesn't have",
+        "hasn't got",
+        "haven't"
+      ],
+      "answer": 1,
+      "explanation": "Negative for he/she/it → 'doesn't have'. (Note: 'hasn't got' is also correct but less common in this form.)"
+    },
+    {
+      "id": 21,
+      "topic": "Adjectives",
+      "question": "That is a ___ car. (big / before noun)",
+      "options": [
+        "big red",
+        "red big",
+        "biggish",
+        "redly"
+      ],
+      "answer": 0,
+      "explanation": "In English, adjectives come before the noun and opinion comes before colour: 'big red car'."
+    },
+    {
+      "id": 22,
+      "topic": "Adjectives",
+      "question": "The film is ___.",
+      "options": [
+        "bored",
+        "boring",
+        "bore",
+        "boringly"
+      ],
+      "answer": 1,
+      "explanation": "'-ing' adjectives describe things/situations. '-ed' describes feelings. 'The film is boring' (the film causes boredom)."
+    },
+    {
+      "id": 23,
+      "topic": "Adjectives",
+      "question": "I am ___ about the game.",
+      "options": [
+        "exciting",
+        "excited",
+        "excite",
+        "excitedly"
+      ],
+      "answer": 1,
+      "explanation": "'-ed' adjectives describe how a person feels: 'I am excited'."
+    },
+    {
+      "id": 24,
+      "topic": "Prepositions of place",
+      "question": "The book is ___ the table. (on top of the surface)",
+      "options": [
+        "in",
+        "on",
+        "at",
+        "under"
+      ],
+      "answer": 1,
+      "explanation": "'On' = touching a surface from above."
+    },
+    {
+      "id": 25,
+      "topic": "Prepositions of place",
+      "question": "The cat is ___ the box. (inside)",
+      "options": [
+        "on",
+        "in",
+        "at",
+        "above"
+      ],
+      "answer": 1,
+      "explanation": "'In' = inside a container or enclosed space."
+    },
+    {
+      "id": 26,
+      "topic": "Prepositions of place",
+      "question": "She is ___ school.",
+      "options": [
+        "in",
+        "on",
+        "at",
+        "into"
+      ],
+      "answer": 2,
+      "explanation": "'At' is used with specific locations/institutions: 'at school', 'at work', 'at home'."
+    },
+    {
+      "id": 27,
+      "topic": "Can / Can't",
+      "question": "She ___ swim. She never learned.",
+      "options": [
+        "can",
+        "can't",
+        "cans't",
+        "cannot to"
+      ],
+      "answer": 1,
+      "explanation": "'Can't' (or 'cannot') is the negative of 'can'. Never add -s or -to."
+    },
+    {
+      "id": 28,
+      "topic": "Can / Can't",
+      "question": "___ you speak French?",
+      "options": [
+        "Do",
+        "Does",
+        "Can",
+        "Are"
+      ],
+      "answer": 2,
+      "explanation": "'Can' is used for ability. Question: 'Can + subject + base verb?'"
+    },
+    {
+      "id": 29,
+      "topic": "Present Simple (spelling)",
+      "question": "She ___ to the gym. (go)",
+      "options": [
+        "go",
+        "gos",
+        "goes",
+        "goies"
+      ],
+      "answer": 2,
+      "explanation": "Verbs ending in -o → add -es for he/she/it: 'goes'."
+    },
+    {
+      "id": 30,
+      "topic": "Have / Has (question)",
+      "question": "___ she have a sister?",
+      "options": [
+        "Do",
+        "Does",
+        "Has",
+        "Have"
+      ],
+      "answer": 1,
+      "explanation": "Question for he/she/it with 'have' → 'Does she have...?' (not 'Has she have')."
+    }
+  ]
+}

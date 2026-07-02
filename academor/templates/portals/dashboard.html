@@ -1,0 +1,17 @@
+{% extends "portals/base.html" %}
+{% load i18n portal_tags %}
+
+{% block title %}{% trans 'Portal' %}{% endblock %}
+
+{% block content %}
+{% portal_page_heading icon="bi-exclamation-circle" eyebrow="Account" title="Portal access" subtitle="Your account is not linked to a teacher, student, or parent profile yet." %}
+
+<section class="panel">
+  <div class="blank-state py-4">
+    <span class="page-icon d-inline-grid mb-3"><i class="bi bi-person-x" aria-hidden="true"></i></span>
+    <h2 class="h5 mb-2">{% trans 'Profile not configured' %}</h2>
+    <p class="text-muted mb-4">{% trans 'Please contact Academor administration to activate your portal access.' %}</p>
+    <a class="btn btn-primary" href="{% url 'projects:home-page' %}">{% trans 'Back to main site' %}</a>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% load i18n %}
+{% with u=request.resolver_match.url_name|default:'' %}
+<nav class="mobile-bottom-nav d-lg-none" aria-label="{% trans 'Bottom navigation' %}">
+  {% if portal_role == 'student' %}
+    <a class="mobile-nav-item{% if u == 'student-dashboard' %} active{% endif %}" href="{% url 'portals:student-dashboard' %}">
+      <i class="ti ti-layout-dashboard" aria-hidden="true"></i>
+      <span>{% trans 'Ana səhifə' %}</span>
+    </a>
+    <a class="mobile-nav-item{% if u == 'student-schedule' %} active{% endif %}" href="{% url 'portals:student-schedule' %}">
+      <i class="ti ti-calendar-week" aria-hidden="true"></i>
+      <span>{% trans 'Cədvəl' %}</span>
+    </a>
+    <a class="mobile-nav-item{% if u == 'student-scores' or u == 'student-score-detail' %} active{% endif %}" href="{% url 'portals:student-scores' %}">
+      <i class="ti ti-star" aria-hidden="true"></i>
+      <span>{% trans 'Qiymət' %}</span>
+    </a>
+    <a class="mobile-nav-item{% if u == 'student-quizzes' or u == 'student-quiz-category' %} active{% endif %}" href="{% url 'portals:student-quizzes' %}">
+      <i class="ti ti-forms" aria-hidden="true"></i>
+      <span>{% trans 'Quiz' %}</span>
+    </a>
+    <a class="mobile-nav-item{% if u == 'student-notifications' %} active{% endif %}" href="{% url 'portals:student-notifications' %}" style="position:relative;">
+      <i class="ti ti-bell" aria-hidden="true"></i>
+      {% if portal_unread_notifications %}<span class="mobile-nav-badge" data-portal-unread-badge>{{ portal_unread_notifications }}</span>{% else %}<span class="mobile-nav-badge d-none" data-portal-unread-badge hidden></span>{% endif %}
+      <span>{% trans 'Bildiriş' %}</span>
+    </a>
+  {% elif portal_role == 'parent' %}
+    <a class="mobile-nav-item{% if u == 'parent-dashboard' %} active{% endif %}" href="{% url 'portals:parent-dashboard' %}">
+      <i class="ti ti-layout-dashboard" aria-hidden="true"></i>
+      <span>{% trans 'Ana səhifə' %}</span>
+    </a>
+    <a class="mobile-nav-item{% if u == 'parent-schedule' %} active{% endif %}" href="{% url 'portals:parent-schedule' %}">
+      <i class="ti ti-calendar-week" aria-hidden="true"></i>
+      <span>{% trans 'Cədvəl' %}</span>
+    </a>
+    <a class="mobile-nav-item{% if u == 'parent-scores' %} active{% endif %}" href="{% url 'portals:parent-scores' %}">
+      <i class="ti ti-star" aria-hidden="true"></i>
+      <span>{% trans 'Qiymət' %}</span>
+    </a>
+    <a class="mobile-nav-item{% if u == 'parent-attendance' %} active{% endif %}" href="{% url 'portals:parent-attendance' %}">
+      <i class="ti ti-calendar-check" aria-hidden="true"></i>
+      <span>{% trans 'Davamiyyət' %}</span>
+    </a>
+    <a class="mobile-nav-item{% if u == 'parent-notifications' %} active{% endif %}" href="{% url 'portals:parent-notifications' %}" style="position:relative;">
+      <i class="ti ti-bell" aria-hidden="true"></i>
+      {% if portal_unread_notifications %}<span class="mobile-nav-badge" data-portal-unread-badge>{{ portal_unread_notifications }}</span>{% else %}<span class="mobile-nav-badge d-none" data-portal-unread-badge hidden></span>{% endif %}
+      <span>{% trans 'Bildiriş' %}</span>
+    </a>
+  {% endif %}
+</nav>
+{% endwith %}

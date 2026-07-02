@@ -1,0 +1,39 @@
+{% load i18n %}
+<div
+  class="portal-quiz-start-modal modal fade"
+  data-quiz-start-gate
+  data-start-url="{{ start_url }}"
+  data-msg-start-error="{% trans 'Could not start the quiz. Please try again.' %}"
+  tabindex="-1"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="quizStartModalTitle"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+>
+  <div class="modal-dialog modal-dialog-centered portal-quiz-start-modal__dialog">
+    <div class="modal-content portal-quiz-start-modal__content">
+      <div class="modal-body portal-quiz-start-modal__body">
+        <div class="portal-quiz-start-modal__icon" aria-hidden="true">
+          <i class="bi bi-exclamation-triangle"></i>
+        </div>
+        <h2 class="portal-quiz-start-modal__title" id="quizStartModalTitle">{% trans 'Important' %}</h2>
+        <p class="portal-quiz-start-modal__text mb-0">
+          {% trans 'If you leave this page or abandon the quiz unfinished, the quiz will be counted as completed.' %}
+        </p>
+        <div class="portal-quiz-start-modal__actions">
+          <button type="button" class="btn btn-primary btn-lg" data-quiz-start-btn>
+            <i class="bi bi-play-fill me-1" aria-hidden="true"></i>{% trans 'Start quiz' %}
+          </button>
+          <a
+            class="btn btn-outline-secondary btn-lg"
+            href="{% url 'portals:student-quiz-cancel' pk=quiz.id %}?next={{ back_url|urlencode }}"
+            data-quiz-back-btn
+          >
+            <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'Go back' %}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

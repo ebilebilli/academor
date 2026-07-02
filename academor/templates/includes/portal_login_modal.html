@@ -1,0 +1,44 @@
+{% load i18n static %}
+<div class="modal fade portal-login-modal" id="portalLoginModal" tabindex="-1" aria-labelledby="portalLoginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 rounded-4 overflow-hidden shadow-lg">
+            <div class="modal-header border-0 portal-login-modal__header px-4 pt-4 pb-0">
+                <div class="pe-3 flex-grow-1">
+                    <img
+                        src="{% static 'portals/img/new_logo.webp' %}"
+                        alt="Academor"
+                        class="portal-login-modal__logo mb-3"
+                        width="138"
+                        height="46"
+                        decoding="async"
+                    >
+                    <div class="portal-login-modal__head-row">
+                        <span class="portal-login-modal__head-figure" aria-hidden="true">
+                            <img
+                                src="{% static 'portals/img/contract_small_icon.webp' %}"
+                                alt=""
+                                class="portal-login-modal__head-icon"
+                                width="24"
+                                height="24"
+                                decoding="async"
+                            >
+                        </span>
+                        <div class="portal-login-modal__head-text">
+                            <h2 class="modal-title h4 mb-2 portal-login-modal__title" id="portalLoginModalLabel">{% trans "Log in" %}</h2>
+                            <p class="portal-login-modal__subtitle text-muted small mb-0">{% trans "Sign in to the student portal with the username and password provided by Academor." %}</p>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans 'Close' %}"></button>
+            </div>
+            <div class="modal-body portal-login-modal__body px-4 pb-4 pt-3">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags|default:'info' }} py-2 small mb-3" role="alert">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+                {% include "includes/portal_login_form.html" %}
+            </div>
+        </div>
+    </div>
+</div>

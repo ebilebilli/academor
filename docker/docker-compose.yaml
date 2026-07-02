@@ -68,6 +68,12 @@ services:
       UNITED_PAYMENT_SUCCESS_URL: ${UNITED_PAYMENT_SUCCESS_URL:-}
       UNITED_PAYMENT_CANCEL_URL: ${UNITED_PAYMENT_CANCEL_URL:-}
       UNITED_PAYMENT_DECLINE_URL: ${UNITED_PAYMENT_DECLINE_URL:-}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/ || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
     depends_on:
       db:
         condition: service_healthy
@@ -87,7 +93,8 @@ services:
       - ../academor/staticfiles:/app/academor/staticfiles:ro
       - ../academor/media:/app/academor/media:ro
     depends_on:
-      - web
+      web:
+        condition: service_healthy
     restart: unless-stopped
     networks:
       - academor_net

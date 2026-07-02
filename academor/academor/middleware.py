@@ -1,7 +1,11 @@
+from django.contrib import messages
+from django.contrib.auth import logout
+from django.shortcuts import redirect
 from django.utils import translation
 from django.conf import settings
 
 from projects.utils.i18n import normalize_lang, resolve_public_language, sync_language_cookie_on_response
+from portals.utils.admin_access import can_access_django_admin
 
 
 class PublicHtmlCacheControlMiddleware:
@@ -26,6 +30,34 @@ class PublicHtmlCacheControlMiddleware:
             if 'Vary' not in response:
                 response['Vary'] = 'Cookie, Accept-Language'
         return response
+
+
+class AdminAccessMiddleware:
+    """
+    Block portal-only accounts from Django admin.
+    Portal session (portal_sessionid cookie) is completely separate from
+    Django admin session (sessionid cookie), so logout here doesn't affect portal.
+    """
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+        self.admin_prefix = f'/{settings.ADMIN_URL.strip("/")}'
+
+    def __call__(self, request):
+        if (
+            request.path.startswith(self.admin_prefix)
+            and request.user.is_authenticated
+            and not can_access_django_admin(request.user)
+        ):
+            # Logout from Django admin session only (sessionid cookie).
+            # Portal session (portal_sessionid) is completely separate and untouched.
+            logout(request)
+            messages.error(
+                request,
+                'This account uses the student portal only. Log in from the main website.',
+            )
+            return redirect(f'{self.admin_prefix}/login/')
+        return self.get_response(request)
 
 
 class CustomLocaleMiddleware:

@@ -97,6 +97,19 @@
                 </div>
             </div>
         </div>
+        <div class="navbar-auth-actions">
+            {% if portal_is_authenticated %}
+                <a href="{% url 'portals:dashboard' %}" class="btn nav-portal-btn">
+                    <span class="nav-portal-btn__label">{% trans "Portal" %}</span>
+                    <i class="fa fa-user-circle ms-lg-2" aria-hidden="true"></i>
+                </a>
+            {% else %}
+                <a href="{% url 'portals:login' %}" class="btn nav-login-btn">
+                    <span class="nav-login-btn__label">{% trans "Log in" %}</span>
+                    <i class="fa fa-sign-in-alt ms-lg-2" aria-hidden="true"></i>
+                </a>
+            {% endif %}
+        </div>
         <div class="nav-contact-mobile-wrap d-lg-none">
             <a href="{% url 'projects:contact-page' %}" class="btn btn-primary nav-contact-mobile{% if u == 'contact-page' %} active{% endif %}">
                 <span class="nav-contact-mobile__label">{% trans "Contact" %}</span>
@@ -109,4 +122,5 @@
         <div id="scrollProgressBar" class="scroll-progress__bar"></div>
     </div>
 </nav>
+{% include "includes/portal_login_modal.html" %}
 {% endwith %}

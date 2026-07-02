@@ -1,0 +1,152 @@
+{% extends "portals/base.html" %}
+{% load i18n portal_tags static %}
+
+{% block title %}{% trans 'Attendance' %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'portals/css/portal-attendance-hub.css' %}">
+{% endblock %}
+
+{% block content %}
+{% include "portals/includes/parent_child_header.html" %}
+
+<header class="s-page-head mb-4">
+  <div>
+    <h1 class="s-page-head__title">
+      <i class="ti ti-calendar-check" aria-hidden="true"></i>
+      {% trans 'Davamiyyət' %}
+    </h1>
+    <p class="s-page-head__sub">{% if page_subtitle %}{{ page_subtitle }}{% else %}{% trans 'Şagirdin iştirakı və seans tarixçəsi.' %}{% endif %}</p>
+  </div>
+</header>
+
+<section class="ds-card portal-attendance-hub-panel mb-4">
+  <div class="portal-attendance-hub-cards row g-3">
+    <div class="col-12 col-lg-6">
+      <article class="portal-attendance-hub-card{% if summary.absent > 0 %} has-attention{% endif %}">
+        <div class="portal-attendance-hub-card__head">
+          <div class="portal-attendance-hub-card__avatar">
+            {% if student.photo_url %}
+              <img src="{{ student.photo_url }}" alt="{{ student.full_name }}">
+            {% else %}
+              <span>{{ student.full_name|slice:":2"|upper }}</span>
+            {% endif %}
+          </div>
+          <div class="portal-attendance-hub-card__info">
+            <h2 class="portal-attendance-hub-card__name">{{ student.full_name }}</h2>
+            {% if groups %}
+              <p class="portal-attendance-hub-card__meta mb-0">{{ groups|join:", " }}</p>
+            {% else %}
+              <p class="portal-attendance-hub-card__meta mb-0">{% trans 'Hələ qrup bağlı deyil.' %}</p>
+            {% endif %}
+          </div>
+          <div
+            class="portal-attendance-hub-card__rate{% if attendance_rate is None %} is-empty{% elif attendance_rate >= 85 %} is-good{% elif attendance_rate >= 70 %} is-fair{% else %} is-low{% endif %}"
+            aria-label="{% trans 'Davamiyyət faizi' %}"
+          >
+            <span class="portal-attendance-hub-card__rate-value">
+              {% if attendance_rate is not None %}{{ attendance_rate }}%{% else %}—{% endif %}
+            </span>
+          </div>
+        </div>
+
+        <div class="portal-attendance-hub-card__metrics">
+          <span class="portal-attendance-hub-metric is-present">
+            <strong>{{ summary.present }}</strong><span>{% trans 'İştirak' %}</span>
+          </span>
+          <span class="portal-attendance-hub-metric is-absent">
+            <strong>{{ summary.absent }}</strong><span>{% trans 'Qayıb' %}</span>
+          </span>
+          <span class="portal-attendance-hub-metric is-late">
+            <strong>{{ summary.late }}</strong><span>{% trans 'Gecikmə' %}</span>
+          </span>
+        </div>
+      </article>
+    </div>
+
+    <div class="col-12 col-lg-6">
+      <div class="t-student-stats h-100">
+        <article class="t-mini-stat t-mini-stat--indigo">
+          <span class="t-mini-stat__icon"><i class="ti ti-list-check" aria-hidden="true"></i></span>
+          <span class="t-mini-stat__value">{{ summary.total }}</span>
+          <span class="t-mini-stat__label">{% trans 'Cəmi seans' %}</span>
+        </article>
+        <article class="t-mini-stat t-mini-stat--teal">
+          <span class="t-mini-stat__icon"><i class="ti ti-circle-check" aria-hidden="true"></i></span>
+          <span class="t-mini-stat__value">{{ summary.present }}</span>
+          <span class="t-mini-stat__label">{% trans 'İştirak' %}</span>
+        </article>
+        <article class="t-mini-stat t-mini-stat--amber">
+          <span class="t-mini-stat__icon"><i class="ti ti-circle-x" aria-hidden="true"></i></span>
+          <span class="t-mini-stat__value">{{ summary.absent }}</span>
+          <span class="t-mini-stat__label">{% trans 'Qayıb' %}</span>
+        </article>
+        <article class="t-mini-stat t-mini-stat--emerald">
+          <span class="t-mini-stat__icon"><i class="ti ti-clock" aria-hidden="true"></i></span>
+          <span class="t-mini-stat__value">{{ summary.late }}</span>
+          <span class="t-mini-stat__label">{% trans 'Gecikmə' %}</span>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ds-card" data-portal-status-tabs>
+  <div class="s-filter-tabs px-0 pt-0 pb-3" id="attendanceStatusTabs" role="group" data-portal-status-tablist aria-label="{% trans 'Status filteri' %}">
+    <button class="s-filter-tab is-active" type="button" data-status="all" aria-selected="true">
+      {% trans 'Hamısı' %} <span class="s-filter-tab__badge">{{ summary.total }}</span>
+    </button>
+    <button class="s-filter-tab" type="button" data-status="present" aria-selected="false">
+      {% trans 'İştirak' %} <span class="s-filter-tab__badge">{{ summary.present }}</span>
+    </button>
+    <button class="s-filter-tab" type="button" data-status="absent" aria-selected="false">
+      {% trans 'Qayıb' %} <span class="s-filter-tab__badge">{{ summary.absent }}</span>
+    </button>
+    <button class="s-filter-tab" type="button" data-status="late" aria-selected="false">
+      {% trans 'Gecikmə' %} <span class="s-filter-tab__badge">{{ summary.late }}</span>
+    </button>
+  </div>
+
+  <div class="table-responsive">
+    <table class="t-table" id="attendance-records-table" aria-label="{% trans 'Davamiyyət qeydləri' %}">
+      <thead>
+        <tr>
+          <th>{% trans 'Tarix' %}</th>
+          <th>{% trans 'Qrup' %}</th>
+          <th>{% trans 'Vaxt' %}</th>
+          <th>{% trans 'Status' %}</th>
+          <th>{% trans 'Qeyd' %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in records %}
+        <tr data-status="{{ row.status }}">
+          <td class="fw-500">{{ row.session_date|portal_date_long }}</td>
+          <td>{{ row.group_name }}</td>
+          <td>{{ row.weekday_label }}, {{ row.start_time|time:"H:i" }}</td>
+          <td>
+            <span class="ds-badge{% if row.status == 'present' %} ds-badge--success{% elif row.status == 'absent' %} ds-badge--danger{% else %} ds-badge--warning{% endif %}">
+              {{ row.status_label }}
+            </span>
+          </td>
+          <td class="text-muted small">{{ row.note|default:"—" }}</td>
+        </tr>
+        {% empty %}
+        <tr class="attendance-empty-row">
+          <td colspan="5">
+            <div class="s-empty-state">
+              <i class="ti ti-calendar-off" aria-hidden="true"></i>
+              <p>{% trans 'Hələ davamiyyət qeydi yoxdur.' %}</p>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="s-empty-state d-none" id="attendance-filter-empty">
+    <i class="ti ti-filter-off" aria-hidden="true"></i>
+    <p>{% trans 'Bu filter üçün qeyd tapılmadı.' %}</p>
+  </div>
+</section>
+{% endblock %}

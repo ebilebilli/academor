@@ -1,0 +1,495 @@
+/* Teacher attendance hub */
+
+/* ── Hero ── */
+.portal-attendance-hub-hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 1rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--admin-border);
+  box-shadow: var(--admin-shadow-sm);
+}
+
+.portal-attendance-hub-action {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex: 1 1 16rem;
+  padding: 0.9rem 1rem;
+  color: inherit;
+  text-decoration: none;
+  background: linear-gradient(135deg, rgba(255, 84, 20, 0.08) 0%, var(--admin-surface) 60%);
+  border: 1px solid rgba(255, 84, 20, 0.22);
+  border-radius: 14px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.portal-attendance-hub-action:hover,
+.portal-attendance-hub-action:focus-visible {
+  color: inherit;
+  border-color: rgba(255, 84, 20, 0.4);
+  box-shadow: var(--admin-shadow-sm);
+}
+
+.portal-attendance-hub-action__icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(255, 84, 20, 0.12);
+  color: var(--admin-accent, #ff5414);
+  font-size: 1.05rem;
+}
+
+.portal-attendance-hub-action__copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.portal-attendance-hub-action__copy strong {
+  display: block;
+  font-size: 0.92rem;
+  color: var(--admin-text);
+}
+
+.portal-attendance-hub-action__copy span {
+  display: block;
+  margin-top: 0.1rem;
+  font-size: 0.78rem;
+  color: var(--admin-muted);
+  line-height: 1.35;
+}
+
+.portal-attendance-hub-action__arrow {
+  flex: 0 0 auto;
+  color: var(--admin-muted);
+}
+
+.portal-attendance-hub-hero__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+  flex: 1 1 20rem;
+  min-width: 0;
+}
+
+.portal-attendance-hub-mini-stat {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.1rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--admin-border);
+  border-radius: 10px;
+  background: var(--admin-surface-soft);
+  text-align: center;
+}
+
+.portal-attendance-hub-mini-stat.is-alert .portal-attendance-hub-mini-stat__value {
+  color: var(--admin-danger);
+}
+
+.portal-attendance-hub-mini-stat__value {
+  font-size: 1.1rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--admin-text);
+}
+
+.portal-attendance-hub-mini-stat__label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--admin-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Students panel ── */
+.portal-attendance-hub-panel {
+  padding: 0;
+  overflow: hidden;
+}
+
+.portal-attendance-hub-groups {
+  padding: 0.85rem 1rem 0;
+  border-bottom: 1px solid var(--admin-border);
+  background: var(--admin-surface-soft);
+}
+
+.portal-attendance-hub-groups__scroll {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.4rem;
+  overflow-x: auto;
+  padding-bottom: 0.85rem;
+  scrollbar-width: thin;
+}
+
+.portal-attendance-hub-group-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 0 0 auto;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--admin-border);
+  border-radius: 999px;
+  background: var(--admin-surface);
+  color: var(--admin-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.portal-attendance-hub-group-chip:hover {
+  color: var(--admin-text);
+  border-color: rgba(255, 84, 20, 0.3);
+}
+
+.portal-attendance-hub-group-chip.active {
+  border-color: rgba(255, 84, 20, 0.45);
+  background: rgba(255, 84, 20, 0.1);
+  color: var(--admin-accent, #ff5414);
+}
+
+.portal-attendance-hub-group-chip__count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 0.3rem;
+  border-radius: 999px;
+  background: rgba(0, 49, 61, 0.07);
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.portal-attendance-hub-group-chip.active .portal-attendance-hub-group-chip__count {
+  background: rgba(255, 84, 20, 0.16);
+}
+
+/* Controls — single row */
+.portal-attendance-hub-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.portal-attendance-hub-controls__search {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.portal-attendance-hub-controls__search i {
+  position: absolute;
+  left: 0.7rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--admin-muted);
+  font-size: 0.85rem;
+  pointer-events: none;
+}
+
+.portal-attendance-hub-controls__search input {
+  padding-left: 2rem;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.portal-attendance-hub-controls__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 0 0 auto;
+}
+
+.portal-attendance-hub-icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  background: var(--admin-surface);
+  color: var(--admin-muted);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.portal-attendance-hub-icon-btn:hover {
+  color: var(--admin-text);
+  background: var(--admin-surface-soft);
+}
+
+.portal-attendance-hub-icon-btn.active,
+.portal-attendance-hub-icon-btn[aria-pressed="true"] {
+  border-color: rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.08);
+  color: var(--admin-danger);
+}
+
+.portal-attendance-hub-icon-btn.dropdown-toggle::after {
+  display: none;
+}
+
+.portal-attendance-hub-view-toggle .btn {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  display: inline-grid;
+  place-items: center;
+  border-color: var(--admin-border);
+  color: var(--admin-muted);
+  background: var(--admin-surface);
+}
+
+.portal-attendance-hub-view-toggle .btn.active {
+  border-color: rgba(255, 84, 20, 0.4);
+  background: rgba(255, 84, 20, 0.1);
+  color: var(--admin-accent, #ff5414);
+}
+
+.portal-attendance-hub-meta {
+  margin: 0;
+  padding: 0.55rem 1rem 0;
+  font-size: 0.78rem;
+  color: var(--admin-muted);
+}
+
+.portal-attendance-hub-meta strong {
+  color: var(--admin-text);
+  font-weight: 800;
+}
+
+/* Cards */
+.portal-attendance-hub-cards {
+  padding: 0.85rem 1rem 1rem;
+}
+
+.portal-attendance-hub-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  height: 100%;
+  padding: 1rem;
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: 12px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.portal-attendance-hub-card.has-attention {
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+.portal-attendance-hub-card:hover {
+  box-shadow: var(--admin-shadow-sm);
+}
+
+.portal-attendance-hub-card__head {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.portal-attendance-hub-card__avatar {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 11px;
+  background: linear-gradient(135deg, var(--color-role), color-mix(in srgb, var(--color-role) 60%, var(--color-bg)));
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.82rem;
+}
+
+.portal-attendance-hub-card__avatar.is-sm {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  font-size: 0.7rem;
+}
+
+.portal-attendance-hub-card__avatar img,
+.portal-attendance-hub-card__avatar span {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  object-fit: cover;
+}
+
+.portal-attendance-hub-card__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.portal-attendance-hub-card__name {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--admin-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.portal-attendance-hub-card__meta {
+  font-size: 0.75rem;
+  color: var(--admin-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.portal-attendance-hub-card__rate {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--admin-border);
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: var(--admin-muted);
+}
+
+.portal-attendance-hub-card__rate.is-good {
+  border-color: rgba(34, 197, 94, 0.5);
+  color: #16a34a;
+}
+
+.portal-attendance-hub-card__rate.is-fair {
+  border-color: rgba(245, 158, 11, 0.5);
+  color: #d97706;
+}
+
+.portal-attendance-hub-card__rate.is-low {
+  border-color: rgba(239, 68, 68, 0.5);
+  color: #dc2626;
+}
+
+.portal-attendance-hub-card__rate.is-empty {
+  border-style: dashed;
+  font-size: 0.85rem;
+}
+
+.portal-attendance-hub-card__metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.4rem;
+  padding: 0.55rem;
+  border-radius: 8px;
+  background: var(--admin-surface-soft);
+}
+
+.portal-attendance-hub-metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.05rem;
+  text-align: center;
+}
+
+.portal-attendance-hub-metric strong {
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.portal-attendance-hub-metric span {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--admin-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.portal-attendance-hub-metric.is-present strong { color: var(--admin-success); }
+.portal-attendance-hub-metric.is-absent strong { color: var(--admin-danger); }
+.portal-attendance-hub-metric.is-late strong { color: #946200; }
+
+/* Table */
+#attendance-table-view {
+  padding: 0 1rem 1rem;
+}
+
+.portal-attendance-hub-table-student {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.portal-attendance-hub-row.has-attention {
+  background: rgba(239, 68, 68, 0.04);
+}
+
+.portal-attendance-hub-rate-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  background: var(--admin-surface-soft);
+  color: var(--admin-muted);
+}
+
+.portal-attendance-hub-rate-badge.is-good {
+  background: rgba(34, 197, 94, 0.12);
+  color: #16a34a;
+}
+
+.portal-attendance-hub-rate-badge.is-fair {
+  background: rgba(245, 158, 11, 0.14);
+  color: #d97706;
+}
+
+.portal-attendance-hub-rate-badge.is-low {
+  background: rgba(239, 68, 68, 0.12);
+  color: #dc2626;
+}
+
+.portal-attendance-hub-rate-badge.is-empty {
+  background: transparent;
+}
+
+#attendance-search-empty {
+  padding: 2rem 1rem;
+}
+
+@media (max-width: 991.98px) {
+  .portal-attendance-hub-hero__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    flex-basis: 100%;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .portal-attendance-hub-controls {
+    flex-wrap: wrap;
+  }
+
+  .portal-attendance-hub-controls__search {
+    flex-basis: 100%;
+  }
+
+  .portal-attendance-hub-controls__actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

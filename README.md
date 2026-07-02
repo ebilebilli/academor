@@ -2,6 +2,8 @@
 
 Public website and CMS for **Academor**, an English-language and test-prep education centre in Baku, Azerbaijan. The site promotes courses (IELTS, GMAT, GRE, SAT, YÖS, ALES, and more), study-abroad programmes, team profiles, level tests, English conversation topics, blog posts, reviews, and contact flows. Content is managed in Django admin; rich text fields use CKEditor where configured.
 
+A separate **student portal** (`/portal/`) gives teachers, students, and parents access to schedules, lessons, attendance, scores, quizzes, classrooms, and notifications — with auth isolated from the Django admin session.
+
 **Production:** [academor.az](https://academor.az)
 
 ## Architecture
@@ -11,11 +13,12 @@ Django **monolith** with server-rendered HTML templates. There is no separate fr
 | Area | Location |
 | --- | --- |
 | Public views | `academor/projects/views/` |
+| Portal views | `academor/portals/views/` |
 | Query + cache layer | `academor/projects/utils/queries.py` |
 | Cache invalidation | `academor/projects/signals.py` |
-| CMS admin | `academor/projects/admin/admin_v1.py` |
-| Site templates | `academor/templates/` (~79 HTML files) |
-| Static assets | `academor/projects/static/` (Bootstrap 5, custom CSS/JS) |
+| CMS admin | `academor/projects/admin/admin_v1.py`, `academor/portals/admin/admin_v1.py` |
+| Site templates | `academor/templates/` (public + `portals/` subtree) |
+| Static assets | `academor/projects/static/`, `academor/portals/static/` (Bootstrap 5, custom CSS/JS) |
 | Translations | `academor/locale/{az,en,ru}/` |
 
 ## Stack
@@ -100,6 +103,53 @@ After successful payment:
 
 Root URLconf also exposes `/sitemap.xml`, `/robots.txt`, `/i18n/setlang/`, and a secret **ADMIN_URL** prefix.
 
+### `portals` — student / teacher / parent portal
+
+Role-based portal at **`/portal/`** for day-to-day learning workflows. Portal users log in via `/portal/login/` or the login modal on the public site navbar; authenticated users see a **Portal** button that routes to their role dashboard.
+
+**Auth isolation:** Portal uses its own `portal_sessionid` cookie (scoped to `/portal/` paths) and middleware, separate from Django admin's `sessionid`. A staff member can stay logged into admin and portal at the same time without session clashes.
+
+**Roles**
+
+| Role | Main capabilities |
+| --- | --- |
+| **Teacher** | Study groups, weekly schedule, lessons and video records, attendance marking (per session or per student), scores, quiz management and manual grading review, classrooms |
+| **Student** | Schedule, lessons, scores, quiz categories and timed attempts (auto-graded or manual), classrooms, notifications |
+| **Parent** | Read-only child views: schedule, lessons, scores, quiz results, attendance, classrooms |
+
+**Main models** (`portals/models/`)
+
+| Model | Purpose |
+| --- | --- |
+| **StudentProfile**, **TeacherProfile**, **ParentProfile** | Portal user profiles linked to Django `User` |
+| **TeacherCourseSpecialization** | Which course types a teacher covers |
+| **StudyGroup** | Teacher-led group with students and linked course types |
+| **Schedule**, **Attendance** | Recurring slots and attendance marks |
+| **Lesson**, **LessonCategory**, **VideoRecord** | Lesson content and recordings |
+| **Classroom** | Shared classroom spaces scoped to services/groups |
+| **Score** | Teacher-entered assessment scores |
+| **Quiz**, **QuizCategory**, **QuizQuestion**, **QuizResult** | Quiz builder, question bank, attempts, and results |
+| **PortalNotification**, **QuizResultReview** | In-app notifications and teacher review of manual quiz answers |
+
+**Portal routes** (`portals/urls_v1.py`, prefix `/portal/`)
+
+| Path | Page |
+| --- | --- |
+| `/portal/login/`, `/portal/logout/` | Portal auth |
+| `/portal/` | Role-aware dashboard redirect |
+| `/portal/profile/` | Profile edit (avatar, bio, contact links) |
+| `/portal/teacher/…` | Teacher dashboard, groups, schedule, lessons, attendance, scores, quizzes, classrooms |
+| `/portal/student/…` | Student dashboard, schedule, lessons, scores, quizzes (take/submit), classrooms |
+| `/portal/parent/…` | Parent dashboard and child-linked schedule, lessons, scores, attendance, quiz results |
+
+Quiz flows support random question selection, optional time limits, service/group visibility rules, and manual grading modes where teachers review free-text answers.
+
+**Portal admin:** user creation with role assignment, quiz builder, quiz question admin UI, and branded list/change templates under `templates/admin/portals/`.
+
+**Portal templates & static:** `templates/portals/` (role dashboards, quiz play UI, shared includes) and `portals/static/portals/` (portal CSS/JS, quiz builder/play assets).
+
+**Tests:** automated coverage in `portals/tests/` (auth isolation, quiz submit/visibility/manual grading, notifications, classrooms, attendance, schedule, admin forms).
+
 ## Repository layout
 
 ```
@@ -107,6 +157,7 @@ Academor/
 ├── academor/                    # Django project root (manage.py lives here)
 │   ├── academor/                # settings, urls, wsgi, middleware, env_load
 │   ├── projects/                # main app: models, views, admin, signals, static, migrations
+│   ├── portals/                 # student/teacher/parent portal: auth, quizzes, schedule, admin
 │   ├── payments/                # payment gateway + enrollment
 │   ├── templates/               # site HTML + includes
 │   ├── locale/                  # az / en / ru translations
@@ -237,7 +288,7 @@ python manage.py createsuperuser   # optional
 python manage.py runserver
 ```
 
-Open `http://127.0.0.1:8000/` and admin at `http://127.0.0.1:8000/<ADMIN_URL>`.
+Open `http://127.0.0.1:8000/` and admin at `http://127.0.0.1:8000/<ADMIN_URL>`. Portal login is at `http://127.0.0.1:8000/portal/login/`.
 
 Admin UI is always **English** regardless of the public site language (`CustomLocaleMiddleware`).
 
@@ -310,20 +361,33 @@ In **Sales**:
 
 ## Admin CMS
 
-The custom admin (`projects/admin/admin_v1.py`) includes:
+The custom admin includes:
 
-- Branded templates under `templates/admin/`
-- Inline help panels (`admin/help_texts.py`)
+- **Public site CMS** (`projects/admin/admin_v1.py`): branded templates under `templates/admin/`, inline help panels, CKEditor, payment/enrollment management
+- **Portal CMS** (`portals/admin/admin_v1.py`): portal user roles, study groups, schedule, lessons, quizzes, question bank, attendance, scores, classrooms — with portal-specific templates under `templates/admin/portals/`
+
+Shared patterns across both:
+
 - Image compression on upload (`AdminImageCompressMixin`)
-- CKEditor for rich text fields
-- Payment and enrollment management with contract PDF export
 - List-editable fields and custom filters for common workflows
+- Contract PDF export for course enrollments (payments admin)
 
 ## Management commands
 
 | Command | Purpose |
 | --- | --- |
 | `python manage.py resize_university_flags` | Batch-resize university flag images |
+| `python manage.py seed_sample_quizzes` | Create sample quiz categories and questions for local demo |
+| `python manage.py load_quiz_category_questions` | Import quizzes/questions from JSON in `portals/resources/quiz_questions/` |
+
+### Running tests
+
+Portal app tests live under `portals/tests/`:
+
+```bash
+cd academor
+python manage.py test portals
+```
 
 ## Security notes
 
@@ -335,13 +399,13 @@ The custom admin (`projects/admin/admin_v1.py`) includes:
 
 ## Known limitations
 
-- **No automated tests** — regression testing is manual; payment and pricing flows are high-risk areas to cover first.
+- **Limited automated tests** — portal app has test coverage (`portals/tests/`); public site and payments flows are still mostly manual.
 - **No CI/CD** — deploy is manual via Docker Compose.
 - **Conversation topics** are code-managed, not editable in admin.
 - **LocMem cache** does not share state across Gunicorn workers (by design; invalidated via signals).
 
 ## Contributing
 
-Use the usual Git workflow (feature branches, pull requests, review). After model changes, add migrations under `projects/migrations` or `payments/migrations` and run `migrate` before deploy.
+Use the usual Git workflow (feature branches, pull requests, review). After model changes, add migrations under `projects/migrations`, `portals/migrations`, or `payments/migrations` and run `migrate` before deploy.
 
 For Django deployment checklists, see the [official Django deployment docs](https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/) in addition to this project's Docker/Nginx setup.

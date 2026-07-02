@@ -1,0 +1,139 @@
+{% extends "portals/base.html" %}
+{% load i18n portal_tags static %}
+
+{% block title %}{% trans 'Lessons' %}{% endblock %}
+
+{% block content %}
+{% include "portals/includes/parent_child_header.html" %}
+
+<div
+  data-portal-lessons-filter
+  data-portal-lessons-subject-tabs=".s-filter-tabs"
+  data-portal-lessons-category-tabs=".s-pill-group"
+  data-portal-lessons-items="#student-lessons-table .s-lesson-card[data-subject]"
+  data-portal-lessons-hide="class"
+>
+
+<header class="s-page-head mb-4">
+  <div>
+    <h1 class="s-page-head__title">
+      <i class="ti ti-book" aria-hidden="true"></i>
+      {% trans 'Dərslər' %}
+      <span class="ds-badge ms-2">{{ lessons|length }}</span>
+    </h1>
+    <p class="s-page-head__sub">{% if page_subtitle %}{{ page_subtitle }}{% else %}{% trans 'Dərs materialları və videolar.' %}{% endif %}</p>
+  </div>
+</header>
+
+{# ── Subject filter tabs ───────────────────────────────────────── #}
+{% if subject_tabs|length > 1 %}
+<div class="s-filter-tabs mb-3" role="group" aria-label="{% trans 'Fənn filteri' %}">
+  {% for tab in subject_tabs %}
+  <button
+    class="s-filter-tab{% if forloop.first %} is-active{% endif %}"
+    type="button"
+    data-subject="{{ tab.code }}"
+  >
+    {{ tab.label }} <span class="s-filter-tab__badge">{{ tab.count }}</span>
+  </button>
+  {% endfor %}
+</div>
+{% endif %}
+
+{# ── Category pills ───────────────────────────────────────────── #}
+{% if category_tabs|length > 1 %}
+<div class="s-pill-group mb-4" role="group" aria-label="{% trans 'Kateqoriya' %}">
+  {% for tab in category_tabs %}
+  <button
+    class="s-pill{% if forloop.first %} is-active{% endif %}"
+    type="button"
+    data-category="{{ tab.code }}"
+  >
+    {{ tab.label }} <span>{{ tab.count }}</span>
+  </button>
+  {% endfor %}
+</div>
+{% endif %}
+
+{# ── Lesson cards ─────────────────────────────────────────────── #}
+<div class="s-lesson-grid" id="student-lessons-table">
+  {% for lesson in lessons %}
+  <article
+    class="s-lesson-card"
+    data-subject="{{ lesson.subject }}"
+    data-category="{{ lesson.category_id|default:'' }}"
+  >
+    <div class="s-lesson-card__head">
+      {% if lesson.category_name %}
+      <span class="s-lesson-card__tag">{{ lesson.category_name }}</span>
+      {% endif %}
+      <time class="s-lesson-card__date">{{ lesson.lesson_date|portal_date_long }}</time>
+    </div>
+
+    <h2 class="s-lesson-card__title">
+      {% if page_eyebrow == 'Parent' %}
+      <a href="{% url 'portals:parent-lesson-detail' pk=lesson.id %}{{ student_query }}">{{ lesson.name }}</a>
+      {% else %}
+      <a href="{% url 'portals:student-lesson-detail' pk=lesson.id %}">{{ lesson.name }}</a>
+      {% endif %}
+    </h2>
+
+    <div class="s-lesson-card__foot">
+      <div class="s-lesson-card__badges">
+        {% if lesson.has_pdf %}<span class="ds-badge">PDF</span>{% endif %}
+        {% if lesson.has_video %}<span class="ds-badge ds-badge--info">Video</span>{% endif %}
+        {% if lesson.has_image %}<span class="ds-badge">Şəkil</span>{% endif %}
+      </div>
+      {% if page_eyebrow == 'Parent' %}
+      <a class="ds-btn ds-btn--secondary btn-sm" href="{% url 'portals:parent-lesson-detail' pk=lesson.id %}{{ student_query }}">{% trans 'Bax' %}</a>
+      {% else %}
+      <a class="ds-btn ds-btn--secondary btn-sm" href="{% url 'portals:student-lesson-detail' pk=lesson.id %}">{% trans 'Bax' %}</a>
+      {% endif %}
+    </div>
+  </article>
+  {% empty %}
+  <div class="s-empty-state col-span-full">
+    <i class="ti ti-book-off" aria-hidden="true"></i>
+    <p>{% trans 'Hazırda heç bir dərs materialı yoxdur.' %}</p>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="s-empty-state d-none mt-3" id="lessons-filter-empty">
+  <i class="ti ti-filter-off" aria-hidden="true"></i>
+  <p>{% trans 'Bu filterlə dərs tapılmadı.' %}</p>
+</div>
+
+</div>
+
+{# ── Video recordings ────────────────────────────────────────── #}
+{% if video_records %}
+<section class="ds-card mt-4">
+  <div class="s-panel-head">
+    <h2 class="s-panel-title">
+      <i class="ti ti-player-play" aria-hidden="true"></i>
+      {% trans 'Video yazılar' %}
+    </h2>
+  </div>
+  <div class="s-lesson-grid">
+    {% for record in video_records %}
+    <article class="s-lesson-card">
+      <div class="s-lesson-card__head">
+        <span class="ds-badge ds-badge--info">Video</span>
+        <time class="s-lesson-card__date">{{ record.lesson_date|portal_date_long }}</time>
+      </div>
+      <h2 class="s-lesson-card__title">{{ record.title }}</h2>
+      <div class="s-lesson-card__foot">
+        <div></div>
+        {% if record.youtube_url %}
+        <a class="ds-btn ds-btn--secondary btn-sm" href="{{ record.youtube_url }}" target="_blank" rel="noopener">
+          <i class="ti ti-brand-youtube" aria-hidden="true"></i> {% trans 'Yüklə' %}
+        </a>
+        {% endif %}
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

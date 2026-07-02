@@ -28,6 +28,11 @@
         block.classList.add("is-revealed");
     }
 
+    function isInViewport(block) {
+        var rect = block.getBoundingClientRect();
+        return rect.top < window.innerHeight && rect.bottom > 0;
+    }
+
     function initPageTaglineBlocks() {
         var blocks = document.querySelectorAll("[data-page-tagline-block]");
         if (!blocks.length) {
@@ -46,6 +51,11 @@
             wrapTaglineWords(block);
 
             if (reduced) {
+                reveal(block);
+                return;
+            }
+
+            if (isInViewport(block)) {
                 reveal(block);
                 return;
             }

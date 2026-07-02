@@ -1,0 +1,46 @@
+{% load i18n portal_tags %}
+{% for row in rows %}
+<article class="portal-student-record-card">
+  <div class="portal-student-record-main">
+    <div class="portal-student-record-icon"><i class="bi bi-patch-check" aria-hidden="true"></i></div>
+    <div class="portal-student-record-copy">
+      <h3 class="portal-student-record-title">{{ row.quiz_topic|default:"—" }}</h3>
+      <p class="portal-student-record-meta mb-0">{{ row.completed_at|portal_datetime }}</p>
+    </div>
+    <div class="portal-student-record-score">
+      {% if row.is_pending_review %}
+        <span class="portal-student-pill warning">{% trans 'Pending' %}</span>
+      {% elif row.total_score is not None %}
+        <strong>{{ row.total_score|format_quiz_score }}{% if row.max_value %}/{{ row.max_value|format_quiz_score }}{% endif %}</strong>
+        {% if row.max_value %}
+          <span class="portal-student-score-pct">{{ row.total_score|score_percent:row.max_value }}%</span>
+        {% endif %}
+      {% else %}
+        <strong>—</strong>
+      {% endif %}
+    </div>
+  </div>
+  {% if row.max_value and row.total_score is not None and not row.is_pending_review %}
+  <div class="portal-student-progress" role="presentation">
+    <span style="width: {{ row.total_score|score_percent:row.max_value }}%"></span>
+  </div>
+  {% endif %}
+  <div class="portal-student-record-footer">
+    {% if row.is_pending_review %}
+      <span class="badge rounded-pill text-bg-warning">{% trans 'Pending review' %}</span>
+      <a class="btn btn-sm btn-outline-primary ms-auto" href="{% url 'portals:teacher-quiz-results' %}">{% trans 'Review' %}</a>
+    {% else %}
+      <span class="badge rounded-pill text-bg-light border">{{ row.grading_mode_label }}</span>
+      <a class="btn btn-sm btn-outline-secondary" href="{% url 'portals:teacher-score-detail' result_pk=row.id %}">{% trans 'Details' %}</a>
+    {% endif %}
+    <span class="portal-duration-chip ms-auto">
+      <i class="bi bi-stopwatch" aria-hidden="true"></i>
+      {{ row.duration_sec|format_duration_clock }}
+    </span>
+  </div>
+</article>
+{% empty %}
+<div class="portal-student-empty py-4">
+  <p class="text-muted mb-0">{{ empty_message }}</p>
+</div>
+{% endfor %}

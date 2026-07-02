@@ -1,0 +1,135 @@
+{% load i18n portal_tags %}
+{% if active_tab == 'quiz-results' %}
+  {% if manual_quiz_results or auto_quiz_results %}
+    {% if auto_quiz_results %}
+    <div class="portal-student-records-section mb-4">
+      <div class="portal-student-records-section__head">
+        <h3 class="h6 mb-0">{% trans 'Auto-graded quizzes' %}</h3>
+        <span class="badge rounded-pill text-bg-light border">{{ auto_quiz_results|length }}</span>
+      </div>
+      <div class="portal-student-records">
+        {% include "portals/includes/teacher_student_quiz_results.html" with rows=auto_quiz_results empty_message=_('No auto-graded quiz results yet.') %}
+      </div>
+    </div>
+    {% endif %}
+    {% if manual_quiz_results %}
+    <div class="portal-student-records-section">
+      <div class="portal-student-records-section__head">
+        <h3 class="h6 mb-0">{% trans 'Reviewable quizzes' %}</h3>
+        <span class="badge rounded-pill text-bg-light border">{{ manual_quiz_results|length }}</span>
+      </div>
+      <div class="portal-student-records">
+        {% include "portals/includes/teacher_student_quiz_results.html" with rows=manual_quiz_results empty_message=_('No reviewable quiz results yet.') %}
+      </div>
+    </div>
+    {% endif %}
+  {% else %}
+    <div class="portal-student-empty">
+      <div class="portal-student-empty-icon"><i class="bi bi-ui-checks" aria-hidden="true"></i></div>
+      <h3>{% trans 'No quiz results yet' %}</h3>
+      <p>{% trans 'Completed quizzes will appear here with scores and review status.' %}</p>
+    </div>
+  {% endif %}
+
+{% elif active_tab == 'duration' %}
+  <div class="portal-attendance-profile-panel" aria-label="{% trans 'Davamiyyət qeydləri' %}">
+    {% if attendance_records %}
+    <div class="portal-duration-summary mb-3" aria-label="{% trans 'Davamiyyət xülasəsi' %}">
+      <div class="portal-duration-summary__item">
+        <span class="portal-duration-summary__label">{% trans 'Cəmi' %}</span>
+        <span class="portal-duration-summary__value">{{ attendance_summary.total|default:0 }}</span>
+      </div>
+      <div class="portal-duration-summary__item">
+        <span class="portal-duration-summary__label">{% trans 'İştirak etdi' %}</span>
+        <span class="portal-duration-summary__value">{{ attendance_summary.present|default:0 }}</span>
+      </div>
+      <div class="portal-duration-summary__item">
+        <span class="portal-duration-summary__label">{% trans 'Gəlmədi' %}</span>
+        <span class="portal-duration-summary__value">{{ attendance_summary.absent|default:0 }}</span>
+      </div>
+      <div class="portal-duration-summary__item">
+        <span class="portal-duration-summary__label">{% trans 'Gecikmə' %}</span>
+        <span class="portal-duration-summary__value">{{ attendance_summary.late|default:0 }}</span>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="t-table" aria-label="{% trans 'Davamiyyət siyahısı' %}">
+        <thead>
+          <tr>
+            <th>{% trans 'Tarix' %}</th>
+            <th>{% trans 'Qrup' %}</th>
+            <th>{% trans 'Vaxt' %}</th>
+            <th>{% trans 'Status' %}</th>
+            <th>{% trans 'Qeyd' %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in attendance_records %}
+          <tr>
+            <td class="fw-500">{{ row.session_date|portal_date_long }}</td>
+            <td>{{ row.group_name|default:"—" }}</td>
+            <td>{{ row.weekday_label }}, {{ row.start_time|time:"H:i" }}</td>
+            <td>
+              <span class="portal-attendance-status portal-attendance-status--{{ row.status }}">{{ row.status_label }}</span>
+            </td>
+            <td class="text-muted small">{{ row.note|default:"—" }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="portal-student-empty">
+      <div class="portal-student-empty-icon"><i class="ti ti-calendar-off" aria-hidden="true"></i></div>
+      <h3>{% trans 'Davamiyyət qeydi yoxdur' %}</h3>
+      <p>{% trans 'Dərs davamiyyəti burada görünəcək.' %}</p>
+    </div>
+    {% endif %}
+  </div>
+
+{% else %}
+  {% if daily_score_history %}
+    <div class="portal-student-timeline">
+      {% for day in daily_score_history %}
+      <article class="portal-student-day-card">
+        <header class="portal-student-day-header">
+          <div class="portal-student-day-date">
+            <span class="portal-student-day-dot" aria-hidden="true"></span>
+            <strong>{{ day.date|portal_date_long }}</strong>
+          </div>
+          <span class="portal-student-day-count">{{ day.entries|length }} {% trans 'entries' %}</span>
+        </header>
+        <ul class="portal-student-day-list">
+          {% for row in day.entries %}
+          <li class="portal-student-day-item">
+            <div class="portal-student-day-item-main">
+              <span class="portal-student-day-item-title">{{ row.quiz_topic|default:row.lesson_title|default:"—" }}</span>
+              {% if row.is_pending_review %}
+                <span class="portal-student-pill warning">{% trans 'Pending' %}</span>
+              {% elif row.value is not None %}
+                <span class="portal-student-day-score">{{ row.value }}{% if row.max_value %}/{{ row.max_value }}{% endif %}</span>
+              {% else %}
+                <span class="portal-student-day-score muted">—</span>
+              {% endif %}
+            </div>
+            <div class="portal-student-day-item-meta">
+              <span class="badge rounded-pill text-bg-light border">{{ row.score_type_label|default:row.grading_mode_label }}</span>
+              {% if row.comment %}
+                <span class="text-muted small">{{ row.comment|truncatewords:14 }}</span>
+              {% endif %}
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="portal-student-empty">
+      <div class="portal-student-empty-icon"><i class="bi bi-star" aria-hidden="true"></i></div>
+      <h3>{% trans 'No scores recorded yet' %}</h3>
+      <p>{% trans 'Quiz and lesson scores grouped by day will show up here.' %}</p>
+    </div>
+  {% endif %}
+{% endif %}

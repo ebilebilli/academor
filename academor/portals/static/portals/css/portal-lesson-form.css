@@ -1,0 +1,424 @@
+/* Teacher lesson upload / edit — clean stepped layout */
+
+.portal-lesson-form {
+  max-width: 44rem;
+  margin: 0 auto;
+}
+
+.portal-lesson-form__nav {
+  margin-bottom: 1rem;
+}
+
+.portal-lesson-form__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.portal-lesson-form__header-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 14px;
+  background: rgba(0, 49, 61, 0.08);
+  color: var(--admin-primary);
+  flex-shrink: 0;
+}
+
+.portal-lesson-form__header-icon i {
+  font-size: 1.45rem;
+}
+
+.portal-lesson-form__title {
+  margin: 0 0 0.35rem;
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--admin-text);
+}
+
+.portal-lesson-form__lead {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--admin-muted);
+  line-height: 1.5;
+}
+
+.portal-lesson-form__body {
+  display: grid;
+  gap: 1rem;
+}
+
+.portal-lesson-panel {
+  border: 1px solid var(--admin-border);
+  border-radius: 16px;
+  background: var(--admin-surface);
+  box-shadow: var(--admin-shadow-sm);
+  overflow: hidden;
+}
+
+.portal-lesson-panel__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  padding: 1rem 1.15rem;
+  border-bottom: 1px solid var(--admin-border);
+  background: var(--admin-surface-soft);
+}
+
+.portal-lesson-panel__title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 1rem 1.15rem;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--admin-text);
+  border-bottom: 1px solid var(--admin-border);
+  background: var(--admin-surface-soft);
+}
+
+.portal-lesson-panel__head .portal-lesson-panel__title {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.portal-lesson-panel__step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 999px;
+  background: var(--admin-primary);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.portal-lesson-panel__body {
+  padding: 1.15rem;
+}
+
+.portal-lesson-grid {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.portal-lesson-grid--2 {
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 576px) {
+  .portal-lesson-grid--2 {
+    grid-template-columns: 1.4fr 1fr;
+  }
+
+  .portal-lesson-grid--3 {
+    grid-template-columns: 1.4fr 1fr 1fr;
+  }
+}
+
+.portal-lesson-field--narrow {
+  max-width: 20rem;
+}
+
+.portal-lesson-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--admin-text);
+}
+
+.portal-lesson-field .form-control,
+.portal-lesson-field .form-select {
+  border-radius: 10px;
+  min-height: 2.75rem;
+}
+
+.portal-lesson-field textarea.form-control {
+  min-height: 5.5rem;
+  resize: vertical;
+}
+
+.portal-lesson-hint {
+  margin: 0.35rem 0 0;
+  font-size: 0.78rem;
+  color: var(--admin-muted);
+}
+
+.portal-lesson-error {
+  margin-top: 0.35rem;
+  font-size: 0.78rem;
+  color: var(--admin-danger);
+}
+
+/* Groups */
+.portal-lesson-group-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.portal-lesson-select-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--admin-text);
+  cursor: pointer;
+}
+
+.portal-lesson-select-all input {
+  width: 1rem;
+  height: 1rem;
+}
+
+.portal-lesson-group-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: 0.55rem;
+}
+
+.portal-lesson-group-card {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.7rem 0.85rem;
+  border: 1.5px solid var(--admin-border);
+  border-radius: 12px;
+  background: var(--admin-surface-soft);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.portal-lesson-group-card:has(input:checked) {
+  border-color: var(--admin-primary);
+  background: rgba(0, 49, 61, 0.06);
+  box-shadow: 0 0 0 1px rgba(0, 49, 61, 0.08);
+}
+
+.portal-lesson-group-card input {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+.portal-lesson-group-card__label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--admin-text);
+  line-height: 1.25;
+}
+
+/* Lesson type */
+.portal-lesson-type-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.portal-lesson-type-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 6.5rem;
+  padding: 0.85rem;
+  border: 1.5px solid var(--admin-border);
+  border-radius: 14px;
+  background: var(--admin-surface-soft);
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.portal-lesson-type-card input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.portal-lesson-type-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 10px;
+  background: var(--admin-surface);
+  color: var(--admin-primary);
+  font-size: 1.15rem;
+}
+
+.portal-lesson-type-card__label {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--admin-text);
+}
+
+.portal-lesson-type-card:has(input:checked) {
+  border-color: var(--admin-primary);
+  background: rgba(0, 49, 61, 0.06);
+  box-shadow: 0 0 0 1px rgba(0, 49, 61, 0.08);
+}
+
+.portal-lesson-type-card:has(input:checked) .portal-lesson-type-card__icon {
+  background: var(--admin-primary);
+  color: #fff;
+}
+
+/* Material tabs */
+.portal-lesson-material-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 0.85rem;
+}
+
+.portal-lesson-material-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid var(--admin-border);
+  border-radius: 999px;
+  background: var(--admin-surface-soft);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--admin-muted);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.portal-lesson-material-tab.is-active {
+  border-color: var(--admin-primary);
+  background: rgba(0, 49, 61, 0.08);
+  color: var(--admin-primary);
+}
+
+.portal-lesson-material-panel[hidden] {
+  display: none !important;
+}
+
+.portal-lesson-dropzone {
+  position: relative;
+  border: 2px dashed var(--admin-border);
+  border-radius: 14px;
+  background: var(--admin-surface-soft);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.portal-lesson-dropzone.is-dragover {
+  border-color: var(--admin-primary);
+  background: rgba(0, 49, 61, 0.05);
+}
+
+.portal-lesson-dropzone.has-file {
+  border-style: solid;
+  border-color: var(--admin-success);
+  background: rgba(22, 163, 74, 0.05);
+}
+
+.portal-lesson-file-widget {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.portal-lesson-file-widget input[type="file"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.portal-lesson-file-widget .form-check,
+.portal-lesson-file-widget a {
+  position: relative;
+  z-index: 3;
+  display: block;
+  margin: 0.75rem 1rem 0;
+  padding-bottom: 0.75rem;
+  font-size: 0.8rem;
+  pointer-events: auto;
+}
+
+.portal-lesson-dropzone__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-height: 9rem;
+  padding: 1.25rem;
+  text-align: center;
+  pointer-events: none;
+}
+
+.portal-lesson-dropzone__icon {
+  font-size: 1.75rem;
+  color: var(--admin-primary);
+}
+
+.portal-lesson-dropzone__title {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--admin-text);
+}
+
+.portal-lesson-dropzone__meta {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--admin-muted);
+}
+
+.portal-lesson-dropzone__filename {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--admin-success);
+  word-break: break-all;
+}
+
+.portal-lesson-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.25rem 0 0.5rem;
+}
+
+.portal-lesson-form__actions .btn-primary {
+  min-width: 10rem;
+}
+
+@media (max-width: 575.98px) {
+  .portal-lesson-type-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-lesson-form__actions .btn-lg {
+    width: 100%;
+  }
+
+  .portal-lesson-form__actions .ms-auto {
+    margin-left: 0 !important;
+  }
+}

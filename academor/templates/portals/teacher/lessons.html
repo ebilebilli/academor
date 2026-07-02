@@ -1,0 +1,80 @@
+{% extends "portals/base.html" %}
+{% load i18n portal_tags static %}
+
+{% block title %}{% trans 'Lessons' %}{% endblock %}
+
+{% block content %}
+{% portal_page_heading icon="bi-journal-text" eyebrow="Teacher" title="Lessons" subtitle="Materials uploaded for your groups." %}
+
+<div class="d-flex flex-wrap gap-2 justify-content-end mb-3">
+  <a class="btn btn-outline-primary btn-sm" href="{% url 'portals:teacher-video-create' %}">
+    <i class="bi bi-play-btn me-1" aria-hidden="true"></i>{% trans 'Add video' %}
+  </a>
+  <a class="btn btn-primary btn-sm" href="{% url 'portals:teacher-lesson-create' %}">
+    <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>{% trans 'Upload lesson' %}
+  </a>
+</div>
+
+<section class="portal-content-panel" data-portal-lessons-filter>
+  {% if subject_tabs|length > 1 %}
+  <ul class="nav nav-tabs portal-attendance-tabs px-3 pt-2" id="lessonSubjectTabs" role="tablist">
+    {% for tab in subject_tabs %}
+    <li class="nav-item" role="presentation">
+      <button class="nav-link{% if forloop.first %} active{% endif %}" type="button" data-subject="{{ tab.code }}"{% if forloop.first %} aria-selected="true"{% else %} aria-selected="false"{% endif %}>
+        {{ tab.label }} <span class="badge rounded-pill">{{ tab.count }}</span>
+      </button>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  {% if category_tabs|length > 1 %}
+  <ul class="nav nav-pills portal-lesson-category-tabs px-3 py-2" id="lessonCategoryTabs" role="tablist" aria-label="{% trans 'Category labels' %}">
+    {% for tab in category_tabs %}
+    <li class="nav-item" role="presentation">
+      <button class="nav-link{% if forloop.first %} active{% endif %}" type="button" data-category="{{ tab.code }}"{% if forloop.first %} aria-selected="true"{% else %} aria-selected="false"{% endif %}>
+        {{ tab.label }} <span class="badge rounded-pill">{{ tab.count }}</span>
+      </button>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  <div class="table-responsive">
+    <table class="table align-middle mb-0 portal-data-table" id="teacher-lessons-table">
+      <thead>
+        <tr>
+          <th scope="col">{% trans 'Name' %}</th>
+          <th scope="col">{% trans 'Group' %}</th>
+          <th scope="col">{% trans 'Service' %}</th>
+          <th scope="col">{% trans 'Date' %}</th>
+          <th scope="col">{% trans 'Category label' %}</th>
+          <th scope="col" class="text-end">{% trans 'Action' %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for lesson in lessons %}
+        <tr data-subject="{{ lesson.subject }}" data-category="{{ lesson.category_id|default:'' }}">
+          <td class="fw-semibold">{{ lesson.name }}</td>
+          <td>{{ lesson.group_name }}</td>
+          <td>{{ lesson.subject_label }}</td>
+          <td>{{ lesson.lesson_date|portal_date_long }}</td>
+          <td>{{ lesson.category_name|default:"—" }}</td>
+          <td class="text-end">
+            <a class="btn btn-outline-secondary btn-sm me-1" href="{% url 'portals:teacher-lesson-detail' pk=lesson.id %}">{% trans 'Open' %}</a>
+            <a class="btn btn-outline-primary btn-sm" href="{% url 'portals:teacher-lesson-edit' pk=lesson.id %}">{% trans 'Edit' %}</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr class="lessons-empty-row">
+          <td colspan="6" class="text-muted py-4 text-center">{% trans 'No lessons uploaded yet.' %} <a href="{% url 'portals:teacher-lesson-create' %}">{% trans 'Upload one' %}</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="portal-attendance-empty-filter text-muted text-center py-4 d-none" id="lessons-filter-empty">
+    {% trans 'No lessons for this filter.' %}
+  </div>
+</section>
+{% endblock %}

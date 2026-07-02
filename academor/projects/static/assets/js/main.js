@@ -105,6 +105,7 @@
 
             var offset = 0;
             var loopWidth = 0;
+            var pointerTracking = false;
             var dragging = false;
             var suppressClick = false;
             var startX = 0;
@@ -175,33 +176,40 @@
                 }
             }
 
-            function onPointerDown(e) {
-                if (e.pointerType === "mouse" && e.button !== 0) return;
+            function beginDrag(e) {
                 dragging = true;
-                suppressClick = false;
-                activePointerId = e.pointerId;
-                startX = e.clientX;
-                startOffset = offset;
+                suppressClick = true;
                 carousel.classList.add("is-dragging");
                 if (carousel.setPointerCapture) {
                     carousel.setPointerCapture(e.pointerId);
                 }
             }
 
+            function onPointerDown(e) {
+                if (e.pointerType === "mouse" && e.button !== 0) return;
+                pointerTracking = true;
+                dragging = false;
+                suppressClick = false;
+                activePointerId = e.pointerId;
+                startX = e.clientX;
+                startOffset = offset;
+            }
+
             function onPointerMove(e) {
-                if (!dragging || e.pointerId !== activePointerId) return;
+                if (!pointerTracking || e.pointerId !== activePointerId) return;
                 var delta = e.clientX - startX;
-                if (Math.abs(delta) >= DRAG_THRESHOLD_PX) {
-                    suppressClick = true;
+                if (!dragging && Math.abs(delta) >= DRAG_THRESHOLD_PX) {
+                    beginDrag(e);
                 }
-                if (!suppressClick) return;
+                if (!dragging) return;
                 offset = startOffset + delta;
                 normalizeOffset();
                 applyTransform();
             }
 
             function endDrag(e) {
-                if (!dragging || (e && e.pointerId !== activePointerId)) return;
+                if (!pointerTracking || (e && e.pointerId !== activePointerId)) return;
+                pointerTracking = false;
                 dragging = false;
                 activePointerId = null;
                 carousel.classList.remove("is-dragging");
@@ -495,8 +503,8 @@
                     : false,
             pagination: pricePagConfig,
             navigation: {
-                nextEl: pricesRoot.querySelector(".swiper-button-next"),
-                prevEl: pricesRoot.querySelector(".swiper-button-prev"),
+                nextEl: priceWrap && priceWrap.querySelector(".swiper-button-next"),
+                prevEl: priceWrap && priceWrap.querySelector(".swiper-button-prev"),
             },
             watchOverflow: true,
             breakpoints: {

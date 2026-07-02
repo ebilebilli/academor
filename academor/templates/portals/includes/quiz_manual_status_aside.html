@@ -1,0 +1,21 @@
+{% load i18n %}
+<aside class="portal-manual-quiz-aside panel" aria-label="{% trans 'Submission status' %}">
+  {% if quiz.is_pending_review %}
+  <div class="portal-manual-quiz-aside__icon portal-manual-quiz-aside__icon--pending" aria-hidden="true">
+    <i class="bi bi-hourglass-split"></i>
+  </div>
+  <span class="ds-badge ds-badge--warning mb-2">{% trans 'Gözlənilir' %}</span>
+  <h2 class="portal-manual-quiz-aside__title h6 mb-2">{% trans 'Review pending' %}</h2>
+  <p class="portal-manual-quiz-aside__text mb-0">
+    {% trans 'Your answers were submitted. Your teacher will review your work and publish feedback.' %}
+  </p>
+  {% elif quiz.is_reviewed and quiz.total_score is not None %}
+  <div class="portal-manual-quiz-aside__icon portal-manual-quiz-aside__icon--done" aria-hidden="true">
+    <i class="bi bi-check-circle"></i>
+  </div>
+  <h2 class="portal-manual-quiz-aside__title h6 mb-2">{% trans 'Reviewed' %}</h2>
+  <p class="portal-manual-quiz-aside__score mb-0">
+    {% trans 'Score' %}: {{ quiz.total_score|format_quiz_score }}/{{ quiz.max_value|format_quiz_score }}
+  </p>
+  {% endif %}
+</aside>

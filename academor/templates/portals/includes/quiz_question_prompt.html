@@ -1,0 +1,33 @@
+{% load i18n portal_tags %}
+<div class="portal-quiz-prompt portal-quiz-prompt--{{ q.prompt_type|default:'text' }}">
+  {% if q.prompt_type == 'text' %}
+  <p class="portal-quiz-prompt__text">{{ q.question }}</p>
+  {% else %}
+  {% if q.question %}
+  <p class="portal-quiz-prompt__caption">{{ q.question }}</p>
+  {% endif %}
+  <div class="portal-quiz-prompt-media">
+    {% with media_src=q.media_file_url|default:q.media_url %}
+    {% if q.prompt_type == 'image' and media_src %}
+    <img src="{{ media_src }}" alt="" class="portal-quiz-prompt-media__image">
+    {% elif q.prompt_type == 'video' %}
+      {% with embed_url=q.media_url|youtube_embed_url %}
+      {% if embed_url %}
+      <div class="portal-quiz-prompt-media__embed">
+        <iframe src="{{ embed_url }}" title="{% trans 'Video' %}" allowfullscreen loading="lazy"></iframe>
+      </div>
+      {% elif media_src %}
+      <video controls preload="metadata" class="portal-quiz-prompt-media__video" src="{{ media_src }}"></video>
+      {% else %}
+      <p class="portal-quiz-prompt__missing text-muted small mb-0">{% trans 'Media not available.' %}</p>
+      {% endif %}
+      {% endwith %}
+    {% elif q.prompt_type == 'audio' and media_src %}
+    <audio controls preload="metadata" class="portal-quiz-prompt-media__audio" src="{{ media_src }}"></audio>
+    {% elif not media_src %}
+    <p class="portal-quiz-prompt__missing text-muted small mb-0">{% trans 'Media not available.' %}</p>
+    {% endif %}
+    {% endwith %}
+  </div>
+  {% endif %}
+</div>

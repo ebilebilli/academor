@@ -1,0 +1,22 @@
+{% extends "portals/base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans 'Mark attendance' %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'portals/css/portal-attendance-mark.css' %}">
+{% endblock %}
+
+{% block content %}
+{% if mode == 'picker' %}
+  {% include "portals/includes/attendance_mark_picker.html" %}
+{% else %}
+  {% include "portals/includes/attendance_mark_form.html" %}
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+{% if mode != 'picker' %}
+<script src="{% static 'portals/js/portal-attendance-mark.js' %}"></script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,18 @@
+{% load i18n static %}
+<footer class="admin-footer">
+  <img
+    src="{% static 'portals/img/footer-formula.webp' %}"
+    alt=""
+    class="admin-footer-formula"
+    width="220"
+    height="56"
+    loading="lazy"
+    decoding="async"
+    aria-hidden="true"
+  >
+  <div class="container-fluid px-3 px-lg-4">
+    <div class="admin-footer-start">
+      <span class="admin-footer-copy">&copy; {% now "Y" %} {% trans 'Academor' %}</span>
+    </div>
+  </div>
+</footer>

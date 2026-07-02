@@ -1,0 +1,65 @@
+{% load i18n %}
+<nav class="navbar admin-navbar navbar-expand">  <div class="container-fluid px-3 px-lg-4">
+    <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="adminSidebar" aria-expanded="true" aria-label="{% trans 'Toggle sidebar' %}">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <div class="navbar-actions ms-auto">
+      {% if portal_role == 'teacher' %}
+      <a class="icon-button portal-review-queue" href="{% if portal_pending_reviews_url %}{{ portal_pending_reviews_url }}{% else %}{% url 'portals:teacher-quiz-results' %}{% endif %}" aria-label="{% trans 'Quizzes to review' %}" title="{% trans 'Quizzes to review' %}">
+        <i class="ti ti-pencil" aria-hidden="true"></i>
+        {% if portal_pending_reviews_count %}
+        <span class="portal-notification-badge">{{ portal_pending_reviews_count }}</span>
+        {% endif %}
+      </a>
+      {% endif %}
+      {% if portal_role == 'teacher' or portal_role == 'parent' or portal_role == 'student' %}
+      <a class="icon-button portal-notification-bell" href="{% if portal_notifications_url %}{{ portal_notifications_url }}{% elif portal_role == 'teacher' %}{% url 'portals:teacher-notifications' %}{% elif portal_role == 'parent' %}{% url 'portals:parent-notifications' %}{% elif portal_role == 'student' %}{% url 'portals:student-notifications' %}{% else %}#{% endif %}" aria-label="{% trans 'Notifications' %}" title="{% trans 'Notifications' %}">
+        <i class="ti ti-bell" aria-hidden="true"></i>
+        {% if portal_unread_notifications %}
+        <span class="portal-notification-badge" data-portal-unread-badge>{{ portal_unread_notifications }}</span>
+        {% else %}
+        <span class="portal-notification-badge d-none" data-portal-unread-badge hidden></span>
+        {% endif %}
+      </a>
+      {% endif %}
+      {% include "portals/includes/language_switcher.html" %}
+
+      <div class="dropdown">
+        <button class="profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          {% if portal_role == 'teacher' and teacher %}
+            {% include "portals/includes/avatar.html" with photo_url=teacher.photo_url name=teacher.full_name initials=teacher.full_name %}
+            <span class="profile-name d-none d-sm-inline">{{ teacher.full_name }}</span>
+          {% elif portal_role == 'student' and student %}
+            {% include "portals/includes/avatar.html" with photo_url=student.photo_url name=student.full_name initials=student.full_name %}
+            <span class="profile-name d-none d-sm-inline">{{ student.full_name }}</span>
+          {% elif portal_role == 'parent' and parent %}
+            {% include "portals/includes/avatar.html" with photo_url='' name=parent.full_name initials=parent.full_name %}
+            <span class="profile-name d-none d-sm-inline">{{ parent.full_name }}</span>
+          {% else %}
+            {% with display_name=portal_user.get_username %}
+            <span class="profile-avatar avatar-sm">{{ display_name|slice:":1"|upper }}</span>
+            <span class="profile-name d-none d-sm-inline">{{ display_name }}</span>
+            {% endwith %}
+          {% endif %}
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          {% if portal_role == 'teacher' or portal_role == 'student' or portal_role == 'parent' %}
+          <li><a class="dropdown-item" href="{% url 'portals:profile' %}"><i class="ti ti-user-circle me-2" aria-hidden="true"></i>{% trans 'My profile' %}</a></li>
+          {% endif %}
+          {% if portal_role == 'teacher' %}
+          <li><a class="dropdown-item" href="{{ portal_pending_reviews_url }}"><i class="ti ti-pencil me-2" aria-hidden="true"></i>{% trans 'Quizzes to review' %}{% if portal_pending_reviews_count %} <span class="badge rounded-pill text-bg-danger ms-1">{{ portal_pending_reviews_count }}</span>{% endif %}</a></li>
+          {% endif %}
+          {% if portal_role == 'teacher' or portal_role == 'parent' or portal_role == 'student' %}
+          <li><a class="dropdown-item" href="{{ portal_notifications_url }}"><i class="ti ti-bell me-2" aria-hidden="true"></i>{% trans 'Notifications' %}{% if portal_unread_notifications %} <span class="badge rounded-pill text-bg-danger ms-1" data-portal-unread-badge>{{ portal_unread_notifications }}</span>{% else %} <span class="badge rounded-pill text-bg-danger ms-1 d-none" data-portal-unread-badge hidden></span>{% endif %}</a></li>
+          {% endif %}
+          <li><a class="dropdown-item" href="{% url 'projects:home-page' %}"><i class="ti ti-home me-2" aria-hidden="true"></i>{% trans 'Main site' %}</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="{% url 'portals:logout' %}"><i class="ti ti-logout me-2" aria-hidden="true"></i>{% trans 'Sign out' %}</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>

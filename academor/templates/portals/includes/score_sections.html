@@ -1,0 +1,161 @@
+{% load i18n portal_tags %}
+{% with scores_view|default:'quiz' as active_view %}
+<section class="ds-card portal-score-shell" data-score-shell>
+  <div class="s-filter-tabs mb-3" role="tablist" aria-label="{% trans 'Qiymət kateqoriyaları' %}">
+    <button
+      type="button"
+      role="tab"
+      class="s-filter-tab{% if active_view == 'quiz' %} is-active{% endif %}"
+      data-score-tab="quiz"
+      aria-selected="{% if active_view == 'quiz' %}true{% else %}false{% endif %}"
+      aria-controls="score-panel-quiz"
+      id="score-tab-quiz"
+    >
+      <i class="ti ti-forms" aria-hidden="true"></i>
+      {% trans 'Quiz qiymətləri' %}
+      <span class="s-filter-tab__badge portal-score-segment__count">{{ quiz_scores|length }}</span>
+    </button>
+    <button
+      type="button"
+      role="tab"
+      class="s-filter-tab{% if active_view == 'lesson' %} is-active{% endif %}"
+      data-score-tab="lesson"
+      aria-selected="{% if active_view == 'lesson' %}true{% else %}false{% endif %}"
+      aria-controls="score-panel-lesson"
+      id="score-tab-lesson"
+    >
+      <i class="ti ti-notebook" aria-hidden="true"></i>
+      {% trans 'Dərs qiymətləri' %}
+      <span class="s-filter-tab__badge portal-score-segment__count">{{ lesson_scores|length }}</span>
+    </button>
+  </div>
+
+  <div
+    class="portal-score-panel{% if active_view == 'quiz' %} is-active{% endif %}"
+    data-score-panel="quiz"
+    role="tabpanel"
+    id="score-panel-quiz"
+    aria-labelledby="score-tab-quiz"
+    {% if active_view != 'quiz' %}hidden{% endif %}
+  >
+    <div class="table-responsive">
+      <table class="t-table portal-score-table">
+        <thead>
+          <tr>
+            {% if show_student_column %}
+            <th>{% trans 'Şagird' %}</th>
+            {% endif %}
+            <th>{% trans 'Quiz' %}</th>
+            <th>{% trans 'Növ' %}</th>
+            <th>{% trans 'Bal' %}</th>
+            <th>{% trans 'Tarix' %}</th>
+            {% if score_detail_url_name %}
+            <th class="text-end">{% trans 'Əməliyyat' %}</th>
+            {% endif %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in quiz_scores %}
+          <tr>
+            {% if show_student_column %}
+            <td class="fw-500">{{ row.student_name }}</td>
+            {% endif %}
+            <td class="{% if not show_student_column %}fw-500{% endif %}">{{ row.quiz_topic|default:"—" }}</td>
+            <td>
+              <span class="ds-badge">{{ row.grading_mode_label|default:row.score_type_label }}</span>
+            </td>
+            <td>
+              {% if row.is_pending_review %}
+              <span class="ds-badge ds-badge--warning">{% trans 'Gözlənilir' %}</span>
+              {% elif row.value is not None %}
+                {{ row.value|format_quiz_score }}{% if row.max_value %}/{{ row.max_value|format_quiz_score }}{% endif %}
+              {% else %}
+                —
+              {% endif %}
+            </td>
+            <td class="text-muted small">{{ row.date|portal_date_long }}</td>
+            {% if score_detail_url_name %}
+            <td class="text-end">
+              {% if not row.is_pending_review %}
+              <a class="ds-btn ds-btn--secondary btn-sm" href="{% url score_detail_url_name result_pk=row.result_id %}">{% trans 'Bax' %}</a>
+              {% else %}
+              <span class="text-muted small">—</span>
+              {% endif %}
+            </td>
+            {% endif %}
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="10">
+              <div class="s-empty-state">
+                <i class="ti ti-forms" aria-hidden="true"></i>
+                <p>{% trans 'Hələ quiz qiyməti yoxdur.' %}</p>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div
+    class="portal-score-panel{% if active_view == 'lesson' %} is-active{% endif %}"
+    data-score-panel="lesson"
+    role="tabpanel"
+    id="score-panel-lesson"
+    aria-labelledby="score-tab-lesson"
+    {% if active_view != 'lesson' %}hidden{% endif %}
+  >
+    <div class="table-responsive">
+      <table class="t-table portal-score-table">
+        <thead>
+          <tr>
+            {% if show_student_column %}
+            <th>{% trans 'Şagird' %}</th>
+            {% endif %}
+            <th>{% trans 'Dərs' %}</th>
+            <th>{% trans 'Növ' %}</th>
+            <th>{% trans 'Bal' %}</th>
+            <th>{% trans 'Tarix' %}</th>
+            {% if show_comment_column %}
+            <th>{% trans 'Şərh' %}</th>
+            {% endif %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in lesson_scores %}
+          <tr>
+            {% if show_student_column %}
+            <td class="fw-500">{{ row.student_name }}</td>
+            {% endif %}
+            <td class="{% if not show_student_column %}fw-500{% endif %}">{{ row.lesson_title|default:"—" }}</td>
+            <td><span class="ds-badge">{{ row.score_type_label }}</span></td>
+            <td>
+              {% if row.value is not None %}
+                {{ row.value|format_quiz_score }}{% if row.max_value %}/{{ row.max_value|format_quiz_score }}{% endif %}
+              {% else %}
+                —
+              {% endif %}
+            </td>
+            <td class="text-muted small">{{ row.date|portal_date_long }}</td>
+            {% if show_comment_column %}
+            <td class="text-muted small">{{ row.comment|default:"—" }}</td>
+            {% endif %}
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="10">
+              <div class="s-empty-state">
+                <i class="ti ti-notebook" aria-hidden="true"></i>
+                <p>{% trans 'Hələ dərs qiyməti yoxdur.' %}</p>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{% endwith %}

@@ -1,0 +1,399 @@
+{
+  "level": "B1",
+  "quiz": 1,
+  "title": "B1 Grammar Quiz 1 — Present Perfect Continuous, Passive Voice, Second Conditional",
+  "service": "general_english",
+  "category_name": "B1",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Present Perfect Continuous",
+      "question": "I ___ for you for an hour!",
+      "options": [
+        "was waiting",
+        "have been waiting",
+        "am waiting",
+        "had waited"
+      ],
+      "answer": 1,
+      "explanation": "Present Perfect Continuous = have/has been + -ing. Emphasises duration of an ongoing activity."
+    },
+    {
+      "id": 2,
+      "topic": "Present Perfect Continuous",
+      "question": "She looks tired. She ___ all day.",
+      "options": [
+        "works",
+        "has worked",
+        "has been working",
+        "had been working"
+      ],
+      "answer": 2,
+      "explanation": "Present Perfect Continuous explains a visible result of a recent ongoing activity."
+    },
+    {
+      "id": 3,
+      "topic": "Present Perfect vs PPC",
+      "question": "I ___ three cups of coffee today. (completed action, number given)",
+      "options": [
+        "was drinking",
+        "have been drinking",
+        "have drunk",
+        "had drunk"
+      ],
+      "answer": 2,
+      "explanation": "When the number of completed actions is stated → Present Perfect Simple: 'have drunk three cups'."
+    },
+    {
+      "id": 4,
+      "topic": "Present Perfect vs PPC",
+      "question": "How long ___ English?",
+      "options": [
+        "have you learned",
+        "have you been learning",
+        "do you learn",
+        "are you learning"
+      ],
+      "answer": 1,
+      "explanation": "'How long' + ongoing activity → PPC: 'have you been learning'. The learning is still happening."
+    },
+    {
+      "id": 5,
+      "topic": "Passive Voice (Present Simple)",
+      "question": "This bridge ___ every year.",
+      "options": [
+        "cleans",
+        "is cleaned",
+        "is cleaning",
+        "has cleaned"
+      ],
+      "answer": 1,
+      "explanation": "Passive Present Simple = is/are + past participle. 'The bridge is cleaned (by someone)'."
+    },
+    {
+      "id": 6,
+      "topic": "Passive Voice (Past Simple)",
+      "question": "The letter ___ last Monday.",
+      "options": [
+        "sent",
+        "was sent",
+        "is sent",
+        "has sent"
+      ],
+      "answer": 1,
+      "explanation": "Passive Past Simple = was/were + past participle: 'was sent'."
+    },
+    {
+      "id": 7,
+      "topic": "Passive Voice",
+      "question": "The new school ___ next year.",
+      "options": [
+        "will build",
+        "will be built",
+        "is going to build",
+        "builds"
+      ],
+      "answer": 1,
+      "explanation": "Passive Future: 'will be + past participle': 'will be built'."
+    },
+    {
+      "id": 8,
+      "topic": "Passive Voice",
+      "question": "The windows ___ by the cleaners every week.",
+      "options": [
+        "clean",
+        "are cleaned",
+        "is cleaned",
+        "cleaned"
+      ],
+      "answer": 1,
+      "explanation": "'Windows' is plural → 'are cleaned'. Passive Present Simple plural."
+    },
+    {
+      "id": 9,
+      "topic": "Passive Voice (agent)",
+      "question": "The Mona Lisa ___ Leonardo da Vinci.",
+      "options": [
+        "painted by",
+        "was painted by",
+        "was painted from",
+        "painted from"
+      ],
+      "answer": 1,
+      "explanation": "Passive + agent: 'was painted by + the agent'."
+    },
+    {
+      "id": 10,
+      "topic": "Second Conditional",
+      "question": "If I ___ a million dollars, I ___ travel the world.",
+      "options": [
+        "had / would",
+        "have / will",
+        "would have / travel",
+        "had / will"
+      ],
+      "answer": 0,
+      "explanation": "Second Conditional (unreal present/future): If + Past Simple, would + base verb."
+    },
+    {
+      "id": 11,
+      "topic": "Second Conditional",
+      "question": "If she ___ taller, she could be a model.",
+      "options": [
+        "is",
+        "was",
+        "were",
+        "would be"
+      ],
+      "answer": 2,
+      "explanation": "In Second Conditional, 'were' is preferred for all subjects (especially in formal English): 'If she were'."
+    },
+    {
+      "id": 12,
+      "topic": "Second Conditional",
+      "question": "What ___ you do if you ___ the boss?",
+      "options": [
+        "would / were",
+        "will / are",
+        "would / would be",
+        "did / were"
+      ],
+      "answer": 0,
+      "explanation": "Second Conditional: 'What would you do if you were...?' — both parts must match."
+    },
+    {
+      "id": 13,
+      "topic": "Modal verbs (deduction present)",
+      "question": "She knows five languages. She ___ be very clever.",
+      "options": [
+        "can",
+        "must",
+        "should",
+        "might"
+      ],
+      "answer": 1,
+      "explanation": "'Must' expresses strong logical deduction from evidence: we are almost certain."
+    },
+    {
+      "id": 14,
+      "topic": "Modal verbs (deduction present)",
+      "question": "He ___ be at home — his car isn't here.",
+      "options": [
+        "must",
+        "can't",
+        "shouldn't",
+        "needn't"
+      ],
+      "answer": 1,
+      "explanation": "'Can't' expresses negative deduction — we are almost certain something is NOT true."
+    },
+    {
+      "id": 15,
+      "topic": "Modal verbs (deduction present)",
+      "question": "I'm not sure where she is. She ___ be at the gym.",
+      "options": [
+        "must",
+        "can't",
+        "might",
+        "should"
+      ],
+      "answer": 2,
+      "explanation": "'Might' expresses possibility when we are not certain: 'maybe she is'."
+    },
+    {
+      "id": 16,
+      "topic": "Past Perfect",
+      "question": "When I arrived, the film ___ already ___.",
+      "options": [
+        "has / started",
+        "had / started",
+        "was / started",
+        "did / start"
+      ],
+      "answer": 1,
+      "explanation": "Past Perfect = had + past participle. Shows an action completed before another past action."
+    },
+    {
+      "id": 17,
+      "topic": "Past Perfect",
+      "question": "She failed the exam because she ___ enough.",
+      "options": [
+        "didn't study",
+        "hasn't studied",
+        "hadn't studied",
+        "wasn't studying"
+      ],
+      "answer": 2,
+      "explanation": "Past Perfect shows the earlier action: 'hadn't studied' (before failing)."
+    },
+    {
+      "id": 18,
+      "topic": "Past Perfect",
+      "question": "By the time we got there, they ___.",
+      "options": [
+        "left",
+        "have left",
+        "had left",
+        "were leaving"
+      ],
+      "answer": 2,
+      "explanation": "'By the time' + Past Simple triggers Past Perfect for the earlier action: 'had left'."
+    },
+    {
+      "id": 19,
+      "topic": "Reported Speech",
+      "question": "'I love chocolate.' → She said she ___ chocolate.",
+      "options": [
+        "loves",
+        "loved",
+        "like",
+        "would love"
+      ],
+      "answer": 1,
+      "explanation": "Present Simple → Past Simple in reported speech: 'loves' → 'loved'."
+    },
+    {
+      "id": 20,
+      "topic": "Reported Speech",
+      "question": "'I will help you.' → He promised he ___ help me.",
+      "options": [
+        "will",
+        "would",
+        "can",
+        "shall"
+      ],
+      "answer": 1,
+      "explanation": "'Will' → 'would' in reported speech."
+    },
+    {
+      "id": 21,
+      "topic": "Reported Speech (questions)",
+      "question": "'Where do you live?' → She asked me where I ___.",
+      "options": [
+        "live",
+        "lived",
+        "do live",
+        "did live"
+      ],
+      "answer": 1,
+      "explanation": "Reported Wh-questions: question word + subject + verb (no inversion). Tense shifts back: 'live' → 'lived'."
+    },
+    {
+      "id": 22,
+      "topic": "Relative clauses (defining)",
+      "question": "The book ___ I told you about is excellent.",
+      "options": [
+        "who",
+        "which",
+        "whose",
+        "what"
+      ],
+      "answer": 1,
+      "explanation": "Defining relative clause for a thing → 'which' (or 'that'). 'What' cannot be used as a relative pronoun here."
+    },
+    {
+      "id": 23,
+      "topic": "Relative clauses (non-defining)",
+      "question": "My brother, ___ is a doctor, lives in Paris.",
+      "options": [
+        "that",
+        "which",
+        "who",
+        "whose"
+      ],
+      "answer": 2,
+      "explanation": "Non-defining relative clauses (with commas) about people → 'who'. 'That' cannot be used in non-defining clauses."
+    },
+    {
+      "id": 24,
+      "topic": "Wish (present)",
+      "question": "I hate this job. I wish I ___ a better one.",
+      "options": [
+        "have",
+        "had",
+        "would have",
+        "will have"
+      ],
+      "answer": 1,
+      "explanation": "'Wish + Past Simple' expresses a present wish about something we want to be different."
+    },
+    {
+      "id": 25,
+      "topic": "Wish (present)",
+      "question": "She can't drive. She wishes she ___ drive.",
+      "options": [
+        "can",
+        "could",
+        "would",
+        "should"
+      ],
+      "answer": 1,
+      "explanation": "'Wish + could' expresses a wish about ability in the present."
+    },
+    {
+      "id": 26,
+      "topic": "Gerund as subject",
+      "question": "___ is good for your health.",
+      "options": [
+        "Swim",
+        "Swims",
+        "Swimming",
+        "To swimming"
+      ],
+      "answer": 2,
+      "explanation": "Gerunds (-ing form) can function as subjects of a sentence: 'Swimming is good'."
+    },
+    {
+      "id": 27,
+      "topic": "Gerund after preposition",
+      "question": "She is interested ___ learning Italian.",
+      "options": [
+        "to",
+        "for",
+        "in",
+        "about"
+      ],
+      "answer": 2,
+      "explanation": "'Interested in' is a fixed expression. After prepositions, always use -ing form."
+    },
+    {
+      "id": 28,
+      "topic": "Connectors (contrast)",
+      "question": "___ being tired, she finished the project.",
+      "options": [
+        "Although",
+        "Despite",
+        "However",
+        "Even though"
+      ],
+      "answer": 1,
+      "explanation": "'Despite/In spite of' + noun/gerund. 'Although/Even though' + clause (need subject + verb)."
+    },
+    {
+      "id": 29,
+      "topic": "Connectors (result)",
+      "question": "He studied hard. ___, he passed the exam.",
+      "options": [
+        "However",
+        "Therefore",
+        "Although",
+        "Despite"
+      ],
+      "answer": 1,
+      "explanation": "'Therefore' = as a result, for that reason. Shows logical consequence."
+    },
+    {
+      "id": 30,
+      "topic": "Passive Voice (Present Perfect)",
+      "question": "The project ___ yet.",
+      "options": [
+        "hasn't completed",
+        "hasn't been completed",
+        "wasn't completed",
+        "isn't completed"
+      ],
+      "answer": 1,
+      "explanation": "Passive Present Perfect: 'have/has + been + past participle': 'hasn't been completed'."
+    }
+  ]
+}

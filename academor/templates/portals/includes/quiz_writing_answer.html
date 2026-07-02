@@ -1,0 +1,28 @@
+{% load i18n %}
+<div class="portal-quiz-writing-area{% if compact %} portal-quiz-writing-area--compact{% endif %}{% if hide_label %} portal-quiz-writing-area--no-label{% endif %}">
+  {% if not hide_label %}
+  <label class="portal-quiz-writing-area__label" for="{% if question_id %}manual-submission-{{ question_id }}{% else %}manual-submission{% endif %}">
+    <i class="bi bi-pencil-square" aria-hidden="true"></i>
+    {% trans 'Your answer' %}
+  </label>
+  {% endif %}
+  {% if view_only %}
+  <div class="portal-quiz-writing-area__readonly">{{ student_answer|linebreaksbr }}</div>
+  {% else %}
+  <textarea
+    id="{% if question_id %}manual-submission-{{ question_id }}{% else %}manual-submission{% endif %}"
+    class="portal-quiz-writing-area__input"
+    rows="{% if compact %}3{% else %}8{% endif %}"
+    data-manual-submission
+    {% if question_id %}data-question-id="{{ question_id }}"{% endif %}
+    placeholder="{% trans 'Write your answer here…' %}"
+    spellcheck="true"
+  ></textarea>
+  {% if not compact %}
+  <div class="portal-quiz-writing-area__footer">
+    <span class="portal-quiz-writing-area__hint">{% trans 'Take your time — your teacher will review your work.' %}</span>
+    <span class="portal-quiz-writing-area__count" data-writing-count aria-live="polite">0 {% trans 'words' %}</span>
+  </div>
+  {% endif %}
+  {% endif %}
+</div>

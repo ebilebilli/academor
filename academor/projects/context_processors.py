@@ -13,7 +13,6 @@ from projects.utils.queries import (
     get_page_tagline,
     serialize_contact,
 )
-
 URL_NAME_TO_TAGLINE_PAGE = {
     'about-page': TaglinePage.ABOUT,
     'contact-page': TaglinePage.CONTACT,
@@ -179,12 +178,33 @@ def turnstile_context(request):
     }
 
 
+def _resolve_page_tagline(url_name, lang):
+    """Return banner tagline for the current route, with shared fallbacks for course/service pages."""
+    page_key = URL_NAME_TO_TAGLINE_PAGE.get(url_name)
+    if not page_key:
+        return None
+
+    if url_name == 'services-page':
+        for key in (TaglinePage.SERVICE, TaglinePage.COURSES):
+            tagline = get_page_tagline(key, lang)
+            if tagline:
+                return tagline
+        return None
+
+    if url_name in ('courses-page', 'course-detail'):
+        for key in (TaglinePage.COURSES, TaglinePage.SERVICE):
+            tagline = get_page_tagline(key, lang)
+            if tagline:
+                return tagline
+        return None
+
+    return get_page_tagline(page_key, lang)
+
+
 def page_banner_tagline_context(request):
     lang = _request_lang(request)
     rm = getattr(request, 'resolver_match', None)
     url_name = getattr(rm, 'url_name', None) or ''
-    page_key = URL_NAME_TO_TAGLINE_PAGE.get(url_name)
-    tagline = get_page_tagline(page_key, lang) if page_key else None
     return {
-        'page_tagline': tagline,
+        'page_tagline': _resolve_page_tagline(url_name, lang),
     }

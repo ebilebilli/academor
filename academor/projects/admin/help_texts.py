@@ -181,8 +181,8 @@ ADMIN_HELP = {
     'where': 'Homepage promotion banner and discounted prices on selected courses.',
     'tips': [
       'Leave "Discount (%)" empty for announcement-only promos (no price change).',
-      '"Apply discount to service prices" reduces listed prices — requires a % and selected courses.',
-      'Leave services empty for a general homepage announcement without price changes.',
+      'Link courses to discount all of their price packages, or pick specific price packages.',
+      'Leave courses and price packages empty for a general homepage announcement without price changes.',
       'Upload one card image in the Media section below for the promo banner.',
     ],
   },

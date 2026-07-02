@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+{% load static i18n %}
+{% get_current_language as LANG_CODE %}
+<html lang="{{ LANG_CODE }}">
+<head>
+    {% trans "Log in" as portal_login_page_title %}
+    {% include "includes/site_layout_head.html" with seo_noindex=True page_title=portal_login_page_title %}
+    <link rel="stylesheet" href="{% static 'portals/css/portal-login.css' %}">
+</head>
+<body class="portal-login-page">
+    {% include "includes/site_spinner.html" %}
+    {% include "includes/site_navbar.html" %}
+
+    <main id="main-content" class="portal-login-page__main">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-8 col-lg-5">
+                    <div class="portal-login-page__card border-0 rounded-4 shadow-lg overflow-hidden">
+                        <div class="portal-login-modal__header px-4 pt-4 pb-0">
+                            <img
+                                src="{% static 'portals/img/new_logo.webp' %}"
+                                alt="{% trans 'Academor' %}"
+                                class="portal-login-modal__logo mb-3"
+                                width="138"
+                                height="46"
+                                decoding="async"
+                            >
+                            <div class="portal-login-modal__head-row">
+                                <span class="portal-login-modal__head-figure" aria-hidden="true">
+                                    <img
+                                        src="{% static 'portals/img/contract_small_icon.webp' %}"
+                                        alt=""
+                                        class="portal-login-modal__head-icon"
+                                        width="24"
+                                        height="24"
+                                        decoding="async"
+                                    >
+                                </span>
+                                <div class="portal-login-modal__head-text">
+                                    <h1 class="h4 mb-2 portal-login-modal__title">{% trans "Log in" %}</h1>
+                                    <p class="portal-login-modal__subtitle text-muted small mb-0">
+                                        {% trans "Sign in to the student portal with the username and password provided by Academor." %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="portal-login-modal__body px-4 pb-4 pt-3">
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class="alert alert-{{ message.tags|default:'info' }} py-2 small mb-3" role="alert">{{ message }}</div>
+                                {% endfor %}
+                            {% endif %}
+                            {% include "includes/portal_login_form.html" with next=next %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {% include "includes/site_footer.html" %}
+    {% include "includes/site_scripts.html" %}
+</body>
+</html>

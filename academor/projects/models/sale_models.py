@@ -10,7 +10,9 @@ class Sale(models.Model):
         blank=True,
         related_name='sales',
         verbose_name=_('Services'),
-        help_text=_('Optional. Leave empty for a general promotion.'),
+        help_text=_(
+            'Optional. Selected courses get the discount on all their price packages.'
+        ),
     )
     name_az = models.CharField(
         max_length=255,
@@ -54,12 +56,14 @@ class Sale(models.Model):
         verbose_name=_('End date'),
         help_text=_('Optional. Promotion is hidden from the homepage after this date.'),
     )
-    apply_to_service_prices = models.BooleanField(
-        default=False,
-        verbose_name=_('Apply discount to service prices'),
+    price_packages = models.ManyToManyField(
+        'CoursePricePackage',
+        blank=True,
+        related_name='sales',
+        verbose_name=_('Price packages'),
         help_text=_(
-            'When enabled, the discount percentage is deducted from the prices '
-            'of the selected services.'
+            'Optional. Selected price cards get the discount '
+            '(homepage carousel and course page).'
         ),
     )
     is_active = models.BooleanField(

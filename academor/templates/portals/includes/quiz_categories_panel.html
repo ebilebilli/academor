@@ -1,0 +1,71 @@
+{% load i18n %}
+<section
+  class="ds-card mb-4"
+  data-portal-service-tabs
+  data-portal-service-match="single"
+  data-portal-service-table="#quiz-categories-table"
+  data-portal-service-empty-row=".quiz-categories-empty-row"
+  data-portal-service-filter-empty="#quiz-categories-filter-empty"
+>
+  {% if service_tabs|length > 1 %}
+  <div class="s-filter-tabs px-0 pt-0 pb-3" id="quizServiceTabs" role="group" data-portal-service-tablist aria-label="{% trans 'Xidmət filteri' %}">
+    {% for tab in service_tabs %}
+    <button
+      class="s-filter-tab{% if forloop.first %} is-active{% endif %}"
+      type="button"
+      data-service="{{ tab.code }}"
+      {% if forloop.first %}aria-selected="true"{% else %}aria-selected="false"{% endif %}
+    >
+      {{ tab.label }} <span class="s-filter-tab__badge">{{ tab.count }}</span>
+    </button>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="s-panel-head">
+    <h2 class="s-panel-title">
+      <i class="ti ti-category" aria-hidden="true"></i>
+      {% trans 'Kateqoriyalar' %}
+    </h2>
+  </div>
+  {% endif %}
+
+  <div class="table-responsive">
+    <table class="t-table" id="quiz-categories-table" aria-label="{% trans 'Quiz kateqoriyaları' %}">
+      <thead>
+        <tr>
+          <th>{% trans 'Kateqoriya' %}</th>
+          <th>{% trans 'Xidmət' %}</th>
+          <th>{% trans 'Quiz' %}</th>
+          <th class="text-end">{% trans 'Əməliyyat' %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for category in categories %}
+        <tr data-service="{{ category.service }}">
+          <td class="fw-500">{{ category.name }}</td>
+          <td><span class="ds-badge">{{ category.service_label }}</span></td>
+          <td><span class="ds-badge">{{ category.quiz_count }}</span></td>
+          <td class="text-end">
+            <a class="ds-btn ds-btn--secondary btn-sm" href="{% url category_detail_url_name category.id %}{{ category_url_suffix|default:'' }}">
+              {{ category_action_label|default:_('Aç') }}
+            </a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr class="quiz-categories-empty-row">
+          <td colspan="4">
+            <div class="s-empty-state">
+              <i class="ti ti-forms" aria-hidden="true"></i>
+              <p>{{ empty_message|default:_('No quiz categories yet.') }}</p>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="s-empty-state d-none" id="quiz-categories-filter-empty">
+    <i class="ti ti-filter-off" aria-hidden="true"></i>
+    <p>{% trans 'Bu xidmət üçün kateqoriya yoxdur.' %}</p>
+  </div>
+</section>

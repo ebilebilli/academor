@@ -1,0 +1,58 @@
+{% extends "portals/base.html" %}
+{% load i18n portal_tags %}
+
+{% block title %}{{ category.name }} — {% trans 'Quizzes' %}{% endblock %}
+
+{% block content %}
+{% portal_page_heading icon="bi-ui-checks" raw_title=category.name raw_subtitle=category.service_label eyebrow="Teacher" %}
+
+<div class="d-flex flex-wrap gap-2 mb-3">
+  <a class="btn btn-light btn-sm" href="{% url 'portals:teacher-quizzes' %}">
+    <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'All categories' %}
+  </a>
+  <span class="badge rounded-pill text-bg-light border align-self-center px-3 py-2">{{ category.service_label }}</span>
+</div>
+
+<section class="panel">
+  <div class="table-responsive">
+    <table class="table align-middle mb-0">
+      <thead>
+        <tr>
+          <th scope="col">{% trans 'Topic' %}</th>
+          <th scope="col">{% trans 'Type' %}</th>
+          <th scope="col">{% trans 'Questions' %}</th>
+          <th scope="col">{% trans 'Created' %}</th>
+          <th scope="col" class="text-end">{% trans 'Action' %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for quiz in quizzes %}
+        <tr>
+          <td class="fw-semibold">{{ quiz.topic }}</td>
+          <td>
+            <span class="badge rounded-pill {% if quiz.is_manual_grading %}text-bg-primary{% else %}text-bg-light border{% endif %}">
+              {{ quiz.grading_mode_label }}
+            </span>
+          </td>
+          <td>
+            {% if quiz.question_count %}
+              <span class="badge rounded-pill text-bg-light border">{{ quiz.question_count }}</span>
+            {% else %}
+              <span class="text-muted">0</span>
+            {% endif %}
+          </td>
+          <td>{{ quiz.created_at|portal_date }}</td>
+          <td class="text-end">
+            <a class="btn btn-outline-primary btn-sm" href="{% url 'portals:teacher-quiz-detail' pk=quiz.id %}">{% trans 'View' %}</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5" class="text-muted py-4 text-center">{% trans 'No quizzes in this category yet.' %}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

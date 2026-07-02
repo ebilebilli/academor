@@ -63,7 +63,6 @@ class AppealContactForm(TurnstileFormMixin, forms.ModelForm):
         widget=forms.Textarea(attrs={
             'class': 'form-control',
             'rows': 5,
-            'style': 'height: 150px',
             'placeholder': _('Your message')
         }),
         required=True,

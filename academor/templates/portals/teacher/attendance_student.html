@@ -1,0 +1,151 @@
+{% extends "portals/base.html" %}
+{% load i18n portal_tags %}
+
+{% block title %}{{ student.full_name }} — {% trans 'Attendance' %}{% endblock %}
+
+{% block content %}
+<nav aria-label="{% trans 'Breadcrumb' %}" class="mb-3">
+  <ol class="breadcrumb portal-breadcrumb mb-0">
+    <li class="breadcrumb-item"><a href="{% url 'portals:teacher-attendance' %}">{% trans 'Students' %}</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'portals:teacher-student-profile' student_pk=student.id %}">{{ student.full_name }}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{% trans 'Attendance' %}</li>
+  </ol>
+</nav>
+
+<section class="portal-student-hero admin-card mb-4 portal-student-hero--compact">
+  <div class="portal-student-hero-cover" aria-hidden="true"></div>
+  <div class="portal-student-hero-body">
+    <div class="portal-student-hero-identity">
+      <div class="portal-student-hero-avatar">
+        {% if student.photo_url %}
+          <img src="{{ student.photo_url }}" alt="{{ student.full_name }}">
+        {% else %}
+          <span class="portal-student-hero-initials">{{ student.full_name|slice:":2"|upper }}</span>
+        {% endif %}
+      </div>
+      <div class="portal-student-hero-copy">
+        <p class="portal-student-hero-eyebrow mb-1">{% trans 'Attendance' %}</p>
+        <h1 class="portal-student-hero-name h4 mb-1">{{ student.full_name }}</h1>
+        {% if groups %}
+          <div class="portal-student-hero-tags">
+            {% for group_name in groups %}
+              <span class="portal-student-hero-tag">{{ group_name }}</span>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="portal-student-hero-actions">
+      <a class="btn btn-light btn-sm portal-student-hero-btn" href="{% url 'portals:teacher-student-profile' student_pk=student.id %}">
+        <i class="bi bi-person" aria-hidden="true"></i><span>{% trans 'Full profile' %}</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="portal-student-stats row g-3 mb-4">
+  <div class="col-6 col-lg-3">
+    <article class="portal-student-stat-card">
+      <span class="portal-student-stat-icon primary"><i class="bi bi-list-check" aria-hidden="true"></i></span>
+      <div>
+        <span class="portal-student-stat-value">{{ summary.total }}</span>
+        <span class="portal-student-stat-label">{% trans 'Total sessions' %}</span>
+      </div>
+    </article>
+  </div>
+  <div class="col-6 col-lg-3">
+    <article class="portal-student-stat-card">
+      <span class="portal-student-stat-icon success"><i class="bi bi-check-circle" aria-hidden="true"></i></span>
+      <div>
+        <span class="portal-student-stat-value">{{ summary.present }}</span>
+        <span class="portal-student-stat-label">{% trans 'Present' %}</span>
+      </div>
+    </article>
+  </div>
+  <div class="col-6 col-lg-3">
+    <article class="portal-student-stat-card">
+      <span class="portal-student-stat-icon danger"><i class="bi bi-x-circle" aria-hidden="true"></i></span>
+      <div>
+        <span class="portal-student-stat-value">{{ summary.absent }}</span>
+        <span class="portal-student-stat-label">{% trans 'Absent' %}</span>
+      </div>
+    </article>
+  </div>
+  <div class="col-6 col-lg-3">
+    <article class="portal-student-stat-card">
+      <span class="portal-student-stat-icon warning"><i class="bi bi-clock-history" aria-hidden="true"></i></span>
+      <div>
+        <span class="portal-student-stat-value">{{ summary.late }}</span>
+        <span class="portal-student-stat-label">{% trans 'Late' %}</span>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="portal-student-tab-shell" data-portal-status-tabs>
+  <ul class="nav nav-tabs portal-attendance-tabs px-3 pt-2" id="attendanceStatusTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" type="button" data-status="all" aria-selected="true">
+        {% trans 'All records' %} <span class="badge rounded-pill">{{ summary.total }}</span>
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" type="button" data-status="present">
+        {% trans 'Present' %} <span class="badge rounded-pill">{{ summary.present }}</span>
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" type="button" data-status="absent">
+        {% trans 'Absent' %} <span class="badge rounded-pill">{{ summary.absent }}</span>
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" type="button" data-status="late">
+        {% trans 'Late' %} <span class="badge rounded-pill">{{ summary.late }}</span>
+      </button>
+    </li>
+  </ul>
+
+  <div class="portal-student-tab-panel p-0">
+    <div class="table-responsive">
+      <table class="table align-middle mb-0 portal-data-table" id="attendance-records-table">
+        <thead>
+          <tr>
+            <th scope="col">{% trans 'Date' %}</th>
+            <th scope="col">{% trans 'Group' %}</th>
+            <th scope="col">{% trans 'Time' %}</th>
+            <th scope="col">{% trans 'Status' %}</th>
+            <th scope="col">{% trans 'Note' %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in records %}
+          <tr data-status="{{ row.status }}">
+            <td class="fw-semibold">{{ row.session_date|portal_date_long }}</td>
+            <td>{{ row.group_name }}</td>
+            <td>{{ row.weekday_label }}, {{ row.start_time|time:"H:i" }}</td>
+            <td>
+              <span class="portal-attendance-status portal-attendance-status--{{ row.status }}">{{ row.status_label }}</span>
+            </td>
+            <td>{{ row.note|default:"—" }}</td>
+          </tr>
+          {% empty %}
+          <tr class="attendance-empty-row">
+            <td colspan="5">
+              <div class="portal-student-empty py-4">
+                <div class="portal-student-empty-icon"><i class="bi bi-calendar-x" aria-hidden="true"></i></div>
+                <h3>{% trans 'No attendance records yet' %}</h3>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="portal-student-empty d-none py-4" id="attendance-filter-empty">
+      <div class="portal-student-empty-icon"><i class="bi bi-funnel" aria-hidden="true"></i></div>
+      <h3>{% trans 'No records for this filter' %}</h3>
+    </div>
+  </div>
+</section>
+{% endblock %}

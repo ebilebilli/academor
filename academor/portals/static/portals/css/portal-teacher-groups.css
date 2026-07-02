@@ -1,0 +1,344 @@
+/* Teacher groups page */
+/* Toolbar Styles */
+.portal-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.portal-toolbar-left,
+.portal-toolbar-right {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.portal-search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.portal-search-box i {
+  position: absolute;
+  left: 0.75rem;
+  color: var(--admin-muted);
+  pointer-events: none;
+}
+
+.portal-search-box input {
+  padding-left: 2.25rem;
+  min-width: 220px;
+  border-radius: 8px;
+}
+
+.portal-filter-menu .dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+}
+
+.portal-filter-menu .dropdown-item:hover {
+  background: var(--admin-surface-soft);
+}
+
+.portal-filter-menu .dropdown-header {
+  font-weight: 700;
+  color: var(--admin-text);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Stats Bar */
+.portal-stats-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: var(--admin-surface-soft);
+  border: 1px solid var(--admin-border);
+  border-radius: 10px;
+  font-size: 0.9rem;
+}
+
+.portal-stat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.portal-stat-item strong {
+  color: var(--admin-text);
+}
+
+.portal-stat-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--admin-border);
+}
+
+/* Data Table Enhancements */
+.portal-data-table {
+  font-size: 0.9rem;
+}
+
+.portal-col-sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.portal-col-sortable:hover {
+  background: var(--admin-surface-soft);
+}
+
+.portal-col-sortable i {
+  font-size: 0.75rem;
+  opacity: 0.5;
+}
+
+.portal-group-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.portal-group-avatar-lg {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.portal-course-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  background: var(--admin-surface-soft);
+  border: 1px solid var(--admin-border);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--admin-text);
+}
+
+.portal-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 0.5rem;
+  border-radius: 14px;
+  background: var(--admin-surface-soft);
+  border: 1px solid var(--admin-border);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--admin-muted);
+}
+
+.portal-count-badge.has-students {
+  background: var(--admin-primary);
+  border-color: var(--admin-primary);
+  color: white;
+}
+
+.portal-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.portal-status-badge.active {
+  background: rgba(15, 118, 110, 0.1);
+  color: var(--admin-success);
+}
+
+.portal-status-badge.inactive {
+  background: rgba(108, 117, 125, 0.1);
+  color: var(--admin-muted);
+}
+
+#groups-table-view.panel {
+  overflow: visible;
+}
+
+#groups-table-view .table-responsive {
+  overflow: visible;
+}
+
+@media (max-width: 991.98px) {
+  #groups-table-view .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+.portal-data-table td.text-end {
+  white-space: nowrap;
+}
+
+/* Card Styles */
+.portal-card {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+}
+
+.portal-card:hover {
+  box-shadow: var(--admin-shadow);
+}
+
+.portal-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.portal-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.portal-card-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.portal-card-body {
+  padding: 1rem;
+}
+
+.portal-card-stats {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.portal-card-stat {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--admin-muted);
+}
+
+.portal-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--admin-muted);
+}
+
+.portal-card-footer {
+  padding: 0.75rem 1rem;
+  border-top: 1px solid var(--admin-border);
+  background: var(--admin-surface-soft);
+}
+
+.portal-status-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.portal-status-dot.active {
+  background: var(--admin-success);
+}
+
+.portal-status-dot.inactive {
+  background: var(--admin-muted);
+}
+
+/* Action Menu */
+.portal-action-menu .dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 0.65rem 1rem;
+  font-weight: 500;
+}
+
+.portal-action-menu .dropdown-item:hover {
+  background: var(--admin-surface-soft);
+}
+
+/* Empty State */
+.portal-empty-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+}
+
+.portal-empty-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  border-radius: 20px;
+  background: var(--admin-surface-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: var(--admin-muted);
+}
+
+.portal-empty-state h3 {
+  margin-bottom: 0.5rem;
+  color: var(--admin-text);
+}
+
+.portal-empty-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .portal-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .portal-toolbar-left,
+  .portal-toolbar-right {
+    width: 100%;
+  }
+
+  .portal-search-box input {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .portal-row-actions {
+    flex-wrap: wrap;
+  }
+}

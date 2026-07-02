@@ -22,14 +22,27 @@ DEBUG = True
 TURNSTILE_SITE_KEY = (os.getenv('TURNSTILE_SITE_KEY') or '').strip()
 TURNSTILE_SECRET_KEY = (os.getenv('TURNSTILE_SECRET_KEY') or '').strip()
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
 
 CSRF_TRUSTED_ORIGINS = [
     "https://www.academor.az",
     'https://academor.az',
     'http://localhost:8000',
     'http://127.0.0.1:8000',
+    'http://localhost:8080',
+    'http://127.0.0.1:8080',
 ]
+
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
+LANGUAGE_COOKIE_SECURE = False
+PORTAL_SESSION_COOKIE_SECURE = False
+
+# Portal auth cookie — separate from Django admin sessionid
+PORTAL_SESSION_COOKIE_NAME = 'portal_sessionid'
+PORTAL_SESSION_COOKIE_PATH = '/portal/'
+PORTAL_SESSION_COOKIE_HTTPONLY = True
+PORTAL_SESSION_COOKIE_SAMESITE = 'Lax'
 
 _ccd = (os.getenv('SITE_CANONICAL_DOMAIN') or 'academor.az').strip()
 _ccd = _ccd.removeprefix('https://').removeprefix('http://').strip().rstrip('/')
@@ -80,6 +93,7 @@ INSTALLED_APPS = [
     # Apps
     'projects',
     'payments',
+    'portals',
 ]
 
 SITE_ID = 1
@@ -99,7 +113,10 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'portals.middleware.PortalAuthenticationMiddleware',
+    'portals.middleware.PortalSessionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'academor.middleware.AdminAccessMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'academor.middleware.PublicHtmlCacheControlMiddleware',
 ]
@@ -121,6 +138,8 @@ TEMPLATES = [
                 'projects.context_processors.site_seo_context',
                 'projects.context_processors.turnstile_context',
                 'projects.context_processors.page_banner_tagline_context',
+                'portals.context_processors.portal_auth_context',
+                'portals.context_processors.portal_notification_context',
             ],
         },
     },
@@ -198,7 +217,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'az'
 
-ADMIN_LANGUAGE_CODE = 'en'
+ADMIN_LANGUAGE_CODE = 'az'
 
 LANGUAGES = [
     ('az', 'Azərbaycan'),

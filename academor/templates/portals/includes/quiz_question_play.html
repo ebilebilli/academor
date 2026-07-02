@@ -1,0 +1,32 @@
+{% load i18n portal_tags %}
+<article class="portal-quiz-play-card" data-quiz-question-card>
+  <header class="portal-quiz-play-card__head">
+    <span class="portal-quiz-play-card__index">{% trans 'Question' %} {{ number }}</span>
+    {% if q.prompt_type and q.prompt_type != 'text' %}
+    <span class="portal-quiz-play-card__type badge rounded-pill text-bg-light border">
+      {% if q.prompt_type == 'image' %}<i class="bi bi-image me-1" aria-hidden="true"></i>{% trans 'Image' %}
+      {% elif q.prompt_type == 'video' %}<i class="bi bi-camera-video me-1" aria-hidden="true"></i>{% trans 'Video' %}
+      {% elif q.prompt_type == 'audio' %}<i class="bi bi-music-note-beamed me-1" aria-hidden="true"></i>{% trans 'Audio' %}
+      {% endif %}
+    </span>
+    {% endif %}
+  </header>
+
+  {% include "portals/includes/quiz_question_prompt.html" with q=q %}
+
+  <fieldset class="portal-quiz-play-options">
+    <legend class="visually-hidden">{% blocktrans with n=number %}Answer choices for question %(n)s{% endblocktrans %}</legend>
+    {% for option in q.answer_options %}
+    <label class="portal-quiz-play-option">
+      <input
+        type="radio"
+        name="quiz-q-{{ q.id }}"
+        value="{{ forloop.counter0 }}"
+        class="portal-quiz-play-option__input"
+      >
+      <span class="portal-quiz-play-option__letter">{{ forloop.counter0|quiz_option_letter|upper }}</span>
+      <span class="portal-quiz-play-option__text">{{ option }}</span>
+    </label>
+    {% endfor %}
+  </fieldset>
+</article>

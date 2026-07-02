@@ -1,0 +1,10 @@
+{% extends "portals/base.html" %}
+{% load i18n portal_tags %}
+
+{% block title %}{% trans 'Quiz categories' %}{% endblock %}
+
+{% block content %}
+{% portal_page_heading icon="bi-ui-checks" eyebrow="Teacher" title="Quiz categories" subtitle="View quizzes for your assigned services." %}
+
+{% include "portals/includes/quiz_categories_panel.html" with category_detail_url_name='portals:teacher-quiz-category' category_action_label=_('View') empty_message=_('No quiz categories for your services yet.') %}
+{% endblock %}

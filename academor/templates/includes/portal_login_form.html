@@ -1,0 +1,32 @@
+{% load i18n %}
+<form method="post" action="{% url 'portals:login' %}" class="portal-login-form" id="portalLoginForm" novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{% if next %}{{ next }}{% elif request.GET.next %}{{ request.GET.next }}{% else %}{% url 'portals:dashboard' %}{% endif %}">
+    <div class="mb-3">
+        <label for="portalLoginUsername" class="form-label">{% trans "Username" %}</label>
+        <input
+            type="text"
+            class="form-control form-control-lg"
+            id="portalLoginUsername"
+            name="username"
+            autocomplete="username"
+            required
+            value="{{ request.session.portal_login_username|default:'' }}"
+        >
+    </div>
+    <div class="mb-4">
+        <label for="portalLoginPassword" class="form-label">{% trans "Password" %}</label>
+        <input
+            type="password"
+            class="form-control form-control-lg"
+            id="portalLoginPassword"
+            name="password"
+            autocomplete="current-password"
+            required
+        >
+    </div>
+    <button type="submit" class="btn btn-primary w-100 btn-lg rounded-pill portal-login-form__submit">
+        {% trans "Log in" %}
+        <i class="fa fa-arrow-right ms-2" aria-hidden="true"></i>
+    </button>
+</form>

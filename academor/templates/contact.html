@@ -49,72 +49,91 @@
                 <h1 class="mb-5">{% trans "Contact For Any Query" %}</h1>
             </div>
             <div class="row g-4">
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <h5>{% trans "Get In Touch" %}</h5>
+                <div class="col-lg-4 col-md-6 contact-info-col wow fadeInUp" data-wow-delay="0.1s">
                     {% if contact %}
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="d-flex align-items-center justify-content-center flex-shrink-0 bg-primary" style="width: 50px; height: 50px;">
-                            <i class="fa fa-map-marker-alt text-white"></i>
+                    <div class="contact-info-card">
+                        <div class="contact-info-card__header">
+                            <h5 class="contact-info-card__title">{% trans "Get In Touch" %}</h5>
                         </div>
-                        <div class="ms-3">
-                            <h5 class="text-primary">{% trans "Office" %}</h5>
-                            <p class="mb-0">{{ contact.address }}</p>
-                        </div>
-                    </div>
-                    {% if contact.phone %}
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="d-flex align-items-center justify-content-center flex-shrink-0 bg-primary" style="width: 50px; height: 50px;">
-                            <i class="fa fa-phone-alt text-white"></i>
-                        </div>
-                        <div class="ms-3">
-                            <h5 class="text-primary">{% trans "Phone" %}</h5>
-                            <p class="mb-0"><a class="text-body" href="tel:{{ contact.phone }}">{{ contact.phone }}</a></p>
-                            {% if contact.phone_three %}<p class="mb-0"><a class="text-body" href="tel:{{ contact.phone_three }}">{{ contact.phone_three }}</a></p>{% endif %}
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% if contact.whatsapp_number or contact.whatsapp_number_2 %}
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="d-flex align-items-center justify-content-center flex-shrink-0 bg-primary" style="width: 50px; height: 50px;">
-                            <i class="fab fa-whatsapp text-white"></i>
-                        </div>
-                        <div class="ms-3">
-                            <h5 class="text-primary">{% trans "WhatsApp" %}</h5>
-                            {% if contact.whatsapp_number %}
-                            <p class="mb-0">{% if contact.whatsapp_number_me %}<a class="text-body" href="https://wa.me/{{ contact.whatsapp_number_me }}" target="_blank" rel="noopener">{{ contact.whatsapp_number }}</a>{% else %}{{ contact.whatsapp_number }}{% endif %}</p>
+                        <ul class="contact-info-list list-unstyled mb-0">
+                            <li class="contact-info-item">
+                                <span class="contact-info-item__icon" aria-hidden="true">
+                                    <i class="fa fa-map-marker-alt"></i>
+                                </span>
+                                <div class="contact-info-item__body">
+                                    <span class="contact-info-item__label">{% trans "Office" %}</span>
+                                    <span class="contact-info-item__value">{{ contact.address }}</span>
+                                </div>
+                            </li>
+                            {% if contact.phone %}
+                            <li class="contact-info-item">
+                                <span class="contact-info-item__icon" aria-hidden="true">
+                                    <i class="fa fa-phone-alt"></i>
+                                </span>
+                                <div class="contact-info-item__body">
+                                    <span class="contact-info-item__label">{% trans "Phone" %}</span>
+                                    <span class="contact-info-item__value">
+                                        <a href="tel:{{ contact.phone }}">{{ contact.phone }}</a>
+                                        {% if contact.phone_three %}<a href="tel:{{ contact.phone_three }}">{{ contact.phone_three }}</a>{% endif %}
+                                    </span>
+                                </div>
+                            </li>
                             {% endif %}
-                            {% if contact.whatsapp_number_2 %}
-                            <p class="mb-0">{% if contact.whatsapp_number_2_me %}<a class="text-body" href="https://wa.me/{{ contact.whatsapp_number_2_me }}" target="_blank" rel="noopener">{{ contact.whatsapp_number_2 }}</a>{% else %}{{ contact.whatsapp_number_2 }}{% endif %}</p>
+                            {% if contact.whatsapp_number or contact.whatsapp_number_2 %}
+                            <li class="contact-info-item contact-info-item--whatsapp">
+                                <span class="contact-info-item__icon" aria-hidden="true">
+                                    <i class="fab fa-whatsapp"></i>
+                                </span>
+                                <div class="contact-info-item__body">
+                                    <span class="contact-info-item__label">{% trans "WhatsApp" %}</span>
+                                    <span class="contact-info-item__value">
+                                        {% if contact.whatsapp_number %}
+                                        {% if contact.whatsapp_number_me %}<a href="https://wa.me/{{ contact.whatsapp_number_me }}" target="_blank" rel="noopener noreferrer">{{ contact.whatsapp_number }}</a>{% else %}{{ contact.whatsapp_number }}{% endif %}
+                                        {% endif %}
+                                        {% if contact.whatsapp_number_2 %}
+                                        {% if contact.whatsapp_number_2_me %}<a href="https://wa.me/{{ contact.whatsapp_number_2_me }}" target="_blank" rel="noopener noreferrer">{{ contact.whatsapp_number_2 }}</a>{% else %}{{ contact.whatsapp_number_2 }}{% endif %}
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </li>
                             {% endif %}
+                            {% if contact.email or contact.email_2 or contact.email_3 %}
+                            <li class="contact-info-item">
+                                <span class="contact-info-item__icon" aria-hidden="true">
+                                    <i class="fa fa-envelope-open"></i>
+                                </span>
+                                <div class="contact-info-item__body">
+                                    <span class="contact-info-item__label">{% trans "Email" %}</span>
+                                    <span class="contact-info-item__value">
+                                        {% if contact.email %}<a href="mailto:{{ contact.email }}">{{ contact.email }}</a>{% endif %}
+                                        {% if contact.email_2 %}<a href="mailto:{{ contact.email_2 }}">{{ contact.email_2 }}</a>{% endif %}
+                                        {% if contact.email_3 %}<a href="mailto:{{ contact.email_3 }}">{{ contact.email_3 }}</a>{% endif %}
+                                    </span>
+                                </div>
+                            </li>
+                            {% endif %}
+                        </ul>
+                        {% if contact.instagram or contact.linkedn or contact.facebook or contact.youtube or contact.tiktok %}
+                        <div class="contact-info-social">
+                            <div class="contact-info-social__links">
+                                {% if contact.instagram %}<a class="contact-info-social__link" href="{{ contact.instagram }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'Instagram' %}"><i class="fab fa-instagram" aria-hidden="true"></i></a>{% endif %}
+                                {% if contact.linkedn %}<a class="contact-info-social__link" href="{{ contact.linkedn }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'LinkedIn' %}"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>{% endif %}
+                                {% if contact.facebook %}<a class="contact-info-social__link" href="{{ contact.facebook }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'Facebook' %}"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>{% endif %}
+                                {% if contact.youtube %}<a class="contact-info-social__link" href="{{ contact.youtube }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'YouTube' %}"><i class="fab fa-youtube" aria-hidden="true"></i></a>{% endif %}
+                                {% if contact.tiktok %}<a class="contact-info-social__link" href="{{ contact.tiktok }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'TikTok' %}"><i class="fab fa-tiktok" aria-hidden="true"></i></a>{% endif %}
+                            </div>
                         </div>
-                    </div>
-                    {% endif %}
-                    {% if contact.email or contact.email_2 or contact.email_3 %}
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="d-flex align-items-center justify-content-center flex-shrink-0 bg-primary" style="width: 50px; height: 50px;">
-                            <i class="fa fa-envelope-open text-white"></i>
-                        </div>
-                        <div class="ms-3">
-                            <h5 class="text-primary">{% trans "Email" %}</h5>
-                            {% if contact.email %}<p class="mb-0"><a class="text-body" href="mailto:{{ contact.email }}">{{ contact.email }}</a></p>{% endif %}
-                            {% if contact.email_2 %}<p class="mb-0"><a class="text-body" href="mailto:{{ contact.email_2 }}">{{ contact.email_2 }}</a></p>{% endif %}
-                            {% if contact.email_3 %}<p class="mb-0"><a class="text-body" href="mailto:{{ contact.email_3 }}">{{ contact.email_3 }}</a></p>{% endif %}
-                        </div>
-                    </div>
-                    {% endif %}
-                    <div class="d-flex flex-wrap gap-2 pt-2">
-                        {% if contact.instagram %}<a class="btn btn-sm btn-outline-primary contact-social-orange" href="{{ contact.instagram }}" target="_blank" rel="noopener" aria-label="{% trans 'Instagram' %}"><i class="fab fa-instagram"></i></a>{% endif %}
-                        {% if contact.linkedn %}<a class="btn btn-sm btn-outline-primary contact-social-orange" href="{{ contact.linkedn }}" target="_blank" rel="noopener" aria-label="{% trans 'LinkedIn' %}"><i class="fab fa-linkedin-in"></i></a>{% endif %}
-                        {% if contact.facebook %}<a class="btn btn-sm btn-outline-primary contact-social-orange" href="{{ contact.facebook }}" target="_blank" rel="noopener" aria-label="{% trans 'Facebook' %}"><i class="fab fa-facebook-f"></i></a>{% endif %}
-                        {% if contact.youtube %}<a class="btn btn-sm btn-outline-primary contact-social-orange" href="{{ contact.youtube }}" target="_blank" rel="noopener" aria-label="{% trans 'YouTube' %}"><i class="fab fa-youtube"></i></a>{% endif %}
-                        {% if contact.tiktok %}<a class="btn btn-sm btn-outline-primary contact-social-orange" href="{{ contact.tiktok }}" target="_blank" rel="noopener" aria-label="{% trans 'TikTok' %}"><i class="fab fa-tiktok"></i></a>{% endif %}
+                        {% endif %}
                     </div>
                     {% else %}
-                    <p class="mb-4 text-muted">{% trans "Contact details will appear here once they are added in the admin panel." %}</p>
+                    <div class="contact-info-card contact-info-card--empty">
+                        <h2 class="contact-info-card__title">{% trans "Get In Touch" %}</h2>
+                        <p class="mb-0 text-muted">{% trans "Contact details will appear here once they are added in the admin panel." %}</p>
+                    </div>
                     {% endif %}
                 </div>
                 {% if contact and contact.map_embed_url %}
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="col-lg-4 col-md-6 wow fadeInUp contact-map-col" data-wow-delay="0.3s">
                     <div class="contact-map-embed rounded overflow-hidden bg-light">
                         <iframe
                             src="{{ contact.map_embed_url }}"
@@ -129,7 +148,7 @@
                 {% endif %}
                 <div class="{% if contact and contact.map_embed_url %}col-lg-4{% else %}col-lg-8{% endif %} col-md-12 wow fadeInUp" data-wow-delay="0.5s">
                     <div id="contact-form-alert" class="alert d-none" role="alert"></div>
-                    <form method="post" action="{% url 'projects:contact-page' %}" id="contact-form" novalidate>
+                    <form method="post" action="{% url 'projects:contact-page' %}" id="contact-form" class="contact-form" novalidate>
                         {% csrf_token %}
                         {{ form.website }}{{ form.fax }}{{ form.company }}
                         <div class="row g-3">
@@ -173,8 +192,8 @@
                                 </div>
                                 {% if form.subject.errors %}<div class="text-danger small mt-1">{{ form.subject.errors.0 }}</div>{% endif %}
                             </div>
-                            <div class="col-12">
-                                <div class="form-floating">
+                            <div class="col-12" id="contact-message-field">
+                                <div class="form-floating contact-form-floating-textarea">
                                     {{ form.info }}
                                     <label for="{{ form.info.id_for_label }}">
                                         {{ form.info.label }}
@@ -191,7 +210,10 @@
                                 {% include "includes/turnstile_widget.html" %}
                             </div>
                             <div class="col-12">
-                                <button class="btn btn-primary w-100 py-3" type="submit" id="contact-form-submit">{% trans "Send Message" %}</button>
+                                <button class="btn btn-primary contact-form-submit w-100" type="submit" id="contact-form-submit">
+                                    {% trans "Send Message" %}
+                                    <i class="fa fa-paper-plane ms-2" aria-hidden="true"></i>
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -210,6 +232,34 @@
     {% include "includes/turnstile_script.html" %}
     <script>
     (function () {
+        var mapEmbed = document.querySelector('.contact-map-embed');
+        var messageAnchor = document.querySelector('.contact-form-floating-textarea');
+        var resizeTimer;
+        var lastMapSyncWidth = window.innerWidth;
+
+        function syncContactMapHeight() {
+            if (!mapEmbed) return;
+            mapEmbed.style.height = '';
+            if (!messageAnchor || window.innerWidth < 992) return;
+            var mapTop = mapEmbed.getBoundingClientRect().top;
+            var messageBottom = messageAnchor.getBoundingClientRect().bottom;
+            var height = Math.round(messageBottom - mapTop);
+            if (height >= 280) {
+                mapEmbed.style.height = height + 'px';
+            }
+        }
+
+        window.addEventListener('load', syncContactMapHeight);
+        window.addEventListener('resize', function () {
+            if (window.innerWidth === lastMapSyncWidth) return;
+            lastMapSyncWidth = window.innerWidth;
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(syncContactMapHeight, 120);
+        });
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(syncContactMapHeight);
+        }
+
         var form = document.getElementById('contact-form');
         if (!form) return;
         var alertEl = document.getElementById('contact-form-alert');

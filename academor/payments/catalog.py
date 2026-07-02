@@ -6,6 +6,7 @@ from django.utils.translation import gettext as _, get_language
 
 from projects.models import CoursePricePackage, Service
 from projects.utils.pricing import (
+    fetch_active_sale_discounts_by_package_id,
     fetch_active_sale_discounts_by_service_id,
     package_payable_amount,
 )
@@ -80,8 +81,13 @@ def course_payment_description(
 
 def package_amount(package: CoursePricePackage) -> Decimal:
     """Payable total for checkout — always uses a fresh sale discount lookup."""
-    discounts_map = fetch_active_sale_discounts_by_service_id()
-    return package_payable_amount(package, discounts_map=discounts_map)
+    service_discounts_map = fetch_active_sale_discounts_by_service_id()
+    package_discounts_map = fetch_active_sale_discounts_by_package_id()
+    return package_payable_amount(
+        package,
+        discounts_map=service_discounts_map,
+        package_discounts_map=package_discounts_map,
+    )
 
 
 def default_price_package_index(packages, preferred_package_id=None) -> int:

@@ -1,0 +1,43 @@
+{% extends "portals/base.html" %}
+{% load i18n portal_tags %}
+
+{% block title %}{% trans 'Schedule' %}{% endblock %}
+
+{% block content %}
+{% include "portals/includes/parent_child_header.html" %}
+
+<header class="s-page-head mb-4">
+  <div>
+    <h1 class="s-page-head__title">
+      <i class="ti ti-calendar-week" aria-hidden="true"></i>
+      {% trans 'Cədvəl' %}
+    </h1>
+    <p class="s-page-head__sub">{% if page_subtitle %}{{ page_subtitle }}{% else %}{% trans 'Həftəlik dərs cədvəliniz.' %}{% endif %}</p>
+  </div>
+</header>
+
+<div class="portal-control-bar mb-4">
+  <div class="portal-control-left">
+    <div class="portal-week-navigator" role="group" aria-label="{% trans 'Həftə naviqasiyası' %}">
+      <a class="portal-nav-btn" href="?{{ week_nav_prefix|default:'' }}week={{ calendar.prev_week }}" title="{% trans 'Əvvəlki həftə' %}">
+        <i class="ti ti-chevron-left" aria-hidden="true"></i>
+      </a>
+      <div class="portal-week-info">
+        <span class="portal-week-label">{% portal_week_label calendar.week_start calendar.week_end %}</span>
+        <span class="portal-week-badge">{% trans 'Həftə' %}</span>
+      </div>
+      <a class="portal-nav-btn" href="?{{ week_nav_prefix|default:'' }}week={{ calendar.next_week }}" title="{% trans 'Növbəti həftə' %}">
+        <i class="ti ti-chevron-right" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+  <div class="portal-control-right">
+    <a class="ds-btn ds-btn--secondary btn-sm" href="?{{ week_nav_prefix|default:'' }}week=">
+      <i class="ti ti-calendar-check" aria-hidden="true"></i>
+      {% trans 'Bu həftə' %}
+    </a>
+  </div>
+</div>
+
+{% include "portals/includes/student_week_calendar.html" %}
+{% endblock %}

@@ -1,0 +1,45 @@
+{% load i18n %}
+<section class="ds-score-showcase mb-4" aria-label="{% trans 'Quiz nəticələri xülasəsi' %}">
+  <div class="ds-score-showcase__ring" style="--score-pct: {{ score_stats.avg_score_pct|default:0 }};" aria-hidden="true">
+    <div class="ds-score-showcase__ring-inner{% if score_stats.avg_score_pct is None %} is-empty{% endif %}">
+      {% if score_stats.avg_score_pct is not None %}
+        {{ score_stats.avg_score_pct }}%
+      {% else %}
+        —
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="ds-score-showcase__copy">
+    <p class="ds-score-showcase__eyebrow">{% trans 'Quiz nəticələri' %}</p>
+    <h2 class="ds-score-showcase__title">
+      {% trans 'Quiz tarixçəsi' %}
+      <span class="ds-badge ms-2">{{ total_count|default:score_stats.total_count }}</span>
+    </h2>
+    <p class="ds-score-showcase__hint">{% trans 'Bütün tamamlanmış quiz cəhdləri.' %}</p>
+
+    <div class="ds-score-showcase__meta">
+      <span class="ds-badge ds-badge--success">
+        <i class="ti ti-circle-check" aria-hidden="true"></i>
+        {{ score_stats.graded_count|default:0 }} {% trans 'qiymətləndirilmiş' %}
+      </span>
+      <span class="ds-badge ds-badge--warning">
+        <i class="ti ti-hourglass" aria-hidden="true"></i>
+        {{ score_stats.pending_count|default:0 }} {% trans 'gözlənilir' %}
+      </span>
+      <span class="ds-badge">
+        {{ total_count|default:score_stats.total_count }} {% trans 'cəmi' %}
+      </span>
+    </div>
+
+    <p class="ds-score-showcase__hint mt-2 mb-0">
+      {% if score_stats.graded_count %}
+        {% blocktrans with avg=score_stats.avg_score_pct count=score_stats.graded_count %}
+          Orta bal {{ avg }}% — {{ count }} qiymətləndirilmiş quiz əsasında (müxtəlif ballar normallaşdırılır).
+        {% endblocktrans %}
+      {% else %}
+        {% trans 'Quizlər qiymətləndirildikdən sonra orta bal burada görünəcək.' %}
+      {% endif %}
+    </p>
+  </div>
+</section>

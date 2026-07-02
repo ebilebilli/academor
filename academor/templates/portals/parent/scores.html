@@ -1,0 +1,33 @@
+{% extends "portals/base.html" %}
+{% load i18n portal_tags %}
+
+{% block title %}{% trans 'Scores' %}{% endblock %}
+
+{% block content %}
+{% include "portals/includes/parent_child_header.html" %}
+
+<header class="s-page-head mb-4">
+  <div>
+    <h1 class="s-page-head__title">
+      <i class="ti ti-star" aria-hidden="true"></i>
+      {% trans 'Qiymətlər' %}
+    </h1>
+    <p class="s-page-head__sub">{% trans 'Şagirdinizin gündəlik dərs qiymətləri.' %}</p>
+  </div>
+</header>
+
+{% include "portals/includes/score_average_showcase.html" with score_stats=lesson_average variant="lesson" %}
+
+<section class="ds-card">
+  <div class="s-panel-head">
+    <h2 class="s-panel-title">
+      <i class="ti ti-notebook" aria-hidden="true"></i>
+      {% trans 'Gündəlik dərs qiymətləri' %}
+      <span class="ds-badge">{{ lesson_scores|length }}</span>
+    </h2>
+  </div>
+  <div class="portal-profile-section__body portal-profile-section__body--flush">
+    {% include "portals/includes/daily_lesson_scores_timeline.html" %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% load i18n %}
+<div class="admin-card p-4">
+  <form method="post" enctype="multipart/form-data" class="portal-teacher-form needs-validation" novalidate>
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger py-2 small">{{ form.non_field_errors }}</div>
+    {% endif %}
+
+    {% for field in form %}
+      <div class="mb-3{% if field.field.widget.input_type == 'checkbox' %} form-check{% endif %}{% if field.name == 'course_type' %} portal-course-field{% endif %}">
+        {% if field.field.widget.input_type == 'checkbox' %}
+          {{ field }}
+          <label class="form-check-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {% elif field.name == 'course_type' %}
+          <span class="form-label d-block mb-2">{{ field.label }}</span>
+          <div class="portal-course-radio-list" role="radiogroup" aria-label="{{ field.label }}">
+            {% for radio in field %}
+            <label class="portal-course-radio-card">
+              {{ radio.tag }}
+              <span>{{ radio.choice_label }}</span>
+            </label>
+            {% endfor %}
+          </div>
+        {% else %}
+          <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+        {% endif %}
+        {% if field.help_text %}
+          <div class="form-text">{{ field.help_text }}</div>
+        {% endif %}
+        {% for error in field.errors %}
+          <div class="invalid-feedback d-block">{{ error }}</div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+
+    {% if return_to %}
+      <input type="hidden" name="return_to" value="{{ return_to }}">
+    {% endif %}
+    {% if return_week %}
+      <input type="hidden" name="return_week" value="{{ return_week }}">
+    {% endif %}
+
+    <div class="d-flex flex-wrap gap-2 pt-2">
+      <button type="submit" class="btn btn-primary">
+        <i class="bi bi-check2 me-1" aria-hidden="true"></i>{% trans 'Save' %}
+      </button>
+      {% if cancel_href %}
+        <a class="btn btn-light" href="{{ cancel_href }}">{% trans 'Cancel' %}</a>
+      {% endif %}
+    </div>
+  </form>
+</div>

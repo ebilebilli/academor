@@ -19,8 +19,10 @@ from projects.service_category_icons import resolve_service_category_icon
 from projects.study_abroad_advantage_icons import build_static_study_abroad_advantages_block
 from projects.utils.pricing import (
     apply_percent_discount,
+    fetch_active_sale_discounts_by_package_id,
     fetch_active_sale_discounts_by_service_id,
     format_decimal_price,
+    get_sale_percent_for_package,
     get_sale_percent_for_service,
 )
 
@@ -426,7 +428,6 @@ def serialize_sale(sale, lang='az'):
         'discount_badge_aria': _sale_discount_badge_aria(sale.percent, lang) if has_discount else None,
         'end_date': sale.end_date.isoformat() if sale.end_date else None,
         'end_date_display': _format_sale_end_date(sale.end_date, lang),
-        'apply_to_service_prices': sale.apply_to_service_prices,
         'image': _sale_promo_image(sale),
         'image_alt': name or _('Special offer'),
         'service_count': len(services),
@@ -485,18 +486,30 @@ def _serialized_categories_with_fresh_sales(lang, show_on_main_page=None):
     """Service cards with current sale prices — always a fresh discount lookup."""
     categories = get_project_categories(lang, show_on_main_page=show_on_main_page)
     discounts_map = fetch_active_sale_discounts_by_service_id()
+    package_discounts_map = fetch_active_sale_discounts_by_package_id()
     return [
-        serialize_project_category(category, lang, discounts_map=discounts_map)
+        serialize_project_category(
+            category,
+            lang,
+            discounts_map=discounts_map,
+            package_discounts_map=package_discounts_map,
+        )
         for category in categories
     ]
 
 
-def serialize_homepage_price_package(package, lang='az', discounts_map=None):
+def serialize_homepage_price_package(package, lang='az', discounts_map=None, package_discounts_map=None):
     """Featured price card for the homepage carousel (may span multiple courses)."""
     if discounts_map is None:
         discounts_map = fetch_active_sale_discounts_by_service_id()
+    if package_discounts_map is None:
+        package_discounts_map = fetch_active_sale_discounts_by_package_id()
     course = package.course
-    sale_percent = get_sale_percent_for_service(course.id, discounts_map)
+    sale_percent = get_sale_percent_for_package(
+        package,
+        service_discounts_map=discounts_map,
+        package_discounts_map=package_discounts_map,
+    )
     data = serialize_price_package(package, lang, sale_percent=sale_percent)
     detail_url = reverse('projects:course-detail', kwargs={'slug': course.slug})
     data['course'] = {
@@ -534,8 +547,14 @@ def _fetch_serialized_homepage_price_packages(lang='az'):
         .order_by('order', 'id')
     )
     discounts_map = fetch_active_sale_discounts_by_service_id()
+    package_discounts_map = fetch_active_sale_discounts_by_package_id()
     return [
-        serialize_homepage_price_package(package, lang, discounts_map=discounts_map)
+        serialize_homepage_price_package(
+            package,
+            lang,
+            discounts_map=discounts_map,
+            package_discounts_map=package_discounts_map,
+        )
         for package in packages
     ]
 
@@ -1167,9 +1186,11 @@ def _service_category_display_name(category, lang='az'):
     return ''
 
 
-def serialize_project_category(category, lang='az', discounts_map=None):
+def serialize_project_category(category, lang='az', discounts_map=None, package_discounts_map=None):
     if discounts_map is None:
         discounts_map = fetch_active_sale_discounts_by_service_id()
+    if package_discounts_map is None:
+        package_discounts_map = fetch_active_sale_discounts_by_package_id()
 
     desc_field = get_localized_field_name('description', lang)
     first_image = None
@@ -1187,15 +1208,29 @@ def serialize_project_category(category, lang='az', discounts_map=None):
         if p.is_active and p.price and p.price > 0
     ]
     min_price = None
+    original_min_price = None
+    sale_percent = None
     if active_packages:
-        min_price = min(p.price for p in active_packages)
+        priced = []
+        for package in active_packages:
+            percent = get_sale_percent_for_package(
+                package,
+                service_discounts_map=discounts_map,
+                package_discounts_map=package_discounts_map,
+            )
+            effective = (
+                apply_percent_discount(package.price, percent)
+                if percent
+                else package.price
+            )
+            priced.append((effective, package.price, percent))
+        min_price, original_min_price, sale_percent = min(priced, key=lambda row: row[0])
     elif category.price and category.price > 0:
         min_price = category.price
-
-    sale_percent = get_sale_percent_for_service(category.id, discounts_map)
-    original_min_price = min_price
-    if min_price is not None and sale_percent:
-        min_price = apply_percent_discount(min_price, sale_percent)
+        sale_percent = get_sale_percent_for_service(category.id, discounts_map)
+        original_min_price = min_price
+        if sale_percent:
+            min_price = apply_percent_discount(min_price, sale_percent)
 
     return {
         'id': category.id,
@@ -1254,9 +1289,17 @@ def serialize_project_category_detail(category, lang='az'):
     data['is_online'] = category.is_online
     data['is_offline'] = category.is_offline
     discounts_map = fetch_active_sale_discounts_by_service_id()
-    sale_percent = get_sale_percent_for_service(category.id, discounts_map)
+    package_discounts_map = fetch_active_sale_discounts_by_package_id()
     packages = [
-        serialize_price_package(p, lang, sale_percent=sale_percent)
+        serialize_price_package(
+            p,
+            lang,
+            sale_percent=get_sale_percent_for_package(
+                p,
+                service_discounts_map=discounts_map,
+                package_discounts_map=package_discounts_map,
+            ),
+        )
         for p in category.price_packages.filter(is_active=True, price__gt=0).order_by('order', 'id')
     ]
     data['price_packages'] = packages

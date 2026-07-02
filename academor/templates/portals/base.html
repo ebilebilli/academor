@@ -1,0 +1,65 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:'az' }}" data-theme="light" data-bs-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{% block meta_description %}{% trans 'Academor student portal' %}{% endblock %}">
+  <title>{% block title %}{% trans 'Portal' %}{% endblock %} | {% trans 'Academor' %}</title>
+  {# Preload critical fonts early (icons + text) #}
+  <link rel="preload" href="{% static 'portals/fonts/inter/inter-400.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{% static 'portals/vendors/tabler-icons/fonts/tabler-icons.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{% static 'portals/vendors/bootstrap-icons/fonts/bootstrap-icons.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <!-- Self-hosted fonts & icons -->
+  <link rel="stylesheet" href="{% static 'portals/css/inter-font.css' %}">
+  <!-- Design tokens (must load first) -->
+  <link rel="stylesheet" href="{% static 'portals/css/tokens.css' %}">
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="{% static 'portals/css/bootstrap.min.css' %}">
+  <!-- Tabler Icons (portal subset — sidebar, dashboards) -->
+  <link rel="stylesheet" href="{% static 'portals/css/portal-tabler-icons.css' %}">
+  <!-- Bootstrap Icons (legacy components — async, non-blocking) -->
+  <link rel="preload" href="{% static 'portals/vendors/bootstrap-icons/bootstrap-icons.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="{% static 'portals/vendors/bootstrap-icons/bootstrap-icons.css' %}"></noscript>
+  <!-- Base portal styles (full legacy sheet — overridden by layers below) -->
+  <link rel="stylesheet" href="{% static 'portals/css/style.css' %}">
+  <!-- Role-specific redesign layer -->
+  <link rel="stylesheet" href="{% static 'portals/css/portal-redesign.css' %}">
+  <!-- Shell overrides (loads last) -->
+  <link rel="stylesheet" href="{% static 'portals/css/portal-shell.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body data-portal-role="{{ portal_role|default:'' }}">
+  <div class="admin-shell">
+    <div class="sidebar-backdrop" data-sidebar-close></div>
+    {% include "portals/includes/sidebar.html" %}
+    <div class="admin-main">
+      {% include "portals/includes/topbar.html" %}
+      <main class="dashboard-content" data-portal-content-root>
+        <div class="container-fluid px-3 px-lg-4 py-4">
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show rounded-lg" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{% trans 'Close' %}"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+          {% block content %}{% endblock %}
+          {% block page_data %}{% endblock %}
+        </div>
+      </main>
+      {% include "portals/includes/footer.html" %}
+    </div>
+  </div>
+  <!-- Mobile bottom nav (student + parent) -->
+  {% if portal_role == 'student' or portal_role == 'parent' %}
+  {% include "portals/includes/mobile_bottom_nav.html" %}
+  {% endif %}
+  <script defer src="{% static 'portals/js/bootstrap.bundle.min.js' %}"></script>
+  <script defer src="{% static 'portals/js/main.js' %}"></script>
+  <script defer src="{% static 'portals/js/portal-nav-ajax.js' %}"></script>
+  <script defer src="{% static 'portals/js/portal-init.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -583,16 +583,12 @@ class SaleAdminForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        apply_prices = cleaned_data.get('apply_to_service_prices')
         services = cleaned_data.get('services')
+        price_packages = cleaned_data.get('price_packages')
         percent = cleaned_data.get('percent')
-        if apply_prices and not services:
+        if (services or price_packages) and percent is None:
             raise ValidationError(
-                'Select at least one service when "Apply discount to service prices" is enabled.'
-            )
-        if apply_prices and percent is None:
-            raise ValidationError(
-                'Enter a discount percentage when "Apply discount to service prices" is enabled.'
+                'Enter a discount percentage when linking courses or price packages.'
             )
         return cleaned_data
 
@@ -607,19 +603,19 @@ class SaleAdmin(AcademorModelAdmin):
         'percent_display',
         'end_date',
         'services_count',
+        'price_packages_count',
         'created_at',
-        'apply_to_service_prices',
         'is_active',
         'show_on_homepage',
     )
     list_display_links = ('name_short',)
-    list_filter = ('is_active', 'show_on_homepage', 'apply_to_service_prices', 'end_date', 'created_at', 'services')
-    list_editable = ('is_active', 'show_on_homepage', 'apply_to_service_prices')
+    list_filter = ('is_active', 'show_on_homepage', 'end_date', 'created_at', 'services')
+    list_editable = ('is_active', 'show_on_homepage')
     search_fields = (
         'name_az', 'name_en', 'name_ru',
         'description_az', 'description_en', 'description_ru',
     )
-    filter_horizontal = ('services',)
+    filter_horizontal = ('services', 'price_packages')
     readonly_fields = ('created_at',)
     ordering = ('-created_at',)
     list_per_page = 25
@@ -629,17 +625,17 @@ class SaleAdmin(AcademorModelAdmin):
             'fields': (
                 'percent',
                 'end_date',
-                'apply_to_service_prices',
                 'services',
+                'price_packages',
                 'is_active',
                 'show_on_homepage',
                 'created_at',
             ),
             'description': (
                 'Leave "Discount (%)" empty for announcement-only promotions (event, campaign, etc.). '
-                'Enable "Apply discount to service prices" to reduce the listed prices of '
-                'selected courses by the discount percentage - a discount value is then required. '
-                'Leave services empty for a general homepage promotion without price changes.'
+                'Link courses to discount all of their price packages, or pick specific price packages. '
+                'A discount value is required when courses or packages are linked. '
+                'Leave both empty for a general homepage promotion without price changes.'
             ),
         }),
         ('Azerbaijani', {
@@ -672,6 +668,13 @@ class SaleAdmin(AcademorModelAdmin):
     @admin.display(description='Services')
     def services_count(self, obj):
         count = obj.services.count()
+        if count == 0:
+            return '-'
+        return count
+
+    @admin.display(description='Price packages')
+    def price_packages_count(self, obj):
+        count = obj.price_packages.count()
         if count == 0:
             return '-'
         return count

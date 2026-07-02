@@ -1,0 +1,13 @@
+<div class="page-heading s-page-head mb-4">
+  <div class="page-heading-copy">
+    <span class="page-icon s-page-head__icon"><i class="bi {{ icon|default:'bi-speedometer2' }}" aria-hidden="true"></i></span>
+    <div>
+      {% if eyebrow %}<span class="eyebrow d-block mb-1">{{ eyebrow }}</span>{% endif %}
+      <h1 class="h3 mb-1 s-page-head__title">{{ title }}</h1>
+      {% if subtitle %}<p class="text-muted mb-0 s-page-head__sub">{{ subtitle }}</p>{% endif %}
+    </div>
+  </div>
+  {% if actions %}
+  <div class="heading-actions">{{ actions }}</div>
+  {% endif %}
+</div>

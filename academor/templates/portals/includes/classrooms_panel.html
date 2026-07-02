@@ -1,0 +1,71 @@
+{% load i18n %}
+<section
+  class="portal-content-panel"
+  data-portal-service-tabs
+  data-portal-service-match="csv"
+  data-portal-service-table="#classrooms-table"
+  data-portal-service-empty-row=".classrooms-empty-row"
+  data-portal-service-filter-empty="#classrooms-filter-empty"
+>
+  {% if service_tabs|length > 1 %}
+  <ul class="nav nav-tabs portal-attendance-tabs px-3 pt-2" id="classroomServiceTabs" role="tablist" data-portal-service-tablist>
+    {% for tab in service_tabs %}
+    <li class="nav-item" role="presentation">
+      <button class="nav-link{% if forloop.first %} active{% endif %}" type="button" data-service="{{ tab.code }}"{% if forloop.first %} aria-selected="true"{% else %} aria-selected="false"{% endif %}>
+        {{ tab.label }} <span class="badge rounded-pill">{{ tab.count }}</span>
+      </button>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  <div class="table-responsive">
+    <table class="table align-middle mb-0 portal-data-table" id="classrooms-table">
+      <thead>
+        <tr>
+          <th scope="col">{% trans 'Name' %}</th>
+          <th scope="col">{% trans 'Service' %}</th>
+          <th scope="col">{% trans 'PDF' %}</th>
+          <th scope="col" class="text-end">{% trans 'Action' %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for room in classrooms %}
+        <tr data-services="{{ room.services_csv }}">
+          <td class="fw-semibold">{{ room.name }}</td>
+          <td>
+            {% for label in room.service_labels %}
+            <span class="portal-tag">{{ label }}</span>
+            {% empty %}
+            <span class="text-muted">—</span>
+            {% endfor %}
+          </td>
+          <td>
+            {% if room.has_pdf %}
+            <span class="badge text-bg-light border">{% trans 'PDF' %}</span>
+            {% else %}
+            <span class="text-muted">—</span>
+            {% endif %}
+          </td>
+          <td class="text-end">
+            {% if portal_role == 'teacher' %}
+            <a class="btn btn-outline-primary btn-sm" href="{% url 'portals:teacher-classroom-detail' pk=room.id %}">{% trans 'Open' %}</a>
+            {% elif portal_role == 'parent' %}
+            <a class="btn btn-outline-primary btn-sm" href="{% url 'portals:parent-classroom-detail' pk=room.id %}">{% trans 'Open' %}</a>
+            {% else %}
+            <a class="btn btn-outline-primary btn-sm" href="{% url 'portals:student-classroom-detail' pk=room.id %}">{% trans 'Open' %}</a>
+            {% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr class="classrooms-empty-row">
+          <td colspan="4" class="text-muted py-4 text-center">{% trans 'No classrooms yet.' %}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="portal-attendance-empty-filter text-muted text-center py-4 d-none" id="classrooms-filter-empty">
+    {% trans 'No classrooms for this service.' %}
+  </div>
+</section>

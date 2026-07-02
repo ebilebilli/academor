@@ -1,0 +1,70 @@
+{% load i18n %}
+{% if calendar.has_sessions %}
+<section class="ds-card portal-calendar-container" aria-label="{% trans 'Həftəlik cədvəl' %}">
+  <div class="portal-calendar-grid">
+    {% for day in calendar.days %}
+    <article class="portal-calendar-day{% if day.sessions %} has-sessions{% endif %}{% if day.is_today %} is-today{% endif %}{% if day.is_weekend %} is-weekend{% endif %}">
+      <header class="portal-calendar-day-header">
+        <div class="portal-day-info">
+          <span class="portal-day-name">{{ day.label }}</span>
+          <span class="portal-day-date">{{ day.date_label }}</span>
+        </div>
+        <div class="portal-day-header-meta">
+          {% if day.sessions %}
+          <span class="portal-day-count">{{ day.sessions|length }}</span>
+          {% endif %}
+          {% if day.is_today %}
+          <span class="portal-today-badge">{% trans 'Bu gün' %}</span>
+          {% endif %}
+        </div>
+      </header>
+
+      <div class="portal-calendar-day-body">
+        {% for session in day.sessions %}
+        <article class="portal-session-card-improved portal-session-card-readonly s-schedule-lesson">
+          <div class="portal-session-card-accent portal-session-card-accent-readonly">
+            <div class="portal-session-time-block">
+              <span class="portal-session-time">
+                <i class="ti ti-clock" aria-hidden="true"></i>
+                {{ session.start_time|time:"H:i" }}
+              </span>
+              <span class="portal-session-duration">{{ session.duration_min }} {% trans 'dəq' %}</span>
+            </div>
+            <div class="portal-session-content portal-session-content-compact">
+              <span class="portal-session-group">{{ session.group_name }}</span>
+              {% if session.course_type_label %}
+              <span class="portal-session-course s-schedule-course">{{ session.course_type_label }}</span>
+              {% endif %}
+              {% if session.room_or_link %}
+              <span class="portal-session-location">
+                <i class="ti ti-map-pin" aria-hidden="true"></i>
+                {% if session.room_or_link|slice:":4" == "http" %}
+                  <a href="{{ session.room_or_link }}" target="_blank" rel="noopener">{{ session.room_or_link|truncatechars:28 }}</a>
+                {% else %}
+                  {{ session.room_or_link|truncatechars:28 }}
+                {% endif %}
+              </span>
+              {% endif %}
+            </div>
+          </div>
+        </article>
+        {% empty %}
+        <div class="portal-empty-day">
+          <i class="ti ti-calendar-off" aria-hidden="true"></i>
+          <span>{% trans 'Dərs yoxdur' %}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% else %}
+<section class="ds-card">
+  <div class="s-empty-state py-5">
+    <i class="ti ti-calendar-off" aria-hidden="true"></i>
+    <h3 class="h5 mb-2">{% trans 'Cədvəl mövcud deyil.' %}</h3>
+    <p class="text-muted mb-0">{% trans 'Qrupunuzda hələ həftəlik dərs vaxtları təyin olunmayıb.' %}</p>
+  </div>
+</section>
+{% endif %}

@@ -1,0 +1,103 @@
+{% load i18n %}
+<section class="portal-profile-performance" aria-label="{% trans 'Performance overview' %}">
+  <header class="portal-profile-performance__header">
+    <p class="portal-profile-performance__eyebrow">{% trans 'Performance overview' %}</p>
+    <h2 class="portal-profile-performance__title">{% trans 'Quiz & lesson scores' %}</h2>
+  </header>
+
+  <div class="portal-profile-performance__grid">
+    <article
+      class="portal-profile-performance__card portal-profile-performance__card--quiz portal-quiz-average-showcase--{{ quiz_average.tier|default:'empty' }}"
+      aria-label="{% trans 'Quiz average' %}"
+    >
+      <div class="portal-profile-performance__ring-wrap" aria-hidden="true">
+        <div
+          class="portal-profile-performance__ring"
+          style="--score-pct: {{ quiz_average.avg_score_pct|default:0 }};"
+        >
+          <div class="portal-profile-performance__ring-inner">
+            {% if quiz_average.avg_score_pct is not None %}
+              <span class="portal-profile-performance__pct">{{ quiz_average.avg_score_pct }}%</span>
+            {% else %}
+              <span class="portal-profile-performance__pct is-empty">—</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="portal-profile-performance__copy">
+        <span class="portal-profile-performance__icon quiz"><i class="bi bi-ui-checks" aria-hidden="true"></i></span>
+        <h3 class="portal-profile-performance__card-title">{% trans 'Average quiz score' %}</h3>
+        <p class="portal-profile-performance__hint">
+          {% if quiz_average.graded_count %}
+            {% blocktrans count counter=quiz_average.graded_count %}
+              From {{ counter }} graded quiz, normalized across different scales.
+            {% plural %}
+              From {{ counter }} graded quizzes, normalized across different scales.
+            {% endblocktrans %}
+          {% else %}
+            {% trans 'Complete graded quizzes to see the average here.' %}
+          {% endif %}
+        </p>
+        {% if quiz_average.graded_count or quiz_average.pending_count %}
+        <div class="portal-profile-performance__meta">
+          {% if quiz_average.graded_count %}
+            <span class="portal-profile-performance__chip">
+              <i class="bi bi-check2-circle" aria-hidden="true"></i>
+              {{ quiz_average.graded_count }} {% trans 'graded' %}
+            </span>
+          {% endif %}
+          {% if quiz_average.pending_count %}
+            <span class="portal-profile-performance__chip is-pending">
+              <i class="bi bi-hourglass-split" aria-hidden="true"></i>
+              {{ quiz_average.pending_count }} {% trans 'awaiting review' %}
+            </span>
+          {% endif %}
+        </div>
+        {% endif %}
+      </div>
+    </article>
+
+    <article
+      class="portal-profile-performance__card portal-profile-performance__card--lesson portal-profile-performance--{{ lesson_average.tier|default:'empty' }}"
+      aria-label="{% trans 'Lesson average' %}"
+    >
+      <div class="portal-profile-performance__ring-wrap" aria-hidden="true">
+        <div
+          class="portal-profile-performance__ring"
+          style="--score-pct: {{ lesson_average.avg_score_pct|default:0 }};"
+        >
+          <div class="portal-profile-performance__ring-inner">
+            {% if lesson_average.avg_score_pct is not None %}
+              <span class="portal-profile-performance__pct">{{ lesson_average.avg_score_pct }}%</span>
+            {% else %}
+              <span class="portal-profile-performance__pct is-empty">—</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="portal-profile-performance__copy">
+        <span class="portal-profile-performance__icon lesson"><i class="bi bi-star" aria-hidden="true"></i></span>
+        <h3 class="portal-profile-performance__card-title">{% trans 'Average lesson score' %}</h3>
+        <p class="portal-profile-performance__hint">
+          {% if lesson_average.graded_count %}
+            {% blocktrans count counter=lesson_average.graded_count %}
+              Normalized from {{ counter }} recorded lesson grade.
+            {% plural %}
+              Normalized from {{ counter }} recorded lesson grades.
+            {% endblocktrans %}
+          {% else %}
+            {% trans 'Lesson scores will appear here once they are recorded.' %}
+          {% endif %}
+        </p>
+        {% if lesson_average.graded_count %}
+        <div class="portal-profile-performance__meta">
+          <span class="portal-profile-performance__chip">
+            <i class="bi bi-check2-circle" aria-hidden="true"></i>
+            {{ lesson_average.graded_count }} {% trans 'scores' %}
+          </span>
+        </div>
+        {% endif %}
+      </div>
+    </article>
+  </div>
+</section>

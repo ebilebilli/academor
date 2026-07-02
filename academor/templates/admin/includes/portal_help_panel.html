@@ -1,0 +1,46 @@
+{% load i18n %}
+{% if admin_page_help %}
+<div class="portal-admin-hero">
+  <div class="portal-admin-hero__head">
+  <span class="portal-admin-hero__icon">{{ admin_page_help.icon|default:"P" }}</span>
+  <div class="portal-admin-hero__titles">
+    <p class="portal-admin-hero__title">{{ admin_page_help.title }}</p>
+    <p class="portal-admin-hero__summary">{{ admin_page_help.summary }}</p>
+  </div>
+  {% if admin_page_help.where %}
+  <p class="portal-admin-hero__where">
+    <strong>{% trans "Who sees this:" %}</strong> {{ admin_page_help.where }}
+  </p>
+  {% endif %}
+  </div>
+
+  {% if admin_page_help.workflow %}
+  <ol class="portal-workflow">
+    {% for step in admin_page_help.workflow %}
+    <li class="portal-workflow__item">
+      <span class="portal-workflow__num">{{ forloop.counter }}</span>
+      <div class="portal-workflow__text">
+        <strong>{{ step.title }}</strong>
+        <span>{{ step.text }}</span>
+      </div>
+    </li>
+    {% endfor %}
+  </ol>
+  {% endif %}
+
+  {% if admin_page_help.json_example %}
+  <div class="portal-json-hint">
+    <strong>{% trans "Answer options format (copy example):" %}</strong>
+    <code>{{ admin_page_help.json_example }}</code>
+  </div>
+  {% endif %}
+
+  {% if admin_page_help.tips %}
+  <ul class="portal-tips">
+    {% for tip in admin_page_help.tips %}
+    <li>{{ tip }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</div>
+{% endif %}

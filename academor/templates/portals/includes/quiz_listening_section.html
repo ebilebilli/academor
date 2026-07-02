@@ -1,0 +1,92 @@
+{% load i18n %}
+<section
+  class="portal-listening-section"
+  aria-labelledby="listening-section-{{ section.section_number }}-title"
+>
+  {% if section.audio %}
+  <div class="portal-listening-section__audio panel{% if not section.questions %} portal-listening-section__audio--solo{% endif %}">
+    <header class="portal-listening-section__audio-head">
+      <div class="portal-listening-section__badge" aria-hidden="true">
+        <i class="bi bi-headphones"></i>
+        <span>{% blocktrans with num=section.section_number %}Section {{ num }}{% endblocktrans %}</span>
+      </div>
+      <div class="portal-listening-section__audio-copy">
+        <h2 class="portal-listening-section__title" id="listening-section-{{ section.section_number }}-title">
+          {% if section.audio.title %}
+            {{ section.audio.title }}
+          {% else %}
+            {% blocktrans with num=section.section_number %}Listening clip {{ num }}{% endblocktrans %}
+          {% endif %}
+        </h2>
+        {% if section.audio.description %}
+        <p class="portal-listening-section__description">{{ section.audio.description }}</p>
+        {% endif %}
+      </div>
+    </header>
+
+    <div class="portal-listening-section__player">
+      {% include "portals/includes/quiz_question_prompt.html" with q=section.audio %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if section.questions %}
+  <div class="portal-listening-section__tasks" data-listening-tasks>
+    <div class="portal-listening-section__tasks-intro">
+      <div class="portal-listening-section__connector" aria-hidden="true">
+        <span class="portal-listening-section__connector-line"></span>
+        <span class="portal-listening-section__connector-node">
+          <i class="bi bi-chat-left-text" aria-hidden="true"></i>
+        </span>
+      </div>
+      <div class="portal-listening-section__tasks-copy">
+        <p class="portal-listening-section__tasks-label mb-1">
+          {% trans 'Questions for this audio' %}
+        </p>
+        <p class="portal-listening-section__tasks-hint mb-0">
+          {% if section.question_range_start == section.question_range_end %}
+            {% blocktrans with num=section.question_range_start %}Question {{ num }}{% endblocktrans %}
+          {% else %}
+            {% blocktrans with start=section.question_range_start end=section.question_range_end %}Questions {{ start }}–{{ end }}{% endblocktrans %}
+          {% endif %}
+          · {% trans 'Listen to the clip above, then answer below.' %}
+        </p>
+      </div>
+    </div>
+
+    <div class="portal-listening-section__task-list">
+      {% for q in section.questions %}
+      <article class="portal-listening-task" data-quiz-writing-card data-listening-task>
+        <header class="portal-listening-task__head">
+          <span class="portal-listening-task__index">
+            <span class="portal-listening-task__index-label">{% trans 'Q' %}</span>
+            <span class="portal-listening-task__index-num">{{ q.number }}</span>
+          </span>
+          <span class="portal-listening-task__section-ref">
+            <i class="bi bi-headphones" aria-hidden="true"></i>
+            {% blocktrans with num=section.section_number %}Section {{ num }}{% endblocktrans %}
+          </span>
+          {% if q.is_variant %}
+          <span class="portal-listening-task__type badge rounded-pill text-bg-light border">
+            <i class="bi bi-ui-radios me-1" aria-hidden="true"></i>{% trans 'Multiple choice' %}
+          </span>
+          {% endif %}
+        </header>
+
+        {% if q.question %}
+        <div class="portal-listening-task__prompt">{{ q.question|safe }}</div>
+        {% endif %}
+
+        <div class="portal-listening-task__response">
+          {% if q.is_variant %}
+          {% include "portals/includes/quiz_listening_variant.html" with q=q view_only=view_only %}
+          {% elif show_response_input %}
+          {% include "portals/includes/quiz_writing_answer.html" with question_id=q.id view_only=view_only student_answer=q.student_answer compact=True hide_label=True %}
+          {% endif %}
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</section>

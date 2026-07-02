@@ -1,0 +1,118 @@
+{% load i18n portal_tags %}
+<div class="portal-attendance-header mb-3">
+  <div class="portal-session-info">
+    <div class="portal-session-icon">
+      <i class="bi bi-calendar-check"></i>
+    </div>
+    <div class="portal-session-details">
+      <h2>{{ schedule.group.name }}</h2>
+      <div class="portal-session-meta">
+        <span><i class="bi bi-calendar3" aria-hidden="true"></i>{{ session_date|portal_date_long_weekday }}</span>
+        <span><i class="bi bi-clock" aria-hidden="true"></i>{{ schedule.start_time|time:"H:i" }}</span>
+        <span><i class="bi bi-hourglass-split" aria-hidden="true"></i>{{ schedule.duration_min }} {% trans 'min' %}</span>
+        {% if schedule.room_or_link %}
+        <span><i class="bi bi-geo-alt" aria-hidden="true"></i>{{ schedule.room_or_link }}</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <a class="btn btn-sm btn-light" href="{% url 'portals:teacher-attendance-session' %}?week={{ session_date|date:'Y-m-d' }}{% if selected_student_ids_param %}&amp;students={{ selected_student_ids_param }}{% endif %}">
+    <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'Change session' %}
+  </a>
+</div>
+
+<form method="post" class="portal-session-attendance" id="attendance-form" data-attendance-session-form data-select-one-msg="{% trans 'Select at least one student.' %}">
+  {% csrf_token %}
+  <input type="hidden" name="schedule" value="{{ schedule.pk }}">
+  <input type="hidden" name="date" value="{{ session_date|date:'Y-m-d' }}">
+  <input type="hidden" name="week" value="{{ session_date|date:'Y-m-d' }}">
+  {% if selected_student_ids_param %}
+  <input type="hidden" name="students" value="{{ selected_student_ids_param }}">
+  {% endif %}
+
+  {% if form.non_field_errors %}
+    <div class="alert alert-danger py-2 small">{{ form.non_field_errors }}</div>
+  {% endif %}
+
+  <div class="portal-bulk-actions">
+    <span class="portal-bulk-label"><i class="bi bi-check-all me-1"></i>{% trans 'Set selected:' %}</span>
+    <button type="button" class="portal-bulk-btn present" data-bulk-status="present">
+      <i class="bi bi-check-circle" aria-hidden="true"></i>{% trans 'Present' %}
+    </button>
+    <button type="button" class="portal-bulk-btn absent" data-bulk-status="absent">
+      <i class="bi bi-x-circle" aria-hidden="true"></i>{% trans 'Absent' %}
+    </button>
+    <button type="button" class="portal-bulk-btn late" data-bulk-status="late">
+      <i class="bi bi-clock-history" aria-hidden="true"></i>{% trans 'Late' %}
+    </button>
+
+    <div class="vr mx-2" style="opacity: 0.3;"></div>
+
+    <label class="portal-bulk-label" style="cursor: pointer;">
+      <input type="checkbox" id="select-all-checkbox" class="me-2" style="width: 18px; height: 18px; cursor: pointer;" checked>
+      {% trans 'Select all' %}
+    </label>
+
+    <span class="portal-bulk-selected-count ms-auto text-muted small" data-selected-count></span>
+  </div>
+
+  <div class="portal-attendance-table">
+    <div class="portal-attendance-table-header">
+      <div>{% trans 'Select' %}</div>
+      <div>{% trans 'Student' %}</div>
+      <div class="text-center">{% trans 'Present' %}</div>
+      <div class="text-center">{% trans 'Absent' %}</div>
+      <div class="text-center">{% trans 'Late' %}</div>
+    </div>
+
+    {% for field in form %}
+    {% with student_pk=field.name|slice:"7:" %}
+    <article class="portal-attendance-row-improved" data-student-row data-student-id="{{ student_pk }}" data-current-status="">
+      <div class="portal-student-select">
+        <input
+          type="checkbox"
+          class="student-checkbox"
+          name="selected_students"
+          value="{{ student_pk }}"
+          aria-label="{% trans 'Select' %} {{ field.label }}"
+          {% if not preselected_set or student_pk in preselected_set %}checked{% endif %}
+        >
+      </div>
+
+      <div class="portal-student-info">
+        <div class="portal-student-avatar">{{ field.label|slice:":2"|upper }}</div>
+        <span class="portal-student-name">{{ field.label }}</span>
+      </div>
+
+      <div class="portal-status-options" role="radiogroup" aria-label="{{ field.label }}">
+        {% for radio in field %}
+        <label class="portal-status-btn{% if radio.data.selected %} active{% endif %}" data-status="{{ radio.data.value }}">
+          {{ radio.tag }}
+          <span>{{ radio.choice_label }}</span>
+        </label>
+        {% endfor %}
+      </div>
+
+      {% for error in field.errors %}
+        <div class="text-danger small mt-1">{{ error }}</div>
+      {% endfor %}
+    </article>
+    {% endwith %}
+    {% endfor %}
+
+    <div class="portal-form-actions">
+      <button type="submit" class="btn btn-primary btn-lg" id="save-btn">
+        <i class="bi bi-check2-all me-2" aria-hidden="true"></i>{% trans 'Save selected' %}
+      </button>
+      <a class="btn btn-outline-secondary" href="{% url 'portals:teacher-schedule' %}?week={{ session_date|date:'Y-m-d' }}">
+        <i class="bi bi-x-lg me-2" aria-hidden="true"></i>{% trans 'Cancel' %}
+      </a>
+
+      <div class="ms-auto d-flex gap-2">
+        <span class="badge text-bg-success" id="count-present">0</span>
+        <span class="badge text-bg-danger" id="count-absent">0</span>
+        <span class="badge text-bg-warning" id="count-late">0</span>
+      </div>
+    </div>
+  </div>
+</form>

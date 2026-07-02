@@ -1,0 +1,10 @@
+{% if portal_stats %}
+<div class="portal-stats">
+  {% for stat in portal_stats %}
+  <div class="portal-stat portal-stat--{{ stat.tone|default:'purple' }}">
+    <span class="portal-stat__value">{{ stat.value }}</span>
+    <span class="portal-stat__label">{{ stat.label }}</span>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}

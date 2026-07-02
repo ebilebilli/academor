@@ -1,0 +1,1731 @@
+"""
+Cached reads and serializers for the student / teacher / parent portal.
+
+Register new @cached_query consumers in portals.signals when models change.
+"""
+from django.db.models import Count, F, Prefetch, Q
+
+from portals.utils.cache_utils import cached_page_data, cached_query
+from portals.models import (
+    Attendance,
+    Lesson,
+    ParentProfile,
+    Quiz,
+    QuizCategory,
+    QuizQuestion,
+    QuizResult,
+    Schedule,
+    Score,
+    StudentProfile,
+    StudyGroup,
+    TeacherProfile,
+    VideoRecord,
+)
+from portals.utils.portal_services import expand_course_types_to_service_slugs
+from portals.utils.student_courses import get_student_course_type_codes
+from portals.utils.teacher_courses import get_teacher_course_type_codes, teacher_groups_queryset
+
+
+def teacher_attendance_queryset(teacher_id):
+    """Attendance for a teacher's groups without courses M2M join (avoids duplicate rows)."""
+    groups = teacher_groups_queryset(teacher_id)
+    if not groups.exists():
+        return Attendance.objects.none()
+    return Attendance.objects.filter(schedule__group__in=groups)
+
+
+# ---------------------------------------------------------------------------
+# Role helpers (not cached — tied to request.user)
+# ---------------------------------------------------------------------------
+
+def get_portal_role(user):
+    if not user.is_authenticated:
+        return None
+    if TeacherProfile.objects.filter(user_id=user.pk).exists():
+        return 'teacher'
+    if StudentProfile.objects.filter(user_id=user.pk).exists():
+        return 'student'
+    if ParentProfile.objects.filter(user_id=user.pk).exists():
+        return 'parent'
+    return None
+
+
+def get_teacher_profile(user):
+    if not user.is_authenticated:
+        return None
+    return (
+        TeacherProfile.objects.select_related('user')
+        .filter(user_id=user.pk)
+        .first()
+    )
+
+
+def get_student_profile(user):
+    if not user.is_authenticated:
+        return None
+    return (
+        StudentProfile.objects.select_related('user')
+        .prefetch_related('groups')
+        .filter(user_id=user.pk)
+        .first()
+    )
+
+
+def get_parent_profile(user):
+    if not user.is_authenticated:
+        return None
+    return (
+        ParentProfile.objects.select_related('user')
+        .prefetch_related('students')
+        .filter(user_id=user.pk)
+        .first()
+    )
+
+
+# ---------------------------------------------------------------------------
+# Serializers
+# ---------------------------------------------------------------------------
+
+def _profile_photo_url(image_field):
+    if not image_field:
+        return None
+    try:
+        return image_field.url
+    except (ValueError, AttributeError):
+        return None
+
+
+def _profile_username(profile):
+    if profile.user_id:
+        return profile.user.get_username()
+    return ''
+
+
+def serialize_teacher(profile):
+    labels = profile.get_course_type_labels()
+    username = _profile_username(profile)
+    return {
+        'id': profile.pk,
+        'username': username,
+        'full_name': username,
+        'specialization': profile.specialization or ', '.join(labels),
+        'course_type_codes': profile.get_course_type_codes(),
+        'course_type_labels': labels,
+        'bio': profile.bio,
+        'phone': profile.phone,
+        'photo_url': _profile_photo_url(profile.profile_image),
+        'instagram': profile.instagram,
+        'facebook': profile.facebook,
+        'linkedin': profile.linkedin,
+        'youtube': profile.youtube,
+    }
+
+
+def serialize_student(profile):
+    username = _profile_username(profile)
+    return {
+        'id': profile.pk,
+        'username': username,
+        'full_name': username,
+        'phone': profile.phone,
+        'bio': profile.bio,
+        'enrollment_date': profile.enrollment_date,
+        'photo_url': _profile_photo_url(profile.profile_image),
+        'group_ids': list(profile.groups.values_list('id', flat=True)),
+        'instagram': profile.instagram,
+        'facebook': profile.facebook,
+        'linkedin': profile.linkedin,
+        'youtube': profile.youtube,
+    }
+
+
+def serialize_parent(profile):
+    username = _profile_username(profile)
+    students = [
+        serialize_student(student)
+        for student in profile.students.select_related('user').order_by('user__username', 'id')
+    ]
+    return {
+        'id': profile.pk,
+        'username': username,
+        'full_name': username,
+        'phone': profile.phone,
+        'students': students,
+    }
+
+
+def serialize_group(group):
+    labels = group.get_service_labels()
+    codes = group.get_portal_course_codes()
+    primary_label = ', '.join(labels) if labels else '—'
+    annotated_count = getattr(group, 'student_count', None)
+    if isinstance(annotated_count, int):
+        student_count = annotated_count
+    elif getattr(group, '_prefetched_objects_cache', None) and 'students' in group._prefetched_objects_cache:
+        student_count = len(group.students.all())
+    elif hasattr(group, 'students'):
+        student_count = group.students.count()
+    else:
+        student_count = 0
+    return {
+        'id': group.pk,
+        'name': group.name,
+        'course_type': codes[0] if codes else '',
+        'course_type_codes': codes,
+        'course_type_labels': labels,
+        'course_type_label': primary_label,
+        'start_date': group.start_date,
+        'max_students': group.max_students,
+        'is_active': group.is_active,
+        'teacher_id': group.teacher_id,
+        'teacher_name': group.teacher.full_name if group.teacher_id else '',
+        'student_count': student_count,
+    }
+
+
+def serialize_schedule(schedule):
+    from datetime import date, timedelta
+
+    from portals.utils.teacher_schedule import schedule_visible_on_date
+
+    today = date.today()
+    week_start = today - timedelta(days=today.weekday())
+    session_date = week_start + timedelta(days=schedule.weekday)
+    if not schedule_visible_on_date(schedule, session_date):
+        session_date = None
+    return {
+        'id': schedule.pk,
+        'group_id': schedule.group_id,
+        'group_name': schedule.group.name,
+        'weekday': schedule.weekday,
+        'weekday_label': schedule.get_weekday_display(),
+        'start_time': schedule.start_time,
+        'duration_min': schedule.duration_min,
+        'room_or_link': schedule.room_or_link,
+        'effective_from': schedule.effective_from,
+        'session_date_this_week': session_date,
+        'session_date_iso': session_date.isoformat() if session_date else '',
+    }
+
+
+def serialize_lesson(lesson):
+    from portals.utils.lesson_media import build_lesson_media
+    from portals.utils.portal_services import resolve_course_type_label
+
+    media = build_lesson_media(lesson)
+    return {
+        'id': lesson.pk,
+        'name': lesson.display_name,
+        'description': lesson.description,
+        'subject': lesson.subject,
+        'subject_label': resolve_course_type_label(lesson.subject) if lesson.subject else '',
+        'category_id': lesson.category_id,
+        'category_name': lesson.category.name if lesson.category_id else '',
+        'group_id': lesson.group_id,
+        'group_name': lesson.group.name,
+        'lesson_date': lesson.lesson_date,
+        'created_at': lesson.created_at,
+        **media,
+    }
+
+
+def serialize_classroom(classroom):
+    pdf_url = ''
+    if classroom.pdf_file:
+        try:
+            pdf_url = classroom.pdf_file.url
+        except ValueError:
+            pdf_url = ''
+    service_slugs = classroom.get_service_slugs()
+    service_labels = classroom.get_service_labels()
+    return {
+        'id': classroom.pk,
+        'name': classroom.display_name,
+        'description': classroom.description or '',
+        'pdf_url': pdf_url,
+        'has_pdf': bool(pdf_url),
+        'created_at': classroom.created_at,
+        'services': service_slugs,
+        'service_labels': service_labels,
+        'services_csv': ','.join(service_slugs),
+        'primary_service': service_slugs[0] if service_slugs else '',
+        'primary_service_label': service_labels[0] if service_labels else '',
+    }
+
+
+def build_classroom_service_tabs(classrooms):
+    from django.utils.translation import gettext as _
+
+    from portals.utils.portal_services import get_active_services_queryset, localized_service_name
+
+    label_map = {
+        service.slug: localized_service_name(service)
+        for service in get_active_services_queryset()
+        if service.slug
+    }
+    counts = {}
+    for room in classrooms:
+        for slug in room.get('services') or []:
+            counts[slug] = counts.get(slug, 0) + 1
+    tabs = [{
+        'code': 'all',
+        'label': _('All services'),
+        'count': len(classrooms),
+    }]
+    for slug in sorted(counts):
+        tabs.append({
+            'code': slug,
+            'label': label_map.get(slug, slug),
+            'count': counts[slug],
+        })
+    return tabs
+
+
+def _classroom_queryset():
+    from portals.models import Classroom
+
+    return (
+        Classroom.objects.prefetch_related('services')
+        .order_by('-created_at', 'id')
+    )
+
+
+def _classroom_filter_slugs(course_codes):
+    from portals.utils.portal_services import expand_course_types_to_service_slugs
+
+    return expand_course_types_to_service_slugs(course_codes)
+
+
+def get_teacher_classrooms(teacher_id):
+    from portals.utils.student_courses import classroom_visible_to_teacher
+    from portals.utils.teacher_courses import get_teacher_course_type_codes
+
+    course_codes = get_teacher_course_type_codes(teacher_id)
+    slugs = _classroom_filter_slugs(course_codes)
+    if not slugs:
+        return []
+    qs = (
+        _classroom_queryset()
+        .filter(services__slug__in=slugs, services__is_active=True)
+        .distinct()
+    )
+    visible = [row for row in qs if classroom_visible_to_teacher(row, teacher_id)]
+    return [serialize_classroom(row) for row in visible]
+
+
+def get_student_classrooms(student_id):
+    from portals.utils.student_courses import classroom_visible_to_student, get_student_course_type_codes
+
+    course_codes = get_student_course_type_codes(student_id)
+    slugs = _classroom_filter_slugs(course_codes)
+    if not slugs:
+        return []
+    qs = (
+        _classroom_queryset()
+        .filter(services__slug__in=slugs, services__is_active=True)
+        .distinct()
+    )
+    visible = [row for row in qs if classroom_visible_to_student(row, student_id)]
+    return [serialize_classroom(row) for row in visible]
+
+
+def get_parent_classrooms(parent_id, student_id=None):
+    if student_id:
+        return get_student_classrooms(student_id)
+
+    from portals.utils.student_courses import classroom_visible_to_parent, get_parent_course_type_codes
+
+    course_codes = get_parent_course_type_codes(parent_id)
+    slugs = _classroom_filter_slugs(course_codes)
+    if not slugs:
+        return []
+    qs = (
+        _classroom_queryset()
+        .filter(services__slug__in=slugs, services__is_active=True)
+        .distinct()
+    )
+    visible = [row for row in qs if classroom_visible_to_parent(row, parent_id)]
+    return [serialize_classroom(row) for row in visible]
+
+
+def get_classroom_detail(pk, *, role, profile_id):
+    from portals.models import Classroom
+    from portals.utils.student_courses import (
+        classroom_visible_to_parent,
+        classroom_visible_to_student,
+        classroom_visible_to_teacher,
+    )
+
+    row = _classroom_queryset().filter(pk=pk).first()
+    if not row:
+        return None
+    if role == 'teacher' and not classroom_visible_to_teacher(row, profile_id):
+        return None
+    if role == 'student' and not classroom_visible_to_student(row, profile_id):
+        return None
+    if role == 'parent' and not classroom_visible_to_parent(row, profile_id):
+        return None
+    return serialize_classroom(row)
+
+
+def get_lesson_detail(lesson):
+    if not lesson:
+        return None
+    data = serialize_lesson(lesson)
+    teacher = getattr(lesson, 'teacher', None)
+    data['teacher_name'] = teacher.full_name if teacher else ''
+    return data
+
+
+def get_student_lesson(student_id, lesson_id):
+    group_ids = get_student_group_ids(student_id)
+    if not group_ids:
+        return None
+    return (
+        Lesson.objects.filter(
+            pk=lesson_id,
+            group_id__in=group_ids,
+            teacher_id=F('group__teacher_id'),
+        )
+        .select_related('group', 'teacher')
+        .first()
+    )
+
+
+def build_lesson_subject_tabs(lessons):
+    from django.utils.translation import gettext as _
+
+    from portals.utils.portal_services import get_course_type_label_map
+
+    labels = get_course_type_label_map()
+    counts = {}
+    for lesson in lessons:
+        code = lesson.get('subject') or ''
+        if code:
+            counts[code] = counts.get(code, 0) + 1
+    tabs = [{
+        'code': 'all',
+        'label': _('All topics'),
+        'count': len(lessons),
+    }]
+    for code in sorted(counts):
+        tabs.append({
+            'code': code,
+            'label': labels.get(code, code),
+            'count': counts[code],
+        })
+    return tabs
+
+
+def build_lesson_category_tabs(lessons):
+    """Category label tabs for lesson lists (client-side filtering by teacher-defined names)."""
+    from django.utils.translation import gettext as _
+
+    counts = {}
+    uncategorized = 0
+    for lesson in lessons:
+        category_id = lesson.get('category_id')
+        if not category_id:
+            uncategorized += 1
+            continue
+        key = str(category_id)
+        if key not in counts:
+            counts[key] = {
+                'id': category_id,
+                'label': lesson.get('category_name') or _('Uncategorized'),
+                'count': 0,
+            }
+        counts[key]['count'] += 1
+    if not counts and not uncategorized:
+        return []
+    tabs = [{
+        'code': 'all',
+        'label': _('All categories'),
+        'count': len(lessons),
+    }]
+    for key in sorted(counts, key=lambda item: counts[item]['label'].lower()):
+        row = counts[key]
+        tabs.append({
+            'code': row['id'],
+            'label': row['label'],
+            'count': row['count'],
+        })
+    if uncategorized:
+        tabs.append({
+            'code': 'none',
+            'label': _('Uncategorized'),
+            'count': uncategorized,
+        })
+    return tabs
+
+
+def serialize_video_record(record):
+    return {
+        'id': record.pk,
+        'title': record.title,
+        'youtube_url': record.youtube_url,
+        'lesson_date': record.lesson_date,
+        'description': record.description,
+        'group_id': record.group_id,
+    }
+
+
+def serialize_attendance(row):
+    schedule = row.schedule
+    return {
+        'id': row.pk,
+        'student_id': row.student_id,
+        'student_name': row.student.full_name,
+        'schedule_id': row.schedule_id,
+        'group_name': schedule.group.name,
+        'weekday_label': schedule.get_weekday_display(),
+        'start_time': schedule.start_time,
+        'session_date': row.session_date,
+        'status': row.status,
+        'status_label': row.get_status_display(),
+        'note': row.note,
+        'marked_at': row.marked_at,
+    }
+
+
+def serialize_score(row):
+    return {
+        'id': f"score-{row.pk}",
+        'source': 'score',
+        'student_id': row.student_id,
+        'student_name': row.student.full_name,
+        'score_type': row.score_type,
+        'score_type_label': row.get_score_type_display(),
+        'value': row.value,
+        'max_value': row.max_value,
+        'date': row.date,
+        'comment': row.comment,
+        'lesson_id': row.lesson_id,
+        'lesson_title': row.lesson.display_name if row.lesson_id else '',
+        'quiz_topic': '',
+        'is_pending_review': False,
+        'grading_mode_label': '',
+    }
+
+
+def serialize_quiz(quiz):
+    from portals.utils.portal_services import resolve_course_type_label
+    from portals.utils.student_courses import get_quiz_service_code
+
+    code = get_quiz_service_code(quiz)
+    label = resolve_course_type_label(code) if code else ''
+    category = getattr(quiz, 'category', None)
+    inline_count = quiz.questions.count() if hasattr(quiz, 'questions') else 0
+    question_count = inline_count
+    if quiz.is_listening:
+        from portals.utils.quiz_listening import get_listening_questions_for_quiz
+
+        listening_count = len(get_listening_questions_for_quiz(quiz))
+        question_count = listening_count or inline_count
+    return {
+        'id': quiz.pk,
+        'topic': quiz.topic,
+        'course_type': code,
+        'course_types': [code] if code else [],
+        'course_type_label': label,
+        'category_id': quiz.category_id,
+        'category_name': category.name if category else '',
+        'created_at': quiz.created_at,
+        'question_count': question_count,
+        'is_listening': quiz.is_listening,
+        'is_essay': quiz.is_essay,
+        'is_speaking': quiz.is_speaking,
+        'is_manual_grading': quiz.is_manual_grading,
+        'uses_per_question_text_responses': quiz.uses_per_question_text_responses,
+        'is_variant_quiz': quiz.is_variant_quiz,
+        'grading_mode': quiz.grading_mode,
+        'grading_mode_label': quiz.get_grading_mode_label(),
+        'is_time_limited': quiz.is_time_limited,
+        'time_limit_minutes': quiz.time_limit_minutes,
+        'time_limit_seconds': quiz.time_limit_seconds,
+    }
+
+
+def serialize_quiz_category(category):
+    from portals.utils.portal_services import resolve_course_type_label
+
+    quiz_count = getattr(category, 'quiz_count', None)
+    if quiz_count is None:
+        quiz_count = category.quizzes.count()
+    return {
+        'id': category.pk,
+        'name': category.name,
+        'service': category.service,
+        'service_label': resolve_course_type_label(category.service),
+        'quiz_count': quiz_count,
+    }
+
+
+def build_quiz_service_tabs(categories):
+    from django.utils.translation import gettext as _
+
+    from portals.utils.portal_services import get_course_type_label_map
+
+    labels = get_course_type_label_map()
+    counts = {}
+    for category in categories:
+        code = category.get('service') or ''
+        if code:
+            counts[code] = counts.get(code, 0) + 1
+    tabs = [{
+        'code': 'all',
+        'label': _('All services'),
+        'count': len(categories),
+    }]
+    for code in sorted(counts):
+        tabs.append({
+            'code': code,
+            'label': labels.get(code, code),
+            'count': counts[code],
+        })
+    return tabs
+
+
+def teacher_can_access_quiz_category(teacher_id, category_id):
+    service = (
+        QuizCategory.objects.filter(pk=category_id)
+        .values_list('service', flat=True)
+        .first()
+    )
+    if not service:
+        return False
+    return service in get_teacher_course_type_codes(teacher_id)
+
+
+def student_can_access_quiz_category(student_id, category_id):
+    service = (
+        QuizCategory.objects.filter(pk=category_id)
+        .values_list('service', flat=True)
+        .first()
+    )
+    if not service:
+        return False
+    return service in get_student_course_type_codes(student_id)
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_teacher_quiz_categories(teacher_id):
+    course_codes = get_teacher_course_type_codes(teacher_id)
+    if not course_codes:
+        return []
+    qs = QuizCategory.objects.filter(service__in=course_codes).order_by('service', 'name', 'id')
+    result = []
+    for category in qs:
+        visible = get_teacher_quizzes_for_category(teacher_id, category.pk)
+        if not visible:
+            continue
+        data = serialize_quiz_category(category)
+        data['quiz_count'] = len(visible)
+        result.append(data)
+    return result
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_student_quiz_categories(student_id):
+    course_codes = get_student_course_type_codes(student_id)
+    if not course_codes:
+        return []
+    qs = QuizCategory.objects.filter(service__in=course_codes).order_by('service', 'name', 'id')
+    result = []
+    for category in qs:
+        visible = get_student_quizzes_for_category(student_id, category.pk)
+        if not visible:
+            continue
+        data = serialize_quiz_category(category)
+        data['quiz_count'] = len(visible)
+        result.append(data)
+    return result
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_teacher_quiz_category(teacher_id, category_id):
+    if not teacher_can_access_quiz_category(teacher_id, category_id):
+        return None
+    row = QuizCategory.objects.filter(pk=category_id).first()
+    if not row:
+        return None
+    visible = get_teacher_quizzes_for_category(teacher_id, category_id)
+    if not visible:
+        return None
+    data = serialize_quiz_category(row)
+    data['quiz_count'] = len(visible)
+    return data
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_student_quiz_category(student_id, category_id):
+    if not student_can_access_quiz_category(student_id, category_id):
+        return None
+    row = QuizCategory.objects.filter(pk=category_id).first()
+    if not row:
+        return None
+    visible = get_student_quizzes_for_category(student_id, category_id)
+    if not visible:
+        return None
+    data = serialize_quiz_category(row)
+    data['quiz_count'] = len(visible)
+    return data
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_teacher_quizzes_for_category(teacher_id, category_id):
+    from portals.utils.student_courses import quiz_visible_to_teacher
+
+    if not teacher_can_access_quiz_category(teacher_id, category_id):
+        return []
+    course_codes = get_teacher_course_type_codes(teacher_id)
+    qs = (
+        Quiz.objects.filter(
+            category_id=category_id,
+            category__service__in=course_codes,
+        )
+        .select_related('category')
+        .prefetch_related('questions')
+        .order_by('-created_at', 'id')
+    )
+    visible = [row for row in qs if quiz_visible_to_teacher(row, teacher_id)]
+    return [serialize_quiz(row) for row in visible]
+
+
+def _attach_quiz_attempt_flags(student_id, quizzes):
+    from portals.utils.quiz_submit import get_student_quiz_attempt_meta
+
+    if not quizzes:
+        return quizzes
+    attempt_meta = get_student_quiz_attempt_meta(student_id, [row['id'] for row in quizzes])
+    enriched = []
+    for row in quizzes:
+        meta = attempt_meta.get(row['id'], {})
+        has_attempt = row['id'] in attempt_meta
+        is_reviewed = bool(meta.get('is_reviewed'))
+        is_pending_review = has_attempt and bool(meta.get('is_pending_review'))
+        enriched.append({
+            **row,
+            'has_attempt': has_attempt,
+            'result_id': meta.get('result_id'),
+            'is_reviewed': is_reviewed,
+            'is_pending_review': is_pending_review,
+            'can_take_manual_quiz': (
+                not row.get('is_manual_grading') or not has_attempt or is_reviewed
+            ),
+        })
+    return enriched
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_student_quizzes_for_category(student_id, category_id):
+    from portals.utils.student_courses import quiz_visible_to_student
+
+    if not student_can_access_quiz_category(student_id, category_id):
+        return []
+    course_codes = get_student_course_type_codes(student_id)
+    qs = (
+        Quiz.objects.filter(
+            category_id=category_id,
+            category__service__in=course_codes,
+        )
+        .select_related('category')
+        .prefetch_related('questions')
+        .order_by('-created_at', 'id')
+    )
+    visible = [row for row in qs if quiz_visible_to_student(row, student_id)]
+    return _attach_quiz_attempt_flags(student_id, [serialize_quiz(row) for row in visible])
+
+
+def _quiz_correct_option_letter(question):
+    options = question.answer_options or []
+    correct = (question.correct_answer or '').strip()
+    if correct and correct in options:
+        return chr(97 + options.index(correct))
+    index = question.correct_option_index
+    if 0 <= index < len(options):
+        return chr(97 + index)
+    return ''
+
+
+def serialize_quiz_question_for_student(question, *, student_answer: str = ''):
+    media_file_url = ''
+    if question.media_file:
+        try:
+            media_file_url = question.media_file.url
+        except ValueError:
+            media_file_url = ''
+
+    return {
+        'id': question.pk,
+        'quiz_id': getattr(question, 'quiz_id', None),
+        'prompt_type': question.prompt_type,
+        'question': question.question,
+        'media_file_url': media_file_url,
+        'media_url': question.media_url,
+        'answer_options': question.answer_options or [],
+        'order': getattr(question, 'order', 0),
+        'student_answer': student_answer,
+    }
+
+
+def serialize_quiz_question(question):
+    media_file_url = ''
+    if question.media_file:
+        try:
+            media_file_url = question.media_file.url
+        except ValueError:
+            media_file_url = ''
+
+    return {
+        'id': question.pk,
+        'quiz_id': question.quiz_id,
+        'prompt_type': question.prompt_type,
+        'question': question.question,
+        'media_file_url': media_file_url,
+        'media_url': question.media_url,
+        'answer_options': question.answer_options or [],
+        'correct_option_index': question.correct_option_index,
+        'correct_option_letter': _quiz_correct_option_letter(question),
+        'correct_answer': question.correct_answer,
+        'order': question.order,
+    }
+
+
+def serialize_quiz_result(row):
+    question_count = getattr(row, 'question_count', None)
+    quiz = row.quiz
+    if question_count is None:
+        question_count = row.quiz.questions.count()
+    return {
+        'id': row.pk,
+        'student_id': row.student_id,
+        'student_name': row.student.full_name,
+        'quiz_id': row.quiz_id,
+        'quiz_topic': quiz.topic,
+        'grading_mode': quiz.grading_mode,
+        'grading_mode_label': quiz.get_grading_mode_label(),
+        'is_manual_grading': quiz.is_manual_grading,
+        'total_score': row.total_score,
+        'max_value': quiz.score_max_value(question_count=question_count),
+        'duration_sec': row.duration_sec,
+        'student_submission': row.student_submission,
+        'teacher_feedback': row.teacher_feedback,
+        'reviewed_at': row.reviewed_at,
+        'is_pending_review': row.is_pending_review,
+        'completed_at': row.completed_at,
+    }
+
+
+def serialize_quiz_result_as_score(row):
+    data = serialize_quiz_result(row)
+    value = data['total_score']
+    if data['is_pending_review']:
+        value_label = None
+    elif value is None:
+        value_label = None
+    else:
+        value_label = value
+    return {
+        'id': f"quiz-{data['id']}",
+        'result_id': data['id'],
+        'source': 'quiz',
+        'student_id': data['student_id'],
+        'student_name': data['student_name'],
+        'score_type': Score.ScoreType.QUIZ,
+        'score_type_label': Score.ScoreType.QUIZ.label,
+        'value': value_label,
+        'max_value': data['max_value'],
+        'date': data['completed_at'],
+        'comment': data['teacher_feedback'],
+        'lesson_id': None,
+        'lesson_title': data['quiz_topic'],
+        'quiz_topic': data['quiz_topic'],
+        'is_pending_review': data['is_pending_review'],
+        'is_manual_grading': data['is_manual_grading'],
+        'grading_mode_label': data.get('grading_mode_label', ''),
+    }
+
+
+def _merge_student_scores(quiz_rows, admin_rows, limit=200):
+    merged = []
+    for row in quiz_rows:
+        merged.append({**row, 'sort_date': row.get('date')})
+    for row in admin_rows:
+        merged.append({**row, 'sort_date': row.get('date')})
+    merged.sort(key=lambda item: item.get('sort_date') or '', reverse=True)
+    for row in merged:
+        row.pop('sort_date', None)
+    return merged[:limit]
+
+
+def _quiz_results_queryset():
+    return (
+        QuizResult.objects.select_related('student', 'quiz')
+        .annotate(question_count=Count('quiz__questions', distinct=True))
+        .order_by('-completed_at', '-id')
+    )
+
+
+# ---------------------------------------------------------------------------
+# Cached querysets
+# ---------------------------------------------------------------------------
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_teacher_groups(teacher_id):
+    qs = (
+        teacher_groups_queryset(teacher_id, active_only=True)
+        .select_related('teacher')
+        .annotate(student_count=Count('students', distinct=True))
+        .prefetch_related('students', 'courses')
+        .order_by('name', 'id')
+    )
+    return [serialize_group(g) for g in qs]
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_teacher_group_detail(teacher_id, group_id):
+    group = (
+        teacher_groups_queryset(teacher_id, active_only=False)
+        .filter(pk=group_id)
+        .select_related('teacher')
+        .prefetch_related(
+            'courses',
+            Prefetch('students', queryset=StudentProfile.objects.select_related('user').order_by('user__username', 'id')),
+            Prefetch('schedules', queryset=Schedule.objects.order_by('weekday', 'start_time')),
+        )
+        .first()
+    )
+    if not group:
+        return None
+    return {
+        **serialize_group(group),
+        'students': [serialize_student(s) for s in group.students.all()],
+        'schedules': [serialize_schedule(s) for s in group.schedules.all()],
+    }
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_teacher_lessons(teacher_id):
+    qs = (
+        Lesson.objects.filter(
+            teacher_id=teacher_id,
+            group__teacher_id=teacher_id,
+        )
+        .select_related('group', 'teacher', 'category')
+        .order_by('-lesson_date', '-created_at', 'id')
+    )
+    return [serialize_lesson(row) for row in qs]
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_teacher_attendance(teacher_id):
+    if not get_teacher_course_type_codes(teacher_id):
+        return []
+    qs = (
+        teacher_attendance_queryset(teacher_id)
+        .select_related('student', 'schedule', 'schedule__group')
+        .order_by('-session_date', '-marked_at')[:200]
+    )
+    return [serialize_attendance(row) for row in qs]
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_teacher_attendance_students(teacher_id):
+    """Students in teacher groups with attendance summary counts."""
+    from django.db.models import Count, Q
+
+    if not get_teacher_course_type_codes(teacher_id):
+        return []
+
+    teacher_groups = teacher_groups_queryset(teacher_id)
+    if not teacher_groups.exists():
+        return []
+
+    stats_qs = (
+        teacher_attendance_queryset(teacher_id)
+        .values('student_id')
+        .annotate(
+            present=Count('id', filter=Q(status=Attendance.Status.PRESENT)),
+            absent=Count('id', filter=Q(status=Attendance.Status.ABSENT)),
+            late=Count('id', filter=Q(status=Attendance.Status.LATE)),
+            total=Count('id'),
+        )
+    )
+    stats_map = {row['student_id']: row for row in stats_qs}
+
+    teacher_group_ids = list(teacher_groups.values_list('pk', flat=True))
+    students = (
+        StudentProfile.objects.filter(groups__in=teacher_groups)
+        .distinct()
+        .select_related('user')
+        .prefetch_related(
+            Prefetch(
+                'groups',
+                queryset=StudyGroup.objects.filter(pk__in=teacher_group_ids).order_by('name'),
+            ),
+        )
+        .order_by('user__username', 'id')
+    )
+
+    result = []
+    for student in students:
+        stats = stats_map.get(student.pk, {})
+        present = stats.get('present', 0)
+        total = stats.get('total', 0)
+        result.append({
+            **serialize_student(student),
+            'group_names': [group.name for group in student.groups.all()],
+            'summary': {
+                'present': present,
+                'absent': stats.get('absent', 0),
+                'late': stats.get('late', 0),
+                'total': total,
+            },
+            'attendance_rate': round(100 * present / total, 1) if total else None,
+        })
+    return result
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_teacher_student_attendance_detail(teacher_id, student_id):
+    from portals.utils.teacher_access import get_teacher_student
+
+    student = get_teacher_student(teacher_id, student_id)
+    if not student:
+        return None
+
+    course_codes = get_teacher_course_type_codes(teacher_id)
+    if not course_codes:
+        return None
+
+    teacher_groups = teacher_groups_queryset(teacher_id)
+    records_qs = (
+        teacher_attendance_queryset(teacher_id)
+        .filter(student_id=student_id)
+        .select_related('schedule', 'schedule__group', 'student')
+        .order_by('-session_date', '-marked_at')
+    )
+    records = [serialize_attendance(row) for row in records_qs]
+    summary = {'present': 0, 'absent': 0, 'late': 0, 'total': len(records)}
+    for row in records:
+        summary[row['status']] = summary.get(row['status'], 0) + 1
+
+    group_names = list(
+        student.groups.filter(pk__in=teacher_groups.values('pk'))
+        .order_by('name')
+        .values_list('name', flat=True)
+        .distinct()
+    )
+
+    return {
+        'student': serialize_student(student),
+        'groups': group_names,
+        'summary': summary,
+        'records': records,
+    }
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_teacher_scores(teacher_id):
+    from portals.utils.student_courses import filter_quiz_results_for_teacher
+
+    course_codes = get_teacher_course_type_codes(teacher_id)
+    if not course_codes:
+        return []
+    quiz_qs = (
+        _quiz_results_queryset()
+        .filter(
+            quiz__category__service__in=course_codes,
+            student__groups__teacher_id=teacher_id,
+            student__groups__courses__slug__in=expand_course_types_to_service_slugs(course_codes),
+            student__groups__is_active=True,
+        )
+        .select_related('quiz__category', 'student')
+        .distinct()
+    )
+    quiz_visible = filter_quiz_results_for_teacher(quiz_qs, teacher_id)
+    quiz_rows = [serialize_quiz_result_as_score(row) for row in quiz_visible]
+
+    admin_qs = (
+        Score.objects.filter(
+            student__groups__teacher_id=teacher_id,
+            student__groups__courses__slug__in=expand_course_types_to_service_slugs(course_codes),
+            student__groups__is_active=True,
+        )
+        .select_related('student', 'lesson')
+        .distinct()
+        .order_by('-date', '-id')
+    )
+    admin_rows = [serialize_score(row) for row in admin_qs[:200]]
+    return _merge_student_scores(quiz_rows, admin_rows)
+
+
+def split_teacher_score_rows(rows):
+    admin_scores = []
+    auto_quiz_scores = []
+    manual_quiz_scores = []
+    for row in rows:
+        if row.get('source') != 'quiz':
+            admin_scores.append(row)
+            continue
+        if row.get('is_manual_grading'):
+            if row.get('is_pending_review'):
+                continue
+            manual_quiz_scores.append(row)
+        else:
+            auto_quiz_scores.append(row)
+    return {
+        'admin_scores': admin_scores,
+        'auto_quiz_scores': auto_quiz_scores,
+        'manual_quiz_scores': manual_quiz_scores,
+    }
+
+
+def split_score_rows_by_source(rows):
+    """Split merged score rows into lesson (admin) scores and quiz results."""
+    lesson_scores = []
+    quiz_scores = []
+    for row in rows:
+        if row.get('source') == 'quiz':
+            quiz_scores.append(row)
+        else:
+            lesson_scores.append(row)
+    return {
+        'lesson_scores': lesson_scores,
+        'quiz_scores': quiz_scores,
+    }
+
+
+def resolve_scores_view_param(request, quiz_scores, lesson_scores):
+    """Pick active scores tab from query string or sensible default."""
+    scores_view = request.GET.get('view')
+    if scores_view in ('quiz', 'lesson'):
+        return scores_view
+    if not quiz_scores and lesson_scores:
+        return 'lesson'
+    return 'quiz'
+
+
+def split_student_quiz_results(rows):
+    manual_quiz_results = [row for row in rows if row.get('is_manual_grading')]
+    auto_quiz_results = [row for row in rows if not row.get('is_manual_grading')]
+    return manual_quiz_results, auto_quiz_results
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_teacher_quizzes(teacher_id):
+    from portals.utils.student_courses import quiz_visible_to_teacher
+
+    course_codes = get_teacher_course_type_codes(teacher_id)
+    if not course_codes:
+        return []
+    qs = (
+        Quiz.objects.filter(
+            category__service__in=course_codes,
+        )
+        .select_related('category')
+        .prefetch_related('questions')
+        .distinct()
+        .order_by('-created_at', 'id')
+    )
+    visible = [row for row in qs if quiz_visible_to_teacher(row, teacher_id)]
+    return [serialize_quiz(row) for row in visible]
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_teacher_quiz_detail(teacher_id, quiz_id):
+    from portals.utils.student_courses import quiz_visible_to_teacher
+
+    course_codes = get_teacher_course_type_codes(teacher_id)
+    if not course_codes:
+        return None
+    quiz = (
+        Quiz.objects.filter(
+            pk=quiz_id,
+            category__service__in=course_codes,
+        )
+        .select_related('category')
+        .prefetch_related(
+            Prefetch('questions', queryset=QuizQuestion.objects.order_by('order', 'id')),
+        )
+        .first()
+    )
+    if not quiz or not quiz_visible_to_teacher(quiz, teacher_id):
+        return None
+    payload = {
+        **serialize_quiz(quiz),
+        'questions': [serialize_quiz_question(q) for q in quiz.questions.all()],
+        'listening_sections': [],
+    }
+    if quiz.is_listening:
+        from portals.utils.quiz_listening import build_listening_sections_for_quiz
+
+        payload['listening_sections'] = build_listening_sections_for_quiz(quiz.pk)
+        flat_questions = [row for section in payload['listening_sections'] for row in section['questions']]
+        payload['response_question_count'] = len(flat_questions)
+    return payload
+
+
+def get_student_quiz_take_data(student_id, quiz_id):
+    from portals.utils.student_courses import quiz_visible_to_student
+
+    course_codes = get_student_course_type_codes(student_id)
+    if not course_codes:
+        return None
+    quiz = (
+        Quiz.objects.filter(
+            pk=quiz_id,
+            category__service__in=course_codes,
+        )
+        .select_related('category')
+        .prefetch_related(
+            Prefetch('questions', queryset=QuizQuestion.objects.order_by('order', 'id')),
+        )
+        .first()
+    )
+    if not quiz or not quiz_visible_to_student(quiz, student_id):
+        return None
+    if not quiz.is_variant_quiz:
+        return None
+
+    questions = [q for q in quiz.questions.all() if q.is_answerable]
+    if not questions:
+        return None
+    return {
+        **serialize_quiz(quiz),
+        'questions': [serialize_quiz_question_for_student(q) for q in questions],
+    }
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_student_manual_quiz_take_data(student_id, quiz_id):
+    from portals.utils.student_courses import quiz_visible_to_student
+    from portals.utils.quiz_submit import build_essay_question_responses, student_can_take_manual_quiz
+
+    course_codes = get_student_course_type_codes(student_id)
+    if not course_codes:
+        return None
+    quiz = (
+        Quiz.objects.filter(
+            pk=quiz_id,
+            category__service__in=course_codes,
+        )
+        .select_related('category')
+        .prefetch_related(
+            Prefetch('questions', queryset=QuizQuestion.objects.order_by('order', 'id')),
+        )
+        .first()
+    )
+    if not quiz or not quiz_visible_to_student(quiz, student_id):
+        return None
+    if not quiz.is_manual_grading:
+        return None
+    from portals.utils.quiz_listening import (
+        build_listening_sections_for_quiz,
+        get_listening_questions_for_quiz,
+    )
+
+    if quiz.is_listening:
+        if not get_listening_questions_for_quiz(quiz):
+            return None
+    else:
+        questions = [q for q in quiz.questions.all() if q.is_answerable]
+        if not questions:
+            return None
+
+    existing = (
+        QuizResult.objects.filter(student_id=student_id, quiz_id=quiz_id)
+        .select_related('quiz')
+        .prefetch_related(
+            Prefetch('quiz__questions', queryset=QuizQuestion.objects.order_by('order', 'id')),
+        )
+        .first()
+    )
+    can_take = student_can_take_manual_quiz(student_id, quiz_id)
+
+    def _listening_payload(*, view_only: bool, response_map: dict | None = None, **extra):
+        sections = build_listening_sections_for_quiz(
+            quiz.pk,
+            response_map=response_map or {},
+        )
+        flat_questions = [row for section in sections for row in section['questions']]
+        response_ids = [row['id'] for row in flat_questions]
+        return {
+            **serialize_quiz(quiz),
+            'questions': flat_questions,
+            'listening_sections': sections,
+            'response_question_ids': response_ids,
+            'response_question_count': len(response_ids),
+            'view_only': view_only,
+            **extra,
+        }
+
+    if quiz.is_listening:
+        if existing and existing.is_pending_review:
+            response_map = {
+                str(item['id']): item['student_answer']
+                for item in build_essay_question_responses(existing)
+            }
+            return _listening_payload(
+                view_only=True,
+                response_map=response_map,
+                is_pending_review=True,
+                result_id=existing.pk,
+            )
+        if not can_take:
+            return None
+        return _listening_payload(view_only=False)
+
+    questions = [q for q in quiz.questions.all() if q.is_answerable]
+    if existing and existing.is_pending_review:
+        response_map = {
+            str(item['id']): item['student_answer']
+            for item in build_essay_question_responses(existing)
+        }
+        single_submission = (existing.student_submission or '').strip()
+        serialized_qs = [
+            serialize_quiz_question_for_student(
+                q,
+                student_answer=response_map.get(str(q.pk), single_submission if len(questions) == 1 else ''),
+            )
+            for q in questions
+        ]
+        response_ids = [q['id'] for q in serialized_qs]
+        return {
+            **serialize_quiz(quiz),
+            'questions': serialized_qs,
+            'listening_sections': [],
+            'response_question_ids': response_ids,
+            'response_question_count': len(response_ids),
+            'view_only': True,
+            'is_pending_review': True,
+            'result_id': existing.pk,
+        }
+    if not can_take:
+        return None
+    serialized_qs = [serialize_quiz_question_for_student(q) for q in questions]
+    response_ids = [q['id'] for q in serialized_qs]
+    return {
+        **serialize_quiz(quiz),
+        'questions': serialized_qs,
+        'listening_sections': [],
+        'response_question_ids': response_ids,
+        'response_question_count': len(response_ids),
+        'view_only': False,
+    }
+
+
+def serialize_quiz_result_review(row):
+    from portals.utils.quiz_submit import build_essay_question_responses
+
+    quiz = row.quiz
+    data = {
+        **serialize_quiz_result(row),
+        'student_submission': row.student_submission,
+        'teacher_feedback': row.teacher_feedback,
+        'grading_mode_label': quiz.get_grading_mode_label(),
+        'is_essay': quiz.is_essay,
+        'is_listening': quiz.is_listening,
+        'listening_sections': [],
+        'questions': [serialize_quiz_question(q) for q in quiz.questions.all()],
+        'question_responses': [],
+    }
+    responses = []
+    if quiz.is_listening or quiz.is_essay or quiz.uses_per_question_text_responses:
+        responses = build_essay_question_responses(row)
+        data['question_responses'] = responses
+    if quiz.is_listening:
+        from portals.utils.quiz_listening import build_listening_sections_for_quiz
+
+        response_map = {
+            str(key): str(value)
+            for key, value in (row.given_answers or {}).items()
+        }
+        data['listening_sections'] = build_listening_sections_for_quiz(
+            quiz.pk,
+            response_map=response_map,
+        )
+    return data
+
+
+def _teacher_pending_quiz_results_queryset(teacher_id):
+    course_codes = get_teacher_course_type_codes(teacher_id)
+    if not course_codes:
+        return None
+    return (
+        QuizResult.objects.filter(
+            reviewed_at__isnull=True,
+            quiz__category__service__in=course_codes,
+            student__groups__teacher_id=teacher_id,
+            student__groups__courses__slug__in=expand_course_types_to_service_slugs(course_codes),
+            student__groups__is_active=True,
+        )
+        .filter(
+            Q(quiz__is_listening=True) | Q(quiz__is_essay=True) | Q(quiz__is_speaking=True),
+        )
+        .select_related('student', 'quiz', 'quiz__category')
+        .distinct()
+        .order_by('-completed_at', 'id')
+    )
+
+
+def get_teacher_pending_quiz_results(teacher_id):
+    from portals.utils.student_courses import filter_quiz_results_for_teacher
+
+    qs = _teacher_pending_quiz_results_queryset(teacher_id)
+    if qs is None:
+        return []
+    qs = qs.prefetch_related(
+        Prefetch('quiz__questions', queryset=QuizQuestion.objects.order_by('order', 'id')),
+    )
+    visible = filter_quiz_results_for_teacher(qs, teacher_id)
+    return [serialize_quiz_result_review(row) for row in visible[:100]]
+
+
+def get_teacher_quiz_result_detail(teacher_id, result_id):
+    from portals.utils.student_courses import teacher_can_see_quiz_result
+
+    row = (
+        QuizResult.objects.filter(pk=result_id)
+        .select_related('student', 'quiz', 'quiz__category')
+        .prefetch_related(
+            Prefetch('quiz__questions', queryset=QuizQuestion.objects.order_by('order', 'id')),
+        )
+        .first()
+    )
+    if not row or not row.quiz.is_manual_grading:
+        return None
+    if not teacher_can_see_quiz_result(teacher_id, row.student_id, row.quiz):
+        return None
+    return serialize_quiz_result_review(row)
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_student_group_ids(student_id):
+    return list(
+        StudyGroup.objects.filter(students__pk=student_id, is_active=True)
+        .values_list('id', flat=True)
+    )
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_student_schedules(student_id):
+    group_ids = get_student_group_ids(student_id)
+    qs = (
+        Schedule.objects.filter(group_id__in=group_ids)
+        .select_related('group')
+        .order_by('weekday', 'start_time', 'id')
+    )
+    return [serialize_schedule(row) for row in qs]
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_student_lessons(student_id):
+    group_ids = get_student_group_ids(student_id)
+    qs = (
+        Lesson.objects.filter(
+            group_id__in=group_ids,
+            teacher_id=F('group__teacher_id'),
+        )
+        .select_related('group', 'category')
+        .order_by('-lesson_date', '-created_at', 'id')
+    )
+    return [serialize_lesson(row) for row in qs]
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_student_video_records(student_id):
+    group_ids = get_student_group_ids(student_id)
+    qs = (
+        VideoRecord.objects.filter(group_id__in=group_ids)
+        .select_related('group')
+        .order_by('-lesson_date', '-id')
+    )
+    return [serialize_video_record(row) for row in qs]
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_student_scores(student_id):
+    from portals.utils.student_courses import filter_quiz_results_for_student
+
+    codes = get_student_course_type_codes(student_id)
+    if not codes:
+        return []
+    quiz_qs = (
+        _quiz_results_queryset()
+        .filter(
+            student_id=student_id,
+            quiz__category__service__in=codes,
+        )
+        .select_related('quiz__category')
+        .distinct()
+    )
+    quiz_visible = filter_quiz_results_for_student(quiz_qs, student_id)
+    quiz_rows = [serialize_quiz_result_as_score(row) for row in quiz_visible]
+
+    admin_qs = (
+        Score.objects.filter(student_id=student_id)
+        .select_related('student', 'lesson')
+        .order_by('-date', '-id')
+    )
+    admin_rows = [serialize_score(row) for row in admin_qs[:200]]
+    return _merge_student_scores(quiz_rows, admin_rows)
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_student_quizzes(student_id):
+    from portals.models import Quiz
+    from portals.utils.student_courses import filter_quizzes_for_student
+
+    codes = get_student_course_type_codes(student_id)
+    if not codes:
+        return []
+    qs = (
+        Quiz.objects.filter(category__service__in=codes)
+        .select_related('category')
+        .prefetch_related('questions')
+        .distinct()
+        .order_by('-created_at', 'id')
+    )
+    visible = filter_quizzes_for_student(qs, student_id)
+    return [serialize_quiz(row) for row in visible]
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_student_admin_scores(student_id):
+    admin_qs = (
+        Score.objects.filter(student_id=student_id)
+        .select_related('student', 'lesson')
+        .order_by('-date', '-id')
+    )
+    return [serialize_score(row) for row in admin_qs[:200]]
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_student_attendance_detail(student_id):
+    """Attendance summary for a student's own profile."""
+    return get_parent_child_attendance_detail(student_id)
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_parent_child_attendance_detail(student_id):
+    student = (
+        StudentProfile.objects.filter(pk=student_id)
+        .select_related('user')
+        .prefetch_related('groups')
+        .first()
+    )
+    if not student:
+        return None
+
+    records_qs = (
+        Attendance.objects.filter(student_id=student_id)
+        .select_related('schedule', 'schedule__group', 'student')
+        .order_by('-session_date', '-marked_at')[:200]
+    )
+    records = [serialize_attendance(row) for row in records_qs]
+    summary = {'present': 0, 'absent': 0, 'late': 0, 'total': len(records)}
+    for row in records:
+        if row['status'] in summary:
+            summary[row['status']] += 1
+
+    present = summary['present']
+    total = summary['total']
+    attendance_rate = round(100 * present / total, 1) if total else None
+    group_names = list(student.groups.order_by('name').values_list('name', flat=True))
+
+    return {
+        'student': serialize_student(student),
+        'groups': group_names,
+        'summary': summary,
+        'records': records,
+        'attendance_rate': attendance_rate,
+    }
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_parent_child_attendance(student_id):
+    qs = (
+        Attendance.objects.filter(student_id=student_id)
+        .select_related('student', 'schedule', 'schedule__group')
+        .order_by('-session_date', '-marked_at')[:200]
+    )
+    return [serialize_attendance(row) for row in qs]
+
+
+def get_parent_child_scores(student_id):
+    return get_student_admin_scores(student_id)
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_student_quiz_results(student_id):
+    from portals.utils.student_courses import filter_quiz_results_for_student
+
+    codes = get_student_course_type_codes(student_id)
+    if not codes:
+        return []
+    qs = (
+        _quiz_results_queryset()
+        .filter(
+            student_id=student_id,
+            quiz__category__service__in=codes,
+        )
+        .select_related('quiz__category')
+        .distinct()
+    )
+    visible = filter_quiz_results_for_student(qs, student_id)
+    return [serialize_quiz_result(row) for row in visible]
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_parent_child_quiz_results(student_id, *, parent_id=None):
+    from portals.utils.parent_access import parent_can_access_student
+
+    if parent_id is not None and not parent_can_access_student(parent_id, student_id):
+        return []
+    return get_student_quiz_results(student_id)
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_teacher_student_quiz_results(teacher_id, student_id):
+    from portals.utils.student_courses import filter_quiz_results_for_teacher
+    from portals.utils.teacher_access import get_teacher_student
+
+    if not get_teacher_student(teacher_id, student_id):
+        return []
+    course_codes = get_teacher_course_type_codes(teacher_id)
+    if not course_codes:
+        return []
+    qs = (
+        _quiz_results_queryset()
+        .filter(
+            student_id=student_id,
+            quiz__category__service__in=course_codes,
+        )
+        .select_related('quiz__category')
+        .distinct()
+    )
+    visible = filter_quiz_results_for_teacher(qs, teacher_id)
+    return [serialize_quiz_result(row) for row in visible]
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_teacher_student_scores(teacher_id, student_id):
+    from portals.utils.student_courses import filter_quiz_results_for_teacher
+    from portals.utils.teacher_access import get_teacher_student
+
+    if not get_teacher_student(teacher_id, student_id):
+        return []
+    course_codes = get_teacher_course_type_codes(teacher_id)
+    if not course_codes:
+        return []
+    quiz_qs = (
+        _quiz_results_queryset()
+        .filter(
+            student_id=student_id,
+            quiz__category__service__in=course_codes,
+        )
+        .select_related('quiz__category', 'student')
+        .distinct()
+    )
+    quiz_visible = filter_quiz_results_for_teacher(quiz_qs, teacher_id)
+    quiz_rows = [serialize_quiz_result_as_score(row) for row in quiz_visible]
+
+    admin_qs = (
+        Score.objects.filter(
+            student_id=student_id,
+            student__groups__teacher_id=teacher_id,
+            student__groups__courses__slug__in=expand_course_types_to_service_slugs(course_codes),
+            student__groups__is_active=True,
+        )
+        .select_related('student', 'lesson')
+        .distinct()
+        .order_by('-date', '-id')
+    )
+    admin_rows = [serialize_score(row) for row in admin_qs[:200]]
+    return _merge_student_scores(quiz_rows, admin_rows)
+
+
+def group_scores_by_day(scores):
+    """Group score rows by calendar day (newest days first)."""
+    from collections import OrderedDict
+
+    buckets = OrderedDict()
+    for row in scores:
+        dt = row.get('date')
+        if not dt:
+            continue
+        if hasattr(dt, 'date'):
+            day = dt.date() if hasattr(dt, 'hour') else dt
+        else:
+            day = dt
+        key = day.isoformat()
+        if key not in buckets:
+            buckets[key] = {'date': day, 'entries': []}
+        buckets[key]['entries'].append(row)
+    return list(buckets.values())
+
+
+def get_teacher_student_group_names(teacher_id, student_id):
+    return list(
+        StudyGroup.objects.filter(
+            teacher_id=teacher_id,
+            students__pk=student_id,
+        )
+        .values_list('name', flat=True)
+        .order_by('name')
+    )
+
+
+# ---------------------------------------------------------------------------
+# Page blobs (cached per profile + query string)
+# ---------------------------------------------------------------------------
+
+@cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_teacher_dashboard_data(request, teacher_id):
+    groups = get_teacher_groups(teacher_id)
+    return {
+        'groups': groups,
+        'group_count': len(groups),
+        'lesson_count': len(get_teacher_lessons(teacher_id)),
+        'quiz_count': len(get_teacher_quizzes(teacher_id)),
+        'student_count': sum(g.get('student_count', 0) for g in groups),
+    }
+
+
+@cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_student_dashboard_data(request, student_id):
+    group_ids = get_student_group_ids(student_id)
+    return {
+        'group_ids': group_ids,
+        'schedule_count': len(get_student_schedules(student_id)),
+        'lesson_count': len(get_student_lessons(student_id)),
+        'score_count': len(get_student_scores(student_id)),
+    }
+
+
+@cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_parent_dashboard_data(request, parent_id):
+    profile = (
+        ParentProfile.objects.prefetch_related('students')
+        .filter(pk=parent_id)
+        .first()
+    )
+    if not profile:
+        return {'children': []}
+    children = []
+    for student in profile.students.select_related('user').order_by('user__username', 'id'):
+        group_ids = get_student_group_ids(student.pk)
+        children.append({
+            'student': serialize_student(student),
+            'group_ids': group_ids,
+            'schedule_count': len(get_student_schedules(student.pk)),
+            'lesson_count': len(get_student_lessons(student.pk)),
+            'score_count': len(get_student_admin_scores(student.pk)),
+            'quiz_count': len(get_student_quizzes(student.pk)),
+            'attendance_count': len(get_parent_child_attendance(student.pk)),
+            'quiz_result_count': len(get_parent_child_quiz_results(student.pk, parent_id=parent_id)),
+            'quiz_results': get_parent_child_quiz_results(student.pk, parent_id=parent_id)[:5],
+        })
+    return {'children': children}

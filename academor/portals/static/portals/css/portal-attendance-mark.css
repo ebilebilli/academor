@@ -1,0 +1,680 @@
+/* Single-student attendance mark form — simple, modern layout */
+
+.portal-mark-attendance {
+  max-width: 48rem;
+}
+
+.portal-mark-attendance__nav {
+  margin-bottom: 1rem;
+}
+
+.portal-mark-attendance__header {
+  margin-bottom: 1.25rem;
+}
+
+.portal-mark-attendance__title {
+  margin: 0 0 0.35rem;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--admin-text);
+}
+
+.portal-mark-attendance__lead {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+  color: var(--admin-muted);
+  line-height: 1.5;
+}
+
+.portal-mark-attendance__tip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--admin-primary);
+  text-decoration: none;
+}
+
+.portal-mark-attendance__tip:hover {
+  text-decoration: underline;
+}
+
+.portal-mark-attendance__card {
+  border: 1px solid var(--admin-border);
+  border-radius: 16px;
+  background: var(--admin-surface);
+  box-shadow: var(--admin-shadow-sm);
+  overflow: hidden;
+}
+
+.portal-mark-section {
+  padding: 1.15rem 1.25rem;
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.portal-mark-section:last-of-type {
+  border-bottom: 0;
+}
+
+.portal-mark-section__title {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0 0 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--admin-muted);
+}
+
+.portal-mark-section__title i {
+  font-size: 0.95rem;
+}
+
+.portal-mark-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+}
+
+@media (min-width: 576px) {
+  .portal-mark-grid--2 {
+    grid-template-columns: 1.4fr 1fr;
+  }
+}
+
+.portal-mark-field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.portal-mark-field label {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--admin-text);
+}
+
+.portal-mark-field .form-select,
+.portal-mark-field .form-control {
+  border-radius: 10px;
+  min-height: 2.75rem;
+}
+
+.portal-mark-field .form-control[type="date"] {
+  font-variant-numeric: tabular-nums;
+}
+
+.portal-mark-status-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.portal-mark-status-option {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-height: 5.5rem;
+  padding: 0.75rem 0.5rem;
+  border: 1.5px solid var(--admin-border);
+  border-radius: 12px;
+  background: var(--admin-surface-soft);
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.portal-mark-status-option i {
+  font-size: 1.35rem;
+}
+
+.portal-mark-status-option span {
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.portal-mark-status-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.portal-mark-status-option--present i,
+.portal-mark-status-option--present span {
+  color: var(--admin-success);
+}
+
+.portal-mark-status-option--absent i,
+.portal-mark-status-option--absent span {
+  color: var(--admin-danger);
+}
+
+.portal-mark-status-option--late i,
+.portal-mark-status-option--late span {
+  color: #946200;
+}
+
+.portal-mark-status-option:has(input:checked) {
+  box-shadow: 0 0 0 2px rgba(0, 49, 61, 0.08);
+}
+
+.portal-mark-status-option--present:has(input:checked) {
+  border-color: var(--admin-success);
+  background: rgba(22, 163, 74, 0.08);
+}
+
+.portal-mark-status-option--absent:has(input:checked) {
+  border-color: var(--admin-danger);
+  background: rgba(220, 38, 38, 0.08);
+}
+
+.portal-mark-status-option--late:has(input:checked) {
+  border-color: #d97706;
+  background: rgba(217, 119, 6, 0.08);
+}
+
+.portal-mark-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  padding: 1rem 1.25rem;
+  background: var(--admin-surface-soft);
+  border-top: 1px solid var(--admin-border);
+}
+
+.portal-mark-actions .btn-primary {
+  min-width: 7rem;
+}
+
+.portal-mark-field .invalid-feedback,
+.portal-mark-field .form-text {
+  font-size: 0.78rem;
+}
+
+@media (max-width: 575.98px) {
+  .portal-mark-status-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-mark-status-option {
+    flex-direction: row;
+    justify-content: flex-start;
+    min-height: auto;
+    padding: 0.85rem 1rem;
+  }
+}
+
+/* Session picker — compact weekly calendar */
+.portal-attendance-student-pick {
+  border: 1px solid var(--admin-border);
+  border-radius: 16px;
+  background: var(--admin-surface);
+  padding: 1.15rem 1.25rem;
+  box-shadow: var(--admin-shadow-sm);
+}
+
+.portal-attendance-student-pick__title {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--admin-text);
+}
+
+.portal-attendance-student-pick__hint {
+  margin: 0 0 0.85rem;
+  font-weight: 400;
+  font-size: 0.88rem;
+  color: var(--admin-muted);
+}
+
+.portal-attendance-student-pick__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  gap: 0.55rem;
+  margin-bottom: 0.85rem;
+}
+
+.portal-attendance-student-pick__item {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--admin-border);
+  border-radius: 10px;
+  background: var(--admin-surface-soft);
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--admin-text);
+}
+
+.portal-attendance-student-pick__item:has(input:checked) {
+  border-color: var(--admin-primary);
+  background: rgba(0, 49, 61, 0.06);
+}
+
+.portal-attendance-student-pick__item input {
+  width: 1rem;
+  height: 1rem;
+}
+
+.portal-attendance-student-pick__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.portal-attendance-picker-calendar {
+  border: 1px solid var(--admin-border);
+  border-radius: 16px;
+  background: var(--admin-surface);
+  overflow: hidden;
+  box-shadow: var(--admin-shadow-sm);
+}
+
+.portal-attendance-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.portal-attendance-picker-day {
+  border-right: 1px solid var(--admin-border);
+  min-height: 8rem;
+}
+
+.portal-attendance-picker-day:last-child {
+  border-right: 0;
+}
+
+.portal-attendance-picker-day.is-today .portal-attendance-picker-day__head {
+  background: rgba(0, 49, 61, 0.06);
+}
+
+.portal-attendance-picker-day__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.55rem 0.35rem;
+  border-bottom: 1px solid var(--admin-border);
+  background: var(--admin-surface-soft);
+}
+
+.portal-attendance-picker-day__name {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--admin-muted);
+}
+
+.portal-attendance-picker-day__date {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--admin-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.portal-attendance-picker-day__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.45rem;
+}
+
+.portal-attendance-picker-session {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.45rem 0.5rem;
+  border: 1px solid var(--admin-border);
+  border-radius: 10px;
+  background: var(--admin-surface-soft);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.portal-attendance-picker-session:hover,
+.portal-attendance-picker-session:focus {
+  border-color: var(--admin-primary);
+  background: rgba(0, 49, 61, 0.06);
+  box-shadow: 0 0 0 1px rgba(0, 49, 61, 0.08);
+  color: inherit;
+}
+
+.portal-attendance-picker-session__time {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--admin-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.portal-attendance-picker-session__group {
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--admin-text);
+}
+
+.portal-attendance-picker-session__meta {
+  font-size: 0.72rem;
+  color: var(--admin-muted);
+}
+
+.portal-attendance-picker-empty {
+  display: block;
+  padding: 0.35rem 0.25rem;
+  font-size: 0.72rem;
+  color: var(--admin-muted);
+  text-align: center;
+}
+
+@media (max-width: 991.98px) {
+  .portal-attendance-picker-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .portal-attendance-picker-day:nth-child(4n) {
+    border-right: 0;
+  }
+
+  .portal-attendance-picker-day {
+    border-bottom: 1px solid var(--admin-border);
+  }
+}
+
+@media (max-width: 575.98px) {
+  .portal-attendance-picker-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-attendance-picker-day {
+    border-right: 0;
+    min-height: auto;
+  }
+}
+
+/* Session mark form */
+.portal-attendance-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--admin-border);
+  border-radius: 16px;
+  background: var(--admin-surface);
+  box-shadow: var(--admin-shadow-sm);
+}
+
+.portal-session-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.portal-session-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 12px;
+  background: rgba(0, 49, 61, 0.08);
+  color: var(--admin-primary);
+  flex-shrink: 0;
+}
+
+.portal-session-icon i {
+  font-size: 1.25rem;
+}
+
+.portal-session-details h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--admin-text);
+}
+
+.portal-session-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 1rem;
+  font-size: 0.84rem;
+  color: var(--admin-muted);
+}
+
+.portal-session-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.portal-bulk-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--admin-border);
+  border-bottom: 0;
+  border-radius: 16px 16px 0 0;
+  background: var(--admin-surface-soft);
+}
+
+.portal-bulk-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--admin-text);
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+}
+
+.portal-bulk-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid var(--admin-border);
+  border-radius: 999px;
+  background: var(--admin-surface);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.portal-bulk-btn.present {
+  color: var(--admin-success);
+}
+
+.portal-bulk-btn.absent {
+  color: var(--admin-danger);
+}
+
+.portal-bulk-btn.late {
+  color: #946200;
+}
+
+.portal-bulk-btn:hover {
+  border-color: currentColor;
+  background: var(--admin-surface-soft);
+}
+
+.portal-attendance-table {
+  border: 1px solid var(--admin-border);
+  border-radius: 0 0 16px 16px;
+  background: var(--admin-surface);
+  overflow: hidden;
+  box-shadow: var(--admin-shadow-sm);
+}
+
+.portal-attendance-table-header {
+  display: grid;
+  grid-template-columns: 3rem 1fr repeat(3, minmax(4.5rem, 1fr));
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid var(--admin-border);
+  background: var(--admin-surface-soft);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--admin-muted);
+}
+
+.portal-attendance-row-improved {
+  display: grid;
+  grid-template-columns: 3rem 1fr repeat(3, minmax(4.5rem, 1fr));
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.portal-attendance-row-improved:last-of-type {
+  border-bottom: 0;
+}
+
+.portal-student-select {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.portal-student-select input {
+  width: 1.1rem;
+  height: 1.1rem;
+  cursor: pointer;
+}
+
+.portal-student-info {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+.portal-student-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: var(--admin-surface-soft);
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--admin-primary);
+  flex-shrink: 0;
+}
+
+.portal-student-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--admin-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.portal-status-options {
+  display: contents;
+}
+
+.portal-status-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.25rem;
+  padding: 0.35rem 0.5rem;
+  border: 1.5px solid var(--admin-border);
+  border-radius: 10px;
+  background: var(--admin-surface-soft);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--admin-muted);
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.portal-status-btn input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.portal-status-btn[data-status="present"].active,
+.portal-status-btn[data-status="present"]:has(input:checked) {
+  border-color: var(--admin-success);
+  background: rgba(22, 163, 74, 0.08);
+  color: var(--admin-success);
+}
+
+.portal-status-btn[data-status="absent"].active,
+.portal-status-btn[data-status="absent"]:has(input:checked) {
+  border-color: var(--admin-danger);
+  background: rgba(220, 38, 38, 0.08);
+  color: var(--admin-danger);
+}
+
+.portal-status-btn[data-status="late"].active,
+.portal-status-btn[data-status="late"]:has(input:checked) {
+  border-color: #d97706;
+  background: rgba(217, 119, 6, 0.08);
+  color: #946200;
+}
+
+.portal-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 1rem;
+  border-top: 1px solid var(--admin-border);
+  background: var(--admin-surface-soft);
+}
+
+@media (max-width: 767.98px) {
+  .portal-attendance-table-header {
+    display: none;
+  }
+
+  .portal-attendance-row-improved {
+    grid-template-columns: 2.5rem 1fr;
+    grid-template-areas:
+      "select student"
+      "status status status status";
+    gap: 0.65rem;
+  }
+
+  .portal-student-select {
+    grid-area: select;
+  }
+
+  .portal-student-info {
+    grid-area: student;
+  }
+
+  .portal-status-options {
+    grid-area: status;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.45rem;
+  }
+
+  .portal-status-btn span {
+    display: none;
+  }
+}

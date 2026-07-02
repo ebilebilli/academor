@@ -1,0 +1,67 @@
+{% extends "portals/base.html" %}
+{% load i18n portal_tags %}
+
+{% block title %}{{ classroom.name }}{% endblock %}
+
+{% block content %}
+<div class="portal-control-bar mb-3">
+  <a class="btn btn-outline-secondary btn-sm" href="{{ back_url }}">
+    <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'Back' %}
+  </a>
+</div>
+
+{% portal_page_heading icon="bi-book" raw_title=classroom.name %}
+
+<section class="portal-content-panel portal-classroom-detail">
+  <div class="portal-panel-header portal-lesson-detail-meta mb-0">
+    <div class="portal-lesson-detail-meta-grid">
+      <div>
+        <span class="portal-lesson-meta-label">{% trans 'Service' %}</span>
+        <div class="d-flex flex-wrap gap-1 mt-1">
+          {% for label in classroom.service_labels %}
+          <span class="portal-tag">{{ label }}</span>
+          {% empty %}
+          <span class="text-muted">—</span>
+          {% endfor %}
+        </div>
+      </div>
+      {% if classroom.created_at %}
+      <div>
+        <span class="portal-lesson-meta-label">{% trans 'Added' %}</span>
+        <strong>{{ classroom.created_at|portal_date_long }}</strong>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if classroom.description %}
+  <div class="portal-lesson-detail-section border-top">
+    <div class="portal-lesson-description">{{ classroom.description|linebreaksbr }}</div>
+  </div>
+  {% endif %}
+
+  {% if classroom.has_pdf %}
+  <div class="portal-lesson-detail-section border-top">
+    <article class="portal-lesson-material-card portal-classroom-pdf-card">
+      <header class="portal-lesson-material-header">
+        <div class="d-flex align-items-center gap-2">
+          <span class="portal-lesson-material-icon"><i class="bi bi-file-earmark-pdf" aria-hidden="true"></i></span>
+          <div>
+            <h2 class="h6 mb-0">{% trans 'PDF' %}</h2>
+            <p class="text-muted small mb-0">{{ classroom.name }}</p>
+          </div>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+          <a class="btn btn-primary btn-sm" href="{{ classroom.pdf_url }}" target="_blank" rel="noopener">
+            <i class="bi bi-box-arrow-up-right me-1" aria-hidden="true"></i>{% trans 'Open PDF' %}
+          </a>
+          <a class="btn btn-outline-secondary btn-sm" href="{{ classroom.pdf_url }}" download>
+            <i class="bi bi-download me-1" aria-hidden="true"></i>{% trans 'Download' %}
+          </a>
+        </div>
+      </header>
+    </article>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

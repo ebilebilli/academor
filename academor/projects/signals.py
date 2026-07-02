@@ -181,7 +181,7 @@ def invalidate_course_price_package_cache(sender, instance, **kwargs):
     """
     Price packages are prefetched on cached `get_project_categories` /
     `get_active_project_category_by_slug` and serialized into course cards/detail
-    (incl. Sale discount amounts when `apply_to_service_prices` is active).
+    (incl. Sale discount amounts when linked courses or price packages have an active sale).
     Also feeds checkout contracts via ``serialize_price_package`` (months, lessons).
     Inline admin edits packages without touching Service.post_save.
     """
@@ -462,6 +462,14 @@ def invalidate_sale_cache_signal(sender, instance, **kwargs):
 @receiver(m2m_changed, sender=Sale.services.through)
 def invalidate_sale_services_m2m(sender, instance, **kwargs):
     """Linked courses changed — refresh sale banners and per-service discount map."""
+    if kwargs.get('action') not in ('post_add', 'post_remove', 'post_clear'):
+        return
+    _invalidate_sale_cache_on_commit()
+
+
+@receiver(m2m_changed, sender=Sale.price_packages.through)
+def invalidate_sale_price_packages_m2m(sender, instance, **kwargs):
+    """Linked price packages changed — refresh homepage carousel and checkout amounts."""
     if kwargs.get('action') not in ('post_add', 'post_remove', 'post_clear'):
         return
     _invalidate_sale_cache_on_commit()

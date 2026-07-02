@@ -1,0 +1,118 @@
+{% extends "portals/base.html" %}
+{% load static i18n portal_tags %}
+
+{% block title %}{{ quiz.topic }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="portal-control-bar mb-3">
+  <a class="btn btn-outline-secondary btn-sm" href="{% url 'portals:student-quiz-cancel' pk=quiz.id %}?next={{ back_url|urlencode }}">
+    <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'Back' %}
+  </a>
+</div>
+
+{% portal_page_heading icon="bi-ui-checks" raw_title=quiz.topic raw_subtitle=quiz.course_type_label %}
+
+<div
+  class="portal-quiz-take{% if quiz.is_time_limited %} portal-quiz-take--timed{% endif %}"
+  data-quiz-take
+  data-quiz-started="false"
+  data-quiz-id="{{ quiz.id }}"
+  data-submit-url="{{ submit_url }}"
+  data-time-limit-sec="{{ quiz.time_limit_seconds|default:0 }}"
+  data-label-correct="{% trans 'Correct' %}"
+  data-label-incorrect="{% trans 'Incorrect' %}"
+  data-label-unanswered="{% trans 'Not answered' %}"
+  data-msg-submitting="{% trans 'Submitting…' %}"
+  data-msg-error="{% trans 'Could not submit the test. Please try again.' %}"
+>
+  <div data-quiz-take-content hidden>
+  <div class="portal-quiz-take-toolbar panel mb-3{% if quiz.is_time_limited %} portal-quiz-take-toolbar--timed{% endif %}">
+    <div class="portal-quiz-take-toolbar__row">
+      <div class="portal-quiz-take-meta">
+        <span class="badge rounded-pill text-bg-light border px-3 py-2">{{ quiz.questions|length }} {% trans 'questions' %}</span>
+        {% if quiz.is_time_limited %}
+        <span class="badge rounded-pill text-bg-light border px-3 py-2">
+          <i class="bi bi-hourglass-split me-1" aria-hidden="true"></i>{% blocktrans with minutes=quiz.time_limit_minutes %}{{ minutes }} min limit{% endblocktrans %}
+        </span>
+        {% endif %}
+      </div>
+      {% if quiz.is_time_limited %}
+      <div class="portal-quiz-clock" data-quiz-timer hidden>
+        <span class="portal-quiz-clock__label">{% trans 'Time left' %}</span>
+        <strong class="portal-quiz-clock__value" data-quiz-timer-value aria-live="polite">--:--</strong>
+      </div>
+      {% endif %}
+    </div>
+    {% if quiz.is_time_limited %}
+    <div class="portal-quiz-time-bar" data-quiz-timer-bar hidden aria-hidden="true">
+      <div class="portal-quiz-time-bar__fill" data-quiz-timer-bar-fill></div>
+    </div>
+    {% endif %}
+  </div>
+  {% if quiz.is_time_limited %}
+  <div class="portal-quiz-take-toolbar-spacer" aria-hidden="true"></div>
+  {% endif %}
+
+  <form class="portal-quiz-take-form" data-quiz-take-form novalidate>
+  <div class="portal-quiz-play-stack mb-4">
+    {% for q in quiz.questions %}
+    {% include "portals/includes/quiz_question_play.html" with q=q number=forloop.counter %}
+    {% endfor %}
+  </div>
+
+  <div class="portal-quiz-take-actions panel">
+    <button type="button" class="btn btn-primary" data-quiz-finish-btn>
+      <i class="bi bi-check2-circle me-1" aria-hidden="true"></i>{% trans 'Finish test' %}
+    </button>
+    <p class="text-muted small mb-0 mt-2" data-quiz-take-hint>
+      {% if quiz.is_time_limited %}
+        {% trans 'The test ends when the timer reaches zero or when you click Finish.' %}
+      {% else %}
+        {% trans 'Click Finish when you are ready.' %}
+      {% endif %}
+    </p>
+  </div>
+  </form>
+
+  <section class="portal-quiz-take-result panel d-none" data-quiz-result hidden>
+    <div class="portal-quiz-take-result__head text-center mb-4">
+      <p class="portal-quiz-take-result__eyebrow mb-2">{% trans 'Test complete' %}</p>
+      <div class="portal-quiz-result-stats">
+        <div class="portal-quiz-result-stat">
+          <span class="portal-quiz-result-stat__label">{% trans 'Score' %}</span>
+          <strong class="portal-quiz-result-stat__value" data-quiz-result-score>0/0</strong>
+        </div>
+        <div class="portal-quiz-result-stat">
+          <span class="portal-quiz-result-stat__label">{% trans 'Result' %}</span>
+          <strong class="portal-quiz-result-stat__value" data-quiz-result-percent>0%</strong>
+        </div>
+        {% if quiz.is_time_limited %}
+        <div class="portal-quiz-result-stat" data-quiz-result-duration-wrap>
+          <span class="portal-quiz-result-stat__label">{% trans 'Time used' %}</span>
+          <strong class="portal-quiz-result-stat__value" data-quiz-result-duration>0%</strong>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="portal-quiz-take-result__list" data-quiz-result-list></div>
+    <div class="d-flex flex-wrap gap-2 justify-content-center mt-4">
+      <a class="btn btn-outline-secondary btn-sm" href="{{ back_url }}">{% trans 'Back to quizzes' %}</a>
+      <a class="btn btn-primary btn-sm" href="{% url 'portals:student-scores' %}">{% trans 'View scores' %}</a>
+    </div>
+  </section>
+  </div>
+</div>
+
+{% include "portals/includes/quiz_start_gate.html" %}
+
+{% csrf_token %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'portals/js/quiz-start-gate.js' %}"></script>
+<script src="{% static 'portals/js/quiz-take.js' %}"></script>
+{% endblock %}

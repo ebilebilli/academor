@@ -1,0 +1,138 @@
+{% extends "portals/base.html" %}
+{% load i18n portal_tags static %}
+
+{% block title %}{% trans 'Notifications' %}{% endblock %}
+
+{% block content %}
+<header class="s-page-head mb-4">
+  <div>
+    <h1 class="s-page-head__title">
+      <i class="ti ti-bell" aria-hidden="true"></i>
+      {% trans 'Bildirişlər' %}
+      {% if portal_unread_notifications %}
+      <span class="ds-badge ds-badge--danger ms-2">{{ portal_unread_notifications }}</span>
+      {% endif %}
+    </h1>
+    <p class="s-page-head__sub">{% if notifications_subtitle %}{{ notifications_subtitle }}{% else %}{% trans 'Quiz nəticələri və qiymətlər.' %}{% endif %}</p>
+  </div>
+
+  {# Mark all read — always visible, hidden when none unread #}
+  <div{% if not unread_count %} class="d-none" hidden{% endif %} data-notification-mark-all-wrap>
+    <button
+      type="button"
+      class="ds-btn ds-btn--primary"
+      data-notification-mark-all
+      data-mark-all-url="{% url 'portals:notification-mark-all-read' %}"
+    >
+      <i class="ti ti-checks" aria-hidden="true"></i>
+      {% trans 'Hamısını oxunmuş işarələ' %}
+    </button>
+  </div>
+</header>
+
+{% csrf_token %}
+
+{# ── Period filter ────────────────────────────────────────────── #}
+<div class="s-filter-tabs mb-3" role="group" aria-label="{% trans 'Zaman filteri' %}">
+  {% for code in period_choices %}
+  <a
+    class="s-filter-tab{% if period == code %} is-active{% endif %}"
+    href="{% url notifications_url_name %}?period={{ code }}"
+  >
+    {% if code == 'all' %}{% trans 'Hamısı' %}
+    {% elif code == 'day' %}{% trans 'Bu gün' %}
+    {% elif code == 'week' %}{% trans 'Bu həftə' %}
+    {% elif code == 'month' %}{% trans 'Bu ay' %}
+    {% elif code == 'year' %}{% trans 'Bu il' %}
+    {% endif %}
+  </a>
+  {% endfor %}
+</div>
+
+{# ── Notification list ────────────────────────────────────────── #}
+<section class="notif-list" data-notification-list aria-label="{% trans 'Bildiriş siyahısı' %}">
+  {% for item in notifications %}
+  <article
+    class="notif-item{% if not item.is_read %} is-unread{% endif %}"
+    data-notification-item
+    data-notification-id="{{ item.id }}"
+  >
+    <div class="notif-item__icon-wrap">
+      <span class="notif-item__icon">
+        <i class="ti ti-star" aria-hidden="true"></i>
+      </span>
+      {% if not item.is_read %}
+      <span class="notif-item__dot" aria-label="{% trans 'Oxunmamış' %}"></span>
+      {% endif %}
+    </div>
+
+    <a class="notif-item__body" href="{% if item.is_submission_pending and item.review_url %}{{ item.review_url }}{% else %}{{ item.score_detail_url }}{% endif %}">
+      <div class="notif-item__head">
+        <h2 class="notif-item__title">{{ item.quiz_topic }}</h2>
+        <time class="notif-item__time">{{ item.created_at|portal_datetime }}</time>
+      </div>
+      <p class="notif-item__desc">
+        {% if item.is_submission_pending %}
+          {% if student %}
+            {% trans 'Your answers were submitted for teacher review.' %}
+          {% else %}
+            {% blocktrans with name=item.student_name %}{{ name }} — awaiting review{% endblocktrans %}
+          {% endif %}
+        {% else %}
+          {% blocktrans with name=item.student_name %}{{ name }} — result published{% endblocktrans %}
+        {% endif %}
+        · {{ item.grading_mode_label }}
+      </p>
+      {% if item.is_submission_pending %}
+        <span class="ds-badge ds-badge--warning">{% trans 'Yoxlama gözləyir' %}</span>
+      {% else %}
+        <span class="notif-item__score">
+          {% trans 'Bal' %}: {{ item.total_score|format_quiz_score }}/{{ item.max_value|format_quiz_score }}
+        </span>
+      {% endif %}
+    </a>
+
+    <div class="notif-item__actions">
+      {% if not item.is_read %}
+      <button
+        type="button"
+        class="notif-action-btn"
+        data-notification-mark-read
+        data-mark-read-url="{{ item.mark_read_url }}"
+        title="{% trans 'Oxunmuş kimi işarələ' %}"
+        aria-label="{% trans 'Oxunmuş kimi işarələ' %}"
+      >
+        <i class="ti ti-check" aria-hidden="true"></i>
+      </button>
+      {% endif %}
+      {% if item.is_submission_pending and item.review_url %}
+      <a class="ds-btn ds-btn--primary btn-sm" href="{{ item.review_url }}">{% trans 'Yoxla' %}</a>
+      {% endif %}
+      <button
+        type="button"
+        class="notif-action-btn notif-action-btn--danger"
+        data-notification-delete
+        data-delete-url="{{ item.delete_url }}"
+        title="{% trans 'Sil' %}"
+        aria-label="{% trans 'Sil' %}"
+      >
+        <i class="ti ti-trash" aria-hidden="true"></i>
+      </button>
+    </div>
+  </article>
+  {% endfor %}
+
+  <div
+    class="s-empty-state py-5{% if notifications %} d-none{% endif %}"
+    data-notification-empty
+    {% if notifications %}hidden{% endif %}
+  >
+    <i class="ti ti-bell-off" aria-hidden="true"></i>
+    <p>{% trans 'Bu dövr üçün bildiriş yoxdur.' %}</p>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'portals/js/portal-notifications.js' %}"></script>
+{% endblock %}

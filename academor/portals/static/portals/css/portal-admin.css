@@ -1,0 +1,146 @@
+.portal-visible-password {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  letter-spacing: 0.03em;
+  min-width: 20rem;
+}
+
+.portal-generate-password {
+  margin-top: 0.5rem;
+}
+
+.portal-generated-password-note {
+  margin-top: 0.5rem;
+  font-weight: 600;
+}
+
+.portal-admin-wrap {
+  max-width: 100%;
+}
+
+.portal-admin-course-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0 0 1rem;
+  padding: 0.35rem;
+  border: 1px solid #dbe4ef;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.portal-admin-course-tab {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.42rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  color: #475569;
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.portal-admin-course-tab:hover,
+.portal-admin-course-tab:focus {
+  color: #0f172a;
+  background: #eef4ff;
+  border-color: #bfdbfe;
+}
+
+.portal-admin-course-tab.is-active {
+  color: #ffffff;
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+/* Teacher / student profile photos in changelist and change form */
+.portal-person {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+.portal-person__meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.portal-person__name {
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.portal-person__sub {
+  color: #64748b;
+  font-size: 0.82rem;
+  line-height: 1.25;
+}
+
+.portal-person__photo,
+.portal-person__avatar {
+  display: block;
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+}
+
+.portal-person__photo {
+  object-fit: cover;
+  border: 1px solid #dbe4ef;
+  background: #f8fafc;
+}
+
+.portal-person__avatar {
+  display: inline-grid;
+  place-items: center;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+}
+
+.portal-person__avatar--teacher {
+  background: #6366f1;
+}
+
+.portal-person__avatar--student {
+  background: #0ea5e9;
+}
+
+.portal-person__avatar--parent {
+  background: #14b8a6;
+}
+
+.portal-profile-preview,
+.portal-admin-wrap .field-profile_image img,
+.portal-admin-wrap .field-profile_image_preview img {
+  display: block;
+  width: 72px;
+  height: 72px;
+  max-width: 72px;
+  max-height: 72px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #dbe4ef;
+  background: #f8fafc;
+}
+
+.portal-admin-wrap .field-profile_image a img {
+  width: 72px;
+  height: 72px;
+}
+
+.portal-admin-link {
+  color: #4f46e5;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.portal-admin-link:hover {
+  color: #3730a3;
+  text-decoration: underline;
+}

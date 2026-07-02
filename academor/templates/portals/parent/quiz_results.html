@@ -1,0 +1,33 @@
+{% extends "portals/base.html" %}
+{% load i18n portal_tags %}
+
+{% block title %}{% trans 'Quiz results' %}{% endblock %}
+
+{% block content %}
+{% include "portals/includes/parent_child_header.html" %}
+
+<header class="s-page-head mb-4">
+  <div>
+    <h1 class="s-page-head__title">
+      <i class="ti ti-forms" aria-hidden="true"></i>
+      {% trans 'Quiz nəticələri' %}
+    </h1>
+    <p class="s-page-head__sub">{% trans 'Tamamlanmış quiz cəhdləri və orta bal.' %}</p>
+  </div>
+</header>
+
+{% include "portals/includes/quiz_history_summary_card.html" with score_stats=quiz_average total_count=quiz_results|length %}
+
+<section class="ds-card">
+  <div class="s-panel-head">
+    <h2 class="s-panel-title">
+      <i class="ti ti-history" aria-hidden="true"></i>
+      {% trans 'Quiz tarixçəsi' %}
+      <span class="ds-badge">{{ quiz_results|length }}</span>
+    </h2>
+  </div>
+  <div class="portal-profile-section__body portal-profile-section__body--flush">
+    {% include "portals/includes/student_quiz_history.html" with score_detail_url_name="portals:parent-score-detail" %}
+  </div>
+</section>
+{% endblock %}

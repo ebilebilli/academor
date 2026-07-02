@@ -1,0 +1,33 @@
+{% load i18n portal_tags %}
+<fieldset class="portal-quiz-play-options portal-quiz-play-options--listening">
+  <legend class="visually-hidden">{% blocktrans with n=q.number %}Answer choices for question {{ n }}{% endblocktrans %}</legend>
+  {% if view_only %}
+  {% if q.student_answer_display or q.student_answer %}
+  <div class="portal-quiz-writing-area__readonly">{{ q.student_answer_display|default:q.student_answer|linebreaksbr }}</div>
+  {% elif q.answer_options %}
+  <ul class="portal-quiz-play-options portal-quiz-play-options--preview list-unstyled mb-0">
+    {% for option in q.answer_options %}
+    <li class="portal-quiz-play-option portal-quiz-play-option--listening portal-quiz-play-option--preview">
+      <span class="portal-quiz-play-option__letter">{{ forloop.counter0|quiz_option_letter|upper }}</span>
+      <span class="portal-quiz-play-option__text">{{ option }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% else %}
+  {% for option in q.answer_options %}
+  <label class="portal-quiz-play-option portal-quiz-play-option--listening">
+    <input
+      type="radio"
+      name="listening-q-{{ q.id }}"
+      value="{{ forloop.counter0 }}"
+      class="portal-quiz-play-option__input"
+      data-manual-submission
+      data-question-id="{{ q.id }}"
+    >
+    <span class="portal-quiz-play-option__letter">{{ forloop.counter0|quiz_option_letter|upper }}</span>
+    <span class="portal-quiz-play-option__text">{{ option }}</span>
+  </label>
+  {% endfor %}
+  {% endif %}
+</fieldset>

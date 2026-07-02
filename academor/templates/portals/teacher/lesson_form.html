@@ -1,0 +1,238 @@
+{% extends "portals/base.html" %}
+{% load static i18n portal_tags %}
+
+{% block title %}{{ form_title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'portals/css/portal-lesson-form.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="portal-lesson-form{% if form.group %} portal-lesson-form--edit{% endif %}">
+  <nav class="portal-lesson-form__nav" aria-label="{% trans 'Breadcrumb' %}">
+    <a class="btn btn-sm btn-light" href="{% url 'portals:teacher-lessons' %}">
+      <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'Lessons' %}
+    </a>
+  </nav>
+
+  <header class="portal-lesson-form__header">
+    <div class="portal-lesson-form__header-icon" aria-hidden="true">
+      <i class="bi bi-journal-plus"></i>
+    </div>
+    <div>
+      <h1 class="portal-lesson-form__title">{{ form_title }}</h1>
+      {% if form_subtitle %}
+        <p class="portal-lesson-form__lead">{{ form_subtitle }}</p>
+      {% endif %}
+    </div>
+  </header>
+
+  <form
+    method="post"
+    enctype="multipart/form-data"
+    class="portal-lesson-form__body needs-validation"
+    data-lesson-form
+    novalidate
+  >
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger py-2 small mb-3">{{ form.non_field_errors }}</div>
+    {% endif %}
+
+    <section class="portal-lesson-panel">
+      <h2 class="portal-lesson-panel__title">
+        <span class="portal-lesson-panel__step">1</span>
+        {% trans 'Lesson details' %}
+      </h2>
+      <div class="portal-lesson-panel__body">
+        <div class="portal-lesson-grid portal-lesson-grid--3">
+          <div class="portal-lesson-field">
+            <label class="portal-lesson-label" for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+            {{ form.name }}
+            {% for error in form.name.errors %}
+              <div class="portal-lesson-error">{{ error }}</div>
+            {% endfor %}
+          </div>
+          <div class="portal-lesson-field">
+            <label class="portal-lesson-label" for="{{ form.lesson_date.id_for_label }}">{{ form.lesson_date.label }}</label>
+            {{ form.lesson_date }}
+            {% for error in form.lesson_date.errors %}
+              <div class="portal-lesson-error">{{ error }}</div>
+            {% endfor %}
+          </div>
+          <div class="portal-lesson-field">
+            <label class="portal-lesson-label" for="{{ form.category_name.id_for_label }}">{{ form.category_name.label }}</label>
+            {{ form.category_name }}
+            {% if form.category_suggestions %}
+            <datalist id="lesson-category-suggestions">
+              {% for suggestion in form.category_suggestions %}
+              <option value="{{ suggestion }}"></option>
+              {% endfor %}
+            </datalist>
+            {% endif %}
+            {% if form.category_name.help_text %}
+              <p class="portal-lesson-hint">{{ form.category_name.help_text }}</p>
+            {% endif %}
+            {% for error in form.category_name.errors %}
+              <div class="portal-lesson-error">{{ error }}</div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="portal-lesson-field mt-3">
+          <label class="portal-lesson-label" for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+          {{ form.description }}
+          <p class="portal-lesson-hint">{% trans 'Optional notes or instructions for students.' %}</p>
+          {% for error in form.description.errors %}
+            <div class="portal-lesson-error">{{ error }}</div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    {% if form.groups %}
+    <section class="portal-lesson-panel">
+      <div class="portal-lesson-panel__head">
+        <h2 class="portal-lesson-panel__title mb-0">
+          <span class="portal-lesson-panel__step">2</span>
+          {{ form.groups.label }}
+        </h2>
+        <div class="portal-lesson-group-toolbar">
+          <label class="portal-lesson-select-all">
+            <input type="checkbox" id="lesson-select-all-groups" data-lesson-select-all-groups>
+            <span>{% trans 'Select all' %}</span>
+          </label>
+          <span class="portal-lesson-group-count text-muted small" data-lesson-group-count></span>
+        </div>
+      </div>
+      <div class="portal-lesson-panel__body">
+        <p class="portal-lesson-hint mb-3">{{ form.groups.help_text }}</p>
+        <div class="portal-lesson-group-grid" role="group" aria-label="{{ form.groups.label }}">
+          {% for checkbox in form.groups %}
+          <label class="portal-lesson-group-card" data-lesson-group-card>
+            {{ checkbox.tag }}
+            <span class="portal-lesson-group-card__label">{{ checkbox.choice_label }}</span>
+          </label>
+          {% endfor %}
+        </div>
+        {% for error in form.groups.errors %}
+          <div class="portal-lesson-error mt-2">{{ error }}</div>
+        {% endfor %}
+      </div>
+    </section>
+    {% elif form.group %}
+    <section class="portal-lesson-panel">
+      <h2 class="portal-lesson-panel__title">
+        <span class="portal-lesson-panel__step">2</span>
+        {{ form.group.label }}
+      </h2>
+      <div class="portal-lesson-panel__body">
+        <div class="portal-lesson-field portal-lesson-field--narrow">
+          <label class="portal-lesson-label" for="{{ form.group.id_for_label }}">{{ form.group.label }}</label>
+          {{ form.group }}
+          {% for error in form.group.errors %}
+            <div class="portal-lesson-error">{{ error }}</div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    {% endif %}
+
+    <section class="portal-lesson-panel">
+      <h2 class="portal-lesson-panel__title">
+        <span class="portal-lesson-panel__step">{% if form.groups or form.group %}3{% else %}2{% endif %}</span>
+        {% trans 'Materials' %}
+      </h2>
+      <div class="portal-lesson-panel__body">
+        <p class="portal-lesson-hint mb-3">{% trans 'Add a PDF, video link, or image — at least one is recommended.' %}</p>
+
+        <div class="portal-lesson-material-tabs" role="tablist" aria-label="{% trans 'Material type' %}">
+          <button type="button" class="portal-lesson-material-tab is-active" data-material-tab="pdf" role="tab" aria-selected="true">
+            <i class="bi bi-file-earmark-pdf" aria-hidden="true"></i>{% trans 'PDF' %}
+          </button>
+          <button type="button" class="portal-lesson-material-tab" data-material-tab="video" role="tab" aria-selected="false">
+            <i class="bi bi-play-circle" aria-hidden="true"></i>{% trans 'Video' %}
+          </button>
+          <button type="button" class="portal-lesson-material-tab" data-material-tab="image" role="tab" aria-selected="false">
+            <i class="bi bi-image" aria-hidden="true"></i>{% trans 'Image' %}
+          </button>
+        </div>
+
+        <div class="portal-lesson-material-panels">
+          <div class="portal-lesson-material-panel is-active" data-material-panel="pdf" role="tabpanel">
+            <div class="portal-lesson-dropzone" data-lesson-dropzone data-target="pdf">
+              <div class="portal-lesson-dropzone__inner">
+                <i class="bi bi-cloud-arrow-up portal-lesson-dropzone__icon" aria-hidden="true"></i>
+                <p class="portal-lesson-dropzone__title">{% trans 'Drop PDF here or click to browse' %}</p>
+                <p class="portal-lesson-dropzone__meta">{% trans 'Max recommended: 20 MB' %}</p>
+                <span class="portal-lesson-dropzone__filename" data-lesson-filename="pdf"></span>
+              </div>
+              <div class="portal-lesson-file-widget">{{ form.pdf_file }}</div>
+            </div>
+            {% if form.instance.pdf_file %}
+              <p class="portal-lesson-current-file small text-muted mt-2">
+                {% trans 'Current file' %}: {{ form.instance.pdf_file.name }}
+              </p>
+            {% endif %}
+            {% for error in form.pdf_file.errors %}
+              <div class="portal-lesson-error mt-2">{{ error }}</div>
+            {% endfor %}
+          </div>
+
+          <div class="portal-lesson-material-panel" data-material-panel="video" role="tabpanel" hidden>
+            <div class="portal-lesson-field">
+              <label class="portal-lesson-label" for="{{ form.video_url.id_for_label }}">{{ form.video_url.label }}</label>
+              {{ form.video_url }}
+              <p class="portal-lesson-hint">{% trans 'YouTube, Vimeo, or any public video link.' %}</p>
+              {% for error in form.video_url.errors %}
+                <div class="portal-lesson-error">{{ error }}</div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="portal-lesson-material-panel" data-material-panel="image" role="tabpanel" hidden>
+            <div class="portal-lesson-dropzone" data-lesson-dropzone data-target="image">
+              <div class="portal-lesson-dropzone__inner">
+                <i class="bi bi-image portal-lesson-dropzone__icon" aria-hidden="true"></i>
+                <p class="portal-lesson-dropzone__title">{% trans 'Drop image here or click to browse' %}</p>
+                <p class="portal-lesson-dropzone__meta">{% trans 'JPG, PNG, WebP' %}</p>
+                <span class="portal-lesson-dropzone__filename" data-lesson-filename="image"></span>
+              </div>
+              <div class="portal-lesson-file-widget">{{ form.image }}</div>
+            </div>
+            {% if form.instance.image %}
+              <p class="portal-lesson-current-file small text-muted mt-2">
+                {% trans 'Current file' %}: {{ form.instance.image.name }}
+              </p>
+            {% endif %}
+            {% for error in form.image.errors %}
+              <div class="portal-lesson-error mt-2">{{ error }}</div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {% if return_to %}
+      <input type="hidden" name="return_to" value="{{ return_to }}">
+    {% endif %}
+    {% if return_week %}
+      <input type="hidden" name="return_week" value="{{ return_week }}">
+    {% endif %}
+
+    <footer class="portal-lesson-form__actions">
+      {% if cancel_href %}
+        <a class="btn btn-light btn-lg" href="{{ cancel_href }}">{% trans 'Cancel' %}</a>
+      {% endif %}
+      <button type="submit" class="btn btn-primary btn-lg ms-auto" data-lesson-submit>
+        <i class="bi bi-cloud-upload me-2" aria-hidden="true"></i>
+        {% if form.groups %}{% trans 'Upload lesson' %}{% else %}{% trans 'Save changes' %}{% endif %}
+      </button>
+    </footer>
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'portals/js/portal-lesson-form.js' %}"></script>
+{% endblock %}

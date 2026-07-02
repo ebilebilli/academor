@@ -1,0 +1,287 @@
+/* ==========================================================================
+   Academor Portal — Design Tokens (2026)
+   Shared across Student / Teacher / Parent views
+   ========================================================================== */
+
+:root {
+
+  /* ------------------------------------------------------------------
+     Brand — trustworthy educational teal
+  ------------------------------------------------------------------ */
+  --color-brand:          #0d9488;
+  --color-brand-light:    #99f6e4;
+  --color-brand-dark:     #0f766e;
+  --color-brand-subtle:   #f0fdfa;
+  --color-brand-border:   #5eead4;
+
+  /* ------------------------------------------------------------------
+     Role accents
+  ------------------------------------------------------------------ */
+  --color-student:        #FF5414;
+  --color-student-light:  #FFD4C2;
+  --color-student-dark:   #E04A10;
+  --color-student-subtle: #FFF4F0;
+
+  --color-teacher:        #FF5414;
+  --color-teacher-light:  #FFD4C2;
+  --color-teacher-dark:   #E04A10;
+  --color-teacher-subtle: #FFF4F0;
+
+  --color-parent:         #FF5414;
+  --color-parent-light:   #FFD4C2;
+  --color-parent-dark:    #E04A10;
+  --color-parent-subtle:  #FFF4F0;
+
+  --color-role:           var(--color-brand);
+  --color-role-light:     var(--color-brand-light);
+  --color-role-dark:      var(--color-brand-dark);
+  --color-role-subtle:    var(--color-brand-subtle);
+
+  /* ------------------------------------------------------------------
+     Semantic colours
+  ------------------------------------------------------------------ */
+  --color-success:        #16a34a;
+  --color-success-light:  #bbf7d0;
+  --color-success-subtle: #f0fdf4;
+
+  --color-warning:        #d97706;
+  --color-warning-light:  #fde68a;
+  --color-warning-subtle: #fffbeb;
+
+  --color-danger:         #e11d48;
+  --color-danger-light:   #fecdd3;
+  --color-danger-subtle:  #fff1f2;
+
+  --color-info:           #0ea5e9;
+  --color-info-light:     #bae6fd;
+  --color-info-subtle:    #f0f9ff;
+
+  /* ------------------------------------------------------------------
+     Neutral palette
+  ------------------------------------------------------------------ */
+  --color-gray-50:  #f8fafc;
+  --color-gray-100: #f1f5f9;
+  --color-gray-200: #e2e8f0;
+  --color-gray-300: #cbd5e1;
+  --color-gray-400: #94a3b8;
+  --color-gray-500: #64748b;
+  --color-gray-600: #475569;
+  --color-gray-700: #334155;
+  --color-gray-900: #0f172a;
+
+  /* ------------------------------------------------------------------
+     Surfaces
+  ------------------------------------------------------------------ */
+  --color-bg:             #f6f8fc;
+  --color-bg-elevated:    #ffffff;
+  --color-surface:        #ffffff;
+  --color-surface-soft:   #f8fafc;
+  --color-surface-muted:  #f1f5f9;
+  --color-border:         rgba(15, 23, 42, 0.08);
+  --color-border-strong:  rgba(15, 23, 42, 0.14);
+  --color-text:           #0f172a;
+  --color-muted:          #64748b;
+  --color-text-secondary: #475569;
+
+  /* ------------------------------------------------------------------
+     Typography
+  ------------------------------------------------------------------ */
+  --font-family:    "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-base:      0.9375rem;   /* 15px */
+  --line-height:    1.55;
+  --line-height-tight: 1.25;
+
+  --text-xs:        0.75rem;     /* 12px */
+  --text-sm:        0.8125rem;   /* 13px */
+  --text-base:      0.9375rem;   /* 15px */
+  --text-md:        1.125rem;    /* 18px */
+  --text-lg:        1.375rem;    /* 22px */
+  --text-xl:        1.75rem;     /* 28px */
+  --text-2xl:       2.125rem;    /* 34px */
+
+  --font-normal:    400;
+  --font-medium:    500;
+  --font-semibold:  600;
+
+  /* ------------------------------------------------------------------
+     Spacing scale (8px base)
+  ------------------------------------------------------------------ */
+  --space-1:   0.25rem;   /*  4px */
+  --space-2:   0.5rem;    /*  8px */
+  --space-3:   0.75rem;   /* 12px */
+  --space-4:   1rem;      /* 16px */
+  --space-5:   1.25rem;   /* 20px */
+  --space-6:   1.5rem;    /* 24px */
+  --space-8:   2rem;      /* 32px */
+  --space-10:  2.5rem;    /* 40px */
+  --space-12:  3rem;      /* 48px */
+  --space-16:  4rem;      /* 64px */
+
+  /* ------------------------------------------------------------------
+     Border radius
+  ------------------------------------------------------------------ */
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   16px;
+  --radius-xl:   20px;
+  --radius-2xl:  24px;
+  --radius-full: 9999px;
+
+  /* ------------------------------------------------------------------
+     Shadows
+  ------------------------------------------------------------------ */
+  --shadow-xs:    0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.06);
+  --shadow-sm:    0 2px 8px rgba(15, 23, 42, 0.06), 0 4px 16px rgba(15, 23, 42, 0.04);
+  --shadow-md:    0 4px 16px rgba(15, 23, 42, 0.08), 0 8px 32px rgba(15, 23, 42, 0.06);
+  --shadow-lg:    0 8px 32px rgba(15, 23, 42, 0.1), 0 16px 48px rgba(15, 23, 42, 0.08);
+  --shadow-hover: 0 8px 24px rgba(15, 23, 42, 0.1), 0 2px 8px rgba(15, 23, 42, 0.06);
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+
+  /* ------------------------------------------------------------------
+     Focus & interaction
+  ------------------------------------------------------------------ */
+  --focus-ring:       0 0 0 3px color-mix(in srgb, var(--color-role) 22%, transparent);
+  --focus-ring-danger: 0 0 0 3px color-mix(in srgb, var(--color-danger) 22%, transparent);
+
+  /* ------------------------------------------------------------------
+     Component defaults
+  ------------------------------------------------------------------ */
+  --card-radius:    var(--radius-lg);
+  --card-padding:   var(--space-5);
+  --card-border:    1px solid var(--color-border);
+  --card-bg:        var(--color-surface);
+  --card-shadow:    var(--shadow-xs);
+
+  --btn-radius:     var(--radius-md);
+  --btn-height:     42px;
+  --btn-font-size:  var(--text-sm);
+
+  --input-height:   42px;
+  --input-radius:   var(--radius-md);
+
+  --avatar-sm:  32px;
+  --avatar-md:  40px;
+  --avatar-lg:  52px;
+  --avatar-xl:  80px;
+
+  --icon-inline:  16px;
+  --icon-nav:     20px;
+  --icon-feature: 22px;
+
+  --z-sidebar:   1040;
+  --z-topbar:    1030;
+  --z-dropdown:  1050;
+  --z-modal:     1060;
+  --z-toast:     1070;
+
+  --transition-fast:   140ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base:   220ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow:     320ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ------------------------------------------------------------------
+     Shell
+  ------------------------------------------------------------------ */
+  --sidebar-width:      260px;
+  --sidebar-mini-width: 84px;
+  --sidebar-bg:         var(--color-surface);
+  --sidebar-border:     var(--color-border);
+  --sidebar-text:       #64748b;
+  --sidebar-text-active: #0f172a;
+  --sidebar-hover:      var(--color-surface-muted);
+  --topbar-height:      64px;
+  --topbar-bg:          rgba(255, 255, 255, 0.82);
+
+  /* Legacy aliases (page-specific CSS still references --admin-*) */
+  --admin-bg:                 #f5f7fb;
+  --admin-surface:            #ffffff;
+  --admin-surface-soft:       #f8fafc;
+  --admin-border:             rgba(0, 49, 61, 0.12);
+  --admin-text:               #00313D;
+  --admin-muted:              #5c7078;
+  --admin-primary:            #00313D;
+  --admin-primary-dark:       #00242d;
+  --admin-accent:             #FF5414;
+  --admin-accent-hover:       #E04A10;
+  --admin-success:            #0f766e;
+  --admin-warning:            var(--color-warning);
+  --admin-danger:             var(--color-danger);
+  --admin-sidebar:            #00313D;
+  --admin-sidebar-soft:       #004455;
+  --admin-shadow-sm:          0 10px 24px rgba(0, 49, 61, 0.06);
+  --admin-shadow:             0 18px 46px rgba(0, 49, 61, 0.09);
+  --admin-shadow-lg:          0 26px 70px rgba(0, 49, 61, 0.12);
+  --admin-ring:               0 0 0 4px rgba(255, 84, 20, 0.12);
+  --admin-card-bg:            #ffffff;
+  --admin-btn-bg:             #ffffff;
+  --admin-badge-bg:           #ffffff;
+  --admin-icon-bg:            rgba(255, 255, 255, 0.75);
+  --admin-accent-bg:          #eaf2ff;
+  --admin-accent-bg-hover:    #f8fbff;
+  --admin-accent-border:      #bfdbfe;
+  --admin-accent-border-focus: #93c5fd;
+}
+
+/* ------------------------------------------------------------------
+   Dark mode architecture — only when theme is explicitly dark
+------------------------------------------------------------------ */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg:             #0b1220;
+    --color-bg-elevated:    #111827;
+    --color-surface:        #151d2e;
+    --color-surface-soft:   #1a2332;
+    --color-surface-muted:  #1e293b;
+    --color-border:         rgba(255, 255, 255, 0.08);
+    --color-border-strong:  rgba(255, 255, 255, 0.14);
+    --color-text:           #f1f5f9;
+    --color-muted:          #94a3b8;
+    --color-text-secondary: #cbd5e1;
+    --card-bg:              #151d2e;
+    --card-border:          1px solid rgba(255, 255, 255, 0.08);
+    --shadow-xs:            0 1px 3px rgba(0, 0, 0, 0.35);
+    --shadow-sm:            0 4px 12px rgba(0, 0, 0, 0.35);
+    --shadow-md:            0 8px 24px rgba(0, 0, 0, 0.4);
+    --shadow-hover:         0 12px 32px rgba(0, 0, 0, 0.45);
+    --sidebar-bg:           #111827;
+    --sidebar-hover:        #1e293b;
+    --sidebar-text:         #94a3b8;
+    --sidebar-text-active:  #f1f5f9;
+    --topbar-bg:            rgba(17, 24, 39, 0.88);
+  }
+}
+
+[data-theme="dark"] {
+  --color-bg:             #0b1220;
+  --color-bg-elevated:    #111827;
+  --color-surface:        #151d2e;
+  --color-surface-soft:   #1a2332;
+  --color-surface-muted:  #1e293b;
+  --color-border:         rgba(255, 255, 255, 0.08);
+  --color-border-strong:  rgba(255, 255, 255, 0.14);
+  --color-text:           #f1f5f9;
+  --color-muted:          #94a3b8;
+  --color-text-secondary: #cbd5e1;
+  --card-bg:              #151d2e;
+  --card-border:          1px solid rgba(255, 255, 255, 0.08);
+  --shadow-xs:            0 1px 3px rgba(0, 0, 0, 0.35);
+  --shadow-sm:            0 4px 12px rgba(0, 0, 0, 0.35);
+  --shadow-md:            0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-hover:         0 12px 32px rgba(0, 0, 0, 0.45);
+  --sidebar-bg:           #111827;
+  --sidebar-hover:        #1e293b;
+  --sidebar-text:         #94a3b8;
+  --sidebar-text-active:  #f1f5f9;
+  --topbar-bg:            rgba(17, 24, 39, 0.88);
+}
+
+/* ------------------------------------------------------------------
+   Role-scoped accent overrides
+------------------------------------------------------------------ */
+[data-portal-role="student"],
+[data-portal-role="teacher"],
+[data-portal-role="parent"] {
+  --color-role:        var(--color-teacher);
+  --color-role-light:  var(--color-teacher-light);
+  --color-role-dark:   var(--color-teacher-dark);
+  --color-role-subtle: var(--color-teacher-subtle);
+}

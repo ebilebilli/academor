@@ -22,7 +22,14 @@ if not (SECRET_KEY and str(SECRET_KEY).strip()):
     )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'True').lower() in ('true', '1', 'yes')
+def _env_bool(name: str, default: bool) -> bool:
+    value = os.getenv(name)
+    if value is None:
+        return default
+    return value.strip().lower() in ('true', '1', 'yes', 'on')
+
+
+DEBUG = _env_bool('DEBUG', True)
 
 # Cloudflare Turnstile (contact + review forms). Leave empty to disable widget/validation.
 TURNSTILE_SITE_KEY = (os.getenv('TURNSTILE_SITE_KEY') or '').strip()
@@ -46,8 +53,34 @@ CSRF_TRUSTED_ORIGINS = [
     'https://academor.az',
     'http://localhost:8080',
     'http://127.0.0.1:8080',
- 
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
 ]
+
+# CSRF Cookie Settings (allow env override for local Docker over plain HTTP)
+CSRF_COOKIE_SECURE = _env_bool('CSRF_COOKIE_SECURE', not DEBUG)
+CSRF_COOKIE_HTTPONLY = False
+CSRF_USE_SESSIONS = False
+
+# Session Cookie Settings
+SESSION_COOKIE_SECURE = _env_bool('SESSION_COOKIE_SECURE', not DEBUG)
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'
+
+# Portal Session (completely separate from Django admin session)
+PORTAL_SESSION_COOKIE_NAME = 'portal_sessionid'
+PORTAL_SESSION_COOKIE_PATH = '/portal/'  # Only sent on /portal/* URLs
+PORTAL_SESSION_COOKIE_HTTPONLY = True
+PORTAL_SESSION_COOKIE_SECURE = _env_bool('PORTAL_SESSION_COOKIE_SECURE', SESSION_COOKIE_SECURE)
+PORTAL_SESSION_COOKIE_SAMESITE = 'Lax'
+
+# Language cookie (synced with session on /i18n/setlang/)
+LANGUAGE_COOKIE_NAME = 'django_language'
+LANGUAGE_COOKIE_AGE = 60 * 60 * 24 * 365
+LANGUAGE_COOKIE_PATH = '/'
+LANGUAGE_COOKIE_SECURE = not DEBUG
+LANGUAGE_COOKIE_HTTPONLY = False
+LANGUAGE_COOKIE_SAMESITE = 'Lax'
 
 # Absolute URLs in sitemap.xml (django.contrib.sites default is often example.com).
 _ccd = (os.getenv('SITE_CANONICAL_DOMAIN') or 'academor.az').strip()
@@ -60,24 +93,6 @@ try:
     SITEMAP_STATIC_LASTMOD = date.fromisoformat(_slm)
 except ValueError:
     SITEMAP_STATIC_LASTMOD = date(2026, 4, 14)
-
-# CSRF Cookie Settings
-CSRF_COOKIE_SECURE = True  
-CSRF_COOKIE_HTTPONLY = False
-CSRF_USE_SESSIONS = False
-
-# Session Cookie Settings
-SESSION_COOKIE_SECURE = True
-SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SAMESITE = 'Lax'
-
-# Language cookie (synced with session on /i18n/setlang/)
-LANGUAGE_COOKIE_NAME = 'django_language'
-LANGUAGE_COOKIE_AGE = 60 * 60 * 24 * 365
-LANGUAGE_COOKIE_PATH = '/'
-LANGUAGE_COOKIE_SECURE = True
-LANGUAGE_COOKIE_HTTPONLY = False
-LANGUAGE_COOKIE_SAMESITE = 'Lax'
 
 
 # Admin URL - secret path (required)
@@ -120,6 +135,7 @@ INSTALLED_APPS = [
     # Apps
     'projects',
     'payments',
+    'portals',
 ]
 
 SITE_ID = 1
@@ -139,7 +155,12 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    # Portal auth with completely separate cookie (portal_sessionid)
+    'portals.middleware.PortalAuthenticationMiddleware',
+    'portals.middleware.PortalSessionMiddleware',  # Sets/deletes portal_sessionid cookie
+    'portals.middleware.PortalFragmentMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'academor.middleware.AdminAccessMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'academor.middleware.PublicHtmlCacheControlMiddleware',
 ]
@@ -162,6 +183,8 @@ TEMPLATES = [
                 'projects.context_processors.site_seo_context',
                 'projects.context_processors.turnstile_context',
                 'projects.context_processors.page_banner_tagline_context',
+                'portals.context_processors.portal_auth_context',
+                'portals.context_processors.portal_notification_context',
             ],
         },
     },
@@ -216,7 +239,7 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'az'
 
 # Django admin stays English (see academor.middleware.CustomLocaleMiddleware)
-ADMIN_LANGUAGE_CODE = 'en'
+ADMIN_LANGUAGE_CODE = 'az'
 
 LANGUAGES = [
     ('az', 'Azərbaycan'),

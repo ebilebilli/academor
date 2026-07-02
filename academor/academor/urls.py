@@ -21,6 +21,7 @@ urlpatterns = [
         name='django.contrib.sitemaps.views.sitemap',
     ),
     path('', include('projects.urls_v1')),
+    path('portal/', include('portals.urls_v1')),
     path("payment/", include("payments.urls")),
 ]
 

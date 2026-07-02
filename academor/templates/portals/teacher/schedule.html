@@ -1,0 +1,106 @@
+{% extends "portals/base.html" %}
+{% load i18n portal_tags %}
+
+{% block title %}{% trans 'Schedule' %}{% endblock %}
+
+{% block content %}
+{% portal_page_heading icon="bi-calendar-week" eyebrow="Teacher" title="Schedule" subtitle="Your weekly class schedule." %}
+
+<div class="portal-control-bar mb-3">
+  <div class="portal-control-left">
+    <div class="portal-week-navigator" role="group" aria-label="{% trans 'Week navigation' %}">
+      <a class="portal-nav-btn" href="?week={{ calendar.prev_week }}" title="{% trans 'Previous week' %}">
+        <i class="bi bi-chevron-left" aria-hidden="true"></i>
+      </a>
+      <div class="portal-week-info">
+        <span class="portal-week-label">{% portal_week_label calendar.week_start calendar.week_end %}</span>
+        <span class="portal-week-badge">{% trans 'Week' %}</span>
+      </div>
+      <a class="portal-nav-btn" href="?week={{ calendar.next_week }}" title="{% trans 'Next week' %}">
+        <i class="bi bi-chevron-right" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="portal-control-right">
+    <a class="btn btn-outline-secondary" href="?week=">
+      <i class="bi bi-calendar-check me-1" aria-hidden="true"></i>{% trans 'This week' %}
+    </a>
+  </div>
+</div>
+
+{% if groups %}
+<section class="portal-calendar-container" aria-label="{% trans 'Weekly schedule' %}">
+  <div class="portal-calendar-grid">
+    {% for day in calendar.days %}
+    <article class="portal-calendar-day{% if day.is_today %} is-today{% endif %}{% if day.is_weekend %} is-weekend{% endif %}">
+      <header class="portal-calendar-day-header">
+        <div class="portal-day-info">
+          <span class="portal-day-name">{{ day.label }}</span>
+          <span class="portal-day-date">{{ day.date_label }}</span>
+        </div>
+        <div class="portal-day-header-meta">
+          {% if day.sessions %}
+          <span class="portal-day-count">{{ day.sessions|length }}</span>
+          {% endif %}
+          {% if day.is_today %}
+          <span class="portal-today-badge">{% trans 'Today' %}</span>
+          {% endif %}
+        </div>
+      </header>
+
+      <div class="portal-calendar-day-body">
+        {% for session in day.sessions %}
+        <article class="portal-session-card-improved portal-session-card-manage">
+          <div class="portal-session-card-accent">
+            <div class="portal-session-card-top">
+              <div class="portal-session-time-block">
+                <span class="portal-session-time">{{ session.start_time|time:"H:i" }}</span>
+                <span class="portal-session-duration">{{ session.duration_min }} {% trans 'min' %}</span>
+              </div>
+            </div>
+            <div class="portal-session-content portal-session-content-compact">
+              <a class="portal-session-group portal-session-group-link" href="{% url 'portals:teacher-group-detail' pk=session.group_id %}">{{ session.group_name }}</a>
+              {% if session.room_or_link %}
+              <span class="portal-session-location">
+                <i class="bi bi-geo-alt" aria-hidden="true"></i>
+                {% if session.room_or_link|slice:":4" == "http" %}
+                  <a href="{{ session.room_or_link }}" target="_blank" rel="noopener">{{ session.room_or_link|truncatechars:24 }}</a>
+                {% else %}
+                  {{ session.room_or_link|truncatechars:24 }}
+                {% endif %}
+              </span>
+              {% endif %}
+            </div>
+          </div>
+          <a class="portal-session-attendance-link" href="{{ session.mark_url }}">
+            <i class="bi bi-check2-circle" aria-hidden="true"></i>
+            <span>{% trans 'Mark attendance' %}</span>
+          </a>
+        </article>
+        {% empty %}
+        <div class="portal-empty-day">
+          <i class="bi bi-calendar-x" aria-hidden="true"></i>
+          <span>{% trans 'No classes' %}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% else %}
+<section class="portal-empty-state">
+  <div class="portal-empty-icon">
+    <i class="bi bi-calendar-week" aria-hidden="true"></i>
+  </div>
+  <h3>{% trans 'No schedule set' %}</h3>
+  <p class="text-muted">{% trans 'Groups and schedule are assigned by Academor administration.' %}</p>
+  <div class="portal-empty-actions">
+    <a class="btn btn-primary" href="{% url 'portals:teacher-groups' %}">
+      <i class="bi bi-people me-2" aria-hidden="true"></i>{% trans 'Open Your Groups' %}
+    </a>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,182 @@
+{% extends "portals/base.html" %}
+{% load i18n portal_tags %}
+
+{% block title %}{% trans 'Dashboard' %}{% endblock %}
+
+{% block content %}
+{% if children %}
+<div{% if children|length > 1 %} data-portal-child-switcher{% endif %}>
+
+{# ── Child selector ───────────────────────────────────────────── #}
+{% if children|length > 1 %}
+<nav class="p-child-selector mb-4" aria-label="{% trans 'Uşaq seçimi' %}">
+  {% for block in children %}
+  <button
+    class="p-child-pill{% if forloop.first %} is-active{% endif %}"
+    type="button"
+    data-child-idx="{{ forloop.counter0 }}"
+    aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
+  >
+    {% if block.student.photo_url %}
+    <img class="p-child-pill__photo" src="{{ block.student.photo_url }}" alt="{{ block.student.full_name }}">
+    {% else %}
+    <span class="p-child-pill__initials">{{ block.student.full_name|slice:":2"|upper }}</span>
+    {% endif %}
+    <span class="p-child-pill__name">{{ block.student.full_name }}</span>
+  </button>
+  {% endfor %}
+</nav>
+{% endif %}
+
+{# ── Per-child blocks ─────────────────────────────────────────── #}
+{% for block in children %}
+<section
+  class="p-child-block{% if not forloop.first %} d-none{% endif %} mb-4"
+  data-child-block="{{ forloop.counter0 }}"
+  aria-label="{{ block.student.full_name }}"
+>
+  {# Greeting + avatar #}
+  <header class="t-welcome mb-4">
+    <div class="t-welcome__copy">
+      <h1 class="t-welcome__name">
+        {% if children|length > 1 %}
+          {{ block.student.full_name }}
+        {% else %}
+          {% blocktrans with name=block.student.full_name %}{{ name }} — Ümumi baxış{% endblocktrans %}
+        {% endif %}
+      </h1>
+      <p class="t-welcome__sub">{% trans 'Bu həftəki irəliləyiş.' %}</p>
+    </div>
+    <div class="t-welcome__date">
+      <i class="ti ti-calendar" aria-hidden="true"></i>
+      <span data-portal-today-date></span>
+    </div>
+  </header>
+
+  {# ── Metric cards ─────────────────────────────────────────────── #}
+  <div class="t-stats mb-4">
+    <a class="t-stat text-decoration-none" href="{% url 'portals:parent-schedule' %}?student={{ block.student.id }}">
+      <span class="t-stat__icon t-stat__icon--indigo"><i class="ti ti-calendar-week" aria-hidden="true"></i></span>
+      <div class="t-stat__body">
+        <span class="t-stat__number">{{ block.schedule_count|default:0 }}</span>
+        <span class="t-stat__label">{% trans 'həftəlik dərs' %}</span>
+      </div>
+    </a>
+
+    <a class="t-stat text-decoration-none" href="{% url 'portals:parent-lessons' %}?student={{ block.student.id }}">
+      <span class="t-stat__icon t-stat__icon--teal"><i class="ti ti-book" aria-hidden="true"></i></span>
+      <div class="t-stat__body">
+        <span class="t-stat__number">{{ block.lesson_count|default:0 }}</span>
+        <span class="t-stat__label">{% trans 'material' %}</span>
+      </div>
+    </a>
+
+    <a class="t-stat text-decoration-none" href="{% url 'portals:parent-scores' %}?student={{ block.student.id }}">
+      <span class="t-stat__icon t-stat__icon--amber"><i class="ti ti-star" aria-hidden="true"></i></span>
+      <div class="t-stat__body">
+        <span class="t-stat__number">{{ block.score_count|default:0 }}</span>
+        <span class="t-stat__label">{% trans 'qiymət' %}</span>
+      </div>
+    </a>
+
+    <a class="t-stat text-decoration-none" href="{% url 'portals:parent-quiz-results' %}?student={{ block.student.id }}">
+      <span class="t-stat__icon t-stat__icon--emerald"><i class="ti ti-forms" aria-hidden="true"></i></span>
+      <div class="t-stat__body">
+        <span class="t-stat__number">{{ block.quiz_result_count|default:0 }}</span>
+        <span class="t-stat__label">{% trans 'quiz nəticəsi' %}</span>
+      </div>
+    </a>
+  </div>
+
+  {# ── Quick links ──────────────────────────────────────────────── #}
+  <section class="ds-card mb-4" aria-label="{% trans 'Sürətli keçidlər' %}">
+    <div class="s-panel-head">
+      <h2 class="s-panel-title">
+        <i class="ti ti-bolt" aria-hidden="true"></i>
+        {% trans 'Sürətli keçidlər' %}
+      </h2>
+    </div>
+    <div class="t-quick-actions">
+      <a class="t-qa-btn t-qa-btn--primary" href="{% url 'portals:parent-schedule' %}?student={{ block.student.id }}">
+        <i class="ti ti-calendar-week" aria-hidden="true"></i>
+        <span>{% trans 'Cədvəl' %}</span>
+      </a>
+      <a class="t-qa-btn t-qa-btn--amber" href="{% url 'portals:parent-scores' %}?student={{ block.student.id }}">
+        <i class="ti ti-star" aria-hidden="true"></i>
+        <span>{% trans 'Qiymətlər' %}</span>
+      </a>
+      <a class="t-qa-btn t-qa-btn--emerald" href="{% url 'portals:parent-attendance' %}?student={{ block.student.id }}">
+        <i class="ti ti-calendar-check" aria-hidden="true"></i>
+        <span>{% trans 'Davamiyyət' %}</span>
+      </a>
+      <a class="t-qa-btn t-qa-btn--indigo" href="{% url 'portals:parent-notifications' %}">
+        <i class="ti ti-bell" aria-hidden="true"></i>
+        <span>{% trans 'Bildirişlər' %}{% if portal_unread_notifications %} ({{ portal_unread_notifications }}){% endif %}</span>
+      </a>
+    </div>
+  </section>
+
+  {# ── Recent quiz results ───────────────────────────────────────── #}
+  {% if block.quiz_results %}
+  <section class="ds-card">
+    <div class="s-panel-head">
+      <h2 class="s-panel-title">
+        <i class="ti ti-forms" aria-hidden="true"></i>
+        {% trans 'Son quiz nəticələri' %}
+      </h2>
+      <a class="ds-btn ds-btn--ghost btn-sm" href="{% url 'portals:parent-quiz-results' %}?student={{ block.student.id }}">
+        {% trans 'Hamısı' %} <i class="ti ti-arrow-right" aria-hidden="true"></i>
+      </a>
+    </div>
+    <div class="table-responsive">
+      <table class="t-table" aria-label="{% trans 'Quiz nəticələri' %}">
+        <thead>
+          <tr>
+            <th>{% trans 'Quiz' %}</th>
+            <th>{% trans 'Bal' %}</th>
+            <th>{% trans 'Tarix' %}</th>
+            <th class="text-end">{% trans 'Əməliyyat' %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in block.quiz_results %}
+          <tr>
+            <td class="fw-500">{{ row.quiz_topic|default:"—" }}</td>
+            <td>
+              {% if row.is_pending_review %}
+                <span class="ds-badge ds-badge--warning">{% trans 'Gözlənilir' %}</span>
+              {% elif row.total_score is not None %}
+                {{ row.total_score|format_quiz_score }}{% if row.max_value %}/{{ row.max_value|format_quiz_score }}{% endif %}
+              {% else %}—{% endif %}
+            </td>
+            <td class="text-muted small">{{ row.completed_at|portal_date_long }}</td>
+            <td class="text-end">
+              {% if not row.is_pending_review %}
+              <a class="ds-btn ds-btn--secondary btn-sm" href="{% url 'portals:parent-score-detail' result_pk=row.id %}?from=dashboard&amp;student={{ block.student.id }}">
+                {% trans 'Bax' %}
+              </a>
+              {% else %}
+              <span class="text-muted small">—</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  {% endif %}
+</section>
+{% endfor %}
+
+</div>
+
+{% else %}
+<section class="ds-card">
+  <div class="s-empty-state py-5">
+    <i class="ti ti-user-off" aria-hidden="true"></i>
+    <p>{% trans 'Hesabınıza heç bir şagird bağlı deyil.' %}</p>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

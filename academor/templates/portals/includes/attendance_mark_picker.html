@@ -1,0 +1,92 @@
+{% load i18n portal_tags %}
+<nav class="portal-mark-attendance__nav mb-3" aria-label="{% trans 'Breadcrumb' %}">
+  <a class="btn btn-sm btn-light" href="{% url 'portals:teacher-attendance' %}">
+    <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'Students' %}
+  </a>
+</nav>
+
+<header class="portal-mark-attendance__header mb-4">
+  <h1 class="portal-mark-attendance__title">{% trans 'Mark attendance' %}</h1>
+  <p class="portal-mark-attendance__lead">
+    {% trans 'Pick a class session from the calendar, then mark one or more students.' %}
+  </p>
+</header>
+
+{% if entry_mode == 'students' and picker_students %}
+<section class="portal-attendance-student-pick panel mb-4">
+  <h2 class="portal-attendance-student-pick__title">
+    <i class="bi bi-people me-2" aria-hidden="true"></i>{% trans 'Students' %}
+  </h2>
+  <p class="portal-attendance-student-pick__hint">{% trans 'Select one or more students, then choose a matching class session below.' %}</p>
+  <form method="get" class="portal-attendance-student-pick__form" id="student-pick-form">
+    <div class="portal-attendance-student-pick__grid">
+      {% for student in picker_students %}
+      <label class="portal-attendance-student-pick__item">
+        <input
+          type="checkbox"
+          name="students"
+          value="{{ student.id }}"
+          {% if student.id in selected_student_ids %}checked{% endif %}
+        >
+        <span>{{ student.full_name }}</span>
+      </label>
+      {% endfor %}
+    </div>
+    <div class="portal-attendance-student-pick__actions">
+      <button type="submit" class="btn btn-primary btn-sm">
+        <i class="bi bi-funnel me-1" aria-hidden="true"></i>{% trans 'Show matching sessions' %}
+      </button>
+      <a class="btn btn-light btn-sm" href="{{ picker_url }}">{% trans 'Clear selection' %}</a>
+    </div>
+  </form>
+</section>
+{% endif %}
+
+{% if students_no_common_group %}
+<div class="alert alert-warning">
+  {% trans 'The selected students are not in the same group, or have no scheduled class this week.' %}
+</div>
+{% endif %}
+
+<div class="portal-control-bar mb-3">
+  <div class="portal-control-left">
+    <div class="portal-week-navigator" role="group" aria-label="{% trans 'Week navigation' %}">
+      <a class="portal-nav-btn" href="{{ picker_url }}?week={{ calendar.prev_week }}{% if selected_student_ids %}&amp;students={{ selected_student_ids|join:',' }}{% endif %}" title="{% trans 'Previous week' %}">
+        <i class="bi bi-chevron-left" aria-hidden="true"></i>
+      </a>
+      <div class="portal-week-info">
+        <span class="portal-week-label">{% portal_week_label calendar.week_start calendar.week_end %}</span>
+      </div>
+      <a class="portal-nav-btn" href="{{ picker_url }}?week={{ calendar.next_week }}{% if selected_student_ids %}&amp;students={{ selected_student_ids|join:',' }}{% endif %}" title="{% trans 'Next week' %}">
+        <i class="bi bi-chevron-right" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+  <div class="portal-control-right">
+    <a class="btn btn-outline-secondary btn-sm" href="{{ picker_url }}{% if selected_student_ids %}?students={{ selected_student_ids|join:',' }}{% endif %}">{% trans 'This week' %}</a>
+  </div>
+</div>
+
+<section class="portal-attendance-picker-calendar" aria-label="{% trans 'Weekly sessions' %}">
+  <div class="portal-attendance-picker-grid">
+    {% for day in calendar.days %}
+    <article class="portal-attendance-picker-day{% if day.is_today %} is-today{% endif %}">
+      <header class="portal-attendance-picker-day__head">
+        <span class="portal-attendance-picker-day__name">{{ day.label }}</span>
+        <span class="portal-attendance-picker-day__date">{{ day.date_label }}</span>
+      </header>
+      <div class="portal-attendance-picker-day__body">
+        {% for session in day.sessions %}
+        <a class="portal-attendance-picker-session" href="{{ session.mark_url }}">
+          <span class="portal-attendance-picker-session__time">{{ session.start_time|time:"H:i" }}</span>
+          <span class="portal-attendance-picker-session__group">{{ session.group_name }}</span>
+          <span class="portal-attendance-picker-session__meta">{{ session.duration_min }} {% trans 'min' %}</span>
+        </a>
+        {% empty %}
+        <span class="portal-attendance-picker-empty">{% trans 'No class' %}</span>
+        {% endfor %}
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>

@@ -1,0 +1,82 @@
+{% extends "portals/base.html" %}
+{% load i18n portal_tags %}
+
+{% block title %}{{ category.name }} — {% trans 'Quizzes' %}{% endblock %}
+
+{% block content %}
+{% include "portals/includes/parent_child_header.html" %}
+
+<header class="s-page-head mb-4">
+  <div>
+    <h1 class="s-page-head__title">
+      <i class="ti ti-forms" aria-hidden="true"></i>
+      {{ category.name }}
+      <span class="ds-badge ds-badge--role ms-2">{{ category.service_label }}</span>
+    </h1>
+  </div>
+  <a class="ds-btn ds-btn--ghost btn-sm" href="{% url categories_back_url %}{{ category_url_suffix|default:'' }}">
+    <i class="ti ti-arrow-left" aria-hidden="true"></i>
+    {% trans 'Kateqoriyalar' %}
+  </a>
+</header>
+
+<section class="ds-card">
+  <div class="table-responsive">
+    <table class="t-table" aria-label="{% trans 'Quiz siyahısı' %}">
+      <thead>
+        <tr>
+          <th>{% trans 'Mövzu' %}</th>
+          <th>{% trans 'Növ' %}</th>
+          <th>{% trans 'Sual' %}</th>
+          {% if can_take_quiz %}
+          <th class="text-end">{% trans 'Əməliyyat' %}</th>
+          {% endif %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for quiz in quizzes %}
+        <tr>
+          <td class="fw-500">{{ quiz.topic }}</td>
+          <td>
+            <span class="ds-badge{% if quiz.is_manual_grading %} ds-badge--role{% endif %}">
+              {{ quiz.grading_mode_label }}
+            </span>
+          </td>
+          <td>{{ quiz.question_count|default:0 }}</td>
+          {% if can_take_quiz %}
+          <td class="text-end">
+            {% if quiz.is_variant_quiz and quiz.question_count %}
+            <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:student-quiz-take' pk=quiz.id %}">
+              {% if quiz.has_attempt %}{% trans 'Təkrar' %}{% else %}{% trans 'Başla' %}{% endif %}
+            </a>
+            {% elif quiz.is_manual_grading and quiz.question_count %}
+              {% if quiz.is_pending_review %}
+              <a class="ds-btn ds-btn--secondary btn-sm" href="{% url 'portals:student-manual-quiz-take' pk=quiz.id %}">{% trans 'Bax' %}</a>
+              <span class="ds-badge ds-badge--warning ms-1">{% trans 'Gözlənilir' %}</span>
+              {% elif quiz.is_reviewed %}
+              <a class="ds-btn ds-btn--secondary btn-sm" href="{% url 'portals:student-score-detail' result_pk=quiz.result_id %}">{% trans 'Bal' %}</a>
+              <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:student-manual-quiz-take' pk=quiz.id %}">{% trans 'Təkrar' %}</a>
+              {% else %}
+              <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:student-manual-quiz-take' pk=quiz.id %}">{% trans 'Təqdim et' %}</a>
+              {% endif %}
+            {% else %}
+            <span class="text-muted">—</span>
+            {% endif %}
+          </td>
+          {% endif %}
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="{% if can_take_quiz %}4{% else %}3{% endif %}">
+            <div class="s-empty-state">
+              <i class="ti ti-forms" aria-hidden="true"></i>
+              <p>{% trans 'Bu kateqoriyada hələ quiz yoxdur.' %}</p>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

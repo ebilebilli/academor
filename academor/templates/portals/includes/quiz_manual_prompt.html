@@ -1,0 +1,23 @@
+{% load i18n portal_tags %}
+<article class="portal-quiz-writing-card" data-quiz-writing-card>
+  <header class="portal-quiz-writing-card__head">
+    <span class="portal-quiz-writing-card__index">{% trans 'Question' %} {{ number }}</span>
+    {% if q.prompt_type and q.prompt_type != 'text' %}
+    <span class="portal-quiz-writing-card__type badge rounded-pill text-bg-light border">
+      {% if q.prompt_type == 'image' %}<i class="bi bi-image me-1" aria-hidden="true"></i>{% trans 'Image' %}
+      {% elif q.prompt_type == 'video' %}<i class="bi bi-camera-video me-1" aria-hidden="true"></i>{% trans 'Video' %}
+      {% elif q.prompt_type == 'audio' %}<i class="bi bi-music-note-beamed me-1" aria-hidden="true"></i>{% trans 'Audio' %}
+      {% else %}{{ q.prompt_type|prompt_type_label }}
+      {% endif %}
+    </span>
+    {% endif %}
+  </header>
+
+  {% include "portals/includes/quiz_question_prompt.html" with q=q %}
+
+  {% if show_response_input %}
+  <div class="portal-quiz-writing-card__response">
+    {% include "portals/includes/quiz_writing_answer.html" with question_id=q.id view_only=view_only student_answer=q.student_answer %}
+  </div>
+  {% endif %}
+</article>

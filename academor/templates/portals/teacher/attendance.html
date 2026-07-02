@@ -1,0 +1,237 @@
+{% extends "portals/base.html" %}
+{% load i18n portal_tags static %}
+
+{% block title %}{% trans 'Attendance' %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'portals/css/portal-attendance-hub.css' %}">
+{% endblock %}
+
+{% block content %}
+{% trans "Track attendance across your groups and mark sessions in a few clicks." as attendance_hub_subtitle %}
+{% portal_page_heading icon="bi-clipboard-check" eyebrow="Teacher" title="Attendance" raw_subtitle=attendance_hub_subtitle %}
+
+<section class="portal-attendance-hub-hero admin-card mb-4" aria-label="{% trans 'Attendance overview' %}">
+  <a class="portal-attendance-hub-action is-primary" href="{% url 'portals:teacher-attendance-session' %}">
+    <span class="portal-attendance-hub-action__icon"><i class="bi bi-calendar-week" aria-hidden="true"></i></span>
+    <span class="portal-attendance-hub-action__copy">
+      <strong>{% trans 'Mark by class session' %}</strong>
+      <span>{% trans 'Pick a session from your weekly calendar' %}</span>
+    </span>
+    <i class="bi bi-arrow-right portal-attendance-hub-action__arrow" aria-hidden="true"></i>
+  </a>
+
+  <div class="portal-attendance-hub-hero__stats" id="attendance-hub-stats">
+    <article class="portal-attendance-hub-mini-stat">
+      <span class="portal-attendance-hub-mini-stat__value" data-stat="student_count">{{ hub_stats.student_count }}</span>
+      <span class="portal-attendance-hub-mini-stat__label">{% trans 'Students' %}</span>
+    </article>
+    <article class="portal-attendance-hub-mini-stat">
+      <span class="portal-attendance-hub-mini-stat__value" data-stat="weekly_sessions">{{ hub_stats.weekly_sessions }}</span>
+      <span class="portal-attendance-hub-mini-stat__label">{% trans 'Weekly classes' %}</span>
+    </article>
+    <article class="portal-attendance-hub-mini-stat">
+      <span class="portal-attendance-hub-mini-stat__value" data-stat="attendance_rate">{% if hub_stats.attendance_rate is not None %}{{ hub_stats.attendance_rate }}%{% else %}—{% endif %}</span>
+      <span class="portal-attendance-hub-mini-stat__label">{% trans 'Rate' %}</span>
+    </article>
+    <article class="portal-attendance-hub-mini-stat is-alert">
+      <span class="portal-attendance-hub-mini-stat__value" data-stat="needs_attention">{{ hub_stats.needs_attention }}</span>
+      <span class="portal-attendance-hub-mini-stat__label">{% trans 'Needs attention' %}</span>
+    </article>
+  </div>
+</section>
+
+{% if students %}
+<section class="panel portal-attendance-hub-panel">
+  {% if attendance_groups %}
+  <nav class="portal-attendance-hub-groups" aria-label="{% trans 'Filter by group' %}">
+    <div class="portal-attendance-hub-groups__scroll">
+      <button type="button" class="portal-attendance-hub-group-chip active" data-attendance-group="all">
+        {% trans 'All groups' %}
+        <span class="portal-attendance-hub-group-chip__count">{{ students|length }}</span>
+      </button>
+      {% for group in attendance_groups %}
+      <button type="button" class="portal-attendance-hub-group-chip" data-attendance-group="{{ group.id }}">
+        {{ group.name }}
+        <span class="portal-attendance-hub-group-chip__count">{{ group.student_count }}</span>
+      </button>
+      {% endfor %}
+    </div>
+  </nav>
+  {% endif %}
+
+  <div class="portal-attendance-hub-controls">
+    <div class="portal-attendance-hub-controls__search">
+      <i class="bi bi-search" aria-hidden="true"></i>
+      <input type="search" id="attendance-student-search" class="form-control form-control-sm" placeholder="{% trans 'Search students...' %}" autocomplete="off">
+    </div>
+
+    <div class="portal-attendance-hub-controls__actions">
+      <button type="button" class="portal-attendance-hub-icon-btn" id="attendance-filter-attention" data-attendance-filter="attention" title="{% trans 'Needs attention' %}" aria-pressed="false">
+        <i class="bi bi-exclamation-circle" aria-hidden="true"></i>
+      </button>
+
+      <div class="dropdown">
+        <button class="portal-attendance-hub-icon-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="{% trans 'Sort' %}">
+          <i class="bi bi-sort-down" aria-hidden="true"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end portal-filter-menu">
+          <li><button type="button" class="dropdown-item active" data-attendance-sort="name">{% trans 'Name (A–Z)' %}</button></li>
+          <li><button type="button" class="dropdown-item" data-attendance-sort="rate-desc">{% trans 'Highest attendance' %}</button></li>
+          <li><button type="button" class="dropdown-item" data-attendance-sort="rate-asc">{% trans 'Lowest attendance' %}</button></li>
+          <li><button type="button" class="dropdown-item" data-attendance-sort="absent-desc">{% trans 'Most absences' %}</button></li>
+        </ul>
+      </div>
+
+      <div class="btn-group portal-attendance-hub-view-toggle" role="group" aria-label="{% trans 'View mode' %}">
+        <button type="button" class="btn btn-sm active" id="attendance-view-cards" title="{% trans 'Card view' %}">
+          <i class="bi bi-grid" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn-sm" id="attendance-view-table" title="{% trans 'Table view' %}">
+          <i class="bi bi-table" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <p class="portal-attendance-hub-meta" id="attendance-visible-count" aria-live="polite">
+    <strong data-attendance-count>{{ students|length }}</strong> {% trans 'students' %}
+  </p>
+
+  <section class="portal-attendance-hub-cards row g-3" id="attendance-cards-view">
+    {% for s in students %}
+    <div
+      class="col-12 col-md-6 col-xl-4 portal-attendance-hub-item"
+      data-name="{{ s.full_name|lower }}"
+      data-student-id="{{ s.id }}"
+      data-group-ids="{{ s.group_ids|join:',' }}"
+    >
+      <article class="portal-attendance-hub-card{% if s.summary.absent > 0 %} has-attention{% endif %}" data-attendance-card>
+        <div class="portal-attendance-hub-card__head">
+          <div class="portal-attendance-hub-card__avatar">
+            {% if s.photo_url %}
+              <img src="{{ s.photo_url }}" alt="">
+            {% else %}
+              <span>{{ s.username|slice:":2"|upper }}</span>
+            {% endif %}
+          </div>
+          <div class="portal-attendance-hub-card__info">
+            <h2 class="portal-attendance-hub-card__name">{{ s.full_name }}</h2>
+            {% if s.group_names %}
+              <p class="portal-attendance-hub-card__meta mb-0">{{ s.group_names|join:", "|truncatechars:36 }}</p>
+            {% else %}
+              <p class="portal-attendance-hub-card__meta mb-0">{{ s.phone|default:"—" }}</p>
+            {% endif %}
+          </div>
+          <div class="portal-attendance-hub-card__rate is-empty" data-card-rate aria-label="{% trans 'Attendance rate' %}">
+            <span class="portal-attendance-hub-card__rate-value">—</span>
+          </div>
+        </div>
+
+        <div class="portal-attendance-hub-card__metrics">
+          <span class="portal-attendance-hub-metric is-present" data-card-present>
+            <strong>0</strong><span>{% trans 'Present' %}</span>
+          </span>
+          <span class="portal-attendance-hub-metric is-absent" data-card-absent>
+            <strong>0</strong><span>{% trans 'Absent' %}</span>
+          </span>
+          <span class="portal-attendance-hub-metric is-late" data-card-late>
+            <strong>0</strong><span>{% trans 'Late' %}</span>
+          </span>
+        </div>
+
+        <a class="btn btn-primary btn-sm w-100" href="{% url 'portals:teacher-student-attendance' student_pk=s.id %}">
+          {% trans 'View attendance' %}
+        </a>
+      </article>
+    </div>
+    {% endfor %}
+  </section>
+
+  <section class="d-none" id="attendance-table-view">
+    <div class="table-responsive">
+      <table class="table align-middle mb-0 portal-data-table" id="attendance-students-table">
+        <thead>
+          <tr>
+            <th scope="col">{% trans 'Student' %}</th>
+            <th scope="col">{% trans 'Groups' %}</th>
+            <th scope="col" class="text-center">{% trans 'Present' %}</th>
+            <th scope="col" class="text-center">{% trans 'Absent' %}</th>
+            <th scope="col" class="text-center">{% trans 'Late' %}</th>
+            <th scope="col" class="text-center">{% trans 'Rate' %}</th>
+            <th scope="col" class="text-end">{% trans 'Actions' %}</th>
+          </tr>
+        </thead>
+        <tbody id="attendance-table-body">
+          {% for s in students %}
+          <tr
+            class="portal-attendance-hub-row{% if s.summary.absent > 0 %} has-attention{% endif %}"
+            data-name="{{ s.full_name|lower }}"
+            data-student-id="{{ s.id }}"
+            data-group-ids="{{ s.group_ids|join:',' }}"
+          >
+            <td>
+              <div class="portal-attendance-hub-table-student">
+                <div class="portal-attendance-hub-card__avatar is-sm">
+                  {% if s.photo_url %}
+                    <img src="{{ s.photo_url }}" alt="">
+                  {% else %}
+                    <span>{{ s.username|slice:":2"|upper }}</span>
+                  {% endif %}
+                </div>
+                <div class="fw-semibold">{{ s.full_name }}</div>
+              </div>
+            </td>
+            <td class="text-muted small">
+              {% if s.group_names %}{{ s.group_names|join:", "|truncatechars:40 }}{% else %}—{% endif %}
+            </td>
+            <td class="text-center" data-row-present>{{ s.summary.present }}</td>
+            <td class="text-center" data-row-absent>{{ s.summary.absent }}</td>
+            <td class="text-center" data-row-late>{{ s.summary.late }}</td>
+            <td class="text-center">
+              <span class="portal-attendance-hub-rate-badge" data-row-rate>{% if s.attendance_rate is not None %}{{ s.attendance_rate }}%{% else %}—{% endif %}</span>
+            </td>
+            <td class="text-end">
+              <a class="btn btn-primary btn-sm" href="{% url 'portals:teacher-student-attendance' student_pk=s.id %}">{% trans 'View' %}</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="portal-student-empty d-none" id="attendance-search-empty">
+    <div class="portal-student-empty-icon"><i class="bi bi-search" aria-hidden="true"></i></div>
+    <h3>{% trans 'No students match your filters' %}</h3>
+    <p>{% trans 'Try a different name or clear the filters.' %}</p>
+    <button type="button" class="btn btn-outline-secondary btn-sm mt-2" id="attendance-clear-filters">
+      {% trans 'Clear filters' %}
+    </button>
+  </div>
+</section>
+{% else %}
+<div class="portal-student-empty">
+  <div class="portal-student-empty-icon"><i class="bi bi-inbox" aria-hidden="true"></i></div>
+  <h3>{% trans 'No students in your groups yet' %}</h3>
+  <p>{% trans 'Students appear here once they are assigned to your study groups in the admin panel.' %}</p>
+  <a class="btn btn-primary btn-sm mt-2" href="{% url 'portals:teacher-groups' %}">
+    <i class="bi bi-people me-1" aria-hidden="true"></i>{% trans 'View groups' %}
+  </a>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block page_data %}
+{% if students %}
+<div id="attendance-hub-i18n" class="d-none" data-all-groups="{% trans 'All groups' %}"></div>
+{{ hub_stats_map|json_script:"attendance-hub-stats-data" }}
+{{ students|json_script:"attendance-hub-students-data" }}
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+{% if students %}
+<script src="{% static 'portals/js/portal-attendance-hub.js' %}"></script>
+{% endif %}
+{% endblock %}

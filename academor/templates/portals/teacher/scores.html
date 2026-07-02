@@ -1,0 +1,18 @@
+{% extends "portals/base.html" %}
+{% load static i18n portal_tags %}
+
+{% block title %}{% trans 'Scores' %}{% endblock %}
+
+{% block content %}
+<header class="s-page-head mb-4">
+  <div>
+    <h1 class="s-page-head__title">
+      <i class="ti ti-star" aria-hidden="true"></i>
+      {% trans 'Qiymətlər' %}
+    </h1>
+    <p class="s-page-head__sub">{% trans 'Aşağıdan quiz və ya dərs qiymətlərini seçin.' %}</p>
+  </div>
+</header>
+
+{% include "portals/includes/score_sections.html" with show_student_column=True score_detail_url_name="portals:teacher-score-detail" %}
+{% endblock %}

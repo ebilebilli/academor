@@ -1,0 +1,90 @@
+{% extends "portals/base.html" %}
+{% load static i18n portal_tags %}
+
+{% block title %}{% trans 'Score detail' %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="portal-control-bar mb-3">
+  <a class="btn btn-outline-secondary btn-sm" href="{{ detail.back_url }}">
+    <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% if detail.back_label %}{{ detail.back_label }}{% else %}{% trans 'Back to notifications' %}{% endif %}
+  </a>
+</div>
+
+{% portal_page_heading icon="bi-star" title="Score detail" raw_subtitle=detail.quiz_topic %}
+
+<div class="portal-quiz-play-meta mb-4">
+  <span class="badge rounded-pill text-bg-light border px-3 py-2">{{ detail.student_name }}</span>
+  <span class="badge rounded-pill text-bg-light border px-3 py-2">{{ detail.grading_mode_label }}</span>
+  <span class="badge rounded-pill text-bg-primary px-3 py-2">
+    {% trans 'Score' %}: {{ detail.total_score|format_quiz_score }}/{{ detail.max_value|format_quiz_score }}
+  </span>
+  <span class="badge rounded-pill text-bg-light border px-3 py-2">{{ detail.completed_at|portal_datetime }}</span>
+</div>
+
+{% if detail.breakdown %}
+<section class="panel mb-4">
+  <h2 class="h6 mb-3">{% trans 'Answers' %}</h2>
+  <div class="portal-quiz-writing-stack">
+    {% for row in detail.breakdown %}
+    <article class="panel mb-2 {% if row.is_correct %}border-success{% else %}border-danger{% endif %}">
+      <p class="fw-semibold mb-2">{{ forloop.counter }}. {{ row.question }}</p>
+      <ul class="list-unstyled mb-0 small">
+        {% for option in row.answer_options %}
+        <li class="{% if forloop.counter0 == row.correct_index %}text-success fw-semibold{% endif %}{% if forloop.counter0 == row.selected_index and not row.is_correct %} text-danger fw-semibold{% endif %}">
+          {% if forloop.counter0 == row.selected_index %}<i class="bi bi-arrow-return-right me-1" aria-hidden="true"></i>{% endif %}
+          {{ option }}
+          {% if forloop.counter0 == row.correct_index %}<span class="badge text-bg-success ms-1">{% trans 'Correct' %}</span>{% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% else %}
+<section class="panel mb-4">
+  <h2 class="h6 mb-3">{% trans 'Prompts' %}</h2>
+  <div class="portal-quiz-writing-stack">
+    {% for q in detail.questions %}
+    {% include "portals/includes/quiz_manual_prompt.html" with q=q number=forloop.counter %}
+    {% endfor %}
+  </div>
+</section>
+
+{% if detail.question_responses %}
+<section class="panel mb-4">
+  <h2 class="h6 mb-3">{% trans 'Student submission' %}</h2>
+  <div class="portal-quiz-writing-stack">
+    {% for item in detail.question_responses %}
+    <article class="panel mb-3">
+      <p class="fw-semibold mb-2">{% blocktrans with num=item.number %}Task {{ num }}{% endblocktrans %}</p>
+      {% if item.question %}
+      <div class="text-muted small mb-2">{{ item.question|safe }}</div>
+      {% endif %}
+      <div class="portal-lesson-description">{{ item.student_answer|linebreaksbr }}</div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% elif detail.student_submission %}
+<section class="panel mb-4">
+  <h2 class="h6 mb-2">{% trans 'Student submission' %}</h2>
+  <div class="portal-lesson-description">{{ detail.student_submission|linebreaksbr }}</div>
+</section>
+{% endif %}
+
+{% if detail.teacher_feedback %}
+<section class="panel mb-4">
+  <h2 class="h6 mb-2">
+    {% trans 'Teacher feedback' %}
+    {% if detail.reviewer_name %}<span class="text-muted fw-normal small">— {{ detail.reviewer_name }}</span>{% endif %}
+  </h2>
+  <div class="portal-lesson-description">{{ detail.teacher_feedback|linebreaksbr }}</div>
+</section>
+{% endif %}
+{% endif %}
+{% endblock %}

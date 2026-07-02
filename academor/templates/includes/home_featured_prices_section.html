@@ -13,13 +13,15 @@
             </div>
 
             <div class="home-prices-carousel-wrap wow fadeInUp" data-wow-delay="0.12s">
-                <div class="swiper home-prices-swiper">
-                    <div class="swiper-wrapper">
-                        {% for pkg in home_featured_prices %}
-                        <div class="swiper-slide">
-                            {% include "includes/home_price_card.html" with pkg=pkg %}
+                <div class="home-prices-carousel-stage">
+                    <div class="swiper home-prices-swiper">
+                        <div class="swiper-wrapper">
+                            {% for pkg in home_featured_prices %}
+                            <div class="swiper-slide">
+                                {% include "includes/home_price_card.html" with pkg=pkg %}
+                            </div>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
                     </div>
                     <div class="swiper-button-prev" aria-label="{% trans 'Previous' %}">
                         <i class="bi bi-chevron-left" aria-hidden="true"></i>
