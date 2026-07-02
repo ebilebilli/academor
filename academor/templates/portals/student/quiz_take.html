@@ -9,7 +9,11 @@
 
 {% block content %}
 <div class="portal-control-bar mb-3">
-  <a class="btn btn-outline-secondary btn-sm" href="{% url 'portals:student-quiz-cancel' pk=quiz.id %}?next={{ back_url|urlencode }}">
+  <a
+    class="btn btn-outline-secondary btn-sm"
+    href="{% url 'portals:student-quiz-cancel' pk=quiz.id %}?next={{ back_url|urlencode }}"
+    data-quiz-leave-link
+  >
     <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'Back' %}
   </a>
 </div>
@@ -28,6 +32,7 @@
   data-label-unanswered="{% trans 'Not answered' %}"
   data-msg-submitting="{% trans 'Submitting…' %}"
   data-msg-error="{% trans 'Could not submit the test. Please try again.' %}"
+  data-msg-leave-warning="{% trans 'If you leave this page now, your quiz will be counted as completed.' %}"
 >
   <div data-quiz-take-content hidden>
   <div class="portal-quiz-take-toolbar panel mb-3{% if quiz.is_time_limited %} portal-quiz-take-toolbar--timed{% endif %}">
@@ -108,11 +113,13 @@
 </div>
 
 {% include "portals/includes/quiz_start_gate.html" %}
+{% include "portals/includes/quiz_leave_gate.html" %}
 
 {% csrf_token %}
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'portals/js/quiz-start-gate.js' %}"></script>
-<script src="{% static 'portals/js/quiz-take.js' %}"></script>
+<script src="{% static 'portals/js/quiz-start-gate.js' %}?v=20260703"></script>
+<script src="{% static 'portals/js/quiz-leave-guard.js' %}?v=20260703"></script>
+<script src="{% static 'portals/js/quiz-take.js' %}?v=20260703"></script>
 {% endblock %}

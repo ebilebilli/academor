@@ -47,7 +47,7 @@
   data-msg-submit-label="{% trans 'Complete' %}"
   data-msg-words="{% trans 'words' %}"
   data-msg-ready="{% trans 'You can complete the quiz whenever you are ready.' %}"
-  data-msg-leave-warning="{% trans 'If you leave this page now, your quiz will be counted as completed and sent for teacher review.' %}"
+  data-msg-leave-warning="{% trans 'If you leave this page now, your quiz will be counted as completed.' %}"
   data-msg-listening-played="{% trans 'This clip has already been played.' %}"
   data-msg-listening-replay-blocked="{% trans 'You cannot replay this clip from the beginning.' %}"
 >
@@ -175,6 +175,7 @@
 {% block extra_js %}
 {% if not quiz.view_only %}
 <script src="{% static 'portals/js/quiz-start-gate.js' %}?v=20260703"></script>
+<script src="{% static 'portals/js/quiz-leave-guard.js' %}?v=20260703"></script>
 <script src="{% static 'portals/js/quiz-take-manual.js' %}?v=20260703"></script>
 {% endif %}
 {% endblock %}

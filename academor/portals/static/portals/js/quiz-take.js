@@ -131,6 +131,10 @@
       if (notice) {
         notice.classList.add("d-none");
       }
+      var leaveGate = document.querySelector("[data-quiz-leave-gate]");
+      if (leaveGate) {
+        leaveGate.classList.add("d-none");
+      }
       if (timerWrap) {
         timerWrap.hidden = true;
       }
@@ -183,6 +187,7 @@
       resultPanel.classList.remove("d-none");
       resultPanel.hidden = false;
       resultPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+      root.setAttribute("data-quiz-finished", "true");
     }
 
     function submitQuiz(options) {
@@ -236,16 +241,6 @@
         });
     }
 
-    function submitOnLeave() {
-      if (root.getAttribute("data-quiz-started") !== "true") {
-        return;
-      }
-      if (submitting || submitted || !submitUrl) {
-        return;
-      }
-      submitQuiz({ keepalive: true, silent: true, completionTrigger: "auto_leave" });
-    }
-
     function updateTimer() {
       if (!timeLimitSec) {
         return;
@@ -288,12 +283,15 @@
       });
     }
 
-    window.addEventListener("pagehide", submitOnLeave);
-    document.addEventListener("visibilitychange", function () {
-      if (document.visibilityState === "hidden") {
-        submitOnLeave();
-      }
-    });
+    if (window.PortalQuizLeaveGuard) {
+      window.PortalQuizLeaveGuard.init({
+        root: root,
+        submit: submitQuiz,
+        shouldIgnoreLink: function (link) {
+          return link.hasAttribute("data-quiz-finish-btn");
+        },
+      });
+    }
 
     root.querySelectorAll(".portal-quiz-play-option__input").forEach(function (input) {
       input.addEventListener("change", function () {

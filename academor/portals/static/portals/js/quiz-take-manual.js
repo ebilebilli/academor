@@ -627,138 +627,28 @@
   }
 
   function initQuizLeaveGuard(root, submitManual) {
-    var leaveModalEl = document.querySelector("[data-quiz-leave-gate]");
-    if (!leaveModalEl) {
+    if (!window.PortalQuizLeaveGuard) {
       return;
     }
-
-    var leaveModal = getBootstrapModal(leaveModalEl);
-    var confirmBtn = leaveModalEl.querySelector("[data-quiz-leave-confirm-btn]");
-    var cancelBtn = leaveModalEl.querySelector("[data-quiz-leave-cancel-btn]");
-    var pendingUrl = "";
-    var navigationAllowed = false;
-    var leaveWarning = root.getAttribute("data-msg-leave-warning") || "If you leave this page now, your quiz will be counted as completed.";
-
-    function isQuizActive() {
-      return root.getAttribute("data-quiz-started") === "true" && root.getAttribute("data-quiz-finished") !== "true";
-    }
-
-    function showLeaveModal(targetUrl) {
-      pendingUrl = targetUrl || "";
-      if (leaveModal) {
-        if (leaveModalEl.parentElement !== document.body) {
-          document.body.appendChild(leaveModalEl);
-        }
-        leaveModalEl.hidden = false;
-        leaveModalEl.removeAttribute("hidden");
-        leaveModalEl.classList.remove("d-none");
-        leaveModal.show();
-        document.body.classList.add("portal-quiz-modal-open");
-        return;
-      }
-      if (window.confirm(leaveWarning)) {
-        completeAndNavigate(pendingUrl);
-      }
-    }
-
-    function hideLeaveModal() {
-      pendingUrl = "";
-      if (leaveModal) {
-        leaveModal.hide();
-      }
-      document.body.classList.remove("portal-quiz-modal-open");
-    }
-
-    function completeAndNavigate(targetUrl) {
-      stopQuizMedia(root);
-      submitManual({ allowEmpty: true, silent: true, completionTrigger: "auto_leave" }).then(function (ok) {
-        if (!ok) {
-          return;
-        }
-        navigationAllowed = true;
+    window.PortalQuizLeaveGuard.init({
+      root: root,
+      submit: function (options) {
+        return submitManual({
+          keepalive: options.keepalive,
+          silent: options.silent,
+          allowEmpty: true,
+          completionTrigger: options.completionTrigger,
+        });
+      },
+      beforeLeave: function () {
+        stopQuizMedia(root);
+      },
+      afterLeave: function () {
         window.portalQuizMediaCleanup = null;
-        root.setAttribute("data-quiz-finished", "true");
-        if (targetUrl) {
-          window.location.href = targetUrl;
-        }
-      });
-    }
-
-    document.addEventListener("portal:before-navigate", function (event) {
-      if (!isQuizActive() || navigationAllowed) {
-        return;
-      }
-      event.preventDefault();
-      if (event.detail && event.detail.push === false) {
-        window.history.pushState(
-          Object.assign({}, window.history.state, { portalAjax: true, url: window.location.href }),
-          "",
-          window.location.href
-        );
-      }
-      showLeaveModal(event.detail ? event.detail.url : "");
-    });
-
-    if (confirmBtn) {
-      confirmBtn.addEventListener("click", function () {
-        var targetUrl = pendingUrl;
-        hideLeaveModal();
-        completeAndNavigate(targetUrl);
-      });
-    }
-
-    if (cancelBtn) {
-      cancelBtn.addEventListener("click", hideLeaveModal);
-    }
-
-    document.addEventListener("click", function (event) {
-      if (!isQuizActive() || navigationAllowed) {
-        return;
-      }
-      var link = event.target.closest("a[href]");
-      if (!link || link.hasAttribute("data-quiz-leave-confirm-btn")) {
-        return;
-      }
-      if (link.hasAttribute("data-manual-submit-btn")) {
-        return;
-      }
-      if (leaveModalEl.contains(link)) {
-        return;
-      }
-      var href = link.getAttribute("href") || "";
-      if (!href || href.charAt(0) === "#" || href.indexOf("javascript:") === 0) {
-        return;
-      }
-      event.preventDefault();
-      event.stopPropagation();
-      showLeaveModal(link.href);
-    }, true);
-
-    window.addEventListener("beforeunload", function (event) {
-      if (!isQuizActive() || navigationAllowed) {
-        return;
-      }
-      event.preventDefault();
-      event.returnValue = leaveWarning;
-      return leaveWarning;
-    });
-
-    root.querySelectorAll("[data-quiz-leave-link]").forEach(function (link) {
-      link.addEventListener("click", function (event) {
-        if (!isQuizActive() || navigationAllowed) {
-          return;
-        }
-        event.preventDefault();
-        showLeaveModal(link.href);
-      });
-    });
-
-    window.addEventListener("pagehide", function () {
-      if (!isQuizActive() || navigationAllowed) {
-        return;
-      }
-      stopQuizMedia(root);
-      submitManual({ keepalive: true, silent: true, allowEmpty: true, completionTrigger: "auto_leave" });
+      },
+      shouldIgnoreLink: function (link) {
+        return link.hasAttribute("data-manual-submit-btn");
+      },
     });
   }
 
