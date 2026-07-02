@@ -13,7 +13,7 @@
     }
   }
 
-  onReady(function () {
+  function initLessonForm() {
     var form = document.querySelector("[data-lesson-form]");
     if (!form || form.dataset.portalLessonFormBound === "true") {
       return;
@@ -139,5 +139,7 @@
         submitBtn.classList.add("disabled");
       }
     });
-  });
+  }
+
+  onReady(initLessonForm);
 })();

@@ -3,9 +3,11 @@ from datetime import timedelta
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse
-from django.test import TestCase
+from django.test import Client, RequestFactory, TestCase
+from django.urls import reverse
 from django.utils import timezone
 
+from portals.middleware import PortalSessionMiddleware
 from portals.models import (
     Quiz,
     QuizCategory,
@@ -16,10 +18,21 @@ from portals.models import (
     TeacherCourseSpecialization,
     TeacherProfile,
 )
+from portals.utils.portal_session import PORTAL_COOKIE_NAME, portal_login
 from portals.utils.quiz_submit import score_variant_quiz, submit_variant_quiz_attempt
 from projects.models.service_models import Service
 
 User = get_user_model()
+
+
+def _portal_client_login(client: Client, user) -> None:
+    factory = RequestFactory()
+    request = factory.get('/portal/')
+    request.COOKIES = {}
+    portal_login(request, user)
+    middleware = PortalSessionMiddleware(lambda r: HttpResponse())
+    response = middleware(request)
+    client.cookies[PORTAL_COOKIE_NAME] = response.cookies[PORTAL_COOKIE_NAME].value
 
 
 def _ensure_active_portal_services():
@@ -118,6 +131,39 @@ class QuizSubmitTests(TestCase):
         self.assertEqual(QuizResult.objects.filter(student=self.student, quiz=self.quiz).count(), 1)
         result = QuizResult.objects.get(student=self.student, quiz=self.quiz)
         self.assertEqual(result.total_score, 2)
+
+    def test_student_can_open_variant_quiz_after_attempt(self):
+        submit_variant_quiz_attempt(
+            student_id=self.student.pk,
+            quiz_id=self.quiz.pk,
+            given_answers={str(self.q1.pk): 0, str(self.q2.pk): 0},
+            duration_sec=60,
+            session_started_at=timezone.now().isoformat(),
+        )
+
+        client = Client()
+        _portal_client_login(client, self.student_user)
+        url = reverse('portals:student-quiz-take', kwargs={'pk': self.quiz.pk})
+        response = client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.quiz.topic)
+
+    def test_submit_stores_completion_trigger(self):
+        started_at = timezone.now() - timedelta(minutes=15)
+        payload = submit_variant_quiz_attempt(
+            student_id=self.student.pk,
+            quiz_id=self.quiz.pk,
+            given_answers={str(self.q1.pk): 0, str(self.q2.pk): 1},
+            duration_sec=900,
+            session_started_at=started_at.isoformat(),
+            completion_trigger='time_limit',
+        )
+        self.assertTrue(payload['success'])
+        self.assertEqual(payload['completion_trigger'], 'time_limit')
+        result = QuizResult.objects.get(student=self.student, quiz=self.quiz)
+        self.assertEqual(result.completion_trigger, 'time_limit')
+        self.assertEqual(result.duration_sec, 900)
 
     def test_time_limit_requires_minutes(self):
         quiz = Quiz(

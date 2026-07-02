@@ -9,6 +9,10 @@ from django.utils.dateparse import parse_datetime
 from django.utils.translation import gettext as _
 
 from portals.models import Quiz, QuizQuestion, QuizResult
+
+_COMPLETION_TRIGGERS = {
+    value for value, _label in QuizResult.CompletionTrigger.choices
+}
 from portals.utils.student_courses import quiz_visible_to_student
 from portals.utils.quiz_listening import get_listening_questions_for_quiz
 
@@ -76,6 +80,13 @@ def _normalize_given_answers(raw: dict) -> dict[int, int | None]:
         except (TypeError, ValueError):
             normalized[question_id] = None
     return normalized
+
+
+def _normalize_completion_trigger(raw) -> str:
+    value = str(raw or QuizResult.CompletionTrigger.MANUAL).strip()
+    if value in _COMPLETION_TRIGGERS:
+        return value
+    return QuizResult.CompletionTrigger.MANUAL
 
 
 def _resolve_duration_sec(
@@ -410,6 +421,7 @@ def submit_variant_quiz_attempt(
     given_answers: dict,
     duration_sec: int = 0,
     session_started_at: str | None = None,
+    completion_trigger: str = QuizResult.CompletionTrigger.MANUAL,
 ) -> dict:
     quiz = _load_quiz_for_student(student_id, quiz_id)
     if not quiz:
@@ -429,6 +441,7 @@ def submit_variant_quiz_attempt(
     if duration_error:
         return {'success': False, 'error': duration_error}
 
+    resolved_trigger = _normalize_completion_trigger(completion_trigger)
     score, max_score, breakdown = score_variant_quiz(quiz, given_answers)
     stored_answers = {
         str(item['id']): item['selected_index']
@@ -442,9 +455,10 @@ def submit_variant_quiz_attempt(
         existing.given_answers = stored_answers
         existing.total_score = score
         existing.duration_sec = resolved_duration or 0
+        existing.completion_trigger = resolved_trigger
         existing.completed_at = now
         existing.save(update_fields=[
-            'given_answers', 'total_score', 'duration_sec', 'completed_at',
+            'given_answers', 'total_score', 'duration_sec', 'completion_trigger', 'completed_at',
         ])
         result = existing
     else:
@@ -455,6 +469,7 @@ def submit_variant_quiz_attempt(
                 given_answers=stored_answers,
                 total_score=score,
                 duration_sec=resolved_duration or 0,
+                completion_trigger=resolved_trigger,
             )
         except IntegrityError:
             existing = QuizResult.objects.filter(student_id=student_id, quiz_id=quiz_id).first()
@@ -463,9 +478,10 @@ def submit_variant_quiz_attempt(
             existing.given_answers = stored_answers
             existing.total_score = score
             existing.duration_sec = resolved_duration or 0
+            existing.completion_trigger = resolved_trigger
             existing.completed_at = now
             existing.save(update_fields=[
-                'given_answers', 'total_score', 'duration_sec', 'completed_at',
+                'given_answers', 'total_score', 'duration_sec', 'completion_trigger', 'completed_at',
             ])
             result = existing
 
@@ -484,6 +500,7 @@ def submit_variant_quiz_attempt(
         'max_score': max_score,
         'percent': percent,
         'duration_sec': resolved_duration or 0,
+        'completion_trigger': resolved_trigger,
         'questions': breakdown,
         'breakdown': breakdown,
     }
@@ -499,6 +516,7 @@ def submit_manual_quiz_attempt(
     duration_sec: int = 0,
     session_started_at: str | None = None,
     allow_empty_submission: bool = False,
+    completion_trigger: str = QuizResult.CompletionTrigger.MANUAL,
 ) -> dict:
     quiz = _load_quiz_for_student(student_id, quiz_id)
     if not quiz:
@@ -550,8 +568,11 @@ def submit_manual_quiz_attempt(
     if duration_error:
         return {'success': False, 'error': duration_error}
 
+    resolved_trigger = _normalize_completion_trigger(completion_trigger)
+
     def apply_submission_fields(result_obj: QuizResult) -> None:
         result_obj.duration_sec = resolved_duration or 0
+        result_obj.completion_trigger = resolved_trigger
         result_obj.completed_at = timezone.now()
         if quiz.is_listening:
             result_obj.given_answers = listening_answers
@@ -579,6 +600,7 @@ def submit_manual_quiz_attempt(
                 'given_answers',
                 'student_submission',
                 'duration_sec',
+                'completion_trigger',
                 'completed_at',
                 *reset_review_fields(existing),
             ])
@@ -587,6 +609,7 @@ def submit_manual_quiz_attempt(
                 'given_answers',
                 'student_submission',
                 'duration_sec',
+                'completion_trigger',
                 'completed_at',
             ])
         result = existing
@@ -596,6 +619,7 @@ def submit_manual_quiz_attempt(
                 'student_id': student_id,
                 'quiz': quiz,
                 'duration_sec': resolved_duration or 0,
+                'completion_trigger': resolved_trigger,
             }
             if quiz.is_listening:
                 create_kwargs['given_answers'] = listening_answers
@@ -619,6 +643,7 @@ def submit_manual_quiz_attempt(
                     'given_answers',
                     'student_submission',
                     'duration_sec',
+                    'completion_trigger',
                     'completed_at',
                     *reset_review_fields(existing),
                 ])
@@ -627,6 +652,7 @@ def submit_manual_quiz_attempt(
                     'given_answers',
                     'student_submission',
                     'duration_sec',
+                    'completion_trigger',
                     'completed_at',
                 ])
             result = existing
@@ -643,7 +669,12 @@ def submit_manual_quiz_attempt(
 
     invalidate_model_cache('QuizResult')
 
-    return {'success': True, 'result_id': result.pk}
+    return {
+        'success': True,
+        'result_id': result.pk,
+        'duration_sec': resolved_duration or 0,
+        'completion_trigger': resolved_trigger,
+    }
 
 
 def submit_teacher_quiz_review(

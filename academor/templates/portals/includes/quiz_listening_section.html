@@ -25,7 +25,12 @@
     </header>
 
     <div class="portal-listening-section__player">
-      {% include "portals/includes/quiz_question_prompt.html" with q=section.audio %}
+      {% include "portals/includes/quiz_question_prompt.html" with q=section.audio audio_play_once=audio_play_once %}
+      {% if audio_play_once %}
+      <p class="portal-listening-section__play-once-hint text-muted small mb-0 mt-2">
+        <i class="bi bi-info-circle me-1" aria-hidden="true"></i>{% trans 'This clip can only be played once.' %}
+      </p>
+      {% endif %}
     </div>
   </div>
   {% endif %}
@@ -79,7 +84,11 @@
 
         <div class="portal-listening-task__response">
           {% if q.is_variant %}
+          {% if review_mode %}
+          {% include "portals/includes/quiz_listening_variant_review.html" with q=q %}
+          {% else %}
           {% include "portals/includes/quiz_listening_variant.html" with q=q view_only=view_only %}
+          {% endif %}
           {% elif show_response_input %}
           {% include "portals/includes/quiz_writing_answer.html" with question_id=q.id view_only=view_only student_answer=q.student_answer compact=True hide_label=True %}
           {% endif %}

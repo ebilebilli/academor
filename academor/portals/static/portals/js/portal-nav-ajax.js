@@ -2,25 +2,13 @@
   "use strict";
 
   window.portalOnReady = function (callback) {
-    var ran = false;
-    var run = function () {
-      if (ran) {
-        return;
-      }
-      ran = true;
+    document.addEventListener("portal:content-loaded", function () {
       try {
         callback();
       } catch (error) {
         console.error(error);
       }
-    };
-
-    if (window.__portalNavPending) {
-      run();
-      return;
-    }
-
-    document.addEventListener("portal:content-loaded", run, { once: true });
+    });
   };
 
   function dispatchPortalContentLoaded(url, initial) {
@@ -30,6 +18,7 @@
   }
 
   var SKIP_PATH_RE = /\/portal\/(login|logout)\/?$|\/portal\/student\/quizzes\/\d+\/(take|manual)\/?$/i;
+  var PREFETCH_SKIP_PATH_RE = /\/portal\/student\/(scores|notifications)(\/|$)|\/portal\/student\/quizzes(\/category\/|\/|$)|\/portal\/parent\/(scores|notifications)(\/|$)/i;
   var CORE_SCRIPTS = /bootstrap\.bundle|\/main\.js|portal-nav-ajax\.js|portal-init\.js/i;
   var FRAGMENT_HEADERS = {
     Accept: "text/html",
@@ -86,6 +75,38 @@
     }
 
     return true;
+  }
+
+  function shouldPrefetchLink(link) {
+    if (!shouldHandleLink(link)) {
+      return false;
+    }
+    try {
+      var url = new URL(link.href, window.location.origin);
+      if (PREFETCH_SKIP_PATH_RE.test(url.pathname)) {
+        return false;
+      }
+    } catch (error) {
+      return false;
+    }
+    return true;
+  }
+
+  function clearPrefetchCache() {
+    prefetchedHtml.clear();
+    prefetchInFlight.forEach(function (controller) {
+      try {
+        controller.abort();
+      } catch (error) {
+        /* ignore */
+      }
+    });
+    prefetchInFlight.clear();
+    prefetchHoverUrl = "";
+    if (prefetchHoverTimer) {
+      clearTimeout(prefetchHoverTimer);
+      prefetchHoverTimer = null;
+    }
   }
 
   function findNavLink(target) {
@@ -345,6 +366,8 @@
       return Promise.resolve();
     }
 
+    stopAllPageMedia();
+
     var doc = parseHtml(html);
     var nextContent = doc.querySelector("[data-portal-content-root]");
     if (!nextContent) {
@@ -367,6 +390,7 @@
     if (!hasNavSnapshot) {
       syncActiveNavFromUrl(url);
     }
+    syncBadgesFromSnapshot(doc);
     syncTopbarBadges(doc);
     setLoading(false);
 
@@ -392,6 +416,27 @@
         window.requestAnimationFrame(function () {
           root.classList.remove("is-ajax-swapped");
         });
+      }
+    });
+  }
+
+  function syncBadgesFromSnapshot(doc) {
+    var snapshot = doc
+      ? doc.querySelector("#portal-badge-snapshot")
+      : document.querySelector("[data-portal-content-root] #portal-badge-snapshot");
+    if (!snapshot) {
+      return;
+    }
+
+    var count = Math.max(0, parseInt(snapshot.getAttribute("data-unread-notifications"), 10) || 0);
+    document.querySelectorAll("[data-portal-unread-badge]").forEach(function (badge) {
+      if (count > 0) {
+        badge.textContent = count;
+        badge.hidden = false;
+        badge.classList.remove("d-none");
+      } else {
+        badge.hidden = true;
+        badge.classList.add("d-none");
       }
     });
   }
@@ -516,7 +561,40 @@
 
   var activeController = null;
 
+  function stopAllPageMedia() {
+    if (typeof window.portalQuizMediaCleanup === "function") {
+      try {
+        window.portalQuizMediaCleanup();
+      } catch (error) {
+        /* ignore */
+      }
+    }
+    document.querySelectorAll("audio, video").forEach(function (node) {
+      try {
+        node.pause();
+        node.removeAttribute("src");
+        node.load();
+      } catch (error) {
+        /* ignore */
+      }
+    });
+  }
+
+  function requestPortalNavigation(url, push) {
+    var event = new CustomEvent("portal:before-navigate", {
+      cancelable: true,
+      detail: { url: url, push: push },
+    });
+    return document.dispatchEvent(event);
+  }
+
   function navigate(url, push) {
+    if (!requestPortalNavigation(url, push)) {
+      return Promise.resolve();
+    }
+
+    stopAllPageMedia();
+
     if (activeController) {
       activeController.abort();
     }
@@ -542,7 +620,7 @@
 
   document.addEventListener("mouseover", function (event) {
     var link = findPortalLink(event.target);
-    if (!link || !shouldHandleLink(link)) {
+    if (!link || !shouldPrefetchLink(link)) {
       return;
     }
     schedulePrefetch(link.href);
@@ -550,7 +628,7 @@
 
   document.addEventListener("focusin", function (event) {
     var link = findPortalLink(event.target);
-    if (!link || !shouldHandleLink(link)) {
+    if (!link || !shouldPrefetchLink(link)) {
       return;
     }
     schedulePrefetch(link.href);
@@ -558,7 +636,7 @@
 
   document.addEventListener("touchstart", function (event) {
     var link = findPortalLink(event.target);
-    if (!link || !shouldHandleLink(link)) {
+    if (!link || !shouldPrefetchLink(link)) {
       return;
     }
     prefetchPage(link.href);
@@ -625,4 +703,16 @@
   } else {
     scheduleInitialPortalReady();
   }
+
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted) {
+      clearPrefetchCache();
+    }
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible") {
+      clearPrefetchCache();
+    }
+  });
 })();

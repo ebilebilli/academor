@@ -717,7 +717,6 @@ def _attach_quiz_attempt_flags(student_id, quizzes):
     return enriched
 
 
-@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_student_quizzes_for_category(student_id, category_id):
     from portals.utils.student_courses import quiz_visible_to_student
 
@@ -797,6 +796,10 @@ def serialize_quiz_result(row):
     quiz = row.quiz
     if question_count is None:
         question_count = row.quiz.questions.count()
+    completion_trigger = getattr(row, 'completion_trigger', 'manual') or 'manual'
+    from portals.models import QuizResult as QuizResultModel
+    trigger_labels = dict(QuizResultModel.CompletionTrigger.choices)
+    time_limit_seconds = quiz.time_limit_seconds or 0
     return {
         'id': row.pk,
         'student_id': row.student_id,
@@ -809,6 +812,13 @@ def serialize_quiz_result(row):
         'total_score': row.total_score,
         'max_value': quiz.score_max_value(question_count=question_count),
         'duration_sec': row.duration_sec,
+        'is_time_limited': bool(quiz.is_time_limited and quiz.time_limit_minutes),
+        'time_limit_minutes': quiz.time_limit_minutes,
+        'time_limit_seconds': time_limit_seconds,
+        'completion_trigger': completion_trigger,
+        'completion_trigger_label': trigger_labels.get(completion_trigger, completion_trigger),
+        'auto_completed': completion_trigger in ('time_limit', 'auto_leave'),
+        'timed_out': completion_trigger == 'time_limit',
         'student_submission': row.student_submission,
         'teacher_feedback': row.teacher_feedback,
         'reviewed_at': row.reviewed_at,
@@ -1198,7 +1208,6 @@ def get_student_quiz_take_data(student_id, quiz_id):
     }
 
 
-@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_student_manual_quiz_take_data(student_id, quiz_id):
     from portals.utils.student_courses import quiz_visible_to_student
     from portals.utils.quiz_submit import build_essay_question_responses, student_can_take_manual_quiz
@@ -1445,7 +1454,6 @@ def get_student_video_records(student_id):
     return [serialize_video_record(row) for row in qs]
 
 
-@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_student_scores(student_id):
     from portals.utils.student_courses import filter_quiz_results_for_student
 
@@ -1558,7 +1566,6 @@ def get_parent_child_scores(student_id):
     return get_student_admin_scores(student_id)
 
 
-@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_student_quiz_results(student_id):
     from portals.utils.student_courses import filter_quiz_results_for_student
 

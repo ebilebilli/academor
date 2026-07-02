@@ -1,111 +1,113 @@
-{% extends "portals/base.html" %}
-{% load static i18n portal_tags %}
-
-{% block title %}{% if result.is_pending_review %}{% trans 'Review submission' %}{% else %}{% trans 'View submission' %}{% endif %}{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}">
-{% endblock %}
-
-{% block content %}
-<div class="portal-control-bar mb-3">
-  <a class="btn btn-outline-secondary btn-sm" href="{{ back_url }}">
-    <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'Back' %}
-  </a>
-</div>
-
-{% if result.is_pending_review %}
-{% portal_page_heading icon="bi-ui-checks" eyebrow="Teacher" raw_title=result.quiz_topic raw_subtitle=result.grading_mode_label %}
-{% else %}
-{% portal_page_heading icon="bi-eye" eyebrow="Teacher" raw_title=result.quiz_topic raw_subtitle=result.grading_mode_label %}
-{% endif %}
-
-<div class="portal-quiz-play-meta mb-3">
-  <span class="badge rounded-pill text-bg-light border px-3 py-2">{{ result.student_name }}</span>
-  <span class="badge rounded-pill text-bg-light border px-3 py-2">{{ result.completed_at|portal_datetime }}</span>
-  {% if not result.is_pending_review and result.total_score is not None %}
-  <span class="badge rounded-pill text-bg-primary px-3 py-2">
-    {% trans 'Score' %}: {{ result.total_score|format_quiz_score }}/{{ result.max_value|format_quiz_score }}
-  </span>
-  {% endif %}
-</div>
-
-{% if result.is_listening and result.listening_sections %}
-<section class="panel mb-4">
-  <h2 class="h6 mb-3">{% trans 'Listening tasks' %}</h2>
-  <div class="portal-listening-stack">
-    {% for section in result.listening_sections %}
-    {% include "portals/includes/quiz_listening_section.html" with section=section show_response_input=True view_only=True %}
-    {% endfor %}
-  </div>
-</section>
-{% else %}
-<section class="panel mb-4">
-  <h2 class="h6 mb-3">{% trans 'Prompts' %}</h2>
-  <div class="portal-quiz-writing-stack">
-    {% for q in result.questions %}
-    {% include "portals/includes/quiz_manual_prompt.html" with q=q number=forloop.counter show_response_input=False view_only=True %}
-    {% endfor %}
-  </div>
-</section>
-
-<section class="panel mb-4">
-  <h2 class="h6 mb-3">{% trans 'Student submission' %}</h2>
-  {% if result.question_responses %}
-  <div class="portal-quiz-writing-stack">
-    {% for item in result.question_responses %}
-    <article class="panel mb-3">
-      <p class="fw-semibold mb-2">{% blocktrans with num=item.number %}Task {{ num }}{% endblocktrans %}</p>
-      {% if item.question %}
-      <div class="text-muted small mb-2">{{ item.question|safe }}</div>
-      {% endif %}
-      <div class="portal-quiz-writing-area__readonly">{{ item.student_answer|linebreaksbr }}</div>
-    </article>
-    {% endfor %}
-  </div>
-  {% else %}
-  <div class="portal-quiz-writing-area__readonly">{{ result.student_submission|linebreaksbr }}</div>
-  {% endif %}
-</section>
-{% endif %}
-
-{% if result.is_pending_review %}
-<form method="post" class="panel">
-  {% csrf_token %}
-  <h2 class="h6 mb-3">{% trans 'Your review' %}</h2>
-  <div class="mb-3">
-    <label class="form-label" for="total_score">{% trans 'Score (out of 10)' %}</label>
-    <input
-      type="number"
-      step="0.01"
-      min="0"
-      max="10"
-      class="form-control"
-      id="total_score"
-      name="total_score"
-      value="{% if result.total_score is not None %}{{ result.total_score|format_quiz_score }}{% endif %}"
-      required
-    >
-    <div class="form-text">{% trans 'Listening, essay, and speaking tasks are graded on a 0–10 scale. Decimal scores are allowed (e.g. 7.25).' %}</div>
-  </div>
-  <div class="mb-3">
-    <label class="form-label" for="teacher_feedback">{% trans 'Feedback and corrections' %}</label>
-    <textarea class="form-control" id="teacher_feedback" name="teacher_feedback" rows="6">{{ result.teacher_feedback }}</textarea>
-  </div>
-  <button type="submit" class="btn btn-primary">{% trans 'Save review' %}</button>
-</form>
-{% else %}
-<section class="panel">
-  <h2 class="h6 mb-3">{% trans 'Your review' %}</h2>
-  {% if result.teacher_feedback %}
-  <div class="portal-lesson-description">{{ result.teacher_feedback|linebreaksbr }}</div>
-  {% else %}
-  <p class="text-muted mb-0">{% trans 'No feedback provided.' %}</p>
-  {% endif %}
-  {% if result.reviewed_at %}
-  <p class="text-muted small mb-0 mt-3">{% trans 'Reviewed' %}: {{ result.reviewed_at|portal_datetime }}</p>
-  {% endif %}
-</section>
-{% endif %}
-{% endblock %}
+{% extends "portals/base.html" %}
+{% load static i18n portal_tags %}
+
+{% block title %}{% if result.is_pending_review %}{% trans 'Review submission' %}{% else %}{% trans 'View submission' %}{% endif %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="portal-control-bar mb-3">
+  <a class="btn btn-outline-secondary btn-sm" href="{{ back_url }}">
+    <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'Back' %}
+  </a>
+</div>
+
+{% if result.is_pending_review %}
+{% portal_page_heading icon="bi-ui-checks" eyebrow="Teacher" raw_title=result.quiz_topic raw_subtitle=result.grading_mode_label %}
+{% else %}
+{% portal_page_heading icon="bi-eye" eyebrow="Teacher" raw_title=result.quiz_topic raw_subtitle=result.grading_mode_label %}
+{% endif %}
+
+<div class="portal-quiz-play-meta mb-3">
+  <span class="badge rounded-pill text-bg-light border px-3 py-2">{{ result.student_name }}</span>
+  <span class="badge rounded-pill text-bg-light border px-3 py-2">{{ result.completed_at|portal_datetime }}</span>
+  {% if not result.is_pending_review and result.total_score is not None %}
+  <span class="badge rounded-pill text-bg-primary px-3 py-2">
+    {% trans 'Score' %}: {{ result.total_score|format_quiz_score }}/{{ result.max_value|format_quiz_score }}
+  </span>
+  {% endif %}
+</div>
+
+{% include "portals/includes/quiz_attempt_timing_panel.html" with result=result %}
+
+{% if result.is_listening and result.listening_sections %}
+<section class="panel mb-4">
+  <h2 class="h6 mb-3">{% trans 'Listening tasks' %}</h2>
+  <div class="portal-listening-stack">
+    {% for section in result.listening_sections %}
+    {% include "portals/includes/quiz_listening_section.html" with section=section show_response_input=True view_only=True review_mode=True %}
+    {% endfor %}
+  </div>
+</section>
+{% else %}
+<section class="panel mb-4">
+  <h2 class="h6 mb-3">{% trans 'Prompts' %}</h2>
+  <div class="portal-quiz-writing-stack">
+    {% for q in result.questions %}
+    {% include "portals/includes/quiz_manual_prompt.html" with q=q number=forloop.counter show_response_input=False view_only=True %}
+    {% endfor %}
+  </div>
+</section>
+
+<section class="panel mb-4">
+  <h2 class="h6 mb-3">{% trans 'Student submission' %}</h2>
+  {% if result.question_responses %}
+  <div class="portal-quiz-writing-stack">
+    {% for item in result.question_responses %}
+    <article class="panel mb-3">
+      <p class="fw-semibold mb-2">{% blocktrans with num=item.number %}Task {{ num }}{% endblocktrans %}</p>
+      {% if item.question %}
+      <div class="text-muted small mb-2">{{ item.question|safe }}</div>
+      {% endif %}
+      <div class="portal-quiz-writing-area__readonly">{{ item.student_answer|linebreaksbr }}</div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="portal-quiz-writing-area__readonly">{{ result.student_submission|linebreaksbr }}</div>
+  {% endif %}
+</section>
+{% endif %}
+
+{% if result.is_pending_review %}
+<form method="post" class="panel">
+  {% csrf_token %}
+  <h2 class="h6 mb-3">{% trans 'Your review' %}</h2>
+  <div class="mb-3">
+    <label class="form-label" for="total_score">{% trans 'Score (out of 10)' %}</label>
+    <input
+      type="number"
+      step="0.01"
+      min="0"
+      max="10"
+      class="form-control"
+      id="total_score"
+      name="total_score"
+      value="{% if result.total_score is not None %}{{ result.total_score|format_quiz_score }}{% endif %}"
+      required
+    >
+    <div class="form-text">{% trans 'Listening, essay, and speaking tasks are graded on a 0–10 scale. Decimal scores are allowed (e.g. 7.25).' %}</div>
+  </div>
+  <div class="mb-3">
+    <label class="form-label" for="teacher_feedback">{% trans 'Feedback and corrections' %}</label>
+    <textarea class="form-control" id="teacher_feedback" name="teacher_feedback" rows="6">{{ result.teacher_feedback }}</textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">{% trans 'Save review' %}</button>
+</form>
+{% else %}
+<section class="panel">
+  <h2 class="h6 mb-3">{% trans 'Your review' %}</h2>
+  {% if result.teacher_feedback %}
+  <div class="portal-lesson-description">{{ result.teacher_feedback|linebreaksbr }}</div>
+  {% else %}
+  <p class="text-muted mb-0">{% trans 'No feedback provided.' %}</p>
+  {% endif %}
+  {% if result.reviewed_at %}
+  <p class="text-muted small mb-0 mt-3">{% trans 'Reviewed' %}: {{ result.reviewed_at|portal_datetime }}</p>
+  {% endif %}
+</section>
+{% endif %}
+{% endblock %}
 

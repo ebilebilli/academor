@@ -93,7 +93,7 @@ class TeacherNotificationsView(TeacherRequiredMixin, View):
                 period=period,
                 period_choices=PERIOD_CHOICES,
                 notifications_url_name='portals:teacher-notifications',
-                notifications_subtitle=_('Quiz submissions and published results from your students.'),
+                notifications_subtitle=_('Published quiz results from your students.'),
             ),
         )
 

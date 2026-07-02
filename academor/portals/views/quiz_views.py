@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.views import View
 
+from portals.models import QuizResult
 from portals.utils.portal_session import (
     clear_quiz_attempt_start,
     get_quiz_attempt_start,
@@ -22,7 +23,6 @@ from portals.utils.queries import (
     serialize_teacher,
 )
 from portals.utils.quiz_submit import (
-    student_has_quiz_attempt,
     submit_manual_quiz_attempt,
     submit_teacher_quiz_review,
     submit_variant_quiz_attempt,
@@ -43,10 +43,6 @@ class StudentQuizTakeView(StudentQuizTakeRequiredMixin, View):
 
     def get(self, request, pk):
         profile = get_student_profile(request.portal_user)
-        if student_has_quiz_attempt(profile.pk, pk):
-            messages.info(request, _('You have already completed this quiz.'))
-            return redirect('portals:student-scores')
-
         quiz = get_student_quiz_take_data(profile.pk, pk)
         if not quiz:
             raise Http404
@@ -100,7 +96,18 @@ class StudentQuizStartView(StudentQuizTakeRequiredMixin, View):
                 status=400,
             )
 
-        set_quiz_attempt_start(request, pk)
+        existing_result = QuizResult.objects.filter(
+            student_id=profile.pk,
+            quiz_id=pk,
+        ).first()
+        is_retest = bool(existing_result and existing_result.reviewed_at is not None)
+
+        if is_retest:
+            clear_quiz_attempt_start(request, pk)
+            set_quiz_attempt_start(request, pk)
+        elif not get_quiz_attempt_start(request, pk):
+            set_quiz_attempt_start(request, pk)
+
         return JsonResponse({'success': True})
 
 
@@ -149,6 +156,7 @@ class StudentQuizSubmitView(StudentQuizTakeRequiredMixin, View):
             given_answers=payload.get('answers') or {},
             duration_sec=int(payload.get('duration_sec') or 0),
             session_started_at=session_started_at,
+            completion_trigger=payload.get('completion_trigger'),
         )
         if not result.get('success'):
             status = 400
@@ -193,6 +201,7 @@ class StudentManualQuizSubmitView(StudentQuizTakeRequiredMixin, View):
             duration_sec=int(payload.get('duration_sec') or 0),
             session_started_at=session_started_at,
             allow_empty_submission=bool(payload.get('allow_empty')),
+            completion_trigger=payload.get('completion_trigger'),
         )
         if not result.get('success'):
             return JsonResponse(result, status=400)

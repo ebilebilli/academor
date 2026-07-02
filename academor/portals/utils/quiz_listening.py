@@ -1,4 +1,5 @@
 """Listening-quiz helpers built on ListeningAudio / ListeningQuestion models."""
+
 from portals.models import ListeningAudio, ListeningQuestion, Quiz
 
 
@@ -36,6 +37,27 @@ def serialize_listening_audio(audio: ListeningAudio) -> dict:
     }
 
 
+def listening_correct_option_index(question: ListeningQuestion) -> int | None:
+    options = question.variant_options
+    if len(options) < 2:
+        return None
+    correct = (question.correct_answer or '').strip()
+    if correct and correct in options:
+        return options.index(correct)
+    index = question.correct_option_index
+    if 0 <= index < len(options):
+        return index
+    return None
+
+
+def listening_selected_option_index(question: ListeningQuestion, raw_value) -> int | None:
+    from portals.utils.quiz_submit import _looks_like_variant_index
+
+    if not _looks_like_variant_index(raw_value, question):
+        return None
+    return int(str(raw_value).strip())
+
+
 def serialize_listening_question(
     question: ListeningQuestion,
     *,
@@ -46,7 +68,7 @@ def serialize_listening_question(
 
     options = question.variant_options
     is_variant = len(options) >= 2
-    return {
+    payload = {
         'id': question.pk,
         'audio_id': question.audio_id,
         'question': question.question,
@@ -59,6 +81,20 @@ def serialize_listening_question(
         'is_variant': is_variant,
         'answer_options': options if is_variant else [],
     }
+    if is_variant:
+        correct_index = listening_correct_option_index(question)
+        selected_index = listening_selected_option_index(question, student_answer)
+        is_correct = None
+        if correct_index is not None and selected_index is not None:
+            is_correct = selected_index == correct_index
+        payload.update({
+            'correct_option_index': correct_index,
+            'correct_answer': question.correct_answer,
+            'selected_option_index': selected_index,
+            'has_selected_option': selected_index is not None,
+            'is_correct': is_correct,
+        })
+    return payload
 
 
 def build_listening_sections_for_quiz(

@@ -1,4 +1,3 @@
-from portals.utils.portal_fragment import is_portal_fragment_request
 from portals.utils.portal_session import is_portal_authenticated
 
 
@@ -24,17 +23,14 @@ def portal_notification_context(request):
         return empty
     if not is_portal_authenticated(request):
         return empty
-    # AJAX fragment nav only swaps main content — skip badge DB queries.
-    if is_portal_fragment_request(request):
-        return empty
 
     from django.urls import reverse
 
     from portals.utils.notifications import (
-    get_teacher_pending_review_count,
-    get_teacher_portal_bell_count,
-    get_unread_notification_count,
-)
+        get_teacher_pending_review_count,
+        get_teacher_portal_bell_count,
+        get_unread_notification_count,
+    )
     from portals.utils.queries import get_parent_profile, get_portal_role, get_student_profile, get_teacher_profile
 
     role = get_portal_role(request.portal_user)

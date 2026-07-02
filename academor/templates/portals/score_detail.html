@@ -25,6 +25,8 @@
   <span class="badge rounded-pill text-bg-light border px-3 py-2">{{ detail.completed_at|portal_datetime }}</span>
 </div>
 
+{% include "portals/includes/quiz_attempt_timing_panel.html" with result=detail %}
+
 {% if detail.breakdown %}
 <section class="panel mb-4">
   <h2 class="h6 mb-3">{% trans 'Answers' %}</h2>
@@ -46,6 +48,16 @@
   </div>
 </section>
 {% else %}
+{% if detail.is_listening and detail.listening_sections %}
+<section class="panel mb-4">
+  <h2 class="h6 mb-3">{% trans 'Listening tasks' %}</h2>
+  <div class="portal-listening-stack">
+    {% for section in detail.listening_sections %}
+    {% include "portals/includes/quiz_listening_section.html" with section=section show_response_input=True view_only=True review_mode=True %}
+    {% endfor %}
+  </div>
+</section>
+{% else %}
 <section class="panel mb-4">
   <h2 class="h6 mb-3">{% trans 'Prompts' %}</h2>
   <div class="portal-quiz-writing-stack">
@@ -54,8 +66,9 @@
     {% endfor %}
   </div>
 </section>
+{% endif %}
 
-{% if detail.question_responses %}
+{% if detail.question_responses and not detail.is_listening %}
 <section class="panel mb-4">
   <h2 class="h6 mb-3">{% trans 'Student submission' %}</h2>
   <div class="portal-quiz-writing-stack">

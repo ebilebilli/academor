@@ -1,0 +1,28 @@
+{% load i18n portal_tags %}
+<div class="portal-quiz-play-options portal-quiz-teacher-options portal-quiz-play-options--listening" role="list">
+  {% if not q.has_selected_option %}
+  <p class="text-muted small mb-2">{% trans 'No answer submitted.' %}</p>
+  {% endif %}
+  {% for option in q.answer_options %}
+  <div
+    class="portal-quiz-play-option portal-quiz-teacher-option portal-quiz-play-option--listening{% if q.correct_option_index is not None and forloop.counter0 == q.correct_option_index %} is-correct{% endif %}{% if q.has_selected_option and forloop.counter0 == q.selected_option_index %} is-selected{% if q.is_correct is False %} is-wrong{% endif %}{% endif %}"
+    role="listitem"
+  >
+    <span class="portal-quiz-play-option__letter">{{ forloop.counter0|quiz_option_letter|upper }}</span>
+    <span class="portal-quiz-play-option__text">{{ option }}</span>
+    <span class="portal-quiz-teacher-option-marks">
+      {% if q.correct_option_index is not None and forloop.counter0 == q.correct_option_index %}
+      <span class="portal-quiz-teacher-correct-mark" title="{% trans 'Correct answer' %}">
+        <i class="bi bi-check-lg" aria-hidden="true"></i>
+        <span class="visually-hidden">{% trans 'Correct answer' %}</span>
+      </span>
+      {% endif %}
+      {% if q.has_selected_option and forloop.counter0 == q.selected_option_index %}
+      <span class="badge rounded-pill {% if q.is_correct %}text-bg-success{% else %}text-bg-danger{% endif %}">
+        {% trans 'Student' %}
+      </span>
+      {% endif %}
+    </span>
+  </div>
+  {% endfor %}
+</div>

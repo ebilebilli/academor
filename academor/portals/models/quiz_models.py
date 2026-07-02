@@ -422,9 +422,20 @@ class QuizResult(models.Model):
         verbose_name=_('Total score'),
         help_text=_('Manual-review quizzes: score from 0 to 10. Variant quizzes: auto-calculated.'),
     )
+    class CompletionTrigger(models.TextChoices):
+        MANUAL = 'manual', _('Submitted by student')
+        TIME_LIMIT = 'time_limit', _('Auto-submitted when time ran out')
+        AUTO_LEAVE = 'auto_leave', _('Auto-submitted when student left')
+
     duration_sec = models.PositiveIntegerField(
         default=0,
         verbose_name=_('Duration (seconds)'),
+    )
+    completion_trigger = models.CharField(
+        max_length=20,
+        choices=CompletionTrigger.choices,
+        default=CompletionTrigger.MANUAL,
+        verbose_name=_('Completion trigger'),
     )
     teacher_feedback = models.TextField(
         blank=True,

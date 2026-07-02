@@ -47,6 +47,12 @@
           {% endif %}
           {% block content %}{% endblock %}
           {% block page_data %}{% endblock %}
+          <div
+            hidden
+            id="portal-badge-snapshot"
+            data-unread-notifications="{{ portal_unread_notifications|default:0 }}"
+            aria-hidden="true"
+          ></div>
         </div>
       </main>
       {% include "portals/includes/footer.html" %}
@@ -58,7 +64,7 @@
   {% endif %}
   <script defer src="{% static 'portals/js/bootstrap.bundle.min.js' %}"></script>
   <script defer src="{% static 'portals/js/main.js' %}"></script>
-  <script defer src="{% static 'portals/js/portal-nav-ajax.js' %}"></script>
+  <script defer src="{% static 'portals/js/portal-nav-ajax.js' %}?v=20260703"></script>
   <script defer src="{% static 'portals/js/portal-init.js' %}"></script>
   {% block extra_js %}{% endblock %}
 </body>

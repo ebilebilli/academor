@@ -15,6 +15,7 @@ from portals.models import (
     ListeningAudio,
     ListeningQuestion,
     ParentProfile,
+    PortalNotification,
     Quiz,
     QuizCategory,
     QuizQuestion,
@@ -96,6 +97,7 @@ for _model in (
     Quiz,
     QuizQuestion,
     QuizResult,
+    PortalNotification,
     ListeningAudio,
     ListeningQuestion,
 ):

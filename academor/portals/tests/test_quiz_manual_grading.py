@@ -413,6 +413,47 @@ class QuizManualGradingTests(QuizVisibilityTests):
         result = QuizResult.objects.get(student=self.student, quiz=self.ielts_quiz)
         self.assertEqual(result.given_answers[str(question.pk)], '0')
 
+    def test_listening_variant_review_includes_option_metadata(self):
+        from portals.models import ListeningAudio, ListeningQuestion
+        from portals.utils.queries import get_teacher_quiz_result_detail, serialize_quiz_result_review
+        from portals.utils.quiz_submit import submit_manual_quiz_attempt
+
+        self.ielts_quiz.is_listening = True
+        self.ielts_quiz.save(update_fields=['is_listening'])
+        audio = ListeningAudio.objects.create(
+            quiz=self.ielts_quiz,
+            order=1,
+            title='Section 1',
+            audio_url='https://example.com/audio.mp3',
+        )
+        question = ListeningQuestion.objects.create(
+            audio=audio,
+            order=1,
+            question='Choose the correct option.',
+            answer_options=['First option', 'Second option'],
+            correct_answer='First option',
+        )
+
+        submit_manual_quiz_attempt(
+            student_id=self.student.pk,
+            quiz_id=self.ielts_quiz.pk,
+            given_answers={str(question.pk): '0'},
+        )
+        result = QuizResult.objects.get(student=self.student, quiz=self.ielts_quiz)
+        review = serialize_quiz_result_review(result)
+        variant = review['listening_sections'][0]['questions'][0]
+        self.assertTrue(variant['is_variant'])
+        self.assertEqual(variant['selected_option_index'], 0)
+        self.assertTrue(variant['has_selected_option'])
+        self.assertEqual(variant['correct_option_index'], 0)
+        self.assertTrue(variant['is_correct'])
+        self.assertEqual(variant['student_answer_display'], 'First option')
+
+        teacher_review = get_teacher_quiz_result_detail(self.teacher.pk, result.pk)
+        self.assertIsNotNone(teacher_review)
+        teacher_variant = teacher_review['listening_sections'][0]['questions'][0]
+        self.assertEqual(teacher_variant['selected_option_index'], 0)
+
     def test_listening_pending_submission_is_view_only(self):
         from portals.models import ListeningAudio, ListeningQuestion
         from portals.utils.queries import get_student_manual_quiz_take_data

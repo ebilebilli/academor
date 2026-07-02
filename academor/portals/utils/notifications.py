@@ -17,6 +17,7 @@ from portals.models import (
     StudyGroup,
 )
 from portals.utils.portal_services import expand_course_types_to_service_slugs
+from portals.utils.queries import serialize_quiz_question
 from portals.utils.student_courses import get_quiz_service_code, teacher_can_see_quiz_result
 
 
@@ -48,14 +49,12 @@ def _teacher_ids_for_quiz_result(result: QuizResult) -> set[int]:
 
 
 def create_teacher_submission_notifications(result: QuizResult) -> None:
-    """Manual quiz submitted — notify teachers in the review bell list."""
-    for teacher_id in _teacher_ids_for_quiz_result(result):
-        PortalNotification.objects.update_or_create(
-            teacher_id=teacher_id,
-            quiz_result=result,
-            kind=PortalNotification.Kind.SUBMISSION_PENDING,
-            defaults={'is_read': False},
-        )
+    """Manual quiz submitted — teachers use the review queue, not the bell list."""
+    PortalNotification.objects.filter(
+        quiz_result=result,
+        kind=PortalNotification.Kind.SUBMISSION_PENDING,
+        teacher__isnull=False,
+    ).delete()
 
 
 def create_student_submission_notification(result: QuizResult) -> None:
@@ -271,7 +270,7 @@ def get_notifications(
             teacher_id=teacher_id,
             parent_id=parent_id,
             student_id=student_id,
-            teacher_kind=None if teacher_id else PortalNotification.Kind.RESULT_PUBLISHED,
+            teacher_kind=PortalNotification.Kind.RESULT_PUBLISHED,
         ),
         period,
     )
@@ -412,6 +411,8 @@ def _serialize_score_detail(row: QuizResult, *, role: str) -> dict:
         'student': 'portals:student-notifications',
     }
     latest_review = row.reviews.select_related('reviewer__user').first()
+    completion_trigger = getattr(row, 'completion_trigger', 'manual') or 'manual'
+    trigger_labels = dict(QuizResult.CompletionTrigger.choices)
     data = {
         'id': row.pk,
         'student_name': row.student.full_name,
@@ -422,6 +423,12 @@ def _serialize_score_detail(row: QuizResult, *, role: str) -> dict:
         'total_score': row.total_score,
         'max_value': max_value,
         'duration_sec': row.duration_sec,
+        'is_time_limited': bool(quiz.is_time_limited and quiz.time_limit_minutes),
+        'time_limit_minutes': quiz.time_limit_minutes,
+        'time_limit_seconds': quiz.time_limit_seconds or 0,
+        'completion_trigger': completion_trigger,
+        'completion_trigger_label': trigger_labels.get(completion_trigger, completion_trigger),
+        'timed_out': completion_trigger == QuizResult.CompletionTrigger.TIME_LIMIT,
         'completed_at': row.completed_at,
         'reviewed_at': row.reviewed_at,
         'student_submission': row.student_submission,
@@ -431,25 +438,24 @@ def _serialize_score_detail(row: QuizResult, *, role: str) -> dict:
     }
     if quiz.is_variant_quiz:
         data['breakdown'] = _build_variant_breakdown(row)
+    elif quiz.is_listening:
+        from portals.utils.quiz_listening import build_listening_sections_for_quiz
+
+        response_map = {
+            str(key): str(value)
+            for key, value in (row.given_answers or {}).items()
+        }
+        data['is_listening'] = True
+        data['listening_sections'] = build_listening_sections_for_quiz(
+            quiz.pk,
+            response_map=response_map,
+        )
+        data['question_responses'] = build_essay_question_responses(row)
     elif quiz.is_essay or quiz.uses_per_question_text_responses:
         data['question_responses'] = build_essay_question_responses(row)
-        data['questions'] = [
-            {
-                'id': q.pk,
-                'question': q.question,
-                'order': q.order,
-            }
-            for q in quiz.questions.all()
-        ]
+        data['questions'] = [serialize_quiz_question(q) for q in quiz.questions.all()]
     else:
-        data['questions'] = [
-            {
-                'id': q.pk,
-                'question': q.question,
-                'order': q.order,
-            }
-            for q in quiz.questions.all()
-        ]
+        data['questions'] = [serialize_quiz_question(q) for q in quiz.questions.all()]
     return data
 
 

@@ -15,7 +15,6 @@
 
   function bindContentLoaded(fn) {
     onReady(fn);
-    document.addEventListener("portal:content-loaded", fn);
   }
 
   /* ── Service tabs (classrooms, quiz categories) ── */

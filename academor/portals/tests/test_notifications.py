@@ -20,6 +20,7 @@ from portals.models import (
 )
 from portals.utils.notifications import (
     delete_notification,
+    get_notifications,
     get_unread_notification_count,
     mark_notification_read,
 )
@@ -150,7 +151,7 @@ class PortalNotificationTests(TestCase):
                 teacher=self.teacher,
                 kind=PortalNotification.Kind.SUBMISSION_PENDING,
             ).count(),
-            1,
+            0,
         )
         self.assertEqual(get_teacher_portal_bell_count(self.teacher.pk), 0)
         self.assertEqual(PortalNotification.objects.filter(parent=self.parent).count(), 0)
@@ -161,6 +162,10 @@ class PortalNotificationTests(TestCase):
             ).count(),
             1,
         )
+        items = get_notifications(student_id=self.student.pk)
+        self.assertEqual(len(items), 1)
+        self.assertTrue(items[0]['is_submission_pending'])
+        self.assertFalse(items[0]['is_read'])
 
     def test_manual_review_publishes_to_student_and_parent(self):
         self.quiz.is_essay = True

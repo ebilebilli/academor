@@ -22,8 +22,12 @@
       <p class="portal-quiz-prompt__missing text-muted small mb-0">{% trans 'Media not available.' %}</p>
       {% endif %}
       {% endwith %}
-    {% elif q.prompt_type == 'audio' and media_src %}
-    <audio controls preload="metadata" class="portal-quiz-prompt-media__audio" src="{{ media_src }}"></audio>
+    {% elif q.prompt_type == 'audio' %}
+    {% if media_src %}
+    <audio controls controlsList="nodownload noplaybackrate" preload="metadata" class="portal-quiz-prompt-media__audio" src="{{ media_src }}"{% if audio_play_once %} data-listening-play-once{% endif %}></audio>
+    {% else %}
+    <p class="portal-quiz-prompt__missing text-muted small mb-0">{% trans 'Media not available.' %}</p>
+    {% endif %}
     {% elif not media_src %}
     <p class="portal-quiz-prompt__missing text-muted small mb-0">{% trans 'Media not available.' %}</p>
     {% endif %}

@@ -1,166 +1,181 @@
-{% extends "portals/base.html" %}
-{% load static i18n portal_tags %}
-
-{% block title %}{{ quiz.topic }}{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}">
-{% endblock %}
-
-{% block content %}
-<div class="portal-control-bar mb-3">
-  <a
-    class="btn btn-outline-secondary btn-sm"
-    href="{{ back_url }}"
-    {% if not quiz.view_only %}data-quiz-leave-link{% endif %}
-  >
-    <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'Back' %}
-  </a>
-</div>
-
-{% portal_page_heading icon="bi-ui-checks" raw_title=quiz.topic raw_subtitle=quiz.grading_mode_label %}
-
-<div
-  class="portal-quiz-take{% if quiz.is_time_limited %} portal-quiz-take--timed{% endif %}{% if not quiz.view_only %} portal-quiz-take--has-dock{% endif %}"
-  {% if not quiz.view_only %}data-quiz-manual-take data-quiz-started="false"{% endif %}
-  data-quiz-essay="{{ quiz.is_essay|yesno:'true,false' }}"
-  data-quiz-text-responses="{{ quiz.uses_per_question_text_responses|yesno:'true,false' }}"
-  data-question-ids="[{% for qid in quiz.response_question_ids %}{{ qid }}{% if not forloop.last %},{% endif %}{% endfor %}]"
-  data-submit-url="{{ submit_url }}"
-  data-time-limit-sec="{{ quiz.time_limit_seconds|default:0 }}"
-  data-msg-submitting="{% trans 'Submitting…' %}"
-  data-msg-error="{% trans 'Could not submit. Please try again.' %}"
-  data-msg-success="{% trans 'Submitted for teacher review.' %}"
-  data-msg-submit-label="{% trans 'Complete' %}"
-  data-msg-words="{% trans 'words' %}"
-  data-msg-ready="{% trans 'You can complete the quiz whenever you are ready.' %}"
-  data-msg-leave-warning="{% trans 'If you leave this page now, your quiz will be counted as completed and sent for teacher review.' %}"
->
-  <div class="portal-manual-quiz-layout{% if quiz.view_only and quiz.is_pending_review %} portal-manual-quiz-layout--with-aside{% endif %}">
-    <div class="portal-manual-quiz-layout__main">
-      <div data-quiz-take-content{% if not quiz.view_only %} hidden{% endif %}>
-        <div class="portal-quiz-take-toolbar panel mb-3{% if quiz.is_time_limited %} portal-quiz-take-toolbar--timed{% endif %}">
-          <div class="portal-quiz-take-toolbar__row">
-            <div class="portal-quiz-take-meta">
-              <span class="badge rounded-pill text-bg-primary px-3 py-2">{{ quiz.grading_mode_label }}</span>
-              {% if quiz.is_time_limited %}
-              <span class="badge rounded-pill text-bg-light border px-3 py-2">
-                <i class="bi bi-hourglass-split me-1" aria-hidden="true"></i>{% blocktrans with minutes=quiz.time_limit_minutes %}{{ minutes }} min limit{% endblocktrans %}
-              </span>
-              {% endif %}
-              {% if quiz.view_only %}
-              <span class="badge rounded-pill text-bg-light border px-3 py-2">
-                <i class="bi bi-eye me-1" aria-hidden="true"></i>{% trans 'View only' %}
-              </span>
-              {% endif %}
-            </div>
-            {% if quiz.is_time_limited and not quiz.view_only %}
-            <div class="portal-quiz-clock" data-quiz-timer hidden>
-              <span class="portal-quiz-clock__label">{% trans 'Time left' %}</span>
-              <strong class="portal-quiz-clock__value" data-quiz-timer-value aria-live="polite">--:--</strong>
-            </div>
-            {% endif %}
-          </div>
-          {% if quiz.is_time_limited and not quiz.view_only %}
-          <div class="portal-quiz-time-bar" data-quiz-timer-bar hidden aria-hidden="true">
-            <div class="portal-quiz-time-bar__fill" data-quiz-timer-bar-fill></div>
-          </div>
-          {% endif %}
-        </div>
-        {% if quiz.is_time_limited and not quiz.view_only %}
-        <div class="portal-quiz-take-toolbar-spacer" aria-hidden="true"></div>
-        {% endif %}
-
-        {% if quiz.uses_per_question_text_responses and quiz.response_question_count > 1 and not quiz.view_only %}
-        <div class="portal-quiz-writing-progress panel mb-3" data-writing-progress>
-          <div class="portal-quiz-writing-progress__row">
-            <span class="portal-quiz-writing-progress__label">{% trans 'Progress' %}</span>
-            <span class="portal-quiz-writing-progress__value" data-writing-progress-text aria-live="polite">0 / {{ quiz.response_question_count }}</span>
-          </div>
-          <div class="portal-quiz-writing-progress__bar" aria-hidden="true">
-            <div class="portal-quiz-writing-progress__fill" data-writing-progress-fill style="width: 0%"></div>
-          </div>
-        </div>
-        {% endif %}
-
-        {% if quiz.is_listening and quiz.listening_sections %}
-        <div class="portal-listening-stack mb-4">
-          {% for section in quiz.listening_sections %}
-          {% include "portals/includes/quiz_listening_section.html" with section=section show_response_input=True view_only=quiz.view_only %}
-          {% endfor %}
-        </div>
-        {% else %}
-        <div class="portal-quiz-writing-stack mb-4">
-          {% for q in quiz.questions %}
-          {% include "portals/includes/quiz_manual_prompt.html" with q=q number=forloop.counter show_response_input=True view_only=quiz.view_only %}
-          {% endfor %}
-        </div>
-        {% endif %}
-
-        {% if not quiz.uses_per_question_text_responses %}
-        <section class="portal-quiz-writing-card portal-quiz-writing-card--solo mb-4">
-          {% include "portals/includes/quiz_writing_answer.html" with view_only=quiz.view_only student_answer=quiz.questions.0.student_answer %}
-        </section>
-        {% endif %}
-
-        {% if not quiz.view_only %}
-        <div class="portal-quiz-take-actions portal-quiz-take-actions--writing panel d-lg-none mb-4" data-quiz-take-actions-inline>
-          <button type="button" class="btn btn-primary btn-lg w-100" data-manual-submit-btn>
-            <i class="bi bi-check2-circle me-1" aria-hidden="true"></i>{% trans 'Complete' %}
-          </button>
-          <p class="portal-quiz-take-actions__hint text-muted small mb-0 mt-2" data-manual-submit-hint>
-            {% trans 'You can complete the quiz whenever you are ready.' %}
-          </p>
-        </div>
-        {% endif %}
-
-        {% if not quiz.view_only %}
-        <section class="portal-quiz-take-result panel d-none" data-manual-result hidden>
-          <div class="text-center py-3">
-            <i class="bi bi-check-circle text-success fs-1" aria-hidden="true"></i>
-            <p class="fw-semibold mt-3 mb-1">{% trans 'Submitted successfully' %}</p>
-            <p class="text-muted mb-0">{% trans 'Your teacher will review your work and publish feedback.' %}</p>
-            <div class="d-flex flex-wrap gap-2 justify-content-center mt-4">
-              <a class="btn btn-outline-secondary btn-sm" href="{{ back_url }}">{% trans 'Back to quizzes' %}</a>
-              <a class="btn btn-primary btn-sm" href="{% url 'portals:student-scores' %}">{% trans 'View scores' %}</a>
-            </div>
-          </div>
-        </section>
-        {% endif %}
-      </div>
-    </div>
-
-    {% if quiz.view_only and quiz.is_pending_review %}
-    <div class="portal-manual-quiz-layout__aside">
-      {% include "portals/includes/quiz_manual_status_aside.html" with quiz=quiz %}
-    </div>
-    {% endif %}
-  </div>
-
-  {% if not quiz.view_only %}
-  <div class="portal-quiz-take-actions portal-quiz-take-actions--writing portal-quiz-take-actions--dock panel" data-quiz-take-actions hidden>
-    <button type="button" class="btn btn-primary btn-lg" data-manual-submit-btn>
-      <i class="bi bi-check2-circle me-1" aria-hidden="true"></i>{% trans 'Complete' %}
-    </button>
-    <p class="portal-quiz-take-actions__hint text-muted small mb-0 mt-2" data-manual-submit-hint>
-      {% trans 'You can complete the quiz whenever you are ready.' %}
-    </p>
-  </div>
-  {% endif %}
-</div>
-
-{% if not quiz.view_only %}
-{% include "portals/includes/quiz_start_gate.html" %}
-{% include "portals/includes/quiz_leave_gate.html" %}
-{% endif %}
-
-{% csrf_token %}
-{% endblock %}
-
-{% block extra_js %}
-{% if not quiz.view_only %}
-<script src="{% static 'portals/js/quiz-start-gate.js' %}"></script>
-<script src="{% static 'portals/js/quiz-take-manual.js' %}"></script>
-{% endif %}
-{% endblock %}
-
+{% extends "portals/base.html" %}
+{% load static i18n portal_tags %}
+
+{% block title %}{{ quiz.topic }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20260702">
+{% endblock %}
+
+{% block content %}
+<div class="portal-control-bar mb-3">
+  <a
+    class="btn btn-outline-secondary btn-sm"
+    href="{{ back_url }}"
+    {% if not quiz.view_only %}data-quiz-leave-link{% endif %}
+  >
+    <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'Back' %}
+  </a>
+</div>
+
+{% portal_page_heading icon="bi-ui-checks" raw_title=quiz.topic raw_subtitle=quiz.grading_mode_label %}
+
+<div
+  class="portal-quiz-take{% if quiz.is_time_limited %} portal-quiz-take--timed{% endif %}{% if not quiz.view_only %} portal-quiz-take--has-dock{% endif %}"
+  {% if not quiz.view_only %}data-quiz-manual-take data-quiz-started="false"{% endif %}
+  {% if quiz.is_listening and not quiz.view_only %}
+  data-listening-auto-sequence="true"
+  data-listening-first-delay-ms="5500"
+  data-listening-gap-ms="30000"
+  data-msg-listening-first-countdown="{% trans 'First listening clip starts in' %}"
+  data-msg-listening-next-countdown="{% trans 'Next listening clip starts in' %}"
+  data-msg-listening-seconds="{% trans 'seconds' %}"
+  data-msg-listening-playing="{% trans 'Listening clip is playing…' %}"
+  data-msg-listening-all-done="{% trans 'All listening clips have finished.' %}"
+  data-msg-listening-waiting="{% trans 'Waiting — this clip will play automatically in order.' %}"
+  data-msg-listening-up-next="{% trans 'Up next — starts after the countdown.' %}"
+  data-msg-listening-live="{% trans 'Now playing' %}"
+  {% endif %}
+  data-quiz-essay="{{ quiz.is_essay|yesno:'true,false' }}"
+  data-quiz-text-responses="{{ quiz.uses_per_question_text_responses|yesno:'true,false' }}"
+  data-question-ids="[{% for qid in quiz.response_question_ids %}{{ qid }}{% if not forloop.last %},{% endif %}{% endfor %}]"
+  data-submit-url="{{ submit_url }}"
+  data-time-limit-sec="{{ quiz.time_limit_seconds|default:0 }}"
+  data-msg-submitting="{% trans 'Submitting…' %}"
+  data-msg-error="{% trans 'Could not submit. Please try again.' %}"
+  data-msg-success="{% trans 'Submitted for teacher review.' %}"
+  data-msg-submit-label="{% trans 'Complete' %}"
+  data-msg-words="{% trans 'words' %}"
+  data-msg-ready="{% trans 'You can complete the quiz whenever you are ready.' %}"
+  data-msg-leave-warning="{% trans 'If you leave this page now, your quiz will be counted as completed and sent for teacher review.' %}"
+  data-msg-listening-played="{% trans 'This clip has already been played.' %}"
+  data-msg-listening-replay-blocked="{% trans 'You cannot replay this clip from the beginning.' %}"
+>
+  <div class="portal-manual-quiz-layout{% if quiz.view_only and quiz.is_pending_review %} portal-manual-quiz-layout--with-aside{% endif %}">
+    <div class="portal-manual-quiz-layout__main">
+      <div data-quiz-take-content{% if not quiz.view_only %} hidden{% endif %}>
+        <div class="portal-quiz-take-toolbar panel mb-3{% if quiz.is_time_limited %} portal-quiz-take-toolbar--timed{% endif %}">
+          <div class="portal-quiz-take-toolbar__row">
+            <div class="portal-quiz-take-meta">
+              <span class="badge rounded-pill text-bg-primary px-3 py-2">{{ quiz.grading_mode_label }}</span>
+              {% if quiz.is_time_limited %}
+              <span class="badge rounded-pill text-bg-light border px-3 py-2">
+                <i class="bi bi-hourglass-split me-1" aria-hidden="true"></i>{% blocktrans with minutes=quiz.time_limit_minutes %}{{ minutes }} min limit{% endblocktrans %}
+              </span>
+              {% endif %}
+              {% if quiz.view_only %}
+              <span class="badge rounded-pill text-bg-light border px-3 py-2">
+                <i class="bi bi-eye me-1" aria-hidden="true"></i>{% trans 'View only' %}
+              </span>
+              {% endif %}
+            </div>
+            {% if quiz.is_time_limited and not quiz.view_only %}
+            <div class="portal-quiz-clock" data-quiz-timer hidden>
+              <span class="portal-quiz-clock__label">{% trans 'Time left' %}</span>
+              <strong class="portal-quiz-clock__value" data-quiz-timer-value aria-live="polite">--:--</strong>
+            </div>
+            {% endif %}
+          </div>
+          {% if quiz.is_time_limited and not quiz.view_only %}
+          <div class="portal-quiz-time-bar" data-quiz-timer-bar hidden aria-hidden="true">
+            <div class="portal-quiz-time-bar__fill" data-quiz-timer-bar-fill></div>
+          </div>
+          {% endif %}
+        </div>
+        {% if quiz.is_time_limited and not quiz.view_only %}
+        <div class="portal-quiz-take-toolbar-spacer" aria-hidden="true"></div>
+        {% endif %}
+
+        {% if quiz.uses_per_question_text_responses and quiz.response_question_count > 1 and not quiz.view_only %}
+        <div class="portal-quiz-writing-progress panel mb-3" data-writing-progress>
+          <div class="portal-quiz-writing-progress__row">
+            <span class="portal-quiz-writing-progress__label">{% trans 'Progress' %}</span>
+            <span class="portal-quiz-writing-progress__value" data-writing-progress-text aria-live="polite">0 / {{ quiz.response_question_count }}</span>
+          </div>
+          <div class="portal-quiz-writing-progress__bar" aria-hidden="true">
+            <div class="portal-quiz-writing-progress__fill" data-writing-progress-fill style="width: 0%"></div>
+          </div>
+        </div>
+        {% endif %}
+
+        {% if quiz.is_listening and quiz.listening_sections %}
+        <div class="portal-listening-stack mb-4"{% if not quiz.view_only %} data-listening-sequenced="true"{% endif %}>
+          {% for section in quiz.listening_sections %}
+          {% include "portals/includes/quiz_listening_section.html" with section=section show_response_input=True view_only=quiz.view_only audio_play_once=quiz.view_only|yesno:",yes" %}
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="portal-quiz-writing-stack mb-4">
+          {% for q in quiz.questions %}
+          {% include "portals/includes/quiz_manual_prompt.html" with q=q number=forloop.counter show_response_input=True view_only=quiz.view_only %}
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if not quiz.uses_per_question_text_responses %}
+        <section class="portal-quiz-writing-card portal-quiz-writing-card--solo mb-4">
+          {% include "portals/includes/quiz_writing_answer.html" with view_only=quiz.view_only student_answer=quiz.questions.0.student_answer %}
+        </section>
+        {% endif %}
+
+        {% if not quiz.view_only %}
+        <div class="portal-quiz-take-actions portal-quiz-take-actions--writing panel d-lg-none mb-4" data-quiz-take-actions-inline>
+          <button type="button" class="btn btn-primary btn-lg w-100" data-manual-submit-btn>
+            <i class="bi bi-check2-circle me-1" aria-hidden="true"></i>{% trans 'Complete' %}
+          </button>
+          <p class="portal-quiz-take-actions__hint text-muted small mb-0 mt-2" data-manual-submit-hint>
+            {% trans 'You can complete the quiz whenever you are ready.' %}
+          </p>
+        </div>
+        {% endif %}
+
+        {% if not quiz.view_only %}
+        <section class="portal-quiz-take-result panel d-none" data-manual-result hidden>
+          <div class="text-center py-3">
+            <i class="bi bi-check-circle text-success fs-1" aria-hidden="true"></i>
+            <p class="fw-semibold mt-3 mb-1">{% trans 'Submitted successfully' %}</p>
+            <p class="text-muted mb-0">{% trans 'Your teacher will review your work and publish feedback.' %}</p>
+            <div class="d-flex flex-wrap gap-2 justify-content-center mt-4">
+              <a class="btn btn-outline-secondary btn-sm" href="{{ back_url }}">{% trans 'Back to quizzes' %}</a>
+              <a class="btn btn-primary btn-sm" href="{% url 'portals:student-scores' %}">{% trans 'View scores' %}</a>
+            </div>
+          </div>
+        </section>
+        {% endif %}
+      </div>
+    </div>
+
+    {% if quiz.view_only and quiz.is_pending_review %}
+    <div class="portal-manual-quiz-layout__aside">
+      {% include "portals/includes/quiz_manual_status_aside.html" with quiz=quiz %}
+    </div>
+    {% endif %}
+  </div>
+
+  {% if not quiz.view_only %}
+  <div class="portal-quiz-take-actions portal-quiz-take-actions--writing portal-quiz-take-actions--dock panel" data-quiz-take-actions hidden>
+    <button type="button" class="btn btn-primary btn-lg" data-manual-submit-btn>
+      <i class="bi bi-check2-circle me-1" aria-hidden="true"></i>{% trans 'Complete' %}
+    </button>
+    <p class="portal-quiz-take-actions__hint text-muted small mb-0 mt-2" data-manual-submit-hint>
+      {% trans 'You can complete the quiz whenever you are ready.' %}
+    </p>
+  </div>
+  {% endif %}
+</div>
+
+{% if not quiz.view_only %}
+{% include "portals/includes/quiz_start_gate.html" %}
+{% include "portals/includes/quiz_leave_gate.html" %}
+{% endif %}
+
+{% csrf_token %}
+{% endblock %}
+
+{% block extra_js %}
+{% if not quiz.view_only %}
+<script src="{% static 'portals/js/quiz-start-gate.js' %}?v=20260703"></script>
+<script src="{% static 'portals/js/quiz-take-manual.js' %}?v=20260703"></script>
+{% endif %}
+{% endblock %}
+

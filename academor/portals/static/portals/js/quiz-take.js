@@ -206,6 +206,7 @@
         body: JSON.stringify({
           answers: collectAnswers(),
           duration_sec: elapsedSeconds(),
+          completion_trigger: options.completionTrigger || "manual",
         }),
       })
         .then(function (response) {
@@ -242,7 +243,7 @@
       if (submitting || submitted || !submitUrl) {
         return;
       }
-      submitQuiz({ keepalive: true, silent: true });
+      submitQuiz({ keepalive: true, silent: true, completionTrigger: "auto_leave" });
     }
 
     function updateTimer() {
@@ -264,7 +265,7 @@
         if (timerId) {
           window.clearInterval(timerId);
         }
-        submitQuiz();
+        submitQuiz({ completionTrigger: "time_limit" });
       }
     }
 
@@ -283,7 +284,7 @@
 
     if (finishBtn) {
       finishBtn.addEventListener("click", function () {
-        submitQuiz();
+        submitQuiz({ completionTrigger: "manual" });
       });
     }
 

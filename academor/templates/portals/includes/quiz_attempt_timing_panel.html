@@ -1,0 +1,33 @@
+{% load i18n portal_tags %}
+{% if result.is_time_limited %}
+<section class="portal-quiz-timing panel mb-4" aria-label="{% trans 'Quiz timing' %}">
+  <h2 class="h6 mb-3">{% trans 'Timing' %}</h2>
+  <div class="portal-quiz-timing__grid">
+    <div class="portal-quiz-timing__item">
+      <span class="portal-quiz-timing__label">{% trans 'Time limit' %}</span>
+      <strong class="portal-quiz-timing__value">
+        {% blocktrans with minutes=result.time_limit_minutes %}{{ minutes }} min{% endblocktrans %}
+      </strong>
+    </div>
+    <div class="portal-quiz-timing__item">
+      <span class="portal-quiz-timing__label">{% trans 'Time used' %}</span>
+      <strong class="portal-quiz-timing__value">{{ result.duration_sec|format_duration_sec }}</strong>
+    </div>
+    <div class="portal-quiz-timing__item">
+      <span class="portal-quiz-timing__label">{% trans 'Completion' %}</span>
+      <strong class="portal-quiz-timing__value">{{ result.completion_trigger_label }}</strong>
+    </div>
+  </div>
+  {% if result.timed_out %}
+  <p class="portal-quiz-timing__notice portal-quiz-timing__notice--warning mb-0 mt-3">
+    <i class="bi bi-hourglass-bottom me-1" aria-hidden="true"></i>
+    {% trans 'The quiz was auto-submitted when the timer reached zero.' %}
+  </p>
+  {% elif result.completion_trigger == 'auto_leave' %}
+  <p class="portal-quiz-timing__notice portal-quiz-timing__notice--warning mb-0 mt-3">
+    <i class="bi bi-box-arrow-right me-1" aria-hidden="true"></i>
+    {% trans 'The quiz was auto-submitted when the student left the page.' %}
+  </p>
+  {% endif %}
+</section>
+{% endif %}
