@@ -63,3 +63,21 @@ def portal_notification_context(request):
             'portal_notifications_url': reverse('portals:student-notifications'),
         }
     return empty
+
+
+def portal_student_service_context(request):
+    if not request.path.startswith('/portal/'):
+        return {'portal_student_has_ielts': False}
+    if not is_portal_authenticated(request):
+        return {'portal_student_has_ielts': False}
+
+    from portals.utils.queries import get_portal_role, get_student_profile
+    from portals.utils.ielts_mock_test import student_can_access_ielts_mock
+
+    role = get_portal_role(request.portal_user)
+    if role != 'student':
+        return {'portal_student_has_ielts': False}
+    profile = get_student_profile(request.portal_user)
+    if not profile:
+        return {'portal_student_has_ielts': False}
+    return {'portal_student_has_ielts': student_can_access_ielts_mock(profile.pk)}

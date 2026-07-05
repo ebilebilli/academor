@@ -1,0 +1,387 @@
+{
+  "title": "IELTS Academic Reading — Practice Test 20",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–40</strong></p><p>You should spend about 60 minutes on <strong>Questions 1–40</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Quantum key distribution</strong></p><p><strong>A</strong> Quantum key distribution exchanges cryptographic keys encoded in quantum states of photons such that eavesdropping introduces detectable disturbances alerting communicating parties. Unlike mathematical public-key schemes vulnerable to future quantum computers, information-theoretic security of properly implemented quantum key distribution relies on physics rather than computational hardness assumptions. Fiber networks between financial centres and government campuses host early commercial links, while satellite demonstrations extend reach toward global coverage aspirations. Engineering challenges include photon loss over distance, detector dark counts, and synchronising clocks across metropolitan-scale deployments. Pilots justify costs for ultra-sensitive traffic, not yet for every consumer messaging application.</p><p><strong>B</strong> Prepare-and-measure protocols send polarised or phase-encoded pulses, while entanglement-based schemes distribute correlated pairs measured independently at distant stations. Error correction and privacy amplification distil raw key material into strings satisfying randomness tests despite channel noise. Side-channel attacks target implementation flaws in detectors or lasers rather than breaking fundamental quantum principles. Certification laboratories evaluate modules against common criteria derived from theoretical security proofs adapted to finite-size effects. The author stresses that security claims require scrutiny of entire systems, not laboratory idealisations ignoring engineering realities. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p><p><strong>C</strong> Integration with existing public-key infrastructure uses quantum-derived keys to seed symmetric algorithms protecting bulk data efficiently. Hybrid architectures maintain classical authentication while upgrading confidentiality layers, acknowledging that initial authentication may still need post-quantum signatures. Network operators debate whether dedicated dark fibers are necessary or whether quantum signals can coexist with classical channels using wavelength division. Cost models include maintenance of cryogenic or cooled detectors depending on technology choices. The writer believes phased deployment starting with backbone links balances expense against harvest-now-decrypt-later risks. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p><p><strong>D</strong> National programmes fund metropolitan testbeds linking research universities with supercomputing centres handling export-controlled simulations. Export controls restrict sale of high-performance single-photon sources to certain jurisdictions, shaping geopolitical supply chains. Standards bodies publish interface specifications so vendors build interoperable equipment rather than incompatible national silos. Procurement officers request transparency on mean time between failures affecting service availability commitments. The author contends international cooperation accelerates maturity more than secretive duplication of incompatible prototypes. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes. Policymakers increasingly demand reproducible evidence, open data, and independent evaluation before scaling interventions beyond controlled pilot settings.</p><p><strong>E</strong> Free-space links bridge rivers or connect buildings where trenching fiber is prohibitively expensive, vulnerable to weather and alignment drift. Adaptive optics correct turbulence for ground-to-satellite channels relaying keys to remote ground stations. Daylight operation remains difficult because background photons overwhelm weak quantum signals without narrow filtering. Mobile platforms on aircraft or ships experiment with stabilised terminals, though operational readiness lags fixed installations. The writer cautions that atmospheric variability demands conservative security margins in key rate calculations. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes. Policymakers increasingly demand reproducible evidence, open data, and independent evaluation before scaling interventions beyond controlled pilot settings.</p><p><strong>F</strong> Regulators examine whether quantum-secured networks require new liability frameworks when outages delay trading settlements. Insurance products emerge covering business interruption from key distribution failures distinct from classical cyber policies. Auditors verify chain-of-custody for hardware modules preventing substitution of compromised devices during logistics. Ethical debates consider equal access to quantum-safe communications for civil society groups in authoritarian contexts. The author supports dual-use governance preventing surveillance monopolies while enabling defensive upgrades for critical infrastructure. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes. Policymakers increasingly demand reproducible evidence, open data, and independent evaluation before scaling interventions beyond controlled pilot settings.</p><p><strong>G</strong> Future terrestrial networks may mesh quantum repeaters extending distances beyond current trusted-node chains splitting keys hop by hop. Repeaters remain experimental, so near-term architecture relies on carefully secured intermediate stations monitored continuously. The writer expects quantum key distribution to complement, not replace, broader post-quantum cryptography migration programmes. Education initiatives helping engineers interpret security proofs will reduce misconfigured deployments undermining theoretical guarantees. When integrated thoughtfully, quantum key distribution strengthens trust anchors for the quantum era without magical thinking. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes. Policymakers increasingly demand reproducible evidence, open data, and independent evaluation before scaling interventions beyond controlled pilot settings.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 11–15",
+          "instructions": "<p>Choose the correct heading for paragraphs <strong>B–F</strong> from the list of headings below.</p><p><em>Write the correct number, <strong>i–vii</strong>, in boxes 11–15 on your answer sheet.</em></p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "i. Medieval parchment tariff schedules",
+            "ii. Protocol types and privacy amplification",
+            "iii. Hybrid integration with classical infrastructure",
+            "iv. Testbeds, export controls, and standards",
+            "v. Free-space, satellite, and atmospheric limits",
+            "vi. Liability, insurance, and dual-use ethics",
+            "vii. Victorian steamship coal ratios"
+          ],
+          "questions": [
+            {
+              "order": 11,
+              "question": "<p>Paragraph B</p>",
+              "correct_answer": "ii. Protocol types and privacy amplification"
+            },
+            {
+              "order": 12,
+              "question": "<p>Paragraph C</p>",
+              "correct_answer": "iii. Hybrid integration with classical infrastructure"
+            },
+            {
+              "order": 13,
+              "question": "<p>Paragraph D</p>",
+              "correct_answer": "iv. Testbeds, export controls, and standards"
+            },
+            {
+              "order": 14,
+              "question": "<p>Paragraph E</p>",
+              "correct_answer": "v. Free-space, satellite, and atmospheric limits"
+            },
+            {
+              "order": 15,
+              "question": "<p>Paragraph F</p>",
+              "correct_answer": "vi. Liability, insurance, and dual-use ethics"
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "title": "Questions 16–20",
+          "instructions": "<p>Which paragraph contains the following information?</p><p><em>Write the correct letter, <strong>A–G</strong>, in boxes 16–20 on your answer sheet.</em></p>",
+          "question_type": "matching_info",
+          "option_pool": [
+            "Paragraph A",
+            "Paragraph B",
+            "Paragraph C",
+            "Paragraph D",
+            "Paragraph E",
+            "Paragraph F",
+            "Paragraph G"
+          ],
+          "questions": [
+            {
+              "order": 16,
+              "question": "<p>explanation of privacy amplification distilling raw keys</p>",
+              "correct_answer": "Paragraph B"
+            },
+            {
+              "order": 17,
+              "question": "<p>discussion of hybrid classical authentication with quantum confidentiality</p>",
+              "correct_answer": "Paragraph C"
+            },
+            {
+              "order": 18,
+              "question": "<p>reference to export controls on photon sources</p>",
+              "correct_answer": "Paragraph D"
+            },
+            {
+              "order": 19,
+              "question": "<p>mention of adaptive optics for satellite channels</p>",
+              "correct_answer": "Paragraph E"
+            },
+            {
+              "order": 20,
+              "question": "<p>a balanced view complementing post-quantum cryptography programmes</p>",
+              "correct_answer": "Paragraph G"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "tfng",
+          "question": "<p>Eavesdropping on quantum keys can introduce detectable disturbances.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 2,
+          "question_type": "tfng",
+          "question": "<p>Quantum key distribution secures all authentication without classical methods.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 3,
+          "question_type": "tfng",
+          "question": "<p>Every consumer chat app uses commercial quantum links today.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 4,
+          "question_type": "tfng",
+          "question": "<p>Side-channel attacks exploit implementation flaws in detectors.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 5,
+          "question_type": "tfng",
+          "question": "<p>Repeaters are already widely deployed in production networks.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 6,
+          "question_type": "ynng",
+          "question": "<p>The author wants scrutiny of entire engineered systems not ideals alone.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 7,
+          "question_type": "ynng",
+          "question": "<p>The writer believes quantum keys should instantly replace all post-quantum work.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 8,
+          "question_type": "ynng",
+          "question": "<p>The author supports cooperative standards over incompatible national silos.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 9,
+          "question_type": "ynng",
+          "question": "<p>The writer dismisses atmospheric effects on free-space security margins.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 10,
+          "question_type": "ynng",
+          "question": "<p>The author favours dual-use governance preventing surveillance monopolies.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 21,
+          "question_type": "sentence_completion",
+          "question": "<p>Photon loss and detector dark counts limit practical ____.</p>",
+          "correct_answer": "distance",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 22,
+          "question_type": "sentence_completion",
+          "question": "<p>Privacy amplification produces strings passing randomness ____.</p>",
+          "correct_answer": "tests",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 23,
+          "question_type": "sentence_completion",
+          "question": "<p>Wavelength division may let quantum signals coexist with ____ channels.</p>",
+          "correct_answer": "classical",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 24,
+          "question_type": "sentence_completion",
+          "question": "<p>Trusted-node chains split keys hop by ____ until repeaters mature.</p>",
+          "correct_answer": "hop",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 25,
+          "question_type": "summary_completion",
+          "question": "<p>Information-theoretic security relies on physics not computational ____ assumptions.</p>",
+          "correct_answer": "hardness",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 26,
+          "question_type": "summary_completion",
+          "question": "<p>Certification adapts proofs to finite-size ____ effects.</p>",
+          "correct_answer": "size",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 27,
+          "question_type": "summary_completion",
+          "question": "<p>Free-space links suffer alignment drift and ____ turbulence.</p>",
+          "correct_answer": "atmospheric",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 28,
+          "question_type": "summary_completion",
+          "question": "<p>Auditors verify hardware chain-of-____ during logistics.</p>",
+          "correct_answer": "custody",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 29,
+          "question_type": "table_completion",
+          "question": "<p>Channel issue | Error correction handles quantum ____</p>",
+          "correct_answer": "noise",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 30,
+          "question_type": "table_completion",
+          "question": "<p>Deployment | Phased backbone rollout addresses harvest-now-decrypt-____ risks</p>",
+          "correct_answer": "later",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 31,
+          "question_type": "table_completion",
+          "question": "<p>Education | Engineers must interpret security ____ to avoid misconfiguration</p>",
+          "correct_answer": "proofs",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 32,
+          "question_type": "mcq",
+          "question": "<p>Paragraph A positions quantum key distribution for</p>",
+          "answer_options": [
+            "every consumer app",
+            "ultra-sensitive traffic on fiber links",
+            "replacing all symmetric crypto",
+            "eliminating detectors"
+          ],
+          "correct_answer": "ultra-sensitive traffic on fiber links"
+        },
+        {
+          "order": 33,
+          "question_type": "mcq",
+          "question": "<p>According to paragraph B, finite-size effects influence</p>",
+          "answer_options": [
+            "only classical keys",
+            "certification of real modules",
+            "ban on entanglement",
+            "satellite bans"
+          ],
+          "correct_answer": "certification of real modules"
+        },
+        {
+          "order": 34,
+          "question_type": "mcq",
+          "question": "<p>Paragraph E notes daylight free-space is hard because</p>",
+          "answer_options": [
+            "background photons overwhelm signals",
+            "fiber is illegal",
+            "repeaters are mandatory",
+            "optics cannot adapt"
+          ],
+          "correct_answer": "background photons overwhelm signals"
+        },
+        {
+          "order": 35,
+          "question_type": "mcq",
+          "question": "<p>Paragraph F introduces insurance for interruptions from</p>",
+          "answer_options": [
+            "key distribution failures",
+            "classical phishing only",
+            "parchment tariffs",
+            "steamship coal"
+          ],
+          "correct_answer": "key distribution failures"
+        },
+        {
+          "order": 36,
+          "question_type": "mcq",
+          "question": "<p>The final paragraph expects quantum keys to</p>",
+          "answer_options": [
+            "replace all migration efforts",
+            "complement post-quantum cryptography programmes",
+            "end education initiatives",
+            "require magical thinking"
+          ],
+          "correct_answer": "complement post-quantum cryptography programmes"
+        },
+        {
+          "order": 37,
+          "question_type": "short_answer",
+          "question": "<p>What particles often encode quantum keys?</p>",
+          "correct_answer": "photons",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 38,
+          "question_type": "short_answer",
+          "question": "<p>What attacks target flawed detectors rather than physics?</p>",
+          "correct_answer": "side-channel",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 39,
+          "question_type": "short_answer",
+          "question": "<p>What optics correct turbulence for satellite links?</p>",
+          "correct_answer": "adaptive",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 40,
+          "question_type": "short_answer",
+          "question": "<p>What experimental devices could extend distance beyond trusted nodes?</p>",
+          "correct_answer": "repeaters",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        }
+      ]
+    }
+  ]
+}

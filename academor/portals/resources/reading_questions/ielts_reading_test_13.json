@@ -1,0 +1,387 @@
+{
+  "title": "IELTS Academic Reading — Practice Test 13",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–40</strong></p><p>You should spend about 60 minutes on <strong>Questions 1–40</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Fifth-generation mobile networks</strong></p><p><strong>A</strong> Fifth-generation mobile networks promise higher throughput, lower latency, and massive machine-type connectivity supporting industrial automation and telemedicine. Radio access networks combine mid-band spectrum with dense small cells, while core architectures virtualise functions in cloud data centres. Network slicing allocates isolated logical networks on shared hardware, enabling customised quality of service for emergency services versus consumer streaming. Deployment costs drive co-investment models between operators and municipalities seeking smart city applications on lamp posts. Regulators auction spectrum bands with coverage obligations to reduce rural digital divides that earlier generations widened. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p><p><strong>B</strong> Millimetre-wave frequencies offer wide bandwidth yet suffer penetration losses, requiring line-of-sight planning in urban canyons. Beamforming arrays steer energy toward user equipment, improving spectral efficiency while complicating interference management between neighbours. Drive tests map received signal strength, guiding technicians adjusting tilt and power to minimise dead zones in stadiums. The author notes marketing peak speeds rarely match everyday experience when users share congested cells during events. Realistic benchmarks should report median performance under loaded conditions, not laboratory peak demonstrations alone. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p><p><strong>C</strong> Edge computing places computation near base stations to support autonomous vehicle coordination and augmented reality overlays with tight latency budgets. Content delivery networks cache popular video closer to subscribers, reducing backhaul strain on fibre links. Security architects segment slices to prevent compromised internet-of-things devices from pivoting into corporate virtual private networks. Zero-touch provisioning automates onboarding thousands of sensors, though misconfigured certificates can open widespread vulnerabilities. The writer urges security-by-design reviews before citywide sensor rollouts marketed as innovation showcases. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p><p><strong>D</strong> Telemedicine pilots transmit high-resolution imaging from ambulances using guaranteed bitrate slices prioritised over recreational traffic. Rural clinics connect to urban specialists, yet reimbursement rules and licensure borders lag technical capability. Emergency drones relay situational video to incident commanders when terrestrial links saturate during disasters. Clinicians demand reliability metrics exceeding consumer service level agreements before trusting remote surgical guidance. The author contends healthcare adoption depends on institutional reform, not merely faster radios. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes. Policymakers increasingly demand reproducible evidence, open data, and independent evaluation before scaling interventions beyond controlled pilot settings.</p><p><strong>E</strong> Energy consumption of active antenna units raises sustainability questions as traffic grows exponentially with video streaming. Sleep modes and intelligent shutdown during low demand hours reduce power draw, requiring coordination with always-on public safety slices. Operators purchase renewable energy credits, while critics request direct power purchase agreements tied to new wind farms. Lifecycle assessments include embodied carbon in equipment manufacturing and difficult e-waste recycling for complex radios. The writer believes transparent energy reporting should accompany coverage maps in regulatory filings. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p><p><strong>F</strong> Geopolitical tensions influence supplier diversification as governments publish trusted vendor lists for critical infrastructure. Open radio access network interfaces aim to reduce vendor lock-in by standardising interoperability between radios and software stacks. Incumbent suppliers argue open interfaces may fragment testing ecosystems, increasing integration risk for smaller operators. Multilateral forums negotiate mutual recognition of equipment certifications to avoid fragmented global markets. The author supports competition if security assurance processes keep pace with rapid interface experimentation. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes. Policymakers increasingly demand reproducible evidence, open data, and independent evaluation before scaling interventions beyond controlled pilot settings.</p><p><strong>G</strong> Sixth-generation research already explores terahertz communications and integrated sensing, though standards remain years away. Backward compatibility ensures legacy devices remain serviceable during lengthy transition periods spanning a decade or more. The writer expects fifth-generation investments to mature into dependable utilities when hype yields to measured performance disclosure. Inclusive planning must connect underserved households with affordable devices, not only install radios in affluent districts. Ultimately, cellular evolution succeeds when policy, engineering, and community needs align rather than chasing leaderboard speeds. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 11–15",
+          "instructions": "<p>Choose the correct heading for paragraphs <strong>B–F</strong> from the list of headings below.</p><p><em>Write the correct number, <strong>i–vii</strong>, in boxes 11–15 on your answer sheet.</em></p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "i. Renaissance fresco pigment trade",
+            "ii. Beamforming and realistic speed claims",
+            "iii. Edge security and sensor onboarding",
+            "iv. Telemedicine slices and institutional barriers",
+            "v. Antenna energy and renewable sourcing",
+            "vi. Open interfaces and vendor diversification",
+            "vii. Ancient pottery kiln temperatures"
+          ],
+          "questions": [
+            {
+              "order": 11,
+              "question": "<p>Paragraph B</p>",
+              "correct_answer": "ii. Beamforming and realistic speed claims"
+            },
+            {
+              "order": 12,
+              "question": "<p>Paragraph C</p>",
+              "correct_answer": "iii. Edge security and sensor onboarding"
+            },
+            {
+              "order": 13,
+              "question": "<p>Paragraph D</p>",
+              "correct_answer": "iv. Telemedicine slices and institutional barriers"
+            },
+            {
+              "order": 14,
+              "question": "<p>Paragraph E</p>",
+              "correct_answer": "v. Antenna energy and renewable sourcing"
+            },
+            {
+              "order": 15,
+              "question": "<p>Paragraph F</p>",
+              "correct_answer": "vi. Open interfaces and vendor diversification"
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "title": "Questions 16–20",
+          "instructions": "<p>Which paragraph contains the following information?</p><p><em>Write the correct letter, <strong>A–G</strong>, in boxes 16–20 on your answer sheet.</em></p>",
+          "question_type": "matching_info",
+          "option_pool": [
+            "Paragraph A",
+            "Paragraph B",
+            "Paragraph C",
+            "Paragraph D",
+            "Paragraph E",
+            "Paragraph F",
+            "Paragraph G"
+          ],
+          "questions": [
+            {
+              "order": 16,
+              "question": "<p>discussion of beam steering toward user equipment</p>",
+              "correct_answer": "Paragraph B"
+            },
+            {
+              "order": 17,
+              "question": "<p>reference to zero-touch provisioning risks</p>",
+              "correct_answer": "Paragraph C"
+            },
+            {
+              "order": 18,
+              "question": "<p>examples of ambulance imaging with guaranteed bitrate</p>",
+              "correct_answer": "Paragraph D"
+            },
+            {
+              "order": 19,
+              "question": "<p>mention of sleep modes for antenna units</p>",
+              "correct_answer": "Paragraph E"
+            },
+            {
+              "order": 20,
+              "question": "<p>a balanced conclusion about community needs and engineering</p>",
+              "correct_answer": "Paragraph G"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "tfng",
+          "question": "<p>Network slicing can provide customised quality of service.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 2,
+          "question_type": "tfng",
+          "question": "<p>Millimetre-wave signals penetrate buildings easily without planning.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 3,
+          "question_type": "tfng",
+          "question": "<p>Every country has completed rural 5G coverage.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 4,
+          "question_type": "tfng",
+          "question": "<p>Edge computing can reduce latency for augmented reality.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 5,
+          "question_type": "tfng",
+          "question": "<p>The passage states sixth-generation standards are already finalised globally.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 6,
+          "question_type": "ynng",
+          "question": "<p>The author wants median loaded performance reported realistically.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 7,
+          "question_type": "ynng",
+          "question": "<p>The writer believes faster radios alone fix healthcare reimbursement barriers.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 8,
+          "question_type": "ynng",
+          "question": "<p>The author supports transparent energy reporting with coverage maps.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 9,
+          "question_type": "ynng",
+          "question": "<p>The writer claims open interfaces always eliminate integration risk.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 10,
+          "question_type": "ynng",
+          "question": "<p>The author emphasises inclusive affordable device access.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 21,
+          "question_type": "sentence_completion",
+          "question": "<p>Virtualised core functions run in cloud data ____.</p>",
+          "correct_answer": "centres",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 22,
+          "question_type": "sentence_completion",
+          "question": "<p>Beamforming improves spectral ____ in dense areas.</p>",
+          "correct_answer": "efficiency",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 23,
+          "question_type": "sentence_completion",
+          "question": "<p>Misconfigured certificates can open widespread ____.</p>",
+          "correct_answer": "vulnerabilities",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 24,
+          "question_type": "sentence_completion",
+          "question": "<p>Terahertz research belongs to prospective ____ generation work.</p>",
+          "correct_answer": "sixth",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 25,
+          "question_type": "summary_completion",
+          "question": "<p>Mid-band spectrum pairs with dense small ____.</p>",
+          "correct_answer": "cells",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 26,
+          "question_type": "summary_completion",
+          "question": "<p>Drive tests map received signal ____.</p>",
+          "correct_answer": "strength",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 27,
+          "question_type": "summary_completion",
+          "question": "<p>Open interfaces aim to reduce vendor lock-____.</p>",
+          "correct_answer": "in",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 28,
+          "question_type": "summary_completion",
+          "question": "<p>Backward compatibility supports lengthy transition ____.</p>",
+          "correct_answer": "periods",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 29,
+          "question_type": "flowchart_completion",
+          "question": "<p>Urban challenge | Millimetre-wave needs line-of-sight ____</p>",
+          "correct_answer": "planning",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 30,
+          "question_type": "flowchart_completion",
+          "question": "<p>Healthcare | Clinicians want reliability beyond consumer ____</p>",
+          "correct_answer": "agreements",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 31,
+          "question_type": "flowchart_completion",
+          "question": "<p>Sustainability | Lifecycle includes embodied carbon in ____</p>",
+          "correct_answer": "manufacturing",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 32,
+          "question_type": "mcq",
+          "question": "<p>Paragraph A describes slicing as</p>",
+          "answer_options": [
+            "physical copper replacement",
+            "isolated logical networks on shared hardware",
+            "ban on emergency traffic",
+            "single consumer queue only"
+          ],
+          "correct_answer": "isolated logical networks on shared hardware"
+        },
+        {
+          "order": 33,
+          "question_type": "mcq",
+          "question": "<p>According to paragraph B, marketing peaks may mislead because</p>",
+          "answer_options": [
+            "users never share cells",
+            "congestion lowers everyday experience",
+            "beamforming is illegal",
+            "drive tests are impossible"
+          ],
+          "correct_answer": "congestion lowers everyday experience"
+        },
+        {
+          "order": 34,
+          "question_type": "mcq",
+          "question": "<p>Paragraph D suggests telemedicine adoption needs</p>",
+          "answer_options": [
+            "only faster download speeds",
+            "institutional reform beyond radios",
+            "eliminating specialists",
+            "banning drones"
+          ],
+          "correct_answer": "institutional reform beyond radios"
+        },
+        {
+          "order": 35,
+          "question_type": "mcq",
+          "question": "<p>Paragraph F indicates open RAN aims to</p>",
+          "answer_options": [
+            "increase lock-in",
+            "standardise interoperability",
+            "ban certifications",
+            "end competition"
+          ],
+          "correct_answer": "standardise interoperability"
+        },
+        {
+          "order": 36,
+          "question_type": "mcq",
+          "question": "<p>The final paragraph argues success requires</p>",
+          "answer_options": [
+            "chasing leaderboard speeds alone",
+            "aligning policy, engineering, and community needs",
+            "ignoring legacy devices",
+            "ending affordable devices"
+          ],
+          "correct_answer": "aligning policy, engineering, and community needs"
+        },
+        {
+          "order": 37,
+          "question_type": "short_answer",
+          "question": "<p>What architecture virtualises core network functions?</p>",
+          "correct_answer": "cloud",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 38,
+          "question_type": "short_answer",
+          "question": "<p>What technique steers radio energy toward devices?</p>",
+          "correct_answer": "beamforming",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 39,
+          "question_type": "short_answer",
+          "question": "<p>What open network model reduces vendor lock-in?</p>",
+          "correct_answer": "RAN",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 40,
+          "question_type": "short_answer",
+          "question": "<p>What frequency band suffers penetration losses?</p>",
+          "correct_answer": "millimetre-wave",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        }
+      ]
+    }
+  ]
+}

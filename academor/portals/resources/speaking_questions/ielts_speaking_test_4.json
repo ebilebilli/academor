@@ -1,0 +1,111 @@
+{
+  "title": "IELTS Speaking — Memorable Journey",
+  "service": "ielts",
+  "category_name": "Speaking",
+  "parts": [
+    {
+      "order": 1,
+      "part_type": "part_1",
+      "title": "Part 1 — Introduction & Interview",
+      "questions": [
+        {
+          "order": 1,
+          "question": "<p>What is your full name?</p>"
+        },
+        {
+          "order": 2,
+          "question": "<p>Where are you from?</p>"
+        },
+        {
+          "order": 3,
+          "question": "<p>Do you work or are you a student?</p>"
+        },
+        {
+          "order": 4,
+          "question": "<p>What do you enjoy most about your work or studies?</p>"
+        },
+        {
+          "order": 5,
+          "question": "<p>What do you usually do in your free time?</p>"
+        },
+        {
+          "order": 6,
+          "question": "<p>How often do you spend time with your friends?</p>"
+        },
+        {
+          "order": 7,
+          "question": "<p>What kind of music do you like?</p>"
+        },
+        {
+          "order": 8,
+          "question": "<p>Do you enjoy reading books? Why or why not?</p>"
+        },
+        {
+          "order": 9,
+          "question": "<p>How often do you use public transport?</p>"
+        },
+        {
+          "order": 10,
+          "question": "<p>What is your favourite season of the year?</p>"
+        },
+        {
+          "order": 11,
+          "question": "<p>Do you prefer living in a city or the countryside?</p>"
+        },
+        {
+          "order": 12,
+          "question": "<p>What is one thing you would like to learn in the future?</p>"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "part_type": "part_2",
+      "title": "Part 2 — Long Turn",
+      "cue_card_topic": "<p><strong>Describe a memorable journey you have taken.</strong></p>",
+      "cue_card_bullets": [
+        "where you went",
+        "who you went with",
+        "what you did there",
+        "and explain why this journey was memorable"
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question": ""
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "part_type": "part_3",
+      "title": "Part 3 — Discussion",
+      "questions": [
+        {
+          "order": 1,
+          "question": "<p>Why do people enjoy travelling?</p>"
+        },
+        {
+          "order": 2,
+          "question": "<p>How has tourism changed over the last twenty years?</p>"
+        },
+        {
+          "order": 3,
+          "question": "<p>What are the advantages of domestic travel?</p>"
+        },
+        {
+          "order": 4,
+          "question": "<p>Do you think technology has made travelling easier? Why?</p>"
+        },
+        {
+          "order": 5,
+          "question": "<p>What impact does tourism have on local communities?</p>"
+        },
+        {
+          "order": 6,
+          "question": "<p>How do you think people will travel in the future?</p>"
+        }
+      ]
+    }
+  ]
+}

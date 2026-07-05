@@ -1,5 +1,7 @@
 {% load i18n portal_tags %}
-{% if active_tab == 'quiz-results' %}
+{% if active_tab == 'weekly-scores' %}
+  {% include "portals/includes/weekly_scores_history.html" with show_teacher_column=False %}
+{% elif active_tab == 'quiz-results' %}
   {% if manual_quiz_results or auto_quiz_results %}
     {% if auto_quiz_results %}
     <div class="portal-student-records-section mb-4">
@@ -129,7 +131,7 @@
     <div class="portal-student-empty">
       <div class="portal-student-empty-icon"><i class="bi bi-star" aria-hidden="true"></i></div>
       <h3>{% trans 'No scores recorded yet' %}</h3>
-      <p>{% trans 'Quiz and lesson scores grouped by day will show up here.' %}</p>
+      <p>{% trans 'Quiz scores grouped by day will show up here.' %}</p>
     </div>
   {% endif %}
 {% endif %}

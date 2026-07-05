@@ -14,7 +14,7 @@
   </div>
   <div class="s-greeting__date">
     <i class="ti ti-calendar" aria-hidden="true"></i>
-    <span data-portal-today-date></span>
+    <span data-portal-today-date>{% portal_today_long %}</span>
   </div>
 </header>
 
@@ -112,7 +112,7 @@
     </a>
     <a class="t-qa-btn t-qa-btn--amber" href="{% url 'portals:student-scores' %}">
       <i class="ti ti-star" aria-hidden="true"></i>
-      <span>{% trans 'Qiymətlər' %}</span>
+      <span>{% trans 'Qiymətləndirmələr' %}</span>
     </a>
     <a class="t-qa-btn t-qa-btn--indigo" href="{% url 'portals:student-quizzes' %}">
       <i class="ti ti-forms" aria-hidden="true"></i>

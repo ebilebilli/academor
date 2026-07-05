@@ -1,0 +1,387 @@
+{
+  "title": "IELTS Academic Reading — Practice Test 36",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–40</strong></p><p>You should spend about 60 minutes on <strong>Questions 1–40</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Urbanization and Internal Migration</strong></p><p><strong>A</strong> Urbanization concentrates population and economic activity in cities, transforming land use, labour markets, and social networks across nations at uneven speeds. Internal migration from rural hinterlands to metropolitan cores supplies workers for services and manufacturing while draining remittance-dependent villages of young adults. Governments promote urban agglomeration for productivity gains linked to knowledge spillovers, yet congestion, housing costs, and pollution externalities challenge liveability rankings. Sociologists examine how hukou-style registration systems and informal settlements shape access to schools and clinics for newly arrived households seeking opportunity. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality.</p><p><strong>B</strong> Push factors include agricultural mechanisation, climate shocks on rain-fed crops, and violence that makes countryside residence untenable. Pull factors feature higher expected wages, educational institutions, and anonymity that loosens traditional surveillance by kin. Migration theories distinguish permanent relocation from circular flows tied to harvest seasons or construction booms. Social capital theorists argue migrants leverage ethnic enclave ties to find housing and jobs, though exploitation by intermediaries charging illegal fees persists in corridors linking interior provinces to coastal factory zones with dormitory regimes. Policy evaluations therefore depend on transparent reporting and independent replication of key results.</p><p><strong>C</strong> Infrastructure investment in transit-oriented development aims to connect suburbs with employment centres, reducing commute times that erode family life. Megacity planners experiment with satellite towns to decentralise functions, yet employment lags can create bedroom communities without local jobs. Informal transport fills gaps where formal buses are unreliable, creating safety risks especially for women travelling at night. Smart city initiatives collect mobility data to optimise signals, raising privacy debates about surveillance normalised as efficiency upgrades welcomed by tech vendors pitching integrated platforms to mayors facing re-election cycles. Longitudinal studies remain essential before drawing firm conclusions about causal mechanisms and durable outcomes.</p><p><strong>D</strong> Housing markets strain under demand shocks when migration outpaces construction, inflating rents and crowding tenants into subdivided flats lacking fire exits. Rent control debates pit tenant protections against developer incentives, while public housing queues stretch for years. Gentrification displaces long-term residents as creative industries colonise formerly affordable districts, altering cultural character and triggering activism for community land trusts. The author notes that without inclusive zoning, urban growth rewards landowners while precarious migrants remain one paycheck from eviction in overheated speculative markets fueled by global capital seeking yield. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality.</p><p><strong>E</strong> Social integration varies: second-generation urban-born children may assimilate linguistically while parents retain rural dialects, creating intergenerational negotiation at home. Discrimination in hiring against regional accents or surnames associated with migrant status perpetuates occupational segregation into hazardous informal work. Community organisations offer legal aid on contracts and occupational safety, yet outreach struggles when populations are highly mobile. Religious and festival networks reproduce village solidarity in urban parishes, buffering anomie theorists associate with dense anonymous environments where traditional moral controls weaken. Policy evaluations therefore depend on transparent reporting and independent replication of key results. Longitudinal studies remain essential before drawing firm conclusions about causal mechanisms and durable outcomes.</p><p><strong>F</strong> Governance challenges include updating master plans participatory enough to incorporate migrant voices often excluded from neighbourhood councils. Census undercounts undocumented movers, skewing fiscal transfers that fund schools in receiving districts. Pandemic lockdowns exposed dependence on migrant delivery workers while denying them residence permits in some cities they served. Climate adaptation plans must anticipate inland destinations as coastal megacities face sea-level rise, potentially redirecting flows toward secondary cities requiring proactive investment in water and employment rather than reactive shantytown clearance campaigns repeating historical errors. Longitudinal studies remain essential before drawing firm conclusions about causal mechanisms and durable outcomes.</p><p><strong>G</strong> Looking ahead, the author believes equitable urbanization demands land and labour policies acknowledging migrants as permanent contributors, not temporary inputs. Regional development should reduce coerced migration driven by destitution. If cities brand themselves as global hubs while neglecting affordable housing, social friction will intensify. Balanced strategies combining rural livelihood support, inclusive urban services, and accountable planning offer a more stable trajectory than either forced rural retention or unchecked speculative growth that treats shelter as financial asset first and human right second. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 11–15",
+          "instructions": "<p>Choose the correct heading for paragraphs <strong>B–F</strong> from the list of headings below.</p><p><em>Write the correct number, <strong>i–vii</strong>, in boxes 11–15 on your answer sheet.</em></p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "i. Push-pull drivers and enclave networks",
+            "ii. Transit satellites and smart-city privacy",
+            "iii. Housing strain and gentrification fights",
+            "iv. Integration, discrimination, and solidarity",
+            "v. Census gaps, pandemics, and climate redirection",
+            "vi. Enzyme immobilisation supports",
+            "vii. Bronze mirror oxidation layers"
+          ],
+          "questions": [
+            {
+              "order": 11,
+              "question": "<p>Paragraph B</p>",
+              "correct_answer": "i. Push-pull drivers and enclave networks"
+            },
+            {
+              "order": 12,
+              "question": "<p>Paragraph C</p>",
+              "correct_answer": "ii. Transit satellites and smart-city privacy"
+            },
+            {
+              "order": 13,
+              "question": "<p>Paragraph D</p>",
+              "correct_answer": "iii. Housing strain and gentrification fights"
+            },
+            {
+              "order": 14,
+              "question": "<p>Paragraph E</p>",
+              "correct_answer": "iv. Integration, discrimination, and solidarity"
+            },
+            {
+              "order": 15,
+              "question": "<p>Paragraph F</p>",
+              "correct_answer": "v. Census gaps, pandemics, and climate redirection"
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "title": "Questions 16–20",
+          "instructions": "<p>Which paragraph contains the following information?</p><p><em>Write the correct letter, <strong>A–G</strong>, in boxes 16–20 on your answer sheet.</em></p>",
+          "question_type": "matching_info",
+          "option_pool": [
+            "Paragraph A",
+            "Paragraph B",
+            "Paragraph C",
+            "Paragraph D",
+            "Paragraph E",
+            "Paragraph F",
+            "Paragraph G"
+          ],
+          "questions": [
+            {
+              "order": 16,
+              "question": "<p>description of hukou-style registration effects</p>",
+              "correct_answer": "Paragraph A"
+            },
+            {
+              "order": 17,
+              "question": "<p>discussion of circular migration tied to harvest seasons</p>",
+              "correct_answer": "Paragraph B"
+            },
+            {
+              "order": 18,
+              "question": "<p>privacy debates about mobility data in smart cities</p>",
+              "correct_answer": "Paragraph C"
+            },
+            {
+              "order": 19,
+              "question": "<p>activism for community land trusts amid gentrification</p>",
+              "correct_answer": "Paragraph D"
+            },
+            {
+              "order": 20,
+              "question": "<p>pandemic exposure of delivery workers without residence permits</p>",
+              "correct_answer": "Paragraph F"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "tfng",
+          "question": "<p>Urban agglomeration is linked to knowledge spillovers.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 2,
+          "question_type": "tfng",
+          "question": "<p>All migrants permanently relocate with no circular flows.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 3,
+          "question_type": "tfng",
+          "question": "<p>The passage states every city provides immediate public housing to newcomers.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 4,
+          "question_type": "tfng",
+          "question": "<p>Ethnic enclaves can help migrants find housing and jobs.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 5,
+          "question_type": "tfng",
+          "question": "<p>Smart city data collection raises surveillance concerns.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 6,
+          "question_type": "ynng",
+          "question": "<p>The author believes migrants should be seen as permanent contributors.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 7,
+          "question_type": "ynng",
+          "question": "<p>The writer supports neglecting affordable housing while branding global hubs.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 8,
+          "question_type": "ynng",
+          "question": "<p>The author thinks regional development can reduce coerced migration.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 9,
+          "question_type": "ynng",
+          "question": "<p>The writer claims discrimination never affects hiring.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 10,
+          "question_type": "ynng",
+          "question": "<p>The author endorses forced rural retention as the only stable path.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 21,
+          "question_type": "sentence_completion",
+          "question": "<p>Internal migration supplies workers for services and ____.</p>",
+          "correct_answer": "manufacturing",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 22,
+          "question_type": "sentence_completion",
+          "question": "<p>Intermediaries may charge illegal ____ to migrants.</p>",
+          "correct_answer": "fees",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 23,
+          "question_type": "sentence_completion",
+          "question": "<p>Gentrification alters cultural ____ of districts.</p>",
+          "correct_answer": "character",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 24,
+          "question_type": "sentence_completion",
+          "question": "<p>Census undercounts skew fiscal ____ for schools.</p>",
+          "correct_answer": "transfers",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 25,
+          "question_type": "summary_completion",
+          "question": "<p>Transit-oriented development aims to reduce commute ____. Family life suffers otherwise.</p>",
+          "correct_answer": "times",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 26,
+          "question_type": "summary_completion",
+          "question": "<p>Rent control debates pit tenants against developer ____. Incentives matter.</p>",
+          "correct_answer": "incentives",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 27,
+          "question_type": "summary_completion",
+          "question": "<p>Second-generation children may assimilate ____ while parents retain dialects.</p>",
+          "correct_answer": "linguistically",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 28,
+          "question_type": "summary_completion",
+          "question": "<p>Climate plans may redirect flows toward secondary ____ inland.</p>",
+          "correct_answer": "cities",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 29,
+          "question_type": "table_completion",
+          "question": "<p>Housing risk | Precarious migrants stay one paycheck from ____</p>",
+          "correct_answer": "eviction",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 30,
+          "question_type": "table_completion",
+          "question": "<p>Work segregation | Hazardous ____ work remains common</p>",
+          "correct_answer": "informal",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 31,
+          "question_type": "table_completion",
+          "question": "<p>Planning flaw | Master plans may exclude migrant ____</p>",
+          "correct_answer": "voices",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 32,
+          "question_type": "mcq",
+          "question": "<p>Paragraph A links urbanization to</p>",
+          "answer_options": [
+            "productivity gains and liveability challenges",
+            "declining manufacturing only",
+            "elimination of all informal settlements",
+            "uniform hukou abolition globally"
+          ],
+          "correct_answer": "productivity gains and liveability challenges"
+        },
+        {
+          "order": 33,
+          "question_type": "mcq",
+          "question": "<p>According to paragraph B, enclave ties can</p>",
+          "answer_options": [
+            "help find housing while risks of fee exploitation persist",
+            "guarantee formal bus reliability",
+            "eliminate circular migration",
+            "remove all occupational segregation"
+          ],
+          "correct_answer": "help find housing while risks of fee exploitation persist"
+        },
+        {
+          "order": 34,
+          "question_type": "mcq",
+          "question": "<p>Paragraph D suggests gentrification can</p>",
+          "answer_options": [
+            "displace long-term residents and alter districts",
+            "eliminate all rent inflation",
+            "ban community land trusts",
+            "remove speculative capital"
+          ],
+          "correct_answer": "displace long-term residents and alter districts"
+        },
+        {
+          "order": 35,
+          "question_type": "mcq",
+          "question": "<p>Paragraph E notes hiring discrimination may target</p>",
+          "answer_options": [
+            "regional accents associated with migrant status",
+            "only second-generation urban-born children",
+            "festival networks exclusively",
+            "legal aid organisations"
+          ],
+          "correct_answer": "regional accents associated with migrant status"
+        },
+        {
+          "order": 36,
+          "question_type": "mcq",
+          "question": "<p>The final paragraph favours</p>",
+          "answer_options": [
+            "inclusive urban services and accountable planning",
+            "unchecked speculative growth",
+            "treating shelter purely as financial asset",
+            "forced rural retention"
+          ],
+          "correct_answer": "inclusive urban services and accountable planning"
+        },
+        {
+          "order": 37,
+          "question_type": "short_answer",
+          "question": "<p>What registration system example shapes migrant access to schools?</p>",
+          "correct_answer": "hukou",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 38,
+          "question_type": "short_answer",
+          "question": "<p>What development approach connects suburbs to jobs?</p>",
+          "correct_answer": "transit-oriented",
+          "question_config": {
+            "word_limit": 2,
+            "word_limit_label": "NO MORE THAN TWO WORDS",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 39,
+          "question_type": "short_answer",
+          "question": "<p>What trusts do activists promote amid gentrification?</p>",
+          "correct_answer": "land",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 40,
+          "question_type": "short_answer",
+          "question": "<p>What theorists link dense cities to weakened traditional controls?</p>",
+          "correct_answer": "anomie",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        }
+      ]
+    }
+  ]
+}

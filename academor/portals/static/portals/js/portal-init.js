@@ -138,18 +138,6 @@
     });
   }
 
-  /* ── Dashboard date ── */
-  function updateDates() {
-    var text = new Date().toLocaleDateString("az-AZ", {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-    });
-    document.querySelectorAll("[data-portal-today-date]").forEach(function (el) {
-      el.textContent = text;
-    });
-  }
-
   /* ── Parent child switcher ── */
   function initSwitcher(root) {
     if (root.dataset.portalChildSwitcherBound === "true") {
@@ -232,12 +220,14 @@
     }
     var subjectTabsSel = root.dataset.portalLessonsSubjectTabs || "#lessonSubjectTabs";
     var categoryTabsSel = root.dataset.portalLessonsCategoryTabs || "#lessonCategoryTabs";
+    var periodTabsSel = root.dataset.portalLessonsPeriodTabs || "[data-portal-lessons-period-tabs]";
     var itemsSel = root.dataset.portalLessonsItems;
     var emptyRowSel = root.dataset.portalLessonsEmptyRow || ".lessons-empty-row";
     var filterEmptySel = root.dataset.portalLessonsEmpty || "#lessons-filter-empty";
     var hideMode = root.dataset.portalLessonsHide || "hidden";
     var subjectTablist = root.querySelector(subjectTabsSel);
     var categoryTablist = root.querySelector(categoryTabsSel);
+    var periodTablist = root.querySelector(periodTabsSel);
 
     if (!itemsSel) {
       if (root.querySelector("#teacher-lessons-table")) {
@@ -248,13 +238,52 @@
         hideMode = "class";
       }
     }
-    if (!itemsSel || (!subjectTablist && !categoryTablist)) {
+    if (!itemsSel || (!subjectTablist && !categoryTablist && !periodTablist)) {
       return;
     }
 
     root.dataset.portalLessonsFilterBound = "true";
     var activeSubject = readActiveValue(subjectTablist, "data-subject", "all");
     var activeCategory = readActiveValue(categoryTablist, "data-category", "all");
+    var activePeriod = readActiveValue(periodTablist, "data-period", "all");
+
+    function parseLocalDate(value) {
+      if (!value) {
+        return null;
+      }
+      var parts = value.split("-");
+      if (parts.length !== 3) {
+        return null;
+      }
+      return new Date(
+        parseInt(parts[0], 10),
+        parseInt(parts[1], 10) - 1,
+        parseInt(parts[2], 10)
+      );
+    }
+
+    function itemMatchesPeriod(item) {
+      if (activePeriod === "all") {
+        return true;
+      }
+      var lessonDate = parseLocalDate(item.getAttribute("data-lesson-date"));
+      if (!lessonDate) {
+        return false;
+      }
+      var today = new Date();
+      today.setHours(0, 0, 0, 0);
+      var start = new Date(today);
+      if (activePeriod === "week") {
+        start.setDate(start.getDate() - 7);
+      } else if (activePeriod === "month") {
+        start.setDate(start.getDate() - 30);
+      } else if (activePeriod === "year") {
+        start.setDate(start.getDate() - 365);
+      } else {
+        return true;
+      }
+      return lessonDate >= start;
+    }
 
     function rowMatchesCategory(item) {
       if (activeCategory === "all") {
@@ -273,7 +302,7 @@
       items.forEach(function (item) {
         var showSubject = activeSubject === "all"
           || item.getAttribute("data-subject") === activeSubject;
-        var show = showSubject && rowMatchesCategory(item);
+        var show = showSubject && rowMatchesCategory(item) && itemMatchesPeriod(item);
         setItemVisible(item, show, hideMode);
         if (show) {
           visible += 1;
@@ -293,6 +322,7 @@
     root.addEventListener("click", function (event) {
       var subjectTab = null;
       var categoryTab = null;
+      var periodTab = null;
       if (subjectTablist) {
         subjectTab = event.target.closest("[data-subject]");
         if (subjectTab && !subjectTablist.contains(subjectTab)) {
@@ -305,7 +335,13 @@
           categoryTab = null;
         }
       }
-      if (!subjectTab && !categoryTab) {
+      if (periodTablist) {
+        periodTab = event.target.closest("[data-period]");
+        if (periodTab && !periodTablist.contains(periodTab)) {
+          periodTab = null;
+        }
+      }
+      if (!subjectTab && !categoryTab && !periodTab) {
         return;
       }
       if (subjectTab) {
@@ -315,6 +351,10 @@
       if (categoryTab) {
         setActiveTab(categoryTablist, categoryTab, "data-category");
         activeCategory = categoryTab.getAttribute("data-category") || "all";
+      }
+      if (periodTab) {
+        setActiveTab(periodTablist, periodTab, "data-period");
+        activePeriod = periodTab.getAttribute("data-period") || "all";
       }
       applyFilters();
     });
@@ -363,10 +403,253 @@
     });
 
     var initial = new URLSearchParams(window.location.search).get("view");
-    if (initial !== "quiz" && initial !== "lesson") {
-      initial = countFor("quiz") === 0 && countFor("lesson") > 0 ? "lesson" : "quiz";
+    if (initial !== "quiz" && initial !== "weekly" && initial !== "lesson") {
+      initial = countFor("quiz") === 0 && countFor("weekly") > 0 ? "weekly" : "quiz";
+    }
+    if (initial === "lesson") {
+      initial = "weekly";
     }
     activate(initial);
+  }
+
+  /* ── Scores period filter ── */
+  function parseScoreDate(value) {
+    if (!value) {
+      return null;
+    }
+    var parts = value.split("-");
+    if (parts.length !== 3) {
+      return null;
+    }
+    return new Date(
+      parseInt(parts[0], 10),
+      parseInt(parts[1], 10) - 1,
+      parseInt(parts[2], 10)
+    );
+  }
+
+  function scoreMatchesPeriod(item, activePeriod) {
+    if (activePeriod === "all") {
+      return true;
+    }
+    var scoreDate = parseScoreDate(item.getAttribute("data-score-date") || item.getAttribute("data-score-day"));
+    if (!scoreDate) {
+      return false;
+    }
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+    var start = new Date(today);
+    if (activePeriod === "week") {
+      start.setDate(start.getDate() - 7);
+    } else if (activePeriod === "month") {
+      start.setDate(start.getDate() - 30);
+    } else if (activePeriod === "year") {
+      start.setDate(start.getDate() - 365);
+    } else {
+      return true;
+    }
+    return scoreDate >= start;
+  }
+
+  function updateScoreTabCounts(root) {
+    root.querySelectorAll("[data-score-tab]").forEach(function (tab) {
+      var name = tab.getAttribute("data-score-tab");
+      var panel = root.querySelector('[data-score-panel="' + name + '"]');
+      if (!panel) {
+        return;
+      }
+      var visible = panel.querySelectorAll("tr[data-score-date]:not([hidden])").length;
+      var badge = tab.querySelector(".portal-score-segment__count, .s-filter-tab__badge");
+      if (badge) {
+        badge.textContent = visible;
+      }
+    });
+  }
+
+  function scoreMatchesGroup(item, activeGroup) {
+    if (activeGroup === "all") {
+      return true;
+    }
+    var ids = item.getAttribute("data-group-ids") || "";
+    if (!ids) {
+      return false;
+    }
+    return ids.split(",").indexOf(String(activeGroup)) !== -1;
+  }
+
+  function updateGroupChipCounts(root, activePeriod) {
+    var groupNav = root.querySelector("[data-score-group-filter]");
+    if (!groupNav) {
+      return;
+    }
+    groupNav.querySelectorAll("[data-score-group]").forEach(function (btn) {
+      var groupId = btn.getAttribute("data-score-group") || "all";
+      var count = 0;
+      root.querySelectorAll("tr[data-score-date]").forEach(function (row) {
+        if (!scoreMatchesPeriod(row, activePeriod)) {
+          return;
+        }
+        if (groupId === "all" || scoreMatchesGroup(row, groupId)) {
+          count += 1;
+        }
+      });
+      var meta = btn.querySelector("[data-score-group-count]");
+      if (meta) {
+        meta.textContent = count;
+      }
+    });
+  }
+
+  function syncScoreGroupUrl(activeGroup) {
+    var url = new URL(window.location.href);
+    if (activeGroup === "all") {
+      url.searchParams.delete("group");
+    } else {
+      url.searchParams.set("group", activeGroup);
+    }
+    var next = url.pathname + url.search;
+    if (next !== window.location.pathname + window.location.search) {
+      window.history.replaceState(
+        Object.assign({}, window.history.state, { scoreGroup: activeGroup }),
+        "",
+        next
+      );
+    }
+  }
+
+  function initScoresPeriodFilter(root) {
+    if (root.__scoreFilterController) {
+      return root.__scoreFilterController;
+    }
+    var periodTablist = root.querySelector("[data-portal-scores-period-tabs]");
+    var groupNav = root.querySelector("[data-score-group-filter]");
+    if (!periodTablist && !groupNav) {
+      return null;
+    }
+
+    root.dataset.portalScoresFilterBound = "true";
+    var activePeriod = periodTablist
+      ? readActiveValue(periodTablist, "data-period", "all")
+      : "all";
+    var activeGroup = new URLSearchParams(window.location.search).get("group") || "all";
+    if (groupNav) {
+      var validGroups = {};
+      groupNav.querySelectorAll("[data-score-group]").forEach(function (btn) {
+        var groupId = btn.getAttribute("data-score-group");
+        if (groupId && groupId !== "all") {
+          validGroups[groupId] = true;
+        }
+      });
+      if (activeGroup !== "all" && !validGroups[activeGroup]) {
+        activeGroup = "all";
+      }
+      setScoreGroupActive(groupNav, activeGroup);
+    }
+
+    function applyFilters() {
+      var tableRows = root.querySelectorAll("tr[data-score-date]");
+      var dayCards = root.querySelectorAll("[data-score-day]");
+      var visibleRows = 0;
+
+      tableRows.forEach(function (row) {
+        var show = scoreMatchesPeriod(row, activePeriod) && scoreMatchesGroup(row, activeGroup);
+        row.hidden = !show;
+        if (show) {
+          visibleRows += 1;
+        }
+      });
+
+      var visibleDays = 0;
+      dayCards.forEach(function (card) {
+        var show = scoreMatchesPeriod(card, activePeriod) && scoreMatchesGroup(card, activeGroup);
+        card.hidden = !show;
+        if (show) {
+          visibleDays += 1;
+        }
+      });
+
+      root.querySelectorAll("[data-score-panel]").forEach(function (panel) {
+        var dataRows = panel.querySelectorAll("tr[data-score-date]");
+        var anyData = dataRows.length > 0;
+        var anyVisible = Array.prototype.some.call(dataRows, function (row) {
+          return !row.hidden;
+        });
+        panel.querySelectorAll("tbody tr:not([data-score-date])").forEach(function (row) {
+          row.hidden = anyData && !anyVisible;
+        });
+      });
+
+      updateScoreTabCounts(root);
+      updateGroupChipCounts(root, activePeriod);
+
+      var filterEmpty = root.querySelector("#scores-filter-empty");
+      var hasItems = tableRows.length > 0 || dayCards.length > 0;
+      var visibleCount = visibleRows + visibleDays;
+      if (filterEmpty) {
+        filterEmpty.classList.toggle("d-none", visibleCount > 0 || !hasItems);
+      }
+    }
+
+    var controller = {
+      setPeriod: function (period) {
+        activePeriod = period || "all";
+        applyFilters();
+      },
+      setGroup: function (group) {
+        activeGroup = group || "all";
+        applyFilters();
+      },
+      applyFilters: applyFilters,
+    };
+    root.__scoreFilterController = controller;
+
+    if (periodTablist) {
+      periodTablist.addEventListener("click", function (event) {
+        var periodTab = event.target.closest("[data-period]");
+        if (!periodTab || !periodTablist.contains(periodTab)) {
+          return;
+        }
+        setActiveTab(periodTablist, periodTab, "data-period");
+        controller.setPeriod(periodTab.getAttribute("data-period") || "all");
+      });
+    }
+
+    window.requestAnimationFrame(applyFilters);
+    return controller;
+  }
+
+  function setScoreGroupActive(groupNav, groupId) {
+    if (!groupNav) {
+      return;
+    }
+    var activeChip = groupNav.querySelector('[data-score-group="' + groupId + '"]');
+    if (!activeChip) {
+      return;
+    }
+    groupNav.querySelectorAll("[data-score-group]").forEach(function (btn) {
+      btn.classList.toggle("is-active", btn === activeChip);
+    });
+  }
+
+  function handleScoreGroupClick(event) {
+    var groupBtn = event.target.closest("[data-score-group]");
+    if (!groupBtn) {
+      return;
+    }
+    var root = groupBtn.closest("[data-portal-scores-filter]");
+    if (!root) {
+      return;
+    }
+    event.preventDefault();
+    var groupNav = root.querySelector("[data-score-group-filter]");
+    setScoreGroupActive(groupNav, groupBtn.getAttribute("data-score-group") || "all");
+    var controller = initScoresPeriodFilter(root);
+    if (!controller) {
+      return;
+    }
+    var group = groupBtn.getAttribute("data-score-group") || "all";
+    syncScoreGroupUrl(group);
+    controller.setGroup(group);
   }
 
   function initAll() {
@@ -374,9 +657,15 @@
     document.querySelectorAll("[data-portal-status-tabs]").forEach(initStatusTabs);
     document.querySelectorAll("[data-portal-child-switcher]").forEach(initSwitcher);
     document.querySelectorAll("[data-portal-lessons-filter]").forEach(initLessonsFilter);
+    document.querySelectorAll("[data-portal-scores-filter]").forEach(initScoresPeriodFilter);
     document.querySelectorAll("[data-score-shell]").forEach(initScoreShell);
-    updateDates();
   }
 
-  bindContentLoaded(initAll);
+  function scheduleInitAll() {
+    window.requestAnimationFrame(initAll);
+  }
+
+  document.addEventListener("click", handleScoreGroupClick);
+  document.addEventListener("portal:content-loaded", scheduleInitAll);
+  bindContentLoaded(scheduleInitAll);
 })();

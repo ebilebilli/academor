@@ -1,0 +1,35 @@
+{% load i18n %}
+<div class="portal-lesson-file-rows" data-lesson-file-rows="{{ field_name }}">
+  {% if hint %}
+  <p class="portal-lesson-hint mb-2">{{ hint }}</p>
+  {% endif %}
+  <div class="portal-lesson-file-rows__list" data-lesson-file-rows-list>
+    <div class="portal-lesson-file-row" data-lesson-file-row>
+      <input
+        type="file"
+        name="{{ field_name }}"
+        class="form-control portal-lesson-file-input-native"
+        accept="{{ accept }}"
+      >
+      <button type="button" class="btn btn-outline-danger btn-sm" data-lesson-file-row-remove aria-label="{% trans 'Remove file' %}" hidden>
+        <i class="bi bi-trash" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+  <template data-lesson-file-row-template>
+    <div class="portal-lesson-file-row" data-lesson-file-row>
+      <input
+        type="file"
+        name="{{ field_name }}"
+        class="form-control portal-lesson-file-input-native"
+        accept="{{ accept }}"
+      >
+      <button type="button" class="btn btn-outline-danger btn-sm" data-lesson-file-row-remove aria-label="{% trans 'Remove file' %}">
+        <i class="bi bi-trash" aria-hidden="true"></i>
+      </button>
+    </div>
+  </template>
+  <button type="button" class="btn btn-light btn-sm mt-2" data-lesson-file-row-add>
+    <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>{{ add_label }}
+  </button>
+</div>

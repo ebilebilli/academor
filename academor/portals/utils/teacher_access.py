@@ -1,6 +1,6 @@
 """Ownership checks — teachers may only manage their own portal data."""
 
-from portals.models import Lesson, Quiz, QuizQuestion, Schedule
+from portals.models import Classroom, Lesson, Quiz, QuizQuestion, Schedule
 from portals.utils.student_courses import quiz_visible_to_teacher
 from portals.utils.teacher_courses import teacher_groups_queryset
 
@@ -21,6 +21,17 @@ def get_teacher_schedule(teacher_id, schedule_id):
     ).first()
 
 
+def get_teacher_textbook(teacher_id, textbook_id):
+    return (
+        Classroom.objects.filter(
+            pk=textbook_id,
+            group__teacher_id=teacher_id,
+        )
+        .select_related('group')
+        .first()
+    )
+
+
 def get_teacher_lesson(teacher_id, lesson_id):
     return (
         Lesson.objects.filter(
@@ -29,6 +40,7 @@ def get_teacher_lesson(teacher_id, lesson_id):
             group__teacher_id=teacher_id,
         )
         .select_related('group')
+        .prefetch_related('attachments')
         .first()
     )
 

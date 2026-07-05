@@ -104,7 +104,13 @@ class ListeningQuestion(models.Model):
         max_length=500,
         blank=True,
         verbose_name=_('Correct answer'),
-        help_text=_('Must exactly match one option when answer options are set.'),
+        help_text=_('Exact text for gap-fill tasks or the matching option label.'),
+    )
+    question_config = models.JSONField(
+        default=dict,
+        blank=True,
+        verbose_name=_('Question config'),
+        help_text=_('Word limits, alternatives, etc.'),
     )
 
     class Meta:
@@ -147,8 +153,10 @@ class ListeningQuestion(models.Model):
             return
 
         self.answer_options = []
-        self.correct_answer = ''
         self.correct_option_index = 0
+        correct = (self.correct_answer or '').strip()
+        if not correct:
+            raise ValidationError({'correct_answer': _('Enter the correct answer.')})
 
     def save(self, *args, **kwargs):
         options = self.variant_options
@@ -159,6 +167,5 @@ class ListeningQuestion(models.Model):
                 self.correct_option_index = options.index(correct)
         else:
             self.answer_options = []
-            self.correct_answer = ''
             self.correct_option_index = 0
         super().save(*args, **kwargs)

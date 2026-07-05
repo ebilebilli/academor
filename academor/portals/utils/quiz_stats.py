@@ -54,12 +54,12 @@ def compute_quiz_average_stats(quiz_results):
     }
 
 
-def compute_lesson_average_stats(scores):
-    """Normalized average for admin lesson score rows (value / max_value)."""
-    rows = list(scores or [])
+def compute_weekly_average_stats(weekly_scores):
+    """Normalized average for weekly score rows (score / max_score, default 10)."""
+    rows = list(weekly_scores or [])
     percentages = []
     for row in rows:
-        pct = quiz_score_percent(row.get('value'), row.get('max_value'))
+        pct = quiz_score_percent(row.get('score'), row.get('max_score') or 10)
         if pct is not None:
             percentages.append(pct)
 

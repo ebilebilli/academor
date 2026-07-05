@@ -1,0 +1,292 @@
+{% load i18n portal_tags %}
+<div class="weekly-scores-panel" data-weekly-scores-panel>
+  {% if flash_message %}
+  <div class="weekly-scores-flash weekly-scores-flash--{{ flash_level|default:'success' }}" role="status" data-weekly-scores-flash>
+    <i class="ti ti-check" aria-hidden="true"></i>
+    {{ flash_message }}
+  </div>
+  {% endif %}
+
+  <section class="weekly-scores-hero ds-card mb-3">
+    <div class="weekly-scores-hero__row">
+      <div class="weekly-scores-current-week">
+        <span class="weekly-scores-current-week__icon" aria-hidden="true">
+          <i class="ti ti-calendar-event"></i>
+        </span>
+        <div class="weekly-scores-current-week__copy">
+          <span class="weekly-scores-current-week__label">{% trans 'Cari həftə' %}</span>
+          <span class="weekly-scores-current-week__dates">{% portal_week_label calendar.week_start calendar.week_end %}</span>
+        </div>
+      </div>
+
+      <div
+        class="weekly-scores-stat"
+        aria-label="{% trans 'Qiymətləndirmə irəliləyişi' %}"
+        role="progressbar"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow="{{ progress_percent }}"
+      >
+        <div class="weekly-scores-stat__counts">
+          <strong data-weekly-scored-count>{{ scored_count }}</strong>
+          <span class="weekly-scores-stat__sep">/</span>
+          <span data-weekly-student-count>{{ student_count }}</span>
+        </div>
+        <span class="weekly-scores-stat__label">{% trans 'qiymətləndirilib' %}</span>
+        <div class="weekly-scores-stat__bar">
+          <span class="weekly-scores-stat__bar-fill" style="width: {{ progress_percent }}%;"></span>
+        </div>
+      </div>
+    </div>
+
+    <p class="weekly-scores-current-note">
+      <i class="ti ti-info-circle" aria-hidden="true"></i>
+      {% trans 'Hər şagird üçün həftəlik bal yalnız bir dəfə verilə bilər. Bal təsdiqləndikdən sonra onu dəyişdirmək mümkün deyil.' %}
+    </p>
+  </section>
+
+  {% if groups %}
+  <nav class="weekly-scores-groups mb-3" aria-label="{% trans 'Qrup filteri' %}">
+    <div class="weekly-scores-groups__scroll">
+      <button
+        type="button"
+        class="weekly-scores-group-chip{% if active_group == 'all' %} is-active{% endif %}"
+        data-weekly-group="all"
+      >
+        {% trans 'Hamısı' %}
+        <span class="weekly-scores-group-chip__meta">{{ total_scored_count }}/{{ total_student_count }}</span>
+      </button>
+      {% for group in groups %}
+      <button
+        type="button"
+        class="weekly-scores-group-chip{% if active_group == group.id|stringformat:'s' %} is-active{% endif %}"
+        data-weekly-group="{{ group.id }}"
+      >
+        {{ group.name }}
+        <span class="weekly-scores-group-chip__meta">{{ group.scored_count }}/{{ group.student_count }}</span>
+      </button>
+      {% endfor %}
+    </div>
+  </nav>
+  {% endif %}
+
+  {% if rows %}
+  <div class="weekly-scores-toolbar mb-3">
+    <div class="weekly-scores-search">
+      <i class="ti ti-search" aria-hidden="true"></i>
+      <input
+        type="search"
+        class="form-control form-control-sm"
+        placeholder="{% trans 'Şagird axtar...' %}"
+        autocomplete="off"
+        data-weekly-search
+      >
+    </div>
+    <span class="weekly-scores-toolbar__hint text-muted small">
+      {% if has_editable_rows %}
+        {% trans 'Bal bir dəfə yazılır — saxladıqdan sonra dəyişmək olmur.' %}
+      {% elif has_any_editable_rows %}
+        {% trans 'Bu qrupda bütün şagirdlər qiymətləndirilib. «Hamısı» seçin.' %}
+      {% else %}
+        {% trans 'Bu həftə bütün şagirdlər artıq qiymətləndirilib.' %}
+      {% endif %}
+    </span>
+  </div>
+
+  {% if has_editable_rows %}
+  <form method="post" class="weekly-scores-form" data-weekly-scores-form novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="week" value="{{ week_value }}" data-weekly-week-field>
+    <input type="hidden" name="group" value="{{ active_group }}" data-weekly-group-field>
+
+    <section class="ds-card weekly-scores-card">
+      <div class="weekly-scores-grid">
+        {% for row in rows %}
+        <article
+          class="weekly-scores-card-item{% if row.score is not None %} is-scored{% endif %}{% if row.is_locked or row.weekly_score_id %} is-locked{% endif %}"
+          data-weekly-score-row
+          data-student-name="{{ row.full_name|lower }}"
+          data-group-ids="{{ row.group_ids|join:',' }}"
+          {% if row.is_locked or row.weekly_score_id %}data-weekly-score-locked{% endif %}
+        >
+          <div class="weekly-scores-card-item__head">
+            <div class="weekly-scores-avatar">
+              {% if row.photo_url %}
+                <img src="{{ row.photo_url }}" alt="">
+              {% else %}
+                {{ row.full_name|slice:":2"|upper }}
+              {% endif %}
+            </div>
+            <div class="weekly-scores-card-item__identity">
+              <a href="{% url 'portals:teacher-student-profile' student_pk=row.id %}?tab=weekly-scores" class="weekly-scores-student-link">
+                {{ row.full_name }}
+              </a>
+              <span class="weekly-scores-card-item__groups">{{ row.group_names|join:", "|default:"—" }}</span>
+            </div>
+            <span
+              class="weekly-scores-status ds-badge{% if row.is_locked or row.weekly_score_id %} ds-badge--success{% endif %}"
+              data-weekly-score-badge
+              data-scored-label="{% trans 'Verilib' %}"
+              data-pending-label="{% trans 'Gözləyir' %}"
+              data-locked-label="{% trans 'Kilidlənib' %}"
+            >
+              {% if row.is_locked or row.weekly_score_id %}{% trans 'Kilidlənib' %}{% elif row.score is not None %}{% trans 'Verilib' %}{% else %}{% trans 'Gözləyir' %}{% endif %}
+            </span>
+          </div>
+
+          <div class="weekly-scores-card-item__fields">
+            {% if row.is_locked or row.weekly_score_id %}
+            <div class="weekly-scores-readonly weekly-scores-readonly--full">
+              <div class="weekly-scores-readonly__item">
+                <span class="weekly-scores-readonly__label">{% trans 'Bal' %}</span>
+                <strong class="weekly-scores-readonly__value">{{ row.score|floatformat:1 }}/10</strong>
+              </div>
+              <div class="weekly-scores-readonly__item weekly-scores-readonly__item--comment">
+                <span class="weekly-scores-readonly__label">{% trans 'Şərh' %}</span>
+                <span class="weekly-scores-readonly__value">{{ row.comment|default:"—" }}</span>
+              </div>
+            </div>
+            {% else %}
+            <label class="weekly-scores-field">
+              <span>{% trans 'Bal' %} <em>0–10</em></span>
+              <input
+                type="number"
+                class="form-control weekly-scores-input"
+                name="score_{{ row.id }}"
+                value=""
+                min="0"
+                max="10"
+                step="0.1"
+                inputmode="decimal"
+                placeholder="—"
+                data-weekly-score-input
+              >
+            </label>
+            <label class="weekly-scores-field weekly-scores-field--comment">
+              <span>{% trans 'Şərh' %}</span>
+              <input
+                type="text"
+                class="form-control weekly-scores-comment"
+                name="comment_{{ row.id }}"
+                value=""
+                maxlength="500"
+                placeholder="{% trans 'Qısa qeyd' %}"
+              >
+            </label>
+            {% endif %}
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+
+      <div class="weekly-scores-actions">
+        <p class="weekly-scores-hint text-muted small mb-0 d-none d-md-block">
+          {% trans 'Yalnız boş şagird kartlarına bal yazıb saxlayın.' %}
+        </p>
+        <button type="submit" class="ds-btn ds-btn--primary" data-weekly-save-btn>
+          <i class="ti ti-device-floppy" aria-hidden="true"></i>
+          {% trans 'Yadda saxla' %}
+        </button>
+      </div>
+    </section>
+  </form>
+  {% elif has_any_editable_rows %}
+  <div class="s-empty-state py-4 mb-3">
+    <i class="ti ti-users-group" aria-hidden="true"></i>
+    <h3 class="h6 mb-1">{% trans 'Bu qrupda qiymətləndirmə bitib' %}</h3>
+    <p class="mb-0">{% trans 'Qiymət vermədiyiniz şagirdlər başqa qrupdadır. «Hamısı» seçin.' %}</p>
+  </div>
+  <section class="ds-card weekly-scores-card weekly-scores-card--readonly">
+    <div class="weekly-scores-grid">
+      {% for row in rows %}
+      <article
+        class="weekly-scores-card-item is-scored is-locked"
+        data-weekly-score-row
+        data-student-name="{{ row.full_name|lower }}"
+        data-group-ids="{{ row.group_ids|join:',' }}"
+        data-weekly-score-locked
+      >
+        <div class="weekly-scores-card-item__head">
+          <div class="weekly-scores-avatar">
+            {% if row.photo_url %}
+              <img src="{{ row.photo_url }}" alt="">
+            {% else %}
+              {{ row.full_name|slice:":2"|upper }}
+            {% endif %}
+          </div>
+          <div class="weekly-scores-card-item__identity">
+            <a href="{% url 'portals:teacher-student-profile' student_pk=row.id %}?tab=weekly-scores" class="weekly-scores-student-link">
+              {{ row.full_name }}
+            </a>
+            <span class="weekly-scores-card-item__groups">{{ row.group_names|join:", "|default:"—" }}</span>
+          </div>
+          <span class="weekly-scores-status ds-badge ds-badge--success">{% trans 'Kilidlənib' %}</span>
+        </div>
+        <div class="weekly-scores-card-item__fields">
+          <div class="weekly-scores-readonly weekly-scores-readonly--full">
+            <div class="weekly-scores-readonly__item">
+              <span class="weekly-scores-readonly__label">{% trans 'Bal' %}</span>
+              <strong class="weekly-scores-readonly__value">{{ row.score|floatformat:1 }}/10</strong>
+            </div>
+            <div class="weekly-scores-readonly__item weekly-scores-readonly__item--comment">
+              <span class="weekly-scores-readonly__label">{% trans 'Şərh' %}</span>
+              <span class="weekly-scores-readonly__value">{{ row.comment|default:"—" }}</span>
+            </div>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+  {% else %}
+  <section class="ds-card weekly-scores-card weekly-scores-card--readonly">
+    <div class="weekly-scores-grid">
+      {% for row in rows %}
+      <article
+        class="weekly-scores-card-item is-scored is-locked"
+        data-weekly-score-row
+        data-student-name="{{ row.full_name|lower }}"
+        data-group-ids="{{ row.group_ids|join:',' }}"
+        data-weekly-score-locked
+      >
+        <div class="weekly-scores-card-item__head">
+          <div class="weekly-scores-avatar">
+            {% if row.photo_url %}
+              <img src="{{ row.photo_url }}" alt="">
+            {% else %}
+              {{ row.full_name|slice:":2"|upper }}
+            {% endif %}
+          </div>
+          <div class="weekly-scores-card-item__identity">
+            <a href="{% url 'portals:teacher-student-profile' student_pk=row.id %}?tab=weekly-scores" class="weekly-scores-student-link">
+              {{ row.full_name }}
+            </a>
+            <span class="weekly-scores-card-item__groups">{{ row.group_names|join:", "|default:"—" }}</span>
+          </div>
+          <span class="weekly-scores-status ds-badge ds-badge--success">{% trans 'Kilidlənib' %}</span>
+        </div>
+        <div class="weekly-scores-card-item__fields">
+          <div class="weekly-scores-readonly weekly-scores-readonly--full">
+            <div class="weekly-scores-readonly__item">
+              <span class="weekly-scores-readonly__label">{% trans 'Bal' %}</span>
+              <strong class="weekly-scores-readonly__value">{{ row.score|floatformat:1 }}/10</strong>
+            </div>
+            <div class="weekly-scores-readonly__item weekly-scores-readonly__item--comment">
+              <span class="weekly-scores-readonly__label">{% trans 'Şərh' %}</span>
+              <span class="weekly-scores-readonly__value">{{ row.comment|default:"—" }}</span>
+            </div>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+  {% else %}
+  <div class="s-empty-state py-5">
+    <i class="ti ti-users" aria-hidden="true"></i>
+    <h3 class="h6 mb-1">{% trans 'Bu qrupda şagird yoxdur' %}</h3>
+    <p class="mb-0">{% trans 'Başqa qrup seçin və ya qrupunuzda şagird olduqda burada görünəcək.' %}</p>
+  </div>
+  {% endif %}
+</div>

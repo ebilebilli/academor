@@ -2,7 +2,7 @@
 {% if daily_score_history %}
 <div class="portal-student-timeline">
   {% for day in daily_score_history %}
-  <article class="portal-student-day-card">
+  <article class="portal-student-day-card" data-score-day="{{ day.date|date:'Y-m-d' }}">
     <header class="portal-student-day-header">
       <div class="portal-student-day-date">
         <span class="portal-student-day-dot" aria-hidden="true"></span>

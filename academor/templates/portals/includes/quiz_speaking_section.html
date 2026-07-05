@@ -1,0 +1,62 @@
+{% load i18n %}
+<section
+  class="portal-speaking-section{% if is_last %} portal-speaking-section--last{% endif %}"
+  data-speaking-section
+  data-part-type="{{ section.part.part_type }}"
+  id="speaking-part-{{ section.part.id }}"
+>
+  <header class="portal-speaking-section__head">
+    <h2 class="portal-speaking-section__title">{{ section.part.heading }}</h2>
+    {% if section.part.is_part_2 %}
+    <div class="portal-speaking-section__timers">
+      <p class="portal-speaking-section__timer-line mb-1">
+        <strong>{% trans 'Preparation Time' %}:</strong> {{ section.part.preparation_clock }}
+      </p>
+      <p class="portal-speaking-section__timer-line mb-0">
+        <strong>{% trans 'Speaking Time' %}:</strong> {{ section.part.speaking_clock }}
+      </p>
+    </div>
+    {% elif section.part.time_limit_clock %}
+    <p class="portal-speaking-section__timer-line mb-0">
+      <strong>{% trans 'Time Limit' %}:</strong> {{ section.part.time_limit_clock }}
+    </p>
+    {% endif %}
+    {% if section.part.instructions %}
+    <div class="portal-speaking-section__instructions">{{ section.part.instructions|safe }}</div>
+    {% endif %}
+  </header>
+
+  {% if section.part.is_part_2 %}
+  <div class="portal-speaking-cue-card">
+    <p class="portal-speaking-cue-card__label mb-2">{% trans 'Cue Card' %}</p>
+    {% if section.part.cue_card_topic %}
+    <div class="portal-speaking-cue-card__topic">{{ section.part.cue_card_topic|safe }}</div>
+    {% endif %}
+    {% if section.part.cue_card_bullets %}
+    <p class="portal-speaking-cue-card__hint mb-2 mt-3">{% trans 'You should say:' %}</p>
+    <ul class="portal-speaking-cue-card__bullets mb-0">
+      {% for bullet in section.part.cue_card_bullets %}
+      <li>{{ bullet }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  {% if section.questions %}
+  <div class="portal-speaking-section__questions">
+  {% if not section.part.is_part_2 %}
+  <p class="portal-speaking-section__questions-label">{{ section.part.questions_heading }}</p>
+  <ol class="portal-speaking-question-list" start="1">
+    {% for q in section.questions %}
+    {% include "portals/includes/quiz_speaking_question.html" with q=q section=section view_only=view_only %}
+    {% endfor %}
+  </ol>
+  {% else %}
+    {% for q in section.questions %}
+    {% include "portals/includes/quiz_speaking_question.html" with q=q section=section view_only=view_only is_part_2=True %}
+    {% endfor %}
+  {% endif %}
+  </div>
+  {% endif %}
+</section>

@@ -1,7 +1,8 @@
 from django.contrib import messages
 from datetime import timedelta
 
-from django.http import Http404
+from django.http import Http404, JsonResponse
+from django.template.loader import render_to_string
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.translation import gettext as _
@@ -11,7 +12,7 @@ from portals.models import Attendance, Schedule
 from portals.teacher_forms import (
     TeacherLessonForm,
     TeacherScheduleForm,
-    TeacherVideoForm,
+    TeacherTextbookForm,
     build_session_attendance_form,
 )
 from portals.utils.queries import (
@@ -23,6 +24,7 @@ from portals.utils.teacher_access import (
     get_teacher_group,
     get_teacher_lesson,
     get_teacher_schedule,
+    get_teacher_textbook,
 )
 from portals.utils.teacher_attendance import (
     parse_student_ids,
@@ -31,6 +33,12 @@ from portals.utils.teacher_attendance import (
 )
 from portals.utils.teacher_courses import course_type_choices_for_teacher
 from portals.utils.teacher_schedule import build_teacher_week_calendar, parse_week_start
+from portals.utils.weekly_scores import (
+    build_teacher_weekly_score_view,
+    parse_weekly_score_post,
+    save_teacher_weekly_scores,
+    student_ids_open_for_scoring,
+)
 from portals.views.mixins import TeacherRequiredMixin, TeacherScheduleMutationForbiddenMixin
 
 
@@ -502,32 +510,175 @@ class TeacherSessionAttendanceView(TeacherRequiredMixin, View):
         )
 
 
-class TeacherVideoCreateView(TeacherRequiredMixin, View):
-    template_name = 'portals/teacher/video_form.html'
+class TeacherTextbookCreateView(TeacherRequiredMixin, View):
+    template_name = 'portals/teacher/textbook_form.html'
 
     def get(self, request):
         teacher = get_teacher_profile(request.portal_user)
         return _form_response(
             request,
             self.template_name,
-            TeacherVideoForm(teacher.pk),
-            title=_('Add video recording'),
-            subtitle=_('Paste a YouTube link for a past class.'),
-            cancel_href=reverse('portals:teacher-lessons'),
+            TeacherTextbookForm(teacher.pk),
+            title=_('Add textbook'),
+            subtitle=_('Upload a PDF textbook for students in one of your groups.'),
+            cancel_href=reverse('portals:teacher-classrooms'),
         )
 
     def post(self, request):
         teacher = get_teacher_profile(request.portal_user)
-        form = TeacherVideoForm(teacher.pk, request.POST)
+        form = TeacherTextbookForm(teacher.pk, request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            messages.success(request, _('Video added successfully.'))
-            return redirect('portals:teacher-lessons')
+            form.save(teacher=teacher)
+            messages.success(request, _('Textbook added successfully.'))
+            return redirect('portals:teacher-classrooms')
         return _form_response(
             request,
             self.template_name,
             form,
-            title=_('Add video recording'),
-            subtitle=_('Paste a YouTube link for a past class.'),
-            cancel_href=reverse('portals:teacher-lessons'),
+            title=_('Add textbook'),
+            subtitle=_('Upload a PDF textbook for students in one of your groups.'),
+            cancel_href=reverse('portals:teacher-classrooms'),
         )
+
+
+class TeacherTextbookEditView(TeacherRequiredMixin, View):
+    template_name = 'portals/teacher/textbook_form.html'
+
+    def get(self, request, pk):
+        teacher = get_teacher_profile(request.portal_user)
+        textbook = get_teacher_textbook(teacher.pk, pk)
+        if not textbook:
+            raise Http404
+        return _form_response(
+            request,
+            self.template_name,
+            TeacherTextbookForm(teacher.pk, instance=textbook),
+            title=_('Edit textbook'),
+            subtitle=_('Update the name, description, or PDF for this group.'),
+            cancel_href=reverse('portals:teacher-classroom-detail', kwargs={'pk': pk}),
+        )
+
+    def post(self, request, pk):
+        teacher = get_teacher_profile(request.portal_user)
+        textbook = get_teacher_textbook(teacher.pk, pk)
+        if not textbook:
+            raise Http404
+        form = TeacherTextbookForm(teacher.pk, request.POST, request.FILES, instance=textbook)
+        if form.is_valid():
+            form.save(teacher=teacher)
+            messages.success(request, _('Textbook updated successfully.'))
+            return redirect('portals:teacher-classroom-detail', pk=pk)
+        return _form_response(
+            request,
+            self.template_name,
+            form,
+            title=_('Edit textbook'),
+            subtitle=_('Update the name, description, or PDF for this group.'),
+            cancel_href=reverse('portals:teacher-classroom-detail', kwargs={'pk': pk}),
+        )
+
+
+class TeacherWeeklyScoresView(TeacherRequiredMixin, View):
+    template_name = 'portals/teacher/weekly_scores.html'
+    panel_template_name = 'portals/includes/teacher_weekly_scores_panel.html'
+
+    def _resolve_group(self, request):
+        group = request.GET.get('group') or request.POST.get('group') or 'all'
+        return str(group)
+
+    def _board_context(self, request, teacher):
+        group = self._resolve_group(request)
+        return build_teacher_weekly_score_view(
+            teacher.pk,
+            group_id=group,
+        )
+
+    def _render_panel(self, request, teacher, *, flash_message='', flash_level=''):
+        ctx = self._board_context(request, teacher)
+        ctx['flash_message'] = flash_message
+        ctx['flash_level'] = flash_level
+        return render_to_string(
+            self.panel_template_name,
+            _teacher_ctx(request, **ctx),
+            request=request,
+        )
+
+    def get(self, request):
+        teacher = get_teacher_profile(request.portal_user)
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return render(
+                request,
+                self.panel_template_name,
+                _teacher_ctx(request, **self._board_context(request, teacher)),
+            )
+        return render(
+            request,
+            self.template_name,
+            _teacher_ctx(request, **self._board_context(request, teacher)),
+        )
+
+    def post(self, request):
+        from django.core.exceptions import ValidationError
+
+        teacher = get_teacher_profile(request.portal_user)
+        ctx = self._board_context(request, teacher)
+        week_start = ctx['week_value']
+        student_ids = student_ids_open_for_scoring(
+            ctx['rows'],
+            teacher_id=teacher.pk,
+            week_start=week_start,
+        )
+        is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+
+        if not ctx.get('has_any_editable_rows'):
+            message = _('All weekly scores for this week are already saved.')
+            if is_ajax:
+                return JsonResponse({'ok': False, 'message': message}, status=400)
+            messages.info(request, message)
+            return render(request, self.template_name, _teacher_ctx(request, **ctx))
+
+        if not student_ids:
+            if ctx.get('has_any_editable_rows'):
+                message = _('No unscored students in this group. Switch to All to continue.')
+            else:
+                message = _('No students to score yet.')
+            if is_ajax:
+                return JsonResponse({'ok': False, 'message': message}, status=400)
+            messages.warning(request, message)
+            return render(request, self.template_name, _teacher_ctx(request, **ctx))
+
+        entries = parse_weekly_score_post(request.POST, student_ids)
+        try:
+            result = save_teacher_weekly_scores(
+                teacher_id=teacher.pk,
+                week_start=ctx['week_value'],
+                entries=entries,
+            )
+        except ValidationError as exc:
+            message = exc.messages[0] if exc.messages else str(exc)
+            if is_ajax:
+                return JsonResponse({'ok': False, 'message': message}, status=400)
+            messages.error(request, message)
+            return render(request, self.template_name, _teacher_ctx(request, **ctx))
+
+        saved = result['saved']
+        if saved:
+            message = _('Weekly scores saved.')
+            level = 'success'
+        elif result.get('skipped'):
+            message = _('All entered scores were already saved.')
+            level = 'info'
+        else:
+            message = _('Enter a score for at least one student.')
+            level = 'info'
+
+        if is_ajax:
+            html = self._render_panel(request, teacher, flash_message=message, flash_level=level)
+            return JsonResponse({'ok': True, 'message': message, 'level': level, 'html': html})
+
+        messages.success(request, message) if saved else messages.info(request, message)
+        group = request.POST.get('group') or ctx.get('active_group', 'all')
+        url = reverse('portals:teacher-weekly-scores')
+        if group != 'all':
+            url = f'{url}?group={group}'
+        return redirect(url)

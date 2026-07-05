@@ -1,0 +1,68 @@
+{% load i18n %}
+<section
+  class="portal-reading-section{% if in_tabs %} portal-reading-section--tabbed{% endif %}"
+  aria-labelledby="reading-section-{{ section.section_number }}-title"
+>
+  <div class="portal-reading-section__layout">
+    <div class="portal-reading-section__passage panel">
+      <header class="portal-reading-section__passage-head">
+        {% if not in_tabs %}
+        <div class="portal-reading-section__badge" aria-hidden="true">
+          <i class="bi bi-book"></i>
+          <span>{% blocktrans with num=section.section_number %}Passage {{ num }}{% endblocktrans %}</span>
+        </div>
+        {% endif %}
+        <h2 class="portal-reading-section__title" id="reading-section-{{ section.section_number }}-title">
+          {% if section.passage.title %}
+            {{ section.passage.title }}
+          {% else %}
+            {% blocktrans with num=section.section_number %}Reading passage {{ num }}{% endblocktrans %}
+          {% endif %}
+        </h2>
+      </header>
+
+      {% if section.passage.instructions %}
+      <div class="portal-reading-section__instructions">{{ section.passage.instructions|safe }}</div>
+      {% endif %}
+
+      <div class="portal-reading-section__body">{{ section.passage.body|safe }}</div>
+    </div>
+
+    {% if section.questions %}
+    <div class="portal-reading-section__tasks panel" data-reading-tasks>
+      <div class="portal-reading-section__tasks-head{% if show_passage_return %} portal-reading-section__tasks-head--sticky{% endif %}">
+        <div class="portal-reading-section__tasks-head-text">
+          <p class="portal-reading-section__tasks-label mb-1">{% trans 'Questions' %}</p>
+          <p class="portal-reading-section__tasks-hint mb-0">
+            {% if section.question_range_start == section.question_range_end %}
+              {% blocktrans with num=section.question_range_start %}Question {{ num }}{% endblocktrans %}
+            {% else %}
+              {% blocktrans with start=section.question_range_start end=section.question_range_end %}Questions {{ start }}–{{ end }}{% endblocktrans %}
+            {% endif %}
+          </p>
+        </div>
+        {% if show_passage_return %}
+        <div class="portal-reading-return-bar" data-reading-return-bar hidden>
+          <button
+            type="button"
+            class="btn btn-sm portal-reading-return-btn"
+            data-reading-return-btn
+          >
+            <i class="bi bi-arrow-up-short me-1" aria-hidden="true"></i>{% trans 'View passage' %}
+          </button>
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="portal-reading-section__task-list">
+        {% for q in section.questions %}
+        {% if q.group_start and q.group_instructions %}
+        {% include "portals/includes/quiz_reading_group_instructions.html" with group=q.group_instructions %}
+        {% endif %}
+        {% include "portals/includes/quiz_reading_question.html" with q=q view_only=view_only %}
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>

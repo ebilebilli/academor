@@ -11,18 +11,22 @@
 <div class="portal-control-bar mb-3">
   <a
     class="btn btn-outline-secondary btn-sm"
-    href="{{ back_url }}"
+    href="{% if mock_id %}{% url 'portals:student-quiz-cancel' pk=quiz.id %}?mock={{ mock_id }}&next={{ back_url|urlencode }}{% else %}{{ back_url }}{% endif %}"
     {% if not quiz.view_only %}data-quiz-leave-link{% endif %}
   >
     <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'Back' %}
   </a>
 </div>
 
+{% include "portals/includes/quiz_mock_progress.html" %}
+{% include "portals/includes/quiz_mock_section_continue.html" %}
+
 {% portal_page_heading icon="bi-ui-checks" raw_title=quiz.topic raw_subtitle=quiz.grading_mode_label %}
 
 <div
   class="portal-quiz-take{% if quiz.is_time_limited %} portal-quiz-take--timed{% endif %}{% if not quiz.view_only %} portal-quiz-take--has-dock{% endif %}"
   {% if not quiz.view_only %}data-quiz-manual-take data-quiz-started="false"{% endif %}
+  {% if mock_id %}data-mock-id="{{ mock_id }}" data-mock-cancel-url="{% url 'portals:student-quiz-cancel' pk=quiz.id %}?mock={{ mock_id }}&amp;next={{ back_url|urlencode }}" data-msg-mock-leave-warning="{% trans 'Leave the mock test? Your current progress will be lost.' %}" data-mock-leave-confirm="{% trans 'Leave mock test' %}"{% endif %}
   {% if quiz.is_listening and not quiz.view_only %}
   data-listening-auto-sequence="true"
   data-listening-first-delay-ms="5500"
@@ -37,6 +41,7 @@
   data-msg-listening-live="{% trans 'Now playing' %}"
   {% endif %}
   data-quiz-essay="{{ quiz.is_essay|yesno:'true,false' }}"
+  data-quiz-listening="{{ quiz.is_listening|yesno:'true,false' }}"
   data-quiz-text-responses="{{ quiz.uses_per_question_text_responses|yesno:'true,false' }}"
   data-question-ids="[{% for qid in quiz.response_question_ids %}{{ qid }}{% if not forloop.last %},{% endif %}{% endfor %}]"
   data-submit-url="{{ submit_url }}"
@@ -44,12 +49,15 @@
   data-msg-submitting="{% trans 'Submitting…' %}"
   data-msg-error="{% trans 'Could not submit. Please try again.' %}"
   data-msg-success="{% trans 'Submitted for teacher review.' %}"
-  data-msg-submit-label="{% trans 'Complete' %}"
+  data-msg-submit-label="{% if mock_id and mock_attempt %}{{ mock_attempt.finish_button_label }}{% else %}{% trans 'Complete' %}{% endif %}"
   data-msg-words="{% trans 'words' %}"
   data-msg-ready="{% trans 'You can complete the quiz whenever you are ready.' %}"
   data-msg-leave-warning="{% trans 'If you leave this page now, your quiz will be counted as completed.' %}"
   data-msg-listening-played="{% trans 'This clip has already been played.' %}"
   data-msg-listening-replay-blocked="{% trans 'You cannot replay this clip from the beginning.' %}"
+  data-label-correct="{% trans 'Correct' %}"
+  data-label-incorrect="{% trans 'Incorrect' %}"
+  data-label-unanswered="{% trans 'Not answered' %}"
 >
   <div class="portal-manual-quiz-layout{% if quiz.view_only and quiz.is_pending_review %} portal-manual-quiz-layout--with-aside{% endif %}">
     <div class="portal-manual-quiz-layout__main">
@@ -121,24 +129,51 @@
         {% if not quiz.view_only %}
         <div class="portal-quiz-take-actions portal-quiz-take-actions--writing panel d-lg-none mb-4" data-quiz-take-actions-inline>
           <button type="button" class="btn btn-primary btn-lg w-100" data-manual-submit-btn>
-            <i class="bi bi-check2-circle me-1" aria-hidden="true"></i>{% trans 'Complete' %}
+            <i class="bi bi-check2-circle me-1" aria-hidden="true"></i>{% include "portals/includes/quiz_mock_finish_label.html" with use_complete=True %}
           </button>
           <p class="portal-quiz-take-actions__hint text-muted small mb-0 mt-2" data-manual-submit-hint>
+            {% if mock_id and mock_attempt %}
+            {% trans 'Submit this section when you are ready to continue the mock test.' %}
+            {% else %}
             {% trans 'You can complete the quiz whenever you are ready.' %}
+            {% endif %}
           </p>
         </div>
         {% endif %}
 
         {% if not quiz.view_only %}
         <section class="portal-quiz-take-result panel d-none" data-manual-result hidden>
+          {% if quiz.is_listening %}
+          <div class="portal-quiz-take-result__head text-center mb-4">
+            <p class="portal-quiz-take-result__eyebrow mb-2" data-manual-result-eyebrow>{% trans 'Test complete' %}</p>
+            <div class="portal-quiz-result-stats" data-manual-result-stats>
+              <div class="portal-quiz-result-stat">
+                <span class="portal-quiz-result-stat__label">{% trans 'Score' %}</span>
+                <strong class="portal-quiz-result-stat__value" data-manual-result-score>0/0</strong>
+              </div>
+              <div class="portal-quiz-result-stat">
+                <span class="portal-quiz-result-stat__label">{% trans 'Result' %}</span>
+                <strong class="portal-quiz-result-stat__value" data-manual-result-percent>0%</strong>
+              </div>
+              {% if quiz.is_time_limited %}
+              <div class="portal-quiz-result-stat" data-manual-result-duration-wrap>
+                <span class="portal-quiz-result-stat__label">{% trans 'Time used' %}</span>
+                <strong class="portal-quiz-result-stat__value" data-manual-result-duration>0%</strong>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="portal-quiz-take-result__list" data-manual-result-list></div>
+          {% else %}
           <div class="text-center py-3">
             <i class="bi bi-check-circle text-success fs-1" aria-hidden="true"></i>
             <p class="fw-semibold mt-3 mb-1">{% trans 'Submitted successfully' %}</p>
             <p class="text-muted mb-0">{% trans 'Your teacher will review your work and publish feedback.' %}</p>
-            <div class="d-flex flex-wrap gap-2 justify-content-center mt-4">
-              <a class="btn btn-outline-secondary btn-sm" href="{{ back_url }}">{% trans 'Back to quizzes' %}</a>
-              <a class="btn btn-primary btn-sm" href="{% url 'portals:student-scores' %}">{% trans 'View scores' %}</a>
-            </div>
+          </div>
+          {% endif %}
+          <div class="d-flex flex-wrap gap-2 justify-content-center mt-4"{% if mock_id %} data-mock-default-actions hidden{% endif %}>
+            <a class="btn btn-outline-secondary btn-sm" href="{{ back_url }}">{% trans 'Back to quizzes' %}</a>
+            <a class="btn btn-primary btn-sm" href="{% url 'portals:student-scores' %}">{% trans 'View scores' %}</a>
           </div>
         </section>
         {% endif %}
@@ -155,10 +190,14 @@
   {% if not quiz.view_only %}
   <div class="portal-quiz-take-actions portal-quiz-take-actions--writing portal-quiz-take-actions--dock panel" data-quiz-take-actions hidden>
     <button type="button" class="btn btn-primary btn-lg" data-manual-submit-btn>
-      <i class="bi bi-check2-circle me-1" aria-hidden="true"></i>{% trans 'Complete' %}
+      <i class="bi bi-check2-circle me-1" aria-hidden="true"></i>{% include "portals/includes/quiz_mock_finish_label.html" with use_complete=True %}
     </button>
     <p class="portal-quiz-take-actions__hint text-muted small mb-0 mt-2" data-manual-submit-hint>
+      {% if mock_id and mock_attempt %}
+      {% trans 'Submit this section when you are ready to continue the mock test.' %}
+      {% else %}
       {% trans 'You can complete the quiz whenever you are ready.' %}
+      {% endif %}
     </p>
   </div>
   {% endif %}
@@ -174,9 +213,10 @@
 
 {% block extra_js %}
 {% if not quiz.view_only %}
+{% if mock_id %}<script src="{% static 'portals/js/quiz-mock-section.js' %}"></script>{% endif %}
 <script src="{% static 'portals/js/quiz-start-gate.js' %}?v=20260703"></script>
 <script src="{% static 'portals/js/quiz-leave-guard.js' %}?v=20260703"></script>
-<script src="{% static 'portals/js/quiz-take-manual.js' %}?v=20260703"></script>
+<script src="{% static 'portals/js/quiz-take-manual.js' %}?v=20260703j"></script>
 {% endif %}
 {% endblock %}
 

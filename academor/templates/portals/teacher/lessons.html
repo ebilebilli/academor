@@ -4,77 +4,83 @@
 {% block title %}{% trans 'Lessons' %}{% endblock %}
 
 {% block content %}
-{% portal_page_heading icon="bi-journal-text" eyebrow="Teacher" title="Lessons" subtitle="Materials uploaded for your groups." %}
+<div
+  data-portal-lessons-filter
+  data-portal-lessons-period-tabs="[data-portal-lessons-period-tabs]"
+  data-portal-lessons-subject-tabs="[data-lesson-subject-tabs]"
+  data-portal-lessons-category-tabs=".s-lessons-filter-panel__tabs--compact"
+  data-portal-lessons-items="#teacher-lessons-table tbody tr[data-subject]"
+  data-portal-lessons-empty-row=".lessons-empty-row"
+  data-portal-lessons-empty="#lessons-filter-empty"
+  data-portal-lessons-hide="hidden"
+>
 
-<div class="d-flex flex-wrap gap-2 justify-content-end mb-3">
-  <a class="btn btn-outline-primary btn-sm" href="{% url 'portals:teacher-video-create' %}">
-    <i class="bi bi-play-btn me-1" aria-hidden="true"></i>{% trans 'Add video' %}
+<header class="s-page-head mb-4">
+  <div>
+    <h1 class="s-page-head__title">
+      <i class="ti ti-book" aria-hidden="true"></i>
+      {% trans 'Dərslər' %}
+      <span class="ds-badge ms-2">{{ lessons|length }}</span>
+    </h1>
+    <p class="s-page-head__sub">{% trans 'Qruplarınız üçün yüklənmiş materiallar.' %}</p>
+  </div>
+  <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:teacher-lesson-create' %}">
+    <i class="ti ti-book-upload" aria-hidden="true"></i>
+    {% trans 'Upload lesson' %}
   </a>
-  <a class="btn btn-primary btn-sm" href="{% url 'portals:teacher-lesson-create' %}">
-    <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>{% trans 'Upload lesson' %}
-  </a>
-</div>
+</header>
 
-<section class="portal-content-panel" data-portal-lessons-filter>
-  {% if subject_tabs|length > 1 %}
-  <ul class="nav nav-tabs portal-attendance-tabs px-3 pt-2" id="lessonSubjectTabs" role="tablist">
-    {% for tab in subject_tabs %}
-    <li class="nav-item" role="presentation">
-      <button class="nav-link{% if forloop.first %} active{% endif %}" type="button" data-subject="{{ tab.code }}"{% if forloop.first %} aria-selected="true"{% else %} aria-selected="false"{% endif %}>
-        {{ tab.label }} <span class="badge rounded-pill">{{ tab.count }}</span>
-      </button>
-    </li>
-    {% endfor %}
-  </ul>
-  {% endif %}
+{% include "portals/includes/lessons_filter_panel.html" %}
 
-  {% if category_tabs|length > 1 %}
-  <ul class="nav nav-pills portal-lesson-category-tabs px-3 py-2" id="lessonCategoryTabs" role="tablist" aria-label="{% trans 'Category labels' %}">
-    {% for tab in category_tabs %}
-    <li class="nav-item" role="presentation">
-      <button class="nav-link{% if forloop.first %} active{% endif %}" type="button" data-category="{{ tab.code }}"{% if forloop.first %} aria-selected="true"{% else %} aria-selected="false"{% endif %}>
-        {{ tab.label }} <span class="badge rounded-pill">{{ tab.count }}</span>
-      </button>
-    </li>
-    {% endfor %}
-  </ul>
-  {% endif %}
-
+<section class="ds-card">
   <div class="table-responsive">
-    <table class="table align-middle mb-0 portal-data-table" id="teacher-lessons-table">
+    <table class="t-table" id="teacher-lessons-table">
       <thead>
         <tr>
-          <th scope="col">{% trans 'Name' %}</th>
-          <th scope="col">{% trans 'Group' %}</th>
-          <th scope="col">{% trans 'Service' %}</th>
-          <th scope="col">{% trans 'Date' %}</th>
-          <th scope="col">{% trans 'Category label' %}</th>
-          <th scope="col" class="text-end">{% trans 'Action' %}</th>
+          <th>{% trans 'Name' %}</th>
+          <th>{% trans 'Group' %}</th>
+          <th>{% trans 'Service' %}</th>
+          <th>{% trans 'Date' %}</th>
+          <th>{% trans 'Category label' %}</th>
+          <th class="text-end">{% trans 'Action' %}</th>
         </tr>
       </thead>
       <tbody>
         {% for lesson in lessons %}
-        <tr data-subject="{{ lesson.subject }}" data-category="{{ lesson.category_id|default:'' }}">
-          <td class="fw-semibold">{{ lesson.name }}</td>
+        <tr
+          data-subject="{{ lesson.subject }}"
+          data-category="{{ lesson.category_id|default:'' }}"
+          data-lesson-date="{{ lesson.lesson_date|date:'Y-m-d' }}"
+        >
+          <td class="fw-500">{{ lesson.name }}</td>
           <td>{{ lesson.group_name }}</td>
-          <td>{{ lesson.subject_label }}</td>
-          <td>{{ lesson.lesson_date|portal_date_long }}</td>
+          <td><span class="ds-badge">{{ lesson.subject_label }}</span></td>
+          <td class="text-muted small">{{ lesson.lesson_date|portal_date_long }}</td>
           <td>{{ lesson.category_name|default:"—" }}</td>
           <td class="text-end">
-            <a class="btn btn-outline-secondary btn-sm me-1" href="{% url 'portals:teacher-lesson-detail' pk=lesson.id %}">{% trans 'Open' %}</a>
-            <a class="btn btn-outline-primary btn-sm" href="{% url 'portals:teacher-lesson-edit' pk=lesson.id %}">{% trans 'Edit' %}</a>
+            <a class="ds-btn ds-btn--ghost btn-sm" href="{% url 'portals:teacher-lesson-detail' pk=lesson.id %}">{% trans 'Open' %}</a>
+            <a class="ds-btn ds-btn--secondary btn-sm" href="{% url 'portals:teacher-lesson-edit' pk=lesson.id %}">{% trans 'Edit' %}</a>
           </td>
         </tr>
         {% empty %}
         <tr class="lessons-empty-row">
-          <td colspan="6" class="text-muted py-4 text-center">{% trans 'No lessons uploaded yet.' %} <a href="{% url 'portals:teacher-lesson-create' %}">{% trans 'Upload one' %}</a></td>
+          <td colspan="6">
+            <div class="s-empty-state">
+              <i class="ti ti-book-off" aria-hidden="true"></i>
+              <p>{% trans 'No lessons uploaded yet.' %} <a href="{% url 'portals:teacher-lesson-create' %}">{% trans 'Upload one' %}</a></p>
+            </div>
+          </td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
-  <div class="portal-attendance-empty-filter text-muted text-center py-4 d-none" id="lessons-filter-empty">
-    {% trans 'No lessons for this filter.' %}
+
+  <div class="s-empty-state d-none" id="lessons-filter-empty">
+    <i class="ti ti-filter-off" aria-hidden="true"></i>
+    <p>{% trans 'Bu filterlə dərs tapılmadı.' %}</p>
   </div>
 </section>
+
+</div>
 {% endblock %}

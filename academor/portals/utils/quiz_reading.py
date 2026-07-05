@@ -1,0 +1,264 @@
+"""Reading-quiz helpers built on ReadingPassage / ReadingQuestion models."""
+
+from __future__ import annotations
+
+from portals.models import ReadingPassage, ReadingQuestion, Quiz
+from portals.models.reading_models import (
+    CHOICE_QUESTION_TYPES,
+    TEXT_QUESTION_TYPES,
+    resolve_reading_question_options,
+)
+
+
+def resolve_question_options(question: ReadingQuestion) -> list[str]:
+    return resolve_reading_question_options(question)
+
+
+def get_quiz_reading_passages(quiz_id: int):
+    return (
+        ReadingPassage.objects.filter(quiz_id=quiz_id)
+        .prefetch_related('question_groups', 'questions__group')
+        .order_by('order', 'id')
+    )
+
+
+def get_reading_questions_for_quiz(quiz: Quiz) -> list[ReadingQuestion]:
+    if not quiz.is_reading or not quiz.pk:
+        return []
+    return [
+        question
+        for question in ReadingQuestion.objects.filter(passage__quiz_id=quiz.pk)
+        .select_related('passage', 'group')
+        .order_by('passage__order', 'passage_id', 'order', 'id')
+        if question.is_answerable
+    ]
+
+
+def reading_question_interaction_family(question: ReadingQuestion) -> str:
+    if question.question_type in CHOICE_QUESTION_TYPES:
+        return 'choice'
+    if question.question_type in TEXT_QUESTION_TYPES:
+        return 'text'
+    return 'text'
+
+
+def serialize_reading_passage(passage: ReadingPassage) -> dict:
+    return {
+        'id': passage.pk,
+        'title': passage.title,
+        'instructions': passage.instructions,
+        'body': passage.body,
+        'order': passage.order,
+    }
+
+
+def serialize_reading_question_group(group) -> dict:
+    return {
+        'id': group.pk,
+        'title': group.title,
+        'instructions': group.instructions,
+        'question_type': group.question_type,
+        'question_type_label': group.get_question_type_display(),
+        'option_pool': group.pool_options,
+        'order': group.order,
+    }
+
+
+def reading_correct_option_index(question: ReadingQuestion) -> int | None:
+    options = question.variant_options
+    if len(options) < 2:
+        return None
+    correct = (question.correct_answer or '').strip()
+    if correct and correct in options:
+        return options.index(correct)
+    index = question.correct_option_index
+    if 0 <= index < len(options):
+        return index
+    return None
+
+
+def reading_selected_option_index(question: ReadingQuestion, raw_value) -> int | None:
+    from portals.utils.quiz_submit import _looks_like_variant_index
+
+    if not _looks_like_variant_index(raw_value, question):
+        return None
+    return int(str(raw_value).strip())
+
+
+def reading_student_answer_display(question: ReadingQuestion, raw_value) -> str:
+    from portals.utils.quiz_submit import listening_student_answer_display
+
+    return listening_student_answer_display(question, raw_value)
+
+
+def reading_accept_alternatives(question: ReadingQuestion) -> list[str]:
+    config = question.question_config or {}
+    return [
+        str(item).strip()
+        for item in (config.get('accept_alternatives') or [])
+        if str(item).strip()
+    ]
+
+
+def reading_correct_answer_display(question: ReadingQuestion) -> str:
+    from django.utils.translation import gettext as _
+
+    primary = (question.correct_answer or '').strip()
+    alternatives = reading_accept_alternatives(question)
+    if not alternatives:
+        return primary
+    if not primary:
+        return ', '.join(alternatives)
+    return f'{primary} ({_("also")}: {", ".join(alternatives)})'
+
+
+def reading_teacher_answer_matches(
+    question: ReadingQuestion,
+    student_raw,
+    teacher_correct: str,
+) -> bool:
+    teacher = str(teacher_correct or '').strip()
+    if not teacher:
+        return False
+    if question.question_type in CHOICE_QUESTION_TYPES:
+        student_label = reading_student_answer_display(question, student_raw).strip()
+        student_raw_text = str(student_raw or '').strip()
+        options = question.variant_options
+        teacher_norm = teacher.casefold()
+        if student_label and student_label.casefold() == teacher_norm:
+            return True
+        if student_raw_text and student_raw_text.casefold() == teacher_norm:
+            return True
+        if student_raw_text.isdigit():
+            index = int(student_raw_text)
+            if 0 <= index < len(options) and options[index].casefold() == teacher_norm:
+                return True
+        return False
+
+    from portals.utils.quiz_reading_score import _normalize_text_answer
+
+    submitted = _normalize_text_answer(
+        '' if student_raw is None else str(student_raw),
+        case_insensitive=True,
+    )
+    return submitted == _normalize_text_answer(teacher, case_insensitive=True)
+
+
+def serialize_reading_question(
+    question: ReadingQuestion,
+    *,
+    student_answer: str = '',
+    number: int = 0,
+    correct_answer_map: dict | None = None,
+    use_admin_answer_keys: bool = False,
+) -> dict:
+    options = question.variant_options
+    is_choice = reading_question_interaction_family(question) == 'choice'
+    config = question.question_config or {}
+    payload = {
+        'id': question.pk,
+        'passage_id': question.passage_id,
+        'group_id': question.group_id,
+        'question': question.question,
+        'order': question.order,
+        'question_type': question.question_type,
+        'question_type_label': question.get_question_type_display(),
+        'interaction_family': reading_question_interaction_family(question),
+        'student_answer': student_answer,
+        'student_answer_display': (
+            reading_student_answer_display(question, student_answer)
+            if is_choice
+            else str(student_answer or '').strip()
+        ),
+        'requires_student_response': True,
+        'number': number,
+        'is_choice': is_choice,
+        'is_text': not is_choice,
+        'answer_options': options if is_choice else [],
+        'word_limit': config.get('word_limit'),
+        'word_limit_label': config.get('word_limit_label', ''),
+        'question_config': config,
+    }
+    if is_choice:
+        selected_index = reading_selected_option_index(question, student_answer)
+        payload.update({
+            'selected_option_index': selected_index,
+            'has_selected_option': selected_index is not None,
+        })
+
+    if correct_answer_map is not None:
+        teacher_correct = str(correct_answer_map.get(str(question.pk), '') or '').strip()
+        payload['correct_answer'] = teacher_correct
+        payload['correct_answer_display'] = teacher_correct
+        if teacher_correct and student_answer not in ('', None):
+            payload['is_correct'] = reading_teacher_answer_matches(
+                question,
+                student_answer,
+                teacher_correct,
+            )
+        elif teacher_correct:
+            payload['is_correct'] = False
+        else:
+            payload['is_correct'] = None
+    elif use_admin_answer_keys:
+        from portals.utils.quiz_reading_score import score_reading_question
+
+        payload['correct_answer'] = question.correct_answer
+        payload['accept_alternatives'] = reading_accept_alternatives(question)
+        payload['correct_answer_display'] = reading_correct_answer_display(question)
+        if student_answer not in ('', None):
+            payload['is_correct'] = score_reading_question(question, student_answer)
+        else:
+            payload['is_correct'] = False
+    return payload
+
+
+def build_reading_sections_for_quiz(
+    quiz_id: int,
+    *,
+    response_map: dict | None = None,
+    correct_answer_map: dict | None = None,
+    use_admin_answer_keys: bool = False,
+) -> list[dict]:
+    response_map = response_map or {}
+    sections: list[dict] = []
+    question_number = 0
+
+    for passage in get_quiz_reading_passages(quiz_id):
+        groups = [
+            serialize_reading_question_group(group)
+            for group in passage.question_groups.all().order_by('order', 'id')
+        ]
+        section_questions = []
+        seen_group_ids: set[int] = set()
+        for row in passage.questions.all().order_by('order', 'id'):
+            if not row.is_answerable:
+                continue
+            question_number += 1
+            group_start = False
+            group_instructions = None
+            if row.group_id and row.group_id not in seen_group_ids:
+                seen_group_ids.add(row.group_id)
+                group_start = True
+                group_instructions = serialize_reading_question_group(row.group)
+            question_payload = serialize_reading_question(
+                row,
+                student_answer=response_map.get(str(row.pk), ''),
+                number=question_number,
+                correct_answer_map=correct_answer_map,
+                use_admin_answer_keys=use_admin_answer_keys,
+            )
+            question_payload['group_start'] = group_start
+            if group_instructions is not None:
+                question_payload['group_instructions'] = group_instructions
+            section_questions.append(question_payload)
+        sections.append({
+            'passage': serialize_reading_passage(passage),
+            'groups': groups,
+            'questions': section_questions,
+            'section_number': len(sections) + 1,
+            'question_range_start': section_questions[0]['number'] if section_questions else None,
+            'question_range_end': section_questions[-1]['number'] if section_questions else None,
+        })
+
+    return sections

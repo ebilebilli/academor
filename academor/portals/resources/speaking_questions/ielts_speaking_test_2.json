@@ -1,0 +1,82 @@
+{
+  "title": "IELTS Speaking — Practice Test 2",
+  "service": "ielts",
+  "category_name": "Speaking",
+  "parts": [
+    {
+      "order": 1,
+      "part_type": "part_1",
+      "title": "Part 1 — Introduction and interview",
+      "instructions": "<p>Answer the examiner's questions about yourself and everyday topics.</p>",
+      "questions": [
+        {
+          "order": 1,
+          "question": "<p>Do you like travelling?</p>"
+        },
+        {
+          "order": 2,
+          "question": "<p>What is your favourite means of transport?</p>"
+        },
+        {
+          "order": 3,
+          "question": "<p>How much time do you spend using technology every day?</p>"
+        },
+        {
+          "order": 4,
+          "question": "<p>What technology do you use most often?</p>"
+        },
+        {
+          "order": 5,
+          "question": "<p>Do you prefer shopping online or in physical stores?</p>"
+        },
+        {
+          "order": 6,
+          "question": "<p>When was the last time you bought something online?</p>"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "part_type": "part_2",
+      "title": "Part 2 — Individual long turn",
+      "instructions": "<p>You have one minute to prepare. Then speak for one to two minutes. You may make notes.</p>",
+      "cue_card_topic": "<p><strong>Describe a memorable trip you have taken.</strong></p>",
+      "cue_card_bullets": [
+        "where you went",
+        "who you went with",
+        "what you did there",
+        "and explain why the trip was memorable"
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question": ""
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "part_type": "part_3",
+      "title": "Part 3 — Two-way discussion",
+      "instructions": "<p>Discuss the topic in more detail with the examiner.</p>",
+      "questions": [
+        {
+          "order": 1,
+          "question": "<p>Why do many people enjoy travelling to other countries?</p>"
+        },
+        {
+          "order": 2,
+          "question": "<p>What are the advantages and disadvantages of tourism for local communities?</p>"
+        },
+        {
+          "order": 3,
+          "question": "<p>Do you think international travel will become easier or more difficult in the future?</p>"
+        },
+        {
+          "order": 4,
+          "question": "<p>How has technology changed the way people plan and experience travel?</p>"
+        }
+      ]
+    }
+  ]
+}

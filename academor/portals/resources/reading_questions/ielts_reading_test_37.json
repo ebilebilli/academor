@@ -1,0 +1,387 @@
+{
+  "title": "IELTS Academic Reading — Practice Test 37",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–40</strong></p><p>You should spend about 60 minutes on <strong>Questions 1–40</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Social Media and Political Polarization</strong></p><p><strong>A</strong> Social media platforms enable rapid dissemination of political information, memes, and mobilisation appeals at scale, restructuring how citizens encounter news. Algorithmic feeds prioritise engagement, sometimes amplifying emotive or divisive content over nuanced policy analysis. Scholars debate whether digital environments cause polarization or reveal entrenched divisions accelerated by geographic sorting and partisan cable television precedents. Cross-national surveys find heterogeneous effects: some democracies report heightened affective hostility between party supporters, while others show stable attitudes despite increased online time spent arguing in comment threads. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality.</p><p><strong>B</strong> Echo chambers form when users follow ideologically similar accounts, reducing exposure to counterarguments unless platforms intentionally inject diverse sources. Experiments lowering algorithmic sorting modestly increase cross-cutting content yet rarely change deep beliefs measured weeks later. Bot networks and coordinated inauthentic behaviour manipulate trending topics, prompting platform integrity teams to label state-sponsored propaganda. Journalists rely on social listening tools to gauge sentiment, though sample bias toward vocal extremes can mislead campaign strategists about silent majorities less inclined to post publicly. Policy evaluations therefore depend on transparent reporting and independent replication of key results. Longitudinal studies remain essential before drawing firm conclusions about causal mechanisms and durable outcomes.</p><p><strong>C</strong> Affective polarization emphasises tribal dislike more than policy disagreement, measured by feelings thermometer scores toward opposing partisans. Outrage cascades reward performative condemnation, training audiences to interpret compromise as betrayal. Politicians adapt by broadcasting clips optimized for sharing rather than legislative detail, shortening policy attention spans in legislatures already strained by omnibus bargaining. Civic educators promote media literacy curricula teaching lateral reading and source triangulation, yet funding fluctuates with political winds suspicious of critical thinking framed as ideological indoctrination by activist school boards. Longitudinal studies remain essential before drawing firm conclusions about causal mechanisms and durable outcomes.</p><p><strong>D</strong> Regulatory proposals include transparency mandates on ad targeting, data portability, and duty-of-care duties for minors' mental health, contested by firms citing free expression. European digital services acts impose risk assessments for systemic platforms, while other jurisdictions experiment with age verification and default chronological feeds. Critics warn heavy-handed bans may push discourse into encrypted channels less visible to researchers monitoring extremist recruitment. The author argues regulation should distinguish amplification mechanisms from lawful speech, focusing on recommender accountability rather than policing every controversial opinion voiced by citizens in democratic debate. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality.</p><p><strong>E</strong> Offline consequences include harassment campaigns doxxing activists, threats against election workers, and street protests organised via event pages that outpace traditional party mobilisation structures. Police monitor live streams during demonstrations, blurring boundaries between public safety and surveillance. Some governments shut down networks during unrest, citing misinformation risks while suppressing dissent. Human rights advocates document gendered abuse deterring women from political speech online, perpetuating representation gaps in councils and parliaments despite hashtags celebrating visibility campaigns that rarely translate into safer participation without enforcement of platform harassment policies. Policy evaluations therefore depend on transparent reporting and independent replication of key results.</p><p><strong>F</strong> Research methods leverage browser tracking, survey panels linked to digital traces, and field experiments randomising feed interventions with ethical oversight. Replication crises remind scholars that modest effects can be fragile across contexts. Longitudinal cohorts following adolescents into adulthood may clarify developmental impacts on civic trust, though causal inference remains contested when family background correlates with both platform use and political identity. Interdisciplinary teams combining computer science and sociology improve measurement of network structures beyond self-reported usage frequency alone, which poorly maps to actual exposure diversity. Longitudinal studies remain essential before drawing firm conclusions about causal mechanisms and durable outcomes.</p><p><strong>G</strong> Looking ahead, the author believes healthier public spheres require platform design aligned with democratic values, not only shareholder metrics. Supporting local news and offline deliberative forums can counterbalance viral outrage economies. If technologists treat polarization solely as user pathology, institutional incentives creating engagement-maximising rage will persist. Shared standards for auditability, researcher data access, and user control over ranking algorithms offer a pragmatic path that preserves speech while reducing manipulative amplification that frays social cohesion necessary for collective problem solving on climate, health, and inequality. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 11–15",
+          "instructions": "<p>Choose the correct heading for paragraphs <strong>B–F</strong> from the list of headings below.</p><p><em>Write the correct number, <strong>i–vii</strong>, in boxes 11–15 on your answer sheet.</em></p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "i. Echo chambers and inauthentic coordination",
+            "ii. Affective hostility and media literacy",
+            "iii. Regulation of amplification versus speech",
+            "iv. Harassment, protests, and shutdowns",
+            "v. Methods, replication, and adolescent cohorts",
+            "vi. PETase reactor temperatures",
+            "vii. Maya milpa fallow cycles"
+          ],
+          "questions": [
+            {
+              "order": 11,
+              "question": "<p>Paragraph B</p>",
+              "correct_answer": "i. Echo chambers and inauthentic coordination"
+            },
+            {
+              "order": 12,
+              "question": "<p>Paragraph C</p>",
+              "correct_answer": "ii. Affective hostility and media literacy"
+            },
+            {
+              "order": 13,
+              "question": "<p>Paragraph D</p>",
+              "correct_answer": "iii. Regulation of amplification versus speech"
+            },
+            {
+              "order": 14,
+              "question": "<p>Paragraph E</p>",
+              "correct_answer": "iv. Harassment, protests, and shutdowns"
+            },
+            {
+              "order": 15,
+              "question": "<p>Paragraph F</p>",
+              "correct_answer": "v. Methods, replication, and adolescent cohorts"
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "title": "Questions 16–20",
+          "instructions": "<p>Which paragraph contains the following information?</p><p><em>Write the correct letter, <strong>A–G</strong>, in boxes 16–20 on your answer sheet.</em></p>",
+          "question_type": "matching_info",
+          "option_pool": [
+            "Paragraph A",
+            "Paragraph B",
+            "Paragraph C",
+            "Paragraph D",
+            "Paragraph E",
+            "Paragraph F",
+            "Paragraph G"
+          ],
+          "questions": [
+            {
+              "order": 16,
+              "question": "<p>algorithmic feeds prioritising engagement over nuance</p>",
+              "correct_answer": "Paragraph A"
+            },
+            {
+              "order": 17,
+              "question": "<p>experiments injecting diverse sources with modest belief change</p>",
+              "correct_answer": "Paragraph B"
+            },
+            {
+              "order": 18,
+              "question": "<p>feelings thermometer scores toward opposing partisans</p>",
+              "correct_answer": "Paragraph C"
+            },
+            {
+              "order": 19,
+              "question": "<p>European digital services acts imposing risk assessments</p>",
+              "correct_answer": "Paragraph D"
+            },
+            {
+              "order": 20,
+              "question": "<p>gendered abuse deterring women from political speech</p>",
+              "correct_answer": "Paragraph E"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "tfng",
+          "question": "<p>Some scholars argue digital media may reveal rather than solely cause divisions.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 2,
+          "question_type": "tfng",
+          "question": "<p>Every experiment shows large belief changes within weeks.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 3,
+          "question_type": "tfng",
+          "question": "<p>The passage states all governments ban encrypted channels.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 4,
+          "question_type": "tfng",
+          "question": "<p>Performative condemnation can be rewarded by outrage cascades.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 5,
+          "question_type": "tfng",
+          "question": "<p>Self-reported usage frequency perfectly maps exposure diversity.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 6,
+          "question_type": "ynng",
+          "question": "<p>The author supports focusing recommender accountability over policing every opinion.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 7,
+          "question_type": "ynng",
+          "question": "<p>The writer believes polarization is only user pathology.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 8,
+          "question_type": "ynng",
+          "question": "<p>The author sees local news as a counterbalance to viral outrage.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 9,
+          "question_type": "ynng",
+          "question": "<p>The writer claims hashtags alone guarantee safer participation for women.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 10,
+          "question_type": "ynng",
+          "question": "<p>The author advocates auditability and researcher data access.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 21,
+          "question_type": "sentence_completion",
+          "question": "<p>Algorithmic feeds may amplify emotive content over policy ____.</p>",
+          "correct_answer": "analysis",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 22,
+          "question_type": "sentence_completion",
+          "question": "<p>Bot networks manipulate ____ topics.</p>",
+          "correct_answer": "trending",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 23,
+          "question_type": "sentence_completion",
+          "question": "<p>Politicians broadcast clips optimized for ____.</p>",
+          "correct_answer": "sharing",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 24,
+          "question_type": "sentence_completion",
+          "question": "<p>Doxxing campaigns target activists with ____.</p>",
+          "correct_answer": "harassment",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 25,
+          "question_type": "summary_completion",
+          "question": "<p>Media literacy teaches lateral reading and source ____. Funding fluctuates.</p>",
+          "correct_answer": "triangulation",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 26,
+          "question_type": "summary_completion",
+          "question": "<p>Duty-of-care proposals address minors' mental ____. Contested by firms.</p>",
+          "correct_answer": "health",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 27,
+          "question_type": "summary_completion",
+          "question": "<p>Field experiments randomise feed interventions with ethical ____. </p>",
+          "correct_answer": "oversight",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 28,
+          "question_type": "summary_completion",
+          "question": "<p>Shared standards include user control over ranking ____. </p>",
+          "correct_answer": "algorithms",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 29,
+          "question_type": "flowchart_completion",
+          "question": "<p>Polarization measure | Affective hostility uses feelings ____</p>",
+          "correct_answer": "thermometer",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 30,
+          "question_type": "flowchart_completion",
+          "question": "<p>Platform integrity | Teams may label state-sponsored ____</p>",
+          "correct_answer": "propaganda",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 31,
+          "question_type": "flowchart_completion",
+          "question": "<p>Research limit | Replication crises show fragile ____</p>",
+          "correct_answer": "effects",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 32,
+          "question_type": "mcq",
+          "question": "<p>Paragraph A notes cross-national surveys find</p>",
+          "answer_options": [
+            "heterogeneous polarization effects across democracies",
+            "identical hostility everywhere",
+            "no role for cable television precedents",
+            "declining online argument time"
+          ],
+          "correct_answer": "heterogeneous polarization effects across democracies"
+        },
+        {
+          "order": 33,
+          "question_type": "mcq",
+          "question": "<p>According to paragraph B, reducing sorting modestly</p>",
+          "answer_options": [
+            "increases cross-cutting content with limited belief change",
+            "eliminates all bots instantly",
+            "guarantees policy compromise",
+            "removes journalists from campaigns"
+          ],
+          "correct_answer": "increases cross-cutting content with limited belief change"
+        },
+        {
+          "order": 34,
+          "question_type": "mcq",
+          "question": "<p>Paragraph D argues regulation should focus on</p>",
+          "answer_options": [
+            "amplification mechanisms and recommender accountability",
+            "banning all controversial speech",
+            "eliminating age verification experiments",
+            "ending democratic debate online"
+          ],
+          "correct_answer": "amplification mechanisms and recommender accountability"
+        },
+        {
+          "order": 35,
+          "question_type": "mcq",
+          "question": "<p>Paragraph E links online abuse to</p>",
+          "answer_options": [
+            "representation gaps in parliaments",
+            "mandatory chronological feeds globally",
+            "shutdown of all protests",
+            "elimination of election workers"
+          ],
+          "correct_answer": "representation gaps in parliaments"
+        },
+        {
+          "order": 36,
+          "question_type": "mcq",
+          "question": "<p>The final paragraph recommends design aligned with</p>",
+          "answer_options": [
+            "democratic values rather than only shareholder metrics",
+            "shareholder metrics exclusively",
+            "user pathology blame alone",
+            "eliminating offline forums"
+          ],
+          "correct_answer": "democratic values rather than only shareholder metrics"
+        },
+        {
+          "order": 37,
+          "question_type": "short_answer",
+          "question": "<p>What term describes tribal dislike beyond policy disagreement?</p>",
+          "correct_answer": "affective",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 38,
+          "question_type": "short_answer",
+          "question": "<p>What reading technique do literacy curricula teach alongside triangulation?</p>",
+          "correct_answer": "lateral",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 39,
+          "question_type": "short_answer",
+          "question": "<p>What coordinated behaviour manipulates trending topics?</p>",
+          "correct_answer": "inauthentic",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 40,
+          "question_type": "short_answer",
+          "question": "<p>What forums does the author say can counterbalance viral outrage?</p>",
+          "correct_answer": "deliberative",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        }
+      ]
+    }
+  ]
+}

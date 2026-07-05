@@ -1,0 +1,29 @@
+{% load i18n portal_tags %}
+<article
+  class="portal-reading-task{% if q.is_choice %} portal-reading-task--choice{% else %} portal-reading-task--text{% endif %}"
+  data-quiz-question-card
+  data-reading-question-id="{{ q.id }}"
+  data-question-type="{{ q.question_type }}"
+>
+  <header class="portal-reading-task__head">
+    <span class="portal-reading-task__index">
+      <span class="portal-reading-task__index-label">{% trans 'Q' %}</span>
+      <span class="portal-reading-task__index-num">{{ q.number }}</span>
+    </span>
+    <span class="portal-reading-task__type badge rounded-pill text-bg-light border">
+      {{ q.question_type_label }}
+    </span>
+  </header>
+
+  {% if q.question %}
+  <div class="portal-reading-task__prompt">{{ q.question|safe }}</div>
+  {% endif %}
+
+  <div class="portal-reading-task__response">
+    {% if q.is_choice %}
+      {% include "portals/includes/quiz_reading_question_choice.html" with q=q view_only=view_only %}
+    {% else %}
+      {% include "portals/includes/quiz_reading_question_text.html" with q=q view_only=view_only %}
+    {% endif %}
+  </div>
+</article>

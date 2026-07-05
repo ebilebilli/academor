@@ -1,117 +1,274 @@
 {% extends "portals/base.html" %}
-{% load i18n portal_tags %}
+{% load static i18n portal_tags %}
 
 {% block title %}{{ lesson.name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'portals/css/lesson-video-lightbox.css' %}">
+{% endblock %}
 
 {% block content %}
 {% include "portals/includes/parent_child_header.html" %}
 
-<div class="portal-control-bar mb-3">
-  <div class="portal-control-left">
-    <a class="btn btn-outline-secondary btn-sm" href="{{ back_url }}">
-      <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'Back to lessons' %}
-    </a>
-  </div>
+<div class="s-page-toolbar">
+  {% trans 'Back to lessons' as lessons_back_label %}
+  {% include "portals/includes/portal_back_link.html" with back_url=back_url back_label=lessons_back_label %}
   {% if edit_url %}
-  <div class="portal-control-right">
-    <a class="btn btn-primary btn-sm" href="{{ edit_url }}">
-      <i class="bi bi-pencil me-1" aria-hidden="true"></i>{% trans 'Edit' %}
-    </a>
-  </div>
+  <a class="ds-btn ds-btn--primary btn-sm" href="{{ edit_url }}">
+    <i class="ti ti-pencil" aria-hidden="true"></i>
+    {% trans 'Edit' %}
+  </a>
   {% endif %}
 </div>
 
-{% portal_page_heading icon="bi-journal-text" eyebrow=page_eyebrow|default:"Student" raw_title=lesson.name %}
-
-{% if lesson.group_name %}
-<p class="portal-lesson-detail-group mb-3">
-  {% if group_detail_url %}
-  <a class="portal-session-group portal-session-group-link" href="{{ group_detail_url }}">{{ lesson.group_name }}</a>
-  {% else %}
-  <span class="portal-session-group">{{ lesson.group_name }}</span>
-  {% endif %}
-</p>
-{% endif %}
-
-<section class="portal-content-panel portal-lesson-detail mb-3">
-  {% if lesson.description %}
-  <div class="portal-lesson-detail-section">
-    <h2 class="portal-lesson-section-title">{% trans 'Description' %}</h2>
-    <div class="portal-lesson-description">{{ lesson.description|linebreaksbr }}</div>
-  </div>
-  {% endif %}
-
-  <div class="portal-lesson-detail-section">
-    <h2 class="portal-lesson-section-title">{% trans 'Materials' %}</h2>
-
-    {% if lesson.has_materials %}
-    <div class="portal-lesson-materials">
-      {% if lesson.has_pdf %}
-      <article class="portal-lesson-material-card">
-        <header class="portal-lesson-material-header">
-          <div>
-            <span class="portal-lesson-material-icon"><i class="bi bi-file-earmark-pdf" aria-hidden="true"></i></span>
-            <h3>{% trans 'PDF' %}</h3>
-          </div>
-          <a class="btn btn-outline-primary btn-sm" href="{{ lesson.pdf_url }}" target="_blank" rel="noopener">
-            <i class="bi bi-box-arrow-up-right me-1" aria-hidden="true"></i>{% trans 'Open PDF' %}
-          </a>
-        </header>
-        <p class="portal-lesson-pdf-hint text-muted small mb-0">{% trans 'PDF opens in a new tab for viewing or download.' %}</p>
-      </article>
+<header class="s-page-head s-lesson-detail-head mb-4">
+  <div class="s-page-head__copy">
+    <h1 class="s-page-head__title">
+      <i class="ti ti-book-2" aria-hidden="true"></i>
+      {{ lesson.name }}
+    </h1>
+    <div class="s-lesson-detail-meta">
+      {% if lesson.lesson_date %}
+      <span class="s-lesson-detail-meta__item">
+        <i class="ti ti-calendar" aria-hidden="true"></i>
+        {{ lesson.lesson_date|portal_date_long }}
+      </span>
       {% endif %}
-
-      {% if lesson.has_video %}
-      <article class="portal-lesson-material-card">
-        <header class="portal-lesson-material-header">
-          <div>
-            <span class="portal-lesson-material-icon"><i class="bi bi-play-btn" aria-hidden="true"></i></span>
-            <h3>{% trans 'Video' %}</h3>
-          </div>
-          <a class="btn btn-outline-primary btn-sm" href="{{ lesson.video_url }}" target="_blank" rel="noopener">
-            <i class="bi bi-box-arrow-up-right me-1" aria-hidden="true"></i>{% trans 'Open in new tab' %}
-          </a>
-        </header>
-        {% if lesson.video_embed_url %}
-        <div class="portal-lesson-video-embed">
-          <iframe
-            src="{{ lesson.video_embed_url }}"
-            title="{% trans 'Lesson video' %}"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
-            loading="lazy"
-          ></iframe>
-        </div>
+      {% if lesson.subject_label %}
+      <span class="s-lesson-detail-meta__item">
+        <i class="ti ti-books" aria-hidden="true"></i>
+        {{ lesson.subject_label }}
+      </span>
+      {% endif %}
+      {% if lesson.category_name %}
+      <span class="s-lesson-detail-meta__item">
+        <i class="ti ti-tag" aria-hidden="true"></i>
+        {{ lesson.category_name }}
+      </span>
+      {% endif %}
+      {% if lesson.group_name %}
+      <span class="s-lesson-detail-meta__item">
+        <i class="ti ti-users" aria-hidden="true"></i>
+        {% if group_detail_url %}
+        <a href="{{ group_detail_url }}">{{ lesson.group_name }}</a>
         {% else %}
-        <div class="portal-lesson-video-fallback">
-          <a class="btn btn-primary" href="{{ lesson.video_url }}" target="_blank" rel="noopener">
-            <i class="bi bi-play-fill me-1" aria-hidden="true"></i>{% trans 'Watch video' %}
-          </a>
-        </div>
+        {{ lesson.group_name }}
         {% endif %}
-      </article>
-      {% endif %}
-
-      {% if lesson.has_image %}
-      <article class="portal-lesson-material-card">
-        <header class="portal-lesson-material-header">
-          <div>
-            <span class="portal-lesson-material-icon"><i class="bi bi-image" aria-hidden="true"></i></span>
-            <h3>{% trans 'Image' %}</h3>
-          </div>
-          <a class="btn btn-outline-primary btn-sm" href="{{ lesson.image_url }}" target="_blank" rel="noopener">
-            <i class="bi bi-box-arrow-up-right me-1" aria-hidden="true"></i>{% trans 'View image' %}
-          </a>
-        </header>
-        <a class="portal-lesson-image-link" href="{{ lesson.image_url }}" target="_blank" rel="noopener">
-          <img class="portal-lesson-image" src="{{ lesson.image_url }}" alt="{{ lesson.name }}">
-        </a>
-      </article>
+      </span>
       {% endif %}
     </div>
-    {% else %}
-    <p class="text-muted mb-0">{% trans 'No materials attached to this lesson.' %}</p>
-    {% endif %}
   </div>
+</header>
+
+{% if lesson.description %}
+<section class="ds-card s-lesson-detail-section mb-4">
+  <div class="s-panel-head">
+    <h2 class="s-panel-title">
+      <i class="ti ti-align-left" aria-hidden="true"></i>
+      {% trans 'Description' %}
+    </h2>
+  </div>
+  <div class="s-lesson-detail-description">{{ lesson.description|linebreaksbr }}</div>
 </section>
+{% endif %}
+
+<section class="ds-card s-lesson-detail-section">
+  <div class="s-panel-head">
+    <h2 class="s-panel-title">
+      <i class="ti ti-paperclip" aria-hidden="true"></i>
+      {% trans 'Materials' %}
+    </h2>
+  </div>
+
+  {% if lesson.has_materials %}
+  <div class="s-lesson-materials">
+    {% if lesson.has_pdf %}
+    <article class="s-lesson-material s-lesson-material--row">
+      <div class="s-lesson-material__icon s-lesson-material__icon--pdf" aria-hidden="true">
+        <i class="ti ti-file-type-pdf"></i>
+      </div>
+      <div class="s-lesson-material__body">
+        <h3 class="s-lesson-material__title">{% trans 'PDF' %}</h3>
+      </div>
+      <div class="s-lesson-material__actions">
+        <a class="ds-btn ds-btn--secondary btn-sm" href="{{ lesson.pdf_url }}" target="_blank" rel="noopener">
+          <i class="ti ti-external-link" aria-hidden="true"></i>
+          {% trans 'Open PDF' %}
+        </a>
+        <a class="ds-btn ds-btn--ghost btn-sm" href="{{ lesson.pdf_url }}" download>
+          <i class="ti ti-download" aria-hidden="true"></i>
+          {% trans 'Download' %}
+        </a>
+      </div>
+    </article>
+    {% endif %}
+
+    {% for attachment in lesson.extra_pdfs %}
+    {% if not lesson.has_pdf or attachment.url != lesson.pdf_url %}
+    <article class="s-lesson-material s-lesson-material--row">
+      <div class="s-lesson-material__icon s-lesson-material__icon--pdf" aria-hidden="true">
+        <i class="ti ti-file-type-pdf"></i>
+      </div>
+      <div class="s-lesson-material__body">
+        <h3 class="s-lesson-material__title">{{ attachment.label }}</h3>
+      </div>
+      <div class="s-lesson-material__actions">
+        <a class="ds-btn ds-btn--secondary btn-sm" href="{{ attachment.url }}" target="_blank" rel="noopener">
+          <i class="ti ti-external-link" aria-hidden="true"></i>
+          {% trans 'Open PDF' %}
+        </a>
+        <a class="ds-btn ds-btn--ghost btn-sm" href="{{ attachment.url }}" download>
+          <i class="ti ti-download" aria-hidden="true"></i>
+          {% trans 'Download' %}
+        </a>
+      </div>
+    </article>
+    {% endif %}
+    {% endfor %}
+
+    {% if lesson.has_video %}
+    <article class="s-lesson-material s-lesson-material--block">
+      <div class="s-lesson-material__block-head">
+        <div class="s-lesson-material__icon s-lesson-material__icon--video" aria-hidden="true">
+          <i class="ti ti-player-play"></i>
+        </div>
+        <div class="s-lesson-material__body">
+          <h3 class="s-lesson-material__title">{% trans 'Video' %}</h3>
+        </div>
+        <div class="s-lesson-material__actions">
+          {% if lesson.video_is_youtube %}
+          <button type="button" class="ds-btn ds-btn--secondary btn-sm" data-lesson-video-open>
+            <i class="ti ti-player-play" aria-hidden="true"></i>
+            {% trans 'Watch video' %}
+          </button>
+          {% else %}
+          <a class="ds-btn ds-btn--secondary btn-sm" href="{{ lesson.video_url }}" target="_blank" rel="noopener">
+            <i class="ti ti-external-link" aria-hidden="true"></i>
+            {% trans 'Open in new tab' %}
+          </a>
+          {% endif %}
+        </div>
+      </div>
+      {% if lesson.video_is_youtube %}
+      <button type="button" class="s-lesson-video-trigger" data-lesson-video-open aria-label="{% trans 'Watch video' %}">
+        {% if lesson.youtube_thumbnail_url %}
+        <img class="s-lesson-video-trigger__thumb" src="{{ lesson.youtube_thumbnail_url }}" alt="">
+        {% endif %}
+        <span class="s-lesson-video-trigger__play" aria-hidden="true">
+          <i class="ti ti-player-play"></i>
+        </span>
+      </button>
+      {% else %}
+      <div class="s-lesson-video-fallback">
+        <a class="ds-btn ds-btn--primary" href="{{ lesson.video_url }}" target="_blank" rel="noopener">
+          <i class="ti ti-player-play" aria-hidden="true"></i>
+          {% trans 'Watch video' %}
+        </a>
+      </div>
+      {% endif %}
+    </article>
+    {% endif %}
+
+    {% for attachment in lesson.extra_videos %}
+    <article class="s-lesson-material s-lesson-material--row">
+      <div class="s-lesson-material__icon s-lesson-material__icon--video" aria-hidden="true">
+        <i class="ti ti-player-play"></i>
+      </div>
+      <div class="s-lesson-material__body">
+        <h3 class="s-lesson-material__title">{{ attachment.label }}</h3>
+      </div>
+      <div class="s-lesson-material__actions">
+        <a class="ds-btn ds-btn--secondary btn-sm" href="{{ attachment.url }}" target="_blank" rel="noopener">
+          <i class="ti ti-external-link" aria-hidden="true"></i>
+          {% trans 'Open video' %}
+        </a>
+      </div>
+    </article>
+    {% endfor %}
+
+    {% if lesson.has_image %}
+    <article class="s-lesson-material s-lesson-material--block">
+      <div class="s-lesson-material__block-head">
+        <div class="s-lesson-material__icon s-lesson-material__icon--image" aria-hidden="true">
+          <i class="ti ti-photo"></i>
+        </div>
+        <div class="s-lesson-material__body">
+          <h3 class="s-lesson-material__title">{% trans 'Image' %}</h3>
+        </div>
+        <div class="s-lesson-material__actions">
+          <a class="ds-btn ds-btn--secondary btn-sm" href="{{ lesson.image_url }}" target="_blank" rel="noopener">
+            <i class="ti ti-external-link" aria-hidden="true"></i>
+            {% trans 'View image' %}
+          </a>
+        </div>
+      </div>
+      <a class="s-lesson-image-preview" href="{{ lesson.image_url }}" target="_blank" rel="noopener">
+        <img src="{{ lesson.image_url }}" alt="{{ lesson.name }}">
+      </a>
+    </article>
+    {% endif %}
+
+    {% for attachment in lesson.extra_images %}
+    {% if not lesson.has_image or attachment.url != lesson.image_url %}
+    <article class="s-lesson-material s-lesson-material--block">
+      <div class="s-lesson-material__block-head">
+        <div class="s-lesson-material__icon s-lesson-material__icon--image" aria-hidden="true">
+          <i class="ti ti-photo"></i>
+        </div>
+        <div class="s-lesson-material__body">
+          <h3 class="s-lesson-material__title">{{ attachment.label }}</h3>
+        </div>
+        <div class="s-lesson-material__actions">
+          <a class="ds-btn ds-btn--secondary btn-sm" href="{{ attachment.url }}" target="_blank" rel="noopener">
+            <i class="ti ti-external-link" aria-hidden="true"></i>
+            {% trans 'View image' %}
+          </a>
+        </div>
+      </div>
+      <a class="s-lesson-image-preview" href="{{ attachment.url }}" target="_blank" rel="noopener">
+        <img src="{{ attachment.url }}" alt="{{ attachment.label }}">
+      </a>
+    </article>
+    {% endif %}
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="s-empty-state s-empty-state--compact">
+    <i class="ti ti-file-off" aria-hidden="true"></i>
+    <p>{% trans 'No materials attached to this lesson.' %}</p>
+  </div>
+  {% endif %}
+</section>
+
+{% if lesson.video_is_youtube and lesson.video_embed_url %}
+<div
+  class="s-video-lightbox"
+  id="lessonVideoLightbox"
+  data-lesson-video-lightbox
+  data-embed-url="{{ lesson.video_embed_url }}"
+  hidden
+>
+  <div class="s-video-lightbox__backdrop" data-lesson-video-close tabindex="-1"></div>
+  <div class="s-video-lightbox__dialog" role="dialog" aria-modal="true" aria-label="{% trans 'Lesson video' %}">
+    <button type="button" class="s-video-lightbox__close" data-lesson-video-close aria-label="{% trans 'Close' %}">
+      <i class="ti ti-x" aria-hidden="true"></i>
+    </button>
+    <div class="s-video-lightbox__frame">
+      <iframe
+        data-lesson-video-iframe
+        title="{% trans 'Lesson video' %}"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+{% if lesson.video_is_youtube and lesson.video_embed_url %}
+<script src="{% static 'portals/js/lesson-video-lightbox.js' %}"></script>
+{% endif %}
 {% endblock %}

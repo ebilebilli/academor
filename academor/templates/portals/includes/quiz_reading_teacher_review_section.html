@@ -1,0 +1,42 @@
+{% load i18n %}
+<section
+  class="portal-reading-review-section"
+  aria-labelledby="reading-review-section-{{ section.section_number }}-title"
+>
+  <details class="portal-reading-review-passage panel mb-3">
+    <summary class="portal-reading-review-passage__summary">
+      <span class="portal-reading-review-passage__title" id="reading-review-section-{{ section.section_number }}-title">
+        {% if section.passage.title %}
+          {{ section.passage.title }}
+        {% else %}
+          {% blocktrans with num=section.section_number %}Passage {{ num }}{% endblocktrans %}
+        {% endif %}
+      </span>
+      <span class="portal-reading-review-passage__hint text-muted small">
+        {% trans 'Show passage' %}
+      </span>
+    </summary>
+    {% if section.passage.instructions %}
+    <div class="portal-reading-review-passage__instructions">{{ section.passage.instructions|safe }}</div>
+    {% endif %}
+    <div class="portal-reading-review-passage__body">{{ section.passage.body|safe }}</div>
+  </details>
+
+  {% if section.questions %}
+  <div class="portal-reading-review-questions">
+    {% for q in section.questions %}
+    {% if q.group_start and q.group_instructions %}
+    <div class="portal-reading-review-group panel mb-2">
+      {% if q.group_instructions.title %}
+      <p class="portal-reading-review-group__title mb-1">{{ q.group_instructions.title }}</p>
+      {% endif %}
+      {% if q.group_instructions.instructions %}
+      <div class="portal-reading-review-group__body small text-muted mb-0">{{ q.group_instructions.instructions|safe }}</div>
+      {% endif %}
+    </div>
+    {% endif %}
+    {% include "portals/includes/quiz_reading_teacher_review_question.html" with q=q review_editable=review_editable %}
+    {% endfor %}
+  </div>
+  {% endif %}
+</section>

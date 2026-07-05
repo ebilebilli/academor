@@ -17,13 +17,55 @@ from portals.utils.student_courses import quiz_visible_to_student
 from portals.utils.quiz_listening import get_listening_questions_for_quiz
 
 
+def _standalone_results(**filters):
+    return QuizResult.objects.filter(ielts_mock_attempt__isnull=True, **filters)
+
+
+def _mock_section_submit_error(
+    student_id: int,
+    mock_attempt_id: int | None,
+    quiz_id: int,
+) -> str | None:
+    if not mock_attempt_id:
+        return None
+    from portals.utils.ielts_mock_test import (
+        get_active_mock_attempt,
+        section_for_quiz_in_attempt,
+        validate_mock_section_submit,
+    )
+
+    attempt = get_active_mock_attempt(student_id, mock_attempt_id)
+    if not attempt:
+        return str(_('Mock test session is no longer active.'))
+    validation_error = validate_mock_section_submit(attempt, quiz_id)
+    if validation_error:
+        return validation_error
+    section = section_for_quiz_in_attempt(attempt, quiz_id)
+    if section and attempt.result_for_section(section):
+        return str(_('You already submitted this mock test section.'))
+    return None
+
+
+def _create_quiz_result(*, student_id: int, quiz: Quiz, mock_attempt_id: int | None = None, **fields):
+    return QuizResult.objects.create(
+        student_id=student_id,
+        quiz=quiz,
+        ielts_mock_attempt_id=mock_attempt_id,
+        **fields,
+    )
+
+
 def student_has_quiz_attempt(student_id: int, quiz_id: int) -> bool:
-    return QuizResult.objects.filter(student_id=student_id, quiz_id=quiz_id).exists()
+    return _standalone_results(student_id=student_id, quiz_id=quiz_id).exists()
 
 
 def student_can_take_manual_quiz(student_id: int, quiz_id: int) -> bool:
     """First attempt, or a new attempt after the teacher has published a review."""
-    result = QuizResult.objects.filter(student_id=student_id, quiz_id=quiz_id).first()
+    result = (
+        _standalone_results(student_id=student_id, quiz_id=quiz_id)
+        .order_by('-completed_at', '-id')
+        .first()
+    )
     if not result:
         return True
     if result.is_pending_review:
@@ -32,24 +74,30 @@ def student_can_take_manual_quiz(student_id: int, quiz_id: int) -> bool:
 
 
 def get_student_quiz_attempt_map(student_id: int, quiz_ids: list[int] | None = None) -> dict[int, int]:
-    qs = QuizResult.objects.filter(student_id=student_id)
+    qs = _standalone_results(student_id=student_id)
     if quiz_ids:
         qs = qs.filter(quiz_id__in=quiz_ids)
-    return dict(qs.values_list('quiz_id', 'pk'))
+    attempt_map: dict[int, int] = {}
+    for result in qs.order_by('quiz_id', '-completed_at', '-id').only('pk', 'quiz_id'):
+        attempt_map.setdefault(result.quiz_id, result.pk)
+    return attempt_map
 
 
 def get_student_quiz_attempt_meta(student_id: int, quiz_ids: list[int] | None = None) -> dict[int, dict]:
-    qs = QuizResult.objects.filter(student_id=student_id)
+    qs = _standalone_results(student_id=student_id)
     if quiz_ids:
         qs = qs.filter(quiz_id__in=quiz_ids)
-    return {
-        row['quiz_id']: {
-            'result_id': row['pk'],
-            'is_reviewed': row['reviewed_at'] is not None,
-            'is_pending_review': row['reviewed_at'] is None,
-        }
-        for row in qs.values('quiz_id', 'pk', 'reviewed_at')
-    }
+    meta: dict[int, dict] = {}
+    for row in qs.order_by('quiz_id', '-completed_at', '-id').values('quiz_id', 'pk', 'reviewed_at'):
+        meta.setdefault(
+            row['quiz_id'],
+            {
+                'result_id': row['pk'],
+                'is_reviewed': row['reviewed_at'] is not None,
+                'is_pending_review': row['reviewed_at'] is None,
+            },
+        )
+    return meta
 
 
 def _question_correct_index(question) -> int | None:
@@ -344,9 +392,42 @@ def _validate_essay_text_answers(quiz: Quiz, answers: dict[str, str]) -> str | N
     return None
 
 
+def build_speaking_question_responses(result: QuizResult) -> list[dict]:
+    from portals.models import SpeakingRecording
+    from portals.utils.quiz_speaking import get_speaking_questions_for_quiz
+
+    quiz = result.quiz
+    questions = get_speaking_questions_for_quiz(quiz)
+    recordings = {
+        row.question_id: row
+        for row in SpeakingRecording.objects.filter(result_id=result.pk).select_related('question')
+    }
+    responses = []
+    for index, question in enumerate(questions, start=1):
+        recording = recordings.get(question.pk)
+        responses.append({
+            'id': question.pk,
+            'number': index,
+            'question': question.question,
+            'part_type': question.part.part_type,
+            'part_type_label': str(question.part.get_part_type_display()),
+            'prompt_type': 'audio',
+            'student_answer': '',
+            'student_audio_url': recording.audio_url if recording else '',
+            'student_duration_sec': recording.duration_sec if recording else 0,
+            'cue_card_topic': question.part.cue_card_topic if question.part.part_type == 'part_2' else '',
+            'cue_card_bullets': list(question.part.cue_card_bullets or [])
+            if question.part.part_type == 'part_2'
+            else [],
+        })
+    return responses
+
+
 def build_essay_question_responses(result: QuizResult) -> list[dict]:
     quiz = result.quiz
     given = result.given_answers or {}
+    if quiz.is_speaking:
+        return build_speaking_question_responses(result)
     if quiz.is_listening:
         questions = get_listening_questions_for_quiz(quiz)
         responses = []
@@ -422,6 +503,8 @@ def submit_variant_quiz_attempt(
     duration_sec: int = 0,
     session_started_at: str | None = None,
     completion_trigger: str = QuizResult.CompletionTrigger.MANUAL,
+    mock_attempt_id: int | None = None,
+    defer_notifications: bool = False,
 ) -> dict:
     quiz = _load_quiz_for_student(student_id, quiz_id)
     if not quiz:
@@ -431,6 +514,10 @@ def submit_variant_quiz_attempt(
 
     if not quiz.questions.exists():
         return {'success': False, 'error': _('This quiz has no questions yet.')}
+
+    mock_error = _mock_section_submit_error(student_id, mock_attempt_id, quiz_id)
+    if mock_error:
+        return {'success': False, 'error': mock_error}
 
     resolved_duration, duration_error = _resolve_duration_sec(
         quiz,
@@ -449,51 +536,120 @@ def submit_variant_quiz_attempt(
         if item['selected_index'] is not None
     }
 
-    now = timezone.now()
-    existing = QuizResult.objects.filter(student_id=student_id, quiz_id=quiz_id).first()
-    if existing:
-        existing.given_answers = stored_answers
-        existing.total_score = score
-        existing.duration_sec = resolved_duration or 0
-        existing.completion_trigger = resolved_trigger
-        existing.completed_at = now
-        existing.save(update_fields=[
-            'given_answers', 'total_score', 'duration_sec', 'completion_trigger', 'completed_at',
-        ])
-        result = existing
-    else:
-        try:
-            result = QuizResult.objects.create(
-                student_id=student_id,
-                quiz=quiz,
-                given_answers=stored_answers,
-                total_score=score,
-                duration_sec=resolved_duration or 0,
-                completion_trigger=resolved_trigger,
-            )
-        except IntegrityError:
-            existing = QuizResult.objects.filter(student_id=student_id, quiz_id=quiz_id).first()
-            if not existing:
-                return {'success': False, 'error': _('Could not save the quiz result.')}
-            existing.given_answers = stored_answers
-            existing.total_score = score
-            existing.duration_sec = resolved_duration or 0
-            existing.completion_trigger = resolved_trigger
-            existing.completed_at = now
-            existing.save(update_fields=[
-                'given_answers', 'total_score', 'duration_sec', 'completion_trigger', 'completed_at',
-            ])
-            result = existing
+    try:
+        result = _create_quiz_result(
+            student_id=student_id,
+            quiz=quiz,
+            mock_attempt_id=mock_attempt_id,
+            given_answers=stored_answers,
+            total_score=score,
+            duration_sec=resolved_duration or 0,
+            completion_trigger=resolved_trigger,
+        )
+    except IntegrityError:
+        return {'success': False, 'error': _('Could not save the quiz result.')}
 
     from portals.utils.notifications import create_published_result_notifications
 
-    create_published_result_notifications(
-        QuizResult.objects.select_related('quiz__category', 'student').get(pk=result.pk),
-    )
+    result_with_relations = QuizResult.objects.select_related('quiz__category', 'student').get(pk=result.pk)
+    if not defer_notifications:
+        create_published_result_notifications(result_with_relations)
 
     percent = round(100 * score / max_score, 1) if max_score else 0.0
 
-    return {
+    response = {
+        'success': True,
+        'result_id': result.pk,
+        'total_score': score,
+        'max_score': max_score,
+        'percent': percent,
+        'duration_sec': resolved_duration or 0,
+        'completion_trigger': resolved_trigger,
+        'pending_review': True,
+        'questions': breakdown,
+        'breakdown': breakdown,
+    }
+    from portals.utils.ielts_mock_test import apply_mock_submit_result
+
+    return apply_mock_submit_result(
+        student_id=student_id,
+        mock_attempt_id=mock_attempt_id,
+        quiz_id=quiz_id,
+        result=result_with_relations,
+        response=response,
+        defer_notifications=defer_notifications,
+    )
+
+
+def submit_reading_quiz_attempt(
+    *,
+    student_id: int,
+    quiz_id: int,
+    given_answers: dict,
+    duration_sec: int = 0,
+    session_started_at: str | None = None,
+    completion_trigger: str = QuizResult.CompletionTrigger.MANUAL,
+    mock_attempt_id: int | None = None,
+    defer_notifications: bool = False,
+) -> dict:
+    from portals.utils.quiz_reading_score import (
+        normalize_reading_answers,
+        score_reading_quiz,
+    )
+
+    quiz = _load_quiz_for_student(student_id, quiz_id)
+    if not quiz:
+        return {'success': False, 'error': _('Quiz not found.')}
+    if not quiz.is_reading:
+        return {'success': False, 'error': _('This quiz is not a reading task.')}
+
+    mock_error = _mock_section_submit_error(student_id, mock_attempt_id, quiz_id)
+    if mock_error:
+        return {'success': False, 'error': mock_error}
+
+    normalized = normalize_reading_answers(quiz, given_answers)
+
+    resolved_duration, duration_error = _resolve_duration_sec(
+        quiz,
+        client_duration_sec=duration_sec,
+        session_started_at=session_started_at,
+        require_session=bool(quiz.is_time_limited and quiz.time_limit_minutes),
+    )
+    if duration_error:
+        return {'success': False, 'error': duration_error}
+
+    resolved_trigger = _normalize_completion_trigger(completion_trigger)
+    score, max_score, breakdown = score_reading_quiz(quiz, normalized)
+    stored_answers = {
+        str(item['id']): normalized.get(str(item['id']), '')
+        for item in breakdown
+        if normalized.get(str(item['id']), '') != ''
+    }
+
+    try:
+        result = _create_quiz_result(
+            student_id=student_id,
+            quiz=quiz,
+            mock_attempt_id=mock_attempt_id,
+            given_answers=stored_answers,
+            total_score=score,
+            duration_sec=resolved_duration or 0,
+            completion_trigger=resolved_trigger,
+        )
+    except IntegrityError:
+        return {'success': False, 'error': _('Could not save the quiz result.')}
+
+    from portals.utils.cache_utils import invalidate_model_cache
+    from portals.utils.notifications import create_published_result_notifications
+
+    result_with_relations = QuizResult.objects.select_related('quiz__category', 'student').get(pk=result.pk)
+    if not defer_notifications:
+        create_published_result_notifications(result_with_relations)
+    invalidate_model_cache('QuizResult')
+
+    percent = round(100 * score / max_score, 1) if max_score else 0.0
+
+    response = {
         'success': True,
         'result_id': result.pk,
         'total_score': score,
@@ -504,6 +660,248 @@ def submit_variant_quiz_attempt(
         'questions': breakdown,
         'breakdown': breakdown,
     }
+    from portals.utils.ielts_mock_test import apply_mock_submit_result
+
+    return apply_mock_submit_result(
+        student_id=student_id,
+        mock_attempt_id=mock_attempt_id,
+        quiz_id=quiz_id,
+        result=result_with_relations,
+        response=response,
+        defer_notifications=defer_notifications,
+    )
+
+
+def submit_listening_quiz_attempt(
+    *,
+    student_id: int,
+    quiz_id: int,
+    given_answers: dict | None = None,
+    ordered_answers: list | None = None,
+    duration_sec: int = 0,
+    session_started_at: str | None = None,
+    allow_empty_submission: bool = False,
+    completion_trigger: str = QuizResult.CompletionTrigger.MANUAL,
+    mock_attempt_id: int | None = None,
+    defer_notifications: bool = False,
+) -> dict:
+    from portals.utils.quiz_listening_score import score_listening_quiz
+
+    quiz = _load_quiz_for_student(student_id, quiz_id)
+    if not quiz:
+        return {'success': False, 'error': _('Quiz not found.')}
+    if not quiz.is_listening:
+        return {'success': False, 'error': _('This quiz is not a listening task.')}
+
+    mock_error = _mock_section_submit_error(student_id, mock_attempt_id, quiz_id)
+    if mock_error:
+        return {'success': False, 'error': mock_error}
+
+    listening_answers = _normalize_listening_model_answers(
+        given_answers,
+        quiz,
+        ordered_answers=ordered_answers,
+    )
+    if not allow_empty_submission:
+        validation_error = _validate_listening_model_answers(quiz, listening_answers)
+        if validation_error:
+            return {'success': False, 'error': validation_error}
+
+    resolved_duration, duration_error = _resolve_duration_sec(
+        quiz,
+        client_duration_sec=duration_sec,
+        session_started_at=session_started_at,
+        require_session=bool(quiz.is_time_limited and quiz.time_limit_minutes),
+    )
+    if duration_error:
+        return {'success': False, 'error': duration_error}
+
+    resolved_trigger = _normalize_completion_trigger(completion_trigger)
+    score, max_score, breakdown = score_listening_quiz(quiz, listening_answers)
+    stored_answers = {
+        str(item['id']): listening_answers.get(str(item['id']), '')
+        for item in breakdown
+        if listening_answers.get(str(item['id']), '') != ''
+    }
+
+    try:
+        result = _create_quiz_result(
+            student_id=student_id,
+            quiz=quiz,
+            mock_attempt_id=mock_attempt_id,
+            given_answers=stored_answers,
+            total_score=score,
+            duration_sec=resolved_duration or 0,
+            completion_trigger=resolved_trigger,
+        )
+    except IntegrityError:
+        return {'success': False, 'error': _('Could not save the quiz result.')}
+
+    from portals.utils.cache_utils import invalidate_model_cache
+    from portals.utils.notifications import create_published_result_notifications
+
+    result_with_relations = QuizResult.objects.select_related('quiz__category', 'student').get(pk=result.pk)
+    if not defer_notifications:
+        create_published_result_notifications(result_with_relations)
+    invalidate_model_cache('QuizResult')
+
+    percent = round(100 * score / max_score, 1) if max_score else 0.0
+
+    response = {
+        'success': True,
+        'result_id': result.pk,
+        'total_score': score,
+        'max_score': max_score,
+        'percent': percent,
+        'duration_sec': resolved_duration or 0,
+        'completion_trigger': resolved_trigger,
+        'questions': breakdown,
+        'breakdown': breakdown,
+    }
+    from portals.utils.ielts_mock_test import apply_mock_submit_result
+
+    return apply_mock_submit_result(
+        student_id=student_id,
+        mock_attempt_id=mock_attempt_id,
+        quiz_id=quiz_id,
+        result=result_with_relations,
+        response=response,
+        defer_notifications=defer_notifications,
+    )
+
+
+def _validate_speaking_recordings(quiz: Quiz, recording_files: dict[str, object]) -> str | None:
+    from portals.utils.quiz_speaking import get_speaking_questions_for_quiz
+
+    questions = get_speaking_questions_for_quiz(quiz)
+    if not questions:
+        return str(_('No questions found.'))
+    missing = [
+        question.pk
+        for question in questions
+        if str(question.pk) not in recording_files
+    ]
+    if missing:
+        return str(_('Record an answer for every speaking task before submitting.'))
+    return None
+
+
+def submit_speaking_quiz_attempt(
+    *,
+    student_id: int,
+    quiz_id: int,
+    recording_files: dict[str, object] | None = None,
+    recording_durations: dict[str, int] | None = None,
+    duration_sec: int = 0,
+    session_started_at: str | None = None,
+    allow_empty_submission: bool = False,
+    completion_trigger: str = QuizResult.CompletionTrigger.MANUAL,
+    mock_attempt_id: int | None = None,
+    defer_notifications: bool = False,
+) -> dict:
+    from portals.models import SpeakingRecording
+    from portals.utils.quiz_speaking import get_speaking_questions_for_quiz
+
+    quiz = _load_quiz_for_student(student_id, quiz_id)
+    if not quiz:
+        return {'success': False, 'error': _('Quiz not found.')}
+    if not quiz.is_speaking:
+        return {'success': False, 'error': _('This quiz is not a speaking task.')}
+
+    files = recording_files or {}
+    durations = recording_durations or {}
+
+    if not allow_empty_submission:
+        validation_error = _validate_speaking_recordings(quiz, files)
+        if validation_error:
+            return {'success': False, 'error': validation_error}
+
+    mock_error = _mock_section_submit_error(student_id, mock_attempt_id, quiz_id)
+    if mock_error:
+        return {'success': False, 'error': mock_error}
+
+    if not mock_attempt_id:
+        existing = (
+            _standalone_results(student_id=student_id, quiz_id=quiz_id)
+            .order_by('-completed_at', '-id')
+            .first()
+        )
+        if existing and existing.is_pending_review:
+            return {'success': False, 'error': _('Your submission is awaiting teacher review.')}
+
+    resolved_duration, duration_error = _resolve_duration_sec(
+        quiz,
+        client_duration_sec=duration_sec,
+        session_started_at=session_started_at,
+        require_session=bool(quiz.is_time_limited and quiz.time_limit_minutes),
+    )
+    if duration_error:
+        return {'success': False, 'error': duration_error}
+
+    resolved_trigger = _normalize_completion_trigger(completion_trigger)
+    questions = get_speaking_questions_for_quiz(quiz)
+    question_map = {str(question.pk): question for question in questions}
+
+    try:
+        result = _create_quiz_result(
+            student_id=student_id,
+            quiz=quiz,
+            mock_attempt_id=mock_attempt_id,
+            given_answers={},
+            duration_sec=resolved_duration or 0,
+            completion_trigger=resolved_trigger,
+        )
+    except IntegrityError:
+        return {'success': False, 'error': _('Could not save the submission.')}
+
+    stored_answers: dict[str, dict] = {}
+    for question_id, upload in files.items():
+        question = question_map.get(str(question_id))
+        if not question or not upload:
+            continue
+        recording = SpeakingRecording.objects.create(
+            result=result,
+            question=question,
+            audio_file=upload,
+            duration_sec=int(durations.get(str(question_id), 0) or 0),
+        )
+        stored_answers[str(question.pk)] = {
+            'recording_id': recording.pk,
+            'duration_sec': recording.duration_sec,
+        }
+
+    if stored_answers:
+        result.given_answers = stored_answers
+        result.save(update_fields=['given_answers'])
+
+    from portals.utils.cache_utils import invalidate_model_cache
+    from portals.utils.notifications import (
+        create_student_submission_notification,
+        create_teacher_submission_notifications,
+    )
+
+    result_with_relations = QuizResult.objects.select_related('quiz__category', 'student').get(pk=result.pk)
+    if not defer_notifications:
+        create_teacher_submission_notifications(result_with_relations)
+        create_student_submission_notification(result_with_relations)
+    invalidate_model_cache('QuizResult')
+
+    response = {
+        'success': True,
+        'result_id': result.pk,
+        'duration_sec': resolved_duration or 0,
+        'completion_trigger': resolved_trigger,
+    }
+    from portals.utils.ielts_mock_test import apply_mock_submit_result
+
+    return apply_mock_submit_result(
+        student_id=student_id,
+        mock_attempt_id=mock_attempt_id,
+        quiz_id=quiz_id,
+        result=result_with_relations,
+        response=response,
+        defer_notifications=defer_notifications,
+    )
 
 
 def submit_manual_quiz_attempt(
@@ -517,6 +915,8 @@ def submit_manual_quiz_attempt(
     session_started_at: str | None = None,
     allow_empty_submission: bool = False,
     completion_trigger: str = QuizResult.CompletionTrigger.MANUAL,
+    mock_attempt_id: int | None = None,
+    defer_notifications: bool = False,
 ) -> dict:
     quiz = _load_quiz_for_student(student_id, quiz_id)
     if not quiz:
@@ -526,20 +926,9 @@ def submit_manual_quiz_attempt(
 
     submission = (student_submission or '').strip()
     text_answers: dict[str, str] = {}
-    listening_answers: dict[str, str] = {}
     uses_text_responses = quiz.uses_per_question_text_responses
     answerable_questions = _answerable_questions(quiz)
-    if quiz.is_listening:
-        listening_answers = _normalize_listening_model_answers(
-            given_answers,
-            quiz,
-            ordered_answers=ordered_answers,
-        )
-        if not allow_empty_submission:
-            validation_error = _validate_listening_model_answers(quiz, listening_answers)
-            if validation_error:
-                return {'success': False, 'error': validation_error}
-    elif uses_text_responses:
+    if uses_text_responses:
         text_answers = _normalize_essay_text_answers(
             given_answers,
             quiz,
@@ -555,9 +944,18 @@ def submit_manual_quiz_attempt(
     elif not submission and not allow_empty_submission:
         return {'success': False, 'error': _('Enter your answer before submitting.')}
 
-    existing = QuizResult.objects.filter(student_id=student_id, quiz_id=quiz_id).first()
-    if existing and existing.is_pending_review:
-        return {'success': False, 'error': _('Your submission is awaiting teacher review.')}
+    mock_error = _mock_section_submit_error(student_id, mock_attempt_id, quiz_id)
+    if mock_error:
+        return {'success': False, 'error': mock_error}
+
+    if not mock_attempt_id:
+        existing = (
+            _standalone_results(student_id=student_id, quiz_id=quiz_id)
+            .order_by('-completed_at', '-id')
+            .first()
+        )
+        if existing and existing.is_pending_review:
+            return {'success': False, 'error': _('Your submission is awaiting teacher review.')}
 
     resolved_duration, duration_error = _resolve_duration_sec(
         quiz,
@@ -570,92 +968,25 @@ def submit_manual_quiz_attempt(
 
     resolved_trigger = _normalize_completion_trigger(completion_trigger)
 
-    def apply_submission_fields(result_obj: QuizResult) -> None:
-        result_obj.duration_sec = resolved_duration or 0
-        result_obj.completion_trigger = resolved_trigger
-        result_obj.completed_at = timezone.now()
-        if quiz.is_listening:
-            result_obj.given_answers = listening_answers
-            result_obj.student_submission = ''
-        elif uses_text_responses:
-            result_obj.given_answers = text_answers
-            result_obj.student_submission = ''
+    try:
+        create_kwargs = {
+            'duration_sec': resolved_duration or 0,
+            'completion_trigger': resolved_trigger,
+        }
+        if uses_text_responses:
+            create_kwargs['given_answers'] = text_answers
+            create_kwargs['student_submission'] = ''
         else:
-            result_obj.student_submission = submission
-            result_obj.given_answers = {}
-
-    def reset_review_fields(result_obj: QuizResult) -> list[str]:
-        from portals.utils.notifications import clear_published_result_notifications
-
-        clear_published_result_notifications(result_obj)
-        result_obj.reviewed_at = None
-        result_obj.total_score = None
-        result_obj.teacher_feedback = ''
-        return ['reviewed_at', 'total_score', 'teacher_feedback']
-
-    if existing:
-        apply_submission_fields(existing)
-        if existing.reviewed_at is not None:
-            existing.save(update_fields=[
-                'given_answers',
-                'student_submission',
-                'duration_sec',
-                'completion_trigger',
-                'completed_at',
-                *reset_review_fields(existing),
-            ])
-        else:
-            existing.save(update_fields=[
-                'given_answers',
-                'student_submission',
-                'duration_sec',
-                'completion_trigger',
-                'completed_at',
-            ])
-        result = existing
-    else:
-        try:
-            create_kwargs = {
-                'student_id': student_id,
-                'quiz': quiz,
-                'duration_sec': resolved_duration or 0,
-                'completion_trigger': resolved_trigger,
-            }
-            if quiz.is_listening:
-                create_kwargs['given_answers'] = listening_answers
-                create_kwargs['student_submission'] = ''
-            elif uses_text_responses:
-                create_kwargs['given_answers'] = text_answers
-                create_kwargs['student_submission'] = ''
-            else:
-                create_kwargs['student_submission'] = submission
-                create_kwargs['given_answers'] = {}
-            result = QuizResult.objects.create(**create_kwargs)
-        except IntegrityError:
-            existing = QuizResult.objects.filter(student_id=student_id, quiz_id=quiz_id).first()
-            if not existing:
-                return {'success': False, 'error': _('Could not save the submission.')}
-            if existing.is_pending_review:
-                return {'success': False, 'error': _('Your submission is awaiting teacher review.')}
-            apply_submission_fields(existing)
-            if existing.reviewed_at is not None:
-                existing.save(update_fields=[
-                    'given_answers',
-                    'student_submission',
-                    'duration_sec',
-                    'completion_trigger',
-                    'completed_at',
-                    *reset_review_fields(existing),
-                ])
-            else:
-                existing.save(update_fields=[
-                    'given_answers',
-                    'student_submission',
-                    'duration_sec',
-                    'completion_trigger',
-                    'completed_at',
-                ])
-            result = existing
+            create_kwargs['student_submission'] = submission
+            create_kwargs['given_answers'] = {}
+        result = _create_quiz_result(
+            student_id=student_id,
+            quiz=quiz,
+            mock_attempt_id=mock_attempt_id,
+            **create_kwargs,
+        )
+    except IntegrityError:
+        return {'success': False, 'error': _('Could not save the submission.')}
 
     from portals.utils.cache_utils import invalidate_model_cache
     from portals.utils.notifications import (
@@ -664,17 +995,28 @@ def submit_manual_quiz_attempt(
     )
 
     result_with_relations = QuizResult.objects.select_related('quiz__category', 'student').get(pk=result.pk)
-    create_teacher_submission_notifications(result_with_relations)
-    create_student_submission_notification(result_with_relations)
+    if not defer_notifications:
+        create_teacher_submission_notifications(result_with_relations)
+        create_student_submission_notification(result_with_relations)
 
     invalidate_model_cache('QuizResult')
 
-    return {
+    response = {
         'success': True,
         'result_id': result.pk,
         'duration_sec': resolved_duration or 0,
         'completion_trigger': resolved_trigger,
     }
+    from portals.utils.ielts_mock_test import apply_mock_submit_result
+
+    return apply_mock_submit_result(
+        student_id=student_id,
+        mock_attempt_id=mock_attempt_id,
+        quiz_id=quiz_id,
+        result=result_with_relations,
+        response=response,
+        defer_notifications=defer_notifications,
+    )
 
 
 def submit_teacher_quiz_review(
@@ -683,6 +1025,7 @@ def submit_teacher_quiz_review(
     result_id: int,
     total_score,
     teacher_feedback: str = '',
+    teacher_correct_answers: dict | None = None,
 ) -> dict:
     from portals.models import QuizResultReview
     from portals.utils.cache_utils import invalidate_model_cache
@@ -697,7 +1040,7 @@ def submit_teacher_quiz_review(
         .filter(pk=result_id)
         .first()
     )
-    if not result or not result.quiz.is_manual_grading:
+    if not result or not result.quiz.requires_teacher_review:
         return {'success': False, 'error': _('Result not found.')}
     if not teacher_can_see_quiz_result(teacher_id, result.student_id, result.quiz):
         return {'success': False, 'error': _('Result not found.')}
@@ -709,7 +1052,7 @@ def submit_teacher_quiz_review(
     except (TypeError, ValueError):
         return {'success': False, 'error': _('Enter a valid score.')}
 
-    max_score = result.quiz.MANUAL_REVIEW_MAX_SCORE
+    max_score = result.quiz.score_max_value()
     if score_value < 0 or score_value > max_score:
         return {
             'success': False,
@@ -718,8 +1061,17 @@ def submit_teacher_quiz_review(
 
     result.total_score = score_value
     result.teacher_feedback = (teacher_feedback or '').strip()
+    if result.quiz.is_reading and teacher_correct_answers is not None:
+        result.teacher_correct_answers = {
+            str(key): str(value).strip()
+            for key, value in teacher_correct_answers.items()
+            if str(value).strip()
+        }
     result.reviewed_at = timezone.now()
-    result.save(update_fields=['total_score', 'teacher_feedback', 'reviewed_at'])
+    update_fields = ['total_score', 'teacher_feedback', 'reviewed_at']
+    if result.quiz.is_reading and teacher_correct_answers is not None:
+        update_fields.append('teacher_correct_answers')
+    result.save(update_fields=update_fields)
 
     QuizResultReview.objects.create(
         result=result,
@@ -734,6 +1086,10 @@ def submit_teacher_quiz_review(
         exclude_teacher_id=teacher_id,
         notify_teachers=True,
     )
+
+    from portals.utils.ielts_mock_test import maybe_publish_mock_results_for_result
+
+    maybe_publish_mock_results_for_result(result)
 
     invalidate_model_cache('QuizResult')
 

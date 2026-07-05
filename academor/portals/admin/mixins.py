@@ -63,6 +63,7 @@ class PortalModelAdmin(admin.ModelAdmin):
         css = {
             'all': ('portals/css/portal-admin.css',),
         }
+        js = ('assets/js/admin_image_compress.js',)
 
     def get_portal_stats(self, request):
         return []

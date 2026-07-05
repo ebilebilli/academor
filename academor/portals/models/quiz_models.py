@@ -77,13 +77,21 @@ class Quiz(models.Model):
     )
     is_essay = models.BooleanField(
         default=False,
-        verbose_name=_('Essay (manual review)'),
+        verbose_name=_('Writing (manual review)'),
         help_text=_('Written work — teacher grades and replies with corrections.'),
     )
     is_speaking = models.BooleanField(
         default=False,
         verbose_name=_('Speaking (manual review)'),
         help_text=_('Speaking task — teacher grades and replies with corrections.'),
+    )
+    is_reading = models.BooleanField(
+        default=False,
+        verbose_name=_('Reading (auto-scored)'),
+        help_text=_(
+            'IELTS-style reading with passages and auto-scored answers. '
+            'Only one quiz format can be active.',
+        ),
     )
     is_time_limited = models.BooleanField(
         default=False,
@@ -114,13 +122,19 @@ class Quiz(models.Model):
         ordering = ('-created_at', 'id')
         constraints = [
             models.CheckConstraint(
-                name='portals_quiz_manual_mode_at_most_one',
+                name='portals_quiz_format_at_most_one',
                 condition=(
                     models.Q(is_listening=False) | models.Q(is_essay=False)
                 ) & (
                     models.Q(is_listening=False) | models.Q(is_speaking=False)
                 ) & (
+                    models.Q(is_listening=False) | models.Q(is_reading=False)
+                ) & (
                     models.Q(is_essay=False) | models.Q(is_speaking=False)
+                ) & (
+                    models.Q(is_essay=False) | models.Q(is_reading=False)
+                ) & (
+                    models.Q(is_speaking=False) | models.Q(is_reading=False)
                 ),
             ),
             models.UniqueConstraint(
@@ -139,19 +153,31 @@ class Quiz(models.Model):
 
     @property
     def is_manual_grading(self):
-        return self.is_listening or self.is_essay or self.is_speaking
+        return self.is_essay or self.is_speaking
+
+    @property
+    def requires_teacher_review(self):
+        return self.is_manual_grading
+
+    @property
+    def is_reading_quiz(self):
+        return self.is_reading
 
     @property
     def is_variant_quiz(self):
-        return not self.is_manual_grading
+        return not self.is_manual_grading and not self.is_reading and not self.is_listening
 
     @property
     def uses_per_question_text_responses(self):
         """Free-text answer per task (writing / multi-part manual quizzes)."""
+        if self.is_reading:
+            return False
         if self.is_essay:
             return True
         if self.is_listening:
             return True
+        if self.is_speaking:
+            return False
         if not self.is_manual_grading:
             return False
         category = getattr(self, 'category', None)
@@ -161,11 +187,20 @@ class Quiz(models.Model):
         return self.questions.count() > 1
 
     def score_max_value(self, *, question_count=None):
-        """Variant quizzes: one point per question; manual review: fixed 10-point scale."""
+        """Variant/reading/listening: one point per question; essay/speaking: 0–10 scale."""
         if self.is_manual_grading:
             return self.MANUAL_REVIEW_MAX_SCORE
         if question_count is None:
-            question_count = self.questions.count()
+            if self.is_reading:
+                from portals.utils.quiz_reading import get_reading_questions_for_quiz
+
+                question_count = len(get_reading_questions_for_quiz(self))
+            elif self.is_listening:
+                from portals.utils.quiz_listening import get_listening_questions_for_quiz
+
+                question_count = len(get_listening_questions_for_quiz(self))
+            else:
+                question_count = self.questions.count()
         return question_count
 
     @property
@@ -176,16 +211,19 @@ class Quiz(models.Model):
             return 'essay'
         if self.is_speaking:
             return 'speaking'
+        if self.is_reading:
+            return 'reading'
         return 'variant'
 
     def get_grading_mode_label(self):
         labels = {
-            'listening': _('Listening'),
-            'essay': _('Essay'),
-            'speaking': _('Speaking'),
-            'variant': _('Multiple choice'),
+            'listening': 'Listening',
+            'essay': _('Writing'),
+            'speaking': 'Speaking',
+            'reading': 'Reading',
+            'variant': 'Multiple choice',
         }
-        return str(labels.get(self.grading_mode, self.grading_mode))
+        return str(labels.get(self.grading_mode, self.grading_mode or ''))
 
     @property
     def time_limit_seconds(self):
@@ -207,10 +245,10 @@ class Quiz(models.Model):
     def clean(self):
         super().clean()
 
-        manual_flags = [self.is_listening, self.is_essay, self.is_speaking]
-        if sum(1 for flag in manual_flags if flag) > 1:
+        format_flags = [self.is_listening, self.is_essay, self.is_speaking, self.is_reading]
+        if sum(1 for flag in format_flags if flag) > 1:
             raise ValidationError(
-                _('Only one of Listening, Essay, or Speaking can be enabled.'),
+                _('Only one quiz format can be enabled (Listening, Essay, Speaking, or Reading).'),
             )
 
         if self.is_time_limited:
@@ -442,6 +480,12 @@ class QuizResult(models.Model):
         verbose_name=_('Teacher feedback'),
         help_text=_('Corrections, reply, and comments from the teacher.'),
     )
+    teacher_correct_answers = models.JSONField(
+        default=dict,
+        blank=True,
+        verbose_name=_('Teacher correct answers'),
+        help_text=_('Reading review: map of question id → teacher-entered correct answer.'),
+    )
     reviewed_at = models.DateTimeField(
         null=True,
         blank=True,
@@ -451,17 +495,20 @@ class QuizResult(models.Model):
         auto_now_add=True,
         verbose_name=_('Completed at'),
     )
+    ielts_mock_attempt = models.ForeignKey(
+        'IeltsMockTestAttempt',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='section_results',
+        verbose_name=_('IELTS mock test attempt'),
+        help_text=_('Set when this result belongs to a mock test section (not a standalone quiz).'),
+    )
 
     class Meta:
         verbose_name = _('Quiz result')
         verbose_name_plural = _('Quiz results')
         ordering = ('-completed_at', 'id')
-        constraints = [
-            models.UniqueConstraint(
-                fields=('student', 'quiz'),
-                name='portals_quiz_result_one_per_student',
-            ),
-        ]
 
     @property
     def is_pending_review(self):
@@ -470,7 +517,7 @@ class QuizResult(models.Model):
         quiz = getattr(self, 'quiz', None)
         if quiz is None:
             quiz = Quiz.objects.filter(pk=self.quiz_id).first()
-        if not quiz or not quiz.is_manual_grading:
+        if not quiz or not quiz.requires_teacher_review:
             return False
         return self.reviewed_at is None
 

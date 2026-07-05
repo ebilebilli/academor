@@ -11,7 +11,9 @@ from portals.views.teacher_manage_views import (
     TeacherScheduleEditView,
     TeacherScheduleSlotCreateView,
     TeacherSessionAttendanceView,
-    TeacherVideoCreateView,
+    TeacherTextbookCreateView,
+    TeacherTextbookEditView,
+    TeacherWeeklyScoresView,
 )
 from portals.views.notification_views import (
     NotificationDeleteView,
@@ -28,11 +30,21 @@ from portals.views.quiz_views import (
     StudentManualQuizSubmitView,
     StudentManualQuizTakeView,
     StudentQuizCancelView,
+    StudentReadingQuizSubmitView,
+    StudentReadingQuizTakeView,
+    StudentSpeakingQuizSubmitView,
+    StudentSpeakingQuizTakeView,
     StudentQuizStartView,
     StudentQuizSubmitView,
     StudentQuizTakeView,
     TeacherQuizResultReviewView,
     TeacherQuizResultsView,
+)
+from portals.views.ielts_mock_views import (
+    StudentIeltsMockCompleteView,
+    StudentIeltsMockLandingView,
+    StudentIeltsMockStartView,
+    TeacherIeltsMockDetailView,
 )
 from portals.views.views_v1 import (
     ParentAttendanceView,
@@ -91,7 +103,8 @@ urlpatterns = [
     path('teacher/lessons/new/', TeacherLessonCreateView.as_view(), name='teacher-lesson-create'),
     path('teacher/lessons/<int:pk>/', TeacherLessonDetailView.as_view(), name='teacher-lesson-detail'),
     path('teacher/lessons/<int:pk>/edit/', TeacherLessonEditView.as_view(), name='teacher-lesson-edit'),
-    path('teacher/videos/new/', TeacherVideoCreateView.as_view(), name='teacher-video-create'),
+    path('teacher/classrooms/new/', TeacherTextbookCreateView.as_view(), name='teacher-classroom-create'),
+    path('teacher/classrooms/<int:pk>/edit/', TeacherTextbookEditView.as_view(), name='teacher-classroom-edit'),
     path('teacher/schedule/', TeacherScheduleView.as_view(), name='teacher-schedule'),
     path('teacher/attendance/', TeacherAttendanceListView.as_view(), name='teacher-attendance'),
     path(
@@ -107,6 +120,7 @@ urlpatterns = [
     path('teacher/attendance/session/', TeacherSessionAttendanceView.as_view(), name='teacher-attendance-session'),
     path('teacher/attendance/new/', TeacherAttendanceCreateView.as_view(), name='teacher-attendance-create'),
     path('teacher/scores/', TeacherScoresListView.as_view(), name='teacher-scores'),
+    path('teacher/weekly-scores/', TeacherWeeklyScoresView.as_view(), name='teacher-weekly-scores'),
     path('teacher/notifications/', TeacherNotificationsView.as_view(), name='teacher-notifications'),
     path('teacher/scores/<int:result_pk>/', TeacherScoreDetailView.as_view(), name='teacher-score-detail'),
     path('teacher/quizzes/', TeacherQuizzesListView.as_view(), name='teacher-quizzes'),
@@ -141,12 +155,31 @@ urlpatterns = [
     path('student/quizzes/<int:pk>/cancel/', StudentQuizCancelView.as_view(), name='student-quiz-cancel'),
     path('student/quizzes/<int:pk>/start/', StudentQuizStartView.as_view(), name='student-quiz-start'),
     path('student/quizzes/<int:pk>/submit/', StudentQuizSubmitView.as_view(), name='student-quiz-submit'),
+    path('student/quizzes/<int:pk>/reading/', StudentReadingQuizTakeView.as_view(), name='student-reading-quiz-take'),
+    path(
+        'student/quizzes/<int:pk>/reading/submit/',
+        StudentReadingQuizSubmitView.as_view(),
+        name='student-reading-quiz-submit',
+    ),
     path('student/quizzes/<int:pk>/manual/', StudentManualQuizTakeView.as_view(), name='student-manual-quiz-take'),
     path(
         'student/quizzes/<int:pk>/manual/submit/',
         StudentManualQuizSubmitView.as_view(),
         name='student-manual-quiz-submit',
     ),
+    path('student/quizzes/<int:pk>/speaking/', StudentSpeakingQuizTakeView.as_view(), name='student-speaking-quiz-take'),
+    path('student/quizzes/<int:pk>/speaking/submit/',
+        StudentSpeakingQuizSubmitView.as_view(),
+        name='student-speaking-quiz-submit',
+    ),
+    path('student/ielts-mock/', StudentIeltsMockLandingView.as_view(), name='student-ielts-mock'),
+    path('student/ielts-mock/start/', StudentIeltsMockStartView.as_view(), name='student-ielts-mock-start'),
+    path(
+        'student/ielts-mock/<int:pk>/complete/',
+        StudentIeltsMockCompleteView.as_view(),
+        name='student-ielts-mock-complete',
+    ),
+    path('teacher/ielts-mock/<int:pk>/', TeacherIeltsMockDetailView.as_view(), name='teacher-ielts-mock-detail'),
     path('student/classrooms/', ClassroomsListView.as_view(), name='student-classrooms'),
     path('student/classrooms/<int:pk>/', ClassroomDetailView.as_view(), name='student-classroom-detail'),
 

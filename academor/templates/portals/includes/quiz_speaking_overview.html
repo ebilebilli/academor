@@ -1,0 +1,26 @@
+{% load i18n portal_tags %}
+<div class="portal-speaking-overview panel" data-speaking-overview>
+  <div class="portal-speaking-overview__inner">
+    {% for section in quiz.speaking_sections %}
+    {% if view_only %}
+    {% include "portals/includes/quiz_speaking_section.html" with section=section view_only=view_only is_last=forloop.last %}
+    {% else %}
+    {% include "portals/includes/quiz_speaking_section.html" with section=section view_only=quiz.view_only is_last=forloop.last %}
+    {% endif %}
+    {% if not forloop.last %}
+    <div class="portal-speaking-divider" aria-hidden="true">────────────────────────────</div>
+    {% endif %}
+    {% endfor %}
+
+    {% if quiz.estimated_total_seconds %}
+    <div class="portal-speaking-divider" aria-hidden="true">────────────────────────────</div>
+    <footer class="portal-speaking-overview__footer">
+      <p class="portal-speaking-overview__footer-label mb-1">{% trans 'Estimated Total Time' %}</p>
+      <p class="portal-speaking-overview__footer-value mb-0">
+        {% blocktrans with minutes=quiz.estimated_total_minutes %}{{ minutes }} minutes{% endblocktrans %}
+        <span class="text-muted">({{ quiz.estimated_total_seconds|format_duration_clock }})</span>
+      </p>
+    </footer>
+    {% endif %}
+  </div>
+</div>

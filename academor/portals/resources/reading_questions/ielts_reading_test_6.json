@@ -1,0 +1,387 @@
+{
+  "title": "IELTS Academic Reading — Practice Test 6",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–40</strong></p><p>You should spend about 60 minutes on <strong>Questions 1–40</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Vaccine adjuvants and immunity</strong></p><p><strong>A</strong> Vaccine adjuvants are substances added to formulations to enhance immune responses against antigens that might otherwise prove weakly immunogenic on their own. Aluminium salts remain among the most widely deployed adjuvants, stimulating local inflammation that recruits antigen-presenting cells to lymph nodes. Novel platforms, including oil-in-water emulsions and saponin-based matrices, aim to balance potency with tolerability across diverse age groups and comorbidities. Regulators evaluate adjuvanted products through extended safety monitoring because subtle autoimmune signals may appear only after millions of doses are administered. Understanding adjuvant mechanisms has become essential as developers pursue vaccines against pathogens that evade conventional antibody responses.</p><p><strong>B</strong> Innate immune receptors recognise conserved molecular patterns on adjuvants, triggering cytokine cascades that shape subsequent adaptive immunity. Toll-like receptor agonists can bias responses toward cellular immunity, which matters for intracellular pathogens and certain oncology applications. Formulation science determines whether antigens remain at the injection site or traffic efficiently to draining lymphoid tissue where T cells are primed. Preclinical models using humanised mice and organoids supplement traditional rodent studies, though translational gaps still complicate dose selection for first-in-human trials. The author notes that mechanistic clarity should guide design rather than empirical screening alone, which historically produced effective but poorly understood mixtures.</p><p><strong>C</strong> During recent pandemic deployments, adjuvanted dose-sparing strategies stretched limited antigen supplies, enabling broader coverage in low-income regions. Pharmacovigilance networks pooled reports of rare adverse events, demonstrating both the value and the limits of global surveillance infrastructure. Manufacturing adjuvants at scale requires stringent control of lipid composition and endotoxin levels, because impurities can skew immunogenicity unpredictably. Technology transfer agreements helped regional producers adopt complex emulsion processes, yet quality audits revealed uneven preparedness across facilities. The writer argues that equitable access depends on sharing know-how, not merely shipping finished vials that expire before cold chains reach remote clinics.</p><p><strong>D</strong> Personalised medicine aspirations extend to adjuvant selection based on genetic polymorphisms affecting cytokine production and vaccine reactogenicity. Biobanks linked to electronic health records could identify subgroups benefiting from alternative formulations, though privacy regulations complicate cross-border analysis. Critics caution against over-interpreting early correlates of protection without confirmatory efficacy trials spanning diverse populations. The author believes stratified approaches may reduce public hesitancy if communicated transparently rather than as opaque algorithmic recommendations. Ethical review boards increasingly scrutinise whether adaptive trial designs adequately protect participants offered experimental adjuvant combinations. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p><p><strong>E</strong> Oncology vaccines employ adjuvants to break tolerance against tumour-associated antigens, sometimes combining checkpoint inhibitors with neoantigen peptides. Immune-related adverse events require oncology teams to distinguish treatment toxicity from disease progression, delaying therapy adjustments. Cost-effectiveness models weigh expensive personalised adjuvant cocktails against standard chemotherapy regimens with established reimbursement pathways. Regulators demand long-term follow-up for therapeutic vaccines, extending trial timelines beyond those typical for preventive infectious disease products. Despite hurdles, the writer sees adjuvant innovation as a lever for durable cellular responses that monoclonal antibodies alone cannot sustain indefinitely. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p><p><strong>F</strong> Public communication about adjuvants frequently encounters misinformation equating aluminium exposure from vaccines with environmental toxicity at irrelevant doses. Scientists counter with pharmacokinetic data showing local deposition and gradual clearance, yet narrative framing on social media often overwhelms nuanced explanations. School-based education and clinician training materials are being revised to address adjuvant questions without dismissing legitimate concerns about transparency. The author contends that respectful dialogue outperforms punitive content moderation when building trust among communities historically underserved by research. Without trust, even optimally formulated adjuvants cannot fulfil their public health promise during outbreaks requiring rapid mass immunisation.</p><p><strong>G</strong> Future adjuvant research will likely integrate systems immunology models predicting human responses from high-dimensional blood profiling after early doses. Open-access databases of adjuvant structures and trial outcomes could reduce redundant experimentation if sponsors overcome proprietary instincts. The writer maintains that adjuvants are not mere additives but co-determinants of vaccine success, deserving parity with antigen discovery in funding portfolios. International harmonisation of approval standards may accelerate introduction of next-generation platforms while preserving rigorous safety thresholds. If discovery, manufacturing, and communication advance together, societies may respond more confidently when novel pathogens inevitably emerge. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 11–15",
+          "instructions": "<p>Choose the correct heading for paragraphs <strong>B–F</strong> from the list of headings below.</p><p><em>Write the correct number, <strong>i–vii</strong>, in boxes 11–15 on your answer sheet.</em></p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "i. Herbal supplement marketing regulations",
+            "ii. Innate receptors and formulation science",
+            "iii. Pandemic dose-sparing and manufacturing quality",
+            "iv. Genetic stratification and ethical trial design",
+            "v. Therapeutic vaccines in oncology",
+            "vi. Misinformation and public trust",
+            "vii. Deep-sea sponge aquaculture"
+          ],
+          "questions": [
+            {
+              "order": 11,
+              "question": "<p>Paragraph B</p>",
+              "correct_answer": "ii. Innate receptors and formulation science"
+            },
+            {
+              "order": 12,
+              "question": "<p>Paragraph C</p>",
+              "correct_answer": "iii. Pandemic dose-sparing and manufacturing quality"
+            },
+            {
+              "order": 13,
+              "question": "<p>Paragraph D</p>",
+              "correct_answer": "iv. Genetic stratification and ethical trial design"
+            },
+            {
+              "order": 14,
+              "question": "<p>Paragraph E</p>",
+              "correct_answer": "v. Therapeutic vaccines in oncology"
+            },
+            {
+              "order": 15,
+              "question": "<p>Paragraph F</p>",
+              "correct_answer": "vi. Misinformation and public trust"
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "title": "Questions 16–20",
+          "instructions": "<p>Which paragraph contains the following information?</p><p><em>Write the correct letter, <strong>A–G</strong>, in boxes 16–20 on your answer sheet.</em></p>",
+          "question_type": "matching_info",
+          "option_pool": [
+            "Paragraph A",
+            "Paragraph B",
+            "Paragraph C",
+            "Paragraph D",
+            "Paragraph E",
+            "Paragraph F",
+            "Paragraph G"
+          ],
+          "questions": [
+            {
+              "order": 16,
+              "question": "<p>discussion of toll-like receptor agonists</p>",
+              "correct_answer": "Paragraph B"
+            },
+            {
+              "order": 17,
+              "question": "<p>mention of technology transfer for emulsion manufacturing</p>",
+              "correct_answer": "Paragraph C"
+            },
+            {
+              "order": 18,
+              "question": "<p>reference to biobanks and electronic health records</p>",
+              "correct_answer": "Paragraph D"
+            },
+            {
+              "order": 19,
+              "question": "<p>examples of checkpoint inhibitors with neoantigen peptides</p>",
+              "correct_answer": "Paragraph E"
+            },
+            {
+              "order": 20,
+              "question": "<p>a forward-looking view of systems immunology models</p>",
+              "correct_answer": "Paragraph G"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "tfng",
+          "question": "<p>Aluminium salts are among widely used vaccine adjuvants.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 2,
+          "question_type": "tfng",
+          "question": "<p>All adjuvants have been fully mechanistically understood for decades.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 3,
+          "question_type": "tfng",
+          "question": "<p>The passage states every oncology vaccine has received reimbursement globally.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 4,
+          "question_type": "tfng",
+          "question": "<p>Toll-like receptor agonists can influence cellular immune bias.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 5,
+          "question_type": "tfng",
+          "question": "<p>Adjuvanted dose-sparing was used during recent pandemic deployments.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 6,
+          "question_type": "ynng",
+          "question": "<p>The author prefers mechanistic design over purely empirical adjuvant screening.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 7,
+          "question_type": "ynng",
+          "question": "<p>The writer believes shipping vials alone ensures equitable access.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 8,
+          "question_type": "ynng",
+          "question": "<p>The author thinks transparent communication may reduce vaccine hesitancy.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 9,
+          "question_type": "ynng",
+          "question": "<p>The writer claims punitive moderation is always the best trust-building tool.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 10,
+          "question_type": "ynng",
+          "question": "<p>The author sees adjuvants as co-determinants of vaccine success.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 21,
+          "question_type": "sentence_completion",
+          "question": "<p>Adjuvants recruit antigen-presenting cells to lymph ____.</p>",
+          "correct_answer": "nodes",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 22,
+          "question_type": "sentence_completion",
+          "question": "<p>Oil-in-water emulsions aim to balance potency with ____.</p>",
+          "correct_answer": "tolerability",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 23,
+          "question_type": "sentence_completion",
+          "question": "<p>Pharmacovigilance networks pooled reports of rare adverse ____.</p>",
+          "correct_answer": "events",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 24,
+          "question_type": "sentence_completion",
+          "question": "<p>Open databases could reduce redundant ____.</p>",
+          "correct_answer": "experimentation",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 25,
+          "question_type": "summary_completion",
+          "question": "<p>Aluminium salts stimulate local ____ that recruits immune cells.</p>",
+          "correct_answer": "inflammation",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 26,
+          "question_type": "summary_completion",
+          "question": "<p>Dose-sparing strategies stretched limited antigen supplies in low-income ____.</p>",
+          "correct_answer": "regions",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 27,
+          "question_type": "summary_completion",
+          "question": "<p>Oncology teams must distinguish toxicity from disease ____.</p>",
+          "correct_answer": "progression",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 28,
+          "question_type": "summary_completion",
+          "question": "<p>International harmonisation may preserve rigorous safety ____.</p>",
+          "correct_answer": "thresholds",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 29,
+          "question_type": "table_completion",
+          "question": "<p>Innate pathway | Adjuvants trigger cytokine ____</p>",
+          "correct_answer": "cascades",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 30,
+          "question_type": "table_completion",
+          "question": "<p>Manufacturing | Impurities such as endotoxin skew ____.</p>",
+          "correct_answer": "immunogenicity",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 31,
+          "question_type": "table_completion",
+          "question": "<p>Communication | Misinformation links aluminium to irrelevant environmental ____.</p>",
+          "correct_answer": "toxicity",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 32,
+          "question_type": "mcq",
+          "question": "<p>Paragraph A indicates adjuvants are used because some antigens are</p>",
+          "answer_options": [
+            "always toxic",
+            "weakly immunogenic alone",
+            "illegal without oil emulsions",
+            "only effective in mice"
+          ],
+          "correct_answer": "weakly immunogenic alone"
+        },
+        {
+          "order": 33,
+          "question_type": "mcq",
+          "question": "<p>According to paragraph C, equitable access requires</p>",
+          "answer_options": [
+            "banning regional manufacturing",
+            "sharing manufacturing know-how",
+            "eliminating cold chains",
+            "avoiding pharmacovigilance"
+          ],
+          "correct_answer": "sharing manufacturing know-how"
+        },
+        {
+          "order": 34,
+          "question_type": "mcq",
+          "question": "<p>Paragraph E suggests oncology adjuvant trials face</p>",
+          "answer_options": [
+            "shorter follow-up than preventive vaccines",
+            "longer follow-up than many preventive products",
+            "no immune-related adverse events",
+            "automatic reimbursement"
+          ],
+          "correct_answer": "longer follow-up than many preventive products"
+        },
+        {
+          "order": 35,
+          "question_type": "mcq",
+          "question": "<p>Paragraph F indicates social media often</p>",
+          "answer_options": [
+            "amplifies nuanced pharmacokinetic explanations",
+            "overwhelms nuanced scientific explanations",
+            "eliminates all vaccine hesitancy",
+            "replaces clinician training"
+          ],
+          "correct_answer": "overwhelms nuanced scientific explanations"
+        },
+        {
+          "order": 36,
+          "question_type": "mcq",
+          "question": "<p>The final paragraph argues adjuvants deserve</p>",
+          "answer_options": [
+            "less funding than antigens",
+            "parity with antigen discovery in funding",
+            "no international standards",
+            "only empirical screening"
+          ],
+          "correct_answer": "parity with antigen discovery in funding"
+        },
+        {
+          "order": 37,
+          "question_type": "short_answer",
+          "question": "<p>Which salts are named as widely deployed adjuvants?</p>",
+          "correct_answer": "aluminium",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 38,
+          "question_type": "short_answer",
+          "question": "<p>What receptor class recognises molecular patterns on adjuvants?</p>",
+          "correct_answer": "Toll-like",
+          "question_config": {
+            "word_limit": 2,
+            "word_limit_label": "NO MORE THAN TWO WORDS",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 39,
+          "question_type": "short_answer",
+          "question": "<p>What strategy stretched antigen supplies during pandemics?</p>",
+          "correct_answer": "dose-sparing",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 40,
+          "question_type": "short_answer",
+          "question": "<p>What inhibitors are combined with neoantigen peptides in oncology?</p>",
+          "correct_answer": "checkpoint",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        }
+      ]
+    }
+  ]
+}

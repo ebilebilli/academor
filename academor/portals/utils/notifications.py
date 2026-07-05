@@ -7,6 +7,7 @@ from datetime import timedelta
 from django.db.models import Prefetch
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.translation import gettext as _
 
 from portals.models import (
     ParentProfile,
@@ -48,6 +49,98 @@ def _teacher_ids_for_quiz_result(result: QuizResult) -> set[int]:
     return teacher_ids
 
 
+def _teacher_ids_for_mock_attempt(attempt) -> set[int]:
+    slugs = expand_course_types_to_service_slugs(['ielts'])
+    if not slugs:
+        return set()
+    return set(
+        StudyGroup.objects.filter(
+            students__pk=attempt.student_id,
+            is_active=True,
+            courses__slug__in=slugs,
+        )
+        .values_list('teacher_id', flat=True)
+        .distinct()
+    )
+
+
+def create_mock_test_completed_notifications(attempt) -> None:
+    from portals.models import IeltsMockTestAttempt
+
+    if attempt.status != IeltsMockTestAttempt.Status.COMPLETED:
+        return
+
+    for teacher_id in _teacher_ids_for_mock_attempt(attempt):
+        PortalNotification.objects.update_or_create(
+            teacher_id=teacher_id,
+            ielts_mock_test=attempt,
+            kind=PortalNotification.Kind.MOCK_TEST_COMPLETED,
+            defaults={
+                'is_read': False,
+                'quiz_result': None,
+            },
+        )
+
+
+def create_mock_section_review_notifications(attempt, result: QuizResult, section: str) -> None:
+    from portals.models import IeltsMockTestAttempt
+
+    if section not in {
+        IeltsMockTestAttempt.Section.WRITING,
+        IeltsMockTestAttempt.Section.SPEAKING,
+    }:
+        return
+    if not result or not result.is_pending_review:
+        return
+
+    for teacher_id in _teacher_ids_for_mock_attempt(attempt):
+        PortalNotification.objects.update_or_create(
+            teacher_id=teacher_id,
+            quiz_result=result,
+            kind=PortalNotification.Kind.MOCK_TEST_SECTION_REVIEW,
+            defaults={
+                'is_read': False,
+                'ielts_mock_test': None,
+            },
+        )
+
+
+def create_mock_results_published_notifications(attempt) -> None:
+    from portals.models import IeltsMockTestAttempt
+    from portals.utils.ielts_mock_test import mock_attempt_is_fully_graded, serialize_mock_attempt_summary
+
+    if attempt.status != IeltsMockTestAttempt.Status.COMPLETED:
+        return
+    if not mock_attempt_is_fully_graded(attempt):
+        return
+
+    summary = serialize_mock_attempt_summary(attempt)
+    if summary['overall_band'] is None:
+        return
+
+    defaults = {
+        'is_read': False,
+        'quiz_result': None,
+    }
+    PortalNotification.objects.update_or_create(
+        student_id=attempt.student_id,
+        ielts_mock_test=attempt,
+        kind=PortalNotification.Kind.MOCK_TEST_RESULTS_PUBLISHED,
+        defaults=defaults,
+    )
+    for parent_id in (
+        ParentProfile.objects.filter(students__pk=attempt.student_id)
+        .values_list('pk', flat=True)
+        .distinct()
+    ):
+        PortalNotification.objects.update_or_create(
+            parent_id=parent_id,
+            ielts_mock_test=attempt,
+            kind=PortalNotification.Kind.MOCK_TEST_RESULTS_PUBLISHED,
+            defaults=defaults,
+        )
+
+
 def create_teacher_submission_notifications(result: QuizResult) -> None:
     """Manual quiz submitted — teachers use the review queue, not the bell list."""
     PortalNotification.objects.filter(
@@ -79,6 +172,15 @@ def clear_published_result_notifications(result: QuizResult) -> None:
     ).delete()
 
 
+def dismiss_student_submission_notification(result: QuizResult) -> None:
+    """Remove the student's pending-review alert once the score is published."""
+    PortalNotification.objects.filter(
+        student_id=result.student_id,
+        quiz_result=result,
+        kind=PortalNotification.Kind.SUBMISSION_PENDING,
+    ).delete()
+
+
 def _upsert_published_notification(**lookup) -> None:
     PortalNotification.objects.update_or_create(
         **lookup,
@@ -95,7 +197,6 @@ def create_published_result_notifications(
     exclude_teacher_id: int | None = None,
     notify_teachers: bool = True,
 ) -> None:
-    """Score published — notify parents and optionally teachers; students only for manual quizzes."""
     if not is_quiz_result_published(result):
         return
 
@@ -110,6 +211,7 @@ def create_published_result_notifications(
             )
 
     if result.quiz.is_manual_grading:
+        dismiss_student_submission_notification(result)
         _upsert_published_notification(
             student_id=result.student_id,
             quiz_result=result,
@@ -126,10 +228,97 @@ def create_published_result_notifications(
         )
 
 
+def create_weekly_score_published_notifications(record) -> None:
+    """Notify student and linked parents when a weekly score is saved."""
+    from portals.models import ParentProfile, WeeklyStudentScore
+
+    if not isinstance(record, WeeklyStudentScore) or not record.pk:
+        return
+
+    defaults = {
+        'is_read': False,
+        'kind': PortalNotification.Kind.WEEKLY_SCORE_PUBLISHED,
+        'quiz_result': None,
+        'ielts_mock_test': None,
+    }
+    PortalNotification.objects.update_or_create(
+        student_id=record.student_id,
+        weekly_student_score_id=record.pk,
+        defaults=defaults,
+    )
+    for parent_id in (
+        ParentProfile.objects.filter(students__pk=record.student_id)
+        .values_list('pk', flat=True)
+        .distinct()
+    ):
+        PortalNotification.objects.update_or_create(
+            parent_id=parent_id,
+            weekly_student_score_id=record.pk,
+            defaults=defaults,
+        )
+
+
+def _weekly_score_detail_url(*, role: str) -> str:
+    routes = {
+        'parent': 'portals:parent-scores',
+        'student': 'portals:student-scores',
+    }
+    return reverse(routes[role])
+
+
+def _serialize_weekly_score_notification(row: PortalNotification, *, role: str) -> dict:
+    from portals.models.score_models import WEEKLY_SCORE_MAX
+
+    record = row.weekly_student_score
+    if not record:
+        return {
+            'id': row.pk,
+            'kind': row.kind,
+            'is_submission_pending': False,
+            'is_weekly_score': True,
+            'is_read': row.is_read,
+            'created_at': row.created_at,
+            'student_name': '',
+            'quiz_topic': '',
+            'grading_mode_label': '',
+            'total_score': None,
+            'max_value': None,
+            'score_detail_url': '',
+            'review_url': '',
+            'mark_read_url': reverse('portals:notification-mark-read', kwargs={'pk': row.pk}),
+            'delete_url': reverse('portals:notification-delete', kwargs={'pk': row.pk}),
+        }
+
+    week_end = record.week_start + timedelta(days=6)
+    week_label = f'{record.week_start:%d.%m.%Y} – {week_end:%d.%m.%Y}'
+    return {
+        'id': row.pk,
+        'kind': row.kind,
+        'is_submission_pending': False,
+        'is_weekly_score': True,
+        'is_read': row.is_read,
+        'created_at': row.created_at,
+        'student_name': record.student.full_name,
+        'quiz_topic': week_label,
+        'week_label': week_label,
+        'teacher_name': record.teacher.full_name,
+        'grading_mode_label': _('Weekly assessment'),
+        'total_score': float(record.score),
+        'max_value': WEEKLY_SCORE_MAX,
+        'score_detail_url': _weekly_score_detail_url(role=role),
+        'review_url': '',
+        'mark_read_url': reverse('portals:notification-mark-read', kwargs={'pk': row.pk}),
+        'delete_url': reverse('portals:notification-delete', kwargs={'pk': row.pk}),
+    }
+
+
 def dismiss_teacher_submission_notifications(result: QuizResult, *, teacher_id: int | None = None) -> None:
     qs = PortalNotification.objects.filter(
         quiz_result=result,
-        kind=PortalNotification.Kind.SUBMISSION_PENDING,
+        kind__in=(
+            PortalNotification.Kind.SUBMISSION_PENDING,
+            PortalNotification.Kind.MOCK_TEST_SECTION_REVIEW,
+        ),
     )
     if teacher_id:
         qs = qs.filter(teacher_id=teacher_id)
@@ -147,13 +336,13 @@ def _notification_queryset(
     student_id: int | None = None,
     teacher_kind: str | None = PortalNotification.Kind.RESULT_PUBLISHED,
 ):
-    qs = (
-        PortalNotification.objects.select_related(
-            'quiz_result__student__user',
-            'quiz_result__quiz__category',
-        )
-        .order_by('-created_at', '-id')
-    )
+    qs = PortalNotification.objects.select_related(
+        'quiz_result__student__user',
+        'quiz_result__quiz__category',
+        'ielts_mock_test__student__user',
+        'weekly_student_score__student__user',
+        'weekly_student_score__teacher__user',
+    ).order_by('-created_at', '-id')
     if teacher_id:
         qs = qs.filter(teacher_id=teacher_id)
         if teacher_kind:
@@ -194,11 +383,16 @@ def get_teacher_pending_review_count(teacher_id: int) -> int:
 
 
 def get_teacher_portal_bell_count(teacher_id: int) -> int:
-    """Unread published-result notifications for teachers (not pending manual reviews)."""
-    return _notification_queryset(
+    """Unread published-result and mock-test notifications for teachers."""
+    return PortalNotification.objects.filter(
         teacher_id=teacher_id,
-        teacher_kind=PortalNotification.Kind.RESULT_PUBLISHED,
-    ).filter(is_read=False).count()
+        is_read=False,
+        kind__in=(
+            PortalNotification.Kind.RESULT_PUBLISHED,
+            PortalNotification.Kind.MOCK_TEST_COMPLETED,
+            PortalNotification.Kind.MOCK_TEST_SECTION_REVIEW,
+        ),
+    ).count()
 
 
 def get_unread_notification_count(
@@ -226,7 +420,131 @@ def _score_detail_url(*, role: str, result_pk: int) -> str:
 
 
 def serialize_notification(row: PortalNotification, *, role: str) -> dict:
+    if row.kind == PortalNotification.Kind.WEEKLY_SCORE_PUBLISHED and row.weekly_student_score_id:
+        return _serialize_weekly_score_notification(row, role=role)
+
+    if row.kind == PortalNotification.Kind.MOCK_TEST_COMPLETED and row.ielts_mock_test_id:
+        from portals.utils.ielts_mock_test import serialize_mock_attempt_summary
+
+        attempt = row.ielts_mock_test
+        summary = serialize_mock_attempt_summary(attempt)
+        detail_url = reverse('portals:teacher-ielts-mock-detail', kwargs={'pk': attempt.pk})
+        pending_labels = [
+            section['section_label']
+            for section in summary['sections']
+            if section['is_pending_review']
+        ]
+        grading_label = _('IELTS mock test — review required')
+        if pending_labels:
+            grading_label = _('IELTS mock test — review %(sections)s') % {
+                'sections': ', '.join(str(label) for label in pending_labels),
+            }
+        return {
+            'id': row.pk,
+            'kind': row.kind,
+            'is_submission_pending': False,
+            'is_mock_test_completed': True,
+            'is_mock_notification': True,
+            'is_read': row.is_read,
+            'created_at': row.created_at,
+            'student_name': attempt.student.full_name,
+            'quiz_topic': _('IELTS Mock Test'),
+            'grading_mode_label': grading_label,
+            'total_score': None,
+            'max_value': None,
+            'score_detail_url': detail_url,
+            'review_url': detail_url if role == 'teacher' else '',
+            'mark_read_url': reverse('portals:notification-mark-read', kwargs={'pk': row.pk}),
+            'delete_url': reverse('portals:notification-delete', kwargs={'pk': row.pk}),
+        }
+
+    if row.kind == PortalNotification.Kind.MOCK_TEST_SECTION_REVIEW and row.quiz_result_id:
+        from portals.utils.ielts_mock_test import find_mock_attempt_for_result, section_for_result_in_attempt
+
+        result = row.quiz_result
+        attempt = row.ielts_mock_test or find_mock_attempt_for_result(result)
+        quiz = result.quiz
+        section_label = ''
+        if attempt:
+            section = section_for_result_in_attempt(attempt, result)
+            if section:
+                from portals.models import IeltsMockTestAttempt
+
+                section_label = dict(IeltsMockTestAttempt.Section.choices).get(section, section)
+        mock_detail_url = (
+            reverse('portals:teacher-ielts-mock-detail', kwargs={'pk': attempt.pk})
+            if attempt
+            else ''
+        )
+        review_url = reverse('portals:teacher-quiz-result-review', kwargs={'result_pk': result.pk})
+        topic = _('IELTS Mock Test')
+        if section_label:
+            topic = _('IELTS Mock Test — %(section)s') % {'section': section_label}
+        return {
+            'id': row.pk,
+            'kind': row.kind,
+            'is_submission_pending': True,
+            'is_mock_section_review': True,
+            'is_mock_notification': True,
+            'is_read': row.is_read,
+            'created_at': row.created_at,
+            'student_name': result.student.full_name,
+            'quiz_topic': topic,
+            'grading_mode_label': _('Mock test section'),
+            'total_score': None,
+            'max_value': None,
+            'score_detail_url': mock_detail_url or review_url,
+            'review_url': review_url if role == 'teacher' else '',
+            'mark_read_url': reverse('portals:notification-mark-read', kwargs={'pk': row.pk}),
+            'delete_url': reverse('portals:notification-delete', kwargs={'pk': row.pk}),
+        }
+
+    if row.kind == PortalNotification.Kind.MOCK_TEST_RESULTS_PUBLISHED and row.ielts_mock_test_id:
+        from portals.utils.ielts_mock_test import serialize_mock_attempt_summary
+
+        attempt = row.ielts_mock_test
+        summary = serialize_mock_attempt_summary(attempt)
+        if role == 'teacher':
+            detail_url = reverse('portals:teacher-ielts-mock-detail', kwargs={'pk': attempt.pk})
+        else:
+            detail_url = reverse('portals:student-ielts-mock-complete', kwargs={'pk': attempt.pk})
+        return {
+            'id': row.pk,
+            'kind': row.kind,
+            'is_submission_pending': False,
+            'is_mock_test_results': True,
+            'is_read': row.is_read,
+            'created_at': row.created_at,
+            'student_name': attempt.student.full_name,
+            'quiz_topic': _('IELTS Mock Test'),
+            'grading_mode_label': _('Overall mock test result'),
+            'total_score': summary['overall_band'],
+            'max_value': summary['overall_band_max'],
+            'score_detail_url': detail_url,
+            'review_url': '',
+            'mark_read_url': reverse('portals:notification-mark-read', kwargs={'pk': row.pk}),
+            'delete_url': reverse('portals:notification-delete', kwargs={'pk': row.pk}),
+        }
+
     result = row.quiz_result
+    if not result:
+        return {
+            'id': row.pk,
+            'kind': row.kind,
+            'is_submission_pending': False,
+            'is_read': row.is_read,
+            'created_at': row.created_at,
+            'student_name': '',
+            'quiz_topic': '',
+            'grading_mode_label': '',
+            'total_score': None,
+            'max_value': None,
+            'score_detail_url': '',
+            'review_url': '',
+            'mark_read_url': reverse('portals:notification-mark-read', kwargs={'pk': row.pk}),
+            'delete_url': reverse('portals:notification-delete', kwargs={'pk': row.pk}),
+        }
+
     quiz = result.quiz
     max_value = quiz.score_max_value()
     is_pending = row.kind == PortalNotification.Kind.SUBMISSION_PENDING
@@ -261,19 +579,27 @@ def get_notifications(
 ):
     if teacher_id:
         role = 'teacher'
+        qs = PortalNotification.objects.filter(
+            teacher_id=teacher_id,
+            kind__in=(
+                PortalNotification.Kind.RESULT_PUBLISHED,
+                PortalNotification.Kind.MOCK_TEST_COMPLETED,
+                PortalNotification.Kind.MOCK_TEST_SECTION_REVIEW,
+            ),
+        ).select_related(
+            'quiz_result__student__user',
+            'quiz_result__quiz__category',
+            'ielts_mock_test__student__user',
+            'weekly_student_score__student__user',
+            'weekly_student_score__teacher__user',
+        ).order_by('-created_at', '-id')
     elif parent_id:
         role = 'parent'
+        qs = _notification_queryset(parent_id=parent_id)
     else:
         role = 'student'
-    qs = _apply_period_filter(
-        _notification_queryset(
-            teacher_id=teacher_id,
-            parent_id=parent_id,
-            student_id=student_id,
-            teacher_kind=PortalNotification.Kind.RESULT_PUBLISHED,
-        ),
-        period,
-    )
+        qs = _notification_queryset(student_id=student_id)
+    qs = _apply_period_filter(qs, period)
     return [serialize_notification(row, role=role) for row in qs[:200]]
 
 
@@ -403,7 +729,20 @@ def _serialize_score_detail(row: QuizResult, *, role: str) -> dict:
     from portals.utils.quiz_submit import build_essay_question_responses
 
     quiz = row.quiz
-    question_count = quiz.questions.count()
+    if quiz.is_reading:
+        from portals.utils.quiz_reading import get_reading_questions_for_quiz
+
+        question_count = len(get_reading_questions_for_quiz(quiz))
+    elif quiz.is_speaking:
+        from portals.utils.quiz_speaking import get_speaking_questions_for_quiz
+
+        question_count = len(get_speaking_questions_for_quiz(quiz))
+    elif quiz.is_listening:
+        from portals.utils.quiz_listening import get_listening_questions_for_quiz
+
+        question_count = len(get_listening_questions_for_quiz(quiz))
+    else:
+        question_count = quiz.questions.count()
     max_value = quiz.score_max_value(question_count=question_count)
     back_routes = {
         'teacher': 'portals:teacher-notifications',
@@ -438,6 +777,37 @@ def _serialize_score_detail(row: QuizResult, *, role: str) -> dict:
     }
     if quiz.is_variant_quiz:
         data['breakdown'] = _build_variant_breakdown(row)
+    elif quiz.is_reading:
+        from portals.utils.quiz_reading import build_reading_sections_for_quiz
+
+        response_map = {
+            str(key): str(value)
+            for key, value in (row.given_answers or {}).items()
+        }
+        teacher_correct_map = {
+            str(key): str(value)
+            for key, value in (row.teacher_correct_answers or {}).items()
+            if str(value).strip()
+        }
+        data['is_reading'] = True
+        data['reading_sections'] = build_reading_sections_for_quiz(
+            quiz.pk,
+            response_map=response_map,
+            correct_answer_map=teacher_correct_map or None,
+            use_admin_answer_keys=not teacher_correct_map,
+        )
+        data['breakdown'] = [
+            {
+                'id': item['id'],
+                'question': item.get('question', ''),
+                'question_type_label': item.get('question_type_label', ''),
+                'student_answer': item.get('student_answer_display', ''),
+                'correct_answer': item.get('correct_answer_display', item.get('correct_answer', '')),
+                'is_correct': item.get('is_correct'),
+            }
+            for section in data['reading_sections']
+            for item in section['questions']
+        ]
     elif quiz.is_listening:
         from portals.utils.quiz_listening import build_listening_sections_for_quiz
 
@@ -449,7 +819,32 @@ def _serialize_score_detail(row: QuizResult, *, role: str) -> dict:
         data['listening_sections'] = build_listening_sections_for_quiz(
             quiz.pk,
             response_map=response_map,
+            use_admin_answer_keys=True,
         )
+        data['question_responses'] = build_essay_question_responses(row)
+    elif quiz.is_speaking:
+        from portals.models import SpeakingRecording
+        from portals.utils.quiz_speaking import (
+            build_speaking_sections_for_quiz,
+            estimate_speaking_quiz_seconds,
+        )
+
+        recording_map = {
+            str(recording.question_id): {
+                'audio_url': recording.audio_url,
+                'duration_sec': recording.duration_sec,
+            }
+            for recording in SpeakingRecording.objects.filter(result_id=row.pk).select_related('question')
+        }
+        sections = build_speaking_sections_for_quiz(
+            quiz.pk,
+            recording_map=recording_map,
+        )
+        data['is_speaking'] = True
+        data['speaking_sections'] = sections
+        estimated_total_seconds = estimate_speaking_quiz_seconds(sections)
+        data['estimated_total_seconds'] = estimated_total_seconds
+        data['estimated_total_minutes'] = max(1, round(estimated_total_seconds / 60))
         data['question_responses'] = build_essay_question_responses(row)
     elif quiz.is_essay or quiz.uses_per_question_text_responses:
         data['question_responses'] = build_essay_question_responses(row)

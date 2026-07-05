@@ -17,7 +17,7 @@
     }));
   }
 
-  var SKIP_PATH_RE = /\/portal\/(login|logout)\/?$|\/portal\/student\/quizzes\/\d+\/(take|manual)\/?$/i;
+  var SKIP_PATH_RE = /\/portal\/(login|logout)\/?$|\/portal\/student\/quizzes\/\d+\/(take|manual|reading|speaking)\/?$|\/portal\/student\/ielts-mock(\/|$)/i;
   var PREFETCH_SKIP_PATH_RE = /\/portal\/student\/(scores|notifications)(\/|$)|\/portal\/student\/quizzes(\/category\/|\/|$)|\/portal\/parent\/(scores|notifications)(\/|$)/i;
   var CORE_SCRIPTS = /bootstrap\.bundle|\/main\.js|portal-nav-ajax\.js|portal-init\.js/i;
   var FRAGMENT_HEADERS = {
@@ -228,6 +228,8 @@
     currentRoot.querySelectorAll("a[href]").forEach(function (link) {
       var nextLink = nextByPath[normalizePath(link.getAttribute("href"))];
       if (!nextLink) {
+        link.classList.remove("active");
+        link.removeAttribute("aria-current");
         return;
       }
 
@@ -248,10 +250,41 @@
     });
   }
 
+  function isMockTestNavContext(url) {
+    try {
+      var parsed = new URL(url, window.location.origin);
+      if (parsed.pathname.indexOf("/portal/student/ielts-mock") === 0) {
+        return true;
+      }
+      if (
+        parsed.searchParams.has("mock")
+        && /\/portal\/student\/quizzes\/\d+\/(take|manual|reading|speaking)\/?$/i.test(parsed.pathname)
+      ) {
+        return true;
+      }
+    } catch (error) {
+      return false;
+    }
+    return false;
+  }
+
   function syncActiveNavFromUrl(url) {
+    if (isMockTestNavContext(url)) {
+      document.querySelectorAll("#adminSidebar .nav-link, .mobile-bottom-nav .mobile-nav-item").forEach(function (link) {
+        var isMock = link.hasAttribute("data-nav-mock-test");
+        link.classList.toggle("active", isMock);
+        if (isMock) {
+          link.setAttribute("aria-current", "page");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+      return;
+    }
+
     var current = normalizePath(url);
     var bestMatch = null;
-    var bestLen = 0;
+    var bestScore = -1;
 
     document.querySelectorAll(
       "#adminSidebar .nav-link[href], .mobile-bottom-nav .mobile-nav-item[href]"
@@ -263,11 +296,15 @@
       if (!path) {
         return;
       }
-      var matches = current === path
-        || (path !== "/portal" && current.indexOf(path) === 0 && path.length > bestLen);
-      if (matches) {
+      var score = -1;
+      if (current === path) {
+        score = 1000 + path.length;
+      } else if (path !== "/portal" && current.indexOf(path + "/") === 0) {
+        score = path.length;
+      }
+      if (score > bestScore) {
         bestMatch = link;
-        bestLen = path.length;
+        bestScore = score;
       }
     });
 
@@ -384,32 +421,29 @@
     }
 
     mountContent(nextContent.innerHTML, nextContent);
-    var hasNavSnapshot = !!doc.getElementById("portal-nav-snapshot");
     syncLinkStates("#adminSidebar", doc);
     syncLinkStates(".mobile-bottom-nav", doc);
-    if (!hasNavSnapshot) {
-      syncActiveNavFromUrl(url);
-    }
+    syncActiveNavFromUrl(url);
     syncBadgesFromSnapshot(doc);
     syncTopbarBadges(doc);
     setLoading(false);
 
-    return Promise.all([ensureStyles(doc), loadPageScripts(doc)]).then(function () {
-      window.__portalNavPending = false;
+    if (push !== false) {
+      window.history.pushState(
+        Object.assign({}, window.history.state, { portalAjax: true, url: url }),
+        "",
+        url
+      );
+    }
 
+    window.__portalNavPending = false;
+
+    return Promise.all([ensureStyles(doc), loadPageScripts(doc)]).then(function () {
+      dispatchPortalContentLoaded(url, false);
       if (window.AcademorPortal && typeof window.AcademorPortal.initPageContent === "function") {
         window.AcademorPortal.initPageContent();
       }
-
-      if (push !== false) {
-        window.history.pushState(
-          Object.assign({}, window.history.state, { portalAjax: true, url: url }),
-          "",
-          url
-        );
-      }
-
-      dispatchPortalContentLoaded(url, false);
+    }).then(function () {
       window.scrollTo(0, 0);
 
       if (root) {
@@ -703,6 +737,11 @@
   } else {
     scheduleInitialPortalReady();
   }
+
+  document.addEventListener("portal:content-loaded", function (event) {
+    var url = (event.detail && event.detail.url) || window.location.href;
+    syncActiveNavFromUrl(url);
+  });
 
   window.addEventListener("pageshow", function (event) {
     if (event.persisted) {

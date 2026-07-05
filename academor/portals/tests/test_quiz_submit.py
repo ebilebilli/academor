@@ -128,8 +128,8 @@ class QuizSubmitTests(TestCase):
         self.assertTrue(retry['success'])
         self.assertEqual(retry['total_score'], 2)
         self.assertEqual(retry['percent'], 100.0)
-        self.assertEqual(QuizResult.objects.filter(student=self.student, quiz=self.quiz).count(), 1)
-        result = QuizResult.objects.get(student=self.student, quiz=self.quiz)
+        self.assertEqual(QuizResult.objects.filter(student=self.student, quiz=self.quiz).count(), 2)
+        result = QuizResult.objects.filter(student=self.student, quiz=self.quiz).order_by('-completed_at', '-id').first()
         self.assertEqual(result.total_score, 2)
 
     def test_student_can_open_variant_quiz_after_attempt(self):
@@ -161,7 +161,7 @@ class QuizSubmitTests(TestCase):
         )
         self.assertTrue(payload['success'])
         self.assertEqual(payload['completion_trigger'], 'time_limit')
-        result = QuizResult.objects.get(student=self.student, quiz=self.quiz)
+        result = QuizResult.objects.filter(student=self.student, quiz=self.quiz).order_by('-completed_at', '-id').first()
         self.assertEqual(result.completion_trigger, 'time_limit')
         self.assertEqual(result.duration_sec, 900)
 

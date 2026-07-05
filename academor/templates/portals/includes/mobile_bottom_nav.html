@@ -12,12 +12,18 @@
     </a>
     <a class="mobile-nav-item{% if u == 'student-scores' or u == 'student-score-detail' %} active{% endif %}" href="{% url 'portals:student-scores' %}">
       <i class="ti ti-star" aria-hidden="true"></i>
-      <span>{% trans 'Qiymət' %}</span>
+      <span>{% trans 'Qiymətləndirmələr' %}</span>
     </a>
     <a class="mobile-nav-item{% if u == 'student-quizzes' or u == 'student-quiz-category' %} active{% endif %}" href="{% url 'portals:student-quizzes' %}">
       <i class="ti ti-forms" aria-hidden="true"></i>
       <span>{% trans 'Quiz' %}</span>
     </a>
+    {% if portal_student_has_ielts %}
+    <a class="mobile-nav-item{% if u == 'student-ielts-mock' or u == 'student-ielts-mock-complete' %} active{% endif %}" href="{% url 'portals:student-ielts-mock' %}" data-nav-mock-test>
+      <i class="ti ti-clipboard-list" aria-hidden="true"></i>
+      <span>{% trans 'Mock' %}</span>
+    </a>
+    {% endif %}
     <a class="mobile-nav-item{% if u == 'student-notifications' %} active{% endif %}" href="{% url 'portals:student-notifications' %}" style="position:relative;">
       <i class="ti ti-bell" aria-hidden="true"></i>
       {% if portal_unread_notifications %}<span class="mobile-nav-badge" data-portal-unread-badge>{{ portal_unread_notifications }}</span>{% else %}<span class="mobile-nav-badge d-none" data-portal-unread-badge hidden></span>{% endif %}
@@ -34,7 +40,7 @@
     </a>
     <a class="mobile-nav-item{% if u == 'parent-scores' %} active{% endif %}" href="{% url 'portals:parent-scores' %}">
       <i class="ti ti-star" aria-hidden="true"></i>
-      <span>{% trans 'Qiymət' %}</span>
+      <span>{% trans 'Qiymətləndirmələr' %}</span>
     </a>
     <a class="mobile-nav-item{% if u == 'parent-attendance' %} active{% endif %}" href="{% url 'portals:parent-attendance' %}">
       <i class="ti ti-calendar-check" aria-hidden="true"></i>

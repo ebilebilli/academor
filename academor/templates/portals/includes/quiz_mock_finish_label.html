@@ -1,0 +1,8 @@
+{% load i18n %}
+{% if mock_id and mock_attempt %}
+{{ mock_attempt.finish_button_label }}
+{% elif use_complete %}
+{% trans 'Complete' %}
+{% else %}
+{% trans 'Finish test' %}
+{% endif %}

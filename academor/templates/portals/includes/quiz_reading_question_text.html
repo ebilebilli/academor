@@ -1,0 +1,28 @@
+{% load i18n %}
+<div class="portal-reading-text-answer">
+  {% if q.word_limit_label %}
+  <p class="portal-reading-text-answer__hint text-muted small mb-2">{{ q.word_limit_label }}</p>
+  {% elif q.word_limit %}
+  <p class="portal-reading-text-answer__hint text-muted small mb-2">
+    {% blocktrans count counter=q.word_limit %}No more than {{ counter }} word{% plural %}No more than {{ counter }} words{% endblocktrans %}
+  </p>
+  {% endif %}
+
+  {% if view_only %}
+  <div class="portal-quiz-writing-area__readonly">{{ q.student_answer_display|default:q.student_answer|linebreaksbr }}</div>
+  {% else %}
+  <label class="visually-hidden" for="reading-text-{{ q.id }}">
+    {% blocktrans with n=q.number %}Answer for question {{ n }}{% endblocktrans %}
+  </label>
+  <input
+    type="text"
+    id="reading-text-{{ q.id }}"
+    class="form-control portal-reading-text-answer__input"
+    data-reading-answer
+    data-question-id="{{ q.id }}"
+    {% if q.word_limit %}data-word-limit="{{ q.word_limit }}"{% endif %}
+    autocomplete="off"
+    spellcheck="false"
+  >
+  {% endif %}
+</div>

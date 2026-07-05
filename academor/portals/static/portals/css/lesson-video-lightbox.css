@@ -1,0 +1,112 @@
+.s-lesson-video-trigger {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--color-gray-900);
+  aspect-ratio: 16 / 9;
+}
+.s-lesson-video-trigger__thumb {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.92;
+  transition: opacity var(--transition-fast), transform var(--transition-base);
+}
+.s-lesson-video-trigger:hover .s-lesson-video-trigger__thumb,
+.s-lesson-video-trigger:focus-visible .s-lesson-video-trigger__thumb {
+  opacity: 0.78;
+  transform: scale(1.02);
+}
+.s-lesson-video-trigger__play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 3rem;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.45);
+}
+.s-lesson-video-trigger__play .ti {
+  width: 72px;
+  height: 72px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, #000 45%, transparent);
+  backdrop-filter: blur(4px);
+}
+
+.s-video-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1080;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+}
+.s-video-lightbox[hidden] {
+  display: none !important;
+}
+.s-video-lightbox__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.82);
+  backdrop-filter: blur(4px);
+}
+.s-video-lightbox__dialog {
+  position: relative;
+  width: min(960px, 100%);
+  z-index: 1;
+}
+.s-video-lightbox__close {
+  position: absolute;
+  top: -44px;
+  right: 0;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+.s-video-lightbox__close:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+.s-video-lightbox__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+}
+.s-video-lightbox__frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+body.s-video-lightbox-open {
+  overflow: hidden;
+}
+@media (max-width: 639px) {
+  .s-video-lightbox {
+    padding: var(--space-3);
+  }
+  .s-video-lightbox__close {
+    top: -40px;
+  }
+}

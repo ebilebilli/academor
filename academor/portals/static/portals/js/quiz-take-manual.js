@@ -661,6 +661,7 @@
     var msgError = root.getAttribute("data-msg-error") || "Could not submit.";
     var msgSubmitLabel = root.getAttribute("data-msg-submit-label") || "Complete";
     var submitBtnHtml = submitBtns[0] ? submitBtns[0].innerHTML : "";
+    var isListeningQuiz = root.getAttribute("data-quiz-listening") === "true";
     var startedAt = Date.now();
     var submitting = false;
     var submitted = false;
@@ -751,7 +752,7 @@
       return { submission: fields[0] ? fields[0].value : "" };
     }
 
-    function showManualResult() {
+    function showManualResult(data) {
       hideTimerToolbar();
       root.setAttribute("data-quiz-finished", "true");
       root.querySelectorAll(
@@ -770,8 +771,81 @@
         el.hidden = true;
       });
       if (resultPanel) {
+        if (isListeningQuiz && data) {
+          renderListeningResult(data);
+        }
         resultPanel.classList.remove("d-none");
         resultPanel.hidden = false;
+        resultPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    function resultPercentValue(data) {
+      if (data.percent !== undefined && data.percent !== null) {
+        return data.percent;
+      }
+      if (!data.max_score) {
+        return 0;
+      }
+      return Math.round((100 * data.total_score) / data.max_score * 10) / 10;
+    }
+
+    function resultTimeUsedPercent(data) {
+      if (!timeLimitSec) {
+        return null;
+      }
+      var used = data.duration_sec;
+      if (used === undefined || used === null) {
+        used = elapsedSeconds();
+      }
+      return Math.round((used / timeLimitSec) * 100);
+    }
+
+    function renderListeningResult(data) {
+      var resultScore = root.querySelector("[data-manual-result-score]");
+      var resultPercent = root.querySelector("[data-manual-result-percent]");
+      var resultDuration = root.querySelector("[data-manual-result-duration]");
+      var durationWrap = root.querySelector("[data-manual-result-duration-wrap]");
+      var resultList = root.querySelector("[data-manual-result-list]");
+      var labelCorrect = root.getAttribute("data-label-correct") || "Correct";
+      var labelIncorrect = root.getAttribute("data-label-incorrect") || "Incorrect";
+      var labelUnanswered = root.getAttribute("data-label-unanswered") || "Not answered";
+
+      if (resultScore) {
+        resultScore.textContent = data.total_score + "/" + data.max_score;
+      }
+      if (resultPercent) {
+        resultPercent.textContent = resultPercentValue(data) + "%";
+      }
+      if (resultDuration && durationWrap) {
+        var timeUsedPct = resultTimeUsedPercent(data);
+        if (timeUsedPct === null) {
+          durationWrap.hidden = true;
+        } else {
+          durationWrap.hidden = false;
+          resultDuration.textContent = timeUsedPct + "%";
+        }
+      }
+      var questionRows = data.questions || data.breakdown;
+      if (resultList && Array.isArray(questionRows)) {
+        resultList.innerHTML = "";
+        questionRows.forEach(function (item, index) {
+          var row = document.createElement("div");
+          row.className = "portal-quiz-take-result__item";
+          var status = labelUnanswered;
+          var tone = "muted";
+          if (item.is_correct === true) {
+            status = labelCorrect;
+            tone = "success";
+          } else if (item.is_correct === false) {
+            status = labelIncorrect;
+            tone = "danger";
+          }
+          row.innerHTML =
+            '<span class="portal-quiz-take-result__num">' + (index + 1) + "</span>" +
+            '<span class="portal-quiz-take-result__status text-' + tone + '">' + status + "</span>";
+          resultList.appendChild(row);
+        });
       }
     }
 
@@ -794,6 +868,10 @@
         },
         collectSubmissionPayload()
       );
+      var mockId = root.getAttribute("data-mock-id");
+      if (mockId) {
+        requestBody.mock = parseInt(mockId, 10);
+      }
 
       return fetch(submitUrl, {
         method: "POST",
@@ -812,14 +890,29 @@
         })
         .then(function (payload) {
           if (!payload.ok || !payload.data.success) {
+            if (window.PortalQuizMockSection && window.PortalQuizMockSection.redirectIfNeeded(payload.data)) {
+              return false;
+            }
             throw new Error((payload.data && payload.data.error) || msgError);
+          }
+          if (payload.data.mock_continue && payload.data.next_url) {
+            submitted = true;
+            submitting = false;
+            stopQuizMedia(root);
+            if (timerId) window.clearInterval(timerId);
+            if (
+              window.PortalQuizMockSection
+              && window.PortalQuizMockSection.handleSubmitResponse(root, payload.data, showManualResult)
+            ) {
+              return true;
+            }
           }
           submitted = true;
           submitting = false;
           stopQuizMedia(root);
           if (timerId) window.clearInterval(timerId);
           if (!options.silent) {
-            showManualResult();
+            showManualResult(payload.data);
           } else {
             root.setAttribute("data-quiz-finished", "true");
           }

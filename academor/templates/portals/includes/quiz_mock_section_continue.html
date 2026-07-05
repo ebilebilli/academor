@@ -1,0 +1,23 @@
+{% load i18n %}
+{% if mock_id %}
+<section
+  class="portal-mock-section-continue panel mb-3 d-none"
+  data-mock-section-continue
+  hidden
+  data-label-next="{% trans 'Next section' %}"
+  data-label-finish="{% trans 'View mock test summary' %}"
+  data-msg-section-done="{% trans 'Section complete. Continue when you are ready.' %}"
+  data-msg-mock-done="{% trans 'All sections are complete.' %}"
+>
+  <div class="text-center py-2">
+    <i class="ti ti-circle-check text-success fs-1" aria-hidden="true"></i>
+    <p class="fw-semibold mt-3 mb-1" data-mock-section-continue-title>{% trans 'Section submitted' %}</p>
+    <p class="text-muted mb-0" data-mock-section-continue-message></p>
+  </div>
+  <div class="d-flex justify-content-center mt-4">
+    <button type="button" class="ds-btn ds-btn--primary" data-mock-section-continue-btn>
+      {% trans 'Next section' %}
+    </button>
+  </div>
+</section>
+{% endif %}

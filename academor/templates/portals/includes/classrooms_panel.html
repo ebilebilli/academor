@@ -2,14 +2,22 @@
 <section
   class="portal-content-panel"
   data-portal-service-tabs
-  data-portal-service-match="csv"
+  data-portal-service-match="single"
   data-portal-service-table="#classrooms-table"
   data-portal-service-empty-row=".classrooms-empty-row"
   data-portal-service-filter-empty="#classrooms-filter-empty"
 >
-  {% if service_tabs|length > 1 %}
-  <ul class="nav nav-tabs portal-attendance-tabs px-3 pt-2" id="classroomServiceTabs" role="tablist" data-portal-service-tablist>
-    {% for tab in service_tabs %}
+  {% if portal_role == 'teacher' %}
+  <div class="d-flex justify-content-end px-3 pt-3">
+    <a class="btn btn-primary btn-sm" href="{% url 'portals:teacher-classroom-create' %}">
+      <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>{% trans 'Add textbook' %}
+    </a>
+  </div>
+  {% endif %}
+
+  {% if group_tabs|length > 1 %}
+  <ul class="nav nav-tabs portal-attendance-tabs px-3 pt-2" id="classroomGroupTabs" role="tablist" data-portal-service-tablist>
+    {% for tab in group_tabs %}
     <li class="nav-item" role="presentation">
       <button class="nav-link{% if forloop.first %} active{% endif %}" type="button" data-service="{{ tab.code }}"{% if forloop.first %} aria-selected="true"{% else %} aria-selected="false"{% endif %}>
         {{ tab.label }} <span class="badge rounded-pill">{{ tab.count }}</span>
@@ -24,21 +32,21 @@
       <thead>
         <tr>
           <th scope="col">{% trans 'Name' %}</th>
-          <th scope="col">{% trans 'Service' %}</th>
+          <th scope="col">{% trans 'Group' %}</th>
           <th scope="col">{% trans 'PDF' %}</th>
           <th scope="col" class="text-end">{% trans 'Action' %}</th>
         </tr>
       </thead>
       <tbody>
         {% for room in classrooms %}
-        <tr data-services="{{ room.services_csv }}">
+        <tr data-service="{{ room.group_id|default:'' }}">
           <td class="fw-semibold">{{ room.name }}</td>
           <td>
-            {% for label in room.service_labels %}
-            <span class="portal-tag">{{ label }}</span>
-            {% empty %}
+            {% if room.group_name %}
+            <span class="portal-tag">{{ room.group_name }}</span>
+            {% else %}
             <span class="text-muted">—</span>
-            {% endfor %}
+            {% endif %}
           </td>
           <td>
             {% if room.has_pdf %}
@@ -59,13 +67,13 @@
         </tr>
         {% empty %}
         <tr class="classrooms-empty-row">
-          <td colspan="4" class="text-muted py-4 text-center">{% trans 'No classrooms yet.' %}</td>
+          <td colspan="4" class="text-muted py-4 text-center">{% trans 'No textbooks yet.' %}</td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
   <div class="portal-attendance-empty-filter text-muted text-center py-4 d-none" id="classrooms-filter-empty">
-    {% trans 'No classrooms for this service.' %}
+    {% trans 'No textbooks for this group.' %}
   </div>
 </section>

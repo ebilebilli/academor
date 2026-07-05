@@ -1,3 +1,7 @@
+.quiz-admin-hidden-fieldset {
+  display: none !important;
+}
+
 .quiz-admin-hidden-field {
   display: none !important;
 }

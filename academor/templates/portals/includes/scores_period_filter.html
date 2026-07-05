@@ -1,0 +1,56 @@
+{% load i18n %}
+{% if period_tabs or score_groups %}
+<section class="s-lessons-filter-panel mb-4" aria-label="{% trans 'Qiymət filterləri' %}">
+  {% if period_tabs %}
+  <div class="s-lessons-filter-panel__row s-lessons-filter-panel__row--period">
+    <span class="s-lessons-filter-panel__label">
+      <i class="ti ti-calendar" aria-hidden="true"></i>
+      {% trans 'Tarix' %}
+    </span>
+    <div class="s-lessons-filter-panel__tabs s-lessons-filter-panel__tabs--seg" data-portal-scores-period-tabs role="group" aria-label="{% trans 'Tarix filteri' %}">
+      {% for tab in period_tabs %}
+      <button
+        class="s-filter-tab{% if forloop.first %} is-active{% endif %}"
+        type="button"
+        data-period="{{ tab.code }}"
+        aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+      >
+        {{ tab.label }}
+        <span class="s-filter-tab__badge">{{ tab.count }}</span>
+      </button>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+  {% if score_groups %}
+  <div class="s-lessons-filter-panel__row s-lessons-filter-panel__row--group{% if period_tabs %} s-lessons-filter-panel__row--bordered{% endif %}">
+    <span class="s-lessons-filter-panel__label">
+      <i class="ti ti-users-group" aria-hidden="true"></i>
+      {% trans 'Qrup' %}
+    </span>
+    <nav class="weekly-scores-groups weekly-scores-groups--inline" aria-label="{% trans 'Qrup filteri' %}" data-score-group-filter>
+      <div class="weekly-scores-groups__scroll">
+        <button
+          type="button"
+          class="weekly-scores-group-chip{% if active_score_group == 'all' %} is-active{% endif %}"
+          data-score-group="all"
+        >
+          {% trans 'Hamısı' %}
+          <span class="weekly-scores-group-chip__meta" data-score-group-count>{{ total_score_count|default:0 }}</span>
+        </button>
+        {% for group in score_groups %}
+        <button
+          type="button"
+          class="weekly-scores-group-chip{% if active_score_group == group.id|stringformat:'s' %} is-active{% endif %}"
+          data-score-group="{{ group.id }}"
+        >
+          {{ group.name }}
+          <span class="weekly-scores-group-chip__meta" data-score-group-count>{{ group.total_count }}</span>
+        </button>
+        {% endfor %}
+      </div>
+    </nav>
+  </div>
+  {% endif %}
+</section>
+{% endif %}

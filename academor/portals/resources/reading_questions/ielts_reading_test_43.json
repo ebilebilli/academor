@@ -1,0 +1,387 @@
+{
+  "title": "IELTS Academic Reading — Practice Test 43",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–40</strong></p><p>You should spend about 60 minutes on <strong>Questions 1–40</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Cold War Science Funding</strong></p><p><strong>A</strong> Cold War science funding reshaped research priorities as United States and Soviet blocs competed for technological prestige, military advantage, and ideological legitimacy claiming rational progress. Federal agencies expanded grants for physics, computing, and biomedical fields perceived as dual-use, channeling universities into national security projects sometimes classified. Scientists navigated loyalty oaths and export controls while pursuing basic curiosity. Historians document how Sputnik's launch accelerated American space and education investments, framing classroom mathematics reform as civilisational survival rather than merely pedagogical fashion detached from geopolitical anxiety about missile gaps and satellite reconnaissance capabilities altering strategic balance calculations overnight in October nineteen fifty-seven headlines worldwide.</p><p><strong>B</strong> Big science models built particle accelerators, radio telescopes, and genomic repositories requiring budgets impossible for lone inventors in garages mythologised elsewhere. International collaborations occasionally transcended iron curtains through CERN-style diplomacy, yet visa denials and espionage fears limited openness. Soviet Lysenkoism distorted biology until reforms, demonstrating how state ideology could devastate disciplines while physics enjoyed relative autonomy for nuclear programmes. Parallel military-industrial complexes influenced procurement timelines, steering engineering toward miniaturised electronics later commercialised in consumer markets, a spinoff narrative contested by scholars noting corporate lobbying also shaped trajectories independent of defence mission statements published for public reassurance during congressional appropriations hearings annually.</p><p><strong>C</strong> University expansion absorbed returning veterans and later baby boom cohorts, creating tenure tracks tied to grant acquisition metrics emerging gradually. Graduate students staffed laboratories investigating materials for jets and submarines, learning skills transferable to civilian sectors after service restrictions eased. Women and minorities faced exclusion from elite labs, though wartime necessities temporarily opened doors later narrowed by suburban domestic ideologies. Feminist historians recover contributions of programmers and human computers whose labour enabled orbital calculations while receiving little credit in popular histories celebrating lone male astronauts whose missions depended on unseen networks of skilled technicians maintaining complex systems under deadline pressures mirroring factory rhythms criticised by labour historians simultaneously documenting shop-floor</p><p><strong>D</strong> Soft power competitions included touring symphony orchestras, exhibitions of consumer goods, and vaccine diplomacy highlighting scientific humanitarianism alongside rockets. UNESCO debates over scientific neutrality exposed colonial continuities when Northern experts defined research agendas for newly independent nations rich in biodiversity but lacking infrastructure. Brain drain flows pulled talent toward higher salaries abroad, weakening home institutions unless return incentives succeeded. Archival releases after nineteen ninety-one reveal espionage cases influencing security clearance policies still affecting international student mobility and collaboration on sensitive topics like quantum sensing and synthetic biology where dual-use anxieties persist though Cold War blocs dissolved into multipolar rivalries and commercial espionage blending state and corporate actors pursuing intellectual property</p><p><strong>E</strong> Medical research funding targeted polio eradication, cancer wars, and cardiovascular studies improving population health while burnishing state images. Ethical scandals such as radiation experiments without consent prompted oversight boards now standard, born from Cold War secrecy cultures. Pharmaceutical supply chains globalised partially through defence logistics expertise. Environmental monitoring of fallout advanced atmospheric science, ironically informing later climate research using instruments initially justified by nuclear test detection treaties negotiated after public protests against atmospheric detonations raised cancer fears among downwind communities whose activism intersected with civil rights movements demanding bodily autonomy and government accountability transcending narrow security rationales invoking national survival to silence dissenting scientists warning of ecological consequences long before</p><p><strong>F</strong> Computing history intertwines with encryption, missile guidance, and simulation of nuclear scenarios consuming megawatts on early mainframes. ARPANET origins linked to survivable communications fed internet mythologies obscuring continued military funding streams. Algorithm development for optimisation and operations research migrated to airlines and logistics corporations. Critiques of technocratic rationality questioned whether endless weapons innovation endangered humanity despite peaceful applications, inspiring scientists' peace movements and arms control treaties verifying compliance via inspection technologies themselves products of funded research ecosystems reluctant to self-limit growth absent political agreements balancing deterrence narratives with disarmament aspirations voiced in petitions signed across campuses internationally throughout decades of brinkmanship exercises normalising existential risk discourse in policy elites trained</p><p><strong>G</strong> Looking ahead, the author argues Cold War funding legacies still shape which disciplines appear bankable, privileging biomedicine and AI over humanities underfunded yet vital for democratic deliberation about technology. Declassifying documents further complicates heroic spin with complicity in harm. Contemporary great-power competition risks repeating militarised science without learning oversight lessons. Transparent priority-setting involving publics, not only intelligence agencies, could steer investments toward climate adaptation and pandemic preparedness while maintaining open basic research insulated from short-term battlefield demands, honouring curiosity that produced unexpected breakthroughs historically when scientists enjoyed protected spaces now threatened by proprietary secrecy and nationalist screening echoing loyalty oath eras unless universities defend academic freedom as precondition for trustworthy</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 11–15",
+          "instructions": "<p>Choose the correct heading for paragraphs <strong>B–F</strong> from the list of headings below.</p><p><em>Write the correct number, <strong>i–vii</strong>, in boxes 11–15 on your answer sheet.</em></p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "i. Big science, CERN, and Lysenkoism",
+            "ii. Universities, exclusion, and hidden labour",
+            "iii. Soft power, UNESCO, and brain drain",
+            "iv. Medical ethics and fallout science",
+            "v. Computing, ARPANET, and peace critiques",
+            "vi. Gig economy surge pricing",
+            "vii. Food desert GIS mapping"
+          ],
+          "questions": [
+            {
+              "order": 11,
+              "question": "<p>Paragraph B</p>",
+              "correct_answer": "i. Big science, CERN, and Lysenkoism"
+            },
+            {
+              "order": 12,
+              "question": "<p>Paragraph C</p>",
+              "correct_answer": "ii. Universities, exclusion, and hidden labour"
+            },
+            {
+              "order": 13,
+              "question": "<p>Paragraph D</p>",
+              "correct_answer": "iii. Soft power, UNESCO, and brain drain"
+            },
+            {
+              "order": 14,
+              "question": "<p>Paragraph E</p>",
+              "correct_answer": "iv. Medical ethics and fallout science"
+            },
+            {
+              "order": 15,
+              "question": "<p>Paragraph F</p>",
+              "correct_answer": "v. Computing, ARPANET, and peace critiques"
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "title": "Questions 16–20",
+          "instructions": "<p>Which paragraph contains the following information?</p><p><em>Write the correct letter, <strong>A–G</strong>, in boxes 16–20 on your answer sheet.</em></p>",
+          "question_type": "matching_info",
+          "option_pool": [
+            "Paragraph A",
+            "Paragraph B",
+            "Paragraph C",
+            "Paragraph D",
+            "Paragraph E",
+            "Paragraph F",
+            "Paragraph G"
+          ],
+          "questions": [
+            {
+              "order": 16,
+              "question": "<p>Sputnik influencing American education and space funding</p>",
+              "correct_answer": "Paragraph A"
+            },
+            {
+              "order": 17,
+              "question": "<p>CERN as example of limited cross-bloc collaboration</p>",
+              "correct_answer": "Paragraph B"
+            },
+            {
+              "order": 18,
+              "question": "<p>recovering women programmers in orbital calculations</p>",
+              "correct_answer": "Paragraph C"
+            },
+            {
+              "order": 19,
+              "question": "<p>UNESCO debates exposing colonial research agendas</p>",
+              "correct_answer": "Paragraph D"
+            },
+            {
+              "order": 20,
+              "question": "<p>oversight boards born from radiation experiment scandals</p>",
+              "correct_answer": "Paragraph E"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "tfng",
+          "question": "<p>Cold War funding linked research to national security priorities.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 2,
+          "question_type": "tfng",
+          "question": "<p>Lysenkoism improved Soviet biology according to the passage.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 3,
+          "question_type": "tfng",
+          "question": "<p>ARPANET had no connection to military survivability goals.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 4,
+          "question_type": "tfng",
+          "question": "<p>Brain drain pulled talent toward higher salaries abroad.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 5,
+          "question_type": "tfng",
+          "question": "<p>The passage states humanities received equal funding to AI historically.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 6,
+          "question_type": "ynng",
+          "question": "<p>The author supports transparent public involvement in research priorities.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 7,
+          "question_type": "ynng",
+          "question": "<p>The writer believes heroic spin should ignore complicity in harm.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 8,
+          "question_type": "ynng",
+          "question": "<p>The author sees Cold War legacies still shaping bankable disciplines.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 9,
+          "question_type": "ynng",
+          "question": "<p>The writer claims loyalty oath eras have no modern echoes.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 10,
+          "question_type": "ynng",
+          "question": "<p>The author values insulating basic research from short-term battlefield demands.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 21,
+          "question_type": "sentence_completion",
+          "question": "<p>Sputnik's launch accelerated American space and ____ investments.</p>",
+          "correct_answer": "education",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 22,
+          "question_type": "sentence_completion",
+          "question": "<p>Big science required budgets beyond lone ____ inventors.</p>",
+          "correct_answer": "garage",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 23,
+          "question_type": "sentence_completion",
+          "question": "<p>Graduate students staffed labs investigating materials for ____.</p>",
+          "correct_answer": "jets",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 24,
+          "question_type": "sentence_completion",
+          "question": "<p>Fallout monitoring advanced atmospheric science informing later ____ research.</p>",
+          "correct_answer": "climate",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 25,
+          "question_type": "summary_completion",
+          "question": "<p>Export controls and loyalty oaths shaped scientist ____. Mobility suffered.</p>",
+          "correct_answer": "mobility",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 26,
+          "question_type": "summary_completion",
+          "question": "<p>Vaccine diplomacy highlighted humanitarianism alongside ____. Rockets mattered too.</p>",
+          "correct_answer": "rockets",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 27,
+          "question_type": "summary_completion",
+          "question": "<p>Operations research migrated to airlines and ____ corporations.</p>",
+          "correct_answer": "logistics",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 28,
+          "question_type": "summary_completion",
+          "question": "<p>Universities must defend academic ____ against nationalist screening.</p>",
+          "correct_answer": "freedom",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 29,
+          "question_type": "flowchart_completion",
+          "question": "<p>Ideology harm | Lysenkoism distorted ____</p>",
+          "correct_answer": "biology",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 30,
+          "question_type": "flowchart_completion",
+          "question": "<p>Ethics response | Scandals prompted oversight ____</p>",
+          "correct_answer": "boards",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 31,
+          "question_type": "flowchart_completion",
+          "question": "<p>Internet origin | ARPANET linked to survivable ____</p>",
+          "correct_answer": "communications",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 32,
+          "question_type": "mcq",
+          "question": "<p>Paragraph A describes mathematics reform as tied to</p>",
+          "answer_options": [
+            "geopolitical anxiety after Sputnik",
+            "purely local pedagogy trends",
+            "elimination of federal grants",
+            "absence of missile gap concerns"
+          ],
+          "correct_answer": "geopolitical anxiety after Sputnik"
+        },
+        {
+          "order": 33,
+          "question_type": "mcq",
+          "question": "<p>According to paragraph B, spinoff narratives are contested because</p>",
+          "answer_options": [
+            "corporate lobbying also shaped technology paths",
+            "CERN never existed",
+            "physics lacked nuclear autonomy",
+            "garage inventors funded accelerators"
+          ],
+          "correct_answer": "corporate lobbying also shaped technology paths"
+        },
+        {
+          "order": 34,
+          "question_type": "mcq",
+          "question": "<p>Paragraph C notes wartime openings for women were</p>",
+          "answer_options": [
+            "later narrowed by domestic ideologies",
+            "permanent across elite labs",
+            "unrelated to programming",
+            "documented solely in astronaut memoirs"
+          ],
+          "correct_answer": "later narrowed by domestic ideologies"
+        },
+        {
+          "order": 35,
+          "question_type": "mcq",
+          "question": "<p>Paragraph E links fallout monitoring to</p>",
+          "answer_options": [
+            "instruments later used in climate science",
+            "elimination of oversight boards",
+            "end of pharmaceutical globalisation",
+            "ban on medical funding"
+          ],
+          "correct_answer": "instruments later used in climate science"
+        },
+        {
+          "order": 36,
+          "question_type": "mcq",
+          "question": "<p>The final paragraph warns contemporary competition may</p>",
+          "answer_options": [
+            "repeat militarised science without oversight lessons",
+            "end all AI research",
+            "eliminate pandemic preparedness",
+            "remove need for humanities"
+          ],
+          "correct_answer": "repeat militarised science without oversight lessons"
+        },
+        {
+          "order": 37,
+          "question_type": "short_answer",
+          "question": "<p>What satellite launch accelerated US science funding?</p>",
+          "correct_answer": "Sputnik",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 38,
+          "question_type": "short_answer",
+          "question": "<p>What distorted Soviet biology under state ideology?</p>",
+          "correct_answer": "Lysenkoism",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 39,
+          "question_type": "short_answer",
+          "question": "<p>What network origins linked to survivable communications?</p>",
+          "correct_answer": "ARPANET",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 40,
+          "question_type": "short_answer",
+          "question": "<p>What freedom do universities must defend against screening?</p>",
+          "correct_answer": "academic",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        }
+      ]
+    }
+  ]
+}

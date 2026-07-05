@@ -118,9 +118,14 @@
   <div class="col-12 col-xl-8">
     <div class="portal-student-tab-shell" data-student-profile-tabs>
       <nav class="portal-student-segmented" aria-label="{% trans 'Şagird bölmələri' %}" data-student-profile-tab-nav>
+        <a class="portal-student-segment{% if active_tab == 'weekly-scores' %} is-active{% endif %}" href="?tab=weekly-scores" data-tab="weekly-scores"{% if active_tab == 'weekly-scores' %} aria-current="page"{% endif %}>
+          <i class="ti ti-calendar-stats" aria-hidden="true"></i>
+          <span>{% trans 'Həftəlik qiymət' %}</span>
+          <em>{{ weekly_scores|length }}</em>
+        </a>
         <a class="portal-student-segment{% if active_tab == 'daily-scores' %} is-active{% endif %}" href="?tab=daily-scores" data-tab="daily-scores"{% if active_tab == 'daily-scores' %} aria-current="page"{% endif %}>
           <i class="ti ti-star" aria-hidden="true"></i>
-          <span>{% trans 'Scores' %}</span>
+          <span>{% trans 'Quiz tarixçəsi' %}</span>
           <em>{{ stats.active_days }}</em>
         </a>
         <a class="portal-student-segment{% if active_tab == 'duration' %} is-active{% endif %}" href="?tab=duration" data-tab="duration"{% if active_tab == 'duration' %} aria-current="page"{% endif %}>

@@ -1,6 +1,18 @@
 (function () {
   "use strict";
 
+  function onReady(fn) {
+    if (window.portalOnReady) {
+      window.portalOnReady(fn);
+      return;
+    }
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", fn);
+    } else {
+      fn();
+    }
+  }
+
   function getCookie(name) {
     var match = document.cookie.match(new RegExp("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)"));
     return match ? decodeURIComponent(match.pop()) : "";
@@ -63,10 +75,14 @@
 
   function initQuizStartGate() {
     var modalEl = document.querySelector("[data-quiz-start-gate]");
-    var root = document.querySelector("[data-quiz-take], [data-quiz-manual-take]");
+    var root = document.querySelector("[data-quiz-take], [data-quiz-manual-take], [data-quiz-reading-take], [data-quiz-speaking-take]");
     if (!modalEl || !root) {
       return;
     }
+    if (root.dataset.quizStartGateBound === "true") {
+      return;
+    }
+    root.dataset.quizStartGateBound = "true";
 
     var startBtn = modalEl.querySelector("[data-quiz-start-btn]");
     var startUrl = modalEl.getAttribute("data-start-url");
@@ -125,6 +141,10 @@
           });
         })
         .then(function (payload) {
+          if (payload.data && payload.data.redirect_url) {
+            window.location.href = payload.data.redirect_url;
+            return;
+          }
           if (!payload.ok || !payload.data.success) {
             throw new Error((payload.data && payload.data.error) || msgError);
           }
@@ -140,5 +160,14 @@
     });
   }
 
-  document.addEventListener("DOMContentLoaded", initQuizStartGate);
+  function scheduleQuizStartGate() {
+    initQuizStartGate();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", scheduleQuizStartGate);
+  } else {
+    scheduleQuizStartGate();
+  }
+  document.addEventListener("portal:content-loaded", scheduleQuizStartGate);
 })();

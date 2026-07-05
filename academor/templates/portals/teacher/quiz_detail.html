@@ -1,70 +1,94 @@
-{% extends "portals/base.html" %}
-{% load static i18n portal_tags %}
-
-{% block title %}{{ quiz.topic }}{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}">
-{% endblock %}
-
-{% block content %}
-<div class="portal-control-bar mb-3">
-  {% if quiz.category_id %}
-  <a class="btn btn-outline-secondary btn-sm" href="{% url 'portals:teacher-quiz-category' category_pk=quiz.category_id %}">
-    <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'Back' %}
-  </a>
-  {% else %}
-  <a class="btn btn-outline-secondary btn-sm" href="{% url 'portals:teacher-quizzes' %}">
-    <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'Back' %}
-  </a>
-  {% endif %}
-</div>
-
-{% portal_page_heading icon="bi-ui-checks" eyebrow="Teacher" raw_title=quiz.topic raw_subtitle=quiz.grading_mode_label %}
-
-<div class="portal-quiz-play-meta mb-4">
-  <span class="badge rounded-pill text-bg-light border px-3 py-2">{{ quiz.grading_mode_label }}</span>
-  <span class="badge rounded-pill text-bg-light border px-3 py-2">
-    {% if quiz.is_listening and quiz.listening_sections %}
-      {{ quiz.response_question_count|default:quiz.question_count }} {% trans 'questions' %}
-    {% else %}
-      {{ quiz.questions|length }} {% trans 'questions' %}
-    {% endif %}
-  </span>
-  <span class="badge rounded-pill text-bg-light border px-3 py-2">
-    <i class="bi bi-eye me-1" aria-hidden="true"></i>{% trans 'Preview only' %}
-  </span>
-  {% if quiz.is_time_limited %}
-  <span class="badge rounded-pill text-bg-warning-subtle border border-warning-subtle text-dark px-3 py-2">
-    <i class="bi bi-clock me-1" aria-hidden="true"></i>{% blocktrans with minutes=quiz.time_limit_minutes %}{{ minutes }} min{% endblocktrans %}
-  </span>
-  {% endif %}
-</div>
-
-{% if quiz.is_listening and quiz.listening_sections %}
-<div class="portal-listening-stack mb-4">
-  {% for section in quiz.listening_sections %}
-  {% include "portals/includes/quiz_listening_section.html" with section=section show_response_input=False view_only=True %}
-  {% endfor %}
-</div>
-{% elif quiz.is_manual_grading and quiz.questions %}
-<div class="portal-quiz-writing-stack">
-  {% for q in quiz.questions %}
-  {% include "portals/includes/quiz_manual_prompt.html" with q=q number=forloop.counter show_response_input=False view_only=True %}
-  {% endfor %}
-</div>
-{% elif quiz.questions %}
-<section class="panel">
-  <div class="portal-quiz-play-stack">
-    {% for q in quiz.questions %}
-    {% include "portals/includes/quiz_question_teacher_view.html" with q=q number=forloop.counter %}
-    {% endfor %}
-  </div>
-</section>
-{% else %}
-<section class="panel">
-  <div class="portal-quiz-empty">{% trans 'No questions in this quiz yet.' %}</div>
-</section>
-{% endif %}
-{% endblock %}
-
+{% extends "portals/base.html" %}
+{% load static i18n portal_tags %}
+
+{% block title %}{{ quiz.topic }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}">
+{% if quiz.is_reading %}
+<link rel="stylesheet" href="{% static 'portals/css/quiz-reading.css' %}?v=20260703f">
+{% endif %}
+{% if quiz.is_speaking %}
+<link rel="stylesheet" href="{% static 'portals/css/quiz-speaking.css' %}?v=20260703">
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="portal-control-bar mb-3">
+  {% if quiz.category_id %}
+  <a class="btn btn-outline-secondary btn-sm" href="{% url 'portals:teacher-quiz-category' category_pk=quiz.category_id %}">
+    <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'Back' %}
+  </a>
+  {% else %}
+  <a class="btn btn-outline-secondary btn-sm" href="{% url 'portals:teacher-quizzes' %}">
+    <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'Back' %}
+  </a>
+  {% endif %}
+</div>
+
+{% portal_page_heading icon="bi-ui-checks" eyebrow="Teacher" raw_title=quiz.topic raw_subtitle=quiz.grading_mode_label %}
+
+<div class="portal-quiz-play-meta mb-4">
+  <span class="badge rounded-pill text-bg-light border px-3 py-2">{{ quiz.grading_mode_label }}</span>
+  <span class="badge rounded-pill text-bg-light border px-3 py-2">
+    {% if quiz.is_listening and quiz.listening_sections %}
+      {{ quiz.response_question_count|default:quiz.question_count }} {% trans 'questions' %}
+    {% elif quiz.is_reading and quiz.reading_sections %}
+      {{ quiz.response_question_count|default:quiz.question_count }} {% trans 'questions' %}
+    {% elif quiz.is_speaking and quiz.speaking_sections %}
+      {{ quiz.response_question_count|default:quiz.question_count }} {% trans 'tasks' %}
+    {% else %}
+      {{ quiz.questions|length }} {% trans 'questions' %}
+    {% endif %}
+  </span>
+  <span class="badge rounded-pill text-bg-light border px-3 py-2">
+    <i class="bi bi-eye me-1" aria-hidden="true"></i>{% trans 'Preview only' %}
+  </span>
+  {% if quiz.is_time_limited %}
+  <span class="badge rounded-pill text-bg-warning-subtle border border-warning-subtle text-dark px-3 py-2">
+    <i class="bi bi-clock me-1" aria-hidden="true"></i>{% blocktrans with minutes=quiz.time_limit_minutes %}{{ minutes }} min{% endblocktrans %}
+  </span>
+  {% endif %}
+</div>
+
+{% if quiz.is_listening and quiz.listening_sections %}
+<div class="portal-listening-stack mb-4">
+  {% for section in quiz.listening_sections %}
+  {% include "portals/includes/quiz_listening_section.html" with section=section show_response_input=False view_only=True %}
+  {% endfor %}
+</div>
+{% elif quiz.is_reading and quiz.reading_sections %}
+<div class="portal-reading-preview-stack mb-4">
+  {% if quiz.reading_sections|length > 1 %}
+  {% include "portals/includes/quiz_reading_tabs.html" with sections=quiz.reading_sections view_only=True %}
+  {% else %}
+  {% for section in quiz.reading_sections %}
+  {% include "portals/includes/quiz_reading_section.html" with section=section view_only=True %}
+  {% endfor %}
+  {% endif %}
+</div>
+{% elif quiz.is_speaking and quiz.speaking_sections %}
+<div class="mb-4">
+  {% include "portals/includes/quiz_speaking_overview.html" with quiz=quiz view_only=True %}
+</div>
+{% elif quiz.is_manual_grading and quiz.questions %}
+<div class="portal-quiz-writing-stack">
+  {% for q in quiz.questions %}
+  {% include "portals/includes/quiz_manual_prompt.html" with q=q number=forloop.counter show_response_input=False view_only=True %}
+  {% endfor %}
+</div>
+{% elif quiz.questions %}
+<section class="panel">
+  <div class="portal-quiz-play-stack">
+    {% for q in quiz.questions %}
+    {% include "portals/includes/quiz_question_teacher_view.html" with q=q number=forloop.counter %}
+    {% endfor %}
+  </div>
+</section>
+{% else %}
+<section class="panel">
+  <div class="portal-quiz-empty">{% trans 'No questions in this quiz yet.' %}</div>
+</section>
+{% endif %}
+{% endblock %}
+

@@ -1,0 +1,50 @@
+{% load i18n %}
+<ul class="portal-lesson-existing-files__list">
+  {% for material in materials %}
+  <li
+    class="portal-lesson-existing-file{% if material.marked_for_removal %} is-marked-for-removal{% endif %}"
+    data-lesson-existing-item
+  >
+    <div class="portal-lesson-existing-file__main">
+      {% if material.kind == 'image' %}
+      <span class="portal-lesson-existing-file__thumb">
+        <img src="{{ material.url }}" alt="">
+      </span>
+      {% elif material.kind == 'video' %}
+      <span class="portal-lesson-existing-file__icon portal-lesson-existing-file__icon--video" aria-hidden="true">
+        <i class="bi bi-play-btn"></i>
+      </span>
+      {% else %}
+      <span class="portal-lesson-existing-file__icon" aria-hidden="true">
+        <i class="bi bi-file-earmark-pdf"></i>
+      </span>
+      {% endif %}
+      <span class="portal-lesson-existing-file__name">{{ material.label }}</span>
+    </div>
+    <div class="portal-lesson-existing-file__actions">
+      <a class="btn btn-sm btn-light" href="{{ material.url }}" target="_blank" rel="noopener">
+        {% trans 'Open' %}
+      </a>
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-danger"
+        data-lesson-remove-toggle
+        data-label-delete="{% trans 'Delete' %}"
+        data-label-undo="{% trans 'Undo' %}"
+        aria-pressed="{% if material.marked_for_removal %}true{% else %}false{% endif %}"
+      >
+        <i class="bi bi-trash" aria-hidden="true"></i>
+        {% if material.marked_for_removal %}{% trans 'Undo' %}{% else %}{% trans 'Delete' %}{% endif %}
+      </button>
+      <input
+        type="checkbox"
+        name="remove_attachments"
+        value="{{ material.id }}"
+        class="portal-lesson-remove-input visually-hidden"
+        data-lesson-remove-input
+        {% if material.marked_for_removal %}checked{% endif %}
+      >
+    </div>
+  </li>
+  {% endfor %}
+</ul>

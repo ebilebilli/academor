@@ -1,0 +1,387 @@
+{
+  "title": "IELTS Academic Reading — Practice Test 28",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–40</strong></p><p>You should spend about 60 minutes on <strong>Questions 1–40</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Grid-Scale Battery Storage</strong></p><p><strong>A</strong> Grid-scale battery storage is reshaping electricity systems that increasingly depend on variable wind and solar generation. Utility operators deploy lithium-ion arrays to absorb surplus power during midday peaks and discharge during evening demand spikes, reducing reliance on gas peaker plants. Proponents argue that storage improves reliability without expanding transmission corridors, yet critics highlight supply-chain constraints for critical minerals and fire-safety concerns in densely built substations. Policymakers now treat batteries as flexibility assets subject to market rules originally designed for conventional thermal generators with different operating economics. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality.</p><p><strong>B</strong> Lithium-ion dominates procurement because energy density and round-trip efficiency exceed most alternatives at commercial scale. Manufacturers iterate cell chemistries to extend cycle life, while engineers package modules inside climate-controlled containers with thermal management and gas detection systems. Declining capital costs have encouraged co-location beside solar farms and offshore wind terminals. Nevertheless, degradation curves mean warranties often cap usable capacity after a defined number of cycles, complicating long-term revenue models for merchant storage developers seeking arbitrage income. Policy evaluations therefore depend on transparent reporting and independent replication of key results. Longitudinal studies remain essential before drawing firm conclusions about causal mechanisms and durable outcomes.</p><p><strong>C</strong> Flow batteries and compressed-air systems offer longer duration discharge suited to multi-day weather lulls, though footprints and conversion losses remain higher than lithium packs for short bursts. Pilot projects pair iron-based electrolytes with renewable microgrids serving remote mining towns. Researchers also examine gravity storage and hydrogen buffers integrated with electrolysers, each presenting distinct siting and efficiency trade-offs. The author notes that duration requirements should guide technology choice rather than assuming one chemistry will dominate every grid service from frequency response to seasonal shifting. Longitudinal studies remain essential before drawing firm conclusions about causal mechanisms and durable outcomes.</p><p><strong>D</strong> Market participation rules determine whether batteries earn revenue from energy arbitrage, capacity payments, or ancillary services such as inertia and voltage support. Independent system operators revise tariffs to reward fast response, yet stacked value streams can conflict when multiple products draw on the same state of charge. Virtual power plants aggregate behind-the-meter units, blurring the line between consumer assets and grid infrastructure. Regulators debate whether distribution utilities may own storage directly or must procure flexibility through competitive auctions to avoid crowding out private investment. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality.</p><p><strong>E</strong> Lifecycle analysis compares greenhouse gas emissions from mining, manufacturing, shipping, and end-of-life recycling against emissions avoided by displacing fossil peakers. Second-life applications repurpose automotive packs for stationary buffers before material recovery, though state-of-health diagnostics remain imperfect. Extended producer responsibility schemes are emerging in Europe to fund collection networks. Environmental groups urge transparent reporting of cobalt and nickel provenance, arguing that decarbonising power must not reproduce extractive harms witnessed in other commodity booms affecting vulnerable mining communities. Policy evaluations therefore depend on transparent reporting and independent replication of key results. Longitudinal studies remain essential before drawing firm conclusions about causal mechanisms and durable outcomes.</p><p><strong>F</strong> Grid planners model storage alongside transmission expansion using production-cost simulations that stress-test renewable droughts and heat-wave demand. Deferred wires projects can save capital when batteries relieve local congestion, but undersized storage may merely shift curtailment geographically without cutting system-wide emissions. Cybersecurity standards are tightening because battery management systems are network-connected and could be targeted to destabilise frequency. Workforce training programmes aim to equip technicians with electrical safety skills distinct from those required for legacy coal plant maintenance schedules. Longitudinal studies remain essential before drawing firm conclusions about causal mechanisms and durable outcomes. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality.</p><p><strong>G</strong> Looking ahead, the author believes storage will become ubiquitous yet insufficient on its own to reach deep decarbonisation targets. Complementary demand response, diversified renewables, and strategic transmission remain essential. If procurement focuses solely on lowest upfront cost per kilowatt-hour, projects may fail to deliver reliability services regulators expect during extreme events. Thoughtful policy can align incentives so batteries complement broader grid modernisation investments that communities will rely on for decades of climate adaptation and economic growth. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality. Policy evaluations therefore depend on transparent reporting and independent replication of key results.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 11–15",
+          "instructions": "<p>Choose the correct heading for paragraphs <strong>B–F</strong> from the list of headings below.</p><p><em>Write the correct number, <strong>i–vii</strong>, in boxes 11–15 on your answer sheet.</em></p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "i. Dominant chemistries and containerised deployment",
+            "ii. Long-duration alternatives and pilot designs",
+            "iii. Revenue stacking and ownership debates",
+            "iv. Lifecycle impacts and second-life reuse",
+            "v. Planning models, congestion, and cybersecurity",
+            "vi. Medieval guild regulation of candle makers",
+            "vii. Coral reef spawning synchrony"
+          ],
+          "questions": [
+            {
+              "order": 11,
+              "question": "<p>Paragraph B</p>",
+              "correct_answer": "i. Dominant chemistries and containerised deployment"
+            },
+            {
+              "order": 12,
+              "question": "<p>Paragraph C</p>",
+              "correct_answer": "ii. Long-duration alternatives and pilot designs"
+            },
+            {
+              "order": 13,
+              "question": "<p>Paragraph D</p>",
+              "correct_answer": "iii. Revenue stacking and ownership debates"
+            },
+            {
+              "order": 14,
+              "question": "<p>Paragraph E</p>",
+              "correct_answer": "iv. Lifecycle impacts and second-life reuse"
+            },
+            {
+              "order": 15,
+              "question": "<p>Paragraph F</p>",
+              "correct_answer": "v. Planning models, congestion, and cybersecurity"
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "title": "Questions 16–20",
+          "instructions": "<p>Which paragraph contains the following information?</p><p><em>Write the correct letter, <strong>A–G</strong>, in boxes 16–20 on your answer sheet.</em></p>",
+          "question_type": "matching_info",
+          "option_pool": [
+            "Paragraph A",
+            "Paragraph B",
+            "Paragraph C",
+            "Paragraph D",
+            "Paragraph E",
+            "Paragraph F",
+            "Paragraph G"
+          ],
+          "questions": [
+            {
+              "order": 16,
+              "question": "<p>mention of gas peaker plants being displaced</p>",
+              "correct_answer": "Paragraph A"
+            },
+            {
+              "order": 17,
+              "question": "<p>reference to iron-based electrolytes in remote towns</p>",
+              "correct_answer": "Paragraph C"
+            },
+            {
+              "order": 18,
+              "question": "<p>discussion of virtual power plants aggregating units</p>",
+              "correct_answer": "Paragraph D"
+            },
+            {
+              "order": 19,
+              "question": "<p>a call for transparent reporting of mineral provenance</p>",
+              "correct_answer": "Paragraph E"
+            },
+            {
+              "order": 20,
+              "question": "<p>a balanced conclusion about complementary grid strategies</p>",
+              "correct_answer": "Paragraph G"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "tfng",
+          "question": "<p>Utility batteries reduce reliance on gas peaker plants.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 2,
+          "question_type": "tfng",
+          "question": "<p>All warranties guarantee full capacity after unlimited cycles.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 3,
+          "question_type": "tfng",
+          "question": "<p>The passage states every country bans utility-owned storage.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 4,
+          "question_type": "tfng",
+          "question": "<p>Virtual power plants blur consumer and grid asset boundaries.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 5,
+          "question_type": "tfng",
+          "question": "<p>Gravity storage is described as ideal for every short-duration service.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 6,
+          "question_type": "ynng",
+          "question": "<p>The author believes storage alone can achieve deep decarbonisation.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 7,
+          "question_type": "ynng",
+          "question": "<p>The writer thinks duration requirements should guide technology choice.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 8,
+          "question_type": "ynng",
+          "question": "<p>The author supports focusing only on lowest upfront cost.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 9,
+          "question_type": "ynng",
+          "question": "<p>The writer claims second-life diagnostics are already perfect.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 10,
+          "question_type": "ynng",
+          "question": "<p>The author is optimistic that batteries can complement grid modernisation.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 21,
+          "question_type": "sentence_completion",
+          "question": "<p>Lithium-ion arrays discharge during evening demand ____.</p>",
+          "correct_answer": "spikes",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 22,
+          "question_type": "sentence_completion",
+          "question": "<p>Degradation curves complicate revenue for ____ storage developers.</p>",
+          "correct_answer": "merchant",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 23,
+          "question_type": "sentence_completion",
+          "question": "<p>Flow batteries suit multi-day weather ____.</p>",
+          "correct_answer": "lulls",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 24,
+          "question_type": "sentence_completion",
+          "question": "<p>Second-life packs are reused before material ____.</p>",
+          "correct_answer": "recovery",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 25,
+          "question_type": "summary_completion",
+          "question": "<p>Operators deploy lithium-ion arrays to absorb surplus ____. Evening peaks follow.</p>",
+          "correct_answer": "power",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 26,
+          "question_type": "summary_completion",
+          "question": "<p>Independent system operators revise tariffs to reward fast ____.</p>",
+          "correct_answer": "response",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 27,
+          "question_type": "summary_completion",
+          "question": "<p>Extended producer responsibility schemes fund collection ____.</p>",
+          "correct_answer": "networks",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 28,
+          "question_type": "summary_completion",
+          "question": "<p>The author warns against choosing projects by lowest upfront cost per ____.</p>",
+          "correct_answer": "kilowatt-hour",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 29,
+          "question_type": "table_completion",
+          "question": "<p>Dominant chemistry | Lithium-ion offers high energy ____</p>",
+          "correct_answer": "density",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 30,
+          "question_type": "table_completion",
+          "question": "<p>Market issue | Stacked streams share the same state of ____</p>",
+          "correct_answer": "charge",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 31,
+          "question_type": "table_completion",
+          "question": "<p>Workforce need | Technicians require distinct electrical ____ skills</p>",
+          "correct_answer": "safety",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 32,
+          "question_type": "mcq",
+          "question": "<p>Paragraph A suggests batteries are treated as</p>",
+          "answer_options": [
+            "flexibility assets in evolving market rules",
+            "permanent replacements for all transmission",
+            "sources free of mineral constraints",
+            "technologies without fire-safety concerns"
+          ],
+          "correct_answer": "flexibility assets in evolving market rules"
+        },
+        {
+          "order": 33,
+          "question_type": "mcq",
+          "question": "<p>According to paragraph B, warranties often limit</p>",
+          "answer_options": [
+            "usable capacity after defined cycles",
+            "installation inside containers",
+            "connection to solar farms",
+            "temperature management systems"
+          ],
+          "correct_answer": "usable capacity after defined cycles"
+        },
+        {
+          "order": 34,
+          "question_type": "mcq",
+          "question": "<p>Paragraph D indicates regulators debate whether utilities may</p>",
+          "answer_options": [
+            "own storage directly",
+            "ban all private investment",
+            "eliminate capacity payments",
+            "ignore frequency response"
+          ],
+          "correct_answer": "own storage directly"
+        },
+        {
+          "order": 35,
+          "question_type": "mcq",
+          "question": "<p>Paragraph E links decarbonisation to concerns about</p>",
+          "answer_options": [
+            "extractive harms in mining communities",
+            "eliminating all nickel use",
+            "ending automotive manufacturing",
+            "banning second-life packs"
+          ],
+          "correct_answer": "extractive harms in mining communities"
+        },
+        {
+          "order": 36,
+          "question_type": "mcq",
+          "question": "<p>The final paragraph argues storage should</p>",
+          "answer_options": [
+            "complement broader grid modernisation",
+            "replace demand response entirely",
+            "focus only on upfront cost",
+            "operate without transmission planning"
+          ],
+          "correct_answer": "complement broader grid modernisation"
+        },
+        {
+          "order": 37,
+          "question_type": "short_answer",
+          "question": "<p>What gas-fired plants do batteries help displace at peaks?</p>",
+          "correct_answer": "peaker",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 38,
+          "question_type": "short_answer",
+          "question": "<p>What simulations stress-test renewable droughts for planners?</p>",
+          "correct_answer": "production-cost",
+          "question_config": {
+            "word_limit": 2,
+            "word_limit_label": "NO MORE THAN TWO WORDS",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 39,
+          "question_type": "short_answer",
+          "question": "<p>What systems connect battery management to cyber risks?</p>",
+          "correct_answer": "network-connected",
+          "question_config": {
+            "word_limit": 2,
+            "word_limit_label": "NO MORE THAN TWO WORDS",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 40,
+          "question_type": "short_answer",
+          "question": "<p>What metric does the author caution against minimising blindly?</p>",
+          "correct_answer": "upfront",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        }
+      ]
+    }
+  ]
+}

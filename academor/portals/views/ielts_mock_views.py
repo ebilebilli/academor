@@ -1,0 +1,137 @@
+import logging
+
+from django.contrib import messages
+from django.http import Http404
+from django.shortcuts import redirect, render
+from django.urls import reverse
+from django.utils.translation import gettext as _
+from django.views import View
+
+from portals.models import IeltsMockTestAttempt
+from portals.utils.ielts_mock_test import (
+    get_mock_attempt_for_student,
+    get_mock_take_url,
+    get_missing_mock_sections,
+    get_student_completed_mock_attempts,
+    serialize_mock_attempt_summary,
+    start_mock_test_attempt,
+    student_can_access_ielts_mock,
+)
+from portals.utils.queries import get_student_profile, get_teacher_profile
+from portals.utils.student_courses import teacher_can_see_quiz_result
+from portals.views.mixins import StudentRequiredMixin, TeacherRequiredMixin
+from portals.views.views_v1 import _portal_context
+
+logger = logging.getLogger('portals.ielts_mock')
+
+
+class StudentIeltsMockLandingView(StudentRequiredMixin, View):
+    template_name = 'portals/student/ielts_mock_landing.html'
+
+    def get(self, request):
+        profile = get_student_profile(request.portal_user)
+        if not student_can_access_ielts_mock(profile.pk):
+            raise Http404
+
+        missing_sections = get_missing_mock_sections(profile.pk)
+        missing_labels = [
+            dict(IeltsMockTestAttempt.Section.choices).get(section, section)
+            for section in missing_sections
+        ]
+        return render(
+            request,
+            self.template_name,
+            _portal_context(
+                request,
+                can_start=not missing_sections,
+                missing_sections=missing_labels,
+                completed_attempts=[
+                    serialize_mock_attempt_summary(attempt)
+                    for attempt in get_student_completed_mock_attempts(profile.pk)
+                ],
+            ),
+        )
+
+
+class StudentIeltsMockStartView(StudentRequiredMixin, View):
+    def post(self, request):
+        profile = get_student_profile(request.portal_user)
+        if not student_can_access_ielts_mock(profile.pk):
+            raise Http404
+
+        attempt, error = start_mock_test_attempt(profile.pk)
+        if error:
+            messages.error(request, error)
+            logger.warning('Mock test start blocked student_id=%s error=%s', profile.pk, error)
+            return redirect('portals:student-ielts-mock')
+
+        return redirect(get_mock_take_url(attempt, IeltsMockTestAttempt.Section.LISTENING))
+
+
+class StudentIeltsMockCompleteView(StudentRequiredMixin, View):
+    template_name = 'portals/student/ielts_mock_complete.html'
+
+    def get(self, request, pk):
+        profile = get_student_profile(request.portal_user)
+        attempt = get_mock_attempt_for_student(profile.pk, pk)
+        if not attempt or attempt.status != IeltsMockTestAttempt.Status.COMPLETED:
+            logger.warning(
+                'Mock test complete page denied student_id=%s attempt_id=%s status=%s',
+                profile.pk,
+                pk,
+                getattr(attempt, 'status', None),
+            )
+            raise Http404
+
+        logger.info('Mock test complete page viewed student_id=%s attempt_id=%s', profile.pk, pk)
+
+        return render(
+            request,
+            self.template_name,
+            _portal_context(
+                request,
+                mock_attempt=serialize_mock_attempt_summary(attempt),
+            ),
+        )
+
+
+class TeacherIeltsMockDetailView(TeacherRequiredMixin, View):
+    template_name = 'portals/teacher/ielts_mock_detail.html'
+
+    def get(self, request, pk):
+        profile = get_teacher_profile(request.portal_user)
+        attempt = (
+            IeltsMockTestAttempt.objects.filter(pk=pk)
+            .select_related(
+                'student__user',
+                'listening_quiz__category',
+                'reading_quiz__category',
+                'writing_quiz__category',
+                'speaking_quiz__category',
+                'listening_result',
+                'reading_result',
+                'writing_result',
+                'speaking_result',
+            )
+            .first()
+        )
+        if not attempt or attempt.status != IeltsMockTestAttempt.Status.COMPLETED:
+            raise Http404
+
+        visible = any(
+            teacher_can_see_quiz_result(profile.pk, attempt.student_id, attempt.quiz_for_section(section))
+            for section in IeltsMockTestAttempt.SECTION_ORDER
+            if attempt.quiz_for_section(section)
+        )
+        if not visible:
+            raise Http404
+
+        return render(
+            request,
+            self.template_name,
+            _portal_context(
+                request,
+                mock_attempt=serialize_mock_attempt_summary(attempt),
+                back_url=reverse('portals:teacher-notifications'),
+            ),
+        )

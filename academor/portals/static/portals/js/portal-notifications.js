@@ -64,7 +64,7 @@
 
   function markItemRead(item) {
     item.classList.remove("is-unread");
-    var dot = item.querySelector(".portal-notification-unread-dot");
+    var dot = item.querySelector(".notif-item__dot, .portal-notification-unread-dot");
     if (dot) {
       dot.remove();
     }
@@ -165,9 +165,16 @@
     }
   }
 
-  if (window.portalOnReady) {
-    window.portalOnReady(initNotifications);
-  } else {
-    document.addEventListener("DOMContentLoaded", initNotifications);
+  function bootNotifications() {
+    initNotifications();
   }
+
+  if (window.portalOnReady) {
+    window.portalOnReady(bootNotifications);
+  } else {
+    document.addEventListener("DOMContentLoaded", bootNotifications);
+  }
+
+  // AJAX nav loads this script after content swap; portal:content-loaded already fired.
+  bootNotifications();
 })();

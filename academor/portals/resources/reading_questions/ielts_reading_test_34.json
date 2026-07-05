@@ -1,0 +1,387 @@
+{
+  "title": "IELTS Academic Reading — Practice Test 34",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–40</strong></p><p>You should spend about 60 minutes on <strong>Questions 1–40</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Placebo Mechanisms in Medicine</strong></p><p><strong>A</strong> Placebo mechanisms describe how ritual, expectation, and conditioning produce clinically meaningful improvements without active pharmacological ingredients matching the presumed target. Randomised trials use placebo controls to isolate drug effects, yet the same pathways can enhance outcomes in routine practice when communication builds therapeutic alliance. Neuroimaging reveals opioid and dopamine release during placebo analgesia, linking subjective relief to measurable neurochemistry. Ethicists debate whether harnessing placebos requires deception or whether open-label honest placebos still work for some pain and functional disorders. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality. Policy evaluations therefore depend on transparent reporting and independent replication of key results.</p><p><strong>B</strong> Classical conditioning pairs neutral cues with active drugs until cues alone elicit partial responses, as shown in immunosuppression and hormonal studies using taste or colour signals. Verbal suggestions modulate pain ratings within minutes, amplified by clinician warmth and perceived expertise. Context effects mean identical pills work better when branded, injected, or administered in prestigious hospitals compared with plain tablets in sparse clinics. Meta-analyses estimate placebo contributions vary by condition, larger in subjective symptoms than objective tumour markers, cautioning against extrapolating pain trial insights to oncology endpoints without separate validation. Policy evaluations therefore depend on transparent reporting and independent replication of key results.</p><p><strong>C</strong> Clinical trial design minimises placebo response through double blinding, sham surgery arms, and crossover phases, though perfect concealment is impossible when side effects unmask assignments. Enrichment strategies select responsive participants, potentially inflating effect sizes that fail in broader populations. Regulators require active comparators when effective treatments exist, yet placebo arms remain common where no gold standard therapy is available. Adaptive designs may randomise more patients to treatment once efficacy thresholds are met, reducing ethical exposure to inert pills among severely ill volunteers seeking any chance of relief. Longitudinal studies remain essential before drawing firm conclusions about causal mechanisms and durable outcomes.</p><p><strong>D</strong> Open-label placebo studies inform patients they receive inert substances while explaining possible mind-body mechanisms, reporting benefits in irritable bowel syndrome and chronic back pain cohorts. Informed consent transforms placebo from trickery into educational intervention, though uptake depends on cultural attitudes toward mind-body explanations. Paediatric contexts raise additional safeguards because parents mediate beliefs about syrups and stickers after minor procedures. The author suggests training curricula should teach clinicians how expectancy framing affects outcomes without encouraging false claims about biochemical cures for structural diseases. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality.</p><p><strong>E</strong> Nocebo effects occur when negative expectations worsen symptoms, visible in reported side-effect profiles among placebo arms mirroring drug labels patients read. Media scare stories can trigger psychogenic symptoms at population scale, complicating pharmacovigilance. Informed consent documents listing rare adverse events may ironically increase experienced reactions, prompting trials of balanced disclosure formats. Clinician language matters: warning patients they might feel pain can fulfil the prophecy, whereas neutral coaching reduces unnecessary distress during benign interventions such as imaging or blood draws in anxious populations. Policy evaluations therefore depend on transparent reporting and independent replication of key results.</p><p><strong>F</strong> Complementary and alternative medicine markets exploit placebo-rich rituals at substantial cost, sometimes delaying evidence-based care for serious illness. Integrative clinics argue combination approaches improve wellbeing even when specific herbs lack efficacy beyond expectancy. Policy makers struggle to regulate claims without denying patient autonomy to choose supportive experiences. Insurance coverage debates hinge on whether non-specific benefits justify reimbursement when budgets are finite and opportunity costs displace proven surgeries or vaccines in underfunded public systems serving marginalised communities with layered comorbidities. Longitudinal studies remain essential before drawing firm conclusions about causal mechanisms and durable outcomes. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality.</p><p><strong>G</strong> Looking ahead, precision placebo research may identify biomarkers predicting who responds to expectancy interventions, enabling ethical personalisation. Digital apps delivering scripted suggestions and biofeedback could standardise components once tied to charismatic healers alone. If industry markets open-label placebos as branded wellness products without rigorous trials, the author fears regression to quackery. Responsible integration pairs honest communication with active treatments, using psychosocial tools to amplify pharmacology rather than replace vaccines, antibiotics, or cancer therapies where molecular targets are well established through reproducible bench science. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 11–15",
+          "instructions": "<p>Choose the correct heading for paragraphs <strong>B–F</strong> from the list of headings below.</p><p><em>Write the correct number, <strong>i–vii</strong>, in boxes 11–15 on your answer sheet.</em></p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "i. Conditioning, context, and meta-analytic limits",
+            "ii. Trial blinding and adaptive ethics",
+            "iii. Open-label honesty and training needs",
+            "iv. Nocebo language and disclosure dilemmas",
+            "v. Alternative markets and insurance trade-offs",
+            "vi. Silk Road camel taxation",
+            "vii. Grid frequency inertia markets"
+          ],
+          "questions": [
+            {
+              "order": 11,
+              "question": "<p>Paragraph B</p>",
+              "correct_answer": "i. Conditioning, context, and meta-analytic limits"
+            },
+            {
+              "order": 12,
+              "question": "<p>Paragraph C</p>",
+              "correct_answer": "ii. Trial blinding and adaptive ethics"
+            },
+            {
+              "order": 13,
+              "question": "<p>Paragraph D</p>",
+              "correct_answer": "iii. Open-label honesty and training needs"
+            },
+            {
+              "order": 14,
+              "question": "<p>Paragraph E</p>",
+              "correct_answer": "iv. Nocebo language and disclosure dilemmas"
+            },
+            {
+              "order": 15,
+              "question": "<p>Paragraph F</p>",
+              "correct_answer": "v. Alternative markets and insurance trade-offs"
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "title": "Questions 16–20",
+          "instructions": "<p>Which paragraph contains the following information?</p><p><em>Write the correct letter, <strong>A–G</strong>, in boxes 16–20 on your answer sheet.</em></p>",
+          "question_type": "matching_info",
+          "option_pool": [
+            "Paragraph A",
+            "Paragraph B",
+            "Paragraph C",
+            "Paragraph D",
+            "Paragraph E",
+            "Paragraph F",
+            "Paragraph G"
+          ],
+          "questions": [
+            {
+              "order": 16,
+              "question": "<p>opioid and dopamine release during placebo analgesia</p>",
+              "correct_answer": "Paragraph A"
+            },
+            {
+              "order": 17,
+              "question": "<p>examples of taste or colour conditioning in hormonal studies</p>",
+              "correct_answer": "Paragraph B"
+            },
+            {
+              "order": 18,
+              "question": "<p>discussion of sham surgery arms in trials</p>",
+              "correct_answer": "Paragraph C"
+            },
+            {
+              "order": 19,
+              "question": "<p>reports of benefits with honest inert substances</p>",
+              "correct_answer": "Paragraph D"
+            },
+            {
+              "order": 20,
+              "question": "<p>warning language increasing experienced side effects</p>",
+              "correct_answer": "Paragraph E"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "tfng",
+          "question": "<p>Placebo pathways can enhance routine care through therapeutic alliance.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 2,
+          "question_type": "tfng",
+          "question": "<p>Identical pills always work equally regardless of clinical context.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 3,
+          "question_type": "tfng",
+          "question": "<p>Open-label placebos require hiding ingredients from patients according to paragraph D.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 4,
+          "question_type": "tfng",
+          "question": "<p>Nocebo effects can mirror side effects listed on drug labels.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 5,
+          "question_type": "tfng",
+          "question": "<p>The passage states placebo contributions are largest for tumour markers.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 6,
+          "question_type": "ynng",
+          "question": "<p>The author supports false biochemical cure claims for structural diseases.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 7,
+          "question_type": "ynng",
+          "question": "<p>The writer thinks clinician language can shape pain expectations.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 8,
+          "question_type": "ynng",
+          "question": "<p>The author welcomes marketing open-label placebos without rigorous trials.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 9,
+          "question_type": "ynng",
+          "question": "<p>The writer advocates replacing vaccines with expectancy alone.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 10,
+          "question_type": "ynng",
+          "question": "<p>The author sees psychosocial tools as amplifying rather than replacing proven therapies.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 21,
+          "question_type": "sentence_completion",
+          "question": "<p>Neuroimaging links placebo analgesia to opioid and ____ release.</p>",
+          "correct_answer": "dopamine",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 22,
+          "question_type": "sentence_completion",
+          "question": "<p>Context effects mean identical pills work better when ____.</p>",
+          "correct_answer": "branded",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 23,
+          "question_type": "sentence_completion",
+          "question": "<p>Open-label studies explain possible mind-body ____.</p>",
+          "correct_answer": "mechanisms",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 24,
+          "question_type": "sentence_completion",
+          "question": "<p>Nocebo effects worsen symptoms when expectations are ____.</p>",
+          "correct_answer": "negative",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 25,
+          "question_type": "summary_completion",
+          "question": "<p>Double blinding aims to minimise placebo ____. Side effects may unmask assignments.</p>",
+          "correct_answer": "response",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 26,
+          "question_type": "summary_completion",
+          "question": "<p>Adaptive designs may shift randomisation once efficacy ____ are met.</p>",
+          "correct_answer": "thresholds",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 27,
+          "question_type": "summary_completion",
+          "question": "<p>Consent documents listing rare adverse events may increase experienced ____. </p>",
+          "correct_answer": "reactions",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 28,
+          "question_type": "summary_completion",
+          "question": "<p>Precision research may identify biomarkers predicting expectancy ____. </p>",
+          "correct_answer": "responders",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 29,
+          "question_type": "table_completion",
+          "question": "<p>Trial issue | Enrichment may inflate effects in broader ____</p>",
+          "correct_answer": "populations",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 30,
+          "question_type": "table_completion",
+          "question": "<p>Paediatric factor | Parents mediate beliefs about syrups and ____</p>",
+          "correct_answer": "stickers",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 31,
+          "question_type": "table_completion",
+          "question": "<p>Policy tension | Finite budgets create opportunity ____</p>",
+          "correct_answer": "costs",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 32,
+          "question_type": "mcq",
+          "question": "<p>Paragraph A indicates placebo effects involve</p>",
+          "answer_options": [
+            "expectation and neurochemical pathways",
+            "only deceptive trickery with no biology",
+            "objective tumour shrinkage always",
+            "elimination of randomised controls"
+          ],
+          "correct_answer": "expectation and neurochemical pathways"
+        },
+        {
+          "order": 33,
+          "question_type": "mcq",
+          "question": "<p>According to paragraph B, placebo contributions tend to be larger in</p>",
+          "answer_options": [
+            "subjective symptoms than objective tumour markers",
+            "oncology endpoints exclusively",
+            "immunosuppression never",
+            "plain tablets in sparse clinics only"
+          ],
+          "correct_answer": "subjective symptoms than objective tumour markers"
+        },
+        {
+          "order": 34,
+          "question_type": "mcq",
+          "question": "<p>Paragraph D suggests open-label approaches rely on</p>",
+          "answer_options": [
+            "informed consent about inert substances",
+            "withholding all mind-body explanations",
+            "mandatory deception for adults",
+            "banning parental involvement"
+          ],
+          "correct_answer": "informed consent about inert substances"
+        },
+        {
+          "order": 35,
+          "question_type": "mcq",
+          "question": "<p>Paragraph F highlights a policy struggle over</p>",
+          "answer_options": [
+            "regulating claims while respecting patient autonomy",
+            "banning all complementary rituals legally",
+            "eliminating integrative clinics entirely",
+            "mandating herbal efficacy for cancer"
+          ],
+          "correct_answer": "regulating claims while respecting patient autonomy"
+        },
+        {
+          "order": 36,
+          "question_type": "mcq",
+          "question": "<p>The final paragraph recommends</p>",
+          "answer_options": [
+            "honest communication alongside active treatments",
+            "replacing antibiotics with apps",
+            "marketing wellness products without trials",
+            "ignoring biomarker personalisation"
+          ],
+          "correct_answer": "honest communication alongside active treatments"
+        },
+        {
+          "order": 37,
+          "question_type": "short_answer",
+          "question": "<p>What trial design feature pairs with double blinding?</p>",
+          "correct_answer": "sham",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 38,
+          "question_type": "short_answer",
+          "question": "<p>What syndrome is named among open-label placebo cohorts?</p>",
+          "correct_answer": "irritable bowel",
+          "question_config": {
+            "word_limit": 2,
+            "word_limit_label": "NO MORE THAN TWO WORDS",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 39,
+          "question_type": "short_answer",
+          "question": "<p>What opposite effect worsens symptoms through negative expectations?</p>",
+          "correct_answer": "nocebo",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 40,
+          "question_type": "short_answer",
+          "question": "<p>What tools does the author say could standardise expectancy components?</p>",
+          "correct_answer": "digital apps",
+          "question_config": {
+            "word_limit": 2,
+            "word_limit_label": "NO MORE THAN TWO WORDS",
+            "case_insensitive": true
+          }
+        }
+      ]
+    }
+  ]
+}

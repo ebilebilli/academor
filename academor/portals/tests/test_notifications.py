@@ -208,6 +208,50 @@ class PortalNotificationTests(TestCase):
         self.assertEqual(get_unread_notification_count(student_id=self.student.pk), 1)
         self.assertEqual(get_unread_notification_count(parent_id=self.parent.pk), 1)
 
+    def test_manual_review_removes_pending_submission_notification(self):
+        self.quiz.is_essay = True
+        self.quiz.save(update_fields=['is_essay'])
+        question_two = QuizQuestion.objects.create(
+            quiz=self.quiz,
+            order=2,
+            question='Write an essay',
+        )
+        payload = submit_manual_quiz_attempt(
+            student_id=self.student.pk,
+            quiz_id=self.quiz.pk,
+            given_answers={
+                str(self.q1.pk): 'Answer for task one.',
+                str(question_two.pk): 'My essay text',
+            },
+        )
+        self.assertTrue(payload['success'])
+        result = QuizResult.objects.filter(student=self.student, quiz=self.quiz).order_by('-completed_at', '-id').first()
+        pending = PortalNotification.objects.get(
+            student=self.student,
+            quiz_result=result,
+            kind=PortalNotification.Kind.SUBMISSION_PENDING,
+        )
+        self.assertFalse(pending.is_read)
+
+        outcome = submit_teacher_quiz_review(
+            teacher_id=self.teacher.pk,
+            result_id=result.pk,
+            total_score=8,
+            teacher_feedback='Well done',
+        )
+        self.assertTrue(outcome['success'])
+        self.assertFalse(
+            PortalNotification.objects.filter(
+                student=self.student,
+                kind=PortalNotification.Kind.SUBMISSION_PENDING,
+            ).exists(),
+        )
+        published = PortalNotification.objects.get(student=self.student, quiz_result=result)
+        self.assertEqual(published.kind, PortalNotification.Kind.RESULT_PUBLISHED)
+        self.assertFalse(published.is_read)
+        self.assertEqual(PortalNotification.objects.filter(student=self.student).count(), 1)
+        self.assertEqual(get_unread_notification_count(student_id=self.student.pk), 1)
+
     def test_manual_re_review_marks_student_notification_unread_again(self):
         from portals.utils.quiz_submit import submit_manual_quiz_attempt
 
@@ -226,7 +270,7 @@ class PortalNotificationTests(TestCase):
                 str(question_two.pk): 'First essay.',
             },
         )
-        result = QuizResult.objects.get(student=self.student, quiz=self.quiz)
+        result = QuizResult.objects.filter(student=self.student, quiz=self.quiz).order_by('-completed_at', '-id').first()
 
         submit_teacher_quiz_review(
             teacher_id=self.teacher.pk,
@@ -246,14 +290,15 @@ class PortalNotificationTests(TestCase):
                 str(question_two.pk): 'Retake essay.',
             },
         )
+        latest_result = QuizResult.objects.filter(student=self.student, quiz=self.quiz).order_by('-completed_at', '-id').first()
         submit_teacher_quiz_review(
             teacher_id=self.teacher.pk,
-            result_id=result.pk,
+            result_id=latest_result.pk,
             total_score=9,
             teacher_feedback='Much better.',
         )
-        note.refresh_from_db()
-        self.assertFalse(note.is_read)
+        new_note = PortalNotification.objects.get(student=self.student, quiz_result=latest_result)
+        self.assertFalse(new_note.is_read)
         self.assertEqual(get_unread_notification_count(student_id=self.student.pk), 1)
 
     def test_mark_read_and_delete(self):

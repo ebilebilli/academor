@@ -31,11 +31,40 @@
     var leaveModal = getBootstrapModal(leaveModalEl);
     var confirmBtn = leaveModalEl.querySelector("[data-quiz-leave-confirm-btn]");
     var cancelBtn = leaveModalEl.querySelector("[data-quiz-leave-cancel-btn]");
+    var defaultLeaveTitleEl = leaveModalEl.querySelector("#quizLeaveModalTitle");
+    var defaultLeaveTextEl = leaveModalEl.querySelector(".portal-quiz-start-modal__text");
+    var defaultLeaveTitle = defaultLeaveTitleEl ? defaultLeaveTitleEl.textContent : "";
+    var defaultLeaveText = defaultLeaveTextEl ? defaultLeaveTextEl.textContent : "";
+    if (confirmBtn) {
+      confirmBtn.dataset.defaultHtml = confirmBtn.innerHTML;
+    }
     var pendingUrl = "";
     var navigationAllowed = false;
     var leaveWarning =
       root.getAttribute("data-msg-leave-warning") ||
       "If you leave this page now, your quiz will be counted as completed.";
+    var mockLeaveWarning =
+      root.getAttribute("data-msg-mock-leave-warning") ||
+      "Leave the mock test? Your current progress will be lost.";
+    var leaveWarningText = root.getAttribute("data-mock-id") ? mockLeaveWarning : leaveWarning;
+
+    function isMockQuiz() {
+      return Boolean(root.getAttribute("data-mock-id"));
+    }
+
+    function getMockCancelUrl() {
+      return root.getAttribute("data-mock-cancel-url") || "";
+    }
+
+    function navigateAway(targetUrl) {
+      navigationAllowed = true;
+      afterLeave();
+      root.setAttribute("data-quiz-finished", "true");
+      var url = targetUrl || getMockCancelUrl();
+      if (url) {
+        window.location.href = url;
+      }
+    }
 
     function isQuizActive() {
       return root.getAttribute("data-quiz-started") === "true" && root.getAttribute("data-quiz-finished") !== "true";
@@ -43,6 +72,21 @@
 
     function showLeaveModal(targetUrl) {
       pendingUrl = targetUrl || "";
+      var titleEl = leaveModalEl.querySelector("#quizLeaveModalTitle");
+      var textEl = leaveModalEl.querySelector(".portal-quiz-start-modal__text");
+      if (titleEl) {
+        titleEl.textContent = isMockQuiz()
+          ? (root.getAttribute("data-mock-leave-title") || "Leave mock test?")
+          : defaultLeaveTitle;
+      }
+      if (textEl) {
+        textEl.textContent = leaveWarningText;
+      }
+      if (confirmBtn) {
+        confirmBtn.innerHTML = isMockQuiz()
+          ? '<i class="bi bi-box-arrow-right me-1" aria-hidden="true"></i>' + (root.getAttribute("data-mock-leave-confirm") || "Leave mock test")
+          : (confirmBtn.dataset.defaultHtml || confirmBtn.innerHTML);
+      }
       if (leaveModal) {
         if (leaveModalEl.parentElement !== document.body) {
           document.body.appendChild(leaveModalEl);
@@ -54,7 +98,7 @@
         document.body.classList.add("portal-quiz-modal-open");
         return;
       }
-      if (window.confirm(leaveWarning)) {
+      if (window.confirm(leaveWarningText)) {
         completeAndNavigate(pendingUrl);
       }
     }
@@ -68,17 +112,20 @@
     }
 
     function completeAndNavigate(targetUrl) {
+      if (isMockQuiz()) {
+        navigateAway(targetUrl);
+        return;
+      }
       beforeLeave();
       submit({ keepalive: false, silent: true, completionTrigger: "auto_leave" }).then(function (ok) {
         if (!ok) {
+          var msgError =
+            root.getAttribute("data-msg-error") ||
+            "Could not submit the test. Please try again.";
+          window.alert(msgError);
           return;
         }
-        navigationAllowed = true;
-        afterLeave();
-        root.setAttribute("data-quiz-finished", "true");
-        if (targetUrl) {
-          window.location.href = targetUrl;
-        }
+        navigateAway(targetUrl);
       });
     }
 
@@ -141,8 +188,8 @@
         return;
       }
       event.preventDefault();
-      event.returnValue = leaveWarning;
-      return leaveWarning;
+      event.returnValue = leaveWarningText;
+      return leaveWarningText;
     });
 
     root.querySelectorAll("[data-quiz-leave-link]").forEach(function (link) {
@@ -156,7 +203,7 @@
     });
 
     window.addEventListener("pagehide", function () {
-      if (!isQuizActive() || navigationAllowed) {
+      if (!isQuizActive() || navigationAllowed || isMockQuiz()) {
         return;
       }
       beforeLeave();

@@ -1,0 +1,5 @@
+{% load i18n %}
+<a class="s-back-link" href="{{ back_url }}{{ back_suffix|default:'' }}">
+  <i class="ti ti-arrow-left" aria-hidden="true"></i>
+  {% if back_label %}{{ back_label }}{% else %}{% trans 'Back' %}{% endif %}
+</a>

@@ -49,7 +49,7 @@
     </div>
     <div class="t-welcome__date">
       <i class="ti ti-calendar" aria-hidden="true"></i>
-      <span data-portal-today-date></span>
+      <span data-portal-today-date>{% portal_today_long %}</span>
     </div>
   </header>
 
@@ -103,7 +103,7 @@
       </a>
       <a class="t-qa-btn t-qa-btn--amber" href="{% url 'portals:parent-scores' %}?student={{ block.student.id }}">
         <i class="ti ti-star" aria-hidden="true"></i>
-        <span>{% trans 'Qiymətlər' %}</span>
+        <span>{% trans 'Qiymətləndirmələr' %}</span>
       </a>
       <a class="t-qa-btn t-qa-btn--emerald" href="{% url 'portals:parent-attendance' %}?student={{ block.student.id }}">
         <i class="ti ti-calendar-check" aria-hidden="true"></i>

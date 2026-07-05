@@ -14,7 +14,7 @@
       {% with embed_url=q.media_url|youtube_embed_url %}
       {% if embed_url %}
       <div class="portal-quiz-prompt-media__embed">
-        <iframe src="{{ embed_url }}" title="{% trans 'Video' %}" allowfullscreen loading="lazy"></iframe>
+        <iframe src="{{ embed_url }}" title="{% trans 'Video' %}" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
       </div>
       {% elif media_src %}
       <video controls preload="metadata" class="portal-quiz-prompt-media__video" src="{{ media_src }}"></video>

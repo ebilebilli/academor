@@ -2,7 +2,7 @@
 <section class="portal-profile-performance" aria-label="{% trans 'Performance overview' %}">
   <header class="portal-profile-performance__header">
     <p class="portal-profile-performance__eyebrow">{% trans 'Performance overview' %}</p>
-    <h2 class="portal-profile-performance__title">{% trans 'Quiz & lesson scores' %}</h2>
+    <h2 class="portal-profile-performance__title">{% trans 'Quiz & weekly scores' %}</h2>
   </header>
 
   <div class="portal-profile-performance__grid">
@@ -57,18 +57,19 @@
       </div>
     </article>
 
+    {% if weekly_average %}
     <article
-      class="portal-profile-performance__card portal-profile-performance__card--lesson portal-profile-performance--{{ lesson_average.tier|default:'empty' }}"
-      aria-label="{% trans 'Lesson average' %}"
+      class="portal-profile-performance__card portal-profile-performance__card--lesson portal-profile-performance--{{ weekly_average.tier|default:'empty' }}"
+      aria-label="{% trans 'Weekly average' %}"
     >
       <div class="portal-profile-performance__ring-wrap" aria-hidden="true">
         <div
           class="portal-profile-performance__ring"
-          style="--score-pct: {{ lesson_average.avg_score_pct|default:0 }};"
+          style="--score-pct: {{ weekly_average.avg_score_pct|default:0 }};"
         >
           <div class="portal-profile-performance__ring-inner">
-            {% if lesson_average.avg_score_pct is not None %}
-              <span class="portal-profile-performance__pct">{{ lesson_average.avg_score_pct }}%</span>
+            {% if weekly_average.avg_score_pct is not None %}
+              <span class="portal-profile-performance__pct">{{ weekly_average.avg_score_pct }}%</span>
             {% else %}
               <span class="portal-profile-performance__pct is-empty">—</span>
             {% endif %}
@@ -76,28 +77,29 @@
         </div>
       </div>
       <div class="portal-profile-performance__copy">
-        <span class="portal-profile-performance__icon lesson"><i class="bi bi-star" aria-hidden="true"></i></span>
-        <h3 class="portal-profile-performance__card-title">{% trans 'Average lesson score' %}</h3>
+        <span class="portal-profile-performance__icon lesson"><i class="ti ti-calendar-stats" aria-hidden="true"></i></span>
+        <h3 class="portal-profile-performance__card-title">{% trans 'Average weekly score' %}</h3>
         <p class="portal-profile-performance__hint">
-          {% if lesson_average.graded_count %}
-            {% blocktrans count counter=lesson_average.graded_count %}
-              Normalized from {{ counter }} recorded lesson grade.
+          {% if weekly_average.graded_count %}
+            {% blocktrans count counter=weekly_average.graded_count %}
+              From {{ counter }} weekly grade out of 10.
             {% plural %}
-              Normalized from {{ counter }} recorded lesson grades.
+              From {{ counter }} weekly grades out of 10.
             {% endblocktrans %}
           {% else %}
-            {% trans 'Lesson scores will appear here once they are recorded.' %}
+            {% trans 'Weekly grades will appear here once they are recorded.' %}
           {% endif %}
         </p>
-        {% if lesson_average.graded_count %}
+        {% if weekly_average.graded_count %}
         <div class="portal-profile-performance__meta">
           <span class="portal-profile-performance__chip">
             <i class="bi bi-check2-circle" aria-hidden="true"></i>
-            {{ lesson_average.graded_count }} {% trans 'scores' %}
+            {{ weekly_average.graded_count }} {% trans 'scores' %}
           </span>
         </div>
         {% endif %}
       </div>
     </article>
+    {% endif %}
   </div>
 </section>

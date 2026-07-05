@@ -1,19 +1,23 @@
 from django import forms
+from django.core.exceptions import ValidationError
+from django.core.validators import URLValidator
 from django.db.models import Q
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from portals.models import (
     Attendance,
+    Classroom,
     Lesson,
+    LessonAttachment,
     LessonCategory,
     Schedule,
     StudentProfile,
     StudyGroup,
-    VideoRecord,
 )
 from portals.utils.teacher_courses import teacher_groups_queryset
 from portals.utils.group_services import resolve_group_lesson_service
+from portals.utils.lesson_media import build_lesson_edit_materials, _file_basename
 
 
 def teacher_lesson_category_suggestions(teacher_id):
@@ -42,6 +46,19 @@ def _fc(attrs=None):
     if attrs:
         base.update(attrs)
     return base
+
+
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
+
+
+class MultipleFileField(forms.FileField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault('widget', MultipleFileInput())
+        super().__init__(*args, **kwargs)
+
+    def clean(self, data, initial=None):
+        return []
 
 
 class TeacherGroupForm(forms.ModelForm):
@@ -138,6 +155,28 @@ class TeacherLessonForm(forms.ModelForm):
             'Course is set automatically from the group you select.'
         ),
     )
+    pdf_files = MultipleFileField(
+        label=_('PDF files'),
+        required=False,
+        widget=MultipleFileInput(attrs={
+            'class': 'portal-lesson-file-input-native',
+            'accept': 'application/pdf,.pdf',
+        }),
+    )
+    image_files = MultipleFileField(
+        label=_('Images'),
+        required=False,
+        widget=MultipleFileInput(attrs={
+            'class': 'portal-lesson-file-input-native',
+            'accept': 'image/*',
+        }),
+    )
+    remove_attachments = forms.MultipleChoiceField(
+        label=_('Remove files'),
+        required=False,
+        choices=[],
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'portal-lesson-remove-input'}),
+    )
 
     class Meta:
         model = Lesson
@@ -146,18 +185,15 @@ class TeacherLessonForm(forms.ModelForm):
             'name',
             'lesson_date',
             'description',
-            'pdf_file',
-            'video_url',
-            'image',
         )
         widgets = {
             'group': forms.Select(attrs=_fc()),
             'name': forms.TextInput(attrs=_fc()),
-            'lesson_date': forms.DateInput(attrs=_fc({'type': 'date'})),
+            'lesson_date': forms.DateInput(
+                attrs=_fc({'type': 'date'}),
+                format='%Y-%m-%d',
+            ),
             'description': forms.Textarea(attrs=_fc({'rows': 3})),
-            'pdf_file': forms.ClearableFileInput(attrs={'class': 'portal-lesson-file-input-native', 'accept': 'application/pdf,.pdf'}),
-            'video_url': forms.URLInput(attrs=_fc({'placeholder': 'https://...'})),
-            'image': forms.ClearableFileInput(attrs={'class': 'portal-lesson-file-input-native', 'accept': 'image/*'}),
         }
 
     def __init__(self, teacher_id, *args, **kwargs):
@@ -171,15 +207,62 @@ class TeacherLessonForm(forms.ModelForm):
             self.fields['group'].queryset = groups
             if self.instance.category_id:
                 self.initial.setdefault('category_name', self.instance.category.name)
+            if self.instance.lesson_date is not None and not self.data:
+                self.initial['lesson_date'] = self.instance.lesson_date
+            elif self.instance.lesson_date is None and not self.data:
+                self.initial.setdefault('lesson_date', timezone.localdate())
+            self.existing_materials = build_lesson_edit_materials(self.instance)
+            selected_removals = (
+                set(self.data.getlist('remove_attachments'))
+                if self.data
+                else set()
+            )
+            for row in self.existing_materials:
+                row['marked_for_removal'] = row['id'] in selected_removals
+            self.existing_pdfs = [
+                row for row in self.existing_materials
+                if row['kind'] == LessonAttachment.Kind.PDF
+            ]
+            self.existing_images = [
+                row for row in self.existing_materials
+                if row['kind'] == LessonAttachment.Kind.IMAGE
+            ]
+            self.existing_videos = [
+                row for row in self.existing_materials
+                if row['kind'] == LessonAttachment.Kind.VIDEO
+            ]
+            self.fields['remove_attachments'].choices = [
+                (row['id'], row['label']) for row in self.existing_materials
+            ]
         else:
             del self.fields['group']
+            del self.fields['remove_attachments']
             self.fields['groups'].queryset = groups
             self.fields['groups'].required = True
+            self.existing_materials = []
+            self.existing_pdfs = []
+            self.existing_images = []
+            self.existing_videos = []
         self.fields['name'].label = _('Name')
         self.fields['name'].required = True
         self.fields['lesson_date'].required = True
-        if not self.initial.get('lesson_date') and not self.data:
+        self.fields['lesson_date'].input_formats = ['%Y-%m-%d']
+        if not is_edit and not self.data and not self.initial.get('lesson_date'):
             self.initial.setdefault('lesson_date', timezone.localdate())
+
+        self.new_video_url_rows = self._build_new_video_url_rows()
+
+    @staticmethod
+    def _empty_video_url_row():
+        return {'url': ''}
+
+    def _build_new_video_url_rows(self):
+        if self.data:
+            posted = self.data.getlist('new_video_urls')
+            if not posted:
+                posted = ['']
+            return [{'url': (raw or '').strip()} for raw in posted]
+        return [self._empty_video_url_row()]
 
     def _owned_groups(self):
         return teacher_groups_queryset(self.teacher_id, active_only=True)
@@ -230,7 +313,180 @@ class TeacherLessonForm(forms.ModelForm):
         if is_edit and payloads:
             cleaned['subject'] = payloads[0]['subject']
             cleaned['category'] = payloads[0]['category']
+
+        pdf_files = list(self.files.getlist('pdf_files')) if hasattr(self, 'files') else []
+        image_files = list(self.files.getlist('image_files')) if hasattr(self, 'files') else []
+        cleaned['pdf_files'] = pdf_files
+        cleaned['image_files'] = image_files
+
+        video_urls = []
+        if self.data:
+            validator = URLValidator()
+            existing_urls = {
+                row['url']
+                for row in getattr(self, 'existing_materials', [])
+                if row['id'] not in set(self.data.getlist('remove_attachments'))
+            }
+            for index, raw in enumerate(self.data.getlist('new_video_urls'), start=1):
+                url = (raw or '').strip()
+                if not url:
+                    continue
+                try:
+                    validator(url)
+                except ValidationError:
+                    self.add_error(
+                        'pdf_files',
+                        _('New video link %(index)s is not a valid URL.') % {'index': index},
+                    )
+                    continue
+                if url in existing_urls or url in video_urls:
+                    continue
+                video_urls.append(url)
+        cleaned['video_urls'] = video_urls
+
+        remove_ids = set(cleaned.get('remove_attachments') or [])
+        valid_remove_ids = {row['id'] for row in getattr(self, 'existing_materials', [])}
+        cleaned['remove_attachments'] = [
+            item for item in remove_ids if item in valid_remove_ids
+        ]
+        remove_ids = set(cleaned['remove_attachments'])
+
+        remaining_existing = sum(
+            1
+            for row in getattr(self, 'existing_materials', [])
+            if row['id'] not in remove_ids
+        )
+
+        if not pdf_files and not image_files and not video_urls and remaining_existing == 0:
+            self.add_error(
+                'pdf_files',
+                _('Add at least one PDF, image, or video link.'),
+            )
         return cleaned
+
+    @staticmethod
+    def _read_uploads(uploaded_list):
+        return [(uploaded.name, uploaded.read()) for uploaded in uploaded_list]
+
+    @staticmethod
+    def _attach_file_contents(lesson, pdf_contents, image_contents):
+        from django.core.files.base import ContentFile
+
+        for name, raw_bytes in pdf_contents:
+            attachment = LessonAttachment(lesson=lesson, kind=LessonAttachment.Kind.PDF)
+            attachment.file.save(name, ContentFile(raw_bytes), save=True)
+        for name, raw_bytes in image_contents:
+            attachment = LessonAttachment(lesson=lesson, kind=LessonAttachment.Kind.IMAGE)
+            attachment.file.save(name, ContentFile(raw_bytes), save=True)
+
+    @staticmethod
+    def _reconcile_lesson_files(lesson):
+        """Remove orphan legacy copies when the same filename already lives in attachments."""
+        update_fields = []
+        for kind, legacy_field in (
+            (LessonAttachment.Kind.PDF, 'pdf_file'),
+            (LessonAttachment.Kind.IMAGE, 'image'),
+        ):
+            legacy = getattr(lesson, legacy_field)
+            if not legacy:
+                continue
+            legacy_name = _file_basename(legacy)
+            attachment_names = [
+                _file_basename(row.file)
+                for row in lesson.attachments.filter(kind=kind)
+                if row.file
+            ]
+            if legacy_name not in attachment_names:
+                continue
+            legacy.delete(save=False)
+            setattr(lesson, legacy_field, '')
+            update_fields.append(legacy_field)
+        if update_fields:
+            lesson.save(update_fields=update_fields)
+
+    def _apply_removals(self, lesson):
+        remove_ids = set(self.cleaned_data.get('remove_attachments') or [])
+        if not remove_ids:
+            return
+
+        update_legacy = False
+        for material in getattr(self, 'existing_materials', []):
+            if material['id'] not in remove_ids:
+                continue
+
+            material_id = material['id']
+            if material_id == 'legacy-pdf':
+                if lesson.pdf_file:
+                    lesson.pdf_file.delete(save=False)
+                    lesson.pdf_file = ''
+                    update_legacy = True
+                continue
+
+            if material_id == 'legacy-image':
+                if lesson.image:
+                    lesson.image.delete(save=False)
+                    lesson.image = ''
+                    update_legacy = True
+                continue
+
+            if material_id == 'legacy-video':
+                lesson.video_url = ''
+                update_legacy = True
+                continue
+
+            if not material_id.startswith('attachment-'):
+                continue
+
+            attachment = lesson.attachments.filter(pk=material['attachment_pk']).first()
+            if not attachment:
+                continue
+
+            if attachment.kind == LessonAttachment.Kind.VIDEO:
+                attachment.delete()
+                continue
+
+            attachment_path = attachment.file.name if attachment.file else ''
+            attachment.file.delete(save=False)
+            attachment.delete()
+
+            if lesson.pdf_file and lesson.pdf_file.name == attachment_path:
+                lesson.pdf_file.delete(save=False)
+                lesson.pdf_file = ''
+                update_legacy = True
+            if lesson.image and lesson.image.name == attachment_path:
+                lesson.image.delete(save=False)
+                lesson.image = ''
+                update_legacy = True
+
+        if update_legacy:
+            lesson.save(update_fields=['pdf_file', 'image', 'video_url'])
+
+    @staticmethod
+    def _attach_video_urls(lesson, urls):
+        for url in urls:
+            LessonAttachment.objects.create(
+                lesson=lesson,
+                kind=LessonAttachment.Kind.VIDEO,
+                video_url=url,
+            )
+
+    @staticmethod
+    def _sync_lesson_video_url(lesson):
+        urls = []
+        seen = set()
+        legacy = (lesson.video_url or '').strip()
+        if legacy:
+            urls.append(legacy)
+            seen.add(legacy)
+        for attachment in lesson.attachments.filter(
+            kind=LessonAttachment.Kind.VIDEO,
+        ).order_by('id'):
+            url = (attachment.video_url or '').strip()
+            if url and url not in seen:
+                urls.append(url)
+                seen.add(url)
+        lesson.video_url = urls[0] if urls else ''
+        lesson.save(update_fields=['video_url'])
 
     def save(self, commit=True):
         instance = super().save(commit=False)
@@ -238,25 +494,30 @@ class TeacherLessonForm(forms.ModelForm):
         instance.category = self.cleaned_data['category']
         if commit:
             instance.save()
+            self._apply_removals(instance)
+            pdf_contents = self._read_uploads(self.cleaned_data.get('pdf_files') or [])
+            image_contents = self._read_uploads(self.cleaned_data.get('image_files') or [])
+            if pdf_contents or image_contents:
+                self._attach_file_contents(instance, pdf_contents, image_contents)
+            video_urls = self.cleaned_data.get('video_urls') or []
+            if video_urls:
+                self._attach_video_urls(instance, video_urls)
+            self._sync_lesson_video_url(instance)
+            self._reconcile_lesson_files(instance)
         return instance
 
     def save_for_groups(self, teacher):
-        from django.core.files.base import ContentFile
-
-        pdf = self.cleaned_data.get('pdf_file')
-        image = self.cleaned_data.get('image')
-        pdf_content = pdf.read() if pdf else None
-        pdf_name = pdf.name if pdf else None
-        image_content = image.read() if image else None
-        image_name = image.name if image else None
+        pdf_contents = self._read_uploads(self.cleaned_data.get('pdf_files') or [])
+        image_contents = self._read_uploads(self.cleaned_data.get('image_files') or [])
         shared = {
             'teacher': teacher,
             'name': self.cleaned_data['name'],
             'lesson_date': self.cleaned_data['lesson_date'],
             'description': self.cleaned_data.get('description', ''),
-            'video_url': self.cleaned_data.get('video_url', ''),
+            'video_url': '',
         }
         lessons = []
+        video_urls = self.cleaned_data.get('video_urls') or []
         for payload in self.cleaned_data['group_lessons']:
             lesson = Lesson(
                 group=payload['group'],
@@ -264,13 +525,90 @@ class TeacherLessonForm(forms.ModelForm):
                 category=payload['category'],
                 **shared,
             )
-            if pdf_content is not None:
-                lesson.pdf_file.save(pdf_name, ContentFile(pdf_content), save=False)
-            if image_content is not None:
-                lesson.image.save(image_name, ContentFile(image_content), save=False)
             lesson.save()
+            if pdf_contents or image_contents:
+                self._attach_file_contents(lesson, pdf_contents, image_contents)
+            if video_urls:
+                self._attach_video_urls(lesson, video_urls)
+                self._sync_lesson_video_url(lesson)
             lessons.append(lesson)
         return lessons
+
+
+class TeacherTextbookForm(forms.ModelForm):
+    remove_pdf = forms.BooleanField(
+        label=_('Remove PDF'),
+        required=False,
+    )
+
+    class Meta:
+        model = Classroom
+        fields = ('group', 'name', 'description', 'pdf_file')
+        widgets = {
+            'group': forms.Select(attrs=_fc()),
+            'name': forms.TextInput(attrs=_fc()),
+            'description': forms.Textarea(attrs=_fc({'rows': 3})),
+            'pdf_file': forms.ClearableFileInput(attrs={
+                'class': 'portal-lesson-file-input-native',
+                'accept': 'application/pdf,.pdf',
+            }),
+        }
+
+    def __init__(self, teacher_id, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.teacher_id = teacher_id
+        self.fields['group'].queryset = teacher_groups_queryset(
+            teacher_id,
+            active_only=True,
+        ).order_by('name')
+        self.fields['group'].label = _('Group')
+        self.fields['name'].label = _('Name')
+        self.fields['name'].required = True
+        self.fields['pdf_file'].required = not (self.instance and self.instance.pk)
+        if self.instance and self.instance.pk and self.instance.pdf_file:
+            self.existing_pdf = {
+                'label': _file_basename(self.instance.pdf_file),
+                'url': self.instance.pdf_file.url,
+                'marked_for_removal': bool(self.data.get('remove_pdf')),
+            }
+        else:
+            self.existing_pdf = None
+
+    def clean(self):
+        cleaned = super().clean()
+        is_edit = bool(self.instance and self.instance.pk)
+        remove_pdf = bool(cleaned.get('remove_pdf'))
+        pdf_file = cleaned.get('pdf_file')
+        has_existing = bool(is_edit and self.instance.pdf_file and not remove_pdf)
+        if not pdf_file and not has_existing:
+            self.add_error('pdf_file', _('Upload a PDF file.'))
+        return cleaned
+
+    def clean_group(self):
+        group = self.cleaned_data.get('group')
+        if group and not teacher_groups_queryset(self.teacher_id, active_only=True).filter(pk=group.pk).exists():
+            raise forms.ValidationError(_('You can only add textbooks for your own groups.'))
+        return group
+
+    def clean_name(self):
+        name = (self.cleaned_data.get('name') or '').strip()
+        if not name:
+            raise forms.ValidationError(_('Enter the textbook name.'))
+        return name
+
+    def save(self, commit=True, teacher=None):
+        instance = super().save(commit=False)
+        if teacher is not None:
+            instance.teacher = teacher
+        remove_pdf = self.cleaned_data.get('remove_pdf')
+        new_pdf = self.cleaned_data.get('pdf_file')
+        if remove_pdf and not new_pdf and instance.pdf_file:
+            instance.pdf_file.delete(save=False)
+            instance.pdf_file = ''
+        if commit:
+            instance.save()
+            self.save_m2m()
+        return instance
 
 
 def build_session_attendance_form(students, existing=None):
@@ -287,22 +625,3 @@ def build_session_attendance_form(students, existing=None):
         )
     return type('SessionAttendanceForm', (forms.Form,), fields)
 
-
-class TeacherVideoForm(forms.ModelForm):
-    class Meta:
-        model = VideoRecord
-        fields = ('group', 'title', 'youtube_url', 'lesson_date', 'description')
-        widgets = {
-            'group': forms.Select(attrs=_fc()),
-            'title': forms.TextInput(attrs=_fc()),
-            'youtube_url': forms.URLInput(attrs=_fc()),
-            'lesson_date': forms.DateInput(attrs=_fc({'type': 'date'})),
-            'description': forms.Textarea(attrs=_fc({'rows': 3})),
-        }
-
-    def __init__(self, teacher_id, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['group'].queryset = teacher_groups_queryset(
-            teacher_id,
-            active_only=True,
-        ).order_by('name')

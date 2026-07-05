@@ -19,14 +19,17 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.ti-align-left:before { content: "\ea09"; }
 .ti-arrow-left:before { content: "\ea19"; }
 .ti-arrow-right:before { content: "\ea1f"; }
 .ti-bell:before { content: "\ea35"; }
 .ti-bell-off:before { content: "\ece9"; }
 .ti-bolt:before { content: "\ea38"; }
 .ti-book:before { content: "\ea39"; }
+.ti-book-2:before { content: "\efc5"; }
 .ti-book-off:before { content: "\f0bc"; }
 .ti-book-upload:before { content: "\f071"; }
+.ti-books:before { content: "\eff2"; }
 .ti-brand-facebook:before { content: "\ec1a"; }
 .ti-brand-instagram:before { content: "\ec20"; }
 .ti-brand-linkedin:before { content: "\ec8c"; }
@@ -35,6 +38,8 @@
 .ti-calendar-check:before { content: "\f824"; }
 .ti-calendar-off:before { content: "\ee1f"; }
 .ti-calendar-week:before { content: "\fd30"; }
+.ti-calendar-stats:before { content: "\ee20"; }
+.ti-calendar-event:before { content: "\ea52"; }
 .ti-category:before { content: "\f1f6"; }
 .ti-check:before { content: "\ea5e"; }
 .ti-checks:before { content: "\ebaa"; }
@@ -43,9 +48,14 @@
 .ti-circle-check:before { content: "\ea67"; }
 .ti-circle-x:before { content: "\ea6a"; }
 .ti-clipboard-check:before { content: "\ea6c"; }
+.ti-clipboard-list:before { content: "\ea6d"; }
 .ti-clipboard-data:before { content: "\f563"; }
 .ti-clock:before { content: "\ea70"; }
 .ti-door:before { content: "\ef4e"; }
+.ti-download:before { content: "\ea96"; }
+.ti-external-link:before { content: "\ea99"; }
+.ti-file-off:before { content: "\ecf2"; }
+.ti-file-type-pdf:before { content: "\fb10"; }
 .ti-filter-off:before { content: "\ed2c"; }
 .ti-forms:before { content: "\ee8f"; }
 .ti-history:before { content: "\ebea"; }
@@ -56,10 +66,13 @@
 .ti-logout:before { content: "\eba8"; }
 .ti-map-pin:before { content: "\eae8"; }
 .ti-notebook:before { content: "\eb96"; }
+.ti-paperclip:before { content: "\eb02"; }
 .ti-pencil:before { content: "\eb04"; }
 .ti-phone:before { content: "\eb09"; }
+.ti-photo:before { content: "\eb0a"; }
 .ti-player-play:before { content: "\ed46"; }
 .ti-star:before { content: "\eb2e"; }
+.ti-tag:before { content: "\10096"; }
 .ti-trash:before { content: "\eb41"; }
 .ti-user:before { content: "\eb4d"; }
 .ti-user-circle:before { content: "\ef68"; }

@@ -1,0 +1,387 @@
+{
+  "title": "IELTS Academic Reading — Practice Test 9",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–40</strong></p><p>You should spend about 60 minutes on <strong>Questions 1–40</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Sleep and memory consolidation</strong></p><p><strong>A</strong> Sleep supports memory consolidation through coordinated oscillations across hippocampal and neocortical networks that replay daytime experiences. Slow-wave sleep appears particularly important for stabilising declarative memories, whereas rapid eye movement sleep associates with emotional and procedural learning. Laboratory studies depriving participants of specific sleep stages reveal selective deficits on recall tasks administered after recovery nights. Neuroimaging tracks reactivation patterns suggesting the brain prioritises salient or unfinished learning during offline processing. Educational policymakers increasingly question whether early school start times undermine adolescent learning by truncating sleep opportunity. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p><p><strong>B</strong> Synaptic homeostasis theories propose that sleep downscales net synaptic strength, preventing saturation while preserving relative connection weights encoding memories. Pharmacological agents modulating GABAergic tone can alter slow oscillation amplitude, offering experimental tools but raising safety concerns for healthy volunteers. Animal models using optogenetics trigger replay on demand, strengthening causal links between neural sequences and behavioural performance improvements. The author warns against oversimplifying sleep as a passive storage period; active selection mechanisms may discard irrelevant details intentionally. Such nuance complicates commercial apps promising universal memory boosts through generic audio tracks played during sleep. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p><p><strong>C</strong> Clinical populations with insomnia, sleep apnoea, or shift-work disorder show inconsistent memory profiles, complicating generalisations from healthy cohorts. Treating apnoea with positive airway pressure sometimes improves delayed recall, suggesting reversible components of cognitive impairment. Longitudinal ageing studies associate chronic short sleep with faster accumulation of biomarkers linked to neurodegeneration, though causality remains debated. Public health campaigns promote sleep hygiene, yet structural factors like housing noise and economic precarity limit individual control. The writer argues interventions must address environmental determinants rather than blaming students or workers for societal scheduling choices. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p><p><strong>D</strong> Educational experiments delaying school bells report improved attendance and standardised test scores in districts willing to adjust transport logistics. Teachers note better classroom engagement, although curriculum pacing pressures sometimes offset gains when instructional minutes remain fixed. Universities experimenting with later exam slots observe fewer careless errors attributed to sleepiness, yet sports training schedules conflict. Employers piloting flexible start times report mixed productivity outcomes depending on industry and coordination requirements across teams. The author contends that aligning institutions with circadian science is a low-cost reform compared with expensive remedial tutoring programmes. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p><p><strong>E</strong> Technology use before bedtime receives blame for sleep curtailment, though evidence distinguishes passive reading on e-paper from stimulating social media. Blue-light filtering settings produce modest melatonin effects in controlled trials, smaller than the impact of content emotional arousal. Wearable trackers quantify sleep duration yet accuracy varies, risking anxiety when users obsess over imperfect stage classifications. Clinicians worry that orthosomnia leads patients to misinterpret benign night awakenings as pathology requiring unnecessary medication. The writer recommends interpreting consumer sleep data cautiously while designing studies using research-grade polysomnography when possible. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p><p><strong>F</strong> Memory research informs legal debates about eyewitness reliability after sleep-deprived identifications during lengthy investigations. Forensic psychologists caution juries that fatigue may distort confidence without reducing subjective certainty felt by witnesses. Policy proposals limit consecutive interrogation hours, citing sleep science alongside human rights protections. Defence attorneys introduce expert testimony summarising consolidation literature, though judges apply admissibility standards unevenly. The author believes justice systems should incorporate sleep evidence without deterministic claims that fatigue always invalidates testimony. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes. Policymakers increasingly demand reproducible evidence, open data, and independent evaluation before scaling interventions beyond controlled pilot settings.</p><p><strong>G</strong> Future work may personalise sleep recommendations using genetic chronotype markers and real-world light exposure sensors. Ethical safeguards must prevent employers from penalising workers classified as night owls through invasive monitoring. Open datasets linking sleep architecture to learning outcomes could guide adaptive educational software pacing review sessions. The writer maintains sleep is a public good intersecting cognition, health, and equity rather than a private lifestyle luxury. Societies investing in sleep-friendly policies may harvest compound benefits across classrooms, hospitals, and safety-critical workplaces. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 11–15",
+          "instructions": "<p>Choose the correct heading for paragraphs <strong>B–F</strong> from the list of headings below.</p><p><em>Write the correct number, <strong>i–vii</strong>, in boxes 11–15 on your answer sheet.</em></p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "i. Glacier tourism permit fees",
+            "ii. Synaptic theories and causal replay tools",
+            "iii. Clinical disorders and public health limits",
+            "iv. School timing experiments and employer pilots",
+            "v. Technology, trackers, and orthosomnia risks",
+            "vi. Forensic testimony and interrogation policy",
+            "vii. Copper coin minting history"
+          ],
+          "questions": [
+            {
+              "order": 11,
+              "question": "<p>Paragraph B</p>",
+              "correct_answer": "ii. Synaptic theories and causal replay tools"
+            },
+            {
+              "order": 12,
+              "question": "<p>Paragraph C</p>",
+              "correct_answer": "iii. Clinical disorders and public health limits"
+            },
+            {
+              "order": 13,
+              "question": "<p>Paragraph D</p>",
+              "correct_answer": "iv. School timing experiments and employer pilots"
+            },
+            {
+              "order": 14,
+              "question": "<p>Paragraph E</p>",
+              "correct_answer": "v. Technology, trackers, and orthosomnia risks"
+            },
+            {
+              "order": 15,
+              "question": "<p>Paragraph F</p>",
+              "correct_answer": "vi. Forensic testimony and interrogation policy"
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "title": "Questions 16–20",
+          "instructions": "<p>Which paragraph contains the following information?</p><p><em>Write the correct letter, <strong>A–G</strong>, in boxes 16–20 on your answer sheet.</em></p>",
+          "question_type": "matching_info",
+          "option_pool": [
+            "Paragraph A",
+            "Paragraph B",
+            "Paragraph C",
+            "Paragraph D",
+            "Paragraph E",
+            "Paragraph F",
+            "Paragraph G"
+          ],
+          "questions": [
+            {
+              "order": 16,
+              "question": "<p>mention of optogenetics triggering replay</p>",
+              "correct_answer": "Paragraph B"
+            },
+            {
+              "order": 17,
+              "question": "<p>reference to positive airway pressure treatment</p>",
+              "correct_answer": "Paragraph C"
+            },
+            {
+              "order": 18,
+              "question": "<p>examples of delayed school start experiments</p>",
+              "correct_answer": "Paragraph D"
+            },
+            {
+              "order": 19,
+              "question": "<p>discussion of orthosomnia from wearables</p>",
+              "correct_answer": "Paragraph E"
+            },
+            {
+              "order": 20,
+              "question": "<p>a vision of personalised chronotype recommendations</p>",
+              "correct_answer": "Paragraph G"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "tfng",
+          "question": "<p>Slow-wave sleep is linked to declarative memory stabilization.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 2,
+          "question_type": "tfng",
+          "question": "<p>All sleep apps are validated by polysomnography studies.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 3,
+          "question_type": "tfng",
+          "question": "<p>Every university has adopted later exam schedules.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 4,
+          "question_type": "tfng",
+          "question": "<p>Treating sleep apnoea may improve delayed recall.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 5,
+          "question_type": "tfng",
+          "question": "<p>Blue-light filters always eliminate pre-bed arousal effects.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 6,
+          "question_type": "ynng",
+          "question": "<p>The author rejects blaming individuals for structural sleep barriers.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 7,
+          "question_type": "ynng",
+          "question": "<p>The writer believes sleep is merely a passive storage period.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 8,
+          "question_type": "ynng",
+          "question": "<p>The author supports aligning school schedules with circadian science.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 9,
+          "question_type": "ynng",
+          "question": "<p>The writer claims fatigue always invalidates eyewitness testimony.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 10,
+          "question_type": "ynng",
+          "question": "<p>The author views sleep as a public good intersecting equity.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 21,
+          "question_type": "sentence_completion",
+          "question": "<p>Hippocampal and neocortical networks replay daytime ____.</p>",
+          "correct_answer": "experiences",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 22,
+          "question_type": "sentence_completion",
+          "question": "<p>Synaptic homeostasis may downscale net synaptic ____.</p>",
+          "correct_answer": "strength",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 23,
+          "question_type": "sentence_completion",
+          "question": "<p>Chronic short sleep links to biomarkers of ____.</p>",
+          "correct_answer": "neurodegeneration",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 24,
+          "question_type": "sentence_completion",
+          "question": "<p>Adaptive software could pace review using sleep ____.</p>",
+          "correct_answer": "architecture",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 25,
+          "question_type": "summary_completion",
+          "question": "<p>REM sleep associates with emotional and ____ learning.</p>",
+          "correct_answer": "procedural",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 26,
+          "question_type": "summary_completion",
+          "question": "<p>Housing noise limits individual sleep hygiene ____.</p>",
+          "correct_answer": "control",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 27,
+          "question_type": "summary_completion",
+          "question": "<p>Judges apply expert testimony admissibility ____ unevenly.</p>",
+          "correct_answer": "standards",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 28,
+          "question_type": "summary_completion",
+          "question": "<p>Ethical safeguards should prevent penalising night ____.</p>",
+          "correct_answer": "owls",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 29,
+          "question_type": "flowchart_completion",
+          "question": "<p>Education issue | Early bells may truncate adolescent sleep ____</p>",
+          "correct_answer": "opportunity",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 30,
+          "question_type": "flowchart_completion",
+          "question": "<p>Technology | Content arousal can outweigh blue-light ____</p>",
+          "correct_answer": "filters",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 31,
+          "question_type": "flowchart_completion",
+          "question": "<p>Justice reform | Policies may cap consecutive interrogation ____</p>",
+          "correct_answer": "hours",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 32,
+          "question_type": "mcq",
+          "question": "<p>Paragraph A indicates policymakers question</p>",
+          "answer_options": [
+            "lunar phases in exams",
+            "school start times for adolescents",
+            "eliminating all declarative memory",
+            "banning neuroimaging"
+          ],
+          "correct_answer": "school start times for adolescents"
+        },
+        {
+          "order": 33,
+          "question_type": "mcq",
+          "question": "<p>According to paragraph B, commercial sleep apps are problematic because</p>",
+          "answer_options": [
+            "science shows active selection not passive storage",
+            "slow waves do not exist",
+            "GABA is illegal",
+            "animals cannot learn"
+          ],
+          "correct_answer": "science shows active selection not passive storage"
+        },
+        {
+          "order": 34,
+          "question_type": "mcq",
+          "question": "<p>Paragraph D suggests later school bells require</p>",
+          "answer_options": [
+            "no transport changes",
+            "adjusting transport logistics",
+            "shorter curricula only",
+            "banning sports"
+          ],
+          "correct_answer": "adjusting transport logistics"
+        },
+        {
+          "order": 35,
+          "question_type": "mcq",
+          "question": "<p>Paragraph F warns against</p>",
+          "answer_options": [
+            "any sleep expert testimony",
+            "deterministic claims that fatigue always invalidates testimony",
+            "human rights protections",
+            "limits on interrogation"
+          ],
+          "correct_answer": "deterministic claims that fatigue always invalidates testimony"
+        },
+        {
+          "order": 36,
+          "question_type": "mcq",
+          "question": "<p>The final paragraph treats sleep as intersecting</p>",
+          "answer_options": [
+            "only luxury hospitality",
+            "cognition, health, and equity",
+            "marketing alone",
+            "coin collecting"
+          ],
+          "correct_answer": "cognition, health, and equity"
+        },
+        {
+          "order": 37,
+          "question_type": "short_answer",
+          "question": "<p>Which sleep stage is tied to declarative memories?</p>",
+          "correct_answer": "slow-wave",
+          "question_config": {
+            "word_limit": 2,
+            "word_limit_label": "NO MORE THAN TWO WORDS",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 38,
+          "question_type": "short_answer",
+          "question": "<p>What breathing treatment may improve recall in apnoea patients?</p>",
+          "correct_answer": "airway pressure",
+          "question_config": {
+            "word_limit": 2,
+            "word_limit_label": "NO MORE THAN TWO WORDS",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 39,
+          "question_type": "short_answer",
+          "question": "<p>What term describes anxiety about imperfect sleep tracker data?</p>",
+          "correct_answer": "orthosomnia",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 40,
+          "question_type": "short_answer",
+          "question": "<p>What markers may accumulate faster with chronic short sleep?</p>",
+          "correct_answer": "biomarkers",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        }
+      ]
+    }
+  ]
+}

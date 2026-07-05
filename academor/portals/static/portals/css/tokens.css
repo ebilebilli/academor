@@ -277,11 +277,23 @@
 /* ------------------------------------------------------------------
    Role-scoped accent overrides
 ------------------------------------------------------------------ */
-[data-portal-role="student"],
-[data-portal-role="teacher"],
-[data-portal-role="parent"] {
+[data-portal-role="student"] {
+  --color-role:        var(--color-student);
+  --color-role-light:  var(--color-student-light);
+  --color-role-dark:   var(--color-student-dark);
+  --color-role-subtle: var(--color-student-subtle);
+}
+
+[data-portal-role="teacher"] {
   --color-role:        var(--color-teacher);
   --color-role-light:  var(--color-teacher-light);
   --color-role-dark:   var(--color-teacher-dark);
   --color-role-subtle: var(--color-teacher-subtle);
+}
+
+[data-portal-role="parent"] {
+  --color-role:        var(--color-parent);
+  --color-role-light:  var(--color-parent-light);
+  --color-role-dark:   var(--color-parent-dark);
+  --color-role-subtle: var(--color-parent-subtle);
 }

@@ -161,6 +161,15 @@ def portal_week_label(week_start, week_end):
 
 
 @register.simple_tag
+def portal_today_long():
+    """Localized long date for dashboard headers, e.g. «Cümə, 4 İyul 2026»."""
+    today = timezone.localdate()
+    weekday = _PORTAL_WEEKDAY_NAMES[_portal_lang_code()][today.weekday()]
+    day_text = format_portal_calendar_day(today, include_year=True)
+    return f'{weekday}, {day_text}'
+
+
+@register.simple_tag
 def duration_compare_meta(duration_sec, avg_sec, max_sec):
     """Return CSS class + short label comparing one attempt to class averages."""
     try:

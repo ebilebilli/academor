@@ -19,7 +19,18 @@ from portals.admin.display import (
     portal_score_chip,
 )
 from portals.admin.mixins import CourseTypeTabFilterMixin, PortalModelAdmin
-from portals.admin.quiz_forms import ListeningQuestionAdminForm, QuizQuestionAdminForm
+from portals.admin.reading_inline_formsets import (
+    ReadingQuestionGroupInlineFormSet,
+    ReadingQuestionInlineFormSet,
+    link_pending_reading_question_groups,
+)
+from portals.admin.quiz_forms import (
+    ListeningQuestionAdminForm,
+    QuizQuestionAdminForm,
+    ReadingQuestionAdminForm,
+    ReadingQuestionGroupAdminForm,
+    SpeakingPartAdminForm,
+)
 from portals.forms import (
     PORTAL_ROLE_CHOICES,
     PortalUserChangeForm,
@@ -37,6 +48,7 @@ from portals.utils.portal_services import (
     get_course_type_label_map,
     resolve_course_type_label,
 )
+from portals.models.score_models import WEEKLY_SCORE_MAX
 from portals.models import (
     Attendance,
     Classroom,
@@ -44,6 +56,9 @@ from portals.models import (
     LessonCategory,
     ListeningAudio,
     ListeningQuestion,
+    ReadingPassage,
+    ReadingQuestion,
+    ReadingQuestionGroup,
     ParentProfile,
     Quiz,
     QuizCategory,
@@ -51,6 +66,9 @@ from portals.models import (
     QuizResult,
     Schedule,
     Score,
+    WeeklyStudentScore,
+    SpeakingPart,
+    SpeakingQuestion,
     StudentProfile,
     StudentCourseSpecialization,
     StudyGroup,
@@ -295,6 +313,195 @@ class ListeningAudioInline(admin.StackedInline):
     verbose_name_plural = _('Listening audio sections (add audio, then edit questions)')
 
 
+class ReadingQuestionInline(admin.StackedInline):
+    model = ReadingQuestion
+    form = ReadingQuestionAdminForm
+    formset = ReadingQuestionInlineFormSet
+    extra = 0
+    fields = (
+        'order',
+        'group_ref',
+        'question_type',
+        'question',
+        'answer_options',
+        'correct_answer',
+        'word_limit',
+        'case_insensitive',
+        'accept_alternatives_text',
+        'question_config',
+    )
+    ordering = ('order', 'id')
+    verbose_name = _('Reading question')
+    verbose_name_plural = _('Reading questions')
+
+
+class ReadingQuestionGroupInline(admin.StackedInline):
+    model = ReadingQuestionGroup
+    form = ReadingQuestionGroupAdminForm
+    formset = ReadingQuestionGroupInlineFormSet
+    extra = 0
+    fields = ('order', 'title', 'instructions', 'question_type', 'option_pool')
+    ordering = ('order', 'id')
+    show_change_link = True
+    verbose_name = _('Reading question group')
+    verbose_name_plural = _('Matching question groups')
+
+
+class ReadingPassageInline(admin.StackedInline):
+    model = ReadingPassage
+    extra = 0
+    fields = ('order', 'title', 'instructions', 'body')
+    ordering = ('order', 'id')
+    show_change_link = True
+    verbose_name = _('Reading passage')
+    verbose_name_plural = _('Reading passages (add passage, then edit questions)')
+
+
+class SpeakingQuestionInline(admin.StackedInline):
+    model = SpeakingQuestion
+    extra = 0
+    fields = ('order', 'question', 'preparation_seconds', 'answer_seconds')
+    ordering = ('order', 'id')
+    verbose_name = _('Speaking question')
+    verbose_name_plural = _('Speaking questions')
+
+
+class SpeakingPartInline(admin.StackedInline):
+    model = SpeakingPart
+    extra = 0
+    fields = (
+        'order',
+        'part_type',
+        'title',
+        'instructions',
+        'cue_card_topic',
+        'cue_card_bullets',
+        'preparation_seconds',
+        'default_answer_seconds',
+    )
+    ordering = ('order', 'id')
+    show_change_link = True
+    verbose_name = _('Speaking part')
+    verbose_name_plural = _('Speaking parts (IELTS Part 1–3, then edit questions)')
+
+
+@admin.register(ReadingPassage)
+class ReadingPassageAdmin(PortalModelAdmin):
+    list_display = (
+        'title',
+        'quiz_display',
+        'order',
+        'question_count_display',
+    )
+    list_display_links = ('title',)
+    list_filter = ('quiz__category__service',)
+    search_fields = ('title', 'body', 'quiz__topic', 'quiz__category__name')
+    autocomplete_fields = ('quiz',)
+    ordering = ('quiz', 'order', 'id')
+    inlines = (ReadingQuestionGroupInline, ReadingQuestionInline,)
+    fieldsets = (
+        (None, {
+            'description': _(
+                'Each passage belongs to a reading quiz. '
+                'Add matching groups and questions in the sections below.'
+            ),
+            'fields': ('quiz', 'order', 'title', 'instructions', 'body'),
+        }),
+    )
+
+    class Media:
+        css = {'all': ('portals/css/quiz-question-admin.css',)}
+        js = ('portals/admin/js/reading-passage-admin.js',)
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom = [
+            path(
+                'group-options/',
+                self.admin_site.admin_view(self.group_options_view),
+                name='portals_readingpassage_group_options',
+            ),
+            path(
+                'question-type-fields/',
+                self.admin_site.admin_view(self.question_type_fields_view),
+                name='portals_readingpassage_question_type_fields',
+            ),
+        ]
+        return custom + urls
+
+    def group_options_view(self, request):
+        passage_id = request.GET.get('passage_id')
+        if not passage_id:
+            return JsonResponse({'groups': []})
+        try:
+            passage_pk = int(passage_id)
+        except (TypeError, ValueError):
+            return JsonResponse({'groups': []})
+        groups = (
+            ReadingQuestionGroup.objects.filter(passage_id=passage_pk)
+            .order_by('order', 'id')
+            .values('id', 'title', 'order', 'question_type')
+        )
+        return JsonResponse({
+            'groups': [
+                {
+                    'id': row['id'],
+                    'title': row['title'] or '',
+                    'order': row['order'],
+                    'question_type': row['question_type'],
+                }
+                for row in groups
+            ],
+        })
+
+    def question_type_fields_view(self, request):
+        if request.method != 'POST':
+            return JsonResponse({'error': _('POST required.')}, status=405)
+
+        from portals.utils.quiz_reading_admin import reading_question_admin_field_config
+
+        return JsonResponse(
+            reading_question_admin_field_config(request.POST.get('question_type')),
+        )
+
+    def save_related(self, request, form, formsets, change):
+        group_formset = None
+        question_formset = None
+        for inline_formset in formsets:
+            if inline_formset.model is ReadingQuestionGroup:
+                group_formset = inline_formset
+            elif inline_formset.model is ReadingQuestion:
+                question_formset = inline_formset
+
+        super().save_related(request, form, formsets, change)
+        link_pending_reading_question_groups(group_formset, question_formset)
+
+    def render_change_form(self, request, context, add=False, change=False, form_url='', obj=None):
+        context['reading_group_options_url'] = reverse(
+            'admin:portals_readingpassage_group_options',
+        )
+        context['reading_question_type_fields_url'] = reverse(
+            'admin:portals_readingpassage_question_type_fields',
+        )
+        return super().render_change_form(request, context, add, change, form_url, obj)
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'quiz':
+            kwargs['queryset'] = Quiz.objects.filter(is_reading=True).select_related('category')
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+    @admin.display(description=_('Quiz'))
+    def quiz_display(self, obj):
+        if not obj.quiz_id:
+            return '—'
+        return portal_admin_change_link(obj.quiz, obj.quiz.topic)
+
+    @admin.display(description=_('Questions'))
+    def question_count_display(self, obj):
+        count = obj.questions.count()
+        return portal_count_badge(count, 'questions', tone='teal')
+
+
 @admin.register(ListeningAudio)
 class ListeningAudioAdmin(PortalModelAdmin):
     list_display = (
@@ -336,14 +543,76 @@ class ListeningAudioAdmin(PortalModelAdmin):
         return portal_count_badge(count, 'questions', tone='teal')
 
 
+@admin.register(SpeakingPart)
+class SpeakingPartAdmin(PortalModelAdmin):
+    form = SpeakingPartAdminForm
+    list_display = (
+        'title',
+        'quiz_display',
+        'part_type',
+        'order',
+        'question_count_display',
+    )
+    list_display_links = ('title',)
+    list_filter = ('part_type', 'quiz__category__service')
+    search_fields = ('title', 'instructions', 'cue_card_topic', 'quiz__topic', 'quiz__category__name')
+    autocomplete_fields = ('quiz',)
+    ordering = ('quiz', 'order', 'id')
+    inlines = (SpeakingQuestionInline,)
+    def get_fieldsets(self, request, obj=None):
+        part_fields = (
+            'order',
+            'part_type',
+            'title',
+            'instructions',
+            'cue_card_topic',
+            'cue_card_bullets',
+            'preparation_seconds',
+            'default_answer_seconds',
+        )
+        if obj and obj.pk:
+            return (
+                (None, {
+                    'description': _(
+                        'Each part belongs to a speaking quiz. '
+                        'Use official IELTS timing defaults or override per part. '
+                        'Add speaking questions in the section below.',
+                    ),
+                    'fields': ('quiz', *part_fields),
+                }),
+            )
+        return (
+            (None, {
+                'description': _(
+                    'Each part belongs to a speaking quiz. '
+                    'Select an existing speaking quiz, or leave Quiz empty and enter '
+                    'a new topic and category — a speaking quiz will be created automatically. '
+                    'Add speaking questions in the section below.',
+                ),
+                'fields': ('quiz', 'new_quiz_topic', 'new_quiz_category', *part_fields),
+            }),
+        )
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'quiz':
+            kwargs['queryset'] = Quiz.objects.filter(is_speaking=True).select_related('category')
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+    @admin.display(description=_('Quiz'))
+    def quiz_display(self, obj):
+        if not obj.quiz_id:
+            return '—'
+        return portal_admin_change_link(obj.quiz, obj.quiz.topic)
+
+    @admin.display(description=_('Questions'))
+    def question_count_display(self, obj):
+        count = obj.questions.count()
+        return portal_count_badge(count, 'questions', tone='teal')
+
+
 # ---------------------------------------------------------------------------
 # Profiles
 # ---------------------------------------------------------------------------
-
-class PortalImageCompressMixin:
-    class Media:
-        js = ('assets/js/admin_image_compress.js',)
-
 
 def _profile_photo_url(obj) -> str | None:
     try:
@@ -365,7 +634,7 @@ def _profile_image_preview(obj):
 
 
 @admin.register(TeacherProfile)
-class TeacherProfileAdmin(PortalImageCompressMixin, PortalModelAdmin):
+class TeacherProfileAdmin(PortalModelAdmin):
     inlines = (TeacherCourseSpecializationInline,)
     list_display = (
         'full_name_link',
@@ -466,7 +735,7 @@ class TeacherProfileAdmin(PortalImageCompressMixin, PortalModelAdmin):
 
 
 @admin.register(StudentProfile)
-class StudentProfileAdmin(PortalImageCompressMixin, PortalModelAdmin):
+class StudentProfileAdmin(PortalModelAdmin):
     inlines = (StudentCourseSpecializationInline,)
     list_display = (
         'full_name_link',
@@ -862,7 +1131,7 @@ class LessonCategoryAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
 
 
 @admin.register(Lesson)
-class LessonAdmin(PortalImageCompressMixin, PortalModelAdmin):
+class LessonAdmin(PortalModelAdmin):
     list_display = (
         'name',
         'subject',
@@ -913,7 +1182,7 @@ class LessonAdmin(PortalImageCompressMixin, PortalModelAdmin):
 @admin.register(Classroom)
 class ClassroomAdmin(PortalModelAdmin):
     service_tab_query_param = 'service'
-    list_display = ('name', 'services_display', 'has_pdf', 'created_at')
+    list_display = ('name', 'group', 'teacher', 'has_pdf', 'created_at')
     list_display_links = ('name',)
     list_filter = ('services', 'created_at')
     search_fields = ('name', 'description', 'services__slug', 'services__name_az')
@@ -924,12 +1193,12 @@ class ClassroomAdmin(PortalModelAdmin):
     fieldsets = (
         (None, {
             'description': _(
-                'Shared classroom PDFs. Pick one or more active site services — '
-                'only teachers and students on matching groups see the room in the portal.',
+                'Group textbooks with PDF files. Teachers create these in the portal; '
+                'only students in the selected group can see them.',
             ),
-            'fields': ('name', 'description', 'pdf_file', 'services'),
+            'fields': ('name', 'description', 'pdf_file', 'group', 'teacher', 'services'),
         }),
-        (_('Date'), {
+        (_('System'), {
             'fields': ('created_at',),
         }),
     )
@@ -1147,6 +1416,57 @@ class ScoreAdmin(PortalModelAdmin):
         return portal_admin_change_link(obj.lesson, obj.lesson.display_name)
 
 
+@admin.register(WeeklyStudentScore)
+class WeeklyStudentScoreAdmin(PortalModelAdmin):
+    list_display = (
+        'student_display',
+        'teacher_display',
+        'week_start',
+        'score_display',
+        'updated_at',
+    )
+    list_display_links = ('student_display',)
+    list_filter = ('week_start', 'teacher', 'student__groups')
+    search_fields = (
+        'student__user__username',
+        'teacher__user__username',
+        'comment',
+    )
+    autocomplete_fields = ('student', 'teacher')
+    date_hierarchy = 'week_start'
+    ordering = ('-week_start', '-updated_at', '-id')
+    list_per_page = 25
+    fieldsets = (
+        (None, {
+            'description': _(
+                'Weekly score out of 10 for a student. Teachers can also enter '
+                'scores from the portal weekly scores page.'
+            ),
+            'fields': ('student', 'teacher', 'week_start'),
+        }),
+        ('Result', {
+            'fields': ('score', 'comment', 'created_at', 'updated_at'),
+        }),
+    )
+    readonly_fields = ('created_at', 'updated_at')
+
+    @admin.display(description='Score')
+    def score_display(self, obj):
+        return portal_score_chip(float(obj.score), WEEKLY_SCORE_MAX)
+
+    @admin.display(description=_('Student'))
+    def student_display(self, obj):
+        if not obj.student_id:
+            return '—'
+        return portal_admin_change_link(obj.student, obj.student.full_name)
+
+    @admin.display(description=_('Teacher'))
+    def teacher_display(self, obj):
+        if not obj.teacher_id:
+            return '—'
+        return portal_admin_change_link(obj.teacher, obj.teacher.full_name)
+
+
 # ---------------------------------------------------------------------------
 # Quizzes
 # ---------------------------------------------------------------------------
@@ -1214,6 +1534,7 @@ class QuizAdminForm(forms.ModelForm):
             'is_listening',
             'is_essay',
             'is_speaking',
+            'is_reading',
             'is_time_limited',
             'time_limit_minutes',
         )
@@ -1221,17 +1542,21 @@ class QuizAdminForm(forms.ModelForm):
     def clean(self):
         cleaned = super().clean()
 
-        manual_flags = [
+        format_flags = [
             cleaned.get('is_listening'),
             cleaned.get('is_essay'),
             cleaned.get('is_speaking'),
+            cleaned.get('is_reading'),
         ]
-        if sum(1 for flag in manual_flags if flag) > 1:
+        if sum(1 for flag in format_flags if flag) > 1:
             raise forms.ValidationError(
-                _('Only one of Listening, Essay, or Speaking can be enabled.'),
+                _('Only one quiz format can be enabled (Listening, Essay, Speaking, or Reading).'),
             )
 
-        if cleaned.get('is_time_limited'):
+        if cleaned.get('is_speaking'):
+            cleaned['is_time_limited'] = False
+            cleaned['time_limit_minutes'] = None
+        elif cleaned.get('is_time_limited'):
             minutes = cleaned.get('time_limit_minutes')
             if not minutes or minutes < 1:
                 self.add_error(
@@ -1248,6 +1573,10 @@ class QuizAdminForm(forms.ModelForm):
 class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
     form = QuizAdminForm
     course_type_field = 'category__service'
+
+    class Media:
+        css = {'all': ('portals/css/quiz-question-admin.css',)}
+        js = ('portals/admin/js/quiz-question-admin.js',)
 
     list_display = (
         'topic',
@@ -1276,15 +1605,14 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
         }),
         (_('Grading mode'), {
             'description': _(
-                'Enable at most one manual mode (Listening, Essay, or Speaking). '
-                'Manual quizzes have no multiple-choice variants — the teacher reviews '
-                'submissions and writes feedback. Leave all unchecked for variant quizzes. '
-                'For Listening: add audio clips and questions in the section below.'
+                'Enable at most one format. Listening, Essay, and Speaking are teacher-reviewed. '
+                'Reading is auto-scored with passages and structured questions. '
+                'Leave all unchecked for standard multiple-choice variant quizzes.'
             ),
-            'fields': ('is_listening', 'is_essay', 'is_speaking'),
+            'fields': ('is_listening', 'is_essay', 'is_speaking', 'is_reading'),
         }),
         (_('Time limit'), {
-            'description': _('Optional countdown for variant quizzes — auto-submits when time runs out.'),
+            'description': _('Optional countdown — auto-submits when time runs out.'),
             'fields': ('is_time_limited', 'time_limit_minutes'),
         }),
         (_('Resource import'), {
@@ -1299,7 +1627,20 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
     def get_inlines(self, request, obj=None):
         if obj and obj.is_listening:
             return (ListeningAudioInline,)
+        if obj and obj.is_reading:
+            return (ReadingPassageInline,)
+        if obj and obj.is_speaking:
+            return (SpeakingPartInline,)
+        if obj is None and self._quiz_format_flag(request, 'is_speaking'):
+            return (SpeakingPartInline,)
+        if obj is None and self._quiz_format_flag(request, 'is_listening'):
+            return (ListeningAudioInline,)
+        if obj is None and self._quiz_format_flag(request, 'is_reading'):
+            return (ReadingPassageInline,)
         return (QuizQuestionInline,)
+
+    def _quiz_format_flag(self, request, name: str) -> bool:
+        return request.POST.get(name) in ('on', 'true', 'True', '1')
 
     def get_urls(self):
         urls = super().get_urls()
@@ -1322,6 +1663,7 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
         is_essay = _flag('is_essay')
         is_listening = _flag('is_listening')
         is_speaking = _flag('is_speaking')
+        is_reading = _flag('is_reading')
 
         if is_essay:
             mode = 'essay'
@@ -1329,6 +1671,8 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
             mode = 'listening'
         elif is_speaking:
             mode = 'speaking'
+        elif is_reading:
+            mode = 'reading'
         else:
             mode = 'variant'
 
@@ -1343,6 +1687,10 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
             show_fields = list(answer_fields)
             hide_fields = [response_field]
             clear_fields = []
+        elif mode == 'reading':
+            show_fields = []
+            hide_fields = [*answer_fields, response_field]
+            clear_fields = list(answer_fields)
         else:
             show_fields = []
             hide_fields = [*answer_fields, response_field]
@@ -1353,6 +1701,7 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
             'show_fields': show_fields,
             'hide_fields': hide_fields,
             'clear_fields': clear_fields,
+            'hide_time_limit': mode == 'speaking',
         })
 
     @admin.display(description=_('Mode'))
@@ -1363,10 +1712,15 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
         queryset, use_distinct = super().get_search_results(request, queryset, search_term)
         if (
             request.GET.get('app_label') == 'portals'
-            and request.GET.get('model_name') == 'listeningaudio'
             and request.GET.get('field_name') == 'quiz'
         ):
-            queryset = queryset.filter(is_listening=True)
+            model_name = request.GET.get('model_name')
+            if model_name == 'listeningaudio':
+                queryset = queryset.filter(is_listening=True)
+            elif model_name == 'readingpassage':
+                queryset = queryset.filter(is_reading=True)
+            elif model_name == 'speakingpart':
+                queryset = queryset.filter(is_speaking=True)
         return queryset, use_distinct
 
     def get_queryset(self, request):
@@ -1375,7 +1729,20 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
 
     @admin.display(description='Questions')
     def question_count(self, obj):
-        count = getattr(obj, '_question_count', obj.questions.count())
+        if obj.is_reading:
+            from portals.utils.quiz_reading import get_reading_questions_for_quiz
+
+            count = len(get_reading_questions_for_quiz(obj))
+        elif obj.is_speaking:
+            from portals.utils.quiz_speaking import get_speaking_questions_for_quiz
+
+            count = len(get_speaking_questions_for_quiz(obj))
+        elif obj.is_listening:
+            from portals.utils.quiz_listening import get_listening_questions_for_quiz
+
+            count = len(get_listening_questions_for_quiz(obj))
+        else:
+            count = getattr(obj, '_question_count', obj.questions.count())
         return portal_count_badge(count, 'questions', tone='teal')
 
     @admin.display(description=_('Category'))
@@ -1535,8 +1902,10 @@ PORTAL_MODEL_ORDER = {
     'VideoRecord': 70,
     'Attendance': 80,
     'Score': 90,
+    'WeeklyStudentScore': 92,
     'QuizCategory': 95,
     'ListeningAudio': 96,
+    'ReadingPassage': 97,
     'Quiz': 100,
     'QuizQuestion': 110,
     'QuizResult': 120,

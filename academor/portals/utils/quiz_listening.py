@@ -58,11 +58,33 @@ def listening_selected_option_index(question: ListeningQuestion, raw_value) -> i
     return int(str(raw_value).strip())
 
 
+def listening_accept_alternatives(question: ListeningQuestion) -> list[str]:
+    config = question.question_config or {}
+    return [
+        str(item).strip()
+        for item in (config.get('accept_alternatives') or [])
+        if str(item).strip()
+    ]
+
+
+def listening_correct_answer_display(question: ListeningQuestion) -> str:
+    from django.utils.translation import gettext as _
+
+    primary = (question.correct_answer or '').strip()
+    alternatives = listening_accept_alternatives(question)
+    if not alternatives:
+        return primary
+    if not primary:
+        return ', '.join(alternatives)
+    return f'{primary} ({_("also")}: {", ".join(alternatives)})'
+
+
 def serialize_listening_question(
     question: ListeningQuestion,
     *,
     student_answer: str = '',
     number: int = 0,
+    use_admin_answer_keys: bool = False,
 ) -> dict:
     from portals.utils.quiz_submit import listening_student_answer_display
 
@@ -82,18 +104,21 @@ def serialize_listening_question(
         'answer_options': options if is_variant else [],
     }
     if is_variant:
-        correct_index = listening_correct_option_index(question)
         selected_index = listening_selected_option_index(question, student_answer)
-        is_correct = None
-        if correct_index is not None and selected_index is not None:
-            is_correct = selected_index == correct_index
         payload.update({
-            'correct_option_index': correct_index,
-            'correct_answer': question.correct_answer,
             'selected_option_index': selected_index,
             'has_selected_option': selected_index is not None,
-            'is_correct': is_correct,
         })
+
+    if use_admin_answer_keys:
+        from portals.utils.quiz_listening_score import score_listening_question
+
+        payload['correct_answer'] = question.correct_answer
+        payload['correct_answer_display'] = listening_correct_answer_display(question)
+        if student_answer not in ('', None):
+            payload['is_correct'] = score_listening_question(question, student_answer)
+        else:
+            payload['is_correct'] = False
     return payload
 
 
@@ -101,6 +126,7 @@ def build_listening_sections_for_quiz(
     quiz_id: int,
     *,
     response_map: dict | None = None,
+    use_admin_answer_keys: bool = False,
 ) -> list[dict]:
     """Build student-facing sections from a listening quiz."""
     response_map = response_map or {}
@@ -118,6 +144,7 @@ def build_listening_sections_for_quiz(
                     row,
                     student_answer=response_map.get(str(row.pk), ''),
                     number=question_number,
+                    use_admin_answer_keys=use_admin_answer_keys,
                 )
             )
         sections.append({

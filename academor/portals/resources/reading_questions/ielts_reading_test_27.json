@@ -1,0 +1,387 @@
+{
+  "title": "IELTS Academic Reading — Practice Test 27",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–40</strong></p><p>You should spend about 60 minutes on <strong>Questions 1–40</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Biodiversity Offset Schemes</strong></p><p><strong>A</strong> Biodiversity offset schemes require developers to compensate for habitat loss by protecting or restoring equivalent ecosystems elsewhere. Proponents argue that such programmes can channel private investment toward conservation while permitting infrastructure that societies demand for housing, transport, and energy. Critics counter that offsets may license destruction of irreplaceable sites if equivalence is poorly defined or monitoring is weak. International guidance emphasises a mitigation hierarchy in which avoidance and minimisation must precede compensation, yet enforcement varies widely across jurisdictions, project types, and sectors. Policymakers therefore face persistent tension between accelerating development timelines and demonstrating genuine no net loss outcomes on the ground.</p><p><strong>B</strong> Offset markets typically involve calculating biodiversity units from surveys of species richness, vegetation structure, and connectivity. Consultants produce baseline assessments and forecast losses from proposed works, then identify receptor sites where restoration could yield comparable gains. Trading platforms allow developers to purchase credits from landowners who commit to long-term management agreements. Price signals depend on scarcity of suitable land, monitoring costs, and the credibility of regulatory approval processes that certify credits before they can be retired against a permit. When liquidity is thin, small projects struggle to find counterparties willing to steward land for decades.</p><p><strong>C</strong> Measurement challenges centre on time lags between planting seedlings and achieving mature forest functions, and on substituting one habitat type for another. Scientists debate whether multipliers should penalise risky projects whose ecological outcomes remain uncertain for decades. Remote sensing and eDNA sampling are improving verification, though ground truthing remains essential. Without transparent baselines, auditors warn that gains on paper may overstate real recovery, especially where invasive species or altered fire regimes undermine plantings. Peer review of offset accounting methods is increasingly demanded by courts reviewing contested permits. Longitudinal studies remain essential before drawing firm conclusions about causal mechanisms and durable outcomes.</p><p><strong>D</strong> Leakage occurs when protecting one parcel simply displaces logging or grazing to unmanaged areas nearby. Aggregators attempt to address this by bundling projects at landscape scales and coordinating with regional land-use planning. Some schemes require developers to fund connectivity corridors rather than isolated patches. Nevertheless, opponents maintain that rare assemblages and cultural landscapes cannot be replicated, making offsets a morally inadequate substitute for in situ protection of sites with outstanding universal value. Campaigners cite cases where flagship species habitats were cleared after credits were sold elsewhere. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality.</p><p><strong>E</strong> Regulatory frameworks differ in whether offsets are mandatory or negotiated case by case. Australia and several Latin American countries have embedded biodiversity banking in environmental impact assessment, whereas European Union law historically emphasised strict protection of designated sites. Recent reforms explore habitat banking as a complement to agri-environment payments. Legal scholars note that weak sanctions for non-compliance can convert obligations into voluntary philanthropy, undermining the policy's environmental integrity. Judicial review has occasionally overturned permits where offset plans lacked measurable performance standards tied to monitoring data. Policy evaluations therefore depend on transparent reporting and independent replication of key results.</p><p><strong>F</strong> Indigenous and local communities often hold customary tenure over receptor lands yet may be excluded from credit revenue unless tenure is formally recognised. Free, prior, and informed consent processes are unevenly applied before restoration contracts are signed. Social researchers document cases where offset projects restrict traditional harvesting rights in the name of conservation. Equitable governance, the author argues, requires revenue sharing, participatory monitoring, and dispute mechanisms that do not treat communities as passive suppliers of land. Capacity building for local rangers can improve both social legitimacy and ecological surveillance over long horizons. Longitudinal studies remain essential before drawing firm conclusions about causal mechanisms and durable outcomes.</p><p><strong>G</strong> Looking ahead, biodiversity offsets are unlikely to resolve tensions between development and conservation on their own. Their value depends on rigorous caps on net loss, independent science review, and integration with spatial planning that identifies no-go zones. If policymakers treat offsets as the first resort rather than the last, the author believes ecosystems will continue to decline despite rising credit volumes. Used cautiously within a broader conservation strategy, however, offsets may still redirect funds toward neglected habitats that would otherwise receive little public financing or philanthropic attention. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 11–15",
+          "instructions": "<p>Choose the correct heading for paragraphs <strong>B–F</strong> from the list of headings below.</p><p><em>Write the correct number, <strong>i–vii</strong>, in boxes 11–15 on your answer sheet.</em></p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "i. Credit trading and survey methods",
+            "ii. Baselines, multipliers, and verification tools",
+            "iii. Displacement risks and landscape-scale responses",
+            "iv. Mandatory rules versus negotiated permits",
+            "v. Tenure, consent, and community revenue",
+            "vi. Deep-sea mining royalties and seabed leases",
+            "vii. Quantum computing qubit error rates"
+          ],
+          "questions": [
+            {
+              "order": 11,
+              "question": "<p>Paragraph B</p>",
+              "correct_answer": "i. Credit trading and survey methods"
+            },
+            {
+              "order": 12,
+              "question": "<p>Paragraph C</p>",
+              "correct_answer": "ii. Baselines, multipliers, and verification tools"
+            },
+            {
+              "order": 13,
+              "question": "<p>Paragraph D</p>",
+              "correct_answer": "iii. Displacement risks and landscape-scale responses"
+            },
+            {
+              "order": 14,
+              "question": "<p>Paragraph E</p>",
+              "correct_answer": "iv. Mandatory rules versus negotiated permits"
+            },
+            {
+              "order": 15,
+              "question": "<p>Paragraph F</p>",
+              "correct_answer": "v. Tenure, consent, and community revenue"
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "title": "Questions 16–20",
+          "instructions": "<p>Which paragraph contains the following information?</p><p><em>Write the correct letter, <strong>A–G</strong>, in boxes 16–20 on your answer sheet.</em></p>",
+          "question_type": "matching_info",
+          "option_pool": [
+            "Paragraph A",
+            "Paragraph B",
+            "Paragraph C",
+            "Paragraph D",
+            "Paragraph E",
+            "Paragraph F",
+            "Paragraph G"
+          ],
+          "questions": [
+            {
+              "order": 16,
+              "question": "<p>a description of biodiversity units derived from surveys</p>",
+              "correct_answer": "Paragraph B"
+            },
+            {
+              "order": 17,
+              "question": "<p>reference to eDNA sampling alongside ground truthing</p>",
+              "correct_answer": "Paragraph C"
+            },
+            {
+              "order": 18,
+              "question": "<p>discussion of connectivity corridors instead of isolated patches</p>",
+              "correct_answer": "Paragraph D"
+            },
+            {
+              "order": 19,
+              "question": "<p>comparison of Australian and European regulatory approaches</p>",
+              "correct_answer": "Paragraph E"
+            },
+            {
+              "order": 20,
+              "question": "<p>mention of free, prior, and informed consent</p>",
+              "correct_answer": "Paragraph F"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "tfng",
+          "question": "<p>International guidance places compensation before avoidance in the mitigation hierarchy.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 2,
+          "question_type": "tfng",
+          "question": "<p>Offset credits can be retired only after regulatory certification.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 3,
+          "question_type": "tfng",
+          "question": "<p>Every offset scheme uses identical multipliers for uncertain projects.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 4,
+          "question_type": "tfng",
+          "question": "<p>Leakage describes displacement of harmful activity to other areas.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 5,
+          "question_type": "tfng",
+          "question": "<p>The passage states that all European countries mandate biodiversity banking.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 6,
+          "question_type": "ynng",
+          "question": "<p>The author believes offsets can work if they are not treated as a first resort.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 7,
+          "question_type": "ynng",
+          "question": "<p>The writer claims rare cultural landscapes can always be replicated elsewhere.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 8,
+          "question_type": "ynng",
+          "question": "<p>The author thinks equitable governance should include participatory monitoring.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 9,
+          "question_type": "ynng",
+          "question": "<p>The writer argues that weak sanctions strengthen environmental integrity.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 10,
+          "question_type": "ynng",
+          "question": "<p>The author is entirely opposed to any use of biodiversity offsets.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 21,
+          "question_type": "sentence_completion",
+          "question": "<p>Developers compensate for habitat loss by protecting ecosystems ____.</p>",
+          "correct_answer": "elsewhere",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 22,
+          "question_type": "sentence_completion",
+          "question": "<p>Trading platforms allow credits to be retired against a ____.</p>",
+          "correct_answer": "permit",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 23,
+          "question_type": "sentence_completion",
+          "question": "<p>Leakage occurs when harmful activity moves to ____ areas.</p>",
+          "correct_answer": "unmanaged",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 24,
+          "question_type": "sentence_completion",
+          "question": "<p>Equitable governance may require revenue sharing and participatory ____.</p>",
+          "correct_answer": "monitoring",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 25,
+          "question_type": "summary_completion",
+          "question": "<p>The mitigation hierarchy requires avoidance and minimisation before ____. Critics fear licensing destruction.</p>",
+          "correct_answer": "compensation",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 26,
+          "question_type": "summary_completion",
+          "question": "<p>Remote sensing helps verification, yet ____ truthing remains essential on site.</p>",
+          "correct_answer": "ground",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 27,
+          "question_type": "summary_completion",
+          "question": "<p>Weak sanctions can turn obligations into voluntary ____. Legal scholars warn of this risk.</p>",
+          "correct_answer": "philanthropy",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 28,
+          "question_type": "summary_completion",
+          "question": "<p>The author urges identification of no-go zones within broader ____ planning.</p>",
+          "correct_answer": "spatial",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 29,
+          "question_type": "flowchart_completion",
+          "question": "<p>Credit factor | Prices depend on scarcity of suitable ____</p>",
+          "correct_answer": "land",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 30,
+          "question_type": "flowchart_completion",
+          "question": "<p>Ecological risk | Invasive species may undermine new ____</p>",
+          "correct_answer": "plantings",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 31,
+          "question_type": "flowchart_completion",
+          "question": "<p>Policy design | Offsets should remain the last ____, not the first</p>",
+          "correct_answer": "resort",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 32,
+          "question_type": "mcq",
+          "question": "<p>Paragraph A presents biodiversity offsets as</p>",
+          "answer_options": [
+            "a way to channel private funds toward conservation",
+            "a ban on all infrastructure development",
+            "a replacement for every protected area law",
+            "a method that avoids all habitat loss"
+          ],
+          "correct_answer": "a way to channel private funds toward conservation"
+        },
+        {
+          "order": 33,
+          "question_type": "mcq",
+          "question": "<p>According to paragraph C, multipliers are debated because</p>",
+          "answer_options": [
+            "eDNA sampling is illegal",
+            "ecological outcomes may remain uncertain for decades",
+            "remote sensing has ended ground surveys",
+            "seedlings mature within one season"
+          ],
+          "correct_answer": "ecological outcomes may remain uncertain for decades"
+        },
+        {
+          "order": 34,
+          "question_type": "mcq",
+          "question": "<p>Paragraph D suggests opponents reject offsets because</p>",
+          "answer_options": [
+            "logging never occurs near protected parcels",
+            "rare sites cannot be genuinely replicated",
+            "corridors are cheaper than isolated patches",
+            "aggregators refuse landscape planning"
+          ],
+          "correct_answer": "rare sites cannot be genuinely replicated"
+        },
+        {
+          "order": 35,
+          "question_type": "mcq",
+          "question": "<p>Paragraph F indicates that communities may lose</p>",
+          "answer_options": [
+            "all contact with regulators",
+            "traditional harvesting rights during projects",
+            "ownership of every receptor site automatically",
+            "interest in participatory monitoring"
+          ],
+          "correct_answer": "traditional harvesting rights during projects"
+        },
+        {
+          "order": 36,
+          "question_type": "mcq",
+          "question": "<p>The final paragraph argues that offsets succeed only when</p>",
+          "answer_options": [
+            "net loss caps and science review are rigorous",
+            "development proceeds without spatial planning",
+            "no-go zones are eliminated",
+            "credits replace every agri-environment payment"
+          ],
+          "correct_answer": "net loss caps and science review are rigorous"
+        },
+        {
+          "order": 37,
+          "question_type": "short_answer",
+          "question": "<p>What must precede compensation in the mitigation hierarchy?</p>",
+          "correct_answer": "avoidance",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 38,
+          "question_type": "short_answer",
+          "question": "<p>What sampling method is named alongside remote sensing?</p>",
+          "correct_answer": "eDNA",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 39,
+          "question_type": "short_answer",
+          "question": "<p>What review has overturned permits lacking measurable standards?</p>",
+          "correct_answer": "judicial",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 40,
+          "question_type": "short_answer",
+          "question": "<p>What kind of zones does the author say planning should identify?</p>",
+          "correct_answer": "no-go",
+          "question_config": {
+            "word_limit": 2,
+            "word_limit_label": "NO MORE THAN TWO WORDS",
+            "case_insensitive": true
+          }
+        }
+      ]
+    }
+  ]
+}

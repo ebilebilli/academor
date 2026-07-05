@@ -1,0 +1,387 @@
+{
+  "title": "IELTS Academic Reading — Practice Test 31",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–40</strong></p><p>You should spend about 60 minutes on <strong>Questions 1–40</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Cognitive Bias in Judgement</strong></p><p><strong>A</strong> Cognitive biases are systematic deviations from normative models of reasoning that influence medical diagnoses, judicial verdicts, and financial trades. Psychologists catalogue anchoring, availability, and confirmation tendencies using controlled experiments with student and professional samples. While heuristics conserve attention under uncertainty, they can entrench errors when stakes are high and feedback is delayed. Organisational researchers argue that debiasing training must target environments, not merely individual awareness, because structural prompts shape choices more reliably than one-off workshops. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality. Policy evaluations therefore depend on transparent reporting and independent replication of key results.</p><p><strong>B</strong> Anchoring occurs when initial numbers skew subsequent estimates even when anchors are obviously arbitrary. Real estate agents shown random listing figures adjust valuations toward those anchors despite denying influence. Courts have observed similar patterns in damage awards following early demands. Debiasing strategies include considering opposite anchors and requiring written justification before final judgments. The author notes that professionals often express confidence in their objectivity while remaining measurably susceptible in double-blind audit studies replicated across continents. Policy evaluations therefore depend on transparent reporting and independent replication of key results. Longitudinal studies remain essential before drawing firm conclusions about causal mechanisms and durable outcomes.</p><p><strong>C</strong> Availability bias overweight vivid events such as plane crashes or sensational crimes, leading policymakers to overfund rare risks while neglecting chronic harms like hypertension. Media cycles amplify exemplars that are memorable yet unrepresentative. Statistical literacy programmes aim to temper intuitive fears with base-rate information, though emotional imagery can override numerical tutoring in immediate decisions. Public health communicators experiment with reframing messages to highlight routine dangers without inducing fatalism among audiences already sceptical of institutional expertise after prior scandals. Longitudinal studies remain essential before drawing firm conclusions about causal mechanisms and durable outcomes. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality.</p><p><strong>D</strong> Confirmation bias drives selective search for evidence supporting prior beliefs, visible in partisan news consumption and scientific peer review when reviewers favour familiar theories. Blind annotation and preregistration of analysis plans reduce but do not eliminate directional filtering. Teams that institutionalise devil's advocate roles surface disconfirming data earlier in product development pipelines. The writer cautions that diversity of viewpoints helps only when dissent is psychologically safe; token inclusion without power sharing may worsen groupthink disguised as consensus. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality. Policy evaluations therefore depend on transparent reporting and independent replication of key results.</p><p><strong>E</strong> Algorithmic decision aids promise consistency yet can encode historical biases present in training data, reproducing disparities in lending and sentencing recommendations. Explainability tools expose feature weights, enabling auditors to challenge proxies for protected attributes. Human overrides remain common when outputs conflict with intuition, sometimes reintroducing bias under the label of professional discretion. Regulators debate whether to mandate human review for high-impact predictions or to restrict certain models altogether when validation across subgroups proves inadequate in prospective field trials. Policy evaluations therefore depend on transparent reporting and independent replication of key results. Longitudinal studies remain essential before drawing firm conclusions about causal mechanisms and durable outcomes.</p><p><strong>F</strong> Cross-cultural studies reveal that some biases intensify under collectivist norms prioritising harmony, whereas individualist settings may encourage overconfidence in personal judgments. Translation of laboratory tasks complicates comparisons because linguistic framing alters risk preferences. Developmental evidence shows children exhibit precursor patterns, suggesting partial innateness interacting with schooling. Longitudinal cohorts link adolescent susceptibility to later financial distress, motivating early curricula on probabilistic thinking integrated with mathematics education rather than standalone pop psychology modules. Longitudinal studies remain essential before drawing firm conclusions about causal mechanisms and durable outcomes. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality.</p><p><strong>G</strong> Looking ahead, the author believes bias mitigation will blend institutional design, transparent algorithms, and humble professional culture. No checklist eliminates fallibility, yet checklists can slow impulsive errors in emergency rooms and cockpits. If organisations reward decisive certainty over calibrated doubt, training effects will decay rapidly. Sustainable improvement requires metrics that track decision quality over time, not merely attendance at diversity seminars that rarely measure downstream outcomes on hiring, lending, or clinical pathways. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality. Policy evaluations therefore depend on transparent reporting and independent replication of key results.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 11–15",
+          "instructions": "<p>Choose the correct heading for paragraphs <strong>B–F</strong> from the list of headings below.</p><p><em>Write the correct number, <strong>i–vii</strong>, in boxes 11–15 on your answer sheet.</em></p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "i. Anchoring experiments and debiasing tactics",
+            "ii. Vivid risks and base-rate communication",
+            "iii. Selective evidence and team dissent",
+            "iv. Algorithmic aids and audit demands",
+            "v. Culture, development, and early education",
+            "vi. Tidal locking of exoplanet moons",
+            "vii. Silk warp density in looms"
+          ],
+          "questions": [
+            {
+              "order": 11,
+              "question": "<p>Paragraph B</p>",
+              "correct_answer": "i. Anchoring experiments and debiasing tactics"
+            },
+            {
+              "order": 12,
+              "question": "<p>Paragraph C</p>",
+              "correct_answer": "ii. Vivid risks and base-rate communication"
+            },
+            {
+              "order": 13,
+              "question": "<p>Paragraph D</p>",
+              "correct_answer": "iii. Selective evidence and team dissent"
+            },
+            {
+              "order": 14,
+              "question": "<p>Paragraph E</p>",
+              "correct_answer": "iv. Algorithmic aids and audit demands"
+            },
+            {
+              "order": 15,
+              "question": "<p>Paragraph F</p>",
+              "correct_answer": "v. Culture, development, and early education"
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "title": "Questions 16–20",
+          "instructions": "<p>Which paragraph contains the following information?</p><p><em>Write the correct letter, <strong>A–G</strong>, in boxes 16–20 on your answer sheet.</em></p>",
+          "question_type": "matching_info",
+          "option_pool": [
+            "Paragraph A",
+            "Paragraph B",
+            "Paragraph C",
+            "Paragraph D",
+            "Paragraph E",
+            "Paragraph F",
+            "Paragraph G"
+          ],
+          "questions": [
+            {
+              "order": 16,
+              "question": "<p>examples of anchoring in real estate valuations</p>",
+              "correct_answer": "Paragraph B"
+            },
+            {
+              "order": 17,
+              "question": "<p>discussion of plane crashes shaping policy funding</p>",
+              "correct_answer": "Paragraph C"
+            },
+            {
+              "order": 18,
+              "question": "<p>reference to preregistration of analysis plans</p>",
+              "correct_answer": "Paragraph D"
+            },
+            {
+              "order": 19,
+              "question": "<p>concern that training data can encode historical disparities</p>",
+              "correct_answer": "Paragraph E"
+            },
+            {
+              "order": 20,
+              "question": "<p>link between adolescent susceptibility and later financial distress</p>",
+              "correct_answer": "Paragraph F"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "tfng",
+          "question": "<p>Heuristics can conserve attention under uncertainty.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 2,
+          "question_type": "tfng",
+          "question": "<p>The passage states anchoring affects only untrained students, never professionals.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 3,
+          "question_type": "tfng",
+          "question": "<p>All algorithms described are banned by regulators.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 4,
+          "question_type": "tfng",
+          "question": "<p>Devil's advocate roles can surface disconfirming data earlier.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 5,
+          "question_type": "tfng",
+          "question": "<p>Cross-cultural studies find identical bias patterns in every society.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 6,
+          "question_type": "ynng",
+          "question": "<p>The author believes debiasing should target environments, not only awareness.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 7,
+          "question_type": "ynng",
+          "question": "<p>The writer thinks token dissent without power sharing always reduces groupthink.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 8,
+          "question_type": "ynng",
+          "question": "<p>The author supports rewarding decisive certainty over calibrated doubt.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 9,
+          "question_type": "ynng",
+          "question": "<p>The writer sees checklists as potentially slowing impulsive errors.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 10,
+          "question_type": "ynng",
+          "question": "<p>The author claims a single checklist eliminates all fallibility.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 21,
+          "question_type": "sentence_completion",
+          "question": "<p>Anchoring skews subsequent ____ even when anchors are arbitrary.</p>",
+          "correct_answer": "estimates",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 22,
+          "question_type": "sentence_completion",
+          "question": "<p>Availability bias overweight vivid events such as plane ____.</p>",
+          "correct_answer": "crashes",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 23,
+          "question_type": "sentence_completion",
+          "question": "<p>Blind annotation and preregistration reduce directional ____.</p>",
+          "correct_answer": "filtering",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 24,
+          "question_type": "sentence_completion",
+          "question": "<p>Explainability tools expose feature ____ for auditors.</p>",
+          "correct_answer": "weights",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 25,
+          "question_type": "summary_completion",
+          "question": "<p>Public health communicators reframe messages about routine dangers without inducing ____. Scepticism complicates outreach.</p>",
+          "correct_answer": "fatalism",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 26,
+          "question_type": "summary_completion",
+          "question": "<p>Human overrides may reintroduce bias under professional ____. Algorithms are not neutral.</p>",
+          "correct_answer": "discretion",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 27,
+          "question_type": "summary_completion",
+          "question": "<p>Longitudinal cohorts motivate curricula on ____ thinking in schools.</p>",
+          "correct_answer": "probabilistic",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 28,
+          "question_type": "summary_completion",
+          "question": "<p>Sustainable improvement requires metrics tracking decision ____ over time.</p>",
+          "correct_answer": "quality",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 29,
+          "question_type": "flowchart_completion",
+          "question": "<p>Training limit | Effects decay if certainty is ____</p>",
+          "correct_answer": "rewarded",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 30,
+          "question_type": "flowchart_completion",
+          "question": "<p>Review practice | Devil's advocate needs psychological ____</p>",
+          "correct_answer": "safety",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 31,
+          "question_type": "flowchart_completion",
+          "question": "<p>Model risk | Validation may fail across subgroups in field ____</p>",
+          "correct_answer": "trials",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 32,
+          "question_type": "mcq",
+          "question": "<p>Paragraph A argues debiasing training should</p>",
+          "answer_options": [
+            "change environments rather than rely on one-off workshops",
+            "ignore structural prompts entirely",
+            "focus only on student samples",
+            "eliminate all heuristics"
+          ],
+          "correct_answer": "change environments rather than rely on one-off workshops"
+        },
+        {
+          "order": 33,
+          "question_type": "mcq",
+          "question": "<p>According to paragraph B, professionals often</p>",
+          "answer_options": [
+            "deny anchoring while showing susceptibility in audits",
+            "avoid written justification successfully",
+            "ignore opposite anchors by law",
+            "never adjust valuations"
+          ],
+          "correct_answer": "deny anchoring while showing susceptibility in audits"
+        },
+        {
+          "order": 34,
+          "question_type": "mcq",
+          "question": "<p>Paragraph E suggests human overrides can</p>",
+          "answer_options": [
+            "reintroduce bias labelled as discretion",
+            "eliminate all proxy attributes automatically",
+            "ban explainability tools",
+            "remove need for auditors"
+          ],
+          "correct_answer": "reintroduce bias labelled as discretion"
+        },
+        {
+          "order": 35,
+          "question_type": "mcq",
+          "question": "<p>Paragraph F notes cross-cultural comparisons are complicated by</p>",
+          "answer_options": [
+            "linguistic framing altering risk preferences",
+            "identical norms in every country",
+            "absence of developmental evidence",
+            "lack of mathematics education worldwide"
+          ],
+          "correct_answer": "linguistic framing altering risk preferences"
+        },
+        {
+          "order": 36,
+          "question_type": "mcq",
+          "question": "<p>The final paragraph advocates metrics that track</p>",
+          "answer_options": [
+            "decision quality rather than seminar attendance alone",
+            "only diversity seminar headcounts",
+            "decisive certainty in emergencies exclusively",
+            "elimination of all algorithms"
+          ],
+          "correct_answer": "decision quality rather than seminar attendance alone"
+        },
+        {
+          "order": 37,
+          "question_type": "short_answer",
+          "question": "<p>What bias overweight memorable yet unrepresentative events?</p>",
+          "correct_answer": "availability",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 38,
+          "question_type": "short_answer",
+          "question": "<p>What registration practice reduces directional filtering in research?</p>",
+          "correct_answer": "preregistration",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 39,
+          "question_type": "short_answer",
+          "question": "<p>What settings may intensify some biases when harmony is prioritised?</p>",
+          "correct_answer": "collectivist",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 40,
+          "question_type": "short_answer",
+          "question": "<p>What rooms benefit from checklists that slow impulsive errors?</p>",
+          "correct_answer": "emergency",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        }
+      ]
+    }
+  ]
+}

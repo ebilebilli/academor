@@ -155,6 +155,16 @@ ADMIN_HELP = {
             _('Lesson link is optional.'),
         ],
     },
+    'WeeklyStudentScore': {
+        'icon': 'W',
+        'title': _('Weekly scores'),
+        'summary': _('Teacher weekly score out of 10 for each student.'),
+        'where': _('Teachers enter from portal; students view their history.'),
+        'tips': [
+            _('Week start must be Monday.'),
+            _('One score per teacher, student, and week.'),
+        ],
+    },
     'QuizCategory': {
         'icon': 'C',
         'title': _('Quiz categories'),
@@ -216,9 +226,9 @@ ADMIN_HELP = {
     },
     'Classroom': {
         'icon': '📖',
-        'title': _('Classrooms'),
-        'summary': _('Shared classroom PDFs tagged with one or more services.'),
-        'where': _('Portal Classrooms page — filtered by teacher/student service access.'),
+        'title': _('Textbooks'),
+        'summary': _('Group textbook PDFs created by teachers for their students.'),
+        'where': _('Portal Textbooks page — visible to students in the matching group.'),
         'tips': [
             _('Pick active site services with the multi-select box (service slug is the key).'),
             _('Only users with a matching active service enrollment see the room.'),

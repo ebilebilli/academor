@@ -1,18 +1,25 @@
 {% extends "portals/base.html" %}
 {% load static i18n portal_tags %}
 
-{% block title %}{% trans 'Scores' %}{% endblock %}
+{% block title %}{% trans 'Nəticələr və qiymətləndirmələr' %}{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
 
 {% block content %}
 <header class="s-page-head mb-4">
   <div>
     <h1 class="s-page-head__title">
       <i class="ti ti-star" aria-hidden="true"></i>
-      {% trans 'Qiymətlər' %}
+      {% trans 'Nəticələr və qiymətləndirmələr' %}
     </h1>
-    <p class="s-page-head__sub">{% trans 'Aşağıdan quiz və ya dərs qiymətlərini seçin.' %}</p>
+    <p class="s-page-head__sub">{% trans 'Həftəlik qiymətlərə baxın.' %}</p>
   </div>
+  <a class="ds-btn ds-btn--secondary btn-sm" href="{% url 'portals:teacher-weekly-scores' %}">
+    <i class="ti ti-calendar-stats" aria-hidden="true"></i>
+    {% trans 'Həftəlik qiymətləndirmə' %}
+  </a>
 </header>
 
-{% include "portals/includes/score_sections.html" with show_student_column=True score_detail_url_name="portals:teacher-score-detail" %}
+{% include "portals/includes/score_sections_weekly.html" with show_student_column=True %}
 {% endblock %}

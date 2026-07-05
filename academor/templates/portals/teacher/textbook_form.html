@@ -1,0 +1,153 @@
+{% extends "portals/base.html" %}
+{% load static i18n portal_tags %}
+
+{% block title %}{{ form_title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'portals/css/portal-lesson-form.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="portal-lesson-form">
+  <nav class="portal-lesson-form__nav" aria-label="{% trans 'Breadcrumb' %}">
+    <a class="btn btn-sm btn-light" href="{{ cancel_href }}">
+      <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'Textbooks' %}
+    </a>
+  </nav>
+
+  <header class="portal-lesson-form__header">
+    <div class="portal-lesson-form__header-icon" aria-hidden="true">
+      <i class="bi bi-book"></i>
+    </div>
+    <div>
+      <h1 class="portal-lesson-form__title">{{ form_title }}</h1>
+      {% if form_subtitle %}
+        <p class="portal-lesson-form__lead">{{ form_subtitle }}</p>
+      {% endif %}
+    </div>
+  </header>
+
+  <form method="post" enctype="multipart/form-data" class="portal-lesson-form__body needs-validation" data-lesson-form novalidate>
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger py-2 small mb-3">{{ form.non_field_errors }}</div>
+    {% endif %}
+
+    <section class="portal-lesson-panel">
+      <h2 class="portal-lesson-panel__title">
+        <span class="portal-lesson-panel__step">1</span>
+        {% trans 'Textbook details' %}
+      </h2>
+      <div class="portal-lesson-panel__body">
+        <div class="portal-lesson-grid portal-lesson-grid--2">
+          <div class="portal-lesson-field">
+            <label class="portal-lesson-label" for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+            {{ form.name }}
+            {% for error in form.name.errors %}
+              <div class="portal-lesson-error">{{ error }}</div>
+            {% endfor %}
+          </div>
+          <div class="portal-lesson-field">
+            <label class="portal-lesson-label" for="{{ form.group.id_for_label }}">{{ form.group.label }}</label>
+            {{ form.group }}
+            {% for error in form.group.errors %}
+              <div class="portal-lesson-error">{{ error }}</div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="portal-lesson-field mt-3">
+          <label class="portal-lesson-label" for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+          {{ form.description }}
+          <p class="portal-lesson-hint">{% trans 'Optional notes for students in this group.' %}</p>
+          {% for error in form.description.errors %}
+            <div class="portal-lesson-error">{{ error }}</div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <section class="portal-lesson-panel">
+      <h2 class="portal-lesson-panel__title">
+        <span class="portal-lesson-panel__step">2</span>
+        {% trans 'PDF' %}
+      </h2>
+      <div class="portal-lesson-panel__body">
+        {% if form.existing_pdf %}
+        <div class="portal-lesson-existing-files" data-lesson-existing-files="pdf">
+          <p class="portal-lesson-existing-files__title">{% trans 'Current PDF' %}</p>
+          <ul class="portal-lesson-existing-files__list">
+            <li
+              class="portal-lesson-existing-file{% if form.existing_pdf.marked_for_removal %} is-marked-for-removal{% endif %}"
+              data-lesson-existing-item
+            >
+              <div class="portal-lesson-existing-file__main">
+                <span class="portal-lesson-existing-file__icon" aria-hidden="true">
+                  <i class="bi bi-file-earmark-pdf"></i>
+                </span>
+                <span class="portal-lesson-existing-file__name">{{ form.existing_pdf.label }}</span>
+              </div>
+              <div class="portal-lesson-existing-file__actions">
+                <a class="btn btn-sm btn-light" href="{{ form.existing_pdf.url }}" target="_blank" rel="noopener">
+                  {% trans 'Open' %}
+                </a>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-danger"
+                  data-lesson-remove-toggle
+                  data-label-delete="{% trans 'Delete' %}"
+                  data-label-undo="{% trans 'Undo' %}"
+                  aria-pressed="{% if form.existing_pdf.marked_for_removal %}true{% else %}false{% endif %}"
+                >
+                  <i class="bi bi-trash" aria-hidden="true"></i>
+                  {% if form.existing_pdf.marked_for_removal %}{% trans 'Undo' %}{% else %}{% trans 'Delete' %}{% endif %}
+                </button>
+                <input
+                  type="checkbox"
+                  name="remove_pdf"
+                  class="visually-hidden"
+                  data-lesson-remove-input
+                  {% if form.existing_pdf.marked_for_removal %}checked{% endif %}
+                >
+              </div>
+            </li>
+          </ul>
+          <p class="portal-lesson-hint">{% trans 'Use Delete to remove the PDF from disk. You can upload a replacement below.' %}</p>
+        </div>
+        {% endif %}
+        <div class="portal-lesson-dropzone" data-lesson-dropzone data-target="pdf">
+          <div class="portal-lesson-dropzone__inner">
+            <i class="bi bi-cloud-arrow-up portal-lesson-dropzone__icon" aria-hidden="true"></i>
+            <p class="portal-lesson-dropzone__title">{% trans 'Drop PDF here or click to browse' %}</p>
+            <p class="portal-lesson-dropzone__meta">{% trans 'Max recommended: 20 MB' %}</p>
+            <span class="portal-lesson-dropzone__filename" data-lesson-filename="pdf"></span>
+          </div>
+          <div class="portal-lesson-file-widget">{{ form.pdf_file }}</div>
+        </div>
+        {% if form.instance.pdf_file and not form.existing_pdf %}
+          <p class="portal-lesson-current-file small text-muted mt-2">
+            {% trans 'Current file' %}: {{ form.instance.pdf_file.name }}
+          </p>
+        {% endif %}
+        {% for error in form.pdf_file.errors %}
+          <div class="portal-lesson-error mt-2">{{ error }}</div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <footer class="portal-lesson-form__actions">
+      {% if cancel_href %}
+        <a class="btn btn-light btn-lg" href="{{ cancel_href }}">{% trans 'Cancel' %}</a>
+      {% endif %}
+      <button type="submit" class="btn btn-primary btn-lg ms-auto" data-lesson-submit>
+        <i class="bi bi-cloud-upload me-2" aria-hidden="true"></i>{% trans 'Save textbook' %}
+      </button>
+    </footer>
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'portals/js/portal-image-compress.js' %}"></script>
+<script src="{% static 'portals/js/portal-lesson-form.js' %}"></script>
+{% endblock %}

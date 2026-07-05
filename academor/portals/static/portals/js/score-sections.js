@@ -53,8 +53,11 @@
 
     var params = new URLSearchParams(window.location.search);
     var initial = params.get("view");
-    if (initial !== "quiz" && initial !== "lesson") {
-      initial = countFor("quiz") === 0 && countFor("lesson") > 0 ? "lesson" : "quiz";
+    if (initial !== "quiz" && initial !== "weekly" && initial !== "lesson") {
+      initial = countFor("quiz") === 0 && countFor("weekly") > 0 ? "weekly" : "quiz";
+    }
+    if (initial === "lesson") {
+      initial = "weekly";
     }
     activate(initial);
   }

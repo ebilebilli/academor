@@ -5,6 +5,12 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}">
+{% if detail.is_reading %}
+<link rel="stylesheet" href="{% static 'portals/css/quiz-reading.css' %}?v=20260703i">
+{% endif %}
+{% if detail.is_speaking %}
+<link rel="stylesheet" href="{% static 'portals/css/quiz-speaking.css' %}?v=20260703">
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -27,7 +33,12 @@
 
 {% include "portals/includes/quiz_attempt_timing_panel.html" with result=detail %}
 
-{% if detail.breakdown %}
+{% if detail.is_reading and detail.reading_sections %}
+<section class="panel mb-4 portal-reading-teacher-review">
+  <h2 class="h6 mb-3">{% trans 'Answers' %}</h2>
+  {% include "portals/includes/quiz_reading_teacher_review_tabs.html" with sections=detail.reading_sections review_editable=False %}
+</section>
+{% elif detail.breakdown %}
 <section class="panel mb-4">
   <h2 class="h6 mb-3">{% trans 'Answers' %}</h2>
   <div class="portal-quiz-writing-stack">
@@ -46,6 +57,11 @@
     </article>
     {% endfor %}
   </div>
+</section>
+{% elif detail.is_speaking and detail.speaking_sections %}
+<section class="panel mb-4">
+  <h2 class="h6 mb-3">{% trans 'Speaking tasks' %}</h2>
+  {% include "portals/includes/quiz_speaking_overview.html" with quiz=detail view_only=True %}
 </section>
 {% else %}
 {% if detail.is_listening and detail.listening_sections %}
@@ -68,7 +84,7 @@
 </section>
 {% endif %}
 
-{% if detail.question_responses and not detail.is_listening %}
+{% if detail.question_responses and not detail.is_listening and not detail.is_speaking %}
 <section class="panel mb-4">
   <h2 class="h6 mb-3">{% trans 'Student submission' %}</h2>
   <div class="portal-quiz-writing-stack">

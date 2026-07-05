@@ -58,8 +58,12 @@
     data-notification-id="{{ item.id }}"
   >
     <div class="notif-item__icon-wrap">
-      <span class="notif-item__icon">
+      <span class="notif-item__icon{% if item.is_mock_notification %} notif-item__icon--mock{% endif %}">
+        {% if item.is_mock_notification %}
+        <i class="ti ti-clipboard-list" aria-hidden="true"></i>
+        {% else %}
         <i class="ti ti-star" aria-hidden="true"></i>
+        {% endif %}
       </span>
       {% if not item.is_read %}
       <span class="notif-item__dot" aria-label="{% trans 'Oxunmamış' %}"></span>
@@ -72,18 +76,30 @@
         <time class="notif-item__time">{{ item.created_at|portal_datetime }}</time>
       </div>
       <p class="notif-item__desc">
-        {% if item.is_submission_pending %}
+        {% if item.is_mock_section_review %}
+          {% blocktrans with name=item.student_name section=item.quiz_topic %}{{ name }} — mock test section awaiting review ({{ section }}){% endblocktrans %}
+        {% elif item.is_mock_test_completed %}
+          {% blocktrans with name=item.student_name %}{{ name }} completed the full IELTS mock test. Review Writing and Speaking.{% endblocktrans %}
+        {% elif item.is_submission_pending %}
           {% if student %}
             {% trans 'Your answers were submitted for teacher review.' %}
           {% else %}
             {% blocktrans with name=item.student_name %}{{ name }} — awaiting review{% endblocktrans %}
           {% endif %}
+        {% elif item.is_weekly_score %}
+          {% if student %}
+            {% blocktrans with teacher=item.teacher_name week=item.week_label %}Your weekly score from {{ teacher }} for {{ week }} was published.{% endblocktrans %}
+          {% else %}
+            {% blocktrans with name=item.student_name teacher=item.teacher_name week=item.week_label %}{{ name }} — weekly score from {{ teacher }} for {{ week }}{% endblocktrans %}
+          {% endif %}
         {% else %}
           {% blocktrans with name=item.student_name %}{{ name }} — result published{% endblocktrans %}
         {% endif %}
-        · {{ item.grading_mode_label }}
+        {% if not item.is_weekly_score %} · {{ item.grading_mode_label }}{% endif %}
       </p>
-      {% if item.is_submission_pending %}
+      {% if item.is_mock_section_review or item.is_mock_test_completed %}
+        <span class="ds-badge ds-badge--info">{% trans 'IELTS Mock Test' %}</span>
+      {% elif item.is_submission_pending %}
         <span class="ds-badge ds-badge--warning">{% trans 'Yoxlama gözləyir' %}</span>
       {% else %}
         <span class="notif-item__score">
@@ -134,5 +150,5 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'portals/js/portal-notifications.js' %}"></script>
+<script defer src="{% static 'portals/js/portal-notifications.js' %}?v=20260705b" data-portal-page-script="true"></script>
 {% endblock %}

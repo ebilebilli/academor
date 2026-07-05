@@ -1,0 +1,73 @@
+{% extends "portals/base.html" %}
+{% load i18n portal_tags %}
+
+{% block title %}{% trans 'Mock test complete' %}{% endblock %}
+
+{% block content %}
+<header class="s-page-head mb-4">
+  <div>
+    <h1 class="s-page-head__title">
+      <i class="ti ti-circle-check" aria-hidden="true"></i>
+      {% trans 'Mock test complete' %}
+    </h1>
+    <p class="text-muted mb-0">
+      {% trans 'All four sections are submitted. Your teacher has been notified.' %}
+    </p>
+  </div>
+  <a class="ds-btn ds-btn--ghost btn-sm" href="{% url 'portals:student-ielts-mock' %}">
+    <i class="ti ti-arrow-left" aria-hidden="true"></i>
+    {% trans 'Back' %}
+  </a>
+</header>
+
+{% include "portals/includes/quiz_mock_overall_summary.html" %}
+
+<section class="ds-card">
+  <div class="table-responsive">
+    <table class="t-table">
+      <thead>
+        <tr>
+          <th>{% trans 'Section' %}</th>
+          <th>{% trans 'Quiz' %}</th>
+          <th>{% trans 'Score' %}</th>
+          <th>{% trans 'Band' %}</th>
+          <th class="text-end">{% trans 'Details' %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for section in mock_attempt.sections %}
+        <tr>
+          <td>{{ section.section_label }}</td>
+          <td>{{ section.quiz_topic }}</td>
+          <td>
+            {% if section.is_pending_review %}
+            <span class="ds-badge ds-badge--warning">{% trans 'Awaiting review' %}</span>
+            {% elif section.total_score is not None %}
+            {{ section.total_score|format_quiz_score }}{% if section.max_score %} / {{ section.max_score|format_quiz_score }}{% endif %}
+            {% else %}
+            —
+            {% endif %}
+          </td>
+          <td>
+            {% if section.band_score is not None %}
+            {{ section.band_score|format_quiz_score }}
+            {% else %}
+            —
+            {% endif %}
+          </td>
+          <td class="text-end">
+            {% if section.result_id %}
+            <a class="ds-btn ds-btn--secondary btn-sm" href="{% url 'portals:student-score-detail' result_pk=section.result_id %}">
+              {% trans 'View' %}
+            </a>
+            {% else %}
+            —
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,387 @@
+{
+  "title": "IELTS Academic Reading — Practice Test 5",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–40</strong></p><p>You should spend about 60 minutes on <strong>Questions 1–40</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Marine microbiomes and ocean health</strong></p><p><strong>A</strong> Marine microbiomes comprise bacteria, archaea, viruses, and microbial eukaryotes that drive biogeochemical cycles across pelagic and benthic habitats throughout the world ocean. Phytoplankton blooms export carbon to depth while heterotrophic microbes remineralise organic matter, regulating dissolved oxygen concentrations that fisheries and coastal communities depend upon seasonally. Molecular surveys now reveal enormous diversity invisible to microscopy, prompting researchers to treat the ocean as a networked ecosystem rather than a passive dilution basin for terrestrial pollutants. Rivers and atmospheric deposition deliver nutrients and contaminants that reshape microbial metabolism near continental margins, with consequences for climate feedbacks and public health along crowded shorelines.</p><p><strong>B</strong> In sunlit surface waters, photosynthetic picocyanobacteria fix carbon dioxide using trace metals that can become limiting when upstream inputs change abruptly after storms or droughts. Viral lysis releases dissolved organic carbon, short-circuiting classical food webs and altering gases that influence cloud formation above the sea surface. Experiments with iron enrichment stimulate blooms in high-nutrient low-chlorophyll regions, yet ecological side effects remain difficult to predict across trophic levels. The author cautions that geoengineering proposals must weigh carbon uptake benefits against disruptions to fisheries and toxin-producing harmful algal events near tourist coastlines. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p><p><strong>C</strong> Deep-sea sediments harbour slow-growing archaea that oxidise methane before it reaches the water column, providing a biological buffer against greenhouse gas release from hydrate deposits. Ocean warming may shrink this microbial filter, amplifying positive feedback loops that accelerate climate change unless emissions decline on land. Submersible sampling and environmental DNA metabarcoding map communities around hydrothermal vents and cold seeps exporting specialised enzymes useful for biotechnology. Conservation planners argue that abyssal plains deserve protection from mining claims until baseline microbiome functions are documented comprehensively by international collaborations. Destroying poorly known habitats for metals could erase evolutionary solutions to energy conversion that laboratories have only begun to characterise.</p><p><strong>D</strong> Plastic particles adsorb persistent organic pollutants and transport microbes across ocean basins, creating novel rafting communities on drifting debris gathered by currents. Laboratory studies show biofilms alter polymer breakdown rates, though field measurements remain sparse across the major subtropical garbage accumulation zones. Policy debates focus on source reduction upstream rather than ocean cleanup alone, because fragmented microplastics continue entering food webs consumed by seabirds and people. The writer believes circular economy measures on land will deliver larger health gains than technologically unproven harvest devices operating far from population centres. Without producer responsibility laws, consumers bear visual pollution while manufacturers externalise long-term ecological costs of disposable packaging.</p><p><strong>E</strong> Coral holobionts depend on symbiotic algae and bacterial consortia that confer resistance to bleaching when thermal stress remains moderate and water quality stays relatively stable. Probiotic treatments and assisted evolution experiments attempt to bolster resilience, yet scaling interventions across reef networks raises equity questions among nations. Monitoring programmes combine autonomous gliders with satellite chlorophyll imagery to detect anomalies early enough for managers to restrict anchoring or runoff. Critics warn that microbiome manipulation could homogenise diversity, whereas proponents see targeted interventions as a bridge while global emissions decline slowly. Either way, reefs remain sentinels demonstrating how microbial partnerships underpin macroscopic ecosystems valued for tourism, fisheries, and coastal protection.</p><p><strong>F</strong> Fisheries managers seldom incorporate microbial indicators into stock assessments, focusing instead on catch statistics and predator counts compiled annually. Emerging metabarcoding of gut contents could reveal prey shifts invisible to conventional surveys, improving ecosystem-based management when funding permits. International data sharing remains uneven, limiting models that link microbiome shifts to hypoxic dead zones expanding under agricultural nutrient runoff. The author contends that funding long-term observatories is cheaper than reacting to collapsed fisheries and tourism revenue after sudden regime changes offshore. Invisible microbial transitions often precede visible crashes, offering a window for precautionary action if monitoring budgets survive political cycles.</p><p><strong>G</strong> Future research will integrate omics datasets with physical ocean models to forecast tipping points in carbon export and oxygen minimum zones affecting migratory species. Open science repositories can accelerate collaboration if metadata standards harmonise across nations reluctant to share proprietary cruise data. The writer maintains that respecting microbial roles is essential for credible ocean health policy because invisible communities regulate climate-relevant gases and nutrient recycling. Education programmes translating metagenomics for fishers and city planners may build support for ambitious protection targets debated at international summits. Without public literacy, technical advances risk remaining confined to journals while ecosystems degrade unnoticed until economic losses become impossible to ignore.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 11–15",
+          "instructions": "<p>Choose the correct heading for paragraphs <strong>B–F</strong> from the list of headings below.</p><p><em>Write the correct number, <strong>i–vii</strong>, in boxes 11–15 on your answer sheet.</em></p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "i. Desert dust fertilisation of alpine lakes",
+            "ii. Surface microbes, viruses, and nutrient experiments",
+            "iii. Methane oxidation and deep-sea sampling",
+            "iv. Plastics, biofilms, and upstream policy",
+            "v. Coral symbionts and resilience interventions",
+            "vi. Fisheries data gaps and shared monitoring",
+            "vii. Tidal turbine lubricant toxicity studies"
+          ],
+          "questions": [
+            {
+              "order": 11,
+              "question": "<p>Paragraph B</p>",
+              "correct_answer": "ii. Surface microbes, viruses, and nutrient experiments"
+            },
+            {
+              "order": 12,
+              "question": "<p>Paragraph C</p>",
+              "correct_answer": "iii. Methane oxidation and deep-sea sampling"
+            },
+            {
+              "order": 13,
+              "question": "<p>Paragraph D</p>",
+              "correct_answer": "iv. Plastics, biofilms, and upstream policy"
+            },
+            {
+              "order": 14,
+              "question": "<p>Paragraph E</p>",
+              "correct_answer": "v. Coral symbionts and resilience interventions"
+            },
+            {
+              "order": 15,
+              "question": "<p>Paragraph F</p>",
+              "correct_answer": "vi. Fisheries data gaps and shared monitoring"
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "title": "Questions 16–20",
+          "instructions": "<p>Which paragraph contains the following information?</p><p><em>Write the correct letter, <strong>A–G</strong>, in boxes 16–20 on your answer sheet.</em></p>",
+          "question_type": "matching_info",
+          "option_pool": [
+            "Paragraph A",
+            "Paragraph B",
+            "Paragraph C",
+            "Paragraph D",
+            "Paragraph E",
+            "Paragraph F",
+            "Paragraph G"
+          ],
+          "questions": [
+            {
+              "order": 16,
+              "question": "<p>mention of iron enrichment in high-nutrient low-chlorophyll regions</p>",
+              "correct_answer": "Paragraph B"
+            },
+            {
+              "order": 17,
+              "question": "<p>reference to environmental DNA metabarcoding</p>",
+              "correct_answer": "Paragraph C"
+            },
+            {
+              "order": 18,
+              "question": "<p>discussion of microplastics entering food webs</p>",
+              "correct_answer": "Paragraph D"
+            },
+            {
+              "order": 19,
+              "question": "<p>examples of assisted evolution for reefs</p>",
+              "correct_answer": "Paragraph E"
+            },
+            {
+              "order": 20,
+              "question": "<p>a conclusion about invisible communities regulating visible resources</p>",
+              "correct_answer": "Paragraph G"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "tfng",
+          "question": "<p>Phytoplankton blooms can transport carbon toward deeper water.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 2,
+          "question_type": "tfng",
+          "question": "<p>Iron enrichment experiments never produce ecological side effects.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 3,
+          "question_type": "tfng",
+          "question": "<p>All coral reefs have received large-scale probiotic treatments.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 4,
+          "question_type": "tfng",
+          "question": "<p>Archaea in sediments can oxidise methane before it escapes.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 5,
+          "question_type": "tfng",
+          "question": "<p>The passage states every nation shares microbiome data equally.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 6,
+          "question_type": "ynng",
+          "question": "<p>The author urges caution about ocean geoengineering proposals.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 7,
+          "question_type": "ynng",
+          "question": "<p>The writer believes land-based circular economy measures outweigh distant cleanup gadgets.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 8,
+          "question_type": "ynng",
+          "question": "<p>The author thinks fisheries managers already fully use microbial indicators.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 9,
+          "question_type": "ynng",
+          "question": "<p>The writer claims probiotic reef treatments carry no equity concerns.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 10,
+          "question_type": "ynng",
+          "question": "<p>The author sees long-term observatories as cost-effective prevention.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 21,
+          "question_type": "sentence_completion",
+          "question": "<p>Viral lysis releases dissolved organic ____ that alters food webs.</p>",
+          "correct_answer": "carbon",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 22,
+          "question_type": "sentence_completion",
+          "question": "<p>Deep-sea archaea oxidise ____ before it reaches the water column.</p>",
+          "correct_answer": "methane",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 23,
+          "question_type": "sentence_completion",
+          "question": "<p>Plastic particles can adsorb persistent organic ____.</p>",
+          "correct_answer": "pollutants",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 24,
+          "question_type": "sentence_completion",
+          "question": "<p>Autonomous gliders help detect chlorophyll ____ early.</p>",
+          "correct_answer": "anomalies",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 25,
+          "question_type": "summary_completion",
+          "question": "<p>Picocyanobacteria fix carbon dioxide using trace ____.</p>",
+          "correct_answer": "metals",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 26,
+          "question_type": "summary_completion",
+          "question": "<p>Coral holobionts include symbiotic algae and bacterial ____.</p>",
+          "correct_answer": "consortia",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 27,
+          "question_type": "summary_completion",
+          "question": "<p>Metabarcoding of gut contents may reveal prey ____.</p>",
+          "correct_answer": "shifts",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 28,
+          "question_type": "summary_completion",
+          "question": "<p>Open repositories need harmonised metadata ____.</p>",
+          "correct_answer": "standards",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 29,
+          "question_type": "flowchart_completion",
+          "question": "<p>Surface process | Viral lysis short-circuits marine food ____</p>",
+          "correct_answer": "webs",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 30,
+          "question_type": "flowchart_completion",
+          "question": "<p>Deep buffer | Warming may shrink the microbial ____</p>",
+          "correct_answer": "filter",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 31,
+          "question_type": "flowchart_completion",
+          "question": "<p>Management gap | Stock assessments rarely use microbial ____</p>",
+          "correct_answer": "indicators",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 32,
+          "question_type": "mcq",
+          "question": "<p>What limitation does paragraph B note about iron enrichment?</p>",
+          "answer_options": [
+            "It only works in freshwater lakes.",
+            "Ecological side effects are hard to predict.",
+            "It eliminates harmful algal blooms entirely.",
+            "It requires no trace metals."
+          ],
+          "correct_answer": "Ecological side effects are hard to predict."
+        },
+        {
+          "order": 33,
+          "question_type": "mcq",
+          "question": "<p>Paragraph C suggests abyssal plains should be protected until</p>",
+          "answer_options": [
+            "all mining is banned globally",
+            "baseline microbiome functions are documented",
+            "every vent is mapped by tourists",
+            "plastic cleanup devices are deployed"
+          ],
+          "correct_answer": "baseline microbiome functions are documented"
+        },
+        {
+          "order": 34,
+          "question_type": "mcq",
+          "question": "<p>According to paragraph D, the writer prioritises</p>",
+          "answer_options": [
+            "ocean harvest gadgets over land policy",
+            "source reduction and circular economy measures",
+            "increasing microplastic production",
+            "ignoring biofilm research"
+          ],
+          "correct_answer": "source reduction and circular economy measures"
+        },
+        {
+          "order": 35,
+          "question_type": "mcq",
+          "question": "<p>Paragraph F indicates conventional fisheries surveys may miss</p>",
+          "answer_options": [
+            "predator counts entirely",
+            "prey shifts detectable via gut metabarcoding",
+            "any reference to catch statistics",
+            "oxygen concentrations"
+          ],
+          "correct_answer": "prey shifts detectable via gut metabarcoding"
+        },
+        {
+          "order": 36,
+          "question_type": "mcq",
+          "question": "<p>The final paragraph emphasises integrating</p>",
+          "answer_options": [
+            "omics data with physical ocean models",
+            "only satellite tourism imagery",
+            "microscopy alone without models",
+            "fisheries catch without metadata"
+          ],
+          "correct_answer": "omics data with physical ocean models"
+        },
+        {
+          "order": 37,
+          "question_type": "short_answer",
+          "question": "<p>Which organisms fix carbon in sunlit surface waters?</p>",
+          "correct_answer": "picocyanobacteria",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 38,
+          "question_type": "short_answer",
+          "question": "<p>What gas do sediment archaea help prevent from reaching the water column?</p>",
+          "correct_answer": "methane",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 39,
+          "question_type": "short_answer",
+          "question": "<p>What term describes the combined coral and its microbes?</p>",
+          "correct_answer": "holobiont",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 40,
+          "question_type": "short_answer",
+          "question": "<p>What expanding zones are linked to nutrient runoff in paragraph F?</p>",
+          "correct_answer": "dead zones",
+          "question_config": {
+            "word_limit": 2,
+            "word_limit_label": "NO MORE THAN TWO WORDS",
+            "case_insensitive": true
+          }
+        }
+      ]
+    }
+  ]
+}

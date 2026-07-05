@@ -12,6 +12,12 @@ class QuizManualGradingTests(QuizVisibilityTests):
         with self.assertRaises(ValidationError):
             self.ielts_quiz.full_clean()
 
+    def test_reading_and_listening_mutually_exclusive(self):
+        self.ielts_quiz.is_reading = True
+        self.ielts_quiz.is_listening = True
+        with self.assertRaises(ValidationError):
+            self.ielts_quiz.full_clean()
+
     def test_manual_quiz_question_skips_variant_validation(self):
         category = QuizCategory.objects.create(service='ielts', name='Essay cat')
         quiz = Quiz.objects.create(
@@ -56,7 +62,7 @@ class QuizManualGradingTests(QuizVisibilityTests):
         self.ielts_quiz.is_listening = True
         self.ielts_quiz.save(update_fields=['is_listening'])
         data = serialize_quiz(self.ielts_quiz)
-        self.assertTrue(data['is_manual_grading'])
+        self.assertFalse(data['is_manual_grading'])
         self.assertEqual(data['grading_mode'], 'listening')
 
     def test_manual_quiz_result_max_value_is_ten(self):
@@ -198,7 +204,7 @@ class QuizManualGradingTests(QuizVisibilityTests):
             given_answers={str(question.pk): 'Edited draft.'},
         )
         self.assertFalse(retry['success'])
-        result = QuizResult.objects.get(student=self.student, quiz=self.ielts_quiz)
+        result = QuizResult.objects.filter(student=self.student, quiz=self.ielts_quiz).order_by('-completed_at', '-id').first()
         self.assertEqual(result.given_answers.get(str(question.pk)), 'First draft.')
 
     def test_student_can_retake_manual_quiz_after_teacher_review(self):
@@ -222,7 +228,7 @@ class QuizManualGradingTests(QuizVisibilityTests):
             given_answers={str(question.pk): 'First draft.'},
         )
 
-        result = QuizResult.objects.get(student=self.student, quiz=self.ielts_quiz)
+        result = QuizResult.objects.filter(student=self.student, quiz=self.ielts_quiz).order_by('-completed_at', '-id').first()
         submit_teacher_quiz_review(
             teacher_id=self.teacher.pk,
             result_id=result.pk,
@@ -239,12 +245,15 @@ class QuizManualGradingTests(QuizVisibilityTests):
             given_answers={str(question.pk): 'Retake attempt.'},
         )
         self.assertTrue(retake['success'])
+        self.assertEqual(QuizResult.objects.filter(student=self.student, quiz=self.ielts_quiz).count(), 2)
+        latest_result = QuizResult.objects.filter(student=self.student, quiz=self.ielts_quiz).order_by('-completed_at', '-id').first()
+        self.assertEqual(latest_result.given_answers.get(str(question.pk)), 'Retake attempt.')
+        self.assertIsNone(latest_result.reviewed_at)
+        self.assertIsNone(latest_result.total_score)
+        self.assertEqual(latest_result.teacher_feedback, '')
+        self.assertTrue(latest_result.is_pending_review)
         result.refresh_from_db()
-        self.assertEqual(result.given_answers.get(str(question.pk)), 'Retake attempt.')
-        self.assertIsNone(result.reviewed_at)
-        self.assertIsNone(result.total_score)
-        self.assertEqual(result.teacher_feedback, '')
-        self.assertTrue(result.is_pending_review)
+        self.assertEqual(result.total_score, 8)
 
     def test_essay_quiz_stores_separate_answer_per_question(self):
         from portals.utils.quiz_submit import build_essay_question_responses, submit_manual_quiz_attempt
@@ -270,7 +279,7 @@ class QuizManualGradingTests(QuizVisibilityTests):
             },
         )
         self.assertTrue(outcome['success'])
-        result = QuizResult.objects.get(student=self.student, quiz=self.ielts_quiz)
+        result = QuizResult.objects.filter(student=self.student, quiz=self.ielts_quiz).order_by('-completed_at', '-id').first()
         self.assertEqual(result.given_answers[str(question_one.pk)], 'Answer for task one.')
         self.assertEqual(result.given_answers[str(question_two.pk)], 'Answer for task two.')
         self.assertEqual(result.student_submission, '')
@@ -301,13 +310,13 @@ class QuizManualGradingTests(QuizVisibilityTests):
             ordered_answers=['Answer for task one.', 'Answer for task two.'],
         )
         self.assertTrue(outcome['success'])
-        result = QuizResult.objects.get(student=self.student, quiz=self.ielts_quiz)
+        result = QuizResult.objects.filter(student=self.student, quiz=self.ielts_quiz).order_by('-completed_at', '-id').first()
         self.assertEqual(len(result.given_answers), 2)
 
     def test_listening_quiz_audio_and_text_questions(self):
         from portals.models import ListeningAudio, ListeningQuestion
-        from portals.utils.queries import get_student_manual_quiz_take_data
-        from portals.utils.quiz_submit import build_essay_question_responses, submit_manual_quiz_attempt
+        from portals.utils.queries import get_student_listening_quiz_take_data
+        from portals.utils.quiz_submit import build_essay_question_responses, submit_listening_quiz_attempt
 
         self.ielts_quiz.is_listening = True
         self.ielts_quiz.save(update_fields=['is_listening'])
@@ -318,41 +327,51 @@ class QuizManualGradingTests(QuizVisibilityTests):
             audio_url='https://example.com/audio.mp3',
         )
         q1 = ListeningQuestion.objects.create(
-            audio=audio, order=1, question='What is the customer name?',
+            audio=audio, order=1, question='What is the customer name?', correct_answer='Anna',
         )
         q2 = ListeningQuestion.objects.create(
-            audio=audio, order=2, question='What time is the appointment?',
+            audio=audio, order=2, question='What time is the appointment?', correct_answer='3:30 pm',
         )
         children = [q1, q2]
 
-        data = get_student_manual_quiz_take_data(self.student.pk, self.ielts_quiz.pk)
+        data = get_student_listening_quiz_take_data(self.student.pk, self.ielts_quiz.pk)
         self.assertIsNotNone(data)
         self.assertEqual(len(data['listening_sections']), 1)
         self.assertEqual(len(data['listening_sections'][0]['questions']), 2)
         self.assertEqual(data['response_question_count'], 2)
+        self.assertFalse(data['view_only'])
+        self.assertFalse(data['is_pending_review'])
 
         given_answers = {
             str(children[0].pk): 'Anna',
             str(children[1].pk): '3:30 pm',
         }
 
-        outcome = submit_manual_quiz_attempt(
+        outcome = submit_listening_quiz_attempt(
             student_id=self.student.pk,
             quiz_id=self.ielts_quiz.pk,
             given_answers=given_answers,
         )
         self.assertTrue(outcome['success'])
-        result = QuizResult.objects.get(student=self.student, quiz=self.ielts_quiz)
+        self.assertEqual(outcome['total_score'], 2)
+        self.assertEqual(outcome['max_score'], 2)
+        self.assertNotIn('pending_review', outcome)
+        result = QuizResult.objects.filter(student=self.student, quiz=self.ielts_quiz).order_by('-completed_at', '-id').first()
         self.assertEqual(result.given_answers[str(children[0].pk)], 'Anna')
         self.assertEqual(result.given_answers[str(children[1].pk)], '3:30 pm')
+        self.assertEqual(result.total_score, 2)
 
         responses = build_essay_question_responses(result)
         self.assertEqual(len(responses), 2)
         self.assertEqual(responses[0]['student_answer'], 'Anna')
 
+        retake_data = get_student_listening_quiz_take_data(self.student.pk, self.ielts_quiz.pk)
+        self.assertIsNotNone(retake_data)
+        self.assertFalse(retake_data['view_only'])
+
     def test_listening_quiz_multiple_audio_sections(self):
         from portals.models import ListeningAudio, ListeningQuestion
-        from portals.utils.queries import get_student_manual_quiz_take_data
+        from portals.utils.queries import get_student_listening_quiz_take_data
 
         self.ielts_quiz.is_listening = True
         self.ielts_quiz.save(update_fields=['is_listening'])
@@ -375,7 +394,7 @@ class QuizManualGradingTests(QuizVisibilityTests):
             audio=audio_two, order=1, question='Section 2 question',
         )
 
-        data = get_student_manual_quiz_take_data(self.student.pk, self.ielts_quiz.pk)
+        data = get_student_listening_quiz_take_data(self.student.pk, self.ielts_quiz.pk)
         self.assertIsNotNone(data)
         self.assertEqual(len(data['listening_sections']), 2)
         self.assertEqual(data['listening_sections'][0]['audio']['id'], audio_one.pk)
@@ -386,7 +405,7 @@ class QuizManualGradingTests(QuizVisibilityTests):
 
     def test_listening_quiz_variant_answer_index_zero(self):
         from portals.models import ListeningAudio, ListeningQuestion
-        from portals.utils.quiz_submit import submit_manual_quiz_attempt
+        from portals.utils.quiz_submit import submit_listening_quiz_attempt
 
         self.ielts_quiz.is_listening = True
         self.ielts_quiz.save(update_fields=['is_listening'])
@@ -404,19 +423,21 @@ class QuizManualGradingTests(QuizVisibilityTests):
             correct_answer='First option',
         )
 
-        outcome = submit_manual_quiz_attempt(
+        outcome = submit_listening_quiz_attempt(
             student_id=self.student.pk,
             quiz_id=self.ielts_quiz.pk,
             given_answers={str(question.pk): '0'},
         )
         self.assertTrue(outcome['success'])
-        result = QuizResult.objects.get(student=self.student, quiz=self.ielts_quiz)
+        self.assertEqual(outcome['total_score'], 1)
+        result = QuizResult.objects.filter(student=self.student, quiz=self.ielts_quiz).order_by('-completed_at', '-id').first()
         self.assertEqual(result.given_answers[str(question.pk)], '0')
+        self.assertEqual(result.total_score, 1)
 
     def test_listening_variant_review_includes_option_metadata(self):
         from portals.models import ListeningAudio, ListeningQuestion
         from portals.utils.queries import get_teacher_quiz_result_detail, serialize_quiz_result_review
-        from portals.utils.quiz_submit import submit_manual_quiz_attempt
+        from portals.utils.quiz_submit import submit_listening_quiz_attempt
 
         self.ielts_quiz.is_listening = True
         self.ielts_quiz.save(update_fields=['is_listening'])
@@ -434,12 +455,13 @@ class QuizManualGradingTests(QuizVisibilityTests):
             correct_answer='First option',
         )
 
-        submit_manual_quiz_attempt(
+        outcome = submit_listening_quiz_attempt(
             student_id=self.student.pk,
             quiz_id=self.ielts_quiz.pk,
             given_answers={str(question.pk): '0'},
         )
-        result = QuizResult.objects.get(student=self.student, quiz=self.ielts_quiz)
+        self.assertTrue(outcome['success'])
+        result = QuizResult.objects.filter(student=self.student, quiz=self.ielts_quiz).order_by('-completed_at', '-id').first()
         review = serialize_quiz_result_review(result)
         variant = review['listening_sections'][0]['questions'][0]
         self.assertTrue(variant['is_variant'])
@@ -454,10 +476,10 @@ class QuizManualGradingTests(QuizVisibilityTests):
         teacher_variant = teacher_review['listening_sections'][0]['questions'][0]
         self.assertEqual(teacher_variant['selected_option_index'], 0)
 
-    def test_listening_pending_submission_is_view_only(self):
+    def test_listening_auto_submit_allows_retake(self):
         from portals.models import ListeningAudio, ListeningQuestion
-        from portals.utils.queries import get_student_manual_quiz_take_data
-        from portals.utils.quiz_submit import submit_manual_quiz_attempt
+        from portals.utils.queries import get_student_listening_quiz_take_data, get_student_manual_quiz_take_data
+        from portals.utils.quiz_submit import submit_listening_quiz_attempt
 
         self.ielts_quiz.is_listening = True
         self.ielts_quiz.save(update_fields=['is_listening'])
@@ -471,20 +493,24 @@ class QuizManualGradingTests(QuizVisibilityTests):
             audio=audio,
             order=1,
             question='What is the answer?',
+            correct_answer='Expected',
         )
 
-        submit_manual_quiz_attempt(
+        outcome = submit_listening_quiz_attempt(
             student_id=self.student.pk,
             quiz_id=self.ielts_quiz.pk,
             given_answers={str(question.pk): 'My answer'},
         )
+        self.assertTrue(outcome['success'])
+        self.assertEqual(outcome['total_score'], 0)
+        self.assertEqual(outcome['max_score'], 1)
 
-        data = get_student_manual_quiz_take_data(self.student.pk, self.ielts_quiz.pk)
+        self.assertIsNone(get_student_manual_quiz_take_data(self.student.pk, self.ielts_quiz.pk))
+
+        data = get_student_listening_quiz_take_data(self.student.pk, self.ielts_quiz.pk)
         self.assertIsNotNone(data)
-        self.assertTrue(data['view_only'])
-        self.assertTrue(data['is_pending_review'])
-        self.assertEqual(len(data['listening_sections']), 1)
-        self.assertEqual(data['listening_sections'][0]['questions'][0]['student_answer'], 'My answer')
+        self.assertFalse(data['view_only'])
+        self.assertFalse(data['is_pending_review'])
 
     def test_writing_category_manual_quiz_uses_text_responses(self):
         from portals.utils.quiz_submit import submit_manual_quiz_attempt
@@ -505,6 +531,6 @@ class QuizManualGradingTests(QuizVisibilityTests):
             ordered_answers=['Answer for task one.', 'Answer for task two.'],
         )
         self.assertTrue(outcome['success'])
-        result = QuizResult.objects.get(student=self.student, quiz=quiz)
+        result = QuizResult.objects.filter(student=self.student, quiz=quiz).order_by('-completed_at', '-id').first()
         self.assertEqual(len(result.given_answers), 2)
         self.assertEqual(result.student_submission, '')

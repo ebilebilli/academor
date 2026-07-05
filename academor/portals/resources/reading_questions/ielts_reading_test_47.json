@@ -1,0 +1,387 @@
+{
+  "title": "IELTS Academic Reading — Practice Test 47",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–40</strong></p><p>You should spend about 60 minutes on <strong>Questions 1–40</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Behavioural Economics and Nudges</strong></p><p><strong>A</strong> Behavioural economics integrates psychological evidence that individuals deviate from rational choice models through present bias, loss aversion, and social norms shaping savings, health, and energy decisions. Nudges alter choice architecture—default enrolment, label framing, social comparisons—without forbidding options, aiming to steer toward welfare-improving behaviour while preserving liberty as contrasted with mandates or taxes. Thaler and Sunstein popularised libertarian paternalism, sparking government units from behavioural insights teams testing letter wording increasing tax compliance or organ donation registration via opt-out defaults controversial among ethicists fearing manipulation and among traditional economists sceptical of small effect sizes failing cost-benefit thresholds when scaled nationally across heterogeneous populations with unequal literacy and trust in institutions crafting messages.</p><p><strong>B</strong> Defaults powerfully influence pension participation when employers auto-enrol workers with ability to opt out, raising coverage compared with opt-in forms ignored on desks. Commitment devices and labelled savings accounts help some households overcome procrastination, though liquidity constraints limit uptake among low-income families. Simplified choice sets reduce paralysis in insurance exchanges, yet oversimplification may hide vital coverage gaps. Randomised controlled trials in field settings provide credible impact estimates, inspiring evidence-based policy movements while raising external validity questions when pilots run with enthusiastic agencies not representative of bureaucratic inertia nationwide implementing at scale with vendor contracts and IT failures delaying rollouts undermining projected savings assumptions used to justify budgets to legislatures skeptical</p><p><strong>C</strong> Health nudges include placing healthier foods at eye level in cafeterias, displaying calorie counts, and sending appointment reminders reducing missed visits. Critics argue structural determinants—poverty, shift work, food deserts— dwarf label tweaks, risking victim-blaming narratives if politicians cite nudges instead of investing in clinics and wages. Environmental applications prompt home energy reports comparing consumption to neighbours, achieving modest reductions with rebound effects partially offsetting gains when savings fund additional usage elsewhere in household budgets. Digital platforms A/B test button colours and notification timing harvesting behavioural data at unprecedented granularity, blurring line between public policy nudges and commercial dark patterns exploiting biases regulators struggle to define legally without chilling legitimate marketing</p><p><strong>D</strong> Ethical frameworks demand transparency, easy opt-outs, and welfare criteria judged by affected individuals not only planners. Sludge audits identify burdensome paperwork harming vulnerable groups, pairing nudge agendas with simplification removing frictions deliberately inserted by incumbents protecting rents. Paternalism debates question whether apparent preferences revealed by choices always reflect true interests when learning is costly and advertising manipulates desires. Developing countries adapt nudges to mobile money contexts skipping legacy paperwork, achieving high uptake of savings prompts via SMS though network outages and illiteracy require voice-based alternatives and agent networks trusted locally rather than one-size SMS templates designed in capital cities distant from rural users' lived constraints and seasonal cash flow rhythms</p><p><strong>E</strong> Organisational behaviour applies nudges internally: meeting defaults shortened, performance feedback timed strategically, diversity prompts in hiring systems reducing biased shortlists when structured rubrics accompany reminders. Unintended consequences include complacency if employees perceive manipulation, eroding trust. Union negotiators demand clarity on surveillance metrics derived from behavioural monitoring wearables entering workplaces promising safety nudges yet enabling punitive productivity scoring. Public sector procurement now requests trial evidence before funding nationwide campaigns printing behavioural slogans on buses, a maturation from early enthusiasm toward accountability aligning with fiscal conservatism after high-profile failures where nudges produced null results published reluctantly yet valuably preventing waste replication if open science norms prevail across agencies sharing null findings repositories</p><p><strong>F</strong> Relation to traditional policy instruments matters: carbon taxes change prices directly, while nudges may complement but rarely substitute when externalities large. Subsidies for insulation plus simplifed application defaults illustrate layering. Political feasibility sometimes favours nudges because they avoid explicit tax votes, a democratic deficit if used to circumvent debate. Academic curricula now teach behavioural modules alongside micro foundations, training analysts to spot biases in their own forecasting avoiding overconfidence traps behavioural research documented among experts as well as laypeople, meta-analytically replicated across domains from finance to medicine where checklists and premortems mitigate planning fallacies killing projects that might have succeeded with realistic reference class forecasting instead of best-case storytelling to</p><p><strong>G</strong> Looking ahead, the author believes nudges belong in toolkit with transparency and equity audits, not as excuse for austerity neglecting structural reform. Personalised nudges via algorithms risk segmentation and privacy harms unless governed. Citizen assemblies could review architectures affecting collective choices like pension defaults and organ donation rules balancing autonomy and welfare. If behavioural units become public relations shields, credibility will collapse. Rigorous evaluation, publication of failures, and democratic legitimacy distinguish ethical nudge practice from covert manipulation or corporate exploitation, preserving insights that small frictions matter while acknowledging limits when power imbalances and scarcity dominate lives no wording tweak alone can remedy without redistribution and rights enforcement underpinning real freedom</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 11–15",
+          "instructions": "<p>Choose the correct heading for paragraphs <strong>B–F</strong> from the list of headings below.</p><p><em>Write the correct number, <strong>i–vii</strong>, in boxes 11–15 on your answer sheet.</em></p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "i. Defaults, trials, and scale challenges",
+            "ii. Health, environment, and dark patterns",
+            "iii. Ethics, sludge audits, and mobile contexts",
+            "iv. Workplace applications and union concerns",
+            "v. Relation to taxes and democratic feasibility",
+            "vi. Cold War ARPANET origins",
+            "vii. Silk terracing bajos"
+          ],
+          "questions": [
+            {
+              "order": 11,
+              "question": "<p>Paragraph B</p>",
+              "correct_answer": "i. Defaults, trials, and scale challenges"
+            },
+            {
+              "order": 12,
+              "question": "<p>Paragraph C</p>",
+              "correct_answer": "ii. Health, environment, and dark patterns"
+            },
+            {
+              "order": 13,
+              "question": "<p>Paragraph D</p>",
+              "correct_answer": "iii. Ethics, sludge audits, and mobile contexts"
+            },
+            {
+              "order": 14,
+              "question": "<p>Paragraph E</p>",
+              "correct_answer": "iv. Workplace applications and union concerns"
+            },
+            {
+              "order": 15,
+              "question": "<p>Paragraph F</p>",
+              "correct_answer": "v. Relation to taxes and democratic feasibility"
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "title": "Questions 16–20",
+          "instructions": "<p>Which paragraph contains the following information?</p><p><em>Write the correct letter, <strong>A–G</strong>, in boxes 16–20 on your answer sheet.</em></p>",
+          "question_type": "matching_info",
+          "option_pool": [
+            "Paragraph A",
+            "Paragraph B",
+            "Paragraph C",
+            "Paragraph D",
+            "Paragraph E",
+            "Paragraph F",
+            "Paragraph G"
+          ],
+          "questions": [
+            {
+              "order": 16,
+              "question": "<p>auto-enrol pension defaults with opt-out ability</p>",
+              "correct_answer": "Paragraph B"
+            },
+            {
+              "order": 17,
+              "question": "<p>neighbour comparison home energy reports</p>",
+              "correct_answer": "Paragraph C"
+            },
+            {
+              "order": 18,
+              "question": "<p>sludge audits identifying burdensome paperwork</p>",
+              "correct_answer": "Paragraph D"
+            },
+            {
+              "order": 19,
+              "question": "<p>wearables enabling punitive productivity scoring concerns</p>",
+              "correct_answer": "Paragraph E"
+            },
+            {
+              "order": 20,
+              "question": "<p>carbon taxes contrasted with nudge limitations</p>",
+              "correct_answer": "Paragraph F"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "tfng",
+          "question": "<p>Nudges aim to preserve liberty compared with mandates.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 2,
+          "question_type": "tfng",
+          "question": "<p>All behavioural pilots scale flawlessly without IT delays.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 3,
+          "question_type": "tfng",
+          "question": "<p>The passage states nudges always substitute for carbon taxes.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 4,
+          "question_type": "tfng",
+          "question": "<p>Opt-out defaults increased organ donation registration in some cases.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 5,
+          "question_type": "tfng",
+          "question": "<p>Present bias is listed as a deviation from rational models.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 6,
+          "question_type": "ynng",
+          "question": "<p>The author opposes using nudges as austerity excuses.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 7,
+          "question_type": "ynng",
+          "question": "<p>The writer believes null trial results should be published.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 8,
+          "question_type": "ynng",
+          "question": "<p>The author supports covert manipulation without transparency.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 9,
+          "question_type": "ynng",
+          "question": "<p>The writer claims label tweaks alone solve food deserts.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 10,
+          "question_type": "ynng",
+          "question": "<p>The author sees citizen assemblies as potentially reviewing defaults.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 21,
+          "question_type": "sentence_completion",
+          "question": "<p>Loss aversion and present bias shape savings and ____ decisions.</p>",
+          "correct_answer": "health",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 22,
+          "question_type": "sentence_completion",
+          "question": "<p>Randomised controlled trials inspire evidence-based ____ movements.</p>",
+          "correct_answer": "policy",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 23,
+          "question_type": "sentence_completion",
+          "question": "<p>Sludge audits pair nudges with ____ removing frictions.</p>",
+          "correct_answer": "simplification",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 24,
+          "question_type": "sentence_completion",
+          "question": "<p>Premortems mitigate planning ____ documented among experts.</p>",
+          "correct_answer": "fallacies",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 25,
+          "question_type": "summary_completion",
+          "question": "<p>Libertarian ____ popularised choice architecture without forbidding options.</p>",
+          "correct_answer": "paternalism",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 26,
+          "question_type": "summary_completion",
+          "question": "<p>Digital platforms A/B test notification ____ harvesting granular data.</p>",
+          "correct_answer": "timing",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 27,
+          "question_type": "summary_completion",
+          "question": "<p>Developing countries adapt prompts via ____ money and SMS.</p>",
+          "correct_answer": "mobile",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 28,
+          "question_type": "summary_completion",
+          "question": "<p>Segmentation risks arise with personalised nudges via ____.</p>",
+          "correct_answer": "algorithms",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 29,
+          "question_type": "flowchart_completion",
+          "question": "<p>Cafeteria design | Healthier foods placed at eye ____</p>",
+          "correct_answer": "level",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 30,
+          "question_type": "flowchart_completion",
+          "question": "<p>Political risk | Nudges may circumvent tax ____</p>",
+          "correct_answer": "votes",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 31,
+          "question_type": "flowchart_completion",
+          "question": "<p>Evaluation norm | Agencies should share null findings ____</p>",
+          "correct_answer": "repositories",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 32,
+          "question_type": "mcq",
+          "question": "<p>Paragraph A contrasts nudges with</p>",
+          "answer_options": [
+            "mandates and taxes while preserving liberty",
+            "mandatory organ donation without opt-out",
+            "elimination of all randomised trials",
+            "uniform effect sizes at national scale"
+          ],
+          "correct_answer": "mandates and taxes while preserving liberty"
+        },
+        {
+          "order": 33,
+          "question_type": "mcq",
+          "question": "<p>According to paragraph B, auto-enrol raises pension</p>",
+          "answer_options": [
+            "coverage compared with opt-in forms",
+            "costs without any trade-offs",
+            "liquidity for all low-income families",
+            "IT reliability nationwide automatically"
+          ],
+          "correct_answer": "coverage compared with opt-in forms"
+        },
+        {
+          "order": 34,
+          "question_type": "mcq",
+          "question": "<p>Paragraph C critics fear nudges enable</p>",
+          "answer_options": [
+            "victim-blaming instead of structural investment",
+            "elimination of all calorie labels",
+            "banning neighbour comparisons",
+            "mandatory cafeteria redesign laws"
+          ],
+          "correct_answer": "victim-blaming instead of structural investment"
+        },
+        {
+          "order": 35,
+          "question_type": "mcq",
+          "question": "<p>Paragraph E notes unions demand clarity on</p>",
+          "answer_options": [
+            "surveillance metrics from behavioural wearables",
+            "abolition of all hiring rubrics",
+            "ending meeting defaults",
+            "publication of all tax records"
+          ],
+          "correct_answer": "surveillance metrics from behavioural wearables"
+        },
+        {
+          "order": 36,
+          "question_type": "mcq",
+          "question": "<p>The final paragraph distinguishes ethical practice via</p>",
+          "answer_options": [
+            "rigorous evaluation and democratic legitimacy",
+            "corporate dark patterns",
+            "ignoring equity audits",
+            "replacing redistribution entirely"
+          ],
+          "correct_answer": "rigorous evaluation and democratic legitimacy"
+        },
+        {
+          "order": 37,
+          "question_type": "short_answer",
+          "question": "<p>Who popularised libertarian paternalism with Sunstein?</p>",
+          "correct_answer": "Thaler",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 38,
+          "question_type": "short_answer",
+          "question": "<p>What trials provide credible field impact estimates?</p>",
+          "correct_answer": "randomised",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 39,
+          "question_type": "short_answer",
+          "question": "<p>What audits identify deliberately burdensome paperwork?</p>",
+          "correct_answer": "sludge",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 40,
+          "question_type": "short_answer",
+          "question": "<p>What assemblies could review pension default rules?</p>",
+          "correct_answer": "citizen",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        }
+      ]
+    }
+  ]
+}

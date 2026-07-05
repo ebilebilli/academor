@@ -1,0 +1,387 @@
+{
+  "title": "IELTS Academic Reading — Practice Test 32",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–40</strong></p><p>You should spend about 60 minutes on <strong>Questions 1–40</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Attachment Across the Lifespan</strong></p><p><strong>A</strong> Attachment theory describes how early caregiver responsiveness shapes expectations about trust, comfort, and exploration across the lifespan. Infants develop internal working models that guide social behaviour in childhood friendships, adolescent romance, and adult partnerships. Longitudinal studies following cohorts for decades link secure patterns with better emotion regulation, though change remains possible after supportive therapy or stable relationships later in life. Critics caution against deterministic readings that blame parents for all adult difficulties while ignoring poverty, discrimination, and neighbourhood violence. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality. Policy evaluations therefore depend on transparent reporting and independent replication of key results.</p><p><strong>B</strong> Strange Situation experiments classify toddler behaviour toward reunions after brief separations, distinguishing secure, avoidant, ambivalent, and disorganised patterns. Cross-cultural replication shows category prevalence varies, prompting debate about universal versus culturally embedded norms of closeness. Daycare expansion led researchers to examine multiple caregivers without assuming maternal exclusivity determines outcomes. Quality of sensitivity—prompt comforting, coherent narratives—predicts security more reliably than hours apart, according to meta-analyses synthesising hundreds of observational studies from North America, Europe, and East Asia. Policy evaluations therefore depend on transparent reporting and independent replication of key results. Longitudinal studies remain essential before drawing firm conclusions about causal mechanisms and durable outcomes.</p><p><strong>C</strong> Adolescent attachment reorganises as peers and romantic partners become salient figures while family bonds remain foundational. Secure teens explore identity with less reckless compensation, whereas insecure youth may cling or dismiss intimacy when stressed. School transitions and migration disrupt familiar networks, temporarily elevating anxiety that supportive mentors can buffer. Neuroimaging studies report associations between reported security and prefrontal regulation of amygdala responses during social rejection tasks, though correlation does not prove causal direction or immutable traits. Longitudinal studies remain essential before drawing firm conclusions about causal mechanisms and durable outcomes. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality.</p><p><strong>D</strong> Adult romantic attachment inventories measure anxiety and avoidance dimensions on continuous scales rather than categorical labels alone. Couples therapy using emotionally focused techniques aims to reshape interaction cycles that perpetuate protest or withdrawal. Workplace research explores how leaders with secure profiles foster psychological safety, while dismissive styles may trivialise subordinate concerns. The author warns against pop psychology quizzes that oversimplify complex histories into fixed types without clinical interviewing or attention to trauma overlays that mimic insecure presentations. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality. Policy evaluations therefore depend on transparent reporting and independent replication of key results.</p><p><strong>E</strong> Ageing introduces attachment needs around illness, bereavement, and relocation to care homes where staff turnover threatens continuity. Spousal loss among older adults can reactivate earlier insecurities, complicating grief with panic or numbness. Intergenerational support flows bidirectionally when adult children coordinate end-of-life care, sometimes reviving childhood dynamics in stressful decision meetings. Programmes pairing residents with consistent volunteers aim to rebuild reliable bonds, reducing agitation in dementia wards where unfamiliar faces trigger fear responses misread as behavioural problems only. Policy evaluations therefore depend on transparent reporting and independent replication of key results. Longitudinal studies remain essential before drawing firm conclusions about causal mechanisms and durable outcomes.</p><p><strong>F</strong> Clinical interventions include parent-infant coaching, circle of security groups, and mentalisation-based therapies strengthening reflective capacity about one's own and others' minds. Foster and adoption systems prioritise placement stability because multiple disruptions correlate with disorganised profiles and educational struggles. Policy implications span paid parental leave, affordable mental health coverage, and domestic violence prevention protecting caregivers and children simultaneously. The writer contends attachment science should inform systems design, not merely individual counselling markets priced beyond reach of disadvantaged families. Longitudinal studies remain essential before drawing firm conclusions about causal mechanisms and durable outcomes. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality.</p><p><strong>G</strong> Looking ahead, integrative models will combine genetics, epigenetics, and social context without reviving simplistic nature-nurture splits. Open science practices sharing anonymised longitudinal datasets could improve reproducibility across laboratories. If popular media reduce attachment to blame narratives, the author fears stigma will deter help-seeking. Respectful translation of research into parenting support, education, and elder care policies offers a compassionate application that honours both resilience and the enduring human need for dependable connection. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality. Policy evaluations therefore depend on transparent reporting and independent replication of key results.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 11–15",
+          "instructions": "<p>Choose the correct heading for paragraphs <strong>B–F</strong> from the list of headings below.</p><p><em>Write the correct number, <strong>i–vii</strong>, in boxes 11–15 on your answer sheet.</em></p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "i. Laboratory classification and cultural debate",
+            "ii. Peers, migration, and neural correlates",
+            "iii. Romantic measures and workplace leadership",
+            "iv. Ageing, bereavement, and care continuity",
+            "v. Interventions, foster care, and policy levers",
+            "vi. Central bank reserve asset swaps",
+            "vii. Enzyme kinetics in cold oceans"
+          ],
+          "questions": [
+            {
+              "order": 11,
+              "question": "<p>Paragraph B</p>",
+              "correct_answer": "i. Laboratory classification and cultural debate"
+            },
+            {
+              "order": 12,
+              "question": "<p>Paragraph C</p>",
+              "correct_answer": "ii. Peers, migration, and neural correlates"
+            },
+            {
+              "order": 13,
+              "question": "<p>Paragraph D</p>",
+              "correct_answer": "iii. Romantic measures and workplace leadership"
+            },
+            {
+              "order": 14,
+              "question": "<p>Paragraph E</p>",
+              "correct_answer": "iv. Ageing, bereavement, and care continuity"
+            },
+            {
+              "order": 15,
+              "question": "<p>Paragraph F</p>",
+              "correct_answer": "v. Interventions, foster care, and policy levers"
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "title": "Questions 16–20",
+          "instructions": "<p>Which paragraph contains the following information?</p><p><em>Write the correct letter, <strong>A–G</strong>, in boxes 16–20 on your answer sheet.</em></p>",
+          "question_type": "matching_info",
+          "option_pool": [
+            "Paragraph A",
+            "Paragraph B",
+            "Paragraph C",
+            "Paragraph D",
+            "Paragraph E",
+            "Paragraph F",
+            "Paragraph G"
+          ],
+          "questions": [
+            {
+              "order": 16,
+              "question": "<p>description of Strange Situation reunions after separation</p>",
+              "correct_answer": "Paragraph B"
+            },
+            {
+              "order": 17,
+              "question": "<p>reference to amygdala responses during social rejection</p>",
+              "correct_answer": "Paragraph C"
+            },
+            {
+              "order": 18,
+              "question": "<p>mention of emotionally focused couples therapy</p>",
+              "correct_answer": "Paragraph D"
+            },
+            {
+              "order": 19,
+              "question": "<p>discussion of staff turnover in care homes</p>",
+              "correct_answer": "Paragraph E"
+            },
+            {
+              "order": 20,
+              "question": "<p>policy links to paid parental leave and violence prevention</p>",
+              "correct_answer": "Paragraph F"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "tfng",
+          "question": "<p>Internal working models can guide adult partnerships.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 2,
+          "question_type": "tfng",
+          "question": "<p>The passage claims attachment patterns never change after infancy.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 3,
+          "question_type": "tfng",
+          "question": "<p>Every culture shows identical Strange Situation category rates.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 4,
+          "question_type": "tfng",
+          "question": "<p>Meta-analyses link sensitivity quality to security more than hours apart.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 5,
+          "question_type": "tfng",
+          "question": "<p>Neuroimaging proves secure attachment is genetically fixed.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 6,
+          "question_type": "ynng",
+          "question": "<p>The author warns against deterministic blame of parents alone.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 7,
+          "question_type": "ynng",
+          "question": "<p>The writer endorses pop quizzes as sufficient clinical assessment.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 8,
+          "question_type": "ynng",
+          "question": "<p>The author believes attachment science should inform systems design.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 9,
+          "question_type": "ynng",
+          "question": "<p>The writer thinks stigma from media narratives may deter help-seeking.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 10,
+          "question_type": "ynng",
+          "question": "<p>The author rejects any role for genetics in integrative models.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 21,
+          "question_type": "sentence_completion",
+          "question": "<p>Secure infants explore with better emotion ____.</p>",
+          "correct_answer": "regulation",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 22,
+          "question_type": "sentence_completion",
+          "question": "<p>Adult inventories measure anxiety and ____ dimensions.</p>",
+          "correct_answer": "avoidance",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 23,
+          "question_type": "sentence_completion",
+          "question": "<p>Multiple foster disruptions correlate with ____ profiles.</p>",
+          "correct_answer": "disorganised",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 24,
+          "question_type": "sentence_completion",
+          "question": "<p>Volunteer pairing aims to reduce agitation in ____ wards.</p>",
+          "correct_answer": "dementia",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 25,
+          "question_type": "summary_completion",
+          "question": "<p>Daycare research examines multiple caregivers without assuming maternal ____. Quality of sensitivity matters.</p>",
+          "correct_answer": "exclusivity",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 26,
+          "question_type": "summary_completion",
+          "question": "<p>Couples therapy targets interaction ____ that perpetuate withdrawal.</p>",
+          "correct_answer": "cycles",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 27,
+          "question_type": "summary_completion",
+          "question": "<p>Mentalisation-based therapies strengthen reflective capacity about ____. </p>",
+          "correct_answer": "minds",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 28,
+          "question_type": "summary_completion",
+          "question": "<p>Open science could improve reproducibility across ____. </p>",
+          "correct_answer": "laboratories",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 29,
+          "question_type": "table_completion",
+          "question": "<p>Adolescent stress | Insecure youth may ____ intimacy when stressed</p>",
+          "correct_answer": "dismiss",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 30,
+          "question_type": "table_completion",
+          "question": "<p>Workplace finding | Secure leaders may foster psychological ____</p>",
+          "correct_answer": "safety",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 31,
+          "question_type": "table_completion",
+          "question": "<p>Ageing risk | Unfamiliar faces may trigger ____ responses</p>",
+          "correct_answer": "fear",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 32,
+          "question_type": "mcq",
+          "question": "<p>Paragraph A emphasises that patterns can change after</p>",
+          "answer_options": [
+            "supportive therapy or stable later relationships",
+            "only genetic interventions",
+            "complete separation from all caregivers",
+            "mandatory pop psychology quizzes"
+          ],
+          "correct_answer": "supportive therapy or stable later relationships"
+        },
+        {
+          "order": 33,
+          "question_type": "mcq",
+          "question": "<p>According to paragraph B, security is predicted more by</p>",
+          "answer_options": [
+            "caregiver sensitivity than mere hours apart",
+            "maternal exclusivity regardless of quality",
+            "avoiding all daycare exposure",
+            "ignoring cultural variation"
+          ],
+          "correct_answer": "caregiver sensitivity than mere hours apart"
+        },
+        {
+          "order": 34,
+          "question_type": "mcq",
+          "question": "<p>Paragraph D cautions that dismissive leaders may</p>",
+          "answer_options": [
+            "trivialise subordinate concerns",
+            "eliminate all anxiety measures",
+            "require clinical interviewing by law",
+            "ban emotionally focused therapy"
+          ],
+          "correct_answer": "trivialise subordinate concerns"
+        },
+        {
+          "order": 35,
+          "question_type": "mcq",
+          "question": "<p>Paragraph E notes dementia agitation may be misread as</p>",
+          "answer_options": [
+            "behavioural problems without attachment lens",
+            "secure exploration",
+            "purely genetic inevitability",
+            "voluntary withdrawal only"
+          ],
+          "correct_answer": "behavioural problems without attachment lens"
+        },
+        {
+          "order": 36,
+          "question_type": "mcq",
+          "question": "<p>The final paragraph supports translation into policies that</p>",
+          "answer_options": [
+            "respect resilience and need for dependable connection",
+            "blame caregivers exclusively",
+            "reject open science sharing",
+            "ignore elder care contexts"
+          ],
+          "correct_answer": "respect resilience and need for dependable connection"
+        },
+        {
+          "order": 37,
+          "question_type": "short_answer",
+          "question": "<p>What laboratory paradigm classifies toddler reunion behaviour?</p>",
+          "correct_answer": "Strange Situation",
+          "question_config": {
+            "word_limit": 2,
+            "word_limit_label": "NO MORE THAN TWO WORDS",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 38,
+          "question_type": "short_answer",
+          "question": "<p>What therapy type aims to reshape couples' interaction cycles?</p>",
+          "correct_answer": "emotionally focused",
+          "question_config": {
+            "word_limit": 2,
+            "word_limit_label": "NO MORE THAN TWO WORDS",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 39,
+          "question_type": "short_answer",
+          "question": "<p>What brain region is linked to regulation during rejection tasks?</p>",
+          "correct_answer": "prefrontal",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 40,
+          "question_type": "short_answer",
+          "question": "<p>What group intervention strengthens reflective capacity about minds?</p>",
+          "correct_answer": "mentalisation-based",
+          "question_config": {
+            "word_limit": 2,
+            "word_limit_label": "NO MORE THAN TWO WORDS",
+            "case_insensitive": true
+          }
+        }
+      ]
+    }
+  ]
+}

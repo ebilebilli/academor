@@ -51,7 +51,7 @@ def serialize_quiz_category(category):
         'id': category.pk,
         'name': category.name,
         'service': category.service,
-        'service_label': resolve_course_type_label(category.service),
+        'service_label': resolve_course_type_label(category.service, lang='en'),
         'quiz_count': quiz_count,
     }
 
@@ -61,7 +61,7 @@ def build_quiz_service_tabs(categories):
 
     from portals.utils.portal_services import get_course_type_label_map
 
-    labels = get_course_type_label_map()
+    labels = get_course_type_label_map(lang='en')
     counts = {}
     for category in categories:
         code = category.get('service') or ''
@@ -398,13 +398,17 @@ def _quiz_results_queryset():
         .annotate(question_count=Count('quiz__questions', distinct=True))
         .order_by('-completed_at', '-id')
     )
-def resolve_scores_view_param(request, quiz_scores, lesson_scores):
+
+
+def resolve_scores_view_param(request, quiz_scores, weekly_scores):
     """Pick active scores tab from query string or sensible default."""
     scores_view = request.GET.get('view')
-    if scores_view in ('quiz', 'lesson'):
+    if scores_view == 'lesson':
+        scores_view = 'weekly'
+    if scores_view in ('quiz', 'weekly'):
         return scores_view
-    if not quiz_scores and lesson_scores:
-        return 'lesson'
+    if not quiz_scores and weekly_scores:
+        return 'weekly'
     return 'quiz'
 
 

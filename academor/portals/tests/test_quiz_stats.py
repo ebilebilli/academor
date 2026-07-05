@@ -1,6 +1,6 @@
 from django.test import SimpleTestCase
 
-from portals.utils.quiz_stats import compute_lesson_average_stats, compute_quiz_average_stats, quiz_score_percent
+from portals.utils.quiz_stats import compute_quiz_average_stats, compute_weekly_average_stats, quiz_score_percent
 
 
 class QuizAverageStatsTests(SimpleTestCase):
@@ -27,11 +27,11 @@ class QuizAverageStatsTests(SimpleTestCase):
         self.assertEqual(quiz_score_percent(11, 10), 100.0)
         self.assertEqual(quiz_score_percent(-1, 10), 0.0)
 
-    def test_lesson_average_stats(self):
+    def test_weekly_average_stats(self):
         rows = [
-            {'value': 8, 'max_value': 10},
-            {'value': 7, 'max_value': 10},
+            {'score': 8, 'max_score': 10},
+            {'score': 7, 'max_score': 10},
         ]
-        stats = compute_lesson_average_stats(rows)
+        stats = compute_weekly_average_stats(rows)
         self.assertEqual(stats['avg_score_pct'], 75.0)
         self.assertEqual(stats['graded_count'], 2)

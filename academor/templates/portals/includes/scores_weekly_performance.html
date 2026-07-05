@@ -1,0 +1,52 @@
+{% load i18n %}
+<section class="portal-profile-performance mb-4" aria-label="{% trans 'Performans xülasəsi' %}">
+  <header class="portal-profile-performance__header">
+    <p class="portal-profile-performance__eyebrow">{% trans 'Performans xülasəsi' %}</p>
+    <h2 class="portal-profile-performance__title">{% trans 'Həftəlik qiymətləndirmə ortalaması' %}</h2>
+  </header>
+
+  <div class="portal-profile-performance__grid portal-profile-performance__grid--single">
+    <article
+      class="portal-profile-performance__card portal-profile-performance__card--lesson portal-profile-performance--{{ weekly_average.tier|default:'empty' }}"
+      aria-label="{% trans 'Həftəlik orta bal' %}"
+    >
+      <div class="portal-profile-performance__ring-wrap" aria-hidden="true">
+        <div
+          class="portal-profile-performance__ring"
+          style="--score-pct: {{ weekly_average.avg_score_pct|default:0 }};"
+        >
+          <div class="portal-profile-performance__ring-inner">
+            {% if weekly_average.avg_score_pct is not None %}
+              <span class="portal-profile-performance__pct">{{ weekly_average.avg_score_pct }}%</span>
+            {% else %}
+              <span class="portal-profile-performance__pct is-empty">—</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="portal-profile-performance__copy">
+        <span class="portal-profile-performance__icon lesson"><i class="ti ti-calendar-stats" aria-hidden="true"></i></span>
+        <h3 class="portal-profile-performance__card-title">{% trans 'Orta həftəlik bal' %}</h3>
+        <p class="portal-profile-performance__hint">
+          {% if weekly_average.graded_count %}
+            {% blocktrans count counter=weekly_average.graded_count %}
+              {{ counter }} həftəlik qiymət üzrə 10 bal şkalasında.
+            {% plural %}
+              {{ counter }} həftəlik qiymət üzrə 10 bal şkalasında.
+            {% endblocktrans %}
+          {% else %}
+            {% trans 'Müəllim həftəlik bal verdikdən sonra burada görünəcək.' %}
+          {% endif %}
+        </p>
+        {% if weekly_average.graded_count %}
+        <div class="portal-profile-performance__meta">
+          <span class="portal-profile-performance__chip">
+            <i class="ti ti-check" aria-hidden="true"></i>
+            {{ weekly_average.graded_count }} {% trans 'qiymət' %}
+          </span>
+        </div>
+        {% endif %}
+      </div>
+    </article>
+  </div>
+</section>

@@ -64,8 +64,14 @@
   {% endif %}
   <script defer src="{% static 'portals/js/bootstrap.bundle.min.js' %}"></script>
   <script defer src="{% static 'portals/js/main.js' %}"></script>
-  <script defer src="{% static 'portals/js/portal-nav-ajax.js' %}?v=20260703"></script>
-  <script defer src="{% static 'portals/js/portal-init.js' %}"></script>
+  <script defer src="{% static 'portals/js/portal-nav-ajax.js' %}?v=20260705b"></script>
+  <script defer src="{% static 'portals/js/portal-init.js' %}?v=20260704c"></script>
   {% block extra_js %}{% endblock %}
+  {% if portal_role == 'teacher' %}
+  <link rel="stylesheet" href="{% static 'portals/css/weekly-scores.css' %}">
+  <script defer src="{% static 'portals/js/weekly-scores.js' %}?v=20260704c" data-portal-page-script="true"></script>
+  {% elif portal_role == 'student' or portal_role == 'parent' %}
+  <link rel="stylesheet" href="{% static 'portals/css/weekly-scores.css' %}">
+  {% endif %}
 </body>
 </html>

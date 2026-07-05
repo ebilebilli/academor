@@ -1,13 +1,13 @@
 {% extends "portals/base.html" %}
 {% load i18n portal_tags %}
 
-{% block title %}{% trans 'Classrooms' %}{% endblock %}
+{% block title %}{% trans 'Textbooks' %}{% endblock %}
 
 {% block content %}
 {% if portal_role == 'parent' and children %}
 {% include "portals/includes/parent_child_header.html" %}
 {% endif %}
-{% portal_page_heading icon="bi-book" title="Classrooms" %}
+{% portal_page_heading icon="bi-book" title="Textbooks" %}
 
 {% include "portals/includes/classrooms_panel.html" %}
 {% endblock %}

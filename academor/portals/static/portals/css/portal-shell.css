@@ -158,31 +158,38 @@ a:hover { color: var(--color-role-dark); }
   font-weight: var(--font-medium);
   font-size: var(--text-sm);
   text-decoration: none;
+  cursor: pointer;
   transition:
     background var(--transition-fast),
-    color var(--transition-fast);
+    color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 #adminSidebar .sidebar-nav .nav-link:hover,
-#adminSidebar .sidebar-nav .nav-link:focus {
-  background: #f1f5f9 !important;
-  color: #0f172a !important;
+#adminSidebar .sidebar-nav .nav-link:focus-visible {
+  background: var(--sidebar-hover, #f1f5f9) !important;
+  color: var(--sidebar-text-active, #0f172a) !important;
   transform: none;
 }
 
 #adminSidebar .sidebar-nav .nav-link:hover .nav-text,
-#adminSidebar .sidebar-nav .nav-link:focus .nav-text {
-  color: #0f172a !important;
+#adminSidebar .sidebar-nav .nav-link:focus-visible .nav-text {
+  color: var(--sidebar-text-active, #0f172a) !important;
 }
 
 #adminSidebar .sidebar-nav .nav-link.active {
   background: var(--color-role-subtle) !important;
-  color: #0f172a !important;
+  color: var(--sidebar-text-active, #0f172a) !important;
   font-weight: var(--font-semibold);
 }
 
+#adminSidebar .sidebar-nav .nav-link.active:hover,
+#adminSidebar .sidebar-nav .nav-link.active:focus-visible {
+  background: color-mix(in srgb, var(--color-role) 12%, var(--sidebar-hover, #f1f5f9)) !important;
+}
+
 #adminSidebar .sidebar-nav .nav-link.active .nav-text {
-  color: #0f172a !important;
+  color: var(--sidebar-text-active, #0f172a) !important;
 }
 
 #adminSidebar .sidebar-nav .nav-link.active .nav-icon {
@@ -194,13 +201,13 @@ a:hover { color: var(--color-role-dark); }
   width: 32px;
   height: 32px;
   border-radius: var(--radius-sm);
-  background: #f1f5f9 !important;
-  color: #64748b !important;
+  background: var(--color-gray-100, #f1f5f9) !important;
+  color: var(--color-gray-500, #64748b) !important;
   font-size: var(--icon-nav);
   display: inline-grid;
   place-items: center;
   flex-shrink: 0;
-  transition: background var(--transition-fast), color var(--transition-fast);
+  transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
 
 #adminSidebar .nav-icon .ti,
@@ -210,9 +217,16 @@ a:hover { color: var(--color-role-dark); }
 }
 
 #adminSidebar .sidebar-nav .nav-link:hover .nav-icon,
-#adminSidebar .sidebar-nav .nav-link:focus .nav-icon {
-  background: #e2e8f0 !important;
-  color: #334155 !important;
+#adminSidebar .sidebar-nav .nav-link:focus-visible .nav-icon {
+  background: var(--color-gray-200, #e2e8f0) !important;
+  color: var(--color-gray-700, #334155) !important;
+}
+
+#adminSidebar .sidebar-nav .nav-link.active:hover .nav-icon,
+#adminSidebar .sidebar-nav .nav-link.active:focus-visible .nav-icon {
+  background: var(--color-role) !important;
+  color: #ffffff !important;
+  filter: brightness(1.05);
 }
 
 #adminSidebar .nav-badge {
@@ -1708,10 +1722,21 @@ html[data-theme="light"] #adminSidebar .sidebar-nav .nav-link .nav-text {
 }
 
 html[data-theme="light"] #adminSidebar .sidebar-nav .nav-link:hover,
-html[data-theme="light"] #adminSidebar .sidebar-nav .nav-link:focus,
+html[data-theme="light"] #adminSidebar .sidebar-nav .nav-link:focus-visible,
 html[data-theme="light"] #adminSidebar .sidebar-nav .nav-link:hover .nav-text,
-html[data-theme="light"] #adminSidebar .sidebar-nav .nav-link:focus .nav-text {
-  color: #0f172a !important;
+html[data-theme="light"] #adminSidebar .sidebar-nav .nav-link:focus-visible .nav-text {
+  color: var(--sidebar-text-active, #0f172a) !important;
+}
+
+html[data-theme="light"] #adminSidebar .sidebar-nav .nav-link:not(.active):hover,
+html[data-theme="light"] #adminSidebar .sidebar-nav .nav-link:not(.active):focus-visible {
+  background: var(--sidebar-hover, #f1f5f9) !important;
+}
+
+html[data-theme="light"] #adminSidebar .sidebar-nav .nav-link:not(.active):hover .nav-icon,
+html[data-theme="light"] #adminSidebar .sidebar-nav .nav-link:not(.active):focus-visible .nav-icon {
+  background: var(--color-gray-200, #e2e8f0) !important;
+  color: var(--color-gray-700, #334155) !important;
 }
 
 html[data-theme="light"] #adminSidebar .sidebar-nav .nav-link.active,
@@ -1784,9 +1809,20 @@ html[data-theme="light"] #adminSidebar .nav-icon i {
 }
 
 [data-theme="dark"] #adminSidebar .sidebar-nav .nav-link:hover,
-[data-theme="dark"] #adminSidebar .sidebar-nav .nav-link:focus,
+[data-theme="dark"] #adminSidebar .sidebar-nav .nav-link:focus-visible,
 [data-theme="dark"] #adminSidebar .sidebar-nav .nav-link:hover .nav-text,
-[data-theme="dark"] #adminSidebar .sidebar-nav .nav-link:focus .nav-text {
+[data-theme="dark"] #adminSidebar .sidebar-nav .nav-link:focus-visible .nav-text {
+  color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] #adminSidebar .sidebar-nav .nav-link:not(.active):hover,
+[data-theme="dark"] #adminSidebar .sidebar-nav .nav-link:not(.active):focus-visible {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="dark"] #adminSidebar .sidebar-nav .nav-link:not(.active):hover .nav-icon,
+[data-theme="dark"] #adminSidebar .sidebar-nav .nav-link:not(.active):focus-visible .nav-icon {
+  background: rgba(255, 255, 255, 0.14) !important;
   color: #f1f5f9 !important;
 }
 
@@ -1802,5 +1838,68 @@ html[data-theme="light"] #adminSidebar .nav-icon i {
 
 [data-theme="dark"] #adminSidebar .sidebar-nav .nav-link.active .nav-icon {
   background: var(--color-role) !important;
+  color: #ffffff !important;
+}
+
+/* Teacher portal — accent hover aligned with other teacher pages */
+[data-portal-role="teacher"] #adminSidebar .sidebar-nav .nav-link:not(.active):hover,
+[data-portal-role="teacher"] #adminSidebar .sidebar-nav .nav-link:not(.active):focus-visible {
+  background: var(--color-teacher-subtle, #fff4f0) !important;
+}
+
+[data-portal-role="teacher"] #adminSidebar .sidebar-nav .nav-link:not(.active):hover .nav-icon,
+[data-portal-role="teacher"] #adminSidebar .sidebar-nav .nav-link:not(.active):focus-visible .nav-icon {
+  background: color-mix(in srgb, var(--color-teacher, #ff5414) 16%, #ffffff) !important;
+  color: var(--color-teacher, #ff5414) !important;
+}
+
+[data-portal-role="teacher"] #adminSidebar .sidebar-nav .nav-link.active {
+  background: var(--color-teacher-subtle, #fff4f0) !important;
+}
+
+[data-portal-role="teacher"] #adminSidebar .sidebar-nav .nav-link.active .nav-icon {
+  background: var(--color-teacher, #ff5414) !important;
+  color: #ffffff !important;
+}
+
+/* Parent portal — accent hover/active aligned with parent pages */
+[data-portal-role="parent"] #adminSidebar .sidebar-nav .nav-link:not(.active):hover,
+[data-portal-role="parent"] #adminSidebar .sidebar-nav .nav-link:not(.active):focus-visible {
+  background: var(--color-parent-subtle, #fff4f0) !important;
+}
+
+[data-portal-role="parent"] #adminSidebar .sidebar-nav .nav-link:not(.active):hover .nav-icon,
+[data-portal-role="parent"] #adminSidebar .sidebar-nav .nav-link:not(.active):focus-visible .nav-icon {
+  background: color-mix(in srgb, var(--color-parent, #ff5414) 16%, #ffffff) !important;
+  color: var(--color-parent, #ff5414) !important;
+}
+
+[data-portal-role="parent"] #adminSidebar .sidebar-nav .nav-link.active {
+  background: var(--color-parent-subtle, #fff4f0) !important;
+}
+
+[data-portal-role="parent"] #adminSidebar .sidebar-nav .nav-link.active .nav-icon {
+  background: var(--color-parent, #ff5414) !important;
+  color: #ffffff !important;
+}
+
+/* Student portal — accent hover/active aligned with student pages */
+[data-portal-role="student"] #adminSidebar .sidebar-nav .nav-link:not(.active):hover,
+[data-portal-role="student"] #adminSidebar .sidebar-nav .nav-link:not(.active):focus-visible {
+  background: var(--color-student-subtle, #fff4f0) !important;
+}
+
+[data-portal-role="student"] #adminSidebar .sidebar-nav .nav-link:not(.active):hover .nav-icon,
+[data-portal-role="student"] #adminSidebar .sidebar-nav .nav-link:not(.active):focus-visible .nav-icon {
+  background: color-mix(in srgb, var(--color-student, #ff5414) 16%, #ffffff) !important;
+  color: var(--color-student, #ff5414) !important;
+}
+
+[data-portal-role="student"] #adminSidebar .sidebar-nav .nav-link.active {
+  background: var(--color-student-subtle, #fff4f0) !important;
+}
+
+[data-portal-role="student"] #adminSidebar .sidebar-nav .nav-link.active .nav-icon {
+  background: var(--color-student, #ff5414) !important;
   color: #ffffff !important;
 }

@@ -6,6 +6,10 @@
 {% block content %}
 {% include "portals/includes/parent_child_header.html" %}
 
+{% url categories_back_url as categories_list_url %}
+{% trans 'Kateqoriyalar' as categories_back_label %}
+{% include "portals/includes/portal_back_link.html" with back_url=categories_list_url back_suffix=category_url_suffix back_label=categories_back_label %}
+
 <header class="s-page-head mb-4">
   <div>
     <h1 class="s-page-head__title">
@@ -14,10 +18,6 @@
       <span class="ds-badge ds-badge--role ms-2">{{ category.service_label }}</span>
     </h1>
   </div>
-  <a class="ds-btn ds-btn--ghost btn-sm" href="{% url categories_back_url %}{{ category_url_suffix|default:'' }}">
-    <i class="ti ti-arrow-left" aria-hidden="true"></i>
-    {% trans 'Kateqoriyalar' %}
-  </a>
 </header>
 
 <section class="ds-card">
@@ -36,7 +36,17 @@
       <tbody>
         {% for quiz in quizzes %}
         <tr>
-          <td class="fw-500">{{ quiz.topic }}</td>
+          <td class="fw-500">
+            <div>{{ quiz.topic }}</div>
+            {% if quiz.attempt_count %}
+            <div class="text-muted small mt-1">
+              <div>{% trans 'Completed' %} {{ quiz.attempt_count }} {% trans 'times' %}</div>
+              {% if quiz.best_score is not None %}<div>{% trans 'Best score' %}: {{ quiz.best_score|format_quiz_score }}</div>{% endif %}
+              {% if quiz.last_score is not None %}<div>{% trans 'Last score' %}: {{ quiz.last_score|format_quiz_score }}</div>{% endif %}
+              {% if quiz.last_attempt_at %}<div>{% trans 'Last attempt' %}: {{ quiz.last_attempt_at|portal_date_long }}</div>{% endif %}
+            </div>
+            {% endif %}
+          </td>
           <td>
             <span class="ds-badge{% if quiz.is_manual_grading %} ds-badge--role{% endif %}">
               {{ quiz.grading_mode_label }}
@@ -49,6 +59,31 @@
             <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:student-quiz-take' pk=quiz.id %}">
               {% if quiz.has_attempt %}{% trans 'Təkrar' %}{% else %}{% trans 'Başla' %}{% endif %}
             </a>
+            {% elif quiz.is_reading and quiz.question_count %}
+            <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:student-reading-quiz-take' pk=quiz.id %}">
+              {% if quiz.has_attempt %}{% trans 'Təkrar' %}{% else %}{% trans 'Başla' %}{% endif %}
+            </a>
+            {% if quiz.has_attempt %}
+            <a class="ds-btn ds-btn--secondary btn-sm ms-1" href="{% url 'portals:student-score-detail' result_pk=quiz.result_id %}">{% trans 'Bal' %}</a>
+            {% endif %}
+            {% elif quiz.is_listening and quiz.question_count %}
+            <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:student-manual-quiz-take' pk=quiz.id %}">
+              {% if quiz.has_attempt %}{% trans 'Təkrar' %}{% else %}{% trans 'Başla' %}{% endif %}
+            </a>
+            {% if quiz.has_attempt %}
+            <a class="ds-btn ds-btn--secondary btn-sm ms-1" href="{% url 'portals:student-score-detail' result_pk=quiz.result_id %}">{% trans 'Bal' %}</a>
+            {% endif %}
+            {% elif quiz.is_speaking and quiz.question_count %}
+            <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:student-speaking-quiz-take' pk=quiz.id %}">
+              {% if quiz.is_pending_review %}
+              {% trans 'Bax' %}
+              {% elif quiz.has_attempt %}{% trans 'Təkrar' %}{% else %}{% trans 'Başla' %}{% endif %}
+            </a>
+            {% if quiz.is_pending_review %}
+            <span class="ds-badge ds-badge--warning ms-1">{% trans 'Gözlənilir' %}</span>
+            {% elif quiz.has_attempt and quiz.is_reviewed %}
+            <a class="ds-btn ds-btn--secondary btn-sm ms-1" href="{% url 'portals:student-score-detail' result_pk=quiz.result_id %}">{% trans 'Bal' %}</a>
+            {% endif %}
             {% elif quiz.is_manual_grading and quiz.question_count %}
               {% if quiz.is_pending_review %}
               <a class="ds-btn ds-btn--secondary btn-sm" href="{% url 'portals:student-manual-quiz-take' pk=quiz.id %}">{% trans 'Bax' %}</a>

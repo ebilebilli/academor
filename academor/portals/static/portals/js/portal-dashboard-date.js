@@ -1,6 +1,10 @@
 (function () {
   "use strict";
 
+  /**
+   * Dashboard dates are rendered server-side via {% portal_today_long %}.
+   * This file is kept for portal:content-loaded hooks if needed later.
+   */
   function onReady(fn) {
     if (window.portalOnReady) {
       window.portalOnReady(fn);
@@ -13,21 +17,6 @@
     }
   }
 
-  function formatToday() {
-    return new Date().toLocaleDateString("az-AZ", {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-    });
-  }
-
-  function updateDates() {
-    var text = formatToday();
-    document.querySelectorAll("[data-portal-today-date]").forEach(function (el) {
-      el.textContent = text;
-    });
-  }
-
-  onReady(updateDates);
-  document.addEventListener("portal:content-loaded", updateDates);
+  onReady(function () {});
+  document.addEventListener("portal:content-loaded", function () {});
 })();

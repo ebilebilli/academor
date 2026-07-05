@@ -1,0 +1,387 @@
+{
+  "title": "IELTS Academic Reading — Practice Test 2",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–40</strong></p><p>You should spend about 60 minutes on <strong>Questions 1–40</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Quantum Computing and Cryptography</strong></p><p><strong>A</strong> Quantum computers exploit superposition and entanglement to perform selected calculations far faster than classical machines. Researchers have warned that this capability could undermine widely deployed encryption, because many security protocols depend on mathematical problems that remain intractable for conventional hardware. Although useful quantum devices are still limited in scale, steady improvements in qubit count and error correction have renewed debate among policymakers and industry leaders about how urgently communication networks must be upgraded before confidential data becomes vulnerable to retrospective decryption by well-resourced adversaries operating across borders and jurisdictions with uneven regulatory maturity in practice.</p><p><strong>B</strong> Public-key cryptography, including RSA, relies on the difficulty of factoring very large integers into prime components. Classical algorithms require exponential time for this task, which is why banks, governments, and e-commerce platforms have trusted these schemes for decades without routine breach. Shor's algorithm, however, could factor large numbers in polynomial time on a sufficiently powerful quantum computer. Experts estimate that thousands of stable logical qubits might be needed before such an attack becomes practical, yet the threshold is no longer considered purely theoretical by national security agencies monitoring hardware progress in competing research laboratories worldwide.</p><p><strong>C</strong> In response, cryptographers are designing post-quantum algorithms believed to resist both classical and quantum adversaries. Lattice-based and hash-based schemes are leading candidates in international standardisation efforts coordinated through public competitions and peer review. Transition planning is complicated because legacy systems cannot always be patched quickly, and organisations must inventory where vulnerable algorithms appear in software libraries, hardware security modules, and archived records that could be decrypted later if ciphertext is harvested and stored today by patient adversaries awaiting future breakthroughs in scalable hardware deployed outside laboratory conditions by state-sponsored programmes worldwide today already in practice.</p><p><strong>D</strong> Quantum key distribution offers a complementary approach by using quantum states to detect eavesdropping on fibre links. If an intruder measures photons en route, the disturbance reveals the breach and the keys are discarded before secure communication proceeds. Proponents argue that this method provides information-theoretic security for key exchange, though critics note that practical deployments face distance limits, high costs, and the need for trusted classical authentication layers that themselves may require post-quantum protection before end-to-end systems are genuinely future-proof in heterogeneous networks spanning campuses, metropolitan areas, and submarine cables owned by competing carriers and consortium partners.</p><p><strong>E</strong> National agencies have begun publishing migration timelines urging operators to adopt hybrid classical and post-quantum protocols during a lengthy overlap period. The author contends that panic is unwarranted because cryptanalytically relevant machines are unlikely to appear without prior warning, yet delaying inventory work is equally unwise. Harvest-now-decrypt-later strategies, in which adversaries store encrypted traffic today for future decoding, mean that sensitive long-lived data such as diplomatic cables, medical records, and trade secrets may already be at risk even before quantum hardware matures commercially in any single jurisdiction or export-controlled facility subject to trade sanctions and monitoring.</p><p><strong>F</strong> Corporate security teams report uneven readiness across sectors. Financial institutions have funded pilot projects and vendor evaluations, whereas smaller software vendors lack expertise to assess marketing claims about quantum safety. Certification frameworks are emerging, but buyers struggle to distinguish promotional language from peer-reviewed cryptographic designs. Training programmes for developers remain scarce, which slows replacement of hard-coded algorithms embedded deep inside enterprise resource planning systems, industrial control software, and firmware that cannot be updated remotely without costly downtime and contractual renegotiation with integrators and maintenance contractors serving critical infrastructure operators nationwide today already in practice now.</p><p><strong>G</strong> Looking ahead, the author believes cryptography will remain viable if societies treat the transition as a managed engineering programme rather than a sudden crisis. Standards bodies, universities, and cloud providers must coordinate interoperability testing so that performance penalties on mobile devices, smart cards, and embedded sensors are understood before mandatory deadlines arrive. Ultimately, quantum technology threatens specific mathematical assumptions, not the broader goal of confidential communication, provided institutions begin systematic upgrades soon rather than postponing decisions until migration becomes chaotic and disruptive for citizens and small enterprises alike that depend on digital services daily worldwide.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 11–15",
+          "instructions": "<p>Choose the correct heading for paragraphs <strong>B–F</strong> from the list of headings below.</p><p><em>Write the correct number, <strong>i–vii</strong>, in boxes 11–15 on your answer sheet.</em></p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "i. University courses on quantum physics fundamentals",
+            "ii. A classical security assumption under threat",
+            "iii. Photonic methods for detecting interception",
+            "iv. Designing replacements and managing legacy systems",
+            "v. Timelines, stored traffic, and the author's caution",
+            "vi. Unequal corporate preparedness and certification gaps",
+            "vii. Consumer demand for faster mobile applications"
+          ],
+          "questions": [
+            {
+              "order": 11,
+              "question": "<p>Paragraph B</p>",
+              "correct_answer": "ii. A classical security assumption under threat"
+            },
+            {
+              "order": 12,
+              "question": "<p>Paragraph C</p>",
+              "correct_answer": "iv. Designing replacements and managing legacy systems"
+            },
+            {
+              "order": 13,
+              "question": "<p>Paragraph D</p>",
+              "correct_answer": "iii. Photonic methods for detecting interception"
+            },
+            {
+              "order": 14,
+              "question": "<p>Paragraph E</p>",
+              "correct_answer": "v. Timelines, stored traffic, and the author's caution"
+            },
+            {
+              "order": 15,
+              "question": "<p>Paragraph F</p>",
+              "correct_answer": "vi. Unequal corporate preparedness and certification gaps"
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "title": "Questions 16–20",
+          "instructions": "<p>Which paragraph contains the following information?</p><p><em>Write the correct letter, <strong>A–G</strong>, in boxes 16–20 on your answer sheet.</em></p>",
+          "question_type": "matching_info",
+          "option_pool": [
+            "Paragraph A",
+            "Paragraph B",
+            "Paragraph C",
+            "Paragraph D",
+            "Paragraph E",
+            "Paragraph F",
+            "Paragraph G"
+          ],
+          "questions": [
+            {
+              "order": 16,
+              "question": "<p>a mention of algorithms that may resist quantum attacks</p>",
+              "correct_answer": "Paragraph C"
+            },
+            {
+              "order": 17,
+              "question": "<p>reference to photons being measured by an intruder</p>",
+              "correct_answer": "Paragraph D"
+            },
+            {
+              "order": 18,
+              "question": "<p>examples of sectors with different levels of preparation</p>",
+              "correct_answer": "Paragraph F"
+            },
+            {
+              "order": 19,
+              "question": "<p>discussion of superposition and entanglement</p>",
+              "correct_answer": "Paragraph A"
+            },
+            {
+              "order": 20,
+              "question": "<p>a positive outlook on maintaining confidential communication</p>",
+              "correct_answer": "Paragraph G"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "tfng",
+          "question": "<p>Quantum computers can already break all forms of encryption in current use.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 2,
+          "question_type": "tfng",
+          "question": "<p>Shor's algorithm relates to factoring large numbers.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 3,
+          "question_type": "tfng",
+          "question": "<p>Every organisation has completed an inventory of vulnerable algorithms.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 4,
+          "question_type": "tfng",
+          "question": "<p>Quantum key distribution can reveal when a communication line has been interfered with.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 5,
+          "question_type": "tfng",
+          "question": "<p>The author states that useful quantum code-breaking machines will certainly appear without warning.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 6,
+          "question_type": "ynng",
+          "question": "<p>The author believes immediate panic over quantum threats is justified.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 7,
+          "question_type": "ynng",
+          "question": "<p>The writer agrees that storing encrypted data now creates future risk under harvest-now-decrypt-later attacks.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 8,
+          "question_type": "ynng",
+          "question": "<p>The author thinks quantum key distribution alone removes the need for classical authentication.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 9,
+          "question_type": "ynng",
+          "question": "<p>The writer claims smaller vendors are generally well prepared for post-quantum migration.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 10,
+          "question_type": "ynng",
+          "question": "<p>The author is confident that confidentiality can be preserved through careful upgrading.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 21,
+          "question_type": "sentence_completion",
+          "question": "<p>Many security protocols depend on mathematical problems that are difficult for ____ hardware.</p>",
+          "correct_answer": "conventional",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 22,
+          "question_type": "sentence_completion",
+          "question": "<p>Shor's algorithm could factor large numbers in ____ time on a powerful quantum computer.</p>",
+          "correct_answer": "polynomial",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 23,
+          "question_type": "sentence_completion",
+          "question": "<p>Quantum key distribution can detect eavesdropping by observing disturbance to ____ states.</p>",
+          "correct_answer": "quantum",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 24,
+          "question_type": "sentence_completion",
+          "question": "<p>The author recommends treating the transition as a managed ____ programme.</p>",
+          "correct_answer": "engineering",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 25,
+          "question_type": "summary_completion",
+          "question": "<p>Public-key schemes such as RSA rely on the hardness of factoring large ____. Post-quantum research includes lattice-based designs.</p>",
+          "correct_answer": "integers",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 26,
+          "question_type": "summary_completion",
+          "question": "<p>Adversaries may use harvest-now-decrypt-later tactics by storing ____ today.</p>",
+          "correct_answer": "ciphertext",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 27,
+          "question_type": "summary_completion",
+          "question": "<p>Buyers find it hard to separate marketing claims from ____ designs.</p>",
+          "correct_answer": "peer-reviewed",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 28,
+          "question_type": "summary_completion",
+          "question": "<p>Cloud providers should coordinate testing before mandatory ____ arrive.</p>",
+          "correct_answer": "deadlines",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 29,
+          "question_type": "table_completion",
+          "question": "<p>Threat mechanism | Shor's algorithm targets integer ____</p>",
+          "correct_answer": "factoring",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 30,
+          "question_type": "table_completion",
+          "question": "<p>QKD limitation | Practical links face distance ____</p>",
+          "correct_answer": "limits",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 31,
+          "question_type": "table_completion",
+          "question": "<p>Migration approach | Agencies urge ____ classical and post-quantum protocols</p>",
+          "correct_answer": "hybrid",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 32,
+          "question_type": "mcq",
+          "question": "<p>What is the main concern about quantum computers in paragraph A?</p>",
+          "answer_options": [
+            "They consume too much electricity for data centres.",
+            "They could defeat encryption based on hard mathematical problems.",
+            "They have replaced classical machines in banking networks.",
+            "They make training programmers unnecessary."
+          ],
+          "correct_answer": "They could defeat encryption based on hard mathematical problems."
+        },
+        {
+          "order": 33,
+          "question_type": "mcq",
+          "question": "<p>According to paragraph B, when might Shor's algorithm become a practical threat?</p>",
+          "answer_options": [
+            "Immediately, with current laboratory devices",
+            "Only if thousands of stable logical qubits exist",
+            "After all smartphones are upgraded",
+            "When RSA keys are shortened deliberately"
+          ],
+          "correct_answer": "Only if thousands of stable logical qubits exist"
+        },
+        {
+          "order": 34,
+          "question_type": "mcq",
+          "question": "<p>Paragraph D suggests a limitation of quantum key distribution is that</p>",
+          "answer_options": [
+            "it cannot operate over any distance",
+            "it eliminates the need for keys entirely",
+            "deployments still depend on classical authentication layers",
+            "it is illegal in most countries"
+          ],
+          "correct_answer": "deployments still depend on classical authentication layers"
+        },
+        {
+          "order": 35,
+          "question_type": "mcq",
+          "question": "<p>The author uses the term harvest-now-decrypt-later to describe</p>",
+          "answer_options": [
+            "farmers selling encrypted produce online",
+            "storing ciphertext now for decoding when quantum tools mature",
+            "deleting old archives before migration",
+            "harvesting qubits from defective chips"
+          ],
+          "correct_answer": "storing ciphertext now for decoding when quantum tools mature"
+        },
+        {
+          "order": 36,
+          "question_type": "mcq",
+          "question": "<p>The concluding paragraph argues that</p>",
+          "answer_options": [
+            "confidential communication is impossible after quantum advances",
+            "only universities should manage cryptographic standards",
+            "systematic upgrades can preserve confidentiality",
+            "mobile performance penalties should block all change"
+          ],
+          "correct_answer": "systematic upgrades can preserve confidentiality"
+        },
+        {
+          "order": 37,
+          "question_type": "short_answer",
+          "question": "<p>Which algorithm is named as a threat to factoring-based cryptography?</p>",
+          "correct_answer": "Shor's",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 38,
+          "question_type": "short_answer",
+          "question": "<p>What mineral-like term describes one family of post-quantum candidate schemes?</p>",
+          "correct_answer": "lattice-based",
+          "question_config": {
+            "word_limit": 2,
+            "word_limit_label": "NO MORE THAN TWO WORDS",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 39,
+          "question_type": "short_answer",
+          "question": "<p>What type of institutions are urged to coordinate testing with cloud providers?</p>",
+          "correct_answer": "standards bodies",
+          "question_config": {
+            "word_limit": 2,
+            "word_limit_label": "NO MORE THAN TWO WORDS",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 40,
+          "question_type": "short_answer",
+          "question": "<p>What kind of penalties on mobile devices must be understood before deadlines?</p>",
+          "correct_answer": "performance",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        }
+      ]
+    }
+  ]
+}

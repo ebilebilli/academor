@@ -107,48 +107,100 @@ Root URLconf also exposes `/sitemap.xml`, `/robots.txt`, `/i18n/setlang/`, and a
 
 Role-based portal at **`/portal/`** for day-to-day learning workflows. Portal users log in via `/portal/login/` or the login modal on the public site navbar; authenticated users see a **Portal** button that routes to their role dashboard.
 
-**Auth isolation:** Portal uses its own `portal_sessionid` cookie (scoped to `/portal/` paths) and middleware, separate from Django admin's `sessionid`. A staff member can stay logged into admin and portal at the same time without session clashes.
+**Auth isolation:** Portal uses its own `portal_sessionid` cookie (scoped to `/portal/` paths) and middleware (`PortalAuthenticationMiddleware`, `PortalSessionMiddleware`), separate from Django admin's `sessionid`. A staff member can stay logged into admin and portal at the same time without session clashes.
 
 **Roles**
 
 | Role | Main capabilities |
 | --- | --- |
-| **Teacher** | Study groups, weekly schedule, lessons and video records, attendance marking (per session or per student), scores, quiz management and manual grading review, classrooms |
-| **Student** | Schedule, lessons, scores, quiz categories and timed attempts (auto-graded or manual), classrooms, notifications |
-| **Parent** | Read-only child views: schedule, lessons, scores, quiz results, attendance, classrooms |
+| **Teacher** | Study groups, weekly schedule, lessons (with attachments and video links), attendance (per session or per student), scores and weekly score entry, quiz management, manual grading review, IELTS mock result review, classrooms/textbooks |
+| **Student** | Schedule, lessons, scores, quiz categories and timed attempts (multiple formats), IELTS full mock test, classrooms, notifications |
+| **Parent** | Read-only child views: schedule, lessons, scores, quiz results, attendance, classrooms (child selector when multiple children are linked) |
 
 **Main models** (`portals/models/`)
 
 | Model | Purpose |
 | --- | --- |
 | **StudentProfile**, **TeacherProfile**, **ParentProfile** | Portal user profiles linked to Django `User` |
-| **TeacherCourseSpecialization** | Which course types a teacher covers |
+| **StudentCourseSpecialization**, **TeacherCourseSpecialization** | Which course types (IELTS, GMAT, etc.) a user is enrolled in or teaches |
 | **StudyGroup** | Teacher-led group with students and linked course types |
 | **Schedule**, **Attendance** | Recurring slots and attendance marks |
-| **Lesson**, **LessonCategory**, **VideoRecord** | Lesson content and recordings |
-| **Classroom** | Shared classroom spaces scoped to services/groups |
-| **Score** | Teacher-entered assessment scores |
-| **Quiz**, **QuizCategory**, **QuizQuestion**, **QuizResult** | Quiz builder, question bank, attempts, and results |
+| **Lesson**, **LessonCategory**, **LessonAttachment**, **VideoRecord** | Lesson content, PDF/image/video attachments, and recordings |
+| **Classroom** | Group- or teacher-scoped textbook/material spaces (PDF, description) |
+| **Score**, **WeeklyStudentScore** | Teacher-entered assessment scores and weekly rollups |
+| **Quiz**, **QuizCategory**, **QuizQuestion**, **QuizResult** | Quiz builder, MCQ question bank, attempts, and results |
+| **ListeningAudio**, **ListeningQuestion** | IELTS-style listening sections (audio clips + questions) |
+| **ReadingPassage**, **ReadingQuestionGroup**, **ReadingQuestion** | IELTS-style reading passages with grouped auto-scored questions |
+| **SpeakingPart**, **SpeakingQuestion**, **SpeakingRecording** | IELTS-style speaking tasks with student audio uploads |
+| **IeltsMockTestAttempt** | Full mock session chaining Listening → Reading → Writing → Speaking |
 | **PortalNotification**, **QuizResultReview** | In-app notifications and teacher review of manual quiz answers |
+
+**Quiz formats**
+
+Each `Quiz` has exactly one format flag (`is_listening`, `is_essay`, `is_speaking`, or `is_reading`); standard MCQ quizzes have all flags off.
+
+| Format | Grading | Student route | Notes |
+| --- | --- | --- | --- |
+| **Standard MCQ** | Auto | `/portal/student/quizzes/<id>/take/` | Random question selection from `QuizQuestion` bank; optional time limit |
+| **Reading** | Auto (IELTS band) | `/portal/student/quizzes/<id>/reading/` | Passages, question groups, 14+ IELTS question types (TFNG, matching, completion, etc.) |
+| **Listening** | Manual (teacher) | Same take flow with listening UI | Audio clips (`ListeningAudio`) and linked questions; teacher reviews submission |
+| **Writing** (`is_essay`) | Manual (teacher) | `/portal/student/quizzes/<id>/manual/` | Free-text essay; teacher scores and writes corrections |
+| **Speaking** (`is_speaking`) | Manual (teacher) | `/portal/student/quizzes/<id>/speaking/` | Part 1/2/3 prompts; student records audio; teacher reviews |
+
+Quizzes are scoped by **course type** (`QuizCategory.service`) and **study group** membership — a student only sees quizzes for services they are enrolled in and groups they belong to. Teachers see quizzes for their specializations and groups.
+
+**IELTS full mock test**
+
+Students with IELTS course access can start a chained mock at `/portal/student/ielts-mock/`:
+
+1. **Listening** — auto-scored quiz picked from available listening quizzes
+2. **Reading** — auto-scored reading quiz
+3. **Writing** — manual essay quiz
+4. **Speaking** — manual speaking quiz
+
+Progress is tracked in `IeltsMockTestAttempt`; Listening and Reading bands are computed automatically, Writing and Speaking await teacher review. Teachers view completed mocks at `/portal/teacher/ielts-mock/<id>/`. Quiz-taking routes are excluded from AJAX fragment navigation so timers and recordings are not interrupted.
 
 **Portal routes** (`portals/urls_v1.py`, prefix `/portal/`)
 
 | Path | Page |
 | --- | --- |
 | `/portal/login/`, `/portal/logout/` | Portal auth |
-| `/portal/` | Role-aware dashboard redirect |
-| `/portal/profile/` | Profile edit (avatar, bio, contact links) |
-| `/portal/teacher/…` | Teacher dashboard, groups, schedule, lessons, attendance, scores, quizzes, classrooms |
-| `/portal/student/…` | Student dashboard, schedule, lessons, scores, quizzes (take/submit), classrooms |
-| `/portal/parent/…` | Parent dashboard and child-linked schedule, lessons, scores, attendance, quiz results |
+| `/portal/`, `/portal/profile/` | Role-aware dashboard redirect; profile edit (avatar, bio, contact links) |
+| `/portal/teacher/…` | Dashboard, groups, schedule CRUD, lessons CRUD, attendance, scores, weekly scores, quizzes, quiz result review, classrooms, IELTS mock detail, notifications |
+| `/portal/student/…` | Dashboard, schedule, lessons, scores, quizzes (start/take/submit per format), IELTS mock, classrooms, notifications |
+| `/portal/parent/…` | Dashboard and child-linked schedule, lessons, scores, attendance, quiz categories/results, classrooms, notifications |
 
-Quiz flows support random question selection, optional time limits, service/group visibility rules, and manual grading modes where teachers review free-text answers.
+**AJAX fragment navigation:** Most portal pages support in-app navigation without full page reloads. `portal-nav-ajax.js` intercepts internal links, fetches HTML with `X-Portal-Fragment: 1`, and swaps content via `PortalFragmentMiddleware`. Quiz take pages, IELTS mock flows, login/logout, and some heavy list views are excluded.
 
-**Portal admin:** user creation with role assignment, quiz builder, quiz question admin UI, and branded list/change templates under `templates/admin/portals/`.
+**Portal admin** (`portals/admin/admin_v1.py`): user creation with role assignment, study groups, schedule, lessons, quiz builder (including reading/listening/speaking inlines), question bank, attendance, scores, classrooms — with branded templates under `templates/admin/portals/` and custom JS for reading passage and quiz question editing.
 
-**Portal templates & static:** `templates/portals/` (role dashboards, quiz play UI, shared includes) and `portals/static/portals/` (portal CSS/JS, quiz builder/play assets).
+**Portal templates & static**
 
-**Tests:** automated coverage in `portals/tests/` (auth isolation, quiz submit/visibility/manual grading, notifications, classrooms, attendance, schedule, admin forms).
+| Location | Contents |
+| --- | --- |
+| `templates/portals/` | Role dashboards, quiz play UI (reading tabs, speaking recorder, manual essay), lesson forms, shared includes |
+| `portals/static/portals/css/` | Portal shell, redesign tokens, quiz-reading/speaking styles, lesson video lightbox |
+| `portals/static/portals/js/` | `portal-nav-ajax.js`, `portal-init.js`, `quiz-take-reading.js`, `quiz-take-speaking.js`, `quiz-take-manual.js`, `quiz-start-gate.js`, `quiz-leave-guard.js`, lesson and score helpers |
+
+**JSON resource banks** (loaded via management commands)
+
+| Directory | Purpose |
+| --- | --- |
+| `portals/resources/quiz_questions/` | Standard MCQ quizzes by level (A1–C1) |
+| `portals/resources/reading_questions/` | IELTS reading tests (`ielts_reading_test_*.json`, 40 questions each) |
+| `portals/resources/speaking_questions/` | IELTS speaking tests (parts and prompts) |
+
+**Portal management commands**
+
+| Command | Purpose |
+| --- | --- |
+| `python manage.py seed_sample_quizzes` | Create sample quiz categories and questions for local demo |
+| `python manage.py load_quiz_category_questions` | Import MCQ quizzes from `portals/resources/quiz_questions/` |
+| `python manage.py load_reading_quiz_resources` | Import reading quizzes from `portals/resources/reading_questions/` (`--file`, `--keep-old`) |
+| `python manage.py load_speaking_quiz_resources` | Import speaking quizzes from `portals/resources/speaking_questions/` (`--file`, `--keep-old`) |
+| `python manage.py generate_ielts_reading_bank` | Regenerate reading JSON from built-in topic bank (tests 2–51; `--dry-run` to validate only) |
+
+**Portal tests:** `python manage.py test portals` — auth isolation, quiz submit/visibility/manual grading, reading and speaking flows, IELTS mock test, notifications, classrooms, attendance, schedule, weekly scores, teacher lessons, admin forms, AJAX fragments, resource loaders.
 
 ## Repository layout
 
@@ -377,12 +429,11 @@ Shared patterns across both:
 | Command | Purpose |
 | --- | --- |
 | `python manage.py resize_university_flags` | Batch-resize university flag images |
-| `python manage.py seed_sample_quizzes` | Create sample quiz categories and questions for local demo |
-| `python manage.py load_quiz_category_questions` | Import quizzes/questions from JSON in `portals/resources/quiz_questions/` |
+| Portal quiz/resource loaders | See **Portal management commands** under the `portals` app section above |
 
 ### Running tests
 
-Portal app tests live under `portals/tests/`:
+Portal app tests live under `portals/tests/` (see portal section above for coverage areas):
 
 ```bash
 cd academor

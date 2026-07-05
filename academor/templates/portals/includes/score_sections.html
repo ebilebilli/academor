@@ -1,5 +1,8 @@
 {% load i18n portal_tags %}
 {% with scores_view|default:'quiz' as active_view %}
+<div data-portal-scores-filter>
+{% include "portals/includes/scores_period_filter.html" %}
+
 <section class="ds-card portal-score-shell" data-score-shell>
   <div class="s-filter-tabs mb-3" role="tablist" aria-label="{% trans 'Qiymət kateqoriyaları' %}">
     <button
@@ -18,15 +21,15 @@
     <button
       type="button"
       role="tab"
-      class="s-filter-tab{% if active_view == 'lesson' %} is-active{% endif %}"
-      data-score-tab="lesson"
-      aria-selected="{% if active_view == 'lesson' %}true{% else %}false{% endif %}"
-      aria-controls="score-panel-lesson"
-      id="score-tab-lesson"
+      class="s-filter-tab{% if active_view == 'weekly' %} is-active{% endif %}"
+      data-score-tab="weekly"
+      aria-selected="{% if active_view == 'weekly' %}true{% else %}false{% endif %}"
+      aria-controls="score-panel-weekly"
+      id="score-tab-weekly"
     >
-      <i class="ti ti-notebook" aria-hidden="true"></i>
-      {% trans 'Dərs qiymətləri' %}
-      <span class="s-filter-tab__badge portal-score-segment__count">{{ lesson_scores|length }}</span>
+      <i class="ti ti-calendar-stats" aria-hidden="true"></i>
+      {% trans 'Həftəlik qiymətləndirmələr' %}
+      <span class="s-filter-tab__badge portal-score-segment__count">{{ weekly_scores|length }}</span>
     </button>
   </div>
 
@@ -56,7 +59,7 @@
         </thead>
         <tbody>
           {% for row in quiz_scores %}
-          <tr>
+          <tr data-score-date="{{ row.date|date:'Y-m-d' }}"{% if row.group_ids %} data-group-ids="{{ row.group_ids|join:',' }}"{% endif %}>
             {% if show_student_column %}
             <td class="fw-500">{{ row.student_name }}</td>
             {% endif %}
@@ -100,55 +103,55 @@
   </div>
 
   <div
-    class="portal-score-panel{% if active_view == 'lesson' %} is-active{% endif %}"
-    data-score-panel="lesson"
+    class="portal-score-panel{% if active_view == 'weekly' %} is-active{% endif %}"
+    data-score-panel="weekly"
     role="tabpanel"
-    id="score-panel-lesson"
-    aria-labelledby="score-tab-lesson"
-    {% if active_view != 'lesson' %}hidden{% endif %}
+    id="score-panel-weekly"
+    aria-labelledby="score-tab-weekly"
+    {% if active_view != 'weekly' %}hidden{% endif %}
   >
     <div class="table-responsive">
-      <table class="t-table portal-score-table">
+      <table class="t-table portal-score-table weekly-scores-history-table">
         <thead>
           <tr>
+            <th>{% trans 'Həftə' %}</th>
             {% if show_student_column %}
             <th>{% trans 'Şagird' %}</th>
             {% endif %}
-            <th>{% trans 'Dərs' %}</th>
-            <th>{% trans 'Növ' %}</th>
+            {% if show_teacher_column %}
+            <th>{% trans 'Müəllim' %}</th>
+            {% endif %}
             <th>{% trans 'Bal' %}</th>
-            <th>{% trans 'Tarix' %}</th>
-            {% if show_comment_column %}
+            {% if show_comment_column|default:True %}
             <th>{% trans 'Şərh' %}</th>
             {% endif %}
+            <th>{% trans 'Yenilənib' %}</th>
           </tr>
         </thead>
         <tbody>
-          {% for row in lesson_scores %}
-          <tr>
+          {% for row in weekly_scores %}
+          <tr data-score-date="{{ row.week_start|date:'Y-m-d' }}"{% if row.group_ids %} data-group-ids="{{ row.group_ids|join:',' }}"{% endif %}>
+            <td class="fw-500">{% portal_week_label row.week_start row.week_end %}</td>
             {% if show_student_column %}
-            <td class="fw-500">{{ row.student_name }}</td>
+            <td>{{ row.student_name|default:"—" }}</td>
             {% endif %}
-            <td class="{% if not show_student_column %}fw-500{% endif %}">{{ row.lesson_title|default:"—" }}</td>
-            <td><span class="ds-badge">{{ row.score_type_label }}</span></td>
+            {% if show_teacher_column %}
+            <td>{{ row.teacher_name|default:"—" }}</td>
+            {% endif %}
             <td>
-              {% if row.value is not None %}
-                {{ row.value|format_quiz_score }}{% if row.max_value %}/{{ row.max_value|format_quiz_score }}{% endif %}
-              {% else %}
-                —
-              {% endif %}
+              <span class="weekly-scores-pill">{{ row.score|format_quiz_score }}/{{ row.max_score|format_quiz_score }}</span>
             </td>
-            <td class="text-muted small">{{ row.date|portal_date_long }}</td>
-            {% if show_comment_column %}
+            {% if show_comment_column|default:True %}
             <td class="text-muted small">{{ row.comment|default:"—" }}</td>
             {% endif %}
+            <td class="text-muted small">{{ row.updated_at|portal_datetime }}</td>
           </tr>
           {% empty %}
           <tr>
             <td colspan="10">
               <div class="s-empty-state">
-                <i class="ti ti-notebook" aria-hidden="true"></i>
-                <p>{% trans 'Hələ dərs qiyməti yoxdur.' %}</p>
+                <i class="ti ti-calendar-off" aria-hidden="true"></i>
+                <p>{% trans 'Hələ həftəlik qiymət yoxdur.' %}</p>
               </div>
             </td>
           </tr>
@@ -157,5 +160,11 @@
       </table>
     </div>
   </div>
+
+  <div class="s-empty-state d-none" id="scores-filter-empty">
+    <i class="ti ti-filter-off" aria-hidden="true"></i>
+    <p>{% trans 'Bu filterlə qiymət tapılmadı.' %}</p>
+  </div>
 </section>
+</div>
 {% endwith %}

@@ -8,6 +8,11 @@
   <a class="btn btn-outline-secondary btn-sm" href="{{ back_url }}">
     <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'Back' %}
   </a>
+  {% if edit_url %}
+  <a class="btn btn-primary btn-sm ms-auto" href="{{ edit_url }}">
+    <i class="bi bi-pencil me-1" aria-hidden="true"></i>{% trans 'Edit' %}
+  </a>
+  {% endif %}
 </div>
 
 {% portal_page_heading icon="bi-book" raw_title=classroom.name %}
@@ -16,21 +21,15 @@
   <div class="portal-panel-header portal-lesson-detail-meta mb-0">
     <div class="portal-lesson-detail-meta-grid">
       <div>
-        <span class="portal-lesson-meta-label">{% trans 'Service' %}</span>
+        <span class="portal-lesson-meta-label">{% trans 'Group' %}</span>
         <div class="d-flex flex-wrap gap-1 mt-1">
-          {% for label in classroom.service_labels %}
-          <span class="portal-tag">{{ label }}</span>
-          {% empty %}
+          {% if classroom.group_name %}
+          <span class="portal-tag">{{ classroom.group_name }}</span>
+          {% else %}
           <span class="text-muted">—</span>
-          {% endfor %}
+          {% endif %}
         </div>
       </div>
-      {% if classroom.created_at %}
-      <div>
-        <span class="portal-lesson-meta-label">{% trans 'Added' %}</span>
-        <strong>{{ classroom.created_at|portal_date_long }}</strong>
-      </div>
-      {% endif %}
     </div>
   </div>
 

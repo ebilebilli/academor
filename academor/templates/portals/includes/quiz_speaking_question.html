@@ -1,0 +1,59 @@
+{% load i18n %}
+{% if is_part_2 %}
+<article
+  class="portal-speaking-question portal-speaking-question--part-2{% if q.has_recording %} portal-speaking-question--done{% endif %}"
+  data-speaking-question
+  data-question-id="{{ q.id }}"
+  data-part-type="{{ q.part_type }}"
+  data-prep-seconds="{{ q.preparation_seconds }}"
+  data-answer-seconds="{{ q.answer_seconds }}"
+  id="speaking-question-{{ q.id }}"
+>
+  {% if view_only and q.student_audio_url %}
+  <div class="portal-speaking-playback">
+    <audio controls preload="metadata" class="portal-speaking-playback__audio" src="{{ q.student_audio_url }}"></audio>
+    {% if q.student_duration_sec %}
+    <span class="portal-speaking-playback__duration text-muted small">
+      {% blocktrans with sec=q.student_duration_sec %}Recorded {{ sec }}s{% endblocktrans %}
+    </span>
+    {% endif %}
+  </div>
+  {% elif view_only %}
+  <p class="text-muted small mb-0">{% trans 'No recording submitted.' %}</p>
+  {% endif %}
+</article>
+{% else %}
+<li
+  class="portal-speaking-question-item{% if q.has_recording %} portal-speaking-question-item--done{% endif %}"
+  data-speaking-question
+  data-question-id="{{ q.id }}"
+  data-part-type="{{ q.part_type }}"
+  data-prep-seconds="{{ q.preparation_seconds }}"
+  data-answer-seconds="{{ q.answer_seconds }}"
+  id="speaking-question-{{ q.id }}"
+>
+  <div class="portal-speaking-question-item__row">
+    <span class="portal-speaking-question-item__number">{{ q.part_question_number }}.</span>
+    <div class="portal-speaking-question-item__body">
+      {% if q.question %}
+      <div class="portal-speaking-question-item__text">{{ q.question|safe }}</div>
+      {% elif q.question_plain %}
+      <div class="portal-speaking-question-item__text">{{ q.question_plain }}</div>
+      {% endif %}
+      {% if view_only and q.student_audio_url %}
+      <div class="portal-speaking-playback mt-2">
+        <audio controls preload="metadata" class="portal-speaking-playback__audio" src="{{ q.student_audio_url }}"></audio>
+        {% if q.student_duration_sec %}
+        <span class="portal-speaking-playback__duration text-muted small">
+          {% blocktrans with sec=q.student_duration_sec %}Recorded {{ sec }}s{% endblocktrans %}
+        </span>
+        {% endif %}
+      </div>
+      {% elif view_only %}
+      <p class="text-muted small mb-0 mt-2">{% trans 'No recording submitted.' %}</p>
+      {% endif %}
+    </div>
+    <span class="portal-speaking-question-item__status" aria-hidden="true"></span>
+  </div>
+</li>
+{% endif %}

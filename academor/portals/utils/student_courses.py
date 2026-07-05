@@ -1,7 +1,11 @@
 """Student course / service access via direct enrollments on the student profile."""
 
 from portals.models import StudentCourseSpecialization, StudyGroup
+from portals.utils.cache_utils import cached_query
 from portals.utils.portal_services import expand_course_types_to_service_slugs
+from portals.utils.teacher_courses import teacher_groups_queryset
+
+SCORE_LIST_LIMIT = 200
 
 
 def get_student_course_type_codes(student_id):
@@ -66,12 +70,58 @@ def filter_quiz_results_for_student(results, student_id):
     return visible
 
 
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_teacher_student_service_pairs(teacher_id):
+    """Set of (student_id, service_slug) for active teacher groups — avoids N+1 per quiz row."""
+    pairs = set()
+    groups = teacher_groups_queryset(teacher_id, active_only=True).prefetch_related(
+        'students',
+        'courses',
+    )
+    for group in groups:
+        slugs = {course.slug for course in group.courses.all() if course.slug}
+        if not slugs:
+            continue
+        for student in group.students.all():
+            for slug in slugs:
+                pairs.add((student.pk, slug))
+    return frozenset(pairs)
+
+
 def filter_quiz_results_for_teacher(results, teacher_id):
+    from portals.utils.teacher_courses import get_teacher_course_type_codes
+
+    teacher_codes = set(get_teacher_course_type_codes(teacher_id))
+    if not teacher_codes:
+        return []
+
+    pairs = get_teacher_student_service_pairs(teacher_id)
+    student_codes_cache = {}
     visible = []
+
     for row in results:
         quiz = getattr(row, 'quiz', None)
-        if quiz and teacher_can_see_quiz_result(teacher_id, row.student_id, quiz):
+        if not quiz or not quiz_visible_to_teacher(quiz, teacher_id):
+            continue
+
+        service = get_quiz_service_code(quiz)
+        if not service or service not in teacher_codes:
+            continue
+
+        student_id = row.student_id
+        if student_id not in student_codes_cache:
+            student_codes_cache[student_id] = set(get_student_course_type_codes(student_id))
+        if service not in student_codes_cache[student_id]:
+            continue
+
+        if (student_id, service) in pairs:
             visible.append(row)
+            continue
+
+        expanded = expand_course_types_to_service_slugs([service])
+        if any((student_id, slug) in pairs for slug in expanded):
+            visible.append(row)
+
     return visible
 
 
@@ -104,6 +154,8 @@ def _classroom_portal_codes(classroom):
 
 
 def classroom_visible_to_student(classroom, student_id):
+    if getattr(classroom, 'group_id', None):
+        return classroom.group.students.filter(pk=student_id).exists()
     services = _classroom_portal_codes(classroom)
     if not services:
         return False
@@ -111,6 +163,8 @@ def classroom_visible_to_student(classroom, student_id):
 
 
 def classroom_visible_to_teacher(classroom, teacher_id):
+    if getattr(classroom, 'group_id', None):
+        return classroom.group.teacher_id == teacher_id
     from portals.utils.teacher_courses import get_teacher_course_type_codes
 
     services = _classroom_portal_codes(classroom)
@@ -137,6 +191,13 @@ def get_parent_course_type_codes(parent_id):
 
 
 def classroom_visible_to_parent(classroom, parent_id):
+    if getattr(classroom, 'group_id', None):
+        from portals.models import ParentProfile
+
+        return ParentProfile.objects.filter(
+            pk=parent_id,
+            students__groups__pk=classroom.group_id,
+        ).exists()
     services = _classroom_portal_codes(classroom)
     if not services:
         return False

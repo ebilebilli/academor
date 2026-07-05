@@ -4729,6 +4729,11 @@ a.portal-session-group-link:focus-visible {
   gap: 1rem;
 }
 
+.portal-profile-performance__grid--single {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 520px;
+}
+
 .portal-profile-performance__card {
   display: flex;
   align-items: center;

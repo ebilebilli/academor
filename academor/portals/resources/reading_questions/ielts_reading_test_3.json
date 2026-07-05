@@ -1,0 +1,387 @@
+{
+  "title": "IELTS Academic Reading — Practice Test 3",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–40</strong></p><p>You should spend about 60 minutes on <strong>Questions 1–40</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>CRISPR Gene Editing</strong></p><p><strong>A</strong> Clustered regularly interspaced short palindromic repeats, known as CRISPR, have transformed molecular biology by enabling precise edits to DNA sequences in living cells. Originally discovered as an adaptive immune system in bacteria, the toolkit now allows researchers to target specific genes with remarkable accuracy compared with earlier nuclease technologies such as zinc-finger proteins. Laboratories worldwide have adopted the method for basic research, drug discovery, and agricultural breeding, although practical outcomes still depend on delivery efficiency, off-target effects, and the complexity of the trait being modified in each organism and environmental context under field conditions monitored across seasons.</p><p><strong>B</strong> The most widely used variant pairs the Cas9 enzyme with a synthetic guide RNA that directs cutting to a complementary genomic site. Once double-strand breaks occur, cellular repair pathways introduce insertions or deletions, or researchers supply a donor template to rewrite the sequence with intended changes. Base editors and prime editors refine this approach by changing individual letters without fully severing the DNA backbone, potentially reducing unwanted rearrangements. These refinements illustrate how quickly the field has moved from proof-of-concept papers to diversified editing platforms suitable for distinct therapeutic and agricultural goals across public and private laboratories.</p><p><strong>C</strong> Clinical trials are exploring CRISPR-based therapies for blood disorders, certain cancers, and inherited metabolic conditions. Ex vivo approaches modify patient cells outside the body before reinfusion, which simplifies quality control and dosing review by regulators. In vivo delivery remains more challenging because viral vectors and lipid nanoparticles must reach the correct tissue while limiting immune reactions that could destroy edited cells prematurely. Early results have encouraged investment, yet long-term monitoring is essential to detect delayed adverse events that might not appear in short follow-up windows reported in initial trial publications and conference abstracts reviewed by independent safety boards.</p><p><strong>D</strong> Germline editing, which would alter eggs, sperm, or embryos, raises profound ethical questions because changes could pass to future generations without their consent. International commissions have called for cautious moratoria except in narrow research settings, while the author argues that transparent governance is preferable to unregulated experimentation conducted beyond public scrutiny. Public consultation reveals uneven understanding of risks, suggesting that science communication must improve before societies can make informed policy choices about reproductive applications that could reshape human genetic diversity in unpredictable ways across communities with differing cultural values and religious traditions worldwide today already.</p><p><strong>E</strong> Agricultural scientists employ CRISPR to enhance drought tolerance, reduce allergenic proteins, and accelerate conventional breeding timelines without introducing foreign transgenes in some jurisdictions. Regulators in several countries distinguish such edits from transgenic crops that incorporate foreign DNA, though labeling debates continue among consumer groups and exporters. Critics worry that commercial pressure could narrow crop diversity, whereas proponents maintain that precise edits may reduce reliance on broad-spectrum chemical sprays if resistance traits are deployed responsibly within integrated pest management programmes on mixed farms and cooperatives worldwide subject to seasonal monitoring and independent audits by regulators annually.</p><p><strong>F</strong> Intellectual property disputes and licensing fees influence who benefits from the technology. Universities and biotechnology firms hold overlapping patents on core components, which can hinder researchers in low-income settings seeking affordable diagnostics and therapies. Open-science advocates promote shared repositories of guide RNA designs, yet quality assurance remains uneven when sequences are contributed without independent validation. The author contends that equitable access requires both legal clarity and funding mechanisms that support non-profit applications addressing neglected tropical diseases overlooked by commercial investors focused on affluent markets and blockbuster indications with predictable reimbursement pathways in public health systems.</p><p><strong>G</strong> Looking forward, CRISPR is unlikely to replace every older genetic tool, but it has become a standard instrument in the life sciences curriculum and industrial pipelines. Continued advances in delivery, specificity, and computational off-target prediction will determine whether therapeutic promises scale beyond boutique interventions for rare conditions. If oversight keeps pace with capability, the author believes society can harness precise genome editing while limiting reckless uses that could erode public trust in biomedical research and trigger restrictive bans on valuable somatic therapies with broad clinical benefit for common disorders affecting ageing populations globally today already.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 11–15",
+          "instructions": "<p>Choose the correct heading for paragraphs <strong>B–F</strong> from the list of headings below.</p><p><em>Write the correct number, <strong>i–vii</strong>, in boxes 11–15 on your answer sheet.</em></p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "i. Deep-sea mining permits and seabed law",
+            "ii. Guide molecules and refined cutting tools",
+            "iii. Medical trials and delivery hurdles",
+            "iv. Heritable changes and public policy",
+            "v. Crop traits and regulatory distinctions",
+            "vi. Patents, access, and shared resources",
+            "vii. Quantum tunnelling in enzyme catalysis"
+          ],
+          "questions": [
+            {
+              "order": 11,
+              "question": "<p>Paragraph B</p>",
+              "correct_answer": "ii. Guide molecules and refined cutting tools"
+            },
+            {
+              "order": 12,
+              "question": "<p>Paragraph C</p>",
+              "correct_answer": "iii. Medical trials and delivery hurdles"
+            },
+            {
+              "order": 13,
+              "question": "<p>Paragraph D</p>",
+              "correct_answer": "iv. Heritable changes and public policy"
+            },
+            {
+              "order": 14,
+              "question": "<p>Paragraph E</p>",
+              "correct_answer": "v. Crop traits and regulatory distinctions"
+            },
+            {
+              "order": 15,
+              "question": "<p>Paragraph F</p>",
+              "correct_answer": "vi. Patents, access, and shared resources"
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "title": "Questions 16–20",
+          "instructions": "<p>Which paragraph contains the following information?</p><p><em>Write the correct letter, <strong>A–G</strong>, in boxes 16–20 on your answer sheet.</em></p>",
+          "question_type": "matching_info",
+          "option_pool": [
+            "Paragraph A",
+            "Paragraph B",
+            "Paragraph C",
+            "Paragraph D",
+            "Paragraph E",
+            "Paragraph F",
+            "Paragraph G"
+          ],
+          "questions": [
+            {
+              "order": 16,
+              "question": "<p>a description of Cas9 paired with synthetic guide RNA</p>",
+              "correct_answer": "Paragraph B"
+            },
+            {
+              "order": 17,
+              "question": "<p>mention of ex vivo modification before reinfusion</p>",
+              "correct_answer": "Paragraph C"
+            },
+            {
+              "order": 18,
+              "question": "<p>discussion of changes that could affect descendants</p>",
+              "correct_answer": "Paragraph D"
+            },
+            {
+              "order": 19,
+              "question": "<p>reference to drought tolerance in plants</p>",
+              "correct_answer": "Paragraph E"
+            },
+            {
+              "order": 20,
+              "question": "<p>a balanced conclusion about public trust</p>",
+              "correct_answer": "Paragraph G"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "tfng",
+          "question": "<p>CRISPR was first identified as part of a bacterial immune mechanism.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 2,
+          "question_type": "tfng",
+          "question": "<p>All CRISPR therapies currently approved use in vivo delivery only.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 3,
+          "question_type": "tfng",
+          "question": "<p>Prime editors always create large deletions across entire chromosomes.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 4,
+          "question_type": "tfng",
+          "question": "<p>International bodies have encouraged completely unrestricted germline editing.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 5,
+          "question_type": "tfng",
+          "question": "<p>The passage states that every country labels CRISPR crops identically.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 6,
+          "question_type": "ynng",
+          "question": "<p>The author prefers transparent governance over unregulated germline experimentation.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 7,
+          "question_type": "ynng",
+          "question": "<p>The writer believes public understanding of editing risks is uniformly high.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 8,
+          "question_type": "ynng",
+          "question": "<p>The author thinks equitable access depends partly on funding for non-profit uses.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 9,
+          "question_type": "ynng",
+          "question": "<p>The writer claims CRISPR will entirely replace older genetic tools soon.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 10,
+          "question_type": "ynng",
+          "question": "<p>The author is optimistic that oversight can keep pace with technical capability.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 21,
+          "question_type": "sentence_completion",
+          "question": "<p>Cas9 creates double-strand breaks that cells repair through natural ____.</p>",
+          "correct_answer": "pathways",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 22,
+          "question_type": "sentence_completion",
+          "question": "<p>Base editors can change individual letters without fully severing the DNA ____.</p>",
+          "correct_answer": "backbone",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 23,
+          "question_type": "sentence_completion",
+          "question": "<p>In vivo delivery must limit immune ____ while reaching target tissue.</p>",
+          "correct_answer": "reactions",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 24,
+          "question_type": "sentence_completion",
+          "question": "<p>Open-science advocates promote shared repositories of guide RNA ____.</p>",
+          "correct_answer": "designs",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 25,
+          "question_type": "summary_completion",
+          "question": "<p>CRISPR originated as an adaptive immune system in ____. Early tools included zinc-finger nucleases.</p>",
+          "correct_answer": "bacteria",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 26,
+          "question_type": "summary_completion",
+          "question": "<p>Germline editing could alter eggs, sperm, or ____. Commissions have urged caution.</p>",
+          "correct_answer": "embryos",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 27,
+          "question_type": "summary_completion",
+          "question": "<p>Some regulators distinguish CRISPR crops from transgenic plants carrying foreign ____. </p>",
+          "correct_answer": "DNA",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 28,
+          "question_type": "summary_completion",
+          "question": "<p>Long-term monitoring is needed to detect delayed adverse ____. </p>",
+          "correct_answer": "events",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 29,
+          "question_type": "flowchart_completion",
+          "question": "<p>Editing platform | Prime editors aim to reduce unwanted ____</p>",
+          "correct_answer": "rearrangements",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 30,
+          "question_type": "flowchart_completion",
+          "question": "<p>Agriculture concern | Critics fear commercial pressure could narrow crop ____</p>",
+          "correct_answer": "diversity",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 31,
+          "question_type": "flowchart_completion",
+          "question": "<p>Access barrier | Overlapping ____ can hinder low-income researchers</p>",
+          "correct_answer": "patents",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 32,
+          "question_type": "mcq",
+          "question": "<p>What advantage of CRISPR is emphasised in paragraph A?</p>",
+          "answer_options": [
+            "It requires no laboratory training.",
+            "It enables precise DNA edits compared with earlier tools.",
+            "It eliminates all off-target effects automatically.",
+            "It works only in plants."
+          ],
+          "correct_answer": "It enables precise DNA edits compared with earlier tools."
+        },
+        {
+          "order": 33,
+          "question_type": "mcq",
+          "question": "<p>Paragraph C indicates that in vivo delivery is difficult because</p>",
+          "answer_options": [
+            "cells cannot be cultured outside the body",
+            "vectors must reach tissue while controlling immune reactions",
+            "blood disorders cannot be treated genetically",
+            "trials are illegal in every country"
+          ],
+          "correct_answer": "vectors must reach tissue while controlling immune reactions"
+        },
+        {
+          "order": 34,
+          "question_type": "mcq",
+          "question": "<p>According to paragraph E, some regulators treat certain CRISPR crops differently because</p>",
+          "answer_options": [
+            "they contain no foreign DNA",
+            "they are always allergenic",
+            "they cannot grow outdoors",
+            "they use larger seeds"
+          ],
+          "correct_answer": "they contain no foreign DNA"
+        },
+        {
+          "order": 35,
+          "question_type": "mcq",
+          "question": "<p>Paragraph F suggests a barrier for researchers in low-income settings is</p>",
+          "answer_options": [
+            "lack of sunlight in laboratories",
+            "overlapping patents and licensing fees",
+            "absence of any guide RNA databases",
+            "ban on university collaboration"
+          ],
+          "correct_answer": "overlapping patents and licensing fees"
+        },
+        {
+          "order": 36,
+          "question_type": "mcq",
+          "question": "<p>The final paragraph argues that scaling therapies depends on</p>",
+          "answer_options": [
+            "replacing all computational tools",
+            "advances in delivery, specificity, and off-target prediction",
+            "ending every clinical trial",
+            "removing moratoria on germline work"
+          ],
+          "correct_answer": "advances in delivery, specificity, and off-target prediction"
+        },
+        {
+          "order": 37,
+          "question_type": "short_answer",
+          "question": "<p>Which enzyme is most commonly paired with guide RNA?</p>",
+          "correct_answer": "Cas9",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 38,
+          "question_type": "short_answer",
+          "question": "<p>What editing approach modifies patient cells outside the body?</p>",
+          "correct_answer": "ex vivo",
+          "question_config": {
+            "word_limit": 2,
+            "word_limit_label": "NO MORE THAN TWO WORDS",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 39,
+          "question_type": "short_answer",
+          "question": "<p>What type of commissions have called for cautious moratoria on germline work?</p>",
+          "correct_answer": "international",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 40,
+          "question_type": "short_answer",
+          "question": "<p>What must science communication improve before informed policy choices?</p>",
+          "correct_answer": "public understanding",
+          "question_config": {
+            "word_limit": 2,
+            "word_limit_label": "NO MORE THAN TWO WORDS",
+            "case_insensitive": true
+          }
+        }
+      ]
+    }
+  ]
+}

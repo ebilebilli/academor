@@ -1,0 +1,392 @@
+.portal-quiz-take--reading {
+  --reading-sticky-offset: 0px;
+  --reading-tab-nav-height: 0px;
+}
+
+.portal-quiz-take--reading.portal-quiz-take--timed {
+  --reading-sticky-offset: var(--portal-quiz-timer-bar-height, 5.75rem);
+}
+
+.portal-reading-preview-stack {
+  --reading-sticky-offset: 0px;
+  --reading-tab-nav-height: 0px;
+}
+
+.portal-reading-preview-stack .portal-reading-tabs {
+  --reading-tab-nav-height: 3.25rem;
+}
+
+.portal-quiz-take--reading .portal-reading-tabs-wrap,
+.portal-reading-preview-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.portal-reading-tabs {
+  --reading-tab-nav-height: 3.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, rgba(0, 0, 0, 0.08));
+  border-radius: 0.75rem;
+  overflow: visible;
+}
+
+.portal-reading-tabs__nav {
+  flex-shrink: 0;
+  position: sticky;
+  top: var(--reading-sticky-offset);
+  z-index: 8;
+  margin: 0;
+  padding: 0.65rem 1rem 0;
+  min-height: var(--reading-tab-nav-height);
+  background: var(--color-surface, #fff);
+  border-bottom: 1px solid var(--color-border, rgba(0, 0, 0, 0.08));
+  gap: 0.25rem;
+}
+
+.portal-reading-tabs__nav .nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  white-space: nowrap;
+}
+
+.portal-reading-tabs__range {
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.portal-reading-tabs__panels {
+  padding: 1rem;
+  overflow: visible;
+}
+
+.portal-reading-tabs__panels > .tab-pane {
+  outline: none;
+  padding-top: 0.125rem;
+}
+
+.portal-reading-section__layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.portal-reading-section__passage {
+  background: var(--color-surface, #fff);
+  margin-bottom: 1rem;
+}
+
+.portal-reading-section__passage-head {
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.portal-reading-section__tasks {
+  min-height: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.portal-reading-section__passage-head,
+.portal-reading-section__tasks-head {
+  margin-bottom: 1rem;
+}
+
+.portal-reading-section__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--portal-muted, #6c757d);
+  margin-bottom: 0.5rem;
+}
+
+.portal-reading-section__title {
+  font-size: 1.15rem;
+  margin: 0;
+}
+
+.portal-reading-section--tabbed .portal-reading-section__title {
+  font-size: 1.05rem;
+}
+
+.portal-reading-section__instructions {
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.portal-reading-section__body {
+  line-height: 1.7;
+}
+
+.portal-reading-section__tasks-label {
+  font-weight: 600;
+}
+
+.portal-reading-section__task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.portal-reading-task {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  background: #fff;
+}
+
+.portal-reading-task__head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.portal-reading-task__index {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 700;
+}
+
+.portal-reading-task__prompt {
+  margin-bottom: 0.75rem;
+}
+
+.portal-reading-text-answer__input {
+  max-width: 24rem;
+}
+
+.portal-reading-group-instructions__pool-list {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.portal-reading-group-instructions__pool-item {
+  padding: 0.35rem 0.5rem;
+  border-radius: 0.5rem;
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.portal-reading-tabs--single {
+  --reading-tab-nav-height: 0px;
+}
+
+.portal-reading-tabs__panels--single {
+  padding: 1rem;
+}
+
+.portal-reading-section__tasks-head--sticky {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  position: sticky;
+  top: calc(var(--reading-sticky-offset) + var(--reading-tab-nav-height, 0px));
+  z-index: 6;
+  margin: -1rem -1rem 1rem;
+  padding: 0.85rem 1rem;
+  background: var(--color-surface, #fff);
+  border-bottom: 1px solid var(--color-border, rgba(0, 0, 0, 0.08));
+}
+
+.portal-reading-section__tasks-head-text {
+  min-width: 0;
+}
+
+.portal-reading-return-bar {
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.portal-reading-return-bar[hidden] {
+  display: none !important;
+}
+
+.portal-reading-return-btn {
+  border-radius: 999px;
+  font-weight: 600;
+  white-space: nowrap;
+  border-color: var(--admin-accent, #ff5414);
+  color: #fff;
+  background: var(--admin-accent, #ff5414);
+}
+
+.portal-reading-return-btn:hover,
+.portal-reading-return-btn:focus-visible {
+  border-color: var(--admin-accent-hover, #e04a10);
+  color: #fff;
+  background: var(--admin-accent-hover, #e04a10);
+}
+
+.portal-quiz-play-option--reading:has(.portal-quiz-play-option__input:checked) {
+  border-color: var(--admin-accent);
+  background: rgba(255, 84, 20, 0.08);
+  box-shadow: 0 0 0 1px rgba(255, 84, 20, 0.12);
+}
+
+.portal-quiz-play-option--reading:has(.portal-quiz-play-option__input:checked) .portal-quiz-play-option__letter {
+  background: var(--admin-accent);
+  border-color: var(--admin-accent);
+  color: #fff;
+}
+
+@media (max-width: 991.98px) {
+  .portal-reading-tabs {
+    --reading-tab-nav-height: 3rem;
+  }
+
+  .portal-reading-tabs__nav {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .portal-reading-tabs__nav .nav-item {
+    flex-shrink: 0;
+  }
+}
+
+/* Teacher review — compact answer grid */
+.portal-reading-teacher-review .portal-reading-tabs--teacher-review {
+  --reading-tab-nav-height: auto;
+}
+
+.portal-reading-review-passage__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  cursor: pointer;
+  list-style: none;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+}
+
+.portal-reading-review-passage__summary::-webkit-details-marker {
+  display: none;
+}
+
+.portal-reading-review-passage__summary::before {
+  content: "▸";
+  margin-right: 0.5rem;
+  color: var(--bs-secondary-color);
+  transition: transform 0.15s ease;
+}
+
+.portal-reading-review-passage[open] .portal-reading-review-passage__summary::before {
+  transform: rotate(90deg);
+}
+
+.portal-reading-review-passage__instructions,
+.portal-reading-review-passage__body {
+  padding: 0 1rem 1rem;
+}
+
+.portal-reading-review-group {
+  padding: 0.65rem 0.85rem;
+}
+
+.portal-reading-review-group__title {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.portal-reading-review-questions {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.portal-reading-review-row {
+  display: grid;
+  grid-template-columns: 2.25rem 1fr auto;
+  gap: 0.65rem 0.75rem;
+  align-items: start;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 0.5rem;
+  background: #fff;
+}
+
+.portal-reading-review-row--correct {
+  border-color: rgba(25, 135, 84, 0.25);
+  background: rgba(25, 135, 84, 0.04);
+}
+
+.portal-reading-review-row--incorrect {
+  border-color: rgba(220, 53, 69, 0.25);
+  background: rgba(220, 53, 69, 0.04);
+}
+
+.portal-reading-review-row__num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.portal-reading-review-row__prompt {
+  font-size: 0.9rem;
+  margin-bottom: 0.45rem;
+}
+
+.portal-reading-review-row__prompt:empty {
+  display: none;
+}
+
+.portal-reading-review-row__answers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 1rem;
+}
+
+.portal-reading-review-row__label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--bs-secondary-color);
+  margin-bottom: 0.15rem;
+}
+
+.portal-reading-review-row__value {
+  font-size: 0.9rem;
+  word-break: break-word;
+}
+
+.portal-reading-review-row__answer--correct .portal-reading-review-row__value {
+  font-weight: 600;
+}
+
+.portal-reading-review-row__input {
+  margin-top: 0.1rem;
+}
+
+.portal-reading-review-form .portal-reading-review-row {
+  grid-template-columns: 2.25rem 1fr;
+}
+
+.portal-reading-review-form .portal-reading-review-row__answers {
+  grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 575.98px) {
+  .portal-reading-review-row__answers {
+    grid-template-columns: 1fr;
+  }
+}

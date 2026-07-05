@@ -1,0 +1,387 @@
+{
+  "title": "IELTS Academic Reading — Practice Test 8",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–40</strong></p><p>You should spend about 60 minutes on <strong>Questions 1–40</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Ocean acidification and shellfish</strong></p><p><strong>A</strong> Ocean acidification arises as seawater absorbs anthropogenic carbon dioxide, lowering pH and reducing carbonate ion availability essential for calcifying organisms. Shellfish aquaculture depends on larvae producing fragile shells during early development stages highly sensitive to chemical saturation states. Coastal upwelling regions naturally experience corrosive waters, offering previews of conditions spreading under continued emissions trajectories. Farmers monitor hatchery intake chemistry, adjusting rearing protocols when aragonite saturation falls below thresholds linked to developmental deformities. Scientists collaborate with industry because economic losses appear years before open-ocean changes become obvious to casual observers. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p><p><strong>B</strong> Biological impacts extend beyond shell formation to altered behaviour, metabolism, and immune competence in adult bivalves and crustaceans. Experiments in controlled flumes manipulate pH while holding temperature constant, isolating acidification effects from concurrent warming stressors. Field studies along volcanic carbon dioxide seeps document community shifts toward non-calcifying species dominating seafloor biomass. Restoration ecologists worry that weakened shellfish beds provide less coastal protection from storm surges as reefs and marshes degrade simultaneously. The author cautions against treating acidification as a distant open-ocean issue irrelevant to nearshore livelihoods and food security. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p><p><strong>C</strong> Mitigation at hatcheries includes buffering intake water with carbonate minerals or deploying electrochemical systems that strip carbon dioxide. These interventions raise energy and material costs, prompting cooperatives to share monitoring equipment and technical advisers. Selective breeding programmes identify broodstock families tolerating lower saturation, though genetic gains must not compromise disease resistance. Policy incentives for low-carbon energy at processing plants indirectly benefit growers facing acidification alongside fuel price volatility. The writer believes local adaptation tools buy time but cannot replace aggressive emissions reductions on land. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p><p><strong>D</strong> Regional fisheries management councils increasingly request acidification projections when setting harvest quotas for culturally important species. Indigenous nations dependent on clam gardens argue that treaty rights should trigger government funding for hatchery upgrades. Legal scholars examine whether failure to curb emissions constitutes negligence toward communities whose economies rely on shellfish exports. International climate negotiations seldom mention aquaculture explicitly, leaving sectoral advocates to translate global temperature targets into chemical endpoints. The author contends that justice frameworks must connect atmospheric policy with shoreline consequences visible in empty nursery tanks. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p><p><strong>E</strong> Research networks deploy autonomous buoys measuring pH, temperature, and salinity, transmitting alerts when corrosive events approach farms. Machine learning models fuse buoy data with satellite chlorophyll to forecast harmful synergies between acidification and algal toxins. Data sharing agreements between competing companies remain rare, limiting ensemble forecasts that could protect entire bays. Open platforms sponsored by universities may overcome commercial secrecy if anonymisation protects proprietary site locations adequately. The writer supports collaborative forecasting because isolated farms cannot outrun regional chemistry shifts driven by basin-scale processes. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p><p><strong>F</strong> Consumer education campaigns describe how sustainable aquaculture practices differ from wild harvest stressed by multiple stressors. Certification schemes add acidification vulnerability indices, though shoppers struggle to interpret labels without contextual storytelling. Restaurants partnering with scientists host tasting events featuring resilient strains, linking culinary culture to conservation narratives. Critics argue market-based certification inadequately addresses root causes requiring legislative carbon pricing. The author believes cultural engagement complements regulation, transforming shellfish from commodity statistics into symbols motivating climate action. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes. Policymakers increasingly demand reproducible evidence, open data, and independent evaluation before scaling interventions beyond controlled pilot settings.</p><p><strong>G</strong> Future scenarios hinge on whether nations meet emissions pathways limiting surface pH decline this century. Geoengineering proposals to alkalinise oceans raise ecological risks and governance questions far exceeding hatchery-scale buffering. Integrated coastal zone plans may relocate vulnerable farms inland or toward species less dependent on carbonate skeletons. The writer maintains that shellfish farmers are frontline observers whose monitoring data should inform national climate assessments. Recognising their testimony could align adaptation funding with communities already investing private capital in chemical resilience. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 11–15",
+          "instructions": "<p>Choose the correct heading for paragraphs <strong>B–F</strong> from the list of headings below.</p><p><em>Write the correct number, <strong>i–vii</strong>, in boxes 11–15 on your answer sheet.</em></p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "i. Alpine skiing snowmaking economics",
+            "ii. Biological effects beyond shell formation",
+            "iii. Hatchery buffering and selective breeding",
+            "iv. Treaty rights and legal negligence debates",
+            "v. Buoys, forecasting, and data sharing",
+            "vi. Certification, culture, and consumer education",
+            "vii. Mars rover wheel design"
+          ],
+          "questions": [
+            {
+              "order": 11,
+              "question": "<p>Paragraph B</p>",
+              "correct_answer": "ii. Biological effects beyond shell formation"
+            },
+            {
+              "order": 12,
+              "question": "<p>Paragraph C</p>",
+              "correct_answer": "iii. Hatchery buffering and selective breeding"
+            },
+            {
+              "order": 13,
+              "question": "<p>Paragraph D</p>",
+              "correct_answer": "iv. Treaty rights and legal negligence debates"
+            },
+            {
+              "order": 14,
+              "question": "<p>Paragraph E</p>",
+              "correct_answer": "v. Buoys, forecasting, and data sharing"
+            },
+            {
+              "order": 15,
+              "question": "<p>Paragraph F</p>",
+              "correct_answer": "vi. Certification, culture, and consumer education"
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "title": "Questions 16–20",
+          "instructions": "<p>Which paragraph contains the following information?</p><p><em>Write the correct letter, <strong>A–G</strong>, in boxes 16–20 on your answer sheet.</em></p>",
+          "question_type": "matching_info",
+          "option_pool": [
+            "Paragraph A",
+            "Paragraph B",
+            "Paragraph C",
+            "Paragraph D",
+            "Paragraph E",
+            "Paragraph F",
+            "Paragraph G"
+          ],
+          "questions": [
+            {
+              "order": 16,
+              "question": "<p>experiments isolating pH effects in controlled flumes</p>",
+              "correct_answer": "Paragraph B"
+            },
+            {
+              "order": 17,
+              "question": "<p>mention of carbonate mineral buffering at hatcheries</p>",
+              "correct_answer": "Paragraph C"
+            },
+            {
+              "order": 18,
+              "question": "<p>discussion of clam gardens and treaty rights</p>",
+              "correct_answer": "Paragraph D"
+            },
+            {
+              "order": 19,
+              "question": "<p>reference to machine learning with buoy data</p>",
+              "correct_answer": "Paragraph E"
+            },
+            {
+              "order": 20,
+              "question": "<p>a conclusion about farmers informing national assessments</p>",
+              "correct_answer": "Paragraph G"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "tfng",
+          "question": "<p>Ocean acidification is linked to seawater absorbing carbon dioxide.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 2,
+          "question_type": "tfng",
+          "question": "<p>Adult shellfish are never affected by acidification according to the passage.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 3,
+          "question_type": "tfng",
+          "question": "<p>Every nation has funded hatchery upgrades through treaty litigation.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 4,
+          "question_type": "tfng",
+          "question": "<p>Volcanic seeps help study community shifts under high carbon dioxide.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 5,
+          "question_type": "tfng",
+          "question": "<p>Geoengineering alkalinisation is presented as risk-free.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 6,
+          "question_type": "ynng",
+          "question": "<p>The author says hatchery tools cannot replace emissions reductions.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 7,
+          "question_type": "ynng",
+          "question": "<p>The writer believes acidification is irrelevant to nearshore livelihoods.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 8,
+          "question_type": "ynng",
+          "question": "<p>The author connects justice frameworks to shoreline economic impacts.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 9,
+          "question_type": "ynng",
+          "question": "<p>The writer thinks certification alone solves root causes without carbon pricing.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 10,
+          "question_type": "ynng",
+          "question": "<p>The author values shellfish farmers as frontline climate observers.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 21,
+          "question_type": "sentence_completion",
+          "question": "<p>Lower pH reduces carbonate ion availability for ____ organisms.</p>",
+          "correct_answer": "calcifying",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 22,
+          "question_type": "sentence_completion",
+          "question": "<p>Farmers adjust rearing protocols when aragonite ____ falls below thresholds.</p>",
+          "correct_answer": "saturation",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 23,
+          "question_type": "sentence_completion",
+          "question": "<p>Autonomous buoys measure pH, temperature, and ____.</p>",
+          "correct_answer": "salinity",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 24,
+          "question_type": "sentence_completion",
+          "question": "<p>Selective breeding seeks broodstock tolerating lower ____.</p>",
+          "correct_answer": "saturation",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 25,
+          "question_type": "summary_completion",
+          "question": "<p>Larvae produce fragile shells during early ____ stages.</p>",
+          "correct_answer": "development",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 26,
+          "question_type": "summary_completion",
+          "question": "<p>Upwelling regions offer previews of spreading chemical ____.</p>",
+          "correct_answer": "conditions",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 27,
+          "question_type": "summary_completion",
+          "question": "<p>Legal scholars ask whether emission failure constitutes ____.</p>",
+          "correct_answer": "negligence",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 28,
+          "question_type": "summary_completion",
+          "question": "<p>Integrated plans may relocate farms toward less carbonate-dependent ____.</p>",
+          "correct_answer": "species",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 29,
+          "question_type": "table_completion",
+          "question": "<p>Stress factor | Concurrent warming complicates acidification ____</p>",
+          "correct_answer": "studies",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 30,
+          "question_type": "table_completion",
+          "question": "<p>Mitigation | Electrochemical systems strip carbon ____</p>",
+          "correct_answer": "dioxide",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 31,
+          "question_type": "table_completion",
+          "question": "<p>Market tool | Certification adds vulnerability ____</p>",
+          "correct_answer": "indices",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 32,
+          "question_type": "mcq",
+          "question": "<p>Paragraph A emphasises shellfish aquaculture vulnerability during</p>",
+          "answer_options": [
+            "adult harvesting only",
+            "larval shell formation stages",
+            "deep-sea mining",
+            "forest clearance"
+          ],
+          "correct_answer": "larval shell formation stages"
+        },
+        {
+          "order": 33,
+          "question_type": "mcq",
+          "question": "<p>According to paragraph C, selective breeding must avoid compromising</p>",
+          "answer_options": [
+            "shell colour",
+            "disease resistance",
+            "water salinity",
+            "boat fuel use"
+          ],
+          "correct_answer": "disease resistance"
+        },
+        {
+          "order": 34,
+          "question_type": "mcq",
+          "question": "<p>Paragraph E suggests regional forecasts are limited because</p>",
+          "answer_options": [
+            "buoys are illegal",
+            "data sharing among competitors is rare",
+            "chlorophyll cannot be measured",
+            "universities ban anonymisation"
+          ],
+          "correct_answer": "data sharing among competitors is rare"
+        },
+        {
+          "order": 35,
+          "question_type": "mcq",
+          "question": "<p>Paragraph F indicates critics view certification as</p>",
+          "answer_options": [
+            "fully solving root causes",
+            "inadequate without legislative carbon pricing",
+            "unnecessary for restaurants",
+            "superior to cultural engagement"
+          ],
+          "correct_answer": "inadequate without legislative carbon pricing"
+        },
+        {
+          "order": 36,
+          "question_type": "mcq",
+          "question": "<p>The final paragraph urges using farmer data in</p>",
+          "answer_options": [
+            "national climate assessments",
+            "volcanic geoengineering only",
+            "wild harvest bans",
+            "consumer label removal"
+          ],
+          "correct_answer": "national climate assessments"
+        },
+        {
+          "order": 37,
+          "question_type": "short_answer",
+          "question": "<p>What ion availability declines as oceans acidify?</p>",
+          "correct_answer": "carbonate",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 38,
+          "question_type": "short_answer",
+          "question": "<p>What natural coastal feature previews corrosive waters?</p>",
+          "correct_answer": "upwelling",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 39,
+          "question_type": "short_answer",
+          "question": "<p>What mineral is used to buffer hatchery intake water?</p>",
+          "correct_answer": "carbonate",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 40,
+          "question_type": "short_answer",
+          "question": "<p>What gardens are mentioned in relation to Indigenous nations?</p>",
+          "correct_answer": "clam",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -14,7 +14,7 @@
   </div>
   <div class="t-welcome__date">
     <i class="ti ti-calendar" aria-hidden="true"></i>
-    <span data-portal-today-date></span>
+    <span data-portal-today-date>{% portal_today_long %}</span>
   </div>
 </header>
 
@@ -63,9 +63,13 @@
       <i class="ti ti-clipboard-check" aria-hidden="true"></i>
       <span>{% trans 'Davamiyyət al' %}</span>
     </a>
+    <a class="t-qa-btn t-qa-btn--emerald" href="{% url 'portals:teacher-weekly-scores' %}">
+      <i class="ti ti-calendar-stats" aria-hidden="true"></i>
+      <span>{% trans 'Həftəlik qiymət' %}</span>
+    </a>
     <a class="t-qa-btn t-qa-btn--emerald" href="{% url 'portals:teacher-scores' %}">
       <i class="ti ti-star" aria-hidden="true"></i>
-      <span>{% trans 'Qiymət yaz' %}</span>
+      <span>{% trans 'Nəticələr və qiymətləndirmələr' %}</span>
     </a>
     <a class="t-qa-btn t-qa-btn--indigo" href="{% url 'portals:teacher-lesson-create' %}">
       <i class="ti ti-book-upload" aria-hidden="true"></i>

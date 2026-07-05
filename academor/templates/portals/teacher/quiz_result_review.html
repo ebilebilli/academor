@@ -5,6 +5,12 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}">
+{% if result.is_reading %}
+<link rel="stylesheet" href="{% static 'portals/css/quiz-reading.css' %}?v=20260703h">
+{% endif %}
+{% if result.is_speaking %}
+<link rel="stylesheet" href="{% static 'portals/css/quiz-speaking.css' %}?v=20260703">
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -41,6 +47,67 @@
     {% endfor %}
   </div>
 </section>
+{% elif result.is_speaking and result.speaking_sections %}
+<section class="panel mb-4">
+  <h2 class="h6 mb-3">{% trans 'Speaking tasks' %}</h2>
+  {% include "portals/includes/quiz_speaking_overview.html" with quiz=result view_only=True %}
+</section>
+{% elif result.is_reading and result.reading_sections %}
+{% if result.is_pending_review %}
+<form method="post" class="portal-reading-review-form">
+  {% csrf_token %}
+  <section class="panel mb-4 portal-reading-teacher-review">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+      <h2 class="h6 mb-0">{% trans 'Answers' %}</h2>
+      {% if result.total_score is not None and result.max_value %}
+      <span class="badge rounded-pill text-bg-light border">
+        {% trans 'Auto-check' %}: {{ result.total_score|format_quiz_score }}/{{ result.max_value|format_quiz_score }}
+      </span>
+      {% endif %}
+    </div>
+    <p class="text-muted small mb-3">{% trans 'Enter the correct answer for each task. These are shown to the student after you publish the review.' %}</p>
+    {% include "portals/includes/quiz_reading_teacher_review_tabs.html" with sections=result.reading_sections review_editable=True %}
+  </section>
+
+  <section class="panel mb-4">
+    <h2 class="h6 mb-3">{% trans 'Your review' %}</h2>
+    <div class="mb-3">
+      <label class="form-label" for="total_score">{% blocktrans with max=result.max_value|format_quiz_score %}Score (out of {{ max }}){% endblocktrans %}</label>
+      <input
+        type="number"
+        step="0.01"
+        min="0"
+        max="{{ result.max_value|format_quiz_score }}"
+        class="form-control"
+        id="total_score"
+        name="total_score"
+        value="{% if result.total_score is not None %}{{ result.total_score|format_quiz_score }}{% endif %}"
+        required
+      >
+      <div class="form-text">
+        {% blocktrans with max=result.max_value|format_quiz_score %}Auto-check is a suggestion only. Set the final score up to {{ max }}.{% endblocktrans %}
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="teacher_feedback">{% trans 'Feedback and corrections' %}</label>
+      <textarea class="form-control" id="teacher_feedback" name="teacher_feedback" rows="6">{{ result.teacher_feedback }}</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">{% trans 'Save review' %}</button>
+  </section>
+</form>
+{% else %}
+<section class="panel mb-4 portal-reading-teacher-review">
+  <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+    <h2 class="h6 mb-0">{% trans 'Answers' %}</h2>
+    {% if result.total_score is not None and result.max_value %}
+    <span class="badge rounded-pill text-bg-light border">
+      {% trans 'Score' %}: {{ result.total_score|format_quiz_score }}/{{ result.max_value|format_quiz_score }}
+    </span>
+    {% endif %}
+  </div>
+  {% include "portals/includes/quiz_reading_teacher_review_tabs.html" with sections=result.reading_sections review_editable=False %}
+</section>
+{% endif %}
 {% else %}
 <section class="panel mb-4">
   <h2 class="h6 mb-3">{% trans 'Prompts' %}</h2>
@@ -71,24 +138,30 @@
 </section>
 {% endif %}
 
-{% if result.is_pending_review %}
+{% if result.is_pending_review and not result.is_reading %}
 <form method="post" class="panel">
   {% csrf_token %}
   <h2 class="h6 mb-3">{% trans 'Your review' %}</h2>
   <div class="mb-3">
-    <label class="form-label" for="total_score">{% trans 'Score (out of 10)' %}</label>
+    <label class="form-label" for="total_score">{% blocktrans with max=result.max_value|format_quiz_score %}Score (out of {{ max }}){% endblocktrans %}</label>
     <input
       type="number"
       step="0.01"
       min="0"
-      max="10"
+      max="{{ result.max_value|format_quiz_score }}"
       class="form-control"
       id="total_score"
       name="total_score"
       value="{% if result.total_score is not None %}{{ result.total_score|format_quiz_score }}{% endif %}"
       required
     >
-    <div class="form-text">{% trans 'Listening, essay, and speaking tasks are graded on a 0–10 scale. Decimal scores are allowed (e.g. 7.25).' %}</div>
+    <div class="form-text">
+      {% if result.is_reading %}
+      {% blocktrans with max=result.max_value|format_quiz_score %}Auto-check is a suggestion only. Set the final score up to {{ max }}.{% endblocktrans %}
+      {% else %}
+      {% trans 'Listening, essay, and speaking tasks are graded on a 0–10 scale. Decimal scores are allowed (e.g. 7.25).' %}
+      {% endif %}
+    </div>
   </div>
   <div class="mb-3">
     <label class="form-label" for="teacher_feedback">{% trans 'Feedback and corrections' %}</label>
@@ -96,7 +169,7 @@
   </div>
   <button type="submit" class="btn btn-primary">{% trans 'Save review' %}</button>
 </form>
-{% else %}
+{% elif not result.is_pending_review %}
 <section class="panel">
   <h2 class="h6 mb-3">{% trans 'Your review' %}</h2>
   {% if result.teacher_feedback %}
@@ -110,4 +183,4 @@
 </section>
 {% endif %}
 {% endblock %}
-
+

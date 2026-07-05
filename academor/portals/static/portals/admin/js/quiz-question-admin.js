@@ -3,7 +3,7 @@
 
   var ANSWER_FIELDS = ["answer_options", "correct_answer"];
   var RESPONSE_FIELD = "student_response_preview";
-  var GRADING_INPUTS = ["is_essay", "is_listening", "is_speaking"];
+  var GRADING_INPUTS = ["is_essay", "is_listening", "is_speaking", "is_reading"];
 
   var PROMPT_TYPES = {
     text: {
@@ -84,6 +84,9 @@
     if (form.querySelector("#id_is_speaking:checked")) {
       return "speaking";
     }
+    if (form.querySelector("#id_is_reading:checked")) {
+      return "reading";
+    }
     return "variant";
   }
 
@@ -104,12 +107,47 @@
         clear_fields: [],
       };
     }
+    if (mode === "reading") {
+      return {
+        grading_mode: mode,
+        show_fields: [],
+        hide_fields: ANSWER_FIELDS.concat([RESPONSE_FIELD]),
+        clear_fields: ANSWER_FIELDS.slice(),
+      };
+    }
     return {
       grading_mode: mode,
       show_fields: [],
       hide_fields: ANSWER_FIELDS.concat([RESPONSE_FIELD]),
       clear_fields: ANSWER_FIELDS.slice(),
+      hide_time_limit: mode === "speaking",
     };
+  }
+
+  function timeLimitFieldset() {
+    var field = document.querySelector("#quiz_form .field-is_time_limited");
+    return field ? field.closest("fieldset") : null;
+  }
+
+  function clearTimeLimitFields() {
+    var timeLimited = document.querySelector("#id_is_time_limited");
+    var minutes = document.querySelector("#id_time_limit_minutes");
+    if (timeLimited) {
+      timeLimited.checked = false;
+    }
+    if (minutes) {
+      minutes.value = "";
+    }
+  }
+
+  function applyTimeLimitVisibility(hide) {
+    var fieldset = timeLimitFieldset();
+    if (fieldset) {
+      fieldset.classList.toggle("quiz-admin-hidden-fieldset", !!hide);
+    }
+    if (hide) {
+      clearTimeLimitFields();
+    }
   }
 
   function clearFieldValue(block, name) {
@@ -164,6 +202,38 @@
         syncAudioListeningNotice(block, select.value || "text");
       }
     });
+    applyTimeLimitVisibility(!!(config && config.hide_time_limit));
+    applyQuizInlineMode(config && config.grading_mode);
+  }
+
+  function applyQuizInlineMode(mode) {
+    var form = quizForm();
+    if (!form) {
+      return;
+    }
+    var variantInline = form.querySelector(".inline-group.portal-quiz-inline");
+    var speakingInline = form.querySelector(".inline-group .speakingpart");
+    var hideVariant = mode === "speaking" || mode === "listening" || mode === "reading";
+    if (variantInline) {
+      variantInline.classList.toggle("quiz-admin-hidden-fieldset", hideVariant);
+    }
+    var notice = form.querySelector("[data-quiz-speaking-inline-notice]");
+    if (mode === "speaking" && !speakingInline && !form.querySelector("#quiz_form input[name='id']")) {
+      if (!notice) {
+        notice = document.createElement("div");
+        notice.className = "help quiz-speaking-inline-notice";
+        notice.setAttribute("data-quiz-speaking-inline-notice", "");
+        notice.textContent =
+          "Save this quiz first with Speaking enabled, then edit it to add speaking parts — or add parts under Speaking parts in the admin menu.";
+        var target = variantInline || form.querySelector(".inline-group");
+        if (target && target.parentNode) {
+          target.parentNode.insertBefore(notice, target);
+        }
+      }
+      notice.hidden = false;
+    } else if (notice) {
+      notice.hidden = true;
+    }
   }
 
   var gradingRequestId = 0;

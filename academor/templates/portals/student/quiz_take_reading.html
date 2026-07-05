@@ -1,0 +1,156 @@
+{% extends "portals/base.html" %}
+{% load static i18n portal_tags %}
+
+{% block title %}{{ quiz.topic }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}">
+<link rel="stylesheet" href="{% static 'portals/css/quiz-reading.css' %}?v=20260703i">
+{% endblock %}
+
+{% block content %}
+<div class="portal-control-bar mb-3">
+  <a
+    class="btn btn-outline-secondary btn-sm"
+    href="{% if mock_id %}{% url 'portals:student-quiz-cancel' pk=quiz.id %}?mock={{ mock_id }}&next={{ back_url|urlencode }}{% else %}{% url 'portals:student-quiz-cancel' pk=quiz.id %}?next={{ back_url|urlencode }}{% endif %}"
+    {% if not quiz.view_only %}data-quiz-leave-link{% endif %}
+  >
+    <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'Back' %}
+  </a>
+</div>
+
+{% include "portals/includes/quiz_mock_progress.html" %}
+{% include "portals/includes/quiz_mock_section_continue.html" %}
+
+{% portal_page_heading icon="bi-book" raw_title=quiz.topic raw_subtitle=quiz.grading_mode_label %}
+
+<div
+  class="portal-quiz-take portal-quiz-take--reading{% if quiz.is_time_limited %} portal-quiz-take--timed{% endif %}"
+  {% if not quiz.view_only %}data-quiz-reading-take data-quiz-started="false"{% endif %}
+  data-quiz-id="{{ quiz.id }}"
+  {% if mock_id %}data-mock-id="{{ mock_id }}" data-mock-cancel-url="{% url 'portals:student-quiz-cancel' pk=quiz.id %}?mock={{ mock_id }}&amp;next={{ back_url|urlencode }}" data-msg-mock-leave-warning="{% trans 'Leave the mock test? Your current progress will be lost.' %}" data-mock-leave-confirm="{% trans 'Leave mock test' %}"{% endif %}
+  data-submit-url="{{ submit_url }}"
+  data-time-limit-sec="{{ quiz.time_limit_seconds|default:0 }}"
+  data-label-correct="{% trans 'Correct' %}"
+  data-label-incorrect="{% trans 'Incorrect' %}"
+  data-label-unanswered="{% trans 'Not answered' %}"
+  data-msg-submitting="{% trans 'Submitting…' %}"
+  data-msg-error="{% trans 'Could not submit the test. Please try again.' %}"
+  data-msg-leave-warning="{% trans 'If you leave this page now, your quiz will be counted as completed.' %}"
+>
+  <div data-quiz-take-content{% if not quiz.view_only %} hidden{% endif %}>
+    <div class="portal-quiz-take-toolbar panel mb-3{% if quiz.is_time_limited %} portal-quiz-take-toolbar--timed{% endif %}">
+      <div class="portal-quiz-take-toolbar__row">
+        <div class="portal-quiz-take-meta">
+          <span class="badge rounded-pill text-bg-primary px-3 py-2">{{ quiz.grading_mode_label }}</span>
+          <span class="badge rounded-pill text-bg-light border px-3 py-2">{{ quiz.response_question_count }} {% trans 'questions' %}</span>
+          {% if quiz.is_time_limited %}
+          <span class="badge rounded-pill text-bg-light border px-3 py-2">
+            <i class="bi bi-hourglass-split me-1" aria-hidden="true"></i>{% blocktrans with minutes=quiz.time_limit_minutes %}{{ minutes }} min limit{% endblocktrans %}
+          </span>
+          {% endif %}
+        </div>
+        {% if quiz.is_time_limited %}
+        <div class="portal-quiz-clock" data-quiz-timer hidden>
+          <span class="portal-quiz-clock__label">{% trans 'Time left' %}</span>
+          <strong class="portal-quiz-clock__value" data-quiz-timer-value aria-live="polite">--:--</strong>
+        </div>
+        {% endif %}
+      </div>
+      {% if quiz.is_time_limited %}
+      <div class="portal-quiz-time-bar" data-quiz-timer-bar hidden aria-hidden="true">
+        <div class="portal-quiz-time-bar__fill" data-quiz-timer-bar-fill></div>
+      </div>
+      {% endif %}
+    </div>
+    {% if quiz.is_time_limited %}
+    <div class="portal-quiz-take-toolbar-spacer" aria-hidden="true"></div>
+    {% endif %}
+
+    <form class="portal-quiz-take-form" data-quiz-take-form novalidate>
+      <div class="portal-reading-tabs-wrap mb-4">
+        {% if quiz.reading_sections|length > 1 %}
+        {% include "portals/includes/quiz_reading_tabs.html" with sections=quiz.reading_sections view_only=quiz.view_only %}
+        {% else %}
+        <div class="portal-reading-tabs portal-reading-tabs--single" data-reading-tabs>
+          <div class="portal-reading-tabs__panels portal-reading-tabs__panels--single">
+            {% for section in quiz.reading_sections %}
+            {% if quiz.view_only %}
+            {% include "portals/includes/quiz_reading_section.html" with section=section view_only=quiz.view_only in_tabs=True show_passage_return=False %}
+            {% else %}
+            {% include "portals/includes/quiz_reading_section.html" with section=section view_only=quiz.view_only in_tabs=True show_passage_return=True %}
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+
+      {% if not quiz.view_only %}
+      <div class="portal-quiz-take-actions panel">
+        <button type="button" class="btn btn-primary" data-quiz-finish-btn>
+          <i class="bi bi-check2-circle me-1" aria-hidden="true"></i>{% include "portals/includes/quiz_mock_finish_label.html" %}
+        </button>
+        <p class="text-muted small mb-0 mt-2" data-quiz-take-hint>
+          {% if mock_id and mock_attempt %}
+            {% trans 'Submit this section when you are ready to continue the mock test.' %}
+          {% elif quiz.is_time_limited %}
+            {% trans 'The test ends when the timer reaches zero or when you click Finish.' %}
+          {% else %}
+            {% trans 'Click Finish when you are ready.' %}
+          {% endif %}
+        </p>
+      </div>
+      {% endif %}
+    </form>
+
+    <section class="portal-quiz-take-result panel d-none" data-quiz-result hidden>
+      <div class="portal-quiz-take-result__head text-center mb-4">
+        <p class="portal-quiz-take-result__eyebrow mb-2" data-quiz-result-eyebrow>{% trans 'Test complete' %}</p>
+        <div class="portal-quiz-result-stats" data-quiz-result-stats>
+          <div class="portal-quiz-result-stat">
+            <span class="portal-quiz-result-stat__label">{% trans 'Score' %}</span>
+            <strong class="portal-quiz-result-stat__value" data-quiz-result-score>0/0</strong>
+          </div>
+          <div class="portal-quiz-result-stat">
+            <span class="portal-quiz-result-stat__label">{% trans 'Result' %}</span>
+            <strong class="portal-quiz-result-stat__value" data-quiz-result-percent>0%</strong>
+          </div>
+          {% if quiz.is_time_limited %}
+          <div class="portal-quiz-result-stat" data-quiz-result-duration-wrap>
+            <span class="portal-quiz-result-stat__label">{% trans 'Time used' %}</span>
+            <strong class="portal-quiz-result-stat__value" data-quiz-result-duration>0%</strong>
+          </div>
+          {% endif %}
+        </div>
+        <div class="d-none" data-quiz-result-pending>
+          <i class="bi bi-check-circle text-success fs-1" aria-hidden="true"></i>
+          <p class="fw-semibold mt-3 mb-1">{% trans 'Submitted successfully' %}</p>
+          <p class="text-muted mb-0">{% trans 'Your teacher will review your reading answers and publish feedback.' %}</p>
+        </div>
+      </div>
+      <div class="portal-quiz-take-result__list" data-quiz-result-list></div>
+      <div class="d-flex flex-wrap gap-2 justify-content-center mt-4"{% if mock_id %} data-mock-default-actions hidden{% endif %}>
+        <a class="btn btn-outline-secondary btn-sm" href="{{ back_url }}">{% trans 'Back to quizzes' %}</a>
+        <a class="btn btn-primary btn-sm" href="{% url 'portals:student-scores' %}">{% trans 'View scores' %}</a>
+      </div>
+    </section>
+  </div>
+</div>
+
+{% if not quiz.view_only %}
+{% include "portals/includes/quiz_start_gate.html" %}
+{% include "portals/includes/quiz_leave_gate.html" %}
+{% endif %}
+
+{% csrf_token %}
+{% endblock %}
+
+{% block extra_js %}
+{% if not quiz.view_only %}
+{% if mock_id %}<script src="{% static 'portals/js/quiz-mock-section.js' %}"></script>{% endif %}
+<script src="{% static 'portals/js/quiz-start-gate.js' %}?v=20260703g"></script>
+<script src="{% static 'portals/js/quiz-leave-guard.js' %}?v=20260703b"></script>
+<script src="{% static 'portals/js/quiz-take-reading.js' %}?v=20260703k"></script>
+{% endif %}
+{% endblock %}

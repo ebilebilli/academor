@@ -1,29 +1,21 @@
 {% extends "portals/base.html" %}
-{% load i18n portal_tags %}
+{% load static i18n portal_tags %}
 
-{% block title %}{% trans 'Scores' %}{% endblock %}
+{% block title %}{% trans 'Qiymətləndirmələr' %}{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
 
 {% block content %}
 <header class="s-page-head mb-4">
   <div>
     <h1 class="s-page-head__title">
       <i class="ti ti-star" aria-hidden="true"></i>
-      {% trans 'Qiymətlər' %}
+      {% trans 'Qiymətləndirmələr' %}
     </h1>
-    <p class="s-page-head__sub">{% trans 'Quiz və dərs qiymətlərinə baxın.' %}</p>
-  </div>
-  <div class="s-seg-control" role="group" aria-label="{% trans 'Yarıillik seçimi' %}">
-    <a
-      class="s-seg-control__btn{% if not semester or semester == '1' %} is-active{% endif %}"
-      href="?semester=1"
-    >{% trans 'I yarıl' %}</a>
-    <a
-      class="s-seg-control__btn{% if semester == '2' %} is-active{% endif %}"
-      href="?semester=2"
-    >{% trans 'II yarıl' %}</a>
+    <p class="s-page-head__sub">{% trans 'Həftəlik qiymətlərinizə baxın.' %}</p>
   </div>
 </header>
 
-{% include "portals/includes/score_sections.html" %}
-
+{% include "portals/includes/score_sections_weekly.html" %}
 {% endblock %}

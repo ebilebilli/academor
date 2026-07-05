@@ -1,0 +1,412 @@
+{
+  "title": "IELTS Academic Reading — Practice Test 1",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–13</strong></p><p>You should spend about 20 minutes on <strong>Questions 1–13</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>The Global Spread of Tea</strong></p><p><strong>A</strong> Tea is today the second most widely consumed beverage in the world after water, yet its journey from a regional crop to a global commodity took more than a thousand years. Native to parts of Asia, the tea plant was first cultivated in China, where leaves were initially chewed for medicinal purposes before being brewed into a drink during the Tang dynasty.</p><p><strong>B</strong> Buddhist monks played a central role in spreading tea culture. As they travelled between monasteries in China, Korea, and Japan, they carried seeds and preparation techniques. In Japan, tea eventually became associated with ritual and aesthetics, culminating in the formal tea ceremony that emphasised harmony, respect, and tranquillity.</p><p><strong>C</strong> European traders encountered tea in the seventeenth century. The Dutch East India Company shipped small quantities to Amsterdam, where it was sold as an expensive luxury. British demand grew rapidly among the upper classes, and by the eighteenth century tea had become a staple of domestic life, supported by falling prices and expanding colonial trade networks.</p><p><strong>D</strong> The economic importance of tea also shaped political history. High taxes on imported tea contributed to unrest in Britain's American colonies, and the Boston Tea Party of 1773 became a symbolic act of resistance. Meanwhile, the British sought to reduce dependence on Chinese supplies by establishing plantations in India and Ceylon, transforming land use and labour systems across South Asia.</p><p><strong>E</strong> In the modern era, mechanised harvesting and global branding have made tea affordable worldwide. Health claims have further boosted consumption, although scientists caution that many popular beliefs about tea's benefits require more rigorous study. Instant and bottled tea products now compete with traditional loose-leaf brewing, reflecting changing lifestyles in both wealthy and developing markets.</p><p><strong>F</strong> Despite this industrial scale, artisanal producers continue to emphasise origin, leaf quality, and craft processing. For many consumers, tea remains not merely a drink but a link to place, history, and daily ritual — a legacy of the long routes by which a single plant conquered the world's tables.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 6–8",
+          "instructions": "<p>Choose the correct heading for paragraphs <strong>B–D</strong> from the list of headings below.</p><p><em>Write the correct number, <strong>i–vii</strong>, in boxes 6–8 on your answer sheet.</em></p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "i. Religious travellers and the arts of preparation",
+            "ii. Scientific proof of health advantages",
+            "iii. From elite luxury to everyday British habit",
+            "iv. Tea as a factor in trade and empire",
+            "v. Modern packaging and mass production",
+            "vi. The plant's earliest uses in one country",
+            "vii. Competition from coffee and cocoa"
+          ],
+          "questions": [
+            {
+              "order": 6,
+              "question": "<p>Paragraph B</p>",
+              "correct_answer": "i. Religious travellers and the arts of preparation"
+            },
+            {
+              "order": 7,
+              "question": "<p>Paragraph C</p>",
+              "correct_answer": "iii. From elite luxury to everyday British habit"
+            },
+            {
+              "order": 8,
+              "question": "<p>Paragraph D</p>",
+              "correct_answer": "iv. Tea as a factor in trade and empire"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "tfng",
+          "question": "<p>Tea is currently consumed more widely than any other drink in the world.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 2,
+          "question_type": "tfng",
+          "question": "<p>People in China were drinking brewed tea before the Tang dynasty.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 3,
+          "question_type": "tfng",
+          "question": "<p>The Dutch were the first Europeans to import tea commercially.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 4,
+          "question_type": "tfng",
+          "question": "<p>All British tea plantations were located in China.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 5,
+          "question_type": "tfng",
+          "question": "<p>Researchers have confirmed every popular claim about the health benefits of tea.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 9,
+          "question_type": "summary_completion",
+          "question": "<p><strong>The development of tea</strong></p><p>Tea began as a product of Asia and was first grown in ____. Monks helped spread it to Japan, where it later formed part of a formal ceremony. In Europe, tea was initially a costly item sold by trading companies such as the Dutch East India Company. Later, British demand led to cultivation in places like India, reducing reliance on Chinese exports.</p>",
+          "correct_answer": "China",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 10,
+          "question_type": "summary_completion",
+          "question": "<p>High British taxes on tea contributed to colonial protest, including the famous Boston Tea Party. Today, ____ harvesting has helped lower prices.</p>",
+          "correct_answer": "mechanised",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true,
+            "accept_alternatives": ["mechanized"]
+          }
+        },
+        {
+          "order": 11,
+          "question_type": "summary_completion",
+          "question": "<p>Some consumers now choose instant or bottled products rather than traditional ____-leaf tea.</p>",
+          "correct_answer": "loose",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 12,
+          "question_type": "summary_completion",
+          "question": "<p>Small-scale producers still stress origin and the ____ of the leaves.</p>",
+          "correct_answer": "quality",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 13,
+          "question_type": "summary_completion",
+          "question": "<p>For many people, tea represents a connection to history and daily ____.</p>",
+          "correct_answer": "ritual",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Passage 2",
+      "instructions": "<p><strong>Questions 14–26</strong></p><p>You should spend about 20 minutes on <strong>Questions 14–26</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>How Birds Navigate on Long Migrations</strong></p><p><strong>A</strong> Each year, billions of birds travel thousands of kilometres between breeding and wintering grounds. Arctic terns may fly from the Arctic to the Antarctic and back, while smaller songbirds cross seas and deserts on routes their ancestors followed long before humans mapped them. Understanding how such journeys are possible has fascinated biologists for decades.</p><p><strong>B</strong> One explanation involves the sun compass. Experiments in the 1950s showed that European starlings used the position of the sun to maintain direction, compensating for its movement across the sky during the day. On overcast days, however, other cues must operate, suggesting that migration relies on a flexible combination of senses rather than a single mechanism.</p><p><strong>C</strong> The earth's magnetic field provides another guide. Birds appear to detect magnetic intensity and inclination through specialised cells containing magnetite or through quantum effects in proteins in the eye. Homing pigeons with magnets attached to their heads become disoriented, supporting the idea that magnetic information is actively used, at least over shorter distances.</p><p><strong>D</strong> Olfaction may also play a role. Some seabirds recognise the smell of their home colony, and experiments with petrels indicate that deleting certain scents can disrupt homing behaviour. Critics argue that wind patterns could confuse scent trails over long routes, but proponents note that smell might be most useful near coastlines and nesting sites.</p><p><strong>E</strong> Young birds on their first migration often travel with experienced adults, learning landmarks and stopover sites. Even when flying alone, many species follow topographic features such as coastlines, mountain ranges, and river valleys. Radar studies reveal that flocks sometimes adjust altitude to exploit favourable winds, saving energy on demanding legs of the journey.</p><p><strong>F</strong> Human activity now threatens these finely tuned systems. Light pollution disorients night migrants, glass buildings cause collisions, and habitat loss removes essential feeding areas. Climate change may shift the timing of insect hatches, leaving arrivals out of step with food supplies. Conservation programmes therefore focus on protecting corridors and reducing artificial light along major flyways.</p><p><strong>G</strong> Despite advances in tracking technology, including miniature geolocators and satellite tags, scientists still debate how birds integrate multiple cues. The emerging consensus is that navigation is redundant: if one signal fails, others can compensate, allowing remarkable precision across hemispheres.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 14–18",
+          "instructions": "<p>Which paragraph contains the following information?</p><p><em>Write the correct letter, <strong>A–G</strong>, in boxes 14–18 on your answer sheet.</em></p>",
+          "question_type": "matching_info",
+          "option_pool": [
+            "Paragraph A",
+            "Paragraph B",
+            "Paragraph C",
+            "Paragraph D",
+            "Paragraph E",
+            "Paragraph F",
+            "Paragraph G"
+          ],
+          "questions": [
+            {
+              "order": 1,
+              "question": "<p>a reference to birds using geographical features as guides</p>",
+              "correct_answer": "Paragraph E"
+            },
+            {
+              "order": 2,
+              "question": "<p>an example of equipment that interferes with magnetic orientation</p>",
+              "correct_answer": "Paragraph C"
+            },
+            {
+              "order": 3,
+              "question": "<p>mention of threats created by human structures and lighting</p>",
+              "correct_answer": "Paragraph F"
+            },
+            {
+              "order": 4,
+              "question": "<p>a description of early laboratory work on solar navigation</p>",
+              "correct_answer": "Paragraph B"
+            },
+            {
+              "order": 5,
+              "question": "<p>a statement that birds may rely on more than one navigational method</p>",
+              "correct_answer": "Paragraph G"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 6,
+          "question_type": "sentence_completion",
+          "question": "<p>Starlings were shown to adjust for the sun's movement across the ____ during the day.</p>",
+          "correct_answer": "sky",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 7,
+          "question_type": "sentence_completion",
+          "question": "<p>Magnetic information may be detected through cells containing a mineral called ____.</p>",
+          "correct_answer": "magnetite",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 8,
+          "question_type": "sentence_completion",
+          "question": "<p>Some seabirds identify their home colony partly by its ____.</p>",
+          "correct_answer": "smell",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true,
+            "accept_alternatives": ["scent"]
+          }
+        },
+        {
+          "order": 9,
+          "question_type": "sentence_completion",
+          "question": "<p>Radar research shows that birds may change ____ to benefit from wind conditions.</p>",
+          "correct_answer": "altitude",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 10,
+          "question_type": "mcq",
+          "question": "<p>What does the writer say about sun-compass navigation?</p>",
+          "answer_options": [
+            "It is the only method birds ever use.",
+            "It cannot function when the sky is cloudy.",
+            "It was first studied in the nineteenth century.",
+            "It works only for seabirds."
+          ],
+          "correct_answer": "It cannot function when the sky is cloudy."
+        },
+        {
+          "order": 11,
+          "question_type": "mcq",
+          "question": "<p>According to the passage, young birds on their first journey may</p>",
+          "answer_options": [
+            "fly entirely without adult birds.",
+            "learn routes from more experienced birds.",
+            "ignore landmarks completely.",
+            "avoid travelling near coastlines."
+          ],
+          "correct_answer": "learn routes from more experienced birds."
+        },
+        {
+          "order": 12,
+          "question_type": "mcq",
+          "question": "<p>Climate change is said to affect migrants because it can alter</p>",
+          "answer_options": [
+            "the colour of birds' feathers.",
+            "the timing of food availability.",
+            "the strength of the earth's magnetic field.",
+            "the number of satellites in orbit."
+          ],
+          "correct_answer": "the timing of food availability."
+        },
+        {
+          "order": 13,
+          "question_type": "mcq",
+          "question": "<p>The writer suggests that modern tracking devices have</p>",
+          "answer_options": [
+            "ended all debate about bird navigation.",
+            "replaced the need for field observations.",
+            "not yet resolved how different cues are combined.",
+            "proved that smell is irrelevant to homing."
+          ],
+          "correct_answer": "not yet resolved how different cues are combined."
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "title": "Passage 3",
+      "instructions": "<p><strong>Questions 27–40</strong></p><p>You should spend about 20 minutes on <strong>Questions 27–40</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Consciousness and the Brain</strong></p><p>For centuries, philosophers asked whether the mind could exist independently of the body. Today, neuroscientists approach consciousness as a biological phenomenon that arises from networks of neurons, yet its subjective quality — the feeling of seeing red or tasting salt — remains difficult to explain. This puzzle is sometimes called the 'hard problem' of consciousness.</p><p>One influential theory proposes that consciousness depends on integrated information. According to this view, a system is conscious to the degree that its parts share information in a unified way. Simple reflex circuits would score low, while the human brain, with its dense interconnectivity, would score high. Critics note that the theory is hard to test and may attribute consciousness to systems we would not intuitively regard as aware.</p><p>Another line of research examines the neural correlates of consciousness — the minimal brain activity that accompanies a conscious experience. Studies comparing awake perception with unconscious processing suggest that widespread coordination between the front and back of the cortex may be necessary. When such coordination breaks down, as in certain anaesthetic states, reportable awareness disappears even though some regions remain active.</p><p>Attention also shapes what enters consciousness. The brain receives far more sensory data than we can consciously process, so selective filters highlight some signals and suppress others. Experiments on 'inattentional blindness' show that observers can fail to notice conspicuous objects when concentrating elsewhere, implying that consciousness is not a passive mirror of the world but an active construction.</p><p>Some researchers argue that animals possess forms of consciousness that differ in degree rather than kind from our own. Evidence from mirror self-recognition tests, flexible problem-solving, and emotional responses has extended ethical debates about animal welfare. Others caution against projecting human introspection onto species whose brains evolved for different ecological niches.</p><p>Clinical cases further complicate the picture. Patients in minimally conscious states may show flickers of awareness that standard bedside tests miss, prompting calls for more sensitive diagnostics. At the same time, advances in brain–computer interfaces raise hopes that locked-in patients could communicate by translating neural signals into text, blurring the boundary between private thought and measurable activity.</p><p>Philosophers of mind continue to dispute whether any purely physical account can ever explain subjective experience. Many scientists, however, adopt a pragmatic stance: even without a final theory, mapping the brain processes linked to awareness can improve medicine, artificial intelligence, and our understanding of mental illness. Whether machines could one day be conscious remains open, but the question has shifted from speculation to measurable criteria.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 32–35",
+          "instructions": "<p>Complete each sentence with the correct ending, <strong>A–F</strong>, below.</p><p><em>Write the correct letter in boxes 32–35 on your answer sheet.</em></p>",
+          "question_type": "matching_sentence_endings",
+          "option_pool": [
+            "A. because widespread links across the cortex appear essential.",
+            "B. because they receive more data than attention can handle.",
+            "C. because integrated information may be present in simple circuits.",
+            "D. because ethical standards now forbid all animal experiments.",
+            "E. because bedside assessments may overlook brief signs of awareness.",
+            "F. because philosophers have unanimously rejected physical explanations."
+          ],
+          "questions": [
+            {
+              "order": 6,
+              "question": "<p>Conscious perception may fail when coordination between brain regions breaks down</p>",
+              "correct_answer": "A. because widespread links across the cortex appear essential."
+            },
+            {
+              "order": 7,
+              "question": "<p>Observers sometimes miss obvious stimuli</p>",
+              "correct_answer": "B. because they receive more data than attention can handle."
+            },
+            {
+              "order": 8,
+              "question": "<p>Some critics challenge the integrated information theory</p>",
+              "correct_answer": "C. because integrated information may be present in simple circuits."
+            },
+            {
+              "order": 9,
+              "question": "<p>Minimally conscious patients may be misclassified</p>",
+              "correct_answer": "E. because bedside assessments may overlook brief signs of awareness."
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "ynng",
+          "question": "<p>Neuroscientists now generally treat consciousness as separate from brain activity.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 2,
+          "question_type": "ynng",
+          "question": "<p>The writer believes the 'hard problem' has already been solved by integrated information theory.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 3,
+          "question_type": "ynng",
+          "question": "<p>Research suggests that consciousness involves active selection of sensory information.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 4,
+          "question_type": "ynng",
+          "question": "<p>The writer claims that all animals experience consciousness in exactly the same way humans do.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 5,
+          "question_type": "ynng",
+          "question": "<p>Brain–computer interfaces may help certain patients communicate.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 10,
+          "question_type": "summary_completion",
+          "question": "<p>Neuroscientists study the ____ correlates of consciousness to identify brain activity linked to awareness.</p>",
+          "correct_answer": "neural",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 11,
+          "question_type": "summary_completion",
+          "question": "<p>Experiments on inattentional ____ show that people may not notice visible objects when their attention is elsewhere.</p>",
+          "correct_answer": "blindness",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 12,
+          "question_type": "summary_completion",
+          "question": "<p>Evidence from mirror self-recognition has influenced debates about animal ____.</p>",
+          "correct_answer": "welfare",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 13,
+          "question_type": "summary_completion",
+          "question": "<p>Brain–computer interfaces can translate neural signals into ____.</p>",
+          "correct_answer": "text",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 14,
+          "question_type": "summary_completion",
+          "question": "<p>Many scientists take a ____ approach, focusing on measurable processes even without a complete theory.</p>",
+          "correct_answer": "pragmatic",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        }
+      ]
+    }
+  ]
+}

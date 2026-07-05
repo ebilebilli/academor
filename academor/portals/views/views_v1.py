@@ -4,14 +4,17 @@ from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.views import View
 
-from portals.utils.quiz_stats import compute_lesson_average_stats, compute_quiz_average_stats
+from portals.utils.quiz_stats import compute_quiz_average_stats, compute_weekly_average_stats
 from portals.utils.parent_access import parent_has_students, resolve_parent_student
 from portals.utils.queries import (
     build_lesson_category_tabs,
+    build_lesson_period_tabs,
     build_lesson_subject_tabs,
+    build_score_period_tabs,
+    prepare_teacher_scores_with_groups,
+    resolve_score_group_param,
     get_parent_child_attendance,
     get_parent_child_attendance_detail,
-    get_parent_child_scores,
     get_parent_child_quiz_results,
     get_parent_dashboard_data,
     get_parent_profile,
@@ -49,7 +52,7 @@ from portals.utils.queries import (
     get_teacher_classrooms,
     get_student_classrooms,
     get_parent_classrooms,
-    build_classroom_service_tabs,
+    build_classroom_group_tabs,
     get_classroom_detail,
     serialize_group,
     serialize_parent,
@@ -57,6 +60,11 @@ from portals.utils.queries import (
     serialize_teacher,
 )
 from portals.utils.teacher_attendance_hub import build_teacher_attendance_hub
+from portals.utils.weekly_scores import (
+    get_student_weekly_scores,
+    get_teacher_student_weekly_scores,
+    get_teacher_weekly_scores_list,
+)
 from portals.utils.teacher_access import get_teacher_lesson, get_teacher_student, teacher_groups_qs
 from portals.utils.teacher_schedule import (
     build_student_week_calendar,
@@ -173,6 +181,7 @@ class TeacherLessonsListView(TeacherRequiredMixin, View):
                 lessons=lessons,
                 subject_tabs=build_lesson_subject_tabs(lessons),
                 category_tabs=build_lesson_category_tabs(lessons),
+                period_tabs=build_lesson_period_tabs(lessons),
             ),
         )
 
@@ -239,7 +248,7 @@ class TeacherStudentAttendanceDetailView(TeacherRequiredMixin, View):
         )
 
 
-_TEACHER_STUDENT_PROFILE_TABS = frozenset({'quiz-results', 'duration', 'daily-scores'})
+_TEACHER_STUDENT_PROFILE_TABS = frozenset({'quiz-results', 'duration', 'daily-scores', 'weekly-scores'})
 
 
 def _teacher_student_profile_stats(quiz_results, scores, daily_score_history):
@@ -276,8 +285,8 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
         daily_score_history = group_scores_by_day(scores)
         attendance_detail = get_teacher_student_attendance_detail(profile.pk, student_pk)
         quiz_average = compute_quiz_average_stats(quiz_results)
-        lesson_scores = [row for row in scores if row.get('source') == 'score']
-        lesson_average = compute_lesson_average_stats(lesson_scores)
+        weekly_scores = get_teacher_student_weekly_scores(profile.pk, student_pk)
+        weekly_average = compute_weekly_average_stats(weekly_scores)
         return _portal_context(
             request,
             teacher=serialize_teacher(profile),
@@ -291,9 +300,10 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
             daily_score_history=daily_score_history,
             stats=_teacher_student_profile_stats(quiz_results, scores, daily_score_history),
             quiz_average=quiz_average,
-            lesson_average=lesson_average,
+            weekly_average=weekly_average,
             attendance_summary=attendance_detail['summary'] if attendance_detail else None,
             attendance_records=attendance_detail['records'] if attendance_detail else [],
+            weekly_scores=weekly_scores,
         )
 
     def get(self, request, student_pk):
@@ -338,19 +348,24 @@ class TeacherScoresListView(TeacherRequiredMixin, View):
 
     def get(self, request):
         profile = get_teacher_profile(request.portal_user)
-        score_groups = split_teacher_score_rows(get_teacher_scores(profile.pk))
-        quiz_scores = score_groups['auto_quiz_scores'] + score_groups['manual_quiz_scores']
-        lesson_scores = score_groups['admin_scores']
-        scores_view = resolve_scores_view_param(request, quiz_scores, lesson_scores)
+        weekly_scores = get_teacher_weekly_scores_list(profile.pk)
+        grouped = prepare_teacher_scores_with_groups(profile.pk, [], weekly_scores)
+        weekly_scores = grouped['weekly_scores']
+        score_group_tabs = grouped['score_groups']
         return render(
             request,
             self.template_name,
             _portal_context(
                 request,
                 teacher=serialize_teacher(profile),
-                lesson_scores=lesson_scores,
-                quiz_scores=quiz_scores,
-                scores_view=scores_view,
+                weekly_scores=weekly_scores,
+                show_teacher_column=False,
+                show_comment_column=True,
+                period_tabs=build_score_period_tabs(weekly_scores),
+                score_groups=score_group_tabs,
+                active_score_group=resolve_score_group_param(request, score_group_tabs),
+                total_score_count=grouped['total_score_count'],
+                weekly_average=compute_weekly_average_stats(weekly_scores),
             ),
         )
 
@@ -462,6 +477,7 @@ class StudentLessonsView(StudentRequiredMixin, View):
                 lessons=lessons,
                 subject_tabs=build_lesson_subject_tabs(lessons),
                 category_tabs=build_lesson_category_tabs(lessons),
+                period_tabs=build_lesson_period_tabs(lessons),
                 video_records=get_student_video_records(profile.pk),
             ),
         )
@@ -493,12 +509,7 @@ class StudentScoresView(StudentRequiredMixin, View):
 
     def get(self, request):
         profile = get_student_profile(request.portal_user)
-        score_sections = split_score_rows_by_source(get_student_scores(profile.pk))
-        scores_view = resolve_scores_view_param(
-            request,
-            score_sections['quiz_scores'],
-            score_sections['lesson_scores'],
-        )
+        weekly_scores = get_student_weekly_scores(profile.pk)
         return render(
             request,
             self.template_name,
@@ -506,9 +517,10 @@ class StudentScoresView(StudentRequiredMixin, View):
                 request,
                 student=serialize_student(profile),
                 show_comment_column=False,
-                score_detail_url_name='portals:student-score-detail',
-                scores_view=scores_view,
-                **score_sections,
+                show_teacher_column=True,
+                period_tabs=build_score_period_tabs(weekly_scores),
+                weekly_scores=weekly_scores,
+                weekly_average=compute_weekly_average_stats(weekly_scores),
             ),
         )
 
@@ -673,6 +685,7 @@ class ParentLessonsView(ParentRequiredMixin, View):
             lessons=lessons,
             subject_tabs=build_lesson_subject_tabs(lessons),
             category_tabs=build_lesson_category_tabs(lessons),
+            period_tabs=build_lesson_period_tabs(lessons),
             video_records=get_student_video_records(student.pk),
         )
 
@@ -709,15 +722,17 @@ class ParentScoresView(ParentRequiredMixin, View):
     def get(self, request):
         profile = get_parent_profile(request.portal_user)
         student, _child_ctx = _parent_student_page(request, profile)
-        lesson_scores = get_parent_child_scores(student.pk)
+        weekly_scores = get_student_weekly_scores(student.pk)
         return _render_parent_child_page(
             request,
             profile,
             self.template_name,
-            page_subtitle=_('Daily lesson grades for your linked student.'),
-            lesson_scores=lesson_scores,
-            daily_score_history=group_scores_by_day(lesson_scores),
-            lesson_average=compute_lesson_average_stats(lesson_scores),
+            page_subtitle=_('Weekly grades for your linked student.'),
+            show_comment_column=False,
+            show_teacher_column=True,
+            period_tabs=build_score_period_tabs(weekly_scores),
+            weekly_scores=weekly_scores,
+            weekly_average=compute_weekly_average_stats(weekly_scores),
         )
 
 
@@ -828,7 +843,7 @@ class ClassroomsListView(PortalLoginRequiredMixin, View):
         ctx = _portal_context(
             request,
             classrooms=classrooms,
-            service_tabs=build_classroom_service_tabs(classrooms),
+            group_tabs=build_classroom_group_tabs(classrooms),
             back_url=_classrooms_back_url(request),
         )
         if child_ctx:
@@ -865,6 +880,9 @@ class ClassroomDetailView(PortalLoginRequiredMixin, View):
 
         if not classroom:
             raise Http404
+        edit_url = None
+        if role == 'teacher':
+            edit_url = reverse('portals:teacher-classroom-edit', kwargs={'pk': pk})
         return render(
             request,
             self.template_name,
@@ -872,5 +890,6 @@ class ClassroomDetailView(PortalLoginRequiredMixin, View):
                 request,
                 classroom=classroom,
                 back_url=_classrooms_list_url(request),
+                edit_url=edit_url,
             ),
         )

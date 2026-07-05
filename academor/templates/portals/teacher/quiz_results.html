@@ -21,7 +21,14 @@
       <tbody>
         {% for row in pending_results %}
         <tr>
-          <td class="fw-semibold">{{ row.student_name }}</td>
+          <td class="fw-semibold">
+            {{ row.student_name }}
+            {% if row.mock_attempt_id %}
+            <div class="mt-1">
+              <span class="portal-tag portal-tag--mock">{% trans 'IELTS Mock Test' %}{% if row.mock_section_label %} — {{ row.mock_section_label }}{% endif %}</span>
+            </div>
+            {% endif %}
+          </td>
           <td>{{ row.quiz_topic }}</td>
           <td><span class="portal-tag">{{ row.grading_mode_label }}</span></td>
           <td>{{ row.completed_at|portal_datetime }}</td>

@@ -1,0 +1,387 @@
+{
+  "title": "IELTS Academic Reading — Practice Test 4",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–40</strong></p><p>You should spend about 60 minutes on <strong>Questions 1–40</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Plate tectonics and seismic risk</strong></p><p><strong>A</strong> Plate tectonics describes how rigid lithospheric plates glide over the ductile asthenosphere, driven by mantle convection, slab pull, and ridge push. Earthquake belts and volcanic arcs trace boundaries where stress accumulates before sudden rupture releases stored elastic energy across vast fault segments. Modern geodetic networks measure millimetre-scale crustal strain, helping scientists refine forecasts for megathrust zones beside densely populated coastlines and ports. Nevertheless, hazard maps stay uncertain where historical catalogues are brief or incomplete, limiting confidence in recurrence estimates used for urban planning. Linked offshore faults with submarine landslides can amplify tsunami risk beyond simple magnitude estimates published in brochures aimed at the general public.</p><p><strong>B</strong> At convergent margins, oceanic lithosphere subducts beneath continental crust, generating deep seismicity and magmatic arcs that shape long-term landscape evolution. Friction along locked plate interfaces stores elastic energy that may be released during large ruptures spanning hundreds of kilometres within minutes. Paleoseismology excavates coastal sediments to extend rupture histories beyond instrumental records, revealing recurrence intervals that sometimes exceed several centuries. Geophysicists combine these timelines with Global Navigation Satellite System measurements to estimate remaining slip budgets along heterogeneous fault segments. Such integrative work improves awareness yet cannot guarantee precise prediction of the day or hour when the next major earthquake will occur.</p><p><strong>C</strong> Probabilistic seismic hazard analysis translates geological knowledge into ground-motion maps used by structural engineers when designing hospitals, bridges, and schools. Attenuation relationships describe how shaking weakens with distance, while site effects amplify waves in soft sedimentary basins beneath densely built urban districts. Building codes increasingly demand performance-based design that limits collapse probability rather than prescribing uniform strength factors for every building category. Retrofitting older masonry structures remains expensive, and the author argues that transparent communication of uncertainty is preferable to implying precise forecasts. Communities make better land-use choices when scientists explain confidence intervals instead of presenting hazard contours as deterministic boundaries on planning maps.</p><p><strong>D</strong> Early warning systems exploit the lag between fast but weak primary waves and slower, destructive secondary waves travelling through the crust toward cities. Dense sensor networks can issue alerts seconds before strong shaking reaches urban cores, allowing trains to brake and surgeons to pause delicate procedures. False alarms and missed events undermine public trust, so operators tune detection thresholds carefully using years of regional calibration data. The writer maintains that such systems complement, rather than replace, long-term preparedness investments in resilient infrastructure and rehearsed evacuation routes. Seconds of warning can reduce injuries, yet they cannot eliminate the need for robust buildings designed according to updated seismic hazard models.</p><p><strong>E</strong> Tsunami modelling couples seafloor deformation with hydrodynamic simulations to estimate inundation heights along vulnerable shorelines and estuarine channels. Bathymetry errors and uncertain slip distributions propagate into wide confidence bands on evacuation maps distributed to households and schools. Community drills improve response times, yet seasonal tourism and language barriers complicate messaging in multicultural ports receiving cruise ships daily. Critics note that economic pressure to rebuild quickly after disasters can repeat unsafe coastal development unless zoning laws incorporate updated scientific assessments. Enforcing setbacks from newly identified high-risk corridors remains politically difficult when property values and tax revenues depend on waterfront construction.</p><p><strong>F</strong> Insurance markets struggle to price rare catastrophic earthquakes fairly while keeping coverage affordable for homeowners and small businesses near active faults. Parametric policies triggered by instrumental intensity reduce settlement delays, while traditional indemnity contracts face moral hazard when owners postpone retrofits. Public catastrophe pools spread risk nationally but may subsidise construction in known hazard zones if premiums do not reflect site-specific geology. The author contends that pricing signals should align with mitigation incentives, otherwise fiscal burdens shift to taxpayers after each destructive season. Without actuarial transparency, communities may underestimate true long-term costs of living beside faults that remain quiet for generations between large events.</p><p><strong>G</strong> Looking ahead, integrating machine learning with physics-based rupture models may sharpen short-term forecasts without abandoning mechanistic understanding of fault physics. Open data initiatives encourage universities and civil protection agencies to share catalogs, fostering reproducible research and faster validation of new methods. The writer believes societies can live more safely on active margins if science, engineering, and governance co-evolve through regular dialogue and funding. Seismic risk should be treated as a managed continuum rather than an unpredictable curse that discourages prudent investment in monitoring networks. Community education programmes that explain preparedness steps can translate technical advances into everyday practices that save lives when the ground finally shakes.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 11–15",
+          "instructions": "<p>Choose the correct heading for paragraphs <strong>B–F</strong> from the list of headings below.</p><p><em>Write the correct number, <strong>i–vii</strong>, in boxes 11–15 on your answer sheet.</em></p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "i. Volcanic ash fertilisation of high-latitude soils",
+            "ii. Locked faults and extended rupture histories",
+            "iii. Hazard maps, site effects, and design codes",
+            "iv. Alerts from seismic wave timing differences",
+            "v. Inundation modelling and coastal rebuilding pressures",
+            "vi. Insurance pricing and catastrophe pools",
+            "vii. Lunar tidal forcing of mantle convection"
+          ],
+          "questions": [
+            {
+              "order": 11,
+              "question": "<p>Paragraph B</p>",
+              "correct_answer": "ii. Locked faults and extended rupture histories"
+            },
+            {
+              "order": 12,
+              "question": "<p>Paragraph C</p>",
+              "correct_answer": "iii. Hazard maps, site effects, and design codes"
+            },
+            {
+              "order": 13,
+              "question": "<p>Paragraph D</p>",
+              "correct_answer": "iv. Alerts from seismic wave timing differences"
+            },
+            {
+              "order": 14,
+              "question": "<p>Paragraph E</p>",
+              "correct_answer": "v. Inundation modelling and coastal rebuilding pressures"
+            },
+            {
+              "order": 15,
+              "question": "<p>Paragraph F</p>",
+              "correct_answer": "vi. Insurance pricing and catastrophe pools"
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "title": "Questions 16–20",
+          "instructions": "<p>Which paragraph contains the following information?</p><p><em>Write the correct letter, <strong>A–G</strong>, in boxes 16–20 on your answer sheet.</em></p>",
+          "question_type": "matching_info",
+          "option_pool": [
+            "Paragraph A",
+            "Paragraph B",
+            "Paragraph C",
+            "Paragraph D",
+            "Paragraph E",
+            "Paragraph F",
+            "Paragraph G"
+          ],
+          "questions": [
+            {
+              "order": 16,
+              "question": "<p>a description of oceanic lithosphere descending beneath continents</p>",
+              "correct_answer": "Paragraph B"
+            },
+            {
+              "order": 17,
+              "question": "<p>mention of performance-based building design</p>",
+              "correct_answer": "Paragraph C"
+            },
+            {
+              "order": 18,
+              "question": "<p>reference to surgeons pausing during alerts</p>",
+              "correct_answer": "Paragraph D"
+            },
+            {
+              "order": 19,
+              "question": "<p>discussion of bathymetry errors affecting inundation estimates</p>",
+              "correct_answer": "Paragraph E"
+            },
+            {
+              "order": 20,
+              "question": "<p>a positive outlook on open data and reproducible research</p>",
+              "correct_answer": "Paragraph G"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "tfng",
+          "question": "<p>Geodetic networks can detect crustal movement at millimetre scales.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 2,
+          "question_type": "tfng",
+          "question": "<p>Every subduction zone has complete instrumental records spanning more than five centuries.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 3,
+          "question_type": "tfng",
+          "question": "<p>Paleoseismology always produces exact dates for the next earthquake.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 4,
+          "question_type": "tfng",
+          "question": "<p>The passage states that all cities have completed masonry retrofits.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 5,
+          "question_type": "tfng",
+          "question": "<p>Submarine landslides may increase tsunami risk beyond magnitude-based estimates.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 6,
+          "question_type": "ynng",
+          "question": "<p>The author prefers transparent communication of hazard uncertainty over implying precise predictions.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 7,
+          "question_type": "ynng",
+          "question": "<p>The writer believes early warning systems should fully replace infrastructure investment.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 8,
+          "question_type": "ynng",
+          "question": "<p>The author thinks insurance pricing should encourage mitigation rather than hide true risk.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 9,
+          "question_type": "ynng",
+          "question": "<p>The writer claims machine learning will make physics-based models obsolete immediately.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 10,
+          "question_type": "ynng",
+          "question": "<p>The author is optimistic that coordinated science and governance can improve safety on active margins.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 21,
+          "question_type": "sentence_completion",
+          "question": "<p>Elastic energy accumulates along locked plate interfaces before sudden ____.</p>",
+          "correct_answer": "ruptures",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 22,
+          "question_type": "sentence_completion",
+          "question": "<p>Attenuation relationships describe how shaking weakens with ____.</p>",
+          "correct_answer": "distance",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 23,
+          "question_type": "sentence_completion",
+          "question": "<p>Early warnings exploit the lag between primary waves and destructive ____ waves.</p>",
+          "correct_answer": "secondary",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 24,
+          "question_type": "sentence_completion",
+          "question": "<p>Parametric insurance policies may be triggered by instrumental ____.</p>",
+          "correct_answer": "intensity",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 25,
+          "question_type": "summary_completion",
+          "question": "<p>Plate motion is driven partly by mantle convection, slab pull, and ridge ____.</p>",
+          "correct_answer": "push",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 26,
+          "question_type": "summary_completion",
+          "question": "<p>Soft sedimentary basins beneath cities can amplify seismic site ____.</p>",
+          "correct_answer": "effects",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 27,
+          "question_type": "summary_completion",
+          "question": "<p>Tsunami simulations couple seafloor deformation with hydrodynamic ____.</p>",
+          "correct_answer": "simulations",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 28,
+          "question_type": "summary_completion",
+          "question": "<p>The author treats seismic risk as a managed ____.</p>",
+          "correct_answer": "continuum",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 29,
+          "question_type": "table_completion",
+          "question": "<p>Geodetic method | Networks track crustal strain at millimetre ____</p>",
+          "correct_answer": "scale",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 30,
+          "question_type": "table_completion",
+          "question": "<p>Warning limitation | False alarms can undermine public ____</p>",
+          "correct_answer": "trust",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 31,
+          "question_type": "table_completion",
+          "question": "<p>Insurance issue | Moral hazard appears when owners delay ____</p>",
+          "correct_answer": "retrofits",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 32,
+          "question_type": "mcq",
+          "question": "<p>What does paragraph A emphasise about modern monitoring?</p>",
+          "answer_options": [
+            "It eliminates all tsunami risk.",
+            "It measures small-scale strain to refine forecasts.",
+            "It proves earthquakes are predictable to the day.",
+            "It replaces geological fieldwork entirely."
+          ],
+          "correct_answer": "It measures small-scale strain to refine forecasts."
+        },
+        {
+          "order": 33,
+          "question_type": "mcq",
+          "question": "<p>According to paragraph C, performance-based design focuses on</p>",
+          "answer_options": [
+            "uniform strength factors only",
+            "limiting collapse probability",
+            "banning construction near coasts",
+            "ignoring site effects"
+          ],
+          "correct_answer": "limiting collapse probability"
+        },
+        {
+          "order": 34,
+          "question_type": "mcq",
+          "question": "<p>Paragraph D indicates early warning systems</p>",
+          "answer_options": [
+            "replace evacuation planning",
+            "provide alerts seconds before strong shaking",
+            "predict earthquakes weeks in advance",
+            "operate without sensor networks"
+          ],
+          "correct_answer": "provide alerts seconds before strong shaking"
+        },
+        {
+          "order": 35,
+          "question_type": "mcq",
+          "question": "<p>Paragraph F suggests a problem with some catastrophe pools is that</p>",
+          "answer_options": [
+            "they forbid any insurance claims",
+            "premiums may not reflect site-specific geology",
+            "they only cover volcanic eruptions",
+            "they require machine learning expertise"
+          ],
+          "correct_answer": "premiums may not reflect site-specific geology"
+        },
+        {
+          "order": 36,
+          "question_type": "mcq",
+          "question": "<p>The final paragraph argues that better safety requires</p>",
+          "answer_options": [
+            "abandoning physics-based models",
+            "science, engineering, and governance working together",
+            "closing universities near fault lines",
+            "ending community education programmes"
+          ],
+          "correct_answer": "science, engineering, and governance working together"
+        },
+        {
+          "order": 37,
+          "question_type": "short_answer",
+          "question": "<p>What satellite system helps estimate remaining fault slip?</p>",
+          "correct_answer": "GNSS",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 38,
+          "question_type": "short_answer",
+          "question": "<p>What geological method excavates coastal sediments for rupture history?</p>",
+          "correct_answer": "paleoseismology",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 39,
+          "question_type": "short_answer",
+          "question": "<p>What fast seismic waves arrive before destructive shaking in early warnings?</p>",
+          "correct_answer": "primary",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 40,
+          "question_type": "short_answer",
+          "question": "<p>What type of policies trigger payouts using instrumental intensity?</p>",
+          "correct_answer": "parametric",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{% load i18n %}
+<article
+  class="portal-reading-review-row{% if not review_editable %}{% if q.is_correct is True %} portal-reading-review-row--correct{% elif q.is_correct is False %} portal-reading-review-row--incorrect{% else %} portal-reading-review-row--unanswered{% endif %}{% endif %}"
+>
+  <div class="portal-reading-review-row__num">{{ q.number }}</div>
+  <div class="portal-reading-review-row__body">
+    {% if q.question %}
+    <div class="portal-reading-review-row__prompt">{{ q.question|safe }}</div>
+    {% endif %}
+    <div class="portal-reading-review-row__answers">
+      <div class="portal-reading-review-row__answer">
+        <span class="portal-reading-review-row__label">{% trans 'Student' %}</span>
+        <span class="portal-reading-review-row__value">{{ q.student_answer_display|default:q.student_answer|default:"—" }}</span>
+      </div>
+      <div class="portal-reading-review-row__answer portal-reading-review-row__answer--correct">
+        <span class="portal-reading-review-row__label">{% trans 'Correct' %}</span>
+        {% if review_editable %}
+        <input
+          type="text"
+          class="form-control form-control-sm portal-reading-review-row__input"
+          name="reading_correct_{{ q.id }}"
+          value="{{ q.correct_answer|default:'' }}"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="{% trans 'Enter correct answer' %}"
+        >
+        {% else %}
+        <span class="portal-reading-review-row__value">{{ q.correct_answer_display|default:q.correct_answer|default:"—" }}</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% if not review_editable %}
+  <div class="portal-reading-review-row__status" aria-hidden="true">
+    {% if q.is_correct is True %}
+    <i class="bi bi-check-lg text-success"></i>
+    {% elif q.is_correct is False %}
+    <i class="bi bi-x-lg text-danger"></i>
+    {% else %}
+    <i class="bi bi-dash-lg text-muted"></i>
+    {% endif %}
+  </div>
+  {% endif %}
+</article>

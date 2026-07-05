@@ -1,0 +1,9 @@
+{% load i18n %}
+{% if mock_attempt %}
+<div class="portal-mock-progress panel mb-3" data-mock-progress>
+  <div class="portal-mock-progress__label fw-600">{{ mock_attempt.progress_label }}</div>
+  <div class="progress mt-2" role="progressbar" aria-valuemin="0" aria-valuemax="{{ mock_attempt.section_total }}" aria-valuenow="{{ mock_attempt.section_index }}">
+    <div class="progress-bar" style="width: {% widthratio mock_attempt.section_index mock_attempt.section_total 100 %}%"></div>
+  </div>
+</div>
+{% endif %}

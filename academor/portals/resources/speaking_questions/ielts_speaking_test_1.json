@@ -1,0 +1,82 @@
+{
+  "title": "IELTS Speaking — Practice Test 1",
+  "service": "ielts",
+  "category_name": "Speaking",
+  "parts": [
+    {
+      "order": 1,
+      "part_type": "part_1",
+      "title": "Part 1 — Introduction and interview",
+      "instructions": "<p>In this part the examiner will ask you questions about yourself and familiar topics. Give short, natural answers.</p>",
+      "questions": [
+        {
+          "order": 1,
+          "question": "<p>Do you work or are you a student?</p>"
+        },
+        {
+          "order": 2,
+          "question": "<p>What subject are you studying / What is your job?</p>"
+        },
+        {
+          "order": 3,
+          "question": "<p>Do you enjoy living in your hometown?</p>"
+        },
+        {
+          "order": 4,
+          "question": "<p>What is the most interesting place in your hometown?</p>"
+        },
+        {
+          "order": 5,
+          "question": "<p>How often do you read books?</p>"
+        },
+        {
+          "order": 6,
+          "question": "<p>Do you prefer reading paper books or e-books?</p>"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "part_type": "part_2",
+      "title": "Part 2 — Individual long turn",
+      "instructions": "<p>You have one minute to prepare. Then speak for one to two minutes on the topic below. You may make notes.</p>",
+      "cue_card_topic": "<p><strong>Describe a book you enjoyed reading recently.</strong></p>",
+      "cue_card_bullets": [
+        "what kind of book it was",
+        "what it was about",
+        "when you read it",
+        "and explain why you enjoyed it"
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question": ""
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "part_type": "part_3",
+      "title": "Part 3 — Two-way discussion",
+      "instructions": "<p>The examiner will ask further questions connected to the topic in Part 2. Give longer, more developed answers.</p>",
+      "questions": [
+        {
+          "order": 1,
+          "question": "<p>Do people in your country read a lot of books?</p>"
+        },
+        {
+          "order": 2,
+          "question": "<p>What kinds of books are most popular with young people today?</p>"
+        },
+        {
+          "order": 3,
+          "question": "<p>Do you think reading books is more important than using the internet for learning?</p>"
+        },
+        {
+          "order": 4,
+          "question": "<p>How might reading habits change in the future?</p>"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,387 @@
+{
+  "title": "IELTS Academic Reading — Practice Test 46",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–40</strong></p><p>You should spend about 60 minutes on <strong>Questions 1–40</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Central Bank Inflation Targeting</strong></p><p><strong>A</strong> Central bank inflation targeting commits monetary authorities to achieving a publicly announced annual inflation rate, often near two percent, using interest rate adjustments and forward guidance to anchor expectations. New Zealand pioneered formal targets in nineteen ninety, followed by Canada, Britain, and the European Central Bank after debates about credibility versus employment trade-offs. Proponents argue transparent goals reduce uncertainty for investors pricing bonds and for wage negotiators indexing contracts. Critics note goods price stability may coexist with asset bubbles in housing when credit conditions remain loose despite low consumer price index readings masking financial instability accumulating off-balance-sheet in shadow banking channels linked to global liquidity cycles beyond narrow headline inflation</p><p><strong>B</strong> Taylor rule prescriptions relate policy rates to deviations of inflation from target and output from potential, offering simple benchmarks though central bankers deviate during crises. Quantitative easing purchased government and mortgage-backed securities after conventional rates hit zero lower bounds, swelling balance sheets later unwound gradually with market tremors. Forward guidance promises prolonged accommodation until thresholds met, influencing long-term yields through expectations hypothesis channels. Communication strategies include press conferences dot plots and minutes scrutinised by algorithmic traders within milliseconds, magnifying language shifts into volatility spikes unrelated to immediate macro fundamentals yet moving capital flows globally affecting emerging markets with dollar-denominated debt vulnerable to sudden tightening surprises announced without adequate swap line</p><p><strong>C</strong> Supply shocks complicate targeting when energy prices spike or pandemics disrupt logistics, forcing temporary overshoots or undershoots debated as transitory versus persistent. Core inflation excludes volatile food and energy yet may mislead if broad underlying pressures spread. Fiscal dominance risks emerge when governments run large deficits financed by central bank purchases, eroding independence narratives cherished in textbooks though political realities often intertwine branches during wars and recessions. The author stresses distinguishing legal autonomy from de facto pressures when elected leaders criticise rate hikes ahead of elections, testing institutional credibility earned over decades but fragile when appointments politicised or mandate scopes expanded ambiguously into inequality and climate goals traditionally fiscal domain.</p><p><strong>D</strong> Labour market Phillips curve relationships weakened in some decades as globalisation and weakened unions reduced wage indexation, flattening curves and complicating forecasts used to justify preemptive hikes preventing imaginary overheating that might never materialise given secular stagnation hypotheses emphasising savings gluts and demographic ageing suppressing neutral interest rates below historical averages, narrowing conventional policy space and elevating importance of unconventional tools whose side effects include wealth inequality amplification via asset price channels benefiting portfolios concentrated among affluent households less sensitive to consumption drag from higher mortgage payments hitting younger buyers in supply-constrained cities where zoning limits responsiveness of construction to demand shifts influenced by rate cycles interacting with tax incentives</p><p><strong>E</strong> Emerging market adopters face trilemma constraints: fixed exchange rates, independent monetary policy, and open capital accounts cannot coexist fully. Inflation targeting with floating exchange rates helped some countries after hyperinflation histories, though dollarisation remnants persist informally. Commodity exporters suffer terms-of-trade shocks transmitting through currencies, complicating achievement of point targets calmer manufacturing exporters maintain more easily. IMF programmes encourage adopting frameworks with data transparency prerequisites, yet statistical capacity gaps undermine credibility when consumer price indices revised abruptly eroding trust among savers holding nominal instruments not indexed, a political flashpoint in societies remembering past debasements vividly shaping behaviour despite formal anchoring promises printed in glossy central bank reports distributed free yet sceptically</p><p><strong>F</strong> Financial stability committees supplement monetary policy with macroprudential tools: countercyclical capital buffers, loan-to-value limits on mortgages, and stress tests of systemic banks. Targeting regimes initially downplayed asset prices focusing on consumer baskets until crises demonstrated linkages between credit booms and subsequent recessions deepening when bursts coincide with rate hiking cycles attempting to cool inflation fueled partly by earlier loose conditions tolerated to offset demand shortfalls during prior slowdowns, a policy sequencing dilemma without easy rules. Climate-related disclosures enter deliberations about stranded assets affecting bank portfolios, blurring mandates further as technocrats navigate congressional mandates expanding remits while operational independence contested in courts and social media campaigns blaming central bankers for affordability</p><p><strong>G</strong> Looking ahead, the author believes inflation targeting remains useful yet insufficient alone for macro stability. Complementary fiscal, competition, and housing policies must share burden. Explicit employment or inequality side objectives may require clearer communication to avoid perceived mission creep undermining anti-inflation credibility hard won since seventies stagflation traumas memorialised in policy culture even among officials too young to have lived through them but trained in departments steeped in cautionary tales. Adaptive frameworks allowing flexible average inflation targeting over multi-year horizons, as some central banks adopted recently, may better accommodate shocks if understood by publics not fixated on monthly prints alone—a literacy challenge for journalists and educators demystifying monetary plumbing increasingly</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 11–15",
+          "instructions": "<p>Choose the correct heading for paragraphs <strong>B–F</strong> from the list of headings below.</p><p><em>Write the correct number, <strong>i–vii</strong>, in boxes 11–15 on your answer sheet.</em></p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "i. Taylor rules and quantitative easing",
+            "ii. Supply shocks and fiscal dominance",
+            "iii. Flat Phillips curves and secular stagnation",
+            "iv. Emerging markets and trilemma constraints",
+            "v. Macroprudential tools and mandate creep",
+            "vi. Silk Road Sogdian script",
+            "vii. Maya milpa rotation"
+          ],
+          "questions": [
+            {
+              "order": 11,
+              "question": "<p>Paragraph B</p>",
+              "correct_answer": "i. Taylor rules and quantitative easing"
+            },
+            {
+              "order": 12,
+              "question": "<p>Paragraph C</p>",
+              "correct_answer": "ii. Supply shocks and fiscal dominance"
+            },
+            {
+              "order": 13,
+              "question": "<p>Paragraph D</p>",
+              "correct_answer": "iii. Flat Phillips curves and secular stagnation"
+            },
+            {
+              "order": 14,
+              "question": "<p>Paragraph E</p>",
+              "correct_answer": "iv. Emerging markets and trilemma constraints"
+            },
+            {
+              "order": 15,
+              "question": "<p>Paragraph F</p>",
+              "correct_answer": "v. Macroprudential tools and mandate creep"
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "title": "Questions 16–20",
+          "instructions": "<p>Which paragraph contains the following information?</p><p><em>Write the correct letter, <strong>A–G</strong>, in boxes 16–20 on your answer sheet.</em></p>",
+          "question_type": "matching_info",
+          "option_pool": [
+            "Paragraph A",
+            "Paragraph B",
+            "Paragraph C",
+            "Paragraph D",
+            "Paragraph E",
+            "Paragraph F",
+            "Paragraph G"
+          ],
+          "questions": [
+            {
+              "order": 16,
+              "question": "<p>Taylor rule linking rates to inflation and output gaps</p>",
+              "correct_answer": "Paragraph B"
+            },
+            {
+              "order": 17,
+              "question": "<p>debate over transitory versus persistent supply shock overshoots</p>",
+              "correct_answer": "Paragraph C"
+            },
+            {
+              "order": 18,
+              "question": "<p>secular stagnation narrowing conventional policy space</p>",
+              "correct_answer": "Paragraph D"
+            },
+            {
+              "order": 19,
+              "question": "<p>trilemma constraints for emerging market adopters</p>",
+              "correct_answer": "Paragraph E"
+            },
+            {
+              "order": 20,
+              "question": "<p>macroprudential buffers and loan-to-value limits</p>",
+              "correct_answer": "Paragraph F"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "tfng",
+          "question": "<p>New Zealand pioneered formal inflation targets in nineteen ninety.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 2,
+          "question_type": "tfng",
+          "question": "<p>Core inflation always includes volatile food and energy.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 3,
+          "question_type": "tfng",
+          "question": "<p>The passage states mandates never expanded beyond inflation.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 4,
+          "question_type": "tfng",
+          "question": "<p>Quantitative easing swelled central bank balance sheets.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 5,
+          "question_type": "tfng",
+          "question": "<p>Every emerging market maintains fixed exchange rates with targeting.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 6,
+          "question_type": "ynng",
+          "question": "<p>The author distinguishes legal autonomy from de facto political pressures.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 7,
+          "question_type": "ynng",
+          "question": "<p>The writer believes targeting alone suffices for macro stability.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 8,
+          "question_type": "ynng",
+          "question": "<p>The author supports clearer communication if mandates broaden.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 9,
+          "question_type": "ynng",
+          "question": "<p>The writer claims Phillips curves strengthened universally recently.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 10,
+          "question_type": "ynng",
+          "question": "<p>The author sees flexible average targeting as potentially helpful if understood.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 21,
+          "question_type": "sentence_completion",
+          "question": "<p>Forward guidance influences long-term yields through expectations ____.</p>",
+          "correct_answer": "hypothesis",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 22,
+          "question_type": "sentence_completion",
+          "question": "<p>Fiscal dominance may erode central bank ____ narratives.</p>",
+          "correct_answer": "independence",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 23,
+          "question_type": "sentence_completion",
+          "question": "<p>Macroprudential tools include countercyclical capital ____.</p>",
+          "correct_answer": "buffers",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 24,
+          "question_type": "sentence_completion",
+          "question": "<p>Trilemma constraints involve exchange rates and capital ____.</p>",
+          "correct_answer": "accounts",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 25,
+          "question_type": "summary_completion",
+          "question": "<p>Dot plots and minutes are scrutinised by ____ traders within milliseconds. Speed matters.</p>",
+          "correct_answer": "algorithmic",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 26,
+          "question_type": "summary_completion",
+          "question": "<p>Wealth inequality may amplify via asset price ____ during easing.</p>",
+          "correct_answer": "channels",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 27,
+          "question_type": "summary_completion",
+          "question": "<p>IMF programmes encourage data ____ prerequisites for credibility.</p>",
+          "correct_answer": "transparency",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 28,
+          "question_type": "summary_completion",
+          "question": "<p>Public literacy challenges involve demystifying monetary ____ for borrowers.</p>",
+          "correct_answer": "plumbing",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 29,
+          "question_type": "table_completion",
+          "question": "<p>Communication | Press conferences include ____ plots</p>",
+          "correct_answer": "dot",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 30,
+          "question_type": "table_completion",
+          "question": "<p>Housing risk | Credit booms link to later ____</p>",
+          "correct_answer": "recessions",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 31,
+          "question_type": "table_completion",
+          "question": "<p>Index issue | CPI revisions can erode saver ____</p>",
+          "correct_answer": "trust",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 32,
+          "question_type": "mcq",
+          "question": "<p>Paragraph A notes critics worry low CPI may mask</p>",
+          "answer_options": [
+            "asset bubbles when credit stays loose",
+            "elimination of all shadow banking",
+            "excess wage indexation everywhere",
+            "fixed exchange rates globally"
+          ],
+          "correct_answer": "asset bubbles when credit stays loose"
+        },
+        {
+          "order": 33,
+          "question_type": "mcq",
+          "question": "<p>According to paragraph B, QE was used when</p>",
+          "answer_options": [
+            "conventional rates hit zero lower bounds",
+            "inflation always exceeded ten percent",
+            "fiscal dominance ended",
+            "dot plots were illegal"
+          ],
+          "correct_answer": "conventional rates hit zero lower bounds"
+        },
+        {
+          "order": 34,
+          "question_type": "mcq",
+          "question": "<p>Paragraph D links secular stagnation to</p>",
+          "answer_options": [
+            "lower neutral rates narrowing policy space",
+            "stronger union wage indexation",
+            "abundant construction in all cities",
+            "elimination of mortgage sensitivity"
+          ],
+          "correct_answer": "lower neutral rates narrowing policy space"
+        },
+        {
+          "order": 35,
+          "question_type": "mcq",
+          "question": "<p>Paragraph E describes commodity exporters suffering</p>",
+          "answer_options": [
+            "terms-of-trade shocks through currencies",
+            "dollarisation ending all informal use",
+            "uniform point targets easily",
+            "IMF bans on transparency"
+          ],
+          "correct_answer": "terms-of-trade shocks through currencies"
+        },
+        {
+          "order": 36,
+          "question_type": "mcq",
+          "question": "<p>The final paragraph argues targeting should be paired with</p>",
+          "answer_options": [
+            "fiscal, competition, and housing policies",
+            "monthly print fixation only",
+            "elimination of employment considerations",
+            "ignoring financial stability tools"
+          ],
+          "correct_answer": "fiscal, competition, and housing policies"
+        },
+        {
+          "order": 37,
+          "question_type": "short_answer",
+          "question": "<p>Which country pioneered formal inflation targets?</p>",
+          "correct_answer": "New Zealand",
+          "question_config": {
+            "word_limit": 2,
+            "word_limit_label": "NO MORE THAN TWO WORDS",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 38,
+          "question_type": "short_answer",
+          "question": "<p>What rule relates rates to inflation and output gaps?</p>",
+          "correct_answer": "Taylor",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 39,
+          "question_type": "short_answer",
+          "question": "<p>What curve weakened in some decades for wage pressures?</p>",
+          "correct_answer": "Phillips",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 40,
+          "question_type": "short_answer",
+          "question": "<p>What average framework do some banks use over multi-year horizons?</p>",
+          "correct_answer": "inflation",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        }
+      ]
+    }
+  ]
+}

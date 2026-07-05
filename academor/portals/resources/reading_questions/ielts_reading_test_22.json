@@ -1,0 +1,387 @@
+{
+  "title": "IELTS Academic Reading — Practice Test 22",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–40</strong></p><p>You should spend about 60 minutes on <strong>Questions 1–40</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Coral reef restoration</strong></p><p><strong>A</strong> Coral reef restoration responds to mass bleaching, storm damage, and chronic pollution degrading carbonate structures supporting fisheries and coastal protection worldwide. Practitioners propagate fragments in underwater nurseries before outplanting onto degraded substrates using cement bases or modular frames. Heat-tolerant genotypes identified through stress experiments offer hope, yet moving corals across regions raises genetic homogenisation and disease transfer risks. Restoration budgets rarely match scale of decline, forcing triage prioritising reefs protecting dense human settlements and culturally sacred sites. Monitoring requires multi-year commitments tracking survival, predation, and recruitment rather than celebrating one-off planting photo opportunities. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p><p><strong>B</strong> Coral gardening teams clean algae competition and remove coralivorous snails threatening fragile transplants during early establishment months. Microfragmentation accelerates growth by cutting colonies into tiny pieces that fuse into larger structures over surprisingly short intervals in optimal conditions. 3D-printed artificial reefs provide settlement surfaces mimicking complex topography when natural rubble lacks stable anchorage for new colonies. The author cautions that artificial structures cannot replace ecological functions of mature reef mosaics built over centuries of biogenic accretion. Engineering solutions must complement watershed management reducing sediment runoff that smothers corals after heavy rains. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p><p><strong>C</strong> Broodstock banks preserve gametes and larvae from spawning synchronisation events occurring on predictable lunar cycles. Larval seeding disperses cultured offspring across reefs using mesh enclosures, attempting to boost natural recruitment suppressed by degraded water quality. Legal permits govern collection of wild broodstock to avoid depleting remaining healthy populations already stressed by warming seas. Indigenous custodians increasingly co-manage projects integrating traditional seasonal closures with scientific spawning calendars. The writer believes co-governance improves compliance compared with externally imposed interventions ignoring local marine tenure. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p><p><strong>D</strong> Water quality interventions upgrade wastewater treatment and agricultural buffers upstream, addressing root drivers of reef decline. Nutrient enrichment fuels macroalgae blooms competing with coral recruits, while sunscreens and pharmaceuticals appear in coastal waters at concerning concentrations. Municipal infrastructure financing competes with visible in-water planting favoured by politicians seeking rapid constituency visibility. The author argues upstream investment yields larger sustained benefits than cosmetic outplanting alone in chronically polluted bays. Integrated coastal management links reef projects to mangrove rehabilitation stabilising sediments and nursery habitats for reef fish. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p><p><strong>E</strong> Tourism operators fund restoration levies on dive permits, marketing trips to volunteer nurseries appealing to environmentally conscious visitors. Greenwashing accusations arise when hotels highlight small plantings while expanding coastal armouring damaging adjacent habitats. Certification programmes audit operator practices, though enforcement capacity remains limited on remote archipelagos. Economic analyses compare reef tourism revenue lost during bleaching against cost-effectiveness of proactive restoration corridors. The writer supports transparent accounting showing how levy funds translate into measurable coral cover gains over decade horizons. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p><p><strong>F</strong> Climate adaptation planning acknowledges that some reefs may function as temporary refugia cooler than surrounding waters during marine heatwaves. Connectivity modelling identifies larval sources replenishing downstream reefs after catastrophic mortality events. Marine protected networks designed using connectivity data may outperform isolated restoration plots lacking larval supply. Skeptics question whether resources should shift entirely toward emissions mitigation rather than local restoration. The author contends both global decarbonisation and local stewardship are necessary, not mutually exclusive strategies. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes. Policymakers increasingly demand reproducible evidence, open data, and independent evaluation before scaling interventions beyond controlled pilot settings.</p><p><strong>G</strong> Emerging probiotics and algal symbiont manipulations remain experimental with uncertain ecological side effects at ecosystem scales. Regulatory frameworks lag behind private startups marketing miracle treatments before peer review completes long-term trials. The writer expects restoration to mature into a discipline with open data repositories sharing failure rates alongside successes. Training local technicians creates durable employment beyond short grant cycles dependent on foreign consultants. Healthy reefs ultimately depend on societal choices reducing emissions while actively repairing damage within scientifically informed limits. Cross-disciplinary collaboration, sustained funding, and careful communication with affected communities remain central to credible long-term outcomes.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 11–15",
+          "instructions": "<p>Choose the correct heading for paragraphs <strong>B–F</strong> from the list of headings below.</p><p><em>Write the correct number, <strong>i–vii</strong>, in boxes 11–15 on your answer sheet.</em></p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "i. Medieval stained glass lead trade",
+            "ii. Gardening, microfragmentation, and 3D substrates",
+            "iii. Broodstock banks and co-governance",
+            "iv. Upstream pollution and integrated coastal management",
+            "v. Tourism levies and greenwashing risks",
+            "vi. Refugia, connectivity, and mitigation debate",
+            "vii. Ancient Roman road milestones"
+          ],
+          "questions": [
+            {
+              "order": 11,
+              "question": "<p>Paragraph B</p>",
+              "correct_answer": "ii. Gardening, microfragmentation, and 3D substrates"
+            },
+            {
+              "order": 12,
+              "question": "<p>Paragraph C</p>",
+              "correct_answer": "iii. Broodstock banks and co-governance"
+            },
+            {
+              "order": 13,
+              "question": "<p>Paragraph D</p>",
+              "correct_answer": "iv. Upstream pollution and integrated coastal management"
+            },
+            {
+              "order": 14,
+              "question": "<p>Paragraph E</p>",
+              "correct_answer": "v. Tourism levies and greenwashing risks"
+            },
+            {
+              "order": 15,
+              "question": "<p>Paragraph F</p>",
+              "correct_answer": "vi. Refugia, connectivity, and mitigation debate"
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "title": "Questions 16–20",
+          "instructions": "<p>Which paragraph contains the following information?</p><p><em>Write the correct letter, <strong>A–G</strong>, in boxes 16–20 on your answer sheet.</em></p>",
+          "question_type": "matching_info",
+          "option_pool": [
+            "Paragraph A",
+            "Paragraph B",
+            "Paragraph C",
+            "Paragraph D",
+            "Paragraph E",
+            "Paragraph F",
+            "Paragraph G"
+          ],
+          "questions": [
+            {
+              "order": 16,
+              "question": "<p>mention of microfragmentation accelerating colony fusion</p>",
+              "correct_answer": "Paragraph B"
+            },
+            {
+              "order": 17,
+              "question": "<p>reference to indigenous seasonal closures with spawning calendars</p>",
+              "correct_answer": "Paragraph C"
+            },
+            {
+              "order": 18,
+              "question": "<p>discussion of wastewater upgrades reducing nutrient enrichment</p>",
+              "correct_answer": "Paragraph D"
+            },
+            {
+              "order": 19,
+              "question": "<p>examples of restoration levies on dive permits</p>",
+              "correct_answer": "Paragraph E"
+            },
+            {
+              "order": 20,
+              "question": "<p>a conclusion requiring emissions cuts and informed repair</p>",
+              "correct_answer": "Paragraph G"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "tfng",
+          "question": "<p>Nurseries propagate coral fragments before outplanting.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 2,
+          "question_type": "tfng",
+          "question": "<p>Artificial reefs fully replace centuries-old reef functions immediately.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 3,
+          "question_type": "tfng",
+          "question": "<p>Every hotel restoration levy is rigorously audited globally.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 4,
+          "question_type": "tfng",
+          "question": "<p>Upstream nutrient reduction can support reef recovery.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 5,
+          "question_type": "tfng",
+          "question": "<p>The passage rejects all local restoration in favour of emissions cuts only.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 6,
+          "question_type": "ynng",
+          "question": "<p>The author warns artificial structures cannot replace mature reef mosaics.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 7,
+          "question_type": "ynng",
+          "question": "<p>The writer believes co-governance improves compliance over imposed projects.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 8,
+          "question_type": "ynng",
+          "question": "<p>The author thinks upstream wastewater investment beats cosmetic planting in polluted bays.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 9,
+          "question_type": "ynng",
+          "question": "<p>The writer claims probiotics are proven safe at ecosystem scale.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 10,
+          "question_type": "ynng",
+          "question": "<p>The author supports both decarbonisation and local stewardship.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 21,
+          "question_type": "sentence_completion",
+          "question": "<p>Bleaching and storms damage carbonate ____ supporting fisheries.</p>",
+          "correct_answer": "structures",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 22,
+          "question_type": "sentence_completion",
+          "question": "<p>Larval seeding uses mesh ____ on degraded reefs.</p>",
+          "correct_answer": "enclosures",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 23,
+          "question_type": "sentence_completion",
+          "question": "<p>Connectivity modelling tracks larval ____ between reefs.</p>",
+          "correct_answer": "sources",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 24,
+          "question_type": "sentence_completion",
+          "question": "<p>Open repositories should share failure ____ alongside successes.</p>",
+          "correct_answer": "rates",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 25,
+          "question_type": "summary_completion",
+          "question": "<p>Heat-tolerant genotypes raise disease transfer and genetic ____ risks.</p>",
+          "correct_answer": "homogenisation",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 26,
+          "question_type": "summary_completion",
+          "question": "<p>Sediment runoff after rains can ____ corals.</p>",
+          "correct_answer": "smother",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 27,
+          "question_type": "summary_completion",
+          "question": "<p>Marine protected networks may outperform isolated restoration ____.</p>",
+          "correct_answer": "plots",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 28,
+          "question_type": "summary_completion",
+          "question": "<p>Regulatory frameworks lag behind startup ____ treatments.</p>",
+          "correct_answer": "miracle",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 29,
+          "question_type": "table_completion",
+          "question": "<p>Field work | Teams remove coralivorous ____ threatening transplants</p>",
+          "correct_answer": "snails",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 30,
+          "question_type": "table_completion",
+          "question": "<p>Tourism | Greenwashing may hide coastal ____ expansion</p>",
+          "correct_answer": "armouring",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 31,
+          "question_type": "table_completion",
+          "question": "<p>Climate | Some reefs act as temporary heatwave ____</p>",
+          "correct_answer": "refugia",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 32,
+          "question_type": "mcq",
+          "question": "<p>Paragraph A notes budgets rarely match</p>",
+          "answer_options": [
+            "tourist demand",
+            "scale of reef decline",
+            "nursery legality",
+            "lunar cycles"
+          ],
+          "correct_answer": "scale of reef decline"
+        },
+        {
+          "order": 33,
+          "question_type": "mcq",
+          "question": "<p>According to paragraph B, 3D structures cannot replace</p>",
+          "answer_options": [
+            "centuries of biogenic accretion",
+            "all watershed work",
+            "permits",
+            "spawning"
+          ],
+          "correct_answer": "centuries of biogenic accretion"
+        },
+        {
+          "order": 34,
+          "question_type": "mcq",
+          "question": "<p>Paragraph D argues politicians favour</p>",
+          "answer_options": [
+            "invisible upstream pipes over visible planting",
+            "only mangrove bans",
+            "ending tourism",
+            "probiotic mandates"
+          ],
+          "correct_answer": "invisible upstream pipes over visible planting"
+        },
+        {
+          "order": 35,
+          "question_type": "mcq",
+          "question": "<p>Paragraph F says protected networks help when designed with</p>",
+          "answer_options": [
+            "connectivity data",
+            "isolated plots without larvae",
+            "hotels only",
+            "miracle startups"
+          ],
+          "correct_answer": "connectivity data"
+        },
+        {
+          "order": 36,
+          "question_type": "mcq",
+          "question": "<p>The final paragraph depends on reducing emissions while</p>",
+          "answer_options": [
+            "repairing within scientific limits",
+            "ending all nurseries",
+            "ignoring local jobs",
+            "avoiding data sharing"
+          ],
+          "correct_answer": "repairing within scientific limits"
+        },
+        {
+          "order": 37,
+          "question_type": "short_answer",
+          "question": "<p>What underwater facilities grow fragments before outplanting?</p>",
+          "correct_answer": "nurseries",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 38,
+          "question_type": "short_answer",
+          "question": "<p>What printing technology creates settlement surfaces?</p>",
+          "correct_answer": "3D-printed",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 39,
+          "question_type": "short_answer",
+          "question": "<p>What closures integrate traditional and scientific calendars?</p>",
+          "correct_answer": "seasonal",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 40,
+          "question_type": "short_answer",
+          "question": "<p>What organisms in corals are manipulated experimentally?</p>",
+          "correct_answer": "symbionts",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -110,7 +110,60 @@ class Lesson(models.Model):
         return (self.name or '').strip() or resolve_course_type_label(self.subject)
 
 
+class LessonAttachment(models.Model):
+    class Kind(models.TextChoices):
+        PDF = 'pdf', _('PDF')
+        IMAGE = 'image', _('Image')
+        VIDEO = 'video', _('Video')
+
+    lesson = models.ForeignKey(
+        Lesson,
+        on_delete=models.CASCADE,
+        related_name='attachments',
+        verbose_name=_('Lesson'),
+    )
+    kind = models.CharField(
+        max_length=16,
+        choices=Kind.choices,
+        verbose_name=_('Type'),
+    )
+    file = models.FileField(
+        upload_to='portals/lessons/attachments/',
+        null=True,
+        blank=True,
+        verbose_name=_('File'),
+    )
+    video_url = models.URLField(
+        blank=True,
+        verbose_name=_('Video URL'),
+    )
+
+    class Meta:
+        verbose_name = _('Lesson attachment')
+        verbose_name_plural = _('Lesson attachments')
+        ordering = ('id',)
+
+    def __str__(self):
+        return f'{self.get_kind_display()} — {self.lesson_id}'
+
+
 class Classroom(models.Model):
+    group = models.ForeignKey(
+        'StudyGroup',
+        on_delete=models.CASCADE,
+        related_name='textbooks',
+        null=True,
+        blank=True,
+        verbose_name=_('Group'),
+    )
+    teacher = models.ForeignKey(
+        'TeacherProfile',
+        on_delete=models.PROTECT,
+        related_name='textbooks',
+        null=True,
+        blank=True,
+        verbose_name=_('Teacher'),
+    )
     name = models.CharField(
         max_length=255,
         blank=True,
@@ -137,20 +190,20 @@ class Classroom(models.Model):
         related_name='classrooms',
         blank=True,
         verbose_name=_('Services'),
-        help_text=_('Active site services — students and teachers see this room when their group matches.'),
+        help_text=_('Legacy admin field — portal textbooks use group access instead.'),
     )
 
     class Meta:
-        verbose_name = _('Classroom')
-        verbose_name_plural = _('Classrooms')
-        ordering = ('-created_at', 'id')
+        verbose_name = _('Textbook')
+        verbose_name_plural = _('Textbooks')
+        ordering = ('name', 'id')
 
     def __str__(self):
-        return (self.name or '').strip() or str(_('Classroom %(pk)s') % {'pk': self.pk or '—'})
+        return (self.name or '').strip() or str(_('Textbook %(pk)s') % {'pk': self.pk or '—'})
 
     @property
     def display_name(self):
-        return (self.name or '').strip() or str(_('Classroom'))
+        return (self.name or '').strip() or str(_('Textbook'))
 
     def get_service_slugs(self):
         if hasattr(self, '_prefetched_objects_cache') and 'services' in self._prefetched_objects_cache:

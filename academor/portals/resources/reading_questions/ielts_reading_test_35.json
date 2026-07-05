@@ -1,0 +1,387 @@
+{
+  "title": "IELTS Academic Reading — Practice Test 35",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–40</strong></p><p>You should spend about 60 minutes on <strong>Questions 1–40</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Mindfulness and Sustained Attention</strong></p><p><strong>A</strong> Mindfulness training cultivates nonjudgmental awareness of present-moment sensations, thoughts, and emotions, often through breath-focused meditation practised daily for weeks. Cognitive psychologists study whether such exercises improve sustained attention—the ability to maintain focus on tasks despite distraction—using computerised continuous performance tests and experience sampling on smartphones. Proponents claim workplace programmes reduce stress and errors, while skeptics question effect sizes after accounting for expectancy and inactive control limitations in many published trials comparing mindfulness to relaxation rather than active skill training. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality. Policy evaluations therefore depend on transparent reporting and independent replication of key results.</p><p><strong>B</strong> Neuroimaging meta-analyses report modest associations between long-term practice and thickening in anterior cingulate regions implicated in conflict monitoring, though causal direction remains unclear because pre-existing traits may attract individuals to retreats. Short courses for novices show more variable outcomes, with some participants reporting increased anxiety when confronting unpleasant body sensations without adequate teacher guidance. Online apps democratise access yet lack interpersonal correction of misinterpretations, such as suppressing emotions under the guise of equanimity, which clinicians distinguish from genuine acceptance that acknowledges feelings without impulsive reaction. Policy evaluations therefore depend on transparent reporting and independent replication of key results.</p><p><strong>C</strong> Educational trials embed brief mindfulness modules in curricula to test effects on executive function and classroom behaviour among adolescents facing digital notification overload. Teachers receive training to lead breathing exercises between lessons, though scheduling pressures and standardized testing priorities limit fidelity. Some districts face parental objections citing religious overtones, prompting secular framing around attention gyms and stress physiology. Results are mixed: certain schools report fewer disciplinary referrals, while others detect no gains beyond generic social-emotional learning programmes with broader emotional vocabulary components. Longitudinal studies remain essential before drawing firm conclusions about causal mechanisms and durable outcomes.</p><p><strong>D</strong> Military and aviation sectors explore mindfulness for maintaining vigilance during monotonous surveillance tasks without inducing complacency. Preliminary studies suggest reduced mind-wandering on long shifts, yet commanders worry about misapplications that discourage necessary rapid responses to threats. Police departments experiment with pre-shift meditations to lower reactive aggression, subject to oversight about whether inner calm could delay legitimate use-of-force decisions in ambiguous encounters. Ethical review boards demand clarity that mindfulness supplements, not replaces, de-escalation training and accountability mechanisms with body-camera documentation. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality. Policy evaluations therefore depend on transparent reporting and independent replication of key results.</p><p><strong>E</strong> Clinical applications target recurrent depression relapse through mindfulness-based cognitive therapy, combining meditation with cognitive restructuring. Patients learn to notice rumination loops early, reducing reentry into negative thought cascades. Trials show efficacy comparable to maintenance antidepressants for some relapse prevention, though adherence drops when homework feels burdensome amid competing life demands. Hospitals offer brief sessions before painful procedures, demonstrating analgesic expectancy effects overlapping with placebo literature, yet institutional champions argue overall wellbeing benefits justify modest resource allocation when staff burnout is endemic. Policy evaluations therefore depend on transparent reporting and independent replication of key results. Longitudinal studies remain essential before drawing firm conclusions about causal mechanisms and durable outcomes.</p><p><strong>F</strong> Measurement challenges include self-report bias on mindfulness questionnaires correlating weakly with objective performance. Active controls like progressive muscle relaxation obscure whether benefits are mindfulness-specific. Longitudinal dropout exceeds twenty percent in community samples, complicating intent-to-treat analyses advertised in popular media as miraculous cures. Open-science reforms preregister primary outcomes to curb HARKing—hypothesising after results are known—which historically inflated enthusiasm in early positive studies later partially failed to replicate in multisite replications with precommitted analysis plans. Longitudinal studies remain essential before drawing firm conclusions about causal mechanisms and durable outcomes. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality.</p><p><strong>G</strong> Looking ahead, the author advocates realistic messaging: mindfulness can modestly support attention and emotion regulation for some people in some contexts, not universal panacea. Personalisation via baseline attention profiling may improve matching to protocols. If corporations adopt mindfulness chiefly to mask excessive workloads, employees may rightly resent wellness theatre. Integrating brief practices with structural changes—reasonable hours, manageable caseloads—offers ethical implementation that respects both contemplative traditions and labour rights in knowledge economies dependent on sustained cognitive performance. Scholars caution that cross-national comparisons require careful attention to institutional context and data quality. Policy evaluations therefore depend on transparent reporting and independent replication of key results.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 11–15",
+          "instructions": "<p>Choose the correct heading for paragraphs <strong>B–F</strong> from the list of headings below.</p><p><em>Write the correct number, <strong>i–vii</strong>, in boxes 11–15 on your answer sheet.</em></p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "i. Brain correlates and novice risks",
+            "ii. Schools, secular framing, and mixed results",
+            "iii. Military vigilance and policing ethics",
+            "iv. Depression relapse and hospital applications",
+            "v. Measurement bias and replication reforms",
+            "vi. Fisheries quota auctions",
+            "vii. Maya calendrical interlocking gears"
+          ],
+          "questions": [
+            {
+              "order": 11,
+              "question": "<p>Paragraph B</p>",
+              "correct_answer": "i. Brain correlates and novice risks"
+            },
+            {
+              "order": 12,
+              "question": "<p>Paragraph C</p>",
+              "correct_answer": "ii. Schools, secular framing, and mixed results"
+            },
+            {
+              "order": 13,
+              "question": "<p>Paragraph D</p>",
+              "correct_answer": "iii. Military vigilance and policing ethics"
+            },
+            {
+              "order": 14,
+              "question": "<p>Paragraph E</p>",
+              "correct_answer": "iv. Depression relapse and hospital applications"
+            },
+            {
+              "order": 15,
+              "question": "<p>Paragraph F</p>",
+              "correct_answer": "v. Measurement bias and replication reforms"
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "title": "Questions 16–20",
+          "instructions": "<p>Which paragraph contains the following information?</p><p><em>Write the correct letter, <strong>A–G</strong>, in boxes 16–20 on your answer sheet.</em></p>",
+          "question_type": "matching_info",
+          "option_pool": [
+            "Paragraph A",
+            "Paragraph B",
+            "Paragraph C",
+            "Paragraph D",
+            "Paragraph E",
+            "Paragraph F",
+            "Paragraph G"
+          ],
+          "questions": [
+            {
+              "order": 16,
+              "question": "<p>continuous performance tests measuring sustained attention</p>",
+              "correct_answer": "Paragraph A"
+            },
+            {
+              "order": 17,
+              "question": "<p>concern that novices may feel increased anxiety</p>",
+              "correct_answer": "Paragraph B"
+            },
+            {
+              "order": 18,
+              "question": "<p>parental objections leading to secular framing</p>",
+              "correct_answer": "Paragraph C"
+            },
+            {
+              "order": 19,
+              "question": "<p>pre-shift meditations in police departments</p>",
+              "correct_answer": "Paragraph D"
+            },
+            {
+              "order": 20,
+              "question": "<p>preregistration to curb hypothesising after results</p>",
+              "correct_answer": "Paragraph F"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "tfng",
+          "question": "<p>Mindfulness often uses breath-focused meditation practised over weeks.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 2,
+          "question_type": "tfng",
+          "question": "<p>All educational trials report uniform disciplinary improvements.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 3,
+          "question_type": "tfng",
+          "question": "<p>Neuroimaging proves meditation alone causes cingulate thickening causally.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 4,
+          "question_type": "tfng",
+          "question": "<p>Mindfulness-based cognitive therapy targets depression relapse.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 5,
+          "question_type": "tfng",
+          "question": "<p>The passage states every military unit replaced de-escalation training with meditation.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 6,
+          "question_type": "ynng",
+          "question": "<p>The author rejects presenting mindfulness as a universal panacea.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 7,
+          "question_type": "ynng",
+          "question": "<p>The writer supports corporations using mindfulness only to mask workloads.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 8,
+          "question_type": "ynng",
+          "question": "<p>The author believes structural labour changes should accompany brief practices.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 9,
+          "question_type": "ynng",
+          "question": "<p>The writer claims self-report questionnaires perfectly match objective performance.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 10,
+          "question_type": "ynng",
+          "question": "<p>The author sees online apps as always replacing teacher guidance successfully.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 21,
+          "question_type": "sentence_completion",
+          "question": "<p>Sustained attention is tested with continuous ____ tests.</p>",
+          "correct_answer": "performance",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 22,
+          "question_type": "sentence_completion",
+          "question": "<p>Anterior cingulate regions relate to conflict ____.</p>",
+          "correct_answer": "monitoring",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 23,
+          "question_type": "sentence_completion",
+          "question": "<p>Mindfulness-based cognitive therapy combines meditation with cognitive ____.</p>",
+          "correct_answer": "restructuring",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 24,
+          "question_type": "sentence_completion",
+          "question": "<p>Open-science reforms encourage preregistered primary ____.</p>",
+          "correct_answer": "outcomes",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 25,
+          "question_type": "summary_completion",
+          "question": "<p>Skeptics question effect sizes after inactive ____ limitations. Controls matter.</p>",
+          "correct_answer": "control",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 26,
+          "question_type": "summary_completion",
+          "question": "<p>Teachers face scheduling pressures and standardized ____ priorities.</p>",
+          "correct_answer": "testing",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 27,
+          "question_type": "summary_completion",
+          "question": "<p>Hospitals offer sessions before painful procedures with analgesic ____ effects.</p>",
+          "correct_answer": "expectancy",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 28,
+          "question_type": "summary_completion",
+          "question": "<p>Personalisation may use baseline attention ____ to match protocols.</p>",
+          "correct_answer": "profiling",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 29,
+          "question_type": "flowchart_completion",
+          "question": "<p>Online risk | Apps may lack interpersonal ____ of misinterpretations</p>",
+          "correct_answer": "correction",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 30,
+          "question_type": "flowchart_completion",
+          "question": "<p>Workplace misuse | Employees may resent wellness ____</p>",
+          "correct_answer": "theatre",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 31,
+          "question_type": "flowchart_completion",
+          "question": "<p>Trial issue | Intent-to-treat analyses suffer from ____</p>",
+          "correct_answer": "dropout",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 32,
+          "question_type": "mcq",
+          "question": "<p>Paragraph A notes skeptics compare mindfulness to</p>",
+          "answer_options": [
+            "relaxation rather than active skill training",
+            "surgery instead of medication",
+            "digital notifications exclusively",
+            "aviation vigilance tasks only"
+          ],
+          "correct_answer": "relaxation rather than active skill training"
+        },
+        {
+          "order": 33,
+          "question_type": "mcq",
+          "question": "<p>According to paragraph C, some districts reframe practices as</p>",
+          "answer_options": [
+            "attention gyms and stress physiology",
+            "mandatory religious instruction",
+            "replacements for all academic subjects",
+            "exclusive police training"
+          ],
+          "correct_answer": "attention gyms and stress physiology"
+        },
+        {
+          "order": 34,
+          "question_type": "mcq",
+          "question": "<p>Paragraph D indicates commanders worry mindfulness could</p>",
+          "answer_options": [
+            "discourage necessary rapid threat responses if misapplied",
+            "eliminate all surveillance shifts",
+            "replace body cameras",
+            "ban de-escalation training by law"
+          ],
+          "correct_answer": "discourage necessary rapid threat responses if misapplied"
+        },
+        {
+          "order": 35,
+          "question_type": "mcq",
+          "question": "<p>Paragraph E compares mindfulness-based cognitive therapy efficacy to</p>",
+          "answer_options": [
+            "maintenance antidepressants for some relapse prevention",
+            "surgical anaesthesia exclusively",
+            "inactive controls only",
+            "digital notification blocking"
+          ],
+          "correct_answer": "maintenance antidepressants for some relapse prevention"
+        },
+        {
+          "order": 36,
+          "question_type": "mcq",
+          "question": "<p>The final paragraph urges ethical implementation combining</p>",
+          "answer_options": [
+            "brief practices with reasonable workloads",
+            "universal panacea messaging",
+            "wellness theatre without structural change",
+            "rejecting contemplative traditions entirely"
+          ],
+          "correct_answer": "brief practices with reasonable workloads"
+        },
+        {
+          "order": 37,
+          "question_type": "short_answer",
+          "question": "<p>What therapy combines mindfulness with cognitive restructuring?</p>",
+          "correct_answer": "mindfulness-based cognitive",
+          "question_config": {
+            "word_limit": 3,
+            "word_limit_label": "NO MORE THAN THREE WORDS",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 38,
+          "question_type": "short_answer",
+          "question": "<p>What sampling method tracks attention on smartphones?</p>",
+          "correct_answer": "experience",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 39,
+          "question_type": "short_answer",
+          "question": "<p>What acronym labels hypothesising after results are known?</p>",
+          "correct_answer": "HARKing",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 40,
+          "question_type": "short_answer",
+          "question": "<p>What rights does the author say labour contexts should respect?</p>",
+          "correct_answer": "labour",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        }
+      ]
+    }
+  ]
+}

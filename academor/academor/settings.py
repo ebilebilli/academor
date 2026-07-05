@@ -48,6 +48,9 @@ else:
 if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
+# YouTube embeds require a Referer header; same-origin blocks cross-origin Referer (Error 153).
+SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+
 CSRF_TRUSTED_ORIGINS = [
     "https://www.academor.az",
     'https://academor.az',
@@ -185,6 +188,7 @@ TEMPLATES = [
                 'projects.context_processors.page_banner_tagline_context',
                 'portals.context_processors.portal_auth_context',
                 'portals.context_processors.portal_notification_context',
+                'portals.context_processors.portal_student_service_context',
             ],
         },
     },
@@ -324,6 +328,34 @@ CACHE_TIMEOUT_LONG = 86400  # 24 hours for stable data (about, contact, backgrou
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'console': {
+            'format': '{levelname} {asctime} {name} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'console',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+    'loggers': {
+        'portals.ielts_mock': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
 
 
 # United Payment Azerbaijan

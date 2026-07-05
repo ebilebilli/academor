@@ -1,0 +1,56 @@
+{% load i18n %}
+<div class="portal-reading-tabs{% if view_only %} portal-reading-tabs--preview{% endif %}" data-reading-tabs>
+  {% if sections|length > 1 %}
+  <ul
+    class="nav nav-tabs portal-reading-tabs__nav"
+    role="tablist"
+    aria-label="{% trans 'Reading passages' %}"
+  >
+    {% for section in sections %}
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link{% if forloop.first %} active{% endif %}"
+        id="reading-tab-{{ section.section_number }}"
+        type="button"
+        data-bs-toggle="tab"
+        data-bs-target="#reading-passage-{{ section.section_number }}"
+        role="tab"
+        aria-controls="reading-passage-{{ section.section_number }}"
+        aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+      >
+        <span class="portal-reading-tabs__label">
+          {% blocktrans with num=section.section_number %}Passage {{ num }}{% endblocktrans %}
+        </span>
+        {% if section.question_range_start %}
+        <span class="portal-reading-tabs__range badge rounded-pill text-bg-light border ms-1">
+          {% if section.question_range_start == section.question_range_end %}
+            {% blocktrans with num=section.question_range_start %}Q{{ num }}{% endblocktrans %}
+          {% else %}
+            {% blocktrans with start=section.question_range_start end=section.question_range_end %}Q{{ start }}–{{ end }}{% endblocktrans %}
+          {% endif %}
+        </span>
+        {% endif %}
+      </button>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  <div class="tab-content portal-reading-tabs__panels">
+    {% for section in sections %}
+    <div
+      class="tab-pane fade{% if forloop.first %} show active{% endif %}"
+      id="reading-passage-{{ section.section_number }}"
+      role="tabpanel"
+      aria-labelledby="reading-tab-{{ section.section_number }}"
+      tabindex="0"
+    >
+      {% if view_only %}
+      {% include "portals/includes/quiz_reading_section.html" with section=section view_only=view_only in_tabs=True show_passage_return=False %}
+      {% else %}
+      {% include "portals/includes/quiz_reading_section.html" with section=section view_only=view_only in_tabs=True show_passage_return=True %}
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</div>

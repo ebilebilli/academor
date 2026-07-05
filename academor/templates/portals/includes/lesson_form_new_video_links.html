@@ -1,0 +1,38 @@
+{% load i18n %}
+<div class="portal-lesson-video-links" data-lesson-video-links>
+  <p class="portal-lesson-hint mb-2">{% trans 'Paste YouTube or direct video URLs. Use “Add another link” for more than one.' %}</p>
+  <div class="portal-lesson-video-links__list" data-lesson-video-links-list>
+    {% for row in new_video_url_rows %}
+    <div class="portal-lesson-video-link-row" data-lesson-video-link-row>
+      <input
+        type="url"
+        name="new_video_urls"
+        class="form-control"
+        value="{{ row.url }}"
+        placeholder="https://www.youtube.com/watch?v=..."
+        inputmode="url"
+      >
+      <button type="button" class="btn btn-outline-danger btn-sm" data-lesson-video-link-remove aria-label="{% trans 'Remove video link' %}">
+        <i class="bi bi-trash" aria-hidden="true"></i>
+      </button>
+    </div>
+    {% endfor %}
+  </div>
+  <template data-lesson-video-link-template>
+    <div class="portal-lesson-video-link-row" data-lesson-video-link-row>
+      <input
+        type="url"
+        name="new_video_urls"
+        class="form-control"
+        placeholder="https://www.youtube.com/watch?v=..."
+        inputmode="url"
+      >
+      <button type="button" class="btn btn-outline-danger btn-sm" data-lesson-video-link-remove aria-label="{% trans 'Remove video link' %}">
+        <i class="bi bi-trash" aria-hidden="true"></i>
+      </button>
+    </div>
+  </template>
+  <button type="button" class="btn btn-light btn-sm mt-2" data-lesson-video-link-add>
+    <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>{% trans 'Add another video link' %}
+  </button>
+</div>

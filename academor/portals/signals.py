@@ -11,9 +11,15 @@ from portals.models import (
     Attendance,
     Classroom,
     Lesson,
+    LessonAttachment,
     LessonCategory,
     ListeningAudio,
     ListeningQuestion,
+    ReadingPassage,
+    ReadingQuestion,
+    ReadingQuestionGroup,
+    SpeakingPart,
+    SpeakingQuestion,
     ParentProfile,
     PortalNotification,
     Quiz,
@@ -23,6 +29,7 @@ from portals.models import (
     QuizResultReview,
     Schedule,
     Score,
+    WeeklyStudentScore,
     StudentCourseSpecialization,
     StudentProfile,
     StudyGroup,
@@ -93,6 +100,7 @@ for _model in (
     VideoRecord,
     Attendance,
     Score,
+    WeeklyStudentScore,
     QuizCategory,
     Quiz,
     QuizQuestion,
@@ -100,6 +108,9 @@ for _model in (
     PortalNotification,
     ListeningAudio,
     ListeningQuestion,
+    ReadingPassage,
+    ReadingQuestion,
+    ReadingQuestionGroup,
 ):
     _register_model_cache(_model)
 
@@ -156,6 +167,31 @@ def invalidate_quiz_on_listening_content_change(sender, instance, **kwargs):
     _invalidate_on_commit('QuizResult')
 
 
+@receiver(post_save, sender=ReadingPassage)
+@receiver(post_delete, sender=ReadingPassage)
+@receiver(post_save, sender=ReadingQuestion)
+@receiver(post_delete, sender=ReadingQuestion)
+@receiver(post_save, sender=ReadingQuestionGroup)
+@receiver(post_delete, sender=ReadingQuestionGroup)
+def invalidate_quiz_on_reading_content_change(sender, instance, **kwargs):
+    _invalidate_on_commit('ReadingPassage')
+    _invalidate_on_commit('ReadingQuestion')
+    _invalidate_on_commit('ReadingQuestionGroup')
+    _invalidate_on_commit('Quiz')
+    _invalidate_on_commit('QuizResult')
+
+
+@receiver(post_save, sender=SpeakingPart)
+@receiver(post_delete, sender=SpeakingPart)
+@receiver(post_save, sender=SpeakingQuestion)
+@receiver(post_delete, sender=SpeakingQuestion)
+def invalidate_quiz_on_speaking_content_change(sender, instance, **kwargs):
+    _invalidate_on_commit('SpeakingPart')
+    _invalidate_on_commit('SpeakingQuestion')
+    _invalidate_on_commit('Quiz')
+    _invalidate_on_commit('QuizResult')
+
+
 @receiver(post_save, sender=QuizCategory)
 @receiver(post_delete, sender=QuizCategory)
 def invalidate_quiz_on_category_change(sender, instance, **kwargs):
@@ -200,3 +236,21 @@ def resize_lesson_image(sender, instance, **kwargs):
         max_width=LESSON_IMAGE_MAX_WIDTH,
         max_height=LESSON_IMAGE_MAX_HEIGHT,
     )
+
+
+@receiver(pre_save, sender=LessonAttachment)
+def resize_lesson_attachment_image(sender, instance, **kwargs):
+    if instance.kind != LessonAttachment.Kind.IMAGE or not instance.file:
+        return
+    _compress_image_field(
+        instance,
+        'file',
+        max_width=LESSON_IMAGE_MAX_WIDTH,
+        max_height=LESSON_IMAGE_MAX_HEIGHT,
+    )
+
+
+@receiver(post_save, sender=LessonAttachment)
+@receiver(post_delete, sender=LessonAttachment)
+def invalidate_lesson_on_attachment_change(sender, instance, **kwargs):
+    _invalidate_on_commit('Lesson')

@@ -13,6 +13,7 @@ from portals.models import (
 )
 from portals.utils.queries import (
     get_student_quiz_results,
+    get_student_quizzes_for_category,
     get_student_quizzes,
     get_teacher_quizzes,
     get_teacher_scores,
@@ -175,6 +176,53 @@ class QuizVisibilityTests(TestCase):
         results = get_student_quiz_results(self.student.pk)
         quiz_ids = {row['quiz_id'] for row in results}
         self.assertNotIn(self.speaking_quiz.pk, quiz_ids)
+
+    def test_student_quiz_results_include_attempt_numbers(self):
+        QuizResult.objects.create(
+            student=self.student,
+            quiz=self.ielts_quiz,
+            given_answers={},
+            total_score=6,
+            duration_sec=60,
+        )
+        QuizResult.objects.create(
+            student=self.student,
+            quiz=self.ielts_quiz,
+            given_answers={},
+            total_score=7,
+            duration_sec=70,
+        )
+
+        results = get_student_quiz_results(self.student.pk)
+        self.assertEqual(len(results), 2)
+        self.assertEqual(results[0]['attempt_number'], 2)
+        self.assertEqual(results[0]['attempt_label'], '2-ci')
+        self.assertEqual(results[1]['attempt_number'], 1)
+        self.assertEqual(results[1]['attempt_label'], '1-ci')
+
+    def test_student_quiz_list_includes_attempt_summary(self):
+        QuizResult.objects.create(
+            student=self.student,
+            quiz=self.ielts_quiz,
+            given_answers={},
+            total_score=6,
+            duration_sec=60,
+        )
+        QuizResult.objects.create(
+            student=self.student,
+            quiz=self.ielts_quiz,
+            given_answers={},
+            total_score=7,
+            duration_sec=70,
+        )
+
+        quizzes = get_student_quizzes_for_category(self.student.pk, self.ielts_category.pk)
+        self.assertEqual(len(quizzes), 1)
+        quiz = quizzes[0]
+        self.assertEqual(quiz['attempt_count'], 2)
+        self.assertEqual(quiz['best_score'], 7)
+        self.assertEqual(quiz['last_score'], 7)
+        self.assertIsNotNone(quiz['last_attempt_at'])
 
     def test_teacher_result_requires_shared_group(self):
         self.assertFalse(

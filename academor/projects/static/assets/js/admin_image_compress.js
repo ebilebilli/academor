@@ -145,6 +145,8 @@
                 img: { width: 512, height: 512 },
                 detail_page_img: { width: 1024, height: 1024 },
                 image: { width: 1920, height: 1080 },
+                image_files: { width: 1920, height: 1080 },
+                profile_image: { width: 400, height: 400 },
             };
 
             function getMaxDimensions(inputName) {

@@ -144,68 +144,72 @@
         {% trans 'Materials' %}
       </h2>
       <div class="portal-lesson-panel__body">
-        <p class="portal-lesson-hint mb-3">{% trans 'Add a PDF, video link, or image — at least one is recommended.' %}</p>
+        <p class="portal-lesson-hint mb-3">{% trans 'Add PDFs, images, or video links (YouTube or direct URL).' %}</p>
 
         <div class="portal-lesson-material-tabs" role="tablist" aria-label="{% trans 'Material type' %}">
           <button type="button" class="portal-lesson-material-tab is-active" data-material-tab="pdf" role="tab" aria-selected="true">
             <i class="bi bi-file-earmark-pdf" aria-hidden="true"></i>{% trans 'PDF' %}
           </button>
-          <button type="button" class="portal-lesson-material-tab" data-material-tab="video" role="tab" aria-selected="false">
-            <i class="bi bi-play-circle" aria-hidden="true"></i>{% trans 'Video' %}
-          </button>
           <button type="button" class="portal-lesson-material-tab" data-material-tab="image" role="tab" aria-selected="false">
             <i class="bi bi-image" aria-hidden="true"></i>{% trans 'Image' %}
+          </button>
+          <button type="button" class="portal-lesson-material-tab" data-material-tab="video" role="tab" aria-selected="false">
+            <i class="bi bi-play-btn" aria-hidden="true"></i>{% trans 'Video' %}
           </button>
         </div>
 
         <div class="portal-lesson-material-panels">
           <div class="portal-lesson-material-panel is-active" data-material-panel="pdf" role="tabpanel">
-            <div class="portal-lesson-dropzone" data-lesson-dropzone data-target="pdf">
-              <div class="portal-lesson-dropzone__inner">
-                <i class="bi bi-cloud-arrow-up portal-lesson-dropzone__icon" aria-hidden="true"></i>
-                <p class="portal-lesson-dropzone__title">{% trans 'Drop PDF here or click to browse' %}</p>
-                <p class="portal-lesson-dropzone__meta">{% trans 'Max recommended: 20 MB' %}</p>
-                <span class="portal-lesson-dropzone__filename" data-lesson-filename="pdf"></span>
-              </div>
-              <div class="portal-lesson-file-widget">{{ form.pdf_file }}</div>
+            {% if form.existing_pdfs %}
+            <div class="portal-lesson-existing-files" data-lesson-existing-files="pdf">
+              <p class="portal-lesson-existing-files__title">{% trans 'Current PDFs' %}</p>
+              {% include "portals/includes/lesson_form_existing_materials.html" with materials=form.existing_pdfs %}
+              <p class="portal-lesson-hint">{% trans 'Use Delete to remove a file.' %}</p>
             </div>
-            {% if form.instance.pdf_file %}
-              <p class="portal-lesson-current-file small text-muted mt-2">
-                {% trans 'Current file' %}: {{ form.instance.pdf_file.name }}
-              </p>
             {% endif %}
-            {% for error in form.pdf_file.errors %}
+            <div class="portal-lesson-new-materials">
+              <p class="portal-lesson-new-materials__title">{% trans 'Add new PDFs' %}</p>
+              {% trans 'Add another PDF' as label_add_pdf %}
+              {% trans 'Choose one PDF per row. Use the button below for more files.' as hint_add_pdf %}
+              {% include "portals/includes/lesson_form_new_file_rows.html" with field_name="pdf_files" accept="application/pdf,.pdf" add_label=label_add_pdf hint=hint_add_pdf %}
+            {% for error in form.pdf_files.errors %}
               <div class="portal-lesson-error mt-2">{{ error }}</div>
             {% endfor %}
-          </div>
-
-          <div class="portal-lesson-material-panel" data-material-panel="video" role="tabpanel" hidden>
-            <div class="portal-lesson-field">
-              <label class="portal-lesson-label" for="{{ form.video_url.id_for_label }}">{{ form.video_url.label }}</label>
-              {{ form.video_url }}
-              <p class="portal-lesson-hint">{% trans 'YouTube, Vimeo, or any public video link.' %}</p>
-              {% for error in form.video_url.errors %}
-                <div class="portal-lesson-error">{{ error }}</div>
-              {% endfor %}
             </div>
           </div>
 
           <div class="portal-lesson-material-panel" data-material-panel="image" role="tabpanel" hidden>
-            <div class="portal-lesson-dropzone" data-lesson-dropzone data-target="image">
-              <div class="portal-lesson-dropzone__inner">
-                <i class="bi bi-image portal-lesson-dropzone__icon" aria-hidden="true"></i>
-                <p class="portal-lesson-dropzone__title">{% trans 'Drop image here or click to browse' %}</p>
-                <p class="portal-lesson-dropzone__meta">{% trans 'JPG, PNG, WebP' %}</p>
-                <span class="portal-lesson-dropzone__filename" data-lesson-filename="image"></span>
-              </div>
-              <div class="portal-lesson-file-widget">{{ form.image }}</div>
+            {% if form.existing_images %}
+            <div class="portal-lesson-existing-files" data-lesson-existing-files="image">
+              <p class="portal-lesson-existing-files__title">{% trans 'Current images' %}</p>
+              {% include "portals/includes/lesson_form_existing_materials.html" with materials=form.existing_images %}
+              <p class="portal-lesson-hint">{% trans 'Use Delete to remove a file.' %}</p>
             </div>
-            {% if form.instance.image %}
-              <p class="portal-lesson-current-file small text-muted mt-2">
-                {% trans 'Current file' %}: {{ form.instance.image.name }}
-              </p>
             {% endif %}
-            {% for error in form.image.errors %}
+            <div class="portal-lesson-new-materials">
+              <p class="portal-lesson-new-materials__title">{% trans 'Add new images' %}</p>
+              {% trans 'Add another image' as label_add_image %}
+              {% trans 'Choose one image per row. Use the button below for more files.' as hint_add_image %}
+              {% include "portals/includes/lesson_form_new_file_rows.html" with field_name="image_files" accept="image/*" add_label=label_add_image hint=hint_add_image %}
+            {% for error in form.image_files.errors %}
+              <div class="portal-lesson-error mt-2">{{ error }}</div>
+            {% endfor %}
+            </div>
+          </div>
+
+          <div class="portal-lesson-material-panel" data-material-panel="video" role="tabpanel" hidden>
+            {% if form.existing_videos %}
+            <div class="portal-lesson-existing-files" data-lesson-existing-files="video">
+              <p class="portal-lesson-existing-files__title">{% trans 'Current video links' %}</p>
+              {% include "portals/includes/lesson_form_existing_materials.html" with materials=form.existing_videos %}
+              <p class="portal-lesson-hint">{% trans 'Use Delete to remove an existing link.' %}</p>
+            </div>
+            {% endif %}
+            <div class="portal-lesson-new-materials">
+              <p class="portal-lesson-new-materials__title">{% trans 'Add new video links' %}</p>
+              {% include "portals/includes/lesson_form_new_video_links.html" with new_video_url_rows=form.new_video_url_rows %}
+            </div>
+            {% for error in form.pdf_files.errors %}
               <div class="portal-lesson-error mt-2">{{ error }}</div>
             {% endfor %}
           </div>
@@ -234,5 +238,6 @@
 {% endblock %}
 
 {% block extra_js %}
+<script src="{% static 'portals/js/portal-image-compress.js' %}"></script>
 <script src="{% static 'portals/js/portal-lesson-form.js' %}"></script>
 {% endblock %}
