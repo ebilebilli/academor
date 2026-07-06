@@ -1,3 +1,4 @@
+from django.db.models import Count
 from django.http import Http404, JsonResponse
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
@@ -133,14 +134,12 @@ class TeacherGroupsListView(TeacherRequiredMixin, View):
 
     def get(self, request):
         profile = get_teacher_profile(request.portal_user)
-        from django.db.models import Count
-
         groups = [
             serialize_group(g)
             for g in teacher_groups_qs(profile.pk)
             .select_related('teacher')
             .annotate(student_count=Count('students', distinct=True))
-            .prefetch_related('students')
+            .prefetch_related('courses')
             .order_by('-is_active', 'name')
         ]
         return render(
@@ -330,7 +329,11 @@ class TeacherScheduleView(TeacherRequiredMixin, View):
         calendar = build_teacher_week_calendar(profile.pk, week_start=week_start)
         groups = [
             serialize_group(g)
-            for g in teacher_groups_qs(profile.pk).order_by('-is_active', 'name')
+            for g in teacher_groups_qs(profile.pk)
+            .select_related('teacher')
+            .annotate(student_count=Count('students', distinct=True))
+            .prefetch_related('courses')
+            .order_by('-is_active', 'name')
         ]
         return render(
             request,
