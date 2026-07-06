@@ -146,7 +146,10 @@ def abandon_in_progress_mock_attempts(student_id: int) -> None:
 
 @transaction.atomic
 def start_mock_test_attempt(student_id: int) -> tuple[IeltsMockTestAttempt | None, str | None]:
-    missing = get_missing_mock_sections(student_id)
+    # Pick once and reuse: validating with one random draw and creating with
+    # a second draw could select different quizzes (or fail the second time).
+    picked = pick_random_ielts_section_quizzes(student_id)
+    missing = [section for section, quiz in picked.items() if quiz is None]
     if missing:
         labels = ', '.join(
             str(dict(IeltsMockTestAttempt.Section.choices).get(section, section))
@@ -155,7 +158,6 @@ def start_mock_test_attempt(student_id: int) -> tuple[IeltsMockTestAttempt | Non
         return None, str(_('Not enough quizzes are available for: %(sections)s.') % {'sections': labels})
 
     abandon_in_progress_mock_attempts(student_id)
-    picked = pick_random_ielts_section_quizzes(student_id)
 
     attempt = IeltsMockTestAttempt.objects.create(
         student_id=student_id,
