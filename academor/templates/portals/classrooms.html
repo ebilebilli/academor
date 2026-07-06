@@ -11,7 +11,7 @@
 {% if portal_role == 'parent' and children %}
 {% include "portals/includes/parent_child_header.html" %}
 {% endif %}
-{% portal_page_heading icon="bi-book" title="Textbooks" %}
+{% portal_page_heading icon="bi-book" title=_('Textbooks') %}
 
 {% include "portals/includes/classrooms_panel.html" %}
 {% endblock %}
