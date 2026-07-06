@@ -11,6 +11,10 @@
   class="weekly-scores-app"
   data-weekly-scores-app
   data-panel-url="{% url 'portals:teacher-weekly-scores' %}"
+  data-msg-load-failed="{% filter escapejs %}{% trans 'Load failed.' %}{% endfilter %}"
+  data-msg-score-range="{% filter escapejs %}{% trans 'Score must be between 0 and 10.' %}{% endfilter %}"
+  data-msg-error="{% filter escapejs %}{% trans 'An error occurred.' %}{% endfilter %}"
+  data-msg-save-failed="{% filter escapejs %}{% trans 'Could not save.' %}{% endfilter %}"
 >
   <header class="s-page-head mb-4">
     <div>

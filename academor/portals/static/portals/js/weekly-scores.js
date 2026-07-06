@@ -127,6 +127,12 @@
 
     var mount = app.querySelector("[data-weekly-scores-mount]");
     var panelUrl = app.getAttribute("data-panel-url") || window.location.pathname;
+    var messages = {
+      loadFailed: app.getAttribute("data-msg-load-failed") || "Load failed.",
+      scoreRange: app.getAttribute("data-msg-score-range") || "Score must be between 0 and 10.",
+      error: app.getAttribute("data-msg-error") || "An error occurred.",
+      saveFailed: app.getAttribute("data-msg-save-failed") || "Could not save.",
+    };
     if (!mount) {
       return null;
     }
@@ -185,7 +191,7 @@
         .catch(function () {
           showFlash(
             mount.querySelector("[data-weekly-scores-panel]") || mount,
-            "Yükləmə alınmadı.",
+            messages.loadFailed,
             "error"
           );
         })
@@ -216,7 +222,7 @@
       });
 
       if (invalid) {
-        showFlash(panel, "Bal 0 ilə 10 arasında olmalıdır.", "error");
+        showFlash(panel, messages.scoreRange, "error");
         return Promise.resolve();
       }
 
@@ -243,7 +249,7 @@
         })
         .then(function (result) {
           if (!result.ok) {
-            showFlash(panel, result.data.message || "Xəta baş verdi.", "error");
+            showFlash(panel, result.data.message || messages.error, "error");
             return;
           }
           replacePanel(result.data.html || "");
@@ -254,7 +260,7 @@
           pushUrl(state);
         })
         .catch(function () {
-          showFlash(panel, "Yadda saxlama alınmadı.", "error");
+          showFlash(panel, messages.saveFailed, "error");
         })
         .finally(function () {
           setLoading(false);
