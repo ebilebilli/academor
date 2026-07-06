@@ -26,6 +26,7 @@ from portals.utils.queries import (
     serialize_student,
     serialize_teacher,
 )
+from portals.utils.safe_redirect import safe_portal_next_url
 from portals.views.mixins import ParentRequiredMixin, PortalLoginRequiredMixin, StudentRequiredMixin, TeacherRequiredMixin
 from portals.views.views_v1 import _portal_context
 
@@ -70,7 +71,7 @@ def _respond_notification_action(request, *, success, message, back_url, recipie
         messages.success(request, message)
     else:
         messages.error(request, message)
-    next_url = request.POST.get('next') or back_url
+    next_url = safe_portal_next_url(request, request.POST.get('next')) or back_url
     return redirect(next_url)
 
 

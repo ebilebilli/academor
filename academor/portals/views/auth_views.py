@@ -12,6 +12,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from portals.forms import PortalLoginForm
 from portals.utils.portal_session import is_portal_authenticated, portal_login, portal_logout
 from portals.utils.queries import get_portal_role
+from portals.utils.safe_redirect import safe_portal_next_url
 
 
 def _append_query(url: str, params: dict) -> str:
@@ -33,9 +34,10 @@ def _login_page_url(next_url=''):
     return url
 
 
-def _redirect_after_login(user, next_url=''):
-    if next_url and next_url.startswith('/portal'):
-        return redirect(next_url)
+def _redirect_after_login(request, next_url=''):
+    safe_next = safe_portal_next_url(request, next_url)
+    if safe_next:
+        return redirect(safe_next)
     return redirect('portals:dashboard')
 
 
@@ -48,7 +50,7 @@ class PortalLoginView(View):
     def get(self, request):
         next_url = (request.GET.get('next') or '').strip()
         if is_portal_authenticated(request):
-            return _redirect_after_login(request.portal_user, next_url)
+            return _redirect_after_login(request, next_url)
         response = render(
             request,
             self.template_name,
@@ -89,7 +91,7 @@ class PortalLoginView(View):
 
         portal_login(request, user)
         request.session.pop('portal_login_username', None)
-        return _redirect_after_login(user, next_url)
+        return _redirect_after_login(request, next_url)
 
 
 class PortalLogoutView(View):

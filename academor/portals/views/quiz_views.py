@@ -42,6 +42,7 @@ from portals.utils.ielts_mock_test import (
     serialize_mock_progress,
     validate_mock_section_submit,
 )
+from portals.utils.safe_redirect import safe_portal_next_url
 from portals.views.mixins import StudentQuizTakeRequiredMixin, TeacherRequiredMixin
 from portals.views.views_v1 import _portal_context
 
@@ -345,8 +346,8 @@ class StudentQuizCancelView(StudentQuizTakeRequiredMixin, View):
             abandon_mock_test_attempt(profile.pk, mock_id)
         clear_quiz_attempt_start(request, pk)
 
-        next_url = (request.GET.get('next') or '').strip()
-        if next_url and next_url.startswith('/portal/'):
+        next_url = safe_portal_next_url(request, request.GET.get('next'))
+        if next_url:
             return redirect(next_url)
 
         return redirect(_quiz_back_url(quiz))
