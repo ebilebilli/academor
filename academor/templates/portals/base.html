@@ -27,6 +27,9 @@
   <link rel="stylesheet" href="{% static 'portals/css/portal-redesign.css' %}">
   <!-- Shell overrides (loads last) -->
   <link rel="stylesheet" href="{% static 'portals/css/portal-shell.css' %}">
+  {% if portal_role == 'teacher' or portal_role == 'student' or portal_role == 'parent' %}
+  <link rel="stylesheet" href="{% static 'portals/css/weekly-scores.css' %}">
+  {% endif %}
   {% block extra_css %}{% endblock %}
 </head>
 <body data-portal-role="{{ portal_role|default:'' }}">
@@ -68,10 +71,7 @@
   <script defer src="{% static 'portals/js/portal-init.js' %}?v=20260705c"></script>
   {% block extra_js %}{% endblock %}
   {% if portal_role == 'teacher' %}
-  <link rel="stylesheet" href="{% static 'portals/css/weekly-scores.css' %}">
   <script defer src="{% static 'portals/js/weekly-scores.js' %}?v=20260704c" data-portal-page-script="true"></script>
-  {% elif portal_role == 'student' or portal_role == 'parent' %}
-  <link rel="stylesheet" href="{% static 'portals/css/weekly-scores.css' %}">
   {% endif %}
 </body>
 </html>
