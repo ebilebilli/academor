@@ -99,18 +99,3 @@ class PortalFragmentMiddleware:
                 exc_info=True,
             )
         return response
-
-
-# DEPRECATED: No longer needed with separate cookies — kept only so old
-# settings imports do not break; remove once confirmed unused in all envs.
-class AuthRealmIsolationMiddleware:
-    """
-    DEPRECATED: Separate cookies make this unnecessary.
-    Kept for backward compatibility - does nothing.
-    """
-
-    def __init__(self, get_response):
-        self.get_response = get_response
-
-    def __call__(self, request):
-        return self.get_response(request)

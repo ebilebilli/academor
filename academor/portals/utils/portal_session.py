@@ -106,22 +106,6 @@ def is_portal_authenticated(request) -> bool:
     return get_portal_user_id(request) is not None
 
 
-# Backward compatibility - these are no longer used but kept for safety
-def _clear_django_auth_session(request):
-    """DEPRECATED: No longer needed with separate cookies."""
-    pass
-
-
-def strip_django_auth_from_request(request) -> None:
-    """DEPRECATED: No longer needed with separate cookies."""
-    pass
-
-
-def django_logout_keep_portal(request) -> None:
-    """DEPRECATED: Admin logout doesn't affect portal anymore."""
-    pass
-
-
 def clear_portal_session(request) -> None:
     """Clear portal session - for signal use."""
     session = _get_portal_session(request)
