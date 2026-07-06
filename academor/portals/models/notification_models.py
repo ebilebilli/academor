@@ -1,6 +1,9 @@
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
+
+from portals.models.quiz_models import Quiz
 
 
 class QuizResultReview(models.Model):
@@ -18,7 +21,13 @@ class QuizResultReview(models.Model):
         related_name='quiz_result_reviews',
         verbose_name=_('Reviewer'),
     )
-    score = models.FloatField(verbose_name=_('Score'))
+    score = models.FloatField(
+        verbose_name=_('Score'),
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(Quiz.MANUAL_REVIEW_MAX_SCORE),
+        ],
+    )
     feedback = models.TextField(
         blank=True,
         verbose_name=_('Feedback and corrections'),

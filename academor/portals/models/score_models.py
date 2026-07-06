@@ -34,9 +34,11 @@ class Score(models.Model):
     )
     value = models.FloatField(
         verbose_name=_('Value'),
+        validators=[MinValueValidator(0)],
     )
     max_value = models.FloatField(
         verbose_name=_('Max value'),
+        validators=[MinValueValidator(0)],
     )
     date = models.DateTimeField(
         verbose_name=_('Date'),
@@ -50,6 +52,19 @@ class Score(models.Model):
         verbose_name = _('Score')
         verbose_name_plural = _('Scores')
         ordering = ('-date', '-id')
+
+    def clean(self):
+        from django.core.exceptions import ValidationError
+
+        super().clean()
+        if self.max_value is not None and self.max_value <= 0:
+            raise ValidationError({'max_value': _('Max value must be greater than zero.')})
+        if (
+            self.value is not None
+            and self.max_value is not None
+            and self.value > self.max_value
+        ):
+            raise ValidationError({'value': _('Score cannot exceed max value.')})
 
     def __str__(self):
         return f'{self.student} — {self.get_score_type_display()}: {self.value}/{self.max_value}'
@@ -85,6 +100,7 @@ class WeeklyStudentScore(models.Model):
     )
     comment = models.TextField(
         blank=True,
+        max_length=500,
         verbose_name=_('Comment'),
     )
     created_at = models.DateTimeField(
