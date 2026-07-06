@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -196,20 +197,35 @@ class StudentCourseSpecialization(models.Model):
             return f'{label} ({_("inactive")})'
         return label
 
-    def save(self, *args, **kwargs):
+    def _course_type_is_allowed(self) -> bool:
         from portals.utils.portal_services import is_active_portal_course_type
 
-        if self.course_type and not is_active_portal_course_type(self.course_type):
-            if self.pk:
-                previous = (
-                    StudentCourseSpecialization.objects.filter(pk=self.pk)
-                    .values_list('course_type', flat=True)
-                    .first()
-                )
-                if previous == self.course_type:
-                    super().save(*args, **kwargs)
-                    return
-            raise ValueError(
+        if not self.course_type or is_active_portal_course_type(self.course_type):
+            return True
+        if self.pk:
+            previous = (
+                StudentCourseSpecialization.objects.filter(pk=self.pk)
+                .values_list('course_type', flat=True)
+                .first()
+            )
+            if previous == self.course_type:
+                return True
+        return False
+
+    def clean(self):
+        super().clean()
+        if not self._course_type_is_allowed():
+            raise ValidationError({
+                'course_type': _('Course type "%(code)s" is not linked to an active site service.') % {
+                    'code': self.course_type,
+                },
+            })
+
+    def save(self, *args, **kwargs):
+        if not self._course_type_is_allowed():
+            # ValidationError (not ValueError) so admin/forms show a field
+            # error instead of a 500.
+            raise ValidationError(
                 f'Course type "{self.course_type}" is not linked to an active site service.',
             )
         super().save(*args, **kwargs)
@@ -243,20 +259,33 @@ class TeacherCourseSpecialization(models.Model):
 
         return resolve_course_type_label(self.course_type)
 
-    def save(self, *args, **kwargs):
+    def _course_type_is_allowed(self) -> bool:
         from portals.utils.portal_services import is_active_portal_course_type
 
-        if self.course_type and not is_active_portal_course_type(self.course_type):
-            if self.pk:
-                previous = (
-                    TeacherCourseSpecialization.objects.filter(pk=self.pk)
-                    .values_list('course_type', flat=True)
-                    .first()
-                )
-                if previous == self.course_type:
-                    super().save(*args, **kwargs)
-                    return
-            raise ValueError(
+        if not self.course_type or is_active_portal_course_type(self.course_type):
+            return True
+        if self.pk:
+            previous = (
+                TeacherCourseSpecialization.objects.filter(pk=self.pk)
+                .values_list('course_type', flat=True)
+                .first()
+            )
+            if previous == self.course_type:
+                return True
+        return False
+
+    def clean(self):
+        super().clean()
+        if not self._course_type_is_allowed():
+            raise ValidationError({
+                'course_type': _('Course type "%(code)s" is not linked to an active site service.') % {
+                    'code': self.course_type,
+                },
+            })
+
+    def save(self, *args, **kwargs):
+        if not self._course_type_is_allowed():
+            raise ValidationError(
                 f'Course type "{self.course_type}" is not linked to an active site service.',
             )
         super().save(*args, **kwargs)

@@ -30,20 +30,35 @@ class QuizCategory(models.Model):
 
         return f'{resolve_course_type_label(self.service)} — {self.name}'
 
-    def save(self, *args, **kwargs):
+    def _service_is_allowed(self) -> bool:
         from portals.utils.portal_services import is_active_portal_course_type
 
-        if self.service and not is_active_portal_course_type(self.service):
-            if self.pk:
-                previous = (
-                    QuizCategory.objects.filter(pk=self.pk)
-                    .values_list('service', flat=True)
-                    .first()
-                )
-                if previous == self.service:
-                    super().save(*args, **kwargs)
-                    return
-            raise ValueError(
+        if not self.service or is_active_portal_course_type(self.service):
+            return True
+        if self.pk:
+            previous = (
+                QuizCategory.objects.filter(pk=self.pk)
+                .values_list('service', flat=True)
+                .first()
+            )
+            if previous == self.service:
+                return True
+        return False
+
+    def clean(self):
+        super().clean()
+        if not self._service_is_allowed():
+            raise ValidationError({
+                'service': _('Service "%(code)s" is not linked to an active site service.') % {
+                    'code': self.service,
+                },
+            })
+
+    def save(self, *args, **kwargs):
+        if not self._service_is_allowed():
+            # ValidationError (not ValueError) so admin/forms show a field
+            # error instead of a 500.
+            raise ValidationError(
                 f'Service "{self.service}" is not linked to an active site service.',
             )
         super().save(*args, **kwargs)
