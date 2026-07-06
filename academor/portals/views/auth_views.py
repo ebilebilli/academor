@@ -8,6 +8,7 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import gettext as _
 from django.views import View
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.http import require_POST
 
 from portals.forms import PortalLoginForm
 from portals.utils.portal_session import is_portal_authenticated, portal_login, portal_logout
@@ -98,5 +99,9 @@ class PortalLogoutView(View):
     """Sign out from the portal only — Django admin session stays untouched."""
 
     def get(self, request):
+        return redirect('portals:dashboard')
+
+    @method_decorator(require_POST)
+    def post(self, request):
         portal_logout(request)
         return redirect('projects:home-page')
