@@ -148,7 +148,7 @@ def get_teacher_weekly_score_board(teacher_id, week_start_iso):
 
 
 def build_teacher_weekly_score_view(teacher_id, week_start_iso=None, group_id=None):
-    week_start = current_week_start()
+    week_start = _normalize_week_start(week_start_iso) if week_start_iso else current_week_start()
     board = get_teacher_weekly_score_board(teacher_id, week_start.isoformat())
     active_group = str(group_id or 'all')
     rows = board['rows']
