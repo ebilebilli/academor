@@ -858,10 +858,11 @@ class ClassroomsListView(PortalLoginRequiredMixin, View):
             if parent_has_students(profile):
                 child_ctx = _parent_child_context(request, profile)
                 student = resolve_parent_student(profile, request)
-                if student:
-                    classrooms = get_parent_classrooms(profile.pk, student_id=student.pk)
-                else:
-                    classrooms = get_parent_classrooms(profile.pk) if profile else []
+                if not student:
+                    # Invalid ?student= param: match _parent_student_page
+                    # instead of silently showing all children's classrooms.
+                    raise Http404
+                classrooms = get_parent_classrooms(profile.pk, student_id=student.pk)
             else:
                 classrooms = get_parent_classrooms(profile.pk) if profile else []
 
@@ -897,8 +898,10 @@ class ClassroomDetailView(PortalLoginRequiredMixin, View):
             profile = get_parent_profile(request.portal_user)
             if not profile:
                 raise Http404
-            student = resolve_parent_student(profile, request) if parent_has_students(profile) else None
-            if student:
+            if parent_has_students(profile):
+                student = resolve_parent_student(profile, request)
+                if not student:
+                    raise Http404
                 classroom = get_classroom_detail(pk, role='student', profile_id=student.pk)
             else:
                 classroom = get_classroom_detail(pk, role='parent', profile_id=profile.pk)

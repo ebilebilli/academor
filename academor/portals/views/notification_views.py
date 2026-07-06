@@ -240,11 +240,11 @@ class NotificationMarkReadView(PortalLoginRequiredMixin, View):
         _role, profile, recipient_kwargs, back = _notification_recipient(request)
         if not profile:
             return redirect('portals:dashboard')
-        mark_notification_read(notification_id=pk, **recipient_kwargs)
+        marked = mark_notification_read(notification_id=pk, **recipient_kwargs)
         return _respond_notification_action(
             request,
-            success=True,
-            message=_('Notification marked as read.'),
+            success=marked,
+            message=_('Notification marked as read.') if marked else _('Notification not found.'),
             back_url=back,
             recipient_kwargs=recipient_kwargs,
         )
