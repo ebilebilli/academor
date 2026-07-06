@@ -140,6 +140,25 @@ def invalidate_parent_students_m2m(sender, instance, action, **kwargs):
 
 
 @receiver(m2m_changed, sender=StudyGroup.students.through)
+def enforce_study_group_max_students(sender, instance, action, pk_set, **kwargs):
+    if action != 'pre_add' or not pk_set:
+        return
+    from django.core.exceptions import ValidationError
+    from django.utils.translation import gettext as _
+
+    limit = instance.max_students or 0
+    if limit <= 0:
+        return
+    current = instance.students.count()
+    new_ids = set(pk_set) - set(instance.students.values_list('pk', flat=True))
+    if current + len(new_ids) > limit:
+        raise ValidationError(
+            _('This group allows at most %(limit)s students (%(current)s already enrolled).')
+            % {'limit': limit, 'current': current},
+        )
+
+
+@receiver(m2m_changed, sender=StudyGroup.students.through)
 def invalidate_study_group_students_m2m(sender, instance, action, **kwargs):
     if action in ('post_add', 'post_remove', 'post_clear'):
         _invalidate_on_commit('StudyGroup')
