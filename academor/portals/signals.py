@@ -10,6 +10,7 @@ from django.dispatch import receiver
 from portals.models import (
     Attendance,
     Classroom,
+    IeltsMockTestAttempt,
     Lesson,
     LessonAttachment,
     LessonCategory,
@@ -20,6 +21,7 @@ from portals.models import (
     ReadingQuestionGroup,
     SpeakingPart,
     SpeakingQuestion,
+    SpeakingRecording,
     ParentProfile,
     PortalNotification,
     Quiz,
@@ -111,6 +113,8 @@ for _model in (
     ReadingPassage,
     ReadingQuestion,
     ReadingQuestionGroup,
+    IeltsMockTestAttempt,
+    SpeakingRecording,
 ):
     _register_model_cache(_model)
 
