@@ -795,21 +795,26 @@ def student_can_access_quiz_category(student_id, category_id):
     return service in get_student_course_type_codes(student_id)
 
 
+def _quiz_categories_with_counts(course_codes):
+    """One aggregate query instead of loading every quiz per category.
+
+    Visibility inside a category only depends on the category's service being
+    in the caller's course codes, which the filter already guarantees.
+    """
+    return (
+        QuizCategory.objects.filter(service__in=course_codes)
+        .annotate(quiz_count=Count('quizzes', distinct=True))
+        .filter(quiz_count__gt=0)
+        .order_by('service', 'name', 'id')
+    )
+
+
 @cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_teacher_quiz_categories(teacher_id):
     course_codes = get_teacher_course_type_codes(teacher_id)
     if not course_codes:
         return []
-    qs = QuizCategory.objects.filter(service__in=course_codes).order_by('service', 'name', 'id')
-    result = []
-    for category in qs:
-        visible = get_teacher_quizzes_for_category(teacher_id, category.pk)
-        if not visible:
-            continue
-        data = serialize_quiz_category(category)
-        data['quiz_count'] = len(visible)
-        result.append(data)
-    return result
+    return [serialize_quiz_category(row) for row in _quiz_categories_with_counts(course_codes)]
 
 
 @cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
@@ -817,16 +822,7 @@ def get_student_quiz_categories(student_id):
     course_codes = get_student_course_type_codes(student_id)
     if not course_codes:
         return []
-    qs = QuizCategory.objects.filter(service__in=course_codes).order_by('service', 'name', 'id')
-    result = []
-    for category in qs:
-        visible = get_student_quizzes_for_category(student_id, category.pk)
-        if not visible:
-            continue
-        data = serialize_quiz_category(category)
-        data['quiz_count'] = len(visible)
-        result.append(data)
-    return result
+    return [serialize_quiz_category(row) for row in _quiz_categories_with_counts(course_codes)]
 
 
 @cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
@@ -951,7 +947,7 @@ def get_student_quizzes_for_category(student_id, category_id):
     quizzes = _attach_quiz_attempt_flags(student_id, [serialize_quiz(row) for row in visible])
     return _attach_quiz_attempt_summaries(
         quizzes,
-        [row for row in get_student_quiz_results(student_id) if row.get('quiz_id') in {quiz['id'] for quiz in quizzes}],
+        get_student_quiz_results(student_id, quiz_ids={quiz['id'] for quiz in quizzes}),
     )
 
 
@@ -2184,11 +2180,13 @@ def get_parent_child_scores(student_id):
     return get_student_admin_scores(student_id)
 
 
-def get_student_quiz_results(student_id):
+def get_student_quiz_results(student_id, *, quiz_ids=None):
     from portals.utils.student_courses import filter_quiz_results_for_student
 
     codes = get_student_course_type_codes(student_id)
     if not codes:
+        return []
+    if quiz_ids is not None and not quiz_ids:
         return []
     qs = (
         _quiz_results_queryset()
@@ -2199,6 +2197,8 @@ def get_student_quiz_results(student_id):
         .select_related('quiz__category')
         .distinct()
     )
+    if quiz_ids is not None:
+        qs = qs.filter(quiz_id__in=list(quiz_ids))
     visible = filter_quiz_results_for_student(qs, student_id)
     return _attach_attempt_metadata([serialize_quiz_result(row) for row in visible])
 
