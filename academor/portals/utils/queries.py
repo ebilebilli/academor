@@ -199,11 +199,13 @@ def serialize_group(group):
 
 
 def serialize_schedule(schedule):
-    from datetime import date, timedelta
+    from datetime import timedelta
+
+    from django.utils import timezone
 
     from portals.utils.teacher_schedule import schedule_visible_on_date
 
-    today = date.today()
+    today = timezone.localdate()
     week_start = today - timedelta(days=today.weekday())
     session_date = week_start + timedelta(days=schedule.weekday)
     if not schedule_visible_on_date(schedule, session_date):

@@ -3,6 +3,7 @@
 from datetime import date, timedelta
 
 from django.urls import reverse
+from django.utils import timezone
 
 from portals.models import Schedule
 from portals.utils.teacher_courses import teacher_groups_queryset
@@ -15,7 +16,7 @@ def parse_week_start(raw_value):
             return parsed - timedelta(days=parsed.weekday())
         except ValueError:
             pass
-    today = date.today()
+    today = timezone.localdate()
     return today - timedelta(days=today.weekday())
 
 
@@ -65,7 +66,7 @@ def build_teacher_week_calendar(
 ):
     week_start = week_start or parse_week_start(None)
     week_end = week_start + timedelta(days=6)
-    today = date.today()
+    today = timezone.localdate()
 
     if student_ids:
         group_ids = common_group_ids_for_students(student_ids, teacher_id)
@@ -142,7 +143,7 @@ def build_student_week_calendar(student_id, week_start=None):
 
     week_start = week_start or parse_week_start(None)
     week_end = week_start + timedelta(days=6)
-    today = date.today()
+    today = timezone.localdate()
     group_ids = get_student_group_ids(student_id)
 
     schedules = (
