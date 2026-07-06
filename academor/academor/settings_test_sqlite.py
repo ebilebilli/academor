@@ -14,6 +14,14 @@ DATABASES = {
 }
 
 PASSWORD_HASHERS = ['django.contrib.auth.hashers.MD5PasswordHasher']
+
+# LocMemCache survives across test cases while the DB rolls back, which makes
+# @cached_query results stale and tests order-dependent.
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
 COMPRESS_OFFLINE = False
 COMPRESS_ENABLED = False
 STORAGES = {
