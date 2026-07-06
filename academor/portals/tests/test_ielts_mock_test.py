@@ -236,7 +236,8 @@ class IeltsMockTestTests(QuizVisibilityTests):
             reverse('portals:student-quiz-cancel', kwargs={'pk': attempt.listening_quiz_id})
             + f'?mock={attempt.pk}&next={reverse("portals:student-ielts-mock")}'
         )
-        response = self.client.get(cancel_url)
+        # State-changing cancel requires POST; GET is redirect-only (CSRF safety).
+        response = self.client.post(cancel_url)
         self.assertEqual(response.status_code, 302)
         attempt.refresh_from_db()
         self.assertEqual(attempt.status, IeltsMockTestAttempt.Status.ABANDONED)

@@ -228,7 +228,8 @@ class QuizReadingTests(QuizVisibilityTests):
         start_response = client.post(start_url, content_type='application/json')
         self.assertEqual(start_response.status_code, 200)
 
-        response = client.get(cancel_url)
+        # State-changing cancel requires POST; GET is redirect-only (CSRF safety).
+        response = client.post(cancel_url)
         self.assertEqual(response.status_code, 302)
 
         result = QuizResult.objects.get(student=self.student, quiz=quiz)

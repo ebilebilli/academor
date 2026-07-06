@@ -332,16 +332,34 @@ class StudentQuizStartView(StudentQuizTakeRequiredMixin, View):
 
 
 class StudentQuizCancelView(StudentQuizTakeRequiredMixin, View):
-    """Leave the quiz page and auto-complete if an active attempt exists."""
+    """Leave the quiz page and auto-complete if an active attempt exists.
+
+    State changes (auto-complete / mock abandon) only happen on POST so a
+    hostile cross-site GET (e.g. <img src="...">) cannot force-complete a
+    student's quiz. GET only redirects back.
+    """
+
+    def _redirect_after_cancel(self, request, quiz):
+        next_url = safe_portal_next_url(request, request.GET.get('next'))
+        if next_url:
+            return redirect(next_url)
+        return redirect(_quiz_back_url(quiz))
 
     def get(self, request, pk):
+        profile = get_student_profile(request.portal_user)
+        quiz, _quiz_kind = _get_student_take_quiz(profile.pk, pk)
+        if not quiz:
+            raise Http404
+        return self._redirect_after_cancel(request, quiz)
+
+    def post(self, request, pk):
         profile = get_student_profile(request.portal_user)
         quiz, quiz_kind = _get_student_take_quiz(profile.pk, pk)
         if not quiz:
             raise Http404
 
         session_started_at = get_quiz_attempt_start(request, pk)
-        mock_id = parse_mock_attempt_id(request.GET.get('mock'))
+        mock_id = parse_mock_attempt_id(request.GET.get('mock') or request.POST.get('mock'))
         if session_started_at and not quiz.get('view_only') and not mock_id:
             _submit_leave_completion(
                 profile_id=profile.pk,
@@ -353,12 +371,7 @@ class StudentQuizCancelView(StudentQuizTakeRequiredMixin, View):
         if mock_id:
             abandon_mock_test_attempt(profile.pk, mock_id)
         clear_quiz_attempt_start(request, pk)
-
-        next_url = safe_portal_next_url(request, request.GET.get('next'))
-        if next_url:
-            return redirect(next_url)
-
-        return redirect(_quiz_back_url(quiz))
+        return self._redirect_after_cancel(request, quiz)
 
 
 class StudentQuizSubmitView(StudentQuizTakeRequiredMixin, View):

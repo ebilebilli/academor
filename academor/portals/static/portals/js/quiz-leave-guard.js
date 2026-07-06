@@ -1,6 +1,19 @@
 (function () {
   "use strict";
 
+  function getCookie(name) {
+    var match = document.cookie.match(new RegExp("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)"));
+    return match ? decodeURIComponent(match.pop()) : "";
+  }
+
+  function getCsrfToken() {
+    var input = document.querySelector("[name=csrfmiddlewaretoken]");
+    if (input && input.value) {
+      return input.value;
+    }
+    return getCookie("csrftoken");
+  }
+
   function getBootstrapModal(modalEl) {
     if (!modalEl || !window.bootstrap || !window.bootstrap.Modal) {
       return null;
@@ -56,14 +69,51 @@
       return root.getAttribute("data-mock-cancel-url") || "";
     }
 
+    function isCancelUrl(url) {
+      var cancelUrl = getMockCancelUrl();
+      if (!cancelUrl) {
+        return false;
+      }
+      try {
+        var target = new URL(url, window.location.origin);
+        var cancel = new URL(cancelUrl, window.location.origin);
+        return target.pathname === cancel.pathname;
+      } catch (e) {
+        return url === cancelUrl;
+      }
+    }
+
     function navigateAway(targetUrl) {
       navigationAllowed = true;
       afterLeave();
       root.setAttribute("data-quiz-finished", "true");
       var url = targetUrl || getMockCancelUrl();
-      if (url) {
-        window.location.href = url;
+      if (!url) {
+        return;
       }
+      // Mock abandon is a state change: the cancel endpoint only acts on
+      // POST (CSRF-protected), so send the POST first, then navigate to the
+      // "next" destination encoded in the cancel URL.
+      if (isMockQuiz() && isCancelUrl(url)) {
+        var finalUrl = "";
+        try {
+          finalUrl = new URL(url, window.location.origin).searchParams.get("next") || "";
+        } catch (e) {
+          finalUrl = "";
+        }
+        fetch(url, {
+          method: "POST",
+          credentials: "same-origin",
+          keepalive: true,
+          headers: { "X-CSRFToken": getCsrfToken() },
+        })
+          .catch(function () {})
+          .then(function () {
+            window.location.href = finalUrl || url;
+          });
+        return;
+      }
+      window.location.href = url;
     }
 
     function isQuizActive() {
