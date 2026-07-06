@@ -3,14 +3,35 @@ from urllib.parse import quote
 from django.shortcuts import redirect
 from django.urls import reverse
 
-from portals.utils.portal_session import is_portal_authenticated
-from portals.utils.queries import get_portal_role
+from portals.utils.portal_session import is_portal_authenticated, portal_logout
+from portals.utils.queries import (
+    get_parent_profile,
+    get_portal_role,
+    get_student_profile,
+    get_teacher_profile,
+)
 
 
 def _portal_login_redirect(request):
     next_path = quote(request.get_full_path(), safe='')
     login = reverse('portals:login')
     return redirect(f'{login}?next={next_path}')
+
+
+def _portal_profile_for_role(user, role):
+    if role == 'teacher':
+        return get_teacher_profile(user)
+    if role == 'student':
+        return get_student_profile(user)
+    if role == 'parent':
+        return get_parent_profile(user)
+    return None
+
+
+def _clear_stale_portal_session(request):
+    """Session user id present but profile row gone — drop session and send to login."""
+    portal_logout(request)
+    return _portal_login_redirect(request)
 
 
 class PortalLoginRequiredMixin:
@@ -26,8 +47,11 @@ class PortalRoleRequiredMixin(PortalLoginRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
         if not is_portal_authenticated(request):
             return _portal_login_redirect(request)
-        if get_portal_role(request.portal_user) != self.required_role:
+        role = get_portal_role(request.portal_user)
+        if role != self.required_role:
             return redirect('portals:dashboard')
+        if _portal_profile_for_role(request.portal_user, role) is None:
+            return _clear_stale_portal_session(request)
         return super(PortalLoginRequiredMixin, self).dispatch(request, *args, **kwargs)
 
 
