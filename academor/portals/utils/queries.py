@@ -359,8 +359,12 @@ def get_student_classrooms(student_id):
     )
     if not group_ids:
         return []
+    group_id_set = set(group_ids)
     qs = _classroom_queryset().filter(group_id__in=group_ids)
-    visible = [row for row in qs if classroom_visible_to_student(row, student_id)]
+    visible = [
+        row for row in qs
+        if classroom_visible_to_student(row, student_id, student_group_ids=group_id_set)
+    ]
     return [serialize_classroom(row) for row in visible]
 
 

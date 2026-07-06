@@ -3,6 +3,7 @@
 from django.utils.translation import get_language
 
 from portals.models import StudyGroup, TeacherCourseSpecialization
+from portals.utils.cache_utils import cached_query
 from portals.utils.portal_services import (
     expand_course_types_to_service_slugs,
     get_active_course_type_choices,
@@ -11,6 +12,7 @@ from portals.utils.portal_services import (
 )
 
 
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_teacher_course_type_codes(teacher_id):
     if not teacher_id:
         return []

@@ -10,8 +10,13 @@ QUIZ_HISTORY_INITIAL_SIZE = 10
 QUIZ_HISTORY_PAGE_SIZE = 10
 
 
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_student_course_type_codes(student_id):
-    """Active service enrollments assigned directly on the student profile."""
+    """Active service enrollments assigned directly on the student profile.
+
+    Cached: quiz/classroom visibility checks call this once per row in list
+    loops, which was an N+1 hotspot.
+    """
     if not student_id:
         return []
     return sorted(
@@ -155,8 +160,12 @@ def _classroom_portal_codes(classroom):
     return set(classroom_service_portal_codes(classroom.services.all()))
 
 
-def classroom_visible_to_student(classroom, student_id):
+def classroom_visible_to_student(classroom, student_id, *, student_group_ids=None):
     if getattr(classroom, 'group_id', None):
+        if student_group_ids is not None:
+            # Caller already knows the student's groups — skip the per-row
+            # EXISTS query (N+1 in classroom list loops).
+            return classroom.group_id in student_group_ids
         return classroom.group.students.filter(pk=student_id).exists()
     services = _classroom_portal_codes(classroom)
     if not services:
