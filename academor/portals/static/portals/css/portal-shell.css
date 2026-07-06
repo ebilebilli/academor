@@ -488,6 +488,15 @@ a:hover { color: var(--color-role-dark); }
 }
 
 .profile-avatar,
+.avatar-img {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  line-height: 1;
+}
+
+.profile-avatar,
 .avatar-sm {
   width: var(--avatar-sm);
   height: var(--avatar-sm);
@@ -496,6 +505,27 @@ a:hover { color: var(--color-role-dark); }
   font-weight: var(--font-semibold);
   background: var(--color-role-subtle);
   color: var(--color-role);
+}
+
+.avatar-img {
+  object-fit: cover;
+  border-radius: var(--radius-full);
+}
+
+.avatar-md {
+  width: var(--avatar-md);
+  height: var(--avatar-md);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+}
+
+.avatar-lg {
+  width: var(--avatar-lg);
+  height: var(--avatar-lg);
+  border-radius: var(--radius-full);
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
 }
 
 /* ── Footer (matches main site .footer / .copyright bar) ───────────── */

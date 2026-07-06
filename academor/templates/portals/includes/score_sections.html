@@ -15,8 +15,8 @@
       id="score-tab-quiz"
     >
       <i class="ti ti-forms" aria-hidden="true"></i>
-      {% trans 'Quiz qiymətləri' %}
-      <span class="s-filter-tab__badge portal-score-segment__count">{{ quiz_scores|length }}</span>
+      {% trans 'Quiz tarixçəsi' %}
+      <span class="s-filter-tab__badge portal-score-segment__count">{{ quiz_scores_total_count|default:quiz_scores|length }}</span>
     </button>
     <button
       type="button"
@@ -31,6 +31,21 @@
       {% trans 'Həftəlik qiymətləndirmələr' %}
       <span class="s-filter-tab__badge portal-score-segment__count">{{ weekly_scores|length }}</span>
     </button>
+    {% if mock_attempts is not None %}
+    <button
+      type="button"
+      role="tab"
+      class="s-filter-tab{% if active_view == 'mock' %} is-active{% endif %}"
+      data-score-tab="mock"
+      aria-selected="{% if active_view == 'mock' %}true{% else %}false{% endif %}"
+      aria-controls="score-panel-mock"
+      id="score-tab-mock"
+    >
+      <i class="ti ti-clipboard-list" aria-hidden="true"></i>
+      {% trans 'Mock test' %}
+      <span class="s-filter-tab__badge portal-score-segment__count" data-score-tab-total="{{ mock_attempts|length }}">{{ mock_attempts|length }}</span>
+    </button>
+    {% endif %}
   </div>
 
   <div
@@ -41,7 +56,20 @@
     aria-labelledby="score-tab-quiz"
     {% if active_view != 'quiz' %}hidden{% endif %}
   >
-    <div class="table-responsive">
+    {% if quiz_average %}
+    <div class="mb-4">
+      {% include "portals/includes/score_average_showcase.html" with score_stats=quiz_average variant="quiz" %}
+    </div>
+    {% endif %}
+    <div
+      class="table-responsive{% if quiz_scores_lazy_load %} portal-quiz-history-scroll{% endif %}"
+      {% if quiz_scores_lazy_load %}
+      data-quiz-history-lazy
+      data-quiz-history-url="{{ quiz_scores_load_url }}"
+      data-quiz-history-offset="{{ quiz_scores|length }}"
+      data-quiz-history-total="{{ quiz_scores_total_count }}"
+      {% endif %}
+    >
       <table class="t-table portal-score-table">
         <thead>
           <tr>
@@ -57,48 +85,17 @@
             {% endif %}
           </tr>
         </thead>
-        <tbody>
-          {% for row in quiz_scores %}
-          <tr data-score-date="{{ row.date|date:'Y-m-d' }}"{% if row.group_ids %} data-group-ids="{{ row.group_ids|join:',' }}"{% endif %}>
-            {% if show_student_column %}
-            <td class="fw-500">{{ row.student_name }}</td>
-            {% endif %}
-            <td class="{% if not show_student_column %}fw-500{% endif %}">{{ row.quiz_topic|default:"—" }}</td>
-            <td>
-              <span class="ds-badge">{{ row.grading_mode_label|default:row.score_type_label }}</span>
-            </td>
-            <td>
-              {% if row.is_pending_review %}
-              <span class="ds-badge ds-badge--warning">{% trans 'Gözlənilir' %}</span>
-              {% elif row.value is not None %}
-                {{ row.value|format_quiz_score }}{% if row.max_value %}/{{ row.max_value|format_quiz_score }}{% endif %}
-              {% else %}
-                —
-              {% endif %}
-            </td>
-            <td class="text-muted small">{{ row.date|portal_date_long }}</td>
-            {% if score_detail_url_name %}
-            <td class="text-end">
-              {% if not row.is_pending_review %}
-              <a class="ds-btn ds-btn--secondary btn-sm" href="{% url score_detail_url_name result_pk=row.result_id %}">{% trans 'Bax' %}</a>
-              {% else %}
-              <span class="text-muted small">—</span>
-              {% endif %}
-            </td>
-            {% endif %}
-          </tr>
-          {% empty %}
-          <tr>
-            <td colspan="10">
-              <div class="s-empty-state">
-                <i class="ti ti-forms" aria-hidden="true"></i>
-                <p>{% trans 'Hələ quiz qiyməti yoxdur.' %}</p>
-              </div>
-            </td>
-          </tr>
-          {% endfor %}
+        <tbody data-quiz-history-body>
+          {% include "portals/includes/quiz_score_history_rows.html" with show_quiz_history_empty=True %}
         </tbody>
       </table>
+      {% if quiz_scores_lazy_load %}
+      <div class="portal-quiz-history-scroll__sentinel" data-quiz-history-sentinel hidden aria-hidden="true"></div>
+      <div class="portal-quiz-history-scroll__loading d-none" data-quiz-history-loading aria-live="polite">
+        <span class="portal-quiz-history-scroll__spinner" aria-hidden="true"></span>
+        <span>{% trans 'Yüklənir…' %}</span>
+      </div>
+      {% endif %}
     </div>
   </div>
 
@@ -110,6 +107,9 @@
     aria-labelledby="score-tab-weekly"
     {% if active_view != 'weekly' %}hidden{% endif %}
   >
+    {% if weekly_average %}
+    {% include "portals/includes/scores_weekly_performance.html" %}
+    {% endif %}
     <div class="table-responsive">
       <table class="t-table portal-score-table weekly-scores-history-table">
         <thead>
@@ -160,6 +160,19 @@
       </table>
     </div>
   </div>
+
+  {% if mock_attempts is not None %}
+  <div
+    class="portal-score-panel{% if active_view == 'mock' %} is-active{% endif %}"
+    data-score-panel="mock"
+    role="tabpanel"
+    id="score-panel-mock"
+    aria-labelledby="score-tab-mock"
+    {% if active_view != 'mock' %}hidden{% endif %}
+  >
+    {% include "portals/includes/ielts_mock_attempts_table.html" with mock_detail_url_name=mock_detail_url_name mock_detail_url_suffix=mock_detail_url_suffix %}
+  </div>
+  {% endif %}
 
   <div class="s-empty-state d-none" id="scores-filter-empty">
     <i class="ti ti-filter-off" aria-hidden="true"></i>

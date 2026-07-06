@@ -65,44 +65,13 @@ def _teacher_ids_for_mock_attempt(attempt) -> set[int]:
 
 
 def create_mock_test_completed_notifications(attempt) -> None:
-    from portals.models import IeltsMockTestAttempt
-
-    if attempt.status != IeltsMockTestAttempt.Status.COMPLETED:
-        return
-
-    for teacher_id in _teacher_ids_for_mock_attempt(attempt):
-        PortalNotification.objects.update_or_create(
-            teacher_id=teacher_id,
-            ielts_mock_test=attempt,
-            kind=PortalNotification.Kind.MOCK_TEST_COMPLETED,
-            defaults={
-                'is_read': False,
-                'quiz_result': None,
-            },
-        )
+    """Mock manual sections use the standard teacher review queue, not the bell."""
+    return
 
 
 def create_mock_section_review_notifications(attempt, result: QuizResult, section: str) -> None:
-    from portals.models import IeltsMockTestAttempt
-
-    if section not in {
-        IeltsMockTestAttempt.Section.WRITING,
-        IeltsMockTestAttempt.Section.SPEAKING,
-    }:
-        return
-    if not result or not result.is_pending_review:
-        return
-
-    for teacher_id in _teacher_ids_for_mock_attempt(attempt):
-        PortalNotification.objects.update_or_create(
-            teacher_id=teacher_id,
-            quiz_result=result,
-            kind=PortalNotification.Kind.MOCK_TEST_SECTION_REVIEW,
-            defaults={
-                'is_read': False,
-                'ielts_mock_test': None,
-            },
-        )
+    """Mock writing/speaking appear in Quizzes to review like standalone manual quizzes."""
+    return
 
 
 def create_mock_results_published_notifications(attempt) -> None:
@@ -383,15 +352,11 @@ def get_teacher_pending_review_count(teacher_id: int) -> int:
 
 
 def get_teacher_portal_bell_count(teacher_id: int) -> int:
-    """Unread published-result and mock-test notifications for teachers."""
+    """Unread published-result notifications for teachers."""
     return PortalNotification.objects.filter(
         teacher_id=teacher_id,
         is_read=False,
-        kind__in=(
-            PortalNotification.Kind.RESULT_PUBLISHED,
-            PortalNotification.Kind.MOCK_TEST_COMPLETED,
-            PortalNotification.Kind.MOCK_TEST_SECTION_REVIEW,
-        ),
+        kind=PortalNotification.Kind.RESULT_PUBLISHED,
     ).count()
 
 
@@ -581,11 +546,7 @@ def get_notifications(
         role = 'teacher'
         qs = PortalNotification.objects.filter(
             teacher_id=teacher_id,
-            kind__in=(
-                PortalNotification.Kind.RESULT_PUBLISHED,
-                PortalNotification.Kind.MOCK_TEST_COMPLETED,
-                PortalNotification.Kind.MOCK_TEST_SECTION_REVIEW,
-            ),
+            kind=PortalNotification.Kind.RESULT_PUBLISHED,
         ).select_related(
             'quiz_result__student__user',
             'quiz_result__quiz__category',

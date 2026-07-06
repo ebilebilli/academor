@@ -556,20 +556,21 @@ def prepare_teacher_scores_with_groups(teacher_id, quiz_scores, weekly_scores):
 
     groups = []
     for group in teacher_groups_queryset(teacher_id, active_only=True).order_by('name'):
+        quiz_count = sum(1 for row in quiz_enriched if group.pk in row['group_ids'])
         weekly_count = sum(1 for row in weekly_enriched if group.pk in row['group_ids'])
         groups.append({
             'id': group.pk,
             'name': group.name,
-            'quiz_count': 0,
+            'quiz_count': quiz_count,
             'weekly_count': weekly_count,
-            'total_count': weekly_count,
+            'total_count': quiz_count + weekly_count,
         })
 
     return {
         'quiz_scores': quiz_enriched,
         'weekly_scores': weekly_enriched,
         'score_groups': groups,
-        'total_score_count': len(weekly_enriched),
+        'total_score_count': len(quiz_enriched) + len(weekly_enriched),
     }
 
 
@@ -1376,15 +1377,20 @@ def split_score_rows_by_source(rows):
     }
 
 
-def resolve_scores_view_param(request, quiz_scores, weekly_scores):
+def resolve_scores_view_param(request, quiz_scores, weekly_scores, mock_attempts=None):
     """Pick active scores tab from query string or sensible default."""
     scores_view = request.GET.get('view')
     if scores_view == 'lesson':
         scores_view = 'weekly'
-    if scores_view in ('quiz', 'weekly'):
+    valid_views = ('quiz', 'weekly')
+    if mock_attempts is not None:
+        valid_views = ('quiz', 'weekly', 'mock')
+    if scores_view in valid_views:
         return scores_view
     if not quiz_scores and weekly_scores:
         return 'weekly'
+    if not quiz_scores and not weekly_scores and mock_attempts:
+        return 'mock'
     return 'quiz'
 
 
@@ -2264,25 +2270,51 @@ def get_teacher_student_group_names(teacher_id, student_id):
 
 @cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_teacher_dashboard_data(request, teacher_id):
+    from portals.utils.weekly_scores import get_teacher_weekly_scores_list
+
     groups = get_teacher_groups(teacher_id)
+    quiz_scores = get_teacher_scores(teacher_id)
+    weekly_scores = get_teacher_weekly_scores_list(teacher_id)
     return {
         'groups': groups,
         'group_count': len(groups),
         'lesson_count': len(get_teacher_lessons(teacher_id)),
         'quiz_count': len(get_teacher_quizzes(teacher_id)),
         'student_count': sum(g.get('student_count', 0) for g in groups),
+        'quiz_result_count': len(quiz_scores),
+        'weekly_score_count': len(weekly_scores),
     }
 
 
 @cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_student_dashboard_data(request, student_id):
+    from portals.utils.weekly_scores import get_student_weekly_scores
+
     group_ids = get_student_group_ids(student_id)
     return {
         'group_ids': group_ids,
         'schedule_count': len(get_student_schedules(student_id)),
         'lesson_count': len(get_student_lessons(student_id)),
-        'score_count': len(get_student_scores(student_id)),
+        'weekly_score_count': len(get_student_weekly_scores(student_id)),
+        'quiz_result_count': len(get_student_scores(student_id)),
+        'mock_count': _student_mock_count(student_id),
     }
+
+
+def _student_mock_count(student_id):
+    from portals.models import IeltsMockTestAttempt
+    from portals.utils.ielts_mock_test import student_can_access_ielts_mock
+
+    if not student_can_access_ielts_mock(student_id):
+        return None
+    return IeltsMockTestAttempt.objects.filter(
+        student_id=student_id,
+        status=IeltsMockTestAttempt.Status.COMPLETED,
+    ).count()
+
+
+def _parent_child_mock_count(student_id):
+    return _student_mock_count(student_id)
 
 
 @cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')
@@ -2308,6 +2340,7 @@ def get_parent_dashboard_data(request, parent_id):
             'quiz_count': len(get_student_quizzes(student.pk)),
             'attendance_count': len(get_parent_child_attendance(student.pk)),
             'quiz_result_count': len(get_parent_child_quiz_results(student.pk, parent_id=parent_id)),
+            'mock_count': _parent_child_mock_count(student.pk),
             'quiz_results': latest_quiz_result_per_quiz(
                 get_parent_child_quiz_results(student.pk, parent_id=parent_id),
                 limit=5,

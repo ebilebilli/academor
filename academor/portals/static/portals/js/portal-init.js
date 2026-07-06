@@ -403,11 +403,14 @@
     });
 
     var initial = new URLSearchParams(window.location.search).get("view");
-    if (initial !== "quiz" && initial !== "weekly" && initial !== "lesson") {
+    if (initial !== "quiz" && initial !== "weekly" && initial !== "mock" && initial !== "lesson") {
       initial = countFor("quiz") === 0 && countFor("weekly") > 0 ? "weekly" : "quiz";
     }
     if (initial === "lesson") {
       initial = "weekly";
+    }
+    if (initial === "mock" && !root.querySelector('[data-score-tab="mock"]')) {
+      initial = countFor("quiz") === 0 && countFor("weekly") > 0 ? "weekly" : "quiz";
     }
     activate(initial);
   }
@@ -458,11 +461,17 @@
       if (!panel) {
         return;
       }
-      var visible = panel.querySelectorAll("tr[data-score-date]:not([hidden])").length;
       var badge = tab.querySelector(".portal-score-segment__count, .s-filter-tab__badge");
-      if (badge) {
-        badge.textContent = visible;
+      if (!badge) {
+        return;
       }
+      var dataRows = panel.querySelectorAll("tr[data-score-date]");
+      if (!dataRows.length && badge.hasAttribute("data-score-tab-total")) {
+        badge.textContent = badge.getAttribute("data-score-tab-total") || "0";
+        return;
+      }
+      var visible = panel.querySelectorAll("tr[data-score-date]:not([hidden])").length;
+      badge.textContent = visible;
     });
   }
 

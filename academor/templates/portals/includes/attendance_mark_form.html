@@ -80,7 +80,7 @@
       </div>
 
       <div class="portal-student-info">
-        <div class="portal-student-avatar">{{ field.label|slice:":2"|upper }}</div>
+        {% include "portals/includes/avatar.html" with photo_url='' name=field.label initials=field.label size_class="avatar-md" %}
         <span class="portal-student-name">{{ field.label }}</span>
       </div>
 

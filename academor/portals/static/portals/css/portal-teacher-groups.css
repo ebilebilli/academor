@@ -321,6 +321,26 @@
   justify-content: center;
 }
 
+/* Card grid */
+.portal-groups-cards {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.portal-groups-cards > .group-card-item {
+  min-width: 0;
+}
+
+.portal-groups-cards .portal-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.portal-groups-cards .portal-card-body {
+  flex: 1;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .portal-toolbar {
@@ -333,12 +353,64 @@
     width: 100%;
   }
 
+  .portal-toolbar-right {
+    justify-content: flex-start;
+  }
+
+  .portal-search-box {
+    flex: 1;
+    min-width: 0;
+  }
+
   .portal-search-box input {
     width: 100%;
     min-width: unset;
   }
 
-  .portal-row-actions {
-    flex-wrap: wrap;
+  .portal-stats-bar {
+    gap: 0.65rem;
+  }
+
+  .portal-stat-divider {
+    display: none;
+  }
+
+  .portal-card-title {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+  }
+
+  .portal-card-stats {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .portal-toolbar-left {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .portal-toolbar-left .dropdown,
+  .portal-toolbar-left .portal-search-box {
+    width: 100%;
+  }
+
+  .portal-toolbar-left .dropdown .btn,
+  .portal-toolbar-left .portal-search-box input {
+    width: 100%;
+  }
+
+  .portal-card-header {
+    gap: 0.65rem;
+  }
+
+  .portal-group-avatar-lg {
+    width: 48px;
+    height: 48px;
+    font-size: 0.95rem;
+    flex-shrink: 0;
   }
 }

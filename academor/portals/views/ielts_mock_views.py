@@ -17,10 +17,10 @@ from portals.utils.ielts_mock_test import (
     start_mock_test_attempt,
     student_can_access_ielts_mock,
 )
-from portals.utils.queries import get_student_profile, get_teacher_profile
+from portals.utils.queries import get_parent_profile, get_student_profile, get_teacher_profile, serialize_parent
 from portals.utils.student_courses import teacher_can_see_quiz_result
-from portals.views.mixins import StudentRequiredMixin, TeacherRequiredMixin
-from portals.views.views_v1 import _portal_context
+from portals.views.mixins import ParentRequiredMixin, StudentRequiredMixin, TeacherRequiredMixin
+from portals.views.views_v1 import _parent_student_page, _portal_context
 
 logger = logging.getLogger('portals.ielts_mock')
 
@@ -91,6 +91,38 @@ class StudentIeltsMockCompleteView(StudentRequiredMixin, View):
             _portal_context(
                 request,
                 mock_attempt=serialize_mock_attempt_summary(attempt),
+            ),
+        )
+
+
+class ParentIeltsMockDetailView(ParentRequiredMixin, View):
+    template_name = 'portals/student/ielts_mock_complete.html'
+
+    def get(self, request, pk):
+        profile = get_parent_profile(request.portal_user)
+        student, child_ctx = _parent_student_page(request, profile)
+        if not student_can_access_ielts_mock(student.pk):
+            raise Http404
+
+        attempt = get_mock_attempt_for_student(student.pk, pk)
+        if not attempt or attempt.status != IeltsMockTestAttempt.Status.COMPLETED:
+            raise Http404
+
+        back_url = reverse('portals:parent-scores') + child_ctx.get('student_query', '')
+        return render(
+            request,
+            self.template_name,
+            _portal_context(
+                request,
+                page_eyebrow='Parent',
+                page_subtitle=_('Mock test results for your linked student.'),
+                parent=serialize_parent(profile),
+                student=child_ctx['selected_student'],
+                mock_attempt=serialize_mock_attempt_summary(attempt),
+                mock_back_url=back_url,
+                score_detail_url_name='portals:parent-score-detail',
+                score_detail_url_suffix=child_ctx.get('student_query', ''),
+                **child_ctx,
             ),
         )
 

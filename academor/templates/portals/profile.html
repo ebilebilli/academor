@@ -63,7 +63,7 @@
             {% elif is_teacher and profile.specialization %}
               <p class="portal-profile-hero__subtitle">{{ profile.specialization }}</p>
             {% elif is_student %}
-              <p class="portal-profile-hero__subtitle">{% trans 'Manage your profile and track your learning progress.' %}</p>
+              <p class="portal-profile-hero__subtitle">{% trans 'Manage your profile and track your attendance.' %}</p>
             {% elif is_parent %}
               <p class="portal-profile-hero__subtitle">{% trans 'Update your contact phone number.' %}</p>
             {% else %}
@@ -80,7 +80,7 @@
     </section>
 
     {% if is_student %}
-    {% include "portals/includes/profile_performance_showcase.html" %}
+    {% include "portals/includes/profile_attendance_showcase.html" %}
     {% endif %}
 
     <div class="row g-4 portal-profile-layout">
@@ -181,7 +181,6 @@
           </header>
           <ul class="portal-profile-tips">
             <li>{% trans 'Keep your bio short so teachers and classmates can get to know you.' %}</li>
-            <li>{% trans 'Quiz averages update automatically after each graded attempt.' %}</li>
             <li>{% trans 'Attendance is recorded by your teacher after each session.' %}</li>
           </ul>
         </aside>

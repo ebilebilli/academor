@@ -350,7 +350,7 @@ class IeltsMockTestTests(QuizVisibilityTests):
         self.assertNotIn('mock_continue', outcome)
         self.assertNotIn('next_url', outcome)
 
-    def test_full_mock_flow_notifies_teacher_once(self):
+    def test_full_mock_flow_puts_manual_sections_in_teacher_review_queue(self):
         attempt, _ = start_mock_test_attempt(self.student.pk)
 
         submit_listening_quiz_attempt(
@@ -402,30 +402,23 @@ class IeltsMockTestTests(QuizVisibilityTests):
         self.assertEqual(outcome['next_url'], complete_url)
         response = self.client.get(complete_url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(
+        self.assertFalse(
             PortalNotification.objects.filter(
                 teacher=self.teacher,
                 kind=PortalNotification.Kind.MOCK_TEST_COMPLETED,
-                ielts_mock_test=attempt,
-            ).count(),
-            1,
+            ).exists()
         )
-        self.assertEqual(
+        self.assertFalse(
             PortalNotification.objects.filter(
                 teacher=self.teacher,
                 kind=PortalNotification.Kind.MOCK_TEST_SECTION_REVIEW,
-                ielts_mock_test=attempt,
-            ).count(),
-            0,
+            ).exists()
         )
-        self.assertEqual(
-            PortalNotification.objects.filter(
-                teacher=self.teacher,
-                kind=PortalNotification.Kind.MOCK_TEST_SECTION_REVIEW,
-                quiz_result__in=[attempt.writing_result, attempt.speaking_result],
-            ).count(),
-            2,
-        )
+        from portals.utils.queries import get_teacher_pending_quiz_results
+
+        pending_ids = {row['id'] for row in get_teacher_pending_quiz_results(self.teacher.pk)}
+        self.assertIn(attempt.writing_result_id, pending_ids)
+        self.assertIn(attempt.speaking_result_id, pending_ids)
         self.assertFalse(
             PortalNotification.objects.filter(
                 teacher=self.teacher,
@@ -484,7 +477,9 @@ class IeltsMockTestTests(QuizVisibilityTests):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'data-quiz-speaking-take')
 
-    def test_writing_submit_in_mock_creates_section_review_notification(self):
+    def test_writing_submit_in_mock_appears_in_teacher_review_queue(self):
+        from portals.utils.queries import get_teacher_pending_quiz_results
+
         attempt, _ = start_mock_test_attempt(self.student.pk)
         submit_listening_quiz_attempt(
             student_id=self.student.pk,
@@ -515,11 +510,13 @@ class IeltsMockTestTests(QuizVisibilityTests):
         )
         attempt.refresh_from_db()
         self.assertEqual(attempt.current_section, IeltsMockTestAttempt.Section.SPEAKING)
-        self.assertTrue(
+        pending = get_teacher_pending_quiz_results(self.teacher.pk)
+        pending_ids = {row['id'] for row in pending}
+        self.assertIn(attempt.writing_result_id, pending_ids)
+        self.assertFalse(
             PortalNotification.objects.filter(
                 teacher=self.teacher,
                 kind=PortalNotification.Kind.MOCK_TEST_SECTION_REVIEW,
-                quiz_result=attempt.writing_result,
             ).exists()
         )
         self.assertFalse(

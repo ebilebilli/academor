@@ -13,7 +13,7 @@
       <i class="ti ti-star" aria-hidden="true"></i>
       {% trans 'Nəticələr və qiymətləndirmələr' %}
     </h1>
-    <p class="s-page-head__sub">{% trans 'Həftəlik qiymətlərə baxın.' %}</p>
+    <p class="s-page-head__sub">{% trans 'Quiz tarixçəsi və həftəlik qiymətlərə baxın.' %}</p>
   </div>
   <a class="ds-btn ds-btn--secondary btn-sm" href="{% url 'portals:teacher-weekly-scores' %}">
     <i class="ti ti-calendar-stats" aria-hidden="true"></i>
@@ -21,5 +21,5 @@
   </a>
 </header>
 
-{% include "portals/includes/score_sections_weekly.html" with show_student_column=True %}
+{% include "portals/includes/score_sections.html" with show_student_column=True %}
 {% endblock %}

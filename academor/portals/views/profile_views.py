@@ -5,13 +5,11 @@ from django.views import View
 
 from portals.forms import ParentProfileEditForm, StudentProfileEditForm, TeacherProfileEditForm
 from portals.utils.attendance_stats import compute_attendance_stats
-from portals.utils.quiz_stats import compute_quiz_average_stats
 from portals.utils.queries import (
     get_parent_profile,
     get_portal_role,
     get_student_attendance_detail,
     get_student_profile,
-    get_student_quiz_results,
     get_teacher_profile,
     serialize_parent,
     serialize_student,
@@ -54,9 +52,7 @@ class PortalProfileView(PortalLoginRequiredMixin, View):
             'is_student': role == 'student',
         }
         if role == 'student':
-            quiz_results = get_student_quiz_results(profile.pk)
             attendance_detail = get_student_attendance_detail(profile.pk)
-            context['quiz_average'] = compute_quiz_average_stats(quiz_results)
             context['attendance_stats'] = compute_attendance_stats(attendance_detail)
         return render(request, self.template_name, context)
 

@@ -143,13 +143,7 @@
         {% for s in group.students %}
         <article class="portal-student-item" data-name="{{ s.full_name|lower }}" data-full-name="{{ s.full_name }}" data-phone="{{ s.phone|default:'' }}" data-username="{{ s.username }}">
           <a class="portal-student-item-main text-decoration-none" href="{% url 'portals:teacher-student-profile' student_pk=s.id %}">
-            <div class="portal-student-avatar">
-              {% if s.photo_url %}
-                <img class="portal-student-avatar-img" src="{{ s.photo_url }}" alt="">
-              {% else %}
-                {{ s.username|slice:":2"|upper }}
-              {% endif %}
-            </div>
+            {% include "portals/includes/avatar.html" with photo_url=s.photo_url name=s.full_name initials=s.full_name size_class="avatar-md" %}
             <div class="portal-student-info">
               <span class="portal-student-name">{{ s.full_name }}</span>
               <span class="portal-student-phone">{{ s.phone|default:"—" }}</span>
@@ -441,20 +435,6 @@
 
 .portal-student-item:last-child {
   border-bottom: none;
-}
-
-.portal-student-avatar {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, var(--admin-primary), var(--admin-sidebar-soft));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 700;
-  font-size: 0.875rem;
-  flex-shrink: 0;
 }
 
 .portal-student-info {

@@ -1,7 +1,7 @@
 {% extends "portals/base.html" %}
 {% load i18n portal_tags %}
 
-{% block title %}{% trans 'Qiymətləndirmələr' %}{% endblock %}
+{% block title %}{% trans 'Nəticələr və qiymətləndirmələr' %}{% endblock %}
 
 {% block extra_css %}
 {% endblock %}
@@ -13,11 +13,11 @@
   <div>
     <h1 class="s-page-head__title">
       <i class="ti ti-star" aria-hidden="true"></i>
-      {% trans 'Qiymətləndirmələr' %}
+      {% trans 'Nəticələr və qiymətləndirmələr' %}
     </h1>
-    <p class="s-page-head__sub">{% trans 'Şagirdinizin həftəlik qiymətlərinə baxın.' %}</p>
+    <p class="s-page-head__sub">{% trans 'Şagirdinizin quiz tarixçəsi, həftəlik qiymətləri və mock nəticələrinə baxın.' %}</p>
   </div>
 </header>
 
-{% include "portals/includes/score_sections_weekly.html" %}
+{% include "portals/includes/score_sections.html" %}
 {% endblock %}

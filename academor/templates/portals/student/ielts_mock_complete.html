@@ -14,7 +14,7 @@
       {% trans 'All four sections are submitted. Your teacher has been notified.' %}
     </p>
   </div>
-  <a class="ds-btn ds-btn--ghost btn-sm" href="{% url 'portals:student-ielts-mock' %}">
+  <a class="ds-btn ds-btn--ghost btn-sm" href="{% if mock_back_url %}{{ mock_back_url }}{% else %}{% url 'portals:student-ielts-mock' %}{% endif %}">
     <i class="ti ti-arrow-left" aria-hidden="true"></i>
     {% trans 'Back' %}
   </a>
@@ -57,7 +57,7 @@
           </td>
           <td class="text-end">
             {% if section.result_id %}
-            <a class="ds-btn ds-btn--secondary btn-sm" href="{% url 'portals:student-score-detail' result_pk=section.result_id %}">
+            <a class="ds-btn ds-btn--secondary btn-sm" href="{% url score_detail_url_name|default:'portals:student-score-detail' result_pk=section.result_id %}{{ score_detail_url_suffix|default:'' }}">
               {% trans 'View' %}
             </a>
             {% else %}

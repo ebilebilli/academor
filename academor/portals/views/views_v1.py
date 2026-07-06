@@ -1,11 +1,13 @@
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.shortcuts import redirect, render
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.views import View
 
 from portals.utils.quiz_stats import compute_quiz_average_stats, compute_weekly_average_stats
 from portals.utils.parent_access import parent_has_students, resolve_parent_student
+from portals.utils.student_courses import QUIZ_HISTORY_INITIAL_SIZE, QUIZ_HISTORY_PAGE_SIZE
 from portals.utils.queries import (
     build_lesson_category_tabs,
     build_lesson_period_tabs,
@@ -26,6 +28,7 @@ from portals.utils.queries import (
     get_lesson_detail,
     get_student_schedules,
     get_student_scores,
+    get_student_quiz_results,
     get_student_video_records,
     get_teacher_dashboard_data,
     get_teacher_group_detail,
@@ -348,8 +351,10 @@ class TeacherScoresListView(TeacherRequiredMixin, View):
 
     def get(self, request):
         profile = get_teacher_profile(request.portal_user)
+        quiz_scores = get_teacher_scores(profile.pk)
         weekly_scores = get_teacher_weekly_scores_list(profile.pk)
-        grouped = prepare_teacher_scores_with_groups(profile.pk, [], weekly_scores)
+        grouped = prepare_teacher_scores_with_groups(profile.pk, quiz_scores, weekly_scores)
+        quiz_scores = grouped['quiz_scores']
         weekly_scores = grouped['weekly_scores']
         score_group_tabs = grouped['score_groups']
         return render(
@@ -358,10 +363,13 @@ class TeacherScoresListView(TeacherRequiredMixin, View):
             _portal_context(
                 request,
                 teacher=serialize_teacher(profile),
+                quiz_scores=quiz_scores,
                 weekly_scores=weekly_scores,
+                scores_view=resolve_scores_view_param(request, quiz_scores, weekly_scores),
+                score_detail_url_name='portals:teacher-score-detail',
                 show_teacher_column=False,
                 show_comment_column=True,
-                period_tabs=build_score_period_tabs(weekly_scores),
+                period_tabs=build_score_period_tabs(quiz_scores, weekly_scores),
                 score_groups=score_group_tabs,
                 active_score_group=resolve_score_group_param(request, score_group_tabs),
                 total_score_count=grouped['total_score_count'],
@@ -509,19 +517,75 @@ class StudentScoresView(StudentRequiredMixin, View):
 
     def get(self, request):
         profile = get_student_profile(request.portal_user)
+        all_quiz_scores = get_student_scores(profile.pk)
         weekly_scores = get_student_weekly_scores(profile.pk)
+        quiz_results = get_student_quiz_results(profile.pk)
+        quiz_scores = all_quiz_scores[:QUIZ_HISTORY_INITIAL_SIZE]
+        total_quiz_scores = len(all_quiz_scores)
+        mock_attempts = None
+        from portals.utils.ielts_mock_test import (
+            get_student_completed_mock_attempts,
+            serialize_mock_attempt_summary,
+            student_can_access_ielts_mock,
+        )
+        if student_can_access_ielts_mock(profile.pk):
+            mock_attempts = [
+                serialize_mock_attempt_summary(attempt)
+                for attempt in get_student_completed_mock_attempts(profile.pk)
+            ]
         return render(
             request,
             self.template_name,
             _portal_context(
                 request,
                 student=serialize_student(profile),
+                quiz_scores=quiz_scores,
+                quiz_scores_total_count=total_quiz_scores,
+                quiz_scores_lazy_load=total_quiz_scores > QUIZ_HISTORY_INITIAL_SIZE,
+                quiz_scores_load_url=reverse('portals:student-quiz-history-load'),
+                quiz_average=compute_quiz_average_stats(quiz_results),
+                weekly_scores=weekly_scores,
+                mock_attempts=mock_attempts,
+                mock_detail_url_name='portals:student-ielts-mock-complete',
+                scores_view=resolve_scores_view_param(
+                    request, all_quiz_scores, weekly_scores, mock_attempts=mock_attempts
+                ),
+                score_detail_url_name='portals:student-score-detail',
                 show_comment_column=False,
                 show_teacher_column=True,
-                period_tabs=build_score_period_tabs(weekly_scores),
-                weekly_scores=weekly_scores,
+                period_tabs=build_score_period_tabs(all_quiz_scores, weekly_scores),
                 weekly_average=compute_weekly_average_stats(weekly_scores),
             ),
+        )
+
+
+class StudentQuizHistoryLoadView(StudentRequiredMixin, View):
+    def get(self, request):
+        try:
+            offset = max(0, int(request.GET.get('offset', 0)))
+        except (TypeError, ValueError):
+            offset = 0
+
+        profile = get_student_profile(request.portal_user)
+        all_quiz_scores = get_student_scores(profile.pk)
+        page = all_quiz_scores[offset:offset + QUIZ_HISTORY_PAGE_SIZE]
+        html = render_to_string(
+            'portals/includes/quiz_score_history_rows.html',
+            {
+                'quiz_scores': page,
+                'score_detail_url_name': 'portals:student-score-detail',
+                'show_student_column': False,
+                'show_quiz_history_empty': False,
+            },
+            request=request,
+        )
+        next_offset = offset + len(page)
+        return JsonResponse(
+            {
+                'html': html,
+                'has_more': next_offset < len(all_quiz_scores),
+                'next_offset': next_offset,
+            }
         )
 
 
@@ -720,78 +784,42 @@ class ParentScoresView(ParentRequiredMixin, View):
     template_name = 'portals/parent/scores.html'
 
     def get(self, request):
+        from portals.utils.ielts_mock_test import (
+            get_student_completed_mock_attempts,
+            serialize_mock_attempt_summary,
+            student_can_access_ielts_mock,
+        )
+
         profile = get_parent_profile(request.portal_user)
-        student, _child_ctx = _parent_student_page(request, profile)
+        student, child_ctx = _parent_student_page(request, profile)
+        quiz_scores = get_student_scores(student.pk)
         weekly_scores = get_student_weekly_scores(student.pk)
+        quiz_results = get_parent_child_quiz_results(student.pk, parent_id=profile.pk)
+        mock_attempts = None
+        if student_can_access_ielts_mock(student.pk):
+            mock_attempts = [
+                serialize_mock_attempt_summary(attempt)
+                for attempt in get_student_completed_mock_attempts(student.pk)
+            ]
         return _render_parent_child_page(
             request,
             profile,
             self.template_name,
-            page_subtitle=_('Weekly grades for your linked student.'),
+            page_subtitle=_('Quiz history, weekly grades, and mock test results for your linked student.'),
+            quiz_scores=quiz_scores,
+            weekly_scores=weekly_scores,
+            quiz_average=compute_quiz_average_stats(quiz_results),
+            scores_view=resolve_scores_view_param(
+                request, quiz_scores, weekly_scores, mock_attempts=mock_attempts
+            ),
+            score_detail_url_name='portals:parent-score-detail',
+            mock_detail_url_name='portals:parent-ielts-mock-detail',
+            mock_detail_url_suffix=child_ctx.get('student_query', ''),
             show_comment_column=False,
             show_teacher_column=True,
-            period_tabs=build_score_period_tabs(weekly_scores),
-            weekly_scores=weekly_scores,
+            period_tabs=build_score_period_tabs(quiz_scores, weekly_scores),
             weekly_average=compute_weekly_average_stats(weekly_scores),
-        )
-
-
-class ParentQuizzesView(ParentRequiredMixin, View):
-    template_name = 'portals/student/quiz_categories.html'
-
-    def get(self, request):
-        profile = get_parent_profile(request.portal_user)
-        student, child_ctx = _parent_student_page(request, profile)
-        categories = get_student_quiz_categories(student.pk)
-        return _render_parent_child_page(
-            request,
-            profile,
-            self.template_name,
-            page_subtitle=_("Student quiz categories (view only)."),
-            categories=categories,
-            service_tabs=build_quiz_service_tabs(categories),
-            can_take_quiz=False,
-            category_detail_url_name='portals:parent-quiz-category',
-            category_url_suffix=child_ctx['student_query'],
-        )
-
-
-class ParentQuizCategoryDetailView(ParentRequiredMixin, View):
-    template_name = 'portals/student/quiz_category_detail.html'
-
-    def get(self, request, category_pk):
-        profile = get_parent_profile(request.portal_user)
-        student, child_ctx = _parent_student_page(request, profile)
-        category = get_student_quiz_category(student.pk, category_pk)
-        if not category:
-            raise Http404
-        return _render_parent_child_page(
-            request,
-            profile,
-            self.template_name,
-            page_subtitle=category['name'],
-            category=category,
-            quizzes=get_student_quizzes_for_category(student.pk, category_pk),
-            can_take_quiz=False,
-            categories_back_url='portals:parent-quizzes',
-            category_url_suffix=child_ctx['student_query'],
-        )
-
-
-class ParentQuizResultsView(ParentRequiredMixin, View):
-    template_name = 'portals/parent/quiz_results.html'
-
-    def get(self, request):
-        profile = get_parent_profile(request.portal_user)
-        student, _child_ctx = _parent_student_page(request, profile)
-        quiz_results = get_parent_child_quiz_results(student.pk, parent_id=profile.pk)
-        return _render_parent_child_page(
-            request,
-            profile,
-            self.template_name,
-            page_subtitle=_('Quiz history and average for your linked student.'),
-            quiz_results=quiz_results,
-            quiz_average=compute_quiz_average_stats(quiz_results),
+            mock_attempts=mock_attempts,
         )
 
 

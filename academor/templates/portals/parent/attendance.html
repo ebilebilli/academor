@@ -25,13 +25,7 @@
     <div class="col-12 col-lg-6">
       <article class="portal-attendance-hub-card{% if summary.absent > 0 %} has-attention{% endif %}">
         <div class="portal-attendance-hub-card__head">
-          <div class="portal-attendance-hub-card__avatar">
-            {% if student.photo_url %}
-              <img src="{{ student.photo_url }}" alt="{{ student.full_name }}">
-            {% else %}
-              <span>{{ student.full_name|slice:":2"|upper }}</span>
-            {% endif %}
-          </div>
+          {% include "portals/includes/avatar.html" with photo_url=student.photo_url name=student.full_name initials=student.full_name size_class="avatar-md" %}
           <div class="portal-attendance-hub-card__info">
             <h2 class="portal-attendance-hub-card__name">{{ student.full_name }}</h2>
             {% if groups %}

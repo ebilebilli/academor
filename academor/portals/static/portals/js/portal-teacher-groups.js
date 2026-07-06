@@ -23,27 +23,26 @@
     var totalGroups = parseInt(root.dataset.totalGroups, 10) || 0;
     var labelShowing = root.dataset.labelShowing || "Showing";
     var labelOf = root.dataset.labelOf || "of";
-    var sortDirection = {};
 
-    function visibleRows() {
+    function visibleCards() {
       return Array.prototype.filter.call(
-        root.querySelectorAll(".group-row"),
-        function (row) {
-          return row.style.display !== "none";
+        root.querySelectorAll(".group-card-item"),
+        function (card) {
+          return card.style.display !== "none";
         }
       );
     }
 
     function updateStats() {
-      var rows = visibleRows();
+      var cards = visibleCards();
       var active = 0;
       var totalStudents = 0;
 
-      rows.forEach(function (row) {
-        if (row.dataset.status === "active") {
+      cards.forEach(function (card) {
+        if (card.dataset.status === "active") {
           active += 1;
         }
-        totalStudents += parseInt(row.dataset.students, 10) || 0;
+        totalStudents += parseInt(card.dataset.students, 10) || 0;
       });
 
       var activeEl = document.getElementById("active-groups");
@@ -58,24 +57,14 @@
         studentsEl.textContent = String(totalStudents);
       }
       if (groupsEl) {
-        groupsEl.textContent = String(rows.length);
+        groupsEl.textContent = String(cards.length);
       }
       if (showingEl) {
-        showingEl.textContent = labelShowing + " " + rows.length + " " + labelOf + " " + totalGroups;
+        showingEl.textContent = labelShowing + " " + cards.length + " " + labelOf + " " + totalGroups;
       }
-    }
-
-    function setRowVisible(selector, name, show) {
-      root.querySelectorAll(selector).forEach(function (el) {
-        el.style.display = show ? "" : "none";
-      });
     }
 
     function applyFilter(filter) {
-      root.querySelectorAll(".group-row").forEach(function (row) {
-        var show = filter === "all" || row.dataset.status === filter;
-        row.style.display = show ? "" : "none";
-      });
       root.querySelectorAll(".group-card-item").forEach(function (card) {
         var show = filter === "all" || card.dataset.status === filter;
         card.style.display = show ? "" : "none";
@@ -84,16 +73,10 @@
     }
 
     function filterByCourse(course) {
-      if (course === "all") {
-        setRowVisible(".group-row, .group-card-item", null, true);
-      } else {
-        root.querySelectorAll(".group-row").forEach(function (row) {
-          row.style.display = row.dataset.course === course ? "" : "none";
-        });
-        root.querySelectorAll(".group-card-item").forEach(function (card) {
-          card.style.display = card.dataset.course === course ? "" : "none";
-        });
-      }
+      root.querySelectorAll(".group-card-item").forEach(function (card) {
+        var show = course === "all" || card.dataset.course === course;
+        card.style.display = show ? "" : "none";
+      });
       updateStats();
     }
 
@@ -105,9 +88,9 @@
       menu.dataset.populated = "true";
 
       var courses = {};
-      root.querySelectorAll(".group-row").forEach(function (row) {
-        if (row.dataset.course) {
-          courses[row.dataset.course] = true;
+      root.querySelectorAll(".group-card-item").forEach(function (card) {
+        if (card.dataset.course) {
+          courses[card.dataset.course] = true;
         }
       });
 
@@ -127,10 +110,6 @@
       var input = document.getElementById("group-search");
       var search = (input && input.value ? input.value : "").toLowerCase();
 
-      root.querySelectorAll(".group-row").forEach(function (row) {
-        var name = row.dataset.name || "";
-        row.style.display = name.indexOf(search) !== -1 ? "" : "none";
-      });
       root.querySelectorAll(".group-card-item").forEach(function (card) {
         var name = card.dataset.name || "";
         card.style.display = name.indexOf(search) !== -1 ? "" : "none";
@@ -138,40 +117,17 @@
       updateStats();
     }
 
-    function setView(view) {
-      var tableBtn = document.getElementById("view-table");
-      var cardsBtn = document.getElementById("view-cards");
-      var tableView = document.getElementById("groups-table-view");
-      var cardsView = document.getElementById("groups-cards-view");
-
-      if (tableBtn) {
-        tableBtn.classList.toggle("active", view === "table");
-      }
-      if (cardsBtn) {
-        cardsBtn.classList.toggle("active", view === "cards");
-      }
-      if (tableView) {
-        tableView.style.display = view === "table" ? "" : "none";
-      }
-      if (cardsView) {
-        cardsView.style.display = view === "cards" ? "" : "none";
-      }
-    }
-
     function sortGroups(column) {
-      var table = document.getElementById("groups-table");
-      if (!table) {
-        return;
-      }
-      var tbody = table.querySelector("tbody");
-      if (!tbody) {
+      var container = document.getElementById("groups-cards-view");
+      if (!container) {
         return;
       }
 
-      var rows = Array.prototype.slice.call(tbody.querySelectorAll(".group-row"));
-      sortDirection[column] = !sortDirection[column];
+      var cards = Array.prototype.slice.call(container.querySelectorAll(".group-card-item"));
+      var ascending = container.dataset.sortDir !== column;
+      container.dataset.sortDir = ascending ? column : "";
 
-      rows.sort(function (a, b) {
+      cards.sort(function (a, b) {
         var valA = a.dataset[column] || "";
         var valB = b.dataset[column] || "";
 
@@ -181,16 +137,16 @@
         }
 
         if (valA < valB) {
-          return sortDirection[column] ? -1 : 1;
+          return ascending ? -1 : 1;
         }
         if (valA > valB) {
-          return sortDirection[column] ? 1 : -1;
+          return ascending ? 1 : -1;
         }
         return 0;
       });
 
-      rows.forEach(function (row) {
-        tbody.appendChild(row);
+      cards.forEach(function (card) {
+        container.appendChild(card);
       });
     }
 
@@ -201,7 +157,7 @@
     });
 
     root.addEventListener("click", function (event) {
-      var target = event.target.closest("[data-portal-groups-filter], [data-portal-groups-sort], [data-portal-groups-course], [data-portal-groups-view]");
+      var target = event.target.closest("[data-portal-groups-filter], [data-portal-groups-sort], [data-portal-groups-course]");
       if (!target) {
         return;
       }
@@ -213,8 +169,6 @@
         sortGroups(target.dataset.portalGroupsSort);
       } else if (target.dataset.portalGroupsCourse) {
         filterByCourse(target.dataset.portalGroupsCourse);
-      } else if (target.dataset.portalGroupsView) {
-        setView(target.dataset.portalGroupsView);
       }
     });
 

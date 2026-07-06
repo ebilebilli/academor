@@ -50,38 +50,7 @@
 {% if completed_attempts %}
 <section class="ds-card">
   <h2 class="h5 mb-3">{% trans 'Previous mock tests' %}</h2>
-  <div class="table-responsive">
-    <table class="t-table">
-      <thead>
-        <tr>
-          <th>{% trans 'Date' %}</th>
-          <th>{% trans 'Overall result' %}</th>
-          <th class="text-end">{% trans 'Action' %}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for attempt in completed_attempts %}
-        <tr>
-          <td>{{ attempt.completed_at|date:"d.m.Y H:i" }}</td>
-          <td>
-            {% if attempt.is_fully_graded %}
-            {{ attempt.overall_band|format_quiz_score }} / {{ attempt.overall_band_max|format_quiz_score }}
-            {% elif attempt.pending_review_count %}
-            <span class="ds-badge ds-badge--warning">{% trans 'Awaiting review' %}</span>
-            {% else %}
-            —
-            {% endif %}
-          </td>
-          <td class="text-end">
-            <a class="ds-btn ds-btn--secondary btn-sm" href="{% url 'portals:student-ielts-mock-complete' pk=attempt.id %}">
-              {% trans 'View summary' %}
-            </a>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+  {% include "portals/includes/ielts_mock_attempts_table.html" with mock_attempts=completed_attempts mock_detail_url_name="portals:student-ielts-mock-complete" %}
 </section>
 {% endif %}
 {% endblock %}

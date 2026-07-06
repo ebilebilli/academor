@@ -109,7 +109,8 @@ class WeeklyStudentScoreTests(TestCase):
         )
         response = self.student_client.get(reverse('portals:student-scores'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Qiymətləndirmələr')
+        self.assertContains(response, 'Nəticələr və qiymətləndirmələr')
+        self.assertContains(response, 'Quiz tarixçəsi')
         self.assertContains(response, 'Həftəlik qiymətləndirmələr')
         self.assertContains(response, '9')
 

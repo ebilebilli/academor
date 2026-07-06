@@ -400,15 +400,20 @@ def _quiz_results_queryset():
     )
 
 
-def resolve_scores_view_param(request, quiz_scores, weekly_scores):
+def resolve_scores_view_param(request, quiz_scores, weekly_scores, mock_attempts=None):
     """Pick active scores tab from query string or sensible default."""
     scores_view = request.GET.get('view')
     if scores_view == 'lesson':
         scores_view = 'weekly'
-    if scores_view in ('quiz', 'weekly'):
+    valid_views = ('quiz', 'weekly')
+    if mock_attempts is not None:
+        valid_views = ('quiz', 'weekly', 'mock')
+    if scores_view in valid_views:
         return scores_view
     if not quiz_scores and weekly_scores:
         return 'weekly'
+    if not quiz_scores and not weekly_scores and mock_attempts:
+        return 'mock'
     return 'quiz'
 
 

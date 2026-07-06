@@ -1,6 +1,6 @@
 {% load i18n %}
 <section
-  class="portal-content-panel"
+  class="portal-content-panel portal-classrooms-panel"
   data-portal-service-tabs
   data-portal-service-match="single"
   data-portal-service-table="#classrooms-table"
@@ -28,7 +28,7 @@
   {% endif %}
 
   <div class="table-responsive">
-    <table class="table align-middle mb-0 portal-data-table" id="classrooms-table">
+    <table class="table align-middle mb-0 portal-data-table portal-classrooms-table" id="classrooms-table">
       <thead>
         <tr>
           <th scope="col">{% trans 'Name' %}</th>
@@ -40,28 +40,28 @@
       <tbody>
         {% for room in classrooms %}
         <tr data-service="{{ room.group_id|default:'' }}">
-          <td class="fw-semibold">{{ room.name }}</td>
-          <td>
+          <td class="fw-semibold" data-label="{% trans 'Name' %}">{{ room.name }}</td>
+          <td data-label="{% trans 'Group' %}">
             {% if room.group_name %}
             <span class="portal-tag">{{ room.group_name }}</span>
             {% else %}
             <span class="text-muted">—</span>
             {% endif %}
           </td>
-          <td>
+          <td data-label="{% trans 'PDF' %}">
             {% if room.has_pdf %}
             <span class="badge text-bg-light border">{% trans 'PDF' %}</span>
             {% else %}
             <span class="text-muted">—</span>
             {% endif %}
           </td>
-          <td class="text-end">
+          <td class="text-end" data-label="{% trans 'Action' %}">
             {% if portal_role == 'teacher' %}
-            <a class="btn btn-outline-primary btn-sm" href="{% url 'portals:teacher-classroom-detail' pk=room.id %}">{% trans 'Open' %}</a>
+            <a class="btn btn-primary btn-sm" href="{% url 'portals:teacher-classroom-detail' pk=room.id %}">{% trans 'Open' %}</a>
             {% elif portal_role == 'parent' %}
-            <a class="btn btn-outline-primary btn-sm" href="{% url 'portals:parent-classroom-detail' pk=room.id %}">{% trans 'Open' %}</a>
+            <a class="btn btn-primary btn-sm" href="{% url 'portals:parent-classroom-detail' pk=room.id %}">{% trans 'Open' %}</a>
             {% else %}
-            <a class="btn btn-outline-primary btn-sm" href="{% url 'portals:student-classroom-detail' pk=room.id %}">{% trans 'Open' %}</a>
+            <a class="btn btn-primary btn-sm" href="{% url 'portals:student-classroom-detail' pk=room.id %}">{% trans 'Open' %}</a>
             {% endif %}
           </td>
         </tr>

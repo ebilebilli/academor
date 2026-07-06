@@ -89,7 +89,7 @@
       </a>
       <a class="nav-link{% if u == 'student-scores' or u == 'student-score-detail' %} active{% endif %}" href="{% url 'portals:student-scores' %}">
         <span class="nav-icon"><i class="ti ti-star" aria-hidden="true"></i></span>
-        <span class="nav-text">{% trans 'Qiymətləndirmələr' %}</span>
+        <span class="nav-text">{% trans 'Nəticələr və qiymətləndirmələr' %}</span>
       </a>
       <a class="nav-link{% if u == 'student-quizzes' or u == 'student-quiz-category' %} active{% endif %}" href="{% url 'portals:student-quizzes' %}">
         <span class="nav-icon"><i class="ti ti-forms" aria-hidden="true"></i></span>
@@ -128,17 +128,9 @@
         <span class="nav-icon"><i class="ti ti-door" aria-hidden="true"></i></span>
         <span class="nav-text">{% trans 'Textbooks' %}</span>
       </a>
-      <a class="nav-link{% if u == 'parent-scores' %} active{% endif %}" href="{% url 'portals:parent-scores' %}">
+      <a class="nav-link{% if u == 'parent-scores' or u == 'parent-score-detail' or u == 'parent-ielts-mock-detail' %} active{% endif %}" href="{% url 'portals:parent-scores' %}">
         <span class="nav-icon"><i class="ti ti-star" aria-hidden="true"></i></span>
-        <span class="nav-text">{% trans 'Qiymətləndirmələr' %}</span>
-      </a>
-      <a class="nav-link{% if u == 'parent-quiz-results' %} active{% endif %}" href="{% url 'portals:parent-quiz-results' %}">
-        <span class="nav-icon"><i class="ti ti-clipboard-data" aria-hidden="true"></i></span>
-        <span class="nav-text">{% trans 'Quiz results' %}</span>
-      </a>
-      <a class="nav-link{% if u == 'parent-quizzes' or u == 'parent-quiz-category' %} active{% endif %}" href="{% url 'portals:parent-quizzes' %}">
-        <span class="nav-icon"><i class="ti ti-forms" aria-hidden="true"></i></span>
-        <span class="nav-text">{% trans 'Quiz categories' %}</span>
+        <span class="nav-text">{% trans 'Nəticələr və qiymətləndirmələr' %}</span>
       </a>
       <a class="nav-link{% if u == 'parent-attendance' %} active{% endif %}" href="{% url 'portals:parent-attendance' %}">
         <span class="nav-icon"><i class="ti ti-calendar-check" aria-hidden="true"></i></span>

@@ -60,7 +60,7 @@ class StudentQuizTakeRequiredMixin(StudentRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
         role = get_portal_role(request.portal_user) if is_portal_authenticated(request) else None
         if role == 'parent':
-            return redirect('portals:parent-quizzes')
+            return redirect('portals:parent-scores')
         return super().dispatch(request, *args, **kwargs)
 
 

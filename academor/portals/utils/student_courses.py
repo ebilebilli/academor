@@ -6,6 +6,8 @@ from portals.utils.portal_services import expand_course_types_to_service_slugs
 from portals.utils.teacher_courses import teacher_groups_queryset
 
 SCORE_LIST_LIMIT = 200
+QUIZ_HISTORY_INITIAL_SIZE = 10
+QUIZ_HISTORY_PAGE_SIZE = 10
 
 
 def get_student_course_type_codes(student_id):

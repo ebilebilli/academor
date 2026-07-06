@@ -196,10 +196,12 @@ def _parent_score_detail_back(request):
     source = request.GET.get('from', '')
     student_id = request.GET.get('student')
     if source == 'quiz-results':
-        url = reverse('portals:parent-quiz-results')
+        url = reverse('portals:parent-scores')
         if student_id:
-            url = f'{url}?student={student_id}'
-        return url, _('Back to quiz results')
+            url = f'{url}?student={student_id}&view=quiz'
+        else:
+            url = f'{url}?view=quiz'
+        return url, _('Back to results and assessments')
     if source == 'dashboard':
         return reverse('portals:parent-dashboard'), _('Back to dashboard')
     return reverse('portals:parent-notifications'), _('Back to notifications')

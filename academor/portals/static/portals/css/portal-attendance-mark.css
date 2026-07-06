@@ -564,17 +564,8 @@
   min-width: 0;
 }
 
-.portal-student-avatar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 999px;
-  background: var(--admin-surface-soft);
-  font-size: 0.75rem;
-  font-weight: 800;
-  color: var(--admin-primary);
+.portal-student-info .profile-avatar,
+.portal-student-info .avatar-img {
   flex-shrink: 0;
 }
 

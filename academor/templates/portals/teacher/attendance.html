@@ -108,13 +108,7 @@
     >
       <article class="portal-attendance-hub-card{% if s.summary.absent > 0 %} has-attention{% endif %}" data-attendance-card>
         <div class="portal-attendance-hub-card__head">
-          <div class="portal-attendance-hub-card__avatar">
-            {% if s.photo_url %}
-              <img src="{{ s.photo_url }}" alt="">
-            {% else %}
-              <span>{{ s.username|slice:":2"|upper }}</span>
-            {% endif %}
-          </div>
+          {% include "portals/includes/avatar.html" with photo_url=s.photo_url name=s.full_name initials=s.full_name size_class="avatar-md" %}
           <div class="portal-attendance-hub-card__info">
             <h2 class="portal-attendance-hub-card__name">{{ s.full_name }}</h2>
             {% if s.group_names %}
@@ -172,13 +166,7 @@
           >
             <td>
               <div class="portal-attendance-hub-table-student">
-                <div class="portal-attendance-hub-card__avatar is-sm">
-                  {% if s.photo_url %}
-                    <img src="{{ s.photo_url }}" alt="">
-                  {% else %}
-                    <span>{{ s.username|slice:":2"|upper }}</span>
-                  {% endif %}
-                </div>
+                {% include "portals/includes/avatar.html" with photo_url=s.photo_url name=s.full_name initials=s.full_name size_class="avatar-sm" %}
                 <div class="fw-semibold">{{ s.full_name }}</div>
               </div>
             </td>

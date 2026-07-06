@@ -1,7 +1,7 @@
 {% extends "portals/base.html" %}
 {% load static i18n portal_tags %}
 
-{% block title %}{% trans 'Qiymətləndirmələr' %}{% endblock %}
+{% block title %}{% trans 'Nəticələr və qiymətləndirmələr' %}{% endblock %}
 
 {% block extra_css %}
 {% endblock %}
@@ -11,11 +11,15 @@
   <div>
     <h1 class="s-page-head__title">
       <i class="ti ti-star" aria-hidden="true"></i>
-      {% trans 'Qiymətləndirmələr' %}
+      {% trans 'Nəticələr və qiymətləndirmələr' %}
     </h1>
-    <p class="s-page-head__sub">{% trans 'Həftəlik qiymətlərinizə baxın.' %}</p>
+    <p class="s-page-head__sub">{% trans 'Quiz tarixçəsi, həftəlik qiymətləriniz və mock nəticələrinizə baxın.' %}</p>
   </div>
 </header>
 
-{% include "portals/includes/score_sections_weekly.html" %}
+{% include "portals/includes/score_sections.html" %}
+{% endblock %}
+
+{% block extra_js %}
+<script defer src="{% static 'portals/js/portal-quiz-history-scroll.js' %}?v=20260705a"></script>
 {% endblock %}

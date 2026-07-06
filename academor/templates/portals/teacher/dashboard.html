@@ -20,34 +20,41 @@
 
 {# ── Stats row ────────────────────────────────────────────────── #}
 <section class="t-stats mb-4" aria-label="{% trans 'Statistika' %}">
-  <article class="t-stat">
+  <a class="t-stat text-decoration-none" href="{% url 'portals:teacher-groups' %}">
     <span class="t-stat__icon t-stat__icon--emerald"><i class="ti ti-users" aria-hidden="true"></i></span>
     <div class="t-stat__body">
       <span class="t-stat__number">{{ student_count|default:0 }}</span>
       <span class="t-stat__label">{% trans 'Şagird' %}</span>
     </div>
-  </article>
-  <article class="t-stat">
+  </a>
+  <a class="t-stat text-decoration-none" href="{% url 'portals:teacher-groups' %}">
     <span class="t-stat__icon t-stat__icon--teal"><i class="ti ti-users-group" aria-hidden="true"></i></span>
     <div class="t-stat__body">
       <span class="t-stat__number">{{ group_count|default:0 }}</span>
       <span class="t-stat__label">{% trans 'Qrup' %}</span>
     </div>
-  </article>
-  <article class="t-stat">
+  </a>
+  <a class="t-stat text-decoration-none" href="{% url 'portals:teacher-lessons' %}">
     <span class="t-stat__icon t-stat__icon--indigo"><i class="ti ti-book" aria-hidden="true"></i></span>
     <div class="t-stat__body">
       <span class="t-stat__number">{{ lesson_count|default:0 }}</span>
       <span class="t-stat__label">{% trans 'Dərs' %}</span>
     </div>
-  </article>
-  <article class="t-stat">
+  </a>
+  <a class="t-stat text-decoration-none" href="{% url 'portals:teacher-scores' %}?view=quiz">
     <span class="t-stat__icon t-stat__icon--amber"><i class="ti ti-forms" aria-hidden="true"></i></span>
     <div class="t-stat__body">
-      <span class="t-stat__number">{{ quiz_count|default:0 }}</span>
-      <span class="t-stat__label">{% trans 'Quiz' %}</span>
+      <span class="t-stat__number">{{ quiz_result_count|default:0 }}</span>
+      <span class="t-stat__label">{% trans 'quiz nəticəsi' %}</span>
     </div>
-  </article>
+  </a>
+  <a class="t-stat text-decoration-none" href="{% url 'portals:teacher-scores' %}?view=weekly">
+    <span class="t-stat__icon t-stat__icon--violet"><i class="ti ti-star" aria-hidden="true"></i></span>
+    <div class="t-stat__body">
+      <span class="t-stat__number">{{ weekly_score_count|default:0 }}</span>
+      <span class="t-stat__label">{% trans 'Həftəlik qiymətləndirmə' %}</span>
+    </div>
+  </a>
 </section>
 
 {# ── Quick actions ─────────────────────────────────────────────── #}
@@ -67,7 +74,7 @@
       <i class="ti ti-calendar-stats" aria-hidden="true"></i>
       <span>{% trans 'Həftəlik qiymət' %}</span>
     </a>
-    <a class="t-qa-btn t-qa-btn--emerald" href="{% url 'portals:teacher-scores' %}">
+    <a class="t-qa-btn t-qa-btn--amber" href="{% url 'portals:teacher-scores' %}">
       <i class="ti ti-star" aria-hidden="true"></i>
       <span>{% trans 'Nəticələr və qiymətləndirmələr' %}</span>
     </a>
@@ -75,7 +82,7 @@
       <i class="ti ti-book-upload" aria-hidden="true"></i>
       <span>{% trans 'Dərs əlavə et' %}</span>
     </a>
-    <a class="t-qa-btn t-qa-btn--amber" href="{% url 'portals:teacher-quizzes' %}">
+    <a class="t-qa-btn t-qa-btn--primary" href="{% url 'portals:teacher-quizzes' %}">
       <i class="ti ti-forms" aria-hidden="true"></i>
       <span>{% trans 'Quizlərə bax' %}</span>
     </a>

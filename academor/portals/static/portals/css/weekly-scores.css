@@ -338,23 +338,9 @@
   margin-bottom: 0.75rem;
 }
 
-.weekly-scores-avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: var(--radius-md, 10px);
-  overflow: hidden;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(135deg, var(--weekly-accent), color-mix(in srgb, var(--weekly-accent) 70%, #000));
-  color: #fff;
-  font-size: 0.75rem;
-  font-weight: 800;
-}
-
-.weekly-scores-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.weekly-scores-card-item__head .profile-avatar,
+.weekly-scores-card-item__head .avatar-img {
+  flex-shrink: 0;
 }
 
 .weekly-scores-card-item__identity {

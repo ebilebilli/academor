@@ -71,21 +71,31 @@
       </div>
     </a>
 
-    <a class="t-stat text-decoration-none" href="{% url 'portals:parent-scores' %}?student={{ block.student.id }}">
+    <a class="t-stat text-decoration-none" href="{% url 'portals:parent-scores' %}?student={{ block.student.id }}&view=weekly">
       <span class="t-stat__icon t-stat__icon--amber"><i class="ti ti-star" aria-hidden="true"></i></span>
       <div class="t-stat__body">
         <span class="t-stat__number">{{ block.score_count|default:0 }}</span>
-        <span class="t-stat__label">{% trans 'qiymət' %}</span>
+        <span class="t-stat__label">{% trans 'Həftəlik qiymətləndirmə' %}</span>
       </div>
     </a>
 
-    <a class="t-stat text-decoration-none" href="{% url 'portals:parent-quiz-results' %}?student={{ block.student.id }}">
+    <a class="t-stat text-decoration-none" href="{% url 'portals:parent-scores' %}?student={{ block.student.id }}&view=quiz">
       <span class="t-stat__icon t-stat__icon--emerald"><i class="ti ti-forms" aria-hidden="true"></i></span>
       <div class="t-stat__body">
         <span class="t-stat__number">{{ block.quiz_result_count|default:0 }}</span>
         <span class="t-stat__label">{% trans 'quiz nəticəsi' %}</span>
       </div>
     </a>
+
+    {% if block.mock_count is not None %}
+    <a class="t-stat text-decoration-none" href="{% url 'portals:parent-scores' %}?student={{ block.student.id }}&view=mock">
+      <span class="t-stat__icon t-stat__icon--violet"><i class="ti ti-clipboard-list" aria-hidden="true"></i></span>
+      <div class="t-stat__body">
+        <span class="t-stat__number">{{ block.mock_count|default:0 }}</span>
+        <span class="t-stat__label">{% trans 'Mock test' %}</span>
+      </div>
+    </a>
+    {% endif %}
   </div>
 
   {# ── Quick links ──────────────────────────────────────────────── #}
@@ -103,7 +113,7 @@
       </a>
       <a class="t-qa-btn t-qa-btn--amber" href="{% url 'portals:parent-scores' %}?student={{ block.student.id }}">
         <i class="ti ti-star" aria-hidden="true"></i>
-        <span>{% trans 'Qiymətləndirmələr' %}</span>
+        <span>{% trans 'Nəticələr və qiymətləndirmələr' %}</span>
       </a>
       <a class="t-qa-btn t-qa-btn--emerald" href="{% url 'portals:parent-attendance' %}?student={{ block.student.id }}">
         <i class="ti ti-calendar-check" aria-hidden="true"></i>
@@ -124,7 +134,7 @@
         <i class="ti ti-forms" aria-hidden="true"></i>
         {% trans 'Son quiz nəticələri' %}
       </h2>
-      <a class="ds-btn ds-btn--ghost btn-sm" href="{% url 'portals:parent-quiz-results' %}?student={{ block.student.id }}">
+      <a class="ds-btn ds-btn--ghost btn-sm" href="{% url 'portals:parent-scores' %}?student={{ block.student.id }}&view=quiz">
         {% trans 'Hamısı' %} <i class="ti ti-arrow-right" aria-hidden="true"></i>
       </a>
     </div>

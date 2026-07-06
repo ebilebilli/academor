@@ -110,13 +110,7 @@
           {% if row.is_locked or row.weekly_score_id %}data-weekly-score-locked{% endif %}
         >
           <div class="weekly-scores-card-item__head">
-            <div class="weekly-scores-avatar">
-              {% if row.photo_url %}
-                <img src="{{ row.photo_url }}" alt="">
-              {% else %}
-                {{ row.full_name|slice:":2"|upper }}
-              {% endif %}
-            </div>
+            {% include "portals/includes/avatar.html" with photo_url=row.photo_url name=row.full_name initials=row.full_name size_class="avatar-md" %}
             <div class="weekly-scores-card-item__identity">
               <a href="{% url 'portals:teacher-student-profile' student_pk=row.id %}?tab=weekly-scores" class="weekly-scores-student-link">
                 {{ row.full_name }}
@@ -207,13 +201,7 @@
         data-weekly-score-locked
       >
         <div class="weekly-scores-card-item__head">
-          <div class="weekly-scores-avatar">
-            {% if row.photo_url %}
-              <img src="{{ row.photo_url }}" alt="">
-            {% else %}
-              {{ row.full_name|slice:":2"|upper }}
-            {% endif %}
-          </div>
+          {% include "portals/includes/avatar.html" with photo_url=row.photo_url name=row.full_name initials=row.full_name size_class="avatar-md" %}
           <div class="weekly-scores-card-item__identity">
             <a href="{% url 'portals:teacher-student-profile' student_pk=row.id %}?tab=weekly-scores" class="weekly-scores-student-link">
               {{ row.full_name }}
@@ -250,13 +238,7 @@
         data-weekly-score-locked
       >
         <div class="weekly-scores-card-item__head">
-          <div class="weekly-scores-avatar">
-            {% if row.photo_url %}
-              <img src="{{ row.photo_url }}" alt="">
-            {% else %}
-              {{ row.full_name|slice:":2"|upper }}
-            {% endif %}
-          </div>
+          {% include "portals/includes/avatar.html" with photo_url=row.photo_url name=row.full_name initials=row.full_name size_class="avatar-md" %}
           <div class="weekly-scores-card-item__identity">
             <a href="{% url 'portals:teacher-student-profile' student_pk=row.id %}?tab=weekly-scores" class="weekly-scores-student-link">
               {{ row.full_name }}

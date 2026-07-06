@@ -1,7 +1,11 @@
 {% extends "portals/base.html" %}
-{% load i18n portal_tags %}
+{% load i18n portal_tags static %}
 
 {% block title %}{% trans 'Textbooks' %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'portals/css/portal-classrooms.css' %}">
+{% endblock %}
 
 {% block content %}
 {% if portal_role == 'parent' and children %}

@@ -1,0 +1,42 @@
+{% load i18n portal_tags %}
+{% for row in quiz_scores %}
+<tr data-score-date="{{ row.date|date:'Y-m-d' }}"{% if row.group_ids %} data-group-ids="{{ row.group_ids|join:',' }}"{% endif %}>
+  {% if show_student_column %}
+  <td class="fw-500">{{ row.student_name }}</td>
+  {% endif %}
+  <td class="{% if not show_student_column %}fw-500{% endif %}">{{ row.quiz_topic|default:"—" }}</td>
+  <td>
+    <span class="ds-badge">{{ row.grading_mode_label|default:row.score_type_label }}</span>
+  </td>
+  <td>
+    {% if row.is_pending_review %}
+    <span class="ds-badge ds-badge--warning">{% trans 'Gözlənilir' %}</span>
+    {% elif row.value is not None %}
+      {{ row.value|format_quiz_score }}{% if row.max_value %}/{{ row.max_value|format_quiz_score }}{% endif %}
+    {% else %}
+      —
+    {% endif %}
+  </td>
+  <td class="text-muted small">{{ row.date|portal_date_long }}</td>
+  {% if score_detail_url_name %}
+  <td class="text-end">
+    {% if not row.is_pending_review %}
+    <a class="ds-btn ds-btn--secondary btn-sm" href="{% url score_detail_url_name result_pk=row.result_id %}">{% trans 'Bax' %}</a>
+    {% else %}
+    <span class="text-muted small">—</span>
+    {% endif %}
+  </td>
+  {% endif %}
+</tr>
+{% empty %}
+{% if show_quiz_history_empty %}
+<tr data-quiz-history-empty>
+  <td colspan="10">
+    <div class="s-empty-state">
+      <i class="ti ti-forms" aria-hidden="true"></i>
+      <p>{% trans 'Hələ quiz nəticəsi yoxdur.' %}</p>
+    </div>
+  </td>
+</tr>
+{% endif %}
+{% endfor %}

@@ -636,6 +636,29 @@ body {
   margin-top: var(--space-3);
 }
 
+.portal-quiz-history-scroll__sentinel {
+  height: 1px;
+}
+
+.portal-quiz-history-scroll__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+}
+
+.portal-quiz-history-scroll__spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid color-mix(in srgb, var(--color-role) 20%, transparent);
+  border-top-color: var(--color-role);
+  border-radius: 50%;
+  animation: ds-spin 0.7s linear infinite;
+}
+
 /* Stat cards */
 .s-stats {
   display: grid;
@@ -1115,7 +1138,7 @@ body {
   grid-template-columns: repeat(2, 1fr);
   gap: var(--space-3);
 }
-@media (min-width: 640px) { .t-stats { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 640px) { .t-stats { grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); } }
 
 .t-stat {
   display: flex;
@@ -1145,6 +1168,7 @@ a.t-stat:hover { color: var(--color-text); }
 .t-stat__icon--teal    { background: var(--color-brand-subtle);   color: var(--color-brand); }
 .t-stat__icon--indigo  { background: var(--color-student-subtle); color: var(--color-student); }
 .t-stat__icon--amber   { background: var(--color-warning-subtle); color: var(--color-warning); }
+.t-stat__icon--violet  { background: var(--color-info-subtle);    color: var(--color-info); }
 .t-stat__body { display: flex; flex-direction: column; }
 .t-stat__number { font-size: var(--text-xl); font-weight: var(--font-medium); line-height: 1; }
 .t-stat__label  { font-size: var(--text-xs); color: var(--color-muted); margin-top: 2px; }
