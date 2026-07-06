@@ -26,10 +26,21 @@ class PortalSessionStore(DBStore):
     pass
 
 
+_SESSION_CACHE_ATTR = '_portal_session_store'
+
+
 def _get_portal_session(request):
-    """Get or create portal session from separate cookie."""
-    cookie_val = request.COOKIES.get(PORTAL_COOKIE_NAME)
-    store = PortalSessionStore(cookie_val)
+    """Get or create portal session from separate cookie.
+
+    Cached on the request: the session helpers are called several times per
+    request (middleware, mixins, context processors) and each fresh store
+    re-reads the session row from the DB.
+    """
+    store = getattr(request, _SESSION_CACHE_ATTR, None)
+    if store is None:
+        cookie_val = request.COOKIES.get(PORTAL_COOKIE_NAME)
+        store = PortalSessionStore(cookie_val)
+        setattr(request, _SESSION_CACHE_ATTR, store)
     return store
 
 
@@ -63,11 +74,10 @@ def portal_logout(request) -> None:
 
 def get_portal_user_id(request) -> int | None:
     """Get portal user ID from separate session cookie."""
-    cookie_val = request.COOKIES.get(PORTAL_COOKIE_NAME)
-    if not cookie_val:
+    if not request.COOKIES.get(PORTAL_COOKIE_NAME) and getattr(request, _SESSION_CACHE_ATTR, None) is None:
         return None
     try:
-        store = PortalSessionStore(cookie_val)
+        store = _get_portal_session(request)
         value = store.get(PORTAL_SESSION_USER_KEY)
         if value is None:
             return None
@@ -130,8 +140,7 @@ def get_portal_session_store(request) -> PortalSessionStore:
     pending = getattr(request, '_portal_session', None)
     if pending is not None:
         return pending
-    cookie_val = request.COOKIES.get(PORTAL_COOKIE_NAME)
-    return PortalSessionStore(cookie_val)
+    return _get_portal_session(request)
 
 
 def ensure_portal_session(request) -> PortalSessionStore:

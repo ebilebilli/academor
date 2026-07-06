@@ -39,16 +39,30 @@ def teacher_attendance_queryset(teacher_id):
 # Role helpers (not cached — tied to request.user)
 # ---------------------------------------------------------------------------
 
+_ROLE_CACHE_ATTR = '_portal_role_cache'
+
+
 def get_portal_role(user):
     if not user.is_authenticated:
         return None
+    # Called several times per request (mixins, context processors, views);
+    # memoize on the user instance, which lives for one request.
+    cached = getattr(user, _ROLE_CACHE_ATTR, '')
+    if cached != '':
+        return cached
     if TeacherProfile.objects.filter(user_id=user.pk).exists():
-        return 'teacher'
-    if StudentProfile.objects.filter(user_id=user.pk).exists():
-        return 'student'
-    if ParentProfile.objects.filter(user_id=user.pk).exists():
-        return 'parent'
-    return None
+        role = 'teacher'
+    elif StudentProfile.objects.filter(user_id=user.pk).exists():
+        role = 'student'
+    elif ParentProfile.objects.filter(user_id=user.pk).exists():
+        role = 'parent'
+    else:
+        role = None
+    try:
+        setattr(user, _ROLE_CACHE_ATTR, role)
+    except AttributeError:
+        pass
+    return role
 
 
 def get_teacher_profile(user):
