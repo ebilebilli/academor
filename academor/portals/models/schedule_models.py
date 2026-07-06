@@ -47,6 +47,12 @@ class Schedule(models.Model):
         verbose_name = _('Schedule')
         verbose_name_plural = _('Schedules')
         ordering = ('weekday', 'start_time', 'id')
+        constraints = [
+            models.UniqueConstraint(
+                fields=('group', 'weekday', 'start_time', 'effective_from'),
+                name='portals_schedule_unique_slot',
+            ),
+        ]
 
     def __str__(self):
         weekday = self.get_weekday_display()
