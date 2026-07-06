@@ -909,7 +909,7 @@ class ParentProfileAdmin(PortalModelAdmin):
         if not usernames:
             return '—'
         text = ', '.join(usernames)
-        extra = obj.students.count() - len(names)
+        extra = obj.students.count() - len(usernames)
         if extra > 0:
             text = f'{text} +{extra}'
         return text
