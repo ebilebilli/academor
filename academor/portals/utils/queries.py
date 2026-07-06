@@ -995,11 +995,19 @@ def serialize_quiz_question(question):
 def serialize_quiz_result(row):
     question_count = getattr(row, 'question_count', None)
     quiz = row.quiz
-    if question_count is None:
+    # The annotated Count('quiz__questions') only counts inline variant
+    # questions; reading/listening questions live in separate tables, so the
+    # annotation yields 0 for them. Treat 0 as "unknown" and recount, else
+    # max_value comes out as 0 and percentages break.
+    if not question_count:
         if quiz.is_reading:
             from portals.utils.quiz_reading import get_reading_questions_for_quiz
 
             question_count = len(get_reading_questions_for_quiz(quiz))
+        elif quiz.is_listening:
+            from portals.utils.quiz_listening import get_listening_questions_for_quiz
+
+            question_count = len(get_listening_questions_for_quiz(quiz))
         else:
             question_count = row.quiz.questions.count()
     completion_trigger = getattr(row, 'completion_trigger', 'manual') or 'manual'
