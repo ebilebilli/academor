@@ -191,11 +191,15 @@ class PortalUserAdmin(BaseUserAdmin):
     def _get_linked_profile(self, obj):
         if not obj or not obj.pk:
             return None
-        return (
-            TeacherProfile.objects.filter(user_id=obj.pk).first()
-            or StudentProfile.objects.filter(user_id=obj.pk).first()
-            or ParentProfile.objects.filter(user_id=obj.pk).first()
-        )
+        # Memoized per row: several list columns call this, and each lookup
+        # is up to three queries.
+        if not hasattr(obj, '_portal_linked_profile'):
+            obj._portal_linked_profile = (
+                TeacherProfile.objects.filter(user_id=obj.pk).first()
+                or StudentProfile.objects.filter(user_id=obj.pk).first()
+                or ParentProfile.objects.filter(user_id=obj.pk).first()
+            )
+        return obj._portal_linked_profile
 
 
 # ---------------------------------------------------------------------------
@@ -1380,9 +1384,10 @@ class ScoreAdmin(PortalModelAdmin):
     search_fields = (
         'student__user__username',
         'comment',
-        'lesson__title',
+        'lesson__name',
     )
     autocomplete_fields = ('student', 'lesson')
+    list_select_related = ('student__user', 'lesson')
     date_hierarchy = 'date'
     ordering = ('-date', '-id')
     list_per_page = 25
