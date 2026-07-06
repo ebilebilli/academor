@@ -17,6 +17,7 @@ from portals.models import (
     QuizResultReview,
     StudyGroup,
 )
+from portals.utils.cache_utils import cached_query
 from portals.utils.portal_services import expand_course_types_to_service_slugs
 from portals.utils.queries import serialize_quiz_question
 from portals.utils.student_courses import get_quiz_service_code, teacher_can_see_quiz_result
@@ -341,7 +342,9 @@ def _apply_period_filter(qs, period: str | None):
     return qs.filter(created_at__gte=start)
 
 
+@cached_query(timeout='CACHE_TIMEOUT_SHORT')
 def get_teacher_pending_review_count(teacher_id: int) -> int:
+    """Cached: runs in the context processor on every teacher portal page."""
     from portals.utils.queries import _teacher_pending_quiz_results_queryset
     from portals.utils.student_courses import filter_quiz_results_for_teacher
 
@@ -351,6 +354,7 @@ def get_teacher_pending_review_count(teacher_id: int) -> int:
     return len(filter_quiz_results_for_teacher(qs[:100], teacher_id))
 
 
+@cached_query(timeout='CACHE_TIMEOUT_SHORT')
 def get_teacher_portal_bell_count(teacher_id: int) -> int:
     """Unread published-result notifications for teachers."""
     return PortalNotification.objects.filter(

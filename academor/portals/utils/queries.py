@@ -683,7 +683,42 @@ def serialize_score(row):
     }
 
 
-def serialize_quiz(quiz):
+def _answerable_question_counts(quiz_rows):
+    """Typed (reading/listening/speaking) answerable-question counts, one
+    query per quiz kind instead of one per quiz (N+1 in list pages)."""
+    from portals.models import ListeningQuestion, ReadingQuestion, SpeakingQuestion
+
+    counts = {}
+    reading_ids = [q.pk for q in quiz_rows if q.is_reading]
+    listening_ids = [q.pk for q in quiz_rows if q.is_listening]
+    speaking_ids = [q.pk for q in quiz_rows if q.is_speaking]
+    for quiz_id in reading_ids + listening_ids + speaking_ids:
+        counts[quiz_id] = 0
+    if reading_ids:
+        rows = ReadingQuestion.objects.filter(
+            passage__quiz_id__in=reading_ids,
+        ).select_related('passage', 'group')
+        for question in rows:
+            if question.is_answerable:
+                counts[question.passage.quiz_id] += 1
+    if listening_ids:
+        rows = ListeningQuestion.objects.filter(
+            audio__quiz_id__in=listening_ids,
+        ).select_related('audio')
+        for question in rows:
+            if question.is_answerable:
+                counts[question.audio.quiz_id] += 1
+    if speaking_ids:
+        rows = SpeakingQuestion.objects.filter(
+            part__quiz_id__in=speaking_ids,
+        ).select_related('part')
+        for question in rows:
+            if question.is_answerable:
+                counts[question.part.quiz_id] += 1
+    return counts
+
+
+def serialize_quiz(quiz, *, question_counts=None):
     from portals.utils.portal_services import resolve_course_type_label
     from portals.utils.student_courses import get_quiz_service_code
 
@@ -692,21 +727,22 @@ def serialize_quiz(quiz):
     category = getattr(quiz, 'category', None)
     inline_count = quiz.questions.count() if hasattr(quiz, 'questions') else 0
     question_count = inline_count
-    if quiz.is_listening:
-        from portals.utils.quiz_listening import get_listening_questions_for_quiz
+    if quiz.is_listening or quiz.is_reading or quiz.is_speaking:
+        if question_counts is not None:
+            typed_count = question_counts.get(quiz.pk, 0)
+        elif quiz.is_listening:
+            from portals.utils.quiz_listening import get_listening_questions_for_quiz
 
-        listening_count = len(get_listening_questions_for_quiz(quiz))
-        question_count = listening_count or inline_count
-    elif quiz.is_reading:
-        from portals.utils.quiz_reading import get_reading_questions_for_quiz
+            typed_count = len(get_listening_questions_for_quiz(quiz))
+        elif quiz.is_reading:
+            from portals.utils.quiz_reading import get_reading_questions_for_quiz
 
-        reading_count = len(get_reading_questions_for_quiz(quiz))
-        question_count = reading_count or inline_count
-    elif quiz.is_speaking:
-        from portals.utils.quiz_speaking import get_speaking_questions_for_quiz
+            typed_count = len(get_reading_questions_for_quiz(quiz))
+        else:
+            from portals.utils.quiz_speaking import get_speaking_questions_for_quiz
 
-        speaking_count = len(get_speaking_questions_for_quiz(quiz))
-        question_count = speaking_count or inline_count
+            typed_count = len(get_speaking_questions_for_quiz(quiz))
+        question_count = typed_count or inline_count
     return {
         'id': quiz.pk,
         'topic': quiz.topic,
@@ -872,7 +908,8 @@ def get_teacher_quizzes_for_category(teacher_id, category_id):
         .order_by('-created_at', 'id')
     )
     visible = [row for row in qs if quiz_visible_to_teacher(row, teacher_id)]
-    return [serialize_quiz(row) for row in visible]
+    question_counts = _answerable_question_counts(visible)
+    return [serialize_quiz(row, question_counts=question_counts) for row in visible]
 
 
 def _attach_quiz_attempt_flags(student_id, quizzes):
@@ -944,7 +981,11 @@ def get_student_quizzes_for_category(student_id, category_id):
         .order_by('-created_at', 'id')
     )
     visible = [row for row in qs if quiz_visible_to_student(row, student_id)]
-    quizzes = _attach_quiz_attempt_flags(student_id, [serialize_quiz(row) for row in visible])
+    question_counts = _answerable_question_counts(visible)
+    quizzes = _attach_quiz_attempt_flags(
+        student_id,
+        [serialize_quiz(row, question_counts=question_counts) for row in visible],
+    )
     return _attach_quiz_attempt_summaries(
         quizzes,
         get_student_quiz_results(student_id, quiz_ids={quiz['id'] for quiz in quizzes}),
@@ -1439,7 +1480,8 @@ def get_teacher_quizzes(teacher_id):
         .order_by('-created_at', 'id')
     )
     visible = [row for row in qs if quiz_visible_to_teacher(row, teacher_id)]
-    return [serialize_quiz(row) for row in visible]
+    question_counts = _answerable_question_counts(visible)
+    return [serialize_quiz(row, question_counts=question_counts) for row in visible]
 
 
 @cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
