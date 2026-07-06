@@ -565,7 +565,8 @@ def submit_variant_quiz_attempt(
         'percent': percent,
         'duration_sec': resolved_duration or 0,
         'completion_trigger': resolved_trigger,
-        'pending_review': True,
+        # Variant quizzes are auto-scored and published immediately.
+        'pending_review': False,
         'questions': breakdown,
         'breakdown': breakdown,
     }

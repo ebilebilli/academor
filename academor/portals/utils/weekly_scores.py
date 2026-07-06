@@ -4,7 +4,7 @@ from datetime import date, timedelta
 from decimal import Decimal, InvalidOperation
 
 from django.core.exceptions import ValidationError
-from django.db import transaction
+from django.db import IntegrityError, transaction
 from django.utils.translation import gettext as _
 
 from portals.models import WeeklyStudentScore
@@ -310,8 +310,15 @@ def save_teacher_weekly_scores(*, teacher_id, week_start, entries):
                 score=score_value,
                 comment=comment,
             )
-            record.full_clean()
-            record.save()
+            try:
+                # Savepoint so a concurrent insert (unique constraint on
+                # student+teacher+week) is skipped instead of 500ing.
+                with transaction.atomic():
+                    record.full_clean()
+                    record.save()
+            except IntegrityError:
+                skipped += 1
+                continue
             saved += 1
             from portals.utils.notifications import create_weekly_score_published_notifications
             create_weekly_score_published_notifications(record)
