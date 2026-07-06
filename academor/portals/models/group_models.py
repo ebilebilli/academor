@@ -61,8 +61,6 @@ class StudyGroup(models.Model):
     def get_course_labels(self):
         from portals.utils.portal_services import localized_service_name
 
-        if hasattr(self, '_prefetched_objects_cache') and 'courses' in self._prefetched_objects_cache:
-            return [localized_service_name(course) for course in self.courses.all()]
         return [localized_service_name(course) for course in self.courses.all()]
 
     def get_portal_course_codes(self):
