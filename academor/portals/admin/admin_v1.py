@@ -1846,6 +1846,7 @@ class QuizResultAdmin(PortalModelAdmin):
         'quiz__topic',
     )
     autocomplete_fields = ('student', 'quiz')
+    list_select_related = ('student__user', 'quiz', 'quiz__category')
     readonly_fields = ('completed_at',)
     date_hierarchy = 'completed_at'
     ordering = ('-completed_at', 'id')
