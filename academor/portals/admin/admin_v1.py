@@ -50,6 +50,11 @@ from portals.utils.portal_services import (
 )
 from portals.models.score_models import WEEKLY_SCORE_MAX
 from portals.models import (
+    QuizResultReview,
+    PortalNotification,
+    IeltsMockTestAttempt,
+    SpeakingRecording,
+    LessonAttachment,
     Attendance,
     Classroom,
     Lesson,
@@ -1889,6 +1894,60 @@ class QuizResultAdmin(PortalModelAdmin):
         return f'{seconds}s'
 
 
+@admin.register(PortalNotification)
+class PortalNotificationAdmin(PortalModelAdmin):
+    list_display = ('id', 'kind', 'student', 'teacher', 'parent', 'is_read', 'created_at')
+    list_filter = ('kind', 'is_read')
+    list_select_related = (
+        'student__user',
+        'teacher__user',
+        'parent__user',
+        'quiz_result',
+        'ielts_mock_test',
+    )
+    search_fields = (
+        'student__user__username',
+        'teacher__user__username',
+        'parent__user__username',
+    )
+    readonly_fields = ('created_at',)
+    ordering = ('-created_at', '-id')
+
+
+@admin.register(QuizResultReview)
+class QuizResultReviewAdmin(PortalModelAdmin):
+    list_display = ('id', 'result', 'reviewer', 'score', 'reviewed_at')
+    list_select_related = ('result__student__user', 'result__quiz', 'reviewer__user')
+    search_fields = ('result__student__user__username', 'reviewer__user__username')
+    readonly_fields = ('reviewed_at',)
+    ordering = ('-reviewed_at', '-id')
+
+
+@admin.register(IeltsMockTestAttempt)
+class IeltsMockTestAttemptAdmin(PortalModelAdmin):
+    list_display = ('id', 'student', 'status', 'current_section', 'started_at', 'completed_at')
+    list_filter = ('status', 'current_section')
+    list_select_related = ('student__user',)
+    readonly_fields = ('started_at', 'completed_at')
+    ordering = ('-started_at', '-id')
+
+
+@admin.register(SpeakingRecording)
+class SpeakingRecordingAdmin(PortalModelAdmin):
+    list_display = ('id', 'question', 'result', 'duration_sec')
+    list_select_related = ('question', 'result__student__user', 'result__quiz')
+    ordering = ('-id',)
+
+
+@admin.register(LessonAttachment)
+class LessonAttachmentAdmin(PortalModelAdmin):
+    list_display = ('id', 'lesson', 'kind', 'file', 'video_url')
+    list_select_related = ('lesson', 'lesson__group')
+    list_filter = ('kind',)
+    search_fields = ('lesson__name',)
+    ordering = ('lesson_id', 'id')
+
+
 # ---------------------------------------------------------------------------
 # Admin sidebar order (portal app)
 # ---------------------------------------------------------------------------
@@ -1914,6 +1973,11 @@ PORTAL_MODEL_ORDER = {
     'Quiz': 100,
     'QuizQuestion': 110,
     'QuizResult': 120,
+    'PortalNotification': 125,
+    'QuizResultReview': 126,
+    'IeltsMockTestAttempt': 127,
+    'SpeakingRecording': 128,
+    'LessonAttachment': 129,
 }
 
 
