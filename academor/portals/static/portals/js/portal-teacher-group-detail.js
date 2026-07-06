@@ -87,6 +87,11 @@
     });
 
     root.addEventListener("click", function (event) {
+      if (event.target.closest("[data-portal-print]")) {
+        event.preventDefault();
+        window.print();
+        return;
+      }
       var exportBtn = event.target.closest("[data-portal-export-students]");
       if (exportBtn) {
         event.preventDefault();

@@ -1,7 +1,11 @@
-{% extends "portals/base.html" %}
+﻿{% extends "portals/base.html" %}
 {% load i18n portal_tags static %}
 
 {% block title %}{{ group.name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'portals/css/portal-teacher-group-detail.css' %}">
+{% endblock %}
 
 {% block extra_js %}
 <script src="{% static 'portals/js/portal-teacher-group-detail.js' %}"></script>
@@ -69,7 +73,7 @@
       </div>
       <div class="portal-info-content">
         <span class="portal-info-label">{% trans 'Course' %}</span>
-        <span class="portal-info-value">{{ group.course_type_label|default:"—" }}</span>
+        <span class="portal-info-value">{{ group.course_type_label|default:"â€”" }}</span>
       </div>
     </div>
   </div>
@@ -96,15 +100,15 @@
     </div>
   </div>
   <div class="col-md-3">
-    <div class="portal-info-card clickable" onclick="window.location.href='{% url 'portals:teacher-schedule' %}'">
+    <a href="{% url 'portals:teacher-schedule' %}" class="portal-info-card portal-info-card--link text-decoration-none">
       <div class="portal-info-icon accent">
         <i class="bi bi-calendar-check"></i>
       </div>
       <div class="portal-info-content">
         <span class="portal-info-label">{% trans 'Attendance' %}</span>
-        <span class="portal-info-action">{% trans 'Mark now →' %}</span>
+        <span class="portal-info-action">{% trans 'Mark now â†’' %}</span>
       </div>
-    </div>
+    </a>
   </div>
 </section>
 
@@ -124,16 +128,16 @@
             <input type="text" id="student-search" placeholder="{% trans 'Search students...' %}">
           </div>
           <div class="dropdown">
-            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-              <i class="bi bi-download"></i>
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-label="{% trans 'Export students' %}">
+              <i class="bi bi-download" aria-hidden="true"></i>
             </button>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="#" data-portal-export-students="csv">
                 <i class="bi bi-file-earmark-spreadsheet me-2"></i>{% trans 'CSV' %}
               </a></li>
-              <li><a class="dropdown-item" href="#" onclick="window.print()">
+              <li><button type="button" class="dropdown-item" data-portal-print>
                 <i class="bi bi-printer me-2"></i>{% trans 'Print' %}
-              </a></li>
+              </button></li>
             </ul>
           </div>
         </div>
@@ -146,7 +150,7 @@
             {% include "portals/includes/avatar.html" with photo_url=s.photo_url name=s.full_name initials=s.full_name size_class="avatar-md" %}
             <div class="portal-student-info">
               <span class="portal-student-name">{{ s.full_name }}</span>
-              <span class="portal-student-phone">{{ s.phone|default:"—" }}</span>
+              <span class="portal-student-phone">{{ s.phone|default:"â€”" }}</span>
             </div>
           </a>
           <div class="portal-student-actions">
@@ -217,373 +221,6 @@
   </div>
 </section>
 
-<style>
-/* Group Detail Specific Styles */
-.portal-breadcrumb {
-  font-size: 0.85rem;
-}
-
-.portal-breadcrumb .breadcrumb {
-  margin: 0;
-  padding: 0;
-  background: none;
-}
-
-.portal-breadcrumb a {
-  color: var(--admin-muted);
-  text-decoration: none;
-}
-
-.portal-breadcrumb a:hover {
-  color: var(--admin-accent);
-}
-
-/* Toolbar */
-.portal-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.875rem 1rem;
-  background: var(--admin-surface);
-  border: 1px solid var(--admin-border);
-  border-radius: 12px;
-}
-
-.portal-toolbar-left,
-.portal-toolbar-right {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.portal-toolbar-stat {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: 0.85rem;
-  color: var(--admin-muted);
-  padding: 0.35rem 0.75rem;
-  background: var(--admin-surface-soft);
-  border-radius: 20px;
-}
-
-.portal-toolbar-stat strong {
-  color: var(--admin-text);
-}
-
-/* Info Cards */
-.portal-info-card {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1.25rem;
-  background: var(--admin-surface);
-  border: 1px solid var(--admin-border);
-  border-radius: 14px;
-  transition: all 0.2s ease;
-}
-
-.portal-info-card.clickable {
-  cursor: pointer;
-}
-
-.portal-info-card.clickable:hover {
-  border-color: var(--admin-accent);
-  box-shadow: var(--admin-shadow-sm);
-}
-
-.portal-info-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  color: white;
-  flex-shrink: 0;
-}
-
-.portal-info-icon.primary { background: var(--admin-primary); }
-.portal-info-icon.success { background: var(--admin-success); }
-.portal-info-icon.warning { background: var(--admin-warning); }
-.portal-info-icon.accent { background: var(--admin-accent); }
-
-.portal-info-content {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.portal-info-label {
-  font-size: 0.8rem;
-  color: var(--admin-muted);
-  font-weight: 600;
-}
-
-.portal-info-value {
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: var(--admin-text);
-}
-
-.portal-info-action {
-  font-size: 0.85rem;
-  color: var(--admin-accent);
-  font-weight: 700;
-}
-
-/* Content Panel */
-.portal-content-panel {
-  background: var(--admin-surface);
-  border: 1px solid var(--admin-border);
-  border-radius: 14px;
-  overflow: hidden;
-  height: 100%;
-}
-
-.portal-panel-header {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1rem 1.25rem;
-  background: var(--admin-surface-soft);
-  border-bottom: 1px solid var(--admin-border);
-}
-
-.portal-header-title {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.portal-header-title i {
-  font-size: 1.25rem;
-  color: var(--admin-accent);
-}
-
-.portal-header-title h2 {
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: 700;
-}
-
-.portal-count {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 28px;
-  height: 28px;
-  padding: 0 0.6rem;
-  background: var(--admin-accent);
-  color: white;
-  font-size: 0.8rem;
-  font-weight: 700;
-  border-radius: 14px;
-}
-
-.portal-header-actions {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.portal-search-input {
-  position: relative;
-}
-
-.portal-search-input i {
-  position: absolute;
-  left: 0.75rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--admin-muted);
-  font-size: 0.8rem;
-}
-
-.portal-search-input input {
-  padding: 0.5rem 0.75rem 0.5rem 2rem;
-  border: 1px solid var(--admin-border);
-  border-radius: 8px;
-  font-size: 0.85rem;
-  width: 180px;
-}
-
-/* Student List */
-.portal-student-list {
-  max-height: 400px;
-  overflow-y: auto;
-}
-
-.portal-student-item {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem 1.25rem;
-  border-bottom: 1px solid var(--admin-border);
-  transition: background 0.15s ease;
-}
-
-.portal-student-item:hover {
-  background: var(--admin-surface-soft);
-}
-
-.portal-student-item:last-child {
-  border-bottom: none;
-}
-
-.portal-student-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.portal-student-name {
-  font-weight: 600;
-  color: var(--admin-text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.portal-student-phone {
-  font-size: 0.8rem;
-  color: var(--admin-muted);
-}
-
-.portal-student-actions {
-  opacity: 0;
-  transition: opacity 0.15s ease;
-}
-
-.portal-student-item:hover .portal-student-actions {
-  opacity: 1;
-}
-
-/* Schedule List */
-.portal-schedule-list {
-  max-height: 400px;
-  overflow-y: auto;
-}
-
-.portal-schedule-item {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem 1.25rem;
-  border-bottom: 1px solid var(--admin-border);
-  transition: background 0.15s ease;
-}
-
-.portal-schedule-item:hover {
-  background: var(--admin-surface-soft);
-}
-
-.portal-schedule-item:last-child {
-  border-bottom: none;
-}
-
-.portal-schedule-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: var(--admin-surface-soft);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--admin-accent);
-  font-size: 1.25rem;
-  flex-shrink: 0;
-}
-
-.portal-schedule-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.portal-schedule-day {
-  font-weight: 700;
-  color: var(--admin-text);
-}
-
-.portal-schedule-time {
-  font-size: 0.85rem;
-  color: var(--admin-muted);
-}
-
-.portal-schedule-location {
-  font-size: 0.8rem;
-  color: var(--admin-muted);
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  margin-top: 0.25rem;
-}
-
-.portal-schedule-location i {
-  font-size: 0.75rem;
-}
-
-.portal-schedule-actions {
-  display: flex;
-  gap: 0.35rem;
-  opacity: 0;
-  transition: opacity 0.15s ease;
-}
-
-.portal-schedule-item:hover .portal-schedule-actions {
-  opacity: 1;
-}
-
-/* Empty List State */
-.portal-empty-list {
-  text-align: center;
-  padding: 3rem 1.5rem;
-  color: var(--admin-muted);
-}
-
-.portal-empty-list i {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  display: block;
-  opacity: 0.5;
-}
-
-.portal-empty-list p {
-  margin: 0 0 0.5rem;
-  font-weight: 600;
-}
-
-/* Icon Button */
-.btn-icon {
-  width: 34px;
-  height: 34px;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-}
-
-@media (max-width: 768px) {
-  .portal-student-actions,
-  .portal-schedule-actions {
-    opacity: 1;
-  }
-
-  .portal-search-input input {
-    width: 140px;
-  }
-}
-</style>
 </div>
 
 {% endblock %}
