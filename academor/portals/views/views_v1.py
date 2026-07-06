@@ -289,7 +289,6 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
         attendance_detail = get_teacher_student_attendance_detail(profile.pk, student_pk)
         quiz_average = compute_quiz_average_stats(quiz_results)
         weekly_scores = get_teacher_student_weekly_scores(profile.pk, student_pk)
-        weekly_average = compute_weekly_average_stats(weekly_scores)
         return _portal_context(
             request,
             teacher=serialize_teacher(profile),
@@ -303,7 +302,6 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
             daily_score_history=daily_score_history,
             stats=_teacher_student_profile_stats(quiz_results, scores, daily_score_history),
             quiz_average=quiz_average,
-            weekly_average=weekly_average,
             attendance_summary=attendance_detail['summary'] if attendance_detail else None,
             attendance_records=attendance_detail['records'] if attendance_detail else [],
             weekly_scores=weekly_scores,
@@ -373,7 +371,6 @@ class TeacherScoresListView(TeacherRequiredMixin, View):
                 score_groups=score_group_tabs,
                 active_score_group=resolve_score_group_param(request, score_group_tabs),
                 total_score_count=grouped['total_score_count'],
-                weekly_average=compute_weekly_average_stats(weekly_scores),
             ),
         )
 

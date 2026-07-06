@@ -8278,6 +8278,12 @@ msgid "Hələlik qrup yoxdur."
 msgstr ""
 
 #: academor/templates/portals/teacher/group_detail.html:37
+msgid "lessons per week"
+msgstr "həftədə dərs"
+
+msgid "Lessons per week"
+msgstr "Həftədə dərs sayı"
+
 msgid "schedule slots"
 msgstr "cədvəl slotu"
 

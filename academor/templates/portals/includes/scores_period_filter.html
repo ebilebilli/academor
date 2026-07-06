@@ -28,28 +28,33 @@
       <i class="ti ti-users-group" aria-hidden="true"></i>
       {% trans 'Qrup' %}
     </span>
-    <nav class="weekly-scores-groups weekly-scores-groups--inline" aria-label="{% trans 'Qrup filteri' %}" data-score-group-filter>
-      <div class="weekly-scores-groups__scroll">
-        <button
-          type="button"
-          class="weekly-scores-group-chip{% if active_score_group == 'all' %} is-active{% endif %}"
-          data-score-group="all"
-        >
-          {% trans 'Hamısı' %}
-          <span class="weekly-scores-group-chip__meta" data-score-group-count>{{ total_score_count|default:0 }}</span>
-        </button>
-        {% for group in score_groups %}
-        <button
-          type="button"
-          class="weekly-scores-group-chip{% if active_score_group == group.id|stringformat:'s' %} is-active{% endif %}"
-          data-score-group="{{ group.id }}"
-        >
-          {{ group.name }}
-          <span class="weekly-scores-group-chip__meta" data-score-group-count>{{ group.total_count }}</span>
-        </button>
-        {% endfor %}
-      </div>
-    </nav>
+    <div
+      class="s-lessons-filter-panel__tabs s-lessons-filter-panel__tabs--seg"
+      data-score-group-filter
+      role="group"
+      aria-label="{% trans 'Qrup filteri' %}"
+    >
+      <button
+        type="button"
+        class="s-filter-tab{% if active_score_group == 'all' %} is-active{% endif %}"
+        data-score-group="all"
+        aria-selected="{% if active_score_group == 'all' %}true{% else %}false{% endif %}"
+      >
+        {% trans 'Hamısı' %}
+        <span class="s-filter-tab__badge" data-score-group-count>{{ total_score_count|default:0 }}</span>
+      </button>
+      {% for group in score_groups %}
+      <button
+        type="button"
+        class="s-filter-tab{% if active_score_group == group.id|stringformat:'s' %} is-active{% endif %}"
+        data-score-group="{{ group.id }}"
+        aria-selected="{% if active_score_group == group.id|stringformat:'s' %}true{% else %}false{% endif %}"
+      >
+        {{ group.name }}
+        <span class="s-filter-tab__badge" data-score-group-count>{{ group.total_count }}</span>
+      </button>
+      {% endfor %}
+    </div>
   </div>
   {% endif %}
 </section>

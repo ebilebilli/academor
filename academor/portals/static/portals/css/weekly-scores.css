@@ -200,8 +200,9 @@
   align-items: flex-start;
 }
 
-.s-lessons-filter-panel__row--group .weekly-scores-groups--inline {
-  margin-top: -0.1rem;
+.s-lessons-filter-panel__row--group .s-lessons-filter-panel__tabs--seg {
+  flex: 1;
+  min-width: 0;
 }
 
 .weekly-scores-group-chip {

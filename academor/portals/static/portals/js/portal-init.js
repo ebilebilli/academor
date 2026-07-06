@@ -635,9 +635,7 @@
     if (!activeChip) {
       return;
     }
-    groupNav.querySelectorAll("[data-score-group]").forEach(function (btn) {
-      btn.classList.toggle("is-active", btn === activeChip);
-    });
+    setActiveTab(groupNav, activeChip, "data-score-group");
   }
 
   function handleScoreGroupClick(event) {
