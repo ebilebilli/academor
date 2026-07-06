@@ -84,9 +84,9 @@ class Quiz(models.Model):
     )
     is_listening = models.BooleanField(
         default=False,
-        verbose_name=_('Listening (manual review)'),
+        verbose_name=_('Listening (auto-scored)'),
         help_text=_(
-            'Teacher reviews the submission and writes feedback. '
+            'Multiple-choice listening quiz scored automatically when the student submits. '
             'No multiple-choice variants — only one manual mode can be active.',
         ),
     )
@@ -512,7 +512,7 @@ class QuizResult(models.Model):
     )
     ielts_mock_attempt = models.ForeignKey(
         'IeltsMockTestAttempt',
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name='section_results',
