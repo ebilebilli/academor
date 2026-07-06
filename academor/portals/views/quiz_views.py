@@ -47,6 +47,14 @@ from portals.views.mixins import StudentQuizTakeRequiredMixin, TeacherRequiredMi
 from portals.views.views_v1 import _portal_context
 
 
+def _parse_duration_sec(value) -> int:
+    """Client-supplied duration; malformed values must not 500 the submit."""
+    try:
+        return max(0, int(value or 0))
+    except (TypeError, ValueError):
+        return 0
+
+
 def _quiz_back_url(quiz: dict) -> str:
     category_pk = quiz.get('category_id')
     if category_pk is not None:
@@ -376,7 +384,7 @@ class StudentQuizSubmitView(StudentQuizTakeRequiredMixin, View):
             student_id=profile.pk,
             quiz_id=pk,
             given_answers=payload.get('answers') or {},
-            duration_sec=int(payload.get('duration_sec') or 0),
+            duration_sec=_parse_duration_sec(payload.get('duration_sec')),
             session_started_at=session_started_at,
             completion_trigger=payload.get('completion_trigger'),
         )
@@ -413,7 +421,7 @@ class StudentReadingQuizSubmitView(StudentQuizTakeRequiredMixin, View):
             student_id=profile.pk,
             quiz_id=pk,
             given_answers=payload.get('answers') or {},
-            duration_sec=int(payload.get('duration_sec') or 0),
+            duration_sec=_parse_duration_sec(payload.get('duration_sec')),
             session_started_at=session_started_at,
             completion_trigger=payload.get('completion_trigger'),
             **_mock_submit_kwargs(request, payload),
@@ -450,7 +458,7 @@ class StudentManualQuizSubmitView(StudentQuizTakeRequiredMixin, View):
                 quiz_id=pk,
                 given_answers=payload.get('answers') or {},
                 ordered_answers=payload.get('ordered_answers'),
-                duration_sec=int(payload.get('duration_sec') or 0),
+                duration_sec=_parse_duration_sec(payload.get('duration_sec')),
                 session_started_at=session_started_at,
                 allow_empty_submission=bool(payload.get('allow_empty')),
                 completion_trigger=payload.get('completion_trigger'),
@@ -498,7 +506,7 @@ class StudentManualQuizSubmitView(StudentQuizTakeRequiredMixin, View):
             student_submission=payload.get('submission') or '',
             given_answers=payload.get('answers') or {},
             ordered_answers=payload.get('ordered_answers'),
-            duration_sec=int(payload.get('duration_sec') or 0),
+            duration_sec=_parse_duration_sec(payload.get('duration_sec')),
             session_started_at=session_started_at,
             allow_empty_submission=bool(payload.get('allow_empty')),
             completion_trigger=payload.get('completion_trigger'),
@@ -552,10 +560,7 @@ class StudentSpeakingQuizSubmitView(StudentQuizTakeRequiredMixin, View):
                     except (TypeError, ValueError):
                         recording_durations[question_id] = 0
 
-        try:
-            duration_sec = int(request.POST.get('duration_sec') or 0)
-        except (TypeError, ValueError):
-            duration_sec = 0
+        duration_sec = _parse_duration_sec(request.POST.get('duration_sec'))
 
         result = submit_speaking_quiz_attempt(
             student_id=profile.pk,
