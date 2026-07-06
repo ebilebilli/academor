@@ -50,21 +50,6 @@ def _teacher_ids_for_quiz_result(result: QuizResult) -> set[int]:
     return teacher_ids
 
 
-def _teacher_ids_for_mock_attempt(attempt) -> set[int]:
-    slugs = expand_course_types_to_service_slugs(['ielts'])
-    if not slugs:
-        return set()
-    return set(
-        StudyGroup.objects.filter(
-            students__pk=attempt.student_id,
-            is_active=True,
-            courses__slug__in=slugs,
-        )
-        .values_list('teacher_id', flat=True)
-        .distinct()
-    )
-
-
 def create_mock_test_completed_notifications(attempt) -> None:
     """Mock manual sections use the standard teacher review queue, not the bell."""
     return

@@ -1180,18 +1180,6 @@ def serialize_quiz_result_as_score(row):
     }
 
 
-def _merge_student_scores(quiz_rows, admin_rows, limit=200):
-    merged = []
-    for row in quiz_rows:
-        merged.append({**row, 'sort_date': row.get('date')})
-    for row in admin_rows:
-        merged.append({**row, 'sort_date': row.get('date')})
-    merged.sort(key=lambda item: item.get('sort_date') or '', reverse=True)
-    for row in merged:
-        row.pop('sort_date', None)
-    return merged[:limit]
-
-
 def _quiz_results_queryset():
     return (
         QuizResult.objects.select_related('student', 'quiz')
@@ -2159,16 +2147,6 @@ def get_student_quizzes(student_id):
 
 
 @cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
-def get_student_admin_scores(student_id):
-    admin_qs = (
-        Score.objects.filter(student_id=student_id)
-        .select_related('student', 'lesson')
-        .order_by('-date', '-id')
-    )
-    return [serialize_score(row) for row in admin_qs[:200]]
-
-
-@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_student_attendance_detail(student_id):
     """Attendance summary for a student's own profile."""
     return get_parent_child_attendance_detail(student_id)
@@ -2218,10 +2196,6 @@ def get_parent_child_attendance(student_id):
         .order_by('-session_date', '-marked_at')[:200]
     )
     return [serialize_attendance(row) for row in qs]
-
-
-def get_parent_child_scores(student_id):
-    return get_student_admin_scores(student_id)
 
 
 def get_student_quiz_results(student_id, *, quiz_ids=None):
