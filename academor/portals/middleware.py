@@ -90,12 +90,19 @@ class PortalFragmentMiddleware:
                 response.content = fragment.encode(charset)
                 if 'Content-Length' in response:
                     response['Content-Length'] = str(len(response.content))
-        except Exception:
-            pass
+        except Exception as exc:
+            import logging
+
+            logging.getLogger('portals.fragment').warning(
+                'Portal fragment extraction failed: %s',
+                exc,
+                exc_info=True,
+            )
         return response
 
 
-# DEPRECATED: No longer needed with separate cookies
+# DEPRECATED: No longer needed with separate cookies — kept only so old
+# settings imports do not break; remove once confirmed unused in all envs.
 class AuthRealmIsolationMiddleware:
     """
     DEPRECATED: Separate cookies make this unnecessary.
