@@ -412,9 +412,145 @@ a:hover { color: var(--color-role-dark); }
 }
 
 .admin-navbar .profile-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: auto;
-  padding: 4px 12px 4px 4px;
+  height: auto;
+  min-height: 40px;
+  padding: 4px 10px;
   gap: var(--space-2);
+}
+
+.admin-navbar .profile-dropdown {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.admin-navbar .portal-lang-dropdown {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.admin-navbar .portal-lang-dropdown .icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  width: auto;
+  height: 40px;
+  padding-inline: 10px;
+  gap: 2px;
+}
+
+.admin-navbar .portal-lang-dropdown .icon-button.dropdown-toggle::after {
+  display: inline-block;
+  flex-shrink: 0;
+  margin-left: 2px;
+  vertical-align: middle;
+  border-top-color: rgba(255, 255, 255, 0.9) !important;
+  transition: transform var(--transition-fast);
+}
+
+.admin-navbar .portal-lang-dropdown.show .icon-button.dropdown-toggle::after,
+.admin-navbar .portal-lang-dropdown .icon-button.dropdown-toggle[aria-expanded="true"]::after {
+  transform: rotate(180deg);
+}
+
+.admin-navbar .profile-dropdown .profile-button.dropdown-toggle::after {
+  display: inline-block;
+  flex-shrink: 0;
+  margin-left: 2px;
+  vertical-align: middle;
+  border-top-color: rgba(255, 255, 255, 0.9) !important;
+  transition: transform var(--transition-fast);
+}
+
+.admin-navbar .profile-dropdown.show .profile-button.dropdown-toggle::after,
+.admin-navbar .profile-button.dropdown-toggle[aria-expanded="true"]::after {
+  transform: rotate(180deg);
+}
+
+.admin-navbar .dropdown-menu {
+  --bs-dropdown-bg: var(--color-surface);
+  --bs-dropdown-color: var(--color-text);
+  --bs-dropdown-border-color: var(--color-border);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text) !important;
+  box-shadow: var(--shadow-md);
+  z-index: calc(var(--z-sidebar) + 2);
+}
+
+.admin-navbar .profile-dropdown > .dropdown-menu {
+  --bs-dropdown-min-width: 100%;
+  min-width: 100%;
+  width: 100%;
+  margin-top: var(--space-1);
+  padding: 3px;
+  border-radius: var(--radius-md);
+}
+
+.admin-navbar .portal-lang-dropdown > .dropdown-menu {
+  --bs-dropdown-min-width: 100%;
+  min-width: 100%;
+  width: 100%;
+  margin-top: var(--space-1);
+  padding: 3px;
+  border-radius: var(--radius-md);
+}
+
+.admin-navbar .profile-dropdown > .dropdown-menu.portal-dropdown-menu,
+.admin-navbar .portal-lang-dropdown > .dropdown-menu.portal-dropdown-menu {
+  min-width: 100%;
+  padding: 3px;
+}
+
+.admin-navbar .profile-dropdown > .dropdown-menu .dropdown-item:hover,
+.admin-navbar .profile-dropdown > .dropdown-menu .dropdown-item:focus,
+.admin-navbar .portal-lang-dropdown > .dropdown-menu .dropdown-item:hover,
+.admin-navbar .portal-lang-dropdown > .dropdown-menu .dropdown-item:focus {
+  transform: none;
+}
+
+.admin-navbar .dropdown-menu .dropdown-item {
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-sm);
+  padding: 5px 10px;
+  min-height: 30px;
+  font-size: var(--text-sm);
+  color: var(--color-text) !important;
+  white-space: nowrap;
+}
+
+.admin-navbar .portal-lang-dropdown .portal-lang-option {
+  justify-content: center;
+  text-align: center;
+  padding: 5px 8px;
+  min-height: 28px;
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  letter-spacing: 0.06em;
+}
+
+.admin-navbar .dropdown-menu .dropdown-item .ti {
+  color: var(--color-text-muted) !important;
+}
+
+.admin-navbar .dropdown-menu .dropdown-item:hover,
+.admin-navbar .dropdown-menu .dropdown-item:focus,
+.admin-navbar .dropdown-menu .dropdown-item:active {
+  background: var(--color-surface-muted);
+  color: var(--color-text) !important;
+}
+
+.admin-navbar .dropdown-menu .dropdown-divider {
+  border-color: var(--color-border);
+  margin: 3px 0;
 }
 
 .admin-navbar .icon-button .ti,
@@ -1479,6 +1615,16 @@ a:hover { color: var(--color-role-dark); }
 }
 
 /* ── Responsive refinements ───────────────────────────────────────────── */
+@media (max-width: 767.98px) {
+  .admin-navbar .profile-button {
+    width: auto;
+    height: auto;
+    min-width: 40px;
+    min-height: 40px;
+    padding: 4px;
+  }
+}
+
 @media (max-width: 639px) {
   body { font-size: max(14px, var(--font-base)); }
 

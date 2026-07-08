@@ -34,15 +34,6 @@
       role="group"
       aria-label="{% trans 'Qrup filteri' %}"
     >
-      <button
-        type="button"
-        class="s-filter-tab{% if active_score_group == 'all' %} is-active{% endif %}"
-        data-score-group="all"
-        aria-selected="{% if active_score_group == 'all' %}true{% else %}false{% endif %}"
-      >
-        {% trans 'Hamısı' %}
-        <span class="s-filter-tab__badge" data-score-group-count>{{ total_score_count|default:0 }}</span>
-      </button>
       {% for group in score_groups %}
       <button
         type="button"

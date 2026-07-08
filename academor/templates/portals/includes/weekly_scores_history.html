@@ -25,15 +25,15 @@
       <tbody>
         {% for row in weekly_scores %}
         <tr>
-          <td class="fw-500">{% portal_week_label row.week_start row.week_end %}</td>
+          <td class="fw-500" data-label="{% trans 'Həftə' %}">{% portal_week_label row.week_start row.week_end %}</td>
           {% if show_teacher_column %}
-          <td>{{ row.teacher_name|default:"—" }}</td>
+          <td data-label="{% trans 'Müəllim' %}">{{ row.teacher_name|default:"—" }}</td>
           {% endif %}
-          <td>
+          <td data-label="{% trans 'Bal' %}">
             <span class="weekly-scores-pill">{{ row.score|format_quiz_score }}/{{ row.max_score|format_quiz_score }}</span>
           </td>
-          <td class="text-muted small">{{ row.comment|default:"—" }}</td>
-          <td class="text-muted small">{{ row.updated_at|portal_datetime }}</td>
+          <td class="text-muted small" data-label="{% trans 'Şərh' %}">{{ row.comment|default:"—" }}</td>
+          <td class="text-muted small" data-label="{% trans 'Yenilənib' %}">{{ row.updated_at|portal_datetime }}</td>
         </tr>
         {% endfor %}
       </tbody>

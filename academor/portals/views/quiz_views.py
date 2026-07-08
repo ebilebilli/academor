@@ -62,6 +62,30 @@ def _quiz_back_url(quiz: dict) -> str:
     return reverse('portals:student-quizzes')
 
 
+def _deny_locked_standalone_quiz(request, student_id: int, quiz_id: int, *, mock_id=None):
+    """Redirect locked quizzes back to the category with a clear message."""
+    from portals.models import Quiz
+    from portals.utils.student_courses import quiz_visible_to_student, student_quiz_enrollment_ok
+
+    if mock_id:
+        return None
+
+    quiz = Quiz.objects.filter(pk=quiz_id).select_related('category').first()
+    if not quiz or not student_quiz_enrollment_ok(student_id, quiz):
+        raise Http404
+    if quiz_visible_to_student(quiz, student_id):
+        return None
+
+    messages.warning(
+        request,
+        _('Bu quiz hazırda bağlıdır. Açılması üçün təlimçi ilə danışın.'),
+    )
+    category_pk = quiz.category_id
+    if category_pk:
+        return redirect('portals:student-quiz-category', category_pk=category_pk)
+    return redirect('portals:student-quizzes')
+
+
 def _mock_context_for_take(request, profile_id: int, quiz_id: int) -> dict:
     mock_id = parse_mock_attempt_id(request.GET.get('mock'))
     return resolve_mock_take_request(profile_id, mock_id, quiz_id)
@@ -191,6 +215,9 @@ class StudentQuizTakeView(StudentQuizTakeRequiredMixin, View):
         profile = get_student_profile(request.portal_user)
         quiz = get_student_quiz_take_data(profile.pk, pk)
         if not quiz:
+            denied = _deny_locked_standalone_quiz(request, profile.pk, pk)
+            if denied:
+                return denied
             raise Http404
 
         return render(
@@ -214,6 +241,9 @@ class StudentReadingQuizTakeView(StudentQuizTakeRequiredMixin, View):
         mock_id = parse_mock_attempt_id(request.GET.get('mock'))
         quiz = get_student_reading_quiz_take_data(profile.pk, pk, mock_attempt_id=mock_id)
         if not quiz:
+            denied = _deny_locked_standalone_quiz(request, profile.pk, pk, mock_id=mock_id)
+            if denied:
+                return denied
             raise Http404
 
         mock_ctx = _mock_context_for_take(request, profile.pk, pk)
@@ -243,6 +273,9 @@ class StudentSpeakingQuizTakeView(StudentQuizTakeRequiredMixin, View):
         mock_id = parse_mock_attempt_id(request.GET.get('mock'))
         quiz = get_student_speaking_quiz_take_data(profile.pk, pk, mock_attempt_id=mock_id)
         if not quiz:
+            denied = _deny_locked_standalone_quiz(request, profile.pk, pk, mock_id=mock_id)
+            if denied:
+                return denied
             raise Http404
 
         mock_ctx = _mock_context_for_take(request, profile.pk, pk)
@@ -274,6 +307,9 @@ class StudentManualQuizTakeView(StudentQuizTakeRequiredMixin, View):
         if not quiz:
             quiz = get_student_manual_quiz_take_data(profile.pk, pk, mock_attempt_id=mock_id)
         if not quiz:
+            denied = _deny_locked_standalone_quiz(request, profile.pk, pk, mock_id=mock_id)
+            if denied:
+                return denied
             raise Http404
 
         mock_ctx = _mock_context_for_take(request, profile.pk, pk)

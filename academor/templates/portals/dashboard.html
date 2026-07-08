@@ -4,6 +4,7 @@
 {% block title %}{% trans 'Portal' %}{% endblock %}
 
 {% block content %}
+{% include "portals/includes/portal_portal_banner.html" with banner_centered=True %}
 {% portal_page_heading icon="bi-exclamation-circle" eyebrow="Account" title="Portal access" subtitle="Your account is not linked to a teacher, student, or parent profile yet." %}
 
 <section class="panel">

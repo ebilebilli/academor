@@ -66,6 +66,7 @@ from portals.models import (
     ReadingQuestionGroup,
     ParentProfile,
     Quiz,
+    QuizAssignment,
     QuizCategory,
     QuizQuestion,
     QuizResult,
@@ -1913,6 +1914,35 @@ class PortalNotificationAdmin(PortalModelAdmin):
     )
     readonly_fields = ('created_at',)
     ordering = ('-created_at', '-id')
+
+
+@admin.register(QuizAssignment)
+class QuizAssignmentAdmin(PortalModelAdmin):
+    list_display = ('student_display', 'quiz_display', 'is_active', 'assigned_by_display', 'assigned_at')
+    list_filter = ('is_active', 'quiz__category__service')
+    list_select_related = ('student__user', 'quiz__category', 'assigned_by__user')
+    search_fields = (
+        'student__user__username',
+        'quiz__topic',
+        'assigned_by__user__username',
+    )
+    autocomplete_fields = ('student', 'quiz', 'assigned_by')
+    list_editable = ('is_active',)
+    ordering = ('-assigned_at', '-id')
+
+    @admin.display(description=_('Student'), ordering='student__user__username')
+    def student_display(self, obj):
+        return portal_person_cell(obj.student)
+
+    @admin.display(description=_('Quiz'), ordering='quiz__topic')
+    def quiz_display(self, obj):
+        return obj.quiz.topic if obj.quiz_id else '—'
+
+    @admin.display(description=_('Assigned by'), ordering='assigned_by__user__username')
+    def assigned_by_display(self, obj):
+        if not obj.assigned_by_id:
+            return '—'
+        return portal_person_cell(obj.assigned_by)
 
 
 @admin.register(QuizResultReview)

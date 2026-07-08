@@ -73,11 +73,16 @@ def portal_student_service_context(request):
 
     from portals.utils.queries import get_portal_role, get_student_profile
     from portals.utils.ielts_mock_test import student_can_access_ielts_mock
+    from portals.utils.student_courses import student_has_course_access
 
     role = get_portal_role(request.portal_user)
     if role != 'student':
-        return {'portal_student_has_ielts': False}
+        return {'portal_student_has_ielts': False, 'portal_student_mock_unlocked': False}
     profile = get_student_profile(request.portal_user)
     if not profile:
-        return {'portal_student_has_ielts': False}
-    return {'portal_student_has_ielts': student_can_access_ielts_mock(profile.pk)}
+        return {'portal_student_has_ielts': False, 'portal_student_mock_unlocked': False}
+    # Show Mock nav for IELTS enrollments even when teacher has locked start access.
+    return {
+        'portal_student_has_ielts': student_has_course_access(profile.pk, 'ielts'),
+        'portal_student_mock_unlocked': student_can_access_ielts_mock(profile.pk),
+    }

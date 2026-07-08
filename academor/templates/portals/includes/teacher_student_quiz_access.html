@@ -1,0 +1,136 @@
+{% load i18n %}
+<div
+  class="portal-quiz-access-panel"
+  data-quiz-access-panel
+  data-student-id="{{ student.id }}"
+  aria-label="{% trans 'Quiz icazələri' %}"
+>
+  <p class="text-muted small mb-3">
+    {% trans 'Hansı quizlərin bu şagird üçün aktiv olacağını buradan idarə edin. Bağlı quizlər şagirdə kilid kimi görünür.' %}
+  </p>
+
+  {% if mock_access is not None %}
+  <section class="portal-quiz-access-mock mb-4" data-mock-access-panel>
+    <div class="portal-quiz-access-mock__row">
+      <div>
+        <h3 class="h6 mb-1">{% trans 'IELTS Mock Test' %}</h3>
+        <p class="text-muted small mb-0">
+          {% trans 'Mock aktiv olanda tələbə IELTS mock testə başlaya bilir.' %}
+        </p>
+      </div>
+      <div class="form-check form-switch mb-0">
+        <input
+          class="form-check-input portal-quiz-access-toggle"
+          type="checkbox"
+          role="switch"
+          id="mock-access-{{ student.id }}"
+          data-mock-access-toggle
+          data-toggle-url="{% url 'portals:teacher-mock-access-toggle' student_pk=student.id %}"
+          {% if mock_access.is_active %}checked{% endif %}
+        >
+        <label class="form-check-label" for="mock-access-{{ student.id }}">{% trans 'Mock aktiv' %}</label>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  {% if quiz_access_categories %}
+  <nav class="portal-quiz-access-cats" aria-label="{% trans 'Quiz kateqoriyaları' %}" data-quiz-access-cats>
+    <button
+      type="button"
+      class="portal-quiz-access-cat is-active"
+      data-quiz-access-cat="all"
+      aria-pressed="true"
+    >
+      <i class="ti ti-list-check" aria-hidden="true"></i>
+      <span>{% trans 'Hamısı' %}</span>
+      <em>{{ quiz_access_count|default:0 }}</em>
+    </button>
+    {% for category in quiz_access_categories %}
+    <button
+      type="button"
+      class="portal-quiz-access-cat"
+      data-quiz-access-cat="{{ category.id }}"
+      aria-pressed="false"
+    >
+      <i class="ti ti-category" aria-hidden="true"></i>
+      <span>{{ category.name }}</span>
+      <em>{{ category.quizzes|length }}</em>
+    </button>
+    {% endfor %}
+  </nav>
+
+    {% for category in quiz_access_categories %}
+    <section
+      class="portal-quiz-access-category mb-4"
+      data-quiz-access-category="{{ category.id }}"
+    >
+      <header class="portal-quiz-access-category__head mb-2">
+        <div class="portal-quiz-access-category__title">
+          <h3 class="h6 mb-0">{{ category.name }}</h3>
+          <span class="badge rounded-pill text-bg-light border">{{ category.service_label }}</span>
+        </div>
+        <div class="portal-quiz-access-category__actions">
+          <button
+            type="button"
+            class="ds-btn ds-btn--ghost btn-sm"
+            data-quiz-access-bulk="on"
+            data-quiz-access-bulk-category="{{ category.id }}"
+          >
+            {% trans 'Hamısını aç' %}
+          </button>
+          <button
+            type="button"
+            class="ds-btn ds-btn--ghost btn-sm"
+            data-quiz-access-bulk="off"
+            data-quiz-access-bulk-category="{{ category.id }}"
+          >
+            {% trans 'Hamısını bağla' %}
+          </button>
+        </div>
+      </header>
+      <div class="table-responsive">
+        <table class="t-table portal-quiz-access-table">
+          <thead>
+            <tr>
+              <th>{% trans 'Quiz' %}</th>
+              <th>{% trans 'Format' %}</th>
+              <th class="text-end">{% trans 'Aktiv' %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for quiz in category.quizzes %}
+            <tr data-quiz-access-row="{{ quiz.id }}">
+              <td>{{ quiz.topic }}</td>
+              <td><span class="badge rounded-pill text-bg-light border">{{ quiz.format_label }}</span></td>
+              <td class="text-end">
+                <div class="form-check form-switch d-inline-flex align-items-center justify-content-end mb-0">
+                  <input
+                    class="form-check-input portal-quiz-access-toggle"
+                    type="checkbox"
+                    role="switch"
+                    id="quiz-access-{{ student.id }}-{{ quiz.id }}"
+                    data-quiz-id="{{ quiz.id }}"
+                    data-toggle-url="{% url 'portals:teacher-quiz-assignment-toggle' student_pk=student.id quiz_pk=quiz.id %}"
+                    {% if quiz.is_active %}checked{% endif %}
+                  >
+                  <label class="form-check-label visually-hidden" for="quiz-access-{{ student.id }}-{{ quiz.id }}">
+                    {% trans 'Aktiv' %}
+                  </label>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+    {% endfor %}
+  {% else %}
+    <div class="portal-student-empty">
+      <div class="portal-student-empty-icon"><i class="ti ti-forms" aria-hidden="true"></i></div>
+      <h3>{% trans 'Təyin oluna bilən quiz yoxdur' %}</h3>
+      <p>{% trans 'Şagirdin aktiv kurs qeydiyyatı və ya uyğun quiz tapılmadı.' %}</p>
+    </div>
+  {% endif %}
+</div>

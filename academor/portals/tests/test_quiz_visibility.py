@@ -3,6 +3,7 @@ from django.test import TestCase
 
 from portals.models import (
     Quiz,
+    QuizAssignment,
     QuizCategory,
     QuizResult,
     StudentCourseSpecialization,
@@ -19,6 +20,7 @@ from portals.utils.queries import (
     get_teacher_scores,
 )
 from portals.utils.student_courses import (
+    get_student_course_type_codes,
     quiz_visible_to_student,
     quiz_visible_to_teacher,
     teacher_can_see_quiz_result,
@@ -99,6 +101,34 @@ class QuizVisibilityTests(TestCase):
             topic='Speaking Quiz 1',
         )
 
+        QuizAssignment.objects.create(
+            student=self.student,
+            quiz=self.ielts_quiz,
+            is_active=True,
+        )
+
+    def assign_student_quizzes(self, *quizzes, student=None, is_active=True):
+        target = student or self.student
+        for quiz in quizzes:
+            QuizAssignment.objects.update_or_create(
+                student=target,
+                quiz=quiz,
+                defaults={'is_active': is_active},
+            )
+
+    def assign_all_enrolled_quizzes(self, student=None):
+        target = student or self.student
+        codes = get_student_course_type_codes(target.pk)
+        if not codes:
+            return
+        for quiz in Quiz.objects.filter(category__service__in=codes):
+            self.assign_student_quizzes(quiz, student=target)
+
+    def test_student_without_assignment_cannot_see_quiz(self):
+        self.assertFalse(quiz_visible_to_student(self.ielts_quiz, self.other_student.pk))
+        quiz_ids = [q['id'] for q in get_student_quizzes(self.other_student.pk)]
+        self.assertNotIn(self.ielts_quiz.pk, quiz_ids)
+
     def test_student_sees_quiz_for_matching_service_enrollment(self):
         self.assertTrue(quiz_visible_to_student(self.ielts_quiz, self.student.pk))
         self.assertIn(self.ielts_quiz.pk, [q['id'] for q in get_student_quizzes(self.student.pk)])
@@ -114,6 +144,11 @@ class QuizVisibilityTests(TestCase):
             course_type='speaking',
             is_active=True,
         )
+        QuizAssignment.objects.create(
+            student=self.student,
+            quiz=self.speaking_quiz,
+            is_active=True,
+        )
         quiz_ids = [q['id'] for q in get_student_quizzes(self.student.pk)]
         self.assertIn(self.ielts_quiz.pk, quiz_ids)
         self.assertIn(self.speaking_quiz.pk, quiz_ids)
@@ -126,6 +161,17 @@ class QuizVisibilityTests(TestCase):
         self.assertFalse(quiz_visible_to_student(self.ielts_quiz, self.student.pk))
         quiz_ids = [q['id'] for q in get_student_quizzes(self.student.pk)]
         self.assertNotIn(self.ielts_quiz.pk, quiz_ids)
+
+    def test_inactive_assignment_hides_quiz(self):
+        QuizAssignment.objects.filter(
+            student=self.student,
+            quiz=self.ielts_quiz,
+        ).update(is_active=False)
+        self.assertFalse(quiz_visible_to_student(self.ielts_quiz, self.student.pk))
+        quizzes = get_student_quizzes_for_category(self.student.pk, self.ielts_category.pk)
+        self.assertEqual(len(quizzes), 1)
+        self.assertTrue(quizzes[0]['is_locked'])
+        self.assertFalse(quizzes[0]['is_unlocked'])
 
     def test_teacher_sees_quiz_for_assigned_service(self):
         self.assertTrue(quiz_visible_to_teacher(self.ielts_quiz, self.teacher.pk))

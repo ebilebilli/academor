@@ -25,6 +25,7 @@ from portals.models import (
     ParentProfile,
     PortalNotification,
     Quiz,
+    QuizAssignment,
     QuizCategory,
     QuizQuestion,
     QuizResult,
@@ -33,6 +34,7 @@ from portals.models import (
     Score,
     WeeklyStudentScore,
     StudentCourseSpecialization,
+    StudentMockAccess,
     StudentProfile,
     StudyGroup,
     TeacherProfile,
@@ -105,6 +107,7 @@ for _model in (
     WeeklyStudentScore,
     QuizCategory,
     Quiz,
+    QuizAssignment,
     QuizQuestion,
     QuizResult,
     PortalNotification,
@@ -114,6 +117,7 @@ for _model in (
     ReadingQuestion,
     ReadingQuestionGroup,
     IeltsMockTestAttempt,
+    StudentMockAccess,
     SpeakingRecording,
 ):
     _register_model_cache(_model)

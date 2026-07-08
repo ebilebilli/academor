@@ -1,0 +1,12 @@
+{% load static %}
+<div class="portal-lottie" data-portal-lottie aria-hidden="true">
+  <dotlottie-player
+    src="{% static src %}"
+    background="transparent"
+    renderer="svg"
+    speed="1"
+    {% if loop != False %}loop{% endif %}
+    autoplay
+    mode="normal"
+  ></dotlottie-player>
+</div>

@@ -17,6 +17,7 @@ from portals.models import (
     SpeakingPart,
     SpeakingQuestion,
     StudentCourseSpecialization,
+    StudentMockAccess,
 )
 from portals.tests.test_quiz_submit import _portal_client_login
 from portals.tests.test_quiz_visibility import QuizVisibilityTests, _ensure_active_portal_services
@@ -62,6 +63,16 @@ class IeltsMockTestTests(QuizVisibilityTests):
         self.mock_reading_quiz = self._create_reading_quiz()
         self.mock_writing_quiz = self._create_writing_quiz()
         self.mock_speaking_quiz = self._create_speaking_quiz()
+        self.assign_student_quizzes(
+            self.mock_listening_quiz,
+            self.mock_reading_quiz,
+            self.mock_writing_quiz,
+            self.mock_speaking_quiz,
+        )
+        StudentMockAccess.objects.update_or_create(
+            student=self.student,
+            defaults={'is_active': True},
+        )
 
         self.client = Client()
         _portal_client_login(self.client, self.student_user)

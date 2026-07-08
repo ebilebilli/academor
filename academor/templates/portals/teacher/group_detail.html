@@ -1,4 +1,4 @@
-﻿{% extends "portals/base.html" %}
+{% extends "portals/base.html" %}
 {% load i18n portal_tags static %}
 
 {% block title %}{{ group.name }}{% endblock %}
@@ -9,10 +9,6 @@
 
 {% block extra_js %}
 <script src="{% static 'portals/js/portal-teacher-group-detail.js' %}"></script>
-{% endblock %}
-
-{% block page_data %}
-<script type="application/json" id="portal-group-detail-export">{"headers":["{% filter escapejs %}{% trans 'Name' %}{% endfilter %}","{% filter escapejs %}{% trans 'Username' %}{% endfilter %}","{% filter escapejs %}{% trans 'Phone' %}{% endfilter %}"],"filename":"{{ group.name|escapejs }}_students.csv"}</script>
 {% endblock %}
 
 {% block content %}
@@ -73,7 +69,7 @@
       </div>
       <div class="portal-info-content">
         <span class="portal-info-label">{% trans 'Course' %}</span>
-        <span class="portal-info-value">{{ group.course_type_label|default:"â€”" }}</span>
+        <span class="portal-info-value">{{ group.course_type_label|default:"—" }}</span>
       </div>
     </div>
   </div>
@@ -106,7 +102,7 @@
       </div>
       <div class="portal-info-content">
         <span class="portal-info-label">{% trans 'Attendance' %}</span>
-        <span class="portal-info-action">{% trans 'Mark now â†’' %}</span>
+        <span class="portal-info-action">{% trans 'Mark now →' %}</span>
       </div>
     </a>
   </div>
@@ -127,38 +123,30 @@
             <i class="bi bi-search"></i>
             <input type="text" id="student-search" placeholder="{% trans 'Search students...' %}">
           </div>
-          <div class="dropdown">
-            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-label="{% trans 'Export students' %}">
-              <i class="bi bi-download" aria-hidden="true"></i>
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#" data-portal-export-students="csv">
-                <i class="bi bi-file-earmark-spreadsheet me-2"></i>{% trans 'CSV' %}
-              </a></li>
-              <li><button type="button" class="dropdown-item" data-portal-print>
-                <i class="bi bi-printer me-2"></i>{% trans 'Print' %}
-              </button></li>
-            </ul>
-          </div>
+          <button type="button" class="btn btn-sm btn-outline-secondary" data-portal-print aria-label="{% trans 'Print' %}">
+            <i class="bi bi-printer" aria-hidden="true"></i>
+          </button>
         </div>
       </div>
 
       <div class="portal-student-list" id="student-list">
         {% for s in group.students %}
         <article class="portal-student-item" data-name="{{ s.full_name|lower }}" data-full-name="{{ s.full_name }}" data-phone="{{ s.phone|default:'' }}" data-username="{{ s.username }}">
-          <a class="portal-student-item-main text-decoration-none" href="{% url 'portals:teacher-student-profile' student_pk=s.id %}">
+          <a class="portal-student-item-main text-decoration-none" href="{% url 'portals:teacher-student-profile' student_pk=s.id %}?from_group={{ group.id }}">
             {% include "portals/includes/avatar.html" with photo_url=s.photo_url name=s.full_name initials=s.full_name size_class="avatar-md" %}
             <div class="portal-student-info">
               <span class="portal-student-name">{{ s.full_name }}</span>
-              <span class="portal-student-phone">{{ s.phone|default:"â€”" }}</span>
+              <span class="portal-student-phone">{{ s.phone|default:"—" }}</span>
             </div>
           </a>
           <div class="portal-student-actions">
-            <a class="btn btn-icon btn-sm btn-light" href="{% url 'portals:teacher-student-profile' student_pk=s.id %}" title="{% trans 'View profile' %}">
-              <i class="bi bi-person"></i>
+            <a class="btn btn-sm btn-light portal-student-action-btn" href="{% url 'portals:teacher-student-profile' student_pk=s.id %}?from_group={{ group.id }}">
+              <i class="bi bi-person" aria-hidden="true"></i>
+              <span>{% trans 'View profile' %}</span>
             </a>
-            <a class="btn btn-icon btn-sm btn-light" href="{% url 'portals:teacher-student-attendance' student_pk=s.id %}" title="{% trans 'Attendance' %}">
-              <i class="bi bi-calendar-check"></i>
+            <a class="btn btn-sm btn-light portal-student-action-btn" href="{% url 'portals:teacher-student-profile' student_pk=s.id %}?from_group={{ group.id }}&tab=duration">
+              <i class="bi bi-calendar-check" aria-hidden="true"></i>
+              <span>{% trans 'Attendance' %}</span>
             </a>
           </div>
         </article>

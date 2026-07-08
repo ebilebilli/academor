@@ -11,8 +11,8 @@
     <tbody>
       {% for attempt in mock_attempts %}
       <tr data-score-date="{{ attempt.completed_at|date:'Y-m-d' }}">
-        <td>{{ attempt.completed_at|date:"d.m.Y H:i" }}</td>
-        <td>
+        <td class="fw-500" data-label="{% trans 'Date' %}">{{ attempt.completed_at|date:"d.m.Y H:i" }}</td>
+        <td data-label="{% trans 'Overall result' %}">
           {% if attempt.is_fully_graded %}
           {{ attempt.overall_band|format_quiz_score }} / {{ attempt.overall_band_max|format_quiz_score }}
           {% elif attempt.pending_review_count %}
@@ -21,7 +21,7 @@
           —
           {% endif %}
         </td>
-        <td class="text-end">
+        <td class="text-end" data-label="{% trans 'Action' %}">
           <a
             class="ds-btn ds-btn--secondary btn-sm"
             href="{% url mock_detail_url_name pk=attempt.id %}{% if mock_detail_url_suffix %}{{ mock_detail_url_suffix }}{% endif %}"

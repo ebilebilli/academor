@@ -464,6 +464,7 @@ def build_lesson_subject_tabs(lessons):
 
 
 LESSON_PERIOD_CHOICES = ('all', 'week', 'month', 'year')
+LESSON_PERIOD_TAB_ORDER = ('week', 'month', 'year', 'all')
 
 
 def _normalize_lesson_date(value):
@@ -504,7 +505,7 @@ def build_lesson_period_tabs(lessons):
                 counts[code] += 1
     return [
         {'code': code, 'label': labels[code], 'count': counts[code]}
-        for code in LESSON_PERIOD_CHOICES
+        for code in LESSON_PERIOD_TAB_ORDER
     ]
 
 
@@ -546,16 +547,19 @@ def build_score_period_tabs(*score_lists):
                 counts[code] += 1
     return [
         {'code': code, 'label': labels[code], 'count': counts[code]}
-        for code in LESSON_PERIOD_CHOICES
+        for code in LESSON_PERIOD_TAB_ORDER
     ]
 
 
 def resolve_score_group_param(request, groups):
-    raw = (request.GET.get('group') or 'all').strip()
-    if raw == 'all':
-        return 'all'
+    if not groups:
+        return None
+    default = str(groups[0]['id'])
+    raw = (request.GET.get('group') or '').strip()
+    if not raw:
+        return default
     valid = {str(group['id']) for group in groups}
-    return raw if raw in valid else 'all'
+    return raw if raw in valid else default
 
 
 def prepare_teacher_scores_with_groups(teacher_id, quiz_scores, weekly_scores):
@@ -575,7 +579,7 @@ def prepare_teacher_scores_with_groups(teacher_id, quiz_scores, weekly_scores):
     weekly_enriched = enrich(weekly_scores or [])
 
     groups = []
-    for group in teacher_groups_queryset(teacher_id, active_only=True).order_by('name'):
+    for group in teacher_groups_queryset(teacher_id, active_only=True).order_by('-id'):
         quiz_count = sum(1 for row in quiz_enriched if group.pk in row['group_ids'])
         weekly_count = sum(1 for row in weekly_enriched if group.pk in row['group_ids'])
         groups.append({
@@ -968,7 +972,8 @@ def _attach_quiz_attempt_summaries(quizzes, quiz_results):
 
 
 def get_student_quizzes_for_category(student_id, category_id):
-    from portals.utils.student_courses import quiz_visible_to_student
+    from portals.utils.quiz_assignments import get_student_quiz_assignment_map
+    from portals.utils.student_courses import student_quiz_enrollment_ok
 
     if not student_can_access_quiz_category(student_id, category_id):
         return []
@@ -982,12 +987,20 @@ def get_student_quizzes_for_category(student_id, category_id):
         .prefetch_related('questions')
         .order_by('-created_at', 'id')
     )
-    visible = [row for row in qs if quiz_visible_to_student(row, student_id)]
-    question_counts = _answerable_question_counts(visible)
-    quizzes = _attach_quiz_attempt_flags(
+    enrolled = [row for row in qs if student_quiz_enrollment_ok(student_id, row)]
+    assignment_map = get_student_quiz_assignment_map(
         student_id,
-        [serialize_quiz(row, question_counts=question_counts) for row in visible],
+        [row.pk for row in enrolled],
     )
+    question_counts = _answerable_question_counts(enrolled)
+    quizzes = []
+    for row in enrolled:
+        data = serialize_quiz(row, question_counts=question_counts)
+        is_unlocked = bool(assignment_map.get(row.pk, False))
+        data['is_unlocked'] = is_unlocked
+        data['is_locked'] = not is_unlocked
+        quizzes.append(data)
+    quizzes = _attach_quiz_attempt_flags(student_id, quizzes)
     return _attach_quiz_attempt_summaries(
         quizzes,
         get_student_quiz_results(student_id, quiz_ids={quiz['id'] for quiz in quizzes}),
@@ -1050,6 +1063,8 @@ def serialize_quiz_question(question):
 
 
 def serialize_quiz_result(row):
+    from portals.utils.quiz_stats import quiz_average_score_tier, quiz_score_percent
+
     question_count = getattr(row, 'question_count', None)
     quiz = row.quiz
     # The annotated Count('quiz__questions') only counts inline variant
@@ -1071,6 +1086,13 @@ def serialize_quiz_result(row):
     from portals.models import QuizResult as QuizResultModel
     trigger_labels = dict(QuizResultModel.CompletionTrigger.choices)
     time_limit_seconds = quiz.time_limit_seconds or 0
+    max_value = quiz.score_max_value(question_count=question_count)
+    is_pending_review = row.is_pending_review
+    score_pct = (
+        None
+        if is_pending_review
+        else quiz_score_percent(row.total_score, max_value)
+    )
     return {
         'id': row.pk,
         'student_id': row.student_id,
@@ -1082,7 +1104,9 @@ def serialize_quiz_result(row):
         'is_manual_grading': quiz.is_manual_grading,
         'requires_teacher_review': quiz.requires_teacher_review,
         'total_score': row.total_score,
-        'max_value': quiz.score_max_value(question_count=question_count),
+        'max_value': max_value,
+        'score_pct': score_pct,
+        'tier': quiz_average_score_tier(score_pct),
         'duration_sec': row.duration_sec,
         'is_time_limited': bool(quiz.is_time_limited and quiz.time_limit_minutes),
         'time_limit_minutes': quiz.time_limit_minutes,
@@ -1094,7 +1118,7 @@ def serialize_quiz_result(row):
         'student_submission': row.student_submission,
         'teacher_feedback': row.teacher_feedback,
         'reviewed_at': row.reviewed_at,
-        'is_pending_review': row.is_pending_review,
+        'is_pending_review': is_pending_review,
         'completed_at': row.completed_at,
     }
 
@@ -1169,6 +1193,8 @@ def serialize_quiz_result_as_score(row):
         'score_type_label': Score.ScoreType.QUIZ.label,
         'value': value_label,
         'max_value': data['max_value'],
+        'score_pct': data.get('score_pct'),
+        'tier': data.get('tier', 'empty'),
         'date': data['completed_at'],
         'comment': data['teacher_feedback'],
         'lesson_id': None,
@@ -1531,7 +1557,7 @@ def get_teacher_quiz_detail(teacher_id, quiz_id):
 
 def get_student_reading_quiz_take_data(student_id, quiz_id, *, mock_attempt_id: int | None = None):
     from portals.utils.ielts_mock_test import mock_allows_active_section_take
-    from portals.utils.student_courses import quiz_visible_to_student
+    from portals.utils.student_courses import quiz_visible_to_student, student_quiz_enrollment_ok
     from portals.utils.quiz_reading import (
         build_reading_sections_for_quiz,
         get_reading_questions_for_quiz,
@@ -1548,7 +1574,12 @@ def get_student_reading_quiz_take_data(student_id, quiz_id, *, mock_attempt_id: 
         .select_related('category')
         .first()
     )
-    if not quiz or not quiz_visible_to_student(quiz, student_id):
+    if not quiz:
+        return None
+    if mock_attempt_id:
+        if not student_quiz_enrollment_ok(student_id, quiz):
+            return None
+    elif not quiz_visible_to_student(quiz, student_id):
         return None
     if not quiz.is_reading:
         return None
@@ -1597,7 +1628,7 @@ def get_student_reading_quiz_take_data(student_id, quiz_id, *, mock_attempt_id: 
 
 def get_student_listening_quiz_take_data(student_id, quiz_id, *, mock_attempt_id: int | None = None):
     from portals.utils.ielts_mock_test import mock_allows_active_section_take
-    from portals.utils.student_courses import quiz_visible_to_student
+    from portals.utils.student_courses import quiz_visible_to_student, student_quiz_enrollment_ok
     from portals.utils.quiz_listening import (
         build_listening_sections_for_quiz,
         get_listening_questions_for_quiz,
@@ -1614,7 +1645,12 @@ def get_student_listening_quiz_take_data(student_id, quiz_id, *, mock_attempt_id
         .select_related('category')
         .first()
     )
-    if not quiz or not quiz_visible_to_student(quiz, student_id):
+    if not quiz:
+        return None
+    if mock_attempt_id:
+        if not student_quiz_enrollment_ok(student_id, quiz):
+            return None
+    elif not quiz_visible_to_student(quiz, student_id):
         return None
     if not quiz.is_listening:
         return None
@@ -1664,7 +1700,7 @@ def get_student_listening_quiz_take_data(student_id, quiz_id, *, mock_attempt_id
 def get_student_speaking_quiz_take_data(student_id, quiz_id, *, mock_attempt_id: int | None = None):
     from portals.models import SpeakingRecording
     from portals.utils.ielts_mock_test import mock_allows_active_section_take
-    from portals.utils.student_courses import quiz_visible_to_student
+    from portals.utils.student_courses import quiz_visible_to_student, student_quiz_enrollment_ok
     from portals.utils.quiz_speaking import (
         build_speaking_sections_for_quiz,
         estimate_speaking_quiz_seconds,
@@ -1683,7 +1719,12 @@ def get_student_speaking_quiz_take_data(student_id, quiz_id, *, mock_attempt_id:
         .select_related('category')
         .first()
     )
-    if not quiz or not quiz_visible_to_student(quiz, student_id):
+    if not quiz:
+        return None
+    if mock_attempt_id:
+        if not student_quiz_enrollment_ok(student_id, quiz):
+            return None
+    elif not quiz_visible_to_student(quiz, student_id):
         return None
     if not quiz.is_speaking:
         return None
@@ -1766,7 +1807,7 @@ def get_student_speaking_quiz_take_data(student_id, quiz_id, *, mock_attempt_id:
 
 
 def get_student_quiz_take_data(student_id, quiz_id):
-    from portals.utils.student_courses import quiz_visible_to_student
+    from portals.utils.student_courses import quiz_visible_to_student, student_quiz_enrollment_ok
 
     course_codes = get_student_course_type_codes(student_id)
     if not course_codes:
@@ -1782,7 +1823,12 @@ def get_student_quiz_take_data(student_id, quiz_id):
         )
         .first()
     )
-    if not quiz or not quiz_visible_to_student(quiz, student_id):
+    if not quiz:
+        return None
+    if mock_attempt_id:
+        if not student_quiz_enrollment_ok(student_id, quiz):
+            return None
+    elif not quiz_visible_to_student(quiz, student_id):
         return None
     if not quiz.is_variant_quiz:
         return None
@@ -1806,7 +1852,7 @@ def get_student_quiz_take_data(student_id, quiz_id):
 
 def get_student_manual_quiz_take_data(student_id, quiz_id, *, mock_attempt_id: int | None = None):
     from portals.utils.ielts_mock_test import mock_allows_active_section_take
-    from portals.utils.student_courses import quiz_visible_to_student
+    from portals.utils.student_courses import quiz_visible_to_student, student_quiz_enrollment_ok
     from portals.utils.quiz_submit import build_essay_question_responses, student_can_take_manual_quiz
 
     course_codes = get_student_course_type_codes(student_id)
@@ -1823,7 +1869,12 @@ def get_student_manual_quiz_take_data(student_id, quiz_id, *, mock_attempt_id: i
         )
         .first()
     )
-    if not quiz or not quiz_visible_to_student(quiz, student_id):
+    if not quiz:
+        return None
+    if mock_attempt_id:
+        if not student_quiz_enrollment_ok(student_id, quiz):
+            return None
+    elif not quiz_visible_to_student(quiz, student_id):
         return None
     if not quiz.is_manual_grading:
         return None
@@ -2245,6 +2296,7 @@ def get_teacher_student_quiz_results(teacher_id, student_id):
         .filter(
             student_id=student_id,
             quiz__category__service__in=course_codes,
+            ielts_mock_attempt__isnull=True,
         )
         .select_related('quiz__category')
         .distinct()
@@ -2308,6 +2360,47 @@ def get_teacher_student_group_names(teacher_id, student_id):
     )
 
 
+def resolve_teacher_student_profile_back(request, teacher_id, student_id):
+    """Back target for teacher student profile — prefer originating group."""
+    from django.utils.translation import gettext as _
+
+    from portals.utils.teacher_access import get_teacher_group
+
+    student_groups = list(
+        StudyGroup.objects.filter(
+            teacher_id=teacher_id,
+            students__pk=student_id,
+        )
+        .values_list('pk', 'name')
+        .order_by('name')
+    )
+
+    from_group = request.GET.get('from_group')
+    if from_group:
+        try:
+            group_id = int(from_group)
+        except (TypeError, ValueError):
+            group_id = None
+        if group_id and any(pk == group_id for pk, _ in student_groups):
+            group = get_teacher_group(teacher_id, group_id)
+            if group:
+                return (
+                    reverse('portals:teacher-group-detail', kwargs={'pk': group_id}),
+                    group.name,
+                    group_id,
+                )
+
+    if len(student_groups) == 1:
+        group_id, group_name = student_groups[0]
+        return (
+            reverse('portals:teacher-group-detail', kwargs={'pk': group_id}),
+            group_name,
+            group_id,
+        )
+
+    return reverse('portals:teacher-groups'), _('Qruplar'), None
+
+
 # ---------------------------------------------------------------------------
 # Page blobs (cached per profile + query string)
 # ---------------------------------------------------------------------------
@@ -2330,6 +2423,43 @@ def get_teacher_dashboard_data(request, teacher_id):
     }
 
 
+def _student_performance_snapshot(student_id, *, parent_id=None):
+    from portals.utils.attendance_stats import compute_attendance_stats
+    from portals.utils.ielts_mock_test import (
+        get_student_completed_mock_attempts,
+        serialize_mock_attempt_summary,
+        student_can_access_ielts_mock,
+    )
+    from portals.utils.quiz_stats import (
+        compute_mock_average_stats,
+        compute_quiz_average_stats,
+        compute_weekly_average_stats,
+    )
+    from portals.utils.weekly_scores import get_student_weekly_scores
+
+    weekly_scores = get_student_weekly_scores(student_id)
+    if parent_id is not None:
+        quiz_results = get_parent_child_quiz_results(student_id, parent_id=parent_id)
+    else:
+        quiz_results = get_student_quiz_results(student_id)
+
+    attendance_detail = get_student_attendance_detail(student_id)
+    mock_stats = None
+    if student_can_access_ielts_mock(student_id):
+        mock_attempts = [
+            serialize_mock_attempt_summary(attempt)
+            for attempt in get_student_completed_mock_attempts(student_id)
+        ]
+        mock_stats = compute_mock_average_stats(mock_attempts)
+
+    return {
+        'weekly_average': compute_weekly_average_stats(weekly_scores),
+        'quiz_average': compute_quiz_average_stats(quiz_results),
+        'attendance_stats': compute_attendance_stats(attendance_detail),
+        'mock_stats': mock_stats,
+    }
+
+
 @cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_student_dashboard_data(request, student_id):
     from portals.utils.weekly_scores import get_student_weekly_scores
@@ -2342,6 +2472,7 @@ def get_student_dashboard_data(request, student_id):
         'weekly_score_count': len(get_student_weekly_scores(student_id)),
         'quiz_result_count': len(get_student_scores(student_id)),
         'mock_count': _student_mock_count(student_id),
+        **_student_performance_snapshot(student_id),
     }
 
 
@@ -2389,5 +2520,6 @@ def get_parent_dashboard_data(request, parent_id):
                 get_parent_child_quiz_results(student.pk, parent_id=parent_id),
                 limit=5,
             ),
+            **_student_performance_snapshot(student.pk, parent_id=parent_id),
         })
     return {'children': children}

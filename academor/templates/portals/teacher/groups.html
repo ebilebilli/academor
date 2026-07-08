@@ -18,7 +18,9 @@
   data-label-showing="{% trans 'Showing' %}"
   data-label-of="{% trans 'of' %}"
 >
-{% portal_page_heading icon="bi-people" eyebrow="Teacher" title="Groups" subtitle="All study groups assigned to you." %}
+{% trans 'Qruplar' as groups_page_title %}
+{% trans 'Sizə təyin olunmuş bütün tədris qrupları.' as groups_page_subtitle %}
+{% include "portals/includes/portal_page_hero.html" with title=groups_page_title subtitle=groups_page_subtitle icon="ti-users" lottie="portals/animations/learning.lottie" %}
 
 <!-- Control Toolbar -->
 <div class="portal-toolbar mb-3">

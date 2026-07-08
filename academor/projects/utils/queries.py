@@ -845,6 +845,7 @@ def get_background_image(page_type):
         'service': 'is_service_page_background_image',
         'footer': 'is_footer_background_image',
         'abroad': 'is_abroad_page_background_image',
+        'portal': 'is_portal_page_background_image',
     }
 
     if page_type not in image_map:

@@ -246,8 +246,18 @@
 }
 
 .portal-student-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
   opacity: 0;
   transition: opacity 0.15s ease;
+}
+
+.portal-student-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
 }
 
 .portal-student-item:hover .portal-student-actions {

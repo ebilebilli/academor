@@ -10,15 +10,7 @@
 {% trans 'Kateqoriyalar' as categories_back_label %}
 {% include "portals/includes/portal_back_link.html" with back_url=categories_list_url back_suffix=category_url_suffix back_label=categories_back_label %}
 
-<header class="s-page-head mb-4">
-  <div>
-    <h1 class="s-page-head__title">
-      <i class="ti ti-forms" aria-hidden="true"></i>
-      {{ category.name }}
-      <span class="ds-badge ds-badge--role ms-2">{{ category.service_label }}</span>
-    </h1>
-  </div>
-</header>
+{% include "portals/includes/portal_page_hero.html" with title=category.name subtitle=category.service_label icon="ti-forms" lottie="portals/animations/student.lottie" %}
 
 <section class="ds-card">
   <div class="table-responsive">
@@ -35,17 +27,28 @@
       </thead>
       <tbody>
         {% for quiz in quizzes %}
-        <tr>
+        <tr class="{% if quiz.is_locked %}is-quiz-locked{% endif %}">
           <td class="fw-500">
-            <div>{{ quiz.topic }}</div>
-            {% if quiz.attempt_count %}
-            <div class="text-muted small mt-1">
-              <div>{% trans 'Completed' %} {{ quiz.attempt_count }} {% trans 'times' %}</div>
-              {% if quiz.best_score is not None %}<div>{% trans 'Best score' %}: {{ quiz.best_score|format_quiz_score }}</div>{% endif %}
-              {% if quiz.last_score is not None %}<div>{% trans 'Last score' %}: {{ quiz.last_score|format_quiz_score }}</div>{% endif %}
-              {% if quiz.last_attempt_at %}<div>{% trans 'Last attempt' %}: {{ quiz.last_attempt_at|portal_date_long }}</div>{% endif %}
+            <div class="d-flex align-items-start gap-2">
+              {% if quiz.is_locked %}
+              <span class="portal-quiz-lock-icon" title="{% trans 'Bağlı' %}" aria-hidden="true"><i class="bi bi-lock-fill"></i></span>
+              {% endif %}
+              <div>
+                <div>{{ quiz.topic }}</div>
+                {% if quiz.is_locked %}
+                <div class="portal-quiz-lock-hint text-muted small mt-1">
+                  {% trans 'Bu quiz hazırda bağlıdır. Açılması üçün təlimçi ilə danışın.' %}
+                </div>
+                {% elif quiz.attempt_count %}
+                <div class="text-muted small mt-1">
+                  <div>{% trans 'Completed' %} {{ quiz.attempt_count }} {% trans 'times' %}</div>
+                  {% if quiz.best_score is not None %}<div>{% trans 'Best score' %}: {{ quiz.best_score|format_quiz_score }}</div>{% endif %}
+                  {% if quiz.last_score is not None %}<div>{% trans 'Last score' %}: {{ quiz.last_score|format_quiz_score }}</div>{% endif %}
+                  {% if quiz.last_attempt_at %}<div>{% trans 'Last attempt' %}: {{ quiz.last_attempt_at|portal_date_long }}</div>{% endif %}
+                </div>
+                {% endif %}
+              </div>
             </div>
-            {% endif %}
           </td>
           <td>
             <span class="ds-badge{% if quiz.is_manual_grading %} ds-badge--role{% endif %}">
@@ -55,7 +58,12 @@
           <td>{{ quiz.question_count|default:0 }}</td>
           {% if can_take_quiz %}
           <td class="text-end">
-            {% if quiz.is_variant_quiz and quiz.question_count %}
+            {% if quiz.is_locked %}
+            <span class="portal-quiz-lock-badge" title="{% trans 'Bağlı' %}">
+              <i class="bi bi-lock-fill" aria-hidden="true"></i>
+              <span>{% trans 'Bağlı' %}</span>
+            </span>
+            {% elif quiz.is_variant_quiz and quiz.question_count %}
             <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:student-quiz-take' pk=quiz.id %}">
               {% if quiz.has_attempt %}{% trans 'Təkrar' %}{% else %}{% trans 'Başla' %}{% endif %}
             </a>

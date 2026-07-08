@@ -4,21 +4,8 @@
 {% block title %}{% trans 'Mock test complete' %}{% endblock %}
 
 {% block content %}
-<header class="s-page-head mb-4">
-  <div>
-    <h1 class="s-page-head__title">
-      <i class="ti ti-circle-check" aria-hidden="true"></i>
-      {% trans 'Mock test complete' %}
-    </h1>
-    <p class="text-muted mb-0">
-      {% trans 'All four sections are submitted. Your teacher has been notified.' %}
-    </p>
-  </div>
-  <a class="ds-btn ds-btn--ghost btn-sm" href="{% if mock_back_url %}{{ mock_back_url }}{% else %}{% url 'portals:student-ielts-mock' %}{% endif %}">
-    <i class="ti ti-arrow-left" aria-hidden="true"></i>
-    {% trans 'Back' %}
-  </a>
-</header>
+{% url 'portals:student-ielts-mock' as default_mock_back_url %}
+{% include "portals/includes/portal_page_hero.html" with title=_('Mock test complete') subtitle=_('All four sections are submitted. Your teacher has been notified.') icon="ti-circle-check" lottie="portals/animations/graduation-certificate.lottie" hero_class="portal-page-hero--centered" back_url=mock_back_url|default:default_mock_back_url %}
 
 {% include "portals/includes/quiz_mock_overall_summary.html" %}
 

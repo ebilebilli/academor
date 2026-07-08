@@ -21,7 +21,8 @@ from portals.models import (
     ReadingQuestion,
     SpeakingQuestion,
 )
-from portals.utils.student_courses import quiz_visible_to_student, student_has_course_access
+from portals.utils.quiz_assignments import student_has_active_mock_access
+from portals.utils.student_courses import student_has_course_access
 
 
 IELTS_SERVICE = 'ielts'
@@ -61,7 +62,8 @@ IELTS_BAND_MAX = 9.0
 
 
 def student_can_access_ielts_mock(student_id: int) -> bool:
-    return student_has_course_access(student_id, IELTS_SERVICE)
+    """IELTS enrollment alone is not enough — teacher must activate mock access."""
+    return student_has_active_mock_access(student_id)
 
 
 def _listening_quiz_has_content():
@@ -112,6 +114,8 @@ def is_mock_quiz_result(result: QuizResult | None) -> bool:
 
 
 def _eligible_quizzes_for_section(student_id: int, section: str, flag_kwargs: dict):
+    from portals.utils.student_courses import student_quiz_enrollment_ok
+
     qs = (
         Quiz.objects.filter(
             category__service=IELTS_SERVICE,
@@ -119,9 +123,10 @@ def _eligible_quizzes_for_section(student_id: int, section: str, flag_kwargs: di
         )
         .annotate(has_content=_content_filter_for_section(section))
         .filter(has_content=True)
+        .select_related('category')
     )
-    candidates = [quiz for quiz in qs if quiz_visible_to_student(quiz, student_id)]
-    return candidates
+    # Mock pool uses IELTS enrollment; per-quiz unlocks only gate standalone quizzes.
+    return [quiz for quiz in qs if student_quiz_enrollment_ok(student_id, quiz)]
 
 
 def pick_random_ielts_section_quizzes(student_id: int) -> dict[str, Quiz | None]:
@@ -146,6 +151,9 @@ def abandon_in_progress_mock_attempts(student_id: int) -> None:
 
 @transaction.atomic
 def start_mock_test_attempt(student_id: int) -> tuple[IeltsMockTestAttempt | None, str | None]:
+    if not student_can_access_ielts_mock(student_id):
+        return None, str(_('Mock test is locked. Ask your teacher to enable it.'))
+
     # Pick once and reuse: validating with one random draw and creating with
     # a second draw could select different quizzes (or fail the second time).
     picked = pick_random_ielts_section_quizzes(student_id)

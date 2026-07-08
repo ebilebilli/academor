@@ -131,20 +131,20 @@
         <tbody>
           {% for row in weekly_scores %}
           <tr data-score-date="{{ row.week_start|date:'Y-m-d' }}"{% if row.group_ids %} data-group-ids="{{ row.group_ids|join:',' }}"{% endif %}>
-            <td class="fw-500">{% portal_week_label row.week_start row.week_end %}</td>
+            <td class="fw-500" data-label="{% trans 'Həftə' %}">{% portal_week_label row.week_start row.week_end %}</td>
             {% if show_student_column %}
-            <td>{{ row.student_name|default:"—" }}</td>
+            <td data-label="{% trans 'Şagird' %}">{{ row.student_name|default:"—" }}</td>
             {% endif %}
             {% if show_teacher_column %}
-            <td>{{ row.teacher_name|default:"—" }}</td>
+            <td data-label="{% trans 'Müəllim' %}">{{ row.teacher_name|default:"—" }}</td>
             {% endif %}
-            <td>
-              <span class="weekly-scores-pill">{{ row.score|format_quiz_score }}/{{ row.max_score|format_quiz_score }}</span>
+            <td data-label="{% trans 'Bal' %}">
+              <span class="weekly-scores-pill weekly-scores-pill--{{ row.tier|default:'good' }}">{{ row.score|format_quiz_score }}/{{ row.max_score|format_quiz_score }}</span>
             </td>
             {% if show_comment_column|default:True %}
-            <td class="text-muted small">{{ row.comment|default:"—" }}</td>
+            <td class="text-muted small" data-label="{% trans 'Şərh' %}">{{ row.comment|default:"—" }}</td>
             {% endif %}
-            <td class="text-muted small">{{ row.updated_at|portal_datetime }}</td>
+            <td class="text-muted small" data-label="{% trans 'Yenilənib' %}">{{ row.updated_at|portal_datetime }}</td>
           </tr>
           {% empty %}
           <tr>

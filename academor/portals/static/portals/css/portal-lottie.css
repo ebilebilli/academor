@@ -1,0 +1,173 @@
+/* Portal Lottie heroes — responsive animation blocks */
+.portal-page-hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4, 1rem);
+}
+
+.portal-page-hero__copy {
+  flex: 1 1 16rem;
+  min-width: 0;
+}
+
+.portal-page-hero__media {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.portal-page-hero__aside {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-3, 0.75rem);
+}
+
+.portal-page-hero__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2, 0.5rem);
+  justify-content: flex-end;
+}
+
+.portal-dashboard-greeting {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4, 1rem);
+  padding: var(--space-5, 1.25rem);
+  background: var(--color-surface);
+  border: var(--card-border, 1px solid var(--color-border));
+  border-radius: var(--radius-lg, 14px);
+  box-shadow: var(--shadow-xs);
+}
+
+.portal-dashboard-greeting__main {
+  flex: 1 1 16rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3, 0.75rem);
+  min-width: 0;
+}
+
+.portal-dashboard-greeting__copy {
+  min-width: 0;
+}
+
+.portal-dashboard-greeting__title {
+  margin: 0 0 var(--space-1, 0.25rem);
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  font-weight: var(--font-semibold, 600);
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+.portal-dashboard-greeting__name {
+  color: var(--color-role);
+}
+
+.portal-dashboard-greeting__sub {
+  margin: 0;
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--color-muted);
+}
+
+.portal-dashboard-greeting__date {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+  padding: var(--space-2, 0.5rem) var(--space-3, 0.75rem);
+  border-radius: var(--radius-full);
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border);
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+.portal-dashboard-greeting__date .ti {
+  color: var(--color-role);
+}
+
+.portal-dashboard-greeting__media {
+  flex: 0 0 auto;
+}
+
+@media (max-width: 767.98px) {
+  .portal-page-hero__aside {
+    width: 100%;
+    align-items: center;
+  }
+
+  .portal-page-hero__toolbar {
+    justify-content: center;
+  }
+
+  .portal-dashboard-greeting__media {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    order: -1;
+  }
+
+  .portal-dashboard-greeting__main {
+    flex-direction: column;
+  }
+
+  .portal-dashboard-greeting__date {
+    align-self: flex-start;
+  }
+}
+
+.portal-lottie {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  flex-shrink: 0;
+  width: clamp(5.75rem, 22vw, 10.5rem);
+  aspect-ratio: 1;
+  height: auto;
+  overflow: hidden;
+  background: transparent;
+  border-radius: var(--radius-lg, 14px);
+  isolation: isolate;
+}
+
+.portal-lottie dotlottie-player {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: transparent !important;
+}
+
+@media (max-width: 767.98px) {
+  .portal-page-hero__media {
+    width: 100%;
+    order: -1;
+  }
+
+  .portal-lottie {
+    width: clamp(5rem, 34vw, 8.5rem);
+  }
+}
+
+/* Mock / scores celebration hero */
+.portal-page-hero--centered {
+  flex-direction: column;
+  text-align: center;
+}
+
+.portal-page-hero--centered .portal-page-hero__copy {
+  flex-basis: auto;
+}
+
+.portal-page-hero--centered .portal-page-hero__media {
+  order: -1;
+}

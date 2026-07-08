@@ -17,7 +17,10 @@ from portals.utils.teacher_schedule import parse_week_start
 
 
 def serialize_weekly_score(row):
+    from portals.utils.quiz_stats import quiz_average_score_tier, quiz_score_percent
+
     week_end = row.week_start + timedelta(days=6)
+    pct = quiz_score_percent(float(row.score), WEEKLY_SCORE_MAX)
     return {
         'id': row.pk,
         'student_id': row.student_id,
@@ -28,6 +31,7 @@ def serialize_weekly_score(row):
         'week_end': week_end,
         'score': float(row.score),
         'max_score': WEEKLY_SCORE_MAX,
+        'tier': quiz_average_score_tier(pct),
         'comment': row.comment,
         'updated_at': row.updated_at,
         'date': row.week_start,

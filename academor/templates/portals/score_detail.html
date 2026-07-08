@@ -15,12 +15,12 @@
 
 {% block content %}
 <div class="portal-control-bar mb-3">
-  <a class="btn btn-outline-secondary btn-sm" href="{{ detail.back_url }}">
-    <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% if detail.back_label %}{{ detail.back_label }}{% else %}{% trans 'Back to notifications' %}{% endif %}
+  <a class="ds-btn ds-btn--ghost btn-sm" href="{{ detail.back_url }}">
+    <i class="ti ti-arrow-left" aria-hidden="true"></i>{% if detail.back_label %}{{ detail.back_label }}{% else %}{% trans 'Back to notifications' %}{% endif %}
   </a>
 </div>
 
-{% portal_page_heading icon="bi-star" title="Score detail" raw_subtitle=detail.quiz_topic %}
+{% include "portals/includes/portal_page_hero.html" with title=_('Score detail') subtitle=detail.quiz_topic icon="ti-star" lottie="portals/animations/graduation-certificate.lottie" %}
 
 <div class="portal-quiz-play-meta mb-4">
   <span class="badge rounded-pill text-bg-light border px-3 py-2">{{ detail.student_name }}</span>

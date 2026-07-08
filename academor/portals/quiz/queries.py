@@ -214,7 +214,9 @@ def _attach_quiz_attempt_flags(student_id, quizzes):
 
 @cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_student_quizzes_for_category(student_id, category_id):
-    from portals.utils.student_courses import quiz_visible_to_student
+    # Keep locked quizzes visible with is_locked flags (same as portals.utils.queries).
+    from portals.utils.quiz_assignments import get_student_quiz_assignment_map
+    from portals.utils.student_courses import student_quiz_enrollment_ok
 
     if not student_can_access_quiz_category(student_id, category_id):
         return []
@@ -228,8 +230,19 @@ def get_student_quizzes_for_category(student_id, category_id):
         .prefetch_related('questions')
         .order_by('-created_at', 'id')
     )
-    visible = [row for row in qs if quiz_visible_to_student(row, student_id)]
-    return _attach_quiz_attempt_flags(student_id, [serialize_quiz(row) for row in visible])
+    enrolled = [row for row in qs if student_quiz_enrollment_ok(student_id, row)]
+    assignment_map = get_student_quiz_assignment_map(
+        student_id,
+        [row.pk for row in enrolled],
+    )
+    quizzes = []
+    for row in enrolled:
+        data = serialize_quiz(row)
+        is_unlocked = bool(assignment_map.get(row.pk, False))
+        data['is_unlocked'] = is_unlocked
+        data['is_locked'] = not is_unlocked
+        quizzes.append(data)
+    return _attach_quiz_attempt_flags(student_id, quizzes)
 
 
 def _quiz_correct_option_letter(question):

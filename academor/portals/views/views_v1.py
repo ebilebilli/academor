@@ -9,6 +9,7 @@ from django.views import View
 from portals.utils.quiz_stats import compute_quiz_average_stats, compute_weekly_average_stats
 from portals.utils.parent_access import parent_has_students, resolve_parent_student
 from portals.utils.student_courses import QUIZ_HISTORY_INITIAL_SIZE, QUIZ_HISTORY_PAGE_SIZE
+from projects.utils.queries import get_background_image
 from portals.utils.queries import (
     build_lesson_category_tabs,
     build_lesson_period_tabs,
@@ -46,6 +47,7 @@ from portals.utils.queries import (
     get_teacher_scores,
     get_teacher_student_attendance_detail,
     get_teacher_student_group_names,
+    resolve_teacher_student_profile_back,
     get_teacher_student_quiz_results,
     get_teacher_student_scores,
     group_scores_by_day,
@@ -85,7 +87,10 @@ from portals.views.mixins import (
 
 def _portal_context(request, **extra):
     user = request.portal_user
-    ctx = {'portal_role': get_portal_role(user)}
+    ctx = {
+        'portal_role': get_portal_role(user),
+        'portal_page_background_image': get_background_image('portal'),
+    }
     ctx.update(extra)
     return ctx
 
@@ -232,25 +237,25 @@ class TeacherAttendanceListView(TeacherRequiredMixin, View):
 
 
 class TeacherStudentAttendanceDetailView(TeacherRequiredMixin, View):
-    template_name = 'portals/teacher/attendance_student.html'
+    """Legacy URL — redirects to student profile attendance tab."""
 
     def get(self, request, student_pk):
         profile = get_teacher_profile(request.portal_user)
-        detail = get_teacher_student_attendance_detail(profile.pk, student_pk)
-        if not detail:
+        student = get_teacher_student(profile.pk, student_pk)
+        if not student:
             raise Http404
-        return render(
-            request,
-            self.template_name,
-            _portal_context(
-                request,
-                teacher=serialize_teacher(profile),
-                **detail,
-            ),
-        )
+        url = reverse('portals:teacher-student-profile', kwargs={'student_pk': student_pk})
+        return redirect(f'{url}?tab=duration')
 
 
-_TEACHER_STUDENT_PROFILE_TABS = frozenset({'quiz-results', 'duration', 'daily-scores', 'weekly-scores'})
+_TEACHER_STUDENT_PROFILE_TABS = frozenset({
+    'quiz-results',
+    'quiz-access',
+    'duration',
+    'daily-scores',
+    'weekly-scores',
+    'mock-results',
+})
 
 
 def _teacher_student_profile_stats(quiz_results, scores, daily_score_history):
@@ -280,6 +285,12 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
     tab_panel_template_name = 'portals/includes/teacher_student_profile_tab_panel.html'
 
     def _build_context(self, request, profile, student, tab):
+        from portals.utils.ielts_mock_test import (
+            get_student_completed_mock_attempts,
+            serialize_mock_attempt_summary,
+            student_can_access_ielts_mock,
+        )
+
         student_pk = student.pk
         quiz_results = get_teacher_student_quiz_results(profile.pk, student_pk)
         manual_quiz_results, auto_quiz_results = split_student_quiz_results(quiz_results)
@@ -288,11 +299,50 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
         attendance_detail = get_teacher_student_attendance_detail(profile.pk, student_pk)
         quiz_average = compute_quiz_average_stats(quiz_results)
         weekly_scores = get_teacher_student_weekly_scores(profile.pk, student_pk)
+        from portals.utils.attendance_stats import compute_attendance_stats
+        from portals.utils.quiz_stats import compute_mock_average_stats
+
+        weekly_average = compute_weekly_average_stats(weekly_scores)
+        attendance_stats = compute_attendance_stats(attendance_detail)
+
+        from portals.utils.quiz_assignments import (
+            get_student_mock_access_state,
+            get_teacher_student_quiz_access_rows,
+        )
+        from portals.utils.student_courses import student_has_course_access
+
+        is_ielts_student = student_has_course_access(student_pk, 'ielts')
+        mock_access = get_student_mock_access_state(student_pk) if is_ielts_student else None
+        mock_attempts = None
+        mock_stats = None
+        if is_ielts_student:
+            mock_attempts = [
+                serialize_mock_attempt_summary(attempt)
+                for attempt in get_student_completed_mock_attempts(student_pk)
+            ]
+            mock_stats = compute_mock_average_stats(mock_attempts)
+
+        quiz_access_categories = []
+        quiz_access_count = 0
+        try:
+            quiz_access_categories = get_teacher_student_quiz_access_rows(profile.pk, student_pk)
+            quiz_access_count = sum(len(cat.get('quizzes') or []) for cat in quiz_access_categories)
+        except Exception:
+            # Migration not applied yet, or incomplete quiz data — keep profile usable.
+            quiz_access_categories = []
+            quiz_access_count = 0
+
+        back_url, back_label, from_group_id = resolve_teacher_student_profile_back(
+            request, profile.pk, student_pk
+        )
         return _portal_context(
             request,
             teacher=serialize_teacher(profile),
             student=serialize_student(student),
             groups=get_teacher_student_group_names(profile.pk, student_pk),
+            profile_back_url=back_url,
+            profile_back_label=back_label,
+            profile_from_group_id=from_group_id,
             active_tab=tab,
             quiz_results=quiz_results,
             manual_quiz_results=manual_quiz_results,
@@ -301,18 +351,29 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
             daily_score_history=daily_score_history,
             stats=_teacher_student_profile_stats(quiz_results, scores, daily_score_history),
             quiz_average=quiz_average,
+            weekly_average=weekly_average,
+            attendance_stats=attendance_stats,
+            mock_stats=mock_stats,
             attendance_summary=attendance_detail['summary'] if attendance_detail else None,
             attendance_records=attendance_detail['records'] if attendance_detail else [],
             weekly_scores=weekly_scores,
+            mock_attempts=mock_attempts,
+            mock_access=mock_access,
+            quiz_access_categories=quiz_access_categories,
+            quiz_access_count=quiz_access_count,
         )
 
     def get(self, request, student_pk):
+        from portals.utils.student_courses import student_has_course_access
+
         profile = get_teacher_profile(request.portal_user)
         student = get_teacher_student(profile.pk, student_pk)
         if not student:
             raise Http404
         tab = request.GET.get('tab', 'quiz-results')
         if tab not in _TEACHER_STUDENT_PROFILE_TABS:
+            tab = 'quiz-results'
+        if tab == 'mock-results' and not student_has_course_access(student_pk, 'ielts'):
             tab = 'quiz-results'
         context = self._build_context(request, profile, student, tab)
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':

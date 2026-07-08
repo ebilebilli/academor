@@ -26,6 +26,10 @@ from portals.views.notification_views import (
     TeacherNotificationsView,
     TeacherScoreDetailView,
 )
+from portals.views.quiz_assignment_views import (
+    TeacherMockAccessToggleView,
+    TeacherQuizAssignmentToggleView,
+)
 from portals.views.quiz_views import (
     StudentManualQuizSubmitView,
     StudentManualQuizTakeView,
@@ -115,6 +119,16 @@ urlpatterns = [
         'teacher/students/<int:student_pk>/',
         TeacherStudentProfileView.as_view(),
         name='teacher-student-profile',
+    ),
+    path(
+        'teacher/students/<int:student_pk>/quiz-access/<int:quiz_pk>/',
+        TeacherQuizAssignmentToggleView.as_view(),
+        name='teacher-quiz-assignment-toggle',
+    ),
+    path(
+        'teacher/students/<int:student_pk>/mock-access/',
+        TeacherMockAccessToggleView.as_view(),
+        name='teacher-mock-access-toggle',
     ),
     path('teacher/attendance/session/', TeacherSessionAttendanceView.as_view(), name='teacher-attendance-session'),
     path('teacher/attendance/new/', TeacherAttendanceCreateView.as_view(), name='teacher-attendance-create'),

@@ -9,15 +9,7 @@
 {% block content %}
 {% include "portals/includes/parent_child_header.html" %}
 
-<header class="s-page-head mb-4">
-  <div>
-    <h1 class="s-page-head__title">
-      <i class="ti ti-star" aria-hidden="true"></i>
-      {% trans 'Nəticələr və qiymətləndirmələr' %}
-    </h1>
-    <p class="s-page-head__sub">{% trans 'Şagirdinizin quiz tarixçəsi, həftəlik qiymətləri və mock nəticələrinə baxın.' %}</p>
-  </div>
-</header>
+{% include "portals/includes/portal_page_hero.html" with title=_('Nəticələr və qiymətləndirmələr') subtitle=_('Şagirdinizin quiz tarixçəsi, həftəlik qiymətləri və mock nəticələrinə baxın.') icon="ti-star" lottie="portals/animations/distance-education.lottie" %}
 
 {% include "portals/includes/score_sections.html" %}
 {% endblock %}

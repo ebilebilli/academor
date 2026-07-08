@@ -2265,13 +2265,16 @@ h1.animated, h2.animated, h3.animated,
 
 .home-prices-carousel-stage {
     position: relative;
-    padding: 0 clamp(2.75rem, 5vw, 3.5rem);
 }
 
 .home-prices-swiper {
     position: relative;
     box-sizing: border-box;
     overflow: hidden;
+    /* Horizontal gutters so arrows sit beside slides, not on cards */
+    --home-prices-nav-gutter: clamp(2.75rem, 5vw, 3.5rem);
+    padding-left: var(--home-prices-nav-gutter);
+    padding-right: var(--home-prices-nav-gutter);
 }
 
 .home-prices-swiper:not(.swiper-initialized) {
@@ -2370,8 +2373,8 @@ h1.animated, h2.animated, h3.animated,
     pointer-events: auto;
 }
 
-.home-prices-carousel-stage .swiper-button-prev,
-.home-prices-carousel-stage .swiper-button-next {
+.home-prices-swiper .swiper-button-prev,
+.home-prices-swiper .swiper-button-next {
     position: absolute;
     top: 50%;
     bottom: auto;
@@ -2392,40 +2395,40 @@ h1.animated, h2.animated, h3.animated,
     transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-.home-prices-carousel-stage .swiper-button-prev::after,
-.home-prices-carousel-stage .swiper-button-next::after {
+.home-prices-swiper .swiper-button-prev::after,
+.home-prices-swiper .swiper-button-next::after {
     display: none;
 }
 
-.home-prices-carousel-stage .swiper-button-prev i,
-.home-prices-carousel-stage .swiper-button-next i {
+.home-prices-swiper .swiper-button-prev i,
+.home-prices-swiper .swiper-button-next i {
     font-size: 1.25rem;
 }
 
-.home-prices-carousel-stage .swiper-button-prev {
-    left: 0;
+.home-prices-swiper .swiper-button-prev {
+    left: clamp(0.2rem, 1.2vw, 0.5rem);
     right: auto;
 }
 
-.home-prices-carousel-stage .swiper-button-next {
-    right: 0;
+.home-prices-swiper .swiper-button-next {
+    right: clamp(0.2rem, 1.2vw, 0.5rem);
     left: auto;
 }
 
-.home-prices-carousel-stage .swiper-button-prev:hover,
-.home-prices-carousel-stage .swiper-button-next:hover {
+.home-prices-swiper .swiper-button-prev:hover,
+.home-prices-swiper .swiper-button-next:hover {
     opacity: 0.92;
     transform: translateY(-50%) scale(1.05);
 }
 
-.home-prices-carousel-stage .swiper-button-prev.swiper-button-lock,
-.home-prices-carousel-stage .swiper-button-next.swiper-button-lock {
+.home-prices-swiper .swiper-button-prev.swiper-button-lock,
+.home-prices-swiper .swiper-button-next.swiper-button-lock {
     display: none !important;
     visibility: hidden !important;
     pointer-events: none;
 }
 
-.home-prices-carousel-stage .swiper-button-disabled {
+.home-prices-swiper .swiper-button-disabled {
     opacity: 0.45;
     cursor: default;
     pointer-events: none;
@@ -2453,13 +2456,21 @@ h1.animated, h2.animated, h3.animated,
 }
 
 @media (max-width: 767.98px) {
-    .home-prices-carousel-stage {
-        padding: 0 clamp(2.5rem, 5vw, 3rem);
+    .home-prices-swiper {
+        --home-prices-nav-gutter: clamp(2.75rem, 7vw, 3.5rem);
+        padding-left: var(--home-prices-nav-gutter);
+        padding-right: var(--home-prices-nav-gutter);
     }
 
     .home-prices-swiper .swiper-slide {
-        width: min(var(--course-pay-card-width, 17.5rem), calc(100vw - 6.5rem));
-        max-width: min(var(--course-pay-card-width, 17.5rem), calc(100vw - 6.5rem));
+        width: min(
+            var(--course-pay-card-width, 17.5rem),
+            calc(100vw - 2 * var(--home-prices-nav-gutter) - var(--bs-gutter-x, 1.5rem))
+        );
+        max-width: min(
+            var(--course-pay-card-width, 17.5rem),
+            calc(100vw - 2 * var(--home-prices-nav-gutter) - var(--bs-gutter-x, 1.5rem))
+        );
     }
 
     .home-prices-swiper .home-price-card {
@@ -2468,23 +2479,17 @@ h1.animated, h2.animated, h3.animated,
         padding: 1.15rem 1rem 1.2rem;
     }
 
-    .home-prices-carousel-stage .swiper-button-prev,
-    .home-prices-carousel-stage .swiper-button-next {
+    .home-prices-swiper .swiper-button-prev,
+    .home-prices-swiper .swiper-button-next {
         width: 40px;
         height: 40px;
+        /* Align to slide/card vertical center (not padded swiper box) */
+        top: calc(50% - 2px);
     }
 
-    .home-prices-carousel-stage .swiper-button-prev i,
-    .home-prices-carousel-stage .swiper-button-next i {
+    .home-prices-swiper .swiper-button-prev i,
+    .home-prices-swiper .swiper-button-next i {
         font-size: 1.15rem;
-    }
-
-    .home-prices-carousel-stage .swiper-button-prev {
-        left: max(0, env(safe-area-inset-left, 0px));
-    }
-
-    .home-prices-carousel-stage .swiper-button-next {
-        right: max(0, env(safe-area-inset-right, 0px));
     }
 }
 

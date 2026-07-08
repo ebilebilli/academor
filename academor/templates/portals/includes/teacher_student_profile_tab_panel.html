@@ -1,38 +1,6 @@
 {% load i18n portal_tags %}
 {% if active_tab == 'weekly-scores' %}
   {% include "portals/includes/weekly_scores_history.html" with show_teacher_column=False %}
-{% elif active_tab == 'quiz-results' %}
-  {% if manual_quiz_results or auto_quiz_results %}
-    {% if auto_quiz_results %}
-    <div class="portal-student-records-section mb-4">
-      <div class="portal-student-records-section__head">
-        <h3 class="h6 mb-0">{% trans 'Auto-graded quizzes' %}</h3>
-        <span class="badge rounded-pill text-bg-light border">{{ auto_quiz_results|length }}</span>
-      </div>
-      <div class="portal-student-records">
-        {% include "portals/includes/teacher_student_quiz_results.html" with rows=auto_quiz_results empty_message=_('No auto-graded quiz results yet.') %}
-      </div>
-    </div>
-    {% endif %}
-    {% if manual_quiz_results %}
-    <div class="portal-student-records-section">
-      <div class="portal-student-records-section__head">
-        <h3 class="h6 mb-0">{% trans 'Reviewable quizzes' %}</h3>
-        <span class="badge rounded-pill text-bg-light border">{{ manual_quiz_results|length }}</span>
-      </div>
-      <div class="portal-student-records">
-        {% include "portals/includes/teacher_student_quiz_results.html" with rows=manual_quiz_results empty_message=_('No reviewable quiz results yet.') %}
-      </div>
-    </div>
-    {% endif %}
-  {% else %}
-    <div class="portal-student-empty">
-      <div class="portal-student-empty-icon"><i class="bi bi-ui-checks" aria-hidden="true"></i></div>
-      <h3>{% trans 'No quiz results yet' %}</h3>
-      <p>{% trans 'Completed quizzes will appear here with scores and review status.' %}</p>
-    </div>
-  {% endif %}
-
 {% elif active_tab == 'duration' %}
   <div class="portal-attendance-profile-panel" aria-label="{% trans 'Davamiyyət qeydləri' %}">
     {% if attendance_records %}
@@ -89,6 +57,44 @@
     </div>
     {% endif %}
   </div>
+
+{% elif active_tab == 'mock-results' %}
+  {% include "portals/includes/ielts_mock_attempts_table.html" with mock_detail_url_name="portals:teacher-ielts-mock-detail" %}
+
+{% elif active_tab == 'quiz-access' %}
+  {% include "portals/includes/teacher_student_quiz_access.html" %}
+
+{% elif active_tab == 'quiz-results' %}
+  {% if manual_quiz_results or auto_quiz_results %}
+    {% if auto_quiz_results %}
+    <div class="portal-student-records-section mb-4">
+      <div class="portal-student-records-section__head">
+        <h3 class="h6 mb-0">{% trans 'Auto-graded quizzes' %}</h3>
+        <span class="badge rounded-pill text-bg-light border">{{ auto_quiz_results|length }}</span>
+      </div>
+      <div class="portal-student-records">
+        {% include "portals/includes/teacher_student_quiz_results.html" with rows=auto_quiz_results empty_message=_('No auto-graded quiz results yet.') %}
+      </div>
+    </div>
+    {% endif %}
+    {% if manual_quiz_results %}
+    <div class="portal-student-records-section">
+      <div class="portal-student-records-section__head">
+        <h3 class="h6 mb-0">{% trans 'Reviewable quizzes' %}</h3>
+        <span class="badge rounded-pill text-bg-light border">{{ manual_quiz_results|length }}</span>
+      </div>
+      <div class="portal-student-records">
+        {% include "portals/includes/teacher_student_quiz_results.html" with rows=manual_quiz_results empty_message=_('No reviewable quiz results yet.') %}
+      </div>
+    </div>
+    {% endif %}
+  {% else %}
+    <div class="portal-student-empty">
+      <div class="portal-student-empty-icon"><i class="bi bi-ui-checks" aria-hidden="true"></i></div>
+      <h3>{% trans 'No quiz results yet' %}</h3>
+      <p>{% trans 'Completed quizzes will appear here with scores and review status.' %}</p>
+    </div>
+  {% endif %}
 
 {% else %}
   {% if daily_score_history %}

@@ -138,3 +138,44 @@ class IeltsMockTestAttempt(models.Model):
             return self.SECTION_ORDER.index(section) + 1
         except ValueError:
             return 0
+
+
+class StudentMockAccess(models.Model):
+    """Teacher-controlled IELTS mock test availability for one student."""
+
+    student = models.OneToOneField(
+        'StudentProfile',
+        on_delete=models.CASCADE,
+        related_name='mock_access',
+        verbose_name=_('Student'),
+    )
+    is_active = models.BooleanField(
+        default=False,
+        verbose_name=_('Active'),
+        help_text=_('When enabled, the IELTS student can start a mock test.'),
+    )
+    assigned_by = models.ForeignKey(
+        'TeacherProfile',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='mock_access_granted',
+        verbose_name=_('Assigned by'),
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name=_('Updated at'),
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_('Created at'),
+    )
+
+    class Meta:
+        verbose_name = _('Student mock access')
+        verbose_name_plural = _('Student mock access')
+        ordering = ('-updated_at', 'id')
+
+    def __str__(self):
+        state = _('active') if self.is_active else _('inactive')
+        return f'{self.student} — mock ({state})'

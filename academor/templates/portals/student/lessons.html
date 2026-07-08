@@ -15,24 +15,20 @@
   data-portal-lessons-hide="class"
 >
 
-<header class="s-page-head mb-4">
-  <div>
-    <h1 class="s-page-head__title">
-      <i class="ti ti-book" aria-hidden="true"></i>
-      {% trans 'Dərslər' %}
-      <span class="ds-badge ms-2">{{ lessons|length }}</span>
-    </h1>
-    <p class="s-page-head__sub">{% if page_subtitle %}{{ page_subtitle }}{% else %}{% trans 'Dərs materialları və videolar.' %}{% endif %}</p>
-  </div>
-</header>
+{% include "portals/includes/portal_page_hero.html" with title=_('Dərslər') subtitle=page_subtitle|default:_('Dərs materialları və videolar.') icon="ti-book" badge=lessons|length lottie="portals/animations/girl-studying-on-laptop.lottie" %}
 
 {% include "portals/includes/lessons_filter_panel.html" %}
 
 {# ── Lesson cards ─────────────────────────────────────────────── #}
 <div class="s-lesson-grid" id="student-lessons-table">
   {% for lesson in lessons %}
+  {% if page_eyebrow == 'Parent' %}
+  {% url 'portals:parent-lesson-detail' pk=lesson.id as lesson_detail_url %}
+  {% else %}
+  {% url 'portals:student-lesson-detail' pk=lesson.id as lesson_detail_url %}
+  {% endif %}
   <article
-    class="s-lesson-card"
+    class="s-lesson-card s-lesson-card--interactive position-relative"
     data-subject="{{ lesson.subject }}"
     data-category="{{ lesson.category_id|default:'' }}"
     data-lesson-date="{{ lesson.lesson_date|date:'Y-m-d' }}"
@@ -44,25 +40,21 @@
       <time class="s-lesson-card__date">{{ lesson.lesson_date|portal_date_long }}</time>
     </div>
 
-    <h2 class="s-lesson-card__title">
-      {% if page_eyebrow == 'Parent' %}
-      <a href="{% url 'portals:parent-lesson-detail' pk=lesson.id %}{{ student_query }}">{{ lesson.name }}</a>
-      {% else %}
-      <a href="{% url 'portals:student-lesson-detail' pk=lesson.id %}">{{ lesson.name }}</a>
-      {% endif %}
-    </h2>
+    <h2 class="s-lesson-card__title">{{ lesson.name }}</h2>
 
     <div class="s-lesson-card__foot">
       <div class="s-lesson-card__badges">
         {% if lesson.has_pdf %}<span class="ds-badge">PDF</span>{% endif %}
         {% if lesson.has_video %}<span class="ds-badge ds-badge--info">{% trans 'Video' %}</span>{% endif %}
-        {% if lesson.has_image %}<span class="ds-badge">Şəkil</span>{% endif %}
+        {% if lesson.has_image %}<span class="ds-badge">{% trans 'Şəkil' %}</span>{% endif %}
       </div>
-      {% if page_eyebrow == 'Parent' %}
-      <a class="ds-btn ds-btn--secondary btn-sm" href="{% url 'portals:parent-lesson-detail' pk=lesson.id %}{{ student_query }}">{% trans 'Bax' %}</a>
-      {% else %}
-      <a class="ds-btn ds-btn--secondary btn-sm" href="{% url 'portals:student-lesson-detail' pk=lesson.id %}">{% trans 'Bax' %}</a>
-      {% endif %}
+      <a
+        class="ds-btn ds-btn--primary btn-sm s-lesson-card__open stretched-link"
+        href="{{ lesson_detail_url }}{{ student_query|default:'' }}"
+        aria-label="{% blocktrans with title=lesson.name %}Open lesson: {{ title }}{% endblocktrans %}"
+      >
+        {% trans 'Aç' %}
+      </a>
     </div>
   </article>
   {% empty %}

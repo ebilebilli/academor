@@ -48,11 +48,20 @@ def get_quiz_service_code(quiz):
     return ''
 
 
-def quiz_visible_to_student(quiz, student_id):
+def student_quiz_enrollment_ok(student_id, quiz):
+    """True when the student is enrolled in the quiz service (ignores assignment)."""
     service = get_quiz_service_code(quiz)
     if not service:
         return False
     return service in set(get_student_course_type_codes(student_id))
+
+
+def quiz_visible_to_student(quiz, student_id):
+    if not student_quiz_enrollment_ok(student_id, quiz):
+        return False
+    from portals.utils.quiz_assignments import student_has_active_quiz_assignment
+
+    return student_has_active_quiz_assignment(student_id, quiz.pk)
 
 
 def quiz_visible_to_teacher(quiz, teacher_id):
@@ -72,7 +81,8 @@ def filter_quiz_results_for_student(results, student_id):
     visible = []
     for row in results:
         quiz = getattr(row, 'quiz', None)
-        if quiz and quiz_visible_to_student(quiz, student_id):
+        # Past results stay visible even if the teacher later locks the quiz.
+        if quiz and student_quiz_enrollment_ok(student_id, quiz):
             visible.append(row)
     return visible
 
@@ -136,7 +146,7 @@ def teacher_can_see_quiz_result(teacher_id, student_id, quiz):
     """Teacher sees a result for their student when group service matches the quiz category."""
     if not quiz or not quiz_visible_to_teacher(quiz, teacher_id):
         return False
-    if not quiz_visible_to_student(quiz, student_id):
+    if not student_quiz_enrollment_ok(student_id, quiz):
         return False
     service = get_quiz_service_code(quiz)
     if not service:

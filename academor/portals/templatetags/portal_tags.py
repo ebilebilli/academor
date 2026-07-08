@@ -160,13 +160,48 @@ def portal_week_label(week_start, week_end):
     return f'{start} – {end}'
 
 
+def _portal_today_parts():
+    today = timezone.localdate()
+    lang = _portal_lang_code()
+    return {
+        'weekday': _PORTAL_WEEKDAY_NAMES[lang][today.weekday()],
+        'day': today.day,
+        'month': _PORTAL_MONTH_NAMES[lang][today.month - 1],
+        'year': today.year,
+    }
+
+
 @register.simple_tag
 def portal_today_long():
     """Localized long date for dashboard headers, e.g. «Cümə, 4 İyul 2026»."""
-    today = timezone.localdate()
-    weekday = _PORTAL_WEEKDAY_NAMES[_portal_lang_code()][today.weekday()]
-    day_text = format_portal_calendar_day(today, include_year=True)
-    return f'{weekday}, {day_text}'
+    parts = _portal_today_parts()
+    return f'{parts["weekday"]}, {parts["day"]} {parts["month"]} {parts["year"]}'
+
+
+@register.simple_tag
+def portal_today_weekday():
+    return _portal_today_parts()['weekday']
+
+
+@register.simple_tag
+def portal_today_day():
+    return _portal_today_parts()['day']
+
+
+@register.simple_tag
+def portal_today_month():
+    return _portal_today_parts()['month']
+
+
+@register.simple_tag
+def portal_today_year():
+    return _portal_today_parts()['year']
+
+
+@register.simple_tag
+def portal_today_month_year():
+    parts = _portal_today_parts()
+    return f'{parts["month"]} {parts["year"]}'
 
 
 @register.simple_tag
@@ -187,6 +222,30 @@ def duration_compare_meta(duration_sec, avg_sec, max_sec):
     if average and duration < average * 0.85:
         return {'css': 'is-fast', 'label': gettext('Below average')}
     return {'css': '', 'label': gettext('Typical pace')}
+
+
+@register.filter
+def css_num(value):
+    """Locale-independent number for CSS custom properties (e.g. --score-pct)."""
+    if value is None:
+        return '0'
+    try:
+        num = float(value)
+    except (TypeError, ValueError):
+        return '0'
+    text = f'{num:.10f}'.rstrip('0').rstrip('.')
+    return text or '0'
+
+
+@register.filter
+def performance_tier_label(tier):
+    labels = {
+        'excellent': gettext('Əla'),
+        'good': gettext('Yaxşı'),
+        'fair': gettext('Orta'),
+        'low': gettext('Zəif'),
+    }
+    return labels.get((tier or '').strip().lower(), '')
 
 
 @register.filter

@@ -521,6 +521,7 @@ class QuizManualGradingTests(QuizVisibilityTests):
             topic='Writing tasks',
             is_essay=True,
         )
+        self.assign_student_quizzes(quiz)
         QuizQuestion.objects.create(quiz=quiz, order=1, question='Task one')
         QuizQuestion.objects.create(quiz=quiz, order=2, question='Task two')
         self.assertTrue(quiz.uses_per_question_text_responses)

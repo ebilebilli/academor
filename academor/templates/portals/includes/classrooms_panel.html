@@ -9,8 +9,9 @@
 >
   {% if portal_role == 'teacher' %}
   <div class="d-flex justify-content-end px-3 pt-3">
-    <a class="btn btn-primary btn-sm" href="{% url 'portals:teacher-classroom-create' %}">
-      <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>{% trans 'Add textbook' %}
+    <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:teacher-classroom-create' %}">
+      <i class="ti ti-plus" aria-hidden="true"></i>
+      {% trans 'Add textbook' %}
     </a>
   </div>
   {% endif %}
@@ -57,11 +58,11 @@
           </td>
           <td class="text-end" data-label="{% trans 'Action' %}">
             {% if portal_role == 'teacher' %}
-            <a class="btn btn-primary btn-sm" href="{% url 'portals:teacher-classroom-detail' pk=room.id %}">{% trans 'Open' %}</a>
+            <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:teacher-classroom-detail' pk=room.id %}">{% trans 'Open' %}</a>
             {% elif portal_role == 'parent' %}
-            <a class="btn btn-primary btn-sm" href="{% url 'portals:parent-classroom-detail' pk=room.id %}">{% trans 'Open' %}</a>
+            <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:parent-classroom-detail' pk=room.id %}">{% trans 'Open' %}</a>
             {% else %}
-            <a class="btn btn-primary btn-sm" href="{% url 'portals:student-classroom-detail' pk=room.id %}">{% trans 'Open' %}</a>
+            <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:student-classroom-detail' pk=room.id %}">{% trans 'Open' %}</a>
             {% endif %}
           </td>
         </tr>

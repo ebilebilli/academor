@@ -15,20 +15,8 @@
   data-portal-lessons-hide="hidden"
 >
 
-<header class="s-page-head mb-4">
-  <div>
-    <h1 class="s-page-head__title">
-      <i class="ti ti-book" aria-hidden="true"></i>
-      {% trans 'Dərslər' %}
-      <span class="ds-badge ms-2">{{ lessons|length }}</span>
-    </h1>
-    <p class="s-page-head__sub">{% trans 'Qruplarınız üçün yüklənmiş materiallar.' %}</p>
-  </div>
-  <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:teacher-lesson-create' %}">
-    <i class="ti ti-book-upload" aria-hidden="true"></i>
-    {% trans 'Upload lesson' %}
-  </a>
-</header>
+{% url 'portals:teacher-lesson-create' as teacher_lesson_create_url %}
+{% include "portals/includes/portal_page_hero.html" with title=_('Dərslər') subtitle=_('Qruplarınız üçün yüklənmiş materiallar.') icon="ti-book" badge=lessons|length lottie="portals/animations/girl-studying-on-laptop.lottie" action_url=teacher_lesson_create_url action_label=_('Upload lesson') action_icon="ti-book-upload" %}
 
 {% include "portals/includes/lessons_filter_panel.html" %}
 
@@ -52,12 +40,12 @@
           data-category="{{ lesson.category_id|default:'' }}"
           data-lesson-date="{{ lesson.lesson_date|date:'Y-m-d' }}"
         >
-          <td class="fw-500">{{ lesson.name }}</td>
-          <td>{{ lesson.group_name }}</td>
-          <td><span class="ds-badge">{{ lesson.subject_label }}</span></td>
-          <td class="text-muted small">{{ lesson.lesson_date|portal_date_long }}</td>
-          <td>{{ lesson.category_name|default:"—" }}</td>
-          <td class="text-end">
+          <td class="fw-500" data-label="{% trans 'Name' %}">{{ lesson.name }}</td>
+          <td data-label="{% trans 'Group' %}">{{ lesson.group_name }}</td>
+          <td data-label="{% trans 'Service' %}"><span class="ds-badge">{{ lesson.subject_label }}</span></td>
+          <td class="text-muted small" data-label="{% trans 'Date' %}">{{ lesson.lesson_date|portal_date_long }}</td>
+          <td data-label="{% trans 'Category label' %}">{{ lesson.category_name|default:"—" }}</td>
+          <td class="text-end" data-label="{% trans 'Action' %}">
             <a class="ds-btn ds-btn--ghost btn-sm" href="{% url 'portals:teacher-lesson-detail' pk=lesson.id %}">{% trans 'Open' %}</a>
             <a class="ds-btn ds-btn--secondary btn-sm" href="{% url 'portals:teacher-lesson-edit' pk=lesson.id %}">{% trans 'Edit' %}</a>
           </td>

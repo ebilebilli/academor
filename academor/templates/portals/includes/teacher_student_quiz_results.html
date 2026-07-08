@@ -11,9 +11,14 @@
       {% if row.is_pending_review %}
         <span class="portal-student-pill warning">{% trans 'Pending' %}</span>
       {% elif row.total_score is not None %}
-        <strong>{{ row.total_score|format_quiz_score }}{% if row.max_value %}/{{ row.max_value|format_quiz_score }}{% endif %}</strong>
+        <span
+          class="weekly-scores-pill weekly-scores-pill--{{ row.tier|default:'empty' }}"
+          {% if row.tier and row.tier != 'empty' %}title="{{ row.tier|performance_tier_label }}"{% endif %}
+        >
+          {{ row.total_score|format_quiz_score }}{% if row.max_value %}/{{ row.max_value|format_quiz_score }}{% endif %}
+        </span>
         {% if row.max_value %}
-          <span class="portal-student-score-pct">{{ row.total_score|score_percent:row.max_value }}%</span>
+          <span class="portal-student-score-pct portal-student-score-pct--{{ row.tier|default:'empty' }}">{{ row.total_score|score_percent:row.max_value }}%</span>
         {% endif %}
       {% else %}
         <strong>—</strong>
@@ -21,7 +26,7 @@
     </div>
   </div>
   {% if row.max_value and row.total_score is not None and not row.is_pending_review %}
-  <div class="portal-student-progress" role="presentation">
+  <div class="portal-student-progress portal-student-progress--{{ row.tier|default:'empty' }}" role="presentation">
     <span style="width: {{ row.total_score|score_percent:row.max_value }}%"></span>
   </div>
   {% endif %}

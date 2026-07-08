@@ -4,22 +4,9 @@
 {% block title %}{% trans 'Dashboard' %}{% endblock %}
 
 {% block content %}
-{# ── Greeting ──────────────────────────────────────────────────── #}
-<header class="s-greeting mb-4">
-  <div class="s-greeting__copy">
-    <h1 class="s-greeting__title">
-      {% blocktrans with name=student.full_name %}Salam, {{ name }}{% endblocktrans %}
-    </h1>
-    <p class="s-greeting__sub">{% trans 'Dərslərini, tapşırıqlarını və nəticələri bir yerdən izlə' %}</p>
-  </div>
-  <div class="s-greeting__date">
-    <i class="ti ti-calendar" aria-hidden="true"></i>
-    <span data-portal-today-date>{% portal_today_long %}</span>
-  </div>
-</header>
+{% include "portals/includes/portal_portal_banner.html" with greeting_name=student.full_name subtitle=_('Dərslərini, tapşırıqlarını və nəticələri bir yerdən izlə') lottie="portals/animations/student.lottie" %}
 
-{# ── Stats row ────────────────────────────────────────────────── #}
-{% include "portals/includes/dashboard_student_stats.html" %}
+{% include "portals/includes/dashboard_performance_cards.html" with weekly_average=weekly_average attendance_stats=attendance_stats quiz_average=quiz_average mock_stats=mock_stats %}
 
 {# ── Today's Schedule ────────────────────────────────────────────── #}
 <section class="ds-card mb-4" aria-label="{% trans 'Bu günkü cədvəl' %}">
@@ -64,38 +51,4 @@
   {% endif %}
 </section>
 
-{# ── Quick actions ─────────────────────────────────────────────── #}
-<section class="ds-card" aria-label="{% trans 'Sürətli keçidlər' %}">
-  <div class="s-panel-head">
-    <h2 class="s-panel-title">
-      <i class="ti ti-bolt" aria-hidden="true"></i>
-      {% trans 'Sürətli keçidlər' %}
-    </h2>
-  </div>
-  <div class="t-quick-actions">
-    <a class="t-qa-btn t-qa-btn--primary" href="{% url 'portals:student-schedule' %}">
-      <i class="ti ti-calendar-week" aria-hidden="true"></i>
-      <span>{% trans 'Cədvəl' %}</span>
-    </a>
-    <a class="t-qa-btn t-qa-btn--emerald" href="{% url 'portals:student-lessons' %}">
-      <i class="ti ti-book" aria-hidden="true"></i>
-      <span>{% trans 'Dərslər' %}</span>
-    </a>
-    <a class="t-qa-btn t-qa-btn--amber" href="{% url 'portals:student-scores' %}">
-      <i class="ti ti-star" aria-hidden="true"></i>
-      <span>{% trans 'Nəticələr və qiymətləndirmələr' %}</span>
-    </a>
-    {% if mock_count is not None %}
-    <a class="t-qa-btn t-qa-btn--indigo" href="{% url 'portals:student-scores' %}?view=mock">
-      <i class="ti ti-clipboard-list" aria-hidden="true"></i>
-      <span>{% trans 'Mock test' %}</span>
-    </a>
-    {% else %}
-    <a class="t-qa-btn t-qa-btn--indigo" href="{% url 'portals:student-quizzes' %}">
-      <i class="ti ti-forms" aria-hidden="true"></i>
-      <span>{% trans 'Quizlər' %}</span>
-    </a>
-    {% endif %}
-  </div>
-</section>
 {% endblock %}

@@ -1,37 +1,43 @@
 {% extends "portals/base.html" %}
 {% load i18n portal_tags %}
 
-{% block title %}{% trans 'Quizzes to review' %}{% endblock %}
+{% block title %}{% trans 'Yoxlanmalı olan quizlər' %}{% endblock %}
 
 {% block content %}
-{% portal_page_heading icon="bi-clipboard-check" eyebrow="Teacher" title="Quizzes to review" subtitle="Manual submissions waiting for your score and feedback." %}
+{% trans 'Yoxlanmalı olan quizlər' as quiz_review_title %}
+{% include "portals/includes/portal_page_hero.html" with title=quiz_review_title icon="ti-pencil" lottie="portals/animations/science-lover.lottie" %}
 
-<section class="panel">
+<section class="ds-card">
   <div class="table-responsive">
-    <table class="table align-middle mb-0">
+    <table class="t-table">
       <thead>
         <tr>
-          <th scope="col">{% trans 'Student' %}</th>
-          <th scope="col">{% trans 'Quiz' %}</th>
-          <th scope="col">{% trans 'Type' %}</th>
-          <th scope="col">{% trans 'Submitted' %}</th>
-          <th scope="col" class="text-end">{% trans 'Action' %}</th>
+          <th>{% trans 'Student' %}</th>
+          <th>{% trans 'Quiz' %}</th>
+          <th>{% trans 'Type' %}</th>
+          <th>{% trans 'Submitted' %}</th>
+          <th class="text-end">{% trans 'Action' %}</th>
         </tr>
       </thead>
       <tbody>
         {% for row in pending_results %}
         <tr>
-          <td class="fw-semibold">{{ row.student_name }}</td>
+          <td class="fw-500">{{ row.student_name }}</td>
           <td>{{ row.quiz_topic }}</td>
-          <td><span class="portal-tag">{{ row.grading_mode_label }}</span></td>
-          <td>{{ row.completed_at|portal_datetime }}</td>
+          <td><span class="ds-badge">{{ row.grading_mode_label|default:"—" }}</span></td>
+          <td class="text-muted small">{{ row.completed_at|portal_datetime }}</td>
           <td class="text-end">
-            <a class="btn btn-primary btn-sm" href="{% url 'portals:teacher-quiz-result-review' result_pk=row.id %}">{% trans 'Review' %}</a>
+            <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:teacher-quiz-result-review' result_pk=row.id %}">{% trans 'Review' %}</a>
           </td>
         </tr>
         {% empty %}
         <tr>
-          <td colspan="5" class="text-muted py-4 text-center">{% trans 'No submissions waiting for review.' %}</td>
+          <td colspan="5">
+            <div class="s-empty-state">
+              <i class="ti ti-circle-check" aria-hidden="true"></i>
+              <p>{% trans 'No submissions waiting for review.' %}</p>
+            </div>
+          </td>
         </tr>
         {% endfor %}
       </tbody>

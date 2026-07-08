@@ -16,19 +16,11 @@
   data-msg-error="{% filter escapejs %}{% trans 'An error occurred.' %}{% endfilter %}"
   data-msg-save-failed="{% filter escapejs %}{% trans 'Could not save.' %}{% endfilter %}"
 >
-  <header class="s-page-head mb-4">
-    <div>
-      <h1 class="s-page-head__title">
-        <i class="ti ti-calendar-stats" aria-hidden="true"></i>
-        {% trans 'Həftəlik qiymətlər' %}
-      </h1>
-      <p class="s-page-head__sub">{% trans 'Hər şagird üçün həftəlik 10 bal üzrə qiymət verin.' %}</p>
-    </div>
-    <a class="ds-btn ds-btn--secondary btn-sm" href="{% url 'portals:teacher-scores' %}">
-      <i class="ti ti-star" aria-hidden="true"></i>
-      {% trans 'Digər qiymətlər' %}
-    </a>
-  </header>
+  {% url 'portals:teacher-scores' as teacher_scores_url %}
+  {% trans 'Həftəlik qiymətlər' as weekly_scores_page_title %}
+  {% trans 'Hər şagird üçün həftəlik 10 bal üzrə qiymət verin.' as weekly_scores_page_subtitle %}
+  {% trans 'Digər qiymətlər' as weekly_scores_action_label %}
+  {% include "portals/includes/portal_page_hero.html" with title=weekly_scores_page_title subtitle=weekly_scores_page_subtitle icon="ti-calendar-stats" lottie="portals/animations/graduation-certificate.lottie" action_url=teacher_scores_url action_label=weekly_scores_action_label action_icon="ti-star" %}
 
   <div data-weekly-scores-mount aria-live="polite" aria-busy="false">
     {% include "portals/includes/teacher_weekly_scores_panel.html" %}

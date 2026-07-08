@@ -1,10 +1,24 @@
 (function () {
   "use strict";
 
+  var lastContentLoadedDetail = null;
+  var contentLoadedFired = false;
+
   window.portalOnReady = function (callback) {
-    document.addEventListener("portal:content-loaded", function () {
+    if (contentLoadedFired) {
+      window.setTimeout(function () {
+        try {
+          callback(lastContentLoadedDetail);
+        } catch (error) {
+          console.error(error);
+        }
+      }, 0);
+      return;
+    }
+
+    document.addEventListener("portal:content-loaded", function (event) {
       try {
-        callback();
+        callback(event && event.detail ? event.detail : null);
       } catch (error) {
         console.error(error);
       }
@@ -12,8 +26,10 @@
   };
 
   function dispatchPortalContentLoaded(url, initial) {
+    lastContentLoadedDetail = { url: url || window.location.href, initial: !!initial };
+    contentLoadedFired = true;
     document.dispatchEvent(new CustomEvent("portal:content-loaded", {
-      detail: { url: url || window.location.href, initial: !!initial },
+      detail: lastContentLoadedDetail,
     }));
   }
 
@@ -55,7 +71,9 @@
       || link.target === "_blank"
       || link.getAttribute("data-no-ajax") === "true"
       || link.getAttribute("data-bs-toggle") === "modal"
-      || link.getAttribute("role") === "button") {
+      || link.getAttribute("role") === "button"
+      || link.closest("[data-student-profile-tab-nav]")
+      || link.hasAttribute("data-tab")) {
       return false;
     }
 
@@ -246,6 +264,12 @@
         currentBadge.textContent = nextBadge.textContent;
         currentBadge.hidden = nextBadge.hidden;
         currentBadge.classList.toggle("d-none", nextBadge.classList.contains("d-none"));
+      }
+
+      var nextText = nextLink.querySelector(".nav-text, .mobile-nav-label");
+      var currentText = link.querySelector(".nav-text, .mobile-nav-label");
+      if (nextText && currentText) {
+        currentText.textContent = nextText.textContent;
       }
     });
   }
@@ -697,13 +721,12 @@
   });
 
   window.addEventListener("popstate", function (event) {
-    if (event.state && event.state.portalAjax && event.state.url) {
-      navigate(event.state.url, false);
+    if (event.state && event.state.studentProfileTab) {
       return;
     }
 
-    if (event.state && event.state.studentProfileTab) {
-      navigate(window.location.href, false);
+    if (event.state && event.state.portalAjax && event.state.url) {
+      navigate(event.state.url, false);
       return;
     }
 

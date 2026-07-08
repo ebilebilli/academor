@@ -1,0 +1,65 @@
+{% load i18n %}
+{% comment %}
+Reusable page hero: title + subtitle + optional Lottie + optional actions.
+{% endcomment %}
+<header class="portal-page-hero s-page-head mb-4{% if hero_class %} {{ hero_class }}{% endif %}">
+  {% if lottie and hero_class == "portal-page-hero--centered" %}
+  <div class="portal-page-hero__media">
+    {% include "portals/includes/portal_lottie.html" with src=lottie %}
+  </div>
+  {% endif %}
+  <div class="portal-page-hero__copy">
+    <h1 class="s-page-head__title">
+      {% if icon %}<i class="ti {{ icon }}" aria-hidden="true"></i>{% endif %}
+      {{ title }}
+      {% if badge is not None %}<span class="ds-badge ms-2">{{ badge }}</span>{% endif %}
+      {% if title_badge %}<span class="ds-badge ds-badge--danger ms-2">{{ title_badge }}</span>{% endif %}
+    </h1>
+    {% if subtitle %}<p class="s-page-head__sub">{{ subtitle }}</p>{% endif %}
+    {% if back_url and hero_class == "portal-page-hero--centered" %}
+    <a class="ds-btn ds-btn--ghost btn-sm mt-2" href="{{ back_url }}">
+      <i class="ti ti-arrow-left" aria-hidden="true"></i>
+      {% if back_label %}{{ back_label }}{% else %}{% trans "Back" %}{% endif %}
+    </a>
+    {% endif %}
+  </div>
+  {% if show_mark_all or action_url or back_url and hero_class != "portal-page-hero--centered" or lottie and hero_class != "portal-page-hero--centered" %}
+  <div class="portal-page-hero__aside">
+    {% if show_mark_all %}
+    <div class="portal-page-hero__toolbar{% if not unread_count %} d-none{% endif %}"{% if not unread_count %} hidden{% endif %} data-notification-mark-all-wrap>
+      <button
+        type="button"
+        class="ds-btn ds-btn--primary btn-sm"
+        data-notification-mark-all
+        data-mark-all-url="{{ mark_all_url }}"
+      >
+        <i class="ti ti-checks" aria-hidden="true"></i>
+        {% trans "Hamısını oxunmuş işarələ" %}
+      </button>
+    </div>
+    {% elif action_url or back_url %}
+    {% if hero_class != "portal-page-hero--centered" %}
+    <div class="portal-page-hero__toolbar">
+      {% if back_url %}
+      <a class="ds-btn ds-btn--ghost btn-sm" href="{{ back_url }}">
+        <i class="ti ti-arrow-left" aria-hidden="true"></i>
+        {% if back_label %}{{ back_label }}{% else %}{% trans "Back" %}{% endif %}
+      </a>
+      {% endif %}
+      {% if action_url %}
+      <a class="ds-btn ds-btn--primary btn-sm" href="{{ action_url }}">
+        {% if action_icon %}<i class="ti {{ action_icon }}" aria-hidden="true"></i>{% endif %}
+        {{ action_label }}
+      </a>
+      {% endif %}
+    </div>
+    {% endif %}
+    {% endif %}
+    {% if lottie and hero_class != "portal-page-hero--centered" %}
+    <div class="portal-page-hero__media">
+      {% include "portals/includes/portal_lottie.html" with src=lottie %}
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+</header>

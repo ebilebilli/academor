@@ -38,6 +38,7 @@ class MediaAdmin(AdminImageCompressMixin, AcademorModelAdmin):
         'is_tests_page_background_image',
         'is_service_page_background_image',
         'is_abroad_page_background_image',
+        'is_portal_page_background_image',
         'created_at',
     )
     readonly_fields = ('created_at', 'media_preview_detailed')
@@ -64,6 +65,7 @@ class MediaAdmin(AdminImageCompressMixin, AcademorModelAdmin):
                 'is_tests_page_background_image',
                 'is_service_page_background_image',
                 'is_abroad_page_background_image',
+                'is_portal_page_background_image',
             ),
         }),
     )
@@ -80,6 +82,7 @@ class MediaAdmin(AdminImageCompressMixin, AcademorModelAdmin):
         'is_service_page_background_image',
         'is_footer_background_image',
         'is_abroad_page_background_image',
+        'is_portal_page_background_image',
     )
 
     def get_form(self, request, obj=None, **kwargs):
@@ -99,6 +102,7 @@ class MediaAdmin(AdminImageCompressMixin, AcademorModelAdmin):
             | Q(is_tests_page_background_image=True)
             | Q(is_service_page_background_image=True)
             | Q(is_abroad_page_background_image=True)
+            | Q(is_portal_page_background_image=True)
         )
 
     def media_preview(self, obj):
@@ -128,6 +132,7 @@ class MediaAdmin(AdminImageCompressMixin, AcademorModelAdmin):
             ('is_tests_page_background_image', 'Tests pages'),
             ('is_service_page_background_image', 'Services page'),
             ('is_abroad_page_background_image', 'Study abroad page'),
+            ('is_portal_page_background_image', 'Portal'),
         )
         flags = [label for field, label in page_labels if getattr(obj, field, False)]
         return ' | '.join(flags) if flags else '-'

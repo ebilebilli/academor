@@ -4,31 +4,9 @@
 {% block title %}{% trans 'Notifications' %}{% endblock %}
 
 {% block content %}
-<header class="s-page-head mb-4">
-  <div>
-    <h1 class="s-page-head__title">
-      <i class="ti ti-bell" aria-hidden="true"></i>
-      {% trans 'Bildirişlər' %}
-      {% if portal_unread_notifications %}
-      <span class="ds-badge ds-badge--danger ms-2">{{ portal_unread_notifications }}</span>
-      {% endif %}
-    </h1>
-    <p class="s-page-head__sub">{% if notifications_subtitle %}{{ notifications_subtitle }}{% else %}{% trans 'Quiz nəticələri və qiymətlər.' %}{% endif %}</p>
-  </div>
-
-  {# Mark all read — always visible, hidden when none unread #}
-  <div{% if not unread_count %} class="d-none" hidden{% endif %} data-notification-mark-all-wrap>
-    <button
-      type="button"
-      class="ds-btn ds-btn--primary"
-      data-notification-mark-all
-      data-mark-all-url="{% url 'portals:notification-mark-all-read' %}"
-    >
-      <i class="ti ti-checks" aria-hidden="true"></i>
-      {% trans 'Hamısını oxunmuş işarələ' %}
-    </button>
-  </div>
-</header>
+{% url 'portals:notification-mark-all-read' as notifications_mark_all_url %}
+{% trans 'Quiz nəticələri və qiymətlər.' as default_notifications_subtitle %}
+{% include "portals/includes/portal_page_hero.html" with title=_('Bildirişlər') subtitle=notifications_subtitle|default:default_notifications_subtitle icon="ti-bell" title_badge=portal_unread_notifications lottie="portals/animations/graduation-certificate.lottie" show_mark_all=True unread_count=unread_count mark_all_url=notifications_mark_all_url %}
 
 {% csrf_token %}
 

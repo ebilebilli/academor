@@ -4,19 +4,7 @@
 {% block title %}{% trans 'Dashboard' %}{% endblock %}
 
 {% block content %}
-{# ── Welcome bar ──────────────────────────────────────────────── #}
-<header class="t-welcome mb-4">
-  <div class="t-welcome__copy">
-    <h1 class="t-welcome__name">
-      {% blocktrans with name=teacher.full_name %}Salam, {{ name }}{% endblocktrans %}
-    </h1>
-    <p class="t-welcome__sub">{% trans 'Dərslərini, tapşırıqlarını və nəticələri bir yerdən izlə' %}</p>
-  </div>
-  <div class="t-welcome__date">
-    <i class="ti ti-calendar" aria-hidden="true"></i>
-    <span data-portal-today-date>{% portal_today_long %}</span>
-  </div>
-</header>
+{% include "portals/includes/portal_portal_banner.html" with greeting_name=teacher.full_name subtitle=_('Dərslərini, tapşırıqlarını və nəticələri bir yerdən izlə') %}
 
 {# ── Stats row ────────────────────────────────────────────────── #}
 <section class="t-stats mb-4" aria-label="{% trans 'Statistika' %}">
@@ -55,44 +43,6 @@
       <span class="t-stat__label">{% trans 'Həftəlik qiymətləndirmə' %}</span>
     </div>
   </a>
-</section>
-
-{# ── Quick actions ─────────────────────────────────────────────── #}
-<section class="ds-card mb-4" aria-label="{% trans 'Sürətli əməliyyatlar' %}">
-  <div class="s-panel-head">
-    <h2 class="s-panel-title">
-      <i class="ti ti-bolt" aria-hidden="true"></i>
-      {% trans 'Sürətli keçidlər' %}
-    </h2>
-  </div>
-  <div class="t-quick-actions">
-    <a class="t-qa-btn t-qa-btn--primary" href="{% url 'portals:teacher-schedule' %}">
-      <i class="ti ti-clipboard-check" aria-hidden="true"></i>
-      <span>{% trans 'Davamiyyət al' %}</span>
-    </a>
-    <a class="t-qa-btn t-qa-btn--emerald" href="{% url 'portals:teacher-weekly-scores' %}">
-      <i class="ti ti-calendar-stats" aria-hidden="true"></i>
-      <span>{% trans 'Həftəlik qiymət' %}</span>
-    </a>
-    <a class="t-qa-btn t-qa-btn--amber" href="{% url 'portals:teacher-scores' %}">
-      <i class="ti ti-star" aria-hidden="true"></i>
-      <span>{% trans 'Nəticələr və qiymətləndirmələr' %}</span>
-    </a>
-    <a class="t-qa-btn t-qa-btn--indigo" href="{% url 'portals:teacher-lesson-create' %}">
-      <i class="ti ti-book-upload" aria-hidden="true"></i>
-      <span>{% trans 'Dərs əlavə et' %}</span>
-    </a>
-    <a class="t-qa-btn t-qa-btn--primary" href="{% url 'portals:teacher-quizzes' %}">
-      <i class="ti ti-forms" aria-hidden="true"></i>
-      <span>{% trans 'Quizlərə bax' %}</span>
-    </a>
-    {% if portal_pending_reviews_count %}
-    <a class="t-qa-btn t-qa-btn--danger" href="{% url 'portals:teacher-quiz-results' %}">
-      <i class="ti ti-pencil" aria-hidden="true"></i>
-      <span>{% trans 'Gözləyən quiz' %}: {{ portal_pending_reviews_count }}</span>
-    </a>
-    {% endif %}
-  </div>
 </section>
 
 {# ── Groups table ─────────────────────────────────────────────── #}
@@ -144,8 +94,8 @@
             {% endif %}
           </td>
           <td class="text-end">
-            <a class="ds-btn ds-btn--secondary btn-sm" href="{% url 'portals:teacher-group-detail' pk=group.id %}">
-              {% trans 'Bax' %}
+            <a class="ds-btn ds-btn--ghost btn-sm" href="{% url 'portals:teacher-group-detail' pk=group.id %}">
+              {% trans 'Aç' %} <i class="ti ti-arrow-right" aria-hidden="true"></i>
             </a>
           </td>
         </tr>

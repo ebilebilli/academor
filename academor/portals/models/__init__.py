@@ -11,6 +11,7 @@ from .schedule_models import Schedule, Attendance
 from .score_models import Score, WeeklyStudentScore
 from .quiz_models import (
     Quiz,
+    QuizAssignment,
     QuizCategory,
     QuizQuestion,
     QuizResult,
@@ -28,7 +29,7 @@ from .speaking_models import (
     SpeakingQuestion,
     SpeakingRecording,
 )
-from .ielts_mock_models import IeltsMockTestAttempt
+from .ielts_mock_models import IeltsMockTestAttempt, StudentMockAccess
 from .notification_models import PortalNotification, QuizResultReview
 
 __all__ = [
@@ -48,6 +49,7 @@ __all__ = [
     'Score',
     'WeeklyStudentScore',
     'Quiz',
+    'QuizAssignment',
     'QuizCategory',
     'QuizQuestion',
     'QuizResult',
@@ -62,6 +64,7 @@ __all__ = [
     'SpeakingQuestion',
     'SpeakingRecording',
     'IeltsMockTestAttempt',
+    'StudentMockAccess',
     'PortalNotification',
     'QuizResultReview',
 ]

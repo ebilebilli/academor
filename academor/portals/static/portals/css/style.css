@@ -5016,9 +5016,7 @@ a.portal-session-group-link:focus-visible {
 }
 
 .portal-student-segmented {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.35rem;
+  display: block;
   padding: 0.65rem;
   background: var(--admin-surface-soft);
   border-bottom: 1px solid var(--admin-border);
@@ -5026,17 +5024,17 @@ a.portal-session-group-link:focus-visible {
 
 .portal-student-segment {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  gap: 0.2rem;
-  min-height: 72px;
-  padding: 0.65rem 0.5rem;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.55rem 0.65rem;
   border-radius: 12px;
   color: var(--admin-muted);
   font-size: 0.82rem;
   font-weight: 700;
-  text-align: center;
+  text-align: left;
   transition: all 0.15s ease;
 }
 
@@ -5156,6 +5154,19 @@ a.portal-session-group-link:focus-visible {
   font-weight: 700;
 }
 
+.portal-student-score-pct--excellent,
+.portal-student-score-pct--good {
+  color: var(--color-success, var(--admin-success));
+}
+
+.portal-student-score-pct--fair {
+  color: var(--color-warning, #d97706);
+}
+
+.portal-student-score-pct--low {
+  color: var(--color-danger, #dc2626);
+}
+
 .portal-student-progress {
   height: 6px;
   margin-top: 0.85rem;
@@ -5169,6 +5180,19 @@ a.portal-session-group-link:focus-visible {
   height: 100%;
   border-radius: inherit;
   background: linear-gradient(90deg, var(--admin-success), #34d399);
+}
+
+.portal-student-progress--excellent span,
+.portal-student-progress--good span {
+  background: linear-gradient(90deg, var(--color-success, var(--admin-success)), #34d399);
+}
+
+.portal-student-progress--fair span {
+  background: linear-gradient(90deg, var(--color-warning, #d97706), #fbbf24);
+}
+
+.portal-student-progress--low span {
+  background: linear-gradient(90deg, var(--color-danger, #dc2626), #f87171);
 }
 
 .portal-student-progress.duration span {
@@ -5641,7 +5665,7 @@ a.portal-session-group-link:focus-visible {
   }
 
   .portal-student-segmented {
-    grid-template-columns: 1fr;
+    display: block;
   }
 
   .portal-student-segment {

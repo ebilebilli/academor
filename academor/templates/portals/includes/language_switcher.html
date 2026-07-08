@@ -4,13 +4,13 @@
   <button class="icon-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{% trans 'Language' %}">
     <span class="portal-lang-code">{{ LANG|upper }}</span>
   </button>
-  <ul class="dropdown-menu dropdown-menu-end">
+  <ul class="dropdown-menu dropdown-menu-end portal-dropdown-menu">
     <li>
       <form action="{% url 'set_language' %}" method="post" class="portal-lang-form">
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ request.get_full_path }}">
         <input type="hidden" name="language" value="az">
-        <button type="submit" class="dropdown-item{% if LANG == 'az' %} active{% endif %}">{% trans 'Azerbaijani' %}</button>
+        <button type="submit" class="dropdown-item portal-lang-option{% if LANG == 'az' %} active{% endif %}" aria-label="{% trans 'Azerbaijani' %}">AZ</button>
       </form>
     </li>
     <li>
@@ -18,7 +18,7 @@
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ request.get_full_path }}">
         <input type="hidden" name="language" value="en">
-        <button type="submit" class="dropdown-item{% if LANG == 'en' %} active{% endif %}">{% trans 'English' %}</button>
+        <button type="submit" class="dropdown-item portal-lang-option{% if LANG == 'en' %} active{% endif %}" aria-label="{% trans 'English' %}">EN</button>
       </form>
     </li>
     <li>
@@ -26,7 +26,7 @@
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ request.get_full_path }}">
         <input type="hidden" name="language" value="ru">
-        <button type="submit" class="dropdown-item{% if LANG == 'ru' %} active{% endif %}">{% trans 'Russian' %}</button>
+        <button type="submit" class="dropdown-item portal-lang-option{% if LANG == 'ru' %} active{% endif %}" aria-label="{% trans 'Russian' %}">RU</button>
       </form>
     </li>
   </ul>

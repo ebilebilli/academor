@@ -1,0 +1,174 @@
+import json
+
+from django.contrib.auth import get_user_model
+from django.http import HttpResponse
+from django.test import Client, RequestFactory, TestCase
+from django.urls import reverse
+
+from portals.middleware import PortalSessionMiddleware
+from portals.models import (
+    Quiz,
+    QuizAssignment,
+    QuizCategory,
+    StudentCourseSpecialization,
+    StudentMockAccess,
+    StudentProfile,
+    StudyGroup,
+    TeacherCourseSpecialization,
+    TeacherProfile,
+)
+from portals.utils.portal_session import PORTAL_COOKIE_NAME, portal_login
+from portals.utils.queries import get_student_quizzes_for_category
+from portals.utils.quiz_assignments import (
+    get_student_mock_access_state,
+    get_teacher_student_quiz_access_rows,
+    set_student_mock_access,
+    set_student_quiz_assignment,
+    student_has_active_mock_access,
+)
+from portals.utils.student_courses import quiz_visible_to_student
+from portals.tests.test_quiz_visibility import QuizVisibilityTests, _ensure_active_portal_services
+
+User = get_user_model()
+
+
+def _portal_client_login(client: Client, user) -> None:
+    factory = RequestFactory()
+    request = factory.get('/portal/')
+    request.COOKIES = {}
+    portal_login(request, user)
+    middleware = PortalSessionMiddleware(lambda r: HttpResponse())
+    response = middleware(request)
+    client.cookies[PORTAL_COOKIE_NAME] = response.cookies[PORTAL_COOKIE_NAME].value
+
+
+class QuizAssignmentTests(QuizVisibilityTests):
+    def test_inactive_assignment_hides_quiz(self):
+        QuizAssignment.objects.filter(
+            student=self.student,
+            quiz=self.ielts_quiz,
+        ).update(is_active=False)
+        self.assertFalse(quiz_visible_to_student(self.ielts_quiz, self.student.pk))
+        quizzes = get_student_quizzes_for_category(self.student.pk, self.ielts_category.pk)
+        self.assertEqual(len(quizzes), 1)
+        self.assertTrue(quizzes[0]['is_locked'])
+        self.assertFalse(quizzes[0]['is_unlocked'])
+
+    def test_teacher_can_activate_quiz_for_student(self):
+        QuizAssignment.objects.filter(
+            student=self.student,
+            quiz=self.ielts_quiz,
+        ).delete()
+        assignment = set_student_quiz_assignment(
+            self.teacher.pk,
+            self.student.pk,
+            self.ielts_quiz.pk,
+            is_active=True,
+        )
+        self.assertIsNotNone(assignment)
+        self.assertTrue(assignment.is_active)
+        self.assertTrue(quiz_visible_to_student(self.ielts_quiz, self.student.pk))
+
+    def test_teacher_cannot_assign_quiz_for_non_group_student(self):
+        assignment = set_student_quiz_assignment(
+            self.teacher.pk,
+            self.other_student.pk,
+            self.ielts_quiz.pk,
+            is_active=True,
+        )
+        self.assertIsNone(assignment)
+
+    def test_teacher_quiz_access_rows_include_assignment_state(self):
+        rows = get_teacher_student_quiz_access_rows(self.teacher.pk, self.student.pk)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]['quizzes'][0]['id'], self.ielts_quiz.pk)
+        self.assertTrue(rows[0]['quizzes'][0]['is_active'])
+
+    def test_teacher_toggle_endpoint_updates_assignment(self):
+        client = Client()
+        _portal_client_login(client, self.teacher_user)
+        url = reverse(
+            'portals:teacher-quiz-assignment-toggle',
+            kwargs={'student_pk': self.student.pk, 'quiz_pk': self.ielts_quiz.pk},
+        )
+        response = client.post(
+            url,
+            data=json.dumps({'is_active': False}),
+            content_type='application/json',
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        self.assertEqual(response.status_code, 200)
+        payload = response.json()
+        self.assertTrue(payload['ok'])
+        self.assertFalse(payload['is_active'])
+        self.assertFalse(
+            QuizAssignment.objects.get(
+                student=self.student,
+                quiz=self.ielts_quiz,
+            ).is_active
+        )
+        quizzes = get_student_quizzes_for_category(self.student.pk, self.ielts_category.pk)
+        self.assertTrue(quizzes[0]['is_locked'])
+
+    def test_teacher_can_toggle_mock_access(self):
+        self.assertFalse(student_has_active_mock_access(self.student.pk))
+        access = set_student_mock_access(
+            self.teacher.pk,
+            self.student.pk,
+            is_active=True,
+        )
+        self.assertIsNotNone(access)
+        self.assertTrue(student_has_active_mock_access(self.student.pk))
+        state = get_student_mock_access_state(self.student.pk)
+        self.assertTrue(state['is_active'])
+
+        client = Client()
+        _portal_client_login(client, self.teacher_user)
+        url = reverse(
+            'portals:teacher-mock-access-toggle',
+            kwargs={'student_pk': self.student.pk},
+        )
+        response = client.post(
+            url,
+            data=json.dumps({'is_active': False}),
+            content_type='application/json',
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.json()['is_active'])
+        self.assertFalse(student_has_active_mock_access(self.student.pk))
+        self.assertFalse(
+            StudentMockAccess.objects.get(student=self.student).is_active
+        )
+
+
+class QuizAssignmentNewStudentTests(TestCase):
+    def setUp(self):
+        _ensure_active_portal_services()
+        self.teacher_user = User.objects.create_user(username='assign-teacher', password='pass')
+        self.student_user = User.objects.create_user(username='assign-student', password='pass')
+        self.teacher = TeacherProfile.objects.create(user=self.teacher_user)
+        self.student = StudentProfile.objects.create(user=self.student_user)
+        TeacherCourseSpecialization.objects.create(teacher=self.teacher, course_type='ielts')
+        self.group = StudyGroup.objects.create(teacher=self.teacher, name='IELTS C', max_students=10)
+        from portals.tests.group_helpers import link_study_group_services
+
+        link_study_group_services(self.group, 'ielts')
+        self.group.students.add(self.student)
+        StudentCourseSpecialization.objects.create(
+            student=self.student,
+            course_type='ielts',
+            is_active=True,
+        )
+        category = QuizCategory.objects.create(service='ielts', name='Grammar')
+        self.quiz = Quiz.objects.create(category=category, topic='New quiz')
+
+    def test_new_student_does_not_see_quiz_until_teacher_assigns(self):
+        self.assertFalse(quiz_visible_to_student(self.quiz, self.student.pk))
+        set_student_quiz_assignment(
+            self.teacher.pk,
+            self.student.pk,
+            self.quiz.pk,
+            is_active=True,
+        )
+        self.assertTrue(quiz_visible_to_student(self.quiz, self.student.pk))

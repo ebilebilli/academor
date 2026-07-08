@@ -9,7 +9,7 @@
 
 {% block content %}
 {% trans "Track attendance across your groups and mark sessions in a few clicks." as attendance_hub_subtitle %}
-{% portal_page_heading icon="bi-clipboard-check" eyebrow="Teacher" title="Attendance" raw_subtitle=attendance_hub_subtitle %}
+{% include "portals/includes/portal_page_hero.html" with title=_('Davamiyyət') subtitle=attendance_hub_subtitle icon="ti-clipboard-check" lottie="portals/animations/study.lottie" %}
 
 <section class="portal-attendance-hub-hero admin-card mb-4" aria-label="{% trans 'Attendance overview' %}">
   <a class="portal-attendance-hub-action is-primary" href="{% url 'portals:teacher-attendance-session' %}">
@@ -134,7 +134,7 @@
           </span>
         </div>
 
-        <a class="btn btn-primary btn-sm w-100" href="{% url 'portals:teacher-student-attendance' student_pk=s.id %}">
+        <a class="btn btn-primary btn-sm w-100" href="{% url 'portals:teacher-student-profile' student_pk=s.id %}?tab=duration">
           {% trans 'View attendance' %}
         </a>
       </article>
@@ -180,7 +180,7 @@
               <span class="portal-attendance-hub-rate-badge" data-row-rate>{% if s.attendance_rate is not None %}{{ s.attendance_rate }}%{% else %}—{% endif %}</span>
             </td>
             <td class="text-end">
-              <a class="btn btn-primary btn-sm" href="{% url 'portals:teacher-student-attendance' student_pk=s.id %}">{% trans 'View' %}</a>
+              <a class="btn btn-primary btn-sm" href="{% url 'portals:teacher-student-profile' student_pk=s.id %}?tab=duration">{% trans 'View' %}</a>
             </td>
           </tr>
           {% endfor %}

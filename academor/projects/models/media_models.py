@@ -79,6 +79,10 @@ class Media(models.Model):
         default=False,
         verbose_name='Study abroad page background image'
     )
+    is_portal_page_background_image = models.BooleanField(
+        default=False,
+        verbose_name='Portal page background image'
+    )
 
     created_at = models.DateTimeField(
         auto_now_add=True,

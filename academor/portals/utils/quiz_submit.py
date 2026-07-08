@@ -1,4 +1,4 @@
-"""Score and persist student quiz attempts."""
+﻿"""Score and persist student quiz attempts."""
 
 from __future__ import annotations
 
@@ -167,7 +167,14 @@ def _resolve_duration_sec(
     return duration, None
 
 
-def _load_quiz_for_student(student_id: int, quiz_id: int) -> Quiz | None:
+def _load_quiz_for_student(
+    student_id: int,
+    quiz_id: int,
+    *,
+    mock_attempt_id: int | None = None,
+) -> Quiz | None:
+    from portals.utils.student_courses import student_quiz_enrollment_ok
+
     quiz = (
         Quiz.objects.filter(pk=quiz_id)
         .select_related('category')
@@ -179,7 +186,16 @@ def _load_quiz_for_student(student_id: int, quiz_id: int) -> Quiz | None:
         )
         .first()
     )
-    if not quiz or not quiz_visible_to_student(quiz, student_id):
+    if not quiz:
+        return None
+    if mock_attempt_id:
+        # Active mock session may use section quizzes even if standalone unlock is off.
+        if not student_quiz_enrollment_ok(student_id, quiz):
+            return None
+        if _mock_section_submit_error(student_id, mock_attempt_id, quiz_id):
+            return None
+        return quiz
+    if not quiz_visible_to_student(quiz, student_id):
         return None
     return quiz
 
@@ -506,7 +522,7 @@ def submit_variant_quiz_attempt(
     mock_attempt_id: int | None = None,
     defer_notifications: bool = False,
 ) -> dict:
-    quiz = _load_quiz_for_student(student_id, quiz_id)
+    quiz = _load_quiz_for_student(student_id, quiz_id, mock_attempt_id=mock_attempt_id)
     if not quiz:
         return {'success': False, 'error': _('Quiz not found.')}
     if not quiz.is_variant_quiz:
@@ -598,7 +614,7 @@ def submit_reading_quiz_attempt(
         score_reading_quiz,
     )
 
-    quiz = _load_quiz_for_student(student_id, quiz_id)
+    quiz = _load_quiz_for_student(student_id, quiz_id, mock_attempt_id=mock_attempt_id)
     if not quiz:
         return {'success': False, 'error': _('Quiz not found.')}
     if not quiz.is_reading:
@@ -688,7 +704,7 @@ def submit_listening_quiz_attempt(
 ) -> dict:
     from portals.utils.quiz_listening_score import score_listening_quiz
 
-    quiz = _load_quiz_for_student(student_id, quiz_id)
+    quiz = _load_quiz_for_student(student_id, quiz_id, mock_attempt_id=mock_attempt_id)
     if not quiz:
         return {'success': False, 'error': _('Quiz not found.')}
     if not quiz.is_listening:
@@ -803,7 +819,7 @@ def submit_speaking_quiz_attempt(
     from portals.models import SpeakingRecording
     from portals.utils.quiz_speaking import get_speaking_questions_for_quiz
 
-    quiz = _load_quiz_for_student(student_id, quiz_id)
+    quiz = _load_quiz_for_student(student_id, quiz_id, mock_attempt_id=mock_attempt_id)
     if not quiz:
         return {'success': False, 'error': _('Quiz not found.')}
     if not quiz.is_speaking:
@@ -919,7 +935,7 @@ def submit_manual_quiz_attempt(
     mock_attempt_id: int | None = None,
     defer_notifications: bool = False,
 ) -> dict:
-    quiz = _load_quiz_for_student(student_id, quiz_id)
+    quiz = _load_quiz_for_student(student_id, quiz_id, mock_attempt_id=mock_attempt_id)
     if not quiz:
         return {'success': False, 'error': _('Quiz not found.')}
     if not quiz.is_manual_grading:

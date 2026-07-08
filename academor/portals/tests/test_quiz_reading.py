@@ -72,6 +72,7 @@ class QuizReadingTests(QuizVisibilityTests):
             question='<p>Paragraph A</p>',
             correct_answer='ii. Global warming',
         )
+        self.assign_student_quizzes(quiz)
         return quiz
 
     def test_only_one_format_allowed_with_reading(self):

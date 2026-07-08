@@ -36,10 +36,10 @@
         <span class="nav-text">{% trans 'Lessons' %}</span>
       </a>
       <a class="nav-link{% if u == 'teacher-classrooms' or u == 'teacher-classroom-detail' %} active{% endif %}" href="{% url 'portals:teacher-classrooms' %}">
-        <span class="nav-icon"><i class="ti ti-door" aria-hidden="true"></i></span>
+        <span class="nav-icon"><i class="ti ti-books" aria-hidden="true"></i></span>
         <span class="nav-text">{% trans 'Textbooks' %}</span>
       </a>
-      <a class="nav-link{% if u == 'teacher-attendance' or u == 'teacher-attendance-create' or u == 'teacher-student-attendance' or u == 'teacher-attendance-session' %} active{% endif %}" href="{% url 'portals:teacher-attendance' %}">
+      <a class="nav-link{% if u == 'teacher-attendance' or u == 'teacher-attendance-create' or u == 'teacher-attendance-session' %} active{% endif %}" href="{% url 'portals:teacher-attendance' %}">
         <span class="nav-icon"><i class="ti ti-clipboard-check" aria-hidden="true"></i></span>
         <span class="nav-text">{% trans 'Davamiyyət' %}</span>
       </a>
@@ -57,12 +57,8 @@
       </a>
       <a class="nav-link{% if u == 'teacher-quiz-results' or u == 'teacher-quiz-result-review' %} active{% endif %}" href="{% url 'portals:teacher-quiz-results' %}">
         <span class="nav-icon"><i class="ti ti-pencil" aria-hidden="true"></i></span>
-        <span class="nav-text">{% trans 'Quizzes to review' %}</span>
+        <span class="nav-text">{% trans 'Yoxlanmalı olan quizlər' %}</span>
         {% if portal_pending_reviews_count %}<span class="nav-badge">{{ portal_pending_reviews_count }}</span>{% endif %}
-      </a>
-      <a class="nav-link{% if u == 'profile' %} active{% endif %}" href="{% url 'portals:profile' %}">
-        <span class="nav-icon"><i class="ti ti-user-circle" aria-hidden="true"></i></span>
-        <span class="nav-text">{% trans 'My profile' %}</span>
       </a>
       <a class="nav-link{% if u == 'teacher-notifications' %} active{% endif %}" href="{% url 'portals:teacher-notifications' %}">
         <span class="nav-icon"><i class="ti ti-bell" aria-hidden="true"></i></span>
@@ -84,7 +80,7 @@
         <span class="nav-text">{% trans 'Lessons' %}</span>
       </a>
       <a class="nav-link{% if u == 'student-classrooms' or u == 'student-classroom-detail' %} active{% endif %}" href="{% url 'portals:student-classrooms' %}">
-        <span class="nav-icon"><i class="ti ti-door" aria-hidden="true"></i></span>
+        <span class="nav-icon"><i class="ti ti-books" aria-hidden="true"></i></span>
         <span class="nav-text">{% trans 'Textbooks' %}</span>
       </a>
       <a class="nav-link{% if u == 'student-scores' or u == 'student-score-detail' %} active{% endif %}" href="{% url 'portals:student-scores' %}">
@@ -106,10 +102,6 @@
         <span class="nav-text">{% trans 'Notifications' %}</span>
         {% if portal_unread_notifications %}<span class="nav-badge" data-portal-unread-badge>{{ portal_unread_notifications }}</span>{% else %}<span class="nav-badge d-none" data-portal-unread-badge hidden></span>{% endif %}
       </a>
-      <a class="nav-link{% if u == 'profile' %} active{% endif %}" href="{% url 'portals:profile' %}">
-        <span class="nav-icon"><i class="ti ti-user-circle" aria-hidden="true"></i></span>
-        <span class="nav-text">{% trans 'My profile' %}</span>
-      </a>
 
     {% elif portal_role == 'parent' %}
       <a class="nav-link{% if u == 'parent-dashboard' %} active{% endif %}" href="{% url 'portals:parent-dashboard' %}"{% if u == 'parent-dashboard' %} aria-current="page"{% endif %}>
@@ -125,7 +117,7 @@
         <span class="nav-text">{% trans 'Lessons' %}</span>
       </a>
       <a class="nav-link{% if u == 'parent-classrooms' or u == 'parent-classroom-detail' %} active{% endif %}" href="{% url 'portals:parent-classrooms' %}">
-        <span class="nav-icon"><i class="ti ti-door" aria-hidden="true"></i></span>
+        <span class="nav-icon"><i class="ti ti-books" aria-hidden="true"></i></span>
         <span class="nav-text">{% trans 'Textbooks' %}</span>
       </a>
       <a class="nav-link{% if u == 'parent-scores' or u == 'parent-score-detail' or u == 'parent-ielts-mock-detail' %} active{% endif %}" href="{% url 'portals:parent-scores' %}">
@@ -140,10 +132,6 @@
         <span class="nav-icon"><i class="ti ti-bell" aria-hidden="true"></i></span>
         <span class="nav-text">{% trans 'Notifications' %}</span>
         {% if portal_unread_notifications %}<span class="nav-badge" data-portal-unread-badge>{{ portal_unread_notifications }}</span>{% else %}<span class="nav-badge d-none" data-portal-unread-badge hidden></span>{% endif %}
-      </a>
-      <a class="nav-link{% if u == 'profile' %} active{% endif %}" href="{% url 'portals:profile' %}">
-        <span class="nav-icon"><i class="ti ti-user-circle" aria-hidden="true"></i></span>
-        <span class="nav-text">{% trans 'My profile' %}</span>
       </a>
     {% endif %}
 

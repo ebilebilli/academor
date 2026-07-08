@@ -5,17 +5,17 @@
 
 {% block content %}
 <div class="portal-control-bar mb-3">
-  <a class="btn btn-outline-secondary btn-sm" href="{{ back_url }}">
-    <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'Back' %}
+  <a class="ds-btn ds-btn--ghost btn-sm" href="{{ back_url }}">
+    <i class="ti ti-arrow-left" aria-hidden="true"></i>{% trans 'Back' %}
   </a>
   {% if edit_url %}
-  <a class="btn btn-primary btn-sm ms-auto" href="{{ edit_url }}">
-    <i class="bi bi-pencil me-1" aria-hidden="true"></i>{% trans 'Edit' %}
+  <a class="ds-btn ds-btn--secondary btn-sm ms-auto" href="{{ edit_url }}">
+    <i class="ti ti-pencil" aria-hidden="true"></i>{% trans 'Edit' %}
   </a>
   {% endif %}
 </div>
 
-{% portal_page_heading icon="bi-book" raw_title=classroom.name %}
+{% include "portals/includes/portal_page_hero.html" with title=classroom.name subtitle=_('Dərs kitabı və materiallar.') icon="ti-book" lottie="portals/animations/study.lottie" %}
 
 <section class="portal-content-panel portal-classroom-detail">
   <div class="portal-panel-header portal-lesson-detail-meta mb-0">

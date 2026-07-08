@@ -62,6 +62,7 @@ class QuizSpeakingTests(QuizVisibilityTests):
             order=1,
             question='<p>Why do people like travelling to new places?</p>',
         )
+        self.assign_student_quizzes(quiz)
         return quiz
 
     def _audio_file(self, name='answer.webm'):

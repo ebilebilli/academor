@@ -4,7 +4,7 @@
 {% block title %}{% trans 'Schedule' %}{% endblock %}
 
 {% block content %}
-{% portal_page_heading icon="bi-calendar-week" eyebrow="Teacher" title="Schedule" subtitle="Your weekly class schedule." %}
+{% include "portals/includes/portal_page_hero.html" with title=_('Cədvəl') subtitle=_('Həftəlik dərs cədvəliniz.') icon="ti-calendar-week" lottie="portals/animations/get-things-done.lottie" %}
 
 <div class="portal-control-bar mb-3">
   <div class="portal-control-left">

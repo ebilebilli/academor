@@ -18,9 +18,22 @@
     });
   }
 
+  function buildTabUrl(shell, tab) {
+    var params = new URLSearchParams(window.location.search);
+    params.set("tab", tab);
+    var fromGroup = shell.getAttribute("data-profile-from-group");
+    if (fromGroup) {
+      params.set("from_group", fromGroup);
+    }
+    return window.location.pathname + "?" + params.toString();
+  }
+
   function afterPanelLoaded(panel, tab) {
     if (tab === "duration" && typeof window.initStudentDurationPanel === "function") {
       window.initStudentDurationPanel(panel.querySelector("[data-duration-panel]"));
+    }
+    if (tab === "quiz-access" && typeof window.initTeacherQuizAccessPanel === "function") {
+      window.initTeacherQuizAccessPanel(panel.querySelector("[data-quiz-access-panel]"));
     }
     panel.removeAttribute("aria-busy");
     panel.classList.remove("is-loading");
@@ -42,12 +55,13 @@
       return Promise.resolve();
     }
 
+    setActiveTab(nav, tab);
     panel.setAttribute("aria-busy", "true");
     panel.classList.add("is-loading");
 
     var url = activeLink.getAttribute("href");
     if (url.charAt(0) === "?") {
-      url = window.location.pathname + url;
+      url = buildTabUrl(shell, tab);
     }
 
     return fetch(url, {
@@ -66,14 +80,12 @@
       })
       .then(function (html) {
         panel.innerHTML = html;
-        setActiveTab(nav, tab);
         if (pushState !== false) {
           window.history.pushState(
-            Object.assign({}, window.history.state, {
-              portalAjax: true,
-              url: url,
+            {
               studentProfileTab: tab,
-            }),
+              url: url,
+            },
             "",
             url
           );
@@ -81,6 +93,9 @@
         afterPanelLoaded(panel, tab);
       })
       .catch(function () {
+        panel.classList.remove("is-loading");
+        panel.removeAttribute("aria-busy");
+        setActiveTab(nav, tabFromUrl());
         window.location.href = url;
       });
   }
@@ -90,7 +105,10 @@
     if (!shell) {
       return;
     }
-    var tab = (event.state && event.state.studentProfileTab) || tabFromUrl();
+    if (!event.state || !event.state.studentProfileTab) {
+      return;
+    }
+    var tab = event.state.studentProfileTab || tabFromUrl();
     loadTab(shell, tab, false);
   }
 
@@ -112,6 +130,7 @@
         return;
       }
       event.preventDefault();
+      event.stopPropagation();
       var tab = link.getAttribute("data-tab");
       if (!tab) {
         return;

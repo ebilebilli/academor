@@ -6,17 +6,14 @@
 {% block content %}
 {% include "portals/includes/parent_child_header.html" %}
 
-<header class="s-page-head mb-4">
-  <div>
-    <h1 class="s-page-head__title">
-      <i class="ti ti-forms" aria-hidden="true"></i>
-      {% if can_take_quiz %}{% trans 'Quiz kateqoriyaları' %}{% else %}{% trans 'Quiz kateqoriyaları' %}{% endif %}
-    </h1>
-    <p class="s-page-head__sub">
-      {% if page_subtitle %}{{ page_subtitle }}{% elif can_take_quiz %}{% trans 'Kateqoriya seçin — xidmətlər tədris qruplarınıza uyğundur.' %}{% else %}{% trans 'Şagirdin quiz kateqoriyaları (yalnız baxış).' %}{% endif %}
-    </p>
-  </div>
-</header>
+{% if not page_subtitle %}
+  {% if can_take_quiz %}
+    {% trans 'Kateqoriya seçin — xidmətlər tədris qruplarınıza uyğundur.' as page_subtitle %}
+  {% else %}
+    {% trans 'Şagirdin quiz kateqoriyaları (yalnız baxış).' as page_subtitle %}
+  {% endif %}
+{% endif %}
+{% include "portals/includes/portal_page_hero.html" with title=_('Quiz kateqoriyaları') subtitle=page_subtitle icon="ti-forms" lottie="portals/animations/student.lottie" %}
 
 {% include "portals/includes/quiz_categories_panel.html" with category_detail_url_name=category_detail_url_name category_url_suffix=category_url_suffix empty_message=_('No quiz categories for your services yet.') %}
 {% endblock %}

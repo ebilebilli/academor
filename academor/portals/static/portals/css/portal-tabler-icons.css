@@ -45,6 +45,7 @@
 .ti-checks:before { content: "\ebaa"; }
 .ti-chevron-left:before { content: "\ea60"; }
 .ti-chevron-right:before { content: "\ea61"; }
+.ti-chevron-down:before { content: "\ea62"; }
 .ti-circle-check:before { content: "\ea67"; }
 .ti-circle-x:before { content: "\ea6a"; }
 .ti-clipboard-check:before { content: "\ea6c"; }
@@ -52,6 +53,7 @@
 .ti-clipboard-data:before { content: "\f563"; }
 .ti-clock:before { content: "\ea70"; }
 .ti-door:before { content: "\ef4e"; }
+.ti-lock:before { content: "\eaea"; }
 .ti-download:before { content: "\ea96"; }
 .ti-external-link:before { content: "\ea99"; }
 .ti-file-off:before { content: "\ecf2"; }

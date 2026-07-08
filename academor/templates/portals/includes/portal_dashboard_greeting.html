@@ -1,0 +1,24 @@
+{% load i18n portal_tags %}
+<header class="portal-dashboard-greeting mb-4">
+  <div class="portal-dashboard-greeting__main">
+    <div class="portal-dashboard-greeting__copy">
+      <h1 class="portal-dashboard-greeting__title">
+        {% if greeting_name %}
+          {% trans "Salam," %} <span class="portal-dashboard-greeting__name">{{ greeting_name }}</span>
+        {% else %}
+          {{ title }}
+        {% endif %}
+      </h1>
+      {% if subtitle %}<p class="portal-dashboard-greeting__sub">{{ subtitle }}</p>{% endif %}
+    </div>
+    <div class="portal-dashboard-greeting__date">
+      <i class="ti ti-calendar" aria-hidden="true"></i>
+      <span data-portal-today-date>{% portal_today_long %}</span>
+    </div>
+  </div>
+  {% if lottie %}
+  <div class="portal-dashboard-greeting__media">
+    {% include "portals/includes/portal_lottie.html" with src=lottie %}
+  </div>
+  {% endif %}
+</header>

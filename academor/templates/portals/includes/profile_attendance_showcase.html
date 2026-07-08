@@ -1,62 +1,56 @@
 {% load i18n %}
-<section class="portal-profile-performance" aria-label="{% trans 'Attendance' %}">
-  <header class="portal-profile-performance__header">
-    <p class="portal-profile-performance__eyebrow">{% trans 'Performance overview' %}</p>
-    <h2 class="portal-profile-performance__title">{% trans 'Attendance' %}</h2>
-  </header>
-
-  <div class="portal-profile-performance__grid portal-profile-performance__grid--single">
-    <article
-      class="portal-profile-performance__card portal-profile-performance__card--attendance portal-profile-performance--{{ attendance_stats.tier|default:'empty' }}"
-      aria-label="{% trans 'Attendance' %}"
-    >
-      <div class="portal-profile-performance__ring-wrap" aria-hidden="true">
-        <div
-          class="portal-profile-performance__ring"
-          style="--score-pct: {{ attendance_stats.attendance_rate|default:0 }};"
-        >
-          <div class="portal-profile-performance__ring-inner">
-            {% if attendance_stats.attendance_rate is not None %}
-              <span class="portal-profile-performance__pct">{{ attendance_stats.attendance_rate }}%</span>
-            {% else %}
-              <span class="portal-profile-performance__pct is-empty">—</span>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-      <div class="portal-profile-performance__copy">
-        <span class="portal-profile-performance__icon attendance"><i class="bi bi-calendar-check" aria-hidden="true"></i></span>
-        <h3 class="portal-profile-performance__card-title">{% trans 'Attendance' %}</h3>
-        <p class="portal-profile-performance__hint">
-          {% if attendance_stats.total %}
-            {% blocktrans with present=attendance_stats.present total=attendance_stats.total %}
-              Present at {{ present }} of {{ total }} recorded sessions.
-            {% endblocktrans %}
-          {% else %}
-            {% trans 'Attendance records will appear here once sessions are marked.' %}
-          {% endif %}
-        </p>
-        {% if attendance_stats.total %}
-        <div class="portal-profile-performance__meta">
-          <span class="portal-profile-performance__chip is-present">
-            <i class="bi bi-check-lg" aria-hidden="true"></i>
-            {{ attendance_stats.present }} {% trans 'present' %}
-          </span>
-          {% if attendance_stats.late %}
-            <span class="portal-profile-performance__chip is-late">
-              <i class="bi bi-clock" aria-hidden="true"></i>
-              {{ attendance_stats.late }} {% trans 'late' %}
-            </span>
-          {% endif %}
-          {% if attendance_stats.absent %}
-            <span class="portal-profile-performance__chip is-absent">
-              <i class="bi bi-x-lg" aria-hidden="true"></i>
-              {{ attendance_stats.absent }} {% trans 'absent' %}
-            </span>
-          {% endif %}
-        </div>
+<section class="weekly-summary-card weekly-summary-card--attendance weekly-summary-card--{{ attendance_stats.tier|default:'empty' }}" aria-label="{% trans 'Attendance' %}">
+  <div class="weekly-summary-card__visual" aria-hidden="true">
+    <div class="weekly-summary-card__ring" style="--score-pct: {{ attendance_stats.attendance_rate|default:0 }};">
+      <div class="weekly-summary-card__ring-inner">
+        {% if attendance_stats.attendance_rate is not None %}
+        <span class="weekly-summary-card__score">{{ attendance_stats.attendance_rate }}</span>
+        <span class="weekly-summary-card__scale">%</span>
+        {% else %}
+        <span class="weekly-summary-card__score is-empty">—</span>
         {% endif %}
       </div>
-    </article>
+    </div>
+  </div>
+
+  <div class="weekly-summary-card__body">
+    <div class="weekly-summary-card__head">
+      <span class="weekly-summary-card__icon"><i class="ti ti-calendar-check" aria-hidden="true"></i></span>
+      <div>
+        <p class="weekly-summary-card__eyebrow">{% trans 'Davamiyyət' %}</p>
+        <h2 class="weekly-summary-card__title">{% trans 'İştirak faizi' %}</h2>
+      </div>
+    </div>
+
+    <p class="weekly-summary-card__hint">
+      {% if attendance_stats.total %}
+        {% blocktrans with present=attendance_stats.present total=attendance_stats.total %}
+          {{ total }} qeydə alınmış dərsdən {{ present }}-də iştirak etmisiniz.
+        {% endblocktrans %}
+      {% else %}
+        {% trans 'Müəllim davamiyyət qeyd etdikdən sonra burada görünəcək.' %}
+      {% endif %}
+    </p>
+
+    {% if attendance_stats.total %}
+    <div class="weekly-summary-card__meta">
+      <span class="weekly-summary-card__chip weekly-summary-card__chip--success">
+        <i class="ti ti-check" aria-hidden="true"></i>
+        {{ attendance_stats.present }} {% trans 'iştirak' %}
+      </span>
+      {% if attendance_stats.late %}
+      <span class="weekly-summary-card__chip weekly-summary-card__chip--warning">
+        <i class="ti ti-clock" aria-hidden="true"></i>
+        {{ attendance_stats.late }} {% trans 'gecikmə' %}
+      </span>
+      {% endif %}
+      {% if attendance_stats.absent %}
+      <span class="weekly-summary-card__chip weekly-summary-card__chip--danger">
+        <i class="ti ti-x" aria-hidden="true"></i>
+        {{ attendance_stats.absent }} {% trans 'qaib' %}
+      </span>
+      {% endif %}
+    </div>
+    {% endif %}
   </div>
 </section>

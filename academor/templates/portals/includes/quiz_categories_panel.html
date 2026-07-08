@@ -42,10 +42,10 @@
       <tbody>
         {% for category in categories %}
         <tr data-service="{{ category.service }}">
-          <td class="fw-500">{{ category.name }}</td>
-          <td><span class="ds-badge">{{ category.service_label }}</span></td>
-          <td><span class="ds-badge">{{ category.quiz_count }}</span></td>
-          <td class="text-end">
+          <td class="fw-500" data-label="{% trans 'Kateqoriya' %}">{{ category.name }}</td>
+          <td data-label="{% trans 'Xidmət' %}"><span class="ds-badge">{{ category.service_label }}</span></td>
+          <td data-label="{% trans 'Quiz' %}"><span class="ds-badge">{{ category.quiz_count }}</span></td>
+          <td class="text-end" data-label="{% trans 'Əməliyyat' %}">
             <a class="ds-btn ds-btn--secondary btn-sm" href="{% url category_detail_url_name category.id %}{{ category_url_suffix|default:'' }}">
               {{ category_action_label|default:_('Aç') }}
             </a>

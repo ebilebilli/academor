@@ -86,7 +86,7 @@
   /* ------------------------------------------------------------------
      Typography
   ------------------------------------------------------------------ */
-  --font-family:    "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family:    "Host Grotesk", "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --font-base:      0.9375rem;   /* 15px */
   --line-height:    1.55;
   --line-height-tight: 1.25;
@@ -102,6 +102,8 @@
   --font-normal:    400;
   --font-medium:    500;
   --font-semibold:  600;
+  --font-bold:      700;
+  --font-black:     900;
 
   /* ------------------------------------------------------------------
      Spacing scale (8px base)

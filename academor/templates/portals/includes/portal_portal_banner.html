@@ -1,0 +1,36 @@
+{% load i18n portal_tags %}
+
+<section
+  class="mb-4 portal-banner{% if banner_centered %} portal-banner--centered{% endif %}"
+  aria-label="{% trans 'Portal banner' %}"
+  {% if portal_page_background_image %}style="--portal-banner-image: url('{{ portal_page_background_image }}');"{% endif %}
+>
+  <div class="portal-banner__main">
+    <div class="portal-banner__copy">
+      <h1 class="portal-banner__title">
+        {% if greeting_name %}
+          {% trans "Salam," %} <span class="portal-banner__name">{{ greeting_name }}</span>
+        {% else %}
+          {{ title|default:_("Dashboard") }}
+        {% endif %}
+      </h1>
+      {% if subtitle %}<p class="portal-banner__sub">{{ subtitle }}</p>{% endif %}
+
+      <div class="portal-banner__date" aria-label="{% portal_today_long %}">
+        <i class="ti ti-calendar" aria-hidden="true"></i>
+        <span class="portal-banner__date-weekday" data-portal-today-date>{% portal_today_weekday %}</span>
+        <span class="portal-banner__date-sep" aria-hidden="true">·</span>
+        <span class="portal-banner__date-month">{% portal_today_day %} {% portal_today_month %}</span>
+        <span class="portal-banner__date-sep" aria-hidden="true">·</span>
+        <span class="portal-banner__date-year">{% portal_today_year %}</span>
+      </div>
+    </div>
+
+    {% if lottie %}
+    <div class="portal-banner__media" aria-hidden="true">
+      {% include "portals/includes/portal_lottie.html" with src=lottie %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+

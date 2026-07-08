@@ -245,7 +245,7 @@
     root.dataset.portalLessonsFilterBound = "true";
     var activeSubject = readActiveValue(subjectTablist, "data-subject", "all");
     var activeCategory = readActiveValue(categoryTablist, "data-category", "all");
-    var activePeriod = readActiveValue(periodTablist, "data-period", "all");
+    var activePeriod = readActiveValue(periodTablist, "data-period", "week");
 
     function parseLocalDate(value) {
       if (!value) {
@@ -476,7 +476,7 @@
   }
 
   function scoreMatchesGroup(item, activeGroup) {
-    if (activeGroup === "all") {
+    if (!activeGroup) {
       return true;
     }
     var ids = item.getAttribute("data-group-ids") || "";
@@ -492,13 +492,16 @@
       return;
     }
     groupNav.querySelectorAll("[data-score-group]").forEach(function (btn) {
-      var groupId = btn.getAttribute("data-score-group") || "all";
+      var groupId = btn.getAttribute("data-score-group");
+      if (!groupId) {
+        return;
+      }
       var count = 0;
       root.querySelectorAll("tr[data-score-date]").forEach(function (row) {
         if (!scoreMatchesPeriod(row, activePeriod)) {
           return;
         }
-        if (groupId === "all" || scoreMatchesGroup(row, groupId)) {
+        if (scoreMatchesGroup(row, groupId)) {
           count += 1;
         }
       });
@@ -510,12 +513,11 @@
   }
 
   function syncScoreGroupUrl(activeGroup) {
-    var url = new URL(window.location.href);
-    if (activeGroup === "all") {
-      url.searchParams.delete("group");
-    } else {
-      url.searchParams.set("group", activeGroup);
+    if (!activeGroup) {
+      return;
     }
+    var url = new URL(window.location.href);
+    url.searchParams.set("group", activeGroup);
     var next = url.pathname + url.search;
     if (next !== window.location.pathname + window.location.search) {
       window.history.replaceState(
@@ -538,21 +540,30 @@
 
     root.dataset.portalScoresFilterBound = "true";
     var activePeriod = periodTablist
-      ? readActiveValue(periodTablist, "data-period", "all")
-      : "all";
-    var activeGroup = new URLSearchParams(window.location.search).get("group") || "all";
+      ? readActiveValue(periodTablist, "data-period", "week")
+      : "week";
+    var activeGroup = null;
     if (groupNav) {
       var validGroups = {};
+      var defaultGroup = null;
       groupNav.querySelectorAll("[data-score-group]").forEach(function (btn) {
         var groupId = btn.getAttribute("data-score-group");
-        if (groupId && groupId !== "all") {
-          validGroups[groupId] = true;
+        if (!groupId) {
+          return;
+        }
+        validGroups[groupId] = true;
+        if (!defaultGroup) {
+          defaultGroup = groupId;
         }
       });
-      if (activeGroup !== "all" && !validGroups[activeGroup]) {
-        activeGroup = "all";
+      activeGroup = new URLSearchParams(window.location.search).get("group");
+      if (!activeGroup || !validGroups[activeGroup]) {
+        activeGroup = defaultGroup;
       }
-      setScoreGroupActive(groupNav, activeGroup);
+      if (activeGroup) {
+        setScoreGroupActive(groupNav, activeGroup);
+        syncScoreGroupUrl(activeGroup);
+      }
     }
 
     function applyFilters() {
@@ -605,7 +616,7 @@
         applyFilters();
       },
       setGroup: function (group) {
-        activeGroup = group || "all";
+        activeGroup = group || null;
         applyFilters();
       },
       applyFilters: applyFilters,
@@ -631,7 +642,8 @@
     if (!groupNav) {
       return;
     }
-    var activeChip = groupNav.querySelector('[data-score-group="' + groupId + '"]');
+    var activeChip = groupNav.querySelector('[data-score-group="' + groupId + '"]')
+      || groupNav.querySelector("[data-score-group]");
     if (!activeChip) {
       return;
     }
@@ -649,12 +661,15 @@
     }
     event.preventDefault();
     var groupNav = root.querySelector("[data-score-group-filter]");
-    setScoreGroupActive(groupNav, groupBtn.getAttribute("data-score-group") || "all");
+    setScoreGroupActive(groupNav, groupBtn.getAttribute("data-score-group"));
     var controller = initScoresPeriodFilter(root);
     if (!controller) {
       return;
     }
-    var group = groupBtn.getAttribute("data-score-group") || "all";
+    var group = groupBtn.getAttribute("data-score-group");
+    if (!group) {
+      return;
+    }
     syncScoreGroupUrl(group);
     controller.setGroup(group);
   }

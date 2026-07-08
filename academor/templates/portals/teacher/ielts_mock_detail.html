@@ -4,19 +4,7 @@
 {% block title %}{% trans 'IELTS Mock Test' %} — {{ mock_attempt.student_name }}{% endblock %}
 
 {% block content %}
-<header class="s-page-head mb-4">
-  <div>
-    <h1 class="s-page-head__title">
-      <i class="ti ti-clipboard-list" aria-hidden="true"></i>
-      {% trans 'IELTS Mock Test' %}
-    </h1>
-    <p class="text-muted mb-0">{{ mock_attempt.student_name }} · {{ mock_attempt.completed_at|date:"d.m.Y H:i" }}</p>
-  </div>
-  <a class="ds-btn ds-btn--ghost btn-sm" href="{{ back_url }}">
-    <i class="ti ti-arrow-left" aria-hidden="true"></i>
-    {% trans 'Back' %}
-  </a>
-</header>
+{% include "portals/includes/portal_page_hero.html" with title=_('IELTS Mock Test') subtitle=mock_attempt.student_name icon="ti-clipboard-list" lottie="portals/animations/learning.lottie" back_url=back_url %}
 
 {% include "portals/includes/quiz_mock_overall_summary.html" %}
 

@@ -29,11 +29,14 @@ class StudentIeltsMockLandingView(StudentRequiredMixin, View):
     template_name = 'portals/student/ielts_mock_landing.html'
 
     def get(self, request):
+        from portals.utils.student_courses import student_has_course_access
+
         profile = get_student_profile(request.portal_user)
-        if not student_can_access_ielts_mock(profile.pk):
+        if not student_has_course_access(profile.pk, 'ielts'):
             raise Http404
 
-        missing_sections = get_missing_mock_sections(profile.pk)
+        mock_unlocked = student_can_access_ielts_mock(profile.pk)
+        missing_sections = get_missing_mock_sections(profile.pk) if mock_unlocked else []
         missing_labels = [
             dict(IeltsMockTestAttempt.Section.choices).get(section, section)
             for section in missing_sections
@@ -43,7 +46,8 @@ class StudentIeltsMockLandingView(StudentRequiredMixin, View):
             self.template_name,
             _portal_context(
                 request,
-                can_start=not missing_sections,
+                mock_unlocked=mock_unlocked,
+                can_start=mock_unlocked and not missing_sections,
                 missing_sections=missing_labels,
                 completed_attempts=[
                     serialize_mock_attempt_summary(attempt)
@@ -99,9 +103,12 @@ class ParentIeltsMockDetailView(ParentRequiredMixin, View):
     template_name = 'portals/student/ielts_mock_complete.html'
 
     def get(self, request, pk):
+        from portals.utils.student_courses import student_has_course_access
+
         profile = get_parent_profile(request.portal_user)
         student, child_ctx = _parent_student_page(request, profile)
-        if not student_can_access_ielts_mock(student.pk):
+        # Past mock results stay visible even when the teacher has locked new starts.
+        if not student_has_course_access(student.pk, 'ielts'):
             raise Http404
 
         attempt = get_mock_attempt_for_student(student.pk, pk)

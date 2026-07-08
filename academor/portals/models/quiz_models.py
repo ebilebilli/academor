@@ -540,3 +540,56 @@ class QuizResult(models.Model):
         score = self.total_score if self.total_score is not None else '—'
         return f'{self.student} — {self.quiz} ({score})'
 
+
+class QuizAssignment(models.Model):
+    """Per-student quiz access — teachers activate or deactivate individual quizzes."""
+
+    student = models.ForeignKey(
+        'StudentProfile',
+        on_delete=models.CASCADE,
+        related_name='quiz_assignments',
+        verbose_name=_('Student'),
+    )
+    quiz = models.ForeignKey(
+        Quiz,
+        on_delete=models.CASCADE,
+        related_name='student_assignments',
+        verbose_name=_('Quiz'),
+    )
+    is_active = models.BooleanField(
+        default=False,
+        verbose_name=_('Active'),
+        help_text=_('When enabled, the student can see and take this quiz.'),
+    )
+    assigned_by = models.ForeignKey(
+        'TeacherProfile',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='quiz_assignments_created',
+        verbose_name=_('Assigned by'),
+    )
+    assigned_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name=_('Updated at'),
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_('Created at'),
+    )
+
+    class Meta:
+        verbose_name = _('Quiz assignment')
+        verbose_name_plural = _('Quiz assignments')
+        constraints = [
+            models.UniqueConstraint(
+                fields=('student', 'quiz'),
+                name='portals_quiz_assignment_uniq',
+            ),
+        ]
+        ordering = ('-assigned_at', 'id')
+
+    def __str__(self):
+        state = _('active') if self.is_active else _('inactive')
+        return f'{self.student} — {self.quiz} ({state})'
+

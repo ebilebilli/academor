@@ -6,15 +6,7 @@
 {% block content %}
 {% include "portals/includes/parent_child_header.html" %}
 
-<header class="s-page-head mb-4">
-  <div>
-    <h1 class="s-page-head__title">
-      <i class="ti ti-calendar-week" aria-hidden="true"></i>
-      {% trans 'Cədvəl' %}
-    </h1>
-    <p class="s-page-head__sub">{% if page_subtitle %}{{ page_subtitle }}{% else %}{% trans 'Həftəlik dərs cədvəliniz.' %}{% endif %}</p>
-  </div>
-</header>
+{% include "portals/includes/portal_page_hero.html" with title=_('Cədvəl') subtitle=page_subtitle|default:_('Həftəlik dərs cədvəliniz.') icon="ti-calendar-week" lottie="portals/animations/student-transparent.lottie" %}
 
 <div class="portal-control-bar mb-4">
   <div class="portal-control-left">
