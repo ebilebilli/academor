@@ -33,7 +33,7 @@
     }));
   }
 
-  var SKIP_PATH_RE = /\/portal\/(login|logout)\/?$|\/portal\/student\/quizzes\/\d+\/(take|manual|reading|speaking)\/?$|\/portal\/student\/ielts-mock(\/|$)/i;
+  var SKIP_PATH_RE = /\/portal\/(login|logout)\/?$|\/portal\/student\/quizzes\/\d+\/(take|manual|reading|speaking)\/?$|\/portal\/student\/ielts-mock(\/|$)|\/portal\/customer\/quizzes\/\d+\/(manual|reading|speaking)\/?$|\/portal\/customer\/ielts-mock(\/|$)/i;
   var PREFETCH_SKIP_PATH_RE = /\/portal\/student\/(scores|notifications)(\/|$)|\/portal\/student\/quizzes(\/category\/|\/|$)|\/portal\/parent\/(scores|notifications)(\/|$)/i;
   var CORE_SCRIPTS = /bootstrap\.bundle|\/main\.js|portal-nav-ajax\.js|portal-init\.js/i;
   var FRAGMENT_HEADERS = {
@@ -280,9 +280,18 @@
       if (parsed.pathname.indexOf("/portal/student/ielts-mock") === 0) {
         return true;
       }
+      if (parsed.pathname.indexOf("/portal/customer/ielts-mock") === 0) {
+        return true;
+      }
       if (
         parsed.searchParams.has("mock")
         && /\/portal\/student\/quizzes\/\d+\/(take|manual|reading|speaking)\/?$/i.test(parsed.pathname)
+      ) {
+        return true;
+      }
+      if (
+        parsed.searchParams.has("mock")
+        && /\/portal\/customer\/quizzes\/\d+\/(manual|reading|speaking)\/?$/i.test(parsed.pathname)
       ) {
         return true;
       }

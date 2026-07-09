@@ -41,7 +41,7 @@
 {% elif mock_attempt.pending_review_count %}
 <section class="ds-card mb-4">
   <div class="alert alert-info mb-0">
-    {% blocktrans count count=mock_attempt.pending_review_count %}
+    {% blocktrans count count=mock_attempt.pending_review_count trimmed %}
     Your overall result will appear after your teacher reviews {{ count }} section.
     {% plural %}
     Your overall result will appear after your teacher reviews {{ count }} sections.

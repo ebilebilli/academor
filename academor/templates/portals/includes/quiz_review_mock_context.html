@@ -1,0 +1,21 @@
+{% load i18n %}
+{% if mock_attempt_id %}
+{% if variant == 'note' %}
+<div class="quiz-review-mock-note" role="note">
+  <i class="ti ti-clipboard-list" aria-hidden="true"></i>
+  <div class="quiz-review-mock-note__copy">
+    <span class="quiz-review-mock-note__title">
+      {% trans 'IELTS mock test' %}{% if mock_section_label %} — {{ mock_section_label }}{% endif %}
+    </span>
+  </div>
+  {% if mock_detail_url %}
+  <a class="ds-btn ds-btn--secondary btn-sm" href="{{ mock_detail_url }}">{% trans 'View mock test summary' %}</a>
+  {% endif %}
+</div>
+{% else %}
+<span class="quiz-review-mock-tag ds-badge ds-badge--info">
+  <i class="ti ti-clipboard-list" aria-hidden="true"></i>
+  {% trans 'IELTS Mock Test' %}{% if mock_section_label %} · {{ mock_section_label }}{% endif %}
+</span>
+{% endif %}
+{% endif %}

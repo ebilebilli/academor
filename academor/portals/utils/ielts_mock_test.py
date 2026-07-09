@@ -236,6 +236,26 @@ def section_for_quiz_in_attempt(attempt: IeltsMockTestAttempt, quiz_id: int) -> 
     return None
 
 
+def find_in_progress_mock_attempt_for_quiz(
+    student_id: int,
+    quiz_id: int,
+) -> IeltsMockTestAttempt | None:
+    """Return the student's active mock attempt that includes this quiz, if any."""
+    return (
+        IeltsMockTestAttempt.objects.filter(
+            student_id=student_id,
+            status=IeltsMockTestAttempt.Status.IN_PROGRESS,
+        )
+        .filter(
+            Q(listening_quiz_id=quiz_id)
+            | Q(reading_quiz_id=quiz_id)
+            | Q(writing_quiz_id=quiz_id)
+            | Q(speaking_quiz_id=quiz_id)
+        )
+        .first()
+    )
+
+
 def validate_mock_section_submit(attempt: IeltsMockTestAttempt, quiz_id: int) -> str | None:
     section = section_for_quiz_in_attempt(attempt, quiz_id)
     if not section:
@@ -563,7 +583,7 @@ def find_mock_attempt_for_result(
         return attempt
     qs = (
         IeltsMockTestAttempt.objects.filter(
-            student_id=result.student_id,
+            Q(student_id=result.student_id) | Q(customer_id=result.customer_id),
         )
         .exclude(status=IeltsMockTestAttempt.Status.ABANDONED)
         .filter(
@@ -616,7 +636,12 @@ def maybe_publish_mock_results_for_result(result: QuizResult) -> None:
     attempt = find_completed_mock_for_result(result)
     if not attempt:
         return
-    refreshed = get_mock_attempt_for_student(attempt.student_id, attempt.pk)
+    if attempt.student_id:
+        refreshed = get_mock_attempt_for_student(attempt.student_id, attempt.pk)
+    else:
+        from portals.utils.customer_mock import get_mock_attempt_for_customer
+
+        refreshed = get_mock_attempt_for_customer(attempt.customer_id, attempt.pk)
     if refreshed:
         maybe_publish_mock_attempt_results(refreshed)
 
@@ -692,7 +717,11 @@ def serialize_mock_attempt_summary(attempt: IeltsMockTestAttempt) -> dict:
         'status': attempt.status,
         'started_at': attempt.started_at,
         'completed_at': attempt.completed_at,
-        'student_name': attempt.student.full_name,
+        'student_name': (
+            attempt.student.full_name
+            if attempt.student_id
+            else (attempt.customer.full_name if attempt.customer_id else '')
+        ),
         'sections': sections,
         'is_fully_graded': is_fully_graded,
         'pending_review_count': pending_review_count,

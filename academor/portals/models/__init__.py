@@ -1,4 +1,5 @@
 from .profile_models import (
+    CustomerProfile,
     ParentProfile,
     StudentProfile,
     StudentCourseSpecialization,
@@ -30,9 +31,11 @@ from .speaking_models import (
     SpeakingRecording,
 )
 from .ielts_mock_models import IeltsMockTestAttempt, StudentMockAccess
+from .mock_package_models import MockTestPackage
 from .notification_models import PortalNotification, QuizResultReview
 
 __all__ = [
+    'CustomerProfile',
     'StudentProfile',
     'StudentCourseSpecialization',
     'ParentProfile',
@@ -65,6 +68,7 @@ __all__ = [
     'SpeakingRecording',
     'IeltsMockTestAttempt',
     'StudentMockAccess',
+    'MockTestPackage',
     'PortalNotification',
     'QuizResultReview',
 ]

@@ -11,21 +11,7 @@
 {% csrf_token %}
 
 {# ── Period filter ────────────────────────────────────────────── #}
-<div class="s-filter-tabs mb-3" role="group" aria-label="{% trans 'Zaman filteri' %}">
-  {% for code in period_choices %}
-  <a
-    class="s-filter-tab{% if period == code %} is-active{% endif %}"
-    href="{% url notifications_url_name %}?period={{ code }}"
-  >
-    {% if code == 'all' %}{% trans 'Hamısı' %}
-    {% elif code == 'day' %}{% trans 'Bu gün' %}
-    {% elif code == 'week' %}{% trans 'Bu həftə' %}
-    {% elif code == 'month' %}{% trans 'Bu ay' %}
-    {% elif code == 'year' %}{% trans 'Bu il' %}
-    {% endif %}
-  </a>
-  {% endfor %}
-</div>
+{% include "portals/includes/notifications_period_filter.html" %}
 
 {# ── Notification list ────────────────────────────────────────── #}
 <section class="notif-list" data-notification-list aria-label="{% trans 'Bildiriş siyahısı' %}">
@@ -55,9 +41,21 @@
       </div>
       <p class="notif-item__desc">
         {% if item.is_mock_section_review %}
-          {% blocktrans with name=item.student_name section=item.quiz_topic %}{{ name }} — mock test section awaiting review ({{ section }}){% endblocktrans %}
+          {% blocktrans with name=item.student_name section=item.quiz_topic %}{{ name }} — mock test bölməsi yoxlama gözləyir ({{ section }}){% endblocktrans %}
         {% elif item.is_mock_test_completed %}
-          {% blocktrans with name=item.student_name %}{{ name }} completed the full IELTS mock test. Review Writing and Speaking.{% endblocktrans %}
+          {% if parent %}
+            {% blocktrans with name=item.student_name %}{{ name }} IELTS mock testini tamamladı.{% endblocktrans %}
+          {% else %}
+            {% blocktrans with name=item.student_name %}{{ name }} tam IELTS mock testini tamamladı. Writing və Speaking yoxlanılmalıdır.{% endblocktrans %}
+          {% endif %}
+        {% elif item.is_mock_test_results %}
+          {% if parent %}
+            {% blocktrans with name=item.student_name %}{{ name }} — ümumi IELTS mock test nəticəsi dərc olundu{% endblocktrans %}
+          {% elif student %}
+            {% trans 'Ümumi IELTS mock test nəticəniz dərc olundu.' %}
+          {% else %}
+            {% blocktrans with name=item.student_name %}{{ name }} — ümumi IELTS mock test nəticəsi dərc olundu{% endblocktrans %}
+          {% endif %}
         {% elif item.is_submission_pending %}
           {% if student %}
             {% trans 'Your answers were submitted for teacher review.' %}
@@ -75,13 +73,17 @@
         {% endif %}
         {% if not item.is_weekly_score %} · {{ item.grading_mode_label }}{% endif %}
       </p>
-      {% if item.is_mock_section_review or item.is_mock_test_completed %}
+      {% if item.is_mock_section_review or item.is_mock_test_completed or item.is_mock_test_results %}
         <span class="ds-badge ds-badge--info">{% trans 'IELTS Mock Test' %}</span>
       {% elif item.is_submission_pending %}
         <span class="ds-badge ds-badge--warning">{% trans 'Yoxlama gözləyir' %}</span>
       {% else %}
         <span class="notif-item__score">
-          {% trans 'Bal' %}: {{ item.total_score|format_quiz_score }}/{{ item.max_value|format_quiz_score }}
+          {% if item.is_mock_test_results %}
+            {% trans 'Band' %}: {{ item.total_score|format_quiz_score }}/{{ item.max_value|format_quiz_score }}
+          {% else %}
+            {% trans 'Bal' %}: {{ item.total_score|format_quiz_score }}/{{ item.max_value|format_quiz_score }}
+          {% endif %}
         </span>
       {% endif %}
     </a>

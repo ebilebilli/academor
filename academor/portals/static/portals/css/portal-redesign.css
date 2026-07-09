@@ -708,6 +708,51 @@ body {
   font-size: var(--text-xs);
   color: var(--color-muted);
 }
+.t-table__quiz-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+.t-table__row--mock {
+  background: color-mix(in srgb, var(--color-info) 4%, transparent);
+}
+.t-table__row--mock:hover {
+  background: color-mix(in srgb, var(--color-info) 7%, transparent);
+}
+.t-table__row--mock td:first-child {
+  box-shadow: inset 3px 0 0 var(--color-info);
+}
+.quiz-review-mock-tag .ti {
+  font-size: 11px;
+}
+.quiz-review-mock-note {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid color-mix(in srgb, var(--color-info) 22%, var(--color-border));
+  background: color-mix(in srgb, var(--color-info) 6%, var(--color-surface));
+  font-size: var(--text-sm);
+}
+.quiz-review-mock-note > .ti {
+  flex-shrink: 0;
+  font-size: 18px;
+  color: var(--color-info);
+}
+.quiz-review-mock-note__copy {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.quiz-review-mock-note__title {
+  font-weight: var(--font-medium);
+}
 .fw-500 { font-weight: 500; }
 
 /* Mobile: stack table rows as cards when cells have data-label */
@@ -893,13 +938,15 @@ body {
 
 /* Role-aware quick action primary */
 [data-portal-role="student"] .t-qa-btn--primary,
-[data-portal-role="parent"] .t-qa-btn--primary {
+[data-portal-role="parent"] .t-qa-btn--primary,
+[data-portal-role="customer"] .t-qa-btn--primary {
   background: var(--color-role-subtle);
   color: var(--color-role);
   border: 1.5px solid var(--color-role-light);
 }
 [data-portal-role="student"] .t-qa-btn--primary:hover,
-[data-portal-role="parent"] .t-qa-btn--primary:hover {
+[data-portal-role="parent"] .t-qa-btn--primary:hover,
+[data-portal-role="customer"] .t-qa-btn--primary:hover {
   background: var(--color-role);
   color: #fff;
 }
@@ -2217,6 +2264,69 @@ tr.is-quiz-locked td {
    NOTIFICATIONS
    ════════════════════════════════════════════════════════════════════════ */
 
+.notif-period-filter {
+  margin-bottom: var(--space-4);
+}
+.notif-period-filter .s-lessons-filter-panel__row--period {
+  align-items: center;
+}
+.notif-period-filter__tabs {
+  width: 100%;
+}
+.notif-period-filter__tab {
+  gap: var(--space-2);
+}
+.notif-period-filter__label--short {
+  display: none;
+}
+.notif-period-filter__tab .s-filter-tab__badge {
+  min-width: 22px;
+  height: 22px;
+  font-size: 11px;
+  font-weight: var(--font-semibold);
+}
+
+@media (max-width: 639px) {
+  .notif-period-filter {
+    padding: var(--space-3);
+  }
+  .notif-period-filter .s-lessons-filter-panel__row--period {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-2);
+  }
+  .notif-period-filter .s-lessons-filter-panel__label {
+    padding-top: 0;
+    flex: none;
+  }
+  .notif-period-filter__tabs {
+    width: 100%;
+  }
+  .notif-period-filter__tab {
+    padding: var(--space-1) var(--space-3);
+    min-height: 32px;
+    font-size: var(--text-xs);
+  }
+  .notif-period-filter__tab .s-filter-tab__badge {
+    min-width: 20px;
+    height: 20px;
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 479px) {
+  .notif-period-filter__label--full {
+    display: none;
+  }
+  .notif-period-filter__label--short {
+    display: inline;
+  }
+  .notif-period-filter__tab {
+    padding: var(--space-1) var(--space-2);
+    gap: var(--space-1);
+  }
+}
+
 .notif-list {
   display: flex;
   flex-direction: column;
@@ -2373,7 +2483,11 @@ tr.is-quiz-locked td {
 [data-portal-role="student"] .mobile-bottom-nav .mobile-nav-item.active,
 [data-portal-role="student"] .mobile-bottom-nav .mobile-nav-item.active .ti,
 [data-portal-role="student"] .mobile-bottom-nav .mobile-nav-item:hover,
-[data-portal-role="student"] .mobile-bottom-nav .mobile-nav-item:hover .ti {
+[data-portal-role="student"] .mobile-bottom-nav .mobile-nav-item:hover .ti,
+[data-portal-role="customer"] .mobile-bottom-nav .mobile-nav-item.active,
+[data-portal-role="customer"] .mobile-bottom-nav .mobile-nav-item.active .ti,
+[data-portal-role="customer"] .mobile-bottom-nav .mobile-nav-item:hover,
+[data-portal-role="customer"] .mobile-bottom-nav .mobile-nav-item:hover .ti {
   color: var(--color-student);
 }
 .mobile-nav-badge {
@@ -2480,12 +2594,14 @@ tr.is-quiz-locked td {
 
 /* Add bottom padding for mobile nav on student/parent */
 [data-portal-role="student"] .dashboard-content,
-[data-portal-role="parent"] .dashboard-content {
+[data-portal-role="parent"] .dashboard-content,
+[data-portal-role="customer"] .dashboard-content {
   padding-bottom: 72px;
 }
 @media (min-width: 1024px) {
   [data-portal-role="student"] .dashboard-content,
-  [data-portal-role="parent"] .dashboard-content {
+  [data-portal-role="parent"] .dashboard-content,
+  [data-portal-role="customer"] .dashboard-content {
     padding-bottom: 0;
   }
   .mobile-bottom-nav { display: none !important; }
@@ -2612,6 +2728,73 @@ a.dashboard-perf-card:hover .dashboard-perf-card__arrow {
   --perf-accent: #7c3aed;
   --perf-accent-subtle: #f5f3ff;
   --perf-ring-track: #ede9fe;
+}
+
+[data-portal-role="customer"] .dashboard-perf-card--mock {
+  --perf-accent: var(--color-role);
+  --perf-accent-subtle: var(--color-role-subtle);
+  --perf-ring-track: color-mix(in srgb, var(--color-role-light) 55%, var(--color-surface));
+}
+
+/* Customer dashboard — solo featured mock stat */
+.dashboard-perf-grid--solo {
+  grid-template-columns: 1fr;
+}
+
+.dashboard-perf-card--featured {
+  min-height: 148px;
+  padding: var(--space-5) var(--space-6);
+  gap: var(--space-5);
+}
+
+.dashboard-perf-card--featured .dashboard-perf-card__ring {
+  width: 108px;
+  height: 108px;
+}
+
+.dashboard-perf-card--featured .dashboard-perf-card__value {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.dashboard-perf-card--featured .dashboard-perf-card__value.is-empty {
+  font-size: 1.75rem;
+}
+
+.dashboard-perf-card--featured .dashboard-perf-card__scale {
+  font-size: 0.75rem;
+}
+
+.dashboard-perf-card--featured .dashboard-perf-card__icon {
+  width: 44px;
+  height: 44px;
+  font-size: 1.35rem;
+}
+
+.dashboard-perf-card--featured .dashboard-perf-card__title {
+  font-size: 1.2rem;
+}
+
+.dashboard-perf-card--featured .dashboard-perf-card__hint {
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  max-width: 42ch;
+}
+
+@media (min-width: 640px) {
+  .dashboard-perf-card--featured {
+    min-height: 168px;
+    padding: var(--space-6);
+    gap: var(--space-6);
+  }
+
+  .dashboard-perf-card--featured .dashboard-perf-card__ring {
+    width: 120px;
+    height: 120px;
+  }
+
+  .dashboard-perf-card--featured .dashboard-perf-card__hint {
+    font-size: var(--text-base);
+  }
 }
 
 /* Tier yalnız badge mətni üçündür; kart rəngi dəyişmir */

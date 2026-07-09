@@ -5,6 +5,7 @@ ROLE_STYLES = {
     'teacher': ('teacher', 'T'),
     'student': ('student', 'S'),
     'parent': ('parent', 'P'),
+    'customer': ('customer', 'C'),
 }
 
 COURSE_PILL_STYLES = {

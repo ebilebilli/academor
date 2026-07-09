@@ -33,6 +33,7 @@
 .ti-brand-facebook:before { content: "\ec1a"; }
 .ti-brand-instagram:before { content: "\ec20"; }
 .ti-brand-linkedin:before { content: "\ec8c"; }
+.ti-brand-whatsapp:before { content: "\ec74"; }
 .ti-brand-youtube:before { content: "\ec90"; }
 .ti-calendar:before { content: "\ea53"; }
 .ti-calendar-check:before { content: "\f824"; }
@@ -50,6 +51,8 @@
 .ti-circle-x:before { content: "\ea6a"; }
 .ti-clipboard-check:before { content: "\ea6c"; }
 .ti-clipboard-list:before { content: "\ea6d"; }
+.ti-chart-dots-3:before { content: "\f098"; }
+.ti-shopping-cart:before { content: "\eb25"; }
 .ti-clipboard-data:before { content: "\f563"; }
 .ti-clock:before { content: "\ea70"; }
 .ti-door:before { content: "\ef4e"; }

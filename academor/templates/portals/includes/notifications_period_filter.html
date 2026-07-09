@@ -1,0 +1,28 @@
+{% load i18n %}
+{% if period_tabs %}
+<section class="notif-period-filter s-lessons-filter-panel mb-4" aria-label="{% trans 'Zaman filteri' %}">
+  <div class="s-lessons-filter-panel__row s-lessons-filter-panel__row--period">
+    <span class="s-lessons-filter-panel__label">
+      <i class="ti ti-calendar" aria-hidden="true"></i>
+      {% trans 'Zaman' %}
+    </span>
+    <div
+      class="s-lessons-filter-panel__tabs s-lessons-filter-panel__tabs--seg notif-period-filter__tabs"
+      role="group"
+      aria-label="{% trans 'Zaman filteri' %}"
+    >
+      {% for tab in period_tabs %}
+      <a
+        class="s-filter-tab notif-period-filter__tab{% if period == tab.code %} is-active{% endif %}"
+        href="{% url notifications_url_name %}?period={{ tab.code }}"
+        {% if period == tab.code %}aria-current="page"{% endif %}
+      >
+        <span class="notif-period-filter__label notif-period-filter__label--full">{{ tab.label }}</span>
+        <span class="notif-period-filter__label notif-period-filter__label--short" aria-hidden="true">{{ tab.short_label }}</span>
+        <span class="s-filter-tab__badge">{{ tab.count }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}

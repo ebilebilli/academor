@@ -23,6 +23,7 @@ from portals.models import (
     SpeakingQuestion,
     SpeakingRecording,
     ParentProfile,
+    CustomerProfile,
     PortalNotification,
     Quiz,
     QuizAssignment,
@@ -230,6 +231,7 @@ def invalidate_quiz_on_category_change(sender, instance, **kwargs):
 @receiver(post_save, sender=TeacherProfile)
 @receiver(post_save, sender=StudentProfile)
 @receiver(post_save, sender=ParentProfile)
+@receiver(post_save, sender=CustomerProfile)
 def portal_profile_strip_admin_flags(sender, instance, **kwargs):
     if instance.user_id:
         strip_admin_flags_for_portal_user(instance.user)

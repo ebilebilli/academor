@@ -27,7 +27,17 @@ class IeltsMockTestAttempt(models.Model):
         'StudentProfile',
         on_delete=models.CASCADE,
         related_name='ielts_mock_attempts',
+        null=True,
+        blank=True,
         verbose_name=_('Student'),
+    )
+    customer = models.ForeignKey(
+        'CustomerProfile',
+        on_delete=models.CASCADE,
+        related_name='ielts_mock_attempts',
+        null=True,
+        blank=True,
+        verbose_name=_('Customer'),
     )
     status = models.CharField(
         max_length=16,
@@ -44,6 +54,11 @@ class IeltsMockTestAttempt(models.Model):
     )
     started_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Started at'))
     completed_at = models.DateTimeField(null=True, blank=True, verbose_name=_('Completed at'))
+    credit_consumed = models.BooleanField(
+        default=False,
+        verbose_name=_('Credit consumed'),
+        help_text=_('Customer mock credit is deducted when the first quiz section starts.'),
+    )
 
     listening_quiz = models.ForeignKey(
         'Quiz',
@@ -109,6 +124,16 @@ class IeltsMockTestAttempt(models.Model):
         ordering = ('-started_at', '-id')
         indexes = [
             models.Index(fields=['student', 'status', '-started_at']),
+            models.Index(fields=['customer', 'status', '-started_at']),
+        ]
+        constraints = [
+            models.CheckConstraint(
+                condition=(
+                    models.Q(student__isnull=False, customer__isnull=True)
+                    | models.Q(student__isnull=True, customer__isnull=False)
+                ),
+                name='portals_mock_attempt_student_xor_customer',
+            ),
         ]
 
     def __str__(self):

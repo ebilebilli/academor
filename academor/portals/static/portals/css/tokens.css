@@ -299,3 +299,10 @@
   --color-role-dark:   var(--color-parent-dark);
   --color-role-subtle: var(--color-parent-subtle);
 }
+
+[data-portal-role="customer"] {
+  --color-role:        var(--color-student);
+  --color-role-light:  var(--color-student-light);
+  --color-role-dark:   var(--color-student-dark);
+  --color-role-subtle: var(--color-student-subtle);
+}

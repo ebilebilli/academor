@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 
-from portals.models import ParentProfile, StudentProfile, TeacherProfile
+from portals.models import CustomerProfile, ParentProfile, StudentProfile, TeacherProfile
 
 User = get_user_model()
 
@@ -13,6 +13,7 @@ def has_portal_profile(user) -> bool:
         TeacherProfile.objects.filter(user_id=uid).exists()
         or StudentProfile.objects.filter(user_id=uid).exists()
         or ParentProfile.objects.filter(user_id=uid).exists()
+        or CustomerProfile.objects.filter(user_id=uid).exists()
     )
 
 

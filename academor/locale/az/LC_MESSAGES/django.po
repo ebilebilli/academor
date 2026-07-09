@@ -3520,10 +3520,8 @@ msgid "Finish test"
 msgstr "Testi bitirin"
 
 #: academor/portals/utils/ielts_mock_test.py:522
-#, fuzzy
-#| msgid "Finish test"
 msgid "Finish the section"
-msgstr "Sectionu bitirin"
+msgstr "Bölməni bitirin"
 
 #: academor/portals/utils/ielts_mock_test.py:524
 #, python-format
@@ -5549,7 +5547,6 @@ msgid ""
 "Academor."
 msgstr ""
 "Academor tərəfindən verilən istifadəçi adı və parol ilə şagird portalına "
-"daxil olun.Academor-un verdiyi istifadəçi adı və şifrə ilə tələbə portalına "
 "daxil olun."
 
 #: academor/templates/includes/review_form_inner.html:57
@@ -6447,46 +6444,36 @@ msgstr "Müəllim qiymətləndirdiyi bölmələr"
 #: academor/templates/portals/includes/quiz_mock_overall_summary.html:44
 #, python-format
 msgid ""
-"\n"
-"    Your overall result will appear after your teacher reviews %(count)s section.\n"
-"    "
+"Your overall result will appear after your teacher reviews %(count)s "
+"section."
 msgid_plural ""
-"\n"
-"    Your overall result will appear after your teacher reviews %(count)s sections.\n"
-"    "
+"Your overall result will appear after your teacher reviews %(count)s "
+"sections."
 msgstr[0] ""
+"Ümumi nəticə müəlliminiz %(count)s bölməni yoxladıqdan sonra görünəcək."
 msgstr[1] ""
+"Ümumi nəticə müəlliminiz %(count)s bölməni yoxladıqdan sonra görünəcək."
 
 #: academor/templates/portals/includes/quiz_mock_section_continue.html:7
 #: academor/templates/portals/includes/quiz_mock_section_continue.html:19
-#, fuzzy
-#| msgid "Next question"
 msgid "Next section"
-msgstr "Növbəti sual"
+msgstr "Növbəti bölmə"
 
 #: academor/templates/portals/includes/quiz_mock_section_continue.html:8
-#, fuzzy
-#| msgid "Quiz results summary"
 msgid "View mock test summary"
-msgstr "Quiz nəticələri icmalı"
+msgstr "Mock test icmalına bax"
 
 #: academor/templates/portals/includes/quiz_mock_section_continue.html:9
-#, fuzzy
-#| msgid "Click Finish when you are ready."
 msgid "Section complete. Continue when you are ready."
-msgstr "Hazır olduqda «Bitir» düyməsini basın."
+msgstr "Bölmə tamamlandı. Hazır olduqda davam edin."
 
 #: academor/templates/portals/includes/quiz_mock_section_continue.html:10
-#, fuzzy
-#| msgid "All speaking tasks are complete."
 msgid "All sections are complete."
-msgstr "Bütün danışıq tapşırıqları tamamlandı."
+msgstr "Bütün bölmələr tamamlandı."
 
 #: academor/templates/portals/includes/quiz_mock_section_continue.html:14
-#, fuzzy
-#| msgid "No recording submitted."
 msgid "Section submitted"
-msgstr "Səs yazısı göndərilməyib."
+msgstr "Bölmə göndərildi"
 
 #: academor/templates/portals/includes/quiz_question_play.html:18
 #, fuzzy, python-format
@@ -7599,23 +7586,17 @@ msgstr "Quiz"
 
 #: academor/templates/portals/student/ielts_mock_complete.html:4
 #: academor/templates/portals/student/ielts_mock_complete.html:11
-#, fuzzy
-#| msgid "Payment completed"
 msgid "Mock test complete"
-msgstr "Ödəniş tamamlandı"
+msgstr "Mock test tamamlandı"
 
 #: academor/templates/portals/student/ielts_mock_complete.html:14
-#, fuzzy
-#| msgid "Your answers were submitted for teacher review."
 msgid "All four sections are submitted. Your teacher has been notified."
-msgstr "Cavablarınız müəllim yoxlaması üçün göndərildi."
+msgstr "Dörd bölmə də təqdim olundu. Müəlliminizə bildiriş göndərildi."
 
 #: academor/templates/portals/student/ielts_mock_complete.html:30
 #: academor/templates/portals/teacher/ielts_mock_detail.html:28
-#, fuzzy
-#| msgid "Action"
 msgid "Section"
-msgstr "Əməliyyat"
+msgstr "Bölmə"
 
 #: academor/templates/portals/student/ielts_mock_complete.html:33
 #: academor/templates/portals/teacher/ielts_mock_detail.html:31
@@ -7642,37 +7623,44 @@ msgid ""
 "Complete Listening, Reading, Writing, and Speaking in one session — just "
 "like the real IELTS exam."
 msgstr ""
-"Listening, Reading, Writing və Speaking bölmələrini bir seansda tamamlayın —"
-" real IELTS imtahanı kimi.Dinləmə, Oxu, Yazı və Danışıq bölmələrini bir "
-"sessiyada — real IELTS imtahanı kimi — tamamlayın."
+"Dinləmə, Oxu, Yazı və Danışıq bölmələrini real IELTS imtahanı kimi bir "
+"sessiyada tamamlayın."
 
 #: academor/templates/portals/student/ielts_mock_landing.html:20
 msgid "How it works"
 msgstr "Necə işləyir"
 
-#: academor/templates/portals/student/ielts_mock_landing.html:22
-msgid "One random quiz is selected from each IELTS section."
-msgstr "Hər IELTS bölməsindən təsadüfi bir quiz seçilir."
+#: academor/templates/portals/student/ielts_mock_landing.html:12
+msgid "One random IELTS task is selected from each section."
+msgstr "Hər bölmədən təsadüfi bir IELTS tapşırığı seçilir."
 
-#: academor/templates/portals/student/ielts_mock_landing.html:23
+#: academor/templates/portals/student/ielts_mock_landing.html:13
 msgid ""
-"Sections follow the real exam order: Listening → Reading → Writing → "
+"Sections follow the real IELTS exam order: Listening → Reading → Writing → "
 "Speaking."
 msgstr ""
-"Bölmələr real imtahan sırasına uyğundur: Listening → Reading → Writing → "
-"Speaking.Bölmələr real imtahan sırası ilə keçilir: Dinləmə → Oxu → Yazı → "
+"Bölmələr real IELTS imtahan sırası ilə keçirilir: Dinləmə → Oxu → Yazı → "
 "Danışıq."
 
-#: academor/templates/portals/student/ielts_mock_landing.html:24
-msgid "After each section, use Next section to continue the mock test."
-msgstr ""
-"Hər bölmədən sonra sınaq testinə davam etmək üçün «Növbəti bölmə» "
-"düyməsindən istifadə edin.Hər bölmədən sonra sınaq testinə davam etmək üçün "
-"«Növbəti bölmə» düyməsini istifadə edin."
+#: academor/templates/portals/student/ielts_mock_landing.html:14
+msgid "Listening and Reading sections are scored automatically."
+msgstr "Dinləmə və Oxu bölmələri avtomatik qiymətləndirilir."
 
-#: academor/templates/portals/student/ielts_mock_landing.html:25
-msgid "When all four sections are finished, your teacher is notified."
-msgstr "Dörd bölmə də bitdikdə müəlliminizə bildiriş gedir."
+#: academor/templates/portals/student/ielts_mock_landing.html:15
+msgid ""
+"Writing and Speaking sections are reviewed and scored by real IELTS "
+"teachers."
+msgstr ""
+"Yazı və Danışıq bölmələri real IELTS müəllimləri tərəfindən yoxlanılır və "
+"qiymətləndirilir."
+
+#: academor/templates/portals/student/ielts_mock_landing.html:16
+msgid ""
+"After all sections are completed, your answers are sent to your IELTS "
+"teacher for scoring."
+msgstr ""
+"Bütün bölmələr tamamlandıqdan sonra cavablarınız qiymətləndirilmək üçün "
+"IELTS müəlliminə göndərilir."
 
 #: academor/templates/portals/student/ielts_mock_landing.html:25
 msgid "Start mock test"
@@ -7683,8 +7671,12 @@ msgid "Mock test is currently locked."
 msgstr "Mock test hazırda bağlıdır."
 
 #: academor/templates/portals/student/ielts_mock_landing.html:36
-msgid "Talk to your teacher to unlock it. Once your teacher enables Mock access on your profile, you can start from here."
-msgstr "Açılması üçün təlimçi ilə danışın. Təlimçi sizin profilinizdə Mock aktivliyini yandırandan sonra buradan başlaya biləcəksiniz."
+msgid ""
+"Talk to your teacher to unlock it. Once your teacher enables Mock access on "
+"your profile, you can start from here."
+msgstr ""
+"Açılması üçün təlimçi ilə danışın. Təlimçi sizin profilinizdə Mock "
+"aktivliyini yandırandan sonra buradan başlaya biləcəksiniz."
 
 #: academor/templates/portals/student/ielts_mock_landing.html:44
 msgid "Mock test is not available yet. Quizzes are missing for:"
@@ -7882,10 +7874,14 @@ msgstr "Sınaq testindən çıxmaq istəyirsiniz? Cari irəliləyişiniz itəcə
 #: academor/templates/portals/student/quiz_take_manual.html:29
 #: academor/templates/portals/student/quiz_take_reading.html:31
 #: academor/templates/portals/student/quiz_take_speaking.html:30
-#, fuzzy
-#| msgid "Start test"
+msgid "Leave mock test?"
+msgstr "Sınaq testindən çıxmaq istəyirsiniz?"
+
+#: academor/templates/portals/student/quiz_take_manual.html:29
+#: academor/templates/portals/student/quiz_take_reading.html:31
+#: academor/templates/portals/student/quiz_take_speaking.html:30
 msgid "Leave mock test"
-msgstr "Testə başlayın"
+msgstr "Sınaq testindən çıx"
 
 #: academor/templates/portals/student/quiz_take_manual.html:34
 msgid "First listening clip starts in"
@@ -8919,6 +8915,90 @@ msgstr "Quiz icazələri"
 #: portals/templates:0
 msgid "Mock nəticələri"
 msgstr "Mock nəticələri"
+
+msgid "%(name)s — mock test bölməsi yoxlama gözləyir (%(section)s)"
+msgstr "%(name)s — mock test bölməsi yoxlama gözləyir (%(section)s)"
+
+msgid "%(name)s IELTS mock testini tamamladı."
+msgstr "%(name)s IELTS mock testini tamamladı."
+
+msgid ""
+"%(name)s tam IELTS mock testini tamamladı. Writing və Speaking "
+"yoxlanılmalıdır."
+msgstr ""
+"%(name)s tam IELTS mock testini tamamladı. Writing və Speaking "
+"yoxlanılmalıdır."
+
+msgid "%(name)s — ümumi IELTS mock test nəticəsi dərc olundu"
+msgstr "%(name)s — ümumi IELTS mock test nəticəsi dərc olundu"
+
+msgid "Ümumi IELTS mock test nəticəniz dərc olundu."
+msgstr "Ümumi IELTS mock test nəticəniz dərc olundu."
+
+msgid "IELTS mock test — yoxlama gözlənilir"
+msgstr "IELTS mock test — yoxlama gözlənilir"
+
+msgid "IELTS mock test — %(sections)s yoxlaması gözlənilir"
+msgstr "IELTS mock test — %(sections)s yoxlaması gözlənilir"
+
+msgid "IELTS mock test — yoxlama tələb olunur"
+msgstr "IELTS mock test — yoxlama tələb olunur"
+
+msgid "IELTS mock test — %(sections)s yoxlanılmalıdır"
+msgstr "IELTS mock test — %(sections)s yoxlanılmalıdır"
+
+msgid "Mock test bölməsi"
+msgstr "Mock test bölməsi"
+
+msgid "Ümumi mock test nəticəsi"
+msgstr "Ümumi mock test nəticəsi"
+
+#: academor/templates/portals/customer/ielts_mock_landing.html:7
+msgid ""
+"Complete Listening, Reading, Writing, and Speaking in real exam order — all "
+"in one session."
+msgstr ""
+"Dinləmə, Oxu, Yazı və Danışıq bölmələrini real imtahan sırası ilə bir "
+"sessiyada tamamlayın."
+
+#: academor/templates/portals/customer/ielts_mock_landing.html:9
+msgid "Mock test credits"
+msgstr "Mock test kreditləri"
+
+#: academor/templates/portals/customer/ielts_mock_landing.html:17
+msgid ""
+"Each credit lets you start one full IELTS mock test with all four sections. "
+"One credit is used when you confirm Start quiz on the first section. Credits "
+"you buy stay on your account until you use them."
+msgstr ""
+"Hər kredit dörd bölmədən ibarət bir tam IELTS mock testinə başlamağa imkan "
+"verir. Birinci bölmədə xəbərdarlıq mesajından sonra «Quizi başlat» "
+"düyməsinə basdıqda 1 kredit xərclənir. Aldığınız kreditlər istifadə "
+"olunana qədər hesabınızda saxlanılır."
+
+#: academor/templates/portals/customer/ielts_mock_landing.html:20
+msgid "Your balance: <strong>%(counter)s</strong> credit"
+msgid_plural "Your balance: <strong>%(counter)s</strong> credits"
+msgstr[0] "Balansınız: <strong>%(counter)s</strong> kredit"
+msgstr[1] "Balansınız: <strong>%(counter)s</strong> kredit"
+
+#: academor/templates/portals/customer/dashboard.html:18
+#: academor/templates/portals/customer/ielts_mock_landing.html:60
+#: academor/templates/portals/customer/mock_packages.html:4
+#: academor/templates/portals/includes/mobile_bottom_nav.html:38
+#: academor/templates/portals/includes/sidebar.html:117
+msgid "Paket al"
+msgstr "Paket al"
+
+#: academor/templates/portals/customer/mock_packages.html:7
+msgid ""
+"Paket seçin və hesabınıza kredit əlavə etmək üçün təhlükəsiz ödəniş edin."
+msgstr ""
+"Paket seçin və hesabınıza kredit əlavə etmək üçün təhlükəsiz ödəniş edin."
+
+#: academor/portals/views/notification_views.py:234
+msgid "Dərc olunmuş IELTS mock test nəticələri."
+msgstr "Dərc olunmuş IELTS mock test nəticələri."
 
 #~ msgid ""
 #~ "Shared classroom PDFs. Pick one or more active site services — only teachers"

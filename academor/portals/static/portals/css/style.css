@@ -502,6 +502,18 @@ html[data-theme="dark"] .nav-link-contact:focus {
   text-decoration: none;
 }
 
+.portal-whatsapp-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.portal-whatsapp-link .ti-brand-whatsapp {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
 .portal-review-queue {
   display: inline-flex;
   align-items: center;

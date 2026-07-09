@@ -1,0 +1,41 @@
+{% extends "portals/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Paket al' %}{% endblock %}
+
+{% block content %}
+{% include "portals/includes/portal_page_hero.html" with title=_('Paket al') subtitle=_('Paket seçin və hesabınıza kredit əlavə etmək üçün təhlükəsiz ödəniş edin.') icon="ti-shopping-cart" lottie="portals/animations/study.lottie" %}
+
+<section class="ds-card mb-4">
+  <p class="mb-0">
+    {% blocktrans with credits=customer.mock_credits %}Current balance: <strong>{{ credits }}</strong> credit(s){% endblocktrans %}
+  </p>
+</section>
+
+{% if packages %}
+<div class="row g-4">
+  {% for pkg in packages %}
+  <div class="col-md-6 col-lg-4">
+    <section class="ds-card h-100 d-flex flex-column">
+      <h2 class="h5 mb-2">{{ pkg.name }}</h2>
+      <p class="text-muted mb-3">
+        {% blocktrans with count=pkg.credits %}{{ count }} mock test credit(s){% endblocktrans %}
+      </p>
+      <p class="h4 mb-4">{{ pkg.price }} AZN</p>
+      <form method="post" action="{% url 'payment_start_mock' package_id=pkg.id %}" class="mt-auto">
+        {% csrf_token %}
+        <button type="submit" class="ds-btn ds-btn--primary w-100">
+          <i class="ti ti-credit-card" aria-hidden="true"></i>
+          {% trans 'Pay now' %}
+        </button>
+      </form>
+    </section>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<section class="ds-card">
+  <p class="mb-0 text-muted">{% trans 'No packages are available right now. Please contact Academor.' %}</p>
+</section>
+{% endif %}
+{% endblock %}

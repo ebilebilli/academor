@@ -103,6 +103,25 @@
         {% if portal_unread_notifications %}<span class="nav-badge" data-portal-unread-badge>{{ portal_unread_notifications }}</span>{% else %}<span class="nav-badge d-none" data-portal-unread-badge hidden></span>{% endif %}
       </a>
 
+    {% elif portal_role == 'customer' %}
+      <a class="nav-link{% if u == 'customer-dashboard' %} active{% endif %}" href="{% url 'portals:customer-dashboard' %}"{% if u == 'customer-dashboard' %} aria-current="page"{% endif %}>
+        <span class="nav-icon"><i class="ti ti-layout-dashboard" aria-hidden="true"></i></span>
+        <span class="nav-text">{% trans 'Dashboard' %}</span>
+      </a>
+      <a class="nav-link{% if u == 'customer-ielts-mock' or u == 'customer-ielts-mock-complete' %} active{% endif %}" href="{% url 'portals:customer-ielts-mock' %}">
+        <span class="nav-icon"><i class="ti ti-clipboard-list" aria-hidden="true"></i></span>
+        <span class="nav-text">{% trans 'Mock Test' %}</span>
+      </a>
+      <a class="nav-link{% if u == 'customer-mock-packages' %} active{% endif %}" href="{% url 'portals:customer-mock-packages' %}">
+        <span class="nav-icon"><i class="ti ti-shopping-cart" aria-hidden="true"></i></span>
+        <span class="nav-text">{% trans 'Paket al' %}</span>
+      </a>
+      <a class="nav-link{% if u == 'customer-notifications' %} active{% endif %}" href="{% url 'portals:customer-notifications' %}">
+        <span class="nav-icon"><i class="ti ti-bell" aria-hidden="true"></i></span>
+        <span class="nav-text">{% trans 'Notifications' %}</span>
+        {% if portal_unread_notifications %}<span class="nav-badge" data-portal-unread-badge>{{ portal_unread_notifications }}</span>{% else %}<span class="nav-badge d-none" data-portal-unread-badge hidden></span>{% endif %}
+      </a>
+
     {% elif portal_role == 'parent' %}
       <a class="nav-link{% if u == 'parent-dashboard' %} active{% endif %}" href="{% url 'portals:parent-dashboard' %}"{% if u == 'parent-dashboard' %} aria-current="page"{% endif %}>
         <span class="nav-icon"><i class="ti ti-layout-dashboard" aria-hidden="true"></i></span>

@@ -1,10 +1,12 @@
 from urllib.parse import quote
+import json
 
 from django.shortcuts import redirect
 from django.urls import reverse
 
 from portals.utils.portal_session import is_portal_authenticated, portal_logout
 from portals.utils.queries import (
+    get_customer_profile,
     get_parent_profile,
     get_portal_role,
     get_student_profile,
@@ -25,6 +27,8 @@ def _portal_profile_for_role(user, role):
         return get_student_profile(user)
     if role == 'parent':
         return get_parent_profile(user)
+    if role == 'customer':
+        return get_customer_profile(user)
     return None
 
 
@@ -90,6 +94,43 @@ class StudentQuizTakeRequiredMixin(StudentRequiredMixin):
 
 class ParentRequiredMixin(PortalRoleRequiredMixin):
     required_role = 'parent'
+
+
+class CustomerRequiredMixin(PortalRoleRequiredMixin):
+    required_role = 'customer'
+
+
+def _customer_mock_id_from_request(request):
+    mock_id = request.GET.get('mock') or request.POST.get('mock')
+    if mock_id:
+        return mock_id
+    if request.method != 'POST':
+        return None
+    content_type = (request.content_type or '').split(';', 1)[0].strip().lower()
+    if content_type != 'application/json':
+        return None
+    try:
+        payload = json.loads(request.body.decode('utf-8') or '{}')
+    except (json.JSONDecodeError, UnicodeDecodeError, AttributeError):
+        return None
+    mock_id = payload.get('mock') or payload.get('mock_attempt_id')
+    return str(mock_id) if mock_id is not None else None
+
+
+class CustomerQuizTakeRequiredMixin(CustomerRequiredMixin):
+    """Customers may only take quizzes inside an active mock session."""
+
+    def dispatch(self, request, *args, **kwargs):
+        if not is_portal_authenticated(request):
+            return _portal_login_redirect(request)
+        role = get_portal_role(request.portal_user)
+        if role != 'customer':
+            return redirect('portals:dashboard')
+        if get_customer_profile(request.portal_user) is None:
+            return _clear_stale_portal_session(request)
+        if not _customer_mock_id_from_request(request):
+            return redirect('portals:customer-dashboard')
+        return super(CustomerRequiredMixin, self).dispatch(request, *args, **kwargs)
 
 
 class TeacherOrStudentRequiredMixin(PortalLoginRequiredMixin):

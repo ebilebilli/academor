@@ -31,7 +31,7 @@ def portal_notification_context(request):
         get_teacher_portal_bell_count,
         get_unread_notification_count,
     )
-    from portals.utils.queries import get_parent_profile, get_portal_role, get_student_profile, get_teacher_profile
+    from portals.utils.queries import get_customer_profile, get_parent_profile, get_portal_role, get_student_profile, get_teacher_profile
 
     role = get_portal_role(request.portal_user)
     if role == 'teacher':
@@ -61,6 +61,15 @@ def portal_notification_context(request):
             **empty,
             'portal_unread_notifications': get_unread_notification_count(student_id=profile.pk),
             'portal_notifications_url': reverse('portals:student-notifications'),
+        }
+    if role == 'customer':
+        profile = get_customer_profile(request.portal_user)
+        if not profile:
+            return empty
+        return {
+            **empty,
+            'portal_unread_notifications': get_unread_notification_count(customer_id=profile.pk),
+            'portal_notifications_url': reverse('portals:customer-notifications'),
         }
     return empty
 

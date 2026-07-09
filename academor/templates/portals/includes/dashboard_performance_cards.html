@@ -6,6 +6,8 @@
     {% url 'portals:parent-attendance' as attendance_base %}
   {% elif portal_role == 'student' %}
     {% url 'portals:student-scores' as scores_base %}
+  {% elif portal_role == 'customer' %}
+    {% url 'portals:customer-ielts-mock' as scores_base %}
   {% endif %}
 
   <div class="s-panel-head">
@@ -21,11 +23,16 @@
     <a href="{{ scores_base }}" class="ds-btn ds-btn--ghost btn-sm">
       {% trans 'Hamısı' %} <i class="ti ti-arrow-right" aria-hidden="true"></i>
     </a>
+    {% elif portal_role == 'customer' %}
+    <a href="{{ scores_base }}" class="ds-btn ds-btn--ghost btn-sm">
+      {% trans 'Hamısı' %} <i class="ti ti-arrow-right" aria-hidden="true"></i>
+    </a>
     {% endif %}
   </div>
 
   <div class="dashboard-perf-grid">
 
+  {% if portal_role != 'customer' %}
   {# ── Weekly ── #}
   {% if portal_role == 'parent' and student_id %}
   <a class="dashboard-perf-card dashboard-perf-card--weekly dashboard-perf-card--{{ weekly_average.tier|default:'empty' }} text-decoration-none" href="{{ scores_base }}?student={{ student_id }}&view=weekly">
@@ -155,12 +162,16 @@
     </div>
   {% if portal_role == 'parent' and student_id or portal_role == 'student' %}</a>{% else %}</article>{% endif %}
 
+  {% endif %}
+
   {# ── Mock (IELTS only) ── #}
   {% if mock_stats is not None %}
     {% if portal_role == 'parent' and student_id %}
     <a class="dashboard-perf-card dashboard-perf-card--mock dashboard-perf-card--{{ mock_stats.tier|default:'empty' }} text-decoration-none" href="{{ scores_base }}?student={{ student_id }}&view=mock">
     {% elif portal_role == 'student' %}
     <a class="dashboard-perf-card dashboard-perf-card--mock dashboard-perf-card--{{ mock_stats.tier|default:'empty' }} text-decoration-none" href="{{ scores_base }}?view=mock">
+    {% elif portal_role == 'customer' %}
+    <a class="dashboard-perf-card dashboard-perf-card--mock dashboard-perf-card--{{ mock_stats.tier|default:'empty' }} text-decoration-none" href="{{ scores_base }}">
     {% else %}
     <article class="dashboard-perf-card dashboard-perf-card--mock dashboard-perf-card--{{ mock_stats.tier|default:'empty' }}">
     {% endif %}
@@ -185,7 +196,7 @@
             <span class="dashboard-perf-card__tier">{{ mock_stats.tier|performance_tier_label }}</span>
             {% endif %}
           </div>
-          {% if portal_role == 'parent' and student_id or portal_role == 'student' %}
+          {% if portal_role == 'parent' and student_id or portal_role == 'student' or portal_role == 'customer' %}
           <i class="ti ti-chevron-right dashboard-perf-card__arrow" aria-hidden="true"></i>
           {% endif %}
         </div>
@@ -199,7 +210,7 @@
           {% endif %}
         </p>
       </div>
-    {% if portal_role == 'parent' and student_id or portal_role == 'student' %}</a>{% else %}</article>{% endif %}
+    {% if portal_role == 'parent' and student_id or portal_role == 'student' or portal_role == 'customer' %}</a>{% else %}</article>{% endif %}
   {% endif %}
 
   </div>

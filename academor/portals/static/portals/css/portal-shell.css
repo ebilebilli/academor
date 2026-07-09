@@ -2079,3 +2079,24 @@ html[data-theme="light"] #adminSidebar .nav-icon i {
   background: var(--color-student, #ff5414) !important;
   color: #ffffff !important;
 }
+
+/* Customer portal — same orange accent as student */
+[data-portal-role="customer"] #adminSidebar .sidebar-nav .nav-link:not(.active):hover,
+[data-portal-role="customer"] #adminSidebar .sidebar-nav .nav-link:not(.active):focus-visible {
+  background: var(--color-student-subtle, #fff4f0) !important;
+}
+
+[data-portal-role="customer"] #adminSidebar .sidebar-nav .nav-link:not(.active):hover .nav-icon,
+[data-portal-role="customer"] #adminSidebar .sidebar-nav .nav-link:not(.active):focus-visible .nav-icon {
+  background: color-mix(in srgb, var(--color-student, #ff5414) 16%, #ffffff) !important;
+  color: var(--color-student, #ff5414) !important;
+}
+
+[data-portal-role="customer"] #adminSidebar .sidebar-nav .nav-link.active {
+  background: var(--color-student-subtle, #fff4f0) !important;
+}
+
+[data-portal-role="customer"] #adminSidebar .sidebar-nav .nav-link.active .nav-icon {
+  background: var(--color-student, #ff5414) !important;
+  color: #ffffff !important;
+}

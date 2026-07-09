@@ -78,6 +78,14 @@ class PortalNotification(models.Model):
         related_name='notifications',
         verbose_name=_('Student'),
     )
+    customer = models.ForeignKey(
+        'CustomerProfile',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='notifications',
+        verbose_name=_('Customer'),
+    )
     quiz_result = models.ForeignKey(
         'QuizResult',
         on_delete=models.CASCADE,
@@ -118,9 +126,10 @@ class PortalNotification(models.Model):
         constraints = [
             models.CheckConstraint(
                 condition=(
-                    Q(teacher__isnull=False, parent__isnull=True, student__isnull=True)
-                    | Q(teacher__isnull=True, parent__isnull=False, student__isnull=True)
-                    | Q(teacher__isnull=True, parent__isnull=True, student__isnull=False)
+                    Q(teacher__isnull=False, parent__isnull=True, student__isnull=True, customer__isnull=True)
+                    | Q(teacher__isnull=True, parent__isnull=False, student__isnull=True, customer__isnull=True)
+                    | Q(teacher__isnull=True, parent__isnull=True, student__isnull=False, customer__isnull=True)
+                    | Q(teacher__isnull=True, parent__isnull=True, student__isnull=True, customer__isnull=False)
                 ),
                 name='portals_notification_single_recipient',
             ),
@@ -158,14 +167,20 @@ class PortalNotification(models.Model):
                 condition=Q(student__isnull=False, weekly_student_score__isnull=False),
                 name='portals_notification_student_weekly_unique',
             ),
+            models.UniqueConstraint(
+                fields=('customer', 'ielts_mock_test'),
+                condition=Q(customer__isnull=False, ielts_mock_test__isnull=False),
+                name='portals_notification_customer_mock_unique',
+            ),
         ]
         indexes = [
             models.Index(fields=['teacher', 'is_read', '-created_at']),
             models.Index(fields=['parent', 'is_read', '-created_at']),
             models.Index(fields=['student', 'is_read', '-created_at']),
+            models.Index(fields=['customer', 'is_read', '-created_at']),
         ]
 
     def __str__(self):
-        recipient = self.teacher or self.parent or self.student
+        recipient = self.teacher or self.parent or self.student or self.customer
         target = self.quiz_result_id or self.ielts_mock_test_id
         return f'{recipient} — {self.get_kind_display()} ({target})'

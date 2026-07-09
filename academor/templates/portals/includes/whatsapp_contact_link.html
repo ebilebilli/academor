@@ -1,0 +1,14 @@
+{% load i18n %}
+{% if footer_contact and footer_contact.whatsapp_number_me %}
+<a
+  class="icon-button portal-whatsapp-link"
+  href="https://wa.me/{{ footer_contact.whatsapp_number_me }}"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="{% trans 'Contact via WhatsApp' %}"
+  title="{% trans 'Contact via WhatsApp' %}"
+>
+  <i class="ti ti-brand-whatsapp" aria-hidden="true"></i>
+  <span class="visually-hidden">{% trans 'WhatsApp' %}</span>
+</a>
+{% endif %}

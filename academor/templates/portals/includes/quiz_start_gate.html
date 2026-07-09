@@ -27,7 +27,7 @@
           </button>
           <a
             class="btn btn-outline-secondary btn-lg"
-            href="{% url 'portals:student-quiz-cancel' pk=quiz.id %}?next={{ back_url|urlencode }}"
+            href="{% if quiz_cancel_url %}{{ quiz_cancel_url }}{% elif mock_id %}{% url 'portals:student-quiz-cancel' pk=quiz.id %}?mock={{ mock_id }}&next={{ back_url|urlencode }}{% else %}{% url 'portals:student-quiz-cancel' pk=quiz.id %}?next={{ back_url|urlencode }}{% endif %}"
             data-quiz-back-btn
           >
             <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'Go back' %}

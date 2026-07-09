@@ -26,6 +26,8 @@
 {% portal_page_heading icon="bi-eye" eyebrow="Teacher" raw_title=result.quiz_topic raw_subtitle=result.grading_mode_label %}
 {% endif %}
 
+{% include "portals/includes/quiz_review_mock_context.html" with variant="note" mock_attempt_id=result.mock_attempt_id mock_section_label=result.mock_section_label mock_detail_url=result.mock_detail_url %}
+
 <div class="portal-quiz-play-meta mb-3">
   <span class="badge rounded-pill text-bg-light border px-3 py-2">{{ result.student_name }}</span>
   <span class="badge rounded-pill text-bg-light border px-3 py-2">{{ result.completed_at|portal_datetime }}</span>

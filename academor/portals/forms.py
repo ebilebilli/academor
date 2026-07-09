@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.utils.translation import gettext_lazy as _
 
-from portals.models import ParentProfile, StudentProfile, TeacherProfile, TeacherCourseSpecialization
+from portals.models import CustomerProfile, ParentProfile, StudentProfile, TeacherProfile, TeacherCourseSpecialization
 from portals.utils.normalize_phone_number import phone_number_validator
 from portals.utils.portal_services import get_active_course_type_choices
 from portals.utils.teacher_courses import validate_teacher_course_codes
@@ -14,6 +14,7 @@ User = get_user_model()
 PORTAL_ROLE_TEACHER = 'teacher'
 PORTAL_ROLE_STUDENT = 'student'
 PORTAL_ROLE_PARENT = 'parent'
+PORTAL_ROLE_CUSTOMER = 'customer'
 PORTAL_ROLE_STAFF = 'staff'
 PORTAL_ROLE_ADMIN = 'admin'
 
@@ -21,6 +22,7 @@ PORTAL_ROLE_CHOICES = (
     (PORTAL_ROLE_TEACHER, _('Teacher')),
     (PORTAL_ROLE_STUDENT, _('Student')),
     (PORTAL_ROLE_PARENT, _('Parent')),
+    (PORTAL_ROLE_CUSTOMER, _('Customer')),
     (PORTAL_ROLE_STAFF, _('Staff (Django admin only)')),
     (PORTAL_ROLE_ADMIN, _('Admin (Django admin only)')),
 )
@@ -29,6 +31,7 @@ PORTAL_PROFILE_ROLES = {
     PORTAL_ROLE_TEACHER,
     PORTAL_ROLE_STUDENT,
     PORTAL_ROLE_PARENT,
+    PORTAL_ROLE_CUSTOMER,
 }
 
 
@@ -43,6 +46,8 @@ def get_user_portal_role(user) -> str | None:
         return PORTAL_ROLE_STUDENT
     if ParentProfile.objects.filter(user_id=user.pk).exists():
         return PORTAL_ROLE_PARENT
+    if CustomerProfile.objects.filter(user_id=user.pk).exists():
+        return PORTAL_ROLE_CUSTOMER
     if user.is_staff:
         return PORTAL_ROLE_STAFF
     return None
@@ -65,7 +70,7 @@ def set_teacher_course_specializations(teacher_profile, course_codes):
     sync_teacher_specialization_text(teacher_profile.pk)
 
 
-def create_portal_profile(user, role, phone='', students=None, teacher_courses=None):
+def create_portal_profile(user, role, phone='', students=None, teacher_courses=None, mock_credits=None, customer_teacher=None):
     if role == PORTAL_ROLE_ADMIN:
         user.is_staff = True
         user.is_superuser = True
@@ -97,6 +102,14 @@ def create_portal_profile(user, role, phone='', students=None, teacher_courses=N
         )
         if students:
             profile.students.set(students)
+    elif role == PORTAL_ROLE_CUSTOMER:
+        credits = 1 if mock_credits is None else max(0, int(mock_credits))
+        CustomerProfile.objects.create(
+            user=user,
+            phone=phone,
+            mock_credits=credits,
+            teacher=customer_teacher,
+        )
 
 
 class PortalLoginForm(forms.Form):
@@ -158,6 +171,19 @@ class PortalUserCreationForm(UserCreationForm):
         widget=forms.CheckboxSelectMultiple,
         help_text=_('Required for teachers. Pick every active site service this teacher may teach.'),
     )
+    mock_credits = forms.IntegerField(
+        label=_('Initial mock credits'),
+        required=False,
+        min_value=0,
+        initial=1,
+        help_text=_('For Customer role only. Defaults to 1 mock test credit.'),
+    )
+    assigned_teacher = forms.ModelChoiceField(
+        label=_('Reviewing teacher'),
+        queryset=TeacherProfile.objects.select_related('user').order_by('user__username', 'id'),
+        required=False,
+        help_text=_('For Customer role only. Teacher who will review mock Writing and Speaking.'),
+    )
 
     class Meta(UserCreationForm.Meta):
         model = User
@@ -199,6 +225,9 @@ class PortalUserCreationForm(UserCreationForm):
         if role == PORTAL_ROLE_TEACHER and not cleaned.get('teacher_courses'):
             self.add_error('teacher_courses', _('Select at least one course specialization.'))
 
+        if role == PORTAL_ROLE_CUSTOMER and not cleaned.get('assigned_teacher'):
+            self.add_error('assigned_teacher', _('Select the teacher who will review this customer\'s mock tests.'))
+
         return cleaned
 
     def save(self, commit=True):
@@ -213,12 +242,20 @@ class PortalUserCreationForm(UserCreationForm):
         user.save()
 
         if role in PORTAL_PROFILE_ROLES:
+            raw_credits = self.cleaned_data.get('mock_credits')
+            profile_credits = (
+                (1 if raw_credits in (None, '') else raw_credits)
+                if role == PORTAL_ROLE_CUSTOMER
+                else (raw_credits or 0)
+            )
             create_portal_profile(
                 user,
                 role,
                 phone=phone,
                 students=students,
                 teacher_courses=self.cleaned_data.get('teacher_courses'),
+                mock_credits=profile_credits,
+                customer_teacher=self.cleaned_data.get('assigned_teacher'),
             )
         else:
             if role == PORTAL_ROLE_ADMIN:

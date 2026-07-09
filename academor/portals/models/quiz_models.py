@@ -451,7 +451,17 @@ class QuizResult(models.Model):
         'StudentProfile',
         on_delete=models.CASCADE,
         related_name='quiz_results',
+        null=True,
+        blank=True,
         verbose_name=_('Student'),
+    )
+    customer = models.ForeignKey(
+        'CustomerProfile',
+        on_delete=models.CASCADE,
+        related_name='quiz_results',
+        null=True,
+        blank=True,
+        verbose_name=_('Customer'),
     )
     quiz = models.ForeignKey(
         Quiz,
@@ -524,6 +534,15 @@ class QuizResult(models.Model):
         verbose_name = _('Quiz result')
         verbose_name_plural = _('Quiz results')
         ordering = ('-completed_at', 'id')
+        constraints = [
+            models.CheckConstraint(
+                condition=(
+                    models.Q(student__isnull=False, customer__isnull=True)
+                    | models.Q(student__isnull=True, customer__isnull=False)
+                ),
+                name='portals_quiz_result_student_xor_customer',
+            ),
+        ]
 
     @property
     def is_pending_review(self):
@@ -538,7 +557,8 @@ class QuizResult(models.Model):
 
     def __str__(self):
         score = self.total_score if self.total_score is not None else '—'
-        return f'{self.student} — {self.quiz} ({score})'
+        owner = self.student or self.customer
+        return f'{owner} — {self.quiz} ({score})'
 
 
 class QuizAssignment(models.Model):

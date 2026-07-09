@@ -66,6 +66,26 @@ ADMIN_HELP = {
             _('Phone is optional but useful for contact.'),
         ],
     },
+    'CustomerProfile': {
+        'icon': 'C',
+        'title': _('Customers'),
+        'summary': _(
+            'Paid mock-test portal users. Each customer has mock credits; '
+            'one credit is used per mock test start. Credits can be set manually '
+            'or added automatically after a successful package payment.'
+        ),
+        'where': _('Private customer portal — mock test and package purchase only.'),
+        'workflow': [
+            {'title': _('Add user'), 'text': _('Authentication → Users → role Customer, username, reviewing teacher, optional phone, initial mock credits')},
+            {'title': _('Packages'), 'text': _('Mock test packages → define credit bundles and prices for United Payment checkout')},
+            {'title': _('Adjust credits'), 'text': _('Edit mock credits here after offline payment or support requests')},
+        ],
+        'tips': [
+            _('Assign a reviewing teacher so Writing and Speaking mock submissions appear in that teacher\'s review queue.'),
+            _('Customers do not see lessons, quizzes, or schedule — only mock test pages.'),
+            _('Set initial mock credits when creating the account for customers who already paid offline.'),
+        ],
+    },
     'StudyGroup': {
         'icon': 'G',
         'title': _('Study groups'),

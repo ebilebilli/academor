@@ -23,14 +23,14 @@
   <!-- Bootstrap -->
   <link rel="stylesheet" href="{% static 'portals/css/bootstrap.min.css' %}">
   <!-- Tabler Icons (portal subset — sidebar, dashboards) -->
-  <link rel="stylesheet" href="{% static 'portals/css/portal-tabler-icons.css' %}?v=20260708v">
+  <link rel="stylesheet" href="{% static 'portals/css/portal-tabler-icons.css' %}?v=20260709a">
   <!-- Bootstrap Icons (legacy components — async, non-blocking) -->
   <link rel="preload" href="{% static 'portals/vendors/bootstrap-icons/bootstrap-icons.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="{% static 'portals/vendors/bootstrap-icons/bootstrap-icons.css' %}"></noscript>
   <!-- Base portal styles (full legacy sheet — overridden by layers below) -->
-  <link rel="stylesheet" href="{% static 'portals/css/style.css' %}?v=20260708v">
+  <link rel="stylesheet" href="{% static 'portals/css/style.css' %}?v=20260709a">
   <!-- Role-specific redesign layer -->
-  <link rel="stylesheet" href="{% static 'portals/css/portal-redesign.css' %}?v=20260708y">
+  <link rel="stylesheet" href="{% static 'portals/css/portal-redesign.css' %}?v=20260709a">
   <!-- Shell overrides (loads last) -->
   <link rel="stylesheet" href="{% static 'portals/css/portal-shell.css' %}?v=20260708v">
   <link rel="stylesheet" href="{% static 'portals/css/portal-lottie.css' %}?v=20260707c">
@@ -69,7 +69,7 @@
     </div>
   </div>
   <!-- Mobile bottom nav (student + parent) -->
-  {% if portal_role == 'student' or portal_role == 'parent' %}
+  {% if portal_role == 'student' or portal_role == 'parent' or portal_role == 'customer' %}
   {% include "portals/includes/mobile_bottom_nav.html" %}
   {% endif %}
   <script defer src="{% static 'portals/js/bootstrap.bundle.min.js' %}"></script>

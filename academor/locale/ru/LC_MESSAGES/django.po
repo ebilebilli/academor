@@ -3462,10 +3462,8 @@ msgid "Finish test"
 msgstr "Завершить тест"
 
 #: academor/portals/utils/ielts_mock_test.py:522
-#, fuzzy
-#| msgid "Finish test"
 msgid "Finish the section"
-msgstr "Завершить тест"
+msgstr "Завершить секцию"
 
 #: academor/portals/utils/ielts_mock_test.py:524
 #, python-format
@@ -6342,47 +6340,38 @@ msgstr "Секции с оценкой преподавателя"
 #: academor/templates/portals/includes/quiz_mock_overall_summary.html:44
 #, python-format
 msgid ""
-"\n"
-"    Your overall result will appear after your teacher reviews %(count)s section.\n"
-"    "
+"Your overall result will appear after your teacher reviews %(count)s "
+"section."
 msgid_plural ""
-"\n"
-"    Your overall result will appear after your teacher reviews %(count)s sections.\n"
-"    "
+"Your overall result will appear after your teacher reviews %(count)s "
+"sections."
 msgstr[0] ""
+"Общий результат появится после проверки преподавателем %(count)s секции."
 msgstr[1] ""
+"Общий результат появится после проверки преподавателем %(count)s секций."
 msgstr[2] ""
+"Общий результат появится после проверки преподавателем %(count)s секций."
 
 #: academor/templates/portals/includes/quiz_mock_section_continue.html:7
 #: academor/templates/portals/includes/quiz_mock_section_continue.html:19
-#, fuzzy
-#| msgid "Next question"
 msgid "Next section"
-msgstr "Следующий вопрос"
+msgstr "Следующая секция"
 
 #: academor/templates/portals/includes/quiz_mock_section_continue.html:8
-#, fuzzy
-#| msgid "Quiz results summary"
 msgid "View mock test summary"
-msgstr "Сводка результатов викторин"
+msgstr "Сводка пробного теста"
 
 #: academor/templates/portals/includes/quiz_mock_section_continue.html:9
-#, fuzzy
-#| msgid "Click Finish when you are ready."
 msgid "Section complete. Continue when you are ready."
-msgstr "Нажмите «Завершить», когда будете готовы."
+msgstr "Секция завершена. Продолжайте, когда будете готовы."
 
 #: academor/templates/portals/includes/quiz_mock_section_continue.html:10
-#, fuzzy
-#| msgid "All speaking tasks are complete."
 msgid "All sections are complete."
-msgstr "Все устные задания выполнены."
+msgstr "Все секции завершены."
 
 #: academor/templates/portals/includes/quiz_mock_section_continue.html:14
-#, fuzzy
-#| msgid "No recording submitted."
 msgid "Section submitted"
-msgstr "Запись не отправлена."
+msgstr "Секция отправлена"
 
 #: academor/templates/portals/includes/quiz_question_play.html:18
 #, fuzzy, python-format
@@ -7506,23 +7495,17 @@ msgstr "Тест"
 
 #: academor/templates/portals/student/ielts_mock_complete.html:4
 #: academor/templates/portals/student/ielts_mock_complete.html:11
-#, fuzzy
-#| msgid "Payment completed"
 msgid "Mock test complete"
-msgstr "Оплата завершена"
+msgstr "Пробный тест завершён"
 
 #: academor/templates/portals/student/ielts_mock_complete.html:14
-#, fuzzy
-#| msgid "Your answers were submitted for teacher review."
 msgid "All four sections are submitted. Your teacher has been notified."
-msgstr "Ваши ответы отправлены на проверку преподавателю."
+msgstr "Все четыре секции отправлены. Ваш преподаватель уведомлён."
 
 #: academor/templates/portals/student/ielts_mock_complete.html:30
 #: academor/templates/portals/teacher/ielts_mock_detail.html:28
-#, fuzzy
-#| msgid "Action"
 msgid "Section"
-msgstr "Действие"
+msgstr "Секция"
 
 #: academor/templates/portals/student/ielts_mock_complete.html:33
 #: academor/templates/portals/teacher/ielts_mock_detail.html:31
@@ -7550,36 +7533,43 @@ msgid ""
 "like the real IELTS exam."
 msgstr ""
 "Пройдите Listening, Reading, Writing и Speaking за одну сессию — как на "
-"настоящем экзамене IELTS.Пройдите Listening, Reading, Writing и Speaking за "
-"одну сессию — как на настоящем экзамене IELTS."
+"настоящем экзамене IELTS."
 
 #: academor/templates/portals/student/ielts_mock_landing.html:20
 msgid "How it works"
 msgstr "Как это работает"
 
-#: academor/templates/portals/student/ielts_mock_landing.html:22
-msgid "One random quiz is selected from each IELTS section."
-msgstr "Из каждой секции IELTS случайным образом выбирается один тест."
+#: academor/templates/portals/student/ielts_mock_landing.html:12
+msgid "One random IELTS task is selected from each section."
+msgstr "Из каждой секции случайным образом выбирается одно задание IELTS."
 
-#: academor/templates/portals/student/ielts_mock_landing.html:23
+#: academor/templates/portals/student/ielts_mock_landing.html:13
 msgid ""
-"Sections follow the real exam order: Listening → Reading → Writing → "
+"Sections follow the real IELTS exam order: Listening → Reading → Writing → "
 "Speaking."
 msgstr ""
-"Секции идут в порядке реального экзамена: Listening → Reading → Writing → "
-"Speaking.Секции идут в порядке реального экзамена: Listening → Reading → "
+"Секции проходят в порядке реального экзамена IELTS: Listening → Reading → "
 "Writing → Speaking."
 
-#: academor/templates/portals/student/ielts_mock_landing.html:24
-msgid "After each section, use Next section to continue the mock test."
-msgstr ""
-"После каждой секции нажмите «Следующая секция», чтобы продолжить пробный "
-"тест.После каждой секции нажмите «Следующая секция», чтобы продолжить "
-"пробный тест."
+#: academor/templates/portals/student/ielts_mock_landing.html:14
+msgid "Listening and Reading sections are scored automatically."
+msgstr "Секции Listening и Reading оцениваются автоматически."
 
-#: academor/templates/portals/student/ielts_mock_landing.html:25
-msgid "When all four sections are finished, your teacher is notified."
-msgstr "Когда все четыре секции завершены, учитель получает уведомление."
+#: academor/templates/portals/student/ielts_mock_landing.html:15
+msgid ""
+"Writing and Speaking sections are reviewed and scored by real IELTS "
+"teachers."
+msgstr ""
+"Секции Writing и Speaking проверяются и оцениваются настоящими "
+"преподавателями IELTS."
+
+#: academor/templates/portals/student/ielts_mock_landing.html:16
+msgid ""
+"After all sections are completed, your answers are sent to your IELTS "
+"teacher for scoring."
+msgstr ""
+"После завершения всех секций ваши ответы отправляются преподавателю IELTS "
+"для оценки."
 
 #: academor/templates/portals/student/ielts_mock_landing.html:35
 msgid "Start mock test"
@@ -7590,8 +7580,12 @@ msgid "Mock test is currently locked."
 msgstr "Mock-тест сейчас закрыт."
 
 #: academor/templates/portals/student/ielts_mock_landing.html:36
-msgid "Talk to your teacher to unlock it. Once your teacher enables Mock access on your profile, you can start from here."
-msgstr "Чтобы открыть доступ, обратитесь к преподавателю. После того как преподаватель включит Mock в вашем профиле, вы сможете начать здесь."
+msgid ""
+"Talk to your teacher to unlock it. Once your teacher enables Mock access on "
+"your profile, you can start from here."
+msgstr ""
+"Чтобы открыть доступ, обратитесь к преподавателю. После того как "
+"преподаватель включит Mock в вашем профиле, вы сможете начать здесь."
 
 #: academor/templates/portals/student/ielts_mock_landing.html:44
 msgid "Mock test is not available yet. Quizzes are missing for:"
@@ -7788,10 +7782,14 @@ msgstr "Выйти из пробного теста? Текущий прогре
 #: academor/templates/portals/student/quiz_take_manual.html:29
 #: academor/templates/portals/student/quiz_take_reading.html:31
 #: academor/templates/portals/student/quiz_take_speaking.html:30
-#, fuzzy
-#| msgid "Start test"
+msgid "Leave mock test?"
+msgstr "Выйти из пробного теста?"
+
+#: academor/templates/portals/student/quiz_take_manual.html:29
+#: academor/templates/portals/student/quiz_take_reading.html:31
+#: academor/templates/portals/student/quiz_take_speaking.html:30
 msgid "Leave mock test"
-msgstr "Начать тест"
+msgstr "Выйти из пробного теста"
 
 #: academor/templates/portals/student/quiz_take_manual.html:34
 msgid "First listening clip starts in"
@@ -8824,6 +8822,90 @@ msgstr "Доступ к тестам"
 #: portals/templates:0
 msgid "Mock nəticələri"
 msgstr "Результаты mock"
+
+msgid "%(name)s — mock test bölməsi yoxlama gözləyir (%(section)s)"
+msgstr "%(name)s — раздел пробного теста ожидает проверки (%(section)s)"
+
+msgid "%(name)s IELTS mock testini tamamladı."
+msgstr "%(name)s завершил(а) пробный IELTS тест."
+
+msgid ""
+"%(name)s tam IELTS mock testini tamamladı. Writing və Speaking "
+"yoxlanılmalıdır."
+msgstr ""
+"%(name)s завершил(а) полный пробный IELTS тест. Требуется проверка Writing и"
+" Speaking."
+
+msgid "%(name)s — ümumi IELTS mock test nəticəsi dərc olundu"
+msgstr "%(name)s — опубликован общий результат пробного IELTS теста"
+
+msgid "Ümumi IELTS mock test nəticəniz dərc olundu."
+msgstr "Опубликован ваш общий результат пробного IELTS теста."
+
+msgid "IELTS mock test — yoxlama gözlənilir"
+msgstr "Пробный IELTS тест — ожидается проверка"
+
+msgid "IELTS mock test — %(sections)s yoxlaması gözlənilir"
+msgstr "Пробный IELTS тест — ожидается проверка: %(sections)s"
+
+msgid "IELTS mock test — yoxlama tələb olunur"
+msgstr "Пробный IELTS тест — требуется проверка"
+
+msgid "IELTS mock test — %(sections)s yoxlanılmalıdır"
+msgstr "Пробный IELTS тест — проверить %(sections)s"
+
+msgid "Mock test bölməsi"
+msgstr "Раздел пробного теста"
+
+msgid "Ümumi mock test nəticəsi"
+msgstr "Общий результат пробного теста"
+
+#: academor/templates/portals/customer/ielts_mock_landing.html:7
+msgid ""
+"Complete Listening, Reading, Writing, and Speaking in real exam order — all "
+"in one session."
+msgstr ""
+"Пройдите Listening, Reading, Writing и Speaking в порядке реального экзамена "
+"— всё за одну сессию."
+
+#: academor/templates/portals/customer/ielts_mock_landing.html:9
+msgid "Mock test credits"
+msgstr "Кредиты на пробный тест"
+
+#: academor/templates/portals/customer/ielts_mock_landing.html:17
+msgid ""
+"Each credit lets you start one full IELTS mock test with all four sections. "
+"One credit is used when you confirm Start quiz on the first section. Credits "
+"you buy stay on your account until you use them."
+msgstr ""
+"Один кредит даёт право начать полный пробный IELTS (все четыре раздела). "
+"После предупреждения в первом разделе при нажатии «Начать викторину» "
+"списывается 1 кредит. Купленные кредиты остаются на счёте, пока вы их не "
+"используете."
+
+#: academor/templates/portals/customer/ielts_mock_landing.html:20
+msgid "Your balance: <strong>%(counter)s</strong> credit"
+msgid_plural "Your balance: <strong>%(counter)s</strong> credits"
+msgstr[0] "Ваш баланс: <strong>%(counter)s</strong> кредит"
+msgstr[1] "Ваш баланс: <strong>%(counter)s</strong> кредита"
+
+#: academor/templates/portals/customer/dashboard.html:18
+#: academor/templates/portals/customer/ielts_mock_landing.html:60
+#: academor/templates/portals/customer/mock_packages.html:4
+#: academor/templates/portals/includes/mobile_bottom_nav.html:38
+#: academor/templates/portals/includes/sidebar.html:117
+msgid "Paket al"
+msgstr "Купить пакет"
+
+#: academor/templates/portals/customer/mock_packages.html:7
+msgid ""
+"Paket seçin və hesabınıza kredit əlavə etmək üçün təhlükəsiz ödəniş edin."
+msgstr ""
+"Выберите пакет и оплатите безопасно, чтобы пополнить кредиты на счёте."
+
+#: academor/portals/views/notification_views.py:234
+msgid "Dərc olunmuş IELTS mock test nəticələri."
+msgstr "Опубликованные результаты пробного IELTS теста."
 
 #~ msgid "Manual quizzes: fill teacher feedback, set score, and reviewed date."
 #~ msgstr "Manual quiz: заполните отзыв, балл и дату проверки."

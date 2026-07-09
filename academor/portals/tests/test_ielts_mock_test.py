@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
@@ -6,8 +8,10 @@ from portals.models import (
     IeltsMockTestAttempt,
     ListeningAudio,
     ListeningQuestion,
+    ParentProfile,
     PortalNotification,
     Quiz,
+    QuizAssignment,
     QuizCategory,
     QuizQuestion,
     QuizResult,
@@ -35,6 +39,7 @@ from portals.utils.quiz_submit import (
     submit_speaking_quiz_attempt,
     submit_teacher_quiz_review,
 )
+from portals.utils.student_courses import quiz_visible_to_student
 
 User = get_user_model()
 
@@ -73,6 +78,10 @@ class IeltsMockTestTests(QuizVisibilityTests):
             student=self.student,
             defaults={'is_active': True},
         )
+
+        self.parent_user = User.objects.create_user(username='mock_parent', password='pass')
+        self.parent = ParentProfile.objects.create(user=self.parent_user)
+        self.parent.students.add(self.student)
 
         self.client = Client()
         _portal_client_login(self.client, self.student_user)
@@ -237,6 +246,72 @@ class IeltsMockTestTests(QuizVisibilityTests):
             ).exists()
         )
 
+    def test_mock_listening_submit_via_http_without_quiz_assignment(self):
+        attempt, _ = start_mock_test_attempt(self.student.pk)
+        QuizAssignment.objects.filter(
+            student=self.student,
+            quiz_id=attempt.listening_quiz_id,
+        ).delete()
+        self.assertFalse(quiz_visible_to_student(attempt.listening_quiz, self.student.pk))
+
+        self.client.get(get_mock_take_url(attempt, IeltsMockTestAttempt.Section.LISTENING))
+        start_url = reverse('portals:student-quiz-start', kwargs={'pk': attempt.listening_quiz_id})
+        self.assertEqual(self.client.post(f'{start_url}?mock={attempt.pk}').status_code, 200)
+
+        question = ListeningQuestion.objects.filter(audio__quiz=attempt.listening_quiz).first()
+        submit_url = reverse('portals:student-manual-quiz-submit', kwargs={'pk': attempt.listening_quiz_id})
+        response = self.client.post(
+            submit_url,
+            data=json.dumps({
+                'answers': {str(question.pk): 'Anna'},
+                'duration_sec': 30,
+                'mock': attempt.pk,
+            }),
+            content_type='application/json',
+        )
+        self.assertEqual(response.status_code, 200, response.content)
+        data = response.json()
+        self.assertTrue(data['success'], data.get('error'))
+        self.assertTrue(data.get('mock_continue'))
+
+    def test_mock_reading_submit_via_http_without_quiz_assignment(self):
+        attempt, _ = start_mock_test_attempt(self.student.pk)
+        submit_listening_quiz_attempt(
+            student_id=self.student.pk,
+            quiz_id=attempt.listening_quiz_id,
+            given_answers={
+                str(ListeningQuestion.objects.filter(audio__quiz=attempt.listening_quiz).first().pk): 'Anna',
+            },
+            mock_attempt_id=attempt.pk,
+            defer_notifications=True,
+        )
+        attempt.refresh_from_db()
+        QuizAssignment.objects.filter(
+            student=self.student,
+            quiz_id=attempt.reading_quiz_id,
+        ).delete()
+        self.assertFalse(quiz_visible_to_student(attempt.reading_quiz, self.student.pk))
+
+        self.client.get(get_mock_take_url(attempt, IeltsMockTestAttempt.Section.READING))
+        start_url = reverse('portals:student-quiz-start', kwargs={'pk': attempt.reading_quiz_id})
+        self.assertEqual(self.client.post(f'{start_url}?mock={attempt.pk}').status_code, 200)
+
+        reading_question = ReadingQuestion.objects.filter(passage__quiz=attempt.reading_quiz).first()
+        submit_url = reverse('portals:student-reading-quiz-submit', kwargs={'pk': attempt.reading_quiz_id})
+        response = self.client.post(
+            submit_url,
+            data=json.dumps({
+                'answers': {str(reading_question.pk): 0},
+                'duration_sec': 30,
+                'mock': attempt.pk,
+            }),
+            content_type='application/json',
+        )
+        self.assertEqual(response.status_code, 200, response.content)
+        data = response.json()
+        self.assertTrue(data['success'], data.get('error'))
+        self.assertTrue(data.get('mock_continue'))
+
     def test_mock_cancel_abandons_without_submitting_section(self):
         attempt, _ = start_mock_test_attempt(self.student.pk)
         listening_url = get_mock_take_url(attempt, IeltsMockTestAttempt.Section.LISTENING)
@@ -253,6 +328,33 @@ class IeltsMockTestTests(QuizVisibilityTests):
         attempt.refresh_from_db()
         self.assertEqual(attempt.status, IeltsMockTestAttempt.Status.ABANDONED)
         self.assertIsNone(attempt.listening_result_id)
+
+    def test_mock_cancel_get_without_mock_param_redirects_with_next(self):
+        attempt, _ = start_mock_test_attempt(self.student.pk)
+        listening_url = get_mock_take_url(attempt, IeltsMockTestAttempt.Section.LISTENING)
+        self.client.get(listening_url)
+        cancel_url = (
+            reverse('portals:student-quiz-cancel', kwargs={'pk': attempt.listening_quiz_id})
+            + f'?next={reverse("portals:student-ielts-mock")}'
+        )
+        response = self.client.get(cancel_url)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['Location'], reverse('portals:student-ielts-mock'))
+
+    def test_mock_cancel_post_without_mock_param_infers_active_attempt(self):
+        attempt, _ = start_mock_test_attempt(self.student.pk)
+        listening_url = get_mock_take_url(attempt, IeltsMockTestAttempt.Section.LISTENING)
+        self.client.get(listening_url)
+        start_url = reverse('portals:student-quiz-start', kwargs={'pk': attempt.listening_quiz_id})
+        self.client.post(f'{start_url}?mock={attempt.pk}')
+        cancel_url = (
+            reverse('portals:student-quiz-cancel', kwargs={'pk': attempt.listening_quiz_id})
+            + f'?next={reverse("portals:student-ielts-mock")}'
+        )
+        response = self.client.post(cancel_url)
+        self.assertEqual(response.status_code, 302)
+        attempt.refresh_from_db()
+        self.assertEqual(attempt.status, IeltsMockTestAttempt.Status.ABANDONED)
 
     def test_stale_listening_page_redirects_to_current_section(self):
         attempt, _ = start_mock_test_attempt(self.student.pk)
@@ -538,6 +640,40 @@ class IeltsMockTestTests(QuizVisibilityTests):
             ).exists()
         )
 
+    def test_parent_notified_when_mock_test_completed(self):
+        attempt = self._complete_full_mock_attempt()
+        self.assertTrue(
+            PortalNotification.objects.filter(
+                parent=self.parent,
+                kind=PortalNotification.Kind.MOCK_TEST_COMPLETED,
+                ielts_mock_test=attempt,
+                is_read=False,
+            ).exists()
+        )
+        self.assertFalse(
+            PortalNotification.objects.filter(
+                teacher=self.teacher,
+                kind=PortalNotification.Kind.MOCK_TEST_COMPLETED,
+            ).exists()
+        )
+
+    def test_parent_notified_when_mock_manual_section_reviewed(self):
+        attempt = self._complete_full_mock_attempt()
+        writing_review = submit_teacher_quiz_review(
+            teacher_id=self.teacher.pk,
+            result_id=attempt.writing_result_id,
+            total_score=8,
+        )
+        self.assertTrue(writing_review['success'])
+        self.assertTrue(
+            PortalNotification.objects.filter(
+                parent=self.parent,
+                kind=PortalNotification.Kind.RESULT_PUBLISHED,
+                quiz_result_id=attempt.writing_result_id,
+                is_read=False,
+            ).exists()
+        )
+
     def test_mock_overall_score_hidden_until_manual_sections_reviewed(self):
         attempt = self._complete_full_mock_attempt()
         summary = serialize_mock_attempt_summary(attempt)
@@ -593,6 +729,14 @@ class IeltsMockTestTests(QuizVisibilityTests):
                 student=self.student,
                 kind=PortalNotification.Kind.MOCK_TEST_RESULTS_PUBLISHED,
                 ielts_mock_test=attempt,
+            ).exists()
+        )
+        self.assertTrue(
+            PortalNotification.objects.filter(
+                parent=self.parent,
+                kind=PortalNotification.Kind.MOCK_TEST_RESULTS_PUBLISHED,
+                ielts_mock_test=attempt,
+                is_read=False,
             ).exists()
         )
 

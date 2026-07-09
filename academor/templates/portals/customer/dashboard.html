@@ -1,0 +1,41 @@
+{% extends "portals/base.html" %}
+{% load i18n portal_tags %}
+
+{% block title %}{% trans 'Dashboard' %}{% endblock %}
+
+{% block content %}
+{% include "portals/includes/portal_portal_banner.html" with greeting_name=customer.full_name %}
+
+{% include "portals/includes/customer_dashboard_mock_stat.html" with mock_stats=mock_stats %}
+
+<section class="ds-card mb-4" aria-label="{% trans 'Mock test' %}">
+  <div class="s-panel-head">
+    <h2 class="s-panel-title">
+      <i class="ti ti-clipboard-list" aria-hidden="true"></i>
+      {% trans 'Mock test' %}
+    </h2>
+  </div>
+
+  <p class="mb-3">
+    {% blocktrans with credits=customer.mock_credits %}Mövcud kredit: <strong>{{ credits }}</strong>{% endblocktrans %}
+  </p>
+
+  <div class="d-flex flex-wrap gap-2">
+    {% if in_progress_mock %}
+    <a class="ds-btn ds-btn--primary" href="{% url 'portals:customer-ielts-mock' %}">
+      <i class="ti ti-player-play" aria-hidden="true"></i>
+      {% trans 'Mock testə davam et' %}
+    </a>
+    {% elif customer.mock_credits > 0 %}
+    <a class="ds-btn ds-btn--primary" href="{% url 'portals:customer-ielts-mock' %}">
+      <i class="ti ti-clipboard-list" aria-hidden="true"></i>
+      {% trans 'Mock testə başla' %}
+    </a>
+    {% endif %}
+    <a class="ds-btn ds-btn--secondary" href="{% url 'portals:customer-mock-packages' %}">
+      <i class="ti ti-shopping-cart" aria-hidden="true"></i>
+      {% trans 'Mock test paketi al' %}
+    </a>
+  </div>
+</section>
+{% endblock %}

@@ -21,9 +21,14 @@
       </thead>
       <tbody>
         {% for row in pending_results %}
-        <tr>
+        <tr{% if row.mock_attempt_id %} class="t-table__row--mock"{% endif %}>
           <td class="fw-500">{{ row.student_name }}</td>
-          <td>{{ row.quiz_topic }}</td>
+          <td>
+            <div class="t-table__quiz-cell">
+              <span>{{ row.quiz_topic }}</span>
+              {% include "portals/includes/quiz_review_mock_context.html" with mock_attempt_id=row.mock_attempt_id mock_section_label=row.mock_section_label %}
+            </div>
+          </td>
           <td><span class="ds-badge">{{ row.grading_mode_label|default:"—" }}</span></td>
           <td class="text-muted small">{{ row.completed_at|portal_datetime }}</td>
           <td class="text-end">

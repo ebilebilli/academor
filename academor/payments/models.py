@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 class Payment(models.Model):
     class ProductType(models.TextChoices):
         COURSE = 'course', _('Course')
+        MOCK_TEST = 'mock_test', _('Mock test')
         GENERIC = 'generic', _('Generic')
 
     class Status(models.TextChoices):
@@ -63,6 +64,22 @@ class Payment(models.Model):
         on_delete=models.SET_NULL,
         related_name='payments',
         verbose_name=_('Price package'),
+    )
+    mock_package = models.ForeignKey(
+        'portals.MockTestPackage',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='payments',
+        verbose_name=_('Mock test package'),
+    )
+    customer = models.ForeignKey(
+        'portals.CustomerProfile',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='payments',
+        verbose_name=_('Customer'),
     )
     buyer_email = models.EmailField(blank=True, null=True)
     buyer_name = models.CharField(max_length=255, blank=True)

@@ -75,6 +75,52 @@ class StudentProfile(SocialLinksMixin, models.Model):
         return str(_('Student: %(name)s') % {'name': name})
 
 
+class CustomerProfile(models.Model):
+    """Paid mock-test portal user (not a full student)."""
+
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='customer_profile',
+        verbose_name=_('User'),
+    )
+    phone = models.CharField(
+        max_length=30,
+        blank=True,
+        validators=[phone_number_validator],
+        verbose_name=_('Phone'),
+    )
+    mock_credits = models.PositiveIntegerField(
+        default=1,
+        verbose_name=_('Mock test credits'),
+        help_text=_('Each started mock test section consumes one credit when you press Start quiz.'),
+    )
+    teacher = models.ForeignKey(
+        'TeacherProfile',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='customers',
+        verbose_name=_('Reviewing teacher'),
+        help_text=_('Teacher who reviews this customer\'s mock Writing and Speaking submissions.'),
+    )
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created at'))
+    updated_at = models.DateTimeField(auto_now=True, verbose_name=_('Updated at'))
+
+    class Meta:
+        verbose_name = _('Customer profile')
+        verbose_name_plural = _('Customer profiles')
+        ordering = ('user__username', 'id')
+
+    @property
+    def full_name(self) -> str:
+        return self.user.get_username() if self.user_id else ''
+
+    def __str__(self):
+        name = self.full_name or '—'
+        return str(_('Customer: %(name)s') % {'name': name})
+
+
 class ParentProfile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,

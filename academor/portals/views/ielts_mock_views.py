@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.views import View
 
-from portals.models import IeltsMockTestAttempt
+from portals.models import IeltsMockTestAttempt, PortalNotification
 from portals.utils.ielts_mock_test import (
     get_mock_attempt_for_student,
     get_mock_take_url,
@@ -115,6 +115,12 @@ class ParentIeltsMockDetailView(ParentRequiredMixin, View):
         if not attempt or attempt.status != IeltsMockTestAttempt.Status.COMPLETED:
             raise Http404
 
+        PortalNotification.objects.filter(
+            parent_id=profile.pk,
+            ielts_mock_test_id=attempt.pk,
+            is_read=False,
+        ).update(is_read=True)
+
         back_url = reverse('portals:parent-scores') + child_ctx.get('student_query', '')
         return render(
             request,
@@ -143,6 +149,8 @@ class TeacherIeltsMockDetailView(TeacherRequiredMixin, View):
             IeltsMockTestAttempt.objects.filter(pk=pk)
             .select_related(
                 'student__user',
+                'customer__user',
+                'customer__teacher',
                 'listening_quiz__category',
                 'reading_quiz__category',
                 'writing_quiz__category',
@@ -157,11 +165,14 @@ class TeacherIeltsMockDetailView(TeacherRequiredMixin, View):
         if not attempt or attempt.status != IeltsMockTestAttempt.Status.COMPLETED:
             raise Http404
 
-        visible = any(
-            teacher_can_see_quiz_result(profile.pk, attempt.student_id, attempt.quiz_for_section(section))
-            for section in IeltsMockTestAttempt.SECTION_ORDER
-            if attempt.quiz_for_section(section)
-        )
+        if attempt.customer_id:
+            visible = attempt.customer.teacher_id == profile.pk
+        else:
+            visible = any(
+                teacher_can_see_quiz_result(profile.pk, attempt.student_id, attempt.quiz_for_section(section))
+                for section in IeltsMockTestAttempt.SECTION_ORDER
+                if attempt.quiz_for_section(section)
+            )
         if not visible:
             raise Http404
 

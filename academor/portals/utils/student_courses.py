@@ -118,6 +118,11 @@ def filter_quiz_results_for_teacher(results, teacher_id):
 
     for row in results:
         quiz = getattr(row, 'quiz', None)
+        if getattr(row, 'customer_id', None):
+            if teacher_can_see_customer_quiz_result(teacher_id, row.customer_id, quiz):
+                visible.append(row)
+            continue
+
         if not quiz or not quiz_visible_to_teacher(quiz, teacher_id):
             continue
 
@@ -140,6 +145,35 @@ def filter_quiz_results_for_teacher(results, teacher_id):
             visible.append(row)
 
     return visible
+
+
+def teacher_can_see_customer_quiz_result(teacher_id, customer_id, quiz):
+    """Assigned teacher sees customer mock manual-review results for their IELTS courses."""
+    from portals.models import CustomerProfile
+    from portals.utils.teacher_courses import get_teacher_course_type_codes
+
+    if not quiz or not customer_id or not teacher_id:
+        return False
+    if not quiz_visible_to_teacher(quiz, teacher_id):
+        return False
+    customer_teacher_id = (
+        CustomerProfile.objects.filter(pk=customer_id)
+        .values_list('teacher_id', flat=True)
+        .first()
+    )
+    if customer_teacher_id != teacher_id:
+        return False
+    service = get_quiz_service_code(quiz)
+    if not service:
+        return False
+    return service in set(get_teacher_course_type_codes(teacher_id))
+
+
+def teacher_can_review_quiz_result(teacher_id, result) -> bool:
+    quiz = getattr(result, 'quiz', None)
+    if getattr(result, 'customer_id', None):
+        return teacher_can_see_customer_quiz_result(teacher_id, result.customer_id, quiz)
+    return teacher_can_see_quiz_result(teacher_id, result.student_id, quiz)
 
 
 def teacher_can_see_quiz_result(teacher_id, student_id, quiz):

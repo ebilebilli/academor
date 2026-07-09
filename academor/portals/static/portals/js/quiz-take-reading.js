@@ -328,7 +328,9 @@
 
       resultPanel.classList.remove("d-none");
       resultPanel.hidden = false;
-      resultPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (!window.PortalQuizMockSection || !window.PortalQuizMockSection.isMockRoot(root)) {
+        resultPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
       root.setAttribute("data-quiz-finished", "true");
     }
 

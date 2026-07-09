@@ -662,7 +662,7 @@
     var msgSubmitLabel = root.getAttribute("data-msg-submit-label") || "Complete";
     var submitBtnHtml = submitBtns[0] ? submitBtns[0].innerHTML : "";
     var isListeningQuiz = root.getAttribute("data-quiz-listening") === "true";
-    var startedAt = Date.now();
+    var startedAt = parseInt(root.dataset.manualQuizBootedAt || "", 10) || Date.now();
     var submitting = false;
     var submitted = false;
     var timerId = null;
@@ -776,7 +776,9 @@
         }
         resultPanel.classList.remove("d-none");
         resultPanel.hidden = false;
-        resultPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+        if (!window.PortalQuizMockSection || !window.PortalQuizMockSection.isMockRoot(root)) {
+          resultPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
       }
     }
 
@@ -862,7 +864,7 @@
 
       var requestBody = Object.assign(
         {
-          duration_sec: elapsedSeconds(),
+          duration_sec: Math.max(1, elapsedSeconds()),
           allow_empty: Boolean(options.allowEmpty),
           completion_trigger: options.completionTrigger || "manual",
         },
@@ -964,12 +966,16 @@
     initQuizLeaveGuard(root, submitManual);
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
+  function scheduleManualQuizTake() {
     var root = document.querySelector("[data-quiz-manual-take]");
-    if (!root) return;
+    if (!root || root.dataset.manualQuizBound === "true") {
+      return;
+    }
+    root.dataset.manualQuizBound = "true";
 
     function boot() {
       root.setAttribute("data-quiz-started", "true");
+      root.dataset.manualQuizBootedAt = String(Date.now());
       initManualQuizTake(root);
     }
 
@@ -979,5 +985,8 @@
     }
 
     boot();
-  });
+  }
+
+  document.addEventListener("DOMContentLoaded", scheduleManualQuizTake);
+  document.addEventListener("portal:content-loaded", scheduleManualQuizTake);
 })();

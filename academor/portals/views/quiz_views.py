@@ -35,6 +35,7 @@ from portals.utils.quiz_submit import (
 )
 from portals.utils.ielts_mock_test import (
     abandon_mock_test_attempt,
+    find_in_progress_mock_attempt_for_quiz,
     get_active_mock_attempt,
     parse_mock_attempt_id,
     resolve_mock_start_request,
@@ -96,11 +97,49 @@ def _mock_submit_kwargs(request, payload: dict | None = None) -> dict:
         (payload or {}).get('mock')
         or (payload or {}).get('mock_attempt_id')
         or request.GET.get('mock')
+        or request.POST.get('mock')
     )
     if not mock_id:
         return {}
     return {
         'mock_attempt_id': mock_id,
+        'defer_notifications': True,
+    }
+
+
+def _parse_json_submit_payload(request) -> dict | None:
+    try:
+        return json.loads(request.body.decode('utf-8') or '{}')
+    except json.JSONDecodeError:
+        return None
+
+
+def _resolve_submit_take_quiz(
+    profile_id: int,
+    quiz_id: int,
+    loader,
+    mock_attempt_id: int | None,
+):
+    """Load quiz take data for submit, inferring mock context when omitted."""
+    quiz = loader(profile_id, quiz_id, mock_attempt_id=mock_attempt_id)
+    if quiz or mock_attempt_id:
+        return quiz, mock_attempt_id
+
+    attempt = find_in_progress_mock_attempt_for_quiz(profile_id, quiz_id)
+    if not attempt:
+        return None, None
+
+    return loader(profile_id, quiz_id, mock_attempt_id=attempt.pk), attempt.pk
+
+
+def _mock_kwargs_for_submit(request, payload: dict | None, mock_attempt_id: int | None) -> dict:
+    mock_kwargs = _mock_submit_kwargs(request, payload)
+    if mock_kwargs.get('mock_attempt_id'):
+        return mock_kwargs
+    if not mock_attempt_id:
+        return {}
+    return {
+        'mock_attempt_id': mock_attempt_id,
         'defer_notifications': True,
     }
 
@@ -120,20 +159,20 @@ def _parse_reading_correct_answers(post_data) -> dict:
     return answers
 
 
-def _get_student_take_quiz(profile_id: int, quiz_id: int):
-    quiz = get_student_quiz_take_data(profile_id, quiz_id)
+def _get_student_take_quiz(profile_id: int, quiz_id: int, *, mock_attempt_id: int | None = None):
+    quiz = get_student_quiz_take_data(profile_id, quiz_id, mock_attempt_id=mock_attempt_id)
     if quiz:
         return quiz, 'variant'
-    quiz = get_student_reading_quiz_take_data(profile_id, quiz_id)
+    quiz = get_student_reading_quiz_take_data(profile_id, quiz_id, mock_attempt_id=mock_attempt_id)
     if quiz:
         return quiz, 'reading'
-    quiz = get_student_listening_quiz_take_data(profile_id, quiz_id)
+    quiz = get_student_listening_quiz_take_data(profile_id, quiz_id, mock_attempt_id=mock_attempt_id)
     if quiz:
         return quiz, 'listening'
-    quiz = get_student_speaking_quiz_take_data(profile_id, quiz_id)
+    quiz = get_student_speaking_quiz_take_data(profile_id, quiz_id, mock_attempt_id=mock_attempt_id)
     if quiz:
         return quiz, 'speaking'
-    quiz = get_student_manual_quiz_take_data(profile_id, quiz_id)
+    quiz = get_student_manual_quiz_take_data(profile_id, quiz_id, mock_attempt_id=mock_attempt_id)
     if quiz:
         return quiz, 'manual'
     return None, None
@@ -206,6 +245,24 @@ def _submit_leave_completion(
             **mock_kwargs,
         )
     return {'success': False, 'error': _('Quiz not found.')}
+
+
+def _resolve_cancel_quiz(profile_id: int, quiz_id: int, mock_id: int | None):
+    """Resolve quiz take data for cancel, inferring mock context when omitted."""
+    quiz, quiz_kind = _get_student_take_quiz(profile_id, quiz_id, mock_attempt_id=mock_id)
+    if quiz or mock_id:
+        return quiz, quiz_kind, mock_id
+
+    attempt = find_in_progress_mock_attempt_for_quiz(profile_id, quiz_id)
+    if not attempt:
+        return None, None, None
+
+    quiz, quiz_kind = _get_student_take_quiz(
+        profile_id,
+        quiz_id,
+        mock_attempt_id=attempt.pk,
+    )
+    return quiz, quiz_kind, attempt.pk
 
 
 class StudentQuizTakeView(StudentQuizTakeRequiredMixin, View):
@@ -334,11 +391,11 @@ class StudentManualQuizTakeView(StudentQuizTakeRequiredMixin, View):
 class StudentQuizStartView(StudentQuizTakeRequiredMixin, View):
     def post(self, request, pk):
         profile = get_student_profile(request.portal_user)
-        quiz, _quiz_kind = _get_student_take_quiz(profile.pk, pk)
+        mock_id = parse_mock_attempt_id(request.GET.get('mock') or request.POST.get('mock'))
+        quiz, _quiz_kind = _get_student_take_quiz(profile.pk, pk, mock_attempt_id=mock_id)
         if not quiz:
             return JsonResponse({'success': False, 'error': _('Quiz not found.')}, status=404)
 
-        mock_id = parse_mock_attempt_id(request.GET.get('mock') or request.POST.get('mock'))
         if mock_id:
             start_override = resolve_mock_start_request(profile.pk, mock_id, pk)
             if start_override is not None:
@@ -383,19 +440,23 @@ class StudentQuizCancelView(StudentQuizTakeRequiredMixin, View):
 
     def get(self, request, pk):
         profile = get_student_profile(request.portal_user)
-        quiz, _quiz_kind = _get_student_take_quiz(profile.pk, pk)
+        mock_id = parse_mock_attempt_id(request.GET.get('mock') or request.POST.get('mock'))
+        quiz, _quiz_kind, _mock_id = _resolve_cancel_quiz(profile.pk, pk, mock_id)
         if not quiz:
+            next_url = safe_portal_next_url(request, request.GET.get('next'))
+            if next_url:
+                return redirect(next_url)
             raise Http404
         return self._redirect_after_cancel(request, quiz)
 
     def post(self, request, pk):
         profile = get_student_profile(request.portal_user)
-        quiz, quiz_kind = _get_student_take_quiz(profile.pk, pk)
+        mock_id = parse_mock_attempt_id(request.GET.get('mock') or request.POST.get('mock'))
+        quiz, quiz_kind, mock_id = _resolve_cancel_quiz(profile.pk, pk, mock_id)
         if not quiz:
             raise Http404
 
         session_started_at = get_quiz_attempt_start(request, pk)
-        mock_id = parse_mock_attempt_id(request.GET.get('mock') or request.POST.get('mock'))
         if session_started_at and not quiz.get('view_only') and not mock_id:
             _submit_leave_completion(
                 profile_id=profile.pk,
@@ -413,14 +474,19 @@ class StudentQuizCancelView(StudentQuizTakeRequiredMixin, View):
 class StudentQuizSubmitView(StudentQuizTakeRequiredMixin, View):
     def post(self, request, pk):
         profile = get_student_profile(request.portal_user)
-        quiz = get_student_quiz_take_data(profile.pk, pk)
+        payload = _parse_json_submit_payload(request)
+        if payload is None:
+            return JsonResponse({'success': False, 'error': 'Invalid request.'}, status=400)
+
+        mock_kwargs = _mock_submit_kwargs(request, payload)
+        quiz, mock_attempt_id = _resolve_submit_take_quiz(
+            profile.pk,
+            pk,
+            get_student_quiz_take_data,
+            mock_kwargs.get('mock_attempt_id'),
+        )
         if not quiz:
             return JsonResponse({'success': False, 'error': 'Quiz not found.'}, status=404)
-
-        try:
-            payload = json.loads(request.body.decode('utf-8') or '{}')
-        except json.JSONDecodeError:
-            return JsonResponse({'success': False, 'error': 'Invalid request.'}, status=400)
 
         session_started_at = get_quiz_attempt_start(request, pk)
         if not session_started_at:
@@ -436,6 +502,7 @@ class StudentQuizSubmitView(StudentQuizTakeRequiredMixin, View):
             duration_sec=_parse_duration_sec(payload.get('duration_sec')),
             session_started_at=session_started_at,
             completion_trigger=payload.get('completion_trigger'),
+            **_mock_kwargs_for_submit(request, payload, mock_attempt_id),
         )
         if not result.get('success'):
             status = 400
@@ -450,14 +517,19 @@ class StudentQuizSubmitView(StudentQuizTakeRequiredMixin, View):
 class StudentReadingQuizSubmitView(StudentQuizTakeRequiredMixin, View):
     def post(self, request, pk):
         profile = get_student_profile(request.portal_user)
-        quiz = get_student_reading_quiz_take_data(profile.pk, pk)
+        payload = _parse_json_submit_payload(request)
+        if payload is None:
+            return JsonResponse({'success': False, 'error': 'Invalid request.'}, status=400)
+
+        mock_kwargs = _mock_submit_kwargs(request, payload)
+        quiz, mock_attempt_id = _resolve_submit_take_quiz(
+            profile.pk,
+            pk,
+            get_student_reading_quiz_take_data,
+            mock_kwargs.get('mock_attempt_id'),
+        )
         if not quiz:
             return JsonResponse({'success': False, 'error': 'Quiz not found.'}, status=404)
-
-        try:
-            payload = json.loads(request.body.decode('utf-8') or '{}')
-        except json.JSONDecodeError:
-            return JsonResponse({'success': False, 'error': 'Invalid request.'}, status=400)
 
         session_started_at = get_quiz_attempt_start(request, pk)
         if not session_started_at:
@@ -473,7 +545,7 @@ class StudentReadingQuizSubmitView(StudentQuizTakeRequiredMixin, View):
             duration_sec=_parse_duration_sec(payload.get('duration_sec')),
             session_started_at=session_started_at,
             completion_trigger=payload.get('completion_trigger'),
-            **_mock_submit_kwargs(request, payload),
+            **_mock_kwargs_for_submit(request, payload, mock_attempt_id),
         )
         if not result.get('success'):
             status = 400
@@ -488,13 +560,18 @@ class StudentReadingQuizSubmitView(StudentQuizTakeRequiredMixin, View):
 class StudentManualQuizSubmitView(StudentQuizTakeRequiredMixin, View):
     def post(self, request, pk):
         profile = get_student_profile(request.portal_user)
-        quiz = get_student_listening_quiz_take_data(profile.pk, pk)
-        if quiz:
-            try:
-                payload = json.loads(request.body.decode('utf-8') or '{}')
-            except json.JSONDecodeError:
-                return JsonResponse({'success': False, 'error': 'Invalid request.'}, status=400)
+        payload = _parse_json_submit_payload(request)
+        if payload is None:
+            return JsonResponse({'success': False, 'error': 'Invalid request.'}, status=400)
 
+        mock_kwargs = _mock_submit_kwargs(request, payload)
+        quiz, mock_attempt_id = _resolve_submit_take_quiz(
+            profile.pk,
+            pk,
+            get_student_listening_quiz_take_data,
+            mock_kwargs.get('mock_attempt_id'),
+        )
+        if quiz:
             session_started_at = get_quiz_attempt_start(request, pk)
             if not session_started_at:
                 return JsonResponse(
@@ -511,7 +588,7 @@ class StudentManualQuizSubmitView(StudentQuizTakeRequiredMixin, View):
                 session_started_at=session_started_at,
                 allow_empty_submission=bool(payload.get('allow_empty')),
                 completion_trigger=payload.get('completion_trigger'),
-                **_mock_submit_kwargs(request, payload),
+                **_mock_kwargs_for_submit(request, payload, mock_attempt_id),
             )
             if not result.get('success'):
                 status = 400
@@ -522,16 +599,12 @@ class StudentManualQuizSubmitView(StudentQuizTakeRequiredMixin, View):
             clear_quiz_attempt_start(request, pk)
             return JsonResponse(result)
 
-        try:
-            payload = json.loads(request.body.decode('utf-8') or '{}')
-        except json.JSONDecodeError:
-            return JsonResponse({'success': False, 'error': 'Invalid request.'}, status=400)
-
-        mock_kwargs = _mock_submit_kwargs(request, payload)
-        quiz = get_student_manual_quiz_take_data(
+        mock_kwargs = _mock_kwargs_for_submit(request, payload, mock_attempt_id)
+        quiz, mock_attempt_id = _resolve_submit_take_quiz(
             profile.pk,
             pk,
-            mock_attempt_id=mock_kwargs.get('mock_attempt_id'),
+            get_student_manual_quiz_take_data,
+            mock_kwargs.get('mock_attempt_id'),
         )
         if not quiz:
             return JsonResponse({'success': False, 'error': 'Quiz not found.'}, status=404)
@@ -559,7 +632,7 @@ class StudentManualQuizSubmitView(StudentQuizTakeRequiredMixin, View):
             session_started_at=session_started_at,
             allow_empty_submission=bool(payload.get('allow_empty')),
             completion_trigger=payload.get('completion_trigger'),
-            **_mock_submit_kwargs(request, payload),
+            **_mock_kwargs_for_submit(request, payload, mock_attempt_id),
         )
         if not result.get('success'):
             return JsonResponse(result, status=400)
@@ -572,10 +645,16 @@ class StudentSpeakingQuizSubmitView(StudentQuizTakeRequiredMixin, View):
     def post(self, request, pk):
         profile = get_student_profile(request.portal_user)
         mock_kwargs = _mock_submit_kwargs(request, {'mock': request.POST.get('mock')})
-        quiz = get_student_speaking_quiz_take_data(
+        quiz, mock_attempt_id = _resolve_submit_take_quiz(
             profile.pk,
             pk,
-            mock_attempt_id=mock_kwargs.get('mock_attempt_id'),
+            get_student_speaking_quiz_take_data,
+            mock_kwargs.get('mock_attempt_id'),
+        )
+        mock_kwargs = _mock_kwargs_for_submit(
+            request,
+            {'mock': request.POST.get('mock')},
+            mock_attempt_id,
         )
         if not quiz:
             return JsonResponse({'success': False, 'error': 'Quiz not found.'}, status=404)
@@ -620,7 +699,7 @@ class StudentSpeakingQuizSubmitView(StudentQuizTakeRequiredMixin, View):
             session_started_at=session_started_at,
             allow_empty_submission=request.POST.get('allow_empty') in ('1', 'true', 'True'),
             completion_trigger=request.POST.get('completion_trigger'),
-            **_mock_submit_kwargs(request, {'mock': request.POST.get('mock')}),
+            **mock_kwargs,
         )
         if not result.get('success'):
             status = 400

@@ -22,19 +22,30 @@ def _standalone_results(**filters):
 
 
 def _mock_section_submit_error(
-    student_id: int,
     mock_attempt_id: int | None,
     quiz_id: int,
+    *,
+    student_id: int | None = None,
+    customer_id: int | None = None,
 ) -> str | None:
     if not mock_attempt_id:
         return None
-    from portals.utils.ielts_mock_test import (
-        get_active_mock_attempt,
-        section_for_quiz_in_attempt,
-        validate_mock_section_submit,
-    )
+    if customer_id:
+        from portals.utils.customer_mock import get_active_customer_mock_attempt
+        from portals.utils.ielts_mock_test import (
+            section_for_quiz_in_attempt,
+            validate_mock_section_submit,
+        )
 
-    attempt = get_active_mock_attempt(student_id, mock_attempt_id)
+        attempt = get_active_customer_mock_attempt(customer_id, mock_attempt_id)
+    else:
+        from portals.utils.ielts_mock_test import (
+            get_active_mock_attempt,
+            section_for_quiz_in_attempt,
+            validate_mock_section_submit,
+        )
+
+        attempt = get_active_mock_attempt(student_id, mock_attempt_id)
     if not attempt:
         return str(_('Mock test session is no longer active.'))
     validation_error = validate_mock_section_submit(attempt, quiz_id)
@@ -46,9 +57,17 @@ def _mock_section_submit_error(
     return None
 
 
-def _create_quiz_result(*, student_id: int, quiz: Quiz, mock_attempt_id: int | None = None, **fields):
+def _create_quiz_result(
+    *,
+    quiz: Quiz,
+    mock_attempt_id: int | None = None,
+    student_id: int | None = None,
+    customer_id: int | None = None,
+    **fields,
+):
     return QuizResult.objects.create(
         student_id=student_id,
+        customer_id=customer_id,
         quiz=quiz,
         ielts_mock_attempt_id=mock_attempt_id,
         **fields,
@@ -148,6 +167,7 @@ def _resolve_duration_sec(
         return None, str(_('Quiz session expired. Open the quiz again and finish within the time limit.'))
 
     duration = max(0, int(client_duration_sec or 0))
+    server_elapsed = None
     if session_started_at:
         parsed = parse_datetime(session_started_at)
         if parsed:
@@ -155,9 +175,24 @@ def _resolve_duration_sec(
                 parsed = timezone.make_aware(parsed, timezone.get_current_timezone())
             elapsed = int((timezone.now() - parsed).total_seconds())
             if elapsed >= 0:
-                duration = elapsed
+                server_elapsed = elapsed
     elif quiz.is_time_limited and quiz.time_limit_minutes:
         return None, str(_('Quiz session expired. Open the quiz again and finish within the time limit.'))
+
+    if server_elapsed is not None:
+        # Prefer the shorter trustworthy elapsed time: stale portal sessions can
+        # outlive the client timer that starts only after the Start gate unlocks.
+        if duration > 0:
+            duration = min(duration, server_elapsed)
+        elif quiz.is_time_limited and quiz.time_limit_minutes:
+            cap = int(quiz.time_limit_minutes) * 60
+            # Sub-second client submit reports 0; ignore stale portal sessions.
+            if server_elapsed > cap + 5:
+                duration = 0
+            else:
+                duration = server_elapsed
+        else:
+            duration = server_elapsed
 
     if quiz.is_time_limited and quiz.time_limit_minutes:
         cap = int(quiz.time_limit_minutes) * 60
@@ -172,6 +207,7 @@ def _load_quiz_for_student(
     quiz_id: int,
     *,
     mock_attempt_id: int | None = None,
+    customer_id: int | None = None,
 ) -> Quiz | None:
     from portals.utils.student_courses import student_quiz_enrollment_ok
 
@@ -189,15 +225,55 @@ def _load_quiz_for_student(
     if not quiz:
         return None
     if mock_attempt_id:
+        if customer_id:
+            from portals.utils.customer_mock import customer_mock_allows_active_section_take
+
+            if not customer_mock_allows_active_section_take(customer_id, mock_attempt_id, quiz_id):
+                return None
+            if _mock_section_submit_error(mock_attempt_id, quiz_id, customer_id=customer_id):
+                return None
+            return quiz
         # Active mock session may use section quizzes even if standalone unlock is off.
         if not student_quiz_enrollment_ok(student_id, quiz):
             return None
-        if _mock_section_submit_error(student_id, mock_attempt_id, quiz_id):
+        if _mock_section_submit_error(mock_attempt_id, quiz_id, student_id=student_id):
             return None
         return quiz
     if not quiz_visible_to_student(quiz, student_id):
         return None
     return quiz
+
+
+def _apply_mock_submit(
+    *,
+    student_id: int | None,
+    customer_id: int | None,
+    mock_attempt_id: int | None,
+    quiz_id: int,
+    result,
+    response: dict,
+    defer_notifications: bool,
+) -> dict:
+    if customer_id:
+        from portals.utils.customer_mock import apply_customer_mock_submit_result
+
+        return apply_customer_mock_submit_result(
+            customer_id=customer_id,
+            mock_attempt_id=mock_attempt_id,
+            quiz_id=quiz_id,
+            result=result,
+            response=response,
+        )
+    from portals.utils.ielts_mock_test import apply_mock_submit_result
+
+    return apply_mock_submit_result(
+        student_id=student_id,
+        mock_attempt_id=mock_attempt_id,
+        quiz_id=quiz_id,
+        result=result,
+        response=response,
+        defer_notifications=defer_notifications,
+    )
 
 
 def _answerable_questions(quiz: Quiz) -> list[QuizQuestion]:
@@ -513,16 +589,22 @@ def score_variant_quiz(
 
 def submit_variant_quiz_attempt(
     *,
-    student_id: int,
     quiz_id: int,
     given_answers: dict,
+    student_id: int | None = None,
+    customer_id: int | None = None,
     duration_sec: int = 0,
     session_started_at: str | None = None,
     completion_trigger: str = QuizResult.CompletionTrigger.MANUAL,
     mock_attempt_id: int | None = None,
     defer_notifications: bool = False,
 ) -> dict:
-    quiz = _load_quiz_for_student(student_id, quiz_id, mock_attempt_id=mock_attempt_id)
+    quiz = _load_quiz_for_student(
+        student_id or 0,
+        quiz_id,
+        mock_attempt_id=mock_attempt_id,
+        customer_id=customer_id,
+    )
     if not quiz:
         return {'success': False, 'error': _('Quiz not found.')}
     if not quiz.is_variant_quiz:
@@ -531,7 +613,12 @@ def submit_variant_quiz_attempt(
     if not quiz.questions.exists():
         return {'success': False, 'error': _('This quiz has no questions yet.')}
 
-    mock_error = _mock_section_submit_error(student_id, mock_attempt_id, quiz_id)
+    mock_error = _mock_section_submit_error(
+        mock_attempt_id,
+        quiz_id,
+        student_id=student_id,
+        customer_id=customer_id,
+    )
     if mock_error:
         return {'success': False, 'error': mock_error}
 
@@ -555,6 +642,7 @@ def submit_variant_quiz_attempt(
     try:
         result = _create_quiz_result(
             student_id=student_id,
+            customer_id=customer_id,
             quiz=quiz,
             mock_attempt_id=mock_attempt_id,
             given_answers=stored_answers,
@@ -586,10 +674,9 @@ def submit_variant_quiz_attempt(
         'questions': breakdown,
         'breakdown': breakdown,
     }
-    from portals.utils.ielts_mock_test import apply_mock_submit_result
-
-    return apply_mock_submit_result(
+    return _apply_mock_submit(
         student_id=student_id,
+        customer_id=customer_id,
         mock_attempt_id=mock_attempt_id,
         quiz_id=quiz_id,
         result=result_with_relations,
@@ -600,9 +687,10 @@ def submit_variant_quiz_attempt(
 
 def submit_reading_quiz_attempt(
     *,
-    student_id: int,
     quiz_id: int,
     given_answers: dict,
+    student_id: int | None = None,
+    customer_id: int | None = None,
     duration_sec: int = 0,
     session_started_at: str | None = None,
     completion_trigger: str = QuizResult.CompletionTrigger.MANUAL,
@@ -614,13 +702,23 @@ def submit_reading_quiz_attempt(
         score_reading_quiz,
     )
 
-    quiz = _load_quiz_for_student(student_id, quiz_id, mock_attempt_id=mock_attempt_id)
+    quiz = _load_quiz_for_student(
+        student_id or 0,
+        quiz_id,
+        mock_attempt_id=mock_attempt_id,
+        customer_id=customer_id,
+    )
     if not quiz:
         return {'success': False, 'error': _('Quiz not found.')}
     if not quiz.is_reading:
         return {'success': False, 'error': _('This quiz is not a reading task.')}
 
-    mock_error = _mock_section_submit_error(student_id, mock_attempt_id, quiz_id)
+    mock_error = _mock_section_submit_error(
+        mock_attempt_id,
+        quiz_id,
+        student_id=student_id,
+        customer_id=customer_id,
+    )
     if mock_error:
         return {'success': False, 'error': mock_error}
 
@@ -646,6 +744,7 @@ def submit_reading_quiz_attempt(
     try:
         result = _create_quiz_result(
             student_id=student_id,
+            customer_id=customer_id,
             quiz=quiz,
             mock_attempt_id=mock_attempt_id,
             given_answers=stored_answers,
@@ -677,10 +776,9 @@ def submit_reading_quiz_attempt(
         'questions': breakdown,
         'breakdown': breakdown,
     }
-    from portals.utils.ielts_mock_test import apply_mock_submit_result
-
-    return apply_mock_submit_result(
+    return _apply_mock_submit(
         student_id=student_id,
+        customer_id=customer_id,
         mock_attempt_id=mock_attempt_id,
         quiz_id=quiz_id,
         result=result_with_relations,
@@ -691,10 +789,11 @@ def submit_reading_quiz_attempt(
 
 def submit_listening_quiz_attempt(
     *,
-    student_id: int,
     quiz_id: int,
     given_answers: dict | None = None,
     ordered_answers: list | None = None,
+    student_id: int | None = None,
+    customer_id: int | None = None,
     duration_sec: int = 0,
     session_started_at: str | None = None,
     allow_empty_submission: bool = False,
@@ -704,13 +803,23 @@ def submit_listening_quiz_attempt(
 ) -> dict:
     from portals.utils.quiz_listening_score import score_listening_quiz
 
-    quiz = _load_quiz_for_student(student_id, quiz_id, mock_attempt_id=mock_attempt_id)
+    quiz = _load_quiz_for_student(
+        student_id or 0,
+        quiz_id,
+        mock_attempt_id=mock_attempt_id,
+        customer_id=customer_id,
+    )
     if not quiz:
         return {'success': False, 'error': _('Quiz not found.')}
     if not quiz.is_listening:
         return {'success': False, 'error': _('This quiz is not a listening task.')}
 
-    mock_error = _mock_section_submit_error(student_id, mock_attempt_id, quiz_id)
+    mock_error = _mock_section_submit_error(
+        mock_attempt_id,
+        quiz_id,
+        student_id=student_id,
+        customer_id=customer_id,
+    )
     if mock_error:
         return {'success': False, 'error': mock_error}
 
@@ -744,6 +853,7 @@ def submit_listening_quiz_attempt(
     try:
         result = _create_quiz_result(
             student_id=student_id,
+            customer_id=customer_id,
             quiz=quiz,
             mock_attempt_id=mock_attempt_id,
             given_answers=stored_answers,
@@ -775,10 +885,9 @@ def submit_listening_quiz_attempt(
         'questions': breakdown,
         'breakdown': breakdown,
     }
-    from portals.utils.ielts_mock_test import apply_mock_submit_result
-
-    return apply_mock_submit_result(
+    return _apply_mock_submit(
         student_id=student_id,
+        customer_id=customer_id,
         mock_attempt_id=mock_attempt_id,
         quiz_id=quiz_id,
         result=result_with_relations,
@@ -805,10 +914,11 @@ def _validate_speaking_recordings(quiz: Quiz, recording_files: dict[str, object]
 
 def submit_speaking_quiz_attempt(
     *,
-    student_id: int,
     quiz_id: int,
     recording_files: dict[str, object] | None = None,
     recording_durations: dict[str, int] | None = None,
+    student_id: int | None = None,
+    customer_id: int | None = None,
     duration_sec: int = 0,
     session_started_at: str | None = None,
     allow_empty_submission: bool = False,
@@ -819,7 +929,12 @@ def submit_speaking_quiz_attempt(
     from portals.models import SpeakingRecording
     from portals.utils.quiz_speaking import get_speaking_questions_for_quiz
 
-    quiz = _load_quiz_for_student(student_id, quiz_id, mock_attempt_id=mock_attempt_id)
+    quiz = _load_quiz_for_student(
+        student_id or 0,
+        quiz_id,
+        mock_attempt_id=mock_attempt_id,
+        customer_id=customer_id,
+    )
     if not quiz:
         return {'success': False, 'error': _('Quiz not found.')}
     if not quiz.is_speaking:
@@ -833,7 +948,12 @@ def submit_speaking_quiz_attempt(
         if validation_error:
             return {'success': False, 'error': validation_error}
 
-    mock_error = _mock_section_submit_error(student_id, mock_attempt_id, quiz_id)
+    mock_error = _mock_section_submit_error(
+        mock_attempt_id,
+        quiz_id,
+        student_id=student_id,
+        customer_id=customer_id,
+    )
     if mock_error:
         return {'success': False, 'error': mock_error}
 
@@ -862,6 +982,7 @@ def submit_speaking_quiz_attempt(
     try:
         result = _create_quiz_result(
             student_id=student_id,
+            customer_id=customer_id,
             quiz=quiz,
             mock_attempt_id=mock_attempt_id,
             given_answers={},
@@ -909,10 +1030,9 @@ def submit_speaking_quiz_attempt(
         'duration_sec': resolved_duration or 0,
         'completion_trigger': resolved_trigger,
     }
-    from portals.utils.ielts_mock_test import apply_mock_submit_result
-
-    return apply_mock_submit_result(
+    return _apply_mock_submit(
         student_id=student_id,
+        customer_id=customer_id,
         mock_attempt_id=mock_attempt_id,
         quiz_id=quiz_id,
         result=result_with_relations,
@@ -923,11 +1043,12 @@ def submit_speaking_quiz_attempt(
 
 def submit_manual_quiz_attempt(
     *,
-    student_id: int,
     quiz_id: int,
     student_submission: str = '',
     given_answers: dict | None = None,
     ordered_answers: list | None = None,
+    student_id: int | None = None,
+    customer_id: int | None = None,
     duration_sec: int = 0,
     session_started_at: str | None = None,
     allow_empty_submission: bool = False,
@@ -935,7 +1056,12 @@ def submit_manual_quiz_attempt(
     mock_attempt_id: int | None = None,
     defer_notifications: bool = False,
 ) -> dict:
-    quiz = _load_quiz_for_student(student_id, quiz_id, mock_attempt_id=mock_attempt_id)
+    quiz = _load_quiz_for_student(
+        student_id or 0,
+        quiz_id,
+        mock_attempt_id=mock_attempt_id,
+        customer_id=customer_id,
+    )
     if not quiz:
         return {'success': False, 'error': _('Quiz not found.')}
     if not quiz.is_manual_grading:
@@ -961,7 +1087,12 @@ def submit_manual_quiz_attempt(
     elif not submission and not allow_empty_submission:
         return {'success': False, 'error': _('Enter your answer before submitting.')}
 
-    mock_error = _mock_section_submit_error(student_id, mock_attempt_id, quiz_id)
+    mock_error = _mock_section_submit_error(
+        mock_attempt_id,
+        quiz_id,
+        student_id=student_id,
+        customer_id=customer_id,
+    )
     if mock_error:
         return {'success': False, 'error': mock_error}
 
@@ -998,6 +1129,7 @@ def submit_manual_quiz_attempt(
             create_kwargs['given_answers'] = {}
         result = _create_quiz_result(
             student_id=student_id,
+            customer_id=customer_id,
             quiz=quiz,
             mock_attempt_id=mock_attempt_id,
             **create_kwargs,
@@ -1024,10 +1156,9 @@ def submit_manual_quiz_attempt(
         'duration_sec': resolved_duration or 0,
         'completion_trigger': resolved_trigger,
     }
-    from portals.utils.ielts_mock_test import apply_mock_submit_result
-
-    return apply_mock_submit_result(
+    return _apply_mock_submit(
         student_id=student_id,
+        customer_id=customer_id,
         mock_attempt_id=mock_attempt_id,
         quiz_id=quiz_id,
         result=result_with_relations,
@@ -1050,16 +1181,16 @@ def submit_teacher_quiz_review(
         create_published_result_notifications,
         dismiss_teacher_submission_notifications,
     )
-    from portals.utils.student_courses import teacher_can_see_quiz_result
+    from portals.utils.student_courses import teacher_can_review_quiz_result
 
     result = (
-        QuizResult.objects.select_related('quiz__category', 'student')
+        QuizResult.objects.select_related('quiz__category', 'student', 'customer')
         .filter(pk=result_id)
         .first()
     )
     if not result or not result.quiz.requires_teacher_review:
         return {'success': False, 'error': _('Result not found.')}
-    if not teacher_can_see_quiz_result(teacher_id, result.student_id, result.quiz):
+    if not teacher_can_review_quiz_result(teacher_id, result):
         return {'success': False, 'error': _('Result not found.')}
     if result.reviewed_at is not None:
         return {'success': False, 'error': _('This submission has already been reviewed.')}

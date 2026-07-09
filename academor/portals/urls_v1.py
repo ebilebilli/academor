@@ -16,6 +16,7 @@ from portals.views.teacher_manage_views import (
     TeacherWeeklyScoresView,
 )
 from portals.views.notification_views import (
+    CustomerNotificationsView,
     NotificationDeleteView,
     NotificationMarkAllReadView,
     NotificationMarkReadView,
@@ -43,6 +44,23 @@ from portals.views.quiz_views import (
     StudentQuizTakeView,
     TeacherQuizResultReviewView,
     TeacherQuizResultsView,
+)
+from portals.views.customer_views import (
+    CustomerDashboardView,
+    CustomerIeltsMockCompleteView,
+    CustomerIeltsMockLandingView,
+    CustomerIeltsMockStartView,
+    CustomerMockPackagesView,
+)
+from portals.views.customer_quiz_views import (
+    CustomerManualQuizSubmitView,
+    CustomerManualQuizTakeView,
+    CustomerQuizCancelView,
+    CustomerQuizStartView,
+    CustomerReadingQuizSubmitView,
+    CustomerReadingQuizTakeView,
+    CustomerSpeakingQuizSubmitView,
+    CustomerSpeakingQuizTakeView,
 )
 from portals.views.ielts_mock_views import (
     StudentIeltsMockCompleteView,
@@ -196,6 +214,37 @@ urlpatterns = [
     path('teacher/ielts-mock/<int:pk>/', TeacherIeltsMockDetailView.as_view(), name='teacher-ielts-mock-detail'),
     path('student/classrooms/', ClassroomsListView.as_view(), name='student-classrooms'),
     path('student/classrooms/<int:pk>/', ClassroomDetailView.as_view(), name='student-classroom-detail'),
+
+    path('customer/', CustomerDashboardView.as_view(), name='customer-dashboard'),
+    path('customer/notifications/', CustomerNotificationsView.as_view(), name='customer-notifications'),
+    path('customer/ielts-mock/', CustomerIeltsMockLandingView.as_view(), name='customer-ielts-mock'),
+    path('customer/ielts-mock/start/', CustomerIeltsMockStartView.as_view(), name='customer-ielts-mock-start'),
+    path(
+        'customer/ielts-mock/<int:pk>/complete/',
+        CustomerIeltsMockCompleteView.as_view(),
+        name='customer-ielts-mock-complete',
+    ),
+    path('customer/mock-packages/', CustomerMockPackagesView.as_view(), name='customer-mock-packages'),
+    path('customer/quizzes/<int:pk>/cancel/', CustomerQuizCancelView.as_view(), name='customer-quiz-cancel'),
+    path('customer/quizzes/<int:pk>/start/', CustomerQuizStartView.as_view(), name='customer-quiz-start'),
+    path('customer/quizzes/<int:pk>/reading/', CustomerReadingQuizTakeView.as_view(), name='customer-reading-quiz-take'),
+    path(
+        'customer/quizzes/<int:pk>/reading/submit/',
+        CustomerReadingQuizSubmitView.as_view(),
+        name='customer-reading-quiz-submit',
+    ),
+    path('customer/quizzes/<int:pk>/manual/', CustomerManualQuizTakeView.as_view(), name='customer-manual-quiz-take'),
+    path(
+        'customer/quizzes/<int:pk>/manual/submit/',
+        CustomerManualQuizSubmitView.as_view(),
+        name='customer-manual-quiz-submit',
+    ),
+    path('customer/quizzes/<int:pk>/speaking/', CustomerSpeakingQuizTakeView.as_view(), name='customer-speaking-quiz-take'),
+    path(
+        'customer/quizzes/<int:pk>/speaking/submit/',
+        CustomerSpeakingQuizSubmitView.as_view(),
+        name='customer-speaking-quiz-submit',
+    ),
 
     path('parent/', ParentDashboardView.as_view(), name='parent-dashboard'),
     path('parent/schedule/', ParentScheduleView.as_view(), name='parent-schedule'),

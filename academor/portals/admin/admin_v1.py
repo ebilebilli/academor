@@ -8,6 +8,12 @@ from django.urls import path, reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
+from portals.admin.filters import (
+    DateJoinedMonthFilter,
+    DateJoinedPeriodFilter,
+    DateJoinedYearFilter,
+    PortalRoleFilter,
+)
 from portals.admin.display import (
     portal_admin_change_link,
     portal_capacity_bar,
@@ -65,6 +71,8 @@ from portals.models import (
     ReadingQuestion,
     ReadingQuestionGroup,
     ParentProfile,
+    CustomerProfile,
+    MockTestPackage,
     Quiz,
     QuizAssignment,
     QuizCategory,
@@ -106,7 +114,15 @@ class PortalUserAdmin(BaseUserAdmin):
         'is_staff',
         'is_active',
     )
-    list_filter = ('is_staff', 'is_superuser', 'is_active')
+    list_filter = (
+        PortalRoleFilter,
+        DateJoinedPeriodFilter,
+        DateJoinedYearFilter,
+        DateJoinedMonthFilter,
+        'is_staff',
+        'is_superuser',
+        'is_active',
+    )
     search_fields = ('username', 'email', 'first_name', 'last_name')
     ordering = ('username',)
 
@@ -122,15 +138,21 @@ class PortalUserAdmin(BaseUserAdmin):
         ('Role & profile', {
             'classes': ('wide', 'portal-fieldset'),
             'description': _(
-                'Pick a role and optional phone. Teacher, Student, and Parent '
+                'Pick a role and optional phone. Teacher, Student, Parent, and Customer '
                 'accounts get a portal profile automatically. Staff can use Django admin. '
                 'Admin has full superuser access. Display name is the username.'
             ),
-            'fields': ('portal_role', 'phone', 'teacher_courses', 'linked_students'),
+            'fields': ('portal_role', 'phone', 'teacher_courses', 'linked_students', 'mock_credits', 'assigned_teacher'),
         }),
     )
 
-    readonly_fields = ('portal_role_display', 'portal_username_display', 'portal_phone_display')
+    readonly_fields = (
+        'portal_role_display',
+        'portal_username_display',
+        'portal_phone_display',
+        'portal_mock_credits_display',
+        'portal_profile_link',
+    )
 
     def get_fieldsets(self, request, obj=None):
         if not obj:
@@ -149,6 +171,8 @@ class PortalUserAdmin(BaseUserAdmin):
                     'portal_role_display',
                     'portal_username_display',
                     'portal_phone_display',
+                    'portal_mock_credits_display',
+                    'portal_profile_link',
                 ),
             },
         ))
@@ -177,7 +201,7 @@ class PortalUserAdmin(BaseUserAdmin):
         labels = dict(PORTAL_ROLE_CHOICES)
         if not role:
             return '—'
-        tone = role if role in ('teacher', 'student', 'parent') else 'default'
+        tone = role if role in ('teacher', 'student', 'parent', 'customer') else 'default'
         return portal_role_badge(labels.get(role, role), tone)
 
     @admin.display(description=_('Username'))
@@ -194,6 +218,20 @@ class PortalUserAdmin(BaseUserAdmin):
             return profile.phone
         return '—'
 
+    @admin.display(description=_('Mock credits'))
+    def portal_mock_credits_display(self, obj):
+        profile = self._get_linked_profile(obj)
+        if isinstance(profile, CustomerProfile):
+            return profile.mock_credits
+        return '—'
+
+    @admin.display(description=_('Portal profile'))
+    def portal_profile_link(self, obj):
+        profile = self._get_linked_profile(obj)
+        if not profile:
+            return '—'
+        return portal_admin_change_link(profile, _('Open profile'))
+
     def _get_linked_profile(self, obj):
         if not obj or not obj.pk:
             return None
@@ -204,6 +242,7 @@ class PortalUserAdmin(BaseUserAdmin):
                 TeacherProfile.objects.filter(user_id=obj.pk).first()
                 or StudentProfile.objects.filter(user_id=obj.pk).first()
                 or ParentProfile.objects.filter(user_id=obj.pk).first()
+                or CustomerProfile.objects.filter(user_id=obj.pk).first()
             )
         return obj._portal_linked_profile
 
@@ -927,6 +966,91 @@ class ParentProfileAdmin(PortalModelAdmin):
     @admin.display(description='Role')
     def role_chip(self, obj):
         return portal_role_badge('Parent', 'parent')
+
+
+@admin.register(CustomerProfile)
+class CustomerProfileAdmin(PortalModelAdmin):
+    list_display = (
+        'full_name_link',
+        'person_display',
+        'teacher_display',
+        'mock_credits',
+        'phone',
+        'role_chip',
+    )
+    list_display_links = ('full_name_link',)
+    search_fields = ('phone', 'user__username', 'user__email', 'teacher__user__username')
+    autocomplete_fields = ('user', 'teacher')
+    ordering = ('user__username', 'id')
+    list_per_page = 25
+    fieldsets = (
+        (_('Account'), {
+            'classes': ('portal-fieldset',),
+            'description': _(
+                'Pick an existing login account, or create one under Authentication → Users '
+                'with role Customer — username, password, and profile are created together.'
+            ),
+            'fields': ('user',),
+        }),
+        (_('Personal information'), {
+            'classes': ('portal-fieldset',),
+            'fields': ('phone', 'mock_credits', 'teacher'),
+        }),
+    )
+
+    def get_portal_stats(self, request):
+        return [
+            {
+                'value': CustomerProfile.objects.count(),
+                'label': _('Customers'),
+                'tone': 'purple',
+            },
+        ]
+
+    @admin.display(description=_('Customer'))
+    def full_name_link(self, obj):
+        return obj.full_name
+
+    @admin.display(description=_('Customer'))
+    def person_display(self, obj):
+        subtitle = _('%(count)s mock credit(s)') % {'count': obj.mock_credits}
+        return portal_person_cell(
+            obj.full_name,
+            subtitle=subtitle,
+            role='customer',
+        )
+
+    @admin.display(description=_('Reviewing teacher'))
+    def teacher_display(self, obj):
+        if not obj.teacher_id:
+            return '—'
+        return portal_admin_change_link(obj.teacher, obj.teacher.full_name)
+
+    @admin.display(description='Role')
+    def role_chip(self, obj):
+        return portal_role_badge('Customer', 'customer')
+
+
+@admin.register(MockTestPackage)
+class MockTestPackageAdmin(PortalModelAdmin):
+    list_display = ('name_az', 'credits', 'price', 'order', 'is_active')
+    list_editable = ('order', 'is_active')
+    search_fields = ('name_az', 'name_en', 'name_ru')
+    ordering = ('order', 'id')
+    fieldsets = (
+        (None, {
+            'classes': ('portal-fieldset',),
+            'fields': (
+                'name_az',
+                'name_en',
+                'name_ru',
+                'credits',
+                'price',
+                'order',
+                'is_active',
+            ),
+        }),
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -1989,6 +2113,7 @@ PORTAL_MODEL_ORDER = {
     'TeacherProfile': 10,
     'StudentProfile': 20,
     'ParentProfile': 30,
+    'CustomerProfile': 35,
     'StudyGroup': 40,
     'Schedule': 50,
     'Lesson': 60,
@@ -2031,10 +2156,10 @@ try:
     if not any(s.get('name') == 'Student portal' for s in site_help.ADMIN_INDEX_HELP['sections']):
         site_help.ADMIN_INDEX_HELP['sections'].append({
             'name': _('Student portal'),
-            'items': _('Teachers, Students, Parents, Groups, Lessons, Attendance, Quizzes'),
+            'items': _('Teachers, Students, Parents, Customers, Groups, Lessons, Attendance, Quizzes'),
             'desc': _(
                 'Purple section in admin — private portal for teachers, students, '
-                'and parents (not on the public website).'
+                'parents, and customers (not on the public website).'
             ),
         })
 except ImportError:

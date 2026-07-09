@@ -11,7 +11,7 @@
 <div class="portal-control-bar mb-3">
   <a
     class="btn btn-outline-secondary btn-sm"
-    href="{% if mock_id %}{% url 'portals:student-quiz-cancel' pk=quiz.id %}?mock={{ mock_id }}&next={{ back_url|urlencode }}{% else %}{{ back_url }}{% endif %}"
+    href="{% if quiz_cancel_url %}{{ quiz_cancel_url }}{% elif mock_id %}{% url 'portals:student-quiz-cancel' pk=quiz.id %}?mock={{ mock_id }}&next={{ back_url|urlencode }}{% else %}{{ back_url }}{% endif %}"
     {% if not quiz.view_only %}data-quiz-leave-link{% endif %}
   >
     <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'Back' %}
@@ -26,7 +26,7 @@
 <div
   class="portal-quiz-take{% if quiz.is_time_limited %} portal-quiz-take--timed{% endif %}{% if not quiz.view_only %} portal-quiz-take--has-dock{% endif %}"
   {% if not quiz.view_only %}data-quiz-manual-take data-quiz-started="false"{% endif %}
-  {% if mock_id %}data-mock-id="{{ mock_id }}" data-mock-cancel-url="{% url 'portals:student-quiz-cancel' pk=quiz.id %}?mock={{ mock_id }}&amp;next={{ back_url|urlencode }}" data-msg-mock-leave-warning="{% trans 'Leave the mock test? Your current progress will be lost.' %}" data-mock-leave-confirm="{% trans 'Leave mock test' %}"{% endif %}
+  {% if mock_id %}data-mock-id="{{ mock_id }}" data-mock-cancel-url="{% if quiz_cancel_url %}{{ quiz_cancel_url }}{% else %}{% url 'portals:student-quiz-cancel' pk=quiz.id %}?mock={{ mock_id }}&amp;next={{ back_url|urlencode }}{% endif %}" data-msg-mock-leave-warning="{% trans 'Leave the mock test? Your current progress will be lost.' %}" data-mock-leave-title="{% trans 'Leave mock test?' %}" data-mock-leave-confirm="{% trans 'Leave mock test' %}"{% endif %}
   {% if quiz.is_listening and not quiz.view_only %}
   data-listening-auto-sequence="true"
   data-listening-first-delay-ms="5500"
@@ -213,10 +213,10 @@
 
 {% block extra_js %}
 {% if not quiz.view_only %}
-{% if mock_id %}<script src="{% static 'portals/js/quiz-mock-section.js' %}"></script>{% endif %}
+{% if mock_id %}<script src="{% static 'portals/js/quiz-mock-section.js' %}?v=20260709a"></script>{% endif %}
 <script src="{% static 'portals/js/quiz-start-gate.js' %}?v=20260703"></script>
 <script src="{% static 'portals/js/quiz-leave-guard.js' %}?v=20260703"></script>
-<script src="{% static 'portals/js/quiz-take-manual.js' %}?v=20260703j"></script>
+<script src="{% static 'portals/js/quiz-take-manual.js' %}?v=20260709d"></script>
 {% endif %}
 {% endblock %}
 

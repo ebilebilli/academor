@@ -24,6 +24,7 @@ from .catalog import (
 )
 from .forms import CoursePaymentForm
 from .enrollment import fulfill_course_enrollment
+from .mock_fulfillment import fulfill_mock_purchase
 from .models import CourseEnrollment, Payment
 from .services import (
     create_transaction,
@@ -181,6 +182,8 @@ def _start_payment(
     description: str,
     course=None,
     price_package=None,
+    mock_package=None,
+    customer=None,
     buyer_email: str | None = None,
     buyer_name: str = '',
     buyer_phone: str = '',
@@ -199,6 +202,8 @@ def _start_payment(
         product_type=product_type,
         course=course,
         price_package=price_package,
+        mock_package=mock_package,
+        customer=customer,
         buyer_email=buyer_email,
         buyer_name=buyer_name,
         buyer_phone=buyer_phone,
@@ -257,7 +262,10 @@ def _sync_payment_from_api(payment):
     payment.save(update_fields=['transaction_id', 'status', 'updated_at'])
 
     if payment.status == Payment.Status.SUCCESS:
-        fulfill_course_enrollment(payment)
+        if payment.product_type == Payment.ProductType.MOCK_TEST:
+            fulfill_mock_purchase(payment)
+        else:
+            fulfill_course_enrollment(payment)
 
     return result
 
@@ -313,6 +321,23 @@ def _render_callback_result(request, payment, result, failed_title):
         course_name = course_display_name(payment.course, get_language()[:2])
 
     if payment.status == Payment.Status.SUCCESS:
+        if payment.product_type == Payment.ProductType.MOCK_TEST:
+            message = _('Payment completed. Mock test credits were added to your account.')
+            if payment.mock_package_id and payment.mock_package:
+                message = _('Payment completed. %(credits)s mock test credit(s) were added.') % {
+                    'credits': payment.mock_package.credits,
+                }
+            return render(
+                request,
+                'payment/success.html',
+                {
+                    'page_title': _('Payment result'),
+                    'seo_noindex': True,
+                    'order_id': payment.transaction_id,
+                    'message': message,
+                    'portal_return_url': reverse('portals:customer-mock-packages'),
+                },
+            )
         if enrollment and course_name:
             message = _('Payment completed. You are enrolled in «%(course)s».') % {
                 'course': course_name,

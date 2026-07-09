@@ -11,6 +11,7 @@ from portals.models import (
     Attendance,
     Lesson,
     ParentProfile,
+    CustomerProfile,
     Quiz,
     QuizCategory,
     QuizQuestion,
@@ -56,6 +57,8 @@ def get_portal_role(user):
         role = 'student'
     elif ParentProfile.objects.filter(user_id=user.pk).exists():
         role = 'parent'
+    elif CustomerProfile.objects.filter(user_id=user.pk).exists():
+        role = 'customer'
     else:
         role = None
     try:
@@ -95,6 +98,28 @@ def get_parent_profile(user):
         .filter(user_id=user.pk)
         .first()
     )
+
+
+def get_customer_profile(user):
+    if not user.is_authenticated:
+        return None
+    return (
+        CustomerProfile.objects.select_related('user', 'teacher', 'teacher__user')
+        .filter(user_id=user.pk)
+        .first()
+    )
+
+
+def serialize_customer(profile):
+    return {
+        'id': profile.pk,
+        'username': _profile_username(profile),
+        'phone': profile.phone or '',
+        'mock_credits': profile.mock_credits,
+        'teacher_id': profile.teacher_id,
+        'teacher_name': profile.teacher.full_name if profile.teacher_id else '',
+        'full_name': profile.full_name,
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -1096,7 +1121,12 @@ def serialize_quiz_result(row):
     return {
         'id': row.pk,
         'student_id': row.student_id,
-        'student_name': row.student.full_name,
+        'customer_id': row.customer_id,
+        'student_name': (
+            row.customer.full_name
+            if row.customer_id
+            else (row.student.full_name if row.student_id else '')
+        ),
         'quiz_id': row.quiz_id,
         'quiz_topic': quiz.topic,
         'grading_mode': quiz.grading_mode,
@@ -1806,7 +1836,7 @@ def get_student_speaking_quiz_take_data(student_id, quiz_id, *, mock_attempt_id:
     }
 
 
-def get_student_quiz_take_data(student_id, quiz_id):
+def get_student_quiz_take_data(student_id, quiz_id, *, mock_attempt_id: int | None = None):
     from portals.utils.student_courses import quiz_visible_to_student, student_quiz_enrollment_ok
 
     course_codes = get_student_course_type_codes(student_id)
@@ -2062,21 +2092,28 @@ def serialize_quiz_result_review(row):
 
 
 def _teacher_pending_quiz_results_queryset(teacher_id):
+    from django.db.models import Q
+
     course_codes = get_teacher_course_type_codes(teacher_id)
     if not course_codes:
         return None
+    expanded = expand_course_types_to_service_slugs(course_codes)
+    pending_filter = Q(reviewed_at__isnull=True) & Q(
+        quiz__category__service__in=course_codes,
+    ) & (Q(quiz__is_essay=True) | Q(quiz__is_speaking=True))
+    student_filter = pending_filter & Q(
+        student__isnull=False,
+        student__groups__teacher_id=teacher_id,
+        student__groups__courses__slug__in=expanded,
+        student__groups__is_active=True,
+    )
+    customer_filter = pending_filter & Q(
+        customer__isnull=False,
+        customer__teacher_id=teacher_id,
+    )
     return (
-        QuizResult.objects.filter(
-            reviewed_at__isnull=True,
-            quiz__category__service__in=course_codes,
-            student__groups__teacher_id=teacher_id,
-            student__groups__courses__slug__in=expand_course_types_to_service_slugs(course_codes),
-            student__groups__is_active=True,
-        )
-        .filter(
-            Q(quiz__is_essay=True) | Q(quiz__is_speaking=True),
-        )
-        .select_related('student', 'quiz', 'quiz__category')
+        QuizResult.objects.filter(student_filter | customer_filter)
+        .select_related('student', 'customer', 'quiz', 'quiz__category')
         .distinct()
         .order_by('-completed_at', 'id')
     )
@@ -2096,11 +2133,11 @@ def get_teacher_pending_quiz_results(teacher_id):
 
 
 def get_teacher_quiz_result_detail(teacher_id, result_id):
-    from portals.utils.student_courses import teacher_can_see_quiz_result
+    from portals.utils.student_courses import teacher_can_review_quiz_result
 
     row = (
         QuizResult.objects.filter(pk=result_id)
-        .select_related('student', 'quiz', 'quiz__category')
+        .select_related('student', 'customer', 'quiz', 'quiz__category')
         .prefetch_related(
             Prefetch('quiz__questions', queryset=QuizQuestion.objects.order_by('order', 'id')),
         )
@@ -2108,7 +2145,7 @@ def get_teacher_quiz_result_detail(teacher_id, result_id):
     )
     if not row or not row.quiz.requires_teacher_review:
         return None
-    if not teacher_can_see_quiz_result(teacher_id, row.student_id, row.quiz):
+    if not teacher_can_review_quiz_result(teacher_id, row):
         return None
     return serialize_quiz_result_review(row)
 
@@ -2523,3 +2560,109 @@ def get_parent_dashboard_data(request, parent_id):
             **_student_performance_snapshot(student.pk, parent_id=parent_id),
         })
     return {'children': children}
+
+
+def get_customer_mock_quiz_take_data(customer_id: int, quiz_id: int, *, mock_attempt_id: int):
+    """Load quiz take payload for customer mock sections only."""
+    from portals.utils.customer_mock import customer_mock_allows_active_section_take
+    from portals.utils.ielts_mock_test import IELTS_SERVICE
+
+    if not customer_mock_allows_active_section_take(customer_id, mock_attempt_id, quiz_id):
+        return None
+
+    quiz = Quiz.objects.filter(pk=quiz_id, category__service=IELTS_SERVICE).select_related('category').first()
+    if not quiz:
+        return None
+
+    if quiz.is_reading:
+        from portals.utils.quiz_reading import build_reading_sections_for_quiz, get_reading_questions_for_quiz
+
+        if not get_reading_questions_for_quiz(quiz):
+            return None
+        sections = build_reading_sections_for_quiz(quiz.pk)
+        flat_questions = [row for section in sections for row in section['questions']]
+        response_ids = [row['id'] for row in flat_questions]
+        return {
+            **serialize_quiz(quiz),
+            'questions': flat_questions,
+            'reading_sections': sections,
+            'response_question_ids': response_ids,
+            'response_question_count': len(response_ids),
+            'view_only': False,
+            'is_pending_review': False,
+            'is_mock_section': True,
+        }
+
+    if quiz.is_speaking:
+        from portals.utils.quiz_speaking import (
+            build_speaking_sections_for_quiz,
+            estimate_speaking_quiz_seconds,
+            get_speaking_questions_for_quiz,
+        )
+
+        if not get_speaking_questions_for_quiz(quiz):
+            return None
+        sections = build_speaking_sections_for_quiz(quiz.pk)
+        flat_questions = [row for section in sections for row in section['questions']]
+        response_ids = [row['id'] for row in flat_questions]
+        estimated_total_seconds = estimate_speaking_quiz_seconds(sections)
+        return {
+            **serialize_quiz(quiz),
+            'questions': flat_questions,
+            'speaking_sections': sections,
+            'response_question_ids': response_ids,
+            'response_question_count': len(response_ids),
+            'estimated_total_seconds': estimated_total_seconds,
+            'estimated_total_minutes': max(1, round(estimated_total_seconds / 60)),
+            'view_only': False,
+            'is_pending_review': False,
+            'is_mock_section': True,
+        }
+
+    if quiz.is_listening:
+        from portals.utils.quiz_listening import (
+            build_listening_sections_for_quiz,
+            get_listening_questions_for_quiz,
+        )
+
+        if not get_listening_questions_for_quiz(quiz):
+            return None
+        sections = build_listening_sections_for_quiz(quiz.pk)
+        flat_questions = [row for section in sections for row in section['questions']]
+        response_ids = [row['id'] for row in flat_questions]
+        return {
+            **serialize_quiz(quiz),
+            'questions': flat_questions,
+            'listening_sections': sections,
+            'response_question_ids': response_ids,
+            'response_question_count': len(response_ids),
+            'view_only': False,
+            'is_pending_review': False,
+            'is_mock_section': True,
+        }
+
+    if quiz.is_manual_grading and not quiz.is_listening and not quiz.is_speaking:
+        quiz = (
+            Quiz.objects.filter(pk=quiz_id, category__service=IELTS_SERVICE)
+            .select_related('category')
+            .prefetch_related(Prefetch('questions', queryset=QuizQuestion.objects.order_by('order', 'id')))
+            .first()
+        )
+        if not quiz:
+            return None
+        questions = [q for q in quiz.questions.all() if q.is_answerable]
+        if not questions:
+            return None
+        serialized_qs = [serialize_quiz_question_for_student(q) for q in questions]
+        response_ids = [q['id'] for q in serialized_qs]
+        return {
+            **serialize_quiz(quiz),
+            'questions': serialized_qs,
+            'listening_sections': [],
+            'response_question_ids': response_ids,
+            'response_question_count': len(response_ids),
+            'view_only': False,
+            'is_mock_section': True,
+        }
+
+    return None

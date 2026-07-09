@@ -4,7 +4,7 @@
 {% block title %}{% trans 'Dashboard' %}{% endblock %}
 
 {% block content %}
-{% include "portals/includes/portal_portal_banner.html" with greeting_name=student.full_name subtitle=_('Dərslərini, tapşırıqlarını və nəticələri bir yerdən izlə') lottie="portals/animations/student.lottie" %}
+{% include "portals/includes/portal_portal_banner.html" with greeting_name=student.full_name subtitle=_('Dərslərini, tapşırıqlarını və nəticələri bir yerdən izlə') %}
 
 {% include "portals/includes/dashboard_performance_cards.html" with weekly_average=weekly_average attendance_stats=attendance_stats quiz_average=quiz_average mock_stats=mock_stats %}
 

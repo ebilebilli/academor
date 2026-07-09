@@ -1,0 +1,79 @@
+{% extends "portals/base.html" %}
+{% load i18n portal_tags %}
+
+{% block title %}{% trans 'IELTS Mock Test' %}{% endblock %}
+
+{% block content %}
+{% include "portals/includes/portal_page_hero.html" with title=_('IELTS Mock Test') subtitle=_('Complete Listening, Reading, Writing, and Speaking in real exam order — all in one session.') icon="ti-clipboard-list" lottie="portals/animations/exam-preparation.lottie" %}
+
+<section class="ds-card mb-4" aria-label="{% trans 'Mock test credits' %}">
+  <div class="s-panel-head">
+    <h2 class="s-panel-title">
+      <i class="ti ti-tag" aria-hidden="true"></i>
+      {% trans 'Mock test credits' %}
+    </h2>
+  </div>
+  <p class="mb-3 text-muted">
+    {% trans 'Each credit lets you start one full IELTS mock test with all four sections. One credit is used when you confirm Start quiz on the first section. Credits you buy stay on your account until you use them.' %}
+  </p>
+  <p class="mb-0">
+    {% blocktrans count counter=mock_credits %}
+    Your balance: <strong>{{ counter }}</strong> credit
+    {% plural %}
+    Your balance: <strong>{{ counter }}</strong> credits
+    {% endblocktrans %}
+  </p>
+</section>
+
+<section class="ds-card mb-4">
+  <h2 class="h5 mb-3">{% trans 'How it works' %}</h2>
+  <ol class="mb-0 ps-3">
+    <li class="mb-2">{% trans 'One random IELTS task is selected from each section.' %}</li>
+    <li class="mb-2">{% trans 'Sections follow the real IELTS exam order: Listening → Reading → Writing → Speaking.' %}</li>
+    <li class="mb-2">{% trans 'Listening and Reading sections are scored automatically.' %}</li>
+    <li>{% trans 'Writing and Speaking sections are reviewed and scored by IELTS teachers.' %}</li>
+  </ol>
+</section>
+
+{% if can_start %}
+<section class="ds-card mb-4">
+  <form method="post" action="{% url 'portals:customer-ielts-mock-start' %}">
+    {% csrf_token %}
+    <button type="submit" class="ds-btn ds-btn--primary">
+      <i class="ti ti-player-play" aria-hidden="true"></i>
+      {% trans 'Start mock test' %}
+    </button>
+  </form>
+</section>
+{% elif not has_credits %}
+<section class="ds-card mb-4">
+  <div class="alert alert-danger mb-3 d-flex align-items-start gap-2">
+    <i class="bi bi-lock-fill mt-1" aria-hidden="true"></i>
+    <div>
+      <strong>{% trans 'No mock test credits.' %}</strong>
+      <p class="mb-0 mt-1">{% trans 'Purchase a package to start your next mock test.' %}</p>
+    </div>
+  </div>
+  <a class="ds-btn ds-btn--primary" href="{% url 'portals:customer-mock-packages' %}">
+    <i class="ti ti-shopping-cart" aria-hidden="true"></i>
+    {% trans 'Paket al' %}
+  </a>
+</section>
+{% else %}
+<section class="ds-card mb-4">
+  <div class="alert alert-warning mb-0">
+    {% trans 'Mock test is not available yet. Quizzes are missing for:' %}
+    {% for section in missing_sections %}
+      <strong>{{ section }}</strong>{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if completed_attempts %}
+<section class="ds-card">
+  <h2 class="h5 mb-3">{% trans 'Previous mock tests' %}</h2>
+  {% include "portals/includes/ielts_mock_attempts_table.html" with mock_attempts=completed_attempts mock_detail_url_name="portals:customer-ielts-mock-complete" %}
+</section>
+{% endif %}
+{% endblock %}

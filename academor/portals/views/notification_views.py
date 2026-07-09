@@ -18,20 +18,80 @@ from portals.utils.notifications import (
     mark_notification_read,
 )
 from portals.utils.queries import (
+    get_customer_profile,
     get_parent_profile,
     get_portal_role,
     get_student_profile,
     get_teacher_profile,
+    serialize_customer,
     serialize_parent,
     serialize_student,
     serialize_teacher,
 )
 from portals.utils.safe_redirect import safe_portal_next_url
-from portals.views.mixins import ParentRequiredMixin, PortalLoginRequiredMixin, StudentRequiredMixin, TeacherRequiredMixin
+from portals.views.mixins import (
+    CustomerRequiredMixin,
+    ParentRequiredMixin,
+    PortalLoginRequiredMixin,
+    StudentRequiredMixin,
+    TeacherRequiredMixin,
+)
 from portals.views.views_v1 import _portal_context
 
 
 PERIOD_CHOICES = ('all', 'day', 'week', 'month', 'year')
+
+PERIOD_TAB_LABELS = {
+    'all': _('Hamısı'),
+    'day': _('Bu gün'),
+    'week': _('Bu həftə'),
+    'month': _('Bu ay'),
+    'year': _('Bu il'),
+}
+
+PERIOD_TAB_SHORT_LABELS = {
+    'all': _('Hamısı'),
+    'day': _('Gün'),
+    'week': _('Həftə'),
+    'month': _('Ay'),
+    'year': _('İl'),
+}
+
+
+def _notification_period_queryset(*, teacher_id=None, parent_id=None, student_id=None, customer_id=None):
+    if teacher_id:
+        return PortalNotification.objects.filter(
+            teacher_id=teacher_id,
+            kind=PortalNotification.Kind.RESULT_PUBLISHED,
+        )
+    from portals.utils.notifications import _notification_queryset
+
+    return _notification_queryset(
+        teacher_id=teacher_id,
+        parent_id=parent_id,
+        student_id=student_id,
+        customer_id=customer_id,
+    )
+
+
+def _build_notification_period_tabs(*, teacher_id=None, parent_id=None, student_id=None, customer_id=None):
+    from portals.utils.notifications import _apply_period_filter
+
+    base_qs = _notification_period_queryset(
+        teacher_id=teacher_id,
+        parent_id=parent_id,
+        student_id=student_id,
+        customer_id=customer_id,
+    )
+    return [
+        {
+            'code': code,
+            'label': PERIOD_TAB_LABELS[code],
+            'short_label': PERIOD_TAB_SHORT_LABELS[code],
+            'count': _apply_period_filter(base_qs, code).count(),
+        }
+        for code in PERIOD_CHOICES
+    ]
 
 
 def _notification_recipient(request):
@@ -45,6 +105,9 @@ def _notification_recipient(request):
     if role == 'student':
         profile = get_student_profile(request.portal_user)
         return role, profile, {'student_id': profile.pk}, reverse('portals:student-notifications')
+    if role == 'customer':
+        profile = get_customer_profile(request.portal_user)
+        return role, profile, {'customer_id': profile.pk}, reverse('portals:customer-notifications')
     return None, None, {}, reverse('portals:dashboard')
 
 
@@ -80,9 +143,9 @@ class TeacherNotificationsView(TeacherRequiredMixin, View):
 
     def get(self, request):
         profile = get_teacher_profile(request.portal_user)
-        period = request.GET.get('period', 'all')
+        period = request.GET.get('period', 'day')
         if period not in PERIOD_CHOICES:
-            period = 'all'
+            period = 'day'
         return render(
             request,
             self.template_name,
@@ -93,6 +156,7 @@ class TeacherNotificationsView(TeacherRequiredMixin, View):
                 unread_count=get_teacher_portal_bell_count(profile.pk),
                 period=period,
                 period_choices=PERIOD_CHOICES,
+                period_tabs=_build_notification_period_tabs(teacher_id=profile.pk),
                 notifications_url_name='portals:teacher-notifications',
                 notifications_subtitle=_('Published quiz results from your students.'),
             ),
@@ -104,9 +168,9 @@ class ParentNotificationsView(ParentRequiredMixin, View):
 
     def get(self, request):
         profile = get_parent_profile(request.portal_user)
-        period = request.GET.get('period', 'all')
+        period = request.GET.get('period', 'day')
         if period not in PERIOD_CHOICES:
-            period = 'all'
+            period = 'day'
         return render(
             request,
             self.template_name,
@@ -117,6 +181,7 @@ class ParentNotificationsView(ParentRequiredMixin, View):
                 unread_count=get_unread_notification_count(parent_id=profile.pk),
                 period=period,
                 period_choices=PERIOD_CHOICES,
+                period_tabs=_build_notification_period_tabs(parent_id=profile.pk),
                 notifications_url_name='portals:parent-notifications',
             ),
         )
@@ -127,9 +192,9 @@ class StudentNotificationsView(StudentRequiredMixin, View):
 
     def get(self, request):
         profile = get_student_profile(request.portal_user)
-        period = request.GET.get('period', 'all')
+        period = request.GET.get('period', 'day')
         if period not in PERIOD_CHOICES:
-            period = 'all'
+            period = 'day'
         return render(
             request,
             self.template_name,
@@ -140,7 +205,33 @@ class StudentNotificationsView(StudentRequiredMixin, View):
                 unread_count=get_unread_notification_count(student_id=profile.pk),
                 period=period,
                 period_choices=PERIOD_CHOICES,
+                period_tabs=_build_notification_period_tabs(student_id=profile.pk),
                 notifications_url_name='portals:student-notifications',
+            ),
+        )
+
+
+class CustomerNotificationsView(CustomerRequiredMixin, View):
+    template_name = 'portals/notifications.html'
+
+    def get(self, request):
+        profile = get_customer_profile(request.portal_user)
+        period = request.GET.get('period', 'day')
+        if period not in PERIOD_CHOICES:
+            period = 'day'
+        return render(
+            request,
+            self.template_name,
+            _portal_context(
+                request,
+                customer=serialize_customer(profile),
+                notifications=get_notifications(customer_id=profile.pk, period=period),
+                unread_count=get_unread_notification_count(customer_id=profile.pk),
+                period=period,
+                period_choices=PERIOD_CHOICES,
+                period_tabs=_build_notification_period_tabs(customer_id=profile.pk),
+                notifications_url_name='portals:customer-notifications',
+                notifications_subtitle=_('Dərc olunmuş IELTS mock test nəticələri.'),
             ),
         )
 

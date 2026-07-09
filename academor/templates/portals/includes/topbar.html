@@ -8,8 +8,9 @@
     </button>
 
     <div class="navbar-actions ms-auto">
-      {% if portal_role == 'teacher' or portal_role == 'parent' or portal_role == 'student' %}
-      <a class="icon-button portal-notification-bell" href="{% if portal_notifications_url %}{{ portal_notifications_url }}{% elif portal_role == 'teacher' %}{% url 'portals:teacher-notifications' %}{% elif portal_role == 'parent' %}{% url 'portals:parent-notifications' %}{% elif portal_role == 'student' %}{% url 'portals:student-notifications' %}{% else %}#{% endif %}" aria-label="{% trans 'Notifications' %}" title="{% trans 'Notifications' %}">
+      {% include "portals/includes/whatsapp_contact_link.html" %}
+      {% if portal_role == 'teacher' or portal_role == 'parent' or portal_role == 'student' or portal_role == 'customer' %}
+      <a class="icon-button portal-notification-bell" href="{% if portal_notifications_url %}{{ portal_notifications_url }}{% elif portal_role == 'teacher' %}{% url 'portals:teacher-notifications' %}{% elif portal_role == 'parent' %}{% url 'portals:parent-notifications' %}{% elif portal_role == 'student' %}{% url 'portals:student-notifications' %}{% elif portal_role == 'customer' %}{% url 'portals:customer-notifications' %}{% else %}#{% endif %}" aria-label="{% trans 'Notifications' %}" title="{% trans 'Notifications' %}">
         <i class="ti ti-bell" aria-hidden="true"></i>
         {% if portal_unread_notifications %}
         <span class="portal-notification-badge" data-portal-unread-badge>{{ portal_unread_notifications }}</span>

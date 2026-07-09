@@ -24,6 +24,19 @@
       <span>{% trans 'Mock' %}</span>
     </a>
     {% endif %}
+  {% elif portal_role == 'customer' %}
+    <a class="mobile-nav-item{% if u == 'customer-dashboard' %} active{% endif %}" href="{% url 'portals:customer-dashboard' %}">
+      <i class="ti ti-layout-dashboard" aria-hidden="true"></i>
+      <span>{% trans 'Ana səhifə' %}</span>
+    </a>
+    <a class="mobile-nav-item{% if u == 'customer-ielts-mock' or u == 'customer-ielts-mock-complete' %} active{% endif %}" href="{% url 'portals:customer-ielts-mock' %}">
+      <i class="ti ti-clipboard-list" aria-hidden="true"></i>
+      <span>{% trans 'Mock' %}</span>
+    </a>
+    <a class="mobile-nav-item{% if u == 'customer-mock-packages' %} active{% endif %}" href="{% url 'portals:customer-mock-packages' %}">
+      <i class="ti ti-shopping-cart" aria-hidden="true"></i>
+      <span>{% trans 'Paket al' %}</span>
+    </a>
   {% elif portal_role == 'parent' %}
     <a class="mobile-nav-item{% if u == 'parent-dashboard' %} active{% endif %}" href="{% url 'portals:parent-dashboard' %}">
       <i class="ti ti-layout-dashboard" aria-hidden="true"></i>
