@@ -11,21 +11,19 @@
     {% include "includes/site_navbar.html" %}
 
     <main id="main-content" class="mock-detail-page">
-        <section class="mock-detail-hero{% if not course.images %} mock-detail-hero--solo{% endif %}" aria-labelledby="mock-detail-title">
+        <section class="mock-detail-hero" aria-labelledby="mock-detail-title">
             <div class="mock-detail-hero__bg" aria-hidden="true"></div>
             <div class="container-xxl mock-detail-hero__inner">
                 <div class="container">
                     <div class="mock-detail-hero__content wow fadeInUp" data-wow-delay="0.05s">
+                        {% if course.tags %}
                         <div class="mock-detail-hero__badges">
-                            <span class="mock-detail-hero__badge mock-detail-hero__badge--mock">{% trans "Mock" %}</span>
                             {% for tag in course.tags %}
                             <span class="mock-detail-hero__badge mock-detail-hero__badge--tag">{{ tag.name }}</span>
                             {% endfor %}
                         </div>
-                        <h1 id="mock-detail-title" class="mock-detail-hero__title">{{ course.name }}</h1>
-                        {% if course.description_excerpt %}
-                        <p class="mock-detail-hero__subtitle">{{ course.description_excerpt }}</p>
                         {% endif %}
+                        <h1 id="mock-detail-title" class="mock-detail-hero__title">{{ course.name }}</h1>
 
                         {% if course.bullet_items %}
                         <ul class="mock-detail-hero__highlights list-unstyled mb-0">
@@ -39,37 +37,54 @@
                         {% endif %}
 
                         {% if course.has_payment %}
-                        <a href="#course-pay" class="mock-detail-hero__cta">
-                            {% trans "View packages" %}
-                            <i class="fa fa-arrow-down ms-2" aria-hidden="true"></i>
-                        </a>
+                        <div class="mock-detail-hero__actions">
+                            <a href="#course-pay" class="mock-detail-hero__action-btn">
+                                {% trans "View packages" %}
+                                <i class="fa fa-arrow-down ms-2" aria-hidden="true"></i>
+                            </a>
+                        </div>
                         {% endif %}
                     </div>
 
-                    {% if course.images %}
-                    <aside class="mock-detail-hero__aside wow fadeInUp" data-wow-delay="0.12s" aria-label="{% trans 'Service images' %}">
-                        <div class="mock-detail-hero__media">
-                            <img
-                                src="{{ course.images.0 }}"
-                                alt="{{ course.name }}"
-                                class="mock-detail-hero__media-img"
-                                loading="eager"
-                                decoding="async"
-                            >
+                    <aside class="mock-detail-hero__aside wow fadeInUp" data-wow-delay="0.12s" aria-label="{% trans 'Service preview' %}">
+                        <div class="mock-detail-hero__aside-card">
+                            {% if course.images %}
+                            <div class="mock-detail-hero__media-wrap">
+                                <div class="mock-detail-hero__media">
+                                    <img
+                                        src="{{ course.images.0 }}"
+                                        alt="{{ course.name }}"
+                                        class="mock-detail-hero__media-img"
+                                        loading="eager"
+                                        decoding="async"
+                                    >
+                                </div>
+                            </div>
+                            {% endif %}
+                            <div class="mock-detail-hero__contact">
+                                <a href="{% url 'projects:contact-page' %}" class="mock-detail-hero__action-btn">
+                                    {% trans "Contact us" %}
+                                    <i class="fas fa-arrow-right ms-2 small" aria-hidden="true"></i>
+                                </a>
+                                {% if footer_contact.whatsapp_number_me %}
+                                <a href="https://wa.me/{{ footer_contact.whatsapp_number_me }}" class="mock-detail-hero__contact-btn mock-detail-hero__contact-btn--whatsapp" target="_blank" rel="noopener noreferrer">
+                                    <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                                    {% trans "WhatsApp" %}
+                                </a>
+                                {% endif %}
+                            </div>
                         </div>
                     </aside>
-                    {% endif %}
                 </div>
             </div>
         </section>
 
         {% if course.description_html %}
-        <section class="mock-detail-about" aria-labelledby="mock-detail-about-heading">
+        <section class="mock-detail-about" aria-label="{% trans 'Overview' %}">
             <div class="container-xxl">
                 <div class="container">
                     <header class="mock-detail-about__head wow fadeInUp" data-wow-delay="0.05s">
                         <span class="mock-detail-section__eyebrow">{% trans "Overview" %}</span>
-                        <h2 id="mock-detail-about-heading" class="mock-detail-section__title">{{ course.name }}</h2>
                     </header>
                     <div class="mock-detail-about__prose wow fadeInUp" data-wow-delay="0.1s">
                         <div class="mock-detail-about__prose-inner">{{ course.description_html|safe }}</div>
@@ -130,7 +145,6 @@
             </div>
         </section>
         {% include "includes/course_detail_payment_modal.html" %}
-        {% include "includes/course_detail_payment_sticky_bar.html" %}
         {% endif %}
     </main>
 
