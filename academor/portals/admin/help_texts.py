@@ -90,12 +90,12 @@ ADMIN_HELP = {
         'icon': 'G',
         'title': _('Study groups'),
         'summary': _(
-            'A class: teacher, linked courses (read-only), capacity, and enrolled students. '
+            'A class: linked courses, teacher, capacity, and enrolled students. '
             'Use the Students box to add or remove members.'
         ),
         'where': _('Portal — lessons, schedule, and videos for this group.'),
         'workflow': [
-            {'title': _('Create group'), 'text': _('Name, teacher, and linked courses')},
+            {'title': _('Create group'), 'text': _('Name, courses, and teacher')},
             {'title': _('Add students'), 'text': _('Select members in the Students field')},
             {'title': _('Add schedule'), 'text': _('Weekly slots in the table below')},
         ],

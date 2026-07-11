@@ -169,12 +169,12 @@
     initNotifications();
   }
 
+  document.addEventListener("portal:content-loaded", bootNotifications);
   if (window.portalOnReady) {
     window.portalOnReady(bootNotifications);
-  } else {
+  } else if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", bootNotifications);
+  } else {
+    bootNotifications();
   }
-
-  // AJAX nav loads this script after content swap; portal:content-loaded already fired.
-  bootNotifications();
 })();

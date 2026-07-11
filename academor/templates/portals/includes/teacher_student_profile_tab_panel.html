@@ -59,7 +59,7 @@
   </div>
 
 {% elif active_tab == 'mock-results' %}
-  {% include "portals/includes/ielts_mock_attempts_table.html" with mock_detail_url_name="portals:teacher-ielts-mock-detail" %}
+  {% include "portals/includes/mock_attempts_table.html" with mock_detail_url_name="portals:teacher-mock-detail" %}
 
 {% elif active_tab == 'quiz-access' %}
   {% include "portals/includes/teacher_student_quiz_access.html" %}

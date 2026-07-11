@@ -1,4 +1,4 @@
-"""IELTS full mock test session helpers."""
+"""Portal mock test session helpers."""
 
 from __future__ import annotations
 
@@ -21,49 +21,88 @@ from portals.models import (
     ReadingQuestion,
     SpeakingQuestion,
 )
-from portals.utils.quiz_assignments import student_has_active_mock_access
+from portals.utils.mock_programs import (
+    IELTS_BAND_MAX,
+    IELTS_SERVICE,
+    MOCK_EXAM_PROGRAMS,
+    PROGRAM_LABELS,
+    SAT_SECTION_SCORE_MAX,
+    SAT_SECTION_SCORE_MIN,
+    SAT_SERVICE,
+    SAT_TOTAL_SCORE_MAX,
+    get_auto_sections,
+    get_manual_sections,
+    get_next_section,
+    get_program_first_section,
+    get_program_label,
+    get_program_quiz_filters,
+    get_program_scoring_mode,
+    get_program_sections,
+    get_section_label,
+    get_section_order,
+    get_section_spec,
+    get_take_url_name,
+    is_final_section,
+    is_valid_mock_program,
+    resolve_take_url_kind,
+    sat_section_scaled_score,
+    section_index_for_program,
+)
+from portals.utils.quiz_assignments import student_has_active_mock_access_for_program
 from portals.utils.student_courses import student_has_course_access
 
-
-IELTS_SERVICE = 'ielts'
-
-logger = logging.getLogger('portals.ielts_mock')
-
-SECTION_SPECS = (
-    (IeltsMockTestAttempt.Section.LISTENING, {'is_listening': True}),
-    (IeltsMockTestAttempt.Section.READING, {'is_reading': True}),
-    (IeltsMockTestAttempt.Section.WRITING, {'is_essay': True}),
-    (IeltsMockTestAttempt.Section.SPEAKING, {'is_speaking': True}),
-)
-
-RESULT_FIELD_BY_SECTION = {
-    IeltsMockTestAttempt.Section.LISTENING: 'listening_result',
-    IeltsMockTestAttempt.Section.READING: 'reading_result',
-    IeltsMockTestAttempt.Section.WRITING: 'writing_result',
-    IeltsMockTestAttempt.Section.SPEAKING: 'speaking_result',
+# Backward-compatible aliases for existing imports.
+MockTestAttempt = IeltsMockTestAttempt
+PROGRAM_QUIZ_FLAG_FIELD = {
+    IELTS_SERVICE: 'is_ielts',
+    SAT_SERVICE: 'is_sat',
 }
 
-NEXT_SECTION_BY_SECTION = {
-    IeltsMockTestAttempt.Section.LISTENING: IeltsMockTestAttempt.Section.READING,
-    IeltsMockTestAttempt.Section.READING: IeltsMockTestAttempt.Section.WRITING,
-    IeltsMockTestAttempt.Section.WRITING: IeltsMockTestAttempt.Section.SPEAKING,
-    IeltsMockTestAttempt.Section.SPEAKING: None,
-}
+logger = logging.getLogger('portals.mock_test')
 
-AUTO_SECTIONS = frozenset({
-    IeltsMockTestAttempt.Section.LISTENING,
-    IeltsMockTestAttempt.Section.READING,
-})
-MANUAL_SECTIONS = frozenset({
-    IeltsMockTestAttempt.Section.WRITING,
-    IeltsMockTestAttempt.Section.SPEAKING,
-})
-IELTS_BAND_MAX = 9.0
+
+def get_student_mock_exam_programs(student_id: int) -> list[str]:
+    programs: list[str] = []
+    if student_has_course_access(student_id, IELTS_SERVICE):
+        programs.append(IELTS_SERVICE)
+    if student_has_course_access(student_id, SAT_SERVICE):
+        programs.append(SAT_SERVICE)
+    return programs
+
+
+def resolve_student_mock_exam_program(
+    student_id: int,
+    preferred: str | None = None,
+) -> str | None:
+    """Return the active mock program for a student, optionally pinned by URL."""
+    programs = get_student_mock_exam_programs(student_id)
+    if not programs:
+        return None
+    if preferred and preferred in programs:
+        return preferred
+    if len(programs) == 1:
+        return programs[0]
+    return None
+
+
+def student_can_access_mock(student_id: int) -> bool:
+    """True when at least one enrolled mock program is unlocked."""
+    from portals.utils.quiz_assignments import student_has_active_mock_access
+
+    return student_has_active_mock_access(student_id)
+
+
+def student_can_access_mock_program(student_id: int, exam_program: str) -> bool:
+    """Teacher must activate mock access for the enrolled program."""
+    return student_has_active_mock_access_for_program(student_id, exam_program)
 
 
 def student_can_access_ielts_mock(student_id: int) -> bool:
-    """IELTS enrollment alone is not enough — teacher must activate mock access."""
-    return student_has_active_mock_access(student_id)
+    return student_can_access_mock_program(student_id, IELTS_SERVICE)
+
+
+def _program_quiz_filters(exam_program: str) -> dict:
+    return get_program_quiz_filters(exam_program)
 
 
 def _listening_quiz_has_content():
@@ -92,14 +131,37 @@ def _speaking_quiz_has_content():
     )
 
 
-def _content_filter_for_section(section: str):
-    if section == IeltsMockTestAttempt.Section.LISTENING:
-        return _listening_quiz_has_content()
-    if section == IeltsMockTestAttempt.Section.READING:
-        return _reading_quiz_has_content()
-    if section == IeltsMockTestAttempt.Section.WRITING:
+def _sat_mock_quiz_has_content():
+    variant = Q(
+        is_reading=False,
+        is_math=False,
+        is_listening=False,
+        is_essay=False,
+        is_speaking=False,
+    )
+    return (
+        (Q(is_reading=True) & _reading_quiz_has_content())
+        | (variant & _essay_quiz_has_content())
+    )
+
+
+def _content_filter_for_section(section_key: str, exam_program: str):
+    spec = get_section_spec(exam_program, section_key)
+    if not spec:
+        return Q(pk__in=[])
+    if not spec.quiz_flags and spec.sat_sections:
+        return _sat_mock_quiz_has_content()
+    if not spec.quiz_flags:
         return _essay_quiz_has_content()
-    if section == IeltsMockTestAttempt.Section.SPEAKING:
+    if 'is_listening' in spec.quiz_flags:
+        return _listening_quiz_has_content()
+    if 'is_reading' in spec.quiz_flags:
+        return _reading_quiz_has_content()
+    if 'is_math' in spec.quiz_flags:
+        return _reading_quiz_has_content()
+    if 'is_essay' in spec.quiz_flags:
+        return _essay_quiz_has_content()
+    if 'is_speaking' in spec.quiz_flags:
         return _speaking_quiz_has_content()
     return Q(pk__in=[])
 
@@ -113,77 +175,161 @@ def is_mock_quiz_result(result: QuizResult | None) -> bool:
     return bool(result and getattr(result, 'ielts_mock_attempt_id', None))
 
 
-def _eligible_quizzes_for_section(student_id: int, section: str, flag_kwargs: dict):
-    from portals.utils.student_courses import student_quiz_enrollment_ok
+def _mock_section_quiz_queryset(spec, program_filters: dict):
+    if spec.quiz_flags:
+        return Quiz.objects.filter(**spec.quiz_flags, **program_filters)
+    return Quiz.objects.filter(
+        **program_filters,
+        is_listening=False,
+        is_reading=False,
+        is_essay=False,
+        is_speaking=False,
+        is_math=False,
+    )
 
+
+def _eligible_quizzes_for_section(
+    student_id: int,
+    section_key: str,
+    exam_program: str,
+):
+    spec = get_section_spec(exam_program, section_key)
+    program_filters = _program_quiz_filters(exam_program)
+    if not spec or not program_filters or not student_has_course_access(student_id, exam_program):
+        return []
+
+    qs = _mock_section_quiz_queryset(spec, program_filters)
+    if spec.sat_sections:
+        qs = qs.filter(sat_section__in=spec.sat_sections)
+    elif spec.category_names:
+        qs = qs.filter(category__name__in=spec.category_names)
     qs = (
-        Quiz.objects.filter(
-            category__service=IELTS_SERVICE,
-            **flag_kwargs,
-        )
-        .annotate(has_content=_content_filter_for_section(section))
+        qs.annotate(has_content=_content_filter_for_section(section_key, exam_program))
         .filter(has_content=True)
         .select_related('category')
     )
-    # Mock pool uses IELTS enrollment; per-quiz unlocks only gate standalone quizzes.
-    return [quiz for quiz in qs if student_quiz_enrollment_ok(student_id, quiz)]
+    return list(qs)
 
 
-def pick_random_ielts_section_quizzes(student_id: int) -> dict[str, Quiz | None]:
+def _eligible_quizzes_for_customer_section(section_key: str, exam_program: str):
+    spec = get_section_spec(exam_program, section_key)
+    program_filters = _program_quiz_filters(exam_program)
+    if not spec or not program_filters:
+        return []
+
+    qs = _mock_section_quiz_queryset(spec, program_filters)
+    if spec.sat_sections:
+        qs = qs.filter(sat_section__in=spec.sat_sections)
+    elif spec.category_names:
+        qs = qs.filter(category__name__in=spec.category_names)
+    qs = (
+        qs.annotate(has_content=_content_filter_for_section(section_key, exam_program))
+        .filter(has_content=True)
+        .select_related('category')
+    )
+    return list(qs)
+
+
+def pick_random_section_quizzes(
+    student_id: int,
+    exam_program: str,
+) -> dict[str, Quiz | None]:
     picked: dict[str, Quiz | None] = {}
-    for section, flag_kwargs in SECTION_SPECS:
-        candidates = _eligible_quizzes_for_section(student_id, section, flag_kwargs)
-        picked[section] = random.choice(candidates) if candidates else None
+    for spec in get_program_sections(exam_program):
+        candidates = _eligible_quizzes_for_section(student_id, spec.key, exam_program)
+        picked[spec.key] = random.choice(candidates) if candidates else None
     return picked
 
 
-def get_missing_mock_sections(student_id: int) -> list[str]:
-    picked = pick_random_ielts_section_quizzes(student_id)
+def pick_random_customer_section_quizzes(
+    *,
+    exam_program: str = IELTS_SERVICE,
+) -> dict[str, Quiz | None]:
+    picked: dict[str, Quiz | None] = {}
+    for spec in get_program_sections(exam_program):
+        candidates = _eligible_quizzes_for_customer_section(spec.key, exam_program)
+        picked[spec.key] = random.choice(candidates) if candidates else None
+    return picked
+
+
+def pick_random_ielts_section_quizzes(student_id: int) -> dict[str, Quiz | None]:
+    exam_program = resolve_student_mock_exam_program(student_id)
+    if not exam_program:
+        return {spec.key: None for spec in get_program_sections(IELTS_SERVICE)}
+    return pick_random_section_quizzes(student_id, exam_program)
+
+
+def get_missing_mock_sections(student_id: int, exam_program: str) -> list[str]:
+    picked = pick_random_section_quizzes(student_id, exam_program)
     return [section for section, quiz in picked.items() if quiz is None]
 
 
-def abandon_in_progress_mock_attempts(student_id: int) -> None:
-    IeltsMockTestAttempt.objects.filter(
+def get_missing_customer_mock_sections(*, exam_program: str = IELTS_SERVICE) -> list[str]:
+    picked = pick_random_customer_section_quizzes(exam_program=exam_program)
+    return [section for section, quiz in picked.items() if quiz is None]
+
+
+def _attempt_create_kwargs(exam_program: str, picked: dict[str, Quiz | None]) -> dict:
+    first_section = get_program_first_section(exam_program)
+    kwargs = {
+        'exam_program': exam_program,
+        'status': IeltsMockTestAttempt.Status.IN_PROGRESS,
+        'current_section': first_section,
+        'listening_quiz': None,
+        'reading_quiz': None,
+        'writing_quiz': None,
+        'speaking_quiz': None,
+        'math_quiz': None,
+    }
+    for spec in get_program_sections(exam_program):
+        kwargs[spec.quiz_field] = picked[spec.key]
+    if not kwargs.get('reading_quiz'):
+        raise ValueError('reading_quiz is required for mock attempts')
+    return kwargs
+
+
+def abandon_in_progress_mock_attempts(student_id: int, *, exam_program: str | None = None) -> None:
+    qs = IeltsMockTestAttempt.objects.filter(
         student_id=student_id,
         status=IeltsMockTestAttempt.Status.IN_PROGRESS,
-    ).update(status=IeltsMockTestAttempt.Status.ABANDONED)
+    )
+    if exam_program:
+        qs = qs.filter(exam_program=exam_program)
+    qs.update(status=IeltsMockTestAttempt.Status.ABANDONED)
 
 
 @transaction.atomic
-def start_mock_test_attempt(student_id: int) -> tuple[IeltsMockTestAttempt | None, str | None]:
-    if not student_can_access_ielts_mock(student_id):
+def start_mock_test_attempt(
+    student_id: int,
+    exam_program: str,
+) -> tuple[IeltsMockTestAttempt | None, str | None]:
+    if not is_valid_mock_program(exam_program):
+        return None, str(_('Unknown mock test program.'))
+    if not student_has_course_access(student_id, exam_program):
+        return None, str(_('You are not enrolled in this mock test program.'))
+    if not student_can_access_mock_program(student_id, exam_program):
         return None, str(_('Mock test is locked. Ask your teacher to enable it.'))
 
-    # Pick once and reuse: validating with one random draw and creating with
-    # a second draw could select different quizzes (or fail the second time).
-    picked = pick_random_ielts_section_quizzes(student_id)
+    picked = pick_random_section_quizzes(student_id, exam_program)
     missing = [section for section, quiz in picked.items() if quiz is None]
     if missing:
         labels = ', '.join(
-            str(dict(IeltsMockTestAttempt.Section.choices).get(section, section))
+            get_section_label(exam_program, section)
             for section in missing
         )
         return None, str(_('Not enough quizzes are available for: %(sections)s.') % {'sections': labels})
 
-    abandon_in_progress_mock_attempts(student_id)
+    abandon_in_progress_mock_attempts(student_id, exam_program=exam_program)
 
     attempt = IeltsMockTestAttempt.objects.create(
         student_id=student_id,
-        status=IeltsMockTestAttempt.Status.IN_PROGRESS,
-        current_section=IeltsMockTestAttempt.Section.LISTENING,
-        listening_quiz=picked[IeltsMockTestAttempt.Section.LISTENING],
-        reading_quiz=picked[IeltsMockTestAttempt.Section.READING],
-        writing_quiz=picked[IeltsMockTestAttempt.Section.WRITING],
-        speaking_quiz=picked[IeltsMockTestAttempt.Section.SPEAKING],
+        **_attempt_create_kwargs(exam_program, picked),
     )
     logger.info(
-        'Mock test started attempt_id=%s student_id=%s listening_quiz=%s reading_quiz=%s writing_quiz=%s speaking_quiz=%s',
+        'Mock test started attempt_id=%s student_id=%s exam_program=%s',
         attempt.pk,
         student_id,
-        attempt.listening_quiz_id,
-        attempt.reading_quiz_id,
-        attempt.writing_quiz_id,
-        attempt.speaking_quiz_id,
+        exam_program,
     )
     return attempt, None
 
@@ -199,10 +345,12 @@ def get_mock_attempt_for_student(student_id: int, attempt_id: int) -> IeltsMockT
             'reading_quiz__category',
             'writing_quiz__category',
             'speaking_quiz__category',
+            'math_quiz__category',
             'listening_result',
             'reading_result',
             'writing_result',
             'speaking_result',
+            'math_result',
             'student__user',
         )
         .first()
@@ -225,14 +373,10 @@ def abandon_mock_test_attempt(student_id: int, attempt_id: int) -> None:
 
 
 def section_for_quiz_in_attempt(attempt: IeltsMockTestAttempt, quiz_id: int) -> str | None:
-    if attempt.listening_quiz_id == quiz_id:
-        return IeltsMockTestAttempt.Section.LISTENING
-    if attempt.reading_quiz_id == quiz_id:
-        return IeltsMockTestAttempt.Section.READING
-    if attempt.writing_quiz_id == quiz_id:
-        return IeltsMockTestAttempt.Section.WRITING
-    if attempt.speaking_quiz_id == quiz_id:
-        return IeltsMockTestAttempt.Section.SPEAKING
+    for section_key in attempt.program_section_order():
+        quiz = attempt.quiz_for_section(section_key)
+        if quiz and quiz.pk == quiz_id:
+            return section_key
     return None
 
 
@@ -240,7 +384,6 @@ def find_in_progress_mock_attempt_for_quiz(
     student_id: int,
     quiz_id: int,
 ) -> IeltsMockTestAttempt | None:
-    """Return the student's active mock attempt that includes this quiz, if any."""
     return (
         IeltsMockTestAttempt.objects.filter(
             student_id=student_id,
@@ -251,6 +394,7 @@ def find_in_progress_mock_attempt_for_quiz(
             | Q(reading_quiz_id=quiz_id)
             | Q(writing_quiz_id=quiz_id)
             | Q(speaking_quiz_id=quiz_id)
+            | Q(math_quiz_id=quiz_id)
         )
         .first()
     )
@@ -270,7 +414,6 @@ def mock_allows_active_section_take(
     mock_attempt_id: int | None,
     quiz_id: int,
 ) -> bool:
-    """Allow taking the quiz when it is the student's current mock section without a saved result."""
     if not mock_attempt_id:
         return False
     attempt = get_active_mock_attempt(student_id, mock_attempt_id)
@@ -282,8 +425,57 @@ def mock_allows_active_section_take(
     return attempt.result_for_section(section) is None
 
 
-def get_mock_current_take_url(attempt: IeltsMockTestAttempt) -> str:
-    return get_mock_take_url(attempt, attempt.current_section)
+def get_mock_landing_url(exam_program: str, *, role: str = 'student') -> str:
+    if role == 'customer':
+        return reverse('portals:customer-mock-landing', kwargs={'program': exam_program})
+    return reverse(get_mock_landing_url_name(role), kwargs={'program': exam_program})
+
+
+def get_mock_complete_url(attempt: IeltsMockTestAttempt, *, role: str = 'student') -> str:
+    if role == 'customer':
+        return reverse(
+            'portals:customer-mock-complete',
+            kwargs={'program': attempt.exam_program, 'pk': attempt.pk},
+        )
+    return reverse(
+        get_mock_complete_url_name(role),
+        kwargs={'program': attempt.exam_program, 'pk': attempt.pk},
+    )
+
+
+def get_mock_landing_url_name(role: str) -> str:
+    from portals.utils.mock_programs import get_mock_landing_url_name as _name
+
+    return _name(role)
+
+
+def get_mock_complete_url_name(role: str) -> str:
+    from portals.utils.mock_programs import get_mock_complete_url_name as _name
+
+    return _name(role)
+
+
+def get_mock_take_url(
+    attempt: IeltsMockTestAttempt,
+    section: str,
+    *,
+    role: str = 'student',
+) -> str:
+    quiz = attempt.quiz_for_section(section)
+    if not quiz:
+        return get_mock_landing_url(attempt.exam_program, role=role)
+
+    spec = get_section_spec(attempt.exam_program, section)
+    if not spec:
+        return get_mock_landing_url(attempt.exam_program, role=role)
+
+    take_kind = resolve_take_url_kind(attempt.exam_program, section, quiz)
+    base = reverse(get_take_url_name(role, take_kind), kwargs={'pk': quiz.pk})
+    return f'{base}?mock={attempt.pk}'
+
+
+def get_mock_current_take_url(attempt: IeltsMockTestAttempt, *, role: str = 'student') -> str:
+    return get_mock_take_url(attempt, attempt.current_section, role=role)
 
 
 def resolve_mock_take_request(
@@ -291,7 +483,6 @@ def resolve_mock_take_request(
     mock_id: int | None,
     quiz_id: int,
 ) -> dict:
-    """Return mock take template context or a redirect URL for stale mock pages."""
     if not mock_id:
         return {}
 
@@ -303,18 +494,13 @@ def resolve_mock_take_request(
             mock_id,
             quiz_id,
         )
-        return {'mock_redirect': reverse('portals:student-ielts-mock')}
+        return {'mock_redirect': get_mock_landing_url(IELTS_SERVICE)}
 
     if attempt.status == IeltsMockTestAttempt.Status.COMPLETED:
-        return {
-            'mock_redirect': reverse(
-                'portals:student-ielts-mock-complete',
-                kwargs={'pk': attempt.pk},
-            ),
-        }
+        return {'mock_redirect': get_mock_complete_url(attempt)}
 
     if attempt.status != IeltsMockTestAttempt.Status.IN_PROGRESS:
-        return {'mock_redirect': reverse('portals:student-ielts-mock')}
+        return {'mock_redirect': get_mock_landing_url(attempt.exam_program)}
 
     section = section_for_quiz_in_attempt(attempt, quiz_id)
     if not section or section != attempt.current_section:
@@ -332,7 +518,7 @@ def resolve_mock_take_request(
     return {
         'mock_attempt': serialize_mock_progress(attempt),
         'mock_id': attempt.pk,
-        'back_url': reverse('portals:student-ielts-mock'),
+        'back_url': get_mock_landing_url(attempt.exam_program),
     }
 
 
@@ -341,7 +527,6 @@ def resolve_mock_start_request(
     mock_id: int | None,
     quiz_id: int,
 ) -> dict | None:
-    """Validate mock quiz start; return redirect payload when the client is on a stale page."""
     if not mock_id:
         return None
 
@@ -370,31 +555,11 @@ def resolve_mock_start_request(
     return None
 
 
-def get_mock_take_url(attempt: IeltsMockTestAttempt, section: str) -> str:
-    quiz = attempt.quiz_for_section(section)
-    if not quiz:
-        return reverse('portals:student-ielts-mock')
-
-    if section == IeltsMockTestAttempt.Section.LISTENING:
-        url_name = 'portals:student-manual-quiz-take'
-    elif section == IeltsMockTestAttempt.Section.READING:
-        url_name = 'portals:student-reading-quiz-take'
-    elif section == IeltsMockTestAttempt.Section.WRITING:
-        url_name = 'portals:student-manual-quiz-take'
-    elif section == IeltsMockTestAttempt.Section.SPEAKING:
-        url_name = 'portals:student-speaking-quiz-take'
-    else:
-        return reverse('portals:student-ielts-mock')
-
-    base = reverse(url_name, kwargs={'pk': quiz.pk})
-    return f'{base}?mock={attempt.pk}'
-
-
-def get_mock_next_url(attempt: IeltsMockTestAttempt, completed_section: str) -> str:
-    next_section = NEXT_SECTION_BY_SECTION.get(completed_section)
+def get_mock_next_url(attempt: IeltsMockTestAttempt, completed_section: str, *, role: str = 'student') -> str:
+    next_section = get_next_section(attempt.exam_program, completed_section)
     if next_section:
-        return get_mock_take_url(attempt, next_section)
-    return reverse('portals:student-ielts-mock-complete', kwargs={'pk': attempt.pk})
+        return get_mock_take_url(attempt, next_section, role=role)
+    return get_mock_complete_url(attempt, role=role)
 
 
 @transaction.atomic
@@ -404,18 +569,20 @@ def advance_mock_after_section_submit(
     section: str,
     result: QuizResult,
 ) -> IeltsMockTestAttempt:
-    result_field = RESULT_FIELD_BY_SECTION[section]
-    setattr(attempt, result_field, result)
+    spec = get_section_spec(attempt.exam_program, section)
+    if not spec:
+        raise ValueError(f'Unknown section {section} for program {attempt.exam_program}')
+    setattr(attempt, spec.result_field, result)
 
-    next_section = NEXT_SECTION_BY_SECTION.get(section)
+    next_section = get_next_section(attempt.exam_program, section)
     if next_section:
         attempt.current_section = next_section
-        update_fields = [result_field, 'current_section']
+        update_fields = [spec.result_field, 'current_section']
     else:
         attempt.status = IeltsMockTestAttempt.Status.COMPLETED
         attempt.completed_at = timezone.now()
         attempt.current_section = section
-        update_fields = [result_field, 'status', 'completed_at', 'current_section']
+        update_fields = [spec.result_field, 'status', 'completed_at', 'current_section']
 
     attempt.save(update_fields=update_fields)
     return attempt
@@ -465,9 +632,8 @@ def apply_mock_submit_result(
         return response
 
     attempt = advance_mock_after_section_submit(attempt, section=section, result=result)
-    next_section = NEXT_SECTION_BY_SECTION.get(section)
-    section_labels = dict(IeltsMockTestAttempt.Section.choices)
-    completed_label = section_labels.get(section, section)
+    next_section = get_next_section(attempt.exam_program, section)
+    completed_label = get_section_label(attempt.exam_program, section)
     response['next_url'] = get_mock_next_url(attempt, section)
     response['mock_attempt_id'] = attempt.pk
     response['mock_continue'] = True
@@ -475,7 +641,7 @@ def apply_mock_submit_result(
     response['mock_section_completed'] = section
     response['mock_section_completed_label'] = str(completed_label)
     if next_section:
-        next_label = section_labels.get(next_section, next_section)
+        next_label = get_section_label(attempt.exam_program, next_section)
         response['mock_next_section'] = next_section
         response['mock_next_section_label'] = str(next_label)
         response['mock_continue_message'] = str(
@@ -491,6 +657,7 @@ def apply_mock_submit_result(
             }
         )
 
+    manual_sections = get_manual_sections(attempt.exam_program)
     if attempt.status == IeltsMockTestAttempt.Status.COMPLETED:
         logger.info(
             'Mock test completed attempt_id=%s student_id=%s completed_section=%s result_id=%s next_url=%s',
@@ -505,7 +672,7 @@ def apply_mock_submit_result(
             create_mock_test_completed_notifications,
         )
 
-        if section in MANUAL_SECTIONS:
+        if section in manual_sections:
             create_mock_section_review_notifications(attempt, result, section)
         create_mock_test_completed_notifications(attempt)
     else:
@@ -519,7 +686,7 @@ def apply_mock_submit_result(
             result.pk,
             response['next_url'],
         )
-        if section in MANUAL_SECTIONS:
+        if section in manual_sections:
             from portals.utils.notifications import create_mock_section_review_notifications
 
             create_mock_section_review_notifications(attempt, result, section)
@@ -538,22 +705,24 @@ def parse_mock_attempt_id(raw) -> int | None:
 
 def serialize_mock_progress(attempt: IeltsMockTestAttempt) -> dict:
     section = attempt.current_section
-    section_label = dict(IeltsMockTestAttempt.Section.choices).get(section, section)
-    index = attempt.section_index(section)
-    is_final_section = section == IeltsMockTestAttempt.Section.SPEAKING
+    section_label = get_section_label(attempt.exam_program, section)
+    index = section_index_for_program(attempt.exam_program, section)
+    section_total = len(attempt.program_section_order())
+    is_final = is_final_section(attempt.exam_program, section)
     return {
         'id': attempt.pk,
+        'exam_program': attempt.exam_program,
         'current_section': section,
         'section_index': index,
-        'section_total': len(IeltsMockTestAttempt.SECTION_ORDER),
+        'section_total': section_total,
         'section_label': section_label,
-        'is_final_section': is_final_section,
+        'is_final_section': is_final,
         'finish_button_label': str(
-            _('Finish test') if is_final_section else _('Finish the section')
+            _('Finish test') if is_final else _('Finish the section')
         ),
         'progress_label': _('Section %(index)s of %(total)s — %(section)s') % {
             'index': index,
-            'total': len(IeltsMockTestAttempt.SECTION_ORDER),
+            'total': section_total,
             'section': section_label,
         },
     }
@@ -591,6 +760,7 @@ def find_mock_attempt_for_result(
             | Q(reading_result_id=result.pk)
             | Q(writing_result_id=result.pk)
             | Q(speaking_result_id=result.pk)
+            | Q(math_result_id=result.pk)
         )
     )
     if status:
@@ -608,7 +778,7 @@ def find_completed_mock_for_result(result: QuizResult) -> IeltsMockTestAttempt |
 def section_for_result_in_attempt(attempt: IeltsMockTestAttempt, result: QuizResult) -> str | None:
     if not attempt or not result:
         return None
-    for section in IeltsMockTestAttempt.SECTION_ORDER:
+    for section in attempt.program_section_order():
         section_result = attempt.result_for_section(section)
         if section_result and section_result.pk == result.pk:
             return section
@@ -616,7 +786,7 @@ def section_for_result_in_attempt(attempt: IeltsMockTestAttempt, result: QuizRes
 
 
 def mock_attempt_is_fully_graded(attempt: IeltsMockTestAttempt) -> bool:
-    for section in IeltsMockTestAttempt.SECTION_ORDER:
+    for section in attempt.program_section_order():
         result = attempt.result_for_section(section)
         if not result or result.is_pending_review or result.total_score is None:
             return False
@@ -647,21 +817,27 @@ def maybe_publish_mock_results_for_result(result: QuizResult) -> None:
 
 
 def serialize_mock_attempt_summary(attempt: IeltsMockTestAttempt) -> dict:
+    exam_program = attempt.exam_program
+    scoring_mode = get_program_scoring_mode(exam_program)
+    auto_sections = get_auto_sections(exam_program)
+    manual_sections = get_manual_sections(exam_program)
+    section_order = attempt.program_section_order()
+
     sections = []
-    section_bands: list[float] = []
-    auto_bands: list[float] = []
-    manual_bands: list[float] = []
+    section_scores: list[float] = []
+    auto_scores: list[float] = []
+    manual_scores: list[float] = []
     auto_score_total = 0.0
     auto_max_total = 0
     manual_score_total = 0.0
     manual_max_total = 0
     pending_review_count = 0
 
-    for section in IeltsMockTestAttempt.SECTION_ORDER:
+    for section in section_order:
         quiz = attempt.quiz_for_section(section)
         result = attempt.result_for_section(section)
-        is_auto_graded = section in AUTO_SECTIONS
-        is_manual_graded = section in MANUAL_SECTIONS
+        is_auto_graded = section in auto_sections
+        is_manual_graded = section in manual_sections
         is_pending_review = bool(result and result.is_pending_review)
         if is_pending_review:
             pending_review_count += 1
@@ -674,27 +850,50 @@ def serialize_mock_attempt_summary(attempt: IeltsMockTestAttempt) -> dict:
             and total_score is not None
             and max_score is not None
         )
-        band_score = section_score_band(total_score, max_score) if has_final_score else None
-        if band_score is not None:
-            section_bands.append(band_score)
-            if is_auto_graded:
-                auto_bands.append(band_score)
-                auto_score_total += float(total_score)
-                auto_max_total += int(max_score)
-            elif is_manual_graded:
-                manual_bands.append(band_score)
-                manual_score_total += float(total_score)
-                manual_max_total += int(max_score)
+
+        band_score = None
+        scaled_score = None
+        display_score = None
+        display_score_max = None
+
+        if has_final_score:
+            if scoring_mode == 'sat_scaled':
+                scaled_score = sat_section_scaled_score(total_score, max_score)
+                display_score = scaled_score
+                display_score_max = SAT_SECTION_SCORE_MAX
+                if scaled_score is not None:
+                    section_scores.append(float(scaled_score))
+                    if is_auto_graded:
+                        auto_scores.append(float(scaled_score))
+                        auto_score_total += float(total_score)
+                        auto_max_total += int(max_score)
+            else:
+                band_score = section_score_band(total_score, max_score)
+                display_score = band_score
+                display_score_max = IELTS_BAND_MAX
+                if band_score is not None:
+                    section_scores.append(band_score)
+                    if is_auto_graded:
+                        auto_scores.append(band_score)
+                        auto_score_total += float(total_score)
+                        auto_max_total += int(max_score)
+                    elif is_manual_graded:
+                        manual_scores.append(band_score)
+                        manual_score_total += float(total_score)
+                        manual_max_total += int(max_score)
 
         sections.append({
             'section': section,
-            'section_label': dict(IeltsMockTestAttempt.Section.choices).get(section, section),
+            'section_label': get_section_label(exam_program, section),
             'quiz_id': quiz.pk if quiz else None,
             'quiz_topic': quiz.topic if quiz else '',
             'result_id': result.pk if result else None,
             'total_score': total_score,
             'max_score': max_score,
             'band_score': band_score,
+            'scaled_score': scaled_score,
+            'display_score': display_score,
+            'display_score_max': display_score_max,
             'is_auto_graded': is_auto_graded,
             'is_manual_graded': is_manual_graded,
             'is_pending_review': is_pending_review,
@@ -702,18 +901,33 @@ def serialize_mock_attempt_summary(attempt: IeltsMockTestAttempt) -> dict:
             'grading_mode_label': quiz.get_grading_mode_label() if quiz else '',
         })
 
-    is_fully_graded = len(section_bands) == len(IeltsMockTestAttempt.SECTION_ORDER)
-    overall_band = ielts_round_band(sum(section_bands) / len(section_bands)) if is_fully_graded else None
-    auto_band_average = (
-        ielts_round_band(sum(auto_bands) / len(auto_bands)) if len(auto_bands) == 2 else None
-    )
-    manual_band_average = (
-        ielts_round_band(sum(manual_bands) / len(manual_bands)) if len(manual_bands) == 2 else None
-    )
+    is_fully_graded = len(section_scores) == len(section_order)
+    overall_score = None
+    overall_score_max = None
+    overall_band = None
+    auto_band_average = None
+    manual_band_average = None
+
+    if is_fully_graded and scoring_mode == 'sat_scaled':
+        overall_score = int(round(sum(section_scores)))
+        overall_score_max = SAT_TOTAL_SCORE_MAX
+    elif is_fully_graded:
+        overall_band = ielts_round_band(sum(section_scores) / len(section_scores))
+        overall_score = overall_band
+        overall_score_max = IELTS_BAND_MAX
+        auto_band_average = (
+            ielts_round_band(sum(auto_scores) / len(auto_scores)) if len(auto_scores) == 2 else None
+        )
+        manual_band_average = (
+            ielts_round_band(sum(manual_scores) / len(manual_scores)) if len(manual_scores) == 2 else None
+        )
 
     return {
         'id': attempt.pk,
         'pk': attempt.pk,
+        'exam_program': exam_program,
+        'exam_program_label': str(PROGRAM_LABELS.get(exam_program, exam_program)),
+        'scoring_mode': scoring_mode,
         'status': attempt.status,
         'started_at': attempt.started_at,
         'completed_at': attempt.completed_at,
@@ -725,33 +939,61 @@ def serialize_mock_attempt_summary(attempt: IeltsMockTestAttempt) -> dict:
         'sections': sections,
         'is_fully_graded': is_fully_graded,
         'pending_review_count': pending_review_count,
+        'overall_score': overall_score,
+        'overall_score_max': overall_score_max,
         'overall_band': overall_band,
-        'overall_band_max': IELTS_BAND_MAX,
-        'auto_score_total': auto_score_total if len(auto_bands) == 2 else None,
-        'auto_max_total': auto_max_total if len(auto_bands) == 2 else None,
+        'overall_band_max': IELTS_BAND_MAX if scoring_mode == 'ielts_band' else None,
+        'auto_score_total': auto_score_total if auto_scores else None,
+        'auto_max_total': auto_max_total if auto_scores else None,
         'auto_band_average': auto_band_average,
-        'manual_score_total': manual_score_total if len(manual_bands) == 2 else None,
-        'manual_max_total': manual_max_total if len(manual_bands) == 2 else None,
+        'manual_score_total': manual_score_total if manual_scores else None,
+        'manual_max_total': manual_max_total if manual_scores else None,
         'manual_band_average': manual_band_average,
     }
 
 
-def get_student_completed_mock_attempts(student_id: int, *, limit: int = 20):
+def get_student_completed_mock_attempts(
+    student_id: int,
+    *,
+    exam_program: str | None = None,
+    limit: int = 20,
+):
+    qs = IeltsMockTestAttempt.objects.filter(
+        student_id=student_id,
+        status=IeltsMockTestAttempt.Status.COMPLETED,
+    )
+    if exam_program:
+        qs = qs.filter(exam_program=exam_program)
     return (
-        IeltsMockTestAttempt.objects.filter(
-            student_id=student_id,
-            status=IeltsMockTestAttempt.Status.COMPLETED,
-        )
-        .select_related(
+        qs.select_related(
             'student__user',
             'listening_quiz__category',
             'reading_quiz__category',
             'writing_quiz__category',
             'speaking_quiz__category',
+            'math_quiz__category',
             'listening_result',
             'reading_result',
             'writing_result',
             'speaking_result',
+            'math_result',
         )
         .order_by('-completed_at', '-id')[:limit]
     )
+
+
+# Legacy constants kept for tests and gradual migration.
+SECTION_SPECS = tuple(
+    (spec.key, spec.quiz_flags)
+    for spec in get_program_sections(IELTS_SERVICE)
+)
+RESULT_FIELD_BY_SECTION = {
+    spec.key: spec.result_field
+    for spec in get_program_sections(IELTS_SERVICE)
+}
+NEXT_SECTION_BY_SECTION = {
+    spec.key: get_next_section(IELTS_SERVICE, spec.key)
+    for spec in get_program_sections(IELTS_SERVICE)
+}
+AUTO_SECTIONS = get_auto_sections(IELTS_SERVICE)
+MANUAL_SECTIONS = get_manual_sections(IELTS_SERVICE)

@@ -1,0 +1,93 @@
+{
+  "title": "SAT Reading and Writing — Practice Mock 1",
+  "service": "sat",
+  "category_name": "SAT Reading and Writing",
+  "is_sat": true,
+  "sat_section": "reading",
+  "time_limit_minutes": 64,
+  "questions": [
+    {
+      "id": 1,
+      "question": "<p><strong>Passage: Urban heat islands.</strong> As used in the passage, the word <em>mitigation</em> most nearly means</p>",
+      "options": ["complete elimination", "reduction of severity", "scientific measurement", "public celebration"],
+      "answer": 1
+    },
+    {
+      "id": 2,
+      "question": "<p><strong>Passage: Urban heat islands.</strong> One reason cities are hotter than nearby rural areas is that cities</p>",
+      "options": [
+        "receive more direct sunlight year-round",
+        "have less vegetation to support evaporative cooling",
+        "are located at lower elevations",
+        "experience stronger ocean winds"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "<p><strong>Passage: Green roofs.</strong> Which choice best describes the function of the paragraph about green roofs?</p>",
+      "options": [
+        "It introduces a potential solution and summarizes research findings.",
+        "It disputes the existence of urban heat islands.",
+        "It compares green roofs with solar panels.",
+        "It defines transpiration for a general audience."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 4,
+      "question": "<p><strong>Passage: Green roofs.</strong> Stormwater is mentioned primarily to</p>",
+      "options": [
+        "argue that sewers should be replaced",
+        "identify an additional benefit of green roofs",
+        "explain why irrigation is unnecessary",
+        "criticize municipal tax credits"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 5,
+      "question": "<p><strong>Passage: Green roofs.</strong> Which statement is best supported?</p>",
+      "options": [
+        "Green roofs always pay for themselves within one year.",
+        "Structural engineering limits where green roofs can be installed.",
+        "Toronto has banned conventional roofing materials.",
+        "Heat islands occur only in tropical climates."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 6,
+      "question": "<p><strong>Passage: Policy.</strong> Effective urban cooling policy should be</p>",
+      "options": [
+        "limited to rooftop vegetation",
+        "abandoned in favor of air conditioning",
+        "combined across building and city scales",
+        "applied only during heat waves"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 7,
+      "question": "<p>Although maintenance costs deter some owners, cities that offer incentives may see adoption rise because ____.</p>",
+      "options": [
+        "incentives offset part of the upfront expense",
+        "rural areas lack pavement",
+        "transpiration stops at night",
+        "heat islands cool without vegetation"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 8,
+      "question": "<p>Which detail best shows that green-roof results are not uniform?</p>",
+      "options": [
+        "Many cities experience higher temperatures than surrounding rural areas.",
+        "Results vary with plant species, soil depth, and irrigation.",
+        "Scientists caution that green roofs alone cannot eliminate heat islands.",
+        "Building-scale interventions offer visible benefits."
+      ],
+      "answer": 1
+    }
+  ]
+}

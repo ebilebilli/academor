@@ -9,7 +9,7 @@
 {% block content %}
 {% include "portals/includes/portal_page_hero.html" with title=_('Nəticələr və qiymətləndirmələr') subtitle=_('Quiz tarixçəsi, həftəlik qiymətləriniz və mock nəticələrinizə baxın.') icon="ti-star" lottie="portals/animations/distance-education.lottie" %}
 
-{% include "portals/includes/score_sections.html" %}
+{% include "portals/includes/score_sections.html" with show_group_column=score_groups %}
 {% endblock %}
 
 {% block extra_js %}

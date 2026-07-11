@@ -26,7 +26,8 @@ class PortalRoleFilterTests(TestCase):
         self.request = RequestFactory().get('/admin/auth/user/')
 
     def _filter(self, role):
-        filter_ = PortalRoleFilter(self.request, {'portal_role': role}, User, self.user_admin)
+        params = {'portal_role': [role]}
+        filter_ = PortalRoleFilter(self.request, params, User, self.user_admin)
         return set(filter_.queryset(self.request, User.objects.all()).values_list('pk', flat=True))
 
     def test_filters_by_teacher_role(self):
@@ -40,13 +41,21 @@ class PortalRoleFilterTests(TestCase):
         self.assertNotIn(student_user.pk, result)
 
     def test_superuser_matches_admin_not_teacher(self):
-        admin_user = User.objects.create_superuser(username='admin_filter', password='pass')
-        TeacherProfile.objects.create(user=admin_user)
-
+        admin_user = User.objects.create_superuser(
+            username='admin_filter',
+            email='admin_filter@test.com',
+            password='pass',
+        )
         admin_result = self._filter(PORTAL_ROLE_ADMIN)
-        teacher_result = self._filter(PORTAL_ROLE_TEACHER)
         self.assertIn(admin_user.pk, admin_result)
-        self.assertNotIn(admin_user.pk, teacher_result)
+
+        TeacherProfile.objects.create(user=admin_user)
+        admin_user.refresh_from_db()
+        self.assertFalse(admin_user.is_superuser)
+
+        teacher_result = self._filter(PORTAL_ROLE_TEACHER)
+        self.assertIn(admin_user.pk, teacher_result)
+        self.assertNotIn(admin_user.pk, self._filter(PORTAL_ROLE_ADMIN))
 
     def test_staff_without_profile_matches_staff_role(self):
         staff_user = User.objects.create_user(username='staff_filter', password='pass', is_staff=True)

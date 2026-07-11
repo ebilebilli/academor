@@ -124,10 +124,15 @@ ADMIN_HELP = {
     ),
     'where': (
       'Courses list (/courses/), course detail pages, homepage service cards, '
+      'Mock tests list (/mock-tests/) when IELTS or SAT mock is enabled, '
       'and the payment modal when a visitor buys a package.'
     ),
     'tips': [
       'Add price packages in the table below (months, lessons, price in AZN).',
+      'Mock tests: enable IELTS mock test OR SAT mock test (only one). '
+      'That service then appears under Mock tests, not in the general courses list.',
+      'Mock price packages require a credits count (portal mock test balance after purchase).',
+      'Mock bullet list: one item per line (AZ/EN/RU) — shown on the mock test detail hero when mock is enabled.',
       'Upload ONE thumbnail image in the Media inline at the bottom.',
       'Card icon: shown on homepage and courses list; "Default" auto-detects from the URL slug.',
       'Tags: optional — used for SEO keywords on course pages (not shown to visitors).',
@@ -157,18 +162,22 @@ ADMIN_HELP = {
     'title': 'Course price packages',
     'summary': (
       'Pricing tiers for a course: tab category, name, months, lesson count, '
-      'lesson length, and price.'
+      'lesson length, price, and optional mock test credits.'
     ),
     'where': (
-      'Course detail page payment tabs, the payment popup, and the homepage '
-      '"Most in demand" price carousel (when "Show on homepage" is on).'
+      'Course or mock test detail payment tabs, the payment popup, customer portal '
+      'mock packages page, and the homepage "Most in demand" carousel '
+      '(when "Show on homepage" is on; mock services are excluded from the carousel).'
     ),
     'tips': [
-      'Payment tab: group/individual, standard/intensive, full package (group/individual), or installments.',
+      'Payment tab: group/individual, standard/intensive, full package (group/individual), '
+      'installments, or Mock Test.',
       'Link each package to the correct course.',
+      'When the course is a mock test service (IELTS or SAT), credits is required — '
+      'number of mock tests granted after payment.',
       'Lower "Order" = appears first within the same tab on the course page.',
-      '"Premium" marks a highlighted/recommended package in the UI.',
-      '"Show on homepage" adds the package to the homepage price carousel (any course).',
+      '"Premium" marks a highlighted/recommended package in the UI (not used on mock test cards).',
+      '"Show on homepage" adds the package to the homepage price carousel (regular courses only).',
       'Turn off "Active" to hide a package without deleting it.',
     ],
   },
@@ -288,12 +297,16 @@ ADMIN_HELP = {
   'CourseEnrollment': {
     'title': 'Course enrollments & contracts',
     'summary': (
-      'After a successful payment, an enrollment record is created with the signed training agreement.'
+      'After a successful payment, an enrollment record is created with the signed agreement. '
+      'Includes course/service enrollments and mock test purchases (via price packages on mock services).'
     ),
     'where': 'This admin only — download the PDF contract for your records.',
     'tips': [
       'Read-only — created automatically after payment.',
-      'Click "Download PDF" to save the training agreement.',
+      'Use Product type filter for course/service vs mock test enrollments.',
+      'Use Service filter to narrow course enrollments by service.',
+      'Mock test enrollments link to a mock service and price package (credits granted in portal).',
+      'Click "Download PDF" to save the agreement.',
       'Contract number is unique per enrollment.',
     ],
   },

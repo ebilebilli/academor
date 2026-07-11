@@ -21,10 +21,12 @@ from portals.utils.portal_session import PORTAL_COOKIE_NAME, portal_login
 from portals.utils.queries import get_student_quizzes_for_category
 from portals.utils.quiz_assignments import (
     get_student_mock_access_state,
+    get_teacher_student_mock_access_rows,
     get_teacher_student_quiz_access_rows,
     set_student_mock_access,
     set_student_quiz_assignment,
     student_has_active_mock_access,
+    student_has_active_mock_access_for_program,
 )
 from portals.utils.student_courses import quiz_visible_to_student
 from portals.tests.test_quiz_visibility import QuizVisibilityTests, _ensure_active_portal_services
@@ -115,18 +117,19 @@ class QuizAssignmentTests(QuizVisibilityTests):
         access = set_student_mock_access(
             self.teacher.pk,
             self.student.pk,
+            'ielts',
             is_active=True,
         )
         self.assertIsNotNone(access)
         self.assertTrue(student_has_active_mock_access(self.student.pk))
-        state = get_student_mock_access_state(self.student.pk)
+        state = get_student_mock_access_state(self.student.pk, 'ielts')
         self.assertTrue(state['is_active'])
 
         client = Client()
         _portal_client_login(client, self.teacher_user)
         url = reverse(
             'portals:teacher-mock-access-toggle',
-            kwargs={'student_pk': self.student.pk},
+            kwargs={'student_pk': self.student.pk, 'program': 'ielts'},
         )
         response = client.post(
             url,
@@ -138,8 +141,84 @@ class QuizAssignmentTests(QuizVisibilityTests):
         self.assertFalse(response.json()['is_active'])
         self.assertFalse(student_has_active_mock_access(self.student.pk))
         self.assertFalse(
-            StudentMockAccess.objects.get(student=self.student).is_active
+            StudentMockAccess.objects.get(
+                student=self.student,
+                exam_program='ielts',
+            ).is_active
         )
+
+
+class MockAccessPerProgramTests(TestCase):
+    def setUp(self):
+        from portals.tests.portal_helpers import ensure_active_portal_services
+
+        ensure_active_portal_services('ielts', 'sat')
+        from portals.tests.group_helpers import link_study_group_services
+
+        self.ielts_teacher_user = User.objects.create_user(username='ielts_mock_teacher', password='pass')
+        self.sat_teacher_user = User.objects.create_user(username='sat_mock_teacher', password='pass')
+        self.student_user = User.objects.create_user(username='dual_mock_student', password='pass')
+
+        self.ielts_teacher = TeacherProfile.objects.create(user=self.ielts_teacher_user)
+        self.sat_teacher = TeacherProfile.objects.create(user=self.sat_teacher_user)
+        self.student = StudentProfile.objects.create(user=self.student_user)
+
+        TeacherCourseSpecialization.objects.create(teacher=self.ielts_teacher, course_type='ielts')
+        TeacherCourseSpecialization.objects.create(teacher=self.sat_teacher, course_type='sat')
+
+        self.ielts_group = StudyGroup.objects.create(
+            teacher=self.ielts_teacher,
+            name='IELTS mock group',
+            max_students=10,
+        )
+        self.sat_group = StudyGroup.objects.create(
+            teacher=self.sat_teacher,
+            name='SAT mock group',
+            max_students=10,
+        )
+        link_study_group_services(self.ielts_group, 'ielts')
+        link_study_group_services(self.sat_group, 'sat')
+        self.ielts_group.students.add(self.student)
+        self.sat_group.students.add(self.student)
+
+    def test_sat_teacher_sees_only_sat_mock_toggle(self):
+        rows = get_teacher_student_mock_access_rows(self.sat_teacher.pk, self.student.pk)
+        self.assertEqual([row['program'] for row in rows], ['sat'])
+
+    def test_ielts_teacher_sees_only_ielts_mock_toggle(self):
+        rows = get_teacher_student_mock_access_rows(self.ielts_teacher.pk, self.student.pk)
+        self.assertEqual([row['program'] for row in rows], ['ielts'])
+
+    def test_program_access_is_independent(self):
+        self.assertTrue(
+            set_student_mock_access(
+                self.sat_teacher.pk,
+                self.student.pk,
+                'sat',
+                is_active=True,
+            )
+        )
+        self.assertFalse(student_has_active_mock_access_for_program(self.student.pk, 'ielts'))
+        self.assertTrue(student_has_active_mock_access_for_program(self.student.pk, 'sat'))
+        self.assertTrue(student_has_active_mock_access(self.student.pk))
+
+        denied = set_student_mock_access(
+            self.sat_teacher.pk,
+            self.student.pk,
+            'ielts',
+            is_active=True,
+        )
+        self.assertIsNone(denied)
+
+        self.assertTrue(
+            set_student_mock_access(
+                self.ielts_teacher.pk,
+                self.student.pk,
+                'ielts',
+                is_active=True,
+            )
+        )
+        self.assertTrue(student_has_active_mock_access_for_program(self.student.pk, 'ielts'))
 
 
 class QuizAssignmentNewStudentTests(TestCase):
@@ -155,11 +234,6 @@ class QuizAssignmentNewStudentTests(TestCase):
 
         link_study_group_services(self.group, 'ielts')
         self.group.students.add(self.student)
-        StudentCourseSpecialization.objects.create(
-            student=self.student,
-            course_type='ielts',
-            is_active=True,
-        )
         category = QuizCategory.objects.create(service='ielts', name='Grammar')
         self.quiz = Quiz.objects.create(category=category, topic='New quiz')
 

@@ -1,0 +1,21 @@
+{% extends "portals/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Mock Test' %}{% endblock %}
+
+{% block content %}
+{% include "portals/includes/portal_page_hero.html" with title=_('Mock Test') subtitle=_('Choose which exam program you want to practice.') icon="ti-clipboard-list" lottie="portals/animations/student.lottie" %}
+
+<section class="ds-card">
+  <div class="row g-3">
+    {% for program in mock_programs %}
+    <div class="col-md-6">
+      <a class="ds-card h-100 text-decoration-none d-block p-4" href="{{ program.landing_url }}">
+        <h2 class="h5 mb-2 text-body">{{ program.label }} {% trans 'Mock Test' %}</h2>
+        <p class="text-muted mb-0">{% blocktrans with program=program.label %}Start a full {{ program }} mock test session.{% endblocktrans %}</p>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

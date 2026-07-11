@@ -9,122 +9,13 @@
 
 {% block content %}
 {% csrf_token %}
-{# ── Breadcrumb ────────────────────────────────────────────────── #}
-<nav aria-label="{% trans 'Breadcrumb' %}" class="mb-3">
-  <ol class="breadcrumb portal-breadcrumb mb-0">
-    <li class="breadcrumb-item">
-      <a href="{% url 'portals:teacher-groups' %}">{% trans 'Qruplar' %}</a>
-    </li>
-    {% if profile_from_group_id %}
-    <li class="breadcrumb-item">
-      <a href="{{ profile_back_url }}">{{ profile_back_label }}</a>
-    </li>
-    {% endif %}
-    <li class="breadcrumb-item active" aria-current="page">{{ student.full_name }}</li>
-  </ol>
-</nav>
-
-{# ── Student at-a-glance ───────────────────────────────────────── #}
-<section class="t-student-hero mb-4">
-  <div class="t-student-hero__avatar-wrap">
-    {% if student.photo_url %}
-      <img class="t-student-hero__avatar" src="{{ student.photo_url }}" alt="{{ student.full_name }}">
-    {% else %}
-      <div class="t-student-hero__avatar t-student-hero__avatar--initials">
-        {{ student.full_name|slice:":2"|upper }}
-      </div>
-    {% endif %}
-  </div>
-
-  <div class="t-student-hero__info">
-    <p class="t-student-hero__eyebrow">{% trans 'Şagird profili' %}</p>
-    <h1 class="t-student-hero__name">{{ student.full_name }}</h1>
-    {% if groups %}
-    <div class="t-student-hero__groups">
-      {% for group_name in groups %}
-      <span class="ds-badge">{{ group_name }}</span>
-      {% endfor %}
-    </div>
-    {% endif %}
-    <div class="t-student-hero__meta">
-      {% if student.phone %}
-      <span><i class="ti ti-phone" aria-hidden="true"></i> {{ student.phone }}</span>
-      {% endif %}
-      {% if student.enrollment_date %}
-      <span><i class="ti ti-calendar" aria-hidden="true"></i> {% trans 'Qeydiyyat' %}: {{ student.enrollment_date|portal_date }}</span>
-      {% endif %}
-    </div>
-  </div>
-
-  <div class="t-student-hero__actions">
-    <a class="ds-btn ds-btn--primary btn-sm" href="?{% if profile_from_group_id %}from_group={{ profile_from_group_id }}&{% endif %}tab=duration">
-      <i class="ti ti-calendar-check" aria-hidden="true"></i> {% trans 'Davamiyyət' %}
-    </a>
-    <a class="ds-btn ds-btn--secondary btn-sm" href="{{ profile_back_url }}">
-      <i class="ti ti-arrow-left" aria-hidden="true"></i> {% trans 'Geri' %}
-    </a>
-  </div>
-</section>
-
-{% include "portals/includes/dashboard_performance_cards.html" with weekly_average=weekly_average attendance_stats=attendance_stats quiz_average=quiz_average mock_stats=mock_stats %}
-
-<div class="portal-student-tab-shell" data-student-profile-tabs{% if profile_from_group_id %} data-profile-from-group="{{ profile_from_group_id }}"{% endif %}>
-  <nav class="portal-student-segmented" aria-label="{% trans 'Şagird bölmələri' %}" data-student-profile-tab-nav>
-    <div class="portal-student-segmented__track" role="presentation">
-    <a class="portal-student-segment{% if active_tab == 'weekly-scores' %} is-active{% endif %}" href="?{% if profile_from_group_id %}from_group={{ profile_from_group_id }}&{% endif %}tab=weekly-scores" data-tab="weekly-scores"{% if active_tab == 'weekly-scores' %} aria-current="page"{% endif %}>
-      <span class="portal-student-segment__icon portal-student-segment__icon--weekly" aria-hidden="true"><i class="ti ti-calendar-stats"></i></span>
-      <span class="portal-student-segment__body">
-        <span class="portal-student-segment__label">{% trans 'Həftəlik qiymət' %}</span>
-        <em class="portal-student-segment__count">{{ weekly_scores|length }}</em>
-      </span>
-    </a>
-    <a class="portal-student-segment{% if active_tab == 'daily-scores' %} is-active{% endif %}" href="?{% if profile_from_group_id %}from_group={{ profile_from_group_id }}&{% endif %}tab=daily-scores" data-tab="daily-scores"{% if active_tab == 'daily-scores' %} aria-current="page"{% endif %}>
-      <span class="portal-student-segment__icon portal-student-segment__icon--history" aria-hidden="true"><i class="ti ti-star"></i></span>
-      <span class="portal-student-segment__body">
-        <span class="portal-student-segment__label">{% trans 'Quiz tarixçəsi' %}</span>
-        <em class="portal-student-segment__count">{{ stats.active_days }}</em>
-      </span>
-    </a>
-    <a class="portal-student-segment{% if active_tab == 'duration' %} is-active{% endif %}" href="?{% if profile_from_group_id %}from_group={{ profile_from_group_id }}&{% endif %}tab=duration" data-tab="duration"{% if active_tab == 'duration' %} aria-current="page"{% endif %}>
-      <span class="portal-student-segment__icon portal-student-segment__icon--attendance" aria-hidden="true"><i class="ti ti-calendar-check"></i></span>
-      <span class="portal-student-segment__body">
-        <span class="portal-student-segment__label">{% trans 'Davamiyyət' %}</span>
-        {% if attendance_summary %}<em class="portal-student-segment__count">{{ attendance_summary.total }}</em>{% endif %}
-      </span>
-    </a>
-    <a class="portal-student-segment{% if active_tab == 'quiz-results' %} is-active{% endif %}" href="?{% if profile_from_group_id %}from_group={{ profile_from_group_id }}&{% endif %}tab=quiz-results" data-tab="quiz-results"{% if active_tab == 'quiz-results' %} aria-current="page"{% endif %}>
-      <span class="portal-student-segment__icon portal-student-segment__icon--quiz" aria-hidden="true"><i class="ti ti-forms"></i></span>
-      <span class="portal-student-segment__body">
-        <span class="portal-student-segment__label">{% trans 'Quiz nəticəsi' %}</span>
-        <em class="portal-student-segment__count">{{ stats.quiz_count }}</em>
-      </span>
-    </a>
-    <a class="portal-student-segment{% if active_tab == 'quiz-access' %} is-active{% endif %}" href="?{% if profile_from_group_id %}from_group={{ profile_from_group_id }}&{% endif %}tab=quiz-access" data-tab="quiz-access"{% if active_tab == 'quiz-access' %} aria-current="page"{% endif %}>
-      <span class="portal-student-segment__icon portal-student-segment__icon--access" aria-hidden="true"><i class="ti ti-category"></i></span>
-      <span class="portal-student-segment__body">
-        <span class="portal-student-segment__label">{% trans 'Quiz icazələri' %}</span>
-        <em class="portal-student-segment__count">{{ quiz_access_count|default:0 }}</em>
-      </span>
-    </a>
-    {% if mock_access is not None %}
-    <a class="portal-student-segment{% if active_tab == 'mock-results' %} is-active{% endif %}" href="?{% if profile_from_group_id %}from_group={{ profile_from_group_id }}&{% endif %}tab=mock-results" data-tab="mock-results"{% if active_tab == 'mock-results' %} aria-current="page"{% endif %}>
-      <span class="portal-student-segment__icon portal-student-segment__icon--mock" aria-hidden="true"><i class="ti ti-clipboard-list"></i></span>
-      <span class="portal-student-segment__body">
-        <span class="portal-student-segment__label">{% trans 'Mock nəticələri' %}</span>
-        <em class="portal-student-segment__count">{% if mock_attempts %}{{ mock_attempts|length }}{% else %}0{% endif %}</em>
-      </span>
-    </a>
-    {% endif %}
-    </div>
-  </nav>
-  <section class="portal-student-tab-panel" data-student-profile-tab-panel>
-    {% include "portals/includes/teacher_student_profile_tab_panel.html" %}
-  </section>
+<div data-student-profile-page>
+  {% include "portals/includes/teacher_student_profile_page.html" %}
 </div>
 {% endblock %}
 
 {% block extra_js %}
 <script src="{% static 'portals/js/student-duration.js' %}?v=20260708v"></script>
 <script src="{% static 'portals/js/portal-quiz-assignments.js' %}?v=20260708v"></script>
-<script src="{% static 'portals/js/portal-student-profile-tabs.js' %}?v=20260708v"></script>
+<script src="{% static 'portals/js/portal-student-profile-tabs.js' %}?v=20260711b"></script>
 {% endblock %}

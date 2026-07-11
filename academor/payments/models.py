@@ -65,14 +65,6 @@ class Payment(models.Model):
         related_name='payments',
         verbose_name=_('Price package'),
     )
-    mock_package = models.ForeignKey(
-        'portals.MockTestPackage',
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name='payments',
-        verbose_name=_('Mock test package'),
-    )
     customer = models.ForeignKey(
         'portals.CustomerProfile',
         null=True,
@@ -135,6 +127,8 @@ class CourseEnrollment(models.Model):
         'projects.Service',
         on_delete=models.PROTECT,
         related_name='enrollments',
+        null=True,
+        blank=True,
     )
     price_package = models.ForeignKey(
         'projects.CoursePricePackage',
@@ -143,6 +137,14 @@ class CourseEnrollment(models.Model):
         on_delete=models.SET_NULL,
         related_name='enrollments',
         verbose_name=_('Price package'),
+    )
+    customer = models.ForeignKey(
+        'portals.CustomerProfile',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='enrollments',
+        verbose_name=_('Customer'),
     )
     buyer_email = models.EmailField(
         blank=True,
@@ -179,4 +181,19 @@ class CourseEnrollment(models.Model):
 
     def __str__(self):
         label = self.buyer_name or self.buyer_phone or self.buyer_email or '—'
-        return f'{self.course_id} — {label} ({self.status})'
+        if self.payment_id and self.payment.product_type == Payment.ProductType.MOCK_TEST:
+            if self.course_id and self.course:
+                if self.price_package_id and self.price_package:
+                    return f'Mock — {self.course} — {self.price_package} — {label} ({self.status})'
+                return f'Mock — {self.course} — {label} ({self.status})'
+            return f'Mock — {label} ({self.status})'
+        if self.course_id:
+            return f'{self.course} — {label} ({self.status})'
+        return f'{label} ({self.status})'
+
+    @property
+    def is_mock_enrollment(self) -> bool:
+        return (
+            self.payment_id is not None
+            and self.payment.product_type == Payment.ProductType.MOCK_TEST
+        )

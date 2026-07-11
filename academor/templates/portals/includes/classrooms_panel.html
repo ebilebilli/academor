@@ -16,7 +16,7 @@
   </div>
   {% endif %}
 
-  {% if group_tabs|length > 1 %}
+  {% if group_tabs|length > 1 and score_groups|length <= 1 %}
   <ul class="nav nav-tabs portal-attendance-tabs px-3 pt-2" id="classroomGroupTabs" role="tablist" data-portal-service-tablist>
     {% for tab in group_tabs %}
     <li class="nav-item" role="presentation">
@@ -34,17 +34,25 @@
         <tr>
           <th scope="col">{% trans 'Name' %}</th>
           <th scope="col">{% trans 'Group' %}</th>
+          <th scope="col">{% trans 'Service' %}</th>
           <th scope="col">{% trans 'PDF' %}</th>
           <th scope="col" class="text-end">{% trans 'Action' %}</th>
         </tr>
       </thead>
       <tbody>
         {% for room in classrooms %}
-        <tr data-service="{{ room.group_id|default:'' }}">
+        <tr{% if room.group_id %} data-group-ids="{{ room.group_id }}" data-service="{{ room.group_id }}"{% else %} data-service=""{% endif %}>
           <td class="fw-semibold" data-label="{% trans 'Name' %}">{{ room.name }}</td>
           <td data-label="{% trans 'Group' %}">
             {% if room.group_name %}
             <span class="portal-tag">{{ room.group_name }}</span>
+            {% else %}
+            <span class="text-muted">—</span>
+            {% endif %}
+          </td>
+          <td data-label="{% trans 'Service' %}">
+            {% if room.service_labels %}
+            <span class="ds-badge">{{ room.service_labels|join:", " }}</span>
             {% else %}
             <span class="text-muted">—</span>
             {% endif %}
@@ -68,7 +76,7 @@
         </tr>
         {% empty %}
         <tr class="classrooms-empty-row">
-          <td colspan="4" class="text-muted py-4 text-center">{% trans 'No textbooks yet.' %}</td>
+          <td colspan="5" class="text-muted py-4 text-center">{% trans 'No textbooks yet.' %}</td>
         </tr>
         {% endfor %}
       </tbody>

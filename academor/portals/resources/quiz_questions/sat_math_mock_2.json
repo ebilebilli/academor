@@ -1,0 +1,58 @@
+{
+  "title": "SAT Math — Practice Mock 2 (Geometry & Data)",
+  "service": "sat",
+  "category_name": "SAT Math",
+  "is_sat": true,
+  "sat_section": "geometry_data",
+  "time_limit_minutes": 35,
+  "questions": [
+    {
+      "id": 1,
+      "question": "A right triangle has legs of length 6 and 8. What is the hypotenuse?",
+      "options": ["9", "10", "12", "14"],
+      "answer": 1
+    },
+    {
+      "id": 2,
+      "question": "The area of a circle with radius 5 is kπ. What is k?",
+      "options": ["5", "10", "25", "50"],
+      "answer": 2
+    },
+    {
+      "id": 3,
+      "question": "A rectangular prism is 4 cm by 3 cm by 5 cm. What is its volume?",
+      "options": ["12", "35", "60", "120"],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "In a class of 30 students, the ratio of soccer players to non-players is 2:3. How many play soccer?",
+      "options": ["6", "10", "12", "18"],
+      "answer": 2
+    },
+    {
+      "id": 5,
+      "question": "A jacket's price rises from $80 to $100. By what percent did it increase?",
+      "options": ["20%", "25%", "80%", "125%"],
+      "answer": 1
+    },
+    {
+      "id": 6,
+      "question": "The mean of five scores is 84. Four scores are 90, 78, 88, and 80. What is the fifth?",
+      "options": ["76", "84", "86", "92"],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "Similar triangles have side ratio 3:5. The smaller perimeter is 18. What is the larger perimeter?",
+      "options": ["24", "27", "30", "36"],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "A bag has 3 red, 5 blue, and 2 green marbles. What is the probability of drawing blue?",
+      "options": ["1/5", "1/2", "3/10", "5/10"],
+      "answer": 1
+    }
+  ]
+}

@@ -90,10 +90,15 @@ class CustomerProfile(models.Model):
         validators=[phone_number_validator],
         verbose_name=_('Phone'),
     )
-    mock_credits = models.PositiveIntegerField(
-        default=1,
-        verbose_name=_('Mock test credits'),
-        help_text=_('Each started mock test section consumes one credit when you press Start quiz.'),
+    ielts_mock_credits = models.PositiveIntegerField(
+        default=0,
+        verbose_name=_('IELTS mock credits'),
+        help_text=_('One credit is consumed when the customer starts an IELTS mock test.'),
+    )
+    sat_mock_credits = models.PositiveIntegerField(
+        default=0,
+        verbose_name=_('SAT mock credits'),
+        help_text=_('One credit is consumed when the customer starts a SAT mock test.'),
     )
     teacher = models.ForeignKey(
         'TeacherProfile',
@@ -115,6 +120,19 @@ class CustomerProfile(models.Model):
     @property
     def full_name(self) -> str:
         return self.user.get_username() if self.user_id else ''
+
+    @property
+    def mock_credits(self) -> int:
+        return int(self.ielts_mock_credits or 0) + int(self.sat_mock_credits or 0)
+
+    def mock_credits_for_program(self, exam_program: str) -> int:
+        from portals.utils.mock_programs import IELTS_SERVICE, SAT_SERVICE
+
+        if exam_program == IELTS_SERVICE:
+            return int(self.ielts_mock_credits or 0)
+        if exam_program == SAT_SERVICE:
+            return int(self.sat_mock_credits or 0)
+        return 0
 
     def __str__(self):
         name = self.full_name or '—'

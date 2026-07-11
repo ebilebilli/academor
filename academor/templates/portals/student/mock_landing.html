@@ -1,0 +1,71 @@
+{% extends "portals/base.html" %}
+{% load i18n portal_tags %}
+
+{% block title %}{% blocktrans with program=exam_program_label %}Mock Test — {{ program }}{% endblocktrans %}{% endblock %}
+
+{% block content %}
+{% if exam_program == 'sat' %}
+{% include "portals/includes/portal_page_hero.html" with title=exam_program_label|add:" Mock Test" subtitle=_('Complete Reading and Writing, then Math in one session — like the Digital SAT.') icon="ti-clipboard-list" lottie="portals/animations/student.lottie" %}
+{% else %}
+{% include "portals/includes/portal_page_hero.html" with title=exam_program_label|add:" Mock Test" subtitle=_('Complete Listening, Reading, Writing, and Speaking in one session — just like the real IELTS exam.') icon="ti-clipboard-list" lottie="portals/animations/student.lottie" %}
+{% endif %}
+
+<section class="ds-card mb-4">
+  <h2 class="h5 mb-3">{% trans 'How it works' %}</h2>
+  {% if exam_program == 'sat' %}
+  <ol class="mb-0 ps-3">
+    <li class="mb-2">{% trans 'One random SAT task is selected from each section.' %}</li>
+    <li class="mb-2">{% trans 'Sections follow the Digital SAT order: Reading and Writing → Math.' %}</li>
+    <li>{% trans 'Both sections are scored automatically and converted to SAT section scores (200–800).' %}</li>
+  </ol>
+  {% else %}
+  <ol class="mb-0 ps-3">
+    <li class="mb-2">{% trans 'One random task is selected from each section.' %}</li>
+    <li class="mb-2">{% trans 'Sections follow the real IELTS exam order: Listening → Reading → Writing → Speaking.' %}</li>
+    <li class="mb-2">{% trans 'Listening and Reading sections are scored automatically.' %}</li>
+    <li class="mb-2">{% trans 'Writing and Speaking sections are reviewed and scored by your teacher.' %}</li>
+    <li>{% trans 'After all sections are completed, your answers are sent to your teacher for scoring.' %}</li>
+  </ol>
+  {% endif %}
+</section>
+
+{% if can_start %}
+<section class="ds-card mb-4">
+  <form method="post" action="{% url 'portals:student-mock-start' program=exam_program %}">
+    {% csrf_token %}
+    <button type="submit" class="ds-btn ds-btn--primary">
+      <i class="ti ti-player-play" aria-hidden="true"></i>
+      {% trans 'Start mock test' %}
+    </button>
+  </form>
+</section>
+{% elif not mock_unlocked %}
+<section class="ds-card mb-4">
+  <div class="alert alert-danger mb-0 d-flex align-items-start gap-2">
+    <i class="bi bi-lock-fill mt-1" aria-hidden="true"></i>
+    <div>
+      <strong>{% trans 'Mock test is currently locked.' %}</strong>
+      <p class="mb-0 mt-1">
+        {% trans 'Talk to your teacher to unlock it. Once your teacher enables Mock access on your profile, you can start from here.' %}
+      </p>
+    </div>
+  </div>
+</section>
+{% else %}
+<section class="ds-card mb-4">
+  <div class="alert alert-warning mb-0">
+    {% trans 'Mock test is not available yet. Quizzes are missing for:' %}
+    {% for section in missing_sections %}
+      <strong>{{ section }}</strong>{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if completed_attempts %}
+<section class="ds-card">
+  <h2 class="h5 mb-3">{% trans 'Previous mock tests' %}</h2>
+  {% include "portals/includes/mock_attempts_table.html" with mock_attempts=completed_attempts mock_detail_url_name="portals:student-mock-complete" mock_detail_program=exam_program %}
+</section>
+{% endif %}
+{% endblock %}

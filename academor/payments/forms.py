@@ -63,9 +63,15 @@ class CoursePaymentForm(forms.Form):
         widget=forms.HiddenInput(),
     )
 
-    def __init__(self, *args, request=None, **kwargs):
+    def __init__(self, *args, request=None, mock_checkout=False, **kwargs):
         self._request = request
+        self._mock_checkout = mock_checkout
         super().__init__(*args, **kwargs)
+        if mock_checkout:
+            self.fields['accept_contract'].label = _('I have read and accept the agreement.')
+            self.fields['accept_contract'].error_messages = {
+                'required': _('You must accept the agreement to proceed.'),
+            }
 
     def clean_buyer_name(self):
         value = (self.cleaned_data.get('buyer_name') or '').strip()

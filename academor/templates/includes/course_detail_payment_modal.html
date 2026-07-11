@@ -93,7 +93,11 @@
                             aria-controls="course-pay-contract-panel"
                         >
                             <span class="course-pay-contract__toggle-text">
+                                {% if course.is_mock_test %}
+                                {% trans "Payment agreement" %}
+                                {% else %}
                                 {% trans "Training agreement" %}
+                                {% endif %}
                             </span>
                             <i class="fas fa-chevron-down course-pay-contract__toggle-icon" aria-hidden="true"></i>
                         </button>
@@ -112,7 +116,11 @@
                                 aria-labelledby="course-pay-contract-toggle"
                             >
                                 {% if default_payment_package %}
-                                {% course_payment_contract course package=default_payment_package %}
+                                    {% if course.is_mock_test %}
+                                    {% mock_payment_contract package=default_payment_package %}
+                                    {% else %}
+                                    {% course_payment_contract course package=default_payment_package %}
+                                    {% endif %}
                                 {% endif %}
                             </div>
                         </div>

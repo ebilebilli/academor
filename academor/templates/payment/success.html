@@ -12,7 +12,7 @@
     <main id="main-content" class="payment-result-page container-xxl py-5">
         {% trans "Successful" as eyebrow %}
         {% trans "Payment completed" as title %}
-        {% include "includes/payment_result_card.html" with variant="success" eyebrow=eyebrow title=title message=message order_id=order_id %}
+        {% include "includes/payment_result_card.html" with variant="success" eyebrow=eyebrow title=title message=message order_id=order_id portal_return_url=portal_return_url %}
     </main>
     {% include "includes/site_footer.html" %}
     {% include "includes/site_scripts.html" %}

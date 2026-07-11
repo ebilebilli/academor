@@ -1,10 +1,18 @@
+from django.core.exceptions import ValidationError
+from django.core.validators import MaxLengthValidator
 from django.db import models
+from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 
 from ckeditor.fields import RichTextField
 
 from projects.service_category_icons import SERVICE_CATEGORY_ICON_CHOICES
 from projects.utils import SluggedModel
+
+MOCK_TEST_SERVICE_Q = Q(ielts_mock_test=True) | Q(sat_mock_test=True)
+MOCK_TEST_SERVICE_VIA_COURSE_Q = (
+    Q(course__ielts_mock_test=True) | Q(course__sat_mock_test=True)
+)
 
 
 class Service(SluggedModel):
@@ -108,6 +116,41 @@ class Service(SluggedModel):
             'If enabled, this course appears in the "Our Services" grid on the homepage.'
         ),
     )
+    ielts_mock_test = models.BooleanField(
+        default=False,
+        verbose_name=_('IELTS mock test'),
+        help_text=_(
+            'If enabled, this service appears under Mock tests and uses IELTS mock pricing.'
+        ),
+    )
+    sat_mock_test = models.BooleanField(
+        default=False,
+        verbose_name=_('SAT mock test'),
+        help_text=_(
+            'If enabled, this service appears under Mock tests and uses SAT mock pricing.'
+        ),
+    )
+    bullet_list_az = models.TextField(
+        blank=True,
+        null=True,
+        validators=[MaxLengthValidator(2000)],
+        verbose_name='Maddələr siyahısı (AZ)',
+        help_text='Hər sətirdə bir maddə yazın (bullet list).',
+    )
+    bullet_list_en = models.TextField(
+        blank=True,
+        null=True,
+        validators=[MaxLengthValidator(2000)],
+        verbose_name='Maddələr siyahısı (EN)',
+        help_text='One item per line (bullet list).',
+    )
+    bullet_list_ru = models.TextField(
+        blank=True,
+        null=True,
+        validators=[MaxLengthValidator(2000)],
+        verbose_name='Maddələr siyahısı (RU)',
+        help_text='Один пункт на строку (маркированный список).',
+    )
     card_icon = models.CharField(
         max_length=80,
         blank=True,
@@ -140,12 +183,29 @@ class Service(SluggedModel):
         verbose_name = 'Service'
         verbose_name_plural = 'Services'
         ordering = ('order', 'id')
+        constraints = [
+            models.CheckConstraint(
+                condition=~Q(ielts_mock_test=True, sat_mock_test=True),
+                name='service_single_mock_test_type',
+            ),
+        ]
 
     def get_slug_source(self) -> str:
         return self.name_az
 
     def __str__(self):
         return self.name_az or 'Service'
+
+    @property
+    def is_mock_test(self) -> bool:
+        return bool(self.ielts_mock_test or self.sat_mock_test)
+
+    def clean(self):
+        super().clean()
+        if self.ielts_mock_test and self.sat_mock_test:
+            raise ValidationError(
+                _('Select only one mock test type: IELTS or SAT.'),
+            )
 
     @property
     def has_active_price_packages(self):
@@ -184,6 +244,10 @@ class CoursePricePackage(models.Model):
             'full_package_installment',
             _('Full package — Installments'),
         )
+        MOCK_TEST = (
+            'mock_test',
+            _('Mock Test'),
+        )
 
     course = models.ForeignKey(
         Service,
@@ -218,6 +282,14 @@ class CoursePricePackage(models.Model):
         blank=True,
         verbose_name=_('Minutes per lesson'),
         help_text=_('Duration of a single lesson in minutes.'),
+    )
+    credits = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        verbose_name=_('Mock test credits'),
+        help_text=_(
+            'Required when the selected course is an IELTS or SAT mock test service.'
+        ),
     )
     price = models.DecimalField(
         max_digits=12,
@@ -254,6 +326,34 @@ class CoursePricePackage(models.Model):
         verbose_name = _('Course price package')
         verbose_name_plural = _('Course price packages')
         ordering = ('order', 'id')
+
+    def clean(self):
+        super().clean()
+        course = self.course
+        if course_id := getattr(self, 'course_id', None):
+            if course is None or getattr(course, 'pk', None) != course_id:
+                course = Service.objects.filter(pk=course_id).first()
+        if course and course.is_mock_test:
+            self.months = None
+            self.lesson_count = None
+            self.lesson_minutes = None
+            if not self.credits or self.credits < 1:
+                raise ValidationError(
+                    {'credits': _('Mock test credits are required for this course.')},
+                )
+        elif self.credits:
+            self.credits = None
+
+    def save(self, *args, **kwargs):
+        if self.course_id:
+            course = self.course
+            if course is None or getattr(course, 'pk', None) != self.course_id:
+                course = Service.objects.filter(pk=self.course_id).first()
+            if course and course.is_mock_test:
+                self.months = None
+                self.lesson_count = None
+                self.lesson_minutes = None
+        super().save(*args, **kwargs)
 
     def __str__(self):
         label = self.name_az or self.name_en or self.name_ru or f'Package #{self.pk}'

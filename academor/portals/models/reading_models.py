@@ -116,8 +116,8 @@ class ReadingPassage(models.Model):
         super().clean()
         if not strip_tags(self.body or '').strip():
             raise ValidationError({'body': _('Enter the passage text.')})
-        if self.quiz_id and not self.quiz.is_reading:
-            raise ValidationError({'quiz': _('Select a reading quiz.')})
+        if self.quiz_id and not (self.quiz.is_reading or self.quiz.is_math):
+            raise ValidationError({'quiz': _('Select a reading or math quiz.')})
 
 
 class ReadingQuestionGroup(models.Model):

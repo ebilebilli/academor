@@ -4,9 +4,10 @@
 <section class="ds-card mb-4">
   <h2 class="h5 mb-2">{% trans 'Overall result' %}</h2>
   <p class="mb-3">
-    <span class="display-6">{{ mock_attempt.overall_band|format_quiz_score }}</span>
-    <span class="text-muted fs-5">/ {{ mock_attempt.overall_band_max|format_quiz_score }}</span>
+    <span class="display-6">{{ mock_attempt.overall_score|format_quiz_score }}</span>
+    <span class="text-muted fs-5">/ {{ mock_attempt.overall_score_max|format_quiz_score }}</span>
   </p>
+  {% if mock_attempt.scoring_mode == 'ielts_band' %}
   <div class="row g-3">
     <div class="col-md-6">
       <div class="border rounded p-3 h-100">
@@ -37,6 +38,7 @@
       </div>
     </div>
   </div>
+  {% endif %}
 </section>
 {% elif mock_attempt.pending_review_count %}
 <section class="ds-card mb-4">

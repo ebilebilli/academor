@@ -108,6 +108,44 @@ class Quiz(models.Model):
             'Only one quiz format can be active.',
         ),
     )
+    is_math = models.BooleanField(
+        default=False,
+        verbose_name=_('Math (auto-scored)'),
+        help_text=_(
+            'SAT Math section — auto-scored with passages/questions like Reading. '
+            'Only available when SAT is enabled. Choose this yourself; it is not set automatically.'
+        ),
+    )
+    is_ielts = models.BooleanField(
+        default=False,
+        verbose_name=_('IELTS'),
+        help_text=_('Marks this quiz as part of the IELTS exam program.'),
+    )
+    is_sat = models.BooleanField(
+        default=False,
+        verbose_name=_('SAT'),
+        help_text=_('Marks this quiz as part of the SAT exam program.'),
+    )
+
+    class SatSection(models.TextChoices):
+        READING = 'reading', _('Reading')
+        WRITING = 'writing', _('Writing')
+        ALGEBRA = 'algebra', _('Algebra')
+        GEOMETRY_DATA = 'geometry_data', _('Geometry & Data')
+
+    SAT_RW_SECTIONS = frozenset({SatSection.READING, SatSection.WRITING})
+    SAT_MATH_SECTIONS = frozenset({SatSection.ALGEBRA, SatSection.GEOMETRY_DATA})
+
+    sat_section = models.CharField(
+        max_length=32,
+        blank=True,
+        choices=SatSection.choices,
+        verbose_name=_('SAT section'),
+        help_text=_(
+            'Required for SAT quizzes. Pick exactly one: Reading, Writing, Algebra, or Geometry & Data. '
+            'Reading uses IELTS-style passages; the others use multiple-choice questions.',
+        ),
+    )
     is_time_limited = models.BooleanField(
         default=False,
         verbose_name=_('Time limited'),
@@ -150,12 +188,24 @@ class Quiz(models.Model):
                     models.Q(is_essay=False) | models.Q(is_reading=False)
                 ) & (
                     models.Q(is_speaking=False) | models.Q(is_reading=False)
+                ) & (
+                    models.Q(is_math=False) | models.Q(is_listening=False)
+                ) & (
+                    models.Q(is_math=False) | models.Q(is_essay=False)
+                ) & (
+                    models.Q(is_math=False) | models.Q(is_speaking=False)
+                ) & (
+                    models.Q(is_math=False) | models.Q(is_reading=False)
                 ),
             ),
             models.UniqueConstraint(
                 fields=('category', 'resource_slug'),
                 condition=~models.Q(resource_slug=''),
                 name='portals_quiz_category_resource_slug_uniq',
+            ),
+            models.CheckConstraint(
+                condition=~models.Q(is_ielts=True, is_sat=True),
+                name='portals_quiz_single_mock_program',
             ),
         ]
 
@@ -176,7 +226,7 @@ class Quiz(models.Model):
 
     @property
     def is_reading_quiz(self):
-        return self.is_reading
+        return self.is_reading or self.is_math
 
     @property
     def is_variant_quiz(self):
@@ -185,7 +235,7 @@ class Quiz(models.Model):
     @property
     def uses_per_question_text_responses(self):
         """Free-text answer per task (writing / multi-part manual quizzes)."""
-        if self.is_reading:
+        if self.is_reading or self.is_math:
             return False
         if self.is_essay:
             return True
@@ -206,7 +256,7 @@ class Quiz(models.Model):
         if self.is_manual_grading:
             return self.MANUAL_REVIEW_MAX_SCORE
         if question_count is None:
-            if self.is_reading:
+            if self.is_reading or self.is_math:
                 from portals.utils.quiz_reading import get_reading_questions_for_quiz
 
                 question_count = len(get_reading_questions_for_quiz(self))
@@ -226,19 +276,36 @@ class Quiz(models.Model):
             return 'essay'
         if self.is_speaking:
             return 'speaking'
+        if self.is_math:
+            return 'math'
         if self.is_reading:
             return 'reading'
         return 'variant'
 
     def get_grading_mode_label(self):
+        if self.is_sat and self.sat_section:
+            for value, label in self.SatSection.choices:
+                if value == self.sat_section:
+                    return str(label)
         labels = {
             'listening': 'Listening',
             'essay': _('Writing'),
             'speaking': 'Speaking',
             'reading': 'Reading',
+            'math': _('Math'),
             'variant': 'Multiple choice',
         }
         return str(labels.get(self.grading_mode, self.grading_mode or ''))
+
+    def apply_sat_section_format(self):
+        """Sync format flags from sat_section when SAT is enabled."""
+        self.is_listening = False
+        self.is_speaking = False
+        self.is_essay = False
+        self.is_math = False
+        self.is_reading = False
+        if self.sat_section == self.SatSection.READING:
+            self.is_reading = True
 
     @property
     def time_limit_seconds(self):
@@ -260,11 +327,37 @@ class Quiz(models.Model):
     def clean(self):
         super().clean()
 
-        format_flags = [self.is_listening, self.is_essay, self.is_speaking, self.is_reading]
+        format_flags = [
+            self.is_listening,
+            self.is_essay,
+            self.is_speaking,
+            self.is_reading,
+            self.is_math,
+        ]
         if sum(1 for flag in format_flags if flag) > 1:
             raise ValidationError(
-                _('Only one quiz format can be enabled (Listening, Essay, Speaking, or Reading).'),
+                _('Only one quiz format can be enabled (Listening, Essay, Speaking, Reading, or Math).'),
             )
+
+        if self.is_math and not self.is_sat:
+            raise ValidationError({
+                'is_math': _('Math format is only available when SAT is enabled.'),
+            })
+
+        if self.is_ielts and self.is_sat:
+            raise ValidationError(_('Select only one mock test program: IELTS or SAT.'))
+
+        if self.is_sat:
+            if not self.sat_section:
+                raise ValidationError({
+                    'sat_section': _('Select a SAT section type (Reading, Writing, Algebra, or Geometry & Data).'),
+                })
+            if self.sat_section not in dict(self.SatSection.choices):
+                raise ValidationError({'sat_section': _('Invalid SAT section type.')})
+            self.apply_sat_section_format()
+        else:
+            self.sat_section = ''
+            self.is_math = False
 
         if self.is_time_limited:
             if not self.time_limit_minutes or self.time_limit_minutes < 1:

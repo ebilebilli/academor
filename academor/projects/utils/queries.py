@@ -117,13 +117,22 @@ _category_media_prefetch = Prefetch(
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
-def get_project_categories(lang='az', show_on_main_page=None, tag_slug=None):
-    """Aktiv service kateqoriyaları (courses)."""
+def get_project_categories(lang='az', show_on_main_page=None, tag_slug=None, is_mock_test=False):
+    """
+    Active services (courses). By default excludes IELTS/SAT mock test services.
+
+    ``is_mock_test=True`` returns only services with ``ielts_mock_test`` or ``sat_mock_test``.
+    Invalidated via ``invalidate_service_cache`` (Service save/delete/M2M).
+    """
     qs = Service.objects.filter(is_active=True).order_by('order', 'id').prefetch_related(
         _category_media_prefetch,
         'price_packages',
         'tags',
     )
+    if is_mock_test:
+        qs = qs.filter(MOCK_TEST_SERVICE_Q)
+    else:
+        qs = qs.exclude(MOCK_TEST_SERVICE_Q)
     if show_on_main_page is not None:
         qs = qs.filter(show_on_main_page=show_on_main_page)
     if tag_slug:
@@ -132,13 +141,23 @@ def get_project_categories(lang='az', show_on_main_page=None, tag_slug=None):
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
-def get_active_project_category_by_slug(slug):
-    """Tək aktiv kateqoriya (detal səhifə) — şəkillər id sırası ilə."""
+def get_active_project_category_by_slug(slug, is_mock_test=None):
+    """
+    Single active service for detail pages.
+
+    ``is_mock_test=True`` — only IELTS/SAT mock services (/mock-tests/<slug>/).
+    ``is_mock_test=False`` — regular courses (/courses/<slug>/).
+    ``None`` — any active service (payments catalog).
+    """
     if not slug:
         return None
+    qs = Service.objects.filter(slug=slug, is_active=True)
+    if is_mock_test is True:
+        qs = qs.filter(MOCK_TEST_SERVICE_Q)
+    elif is_mock_test is False:
+        qs = qs.exclude(MOCK_TEST_SERVICE_Q)
     return (
-        Service.objects.filter(slug=slug, is_active=True)
-        .prefetch_related(
+        qs.prefetch_related(
             _category_media_prefetch,
             'instructors',
             'price_packages',
@@ -482,9 +501,13 @@ def _fresh_home_team_context(lang='az'):
     }
 
 
-def _serialized_categories_with_fresh_sales(lang, show_on_main_page=None):
+def _serialized_categories_with_fresh_sales(lang, show_on_main_page=None, is_mock_test=False):
     """Service cards with current sale prices — always a fresh discount lookup."""
-    categories = get_project_categories(lang, show_on_main_page=show_on_main_page)
+    categories = get_project_categories(
+        lang,
+        show_on_main_page=show_on_main_page,
+        is_mock_test=is_mock_test,
+    )
     discounts_map = fetch_active_sale_discounts_by_service_id()
     package_discounts_map = fetch_active_sale_discounts_by_package_id()
     return [
@@ -535,7 +558,25 @@ def serialize_homepage_price_package(package, lang='az', discounts_map=None, pac
     return data
 
 
-def _fetch_serialized_homepage_price_packages(lang='az'):
+def serialize_homepage_mock_price_package(package, lang='az', discounts_map=None, package_discounts_map=None):
+    data = serialize_homepage_price_package(
+        package,
+        lang,
+        discounts_map=discounts_map,
+        package_discounts_map=package_discounts_map,
+    )
+    course = package.course
+    if course.ielts_mock_test:
+        data['exam_program'] = 'ielts'
+    elif course.sat_mock_test:
+        data['exam_program'] = 'sat'
+    else:
+        data['exam_program'] = 'mock'
+    data['detail_url'] = reverse('projects:mock-test-detail', kwargs={'slug': course.slug})
+    return data
+
+
+def _fetch_serialized_homepage_mock_packages(lang='az'):
     packages = (
         CoursePricePackage.objects.filter(
             is_active=True,
@@ -543,6 +584,39 @@ def _fetch_serialized_homepage_price_packages(lang='az'):
             price__gt=0,
             course__is_active=True,
         )
+        .filter(MOCK_TEST_SERVICE_VIA_COURSE_Q)
+        .select_related('course')
+        .order_by('order', 'id')
+    )
+    discounts_map = fetch_active_sale_discounts_by_service_id()
+    package_discounts_map = fetch_active_sale_discounts_by_package_id()
+    return [
+        serialize_homepage_mock_price_package(
+            package,
+            lang,
+            discounts_map=discounts_map,
+            package_discounts_map=package_discounts_map,
+        )
+        for package in packages
+    ]
+
+
+def _fresh_home_mock_packages_context(lang='az'):
+    return {
+        'home_mock_packages': _fetch_serialized_homepage_mock_packages(lang),
+    }
+
+
+def _fetch_serialized_homepage_price_packages(lang='az'):
+    """Featured carousel packages — mock test services excluded."""
+    packages = (
+        CoursePricePackage.objects.filter(
+            is_active=True,
+            show_on_homepage=True,
+            price__gt=0,
+            course__is_active=True,
+        )
+        .exclude(MOCK_TEST_SERVICE_VIA_COURSE_Q)
         .select_related('course')
         .order_by('order', 'id')
     )
@@ -576,11 +650,12 @@ def _fresh_home_categories_context(lang='az'):
     }
 
 
-def _merge_fresh_sale_categories(ctx, lang, show_on_main_page=None):
+def _merge_fresh_sale_categories(ctx, lang, show_on_main_page=None, is_mock_test=False):
     """Replace serialized categories in a page context with fresh sale pricing."""
     ctx['categories'] = _serialized_categories_with_fresh_sales(
         lang,
         show_on_main_page=show_on_main_page,
+        is_mock_test=is_mock_test,
     )
     slug = (ctx.get('filters') or {}).get('slug')
     if slug:
@@ -1166,6 +1241,7 @@ def serialize_price_package(package, lang='az', sale_percent=None):
         'has_discount': has_discount,
         'is_premium': bool(package.is_premium),
         'package_tab': package.package_tab,
+        'credits': package.credits,
     }
 
 
@@ -1289,6 +1365,20 @@ def serialize_project_category_detail(category, lang='az'):
     data['has_certificate'] = category.has_certificate
     data['is_online'] = category.is_online
     data['is_offline'] = category.is_offline
+    data['description_excerpt'] = _about_plain_excerpt(
+        data.get('description_html') or '',
+        max_chars=220,
+    )
+    bullet_field = get_localized_field_name('bullet_list', lang)
+    raw_bullets = (
+        getattr(category, bullet_field, None)
+        or getattr(category, 'bullet_list_az', None)
+        or ''
+    )
+    data['bullet_items'] = _parse_bullet_list(raw_bullets)
+    data['is_mock_test'] = category.is_mock_test
+    data['ielts_mock_test'] = category.ielts_mock_test
+    data['sat_mock_test'] = category.sat_mock_test
     discounts_map = fetch_active_sale_discounts_by_service_id()
     package_discounts_map = fetch_active_sale_discounts_by_package_id()
     packages = [
@@ -1320,6 +1410,13 @@ def serialize_project_category_detail(category, lang='az'):
     ]
 
     return data
+
+
+def _parse_bullet_list(text):
+    """Non-empty lines from a mock service bullet list field."""
+    if not text:
+        return []
+    return [line.strip() for line in str(text).splitlines() if line.strip()]
 
 
 def _about_plain_excerpt(html, max_chars=300):
@@ -1535,6 +1632,7 @@ def get_home_page_data(request, lang):
     ctx.update(_fresh_home_team_context(lang))
     ctx.update(_fresh_home_categories_context(lang))
     ctx.update(_fresh_home_featured_prices_context(lang))
+    ctx.update(_fresh_home_mock_packages_context(lang))
     ctx.update(_fresh_home_sales_context(lang))
     ctx.update(get_home_about_context(lang))
     ctx.update(_fresh_abroad_advantages_context(lang))
@@ -1690,6 +1788,33 @@ def get_courses_list_data(request, lang):
     return ctx
 
 
+def _get_mock_tests_list_data_impl(request, lang):
+    contact = get_contact(lang)
+    categories = get_project_categories(lang, is_mock_test=True)
+    serialized_categories = [
+        serialize_project_category(category, lang)
+        for category in categories
+    ]
+    return {
+        'contact': serialize_contact(contact, lang) if contact else None,
+        'categories': serialized_categories,
+        'language': lang,
+        'background_image': get_background_image('service'),
+        'detail_url_name': 'projects:mock-test-detail',
+    }
+
+
+@cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')
+def _get_mock_tests_list_data_cached(request, lang):
+    return _get_mock_tests_list_data_impl(request, lang)
+
+
+def get_mock_tests_list_data(request, lang):
+    ctx = _get_mock_tests_list_data_cached(request, lang)
+    _merge_fresh_sale_categories(ctx, lang, is_mock_test=True)
+    return ctx
+
+
 @cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')
 def _get_project_list_data_cached(request, lang):
     return _get_project_list_data_impl(request, lang)
@@ -1703,7 +1828,14 @@ def get_project_list_data(request, lang):
 
 @cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_nav_courses(lang='az'):
-    """Aktiv kateqoriyalar — header Courses dropdown (slug + ad)."""
-    cats = get_project_categories(lang)
+    """Active non-mock services — header Courses dropdown."""
+    cats = get_project_categories(lang, is_mock_test=False)
+    return [serialize_project_category(c, lang) for c in cats]
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_nav_mock_tests(lang='az'):
+    """Active IELTS/SAT mock test services — header Mock tests dropdown."""
+    cats = get_project_categories(lang, is_mock_test=True)
     return [serialize_project_category(c, lang) for c in cats]
 

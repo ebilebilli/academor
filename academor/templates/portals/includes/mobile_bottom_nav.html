@@ -18,8 +18,8 @@
       <i class="ti ti-forms" aria-hidden="true"></i>
       <span>{% trans 'Quiz' %}</span>
     </a>
-    {% if portal_student_has_ielts %}
-    <a class="mobile-nav-item{% if u == 'student-ielts-mock' or u == 'student-ielts-mock-complete' %} active{% endif %}" href="{% url 'portals:student-ielts-mock' %}" data-nav-mock-test>
+    {% if portal_student_has_mock_exam %}
+    <a class="mobile-nav-item{% if u == 'student-mock-picker' or u == 'student-mock-landing' or u == 'student-mock-complete' or u == 'student-ielts-mock' or u == 'student-ielts-mock-complete' %} active{% endif %}" href="{{ portal_student_mock_url|default:'#' }}" data-nav-mock-test>
       <i class="ti ti-clipboard-list" aria-hidden="true"></i>
       <span>{% trans 'Mock' %}</span>
     </a>
@@ -29,7 +29,7 @@
       <i class="ti ti-layout-dashboard" aria-hidden="true"></i>
       <span>{% trans 'Ana səhifə' %}</span>
     </a>
-    <a class="mobile-nav-item{% if u == 'customer-ielts-mock' or u == 'customer-ielts-mock-complete' %} active{% endif %}" href="{% url 'portals:customer-ielts-mock' %}">
+    <a class="mobile-nav-item{% if u == 'customer-mock-picker' or u == 'customer-mock-landing' or u == 'customer-mock-complete' or u == 'customer-ielts-mock' or u == 'customer-ielts-mock-complete' %} active{% endif %}" href="{{ portal_customer_mock_url|default:'#' }}">
       <i class="ti ti-clipboard-list" aria-hidden="true"></i>
       <span>{% trans 'Mock' %}</span>
     </a>

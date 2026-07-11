@@ -6,7 +6,7 @@
 {% block content %}
 {% include "portals/includes/portal_portal_banner.html" with greeting_name=student.full_name subtitle=_('Dərslərini, tapşırıqlarını və nəticələri bir yerdən izlə') %}
 
-{% include "portals/includes/dashboard_performance_cards.html" with weekly_average=weekly_average attendance_stats=attendance_stats quiz_average=quiz_average mock_stats=mock_stats %}
+{% include "portals/includes/dashboard_performance_cards.html" with weekly_average=weekly_average attendance_stats=attendance_stats quiz_average=quiz_average mock_stats_list=mock_stats_list %}
 
 {# ── Today's Schedule ────────────────────────────────────────────── #}
 <section class="ds-card mb-4" aria-label="{% trans 'Bu günkü cədvəl' %}">

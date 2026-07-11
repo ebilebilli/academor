@@ -9,6 +9,7 @@ from portals.models import PortalNotification
 from portals.utils.notifications import (
     delete_notification,
     get_notifications,
+    get_score_detail_for_customer,
     get_score_detail_for_parent,
     get_score_detail_for_student,
     get_score_detail_for_teacher,
@@ -232,6 +233,30 @@ class CustomerNotificationsView(CustomerRequiredMixin, View):
                 period_tabs=_build_notification_period_tabs(customer_id=profile.pk),
                 notifications_url_name='portals:customer-notifications',
                 notifications_subtitle=_('Dərc olunmuş IELTS mock test nəticələri.'),
+            ),
+        )
+
+
+class CustomerScoreDetailView(CustomerRequiredMixin, View):
+    template_name = 'portals/score_detail.html'
+
+    def get(self, request, result_pk):
+        profile = get_customer_profile(request.portal_user)
+        detail = get_score_detail_for_customer(profile.pk, result_pk)
+        if not detail:
+            raise Http404
+        PortalNotification.objects.filter(
+            customer_id=profile.pk,
+            quiz_result_id=result_pk,
+            is_read=False,
+        ).update(is_read=True)
+        return render(
+            request,
+            self.template_name,
+            _portal_context(
+                request,
+                customer=serialize_customer(profile),
+                detail=detail,
             ),
         )
 

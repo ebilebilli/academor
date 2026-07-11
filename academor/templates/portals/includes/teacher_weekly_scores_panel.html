@@ -41,7 +41,7 @@
 
     <p class="weekly-scores-current-note">
       <i class="ti ti-info-circle" aria-hidden="true"></i>
-      {% trans 'Hər şagird üçün həftəlik bal yalnız bir dəfə verilə bilər. Bal təsdiqləndikdən sonra onu dəyişdirmək mümkün deyil.' %}
+      {% trans 'Hər şagird üçün hər qrupda həftəlik bal yalnız bir dəfə verilə bilər. Bal təsdiqləndikdən sonra onu dəyişdirmək mümkün deyil.' %}
     </p>
   </section>
 
@@ -112,10 +112,10 @@
           <div class="weekly-scores-card-item__head">
             {% include "portals/includes/avatar.html" with photo_url=row.photo_url name=row.full_name initials=row.full_name size_class="avatar-md" %}
             <div class="weekly-scores-card-item__identity">
-              <a href="{% url 'portals:teacher-student-profile' student_pk=row.id %}?tab=weekly-scores" class="weekly-scores-student-link">
+              <a href="{% url 'portals:teacher-student-profile' student_pk=row.id %}?tab=weekly-scores{% if row.group_id %}&from_group={{ row.group_id }}{% endif %}" class="weekly-scores-student-link">
                 {{ row.full_name }}
               </a>
-              <span class="weekly-scores-card-item__groups">{{ row.group_names|join:", "|default:"—" }}</span>
+              <span class="weekly-scores-card-item__groups">{{ row.group_name|default:"—" }}</span>
             </div>
             <span
               class="weekly-scores-status ds-badge{% if row.is_locked or row.weekly_score_id %} ds-badge--success{% endif %}"
@@ -146,7 +146,7 @@
               <input
                 type="number"
                 class="form-control weekly-scores-input"
-                name="score_{{ row.id }}"
+                name="score_{{ row.row_key }}"
                 value=""
                 min="0"
                 max="10"
@@ -161,7 +161,7 @@
               <input
                 type="text"
                 class="form-control weekly-scores-comment"
-                name="comment_{{ row.id }}"
+                name="comment_{{ row.row_key }}"
                 value=""
                 maxlength="500"
                 placeholder="{% trans 'Qısa qeyd' %}"
@@ -203,10 +203,10 @@
         <div class="weekly-scores-card-item__head">
           {% include "portals/includes/avatar.html" with photo_url=row.photo_url name=row.full_name initials=row.full_name size_class="avatar-md" %}
           <div class="weekly-scores-card-item__identity">
-            <a href="{% url 'portals:teacher-student-profile' student_pk=row.id %}?tab=weekly-scores" class="weekly-scores-student-link">
+            <a href="{% url 'portals:teacher-student-profile' student_pk=row.id %}?tab=weekly-scores{% if row.group_id %}&from_group={{ row.group_id }}{% endif %}" class="weekly-scores-student-link">
               {{ row.full_name }}
             </a>
-            <span class="weekly-scores-card-item__groups">{{ row.group_names|join:", "|default:"—" }}</span>
+            <span class="weekly-scores-card-item__groups">{{ row.group_name|default:"—" }}</span>
           </div>
           <span class="weekly-scores-status ds-badge ds-badge--success">{% trans 'Kilidlənib' %}</span>
         </div>
@@ -240,10 +240,10 @@
         <div class="weekly-scores-card-item__head">
           {% include "portals/includes/avatar.html" with photo_url=row.photo_url name=row.full_name initials=row.full_name size_class="avatar-md" %}
           <div class="weekly-scores-card-item__identity">
-            <a href="{% url 'portals:teacher-student-profile' student_pk=row.id %}?tab=weekly-scores" class="weekly-scores-student-link">
+            <a href="{% url 'portals:teacher-student-profile' student_pk=row.id %}?tab=weekly-scores{% if row.group_id %}&from_group={{ row.group_id }}{% endif %}" class="weekly-scores-student-link">
               {{ row.full_name }}
             </a>
-            <span class="weekly-scores-card-item__groups">{{ row.group_names|join:", "|default:"—" }}</span>
+            <span class="weekly-scores-card-item__groups">{{ row.group_name|default:"—" }}</span>
           </div>
           <span class="weekly-scores-status ds-badge ds-badge--success">{% trans 'Kilidlənib' %}</span>
         </div>

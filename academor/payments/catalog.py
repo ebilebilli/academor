@@ -1,4 +1,8 @@
-"""Resolve payable courses and price packages; amount always comes from the database."""
+"""Resolve payable courses and price packages; amount always comes from the database.
+
+Mock test checkout uses the same ``CoursePricePackage`` rows on IELTS/SAT mock
+services (``Service.is_mock_test`` property; credits required).
+"""
 
 from decimal import Decimal
 
@@ -29,8 +33,8 @@ def course_has_payable_packages(course: Service) -> bool:
     return course.price_packages.filter(is_active=True, price__gt=0).exists()
 
 
-def get_payable_course(slug: str) -> Service:
-    course = get_active_project_category_by_slug(slug)
+def get_payable_course(slug: str, *, mock_only: bool | None = None) -> Service:
+    course = get_active_project_category_by_slug(slug, is_mock_test=mock_only)
     if not course:
         raise CourseNotPayableError(_('Course not found or is not active.'))
     if not course_has_payable_packages(course):
@@ -60,6 +64,8 @@ def get_payable_price_package(course: Service, package_id) -> CoursePricePackage
     )
     if not package or not package.price or package.price <= 0:
         raise PricePackageNotFoundError(_('Selected price package is not available.'))
+    if course.is_mock_test and (not package.credits or package.credits < 1):
+        raise PricePackageNotFoundError(_('Selected mock test package is not available.'))
     return package
 
 

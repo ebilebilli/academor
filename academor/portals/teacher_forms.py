@@ -20,6 +20,19 @@ from portals.utils.group_services import resolve_group_lesson_service
 from portals.utils.lesson_media import build_lesson_edit_materials, _file_basename
 
 
+def _form_data_getlist(data, key, *, default=None):
+    if not data:
+        return default if default is not None else []
+    if hasattr(data, 'getlist'):
+        return data.getlist(key)
+    value = data.get(key, default if default is not None else [])
+    if value is None:
+        return []
+    if isinstance(value, (list, tuple)):
+        return list(value)
+    return [value]
+
+
 def teacher_lesson_category_suggestions(teacher_id):
     """Distinct category labels this teacher already used (for datalist hints)."""
     return list(
@@ -139,7 +152,10 @@ class TeacherLessonForm(forms.ModelForm):
         queryset=StudyGroup.objects.none(),
         required=False,
         widget=forms.CheckboxSelectMultiple(attrs={'class': 'portal-lesson-group-input'}),
-        help_text=_('Choose every group that should receive this lesson.'),
+        help_text=_(
+            'Choose every group that should receive this lesson. '
+            'The service (SAT, IELTS, etc.) is taken from each group\'s linked course in admin—not from your teacher profile.'
+        ),
     )
     category_name = forms.CharField(
         label=_('Category label'),
@@ -200,11 +216,22 @@ class TeacherLessonForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.teacher_id = teacher_id
         self.category_suggestions = teacher_lesson_category_suggestions(teacher_id)
-        groups = teacher_groups_queryset(teacher_id, active_only=True).order_by('name')
+        from portals.utils.group_services import study_group_portal_display_labels
+
+        groups = (
+            teacher_groups_queryset(teacher_id, active_only=True)
+            .prefetch_related('courses')
+            .order_by('name')
+        )
         is_edit = bool(self.instance and self.instance.pk)
         if is_edit:
             del self.fields['groups']
             self.fields['group'].queryset = groups
+            if self.instance.group_id:
+                labels = study_group_portal_display_labels(self.instance.group)
+                self.group_service_label = ', '.join(labels) if labels else ''
+            else:
+                self.group_service_label = ''
             if self.instance.category_id:
                 self.initial.setdefault('category_name', self.instance.category.name)
             if self.instance.lesson_date is not None and not self.data:
@@ -213,7 +240,7 @@ class TeacherLessonForm(forms.ModelForm):
                 self.initial.setdefault('lesson_date', timezone.localdate())
             self.existing_materials = build_lesson_edit_materials(self.instance)
             selected_removals = (
-                set(self.data.getlist('remove_attachments'))
+                set(_form_data_getlist(self.data, 'remove_attachments'))
                 if self.data
                 else set()
             )
@@ -239,6 +266,8 @@ class TeacherLessonForm(forms.ModelForm):
             del self.fields['remove_attachments']
             self.fields['groups'].queryset = groups
             self.fields['groups'].required = True
+            self.fields['groups'].label_from_instance = self._lesson_group_choice_label
+            self.group_service_label = ''
             self.existing_materials = []
             self.existing_pdfs = []
             self.existing_images = []
@@ -253,12 +282,22 @@ class TeacherLessonForm(forms.ModelForm):
         self.new_video_url_rows = self._build_new_video_url_rows()
 
     @staticmethod
+    def _lesson_group_choice_label(group):
+        from django.utils.translation import gettext as _
+
+        from portals.utils.group_services import study_group_portal_display_labels
+
+        labels = study_group_portal_display_labels(group)
+        service = ', '.join(labels) if labels else str(_('No course linked'))
+        return f'{group.name} · {service}'
+
+    @staticmethod
     def _empty_video_url_row():
         return {'url': ''}
 
     def _build_new_video_url_rows(self):
         if self.data:
-            posted = self.data.getlist('new_video_urls')
+            posted = _form_data_getlist(self.data, 'new_video_urls', default=[''])
             if not posted:
                 posted = ['']
             return [{'url': (raw or '').strip()} for raw in posted]
@@ -325,9 +364,9 @@ class TeacherLessonForm(forms.ModelForm):
             existing_urls = {
                 row['url']
                 for row in getattr(self, 'existing_materials', [])
-                if row['id'] not in set(self.data.getlist('remove_attachments'))
+                if row['id'] not in set(_form_data_getlist(self.data, 'remove_attachments'))
             }
-            for index, raw in enumerate(self.data.getlist('new_video_urls'), start=1):
+            for index, raw in enumerate(_form_data_getlist(self.data, 'new_video_urls'), start=1):
                 url = (raw or '').strip()
                 if not url:
                     continue

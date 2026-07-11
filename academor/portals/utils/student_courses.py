@@ -10,7 +10,28 @@ QUIZ_HISTORY_INITIAL_SIZE = 10
 QUIZ_HISTORY_PAGE_SIZE = 10
 
 
-@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def ensure_student_group_course_enrollments(student_id: int, group) -> None:
+    """Ensure active StudentCourseSpecialization rows for the group's portal services.
+
+    Not cached — this is a write helper invoked from M2M signals.
+    """
+    from portals.models import StudentCourseSpecialization
+    from portals.utils.group_services import study_group_portal_codes
+    from portals.utils.portal_services import is_active_portal_course_type, normalize_portal_course_type
+
+    if not student_id or not group:
+        return
+    for code in study_group_portal_codes(group):
+        course_type = normalize_portal_course_type(code)
+        if not course_type or not is_active_portal_course_type(course_type):
+            continue
+        StudentCourseSpecialization.objects.update_or_create(
+            student_id=student_id,
+            course_type=course_type,
+            defaults={'is_active': True},
+        )
+
+
 def get_student_course_type_codes(student_id):
     """Active service enrollments assigned directly on the student profile.
 

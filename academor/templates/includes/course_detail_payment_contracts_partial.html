@@ -1,6 +1,10 @@
 {% load payment_contract %}
 {% for pkg in packages %}
 <div data-contract-package-id="{{ pkg.id }}">
+    {% if course.is_mock_test %}
+    {% mock_payment_contract package=pkg %}
+    {% else %}
     {% course_payment_contract course package=pkg %}
+    {% endif %}
 </div>
 {% endfor %}

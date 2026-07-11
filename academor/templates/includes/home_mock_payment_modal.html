@@ -1,0 +1,155 @@
+{% load i18n payment_contract static %}
+<div
+    class="modal fade course-pay-modal"
+    id="homeMockPayModal"
+    tabindex="-1"
+    aria-labelledby="homeMockPayModalLabel"
+    aria-hidden="true"
+    data-home-mock-pay-modal
+    data-open-on-load="{% if home_mock_payment_form.errors or open_home_mock_payment_modal %}true{% else %}false{% endif %}"
+    {% if home_mock_payment_package_id %}data-initial-package-id="{{ home_mock_payment_package_id }}"{% endif %}
+>
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content border-0 rounded-4 overflow-hidden shadow-lg course-pay-modal__content">
+            <div class="modal-header border-0 course-pay-modal__header px-4 pt-4 pb-0">
+                <div class="course-pay-modal__head pe-3">
+                    <div class="course-pay-modal__head-row">
+                        <span class="course-pay-modal__head-figure" aria-hidden="true">
+                            <img
+                                src="{% static 'assets/img/contract_small_icon.webp' %}"
+                                alt=""
+                                class="course-pay-modal__head-icon"
+                                width="24"
+                                height="24"
+                                decoding="async"
+                            >
+                        </span>
+                        <div class="course-pay-modal__head-text">
+                            <h2 class="modal-title h4 mb-1 course-pay-modal__title" id="homeMockPayModalLabel">
+                                {% trans "Contract and payment" %}
+                            </h2>
+                            <p class="course-pay-modal__package small mb-0" id="home-mock-pay-modal-package" hidden></p>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans 'Close' %}"></button>
+            </div>
+            <div class="modal-body course-pay-modal__body px-4 pb-4 pt-3">
+                <div id="home-mock-pay-modal-alert" class="alert py-2 small mb-3 d-none" role="alert" aria-live="polite"></div>
+
+                <form
+                    method="post"
+                    action="#"
+                    class="course-pay-modal__form"
+                    id="home-mock-pay-form"
+                    novalidate
+                    data-msg-network="{% trans 'Network error. Please try again.' %}"
+                    data-msg-generic="{% trans 'Please correct the errors in the form.' %}"
+                    data-msg-redirecting="{% trans 'Redirecting to secure payment…' %}"
+                    data-msg-select-package="{% trans 'Please select a package.' %}"
+                >
+                    {% csrf_token %}
+                    <input type="hidden" name="return_to" value="home">
+                    {{ home_mock_payment_form.price_package_id }}
+                    {{ home_mock_payment_form.contract_number }}
+
+                    <div class="mb-2 course-pay-modal__field">
+                        <label for="{{ home_mock_payment_form.buyer_name.id_for_label }}" class="form-label small fw-semibold mb-1">
+                            {{ home_mock_payment_form.buyer_name.label }}
+                            <span class="text-danger" aria-hidden="true">*</span>
+                        </label>
+                        {{ home_mock_payment_form.buyer_name }}
+                        {% if home_mock_payment_form.buyer_name.errors %}
+                        <div class="text-danger small mt-1 js-field-error" data-server-error>{{ home_mock_payment_form.buyer_name.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-2 course-pay-modal__field">
+                        <label for="{{ home_mock_payment_form.buyer_email.id_for_label }}" class="form-label small fw-semibold mb-1">
+                            {{ home_mock_payment_form.buyer_email.label }}
+                        </label>
+                        {{ home_mock_payment_form.buyer_email }}
+                        {% if home_mock_payment_form.buyer_email.errors %}
+                        <div class="text-danger small mt-1 js-field-error" data-server-error>{{ home_mock_payment_form.buyer_email.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-2 course-pay-modal__field">
+                        <label for="{{ home_mock_payment_form.buyer_phone.id_for_label }}" class="form-label small fw-semibold mb-1">
+                            {{ home_mock_payment_form.buyer_phone.label }}
+                            <span class="text-danger" aria-hidden="true">*</span>
+                        </label>
+                        {{ home_mock_payment_form.buyer_phone }}
+                        {% if home_mock_payment_form.buyer_phone.errors %}
+                        <div class="text-danger small mt-1 js-field-error" data-server-error>{{ home_mock_payment_form.buyer_phone.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <p class="course-pay-modal__portal-note small text-muted mb-3">
+                        <i class="fas fa-info-circle me-1" aria-hidden="true"></i>
+                        {% trans "After successful payment, our team will send your portal login details to the phone number you provide." %}
+                    </p>
+
+                    <section class="course-pay-contract mb-3" aria-labelledby="home-mock-pay-contract-toggle">
+                        <button
+                            type="button"
+                            class="course-pay-contract__toggle w-100"
+                            id="home-mock-pay-contract-toggle"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#home-mock-pay-contract-panel"
+                            aria-expanded="{% if home_mock_payment_form.accept_contract.errors %}true{% else %}false{% endif %}"
+                            aria-controls="home-mock-pay-contract-panel"
+                        >
+                            <span class="course-pay-contract__toggle-text">
+                                {% trans "Payment agreement" %}
+                            </span>
+                            <i class="fas fa-chevron-down course-pay-contract__toggle-icon" aria-hidden="true"></i>
+                        </button>
+                        <p class="course-pay-contract__hint small text-muted mb-0 mt-2">
+                            {% trans "Please read the agreement before confirming." %}
+                        </p>
+                        <div
+                            class="collapse{% if home_mock_payment_form.accept_contract.errors %} show{% endif %}"
+                            id="home-mock-pay-contract-panel"
+                        >
+                            <div
+                                class="course-pay-contract__scroll mt-2"
+                                id="home-mock-pay-contract-body"
+                                tabindex="0"
+                                role="document"
+                                aria-labelledby="home-mock-pay-contract-toggle"
+                            ></div>
+                        </div>
+                        <div id="home-mock-pay-contract-templates" class="d-none" aria-hidden="true">
+                            {% for pkg in home_mock_packages %}
+                            <div data-contract-package-id="{{ pkg.id }}">
+                                {% mock_payment_contract package=pkg %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="form-check mt-2 course-pay-modal__field{% if home_mock_payment_form.accept_contract.errors %} is-invalid{% endif %}">
+                            {{ home_mock_payment_form.accept_contract }}
+                            <label class="form-check-label small" for="{{ home_mock_payment_form.accept_contract.id_for_label }}">
+                                {{ home_mock_payment_form.accept_contract.label }}
+                                <span class="text-danger" aria-hidden="true">*</span>
+                            </label>
+                            {% if home_mock_payment_form.accept_contract.errors %}
+                            <div class="text-danger small mt-1 js-field-error" data-server-error>{{ home_mock_payment_form.accept_contract.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </section>
+
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-semibold w-100 course-pay-modal__submit" id="home-mock-pay-submit">
+                        <span class="course-pay-modal__submit-spinner" aria-hidden="true">
+                            <i class="fas fa-circle-notch fa-spin"></i>
+                        </span>
+                        <i class="fas fa-lock course-pay-modal__submit-lock small" aria-hidden="true"></i>
+                        <span class="course-pay-modal__submit-label">{% trans "Confirm and pay" %}</span>
+                    </button>
+                    <p class="course-pay-block__secure-note small mb-0 mt-3 text-center text-muted">
+                        <i class="fas fa-shield-alt me-1" aria-hidden="true"></i>
+                        {% trans "Secure payment via United Payment" %}
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

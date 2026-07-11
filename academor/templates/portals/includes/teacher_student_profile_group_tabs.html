@@ -1,0 +1,26 @@
+{% load i18n %}
+{% if profile_groups|length > 1 %}
+<div class="s-lessons-filter-panel__row s-lessons-filter-panel__row--group mb-4">
+  <span class="s-lessons-filter-panel__label">
+    <i class="ti ti-users-group" aria-hidden="true"></i>
+    {% trans 'Qrup' %}
+  </span>
+  <div
+    class="s-lessons-filter-panel__tabs s-lessons-filter-panel__tabs--seg"
+    data-profile-group-filter
+    role="group"
+    aria-label="{% trans 'Qrup filteri' %}"
+  >
+    {% for group in profile_groups %}
+    <button
+      type="button"
+      class="s-filter-tab{% if profile_active_group_id == group.id %} is-active{% endif %}"
+      data-profile-group="{{ group.id }}"
+      aria-selected="{% if profile_active_group_id == group.id %}true{% else %}false{% endif %}"
+    >
+      {{ group.name }}
+    </button>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}

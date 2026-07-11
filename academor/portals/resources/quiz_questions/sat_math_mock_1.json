@@ -1,0 +1,58 @@
+{
+  "title": "SAT Math — Practice Mock 1 (Algebra)",
+  "service": "sat",
+  "category_name": "SAT Math",
+  "is_sat": true,
+  "sat_section": "algebra",
+  "time_limit_minutes": 35,
+  "questions": [
+    {
+      "id": 1,
+      "question": "If 3x + 7 = 22, what is the value of x?",
+      "options": ["3", "5", "7", "15"],
+      "answer": 1
+    },
+    {
+      "id": 2,
+      "question": "The line y = -2x + 11 crosses the y-axis at what point?",
+      "options": ["(0, 11)", "(11, 0)", "(0, -2)", "(-2, 0)"],
+      "answer": 0
+    },
+    {
+      "id": 3,
+      "question": "A rideshare company charges $2.50 plus $1.20 per mile. Which equation gives the total cost C for m miles?",
+      "options": ["C = 1.20m - 2.50", "C = 2.50m + 1.20", "C = 1.20 + 2.50m", "C = 2.50 + 1.20m"],
+      "answer": 3
+    },
+    {
+      "id": 4,
+      "question": "What is the solution (x, y) to the system: 2x + y = 10 and x - y = 2?",
+      "options": ["(4, 2)", "(2, 4)", "(3, 4)", "(6, -2)"],
+      "answer": 0
+    },
+    {
+      "id": 5,
+      "question": "The inequality 5 - 2x > 13 is equivalent to",
+      "options": ["x < -4", "x > -4", "x < 4", "x > 4"],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "A gym costs $40/month plus a $75 registration fee. After how many months is the total $295?",
+      "options": ["4", "5", "6", "7"],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "The graph of y = 4x - 3 has a slope of",
+      "options": ["-3", "3", "4", "-4"],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "If f(x) = 2x² - 8, what is f(3)?",
+      "options": ["-2", "2", "10", "18"],
+      "answer": 2
+    }
+  ]
+}

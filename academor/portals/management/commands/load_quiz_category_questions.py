@@ -43,7 +43,7 @@ class Command(BaseCommand):
         for row in results:
             self.stdout.write(
                 self.style.SUCCESS(
-                    f'{row["file"]} → {row["category"]}: '
+                    f'{row["file"]} -> {row["category"]}: '
                     f'Quiz {row["quiz_topic"]} '
                     f'({"created" if row["quiz_created"] else "updated"}, id={row["quiz_id"]}); '
                     f'questions {row["created"]} created, {row["updated"]} updated, '

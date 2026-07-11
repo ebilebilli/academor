@@ -8,70 +8,195 @@ from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from portals.models import CustomerProfile, IeltsMockTestAttempt, Quiz
+from projects.models import MOCK_TEST_SERVICE_Q
 from portals.utils.ielts_mock_test import (
     IELTS_SERVICE,
-    SECTION_SPECS,
-    _content_filter_for_section,
+    SAT_SERVICE,
+    _attempt_create_kwargs,
     advance_mock_after_section_submit,
+    get_mock_complete_url,
+    get_mock_landing_url,
+    get_mock_take_url,
+    pick_random_customer_section_quizzes,
     serialize_mock_attempt_summary,
     serialize_mock_progress,
     validate_mock_section_submit,
 )
+from portals.utils.mock_programs import (
+    MOCK_EXAM_PROGRAMS,
+    get_manual_sections,
+    get_next_section,
+    get_program_first_section,
+    get_program_label,
+    get_section_label,
+    is_valid_mock_program,
+)
 
 
-def customer_has_in_progress_mock(customer_id: int) -> bool:
+def _mock_credit_field_for_program(exam_program: str) -> str | None:
+    if exam_program == IELTS_SERVICE:
+        return 'ielts_mock_credits'
+    if exam_program == SAT_SERVICE:
+        return 'sat_mock_credits'
+    return None
+
+
+def _customer_in_progress_program(customer_id: int) -> str | None:
+    return (
+        IeltsMockTestAttempt.objects.filter(
+            customer_id=customer_id,
+            status=IeltsMockTestAttempt.Status.IN_PROGRESS,
+        )
+        .values_list('exam_program', flat=True)
+        .first()
+    )
+
+
+def customer_can_view_mock_program(customer_id: int, exam_program: str) -> bool:
+    if not is_valid_mock_program(exam_program):
+        return False
+    if exam_program in get_customer_mock_exam_programs(customer_id):
+        return True
     return IeltsMockTestAttempt.objects.filter(
         customer_id=customer_id,
-        status=IeltsMockTestAttempt.Status.IN_PROGRESS,
+        exam_program=exam_program,
+        status=IeltsMockTestAttempt.Status.COMPLETED,
     ).exists()
 
 
-def customer_can_start_mock(customer_id: int) -> bool:
+def build_customer_mock_dashboard_sections(customer_id: int) -> list[dict]:
+    """One dashboard action block per visible mock program (IELTS, SAT, …)."""
+    profile = CustomerProfile.objects.filter(pk=customer_id).first()
+    if not profile:
+        return []
+
+    sections = []
+    for program in MOCK_EXAM_PROGRAMS:
+        if not customer_can_view_mock_program(customer_id, program):
+            continue
+        sections.append({
+            'program': program,
+            'label': get_program_label(program),
+            'credits': profile.mock_credits_for_program(program),
+            'in_progress': customer_has_in_progress_mock(customer_id, exam_program=program),
+            'can_start': customer_can_start_mock(customer_id, program),
+            'landing_url': reverse('portals:customer-mock-landing', kwargs={'program': program}),
+        })
+    return sections
+
+
+def get_customer_selectable_mock_programs(customer_id: int) -> list[str]:
+    """Programs a customer may pick on the mock chooser (credits, in-progress, or history)."""
+    return [
+        program for program in MOCK_EXAM_PROGRAMS
+        if customer_can_view_mock_program(customer_id, program)
+    ]
+
+
+def build_customer_mock_picker_programs(customer_id: int) -> list[dict]:
+    profile = CustomerProfile.objects.filter(pk=customer_id).first()
+    if not profile:
+        return []
+
+    cards = []
+    for program in get_customer_selectable_mock_programs(customer_id):
+        cards.append({
+            'code': program,
+            'label': get_program_label(program),
+            'landing_url': reverse('portals:customer-mock-landing', kwargs={'program': program}),
+            'credits': profile.mock_credits_for_program(program),
+            'in_progress': customer_has_in_progress_mock(customer_id, exam_program=program),
+            'can_start': customer_can_start_mock(customer_id, program),
+            'completed_count': IeltsMockTestAttempt.objects.filter(
+                customer_id=customer_id,
+                exam_program=program,
+                status=IeltsMockTestAttempt.Status.COMPLETED,
+            ).count(),
+        })
+    return cards
+
+
+def get_customer_mock_exam_programs(customer_id: int) -> list[str]:
+    profile = CustomerProfile.objects.filter(pk=customer_id).first()
+    if not profile:
+        return []
+
+    programs: list[str] = []
+    in_progress = _customer_in_progress_program(customer_id)
+    if in_progress and is_valid_mock_program(in_progress):
+        programs.append(in_progress)
+
+    if profile.ielts_mock_credits > 0 and IELTS_SERVICE not in programs:
+        programs.append(IELTS_SERVICE)
+    if profile.sat_mock_credits > 0 and SAT_SERVICE not in programs:
+        programs.append(SAT_SERVICE)
+    return programs
+
+
+def resolve_customer_mock_exam_program(
+    customer_id: int,
+    preferred: str | None = None,
+) -> str | None:
+    programs = get_customer_mock_exam_programs(customer_id)
+    if not programs:
+        return None
+    if preferred and preferred in programs:
+        return preferred
+    if len(programs) == 1:
+        return programs[0]
+    return None
+
+
+def customer_has_in_progress_mock(customer_id: int, *, exam_program: str | None = None) -> bool:
+    qs = IeltsMockTestAttempt.objects.filter(
+        customer_id=customer_id,
+        status=IeltsMockTestAttempt.Status.IN_PROGRESS,
+    )
+    if exam_program:
+        qs = qs.filter(exam_program=exam_program)
+    return qs.exists()
+
+
+def customer_can_start_mock(customer_id: int, exam_program: str | None = None) -> bool:
     profile = CustomerProfile.objects.filter(pk=customer_id).first()
     if not profile:
         return False
+    if exam_program:
+        if customer_has_in_progress_mock(customer_id, exam_program=exam_program):
+            return True
+        return profile.mock_credits_for_program(exam_program) > 0
     if customer_has_in_progress_mock(customer_id):
         return True
     return profile.mock_credits > 0
 
 
-def _eligible_quizzes_for_customer_section(section: str, flag_kwargs: dict):
-    qs = (
-        Quiz.objects.filter(
-            category__service=IELTS_SERVICE,
-            **flag_kwargs,
-        )
-        .annotate(has_content=_content_filter_for_section(section))
-        .filter(has_content=True)
-        .select_related('category')
-    )
-    return list(qs)
-
-
-def pick_random_customer_section_quizzes() -> dict[str, Quiz | None]:
-    import random
-
-    picked: dict[str, Quiz | None] = {}
-    for section, flag_kwargs in SECTION_SPECS:
-        candidates = _eligible_quizzes_for_customer_section(section, flag_kwargs)
-        picked[section] = random.choice(candidates) if candidates else None
-    return picked
-
-
-def get_missing_customer_mock_sections() -> list[str]:
-    picked = pick_random_customer_section_quizzes()
+def get_missing_customer_mock_sections(*, exam_program: str = IELTS_SERVICE) -> list[str]:
+    picked = pick_random_customer_section_quizzes(exam_program=exam_program)
     return [section for section, quiz in picked.items() if quiz is None]
 
 
-def abandon_in_progress_customer_mock_attempts(customer_id: int) -> None:
-    IeltsMockTestAttempt.objects.filter(
+def abandon_in_progress_customer_mock_attempts(
+    customer_id: int,
+    *,
+    exam_program: str | None = None,
+) -> None:
+    qs = IeltsMockTestAttempt.objects.filter(
         customer_id=customer_id,
         status=IeltsMockTestAttempt.Status.IN_PROGRESS,
-    ).update(status=IeltsMockTestAttempt.Status.ABANDONED)
+    )
+    if exam_program:
+        qs = qs.filter(exam_program=exam_program)
+    qs.update(status=IeltsMockTestAttempt.Status.ABANDONED)
 
 
 @transaction.atomic
-def start_customer_mock_test_attempt(customer_id: int) -> tuple[IeltsMockTestAttempt | None, str | None]:
+def start_customer_mock_test_attempt(
+    customer_id: int,
+    exam_program: str,
+) -> tuple[IeltsMockTestAttempt | None, str | None]:
+    if not is_valid_mock_program(exam_program):
+        return None, str(_('Unknown mock test program.'))
+
     profile = CustomerProfile.objects.select_for_update().filter(pk=customer_id).first()
     if not profile:
         return None, str(_('Customer profile not found.'))
@@ -79,26 +204,22 @@ def start_customer_mock_test_attempt(customer_id: int) -> tuple[IeltsMockTestAtt
     if customer_has_in_progress_mock(customer_id):
         abandon_in_progress_customer_mock_attempts(customer_id)
 
-    if profile.mock_credits < 1:
+    credit_field = _mock_credit_field_for_program(exam_program)
+    if not credit_field or profile.mock_credits_for_program(exam_program) < 1:
         return None, str(_('You have no mock test credits. Purchase a package to continue.'))
 
-    picked = pick_random_customer_section_quizzes()
+    picked = pick_random_customer_section_quizzes(exam_program=exam_program)
     missing = [section for section, quiz in picked.items() if quiz is None]
     if missing:
         labels = ', '.join(
-            str(dict(IeltsMockTestAttempt.Section.choices).get(section, section))
+            get_section_label(exam_program, section)
             for section in missing
         )
         return None, str(_('Not enough quizzes are available for: %(sections)s.') % {'sections': labels})
 
     attempt = IeltsMockTestAttempt.objects.create(
         customer_id=customer_id,
-        status=IeltsMockTestAttempt.Status.IN_PROGRESS,
-        current_section=IeltsMockTestAttempt.Section.LISTENING,
-        listening_quiz=picked[IeltsMockTestAttempt.Section.LISTENING],
-        reading_quiz=picked[IeltsMockTestAttempt.Section.READING],
-        writing_quiz=picked[IeltsMockTestAttempt.Section.WRITING],
-        speaking_quiz=picked[IeltsMockTestAttempt.Section.SPEAKING],
+        **_attempt_create_kwargs(exam_program, picked),
     )
     return attempt, None
 
@@ -109,7 +230,7 @@ def consume_customer_mock_credit_on_quiz_start(
     attempt_id: int,
     quiz_id: int,
 ) -> tuple[bool, str | None]:
-    """Deduct one credit when the customer starts the first Listening quiz."""
+    """Deduct one credit when the customer starts the first mock section."""
     from portals.utils.ielts_mock_test import section_for_quiz_in_attempt
 
     attempt = (
@@ -128,14 +249,16 @@ def consume_customer_mock_credit_on_quiz_start(
         return True, None
 
     section = section_for_quiz_in_attempt(attempt, quiz_id)
-    if section != IeltsMockTestAttempt.Section.LISTENING:
+    first_section = get_program_first_section(attempt.exam_program)
+    if section != first_section:
         return False, str(_('Mock test credit must be applied before starting the first section.'))
 
+    credit_field = _mock_credit_field_for_program(attempt.exam_program)
     profile = CustomerProfile.objects.select_for_update().filter(pk=customer_id).first()
-    if not profile or profile.mock_credits < 1:
+    if not profile or not credit_field or profile.mock_credits_for_program(attempt.exam_program) < 1:
         return False, str(_('You have no mock test credits. Purchase a package to continue.'))
 
-    CustomerProfile.objects.filter(pk=customer_id).update(mock_credits=F('mock_credits') - 1)
+    CustomerProfile.objects.filter(pk=customer_id).update(**{credit_field: F(credit_field) - 1})
     attempt.credit_consumed = True
     attempt.save(update_fields=['credit_consumed'])
     return True, None
@@ -152,10 +275,12 @@ def get_mock_attempt_for_customer(customer_id: int, attempt_id: int) -> IeltsMoc
             'reading_quiz__category',
             'writing_quiz__category',
             'speaking_quiz__category',
+            'math_quiz__category',
             'listening_result',
             'reading_result',
             'writing_result',
             'speaking_result',
+            'math_result',
             'customer__user',
         )
         .first()
@@ -177,46 +302,38 @@ def abandon_customer_mock_test_attempt(customer_id: int, attempt_id: int) -> Non
     ).update(status=IeltsMockTestAttempt.Status.ABANDONED)
 
 
-def get_customer_completed_mock_attempts(customer_id: int, *, limit: int = 20):
+def get_customer_completed_mock_attempts(
+    customer_id: int,
+    *,
+    exam_program: str | None = None,
+    limit: int = 20,
+):
+    qs = IeltsMockTestAttempt.objects.filter(
+        customer_id=customer_id,
+        status=IeltsMockTestAttempt.Status.COMPLETED,
+    )
+    if exam_program:
+        qs = qs.filter(exam_program=exam_program)
     return (
-        IeltsMockTestAttempt.objects.filter(
-            customer_id=customer_id,
-            status=IeltsMockTestAttempt.Status.COMPLETED,
-        )
-        .select_related(
+        qs.select_related(
             'customer__user',
             'listening_quiz__category',
             'reading_quiz__category',
             'writing_quiz__category',
             'speaking_quiz__category',
+            'math_quiz__category',
             'listening_result',
             'reading_result',
             'writing_result',
             'speaking_result',
+            'math_result',
         )
         .order_by('-completed_at', '-id')[:limit]
     )
 
 
 def get_customer_mock_take_url(attempt: IeltsMockTestAttempt, section: str) -> str:
-    """Customer mock take URLs (parallel to student routes)."""
-    quiz = attempt.quiz_for_section(section)
-    if not quiz:
-        return reverse('portals:customer-ielts-mock')
-
-    if section == IeltsMockTestAttempt.Section.LISTENING:
-        url_name = 'portals:customer-manual-quiz-take'
-    elif section == IeltsMockTestAttempt.Section.READING:
-        url_name = 'portals:customer-reading-quiz-take'
-    elif section == IeltsMockTestAttempt.Section.WRITING:
-        url_name = 'portals:customer-manual-quiz-take'
-    elif section == IeltsMockTestAttempt.Section.SPEAKING:
-        url_name = 'portals:customer-speaking-quiz-take'
-    else:
-        return reverse('portals:customer-ielts-mock')
-
-    base = reverse(url_name, kwargs={'pk': quiz.pk})
-    return f'{base}?mock={attempt.pk}'
+    return get_mock_take_url(attempt, section, role='customer')
 
 
 def get_customer_mock_current_take_url(attempt: IeltsMockTestAttempt) -> str:
@@ -233,18 +350,15 @@ def resolve_customer_mock_take_request(
 
     attempt = get_mock_attempt_for_customer(customer_id, mock_id)
     if not attempt:
-        return {'mock_redirect': reverse('portals:customer-ielts-mock')}
+        programs = get_customer_mock_exam_programs(customer_id)
+        program = programs[0] if len(programs) == 1 else IELTS_SERVICE
+        return {'mock_redirect': get_mock_landing_url(program, role='customer')}
 
     if attempt.status == IeltsMockTestAttempt.Status.COMPLETED:
-        return {
-            'mock_redirect': reverse(
-                'portals:customer-ielts-mock-complete',
-                kwargs={'pk': attempt.pk},
-            ),
-        }
+        return {'mock_redirect': get_mock_complete_url(attempt, role='customer')}
 
     if attempt.status != IeltsMockTestAttempt.Status.IN_PROGRESS:
-        return {'mock_redirect': reverse('portals:customer-ielts-mock')}
+        return {'mock_redirect': get_mock_landing_url(attempt.exam_program, role='customer')}
 
     from portals.utils.ielts_mock_test import section_for_quiz_in_attempt
 
@@ -255,7 +369,7 @@ def resolve_customer_mock_take_request(
     return {
         'mock_attempt': serialize_mock_progress(attempt),
         'mock_id': attempt.pk,
-        'back_url': reverse('portals:customer-ielts-mock'),
+        'back_url': get_mock_landing_url(attempt.exam_program, role='customer'),
     }
 
 
@@ -325,10 +439,7 @@ def apply_customer_mock_submit_result(
         response['redirect_url'] = get_customer_mock_current_take_url(attempt)
         return response
 
-    from portals.utils.ielts_mock_test import (
-        NEXT_SECTION_BY_SECTION,
-        section_for_quiz_in_attempt,
-    )
+    from portals.utils.ielts_mock_test import section_for_quiz_in_attempt
 
     section = section_for_quiz_in_attempt(attempt, quiz_id)
     if not section:
@@ -337,13 +448,12 @@ def apply_customer_mock_submit_result(
         return response
 
     attempt = advance_mock_after_section_submit(attempt, section=section, result=result)
-    next_section = NEXT_SECTION_BY_SECTION.get(section)
-    section_labels = dict(IeltsMockTestAttempt.Section.choices)
-    completed_label = section_labels.get(section, section)
+    next_section = get_next_section(attempt.exam_program, section)
+    completed_label = get_section_label(attempt.exam_program, section)
     response['next_url'] = (
         get_customer_mock_take_url(attempt, next_section)
         if next_section
-        else reverse('portals:customer-ielts-mock-complete', kwargs={'pk': attempt.pk})
+        else get_mock_complete_url(attempt, role='customer')
     )
     response['mock_attempt_id'] = attempt.pk
     response['mock_continue'] = True
@@ -351,7 +461,7 @@ def apply_customer_mock_submit_result(
     response['mock_section_completed'] = section
     response['mock_section_completed_label'] = str(completed_label)
     if next_section:
-        next_label = section_labels.get(next_section, next_section)
+        next_label = get_section_label(attempt.exam_program, next_section)
         response['mock_next_section'] = next_section
         response['mock_next_section_label'] = str(next_label)
         response['mock_continue_message'] = str(
@@ -372,9 +482,8 @@ def apply_customer_mock_submit_result(
             create_mock_section_review_notifications,
             create_mock_test_completed_notifications,
         )
-        from portals.utils.ielts_mock_test import MANUAL_SECTIONS
 
-        if section in MANUAL_SECTIONS:
+        if section in get_manual_sections(attempt.exam_program):
             create_mock_section_review_notifications(attempt, result, section)
         create_mock_test_completed_notifications(attempt)
 
@@ -388,7 +497,21 @@ def serialize_customer_mock_attempt_summary(attempt: IeltsMockTestAttempt) -> di
     return data
 
 
-def get_active_mock_packages():
-    from portals.models import MockTestPackage
+def get_active_mock_packages_services():
+    from projects.models import Service
 
-    return MockTestPackage.objects.filter(is_active=True, price__gt=0, credits__gt=0).order_by('order', 'id')
+    return (
+        Service.objects.filter(is_active=True)
+        .filter(MOCK_TEST_SERVICE_Q)
+        .prefetch_related('price_packages')
+        .order_by('order', 'id')
+    )
+
+
+def get_customer_mock_home_url(customer_id: int) -> str:
+    programs = get_customer_selectable_mock_programs(customer_id)
+    if len(programs) == 1:
+        return reverse('portals:customer-mock-landing', kwargs={'program': programs[0]})
+    if programs:
+        return reverse('portals:customer-mock-picker')
+    return reverse('portals:customer-mock-packages')

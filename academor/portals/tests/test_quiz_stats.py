@@ -1,6 +1,7 @@
 from django.test import SimpleTestCase
 
 from portals.utils.quiz_stats import (
+    build_mock_stats_list,
     compute_mock_average_stats,
     compute_quiz_average_stats,
     compute_weekly_average_stats,
@@ -63,3 +64,56 @@ class QuizAverageStatsTests(SimpleTestCase):
         self.assertEqual(stats['graded_count'], 2)
         self.assertEqual(stats['pending_count'], 1)
         self.assertEqual(stats['tier'], 'good')
+
+    def test_mock_average_stats_sat_scaled(self):
+        attempts = [
+            {
+                'scoring_mode': 'sat_scaled',
+                'overall_score': 1200,
+                'is_fully_graded': True,
+            },
+            {
+                'scoring_mode': 'sat_scaled',
+                'overall_score': 1400,
+                'is_fully_graded': True,
+            },
+        ]
+        stats = compute_mock_average_stats(attempts)
+        self.assertIsNone(stats['avg_band'])
+        self.assertEqual(stats['avg_total_score'], 1300)
+        self.assertEqual(stats['avg_score_pct'], 81.2)
+        self.assertEqual(stats['graded_count'], 2)
+
+    def test_build_mock_stats_list_splits_by_exam_program(self):
+        attempts = [
+            {
+                'exam_program': 'ielts',
+                'scoring_mode': 'ielts_band',
+                'overall_band': 7.0,
+                'is_fully_graded': True,
+            },
+            {
+                'exam_program': 'ielts',
+                'scoring_mode': 'ielts_band',
+                'overall_band': 8.0,
+                'is_fully_graded': True,
+            },
+            {
+                'exam_program': 'sat',
+                'scoring_mode': 'sat_scaled',
+                'overall_score': 1200,
+                'is_fully_graded': True,
+            },
+            {
+                'exam_program': 'sat',
+                'scoring_mode': 'sat_scaled',
+                'overall_score': 1400,
+                'is_fully_graded': True,
+            },
+        ]
+        cards = build_mock_stats_list(attempts)
+        self.assertEqual(len(cards), 2)
+        self.assertEqual(cards[0]['exam_program'], 'ielts')
+        self.assertEqual(cards[0]['avg_band'], 7.5)
+        self.assertEqual(cards[1]['exam_program'], 'sat')
+        self.assertEqual(cards[1]['avg_total_score'], 1300)

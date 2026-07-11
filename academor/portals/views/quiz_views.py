@@ -249,20 +249,13 @@ def _submit_leave_completion(
 
 def _resolve_cancel_quiz(profile_id: int, quiz_id: int, mock_id: int | None):
     """Resolve quiz take data for cancel, inferring mock context when omitted."""
+    if mock_id is None:
+        attempt = find_in_progress_mock_attempt_for_quiz(profile_id, quiz_id)
+        if attempt:
+            mock_id = attempt.pk
+
     quiz, quiz_kind = _get_student_take_quiz(profile_id, quiz_id, mock_attempt_id=mock_id)
-    if quiz or mock_id:
-        return quiz, quiz_kind, mock_id
-
-    attempt = find_in_progress_mock_attempt_for_quiz(profile_id, quiz_id)
-    if not attempt:
-        return None, None, None
-
-    quiz, quiz_kind = _get_student_take_quiz(
-        profile_id,
-        quiz_id,
-        mock_attempt_id=attempt.pk,
-    )
-    return quiz, quiz_kind, attempt.pk
+    return quiz, quiz_kind, mock_id
 
 
 class StudentQuizTakeView(StudentQuizTakeRequiredMixin, View):
@@ -270,24 +263,31 @@ class StudentQuizTakeView(StudentQuizTakeRequiredMixin, View):
 
     def get(self, request, pk):
         profile = get_student_profile(request.portal_user)
-        quiz = get_student_quiz_take_data(profile.pk, pk)
+        mock_id = parse_mock_attempt_id(request.GET.get('mock'))
+        quiz = get_student_quiz_take_data(profile.pk, pk, mock_attempt_id=mock_id)
         if not quiz:
-            denied = _deny_locked_standalone_quiz(request, profile.pk, pk)
+            denied = _deny_locked_standalone_quiz(request, profile.pk, pk, mock_id=mock_id)
             if denied:
                 return denied
             raise Http404
 
-        return render(
+        mock_ctx = _mock_context_for_take(request, profile.pk, pk)
+        if mock_ctx.get('mock_redirect'):
+            return redirect(mock_ctx['mock_redirect'])
+
+        start_url = reverse('portals:student-quiz-start', kwargs={'pk': pk})
+        if mock_ctx.get('mock_id'):
+            start_url = f'{start_url}?mock={mock_ctx["mock_id"]}'
+
+        ctx = _portal_context(
             request,
-            self.template_name,
-            _portal_context(
-                request,
-                quiz=quiz,
-                submit_url=reverse('portals:student-quiz-submit', kwargs={'pk': pk}),
-                start_url=reverse('portals:student-quiz-start', kwargs={'pk': pk}),
-                back_url=_quiz_back_url(quiz),
-            ),
+            quiz=quiz,
+            submit_url=reverse('portals:student-quiz-submit', kwargs={'pk': pk}),
+            start_url=start_url,
+            back_url=mock_ctx.get('back_url') or _quiz_back_url(quiz),
+            **{k: v for k, v in mock_ctx.items() if k != 'back_url'},
         )
+        return render(request, self.template_name, ctx)
 
 
 class StudentReadingQuizTakeView(StudentQuizTakeRequiredMixin, View):

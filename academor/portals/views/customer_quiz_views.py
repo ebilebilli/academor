@@ -9,6 +9,7 @@ from portals.utils.customer_mock import (
     abandon_customer_mock_test_attempt,
     consume_customer_mock_credit_on_quiz_start,
     get_active_customer_mock_attempt,
+    get_customer_mock_home_url,
     resolve_customer_mock_start_request,
     resolve_customer_mock_take_request,
 )
@@ -21,6 +22,7 @@ from portals.utils.quiz_submit import (
     submit_manual_quiz_attempt,
     submit_reading_quiz_attempt,
     submit_speaking_quiz_attempt,
+    submit_variant_quiz_attempt,
 )
 from portals.views.mixins import CustomerQuizTakeRequiredMixin
 from portals.views.quiz_views import (
@@ -29,6 +31,43 @@ from portals.views.quiz_views import (
     _parse_json_submit_payload,
 )
 from portals.views.views_v1 import _portal_context
+
+
+class CustomerQuizTakeView(CustomerQuizTakeRequiredMixin, View):
+    template_name = 'portals/student/quiz_take.html'
+
+    def get(self, request, pk):
+        profile = get_customer_profile(request.portal_user)
+        mock_id = parse_mock_attempt_id(request.GET.get('mock'))
+        if not mock_id:
+            raise Http404
+        quiz = get_customer_mock_quiz_take_data(profile.pk, pk, mock_attempt_id=mock_id)
+        if not quiz:
+            raise Http404
+
+        mock_ctx = resolve_customer_mock_take_request(profile.pk, mock_id, pk)
+        if mock_ctx.get('mock_redirect'):
+            return redirect(mock_ctx['mock_redirect'])
+
+        mock_home = get_customer_mock_home_url(profile.pk)
+        start_url = f"{reverse('portals:customer-quiz-start', kwargs={'pk': pk})}?mock={mock_id}"
+        cancel_url = (
+            f"{reverse('portals:customer-quiz-cancel', kwargs={'pk': pk})}"
+            f"?mock={mock_id}&next={mock_ctx.get('back_url', mock_home)}"
+        )
+        return render(
+            request,
+            self.template_name,
+            _portal_context(
+                request,
+                quiz=quiz,
+                submit_url=reverse('portals:customer-quiz-submit', kwargs={'pk': pk}),
+                start_url=start_url,
+                back_url=mock_ctx.get('back_url') or mock_home,
+                quiz_cancel_url=cancel_url,
+                **{k: v for k, v in mock_ctx.items() if k != 'back_url'},
+            ),
+        )
 
 
 class CustomerReadingQuizTakeView(CustomerQuizTakeRequiredMixin, View):
@@ -47,10 +86,11 @@ class CustomerReadingQuizTakeView(CustomerQuizTakeRequiredMixin, View):
         if mock_ctx.get('mock_redirect'):
             return redirect(mock_ctx['mock_redirect'])
 
+        mock_home = get_customer_mock_home_url(profile.pk)
         start_url = f"{reverse('portals:customer-quiz-start', kwargs={'pk': pk})}?mock={mock_id}"
         cancel_url = (
             f"{reverse('portals:customer-quiz-cancel', kwargs={'pk': pk})}"
-            f"?mock={mock_id}&next={mock_ctx.get('back_url', reverse('portals:customer-ielts-mock'))}"
+            f"?mock={mock_id}&next={mock_ctx.get('back_url', mock_home)}"
         )
         return render(
             request,
@@ -60,7 +100,7 @@ class CustomerReadingQuizTakeView(CustomerQuizTakeRequiredMixin, View):
                 quiz=quiz,
                 submit_url=reverse('portals:customer-reading-quiz-submit', kwargs={'pk': pk}),
                 start_url=start_url,
-                back_url=mock_ctx.get('back_url') or reverse('portals:customer-ielts-mock'),
+                back_url=mock_ctx.get('back_url') or mock_home,
                 quiz_cancel_url=cancel_url,
                 **{k: v for k, v in mock_ctx.items() if k != 'back_url'},
             ),
@@ -83,10 +123,11 @@ class CustomerSpeakingQuizTakeView(CustomerQuizTakeRequiredMixin, View):
         if mock_ctx.get('mock_redirect'):
             return redirect(mock_ctx['mock_redirect'])
 
+        mock_home = get_customer_mock_home_url(profile.pk)
         start_url = f"{reverse('portals:customer-quiz-start', kwargs={'pk': pk})}?mock={mock_id}"
         cancel_url = (
             f"{reverse('portals:customer-quiz-cancel', kwargs={'pk': pk})}"
-            f"?mock={mock_id}&next={mock_ctx.get('back_url', reverse('portals:customer-ielts-mock'))}"
+            f"?mock={mock_id}&next={mock_ctx.get('back_url', mock_home)}"
         )
         return render(
             request,
@@ -96,7 +137,7 @@ class CustomerSpeakingQuizTakeView(CustomerQuizTakeRequiredMixin, View):
                 quiz=quiz,
                 submit_url=reverse('portals:customer-speaking-quiz-submit', kwargs={'pk': pk}),
                 start_url=start_url,
-                back_url=mock_ctx.get('back_url') or reverse('portals:customer-ielts-mock'),
+                back_url=mock_ctx.get('back_url') or mock_home,
                 quiz_cancel_url=cancel_url,
                 **{k: v for k, v in mock_ctx.items() if k != 'back_url'},
             ),
@@ -119,10 +160,11 @@ class CustomerManualQuizTakeView(CustomerQuizTakeRequiredMixin, View):
         if mock_ctx.get('mock_redirect'):
             return redirect(mock_ctx['mock_redirect'])
 
+        mock_home = get_customer_mock_home_url(profile.pk)
         start_url = f"{reverse('portals:customer-quiz-start', kwargs={'pk': pk})}?mock={mock_id}"
         cancel_url = (
             f"{reverse('portals:customer-quiz-cancel', kwargs={'pk': pk})}"
-            f"?mock={mock_id}&next={mock_ctx.get('back_url', reverse('portals:customer-ielts-mock'))}"
+            f"?mock={mock_id}&next={mock_ctx.get('back_url', mock_home)}"
         )
         return render(
             request,
@@ -132,7 +174,7 @@ class CustomerManualQuizTakeView(CustomerQuizTakeRequiredMixin, View):
                 quiz=quiz,
                 submit_url=reverse('portals:customer-manual-quiz-submit', kwargs={'pk': pk}),
                 start_url=start_url,
-                back_url=mock_ctx.get('back_url') or reverse('portals:customer-ielts-mock'),
+                back_url=mock_ctx.get('back_url') or mock_home,
                 quiz_cancel_url=cancel_url,
                 **{k: v for k, v in mock_ctx.items() if k != 'back_url'},
             ),
@@ -158,9 +200,11 @@ class CustomerQuizStartView(CustomerQuizTakeRequiredMixin, View):
         attempt = get_active_customer_mock_attempt(profile.pk, mock_id)
         if attempt:
             from portals.utils.ielts_mock_test import section_for_quiz_in_attempt
+            from portals.utils.mock_programs import get_program_first_section
 
             section = section_for_quiz_in_attempt(attempt, pk)
-            if section == IeltsMockTestAttempt.Section.LISTENING and not attempt.credit_consumed:
+            first_section = get_program_first_section(attempt.exam_program)
+            if section == first_section and not attempt.credit_consumed:
                 ok, error = consume_customer_mock_credit_on_quiz_start(profile.pk, mock_id, pk)
                 if not ok:
                     return JsonResponse({'success': False, 'error': error}, status=400)
@@ -176,7 +220,8 @@ class CustomerQuizCancelView(CustomerQuizTakeRequiredMixin, View):
         next_url = safe_portal_next_url(request, request.GET.get('next'))
         if next_url:
             return redirect(next_url)
-        return redirect('portals:customer-ielts-mock')
+        profile = get_customer_profile(request.portal_user)
+        return redirect(get_customer_mock_home_url(profile.pk))
 
     def get(self, request, pk):
         profile = get_customer_profile(request.portal_user)
@@ -197,6 +242,34 @@ class CustomerQuizCancelView(CustomerQuizTakeRequiredMixin, View):
             abandon_customer_mock_test_attempt(profile.pk, mock_id)
         clear_quiz_attempt_start(request, pk)
         return self._redirect_after_cancel(request)
+
+
+class CustomerQuizSubmitView(CustomerQuizTakeRequiredMixin, View):
+    def post(self, request, pk):
+        profile = get_customer_profile(request.portal_user)
+        payload = _parse_json_submit_payload(request)
+        if payload is None:
+            return JsonResponse({'success': False, 'error': _('Invalid request.')}, status=400)
+
+        session_started_at = get_quiz_attempt_start(request, pk)
+        if not session_started_at:
+            return JsonResponse(
+                {'success': False, 'error': _('Quiz not started.')},
+                status=400,
+            )
+
+        result = submit_variant_quiz_attempt(
+            customer_id=profile.pk,
+            quiz_id=pk,
+            given_answers=payload.get('answers') or {},
+            duration_sec=_parse_duration_sec(payload.get('duration_sec')),
+            session_started_at=session_started_at,
+            completion_trigger=payload.get('completion_trigger'),
+            **_mock_submit_kwargs(request, payload),
+        )
+        if result.get('success'):
+            clear_quiz_attempt_start(request, pk)
+        return JsonResponse(result, status=200 if result.get('success') else 400)
 
 
 class CustomerReadingQuizSubmitView(CustomerQuizTakeRequiredMixin, View):

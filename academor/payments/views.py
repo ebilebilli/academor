@@ -6,6 +6,7 @@ from urllib.parse import urlencode, urlsplit, urlunsplit, parse_qsl
 
 from django.conf import settings
 from django.contrib import messages
+from django.core.exceptions import ValidationError
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -133,8 +134,28 @@ def _find_payment(request):
     return None
 
 
-def _course_detail_url(slug: str) -> str:
+def _service_pay_url(slug: str, *, is_mock_test: bool = False) -> str:
+    if is_mock_test:
+        return reverse('projects:mock-test-detail', kwargs={'slug': slug}) + '#course-pay'
     return reverse('projects:course-detail', kwargs={'slug': slug}) + '#course-pay'
+
+
+def _course_detail_url(slug: str, *, is_mock_test: bool = False) -> str:
+    return _service_pay_url(slug, is_mock_test=is_mock_test)
+
+
+def _portal_mock_packages_url() -> str:
+    return reverse('portals:customer-mock-packages')
+
+
+def _is_existing_portal_customer_payment(payment: Payment) -> bool:
+    """True when the buyer already had a portal customer account (not a public mock signup)."""
+    if not payment.customer_id:
+        return False
+    customer = payment.customer
+    if not customer or not customer.user_id:
+        return False
+    return not customer.user.username.startswith('mock')
 
 
 def _is_ajax(request) -> bool:
@@ -145,18 +166,20 @@ def _form_errors_payload(form: CoursePaymentForm) -> dict:
     return {field: [str(error) for error in errors] for field, errors in form.errors.items()}
 
 
-def _redirect_course_payment_form_errors(request, slug: str, form: CoursePaymentForm):
+def _redirect_course_payment_form_errors(request, slug: str, form: CoursePaymentForm, *, is_mock_test: bool = False):
     if request.POST.get('return_to') == 'home':
-        request.session['home_payment_form_data'] = form.data
+        session_key = 'home_mock_payment_form_data' if is_mock_test else 'home_payment_form_data'
+        request.session[session_key] = form.data
         for field_errors in form.errors.values():
             for error in field_errors:
                 messages.error(request, error)
-        return redirect(reverse('projects:home-page') + '#home-featured-prices')
+        anchor = '#home-ielts-mock' if is_mock_test else '#home-featured-prices'
+        return redirect(reverse('projects:home-page') + anchor)
     request.session['course_payment_form_data'] = form.data
     for field_errors in form.errors.values():
         for error in field_errors:
             messages.error(request, error)
-    return redirect(_course_detail_url(slug))
+    return redirect(_course_detail_url(slug, is_mock_test=is_mock_test))
 
 
 def _append_query_params(url: str, params: dict) -> str:
@@ -182,7 +205,6 @@ def _start_payment(
     description: str,
     course=None,
     price_package=None,
-    mock_package=None,
     customer=None,
     buyer_email: str | None = None,
     buyer_name: str = '',
@@ -202,7 +224,6 @@ def _start_payment(
         product_type=product_type,
         course=course,
         price_package=price_package,
-        mock_package=mock_package,
         customer=customer,
         buyer_email=buyer_email,
         buyer_name=buyer_name,
@@ -322,11 +343,35 @@ def _render_callback_result(request, payment, result, failed_title):
 
     if payment.status == Payment.Status.SUCCESS:
         if payment.product_type == Payment.ProductType.MOCK_TEST:
-            message = _('Payment completed. Mock test credits were added to your account.')
-            if payment.mock_package_id and payment.mock_package:
-                message = _('Payment completed. %(credits)s mock test credit(s) were added.') % {
-                    'credits': payment.mock_package.credits,
-                }
+            credits = None
+            if payment.price_package_id and payment.price_package:
+                credits = payment.price_package.credits
+            portal_customer = _is_existing_portal_customer_payment(payment)
+            if portal_customer:
+                if credits is not None:
+                    message = _(
+                        'Your payment was successful and %(credits)s mock test credit(s) '
+                        'were added to your account.\n'
+                        'You can start a mock test from your portal now.'
+                    ) % {'credits': credits}
+                else:
+                    message = _(
+                        'Your payment was successful and mock test credits were added to '
+                        'your account.\n'
+                        'You can start a mock test from your portal now.'
+                    )
+            elif credits is not None:
+                message = _(
+                    'Your payment was successful and %(credits)s mock test credit(s) '
+                    'were added to your account.\n'
+                    'Our team will contact you shortly to send your portal login details.'
+                ) % {'credits': credits}
+            else:
+                message = _(
+                    'Your payment was successful and mock test credits were added to '
+                    'your account.\n'
+                    'Our team will contact you shortly to send your portal login details.'
+                )
             return render(
                 request,
                 'payment/success.html',
@@ -335,7 +380,9 @@ def _render_callback_result(request, payment, result, failed_title):
                     'seo_noindex': True,
                     'order_id': payment.transaction_id,
                     'message': message,
-                    'portal_return_url': reverse('portals:customer-mock-packages'),
+                    'portal_return_url': (
+                        _portal_mock_packages_url() if portal_customer else None
+                    ),
                 },
             )
         if enrollment and course_name:
@@ -373,13 +420,22 @@ def _render_callback_result(request, payment, result, failed_title):
     )
 
 
-@require_http_methods(['GET', 'POST'])
-def payment_start_course(request, slug):
-    if request.method == 'GET':
-        return redirect(_course_detail_url(slug))
+def start_portal_customer_mock_payment(request, slug):
+    """Start mock checkout for a logged-in portal customer (no contract form)."""
+    from payments.contract import generate_contract_number
+    from payments.mock_customer import portal_customer_profile
 
     ajax = _is_ajax(request)
     lang = (get_language() or 'az')[:2]
+    return_url = _portal_mock_packages_url()
+
+    profile = portal_customer_profile(request)
+    if not profile:
+        message = _('Customer profile not found.')
+        if ajax:
+            return JsonResponse({'success': False, 'message': message}, status=400)
+        messages.error(request, message)
+        return redirect(return_url)
 
     try:
         course = get_payable_course(slug)
@@ -387,9 +443,96 @@ def payment_start_course(request, slug):
         if ajax:
             return JsonResponse({'success': False, 'message': str(exc)}, status=400)
         messages.error(request, str(exc))
+        return redirect(return_url)
+
+    if not course.is_mock_test:
+        message = _('This package is not available for purchase.')
+        if ajax:
+            return JsonResponse({'success': False, 'message': message}, status=400)
+        messages.error(request, message)
+        return redirect(return_url)
+
+    try:
+        price_package = get_payable_price_package(
+            course,
+            request.POST.get('price_package_id'),
+        )
+    except PricePackageNotFoundError as exc:
+        if ajax:
+            return JsonResponse({'success': False, 'message': str(exc)}, status=400)
+        messages.error(request, str(exc))
+        return redirect(return_url)
+
+    user = request.portal_user
+    buyer_name = profile.full_name or user.get_username()
+    buyer_email = getattr(user, 'email', '') or ''
+    buyer_phone = profile.phone or ''
+    contract_number = generate_contract_number()
+
+    amount = package_amount(price_package)
+    description = course_payment_description(course, price_package, lang)
+    payment, result = _start_payment(
+        amount=amount,
+        description=description,
+        course=course,
+        price_package=price_package,
+        customer=profile,
+        buyer_name=buyer_name,
+        buyer_email=buyer_email,
+        buyer_phone=buyer_phone,
+        contract_number=contract_number,
+        contract_language=(get_language() or 'az')[:2],
+        product_type=Payment.ProductType.MOCK_TEST,
+    )
+    if payment is None:
+        message = result.get('error') or _('Order could not be created.')
+        if ajax:
+            return JsonResponse({'success': False, 'message': message}, status=502)
+        messages.error(request, message)
+        return redirect(return_url)
+
+    redirect_url = result['payment_url']
+    if ajax:
+        return JsonResponse({'success': True, 'redirect_url': redirect_url})
+    return redirect(redirect_url)
+
+
+@require_http_methods(['GET', 'POST'])
+def payment_start_course(request, slug):
+    ajax = _is_ajax(request)
+    lang = (get_language() or 'az')[:2]
+
+    try:
+        course = get_payable_course(slug)
+    except CourseNotPayableError as exc:
+        if request.method == 'GET':
+            return redirect(reverse('projects:courses-page'))
+        if ajax:
+            return JsonResponse({'success': False, 'message': str(exc)}, status=400)
+        messages.error(request, str(exc))
         return redirect(reverse('projects:courses-page'))
 
-    form = CoursePaymentForm(request.POST, request=request)
+    is_mock = course.is_mock_test
+    detail_url = _course_detail_url(slug, is_mock_test=is_mock)
+
+    if request.method == 'GET':
+        return redirect(detail_url)
+
+    from payments.mock_customer import (
+        portal_customer_checkout,
+        resolve_or_create_customer_for_mock_purchase,
+    )
+
+    if is_mock and portal_customer_checkout(request):
+        return start_portal_customer_mock_payment(request, slug)
+
+    from payments.contract import generate_contract_number
+
+    form = CoursePaymentForm(
+        request.POST,
+        request=request,
+        mock_checkout=is_mock,
+    )
     if not form.is_valid():
         if ajax:
             payload = {'success': False, 'errors': _form_errors_payload(form)}
@@ -397,7 +540,12 @@ def payment_start_course(request, slug):
             if non_field:
                 payload['message'] = str(non_field[0])
             return JsonResponse(payload, status=400)
-        return _redirect_course_payment_form_errors(request, slug, form)
+        return _redirect_course_payment_form_errors(
+            request,
+            slug,
+            form,
+            is_mock_test=is_mock,
+        )
 
     try:
         price_package = get_payable_price_package(
@@ -408,28 +556,52 @@ def payment_start_course(request, slug):
         if ajax:
             return JsonResponse({'success': False, 'message': str(exc)}, status=400)
         messages.error(request, str(exc))
-        return redirect(_course_detail_url(slug))
+        return redirect(detail_url)
+
+    buyer_name = form.cleaned_data['buyer_name']
+    buyer_email = form.cleaned_data.get('buyer_email')
+    buyer_phone = form.cleaned_data['buyer_phone']
+    contract_number = form.cleaned_data['contract_number']
+    customer = None
+    if is_mock:
+        try:
+            customer = resolve_or_create_customer_for_mock_purchase(
+                buyer_name=buyer_name,
+                buyer_phone=buyer_phone,
+                buyer_email=buyer_email,
+            )
+        except ValidationError as exc:
+            messages_list = getattr(exc, 'messages', None)
+            message = messages_list[0] if messages_list else str(exc)
+            if ajax:
+                return JsonResponse({'success': False, 'message': message}, status=400)
+            messages.error(request, message)
+            return redirect(detail_url)
 
     amount = package_amount(price_package)
     description = course_payment_description(course, price_package, lang)
+    product_type = (
+        Payment.ProductType.MOCK_TEST if is_mock else Payment.ProductType.COURSE
+    )
     payment, result = _start_payment(
         amount=amount,
         description=description,
         course=course,
         price_package=price_package,
-        buyer_name=form.cleaned_data['buyer_name'],
-        buyer_email=form.cleaned_data.get('buyer_email'),
-        buyer_phone=form.cleaned_data['buyer_phone'],
-        contract_number=form.cleaned_data['contract_number'],
+        customer=customer,
+        buyer_name=buyer_name,
+        buyer_email=buyer_email or '',
+        buyer_phone=buyer_phone,
+        contract_number=contract_number,
         contract_language=(get_language() or 'az')[:2],
-        product_type=Payment.ProductType.COURSE,
+        product_type=product_type,
     )
     if payment is None:
         message = result.get('error') or _('Order could not be created.')
         if ajax:
             return JsonResponse({'success': False, 'message': message}, status=502)
         messages.error(request, message)
-        return redirect(_course_detail_url(slug))
+        return redirect(detail_url)
 
     request.session.pop('course_payment_form_data', None)
     redirect_url = result['payment_url']

@@ -50,9 +50,9 @@ class TeacherQuizAssignmentToggleView(TeacherRequiredMixin, View):
 
 
 class TeacherMockAccessToggleView(TeacherRequiredMixin, View):
-    """Activate or deactivate IELTS mock access for one student."""
+    """Activate or deactivate mock access for one student and exam program."""
 
-    def post(self, request, student_pk):
+    def post(self, request, student_pk, program):
         profile = get_teacher_profile(request.portal_user)
         student = get_teacher_student(profile.pk, student_pk)
         if not student:
@@ -66,6 +66,7 @@ class TeacherMockAccessToggleView(TeacherRequiredMixin, View):
         access = set_student_mock_access(
             profile.pk,
             student_pk,
+            program,
             is_active=_parse_is_active(payload, request.POST.get('is_active')),
         )
         if access is None:
@@ -73,5 +74,6 @@ class TeacherMockAccessToggleView(TeacherRequiredMixin, View):
 
         return JsonResponse({
             'ok': True,
+            'program': program,
             'is_active': access.is_active,
         })

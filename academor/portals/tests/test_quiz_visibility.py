@@ -83,12 +83,6 @@ class QuizVisibilityTests(TestCase):
         link_study_group_services(self.speaking_group, 'speaking')
         self.ielts_group.students.add(self.student)
 
-        StudentCourseSpecialization.objects.create(
-            student=self.student,
-            course_type='ielts',
-            is_active=True,
-        )
-
         self.ielts_category = QuizCategory.objects.create(service='ielts', name='Reading')
         self.speaking_category = QuizCategory.objects.create(service='speaking', name='Fluency')
 

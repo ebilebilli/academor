@@ -14,15 +14,21 @@ from portals.utils.queries import (
     build_lesson_category_tabs,
     build_lesson_period_tabs,
     build_lesson_subject_tabs,
+    build_teacher_lesson_group_tabs,
     build_score_period_tabs,
+    build_student_performance_by_groups,
+    prepare_student_scores_with_groups,
     prepare_teacher_scores_with_groups,
     resolve_score_group_param,
+    resolve_mock_program_param,
+    filter_mock_attempt_summaries,
     get_parent_child_attendance,
     get_parent_child_attendance_detail,
     get_parent_child_quiz_results,
     get_parent_dashboard_data,
     get_parent_profile,
     get_portal_role,
+    get_student_attendance_detail,
     get_student_dashboard_data,
     get_student_lessons,
     get_student_profile,
@@ -45,8 +51,13 @@ from portals.utils.queries import (
     get_student_quizzes_for_category,
     build_quiz_service_tabs,
     get_teacher_scores,
+    filter_attendance_detail_by_group,
+    filter_teacher_profile_rows_by_group,
     get_teacher_student_attendance_detail,
     get_teacher_student_group_names,
+    get_teacher_student_group_service_codes,
+    get_teacher_student_profile_groups,
+    resolve_teacher_profile_group,
     resolve_teacher_student_profile_back,
     get_teacher_student_quiz_results,
     get_teacher_student_scores,
@@ -76,6 +87,11 @@ from portals.utils.teacher_schedule import (
     build_student_week_calendar,
     build_teacher_week_calendar,
     parse_week_start,
+)
+from portals.utils.student_groups import (
+    enrich_score_group_counts,
+    merge_parent_group_context,
+    student_group_context,
 )
 from portals.views.mixins import (
     ParentRequiredMixin,
@@ -181,6 +197,9 @@ class TeacherLessonsListView(TeacherRequiredMixin, View):
     def get(self, request):
         profile = get_teacher_profile(request.portal_user)
         lessons = get_teacher_lessons(profile.pk)
+        group_tabs = build_teacher_lesson_group_tabs(profile.pk, lessons)
+        score_groups = group_tabs if len(group_tabs) > 1 else []
+        active_score_group = resolve_score_group_param(request, group_tabs) if score_groups else None
         return render(
             request,
             self.template_name,
@@ -188,9 +207,11 @@ class TeacherLessonsListView(TeacherRequiredMixin, View):
                 request,
                 teacher=serialize_teacher(profile),
                 lessons=lessons,
-                subject_tabs=build_lesson_subject_tabs(lessons),
+                subject_tabs=[],
                 category_tabs=build_lesson_category_tabs(lessons),
                 period_tabs=build_lesson_period_tabs(lessons),
+                score_groups=score_groups,
+                active_score_group=active_score_group,
             ),
         )
 
@@ -285,44 +306,106 @@ def _teacher_student_profile_stats(quiz_results, scores, daily_score_history):
 class TeacherStudentProfileView(TeacherRequiredMixin, View):
     template_name = 'portals/teacher/student_profile.html'
     tab_panel_template_name = 'portals/includes/teacher_student_profile_tab_panel.html'
+    page_fragment_template_name = 'portals/includes/teacher_student_profile_page.html'
 
     def _build_context(self, request, profile, student, tab):
         from portals.utils.ielts_mock_test import (
             get_student_completed_mock_attempts,
             serialize_mock_attempt_summary,
-            student_can_access_ielts_mock,
         )
+        from portals.utils.teacher_access import get_teacher_group
 
         student_pk = student.pk
         quiz_results = get_teacher_student_quiz_results(profile.pk, student_pk)
-        manual_quiz_results, auto_quiz_results = split_student_quiz_results(quiz_results)
         scores = get_teacher_student_scores(profile.pk, student_pk)
+        profile_groups = get_teacher_student_profile_groups(profile.pk, student_pk)
+        back_url, back_label, from_group_id = resolve_teacher_student_profile_back(
+            request, profile.pk, student_pk
+        )
+
+        profile_active_group_id = None
+        if len(profile_groups) > 1:
+            profile_active_group_id = resolve_teacher_profile_group(request, profile_groups)
+        elif profile_groups:
+            profile_active_group_id = profile_groups[0]['id']
+        else:
+            profile_active_group_id = from_group_id
+
+        if profile_active_group_id and len(profile_groups) > 1:
+            group = get_teacher_group(profile.pk, profile_active_group_id)
+            if group:
+                from_group_id = profile_active_group_id
+                back_url = reverse(
+                    'portals:teacher-group-detail',
+                    kwargs={'pk': profile_active_group_id},
+                )
+                back_label = group.name
+
+        group_service_codes = None
+        if profile_active_group_id and len(profile_groups) > 1:
+            group_service_codes = get_teacher_student_group_service_codes(
+                profile.pk,
+                student_pk,
+                profile_active_group_id,
+            )
+            if group_service_codes is not None:
+                quiz_results = filter_teacher_profile_rows_by_group(
+                    quiz_results,
+                    group_service_codes,
+                )
+                scores = filter_teacher_profile_rows_by_group(
+                    scores,
+                    group_service_codes,
+                )
+
+        manual_quiz_results, auto_quiz_results = split_student_quiz_results(quiz_results)
         daily_score_history = group_scores_by_day(scores)
         attendance_detail = get_teacher_student_attendance_detail(profile.pk, student_pk)
         quiz_average = compute_quiz_average_stats(quiz_results)
         weekly_scores = get_teacher_student_weekly_scores(profile.pk, student_pk)
         from portals.utils.attendance_stats import compute_attendance_stats
-        from portals.utils.quiz_stats import compute_mock_average_stats
+        from portals.utils.quiz_stats import build_mock_stats_list
+
+        if profile_active_group_id and len(profile_groups) > 1:
+            attendance_detail = filter_attendance_detail_by_group(
+                attendance_detail,
+                profile_active_group_id,
+            )
+            weekly_scores = [
+                row for row in weekly_scores
+                if row.get('study_group_id') == profile_active_group_id
+            ]
+        elif from_group_id:
+            weekly_scores = [
+                row for row in weekly_scores
+                if row.get('study_group_id') == from_group_id
+            ]
 
         weekly_average = compute_weekly_average_stats(weekly_scores)
         attendance_stats = compute_attendance_stats(attendance_detail)
 
         from portals.utils.quiz_assignments import (
-            get_student_mock_access_state,
+            get_teacher_student_mock_access_rows,
             get_teacher_student_quiz_access_rows,
         )
+        from portals.utils.ielts_mock_test import get_student_mock_exam_programs
         from portals.utils.student_courses import student_has_course_access
 
-        is_ielts_student = student_has_course_access(student_pk, 'ielts')
-        mock_access = get_student_mock_access_state(student_pk) if is_ielts_student else None
+        has_mock_exam = bool(get_student_mock_exam_programs(student_pk))
+        mock_access_programs = get_teacher_student_mock_access_rows(profile.pk, student_pk)
         mock_attempts = None
-        mock_stats = None
-        if is_ielts_student:
+        mock_stats_list = []
+        if has_mock_exam:
             mock_attempts = [
                 serialize_mock_attempt_summary(attempt)
                 for attempt in get_student_completed_mock_attempts(student_pk)
             ]
-            mock_stats = compute_mock_average_stats(mock_attempts)
+            if group_service_codes is not None:
+                mock_attempts = [
+                    attempt for attempt in mock_attempts
+                    if attempt.get('exam_program') in group_service_codes
+                ]
+            mock_stats_list = build_mock_stats_list(mock_attempts)
 
         quiz_access_categories = []
         quiz_access_count = 0
@@ -330,21 +413,26 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
             quiz_access_categories = get_teacher_student_quiz_access_rows(profile.pk, student_pk)
             quiz_access_count = sum(len(cat.get('quizzes') or []) for cat in quiz_access_categories)
         except Exception:
-            # Migration not applied yet, or incomplete quiz data — keep profile usable.
             quiz_access_categories = []
             quiz_access_count = 0
 
-        back_url, back_label, from_group_id = resolve_teacher_student_profile_back(
-            request, profile.pk, student_pk
+        focus_group_id = profile_active_group_id if len(profile_groups) > 1 else from_group_id
+        group_performance_cards = build_student_performance_by_groups(
+            student_pk,
+            teacher_id=profile.pk,
+            focus_group_id=focus_group_id,
         )
         return _portal_context(
             request,
             teacher=serialize_teacher(profile),
             student=serialize_student(student),
             groups=get_teacher_student_group_names(profile.pk, student_pk),
+            group_performance_cards=group_performance_cards,
             profile_back_url=back_url,
             profile_back_label=back_label,
             profile_from_group_id=from_group_id,
+            profile_active_group_id=profile_active_group_id,
+            profile_groups=profile_groups,
             active_tab=tab,
             quiz_results=quiz_results,
             manual_quiz_results=manual_quiz_results,
@@ -355,12 +443,13 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
             quiz_average=quiz_average,
             weekly_average=weekly_average,
             attendance_stats=attendance_stats,
-            mock_stats=mock_stats,
+            mock_stats_list=mock_stats_list,
             attendance_summary=attendance_detail['summary'] if attendance_detail else None,
             attendance_records=attendance_detail['records'] if attendance_detail else [],
             weekly_scores=weekly_scores,
             mock_attempts=mock_attempts,
-            mock_access=mock_access,
+            mock_access_programs=mock_access_programs,
+            has_mock_exam=has_mock_exam,
             quiz_access_categories=quiz_access_categories,
             quiz_access_count=quiz_access_count,
         )
@@ -375,10 +464,14 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
         tab = request.GET.get('tab', 'quiz-results')
         if tab not in _TEACHER_STUDENT_PROFILE_TABS:
             tab = 'quiz-results'
-        if tab == 'mock-results' and not student_has_course_access(student_pk, 'ielts'):
+        from portals.utils.ielts_mock_test import get_student_mock_exam_programs
+
+        if tab == 'mock-results' and not get_student_mock_exam_programs(student_pk):
             tab = 'quiz-results'
         context = self._build_context(request, profile, student, tab)
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            if request.headers.get('X-Profile-Fragment') == 'page':
+                return render(request, self.page_fragment_template_name, context)
             return render(request, self.tab_panel_template_name, context)
         return render(request, self.template_name, context)
 
@@ -521,14 +614,37 @@ class StudentScheduleView(StudentRequiredMixin, View):
     def get(self, request):
         profile = get_student_profile(request.portal_user)
         week_start = parse_week_start(request.GET.get('week'))
+        calendar = build_student_week_calendar(profile.pk, week_start=week_start)
         return render(
             request,
             self.template_name,
             _portal_context(
                 request,
                 student=serialize_student(profile),
-                calendar=build_student_week_calendar(profile.pk, week_start=week_start),
+                calendar=calendar,
                 week_nav_prefix='',
+            ),
+        )
+
+
+class StudentAttendanceView(StudentRequiredMixin, View):
+    template_name = 'portals/parent/attendance.html'
+
+    def get(self, request):
+        profile = get_student_profile(request.portal_user)
+        detail = get_student_attendance_detail(profile.pk)
+        if not detail:
+            raise Http404
+        group_ctx = student_group_context(request, profile.pk)
+        enrich_score_group_counts(group_ctx['score_groups'], detail.get('records', []), replace=True)
+        return render(
+            request,
+            self.template_name,
+            _portal_context(
+                request,
+                page_subtitle=_('İştirak və seans tarixçəniz.'),
+                **detail,
+                **group_ctx,
             ),
         )
 
@@ -539,6 +655,10 @@ class StudentLessonsView(StudentRequiredMixin, View):
     def get(self, request):
         profile = get_student_profile(request.portal_user)
         lessons = get_student_lessons(profile.pk)
+        group_ctx = student_group_context(request, profile.pk)
+        enrich_score_group_counts(group_ctx['score_groups'], lessons, replace=True)
+        video_records = get_student_video_records(profile.pk)
+        enrich_score_group_counts(group_ctx['score_groups'], video_records)
         return render(
             request,
             self.template_name,
@@ -549,7 +669,8 @@ class StudentLessonsView(StudentRequiredMixin, View):
                 subject_tabs=build_lesson_subject_tabs(lessons),
                 category_tabs=build_lesson_category_tabs(lessons),
                 period_tabs=build_lesson_period_tabs(lessons),
-                video_records=get_student_video_records(profile.pk),
+                video_records=video_records,
+                **group_ctx,
             ),
         )
 
@@ -562,6 +683,8 @@ class StudentLessonDetailView(StudentRequiredMixin, View):
         lesson = get_student_lesson(profile.pk, pk)
         if not lesson:
             raise Http404
+        group_ctx = student_group_context(request, profile.pk)
+        back_url = reverse('portals:student-lessons') + (group_ctx.get('group_query') or '')
         return render(
             request,
             self.template_name,
@@ -570,7 +693,7 @@ class StudentLessonDetailView(StudentRequiredMixin, View):
                 student=serialize_student(profile),
                 lesson=get_lesson_detail(lesson),
                 page_eyebrow='Student',
-                back_url=reverse('portals:student-lessons'),
+                back_url=back_url,
             ),
         )
 
@@ -580,44 +703,41 @@ class StudentScoresView(StudentRequiredMixin, View):
 
     def get(self, request):
         profile = get_student_profile(request.portal_user)
-        all_quiz_scores = get_student_scores(profile.pk)
-        weekly_scores = get_student_weekly_scores(profile.pk)
-        quiz_results = get_student_quiz_results(profile.pk)
-        quiz_scores = all_quiz_scores[:QUIZ_HISTORY_INITIAL_SIZE]
-        total_quiz_scores = len(all_quiz_scores)
+        scores_ctx = _student_scores_context(profile.pk, request=request)
         mock_attempts = None
         from portals.utils.ielts_mock_test import (
             get_student_completed_mock_attempts,
+            get_student_mock_exam_programs,
             serialize_mock_attempt_summary,
-            student_can_access_ielts_mock,
+            student_can_access_mock,
         )
-        if student_can_access_ielts_mock(profile.pk):
-            mock_attempts = [
-                serialize_mock_attempt_summary(attempt)
-                for attempt in get_student_completed_mock_attempts(profile.pk)
-            ]
+        if get_student_mock_exam_programs(profile.pk) and student_can_access_mock(profile.pk):
+            mock_attempts = filter_mock_attempt_summaries(
+                [
+                    serialize_mock_attempt_summary(attempt)
+                    for attempt in get_student_completed_mock_attempts(profile.pk)
+                ],
+                program=resolve_mock_program_param(request),
+            )
         return render(
             request,
             self.template_name,
             _portal_context(
                 request,
                 student=serialize_student(profile),
-                quiz_scores=quiz_scores,
-                quiz_scores_total_count=total_quiz_scores,
-                quiz_scores_lazy_load=total_quiz_scores > QUIZ_HISTORY_INITIAL_SIZE,
-                quiz_scores_load_url=reverse('portals:student-quiz-history-load'),
-                quiz_average=compute_quiz_average_stats(quiz_results),
-                weekly_scores=weekly_scores,
                 mock_attempts=mock_attempts,
-                mock_detail_url_name='portals:student-ielts-mock-complete',
+                mock_detail_url_name='portals:student-mock-complete',
                 scores_view=resolve_scores_view_param(
-                    request, all_quiz_scores, weekly_scores, mock_attempts=mock_attempts
+                    request,
+                    scores_ctx['quiz_scores'],
+                    scores_ctx['weekly_scores'],
+                    mock_attempts=mock_attempts,
                 ),
                 score_detail_url_name='portals:student-score-detail',
                 show_comment_column=False,
                 show_teacher_column=True,
-                period_tabs=build_score_period_tabs(all_quiz_scores, weekly_scores),
-                weekly_average=compute_weekly_average_stats(weekly_scores),
+                quiz_scores_load_url=reverse('portals:student-quiz-history-load'),
+                **scores_ctx,
             ),
         )
 
@@ -630,7 +750,12 @@ class StudentQuizHistoryLoadView(StudentRequiredMixin, View):
             offset = 0
 
         profile = get_student_profile(request.portal_user)
-        all_quiz_scores = get_student_scores(profile.pk)
+        grouped = prepare_student_scores_with_groups(
+            profile.pk,
+            get_student_scores(profile.pk),
+            [],
+        )
+        all_quiz_scores = grouped['quiz_scores']
         page = all_quiz_scores[offset:offset + QUIZ_HISTORY_PAGE_SIZE]
         html = render_to_string(
             'portals/includes/quiz_score_history_rows.html',
@@ -700,18 +825,49 @@ class StudentQuizCategoryDetailView(StudentRequiredMixin, View):
 # Parent
 # ---------------------------------------------------------------------------
 
-def _parent_child_context(request, profile):
-    student = resolve_parent_student(profile, request)
+def _parent_child_context(request, profile, *, student=None):
+    student = student or resolve_parent_student(profile, request)
     children = [
         serialize_student(row)
         for row in profile.students.select_related('user').order_by('user__username', 'id')
     ]
     selected = serialize_student(student) if student else None
-    return {
+    ctx = {
         'children': children,
         'selected_student': selected,
         'student_query': f'?student={student.pk}' if student and len(children) > 1 else '',
         'week_nav_prefix': f'student={student.pk}&' if student and len(children) > 1 else '',
+    }
+    if student:
+        merge_parent_group_context(ctx, student.pk, request)
+    return ctx
+
+
+def _student_scores_context(student_id, *, parent_id=None, request=None):
+    all_quiz_scores = get_student_scores(student_id)
+    weekly_scores = get_student_weekly_scores(student_id)
+    grouped = prepare_student_scores_with_groups(student_id, all_quiz_scores, weekly_scores)
+    score_groups = grouped['score_groups']
+    active_score_group = resolve_score_group_param(request, score_groups) if request else None
+
+    if parent_id is not None:
+        quiz_results = get_parent_child_quiz_results(student_id, parent_id=parent_id)
+    else:
+        quiz_results = get_student_quiz_results(student_id)
+
+    all_quiz = grouped['quiz_scores']
+    all_weekly = grouped['weekly_scores']
+    quiz_scores = all_quiz[:QUIZ_HISTORY_INITIAL_SIZE]
+    return {
+        'quiz_scores': quiz_scores,
+        'quiz_scores_total_count': len(all_quiz),
+        'quiz_scores_lazy_load': len(all_quiz) > QUIZ_HISTORY_INITIAL_SIZE,
+        'weekly_scores': all_weekly,
+        'score_groups': score_groups,
+        'active_score_group': active_score_group,
+        'quiz_average': compute_quiz_average_stats(quiz_results),
+        'weekly_average': compute_weekly_average_stats(all_weekly),
+        'period_tabs': build_score_period_tabs(all_quiz, all_weekly),
     }
 
 
@@ -721,11 +877,23 @@ def _parent_student_page(request, profile):
     student = resolve_parent_student(profile, request)
     if not student:
         raise Http404
-    return student, _parent_child_context(request, profile)
+    return student, _parent_child_context(request, profile, student=student)
 
 
-def _render_parent_child_page(request, profile, template_name, *, page_subtitle, **extra):
-    student, child_ctx = _parent_student_page(request, profile)
+def _render_parent_child_page(
+    request,
+    profile,
+    template_name,
+    *,
+    page_subtitle,
+    student=None,
+    child_ctx=None,
+    **extra,
+):
+    if student is None or child_ctx is None:
+        student, child_ctx = _parent_student_page(request, profile)
+    passthrough = {k: v for k, v in extra.items() if k not in ('student', 'child_ctx')}
+    page_ctx = {**child_ctx, **passthrough}
     return render(
         request,
         template_name,
@@ -734,9 +902,8 @@ def _render_parent_child_page(request, profile, template_name, *, page_subtitle,
             page_eyebrow='Parent',
             page_subtitle=page_subtitle,
             parent=serialize_parent(profile),
-            student=child_ctx['selected_student'],
-            **child_ctx,
-            **extra,
+            student=page_ctx['selected_student'],
+            **{k: v for k, v in page_ctx.items() if k != 'selected_student'},
         ),
     )
 
@@ -767,6 +934,7 @@ class ParentAttendanceView(ParentRequiredMixin, View):
         detail = get_parent_child_attendance_detail(student.pk)
         if not detail:
             raise Http404
+        enrich_score_group_counts(child_ctx['score_groups'], detail.get('records', []), replace=True)
         return render(
             request,
             self.template_name,
@@ -786,14 +954,27 @@ class ParentScheduleView(ParentRequiredMixin, View):
 
     def get(self, request):
         profile = get_parent_profile(request.portal_user)
-        student, _child_ctx = _parent_student_page(request, profile)
+        student, child_ctx = _parent_student_page(request, profile)
         week_start = parse_week_start(request.GET.get('week'))
+        calendar = build_student_week_calendar(student.pk, week_start=week_start)
+        child_ctx = {
+            **child_ctx,
+            'score_groups': [],
+            'active_score_group': None,
+            'week_nav_prefix': (
+                f'student={student.pk}&'
+                if len(child_ctx.get('children', [])) > 1
+                else ''
+            ),
+        }
         return _render_parent_child_page(
             request,
             profile,
             self.template_name,
             page_subtitle=_("Student weekly class timetable."),
-            calendar=build_student_week_calendar(student.pk, week_start=week_start),
+            student=student,
+            child_ctx=child_ctx,
+            calendar=calendar,
         )
 
 
@@ -804,16 +985,21 @@ class ParentLessonsView(ParentRequiredMixin, View):
         profile = get_parent_profile(request.portal_user)
         student, child_ctx = _parent_student_page(request, profile)
         lessons = get_student_lessons(student.pk)
+        enrich_score_group_counts(child_ctx['score_groups'], lessons, replace=True)
+        video_records = get_student_video_records(student.pk)
+        enrich_score_group_counts(child_ctx['score_groups'], video_records)
         return _render_parent_child_page(
             request,
             profile,
             self.template_name,
             page_subtitle=_("Student lesson materials and video recordings."),
+            student=student,
+            child_ctx=child_ctx,
             lessons=lessons,
             subject_tabs=build_lesson_subject_tabs(lessons),
             category_tabs=build_lesson_category_tabs(lessons),
             period_tabs=build_lesson_period_tabs(lessons),
-            video_records=get_student_video_records(student.pk),
+            video_records=video_records,
         )
 
 
@@ -849,40 +1035,47 @@ class ParentScoresView(ParentRequiredMixin, View):
     def get(self, request):
         from portals.utils.ielts_mock_test import (
             get_student_completed_mock_attempts,
+            get_student_mock_exam_programs,
             serialize_mock_attempt_summary,
-            student_can_access_ielts_mock,
+            student_can_access_mock,
         )
 
         profile = get_parent_profile(request.portal_user)
         student, child_ctx = _parent_student_page(request, profile)
-        quiz_scores = get_student_scores(student.pk)
-        weekly_scores = get_student_weekly_scores(student.pk)
-        quiz_results = get_parent_child_quiz_results(student.pk, parent_id=profile.pk)
+        scores_ctx = _student_scores_context(
+            student.pk,
+            parent_id=profile.pk,
+            request=request,
+        )
         mock_attempts = None
-        if student_can_access_ielts_mock(student.pk):
-            mock_attempts = [
-                serialize_mock_attempt_summary(attempt)
-                for attempt in get_student_completed_mock_attempts(student.pk)
-            ]
+        if get_student_mock_exam_programs(student.pk) and student_can_access_mock(student.pk):
+            mock_attempts = filter_mock_attempt_summaries(
+                [
+                    serialize_mock_attempt_summary(attempt)
+                    for attempt in get_student_completed_mock_attempts(student.pk)
+                ],
+                program=resolve_mock_program_param(request),
+            )
         return _render_parent_child_page(
             request,
             profile,
             self.template_name,
             page_subtitle=_('Quiz history, weekly grades, and mock test results for your linked student.'),
-            quiz_scores=quiz_scores,
-            weekly_scores=weekly_scores,
-            quiz_average=compute_quiz_average_stats(quiz_results),
+            student=student,
+            child_ctx=child_ctx,
+            mock_attempts=mock_attempts,
+            mock_detail_url_name='portals:parent-mock-detail',
+            mock_detail_url_suffix=child_ctx.get('student_query', ''),
             scores_view=resolve_scores_view_param(
-                request, quiz_scores, weekly_scores, mock_attempts=mock_attempts
+                request,
+                scores_ctx['quiz_scores'],
+                scores_ctx['weekly_scores'],
+                mock_attempts=mock_attempts,
             ),
             score_detail_url_name='portals:parent-score-detail',
-            mock_detail_url_name='portals:parent-ielts-mock-detail',
-            mock_detail_url_suffix=child_ctx.get('student_query', ''),
             show_comment_column=False,
             show_teacher_column=True,
-            period_tabs=build_score_period_tabs(quiz_scores, weekly_scores),
-            weekly_average=compute_weekly_average_stats(weekly_scores),
-            mock_attempts=mock_attempts,
+            **scores_ctx,
         )
 
 
@@ -916,9 +1109,23 @@ class ClassroomsListView(PortalLoginRequiredMixin, View):
         if role == 'teacher':
             profile = get_teacher_profile(request.portal_user)
             classrooms = get_teacher_classrooms(profile.pk) if profile else []
+            if profile and classrooms:
+                group_tabs_meta = build_teacher_lesson_group_tabs(
+                    profile.pk,
+                    [{'group_id': room.get('group_id')} for room in classrooms],
+                )
+                child_ctx = {
+                    'score_groups': group_tabs_meta if len(group_tabs_meta) > 1 else [],
+                    'active_score_group': resolve_score_group_param(request, group_tabs_meta)
+                    if len(group_tabs_meta) > 1
+                    else None,
+                }
         elif role == 'student':
             profile = get_student_profile(request.portal_user)
             classrooms = get_student_classrooms(profile.pk) if profile else []
+            if profile:
+                child_ctx = student_group_context(request, profile.pk)
+                enrich_score_group_counts(child_ctx['score_groups'], classrooms, replace=True)
         else:
             profile = get_parent_profile(request.portal_user)
             if parent_has_students(profile):
@@ -929,6 +1136,7 @@ class ClassroomsListView(PortalLoginRequiredMixin, View):
                     # instead of silently showing all children's classrooms.
                     raise Http404
                 classrooms = get_parent_classrooms(profile.pk, student_id=student.pk)
+                enrich_score_group_counts(child_ctx['score_groups'], classrooms, replace=True)
             else:
                 classrooms = get_parent_classrooms(profile.pk) if profile else []
 

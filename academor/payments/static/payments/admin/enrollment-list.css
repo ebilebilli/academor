@@ -1,0 +1,32 @@
+.enrollment-type-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.28rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    text-decoration: none !important;
+    white-space: nowrap;
+    line-height: 1.2;
+}
+
+.enrollment-type-badge--course {
+    color: #0b3b4a;
+    background: #d9f1f7;
+    border: 1px solid #9ed3e0;
+}
+
+.enrollment-type-badge--mock {
+    color: #7a2e00;
+    background: #ffe6d4;
+    border: 1px solid #ffb27a;
+}
+
+.enrollment-type-badge:hover {
+    filter: brightness(0.97);
+}
+
+#changelist-filter li.selected a {
+    font-weight: 700;
+}

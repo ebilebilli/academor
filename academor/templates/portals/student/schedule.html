@@ -6,8 +6,6 @@
 {% block content %}
 {% include "portals/includes/parent_child_header.html" %}
 
-{% include "portals/includes/portal_page_hero.html" with title=_('Cədvəl') subtitle=page_subtitle|default:_('Həftəlik dərs cədvəliniz.') icon="ti-calendar-week" lottie="portals/animations/student-transparent.lottie" %}
-
 <div class="portal-control-bar mb-4">
   <div class="portal-control-left">
     <div class="portal-week-navigator" role="group" aria-label="{% trans 'Həftə naviqasiyası' %}">
@@ -30,6 +28,8 @@
     </a>
   </div>
 </div>
+
+{% include "portals/includes/portal_page_hero.html" with title=_('Cədvəl') subtitle=page_subtitle|default:_('Həftəlik dərs cədvəliniz.') icon="ti-calendar-week" lottie="portals/animations/student-transparent.lottie" %}
 
 {% include "portals/includes/student_week_calendar.html" %}
 {% endblock %}

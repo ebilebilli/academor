@@ -121,6 +121,9 @@
             {% if show_teacher_column %}
             <th>{% trans 'Müəllim' %}</th>
             {% endif %}
+            {% if show_group_column|default:False %}
+            <th>{% trans 'Qrup' %}</th>
+            {% endif %}
             <th>{% trans 'Bal' %}</th>
             {% if show_comment_column|default:True %}
             <th>{% trans 'Şərh' %}</th>
@@ -137,6 +140,9 @@
             {% endif %}
             {% if show_teacher_column %}
             <td data-label="{% trans 'Müəllim' %}">{{ row.teacher_name|default:"—" }}</td>
+            {% endif %}
+            {% if show_group_column|default:False %}
+            <td data-label="{% trans 'Qrup' %}">{{ row.group_name|default:"—" }}</td>
             {% endif %}
             <td data-label="{% trans 'Bal' %}">
               <span class="weekly-scores-pill weekly-scores-pill--{{ row.tier|default:'good' }}">{{ row.score|format_quiz_score }}/{{ row.max_score|format_quiz_score }}</span>
@@ -170,7 +176,7 @@
     aria-labelledby="score-tab-mock"
     {% if active_view != 'mock' %}hidden{% endif %}
   >
-    {% include "portals/includes/ielts_mock_attempts_table.html" with mock_detail_url_name=mock_detail_url_name mock_detail_url_suffix=mock_detail_url_suffix %}
+    {% include "portals/includes/mock_attempts_table.html" with mock_detail_url_name=mock_detail_url_name mock_detail_url_suffix=mock_detail_url_suffix %}
   </div>
   {% endif %}
 

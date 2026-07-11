@@ -2338,6 +2338,11 @@ h1.animated, h2.animated, h3.animated,
     border-radius: 0.25rem;
 }
 
+.home-mock-price-card__label {
+    cursor: default;
+    pointer-events: none;
+}
+
 .home-price-card__course-name {
     flex: 1 1 auto;
     min-width: 0;

@@ -130,6 +130,16 @@
         <div class="portal-lesson-field portal-lesson-field--narrow">
           <label class="portal-lesson-label" for="{{ form.group.id_for_label }}">{{ form.group.label }}</label>
           {{ form.group }}
+          {% if form.group_service_label %}
+          <p class="portal-lesson-hint mb-0 mt-2">
+            {% trans 'Service' %}: <strong>{{ form.group_service_label }}</strong>
+            — {% trans 'Set automatically from the group\'s linked course in admin.' %}
+          </p>
+          {% elif form.instance.group_id %}
+          <p class="portal-lesson-hint mb-0 mt-2 text-warning">
+            {% trans 'This group has no course linked in admin. Link SAT (or the correct course) on the study group first.' %}
+          </p>
+          {% endif %}
           {% for error in form.group.errors %}
             <div class="portal-lesson-error">{{ error }}</div>
           {% endfor %}

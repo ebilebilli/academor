@@ -15,7 +15,7 @@
   {% include "portals/includes/quiz_question_prompt.html" with q=q %}
 
   <fieldset class="portal-quiz-play-options">
-    <legend class="visually-hidden">{% blocktrans with n=number %}Answer choices for question %(n)s{% endblocktrans %}</legend>
+    <legend class="visually-hidden">{% blocktrans with n=number %}Answer choices for question {{ n }}{% endblocktrans %}</legend>
     {% for option in q.answer_options %}
     <label class="portal-quiz-play-option">
       <input

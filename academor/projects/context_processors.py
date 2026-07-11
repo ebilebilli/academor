@@ -9,6 +9,7 @@ from projects.utils.queries import (
     get_background_image,
     get_contact,
     get_nav_courses,
+    get_nav_mock_tests,
     get_nav_abroad_items_with_universities,
     get_page_tagline,
     serialize_contact,
@@ -19,6 +20,8 @@ URL_NAME_TO_TAGLINE_PAGE = {
     'services-page': TaglinePage.SERVICE,
     'courses-page': TaglinePage.COURSES,
     'course-detail': TaglinePage.COURSES,
+    'mock-tests-page': TaglinePage.COURSES,
+    'mock-test-detail': TaglinePage.COURSES,
     'tests-page': TaglinePage.TESTS,
     'test-take': TaglinePage.TESTS,
     'english-conversation-topics': TaglinePage.TESTS,
@@ -149,11 +152,14 @@ def site_footer_context(request):
     rm = getattr(request, 'resolver_match', None)
     nav_url_name = getattr(rm, 'url_name', '') if rm else ''
     nav_course_slug = ''
+    nav_mock_test_slug = ''
     nav_abroad_slug = ''
     nav_university_slug = ''
     if rm and getattr(rm, 'kwargs', None):
         if nav_url_name == 'course-detail':
             nav_course_slug = rm.kwargs.get('slug') or ''
+        elif nav_url_name == 'mock-test-detail':
+            nav_mock_test_slug = rm.kwargs.get('slug') or ''
         elif nav_url_name == 'abroad-detail':
             nav_abroad_slug = rm.kwargs.get('slug') or ''
         elif nav_url_name == 'abroad-university-detail':
@@ -162,9 +168,11 @@ def site_footer_context(request):
         'footer_contact': serialize_contact(contact, lang) if contact else None,
         'footer_background_image': get_background_image('footer'),
         'nav_courses': get_nav_courses(lang),
+        'nav_mock_tests': get_nav_mock_tests(lang),
         'nav_abroad_items': get_nav_abroad_items_with_universities(lang=lang, is_active=True),
         'nav_url_name': nav_url_name,
         'nav_course_slug': nav_course_slug,
+        'nav_mock_test_slug': nav_mock_test_slug,
         'nav_abroad_slug': nav_abroad_slug,
         'nav_university_slug': nav_university_slug,
     }
@@ -191,7 +199,7 @@ def _resolve_page_tagline(url_name, lang):
                 return tagline
         return None
 
-    if url_name in ('courses-page', 'course-detail'):
+    if url_name in ('courses-page', 'course-detail', 'mock-tests-page', 'mock-test-detail'):
         for key in (TaglinePage.COURSES, TaglinePage.SERVICE):
             tagline = get_page_tagline(key, lang)
             if tagline:

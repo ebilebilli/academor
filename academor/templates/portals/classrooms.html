@@ -15,5 +15,13 @@
 {% trans 'Dərs kitabları və materiallar.' as textbooks_page_subtitle %}
 {% include "portals/includes/portal_page_hero.html" with title=textbooks_page_title subtitle=textbooks_page_subtitle icon="ti-books" lottie="portals/animations/study.lottie" %}
 
+<div{% if score_groups|length > 1 %} data-portal-scores-filter{% endif %}>
+{% if score_groups|length > 1 %}
+<section class="s-lessons-filter-panel mb-4" aria-label="{% trans 'Qrup filteri' %}">
+  {% include "portals/includes/student_group_filter.html" with bordered=False %}
+</section>
+{% endif %}
+
 {% include "portals/includes/classrooms_panel.html" %}
+</div>
 {% endblock %}

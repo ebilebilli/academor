@@ -75,6 +75,10 @@
         <span class="nav-icon"><i class="ti ti-calendar-week" aria-hidden="true"></i></span>
         <span class="nav-text">{% trans 'Schedule' %}</span>
       </a>
+      <a class="nav-link{% if u == 'student-attendance' %} active{% endif %}" href="{% url 'portals:student-attendance' %}">
+        <span class="nav-icon"><i class="ti ti-calendar-check" aria-hidden="true"></i></span>
+        <span class="nav-text">{% trans 'Davamiyyət' %}</span>
+      </a>
       <a class="nav-link{% if u == 'student-lessons' %} active{% endif %}" href="{% url 'portals:student-lessons' %}">
         <span class="nav-icon"><i class="ti ti-book" aria-hidden="true"></i></span>
         <span class="nav-text">{% trans 'Lessons' %}</span>
@@ -91,8 +95,8 @@
         <span class="nav-icon"><i class="ti ti-forms" aria-hidden="true"></i></span>
         <span class="nav-text">{% trans 'Quizzes' %}</span>
       </a>
-      {% if portal_student_has_ielts %}
-      <a class="nav-link{% if u == 'student-ielts-mock' or u == 'student-ielts-mock-complete' %} active{% endif %}" href="{% url 'portals:student-ielts-mock' %}" data-nav-mock-test>
+      {% if portal_student_has_mock_exam %}
+      <a class="nav-link{% if u == 'student-mock-picker' or u == 'student-mock-landing' or u == 'student-mock-complete' or u == 'student-ielts-mock' or u == 'student-ielts-mock-complete' %} active{% endif %}" href="{{ portal_student_mock_url|default:'#' }}" data-nav-mock-test>
         <span class="nav-icon"><i class="ti ti-clipboard-list" aria-hidden="true"></i></span>
         <span class="nav-text">{% trans 'Mock Test' %}</span>
       </a>
@@ -108,7 +112,7 @@
         <span class="nav-icon"><i class="ti ti-layout-dashboard" aria-hidden="true"></i></span>
         <span class="nav-text">{% trans 'Dashboard' %}</span>
       </a>
-      <a class="nav-link{% if u == 'customer-ielts-mock' or u == 'customer-ielts-mock-complete' %} active{% endif %}" href="{% url 'portals:customer-ielts-mock' %}">
+      <a class="nav-link{% if u == 'customer-mock-picker' or u == 'customer-mock-landing' or u == 'customer-mock-complete' or u == 'customer-ielts-mock' or u == 'customer-ielts-mock-complete' %} active{% endif %}" href="{{ portal_customer_mock_url|default:'#' }}">
         <span class="nav-icon"><i class="ti ti-clipboard-list" aria-hidden="true"></i></span>
         <span class="nav-text">{% trans 'Mock Test' %}</span>
       </a>
@@ -139,13 +143,13 @@
         <span class="nav-icon"><i class="ti ti-books" aria-hidden="true"></i></span>
         <span class="nav-text">{% trans 'Textbooks' %}</span>
       </a>
-      <a class="nav-link{% if u == 'parent-scores' or u == 'parent-score-detail' or u == 'parent-ielts-mock-detail' %} active{% endif %}" href="{% url 'portals:parent-scores' %}">
+      <a class="nav-link{% if u == 'parent-scores' or u == 'parent-score-detail' or u == 'parent-mock-detail' or u == 'parent-ielts-mock-detail' %} active{% endif %}" href="{% url 'portals:parent-scores' %}">
         <span class="nav-icon"><i class="ti ti-star" aria-hidden="true"></i></span>
         <span class="nav-text">{% trans 'Nəticələr və qiymətləndirmələr' %}</span>
       </a>
       <a class="nav-link{% if u == 'parent-attendance' %} active{% endif %}" href="{% url 'portals:parent-attendance' %}">
         <span class="nav-icon"><i class="ti ti-calendar-check" aria-hidden="true"></i></span>
-        <span class="nav-text">{% trans 'Attendance' %}</span>
+        <span class="nav-text">{% trans 'Davamiyyət' %}</span>
       </a>
       <a class="nav-link{% if u == 'parent-notifications' or u == 'parent-score-detail' %} active{% endif %}" href="{% url 'portals:parent-notifications' %}">
         <span class="nav-icon"><i class="ti ti-bell" aria-hidden="true"></i></span>

@@ -149,6 +149,7 @@ def build_student_week_calendar(student_id, week_start=None):
     schedules = (
         Schedule.objects.filter(group_id__in=group_ids)
         .select_related('group')
+        .prefetch_related('group__courses')
         .order_by('weekday', 'start_time', 'id')
     )
 

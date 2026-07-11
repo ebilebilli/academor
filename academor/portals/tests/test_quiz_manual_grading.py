@@ -436,7 +436,7 @@ class QuizManualGradingTests(QuizVisibilityTests):
 
     def test_listening_variant_review_includes_option_metadata(self):
         from portals.models import ListeningAudio, ListeningQuestion
-        from portals.utils.queries import get_teacher_quiz_result_detail, serialize_quiz_result_review
+        from portals.utils.queries import serialize_quiz_result_review
         from portals.utils.quiz_submit import submit_listening_quiz_attempt
 
         self.ielts_quiz.is_listening = True
@@ -470,11 +470,6 @@ class QuizManualGradingTests(QuizVisibilityTests):
         self.assertEqual(variant['correct_option_index'], 0)
         self.assertTrue(variant['is_correct'])
         self.assertEqual(variant['student_answer_display'], 'First option')
-
-        teacher_review = get_teacher_quiz_result_detail(self.teacher.pk, result.pk)
-        self.assertIsNotNone(teacher_review)
-        teacher_variant = teacher_review['listening_sections'][0]['questions'][0]
-        self.assertEqual(teacher_variant['selected_option_index'], 0)
 
     def test_listening_auto_submit_allows_retake(self):
         from portals.models import ListeningAudio, ListeningQuestion

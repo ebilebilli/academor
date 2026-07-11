@@ -11,12 +11,15 @@
 <div class="portal-control-bar mb-3">
   <a
     class="btn btn-outline-secondary btn-sm"
-    href="{% url 'portals:student-quiz-cancel' pk=quiz.id %}?next={{ back_url|urlencode }}"
+    href="{% if quiz_cancel_url %}{{ quiz_cancel_url }}{% elif mock_id %}{% url 'portals:student-quiz-cancel' pk=quiz.id %}?mock={{ mock_id }}&next={{ back_url|urlencode }}{% else %}{% url 'portals:student-quiz-cancel' pk=quiz.id %}?next={{ back_url|urlencode }}{% endif %}"
     data-quiz-leave-link
   >
     <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'Back' %}
   </a>
 </div>
+
+{% include "portals/includes/quiz_mock_progress.html" %}
+{% include "portals/includes/quiz_mock_section_continue.html" %}
 
 {% portal_page_heading icon="bi-ui-checks" raw_title=quiz.topic raw_subtitle=quiz.course_type_label %}
 
@@ -25,6 +28,7 @@
   data-quiz-take
   data-quiz-started="false"
   data-quiz-id="{{ quiz.id }}"
+  {% if mock_id %}data-mock-id="{{ mock_id }}" data-mock-cancel-url="{% if quiz_cancel_url %}{{ quiz_cancel_url }}{% else %}{% url 'portals:student-quiz-cancel' pk=quiz.id %}?mock={{ mock_id }}&amp;next={{ back_url|urlencode }}{% endif %}" data-msg-mock-leave-warning="{% trans 'Leave the mock test? Your current progress will be lost.' %}" data-mock-leave-title="{% trans 'Leave mock test?' %}" data-mock-leave-confirm="{% trans 'Leave mock test' %}"{% endif %}
   data-submit-url="{{ submit_url }}"
   data-time-limit-sec="{{ quiz.time_limit_seconds|default:0 }}"
   data-label-correct="{% trans 'Correct' %}"
@@ -71,10 +75,12 @@
 
   <div class="portal-quiz-take-actions panel">
     <button type="button" class="btn btn-primary" data-quiz-finish-btn>
-      <i class="bi bi-check2-circle me-1" aria-hidden="true"></i>{% trans 'Finish test' %}
+      <i class="bi bi-check2-circle me-1" aria-hidden="true"></i>{% include "portals/includes/quiz_mock_finish_label.html" %}
     </button>
     <p class="text-muted small mb-0 mt-2" data-quiz-take-hint>
-      {% if quiz.is_time_limited %}
+      {% if mock_id and mock_attempt %}
+        {% trans 'Submit this section when you are ready to continue the mock test.' %}
+      {% elif quiz.is_time_limited %}
         {% trans 'The test ends when the timer reaches zero or when you click Finish.' %}
       {% else %}
         {% trans 'Click Finish when you are ready.' %}
@@ -104,7 +110,7 @@
       </div>
     </div>
     <div class="portal-quiz-take-result__list" data-quiz-result-list></div>
-    <div class="d-flex flex-wrap gap-2 justify-content-center mt-4">
+    <div class="d-flex flex-wrap gap-2 justify-content-center mt-4"{% if mock_id %} data-mock-default-actions hidden{% endif %}>
       <a class="btn btn-outline-secondary btn-sm" href="{{ back_url }}">{% trans 'Back to quizzes' %}</a>
       <a class="btn btn-primary btn-sm" href="{% url 'portals:student-scores' %}">{% trans 'View scores' %}</a>
     </div>
@@ -119,7 +125,8 @@
 {% endblock %}
 
 {% block extra_js %}
+{% if mock_id %}<script src="{% static 'portals/js/quiz-mock-section.js' %}?v=20260709a"></script>{% endif %}
 <script src="{% static 'portals/js/quiz-start-gate.js' %}?v=20260703"></script>
 <script src="{% static 'portals/js/quiz-leave-guard.js' %}?v=20260703"></script>
-<script src="{% static 'portals/js/quiz-take.js' %}?v=20260703"></script>
+<script src="{% static 'portals/js/quiz-take.js' %}?v=20260711"></script>
 {% endblock %}

@@ -265,5 +265,22 @@
   "Zəif": "Слабо",
   "Quiz tarixçəsi": "История тестов",
   "Quiz icazələri": "Доступ к тестам",
-  "Hamısı": "Все"
+  "Hamısı": "Все",
+  "Your balance: <strong>%(counter)s</strong> credit": "Ваш баланс: <strong>%(counter)s</strong> кредит",
+  "Your balance: <strong>%(counter)s</strong> credits": "Ваш баланс: <strong>%(counter)s</strong> кредитов",
+  "Continue mock test": "Продолжить пробный тест",
+  "Buy mock package": "Купить пакет пробного теста",
+  "Mock test results": "Результаты пробного теста",
+  "Mock test credits": "Кредиты на пробный тест",
+  "%(counter)s mock test credit": "%(counter)s кредит на пробный тест",
+  "%(counter)s mock test credits": "%(counter)s кредитов на пробный тест",
+  "Pay now": "Оплатить",
+  "No packages are available right now. Please contact Academor.": "Сейчас пакеты недоступны. Пожалуйста, свяжитесь с Academor.",
+  "No mock test credits.": "Нет кредитов на пробный тест.",
+  "Purchase a package to start your next mock test.": "Купите пакет, чтобы начать следующий пробный тест.",
+  "You have no mock test credits. Purchase a package to continue.": "У вас нет кредитов на пробный тест. Купите пакет, чтобы продолжить.",
+  "Payment completed. Mock test credits were added to your account.": "Оплата завершена. Кредиты на пробный тест добавлены на ваш счёт.",
+  "Payment completed. %(credits)s mock test credit(s) were added.": "Оплата завершена. Добавлено кредитов на пробный тест: %(credits)s.",
+  "Writing and Speaking sections are reviewed and scored by IELTS teachers.": "Разделы Writing и Speaking проверяют и оценивают преподаватели IELTS.",
+  "Each credit lets you start one full IELTS mock test with all four sections. One credit is used when you confirm Start quiz on the first section. Credits you buy stay on your account until you use them.": "Один кредит даёт право начать полный пробный IELTS (все четыре раздела). После предупреждения в первом разделе при нажатии «Начать викторину» списывается 1 кредит. Купленные кредиты остаются на счёте, пока вы их не используете."
 }

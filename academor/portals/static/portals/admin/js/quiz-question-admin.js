@@ -3,7 +3,7 @@
 
   var ANSWER_FIELDS = ["answer_options", "correct_answer"];
   var RESPONSE_FIELD = "student_response_preview";
-  var GRADING_INPUTS = ["is_essay", "is_listening", "is_speaking", "is_reading"];
+  var GRADING_INPUTS = ["is_essay", "is_listening", "is_speaking", "is_reading", "is_math"];
 
   var PROMPT_TYPES = {
     text: {
@@ -65,6 +65,15 @@
     return parts.slice(0, quizIdx + 1).join("/") + "/grading-mode-fields/";
   }
 
+  function satSectionConfigUrl() {
+    var parts = window.location.pathname.split("/");
+    var quizIdx = parts.indexOf("quiz");
+    if (quizIdx === -1) {
+      return null;
+    }
+    return parts.slice(0, quizIdx + 1).join("/") + "/sat-section-config/";
+  }
+
   function csrfToken() {
     var input = document.querySelector("[name=csrfmiddlewaretoken]");
     return input ? input.value : "";
@@ -87,6 +96,9 @@
     if (form.querySelector("#id_is_reading:checked")) {
       return "reading";
     }
+    if (form.querySelector("#id_is_math:checked")) {
+      return "math";
+    }
     return "variant";
   }
 
@@ -107,7 +119,7 @@
         clear_fields: [],
       };
     }
-    if (mode === "reading") {
+    if (mode === "reading" || mode === "math") {
       return {
         grading_mode: mode,
         show_fields: [],
@@ -213,7 +225,7 @@
     }
     var variantInline = form.querySelector(".inline-group.portal-quiz-inline");
     var speakingInline = form.querySelector(".inline-group .speakingpart");
-    var hideVariant = mode === "speaking" || mode === "listening" || mode === "reading";
+    var hideVariant = mode === "speaking" || mode === "listening" || mode === "reading" || mode === "math";
     if (variantInline) {
       variantInline.classList.toggle("quiz-admin-hidden-fieldset", hideVariant);
     }
@@ -282,6 +294,123 @@
       });
   }
 
+  function syncMathFieldVisibility() {
+    var form = quizForm();
+    if (!form) {
+      return;
+    }
+    var mathRow = form.querySelector(".field-is_math");
+    var mathInput = form.querySelector("#id_is_math");
+    if (mathRow) {
+      mathRow.classList.add("quiz-admin-hidden-field");
+    }
+    if (mathInput) {
+      mathInput.checked = false;
+    }
+  }
+
+  function selectedSatSection() {
+    var form = quizForm();
+    if (!form) {
+      return "";
+    }
+    var checked = form.querySelector('input[name="sat_section"]:checked');
+    return checked ? checked.value : "";
+  }
+
+  function applySatSectionFlags(flags) {
+    var form = quizForm();
+    if (!form || !flags) {
+      return;
+    }
+    GRADING_INPUTS.forEach(function (name) {
+      var input = form.querySelector("#id_" + name);
+      if (!input) {
+        return;
+      }
+      input.checked = !!flags[name];
+    });
+  }
+
+  function syncSatSectionFieldVisibility() {
+    var form = quizForm();
+    if (!form) {
+      return;
+    }
+    var satInput = form.querySelector("#id_is_sat");
+    var satEnabled = !!(satInput && satInput.checked);
+    var satFieldset = form.querySelector(".sat-section-fieldset");
+    var gradingFieldset = form.querySelector(".quiz-grading-fieldset");
+    var ieltsRow = form.querySelector(".field-is_ielts");
+
+    if (satFieldset) {
+      satFieldset.classList.toggle("quiz-admin-hidden-fieldset", !satEnabled);
+    }
+    if (gradingFieldset) {
+      gradingFieldset.classList.toggle("quiz-admin-hidden-fieldset", satEnabled);
+    }
+    if (ieltsRow) {
+      ieltsRow.classList.toggle("quiz-admin-hidden-field", satEnabled);
+    }
+    syncMathFieldVisibility();
+  }
+
+  var satSectionRequestId = 0;
+
+  function syncSatSectionViaAjax() {
+    var url = satSectionConfigUrl();
+    var form = quizForm();
+    if (!url || !form) {
+      syncSatSectionFieldVisibility();
+      syncGradingModeViaAjax();
+      return;
+    }
+
+    syncSatSectionFieldVisibility();
+
+    var satInput = form.querySelector("#id_is_sat");
+    if (!satInput || !satInput.checked) {
+      syncGradingModeViaAjax();
+      return;
+    }
+
+    var requestId = ++satSectionRequestId;
+    var body = new FormData();
+    body.append("is_sat", "on");
+    body.append("sat_section", selectedSatSection());
+    body.append("csrfmiddlewaretoken", csrfToken());
+
+    fetch(url, {
+      method: "POST",
+      body: body,
+      credentials: "same-origin",
+      headers: { "X-Requested-With": "XMLHttpRequest" },
+    })
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error("sat-section-config failed");
+        }
+        return response.json();
+      })
+      .then(function (config) {
+        if (requestId !== satSectionRequestId) {
+          return;
+        }
+        applySatSectionFlags(config.flags || {});
+        if (config.grading_mode) {
+          applyGradingConfigToAll(fallbackGradingConfig(config.grading_mode));
+          applyQuizInlineMode(config.grading_mode);
+        }
+        syncGradingModeViaAjax();
+      })
+      .catch(function () {
+        if (requestId !== satSectionRequestId) {
+          return;
+        }
+        syncGradingModeViaAjax();
+      });
+  }
+
   function bindGradingModeOnQuizForm() {
     var form = quizForm();
     if (!form || form.dataset.quizGradingBound === "1") {
@@ -296,8 +425,26 @@
       input.addEventListener("change", syncGradingModeViaAjax);
     });
 
+    var satInput = form.querySelector("#id_is_sat");
+    if (satInput) {
+      satInput.addEventListener("change", function () {
+        if (satInput.checked) {
+          var ieltsInput = form.querySelector("#id_is_ielts");
+          if (ieltsInput) {
+            ieltsInput.checked = false;
+          }
+        }
+        syncSatSectionViaAjax();
+      });
+    }
+
+    form.querySelectorAll('input[name="sat_section"]').forEach(function (input) {
+      input.addEventListener("change", syncSatSectionViaAjax);
+    });
+
     form.dataset.quizGradingBound = "1";
-    syncGradingModeViaAjax();
+    syncSatSectionFieldVisibility();
+    syncSatSectionViaAjax();
   }
 
   function fieldRow(block, name) {

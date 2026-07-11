@@ -100,21 +100,35 @@ def parse_resource_file(path: Path) -> dict:
         'level': level,
         'service': service,
         'category_name': category_name,
+        'is_sat': bool(data.get('is_sat')),
+        'sat_section': (data.get('sat_section') or '').strip(),
+        'time_limit_minutes': data.get('time_limit_minutes'),
         'questions': questions,
     }
 
 
 def ensure_quiz_from_resource(parsed: dict, category: QuizCategory) -> tuple[Quiz, bool]:
     """Create or update a Quiz row for a loaded JSON resource."""
+    defaults = {
+        'topic': parsed['resource_name'],
+        'is_listening': False,
+        'is_essay': False,
+        'is_speaking': False,
+        'is_reading': False,
+        'is_math': False,
+        'is_ielts': False,
+        'is_sat': parsed.get('is_sat', False),
+        'sat_section': parsed.get('sat_section', ''),
+    }
+    time_limit = parsed.get('time_limit_minutes')
+    if time_limit:
+        defaults['is_time_limited'] = True
+        defaults['time_limit_minutes'] = int(time_limit)
+
     quiz, created = Quiz.objects.update_or_create(
         category=category,
         resource_slug=parsed['resource_slug'],
-        defaults={
-            'topic': parsed['resource_name'],
-            'is_listening': False,
-            'is_essay': False,
-            'is_speaking': False,
-        },
+        defaults=defaults,
     )
     return quiz, created
 
@@ -168,6 +182,18 @@ def sync_quiz_questions(
 @transaction.atomic
 def load_resource_file(path: Path, *, deactivate_missing: bool = True) -> dict:
     parsed = parse_resource_file(path)
+    if parsed['service'] == 'sat':
+        from projects.models.service_models import Service
+
+        Service.objects.get_or_create(
+            slug='sat',
+            defaults={
+                'name_az': 'SAT',
+                'name_en': 'SAT',
+                'name_ru': 'SAT',
+                'is_active': True,
+            },
+        )
     category, _ = QuizCategory.objects.get_or_create(
         service=parsed['service'],
         name=parsed['category_name'],

@@ -212,6 +212,7 @@
           answers: collectAnswers(),
           duration_sec: elapsedSeconds(),
           completion_trigger: options.completionTrigger || "manual",
+          mock: root.getAttribute("data-mock-id") || undefined,
         }),
       })
         .then(function (response) {
@@ -221,7 +222,23 @@
         })
         .then(function (payload) {
           if (!payload.ok || !payload.data.success) {
+            if (window.PortalQuizMockSection && window.PortalQuizMockSection.redirectIfNeeded(payload.data)) {
+              return false;
+            }
             throw new Error((payload.data && payload.data.error) || msgError);
+          }
+          if (payload.data.mock_continue && payload.data.next_url) {
+            submitted = true;
+            submitting = false;
+            if (timerId) {
+              window.clearInterval(timerId);
+            }
+            if (
+              window.PortalQuizMockSection
+              && window.PortalQuizMockSection.handleSubmitResponse(root, payload.data, renderResult)
+            ) {
+              return true;
+            }
           }
           submitted = true;
           submitting = false;

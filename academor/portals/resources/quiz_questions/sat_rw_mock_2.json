@@ -1,0 +1,98 @@
+{
+  "title": "SAT Reading and Writing — Practice Mock 2",
+  "service": "sat",
+  "category_name": "SAT Reading and Writing",
+  "is_sat": true,
+  "sat_section": "writing",
+  "time_limit_minutes": 64,
+  "questions": [
+    {
+      "id": 1,
+      "question": "<p><strong>Passage: Harlem Renaissance.</strong> The primary purpose of the passage is to</p>",
+      "options": [
+        "argue that jazz declined after the 1930s",
+        "describe the scope and legacy of the Harlem Renaissance",
+        "compare Hughes and Hurston's private lives",
+        "prove that white patrons controlled all Black art"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 2,
+      "question": "<p>Hughes and Hurston treated Black experiences as</p>",
+      "options": [
+        "unworthy literary topics",
+        "worthy subjects for serious literature",
+        "topics only for European audiences",
+        "material that should avoid dialect"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "<p>The discussion of musicians mainly shows that artists</p>",
+      "options": [
+        "avoided commercial recording entirely",
+        "succeeded without facing structural barriers",
+        "shaped popular culture while confronting inequality",
+        "preferred segregated audiences"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "<p>Which choice best states the main idea of the scholars' debate?</p>",
+      "options": [
+        "Scholars disagree on details but agree on the movement's cultural impact.",
+        "The Renaissance failed to influence civil rights.",
+        "Militant essays were the only important texts of the era.",
+        "White publishers refused to print Black authors."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 5,
+      "question": "<p>The Great Depression is mentioned in order to</p>",
+      "options": [
+        "explain a factor that weakened institutional support",
+        "claim that Harlem's population disappeared",
+        "praise New Deal arts programs",
+        "argue that museums closed permanently"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "<p>As used in the passage, <em>recover</em> most nearly means</p>",
+      "options": [
+        "financially reimburse",
+        "restore to public attention",
+        "physically heal",
+        "copy without permission"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "<p>Which inference is best supported?</p>",
+      "options": [
+        "Harlem Renaissance artists agreed on every political strategy.",
+        "American modernism developed without Black creators.",
+        "Artistic innovation occurred alongside ongoing racial inequality.",
+        "Northern cities eliminated segregation by 1925."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "<p>Which idea best supports lasting influence of the Renaissance?</p>",
+      "options": [
+        "Harlem became a center of artistic production in the 1920s.",
+        "The movement expanded audiences for Black art and trained creators who influenced later civil rights culture.",
+        "Musicians transformed popular entertainment.",
+        "The Great Depression reduced philanthropic support."
+      ],
+      "answer": 1
+    }
+  ]
+}

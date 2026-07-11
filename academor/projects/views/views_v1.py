@@ -21,6 +21,7 @@ from projects.seo_page_defaults import get_page_seo_defaults
 from projects.utils.queries import (
     get_language_from_request, get_home_page_data,
     get_courses_list_data,
+    get_mock_tests_list_data,
     get_background_image,
     get_about, serialize_about, get_serialized_about_why_items, get_about_page_gallery_items,
     get_contact, serialize_contact,
@@ -51,7 +52,8 @@ class HomePageView(View):
         context['language'] = lang
         context['review_form'] = review_form if review_form is not None else ReviewForm(request=request)
         context['open_review_modal'] = open_review_modal
-        context.update(self._home_payment_context(request, context))
+        context.update(self._home_course_payment_context(request, context))
+        context.update(self._home_mock_payment_context(request, context))
         canonical = canonical_url_for_request(request)
         context['structured_data_json'] = dumps_structured_data(
             organization_json_ld(canonical_url=canonical, lang=lang),
@@ -59,7 +61,7 @@ class HomePageView(View):
         )
         return context
 
-    def _home_payment_context(self, request, context):
+    def _home_course_payment_context(self, request, context):
         featured = context.get('home_featured_prices') or []
         if not featured:
             return {}
@@ -79,6 +81,28 @@ class HomePageView(View):
             'home_payment_form': CoursePaymentForm(request=request),
             'open_home_payment_modal': False,
             'home_payment_package_id': None,
+        }
+
+    def _home_mock_payment_context(self, request, context):
+        mock_packages = context.get('home_mock_packages') or []
+        if not mock_packages:
+            return {}
+        from payments.forms import CoursePaymentForm
+
+        session_data = request.session.pop('home_mock_payment_form_data', None)
+        if session_data is not None:
+            form = CoursePaymentForm(session_data, request=request, mock_checkout=True)
+            form.is_valid()
+            package_id = session_data.get('price_package_id')
+            return {
+                'home_mock_payment_form': form,
+                'open_home_mock_payment_modal': True,
+                'home_mock_payment_package_id': package_id,
+            }
+        return {
+            'home_mock_payment_form': CoursePaymentForm(request=request, mock_checkout=True),
+            'open_home_mock_payment_modal': False,
+            'home_mock_payment_package_id': None,
         }
 
     def get(self, request):
@@ -127,87 +151,127 @@ class CoursesPageView(View):
 
 class CourseDetailPageView(View):
     template_name = 'course-detail.html'
+    mock_only = False
 
     def get(self, request, slug):
-        lang = get_language_from_request(request)
-        category = get_active_project_category_by_slug(slug)
-        if not category:
-            raise Http404(_("Category not found"))
-        course = serialize_project_category_detail(category, lang)
-        payment_form = None
-        payment_tab_panels = []
-        default_payment_tab = None
-        all_packages = course.get('price_packages') or []
-
-        if course.get('has_payment'):
-            from payments.forms import CoursePaymentForm
-
-            session_data = request.session.pop('course_payment_form_data', None)
-            preferred_package_id = None
-            if session_data is not None:
-                data = dict(session_data)
-                preferred_package_id = data.get('price_package_id')
-                if not (data.get('buyer_name') or '').strip():
-                    first = (data.get('buyer_first_name') or '').strip()
-                    last = (data.get('buyer_last_name') or '').strip()
-                    data['buyer_name'] = f'{first} {last}'.strip()
-                payment_form = CoursePaymentForm(data, request=request)
-                payment_form.is_valid()
-            else:
-                payment_form = CoursePaymentForm(request=request)
-                package_param = request.GET.get('package')
-                if package_param:
-                    preferred_package_id = package_param
-
-            payment_tab_panels, default_payment_tab = build_payment_tab_panels(
-                all_packages,
-                lang=lang,
-                preferred_package_id=preferred_package_id,
-            )
-            course['all_price_packages'] = all_packages
-
-            active_panel = next(
-                (panel for panel in payment_tab_panels if panel['is_active']),
-                None,
-            )
-            default_package_index = (
-                active_panel['default_index'] if active_panel else 0
-            )
-            default_payment_package = None
-            if active_panel and active_panel['packages']:
-                packages_in_panel = active_panel['packages']
-                if default_package_index < len(packages_in_panel):
-                    default_payment_package = packages_in_panel[default_package_index]
-            open_payment_modal = (
-                request.GET.get('pay') == '1'
-                and course.get('has_payment')
-                and not payment_form.errors
-            )
-        else:
-            default_package_index = 0
-            default_payment_package = None
-            open_payment_modal = False
-
-        seo_defaults = get_page_seo_defaults('course-detail', lang)
-        context = {
-            'course': course,
-            'default_package_index': default_package_index,
-            'default_payment_package': default_payment_package,
-            'default_payment_tab': default_payment_tab,
-            'payment_tab_panels': payment_tab_panels,
-            'open_payment_modal': open_payment_modal,
-            'language': lang,
-            'background_image': get_background_image('courses'),
-            'payment_form': payment_form,
-        }
-        context.update(
-            course_detail_seo(
-                canonical_url=canonical_url_for_request(request),
-                course=course,
-                default_keywords=seo_defaults.get('keywords'),
-            )
+        return _render_service_detail_page(
+            request,
+            slug,
+            template_name=self.template_name,
+            mock_only=self.mock_only,
         )
+
+
+class MockTestsPageView(View):
+    template_name = 'mock-tests.html'
+
+    def get(self, request):
+        lang = get_language_from_request(request)
+        context = get_mock_tests_list_data(request, lang)
         return render(request, self.template_name, context)
+
+
+class MockTestDetailPageView(CourseDetailPageView):
+    template_name = 'mock-test-detail.html'
+    mock_only = True
+
+
+def _render_service_detail_page(request, slug, *, template_name, mock_only: bool):
+    lang = get_language_from_request(request)
+    category = get_active_project_category_by_slug(
+        slug,
+        is_mock_test=True if mock_only else False,
+    )
+    if not category:
+        raise Http404(_("Category not found"))
+    if mock_only and not category.is_mock_test:
+        raise Http404(_("Category not found"))
+    if not mock_only and category.is_mock_test:
+        raise Http404(_("Category not found"))
+
+    course = serialize_project_category_detail(category, lang)
+    payment_form = None
+    payment_tab_panels = []
+    default_payment_tab = None
+    all_packages = course.get('price_packages') or []
+
+    if course.get('has_payment'):
+        from payments.forms import CoursePaymentForm
+
+        session_data = request.session.pop('course_payment_form_data', None)
+        preferred_package_id = None
+        if session_data is not None:
+            data = dict(session_data)
+            preferred_package_id = data.get('price_package_id')
+            if not (data.get('buyer_name') or '').strip():
+                first = (data.get('buyer_first_name') or '').strip()
+                last = (data.get('buyer_last_name') or '').strip()
+                data['buyer_name'] = f'{first} {last}'.strip()
+            payment_form = CoursePaymentForm(
+                data,
+                request=request,
+                mock_checkout=course.get('is_mock_test'),
+            )
+            payment_form.is_valid()
+        else:
+            payment_form = CoursePaymentForm(
+                request=request,
+                mock_checkout=course.get('is_mock_test'),
+            )
+            package_param = request.GET.get('package')
+            if package_param:
+                preferred_package_id = package_param
+
+        payment_tab_panels, default_payment_tab = build_payment_tab_panels(
+            all_packages,
+            lang=lang,
+            preferred_package_id=preferred_package_id,
+        )
+        course['all_price_packages'] = all_packages
+
+        active_panel = next(
+            (panel for panel in payment_tab_panels if panel['is_active']),
+            None,
+        )
+        default_package_index = (
+            active_panel['default_index'] if active_panel else 0
+        )
+        default_payment_package = None
+        if active_panel and active_panel['packages']:
+            packages_in_panel = active_panel['packages']
+            if default_package_index < len(packages_in_panel):
+                default_payment_package = packages_in_panel[default_package_index]
+        open_payment_modal = (
+            request.GET.get('pay') == '1'
+            and course.get('has_payment')
+            and not payment_form.errors
+        )
+    else:
+        default_package_index = 0
+        default_payment_package = None
+        open_payment_modal = False
+
+    seo_defaults = get_page_seo_defaults('course-detail', lang)
+    context = {
+        'course': course,
+        'default_package_index': default_package_index,
+        'default_payment_package': default_payment_package,
+        'default_payment_tab': default_payment_tab,
+        'payment_tab_panels': payment_tab_panels,
+        'open_payment_modal': open_payment_modal,
+        'language': lang,
+        'background_image': get_background_image('courses'),
+        'payment_form': payment_form,
+        'is_mock_test_page': mock_only,
+    }
+    context.update(
+        course_detail_seo(
+            canonical_url=canonical_url_for_request(request),
+            course=course,
+            default_keywords=seo_defaults.get('keywords'),
+        )
+    )
+    return render(request, template_name, context)
 
 
 class AboutPageView(View):

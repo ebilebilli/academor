@@ -1,6 +1,10 @@
 {% load i18n %}
-{% if period_tabs or subject_tabs|length > 1 or category_tabs|length > 1 %}
+{% if period_tabs or subject_tabs|length > 1 or category_tabs|length > 1 or score_groups|length > 1 %}
 <section class="s-lessons-filter-panel mb-4" aria-label="{% trans 'Dərs filterləri' %}">
+  {% if score_groups|length > 1 %}
+  {% include "portals/includes/student_group_filter.html" with bordered=False %}
+  {% endif %}
+
   {% if period_tabs %}
   <div class="s-lessons-filter-panel__row s-lessons-filter-panel__row--period">
     <span class="s-lessons-filter-panel__label">
@@ -27,9 +31,9 @@
   <div class="s-lessons-filter-panel__row{% if period_tabs %} s-lessons-filter-panel__row--bordered{% endif %}">
     <span class="s-lessons-filter-panel__label">
       <i class="ti ti-books" aria-hidden="true"></i>
-      {% trans 'Fənn' %}
+      {% trans 'Service' %}
     </span>
-    <div class="s-lessons-filter-panel__tabs" data-lesson-subject-tabs role="group" aria-label="{% trans 'Fənn filteri' %}">
+    <div class="s-lessons-filter-panel__tabs" data-lesson-subject-tabs role="group" aria-label="{% trans 'Service filter' %}">
       {% for tab in subject_tabs %}
       <button
         class="s-filter-tab{% if forloop.first %} is-active{% endif %}"

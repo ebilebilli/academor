@@ -79,14 +79,23 @@ def _mock_notification_defaults() -> dict:
     }
 
 
-def _mock_detail_url(*, role: str, attempt_pk: int) -> str:
-    routes = {
-        'teacher': 'portals:teacher-ielts-mock-detail',
-        'parent': 'portals:parent-ielts-mock-detail',
-        'student': 'portals:student-ielts-mock-complete',
-        'customer': 'portals:customer-ielts-mock-complete',
-    }
-    return reverse(routes[role], kwargs={'pk': attempt_pk})
+def _mock_detail_url(*, role: str, attempt) -> str:
+    attempt_pk = attempt.pk
+    if role == 'teacher':
+        return reverse('portals:teacher-mock-detail', kwargs={'pk': attempt_pk})
+    if role == 'parent':
+        return reverse('portals:parent-mock-detail', kwargs={'pk': attempt_pk})
+    if role == 'student':
+        return reverse(
+            'portals:student-mock-complete',
+            kwargs={'program': attempt.exam_program, 'pk': attempt_pk},
+        )
+    if role == 'customer':
+        return reverse(
+            'portals:customer-mock-complete',
+            kwargs={'program': attempt.exam_program, 'pk': attempt_pk},
+        )
+    return reverse('portals:student-mock-complete', kwargs={'program': attempt.exam_program, 'pk': attempt_pk})
 
 
 def _mock_attempt_recipient_name(attempt) -> str:
@@ -170,13 +179,24 @@ def create_teacher_submission_notifications(result: QuizResult) -> None:
     ).delete()
 
 
+def _learner_notification_lookup(result: QuizResult) -> dict | None:
+    if result.student_id:
+        return {'student_id': result.student_id}
+    if result.customer_id:
+        return {'customer_id': result.customer_id}
+    return None
+
+
 def create_student_submission_notification(result: QuizResult) -> None:
-    """Tell the student their manual quiz was sent for review."""
+    """Tell the student or customer their manual quiz was sent for review."""
     if not result.quiz.is_manual_grading:
         return
+    lookup = _learner_notification_lookup(result)
+    if not lookup:
+        return
     PortalNotification.objects.update_or_create(
-        student_id=result.student_id,
         quiz_result=result,
+        **lookup,
         defaults={
             'kind': PortalNotification.Kind.SUBMISSION_PENDING,
             'is_read': False,
@@ -193,11 +213,14 @@ def clear_published_result_notifications(result: QuizResult) -> None:
 
 
 def dismiss_student_submission_notification(result: QuizResult) -> None:
-    """Remove the student's pending-review alert once the score is published."""
+    """Remove the learner's pending-review alert once the score is published."""
+    lookup = _learner_notification_lookup(result)
+    if not lookup:
+        return
     PortalNotification.objects.filter(
-        student_id=result.student_id,
         quiz_result=result,
         kind=PortalNotification.Kind.SUBMISSION_PENDING,
+        **lookup,
     ).delete()
 
 
@@ -232,10 +255,15 @@ def create_published_result_notifications(
 
     if result.quiz.is_manual_grading:
         dismiss_student_submission_notification(result)
-        _upsert_published_notification(
-            student_id=result.student_id,
-            quiz_result=result,
-        )
+        learner_lookup = _learner_notification_lookup(result)
+        if learner_lookup:
+            _upsert_published_notification(
+                quiz_result=result,
+                **learner_lookup,
+            )
+
+    if not result.student_id:
+        return
 
     for parent_id in _parent_ids_for_student(result.student_id):
         _upsert_published_notification(
@@ -355,6 +383,7 @@ def _notification_queryset(
 ):
     qs = PortalNotification.objects.select_related(
         'quiz_result__student__user',
+        'quiz_result__customer__user',
         'quiz_result__quiz__category',
         'ielts_mock_test__student__user',
         'ielts_mock_test__customer__user',
@@ -436,6 +465,7 @@ def _score_detail_url(*, role: str, result_pk: int) -> str:
         'teacher': 'portals:teacher-score-detail',
         'parent': 'portals:parent-score-detail',
         'student': 'portals:student-score-detail',
+        'customer': 'portals:customer-score-detail',
     }
     return reverse(routes[role], kwargs={'result_pk': result_pk})
 
@@ -449,7 +479,7 @@ def serialize_notification(row: PortalNotification, *, role: str) -> dict:
 
         attempt = row.ielts_mock_test
         summary = serialize_mock_attempt_summary(attempt)
-        detail_url = _mock_detail_url(role=role, attempt_pk=attempt.pk)
+        detail_url = _mock_detail_url(role=role, attempt=attempt)
         pending_labels = [
             section['section_label']
             for section in summary['sections']
@@ -532,7 +562,7 @@ def serialize_notification(row: PortalNotification, *, role: str) -> dict:
 
         attempt = row.ielts_mock_test
         summary = serialize_mock_attempt_summary(attempt)
-        detail_url = _mock_detail_url(role=role, attempt_pk=attempt.pk)
+        detail_url = _mock_detail_url(role=role, attempt=attempt)
         return {
             'id': row.pk,
             'kind': row.kind,
@@ -576,15 +606,22 @@ def serialize_notification(row: PortalNotification, *, role: str) -> dict:
     is_pending = row.kind == PortalNotification.Kind.SUBMISSION_PENDING
     if is_pending and role == 'student':
         score_detail_url = reverse('portals:student-scores')
+    elif is_pending and role == 'customer':
+        score_detail_url = reverse('portals:customer-notifications')
     else:
         score_detail_url = _score_detail_url(role=role, result_pk=result.pk)
+    learner_name = (
+        result.customer.full_name
+        if result.customer_id
+        else (result.student.full_name if result.student_id else '')
+    )
     return {
         'id': row.pk,
         'kind': row.kind,
         'is_submission_pending': is_pending,
         'is_read': row.is_read,
         'created_at': row.created_at,
-        'student_name': result.student.full_name,
+        'student_name': learner_name,
         'quiz_topic': quiz.topic,
         'grading_mode_label': quiz.get_grading_mode_label(),
         'total_score': result.total_score,
@@ -611,6 +648,7 @@ def get_notifications(
             kind=PortalNotification.Kind.RESULT_PUBLISHED,
         ).select_related(
             'quiz_result__student__user',
+            'quiz_result__customer__user',
             'quiz_result__quiz__category',
             'ielts_mock_test__student__user',
             'ielts_mock_test__customer__user',
@@ -721,6 +759,10 @@ def student_can_view_quiz_result(student_id: int, result: QuizResult) -> bool:
     return result.student_id == student_id and is_quiz_result_published(result)
 
 
+def customer_can_view_quiz_result(customer_id: int, result: QuizResult) -> bool:
+    return result.customer_id == customer_id and is_quiz_result_published(result)
+
+
 def _build_variant_breakdown(result: QuizResult) -> list[dict]:
     given = result.given_answers or {}
     quiz = result.quiz
@@ -784,6 +826,7 @@ def _serialize_score_detail(row: QuizResult, *, role: str) -> dict:
         'teacher': 'portals:teacher-notifications',
         'parent': 'portals:parent-notifications',
         'student': 'portals:student-notifications',
+        'customer': 'portals:customer-notifications',
     }
     latest_review = row.reviews.select_related('reviewer__user').first()
     completion_trigger = getattr(row, 'completion_trigger', 'manual') or 'manual'
@@ -941,3 +984,18 @@ def get_score_detail_for_student(student_id: int, result_id: int) -> dict | None
     if not row or not student_can_view_quiz_result(student_id, row):
         return None
     return _serialize_score_detail(row, role='student')
+
+
+def get_score_detail_for_customer(customer_id: int, result_id: int) -> dict | None:
+    row = (
+        QuizResult.objects.filter(pk=result_id)
+        .select_related('customer__user', 'quiz__category')
+        .prefetch_related(
+            Prefetch('quiz__questions', queryset=QuizQuestion.objects.order_by('order', 'id')),
+            Prefetch('reviews', queryset=QuizResultReview.objects.select_related('reviewer__user')),
+        )
+        .first()
+    )
+    if not row or not customer_can_view_quiz_result(customer_id, row):
+        return None
+    return _serialize_score_detail(row, role='customer')

@@ -59,9 +59,9 @@ class StudyGroup(models.Model):
         return list(self.courses.values_list('slug', flat=True))
 
     def get_course_labels(self):
-        from portals.utils.portal_services import localized_service_name
+        from portals.utils.group_services import study_group_portal_display_labels
 
-        return [localized_service_name(course) for course in self.courses.all()]
+        return study_group_portal_display_labels(self)
 
     def get_portal_course_codes(self):
         from portals.utils.group_services import study_group_portal_codes

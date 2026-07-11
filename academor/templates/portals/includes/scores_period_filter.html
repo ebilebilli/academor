@@ -1,8 +1,12 @@
 {% load i18n %}
 {% if period_tabs or score_groups %}
 <section class="s-lessons-filter-panel mb-4" aria-label="{% trans 'Qiymət filterləri' %}">
+  {% if score_groups|length > 1 %}
+  {% include "portals/includes/student_group_filter.html" with bordered=period_tabs %}
+  {% endif %}
+
   {% if period_tabs %}
-  <div class="s-lessons-filter-panel__row s-lessons-filter-panel__row--period">
+  <div class="s-lessons-filter-panel__row s-lessons-filter-panel__row--period{% if score_groups|length > 1 %} s-lessons-filter-panel__row--bordered{% endif %}">
     <span class="s-lessons-filter-panel__label">
       <i class="ti ti-calendar" aria-hidden="true"></i>
       {% trans 'Tarix' %}
@@ -17,32 +21,6 @@
       >
         {{ tab.label }}
         <span class="s-filter-tab__badge">{{ tab.count }}</span>
-      </button>
-      {% endfor %}
-    </div>
-  </div>
-  {% endif %}
-  {% if score_groups %}
-  <div class="s-lessons-filter-panel__row s-lessons-filter-panel__row--group{% if period_tabs %} s-lessons-filter-panel__row--bordered{% endif %}">
-    <span class="s-lessons-filter-panel__label">
-      <i class="ti ti-users-group" aria-hidden="true"></i>
-      {% trans 'Qrup' %}
-    </span>
-    <div
-      class="s-lessons-filter-panel__tabs s-lessons-filter-panel__tabs--seg"
-      data-score-group-filter
-      role="group"
-      aria-label="{% trans 'Qrup filteri' %}"
-    >
-      {% for group in score_groups %}
-      <button
-        type="button"
-        class="s-filter-tab{% if active_score_group == group.id|stringformat:'s' %} is-active{% endif %}"
-        data-score-group="{{ group.id }}"
-        aria-selected="{% if active_score_group == group.id|stringformat:'s' %}true{% else %}false{% endif %}"
-      >
-        {{ group.name }}
-        <span class="s-filter-tab__badge" data-score-group-count>{{ group.total_count }}</span>
       </button>
       {% endfor %}
     </div>

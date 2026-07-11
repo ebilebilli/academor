@@ -8,6 +8,7 @@
 
 <div
   data-portal-lessons-filter
+  data-portal-scores-filter
   data-portal-lessons-period-tabs="[data-portal-lessons-period-tabs]"
   data-portal-lessons-subject-tabs="[data-lesson-subject-tabs]"
   data-portal-lessons-category-tabs=".s-lessons-filter-panel__tabs--compact"
@@ -32,6 +33,8 @@
     data-subject="{{ lesson.subject }}"
     data-category="{{ lesson.category_id|default:'' }}"
     data-lesson-date="{{ lesson.lesson_date|date:'Y-m-d' }}"
+    data-group-id="{{ lesson.group_id|default:'' }}"
+    {% if lesson.group_id %}data-group-ids="{{ lesson.group_id }}"{% endif %}
   >
     <div class="s-lesson-card__head">
       {% if lesson.category_name %}
@@ -50,7 +53,7 @@
       </div>
       <a
         class="ds-btn ds-btn--primary btn-sm s-lesson-card__open stretched-link"
-        href="{{ lesson_detail_url }}{{ student_query|default:'' }}"
+        href="{{ lesson_detail_url }}{{ student_query|default:group_query|default:'' }}"
         aria-label="{% blocktrans with title=lesson.name %}Open lesson: {{ title }}{% endblocktrans %}"
       >
         {% trans 'Aç' %}
@@ -70,11 +73,9 @@
   <p>{% trans 'Bu filterlə dərs tapılmadı.' %}</p>
 </div>
 
-</div>
-
 {# ── Video recordings ────────────────────────────────────────── #}
 {% if video_records %}
-<section class="ds-card mt-4">
+<section class="ds-card mt-4" data-portal-video-records>
   <div class="s-panel-head">
     <h2 class="s-panel-title">
       <i class="ti ti-player-play" aria-hidden="true"></i>
@@ -83,7 +84,7 @@
   </div>
   <div class="s-lesson-grid">
     {% for record in video_records %}
-    <article class="s-lesson-card">
+    <article class="s-lesson-card" data-group-id="{{ record.group_id|default:'' }}"{% if record.group_id %} data-group-ids="{{ record.group_id }}"{% endif %}>
       <div class="s-lesson-card__head">
         <span class="ds-badge ds-badge--info">{% trans 'Video' %}</span>
         <time class="s-lesson-card__date">{{ record.lesson_date|portal_date_long }}</time>
@@ -102,4 +103,5 @@
   </div>
 </section>
 {% endif %}
+</div>
 {% endblock %}

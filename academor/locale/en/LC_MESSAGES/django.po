@@ -4299,6 +4299,11 @@ msgstr "Full package — Individual"
 msgid "Full package — Installments"
 msgstr "Full package — Installments"
 
+#: academor/projects/models/service_models.py
+#: academor/projects/utils/price_package_tabs.py
+msgid "Mock Test"
+msgstr "Mock Test"
+
 #: academor/projects/models/service_models.py:208
 #: academor/templates/includes/course_detail_payment_packages_list.html:53
 #: academor/templates/includes/home_price_card.html:36
@@ -8809,11 +8814,26 @@ msgstr ""
 "One credit is used when you confirm Start quiz on the first section. Credits "
 "you buy stay on your account until you use them."
 
+#: academor/templates/portals/customer/dashboard.html:20
 #: academor/templates/portals/customer/ielts_mock_landing.html:20
+#: academor/templates/portals/customer/mock_packages.html:11
 msgid "Your balance: <strong>%(counter)s</strong> credit"
 msgid_plural "Your balance: <strong>%(counter)s</strong> credits"
 msgstr[0] "Your balance: <strong>%(counter)s</strong> credit"
 msgstr[1] "Your balance: <strong>%(counter)s</strong> credits"
+
+#: academor/templates/portals/customer/dashboard.html:27
+msgid "Continue mock test"
+msgstr "Continue mock test"
+
+#: academor/templates/portals/customer/dashboard.html:37
+msgid "Buy mock package"
+msgstr "Buy mock package"
+
+#: academor/templates/portals/includes/customer_dashboard_mock_stat.html:2
+#: academor/templates/portals/includes/customer_dashboard_mock_stat.html:6
+msgid "Mock test results"
+msgstr "Mock test results"
 
 #: academor/templates/portals/customer/dashboard.html:18
 #: academor/templates/portals/customer/ielts_mock_landing.html:60
@@ -8829,9 +8849,349 @@ msgid ""
 msgstr ""
 "Choose a package and pay securely to add credits to your account."
 
+#: academor/templates/portals/customer/mock_packages.html:22
+msgid "%(counter)s mock test credit"
+msgid_plural "%(counter)s mock test credits"
+msgstr[0] "%(counter)s mock test credit"
+msgstr[1] "%(counter)s mock test credits"
+
+#: academor/templates/portals/customer/mock_packages.html:29
+msgid "Pay now"
+msgstr "Pay now"
+
+#: academor/templates/portals/customer/mock_packages.html:38
+msgid "No packages are available right now. Please contact Academor."
+msgstr "No packages are available right now. Please contact Academor."
+
+#: academor/templates/portals/customer/ielts_mock_landing.html:34
+msgid "Writing and Speaking sections are reviewed and scored by IELTS teachers."
+msgstr "Writing and Speaking sections are reviewed and scored by IELTS teachers."
+
+#: academor/templates/portals/customer/ielts_mock_landing.html:53
+msgid "No mock test credits."
+msgstr "No mock test credits."
+
+#: academor/templates/portals/customer/ielts_mock_landing.html:54
+msgid "Purchase a package to start your next mock test."
+msgstr "Purchase a package to start your next mock test."
+
+#: academor/portals/utils/customer_mock.py:83
+#: academor/portals/utils/customer_mock.py:136
+#: academor/portals/views/customer_views.py:91
+msgid "You have no mock test credits. Purchase a package to continue."
+msgstr "You have no mock test credits. Purchase a package to continue."
+
+#: academor/payments/views.py
+msgid ""
+"Your payment was successful and mock test credits were added to your "
+"account.\n"
+"Our team will contact you shortly to send your portal login details."
+msgstr ""
+"Your payment was successful and mock test credits were added to your "
+"account.\n"
+"Our team will contact you shortly to send your portal login details."
+
+#: academor/payments/views.py
+#, python-format
+msgid ""
+"Your payment was successful and %(credits)s mock test credit(s) were added "
+"to your account.\n"
+"Our team will contact you shortly to send your portal login details."
+msgstr ""
+"Your payment was successful and %(credits)s mock test credit(s) were added "
+"to your account.\n"
+"Our team will contact you shortly to send your portal login details."
+
+#: academor/payments/views.py
+msgid ""
+"Your payment was successful and mock test credits were added to your "
+"account.\n"
+"You can start a mock test from your portal now."
+msgstr ""
+"Your payment was successful and mock test credits were added to your "
+"account.\n"
+"You can start a mock test from your portal now."
+
+#: academor/payments/views.py
+#, python-format
+msgid ""
+"Your payment was successful and %(credits)s mock test credit(s) were added "
+"to your account.\n"
+"You can start a mock test from your portal now."
+msgstr ""
+"Your payment was successful and %(credits)s mock test credit(s) were added "
+"to your account.\n"
+"You can start a mock test from your portal now."
+
+#: academor/payments/admin.py
+msgid "Package / service"
+msgstr "Package / service"
+
+#: academor/templates/includes/home_ielts_mock_section.html
+msgid "IELTS mock tests in real exam format"
+msgstr "IELTS mock tests in real exam format"
+
+#: academor/templates/includes/home_ielts_mock_section.html
+#: academor/templates/includes/home_mock_price_card.html
+msgid "Mock"
+msgstr "Mock"
+
+#: academor/templates/includes/home_mock_price_card.html
+#, python-format
+msgid "%(counter)s test credit"
+msgid_plural "%(counter)s test credits"
+msgstr[0] "%(counter)s test credit"
+msgstr[1] "%(counter)s test credits"
+
+#: academor/templates/includes/home_mock_price_card.html
+msgid "Reading, Listening, Writing, Speaking"
+msgstr "Reading, Listening, Writing, Speaking"
+
+#: academor/templates/includes/home_mock_price_card.html
+msgid "IELTS sections"
+msgstr "IELTS sections"
+
+#: academor/templates/includes/home_mock_price_card.html
+msgctxt "ielts section"
+msgid "reading"
+msgstr "reading"
+
+#: academor/templates/includes/home_mock_price_card.html
+msgctxt "ielts section"
+msgid "listening"
+msgstr "listening"
+
+#: academor/templates/includes/home_mock_price_card.html
+msgctxt "ielts section"
+msgid "writing"
+msgstr "writing"
+
+#: academor/templates/includes/home_mock_price_card.html
+msgctxt "ielts section"
+msgid "speaking"
+msgstr "speaking"
+
+#: academor/templates/includes/home_mock_price_card.html
+msgid "test"
+msgid_plural "tests"
+msgstr[0] "test"
+msgstr[1] "tests"
+
+#: academor/templates/includes/home_mock_price_card.html
+msgid "Real exam format"
+msgstr "Real exam format"
+
+#: academor/templates/includes/home_mock_price_card.html
+msgid "Your results are scored by IELTS teachers"
+msgstr "Your results are scored by IELTS teachers"
+
+#: academor/templates/includes/course_pay_card_mock_static.html
+msgid "Your results are scored by teachers"
+msgstr "Your results are scored by teachers"
+
 #: academor/portals/views/notification_views.py:234
 msgid "Dərc olunmuş IELTS mock test nəticələri."
 msgstr "Published IELTS mock test results."
+
+#: academor/templates/includes/mock_payment_contract.html
+msgid ""
+"Each credit lets you start one full IELTS mock test covering four sections. "
+"Writing and Speaking are reviewed and scored by IELTS teachers."
+msgstr ""
+"Each credit lets you start one full IELTS mock test covering four sections. "
+"Writing and Speaking are reviewed and scored by IELTS teachers."
+
+#: academor/templates/includes/home_mock_payment_modal.html
+msgid ""
+"After successful payment, our team will send your portal login details to the "
+"phone number you provide."
+msgstr ""
+"After successful payment, our team will send your portal login details to the "
+"phone number you provide."
+
+#: academor/templates/includes/mock_payment_contract.html
+#: academor/templates/includes/home_mock_payment_modal.html
+msgid "Payment agreement"
+msgstr "Payment agreement"
+
+#: academor/templates/includes/mock_payment_contract.html
+msgid "System information"
+msgstr "System information"
+
+#: academor/templates/includes/mock_payment_contract.html
+msgid ""
+"Academor provides an online IELTS Mock Test platform through the customer "
+"portal. The service is delivered digitally and does not include classroom "
+"lessons."
+msgstr ""
+"Academor provides an online IELTS Mock Test platform through the customer "
+"portal. The service is delivered digitally and does not include classroom "
+"lessons."
+
+#: academor/templates/includes/mock_payment_contract.html
+msgid "Reading and Listening are completed and scored automatically in the system."
+msgstr "Reading and Listening are completed and scored automatically in the system."
+
+#: academor/templates/includes/mock_payment_contract.html
+msgid ""
+"After successful payment, mock test credits are added to the Customer "
+"account in the portal. Portal login details are provided by Academor."
+msgstr ""
+"After successful payment, mock test credits are added to the Customer "
+"account in the portal. Portal login details are provided by Academor."
+
+#: academor/templates/includes/mock_payment_contract.html
+msgid ""
+"A credit is consumed when the Customer starts a mock test section from the "
+"portal."
+msgstr ""
+"A credit is consumed when the Customer starts a mock test section from the "
+"portal."
+
+#: academor/templates/includes/mock_payment_contract.html
+msgid ""
+"On one side, «Academor Training and Development Center» LLC (hereinafter — "
+"the Provider), and on the other side, the online mock test customer "
+"(hereinafter — the Customer), have entered into this agreement on the "
+"following terms:"
+msgstr ""
+"On one side, «Academor Training and Development Center» LLC (hereinafter — "
+"the Provider), and on the other side, the online mock test customer "
+"(hereinafter — the Customer), have entered into this agreement on the "
+"following terms:"
+
+#: academor/templates/includes/mock_payment_contract.html
+#, python-format
+msgid ""
+"The Provider grants the Customer access to the online IELTS Mock Test "
+"service under the selected package «%(package_name)s», which includes "
+"%(credits_label)s."
+msgstr ""
+"The Provider grants the Customer access to the online IELTS Mock Test "
+"service under the selected package «%(package_name)s», which includes "
+"%(credits_label)s."
+
+#: academor/templates/includes/mock_payment_contract.html
+msgid ""
+"The service is provided remotely through the Academor customer portal and "
+"includes timed mock test sections in the IELTS format."
+msgstr ""
+"The service is provided remotely through the Academor customer portal and "
+"includes timed mock test sections in the IELTS format."
+
+#: academor/templates/includes/mock_payment_contract.html
+msgid "Payment is made online through the secure payment system shown on the website."
+msgstr "Payment is made online through the secure payment system shown on the website."
+
+#: academor/templates/includes/mock_payment_contract.html
+msgid ""
+"Mock test credits are non-refundable once they have been used to start a "
+"mock test section, unless otherwise required by applicable law."
+msgstr ""
+"Mock test credits are non-refundable once they have been used to start a "
+"mock test section, unless otherwise required by applicable law."
+
+#: academor/templates/includes/mock_payment_contract.html
+msgid "3.1. Rights and obligations of the Provider:"
+msgstr "3.1. Rights and obligations of the Provider:"
+
+#: academor/templates/includes/mock_payment_contract.html
+msgid ""
+"3.1.1. To provide access to the online IELTS Mock Test platform after "
+"successful payment."
+msgstr ""
+"3.1.1. To provide access to the online IELTS Mock Test platform after "
+"successful payment."
+
+#: academor/templates/includes/mock_payment_contract.html
+msgid ""
+"3.1.2. To review and score Writing and Speaking sections through qualified "
+"IELTS teachers."
+msgstr ""
+"3.1.2. To review and score Writing and Speaking sections through qualified "
+"IELTS teachers."
+
+#: academor/templates/includes/mock_payment_contract.html
+msgid ""
+"3.1.3. To maintain the technical availability of the portal within "
+"reasonable limits."
+msgstr ""
+"3.1.3. To maintain the technical availability of the portal within "
+"reasonable limits."
+
+#: academor/templates/includes/mock_payment_contract.html
+msgid "3.2. Rights and obligations of the Customer:"
+msgstr "3.2. Rights and obligations of the Customer:"
+
+#: academor/templates/includes/mock_payment_contract.html
+msgid ""
+"3.2.1. To use purchased credits only for personal mock test practice "
+"through the assigned portal account."
+msgstr ""
+"3.2.1. To use purchased credits only for personal mock test practice "
+"through the assigned portal account."
+
+#: academor/templates/includes/mock_payment_contract.html
+msgid ""
+"3.2.2. To provide accurate contact details and keep portal access "
+"credentials confidential."
+msgstr ""
+"3.2.2. To provide accurate contact details and keep portal access "
+"credentials confidential."
+
+#: academor/templates/includes/mock_payment_contract.html
+msgid ""
+"3.2.3. Not to share, resell, or transfer portal access or mock test content "
+"to third parties."
+msgstr ""
+"3.2.3. Not to share, resell, or transfer portal access or mock test content "
+"to third parties."
+
+#: academor/templates/includes/mock_payment_contract.html
+msgid ""
+"4.1. This agreement enters into force from the moment of acceptance and "
+"successful payment."
+msgstr ""
+"4.1. This agreement enters into force from the moment of acceptance and "
+"successful payment."
+
+#: academor/templates/includes/mock_payment_contract.html
+#: academor/portals/forms.py
+msgid "Customer"
+msgstr "Customer"
+
+#: academor/payments/mock_contract.py
+msgid "Selected package"
+msgstr "Selected package"
+
+#: academor/payments/mock_contract.py
+#, python-format
+msgid ""
+"Upon payment of %(price)s AZN for «%(package)s», the Customer receives "
+"%(credits)s on the Academor customer portal. Each credit allows the "
+"Customer to start one full online IELTS mock test covering Reading, "
+"Listening, Writing, and Speaking."
+msgstr ""
+"Upon payment of %(price)s AZN for «%(package)s», the Customer receives "
+"%(credits)s on the Academor customer portal. Each credit allows the "
+"Customer to start one full online IELTS mock test covering Reading, "
+"Listening, Writing, and Speaking."
+
+#: academor/payments/forms.py
+msgid "I have read and accept the agreement."
+msgstr "I have read and accept the agreement."
+
+#: academor/payments/forms.py
+msgid "You must accept the agreement to proceed."
+msgstr "You must accept the agreement to proceed."
+
+#: academor/payments/forms.py
+msgid "Payment agreement number is missing."
+msgstr "Payment agreement number is missing."
+
+#: academor/payments/forms.py
+msgid "Invalid payment agreement number."
+msgstr "Invalid payment agreement number."
 
 #~ msgid "Manual quizzes: fill teacher feedback, set score, and reviewed date."
 #~ msgstr "Manual quizzes: fill teacher feedback, set score, and reviewed date."

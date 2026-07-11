@@ -1,0 +1,58 @@
+{% load i18n static %}
+
+{% if home_mock_packages %}
+
+<link href="{% static 'assets/css/mock-plan-cards.css' %}" rel="stylesheet">
+<link href="{% static 'assets/css/payment-ui.css' %}" rel="stylesheet">
+<link href="{% static 'assets/css/home-mock-prices.css' %}" rel="stylesheet">
+
+<section id="home-ielts-mock" class="home-mock-prices-section" aria-labelledby="home-ielts-mock-heading">
+
+    <div class="home-mock-prices-section__layout">
+
+        <header class="home-mock-prices-section__header wow fadeInUp" data-wow-delay="0.05s">
+
+            <span class="home-mock-prices-section__eyebrow">{% trans "Mock" %}</span>
+
+            {% if use_h2_for_section_titles %}
+
+            <h2 id="home-ielts-mock-heading" class="home-mock-prices-section__title">
+
+                {% trans "Mock tests in real exam format" %}
+
+            </h2>
+
+            {% else %}
+
+            <h1 id="home-ielts-mock-heading" class="home-mock-prices-section__title">
+
+                {% trans "Mock tests in real exam format" %}
+
+            </h1>
+
+            {% endif %}
+
+        </header>
+
+
+
+        <div class="home-mock-prices-grid wow fadeInUp" data-wow-delay="0.12s">
+
+            {% for pkg in home_mock_packages %}
+
+            {% include "includes/home_mock_price_card.html" with pkg=pkg %}
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    {% include "includes/home_mock_payment_modal.html" %}
+
+</section>
+
+<script defer src="{% static 'assets/js/home-mock-payment.js' %}"></script>
+
+{% endif %}
+

@@ -83,6 +83,13 @@ class WeeklyStudentScore(models.Model):
         related_name='weekly_scores_given',
         verbose_name=_('Teacher'),
     )
+    study_group = models.ForeignKey(
+        'StudyGroup',
+        on_delete=models.CASCADE,
+        related_name='weekly_scores',
+        verbose_name=_('Study group'),
+        help_text=_('Weekly score applies to this group membership.'),
+    )
     week_start = models.DateField(
         db_index=True,
         verbose_name=_('Week start'),
@@ -118,8 +125,8 @@ class WeeklyStudentScore(models.Model):
         ordering = ('-week_start', '-updated_at', '-id')
         constraints = [
             models.UniqueConstraint(
-                fields=('student', 'teacher', 'week_start'),
-                name='portals_weekly_score_unique_student_teacher_week',
+                fields=('student', 'teacher', 'study_group', 'week_start'),
+                name='portals_weekly_score_unique_student_group_week',
             ),
         ]
 

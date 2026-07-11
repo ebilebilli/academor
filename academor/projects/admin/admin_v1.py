@@ -1,12 +1,14 @@
-﻿from django.contrib import admin
+from django.contrib import admin
 from django.db.models import Q
 from django.db import models, transaction
+from django.http import JsonResponse
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
-from django.urls import reverse
+from django.urls import path, reverse
 from django import forms
 from django.core.exceptions import ValidationError
 from django.forms.models import BaseInlineFormSet
+from django.utils.translation import gettext_lazy as _
 from ckeditor.widgets import CKEditorWidget
 
 from projects.models import *
@@ -348,6 +350,7 @@ class CoursePricePackageInline(admin.StackedInline):
                 'months',
                 'lesson_count',
                 'lesson_minutes',
+                'credits',
                 'price',
             ),
         }),
@@ -362,6 +365,12 @@ class CoursePricePackageInline(admin.StackedInline):
     )
     ordering = ('package_tab', 'order', 'id')
 
+    class Media:
+        js = (
+            'projects/admin/price_package_mock_field_toggle.js',
+            'projects/admin/service_mock_price_package.js',
+        )
+
 
 @admin.register(CoursePricePackage)
 class CoursePricePackageAdmin(AcademorModelAdmin):
@@ -373,6 +382,7 @@ class CoursePricePackageAdmin(AcademorModelAdmin):
         'months',
         'lesson_count',
         'lesson_minutes',
+        'credits',
         'price',
         'order',
         'is_active',
@@ -403,9 +413,39 @@ class CoursePricePackageAdmin(AcademorModelAdmin):
             'fields': ('name_az', 'name_en', 'name_ru'),
         }),
         ('Package details', {
-            'fields': ('months', 'lesson_count', 'lesson_minutes', 'price'),
+            'fields': ('months', 'lesson_count', 'lesson_minutes', 'credits', 'price'),
         }),
     )
+
+    class Media:
+        js = (
+            'projects/admin/price_package_mock_field_toggle.js',
+            'projects/admin/price_package_course_mock_credits.js',
+        )
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom = [
+            path(
+                'service-mock-flags/',
+                self.admin_site.admin_view(self.service_mock_flags_view),
+                name='projects_coursepricepackage_service_mock_flags',
+            ),
+        ]
+        return custom + urls
+
+    def service_mock_flags_view(self, request):
+        course_id = request.GET.get('course_id')
+        is_mock = False
+        if course_id:
+            try:
+                course_id = int(course_id)
+            except (TypeError, ValueError):
+                course_id = None
+        if course_id:
+            service = Service.objects.filter(pk=course_id).first()
+            is_mock = bool(service and service.is_mock_test)
+        return JsonResponse({'is_mock_test': is_mock})
 
     def package_tab_badge(self, obj):
         colors = {
@@ -416,6 +456,7 @@ class CoursePricePackageAdmin(AcademorModelAdmin):
             CoursePricePackage.PackageTab.FULL_PACKAGE_GROUP: '#0d9488',
             CoursePricePackage.PackageTab.FULL_PACKAGE_INDIVIDUAL: '#0891b2',
             CoursePricePackage.PackageTab.FULL_PACKAGE_INSTALLMENT: '#7c3aed',
+            CoursePricePackage.PackageTab.MOCK_TEST: '#ff5414',
         }
         color = colors.get(obj.package_tab, '#6c757d')
         label = obj.get_package_tab_display()
@@ -456,6 +497,14 @@ class ServiceAdminForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         apply_order_choice_field(self, model=Service, instance=self.instance)
 
+    def clean(self):
+        cleaned = super().clean()
+        if cleaned.get('ielts_mock_test') and cleaned.get('sat_mock_test'):
+            raise ValidationError(
+                _('Select only one mock test type: IELTS or SAT.'),
+            )
+        return cleaned
+
 
 @admin.register(Service)
 class ServiceAdmin(AdminImageCompressMixin, AcademorModelAdmin):
@@ -475,7 +524,7 @@ class ServiceAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     )
     list_display_links = ('id',)
     list_editable = ('order', 'is_active', 'show_on_main_page')
-    list_filter = ('is_active', 'show_on_main_page', 'instructors', 'created_at')
+    list_filter = ('is_active', 'show_on_main_page', 'ielts_mock_test', 'sat_mock_test', 'instructors', 'created_at')
     search_fields = (
         'name_az', 'name_en', 'name_ru',
         'description_az', 'description_en', 'description_ru',
@@ -487,6 +536,12 @@ class ServiceAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     exclude = ('slug', 'price')
     readonly_fields = ('created_at',)
     inlines = [CoursePricePackageInline, MediaInlineCategory]
+
+    class Media:
+        js = (
+            'projects/admin/service_mock_price_package.js',
+            'projects/admin/service_mock_bullet_list.js',
+        )
 
     fieldsets = (
         ('Azerbaijani', {
@@ -504,6 +559,20 @@ class ServiceAdmin(AdminImageCompressMixin, AcademorModelAdmin):
                 'Add price packages in the section below. Choose a payment tab for each '
                 '(group/individual, standard/intensive, full package, installments). '
                 'Legacy "Price (AZN)" on the model is deprecated; use packages instead.'
+            ),
+        }),
+        ('Mock tests', {
+            'fields': (
+                'ielts_mock_test',
+                'sat_mock_test',
+                'bullet_list_az',
+                'bullet_list_en',
+                'bullet_list_ru',
+            ),
+            'description': (
+                'Enable IELTS or SAT (only one). The service then appears under Mock tests '
+                'in the navbar and on /mock-tests/. Price packages require mock test credits. '
+                'Bullet list items (one per line) appear on the mock test detail page hero.'
             ),
         }),
         ('Service card (home & courses list)', {

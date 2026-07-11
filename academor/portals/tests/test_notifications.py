@@ -18,6 +18,7 @@ from portals.models import (
     TeacherCourseSpecialization,
     TeacherProfile,
 )
+from portals.tests.portal_helpers import assign_quiz_to_student
 from portals.utils.notifications import (
     delete_notification,
     get_notifications,
@@ -88,6 +89,7 @@ class PortalNotificationTests(TestCase):
             answer_options=['A', 'B'],
             correct_answer='A',
         )
+        assign_quiz_to_student(self.student, self.quiz)
 
     def test_variant_quiz_auto_publishes_and_notifies_teacher_and_parent_only(self):
         payload = submit_variant_quiz_attempt(

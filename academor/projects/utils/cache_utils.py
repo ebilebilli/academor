@@ -290,11 +290,12 @@ def invalidate_model_cache(model_name):
     Args:
         model_name: Which model changed (documentation / future metrics only; not used for keying).
 
-    Service (e.g. admin ``card_icon`` dropdown) uses the same bump — see
+    Service (e.g. admin ``card_icon`` or mock test flags) uses the same bump — see
     ``projects.signals.invalidate_service_cache``.
 
     Tagline changes bump all versioned keys (inner-page banner taglines).
-    CoursePricePackage changes bump via ``invalidate_course_price_package_cache`` (Service).
+    CoursePricePackage changes (incl. mock ``credits``) bump via
+    ``invalidate_course_price_package_cache`` (Service).
     """
     _bump_cache_version()
 

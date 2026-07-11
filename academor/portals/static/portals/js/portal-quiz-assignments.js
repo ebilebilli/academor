@@ -184,28 +184,30 @@
       bindToggle(toggle);
     });
 
-    var mockToggle = root.querySelector("[data-mock-access-toggle]");
-    if (mockToggle && mockToggle.dataset.quizAccessBound !== "true") {
-      mockToggle.dataset.quizAccessBound = "true";
-      mockToggle.addEventListener("change", function () {
-        var url = mockToggle.getAttribute("data-toggle-url");
+    root.querySelectorAll("[data-mock-access-toggle]").forEach(function (toggle) {
+      if (toggle.dataset.quizAccessBound === "true") {
+        return;
+      }
+      toggle.dataset.quizAccessBound = "true";
+      toggle.addEventListener("change", function () {
+        var url = toggle.getAttribute("data-toggle-url");
         if (!url) {
           return;
         }
-        var previous = !mockToggle.checked;
-        mockToggle.disabled = true;
-        postToggle(url, mockToggle.checked)
+        var previous = !toggle.checked;
+        toggle.disabled = true;
+        postToggle(url, toggle.checked)
           .then(function (data) {
-            mockToggle.checked = !!data.is_active;
+            toggle.checked = !!data.is_active;
           })
           .catch(function () {
-            mockToggle.checked = previous;
+            toggle.checked = previous;
           })
           .finally(function () {
-            mockToggle.disabled = false;
+            toggle.disabled = false;
           });
       });
-    }
+    });
 
     bindCategoryTabs(root);
     bindBulkActions(root);

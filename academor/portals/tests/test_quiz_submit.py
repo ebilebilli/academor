@@ -2,12 +2,10 @@ from datetime import timedelta
 
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-from django.http import HttpResponse
-from django.test import Client, RequestFactory, TestCase
+from django.test import Client, TestCase
 from django.urls import reverse
 from django.utils import timezone
 
-from portals.middleware import PortalSessionMiddleware
 from portals.models import (
     Quiz,
     QuizCategory,
@@ -18,28 +16,22 @@ from portals.models import (
     TeacherCourseSpecialization,
     TeacherProfile,
 )
-from portals.utils.portal_session import PORTAL_COOKIE_NAME, portal_login
+from portals.tests.portal_helpers import (
+    assign_quiz_to_student,
+    ensure_active_portal_services,
+    portal_client_login,
+)
 from portals.utils.quiz_submit import score_variant_quiz, submit_variant_quiz_attempt
-from projects.models.service_models import Service
 
 User = get_user_model()
 
 
 def _portal_client_login(client: Client, user) -> None:
-    factory = RequestFactory()
-    request = factory.get('/portal/')
-    request.COOKIES = {}
-    portal_login(request, user)
-    middleware = PortalSessionMiddleware(lambda r: HttpResponse())
-    response = middleware(request)
-    client.cookies[PORTAL_COOKIE_NAME] = response.cookies[PORTAL_COOKIE_NAME].value
+    portal_client_login(client, user)
 
 
 def _ensure_active_portal_services():
-    Service.objects.get_or_create(
-        slug='ielts',
-        defaults={'name_az': 'IELTS', 'name_en': 'IELTS', 'is_active': True},
-    )
+    ensure_active_portal_services('ielts')
 
 
 class QuizSubmitTests(TestCase):
@@ -83,6 +75,7 @@ class QuizSubmitTests(TestCase):
             answer_options=['X', 'Y'],
             correct_answer='Y',
         )
+        assign_quiz_to_student(self.student, self.quiz)
 
     def test_score_variant_quiz(self):
         score, max_score, breakdown = score_variant_quiz(

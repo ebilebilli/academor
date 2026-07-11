@@ -164,6 +164,18 @@ def enforce_study_group_max_students(sender, instance, action, pk_set, **kwargs)
 
 
 @receiver(m2m_changed, sender=StudyGroup.students.through)
+def sync_student_group_course_enrollments(sender, instance, action, pk_set, **kwargs):
+    if action != 'post_add' or not pk_set:
+        return
+    from portals.utils.student_courses import ensure_student_group_course_enrollments
+
+    for student_id in pk_set:
+        if student_id:
+            ensure_student_group_course_enrollments(student_id, instance)
+    _invalidate_on_commit('StudentCourseSpecialization')
+
+
+@receiver(m2m_changed, sender=StudyGroup.students.through)
 def invalidate_study_group_students_m2m(sender, instance, action, **kwargs):
     if action in ('post_add', 'post_remove', 'post_clear'):
         _invalidate_on_commit('StudyGroup')

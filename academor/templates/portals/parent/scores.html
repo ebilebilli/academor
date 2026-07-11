@@ -11,5 +11,5 @@
 
 {% include "portals/includes/portal_page_hero.html" with title=_('Nəticələr və qiymətləndirmələr') subtitle=_('Şagirdinizin quiz tarixçəsi, həftəlik qiymətləri və mock nəticələrinə baxın.') icon="ti-star" lottie="portals/animations/distance-education.lottie" %}
 
-{% include "portals/includes/score_sections.html" %}
+{% include "portals/includes/score_sections.html" with show_group_column=score_groups %}
 {% endblock %}

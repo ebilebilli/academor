@@ -1,7 +1,6 @@
 from django.urls import path
 
 from . import views
-from .mock_views import payment_start_mock
 
 urlpatterns = [
     path(
@@ -23,9 +22,4 @@ urlpatterns = [
     path('success/', views.payment_success, name='payment_success'),
     path('cancel/', views.payment_cancel, name='payment_cancel'),
     path('decline/', views.payment_decline, name='payment_decline'),
-    path(
-        'mock/<int:package_id>/',
-        payment_start_mock,
-        name='payment_start_mock',
-    ),
 ]

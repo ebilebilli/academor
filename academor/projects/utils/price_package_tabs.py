@@ -15,6 +15,7 @@ PACKAGE_TAB_ORDER = [
     CoursePricePackage.PackageTab.FULL_PACKAGE_GROUP,
     CoursePricePackage.PackageTab.FULL_PACKAGE_INDIVIDUAL,
     CoursePricePackage.PackageTab.FULL_PACKAGE_INSTALLMENT,
+    CoursePricePackage.PackageTab.MOCK_TEST,
 ]
 
 PACKAGE_TAB_ICONS = {
@@ -26,6 +27,7 @@ PACKAGE_TAB_ICONS = {
     CoursePricePackage.PackageTab.FULL_PACKAGE_GROUP: 'fas fa-object-group',
     CoursePricePackage.PackageTab.FULL_PACKAGE_INDIVIDUAL: 'fas fa-user-check',
     CoursePricePackage.PackageTab.FULL_PACKAGE_INSTALLMENT: 'fas fa-credit-card',
+    CoursePricePackage.PackageTab.MOCK_TEST: 'fas fa-clipboard-list',
 }
 
 PACKAGE_TAB_LABELS = {
@@ -37,6 +39,7 @@ PACKAGE_TAB_LABELS = {
     CoursePricePackage.PackageTab.FULL_PACKAGE_GROUP: _('Full package — Group'),
     CoursePricePackage.PackageTab.FULL_PACKAGE_INDIVIDUAL: _('Full package — Individual'),
     CoursePricePackage.PackageTab.FULL_PACKAGE_INSTALLMENT: _('Full package — Installments'),
+    CoursePricePackage.PackageTab.MOCK_TEST: _('Mock Test'),
 }
 
 

@@ -21,7 +21,7 @@
 
       <div class="portal-calendar-day-body">
         {% for session in day.sessions %}
-        <article class="portal-session-card-improved portal-session-card-readonly s-schedule-lesson">
+        <article class="portal-session-card-improved portal-session-card-readonly s-schedule-lesson"{% if session.group_id %} data-group-ids="{{ session.group_id }}"{% endif %}>
           <div class="portal-session-card-accent portal-session-card-accent-readonly">
             <div class="portal-session-time-block">
               <span class="portal-session-time">
@@ -32,9 +32,6 @@
             </div>
             <div class="portal-session-content portal-session-content-compact">
               <span class="portal-session-group">{{ session.group_name }}</span>
-              {% if session.course_type_label %}
-              <span class="portal-session-course s-schedule-course">{{ session.course_type_label }}</span>
-              {% endif %}
               {% if session.room_or_link %}
               <span class="portal-session-location">
                 <i class="ti ti-map-pin" aria-hidden="true"></i>

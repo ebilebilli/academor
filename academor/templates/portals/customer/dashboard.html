@@ -6,8 +6,47 @@
 {% block content %}
 {% include "portals/includes/portal_portal_banner.html" with greeting_name=customer.full_name %}
 
-{% include "portals/includes/customer_dashboard_mock_stat.html" with mock_stats=mock_stats %}
+{% include "portals/includes/customer_dashboard_mock_stat.html" with mock_stats_list=mock_stats_list %}
 
+{% for section in mock_program_sections %}
+<section class="ds-card mb-4" aria-label="{% blocktrans with program_label=section.label %}{{ program_label }} mock test{% endblocktrans %}">
+  <div class="s-panel-head">
+    <h2 class="s-panel-title">
+      <i class="ti ti-clipboard-list" aria-hidden="true"></i>
+      {% blocktrans with program_label=section.label %}{{ program_label }} mock test{% endblocktrans %}
+    </h2>
+  </div>
+
+  <p class="mb-3">
+    {% with program_label=section.label credit_count=section.credits %}
+    {% blocktrans count counter=credit_count with program_label=program_label %}
+    {{ program_label }} credits: <strong>{{ counter }}</strong>
+    {% plural %}
+    {{ program_label }} credits: <strong>{{ counter }}</strong>
+    {% endblocktrans %}
+    {% endwith %}
+  </p>
+
+  <div class="d-flex flex-wrap gap-2">
+    {% if section.in_progress %}
+    <a class="ds-btn ds-btn--primary" href="{{ section.landing_url }}">
+      <i class="ti ti-player-play" aria-hidden="true"></i>
+      {% trans 'Continue mock test' %}
+    </a>
+    {% elif section.credits > 0 %}
+    <a class="ds-btn ds-btn--primary" href="{{ section.landing_url }}">
+      <i class="ti ti-clipboard-list" aria-hidden="true"></i>
+      {% trans 'Start mock test' %}
+    </a>
+    {% else %}
+    <a class="ds-btn ds-btn--secondary" href="{{ section.landing_url }}">
+      <i class="ti ti-history" aria-hidden="true"></i>
+      {% trans 'View history' %}
+    </a>
+    {% endif %}
+  </div>
+</section>
+{% empty %}
 <section class="ds-card mb-4" aria-label="{% trans 'Mock test' %}">
   <div class="s-panel-head">
     <h2 class="s-panel-title">
@@ -15,27 +54,23 @@
       {% trans 'Mock test' %}
     </h2>
   </div>
+  <p class="mb-3 text-muted">{% trans 'Purchase a package to start your first mock test.' %}</p>
+  <a class="ds-btn ds-btn--primary" href="{% url 'portals:customer-mock-packages' %}">
+    <i class="ti ti-shopping-cart" aria-hidden="true"></i>
+    {% trans 'Buy mock package' %}
+  </a>
+</section>
+{% endfor %}
 
-  <p class="mb-3">
-    {% blocktrans with credits=customer.mock_credits %}Mövcud kredit: <strong>{{ credits }}</strong>{% endblocktrans %}
-  </p>
-
-  <div class="d-flex flex-wrap gap-2">
-    {% if in_progress_mock %}
-    <a class="ds-btn ds-btn--primary" href="{% url 'portals:customer-ielts-mock' %}">
-      <i class="ti ti-player-play" aria-hidden="true"></i>
-      {% trans 'Mock testə davam et' %}
-    </a>
-    {% elif customer.mock_credits > 0 %}
-    <a class="ds-btn ds-btn--primary" href="{% url 'portals:customer-ielts-mock' %}">
-      <i class="ti ti-clipboard-list" aria-hidden="true"></i>
-      {% trans 'Mock testə başla' %}
-    </a>
-    {% endif %}
+{% if mock_program_sections %}
+<section class="ds-card mb-4" aria-label="{% trans 'Buy mock package' %}">
+  <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+    <p class="mb-0 text-muted">{% trans 'Need more credits? Purchase a mock test package.' %}</p>
     <a class="ds-btn ds-btn--secondary" href="{% url 'portals:customer-mock-packages' %}">
       <i class="ti ti-shopping-cart" aria-hidden="true"></i>
-      {% trans 'Mock test paketi al' %}
+      {% trans 'Buy mock package' %}
     </a>
   </div>
 </section>
+{% endif %}
 {% endblock %}

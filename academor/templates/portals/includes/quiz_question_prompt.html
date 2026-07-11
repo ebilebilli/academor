@@ -1,10 +1,10 @@
 {% load i18n portal_tags %}
 <div class="portal-quiz-prompt portal-quiz-prompt--{{ q.prompt_type|default:'text' }}">
   {% if q.prompt_type == 'text' %}
-  <p class="portal-quiz-prompt__text">{{ q.question }}</p>
+  <div class="portal-quiz-prompt__text">{{ q.question|safe }}</div>
   {% else %}
   {% if q.question %}
-  <p class="portal-quiz-prompt__caption">{{ q.question }}</p>
+  <div class="portal-quiz-prompt__caption">{{ q.question|safe }}</div>
   {% endif %}
   <div class="portal-quiz-prompt-media">
     {% with media_src=q.media_file_url|default:q.media_url %}

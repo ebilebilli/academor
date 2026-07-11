@@ -9,13 +9,16 @@
     {% trans 'Hansı quizlərin bu şagird üçün aktiv olacağını buradan idarə edin. Bağlı quizlər şagirdə kilid kimi görünür.' %}
   </p>
 
-  {% if mock_access is not None %}
+  {% if mock_access_programs %}
   <section class="portal-quiz-access-mock mb-4" data-mock-access-panel>
-    <div class="portal-quiz-access-mock__row">
+    {% for mock_access in mock_access_programs %}
+    <div class="portal-quiz-access-mock__row{% if not forloop.last %} mb-3 pb-3 border-bottom{% endif %}">
       <div>
-        <h3 class="h6 mb-1">{% trans 'IELTS Mock Test' %}</h3>
+        <h3 class="h6 mb-1">{{ mock_access.label }} {% trans 'Mock Test' %}</h3>
         <p class="text-muted small mb-0">
-          {% trans 'Mock aktiv olanda tələbə IELTS mock testə başlaya bilir.' %}
+          {% blocktrans with program=mock_access.label %}
+            Mock aktiv olanda tələbə {{ program }} mock testə başlaya bilir.
+          {% endblocktrans %}
         </p>
       </div>
       <div class="form-check form-switch mb-0">
@@ -23,14 +26,17 @@
           class="form-check-input portal-quiz-access-toggle"
           type="checkbox"
           role="switch"
-          id="mock-access-{{ student.id }}"
+          id="mock-access-{{ student.id }}-{{ mock_access.program }}"
           data-mock-access-toggle
-          data-toggle-url="{% url 'portals:teacher-mock-access-toggle' student_pk=student.id %}"
+          data-toggle-url="{% url 'portals:teacher-mock-access-toggle' student_pk=student.id program=mock_access.program %}"
           {% if mock_access.is_active %}checked{% endif %}
         >
-        <label class="form-check-label" for="mock-access-{{ student.id }}">{% trans 'Mock aktiv' %}</label>
+        <label class="form-check-label" for="mock-access-{{ student.id }}-{{ mock_access.program }}">
+          {% trans 'Mock aktiv' %}
+        </label>
       </div>
     </div>
+    {% endfor %}
   </section>
   {% endif %}
 
@@ -126,7 +132,7 @@
       </div>
     </section>
     {% endfor %}
-  {% else %}
+  {% elif not mock_access_programs %}
     <div class="portal-student-empty">
       <div class="portal-student-empty-icon"><i class="ti ti-forms" aria-hidden="true"></i></div>
       <h3>{% trans 'Təyin oluna bilən quiz yoxdur' %}</h3>

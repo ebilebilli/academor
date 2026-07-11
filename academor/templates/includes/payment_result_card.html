@@ -12,7 +12,7 @@
     </div>
     <p class="payment-result-card__eyebrow payment-result-card__eyebrow--{{ variant }} mb-0">{{ eyebrow }}</p>
     <h1 class="payment-result-card__title h3 mb-2">{{ title }}</h1>
-    <p class="payment-result-card__message mb-0">{{ message }}</p>
+    <p class="payment-result-card__message mb-0">{{ message|linebreaksbr }}</p>
     {% if order_id or status %}
     <dl class="payment-result-card__meta">
         {% if order_id %}
@@ -30,7 +30,11 @@
     </dl>
     {% endif %}
     <div class="payment-result-card__actions d-flex flex-column flex-sm-row gap-2 justify-content-center">
+        {% if portal_return_url %}
+        <a href="{{ portal_return_url }}" class="btn btn-primary rounded-pill px-4">{% trans "Return to portal" %}</a>
+        {% else %}
         <a href="{% url 'projects:home-page' %}" class="btn btn-primary rounded-pill px-4">{% trans "Home" %}</a>
         <a href="{% url 'projects:courses-page' %}" class="btn btn-outline-accent rounded-pill px-4">{% trans "Courses" %}</a>
+        {% endif %}
     </div>
 </div>

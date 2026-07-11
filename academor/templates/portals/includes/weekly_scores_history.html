@@ -17,6 +17,9 @@
           {% if show_teacher_column %}
           <th>{% trans 'Müəllim' %}</th>
           {% endif %}
+          {% if show_group_column|default:True %}
+          <th>{% trans 'Qrup' %}</th>
+          {% endif %}
           <th>{% trans 'Bal' %}</th>
           <th>{% trans 'Şərh' %}</th>
           <th>{% trans 'Yenilənib' %}</th>
@@ -28,6 +31,9 @@
           <td class="fw-500" data-label="{% trans 'Həftə' %}">{% portal_week_label row.week_start row.week_end %}</td>
           {% if show_teacher_column %}
           <td data-label="{% trans 'Müəllim' %}">{{ row.teacher_name|default:"—" }}</td>
+          {% endif %}
+          {% if show_group_column|default:True %}
+          <td data-label="{% trans 'Qrup' %}">{{ row.group_name|default:"—" }}</td>
           {% endif %}
           <td data-label="{% trans 'Bal' %}">
             <span class="weekly-scores-pill">{{ row.score|format_quiz_score }}/{{ row.max_score|format_quiz_score }}</span>

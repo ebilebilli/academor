@@ -1,4 +1,4 @@
-from .service_models import Service, CoursePricePackage
+from .service_models import Service, CoursePricePackage, MOCK_TEST_SERVICE_Q, MOCK_TEST_SERVICE_VIA_COURSE_Q
 from .study_abroad_models import (
     AbroadModel,
     University,

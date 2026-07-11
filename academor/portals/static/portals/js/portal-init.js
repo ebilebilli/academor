@@ -108,15 +108,49 @@
       : root.querySelector("#attendance-filter-empty");
     root.dataset.portalStatusTabsBound = "true";
 
+    function readActiveGroup() {
+      var groupNav = root.closest("[data-portal-scores-filter]")
+        ? root.closest("[data-portal-scores-filter]").querySelector("[data-score-group-filter]")
+        : null;
+      if (!groupNav) {
+        return null;
+      }
+      return readActiveValue(groupNav, "data-score-group", null);
+    }
+
+    function updateStatusBadges(activeGroup) {
+      tabs.forEach(function (tab) {
+        var status = tab.getAttribute("data-status");
+        var badge = tab.querySelector(".s-filter-tab__badge, .nav-link__badge");
+        if (!badge) {
+          return;
+        }
+        var count = 0;
+        rows.forEach(function (row) {
+          if (!scoreMatchesGroup(row, activeGroup)) {
+            return;
+          }
+          if (status === "all" || row.getAttribute("data-status") === status) {
+            count += 1;
+          }
+        });
+        badge.textContent = count;
+      });
+    }
+
     function applyFilter(status) {
+      var activeGroup = readActiveGroup();
       var visible = 0;
       rows.forEach(function (row) {
-        var show = status === "all" || row.getAttribute("data-status") === status;
+        var showStatus = status === "all" || row.getAttribute("data-status") === status;
+        var showGroup = scoreMatchesGroup(row, activeGroup);
+        var show = showStatus && showGroup;
         row.hidden = !show;
         if (show) {
           visible += 1;
         }
       });
+      updateStatusBadges(activeGroup);
       if (emptyRow) {
         emptyRow.hidden = true;
       }
@@ -136,6 +170,15 @@
         applyFilter(tab.getAttribute("data-status"));
       });
     });
+
+    root.__statusFilterApply = function () {
+      var active = tablist.querySelector(".is-active[data-status], .active[data-status]")
+        || tabs[0];
+      if (active) {
+        applyFilter(active.getAttribute("data-status") || "all");
+      }
+    };
+    root.__statusFilterApply();
   }
 
   /* ── Parent child switcher ── */
@@ -238,14 +281,28 @@
         hideMode = "class";
       }
     }
-    if (!itemsSel || (!subjectTablist && !categoryTablist && !periodTablist)) {
+    if (!itemsSel || (!subjectTablist && !categoryTablist && !periodTablist && !root.querySelector("[data-score-group-filter]"))) {
       return;
     }
 
     root.dataset.portalLessonsFilterBound = "true";
     var activeSubject = readActiveValue(subjectTablist, "data-subject", "all");
     var activeCategory = readActiveValue(categoryTablist, "data-category", "all");
-    var activePeriod = readActiveValue(periodTablist, "data-period", "week");
+    var activePeriod = periodTablist
+      ? readActiveValue(periodTablist, "data-period", "week")
+      : "all";
+    var groupNav = root.querySelector("[data-score-group-filter]");
+
+    function readActiveGroup() {
+      if (!groupNav) {
+        return null;
+      }
+      return readActiveValue(groupNav, "data-score-group", null);
+    }
+
+    function itemMatchesGroup(item) {
+      return scoreMatchesGroup(item, readActiveGroup());
+    }
 
     function parseLocalDate(value) {
       if (!value) {
@@ -296,17 +353,86 @@
       return rowCategory === String(activeCategory);
     }
 
+    function updateSubjectTabCounts() {
+      if (!subjectTablist) {
+        return;
+      }
+      var items = root.querySelectorAll(itemsSel);
+      var counts = { all: 0 };
+      items.forEach(function (item) {
+        if (!itemMatchesGroup(item) || !itemMatchesPeriod(item)) {
+          return;
+        }
+        counts.all += 1;
+        var subject = item.getAttribute("data-subject") || "";
+        if (subject) {
+          counts[subject] = (counts[subject] || 0) + 1;
+        }
+      });
+      subjectTablist.querySelectorAll("[data-subject]").forEach(function (tab) {
+        var code = tab.getAttribute("data-subject");
+        var badge = tab.querySelector(".s-filter-tab__badge");
+        if (!badge) {
+          return;
+        }
+        badge.textContent = code === "all" ? counts.all : (counts[code] || 0);
+      });
+    }
+
+    function syncSubjectTabsToGroup() {
+      if (!subjectTablist || !groupNav) {
+        return;
+      }
+      var activeGroup = readActiveGroup();
+      if (!activeGroup) {
+        return;
+      }
+      var groupBtn = groupNav.querySelector('[data-score-group="' + activeGroup + '"]');
+      if (!groupBtn) {
+        return;
+      }
+      var servicesRaw = groupBtn.getAttribute("data-group-services") || "";
+      var services = servicesRaw
+        ? servicesRaw.split(",").map(function (value) { return value.trim(); }).filter(Boolean)
+        : [];
+      var needReset = false;
+      subjectTablist.querySelectorAll("[data-subject]").forEach(function (tab) {
+        var code = tab.getAttribute("data-subject");
+        if (code === "all") {
+          tab.hidden = false;
+          return;
+        }
+        var show = !services.length || services.indexOf(code) !== -1;
+        tab.hidden = !show;
+        if (!show && tab.classList.contains("is-active")) {
+          needReset = true;
+        }
+      });
+      if (needReset) {
+        var allTab = subjectTablist.querySelector('[data-subject="all"]');
+        if (allTab) {
+          setActiveTab(subjectTablist, allTab, "data-subject");
+          activeSubject = "all";
+        }
+      }
+    }
+
     function applyFilters() {
+      syncSubjectTabsToGroup();
       var items = root.querySelectorAll(itemsSel);
       var visible = 0;
       items.forEach(function (item) {
         var showSubject = activeSubject === "all"
           || item.getAttribute("data-subject") === activeSubject;
-        var show = showSubject && rowMatchesCategory(item) && itemMatchesPeriod(item);
+        var show = showSubject && rowMatchesCategory(item) && itemMatchesPeriod(item) && itemMatchesGroup(item);
         setItemVisible(item, show, hideMode);
         if (show) {
           visible += 1;
         }
+      });
+      root.querySelectorAll("[data-portal-video-records] .s-lesson-card[data-group-ids]").forEach(function (item) {
+        var show = itemMatchesGroup(item);
+        setItemVisible(item, show, "class");
       });
       var emptyRow = root.querySelector(emptyRowSel);
       if (emptyRow) {
@@ -317,6 +443,7 @@
       if (filterEmpty) {
         filterEmpty.classList.toggle("d-none", visible > 0 || items.length === 0);
       }
+      updateSubjectTabCounts();
     }
 
     root.addEventListener("click", function (event) {
@@ -359,6 +486,7 @@
       applyFilters();
     });
 
+    root.__lessonsFilterApply = applyFilters;
     applyFilters();
   }
 
@@ -479,11 +607,47 @@
     if (!activeGroup) {
       return true;
     }
-    var ids = item.getAttribute("data-group-ids") || "";
+    var ids = item.getAttribute("data-group-ids") || item.getAttribute("data-group-id") || "";
     if (!ids) {
       return false;
     }
-    return ids.split(",").indexOf(String(activeGroup)) !== -1;
+    return ids.split(",").map(function (value) {
+      return value.trim();
+    }).indexOf(String(activeGroup)) !== -1;
+  }
+
+  function findFilterRoot(root, selector) {
+    if (!root) {
+      return null;
+    }
+    if (root.matches && root.matches(selector)) {
+      return root;
+    }
+    return root.querySelector(selector);
+  }
+
+  function collectGroupCountableItems(root) {
+    var seen = [];
+    var pushUnique = function (node) {
+      if (!node || seen.indexOf(node) !== -1) {
+        return;
+      }
+      seen.push(node);
+    };
+    root.querySelectorAll("tr[data-score-date]").forEach(pushUnique);
+    root.querySelectorAll("[data-score-day]").forEach(pushUnique);
+    root.querySelectorAll("tr[data-group-ids]").forEach(pushUnique);
+    root.querySelectorAll(".s-lesson-card[data-group-ids]").forEach(pushUnique);
+    root.querySelectorAll(".s-schedule-lesson[data-group-ids]").forEach(pushUnique);
+    root.querySelectorAll("#classrooms-table tbody tr[data-group-ids]").forEach(pushUnique);
+    return seen;
+  }
+
+  function itemMatchesPeriodForGroupCount(item, activePeriod) {
+    if (item.hasAttribute("data-score-date") || item.hasAttribute("data-score-day")) {
+      return scoreMatchesPeriod(item, activePeriod);
+    }
+    return true;
   }
 
   function updateGroupChipCounts(root, activePeriod) {
@@ -491,17 +655,18 @@
     if (!groupNav) {
       return;
     }
+    var items = collectGroupCountableItems(root);
     groupNav.querySelectorAll("[data-score-group]").forEach(function (btn) {
       var groupId = btn.getAttribute("data-score-group");
       if (!groupId) {
         return;
       }
       var count = 0;
-      root.querySelectorAll("tr[data-score-date]").forEach(function (row) {
-        if (!scoreMatchesPeriod(row, activePeriod)) {
+      items.forEach(function (item) {
+        if (!itemMatchesPeriodForGroupCount(item, activePeriod)) {
           return;
         }
-        if (scoreMatchesGroup(row, groupId)) {
+        if (scoreMatchesGroup(item, groupId)) {
           count += 1;
         }
       });
@@ -541,7 +706,7 @@
     root.dataset.portalScoresFilterBound = "true";
     var activePeriod = periodTablist
       ? readActiveValue(periodTablist, "data-period", "week")
-      : "week";
+      : "all";
     var activeGroup = null;
     if (groupNav) {
       var validGroups = {};
@@ -566,14 +731,53 @@
       }
     }
 
+    function syncDependentFilters() {
+      var lessonsRoot = findFilterRoot(root, "[data-portal-lessons-filter]");
+      if (lessonsRoot && typeof lessonsRoot.__lessonsFilterApply === "function") {
+        lessonsRoot.__lessonsFilterApply();
+      }
+      var statusRoot = findFilterRoot(root, "[data-portal-status-tabs]");
+      if (statusRoot && typeof statusRoot.__statusFilterApply === "function") {
+        statusRoot.__statusFilterApply();
+      }
+    }
+
     function applyFilters() {
       var tableRows = root.querySelectorAll("tr[data-score-date]");
       var dayCards = root.querySelectorAll("[data-score-day]");
+      var groupRows = root.querySelectorAll("tr[data-group-ids]:not([data-score-date])");
+      var scheduleItems = root.querySelectorAll(".s-schedule-lesson[data-group-ids]");
+      var lessonCards = root.querySelectorAll(".s-lesson-card[data-group-ids], .s-lesson-card[data-group-id]");
       var visibleRows = 0;
 
       tableRows.forEach(function (row) {
         var show = scoreMatchesPeriod(row, activePeriod) && scoreMatchesGroup(row, activeGroup);
         row.hidden = !show;
+        if (show) {
+          visibleRows += 1;
+        }
+      });
+
+      groupRows.forEach(function (row) {
+        var show = scoreMatchesGroup(row, activeGroup);
+        row.hidden = !show;
+        row.classList.toggle("d-none", !show);
+        if (show) {
+          visibleRows += 1;
+        }
+      });
+
+      scheduleItems.forEach(function (item) {
+        var show = scoreMatchesGroup(item, activeGroup);
+        item.classList.toggle("d-none", !show);
+        if (show) {
+          visibleRows += 1;
+        }
+      });
+
+      lessonCards.forEach(function (item) {
+        var show = scoreMatchesGroup(item, activeGroup);
+        setItemVisible(item, show, "class");
         if (show) {
           visibleRows += 1;
         }
@@ -601,12 +805,17 @@
 
       updateScoreTabCounts(root);
       updateGroupChipCounts(root, activePeriod);
+      syncDependentFilters();
 
-      var filterEmpty = root.querySelector("#scores-filter-empty");
-      var hasItems = tableRows.length > 0 || dayCards.length > 0;
+      var filterEmpty = root.querySelector("#scores-filter-empty")
+        || root.querySelector("#lessons-filter-empty")
+        || root.querySelector("#attendance-filter-empty")
+        || root.querySelector("#classrooms-filter-empty");
+      var countableItems = tableRows.length + dayCards.length + groupRows.length
+        + lessonCards.length + scheduleItems.length;
       var visibleCount = visibleRows + visibleDays;
       if (filterEmpty) {
-        filterEmpty.classList.toggle("d-none", visibleCount > 0 || !hasItems);
+        filterEmpty.classList.toggle("d-none", visibleCount > 0 || countableItems === 0);
       }
     }
 

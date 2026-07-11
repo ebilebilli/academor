@@ -6,8 +6,11 @@ cache_version key. invalidate_model_cache() bumps that version, so every
 persisted model that feeds those queries must call _invalidate_on_commit here.
 
 Keep in sync with queries.py (add a receiver when a new cached query reads a model):
-  Service (incl. card_icon → serialize_project_category `icon` on home + /courses/),
-  CoursePricePackage (→ Service: packages in course list/detail + payments catalog),
+  Service (incl. card_icon → serialize_project_category `icon` on home + /courses/;
+  ielts_mock_test / sat_mock_test → mock vs course split in ``get_project_categories``,
+  ``get_nav_courses``, ``get_nav_mock_tests``, /mock-tests/ list),
+  CoursePricePackage (→ Service: packages in course/mock list/detail + payments catalog;
+  ``credits`` for mock test services),
   AbroadModel, StudyAbroadSection, StudyAbroadAdvantage, University,
   BlogPost, BlogPostImage, ContentTag, About, AboutWhyItem, Contact, Media, Tagline, SiteFaqEntry,
   Test, Question, Option, Sale
@@ -32,7 +35,10 @@ Keep in sync with queries.py (add a receiver when a new cached query reads a mod
   (fresh on every GET; not stored inside the page blob).
   Homepage service cards use `_fresh_home_categories_context()` (fresh sale prices on every GET).
   Homepage featured price carousel uses `_fresh_home_featured_prices_context()` (packages with
-  `show_on_homepage=True`; fresh on every GET).
+  `show_on_homepage=True`; excludes IELTS/SAT mock test services; fresh on every GET).
+  Mock tests list (`/mock-tests/`) uses `get_mock_tests_list_data()` — cached page blob +
+  fresh sale merge for mock-only categories (`get_project_categories(..., is_mock_test=True)`).
+  Header nav: `get_nav_courses` (non-mock) and `get_nav_mock_tests` (IELTS or SAT flag).
   Courses list uses `_merge_fresh_sale_categories()` after the cached page blob.
   Serialized fields: name, description, percent, end_date_display,
   linked services, promo image. Expired rows (`end_date` < today) are excluded at query time.
@@ -159,9 +165,13 @@ def _invalidate_sale_cache_on_commit():
 @receiver(post_delete, sender=Service)
 def invalidate_service_cache(sender, instance, **kwargs):
     """
-    Home / courses list / nav: cached `get_project_categories` and page blobs
-    (`_get_home_page_data_cached`, `get_project_list_data`, …) embed serialized
-    categories including `icon` from `card_icon` + slug hints.
+    Home / courses list / nav / mock-tests: cached `get_project_categories`,
+    `get_nav_courses`, `get_nav_mock_tests`, and page blobs
+    (`_get_home_page_data_cached`, `get_courses_list_data`, `get_mock_tests_list_data`, …)
+    embed serialized categories including `icon` from `card_icon` + slug hints.
+
+    ``ielts_mock_test`` / ``sat_mock_test`` control whether a service appears under
+    Courses or Mock tests — toggling either flag must bump this cache.
     Also refreshes homepage sale banners (`get_serialized_active_sales`: linked course names).
     """
     _invalidate_on_commit('Service')
@@ -180,9 +190,11 @@ def invalidate_service_instructors_m2m(sender, instance, **kwargs):
 def invalidate_course_price_package_cache(sender, instance, **kwargs):
     """
     Price packages are prefetched on cached `get_project_categories` /
-    `get_active_project_category_by_slug` and serialized into course cards/detail
+    `get_active_project_category_by_slug` and serialized into course/mock cards/detail
     (incl. Sale discount amounts when linked courses or price packages have an active sale).
-    Also feeds checkout contracts via ``serialize_price_package`` (months, lessons).
+    Also feeds checkout contracts via ``serialize_price_package`` (months, lessons, credits).
+    Mock test purchases use the same ``CoursePricePackage`` rows (``credits`` required when
+    the parent service has IELTS or SAT mock enabled).
     Inline admin edits packages without touching Service.post_save.
     """
     _invalidate_on_commit('Service')

@@ -1,0 +1,60 @@
+{% extends "portals/base.html" %}
+{% load i18n portal_tags %}
+
+{% block title %}{% trans 'Mock test complete' %}{% endblock %}
+
+{% block content %}
+{% url 'portals:student-mock-landing' program=exam_program as default_mock_back_url %}
+{% include "portals/includes/portal_page_hero.html" with title=_('Mock test complete') subtitle=_('All sections are submitted. Your teacher has been notified.') icon="ti-circle-check" lottie="portals/animations/graduation-certificate.lottie" hero_class="portal-page-hero--centered" back_url=mock_back_url|default:default_mock_back_url %}
+
+{% include "portals/includes/quiz_mock_overall_summary.html" %}
+
+<section class="ds-card">
+  <div class="table-responsive">
+    <table class="t-table">
+      <thead>
+        <tr>
+          <th>{% trans 'Section' %}</th>
+          <th>{% trans 'Quiz' %}</th>
+          <th>{% trans 'Score' %}</th>
+          <th>{% if mock_attempt.scoring_mode == 'sat_scaled' %}{% trans 'Section score' %}{% else %}{% trans 'Band' %}{% endif %}</th>
+          <th class="text-end">{% trans 'Details' %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for section in mock_attempt.sections %}
+        <tr>
+          <td>{{ section.section_label }}</td>
+          <td>{{ section.quiz_topic }}</td>
+          <td>
+            {% if section.is_pending_review %}
+            <span class="ds-badge ds-badge--warning">{% trans 'Awaiting review' %}</span>
+            {% elif section.total_score is not None %}
+            {{ section.total_score|format_quiz_score }}{% if section.max_score %} / {{ section.max_score|format_quiz_score }}{% endif %}
+            {% else %}
+            —
+            {% endif %}
+          </td>
+          <td>
+            {% if section.display_score is not None %}
+            {{ section.display_score|format_quiz_score }}{% if section.display_score_max %} / {{ section.display_score_max|format_quiz_score }}{% endif %}
+            {% else %}
+            —
+            {% endif %}
+          </td>
+          <td class="text-end">
+            {% if section.result_id %}
+            <a class="ds-btn ds-btn--secondary btn-sm" href="{% url score_detail_url_name|default:'portals:student-score-detail' result_pk=section.result_id %}{{ score_detail_url_suffix|default:'' }}">
+              {% trans 'View' %}
+            </a>
+            {% else %}
+            —
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

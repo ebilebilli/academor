@@ -116,6 +116,8 @@ def serialize_customer(profile):
         'username': _profile_username(profile),
         'phone': profile.phone or '',
         'mock_credits': profile.mock_credits,
+        'ielts_mock_credits': profile.ielts_mock_credits,
+        'sat_mock_credits': profile.sat_mock_credits,
         'teacher_id': profile.teacher_id,
         'teacher_name': profile.teacher.full_name if profile.teacher_id else '',
         'full_name': profile.full_name,
@@ -195,8 +197,13 @@ def serialize_parent(profile):
 
 
 def serialize_group(group):
-    labels = group.get_service_labels()
-    codes = group.get_portal_course_codes()
+    from portals.utils.group_services import (
+        study_group_portal_display_labels,
+        study_group_teaching_portal_codes,
+    )
+
+    labels = study_group_portal_display_labels(group)
+    codes = study_group_teaching_portal_codes(group)
     primary_label = ', '.join(labels) if labels else '—'
     annotated_count = getattr(group, 'student_count', None)
     if isinstance(annotated_count, int):
@@ -252,15 +259,17 @@ def serialize_schedule(schedule):
 
 def serialize_lesson(lesson):
     from portals.utils.lesson_media import build_lesson_media
+    from portals.utils.group_services import lesson_effective_subject
     from portals.utils.portal_services import resolve_course_type_label
 
     media = build_lesson_media(lesson)
+    subject = lesson_effective_subject(lesson)
     return {
         'id': lesson.pk,
         'name': lesson.display_name,
         'description': lesson.description,
-        'subject': lesson.subject,
-        'subject_label': resolve_course_type_label(lesson.subject) if lesson.subject else '',
+        'subject': subject,
+        'subject_label': resolve_course_type_label(subject) if subject else '',
         'category_id': lesson.category_id,
         'category_name': lesson.category.name if lesson.category_id else '',
         'group_id': lesson.group_id,
@@ -273,11 +282,19 @@ def serialize_lesson(lesson):
 
 def serialize_classroom(classroom):
     from portals.utils.media_cache_bust import media_url
+    from portals.utils.group_services import (
+        study_group_portal_display_labels,
+        study_group_teaching_portal_codes,
+    )
 
     pdf_url = media_url(classroom.pdf_file) if classroom.pdf_file else ''
-    service_slugs = classroom.get_service_slugs()
-    service_labels = classroom.get_service_labels()
     group = getattr(classroom, 'group', None)
+    if group and group.pk:
+        service_slugs = study_group_teaching_portal_codes(group)
+        service_labels = study_group_portal_display_labels(group)
+    else:
+        service_slugs = classroom.get_service_slugs()
+        service_labels = classroom.get_service_labels()
     return {
         'id': classroom.pk,
         'name': classroom.display_name,
@@ -463,21 +480,27 @@ def get_student_lesson(student_id, lesson_id):
     )
 
 
-def build_lesson_subject_tabs(lessons):
+def build_lesson_subject_tabs(lessons, allowed_codes=None):
     from django.utils.translation import gettext as _
 
-    from portals.utils.portal_services import get_course_type_label_map
+    from portals.utils.portal_services import get_course_type_label_map, normalize_portal_course_type
 
     labels = get_course_type_label_map()
+    allowed = {code for code in (allowed_codes or []) if code}
     counts = {}
+    visible_lessons = 0
     for lesson in lessons:
-        code = lesson.get('subject') or ''
-        if code:
-            counts[code] = counts.get(code, 0) + 1
+        code = normalize_portal_course_type(lesson.get('subject') or '') or (lesson.get('subject') or '')
+        if not code:
+            continue
+        if allowed and code not in allowed:
+            continue
+        counts[code] = counts.get(code, 0) + 1
+        visible_lessons += 1
     tabs = [{
         'code': 'all',
         'label': _('All topics'),
-        'count': len(lessons),
+        'count': visible_lessons if allowed else len(lessons),
     }]
     for code in sorted(counts):
         tabs.append({
@@ -486,6 +509,36 @@ def build_lesson_subject_tabs(lessons):
             'count': counts[code],
         })
     return tabs
+
+
+def build_teacher_lesson_group_tabs(teacher_id, lessons):
+    """Group filter chips for teacher lesson lists (scoped to each group's linked courses)."""
+    from portals.utils.group_services import (
+        study_group_portal_display_labels,
+        study_group_teaching_portal_codes,
+    )
+
+    groups = []
+    for group in (
+        teacher_groups_queryset(teacher_id, active_only=True)
+        .prefetch_related('courses')
+        .order_by('name')
+    ):
+        service_codes = study_group_teaching_portal_codes(group)
+        service_labels = study_group_portal_display_labels(group)
+        groups.append({
+            'id': group.pk,
+            'name': group.name,
+            'total_count': sum(1 for lesson in lessons if lesson.get('group_id') == group.pk),
+            'service_codes': service_codes,
+            'service_codes_csv': ','.join(service_codes),
+            'service_label': ', '.join(service_labels) if service_labels else '',
+        })
+    return groups
+
+
+def lesson_subject_codes_for_group(group_meta):
+    return list(group_meta.get('service_codes') or [])
 
 
 LESSON_PERIOD_CHOICES = ('all', 'week', 'month', 'year')
@@ -587,6 +640,46 @@ def resolve_score_group_param(request, groups):
     return raw if raw in valid else default
 
 
+def prepare_student_scores_with_groups(student_id, quiz_scores, weekly_scores):
+    """Attach group_ids to student score rows and build group filter tabs."""
+    from portals.utils.student_groups import build_student_group_maps
+
+    groups, by_teacher, by_service = build_student_group_maps(student_id)
+
+    def enrich_quiz(row):
+        service = row.get('course_type') or ''
+        return {**row, 'group_ids': by_service.get(service, [])}
+
+    def enrich_weekly(row):
+        group_id = row.get('study_group_id')
+        if group_id:
+            return {**row, 'group_ids': [group_id]}
+        teacher_id = row.get('teacher_id')
+        return {**row, 'group_ids': by_teacher.get(teacher_id, [])}
+
+    quiz_enriched = [enrich_quiz(row) for row in (quiz_scores or [])]
+    weekly_enriched = [enrich_weekly(row) for row in (weekly_scores or [])]
+
+    score_groups = []
+    for group in groups:
+        group_id = group['id']
+        quiz_count = sum(1 for row in quiz_enriched if group_id in row['group_ids'])
+        weekly_count = sum(1 for row in weekly_enriched if group_id in row['group_ids'])
+        score_groups.append({
+            'id': group_id,
+            'name': group['name'],
+            'quiz_count': quiz_count,
+            'weekly_count': weekly_count,
+            'total_count': quiz_count + weekly_count,
+        })
+
+    return {
+        'quiz_scores': quiz_enriched,
+        'weekly_scores': weekly_enriched,
+        'score_groups': score_groups if len(score_groups) > 1 else [],
+    }
+
+
 def prepare_teacher_scores_with_groups(teacher_id, quiz_scores, weekly_scores):
     """Attach group_ids to score rows and build group filter tabs for teacher results."""
     student_groups = {
@@ -596,7 +689,14 @@ def prepare_teacher_scores_with_groups(teacher_id, quiz_scores, weekly_scores):
 
     def enrich(rows):
         return [
-            {**row, 'group_ids': student_groups.get(row.get('student_id'), [])}
+            {
+                **row,
+                'group_ids': (
+                    [row['study_group_id']]
+                    if row.get('study_group_id')
+                    else student_groups.get(row.get('student_id'), [])
+                ),
+            }
             for row in rows
         ]
 
@@ -683,6 +783,7 @@ def serialize_attendance(row):
         'student_id': row.student_id,
         'student_name': row.student.full_name,
         'schedule_id': row.schedule_id,
+        'group_id': schedule.group_id,
         'group_name': schedule.group.name,
         'weekday_label': schedule.get_weekday_display(),
         'start_time': schedule.start_time,
@@ -1150,6 +1251,11 @@ def serialize_quiz_result(row):
         'reviewed_at': row.reviewed_at,
         'is_pending_review': is_pending_review,
         'completed_at': row.completed_at,
+        'course_type': (
+            row.quiz.category.service
+            if row.quiz.category_id and getattr(row.quiz.category, 'service', None)
+            else ''
+        ),
     }
 
 
@@ -1233,6 +1339,7 @@ def serialize_quiz_result_as_score(row):
         'is_pending_review': data['is_pending_review'],
         'is_manual_grading': data['is_manual_grading'],
         'grading_mode_label': data.get('grading_mode_label', ''),
+        'course_type': data.get('course_type') or '',
     }
 
 
@@ -1290,6 +1397,7 @@ def get_teacher_lessons(teacher_id):
             group__teacher_id=teacher_id,
         )
         .select_related('group', 'teacher', 'category')
+        .prefetch_related('group__courses')
         .order_by('-lesson_date', '-created_at', 'id')
     )
     return [serialize_lesson(row) for row in qs]
@@ -1501,6 +1609,21 @@ def resolve_scores_view_param(request, quiz_scores, weekly_scores, mock_attempts
     if not quiz_scores and not weekly_scores and mock_attempts:
         return 'mock'
     return 'quiz'
+
+
+def resolve_mock_program_param(request):
+    """Optional exam program filter for mock scores tab (?program=ielts|sat)."""
+    from portals.utils.mock_programs import MOCK_EXAM_PROGRAMS
+
+    raw = (request.GET.get('program') or '').strip().lower()
+    return raw if raw in MOCK_EXAM_PROGRAMS else None
+
+
+def filter_mock_attempt_summaries(attempts, *, program=None):
+    rows = list(attempts or [])
+    if not program:
+        return rows
+    return [row for row in rows if row.get('exam_program') == program]
 
 
 def split_student_quiz_results(rows):
@@ -1837,6 +1960,7 @@ def get_student_speaking_quiz_take_data(student_id, quiz_id, *, mock_attempt_id:
 
 
 def get_student_quiz_take_data(student_id, quiz_id, *, mock_attempt_id: int | None = None):
+    from portals.utils.ielts_mock_test import mock_allows_active_section_take
     from portals.utils.student_courses import quiz_visible_to_student, student_quiz_enrollment_ok
 
     course_codes = get_student_course_type_codes(student_id)
@@ -1863,14 +1987,29 @@ def get_student_quiz_take_data(student_id, quiz_id, *, mock_attempt_id: int | No
     if not quiz.is_variant_quiz:
         return None
 
-    existing = (
-        QuizResult.objects.filter(student_id=student_id, quiz_id=quiz_id)
-        .order_by('-completed_at', '-id')
-        .first()
-    )
     questions = [q for q in quiz.questions.all() if q.is_answerable]
     if not questions:
         return None
+
+    mock_take = mock_allows_active_section_take(student_id, mock_attempt_id, quiz_id)
+    if mock_take:
+        return {
+            **serialize_quiz(quiz),
+            'questions': [serialize_quiz_question_for_student(q) for q in questions],
+            'view_only': False,
+            'is_pending_review': False,
+            'is_mock_section': True,
+        }
+
+    existing = (
+        QuizResult.objects.filter(
+            student_id=student_id,
+            quiz_id=quiz_id,
+            ielts_mock_attempt__isnull=True,
+        )
+        .order_by('-completed_at', '-id')
+        .first()
+    )
     return {
         **serialize_quiz(quiz),
         'questions': [serialize_quiz_question_for_student(q) for q in questions],
@@ -2397,6 +2536,84 @@ def get_teacher_student_group_names(teacher_id, student_id):
     )
 
 
+def get_teacher_student_profile_groups(teacher_id, student_id):
+    return list(
+        StudyGroup.objects.filter(
+            teacher_id=teacher_id,
+            students__pk=student_id,
+            is_active=True,
+        )
+        .order_by('name')
+        .values('id', 'name')
+    )
+
+
+def resolve_teacher_profile_group(request, profile_groups):
+    if not profile_groups:
+        return None
+    if len(profile_groups) == 1:
+        return profile_groups[0]['id']
+    from_group = request.GET.get('from_group')
+    if from_group:
+        try:
+            group_id = int(from_group)
+        except (TypeError, ValueError):
+            group_id = None
+        if group_id and any(row['id'] == group_id for row in profile_groups):
+            return group_id
+    return profile_groups[0]['id']
+
+
+def resolve_teacher_profile_duration_group(request, profile_groups):
+    return resolve_teacher_profile_group(request, profile_groups)
+
+
+def get_teacher_student_group_service_codes(teacher_id, student_id, group_id):
+    from portals.utils.group_services import study_group_portal_codes
+
+    group = (
+        StudyGroup.objects.filter(
+            pk=group_id,
+            teacher_id=teacher_id,
+            students__pk=student_id,
+            is_active=True,
+        )
+        .prefetch_related('courses')
+        .first()
+    )
+    if not group:
+        return None
+    return set(study_group_portal_codes(group))
+
+
+def filter_teacher_profile_rows_by_group(rows, service_codes, *, key='course_type'):
+    if not service_codes:
+        return rows
+    return [row for row in rows if row.get(key) in service_codes]
+
+
+def filter_attendance_detail_by_group(attendance_detail, group_id):
+    if not attendance_detail or not group_id:
+        return attendance_detail
+    filtered_records = [
+        row for row in attendance_detail.get('records', [])
+        if row.get('group_id') == group_id
+    ]
+    summary = {'present': 0, 'absent': 0, 'late': 0, 'total': len(filtered_records)}
+    for row in filtered_records:
+        status = row.get('status')
+        if status in summary:
+            summary[status] += 1
+    present = summary['present']
+    total = summary['total']
+    return {
+        **attendance_detail,
+        'summary': summary,
+        'records': filtered_records,
+        'attendance_rate': round(100 * present / total, 1) if total else None,
+    }
+
+
 def resolve_teacher_student_profile_back(request, teacher_id, student_id):
     """Back target for teacher student profile — prefer originating group."""
     from django.utils.translation import gettext as _
@@ -2460,41 +2677,134 @@ def get_teacher_dashboard_data(request, teacher_id):
     }
 
 
-def _student_performance_snapshot(student_id, *, parent_id=None):
+def _student_performance_snapshot(student_id, *, parent_id=None, group_id=None):
     from portals.utils.attendance_stats import compute_attendance_stats
+    from portals.utils.group_services import study_group_portal_codes
     from portals.utils.ielts_mock_test import (
         get_student_completed_mock_attempts,
+        get_student_mock_exam_programs,
         serialize_mock_attempt_summary,
-        student_can_access_ielts_mock,
+        student_can_access_mock,
     )
     from portals.utils.quiz_stats import (
-        compute_mock_average_stats,
+        build_mock_stats_list,
         compute_quiz_average_stats,
         compute_weekly_average_stats,
     )
     from portals.utils.weekly_scores import get_student_weekly_scores
 
+    group = None
+    group_service_codes = None
+    if group_id:
+        group = (
+            StudyGroup.objects.filter(pk=group_id, students__pk=student_id, is_active=True)
+            .select_related('teacher')
+            .prefetch_related('courses')
+            .first()
+        )
+        if group:
+            group_service_codes = set(study_group_portal_codes(group))
+
     weekly_scores = get_student_weekly_scores(student_id)
+    if group:
+        weekly_scores = [
+            row for row in weekly_scores
+            if row.get('study_group_id') == group.pk
+        ]
+
     if parent_id is not None:
         quiz_results = get_parent_child_quiz_results(student_id, parent_id=parent_id)
     else:
         quiz_results = get_student_quiz_results(student_id)
 
+    if group_service_codes is not None:
+        quiz_results = [
+            row for row in quiz_results
+            if row.get('course_type') in group_service_codes
+        ]
+
     attendance_detail = get_student_attendance_detail(student_id)
-    mock_stats = None
-    if student_can_access_ielts_mock(student_id):
+    if group and attendance_detail:
+        filtered_records = [
+            row for row in attendance_detail.get('records', [])
+            if row.get('group_id') == group.pk
+        ]
+        summary = {'present': 0, 'absent': 0, 'late': 0, 'total': len(filtered_records)}
+        for row in filtered_records:
+            if row['status'] in summary:
+                summary[row['status']] += 1
+        present = summary['present']
+        total = summary['total']
+        attendance_detail = {
+            **attendance_detail,
+            'summary': summary,
+            'records': filtered_records,
+            'attendance_rate': round(100 * present / total, 1) if total else None,
+        }
+
+    mock_stats_list = []
+    mock_programs = get_student_mock_exam_programs(student_id)
+    if group_service_codes is not None:
+        mock_programs = [code for code in mock_programs if code in group_service_codes]
+    if mock_programs and student_can_access_mock(student_id):
         mock_attempts = [
             serialize_mock_attempt_summary(attempt)
             for attempt in get_student_completed_mock_attempts(student_id)
+            if getattr(attempt, 'exam_program', None) in mock_programs
         ]
-        mock_stats = compute_mock_average_stats(mock_attempts)
+        mock_stats_list = build_mock_stats_list(mock_attempts)
 
     return {
         'weekly_average': compute_weekly_average_stats(weekly_scores),
         'quiz_average': compute_quiz_average_stats(quiz_results),
         'attendance_stats': compute_attendance_stats(attendance_detail),
-        'mock_stats': mock_stats,
+        'mock_stats_list': mock_stats_list,
     }
+
+
+def build_student_performance_by_groups(
+    student_id,
+    *,
+    parent_id=None,
+    teacher_id=None,
+    focus_group_id=None,
+):
+    """Per-group performance cards when a student belongs to multiple groups."""
+    qs = StudyGroup.objects.filter(students__pk=student_id, is_active=True)
+    if teacher_id:
+        qs = qs.filter(teacher_id=teacher_id)
+    if focus_group_id:
+        qs = qs.filter(pk=focus_group_id)
+    groups = list(qs.order_by('name').values('id', 'name'))
+    if not groups:
+        return []
+    if teacher_id:
+        return [
+            {
+                'group_id': group['id'],
+                'group_name': group['name'],
+                **_student_performance_snapshot(
+                    student_id,
+                    parent_id=parent_id,
+                    group_id=group['id'],
+                ),
+            }
+            for group in groups
+        ]
+    if len(groups) <= 1:
+        return []
+    return [
+        {
+            'group_id': group['id'],
+            'group_name': group['name'],
+            **_student_performance_snapshot(
+                student_id,
+                parent_id=parent_id,
+                group_id=group['id'],
+            ),
+        }
+        for group in groups
+    ]
 
 
 @cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')
@@ -2515,9 +2825,12 @@ def get_student_dashboard_data(request, student_id):
 
 def _student_mock_count(student_id):
     from portals.models import IeltsMockTestAttempt
-    from portals.utils.ielts_mock_test import student_can_access_ielts_mock
+    from portals.utils.ielts_mock_test import (
+        get_student_mock_exam_programs,
+        student_can_access_mock,
+    )
 
-    if not student_can_access_ielts_mock(student_id):
+    if not get_student_mock_exam_programs(student_id) or not student_can_access_mock(student_id):
         return None
     return IeltsMockTestAttempt.objects.filter(
         student_id=student_id,
@@ -2564,15 +2877,39 @@ def get_parent_dashboard_data(request, parent_id):
 
 def get_customer_mock_quiz_take_data(customer_id: int, quiz_id: int, *, mock_attempt_id: int):
     """Load quiz take payload for customer mock sections only."""
-    from portals.utils.customer_mock import customer_mock_allows_active_section_take
-    from portals.utils.ielts_mock_test import IELTS_SERVICE
+    from portals.utils.customer_mock import (
+        customer_mock_allows_active_section_take,
+        get_active_customer_mock_attempt,
+    )
 
     if not customer_mock_allows_active_section_take(customer_id, mock_attempt_id, quiz_id):
         return None
 
-    quiz = Quiz.objects.filter(pk=quiz_id, category__service=IELTS_SERVICE).select_related('category').first()
+    attempt = get_active_customer_mock_attempt(customer_id, mock_attempt_id)
+    if not attempt:
+        return None
+
+    exam_program = attempt.exam_program
+    quiz = (
+        Quiz.objects.filter(pk=quiz_id, category__service=exam_program)
+        .select_related('category')
+        .prefetch_related(Prefetch('questions', queryset=QuizQuestion.objects.order_by('order', 'id')))
+        .first()
+    )
     if not quiz:
         return None
+
+    if quiz.is_variant_quiz:
+        questions = [q for q in quiz.questions.all() if q.is_answerable]
+        if not questions:
+            return None
+        return {
+            **serialize_quiz(quiz),
+            'questions': [serialize_quiz_question_for_student(q) for q in questions],
+            'view_only': False,
+            'is_pending_review': False,
+            'is_mock_section': True,
+        }
 
     if quiz.is_reading:
         from portals.utils.quiz_reading import build_reading_sections_for_quiz, get_reading_questions_for_quiz
@@ -2642,14 +2979,6 @@ def get_customer_mock_quiz_take_data(customer_id: int, quiz_id: int, *, mock_att
         }
 
     if quiz.is_manual_grading and not quiz.is_listening and not quiz.is_speaking:
-        quiz = (
-            Quiz.objects.filter(pk=quiz_id, category__service=IELTS_SERVICE)
-            .select_related('category')
-            .prefetch_related(Prefetch('questions', queryset=QuizQuestion.objects.order_by('order', 'id')))
-            .first()
-        )
-        if not quiz:
-            return None
         questions = [q for q in quiz.questions.all() if q.is_answerable]
         if not questions:
             return None

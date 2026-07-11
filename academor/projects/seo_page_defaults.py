@@ -50,6 +50,25 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
                 + _EN_KW_CORE
             ),
         },
+        "mock-tests-page": {
+            "title": "Mock Tests | Academor — IELTS & SAT Practice",
+            "description": (
+                "Buy IELTS and SAT mock test packages at Academor in Baku. "
+                "Practice exams with portal access and scored feedback."
+            ),
+            "keywords": (
+                "ielts mock test baku, sat mock test, academor mock exams, practice test azerbaijan, "
+                + _EN_KW_CORE
+            ),
+        },
+        "mock-test-detail": {
+            "description": (
+                "Mock test package options, pricing, and checkout for this Academor practice exam program."
+            ),
+            "keywords": (
+                "mock test package, ielts sat practice baku, academor, exam simulation, " + _EN_KW_CORE
+            ),
+        },
         "about-page": {
             "title": "About Us | Academor — English & Study Abroad in Baku",
             "description": (
@@ -156,6 +175,23 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
                 "kurs təsviri, academor, ingilis proqramı bakı, qeydiyyat, IELTS speaking, " + _AZ_KW_CORE
             ),
         },
+        "mock-tests-page": {
+            "title": "Mock testlər | Academor — IELTS və SAT",
+            "description": (
+                "Academor-da IELTS və SAT mock test paketləri: portal girişi, praktika imtahanları və qiymətləndirmə."
+            ),
+            "keywords": (
+                "ielts mock test bakı, sat mock test, academor mock imtahan, praktika testi, " + _AZ_KW_CORE
+            ),
+        },
+        "mock-test-detail": {
+            "description": (
+                "Bu mock test proqramı üçün paketlər, qiymətlər və ödəniş — Academor, Bakı."
+            ),
+            "keywords": (
+                "mock test paketi, ielts sat praktika bakı, academor, imtahan simulyasiyası, " + _AZ_KW_CORE
+            ),
+        },
         "about-page": {
             "title": "Haqqımızda | Academor — Bakı",
             "description": (
@@ -254,6 +290,23 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
                 "Описание программы Academor: содержание, формат и запись на курс в Баку, Азербайджан."
             ),
             "keywords": "программа academor, курс английского баку, запись, ielts, " + _RU_KW_CORE,
+        },
+        "mock-tests-page": {
+            "title": "Пробные тесты | Academor — IELTS и SAT",
+            "description": (
+                "Пакеты пробных тестов IELTS и SAT в Academor, Баку: доступ в портал, практика и оценка."
+            ),
+            "keywords": (
+                "ielts mock test баку, sat mock test, academor пробный экзамен, " + _RU_KW_CORE
+            ),
+        },
+        "mock-test-detail": {
+            "description": (
+                "Пакеты, цены и оплата для этой программы пробных тестов Academor."
+            ),
+            "keywords": (
+                "пакет mock test, ielts sat практика баку, academor, " + _RU_KW_CORE
+            ),
         },
         "about-page": {
             "title": "О нас | Academor — Баку",

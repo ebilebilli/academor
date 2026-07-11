@@ -1,0 +1,14 @@
+{% load i18n %}
+{% if score_groups|length > 1 %}
+<nav class="p-child-nav p-child-nav--groups mb-3" aria-label="{% trans 'Qrup seçimi' %}">
+  {% for group in score_groups %}
+  <a
+    class="p-child-nav__link{% if active_score_group == group.id|stringformat:'s' %} is-active{% endif %}"
+    href="{{ request.path }}?{% if selected_student and children|length > 1 %}student={{ selected_student.id }}&{% endif %}group={{ group.id }}"
+    {% if active_score_group == group.id|stringformat:'s' %}aria-current="page"{% endif %}
+  >
+    {{ group.name }}
+  </a>
+  {% endfor %}
+</nav>
+{% endif %}

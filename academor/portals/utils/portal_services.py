@@ -51,10 +51,28 @@ def classroom_service_portal_codes(services):
         code = infer_course_type_for_service(service)
         if code:
             codes.add(code)
+            continue
         slug = (service.slug or '').strip()
         if slug:
             codes.add(slug)
     return codes
+
+
+def normalize_portal_course_type(code):
+    """Map a portal code or active service slug to the canonical course_type."""
+    if not code:
+        return ''
+    if is_active_portal_course_type(code):
+        return code
+    for service in get_active_services_queryset():
+        slug = (service.slug or '').strip()
+        if slug and slug == code:
+            inferred = infer_course_type_for_service(service)
+            if inferred and is_active_portal_course_type(inferred):
+                return inferred
+            if is_active_portal_course_type(slug):
+                return slug
+    return code
 
 
 def expand_course_types_to_service_slugs(course_types, lang=None):
@@ -76,6 +94,19 @@ def services_for_portal_codes(codes):
     if not slugs:
         return get_active_services_queryset().none()
     return get_active_services_queryset().filter(slug__in=slugs)
+
+
+def portal_codes_for_service_ids(service_ids):
+    """Portal course_type codes inferred from site Service primary keys."""
+    ids = []
+    for pk in service_ids or []:
+        try:
+            ids.append(int(pk))
+        except (TypeError, ValueError):
+            continue
+    if not ids:
+        return []
+    return sorted(classroom_service_portal_codes(get_active_services_queryset().filter(pk__in=ids)))
 
 
 def get_active_service_choices(lang=None):

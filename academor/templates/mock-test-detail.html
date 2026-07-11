@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+{% load i18n static %}{% get_current_language as LANG_CODE %}
+<html lang="{{ LANG_CODE }}">
+<head>
+    {% include "includes/site_layout_head.html" with page_title=page_title page_description=page_description page_keywords=page_keywords lcp_image_url=course.image og_image_url=og_image_url og_type=og_type structured_data_json=structured_data_json %}
+    {% include "includes/payment_ui_head.html" %}
+    <link href="{% static 'assets/css/mock-test-detail.css' %}" rel="stylesheet">
+</head>
+<body class="mock-detail-body">
+    {% include "includes/site_spinner.html" %}
+    {% include "includes/site_navbar.html" %}
+
+    <main id="main-content" class="mock-detail-page">
+        <section class="mock-detail-hero{% if not course.images %} mock-detail-hero--solo{% endif %}" aria-labelledby="mock-detail-title">
+            <div class="mock-detail-hero__bg" aria-hidden="true"></div>
+            <div class="container-xxl mock-detail-hero__inner">
+                <div class="container">
+                    <div class="mock-detail-hero__content wow fadeInUp" data-wow-delay="0.05s">
+                        <div class="mock-detail-hero__badges">
+                            <span class="mock-detail-hero__badge mock-detail-hero__badge--mock">{% trans "Mock" %}</span>
+                            {% for tag in course.tags %}
+                            <span class="mock-detail-hero__badge mock-detail-hero__badge--tag">{{ tag.name }}</span>
+                            {% endfor %}
+                        </div>
+                        <h1 id="mock-detail-title" class="mock-detail-hero__title">{{ course.name }}</h1>
+                        {% if course.description_excerpt %}
+                        <p class="mock-detail-hero__subtitle">{{ course.description_excerpt }}</p>
+                        {% endif %}
+
+                        {% if course.bullet_items %}
+                        <ul class="mock-detail-hero__highlights list-unstyled mb-0">
+                            {% for item in course.bullet_items %}
+                            <li>
+                                <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                <span>{{ item }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+
+                        {% if course.has_payment %}
+                        <a href="#course-pay" class="mock-detail-hero__cta">
+                            {% trans "View packages" %}
+                            <i class="fa fa-arrow-down ms-2" aria-hidden="true"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+
+                    {% if course.images %}
+                    <aside class="mock-detail-hero__aside wow fadeInUp" data-wow-delay="0.12s" aria-label="{% trans 'Service images' %}">
+                        <div class="mock-detail-hero__media">
+                            <img
+                                src="{{ course.images.0 }}"
+                                alt="{{ course.name }}"
+                                class="mock-detail-hero__media-img"
+                                loading="eager"
+                                decoding="async"
+                            >
+                        </div>
+                    </aside>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+
+        {% if course.description_html %}
+        <section class="mock-detail-about" aria-labelledby="mock-detail-about-heading">
+            <div class="container-xxl">
+                <div class="container">
+                    <header class="mock-detail-about__head wow fadeInUp" data-wow-delay="0.05s">
+                        <span class="mock-detail-section__eyebrow">{% trans "Overview" %}</span>
+                        <h2 id="mock-detail-about-heading" class="mock-detail-section__title">{{ course.name }}</h2>
+                    </header>
+                    <div class="mock-detail-about__prose wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="mock-detail-about__prose-inner">{{ course.description_html|safe }}</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if course.instructors %}
+        <section class="mock-detail-trainers" aria-labelledby="mock-detail-trainers-heading">
+            <div class="container-xxl">
+                <div class="container">
+                    <header class="mock-detail-trainers__head wow fadeInUp" data-wow-delay="0.05s">
+                        <span class="mock-detail-section__eyebrow">{% trans "Team" %}</span>
+                        <h2 id="mock-detail-trainers-heading" class="mock-detail-section__title">{% trans "Trainer" %}</h2>
+                    </header>
+                    <div class="row g-4 mock-detail-trainers__grid">
+                        {% for trainer in course.instructors %}
+                        <div class="col-6 col-md-4 col-lg-3 wow fadeInUp" data-wow-delay="0.08s">
+                            <article class="mock-detail-trainer-card h-100">
+                                <a href="{% url 'projects:team-detail' trainer.slug %}" class="mock-detail-trainer-card__link text-decoration-none">
+                                    <div class="mock-detail-trainer-card__media">
+                                        {% if trainer.image %}
+                                        <img src="{{ trainer.image }}" alt="{{ trainer.name }}" loading="lazy" decoding="async" width="400" height="400">
+                                        {% else %}
+                                        <div class="mock-detail-trainer-card__placeholder">
+                                            <i class="fa fa-user" aria-hidden="true"></i>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="mock-detail-trainer-card__body">
+                                        <h3 class="mock-detail-trainer-card__name">{{ trainer.name }}</h3>
+                                        {% if trainer.role %}<p class="mock-detail-trainer-card__role mb-0">{{ trainer.role }}</p>{% endif %}
+                                    </div>
+                                </a>
+                            </article>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if course.has_payment and payment_form %}
+        <section
+            class="course-detail-payment-section"
+            id="course-pay"
+            data-default-index="{{ default_package_index|default:0 }}"
+            data-default-tab="{{ default_payment_tab }}"
+            aria-labelledby="course-detail-payment-heading"
+        >
+            <div class="container-fluid px-3 px-md-4 px-lg-5">
+                <div class="course-detail-payment-section__inner wow fadeInUp" data-wow-delay="0.1s">
+                    {% include "includes/course_detail_payment_box.html" %}
+                </div>
+            </div>
+        </section>
+        {% include "includes/course_detail_payment_modal.html" %}
+        {% include "includes/course_detail_payment_sticky_bar.html" %}
+        {% endif %}
+    </main>
+
+    {% include "includes/site_footer.html" %}
+    {% include "includes/site_scripts.html" %}
+    {% if course.has_payment and payment_form %}
+    {% include "includes/payment_ui_scripts.html" %}
+    {% endif %}
+</body>
+</html>

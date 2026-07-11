@@ -5,6 +5,8 @@ from projects.views.views_v1 import (
     HomePageView,
     CoursesPageView,
     CourseDetailPageView,
+    MockTestsPageView,
+    MockTestDetailPageView,
     AboutPageView,
     ServicesPageView,
     AbroadPageView,
@@ -47,6 +49,16 @@ urlpatterns = [
         'courses/<slug:slug>/',
         CourseDetailPageView.as_view(),
         name='course-detail'
+    ),
+    path(
+        'mock-tests/',
+        MockTestsPageView.as_view(),
+        name='mock-tests-page',
+    ),
+    path(
+        'mock-tests/<slug:slug>/',
+        MockTestDetailPageView.as_view(),
+        name='mock-test-detail',
     ),
     path(
         'about/', 

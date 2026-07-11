@@ -4,7 +4,7 @@
     {% for cat in categories %}
     <li class="hsvc-grid__item">
         <div class="hsvc-card-wrap{% if active_slug == cat.slug %} hsvc-card-wrap--active{% endif %}">
-            <a href="{% url 'projects:course-detail' slug=cat.slug %}" class="hsvc-card">
+            <a href="{% url detail_url_name|default:'projects:course-detail' slug=cat.slug %}" class="hsvc-card">
                 <span class="hsvc-card__icon" aria-hidden="true">
                     <i class="fa {{ cat.icon }}" aria-hidden="true"></i>
                 </span>

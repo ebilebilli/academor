@@ -2,7 +2,7 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.http import JsonResponse
 from django.urls import path, reverse
 from django.utils.html import format_html
@@ -46,13 +46,19 @@ from portals.forms import (
 from portals.utils.admin_access import can_access_django_admin, strip_admin_flags_for_portal_user
 from portals.utils.group_services import (
     students_matching_group_courses,
-    sync_study_group_courses_from_teacher,
+    study_group_portal_codes,
 )
 from portals.utils.portal_services import (
     expand_course_types_to_service_slugs,
     get_active_course_type_choices,
+    get_active_services_queryset,
     get_course_type_label_map,
+    portal_codes_for_service_ids,
     resolve_course_type_label,
+)
+from portals.utils.teacher_courses import (
+    teacher_has_all_course_codes,
+    teachers_for_portal_course_codes,
 )
 from portals.models.score_models import WEEKLY_SCORE_MAX
 from portals.models import (
@@ -72,7 +78,6 @@ from portals.models import (
     ReadingQuestionGroup,
     ParentProfile,
     CustomerProfile,
-    MockTestPackage,
     Quiz,
     QuizAssignment,
     QuizCategory,
@@ -222,7 +227,10 @@ class PortalUserAdmin(BaseUserAdmin):
     def portal_mock_credits_display(self, obj):
         profile = self._get_linked_profile(obj)
         if isinstance(profile, CustomerProfile):
-            return profile.mock_credits
+            return _('IELTS: %(ielts)s, SAT: %(sat)s') % {
+                'ielts': profile.ielts_mock_credits,
+                'sat': profile.sat_mock_credits,
+            }
         return '—'
 
     @admin.display(description=_('Portal profile'))
@@ -736,6 +744,21 @@ class TeacherProfileAdmin(PortalModelAdmin):
             {'value': with_groups, 'label': _('With groups'), 'tone': 'teal'},
         ]
 
+    def get_search_results(self, request, queryset, search_term):
+        if (
+            request.GET.get('app_label') == 'portals'
+            and request.GET.get('model_name') == 'studygroup'
+            and request.GET.get('field_name') == 'teacher'
+        ):
+            raw_ids = (request.GET.get('group_courses') or '').strip()
+            if raw_ids:
+                service_ids = [part for part in raw_ids.split(',') if part]
+                codes = portal_codes_for_service_ids(service_ids)
+                if codes:
+                    queryset = teachers_for_portal_course_codes(codes)
+        queryset, use_distinct = super().get_search_results(request, queryset, search_term)
+        return queryset, use_distinct
+
     @admin.display(description=_('Teacher'))
     def full_name_link(self, obj):
         return obj.full_name
@@ -974,7 +997,8 @@ class CustomerProfileAdmin(PortalModelAdmin):
         'full_name_link',
         'person_display',
         'teacher_display',
-        'mock_credits',
+        'ielts_mock_credits',
+        'sat_mock_credits',
         'phone',
         'role_chip',
     )
@@ -994,7 +1018,7 @@ class CustomerProfileAdmin(PortalModelAdmin):
         }),
         (_('Personal information'), {
             'classes': ('portal-fieldset',),
-            'fields': ('phone', 'mock_credits', 'teacher'),
+            'fields': ('phone', 'ielts_mock_credits', 'sat_mock_credits', 'teacher'),
         }),
     )
 
@@ -1013,7 +1037,10 @@ class CustomerProfileAdmin(PortalModelAdmin):
 
     @admin.display(description=_('Customer'))
     def person_display(self, obj):
-        subtitle = _('%(count)s mock credit(s)') % {'count': obj.mock_credits}
+        subtitle = _('IELTS: %(ielts)s, SAT: %(sat)s') % {
+            'ielts': obj.ielts_mock_credits,
+            'sat': obj.sat_mock_credits,
+        }
         return portal_person_cell(
             obj.full_name,
             subtitle=subtitle,
@@ -1031,34 +1058,31 @@ class CustomerProfileAdmin(PortalModelAdmin):
         return portal_role_badge('Customer', 'customer')
 
 
-@admin.register(MockTestPackage)
-class MockTestPackageAdmin(PortalModelAdmin):
-    list_display = ('name_az', 'credits', 'price', 'order', 'is_active')
-    list_editable = ('order', 'is_active')
-    search_fields = ('name_az', 'name_en', 'name_ru')
-    ordering = ('order', 'id')
-    fieldsets = (
-        (None, {
-            'classes': ('portal-fieldset',),
-            'fields': (
-                'name_az',
-                'name_en',
-                'name_ru',
-                'credits',
-                'price',
-                'order',
-                'is_active',
-            ),
-        }),
-    )
-
-
 # ---------------------------------------------------------------------------
 # Groups & schedule
 # ---------------------------------------------------------------------------
 
+class StudyGroupAdminForm(forms.ModelForm):
+    class Meta:
+        model = StudyGroup
+        fields = '__all__'
+
+    def clean(self):
+        cleaned = super().clean()
+        teacher = cleaned.get('teacher')
+        course_ids = self.data.getlist('courses')
+        codes = portal_codes_for_service_ids(course_ids)
+        if teacher and codes and not teacher_has_all_course_codes(teacher.pk, codes):
+            self.add_error(
+                'teacher',
+                _('This teacher is not assigned to all selected courses.'),
+            )
+        return cleaned
+
+
 @admin.register(StudyGroup)
 class StudyGroupAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
+    form = StudyGroupAdminForm
     list_display = (
         'name',
         'teacher_display',
@@ -1070,8 +1094,7 @@ class StudyGroupAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
     list_filter = ('is_active', 'courses', 'teacher')
     search_fields = ('name', 'teacher__user__username', 'courses__slug')
     autocomplete_fields = ('teacher',)
-    filter_horizontal = ('students',)
-    readonly_fields = ('courses_display',)
+    filter_horizontal = ('courses', 'students')
     list_editable = ('is_active',)
     ordering = ('-is_active', 'name', 'id')
     list_per_page = 25
@@ -1079,16 +1102,16 @@ class StudyGroupAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
     fieldsets = (
         ('Group basics', {
             'classes': ('portal-fieldset',),
-            'description': 'Name, teacher, and active status.',
-            'fields': ('name', 'teacher', 'is_active'),
+            'description': _('Name, linked courses, teacher, and active status.'),
+            'fields': ('name', 'courses', 'teacher', 'is_active'),
         }),
         ('Course details', {
             'classes': ('portal-fieldset',),
             'description': _(
-                'Courses are linked automatically from the teacher profile (read-only). '
-                'Assign course specializations on the teacher page first.'
+                'Students inherit the course from the group you create — pick the matching '
+                'course(s) above. Only teachers assigned to those courses can be selected.'
             ),
-            'fields': ('courses_display', 'start_date', 'max_students'),
+            'fields': ('start_date', 'max_students'),
         }),
         ('Students', {
             'classes': ('portal-fieldset',),
@@ -1099,6 +1122,9 @@ class StudyGroupAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
             'fields': ('students',),
         }),
     )
+
+    class Media(PortalModelAdmin.Media):
+        js = PortalModelAdmin.Media.js + ('portals/admin/js/study_group_admin.js',)
 
     def get_queryset(self, request):
         qs = admin.ModelAdmin.get_queryset(self, request)
@@ -1111,7 +1137,21 @@ class StudyGroupAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
             qs = qs.filter(courses__slug__in=slugs).distinct() if slugs else qs.none()
         return qs
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'teacher':
+            obj_id = request.resolver_match.kwargs.get('object_id')
+            codes = []
+            if obj_id:
+                group = StudyGroup.objects.filter(pk=obj_id).prefetch_related('courses').first()
+                if group:
+                    codes = study_group_portal_codes(group)
+            if codes:
+                kwargs['queryset'] = teachers_for_portal_course_codes(codes)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
     def formfield_for_manytomany(self, db_field, request, **kwargs):
+        if db_field.name == 'courses':
+            kwargs['queryset'] = get_active_services_queryset()
         if db_field.name == 'students':
             obj_id = request.resolver_match.kwargs.get('object_id')
             group = None
@@ -1122,8 +1162,6 @@ class StudyGroupAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
 
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
-        if not change:
-            sync_study_group_courses_from_teacher(obj)
 
     def get_portal_stats(self, request):
         active = StudyGroup.objects.filter(is_active=True).count()
@@ -1146,9 +1184,7 @@ class StudyGroupAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
     @admin.display(description=_('Courses'))
     def courses_display(self, obj):
         if not obj or not obj.pk:
-            return _(
-                'Courses appear after you save the group — synced from the teacher profile.'
-            )
+            return _('Select course(s) when creating the group.')
         if hasattr(obj, '_prefetched_objects_cache') and 'courses' in obj._prefetched_objects_cache:
             courses = list(obj.courses.all())
         else:
@@ -1556,6 +1592,7 @@ class WeeklyStudentScoreAdmin(PortalModelAdmin):
     list_display = (
         'student_display',
         'teacher_display',
+        'study_group',
         'week_start',
         'score_display',
         'updated_at',
@@ -1567,7 +1604,7 @@ class WeeklyStudentScoreAdmin(PortalModelAdmin):
         'teacher__user__username',
         'comment',
     )
-    autocomplete_fields = ('student', 'teacher')
+    autocomplete_fields = ('student', 'teacher', 'study_group')
     date_hierarchy = 'week_start'
     ordering = ('-week_start', '-updated_at', '-id')
     list_per_page = 25
@@ -1577,7 +1614,7 @@ class WeeklyStudentScoreAdmin(PortalModelAdmin):
                 'Weekly score out of 10 for a student. Teachers can also enter '
                 'scores from the portal weekly scores page.'
             ),
-            'fields': ('student', 'teacher', 'week_start'),
+            'fields': ('student', 'teacher', 'study_group', 'week_start'),
         }),
         ('Result', {
             'fields': ('score', 'comment', 'created_at', 'updated_at'),
@@ -1670,22 +1707,63 @@ class QuizAdminForm(forms.ModelForm):
             'is_essay',
             'is_speaking',
             'is_reading',
+            'is_math',
+            'is_ielts',
+            'is_sat',
+            'sat_section',
             'is_time_limited',
             'time_limit_minutes',
         )
+        widgets = {
+            'sat_section': forms.RadioSelect,
+        }
 
     def clean(self):
         cleaned = super().clean()
+
+        if cleaned.get('is_sat'):
+            sat_section = cleaned.get('sat_section') or ''
+            if not sat_section:
+                self.add_error(
+                    'sat_section',
+                    _('Select a SAT section type (Reading, Writing, Algebra, or Geometry & Data).'),
+                )
+            elif sat_section not in dict(Quiz.SatSection.choices):
+                self.add_error('sat_section', _('Invalid SAT section type.'))
+            else:
+                cleaned['is_listening'] = False
+                cleaned['is_speaking'] = False
+                cleaned['is_essay'] = False
+                cleaned['is_math'] = False
+                cleaned['is_reading'] = sat_section == Quiz.SatSection.READING
+        else:
+            cleaned['sat_section'] = ''
+            cleaned['is_math'] = False
+
+        if not cleaned.get('is_sat'):
+            cleaned['is_math'] = False
 
         format_flags = [
             cleaned.get('is_listening'),
             cleaned.get('is_essay'),
             cleaned.get('is_speaking'),
             cleaned.get('is_reading'),
+            cleaned.get('is_math'),
         ]
         if sum(1 for flag in format_flags if flag) > 1:
             raise forms.ValidationError(
-                _('Only one quiz format can be enabled (Listening, Essay, Speaking, or Reading).'),
+                _('Only one quiz format can be enabled (Listening, Essay, Speaking, Reading, or Math).'),
+            )
+
+        if cleaned.get('is_math') and not cleaned.get('is_sat'):
+            self.add_error(
+                'is_math',
+                _('Math format is only available when SAT is enabled.'),
+            )
+
+        if cleaned.get('is_ielts') and cleaned.get('is_sat'):
+            raise forms.ValidationError(
+                _('Select only one mock test program: IELTS or SAT.'),
             )
 
         if cleaned.get('is_speaking'):
@@ -1722,7 +1800,7 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
         'created_at',
     )
     list_display_links = ('topic',)
-    list_filter = ('category', 'category__service', 'created_at')
+    list_filter = ('category', 'category__service', 'is_ielts', 'is_sat', 'sat_section', 'created_at')
     search_fields = ('topic', 'category__name', 'category__service')
     autocomplete_fields = ('category',)
     readonly_fields = ('created_at',)
@@ -1742,9 +1820,26 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
             'description': _(
                 'Enable at most one format. Listening, Essay, and Speaking are teacher-reviewed. '
                 'Reading is auto-scored with passages and structured questions. '
+                'Math appears when SAT is enabled and uses the same passage/question layout as Reading. '
                 'Leave all unchecked for standard multiple-choice variant quizzes.'
             ),
-            'fields': ('is_listening', 'is_essay', 'is_speaking', 'is_reading'),
+            'fields': ('is_listening', 'is_essay', 'is_speaking', 'is_reading', 'is_math'),
+            'classes': ('quiz-grading-fieldset',),
+        }),
+        (_('Exam program'), {
+            'description': _(
+                'Mark the exam program this quiz belongs to. '
+                'When SAT is enabled, choose a SAT section type below — Reading uses IELTS-style passages.'
+            ),
+            'fields': ('is_ielts', 'is_sat'),
+        }),
+        (_('SAT section'), {
+            'description': _(
+                'Required when SAT is enabled. Pick exactly one section: '
+                'Reading (passage-based), Writing, Algebra, or Geometry & Data (multiple choice).'
+            ),
+            'fields': ('sat_section',),
+            'classes': ('sat-section-fieldset',),
         }),
         (_('Time limit'), {
             'description': _('Optional countdown — auto-submits when time runs out.'),
@@ -1762,7 +1857,7 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
     def get_inlines(self, request, obj=None):
         if obj and obj.is_listening:
             return (ListeningAudioInline,)
-        if obj and obj.is_reading:
+        if obj and (obj.is_reading or obj.is_math):
             return (ReadingPassageInline,)
         if obj and obj.is_speaking:
             return (SpeakingPartInline,)
@@ -1770,7 +1865,10 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
             return (SpeakingPartInline,)
         if obj is None and self._quiz_format_flag(request, 'is_listening'):
             return (ListeningAudioInline,)
-        if obj is None and self._quiz_format_flag(request, 'is_reading'):
+        if obj is None and (
+            self._quiz_format_flag(request, 'is_reading')
+            or self._quiz_format_flag(request, 'is_math')
+        ):
             return (ReadingPassageInline,)
         return (QuizQuestionInline,)
 
@@ -1784,6 +1882,11 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
                 'grading-mode-fields/',
                 self.admin_site.admin_view(self.grading_mode_fields_view),
                 name='portals_quiz_grading_mode_fields',
+            ),
+            path(
+                'sat-section-config/',
+                self.admin_site.admin_view(self.sat_section_config_view),
+                name='portals_quiz_sat_section_config',
             ),
         ]
         return custom + urls
@@ -1799,6 +1902,7 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
         is_listening = _flag('is_listening')
         is_speaking = _flag('is_speaking')
         is_reading = _flag('is_reading')
+        is_math = _flag('is_math')
 
         if is_essay:
             mode = 'essay'
@@ -1806,6 +1910,8 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
             mode = 'listening'
         elif is_speaking:
             mode = 'speaking'
+        elif is_math:
+            mode = 'math'
         elif is_reading:
             mode = 'reading'
         else:
@@ -1822,7 +1928,7 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
             show_fields = list(answer_fields)
             hide_fields = [response_field]
             clear_fields = []
-        elif mode == 'reading':
+        elif mode in ('reading', 'math'):
             show_fields = []
             hide_fields = [*answer_fields, response_field]
             clear_fields = list(answer_fields)
@@ -1839,6 +1945,45 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
             'hide_time_limit': mode == 'speaking',
         })
 
+    def sat_section_config_view(self, request):
+        if request.method != 'POST':
+            return JsonResponse({'error': _('POST required.')}, status=405)
+
+        is_sat = request.POST.get('is_sat') in ('on', 'true', 'True', '1')
+        sat_section = (request.POST.get('sat_section') or '').strip()
+
+        if not is_sat:
+            return JsonResponse({
+                'is_sat': False,
+                'grading_mode': 'variant',
+                'flags': {
+                    'is_listening': False,
+                    'is_essay': False,
+                    'is_speaking': False,
+                    'is_reading': False,
+                    'is_math': False,
+                },
+            })
+
+        flags = {
+            'is_listening': False,
+            'is_essay': False,
+            'is_speaking': False,
+            'is_reading': sat_section == Quiz.SatSection.READING,
+            'is_math': False,
+        }
+        if sat_section == Quiz.SatSection.READING:
+            grading_mode = 'reading'
+        else:
+            grading_mode = 'variant'
+
+        return JsonResponse({
+            'is_sat': True,
+            'sat_section': sat_section,
+            'grading_mode': grading_mode,
+            'flags': flags,
+        })
+
     @admin.display(description=_('Mode'))
     def grading_mode_display(self, obj):
         return obj.get_grading_mode_label()
@@ -1853,7 +1998,7 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
             if model_name == 'listeningaudio':
                 queryset = queryset.filter(is_listening=True)
             elif model_name == 'readingpassage':
-                queryset = queryset.filter(is_reading=True)
+                queryset = queryset.filter(Q(is_reading=True) | Q(is_math=True))
             elif model_name == 'speakingpart':
                 queryset = queryset.filter(is_speaking=True)
         return queryset, use_distinct
@@ -1864,7 +2009,7 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
 
     @admin.display(description='Questions')
     def question_count(self, obj):
-        if obj.is_reading:
+        if obj.is_reading or obj.is_math:
             from portals.utils.quiz_reading import get_reading_questions_for_quiz
 
             count = len(get_reading_questions_for_quiz(obj))

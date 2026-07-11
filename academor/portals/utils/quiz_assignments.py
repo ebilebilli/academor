@@ -4,6 +4,7 @@ from django.db import transaction
 
 from portals.models import Quiz, QuizAssignment, StudentMockAccess
 from portals.utils.cache_utils import invalidate_model_cache
+from portals.utils.mock_programs import MOCK_EXAM_PROGRAMS, get_program_label
 from portals.utils.student_courses import (
     get_quiz_service_code,
     get_student_course_type_codes,
@@ -76,23 +77,43 @@ def set_student_quiz_assignment(teacher_id, student_id, quiz_id, *, is_active):
     return assignment
 
 
-def student_has_active_mock_access(student_id):
-    if not student_id or not student_has_course_access(student_id, IELTS_SERVICE):
+def student_has_active_mock_access_for_program(student_id, exam_program):
+    if not student_id or not exam_program:
+        return False
+    if not student_has_course_access(student_id, exam_program):
         return False
     try:
         return StudentMockAccess.objects.filter(
             student_id=student_id,
+            exam_program=exam_program,
             is_active=True,
         ).exists()
     except Exception:
         return True
 
 
-def get_student_mock_access_state(student_id):
-    if not student_id or not student_has_course_access(student_id, IELTS_SERVICE):
+def student_has_active_mock_access(student_id):
+    from portals.utils.ielts_mock_test import get_student_mock_exam_programs
+
+    programs = get_student_mock_exam_programs(student_id)
+    if not programs:
+        return False
+    return any(
+        student_has_active_mock_access_for_program(student_id, program)
+        for program in programs
+    )
+
+
+def get_student_mock_access_state(student_id, exam_program):
+    from portals.utils.ielts_mock_test import get_student_mock_exam_programs
+
+    if exam_program not in get_student_mock_exam_programs(student_id):
         return None
     try:
-        row = StudentMockAccess.objects.filter(student_id=student_id).first()
+        row = StudentMockAccess.objects.filter(
+            student_id=student_id,
+            exam_program=exam_program,
+        ).first()
     except Exception:
         return {'is_active': True, 'exists': False}
     if not row:
@@ -100,15 +121,50 @@ def get_student_mock_access_state(student_id):
     return {'is_active': bool(row.is_active), 'exists': True}
 
 
-def set_student_mock_access(teacher_id, student_id, *, is_active):
+def get_teacher_manageable_mock_programs(teacher_id, student_id):
+    from portals.models import TeacherCourseSpecialization
+    from portals.utils.ielts_mock_test import get_student_mock_exam_programs
+
     if not get_teacher_student(teacher_id, student_id):
+        return []
+    student_programs = set(get_student_mock_exam_programs(student_id))
+    teacher_programs = set(
+        TeacherCourseSpecialization.objects.filter(teacher_id=teacher_id)
+        .values_list('course_type', flat=True)
+    )
+    return sorted(student_programs & teacher_programs & set(MOCK_EXAM_PROGRAMS))
+
+
+def get_teacher_student_mock_access_rows(teacher_id, student_id):
+    rows = []
+    for program in get_teacher_manageable_mock_programs(teacher_id, student_id):
+        state = get_student_mock_access_state(student_id, program) or {
+            'is_active': False,
+            'exists': False,
+        }
+        rows.append({
+            'program': program,
+            'label': get_program_label(program),
+            'is_active': state['is_active'],
+            'exists': state['exists'],
+        })
+    return rows
+
+
+def set_student_mock_access(teacher_id, student_id, exam_program, *, is_active):
+    from portals.utils.ielts_mock_test import get_student_mock_exam_programs
+
+    if exam_program not in MOCK_EXAM_PROGRAMS:
         return None
-    if not student_has_course_access(student_id, IELTS_SERVICE):
+    if exam_program not in get_teacher_manageable_mock_programs(teacher_id, student_id):
+        return None
+    if exam_program not in get_student_mock_exam_programs(student_id):
         return None
 
     with transaction.atomic():
         access, _created = StudentMockAccess.objects.update_or_create(
             student_id=student_id,
+            exam_program=exam_program,
             defaults={
                 'is_active': bool(is_active),
                 'assigned_by_id': teacher_id,

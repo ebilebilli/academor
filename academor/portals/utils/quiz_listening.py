@@ -115,6 +115,8 @@ def serialize_listening_question(
 
         payload['correct_answer'] = question.correct_answer
         payload['correct_answer_display'] = listening_correct_answer_display(question)
+        if is_variant:
+            payload['correct_option_index'] = listening_correct_option_index(question)
         if student_answer not in ('', None):
             payload['is_correct'] = score_listening_question(question, student_answer)
         else:

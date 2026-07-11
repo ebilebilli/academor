@@ -6,6 +6,28 @@
   display: none !important;
 }
 
+.sat-section-fieldset.quiz-admin-hidden-fieldset {
+  display: none !important;
+}
+
+.quiz-grading-fieldset.quiz-admin-hidden-fieldset {
+  display: none !important;
+}
+
+.field-sat_section ul {
+  list-style: none;
+  margin: 0.35rem 0 0;
+  padding: 0;
+}
+
+.field-sat_section li {
+  margin: 0.35rem 0;
+}
+
+.field-sat_section label {
+  font-weight: 600;
+}
+
 .portal-quiz-json-field {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   min-width: 100%;

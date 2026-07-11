@@ -50,6 +50,28 @@ def teacher_has_course_access(teacher_id, course_type):
     ).exists()
 
 
+def teacher_has_all_course_codes(teacher_id, course_codes):
+    """True when the teacher is specialized in every given portal course_type code."""
+    codes = [code for code in (course_codes or []) if code]
+    if not teacher_id or not codes:
+        return True
+    assigned = set(get_teacher_course_type_codes(teacher_id))
+    return set(codes).issubset(assigned)
+
+
+def teachers_for_portal_course_codes(course_codes):
+    """Teachers who teach all of the given portal course_type codes."""
+    from portals.models import TeacherProfile
+
+    codes = [code for code in (course_codes or []) if code]
+    qs = TeacherProfile.objects.select_related('user')
+    if not codes:
+        return qs.order_by('user__username', 'id')
+    for code in codes:
+        qs = qs.filter(course_specializations__course_type=code)
+    return qs.distinct().order_by('user__username', 'id')
+
+
 def teacher_groups_queryset(teacher_id, *, active_only=True):
     """Groups owned by the teacher (course access is derived from each group)."""
     qs = StudyGroup.objects.filter(teacher_id=teacher_id)

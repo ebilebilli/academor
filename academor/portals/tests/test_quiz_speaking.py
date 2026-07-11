@@ -1,5 +1,6 @@
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
+from django.utils import timezone
 
 from portals.models import (
     Quiz,
@@ -10,6 +11,7 @@ from portals.models import (
     SpeakingQuestion,
     SpeakingRecording,
 )
+from portals.tests.portal_helpers import portal_client_login
 from portals.tests.test_quiz_visibility import QuizVisibilityTests
 from portals.utils.queries import get_student_speaking_quiz_take_data, serialize_quiz
 from portals.utils.quiz_submit import submit_speaking_quiz_attempt, submit_teacher_quiz_review
@@ -83,6 +85,9 @@ class QuizSpeakingTests(QuizVisibilityTests):
         self.assertEqual(data['speaking_sections'][1]['part']['part_type'], SpeakingPartType.PART_2)
         self.assertFalse(data['view_only'])
 
+    def _session_started_at(self):
+        return timezone.now().isoformat()
+
     def test_submit_speaking_quiz_attempt(self):
         quiz = self._create_speaking_quiz()
         take_data = get_student_speaking_quiz_take_data(self.student.pk, quiz.pk)
@@ -95,6 +100,7 @@ class QuizSpeakingTests(QuizVisibilityTests):
             recording_files=files,
             recording_durations={str(qid): 25 for qid in question_ids},
             duration_sec=600,
+            session_started_at=self._session_started_at(),
         )
         self.assertTrue(outcome['success'])
         result = QuizResult.objects.get(pk=outcome['result_id'])
@@ -109,6 +115,7 @@ class QuizSpeakingTests(QuizVisibilityTests):
             student_id=self.student.pk,
             quiz_id=quiz.pk,
             recording_files={str(qid): self._audio_file() for qid in question_ids},
+            session_started_at=self._session_started_at(),
         )
         pending = get_student_speaking_quiz_take_data(self.student.pk, quiz.pk)
         self.assertTrue(pending['view_only'])
@@ -122,6 +129,7 @@ class QuizSpeakingTests(QuizVisibilityTests):
             student_id=self.student.pk,
             quiz_id=quiz.pk,
             recording_files={str(qid): self._audio_file() for qid in question_ids},
+            session_started_at=self._session_started_at(),
         )
         review = submit_teacher_quiz_review(
             teacher_id=self.teacher.pk,
@@ -142,22 +150,25 @@ class QuizSpeakingTests(QuizVisibilityTests):
             student_id=self.student.pk,
             quiz_id=quiz.pk,
             recording_files={str(qid): self._audio_file() for qid in question_ids},
+            session_started_at=self._session_started_at(),
         )
-        self.client.force_login(self.teacher_user)
+        client = self.client_class()
+        portal_client_login(client, self.teacher_user)
         url = reverse(
             'portals:teacher-quiz-result-review',
             kwargs={'result_pk': outcome['result_id']},
         )
-        response = self.client.get(url)
+        response = client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'IELTS Speaking Test')
         self.assertContains(response, 'Speaking tasks')
 
     def test_speaking_take_view_renders(self):
         quiz = self._create_speaking_quiz()
-        self.client.force_login(self.student_user)
+        client = self.client_class()
+        portal_client_login(client, self.student_user)
         url = reverse('portals:student-speaking-quiz-take', kwargs={'pk': quiz.pk})
-        response = self.client.get(url)
+        response = client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'IELTS Speaking Test')
         self.assertContains(response, 'data-quiz-speaking-take')

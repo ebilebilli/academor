@@ -1,0 +1,62 @@
+{% load i18n portal_tags %}
+{% if portal_role == 'parent' and student_id %}
+<a class="dashboard-perf-card dashboard-perf-card--mock dashboard-perf-card--{{ mock_stat.tier|default:'empty' }} text-decoration-none" href="{{ scores_base }}?student={{ student_id }}&view=mock{% if mock_stat.exam_program %}&program={{ mock_stat.exam_program }}{% endif %}">
+{% elif portal_role == 'student' %}
+<a class="dashboard-perf-card dashboard-perf-card--mock dashboard-perf-card--{{ mock_stat.tier|default:'empty' }} text-decoration-none" href="{{ scores_base }}?view=mock{% if mock_stat.exam_program %}&program={{ mock_stat.exam_program }}{% endif %}">
+{% elif portal_role == 'customer' %}
+<a class="dashboard-perf-card dashboard-perf-card--mock dashboard-perf-card--{{ mock_stat.tier|default:'empty' }} text-decoration-none" href="{% url 'portals:customer-mock-landing' program=mock_stat.exam_program %}">
+{% else %}
+<article class="dashboard-perf-card dashboard-perf-card--mock dashboard-perf-card--{{ mock_stat.tier|default:'empty' }}">
+{% endif %}
+  <div class="dashboard-perf-card__visual" aria-hidden="true">
+    <div class="dashboard-perf-card__ring" style="--score-pct: {{ mock_stat.avg_score_pct|default:0|css_num }};">
+      <div class="dashboard-perf-card__ring-inner">
+        {% if mock_stat.scoring_mode == 'sat_scaled' and mock_stat.avg_total_score is not None %}
+          <span class="dashboard-perf-card__value">{{ mock_stat.avg_total_score }}</span>
+          <span class="dashboard-perf-card__scale">/1600</span>
+        {% elif mock_stat.avg_band is not None %}
+          <span class="dashboard-perf-card__value">{{ mock_stat.avg_band }}</span>
+          <span class="dashboard-perf-card__scale">/9</span>
+        {% elif mock_stat.avg_score_pct is not None %}
+          <span class="dashboard-perf-card__value">{{ mock_stat.avg_score_pct }}</span>
+          <span class="dashboard-perf-card__scale">%</span>
+        {% else %}
+          <span class="dashboard-perf-card__value is-empty">—</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="dashboard-perf-card__body">
+    <div class="dashboard-perf-card__head">
+      <span class="dashboard-perf-card__icon"><i class="ti ti-clipboard-list" aria-hidden="true"></i></span>
+      <div class="dashboard-perf-card__titles">
+        <h3 class="dashboard-perf-card__title">
+          {% if mock_stat.exam_program_label %}
+            {% blocktrans with program=mock_stat.exam_program_label %}Mock test · {{ program }}{% endblocktrans %}
+          {% else %}
+            {% trans 'Mock test' %}
+          {% endif %}
+        </h3>
+        {% if mock_stat.tier and mock_stat.tier != 'empty' %}
+        <span class="dashboard-perf-card__tier">{{ mock_stat.tier|performance_tier_label }}</span>
+        {% endif %}
+      </div>
+      {% if portal_role == 'parent' and student_id or portal_role == 'student' or portal_role == 'customer' %}
+      <i class="ti ti-chevron-right dashboard-perf-card__arrow" aria-hidden="true"></i>
+      {% endif %}
+    </div>
+    <p class="dashboard-perf-card__hint">
+      {% if mock_stat.graded_count %}
+        {% if mock_stat.scoring_mode == 'sat_scaled' %}
+          {{ mock_stat.graded_count }} {% trans 'mock · orta bal' %}
+        {% else %}
+          {{ mock_stat.graded_count }} {% trans 'mock · orta band' %}
+        {% endif %}
+      {% elif mock_stat.total_count %}
+        {% trans 'Mock tamamlanıb, qiymətləndirmə gözlənilir.' %}
+      {% else %}
+        {% trans 'Hələ mock test tamamlanmayıb.' %}
+      {% endif %}
+    </p>
+  </div>
+{% if portal_role == 'parent' and student_id or portal_role == 'student' or portal_role == 'customer' %}</a>{% else %}</article>{% endif %}

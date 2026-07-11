@@ -107,7 +107,8 @@ def create_portal_profile(user, role, phone='', students=None, teacher_courses=N
         CustomerProfile.objects.create(
             user=user,
             phone=phone,
-            mock_credits=credits,
+            ielts_mock_credits=credits,
+            sat_mock_credits=0,
             teacher=customer_teacher,
         )
 

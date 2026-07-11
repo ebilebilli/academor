@@ -40,7 +40,7 @@ def get_teacher_lesson(teacher_id, lesson_id):
             group__teacher_id=teacher_id,
         )
         .select_related('group')
-        .prefetch_related('attachments')
+        .prefetch_related('attachments', 'group__courses')
         .first()
     )
 

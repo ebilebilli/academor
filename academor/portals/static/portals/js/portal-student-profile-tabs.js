@@ -1,9 +1,19 @@
 (function () {
   "use strict";
 
+  var profileClickBound = false;
+
   function tabFromUrl() {
     var params = new URLSearchParams(window.location.search);
     return params.get("tab") || "quiz-results";
+  }
+
+  function profilePageRoot() {
+    return document.querySelector("[data-student-profile-page]");
+  }
+
+  function profileTabShell() {
+    return document.querySelector("[data-student-profile-tabs]");
   }
 
   function setActiveTab(nav, tab) {
@@ -18,12 +28,14 @@
     });
   }
 
-  function buildTabUrl(shell, tab) {
+  function buildProfileUrl(shell, tab, groupId) {
     var params = new URLSearchParams(window.location.search);
     params.set("tab", tab);
-    var fromGroup = shell.getAttribute("data-profile-from-group");
-    if (fromGroup) {
-      params.set("from_group", fromGroup);
+    var activeGroup = groupId || (shell && shell.getAttribute("data-profile-from-group"));
+    if (activeGroup) {
+      params.set("from_group", activeGroup);
+    } else {
+      params.delete("from_group");
     }
     return window.location.pathname + "?" + params.toString();
   }
@@ -39,7 +51,8 @@
     panel.classList.remove("is-loading");
   }
 
-  function loadTab(shell, tab, pushState) {
+  function loadTab(shell, tab, pushState, options) {
+    options = options || {};
     var nav = shell.querySelector("[data-student-profile-tab-nav]");
     var panel = shell.querySelector("[data-student-profile-tab-panel]");
     if (!nav || !panel) {
@@ -51,7 +64,11 @@
       return Promise.resolve();
     }
 
-    if (activeLink.classList.contains("is-active") && !pushState) {
+    if (
+      activeLink.classList.contains("is-active")
+      && !pushState
+      && !options.forceReload
+    ) {
       return Promise.resolve();
     }
 
@@ -59,10 +76,7 @@
     panel.setAttribute("aria-busy", "true");
     panel.classList.add("is-loading");
 
-    var url = activeLink.getAttribute("href");
-    if (url.charAt(0) === "?") {
-      url = buildTabUrl(shell, tab);
-    }
+    var url = buildProfileUrl(shell, tab);
 
     return fetch(url, {
       method: "GET",
@@ -100,31 +114,112 @@
       });
   }
 
+  function loadProfilePage(groupId) {
+    var page = profilePageRoot();
+    var shell = profileTabShell();
+    if (!page) {
+      return Promise.resolve();
+    }
+
+    var tab = tabFromUrl();
+    var url = buildProfileUrl(shell, tab, groupId);
+    page.setAttribute("aria-busy", "true");
+    page.classList.add("is-loading");
+
+    return fetch(url, {
+      method: "GET",
+      credentials: "same-origin",
+      headers: {
+        "X-Requested-With": "XMLHttpRequest",
+        "X-Profile-Fragment": "page",
+        Accept: "text/html",
+      },
+    })
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error("profile page load failed");
+        }
+        return response.text();
+      })
+      .then(function (html) {
+        page.innerHTML = html;
+        page.classList.remove("is-loading");
+        page.removeAttribute("aria-busy");
+        window.history.pushState(
+          {
+            studentProfileTab: tab,
+            url: url,
+          },
+          "",
+          url
+        );
+        var panel = profileTabShell();
+        if (panel) {
+          var activeTab = tabFromUrl();
+          afterPanelLoaded(
+            panel.querySelector("[data-student-profile-tab-panel]"),
+            activeTab
+          );
+        }
+      })
+      .catch(function () {
+        page.classList.remove("is-loading");
+        page.removeAttribute("aria-busy");
+        window.location.href = url;
+      });
+  }
+
   function onProfilePopstate(event) {
-    var shell = document.querySelector("[data-student-profile-tabs]");
-    if (!shell) {
+    var page = profilePageRoot();
+    var shell = profileTabShell();
+    if (!page || !shell) {
       return;
     }
-    if (!event.state || !event.state.studentProfileTab) {
+    var tab = (event.state && event.state.studentProfileTab) || tabFromUrl();
+    var params = new URLSearchParams(window.location.search);
+    var urlGroup = params.get("from_group") || "";
+    var shellGroup = shell.getAttribute("data-profile-from-group") || "";
+    if (urlGroup !== shellGroup) {
+      if (urlGroup) {
+        loadProfilePage(urlGroup);
+      } else {
+        window.location.reload();
+      }
       return;
     }
-    var tab = event.state.studentProfileTab || tabFromUrl();
     loadTab(shell, tab, false);
   }
 
-  function boot() {
-    var shell = document.querySelector("[data-student-profile-tabs]");
-    if (!shell || shell.dataset.portalProfileTabsBound === "true") {
+  function bindProfileInteractions() {
+    if (profileClickBound) {
       return;
     }
-    shell.dataset.portalProfileTabsBound = "true";
+    profileClickBound = true;
 
-    var nav = shell.querySelector("[data-student-profile-tab-nav]");
-    if (!nav) {
-      return;
-    }
+    document.addEventListener("click", function (event) {
+      var groupBtn = event.target.closest("[data-profile-group]");
+      if (groupBtn && groupBtn.closest("[data-student-profile-page]")) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (groupBtn.classList.contains("is-active")) {
+          return;
+        }
+        var groupId = groupBtn.getAttribute("data-profile-group");
+        if (!groupId) {
+          return;
+        }
+        loadProfilePage(groupId);
+        return;
+      }
 
-    nav.addEventListener("click", function (event) {
+      var shell = profileTabShell();
+      if (!shell) {
+        return;
+      }
+      var nav = shell.querySelector("[data-student-profile-tab-nav]");
+      if (!nav) {
+        return;
+      }
       var link = event.target.closest("[data-tab]");
       if (!link || !nav.contains(link)) {
         return;
@@ -138,16 +233,33 @@
       loadTab(shell, tab, true);
     });
 
+    if (!window.__portalProfileTabsPopstateBound) {
+      window.__portalProfileTabsPopstateBound = true;
+      window.addEventListener("popstate", onProfilePopstate);
+    }
+  }
+
+  function boot() {
+    if (!profilePageRoot()) {
+      return;
+    }
+    bindProfileInteractions();
+
+    var shell = profileTabShell();
+    if (!shell) {
+      return;
+    }
+
+    var nav = shell.querySelector("[data-student-profile-tab-nav]");
+    if (!nav) {
+      return;
+    }
+
     var initialTab = tabFromUrl();
     var activeLink = nav.querySelector(".portal-student-segment.is-active");
     var activeTab = activeLink ? activeLink.getAttribute("data-tab") : null;
     if (initialTab && initialTab !== activeTab) {
       loadTab(shell, initialTab, false);
-    }
-
-    if (!window.__portalProfileTabsPopstateBound) {
-      window.__portalProfileTabsPopstateBound = true;
-      window.addEventListener("popstate", onProfilePopstate);
     }
   }
 
@@ -156,4 +268,5 @@
   } else {
     document.addEventListener("DOMContentLoaded", boot);
   }
+  document.addEventListener("portal:content-loaded", boot);
 })();

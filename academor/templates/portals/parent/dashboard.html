@@ -44,7 +44,7 @@
   {% endif %}
 
   {# ── Performance cards ─────────────────────────────────────────── #}
-  {% include "portals/includes/dashboard_performance_cards.html" with weekly_average=block.weekly_average attendance_stats=block.attendance_stats quiz_average=block.quiz_average mock_stats=block.mock_stats student_id=block.student.id %}
+  {% include "portals/includes/dashboard_performance_cards.html" with weekly_average=block.weekly_average attendance_stats=block.attendance_stats quiz_average=block.quiz_average mock_stats_list=block.mock_stats_list student_id=block.student.id %}
 
   {# ── Recent quiz results ───────────────────────────────────────── #}
   {% if block.quiz_results %}

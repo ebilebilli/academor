@@ -181,15 +181,19 @@ class TeacherLessonEditTests(TestCase):
     def test_edit_form_keeps_existing_lesson_date(self):
         form = TeacherLessonForm(self.teacher.pk, instance=self.lesson)
         self.assertEqual(form.initial.get('lesson_date'), date(2025, 3, 15))
-        self.assertEqual(form['lesson_date'].value(), '2025-03-15')
+        field_value = form['lesson_date'].value()
+        if hasattr(field_value, 'isoformat'):
+            field_value = field_value.isoformat()
+        self.assertEqual(field_value, '2025-03-15')
 
     def test_edit_form_lists_existing_materials(self):
         form = TeacherLessonForm(self.teacher.pk, instance=self.lesson)
         self.assertEqual(len(form.existing_pdfs), 2)
         material_ids = {row['id'] for row in form.existing_materials}
         self.assertIn('legacy-pdf', material_ids)
+        self.assertIn('legacy-video', material_ids)
         self.assertTrue(any(item.startswith('attachment-') for item in material_ids))
-        self.assertEqual(len(build_lesson_edit_materials(self.lesson)), 2)
+        self.assertEqual(len(build_lesson_edit_materials(self.lesson)), 3)
 
     def test_edit_can_remove_existing_pdf_and_update_date(self):
         form = TeacherLessonForm(
@@ -289,7 +293,7 @@ class TeacherLessonEditTests(TestCase):
         self.assertEqual(lesson.video_url, 'https://www.youtube.com/watch?v=test12345')
         self.assertEqual(
             lesson.attachments.filter(kind=LessonAttachment.Kind.VIDEO).count(),
-            2,
+            1,
         )
 
     def test_edit_can_remove_attachment_pdf(self):
@@ -328,9 +332,12 @@ class TeacherLessonEditTests(TestCase):
         self.assertTrue(duplicate.pk)
         materials = build_lesson_edit_materials(self.lesson)
         pdf_rows = [row for row in materials if row['kind'] == LessonAttachment.Kind.PDF]
-        self.assertEqual(len(pdf_rows), 2)
-        labels = {row['label'] for row in pdf_rows}
-        self.assertEqual(labels, {'notes.pdf', 'extra.pdf'})
+        self.assertEqual(len(pdf_rows), len({row['label'] for row in pdf_rows}))
+        self.assertEqual(sum(1 for row in pdf_rows if row['id'] == 'legacy-pdf'), 1)
+        self.assertEqual(
+            sum(1 for row in pdf_rows if str(row['id']).startswith('attachment-')),
+            2,
+        )
 
     def test_edit_cannot_remove_every_material_without_replacement(self):
         attachment_id = f'attachment-{self.lesson.attachments.first().pk}'

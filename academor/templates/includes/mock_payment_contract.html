@@ -1,0 +1,111 @@
+{% load i18n %}
+<div class="course-payment-contract__doc" data-contract-number="{{ contract_number }}">
+    <p class="course-payment-contract__meta text-end mb-3">
+        <strong>{% trans "Payment agreement" %} № {{ contract_number }}</strong>
+    </p>
+
+    <section class="course-payment-contract__section">
+        <h4 class="course-payment-contract__heading">{% trans "System information" %}</h4>
+        <p class="mb-2">
+            {% blocktrans trimmed %}
+            Academor provides an online mock test platform through the customer portal.
+            The service is delivered digitally and does not include classroom lessons.
+            {% endblocktrans %}
+        </p>
+        <ul class="course-payment-contract__list mb-0">
+            <li>
+                {% blocktrans trimmed %}
+                After successful payment, access to the selected package is added to the
+                Customer account in the portal. Portal login details are provided by Academor.
+                {% endblocktrans %}
+            </li>
+            <li>
+                {% blocktrans trimmed %}
+                The Customer uses the purchased package only through the assigned portal account.
+                {% endblocktrans %}
+            </li>
+        </ul>
+    </section>
+
+    <p class="course-payment-contract__lead mt-3">
+        {% blocktrans trimmed %}
+        On one side, «Academor Training and Development Center» LLC (hereinafter — the Provider),
+        and on the other side, the online mock test customer (hereinafter — the Customer),
+        have entered into this agreement on the following terms:
+        {% endblocktrans %}
+    </p>
+
+    <section class="course-payment-contract__section">
+        <h4 class="course-payment-contract__heading">{% trans "1. Subject of the agreement" %}</h4>
+        <p class="mb-2">
+            <strong>1.1.</strong>
+            {% blocktrans trimmed with package_name=package_name %}
+            The Provider grants the Customer access to the online mock test service under
+            the selected package «{{ package_name }}».
+            {% endblocktrans %}
+        </p>
+        <p class="mb-0">
+            <strong>1.2.</strong>
+            {% trans "The service is provided remotely through the Academor customer portal." %}
+        </p>
+    </section>
+
+    <section class="course-payment-contract__section">
+        <h4 class="course-payment-contract__heading">{% trans "2. Payment terms" %}</h4>
+        <p class="mb-2">
+            <strong>2.1.</strong>
+            {{ payment_clause }}
+        </p>
+        <p class="mb-2">
+            <strong>2.2.</strong>
+            {% trans "Payment is made online through the secure payment system shown on the website." %}
+        </p>
+        <p class="mb-0">
+            <strong>2.3.</strong>
+            {% trans "Used mock test access is non-refundable, unless otherwise required by applicable law." %}
+        </p>
+    </section>
+
+    <section class="course-payment-contract__section">
+        <h4 class="course-payment-contract__heading">{% trans "3. Rights and obligations of the parties" %}</h4>
+        <p class="mb-1"><strong>{% trans "3.1. Rights and obligations of the Provider:" %}</strong></p>
+        <ul class="course-payment-contract__list">
+            <li>{% trans "3.1.1. To provide access to the online mock test platform after successful payment." %}</li>
+            <li>{% trans "3.1.2. To maintain the technical availability of the portal within reasonable limits." %}</li>
+        </ul>
+        <p class="mb-1"><strong>{% trans "3.2. Rights and obligations of the Customer:" %}</strong></p>
+        <ul class="course-payment-contract__list">
+            <li>{% trans "3.2.1. To use the purchased package only for personal mock test practice through the assigned portal account." %}</li>
+            <li>{% trans "3.2.2. To provide accurate contact details and keep portal access credentials confidential." %}</li>
+            <li>{% trans "3.2.3. Not to share, resell, or transfer portal access or mock test content to third parties." %}</li>
+        </ul>
+    </section>
+
+    <section class="course-payment-contract__section">
+        <h4 class="course-payment-contract__heading">{% trans "4. General provisions" %}</h4>
+        <ul class="course-payment-contract__list mb-0">
+            <li>{% trans "4.1. This agreement enters into force from the moment of acceptance and successful payment." %}</li>
+            <li>{% trans "4.2. In cases not provided for in this agreement, the civil legislation of the Republic of Azerbaijan applies." %}</li>
+            <li>{% trans "4.3. Disputes that may arise between the parties shall be resolved through negotiations; if no agreement is reached, the matter shall be referred to court." %}</li>
+        </ul>
+    </section>
+
+    <section class="course-payment-contract__section course-payment-contract__parties">
+        <h4 class="course-payment-contract__heading">{% trans "5. Details of the parties" %}</h4>
+        <div class="row g-3">
+            <div class="col-sm-6">
+                <p class="mb-1 fw-semibold">Academor Training and Development Center</p>
+                <p class="mb-0">{% trans "Phone" %}: +994 55 123 00 77</p>
+                <p class="mb-0">{% trans "TIN" %}: 1507376041</p>
+            </div>
+            <div class="col-sm-6">
+                <p class="mb-1 fw-semibold">{% trans "Customer" %}</p>
+                <p class="mb-0">{% trans "Full name" %}: {% if buyer_name %}<strong>{{ buyer_name }}</strong>{% else %}<span class="course-payment-contract__fill" data-contract-buyer-name>_______________</span>{% endif %}</p>
+                <p class="mb-0">{% trans "Phone" %}: {% if buyer_phone %}<strong>{{ buyer_phone }}</strong>{% else %}<span class="course-payment-contract__fill" data-contract-buyer-phone>_______________</span>{% endif %}</p>
+            </div>
+        </div>
+        <p class="text-muted mt-3 mb-0">
+            {% trans "Date" %}: {% if contract_date %}{{ contract_date|date:"d.m.Y" }}{% else %}{% now "d.m.Y" %}{% endif %}
+        </p>
+    </section>
+</div>

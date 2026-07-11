@@ -141,6 +141,7 @@ TEMPLATES = [
                 'portals.context_processors.portal_auth_context',
                 'portals.context_processors.portal_notification_context',
                 'portals.context_processors.portal_student_service_context',
+                'portals.context_processors.portal_customer_service_context',
             ],
         },
     },

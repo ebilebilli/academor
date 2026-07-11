@@ -1,0 +1,70 @@
+{% load i18n %}
+<article class="mock-plan">
+    <div class="mock-plan__side">
+        <span class="mock-plan__tag">{% trans "Mock" %}</span>
+        <div class="mock-plan__count">
+            <span class="mock-plan__count-num">{{ pkg.credits }}</span>
+            <span class="mock-plan__count-label">
+                {% blocktrans count counter=pkg.credits %}test{% plural %}tests{% endblocktrans %}
+            </span>
+        </div>
+    </div>
+
+    <div class="mock-plan__main">
+        <div class="mock-plan__head">
+            <h3 class="mock-plan__name">{{ pkg.name }}</h3>
+            <p class="mock-plan__credits mb-0">
+                {% blocktrans count counter=pkg.credits %}{{ counter }} test credit{% plural %}{{ counter }} test credits{% endblocktrans %}
+            </p>
+        </div>
+        {% if pkg.exam_program == 'sat' %}
+        <ul class="mock-plan__sections list-unstyled mb-0" aria-label="{% trans 'SAT sections' %}">
+            <li>{% trans "Reading and Writing" %}</li>
+            <li>{% trans "Math" %}</li>
+        </ul>
+        <ul class="mock-plan__features list-unstyled mb-0">
+            <li>{% trans "Real exam format" %}</li>
+            <li>{% trans "Automatic scoring for both sections" %}</li>
+        </ul>
+        {% else %}
+        <ul class="mock-plan__sections list-unstyled mb-0" aria-label="{% trans 'IELTS sections' %}">
+            <li>{% trans "reading" context "ielts section" %}</li>
+            <li>{% trans "listening" context "ielts section" %}</li>
+            <li>{% trans "writing" context "ielts section" %}</li>
+            <li>{% trans "speaking" context "ielts section" %}</li>
+        </ul>
+        <ul class="mock-plan__features list-unstyled mb-0">
+            <li>{% trans "Real exam format" %}</li>
+            <li>{% trans "Your results are scored by IELTS teachers" %}</li>
+        </ul>
+        {% endif %}
+    </div>
+
+    <div class="mock-plan__action">
+        <p class="mock-plan__price mb-0">
+            <span class="mock-plan__amount">{{ pkg.price_display }}</span>
+            <span class="mock-plan__currency">AZN</span>
+        </p>
+        {% if portal_checkout %}
+        <form method="post" action="{% url 'payment_start_course' slug=pkg.course.slug %}" class="mock-plan__checkout">
+            {% csrf_token %}
+            <input type="hidden" name="price_package_id" value="{{ pkg.id }}">
+            <button type="submit" class="mock-plan__cta">
+                {% trans "Buy now" %}
+            </button>
+        </form>
+        {% else %}
+        <button
+            type="button"
+            class="mock-plan__cta"
+            data-home-mock-pay-open
+            data-package-id="{{ pkg.id }}"
+            data-package-name="{{ pkg.name }}"
+            data-package-price="{{ pkg.price_display }}"
+            data-payment-url="{{ pkg.payment_start_url }}"
+        >
+            {% trans "Buy now" %}
+        </button>
+        {% endif %}
+    </div>
+</article>

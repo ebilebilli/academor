@@ -36,8 +36,8 @@ from portals.utils.teacher_schedule import build_teacher_week_calendar, parse_we
 from portals.utils.weekly_scores import (
     build_teacher_weekly_score_view,
     parse_weekly_score_post,
+    rows_open_for_scoring,
     save_teacher_weekly_scores,
-    student_ids_open_for_scoring,
 )
 from portals.views.mixins import TeacherRequiredMixin, TeacherScheduleMutationForbiddenMixin
 
@@ -623,7 +623,7 @@ class TeacherWeeklyScoresView(TeacherRequiredMixin, View):
         teacher = get_teacher_profile(request.portal_user)
         ctx = self._board_context(request, teacher)
         week_start = ctx['week_value']
-        student_ids = student_ids_open_for_scoring(
+        student_ids = rows_open_for_scoring(
             ctx['rows'],
             teacher_id=teacher.pk,
             week_start=week_start,

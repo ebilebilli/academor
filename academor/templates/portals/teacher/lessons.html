@@ -6,22 +6,32 @@
 {% block content %}
 <div
   data-portal-lessons-filter
+  {% if score_groups|length > 1 %}data-portal-scores-filter{% endif %}
   data-portal-lessons-period-tabs="[data-portal-lessons-period-tabs]"
-  data-portal-lessons-subject-tabs="[data-lesson-subject-tabs]"
   data-portal-lessons-category-tabs=".s-lessons-filter-panel__tabs--compact"
-  data-portal-lessons-items="#teacher-lessons-table tbody tr[data-subject]"
+  data-portal-lessons-items="#teacher-lessons-table tbody tr:not(.lessons-empty-row)"
   data-portal-lessons-empty-row=".lessons-empty-row"
   data-portal-lessons-empty="#lessons-filter-empty"
   data-portal-lessons-hide="hidden"
 >
 
 {% url 'portals:teacher-lesson-create' as teacher_lesson_create_url %}
-{% include "portals/includes/portal_page_hero.html" with title=_('Dərslər') subtitle=_('Qruplarınız üçün yüklənmiş materiallar.') icon="ti-book" badge=lessons|length lottie="portals/animations/girl-studying-on-laptop.lottie" action_url=teacher_lesson_create_url action_label=_('Upload lesson') action_icon="ti-book-upload" %}
+{% include "portals/includes/portal_page_hero.html" with title=_('Dərslər') subtitle=_('Qruplarınız üçün yüklənmiş materiallar.') icon="ti-book" badge=lessons|length lottie="portals/animations/girl-studying-on-laptop.lottie" %}
 
 {% include "portals/includes/lessons_filter_panel.html" %}
 
 <section class="ds-card">
-  <div class="table-responsive">
+  <div class="s-panel-head px-3 pt-3 mb-0">
+    <h2 class="s-panel-title">
+      <i class="ti ti-list" aria-hidden="true"></i>
+      {% trans 'Lesson list' %}
+    </h2>
+    <a class="ds-btn ds-btn--primary btn-sm" href="{{ teacher_lesson_create_url }}">
+      <i class="ti ti-book-upload" aria-hidden="true"></i>
+      {% trans 'Upload lesson' %}
+    </a>
+  </div>
+  <div class="table-responsive px-3 pb-3">
     <table class="t-table" id="teacher-lessons-table">
       <thead>
         <tr>
@@ -39,6 +49,7 @@
           data-subject="{{ lesson.subject }}"
           data-category="{{ lesson.category_id|default:'' }}"
           data-lesson-date="{{ lesson.lesson_date|date:'Y-m-d' }}"
+          {% if lesson.group_id %}data-group-id="{{ lesson.group_id }}" data-group-ids="{{ lesson.group_id }}"{% endif %}
         >
           <td class="fw-500" data-label="{% trans 'Name' %}">{{ lesson.name }}</td>
           <td data-label="{% trans 'Group' %}">{{ lesson.group_name }}</td>

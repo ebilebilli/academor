@@ -30,8 +30,7 @@ from .speaking_models import (
     SpeakingQuestion,
     SpeakingRecording,
 )
-from .ielts_mock_models import IeltsMockTestAttempt, StudentMockAccess
-from .mock_package_models import MockTestPackage
+from .ielts_mock_models import IeltsMockTestAttempt, MockTestAttempt, StudentMockAccess
 from .notification_models import PortalNotification, QuizResultReview
 
 __all__ = [
@@ -68,7 +67,6 @@ __all__ = [
     'SpeakingRecording',
     'IeltsMockTestAttempt',
     'StudentMockAccess',
-    'MockTestPackage',
     'PortalNotification',
     'QuizResultReview',
 ]

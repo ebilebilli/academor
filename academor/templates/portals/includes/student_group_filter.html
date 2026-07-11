@@ -1,0 +1,33 @@
+{% load i18n %}
+{% if score_groups|length > 1 %}
+<div class="s-lessons-filter-panel__row s-lessons-filter-panel__row--group{% if bordered %} s-lessons-filter-panel__row--bordered{% endif %}">
+  <span class="s-lessons-filter-panel__label">
+    <i class="ti ti-users-group" aria-hidden="true"></i>
+    {% trans 'Qrup' %}
+  </span>
+  <div
+    class="s-lessons-filter-panel__tabs s-lessons-filter-panel__tabs--seg"
+    data-score-group-filter
+    role="group"
+    aria-label="{% trans 'Qrup filteri' %}"
+  >
+    {% for group in score_groups %}
+    <button
+      type="button"
+      class="s-filter-tab{% if active_score_group == group.id|stringformat:'s' %} is-active{% endif %}"
+      data-score-group="{{ group.id }}"
+      {% if group.service_codes_csv %}data-group-services="{{ group.service_codes_csv }}"{% endif %}
+      aria-selected="{% if active_score_group == group.id|stringformat:'s' %}true{% else %}false{% endif %}"
+    >
+      {{ group.name }}
+      {% if group.service_label %}
+      <span class="s-filter-tab__service">{{ group.service_label }}</span>
+      {% endif %}
+      {% if group.total_count is not None %}
+      <span class="s-filter-tab__badge" data-score-group-count>{{ group.total_count }}</span>
+      {% endif %}
+    </button>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}

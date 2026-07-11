@@ -13,6 +13,7 @@ from portals.models import (
     ReadingQuestionGroup,
     ReadingQuestionType,
 )
+from portals.tests.portal_helpers import portal_client_login
 from portals.tests.test_quiz_visibility import QuizVisibilityTests
 from portals.utils.queries import get_student_reading_quiz_take_data, serialize_quiz
 from portals.utils.quiz_reading_score import score_reading_question, score_reading_quiz
@@ -209,9 +210,10 @@ class QuizReadingTests(QuizVisibilityTests):
 
     def test_student_reading_take_view(self):
         quiz = self._create_reading_quiz()
-        self.client.force_login(self.student_user)
+        client = self.client_class()
+        portal_client_login(client, self.student_user)
         url = reverse('portals:student-reading-quiz-take', kwargs={'pk': quiz.pk})
-        response = self.client.get(url)
+        response = client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Passage 1')
         self.assertContains(response, 'data-quiz-reading-take')
