@@ -4624,18 +4624,14 @@ h1.animated, h2.animated, h3.animated,
     appearance: none;
     -webkit-appearance: none;
     pointer-events: auto;
-    transition: color 0.15s ease, background 0.15s ease;
 }
 
 .portal-login-password__toggle:hover,
-.portal-login-password__toggle:focus-visible {
-    color: var(--primary, #00313d);
-    background: rgba(0, 49, 61, 0.06);
-    outline: none;
-}
-
+.portal-login-password__toggle:focus-visible,
 .portal-login-password__toggle[aria-pressed="true"] {
-    color: var(--accent, #ff5414);
+    color: rgba(0, 49, 61, 0.58);
+    background: transparent;
+    outline: none;
 }
 
 .portal-login-password__toggle i {
