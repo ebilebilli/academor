@@ -110,3 +110,94 @@ body.s-video-lightbox-open {
     top: -40px;
   }
 }
+
+/* Lesson image lightbox */
+.s-lesson-image-preview {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: var(--radius-md, 0.75rem);
+  overflow: hidden;
+  cursor: zoom-in;
+  background: var(--color-surface, #fff);
+}
+.s-lesson-image-preview img {
+  display: block;
+  width: 100%;
+  max-height: 420px;
+  object-fit: contain;
+  background: var(--color-gray-100, #f3f4f6);
+  pointer-events: none;
+}
+.s-image-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1080;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4, 1rem);
+}
+.s-image-lightbox[hidden] {
+  display: none !important;
+}
+.s-image-lightbox__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(4px);
+}
+.s-image-lightbox__dialog {
+  position: relative;
+  width: min(1100px, 100%);
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+}
+.s-image-lightbox__close {
+  position: absolute;
+  top: -44px;
+  right: 0;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.s-image-lightbox__close:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+.s-image-lightbox__frame {
+  max-width: 100%;
+  max-height: min(88vh, 900px);
+  border-radius: var(--radius-lg, 1rem);
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+}
+.s-image-lightbox__frame img {
+  display: block;
+  max-width: 100%;
+  max-height: min(88vh, 900px);
+  width: auto;
+  height: auto;
+  margin: 0 auto;
+  object-fit: contain;
+}
+body.s-image-lightbox-open {
+  overflow: hidden;
+}
+@media (max-width: 639px) {
+  .s-image-lightbox {
+    padding: var(--space-3, 0.75rem);
+  }
+  .s-image-lightbox__close {
+    top: -40px;
+  }
+}

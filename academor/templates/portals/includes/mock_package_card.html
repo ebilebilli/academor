@@ -1,0 +1,57 @@
+{% load i18n %}
+{% with credits=pkg.credits|default:1 exam=exam_program|default:"ielts" %}
+<article class="mp-pack mp-pack--{{ exam }}">
+  <div class="mp-pack__top">
+    <span class="mp-pack__exam">
+      {% if exam == 'sat' %}SAT{% elif exam == 'ielts' %}IELTS{% else %}{% trans "Mock" %}{% endif %}
+    </span>
+    <div class="mp-pack__credits" aria-label="{% blocktrans count counter=credits %}{{ counter }} test credit{% plural %}{{ counter }} test credits{% endblocktrans %}">
+      <span class="mp-pack__credits-num">{{ credits }}</span>
+      <span class="mp-pack__credits-label">
+        {% blocktrans count counter=credits %}credit{% plural %}credits{% endblocktrans %}
+      </span>
+    </div>
+  </div>
+
+  <div class="mp-pack__body">
+    <h3 class="mp-pack__name">{{ pkg.name }}</h3>
+
+    {% if exam == 'sat' %}
+    <ul class="mp-pack__sections list-unstyled mb-0" aria-label="{% trans 'SAT sections' %}">
+      <li>Reading and Writing</li>
+      <li>Math</li>
+    </ul>
+    <ul class="mp-pack__features list-unstyled mb-0">
+      <li><i class="ti ti-circle-check" aria-hidden="true"></i><span>{% trans "Real exam format" %}</span></li>
+      <li><i class="ti ti-circle-check" aria-hidden="true"></i><span>{% trans "Automatic scoring for both sections" %}</span></li>
+    </ul>
+    {% else %}
+    <ul class="mp-pack__sections list-unstyled mb-0" aria-label="{% trans 'IELTS sections' %}">
+      <li>Listening</li>
+      <li>Reading</li>
+      <li>Writing</li>
+      <li>Speaking</li>
+    </ul>
+    <ul class="mp-pack__features list-unstyled mb-0">
+      <li><i class="ti ti-circle-check" aria-hidden="true"></i><span>{% trans "Real exam format" %}</span></li>
+      <li><i class="ti ti-circle-check" aria-hidden="true"></i><span>{% trans "Your results are scored by IELTS teachers" %}</span></li>
+    </ul>
+    {% endif %}
+  </div>
+
+  <div class="mp-pack__foot">
+    <p class="mp-pack__price mb-0">
+      <span class="mp-pack__amount">{{ pkg.price_display }}</span>
+      <span class="mp-pack__currency">AZN</span>
+    </p>
+    <form method="post" action="{{ checkout_url }}" class="mp-pack__form">
+      {% csrf_token %}
+      <input type="hidden" name="price_package_id" value="{{ pkg.id }}">
+      <button type="submit" class="mp-pack__cta">
+        <i class="ti ti-shopping-cart" aria-hidden="true"></i>
+        {% trans "Buy now" %}
+      </button>
+    </form>
+  </div>
+</article>
+{% endwith %}

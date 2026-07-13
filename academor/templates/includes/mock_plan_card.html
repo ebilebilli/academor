@@ -1,11 +1,12 @@
 {% load i18n %}
-<article class="mock-plan">
+{% with credits=pkg.credits|default:1 exam=exam_program|default:"ielts" %}
+<article class="mock-plan{% if exam == 'sat' %} mock-plan--sat{% elif exam == 'ielts' %} mock-plan--ielts{% endif %}">
     <div class="mock-plan__side">
-        <span class="mock-plan__tag">{% trans "Mock" %}</span>
+        <span class="mock-plan__tag">{% if exam == 'sat' %}SAT{% elif exam == 'ielts' %}IELTS{% else %}{% trans "Mock" %}{% endif %}</span>
         <div class="mock-plan__count">
-            <span class="mock-plan__count-num">{{ pkg.credits }}</span>
+            <span class="mock-plan__count-num">{{ credits }}</span>
             <span class="mock-plan__count-label">
-                {% blocktrans count counter=pkg.credits %}test{% plural %}tests{% endblocktrans %}
+                {% blocktrans count counter=credits %}test{% plural %}tests{% endblocktrans %}
             </span>
         </div>
     </div>
@@ -14,13 +15,13 @@
         <div class="mock-plan__head">
             <h3 class="mock-plan__name">{{ pkg.name }}</h3>
             <p class="mock-plan__credits mb-0">
-                {% blocktrans count counter=pkg.credits %}{{ counter }} test credit{% plural %}{{ counter }} test credits{% endblocktrans %}
+                {% blocktrans count counter=credits %}{{ counter }} test credit{% plural %}{{ counter }} test credits{% endblocktrans %}
             </p>
         </div>
-        {% if pkg.exam_program == 'sat' %}
+        {% if exam == 'sat' %}
         <ul class="mock-plan__sections list-unstyled mb-0" aria-label="{% trans 'SAT sections' %}">
-            <li>{% trans "Reading and Writing" %}</li>
-            <li>{% trans "Math" %}</li>
+            <li>Reading and Writing</li>
+            <li>Math</li>
         </ul>
         <ul class="mock-plan__features list-unstyled mb-0">
             <li>{% trans "Real exam format" %}</li>
@@ -28,10 +29,10 @@
         </ul>
         {% else %}
         <ul class="mock-plan__sections list-unstyled mb-0" aria-label="{% trans 'IELTS sections' %}">
-            <li>{% trans "reading" context "ielts section" %}</li>
-            <li>{% trans "listening" context "ielts section" %}</li>
-            <li>{% trans "writing" context "ielts section" %}</li>
-            <li>{% trans "speaking" context "ielts section" %}</li>
+            <li>Listening</li>
+            <li>Reading</li>
+            <li>Writing</li>
+            <li>Speaking</li>
         </ul>
         <ul class="mock-plan__features list-unstyled mb-0">
             <li>{% trans "Real exam format" %}</li>
@@ -45,7 +46,15 @@
             <span class="mock-plan__amount">{{ pkg.price_display }}</span>
             <span class="mock-plan__currency">AZN</span>
         </p>
-        {% if portal_checkout %}
+        {% if checkout_url %}
+        <form method="post" action="{{ checkout_url }}" class="mock-plan__checkout">
+            {% csrf_token %}
+            <input type="hidden" name="price_package_id" value="{{ pkg.id }}">
+            <button type="submit" class="mock-plan__cta">
+                {% trans "Buy now" %}
+            </button>
+        </form>
+        {% elif portal_checkout %}
         <form method="post" action="{% url 'payment_start_course' slug=pkg.course.slug %}" class="mock-plan__checkout">
             {% csrf_token %}
             <input type="hidden" name="price_package_id" value="{{ pkg.id }}">
@@ -68,3 +77,4 @@
         {% endif %}
     </div>
 </article>
+{% endwith %}

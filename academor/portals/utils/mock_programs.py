@@ -145,11 +145,21 @@ def get_section_spec(exam_program: str, section_key: str) -> MockSectionSpec | N
     return None
 
 
-def get_section_label(exam_program: str, section_key: str) -> str:
+def get_section_label(exam_program: str, section_key: str, *, translate: bool = True) -> str:
     spec = get_section_spec(exam_program, section_key)
-    if spec:
-        return str(spec.label)
-    return section_key
+    if not spec:
+        return section_key
+    if not translate:
+        # Fixed English exam section names (Listening, Math, …).
+        return {
+            'listening': 'Listening',
+            'reading': 'Reading',
+            'writing': 'Writing',
+            'speaking': 'Speaking',
+            'reading_writing': 'Reading and Writing',
+            'math': 'Math',
+        }.get(section_key, section_key)
+    return str(spec.label)
 
 
 def get_section_order(exam_program: str) -> tuple[str, ...]:

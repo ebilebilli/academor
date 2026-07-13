@@ -1,0 +1,211 @@
+/* Customer mock program picker */
+
+.mpick {
+  padding: 1.15rem 1.2rem 1.35rem;
+}
+
+.mpick__head {
+  margin-bottom: 1.1rem;
+}
+
+.mpick__title {
+  margin: 0 0 0.3rem;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--color-text, #0f172a);
+  line-height: 1.25;
+}
+
+.mpick__hint {
+  font-size: 0.86rem;
+  color: var(--color-muted, #64748b);
+  line-height: 1.4;
+}
+
+.mpick-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.mpick-card {
+  --mp-accent: #ff5414;
+  --mp-accent-soft: #fff4f0;
+  --mp-ink: #00313d;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+  min-height: 100%;
+  padding: 1.15rem 1.2rem 1.2rem;
+  border-radius: 1.15rem;
+  border: 1px solid rgba(0, 49, 61, 0.1);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, #fff 48%),
+    radial-gradient(120% 80% at 100% 0%, color-mix(in srgb, var(--mp-accent) 14%, transparent), transparent 55%);
+  box-shadow: 0 10px 28px rgba(0, 49, 61, 0.07);
+  text-decoration: none !important;
+  color: inherit;
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.mpick-card--sat {
+  --mp-accent: #0d9488;
+  --mp-accent-soft: #f0fdfa;
+}
+
+.mpick-card--ielts {
+  --mp-accent: #ff5414;
+  --mp-accent-soft: #fff4f0;
+}
+
+@media (hover: hover) {
+  .mpick-card:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--mp-accent) 42%, rgba(0, 49, 61, 0.12));
+    box-shadow: 0 16px 36px rgba(0, 49, 61, 0.12);
+  }
+}
+
+.mpick-card:focus-visible {
+  outline: 2px solid var(--mp-accent);
+  outline-offset: 3px;
+}
+
+.mpick-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.mpick-card__exam {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.28rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--mp-accent);
+  background: var(--mp-accent-soft);
+  border: 1px solid color-mix(in srgb, var(--mp-accent) 28%, transparent);
+}
+
+.mpick-card__arrow {
+  width: 1.85rem;
+  height: 1.85rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: var(--mp-accent);
+  background: var(--mp-accent-soft);
+  font-size: 1rem;
+}
+
+.mpick-card__name {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--mp-ink);
+}
+
+.mpick-card__credits {
+  font-size: 0.9rem;
+  color: rgba(0, 49, 61, 0.65);
+}
+
+.mpick-card__credits strong {
+  color: var(--mp-ink);
+  font-weight: 800;
+}
+
+.mpick-card__sections {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.mpick-card__sections li {
+  padding: 0.28rem 0.55rem;
+  border-radius: 0.45rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: rgba(0, 49, 61, 0.72);
+  background: rgba(0, 49, 61, 0.05);
+}
+
+.mpick-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: auto;
+}
+
+.mpick-card__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.28rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: rgba(0, 49, 61, 0.7);
+  background: rgba(0, 49, 61, 0.06);
+}
+
+.mpick-card__badge--ok {
+  color: #0f766e;
+  background: #f0fdfa;
+  border: 1px solid rgba(13, 148, 136, 0.25);
+}
+
+.mpick-card__badge--info {
+  color: #0369a1;
+  background: #f0f9ff;
+  border: 1px solid rgba(14, 165, 233, 0.28);
+}
+
+.mpick-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: auto;
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--mp-accent);
+}
+
+.mpick-card__cta .ti {
+  font-size: 1rem;
+}
+
+@media (max-width: 767.98px) {
+  .mpick-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .mpick {
+    padding: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mpick-card {
+    transition: none;
+  }
+
+  .mpick-card:hover {
+    transform: none;
+  }
+}

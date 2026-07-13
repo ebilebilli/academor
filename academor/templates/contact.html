@@ -147,6 +147,18 @@
                 </div>
                 {% endif %}
                 <div class="{% if contact and contact.map_embed_url %}col-lg-4{% else %}col-lg-8{% endif %} col-md-12 wow fadeInUp" data-wow-delay="0.5s">
+                    <aside class="contact-portal-note" aria-labelledby="contact-portal-note-title">
+                        <p id="contact-portal-note-title" class="contact-portal-note__title">
+                            {% trans "Want to sign in to the student portal?" %}
+                        </p>
+                        <p class="contact-portal-note__text">
+                            {% trans "If you already have portal credentials, go to the login page." %}
+                        </p>
+                        <a class="contact-portal-note__link" href="{% url 'portals:login' %}">
+                            {% trans "Student portal login" %}
+                            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                        </a>
+                    </aside>
                     <div id="contact-form-alert" class="alert d-none" role="alert"></div>
                     <form method="post" action="{% url 'projects:contact-page' %}" id="contact-form" class="contact-form" novalidate>
                         {% csrf_token %}

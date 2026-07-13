@@ -240,10 +240,10 @@ def css_num(value):
 @register.filter
 def performance_tier_label(tier):
     labels = {
-        'excellent': gettext('Əla'),
-        'good': gettext('Yaxşı'),
-        'fair': gettext('Orta'),
-        'low': gettext('Zəif'),
+        'excellent': gettext('Excellent'),
+        'good': gettext('Good'),
+        'fair': gettext('Average'),
+        'low': gettext('Weak'),
     }
     return labels.get((tier or '').strip().lower(), '')
 

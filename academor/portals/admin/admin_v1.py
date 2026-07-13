@@ -71,6 +71,7 @@ from portals.models import (
     Classroom,
     Lesson,
     LessonCategory,
+    LessonHomework,
     ListeningAudio,
     ListeningQuestion,
     ReadingPassage,
@@ -2175,6 +2176,7 @@ class PortalNotificationAdmin(PortalModelAdmin):
         'parent__user',
         'quiz_result',
         'ielts_mock_test',
+        'lesson_homework',
     )
     search_fields = (
         'student__user__username',
@@ -2248,6 +2250,39 @@ class LessonAttachmentAdmin(PortalModelAdmin):
     ordering = ('lesson_id', 'id')
 
 
+@admin.register(LessonHomework)
+class LessonHomeworkAdmin(PortalModelAdmin):
+    list_display = (
+        'id',
+        'lesson',
+        'student_display',
+        'file_kind',
+        'has_file',
+        'submitted_at',
+    )
+    list_select_related = ('lesson', 'lesson__group', 'student', 'student__user')
+    list_filter = ('file_kind', 'submitted_at')
+    search_fields = (
+        'lesson__name',
+        'student__user__username',
+        'original_filename',
+        'text',
+    )
+    autocomplete_fields = ('lesson', 'student')
+    readonly_fields = ('created_at', 'submitted_at')
+    ordering = ('-submitted_at', 'id')
+
+    @admin.display(description=_('Student'))
+    def student_display(self, obj):
+        if not obj.student_id:
+            return '—'
+        return portal_admin_change_link(obj.student, obj.student.full_name)
+
+    @admin.display(description=_('File'), boolean=True)
+    def has_file(self, obj):
+        return bool(obj.file and obj.file.name)
+
+
 # ---------------------------------------------------------------------------
 # Admin sidebar order (portal app)
 # ---------------------------------------------------------------------------
@@ -2279,6 +2314,7 @@ PORTAL_MODEL_ORDER = {
     'IeltsMockTestAttempt': 127,
     'SpeakingRecording': 128,
     'LessonAttachment': 129,
+    'LessonHomework': 130,
 }
 
 

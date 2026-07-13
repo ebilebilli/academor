@@ -1,0 +1,147 @@
+/* Lesson homework — student submit + teacher/parent list on lesson detail */
+
+.s-lesson-homework__current {
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--color-gray-200, #e5e7eb);
+  border-radius: 0.75rem;
+  background: var(--color-gray-50, #f9fafb);
+}
+
+.s-lesson-homework__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0 0 0.65rem;
+  font-size: 0.875rem;
+  color: var(--color-gray-500, #6b7280);
+}
+
+.s-lesson-homework__text {
+  margin-bottom: 0.75rem;
+  line-height: 1.55;
+  color: var(--color-gray-800, #1f2937);
+  white-space: normal;
+}
+
+.s-lesson-homework__file {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.s-lesson-homework__kind {
+  margin-left: 0.25rem;
+  font-weight: 400;
+  opacity: 0.8;
+}
+
+.s-lesson-homework__form {
+  display: grid;
+  gap: 1rem;
+}
+
+.s-lesson-homework__field .form-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+}
+
+.s-lesson-homework__errors {
+  padding: 0.75rem 1rem;
+  border-radius: 0.65rem;
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.s-lesson-homework__errors p {
+  margin: 0;
+}
+
+.s-lesson-homework__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.s-lesson-homework__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.s-lesson-homework__item {
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--color-gray-200, #e5e7eb);
+  border-radius: 0.75rem;
+  background: var(--color-white, #fff);
+}
+
+.s-lesson-homework__item-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.35rem 1rem;
+  margin-bottom: 0.55rem;
+}
+
+.s-lesson-homework__student {
+  font-size: 1rem;
+}
+
+.s-lesson-homework__student a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.s-lesson-homework__student a:hover {
+  text-decoration: underline;
+}
+
+.s-lesson-homework__meta .ti {
+  margin-right: 0.15rem;
+}
+
+.s-lesson-homework__meta .ti + .ti,
+.s-lesson-homework__meta .ti-users {
+  margin-left: 0.65rem;
+}
+
+.s-lesson-homework__text--detail {
+  margin-bottom: 0;
+  font-size: 1rem;
+}
+
+.s-homework-summary-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.85rem;
+  margin: 0 0 0.75rem;
+  font-size: 0.8125rem;
+  color: var(--color-gray-500, #6b7280);
+}
+
+.s-homework-summary-card__meta .ti {
+  margin-right: 0.2rem;
+}
+
+.s-homework-lesson-link__body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+}
+
+.s-homework-lesson-link__title {
+  margin: 0 0 0.35rem;
+  font-size: 1.125rem;
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+.s-homework-lesson-link__copy .s-lesson-detail-meta {
+  margin: 0;
+}

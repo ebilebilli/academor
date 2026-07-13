@@ -671,34 +671,34 @@ a:hover { color: var(--color-role-dark); }
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   background: #00313D !important;
   color: rgba(255, 255, 255, 0.75) !important;
-  padding: 1.1rem 0 1.35rem;
+  padding: 0.75rem 1rem;
   margin-top: auto;
   font-size: 0.9rem;
-}
-
-.admin-footer .container-fluid {
-  position: relative;
-  z-index: 1;
-}
-
-.admin-footer-start {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  min-width: 0;
+  justify-content: center;
+  text-align: center;
 }
 
-.admin-footer-formula {
-  opacity: 0.55;
+.admin-footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .admin-footer-logo {
   display: block;
   width: auto;
-  height: 28px;
+  height: 20px;
   object-fit: contain;
   filter: brightness(0) invert(1) !important;
-  opacity: 0.85;
+  opacity: 0.45;
+  flex-shrink: 0;
 }
 
 .admin-footer-copy {

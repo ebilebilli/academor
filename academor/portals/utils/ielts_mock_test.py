@@ -884,7 +884,7 @@ def serialize_mock_attempt_summary(attempt: IeltsMockTestAttempt) -> dict:
 
         sections.append({
             'section': section,
-            'section_label': get_section_label(exam_program, section),
+            'section_label': get_section_label(exam_program, section, translate=False),
             'quiz_id': quiz.pk if quiz else None,
             'quiz_topic': quiz.topic if quiz else '',
             'result_id': result.pk if result else None,
@@ -935,6 +935,15 @@ def serialize_mock_attempt_summary(attempt: IeltsMockTestAttempt) -> dict:
             attempt.student.full_name
             if attempt.student_id
             else (attempt.customer.full_name if attempt.customer_id else '')
+        ),
+        'contact_phone': (
+            (attempt.customer.phone or '').strip()
+            if attempt.customer_id and getattr(attempt, 'customer', None) is not None
+            else (
+                (attempt.student.phone or '').strip()
+                if attempt.student_id and getattr(attempt, 'student', None) is not None
+                else ''
+            )
         ),
         'sections': sections,
         'is_fully_graded': is_fully_graded,

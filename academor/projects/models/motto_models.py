@@ -8,10 +8,12 @@ class TaglinePage(models.TextChoices):
     CONTACT = 'contact', _('Contact page')
     SERVICE = 'service', _('Services page')
     COURSES = 'courses', _('Courses page')
+    MOCK_TESTS = 'mock_tests', _('Mock tests page')
     TESTS = 'tests', _('Tests page')
     ABROAD = 'abroad', _('Study abroad page')
     BLOG = 'blog', _('Blog page')
     TEAM = 'team', _('Team page')
+    PORTAL_LOGIN = 'portal_login', _('Portal login page')
 
 
 class Tagline(models.Model):

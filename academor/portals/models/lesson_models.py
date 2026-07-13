@@ -147,6 +147,69 @@ class LessonAttachment(models.Model):
         return f'{self.get_kind_display()} — {self.lesson_id}'
 
 
+class LessonHomework(models.Model):
+    class FileKind(models.TextChoices):
+        PDF = 'pdf', _('PDF')
+        WORD = 'word', _('Word')
+        TXT = 'txt', _('Text')
+
+    lesson = models.ForeignKey(
+        Lesson,
+        on_delete=models.CASCADE,
+        related_name='homeworks',
+        verbose_name=_('Lesson'),
+    )
+    student = models.ForeignKey(
+        'StudentProfile',
+        on_delete=models.CASCADE,
+        related_name='lesson_homeworks',
+        verbose_name=_('Student'),
+    )
+    text = models.TextField(
+        blank=True,
+        verbose_name=_('Text'),
+    )
+    file = models.FileField(
+        upload_to='portals/lessons/homework/',
+        null=True,
+        blank=True,
+        verbose_name=_('File'),
+    )
+    original_filename = models.CharField(
+        max_length=255,
+        blank=True,
+        verbose_name=_('Original filename'),
+    )
+    file_kind = models.CharField(
+        max_length=16,
+        choices=FileKind.choices,
+        blank=True,
+        verbose_name=_('File type'),
+    )
+    submitted_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name=_('Submitted at'),
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_('Created at'),
+    )
+
+    class Meta:
+        verbose_name = _('Lesson homework')
+        verbose_name_plural = _('Lesson homeworks')
+        ordering = ('-submitted_at', 'id')
+        constraints = [
+            models.UniqueConstraint(
+                fields=('lesson', 'student'),
+                name='portals_lesson_homework_lesson_student_uniq',
+            ),
+        ]
+
+    def __str__(self):
+        return f'{self.student_id} → lesson {self.lesson_id}'
+
+
 class Classroom(models.Model):
     group = models.ForeignKey(
         'StudyGroup',

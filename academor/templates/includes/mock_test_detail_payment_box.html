@@ -1,0 +1,40 @@
+{% load i18n %}
+{% with packages=course.all_price_packages|default:course.price_packages %}
+<div
+    class="course-pay-block mock-detail-hero__pay-block"
+    data-default-index="{{ default_package_index|default:0 }}"
+>
+    <div id="course-pay-alert" class="alert py-2 small mb-3 d-none" role="alert" aria-live="polite"></div>
+
+    <div
+        class="course-pay-packages-panel"
+        id="course-pay-panel"
+        data-course-pay-panel
+    >
+        <div class="course-pay-tab-panels" data-course-pay-tab-panels>
+            <div
+                class="course-pay-tab-panel is-active"
+                id="course-pay-panel-all"
+                data-tab-panel="all"
+                data-default-index="{{ default_package_index|default:0 }}"
+                role="tabpanel"
+            >
+                {% if packages %}
+                <ul
+                    class="course-pay-packages list-unstyled mb-0{% if payment_form.price_package_id.errors %} is-invalid{% endif %}"
+                    data-course-pay-packages
+                    role="listbox"
+                    aria-label="{% trans 'Price packages' %}"
+                >
+                    {% include "includes/course_detail_payment_packages_list.html" with packages=packages default_package_index=default_package_index %}
+                </ul>
+                {% else %}
+                <p class="course-pay-packages-empty text-center text-muted mb-0">
+                    {% trans "No packages in this category yet." %}
+                </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endwith %}

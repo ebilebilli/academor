@@ -1,35 +1,46 @@
 <!DOCTYPE html>
 {% load static i18n %}{% get_current_language as LANG_CODE %}
 <html lang="{{ LANG_CODE }}">
-
 <head>
     {% include "includes/site_layout_head.html" %}
+    <link href="{% static 'assets/css/mock-tests-page.css' %}" rel="stylesheet">
 </head>
-
-<body>
+<body class="mock-tests-body">
     {% include "includes/site_spinner.html" %}
-
     {% include "includes/site_navbar.html" %}
 
-    <main id="main-content">
-    {% include "includes/page_header_banner.html" %}
+    <main id="main-content" class="mock-tests-page">
+        {% include "includes/page_header_banner.html" %}
 
-    <section class="hsvc-section hsvc-section--standalone" aria-labelledby="mock-tests-heading">
-        {% include "includes/hsvc_cards_styles.html" %}
-        <div class="hsvc-inner">
+        <section class="mock-tests-list" aria-labelledby="mock-tests-heading">
+            <div class="mock-tests-list__atmosphere" aria-hidden="true"></div>
             <div class="container-xxl">
                 <div class="container">
-                    <h1 id="mock-tests-heading" class="hsvc-title hsvc-title--centered wow fadeInUp" data-wow-delay="0.05s">{% trans "Mock tests" %}</h1>
-                    {% include "includes/hsvc_cards_grid.html" with detail_url_name="projects:mock-test-detail" %}
+                    <header class="mock-tests-list__head mock-tests-reveal" style="--mt-delay: 0">
+                        <div class="mock-tests-list__title-wrap">
+                            <span class="mock-tests-list__title-accent" aria-hidden="true"></span>
+                            <h1 id="mock-tests-heading" class="mock-tests-list__title">
+                                {% trans "Mock tests" %}
+                            </h1>
+                            {% if categories %}
+                            <p class="mock-tests-list__count mb-0">
+                                {% blocktrans count counter=categories|length %}
+                                {{ counter }} mock test
+                                {% plural %}
+                                {{ counter }} mock tests
+                                {% endblocktrans %}
+                            </p>
+                            {% endif %}
+                        </div>
+                    </header>
+                    {% include "includes/mock_tests_cards_grid.html" with detail_url_name=detail_url_name|default:"projects:mock-test-detail" %}
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
     </main>
 
     {% include "includes/site_footer.html" %}
-
     {% include "includes/site_scripts.html" %}
+    <script defer src="{% static 'assets/js/mock-tests-page.js' %}"></script>
 </body>
-
 </html>

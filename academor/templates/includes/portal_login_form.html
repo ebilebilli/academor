@@ -1,13 +1,14 @@
 {% load i18n %}
-<form method="post" action="{% url 'portals:login' %}" class="portal-login-form" id="portalLoginForm" novalidate>
+{% with pid=form_id_prefix|default:"" %}
+<form method="post" action="{% url 'portals:login' %}" class="portal-login-form" id="{{ pid }}portalLoginForm" novalidate>
     {% csrf_token %}
     <input type="hidden" name="next" value="{% if next %}{{ next }}{% elif request.GET.next %}{{ request.GET.next }}{% else %}{% url 'portals:dashboard' %}{% endif %}">
     <div class="mb-3">
-        <label for="portalLoginUsername" class="form-label">{% trans "Username" %}</label>
+        <label for="{{ pid }}portalLoginUsername" class="form-label">{% trans "Username" %}</label>
         <input
             type="text"
             class="form-control form-control-lg"
-            id="portalLoginUsername"
+            id="{{ pid }}portalLoginUsername"
             name="username"
             autocomplete="username"
             required
@@ -15,18 +16,60 @@
         >
     </div>
     <div class="mb-4">
-        <label for="portalLoginPassword" class="form-label">{% trans "Password" %}</label>
-        <input
-            type="password"
-            class="form-control form-control-lg"
-            id="portalLoginPassword"
-            name="password"
-            autocomplete="current-password"
-            required
-        >
+        <label for="{{ pid }}portalLoginPassword" class="form-label">{% trans "Password" %}</label>
+        <div class="portal-login-password">
+            <input
+                type="password"
+                class="form-control form-control-lg portal-login-password__input"
+                id="{{ pid }}portalLoginPassword"
+                name="password"
+                autocomplete="current-password"
+                required
+            >
+            <button
+                type="button"
+                class="portal-login-password__toggle"
+                id="{{ pid }}portalLoginPasswordToggle"
+                aria-label="{% trans 'Show password' %}"
+                aria-controls="{{ pid }}portalLoginPassword"
+                aria-pressed="false"
+            >
+                <i class="fa fa-eye" aria-hidden="true" data-eye-icon></i>
+            </button>
+        </div>
     </div>
     <button type="submit" class="btn btn-primary w-100 btn-lg rounded-pill portal-login-form__submit">
         {% trans "Log in" %}
         <i class="fa fa-arrow-right ms-2" aria-hidden="true"></i>
     </button>
 </form>
+{% endwith %}
+<script>
+(function () {
+  var showLabel = "{% filter escapejs %}{% trans 'Show password' %}{% endfilter %}";
+  var hideLabel = "{% filter escapejs %}{% trans 'Hide password' %}{% endfilter %}";
+
+  function bindPasswordToggle(wrap) {
+    var btn = wrap.querySelector('.portal-login-password__toggle');
+    var input = wrap.querySelector('.portal-login-password__input');
+    if (!btn || !input || btn.getAttribute('data-bound') === '1') return;
+    btn.setAttribute('data-bound', '1');
+
+    btn.addEventListener('click', function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      var hidden = input.getAttribute('type') === 'password';
+      input.setAttribute('type', hidden ? 'text' : 'password');
+      btn.setAttribute('aria-pressed', hidden ? 'true' : 'false');
+      btn.setAttribute('aria-label', hidden ? hideLabel : showLabel);
+      var icon = btn.querySelector('[data-eye-icon]');
+      if (icon) {
+        icon.classList.remove(hidden ? 'fa-eye' : 'fa-eye-slash');
+        icon.classList.add(hidden ? 'fa-eye-slash' : 'fa-eye');
+      }
+    });
+  }
+
+  document.querySelectorAll('.portal-login-password').forEach(bindPasswordToggle);
+})();
+</script>

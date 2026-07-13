@@ -53,6 +53,7 @@ class PortalNotification(models.Model):
         MOCK_TEST_SECTION_REVIEW = 'mock_test_section_review', _('IELTS mock test section review')
         MOCK_TEST_RESULTS_PUBLISHED = 'mock_test_results_published', _('IELTS mock test results published')
         WEEKLY_SCORE_PUBLISHED = 'weekly_score_published', _('Weekly score published')
+        HOMEWORK_SUBMITTED = 'homework_submitted', _('Homework submitted')
 
     teacher = models.ForeignKey(
         'TeacherProfile',
@@ -110,6 +111,14 @@ class PortalNotification(models.Model):
         related_name='notifications',
         verbose_name=_('Weekly student score'),
     )
+    lesson_homework = models.ForeignKey(
+        'LessonHomework',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='notifications',
+        verbose_name=_('Lesson homework'),
+    )
     kind = models.CharField(
         max_length=32,
         choices=Kind.choices,
@@ -134,7 +143,12 @@ class PortalNotification(models.Model):
                 name='portals_notification_single_recipient',
             ),
             models.CheckConstraint(
-                condition=Q(quiz_result__isnull=False) | Q(ielts_mock_test__isnull=False) | Q(weekly_student_score__isnull=False),
+                condition=(
+                    Q(quiz_result__isnull=False)
+                    | Q(ielts_mock_test__isnull=False)
+                    | Q(weekly_student_score__isnull=False)
+                    | Q(lesson_homework__isnull=False)
+                ),
                 name='portals_notification_has_target',
             ),
             models.UniqueConstraint(
@@ -146,6 +160,11 @@ class PortalNotification(models.Model):
                 fields=('teacher', 'ielts_mock_test', 'kind'),
                 condition=Q(teacher__isnull=False, ielts_mock_test__isnull=False),
                 name='portals_notification_teacher_mock_kind_unique',
+            ),
+            models.UniqueConstraint(
+                fields=('teacher', 'lesson_homework', 'kind'),
+                condition=Q(teacher__isnull=False, lesson_homework__isnull=False),
+                name='portals_notification_teacher_homework_kind_unique',
             ),
             models.UniqueConstraint(
                 fields=('parent', 'quiz_result'),
@@ -182,5 +201,10 @@ class PortalNotification(models.Model):
 
     def __str__(self):
         recipient = self.teacher or self.parent or self.student or self.customer
-        target = self.quiz_result_id or self.ielts_mock_test_id
+        target = (
+            self.quiz_result_id
+            or self.ielts_mock_test_id
+            or self.weekly_student_score_id
+            or self.lesson_homework_id
+        )
         return f'{recipient} — {self.get_kind_display()} ({target})'

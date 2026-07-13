@@ -1,7 +1,7 @@
 [project]
 name = "academor"
 version = "0.1.0"
-description = "Add your description here"
+description = "Academor — public CMS, role portal, and payments for an English / test-prep centre"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [

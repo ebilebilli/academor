@@ -528,10 +528,11 @@ class IeltsMockTestTests(QuizVisibilityTests):
         self.assertEqual(outcome['next_url'], complete_url)
         response = self.client.get(complete_url)
         self.assertEqual(response.status_code, 200)
-        self.assertFalse(
+        self.assertTrue(
             PortalNotification.objects.filter(
                 teacher=self.teacher,
                 kind=PortalNotification.Kind.MOCK_TEST_COMPLETED,
+                ielts_mock_test=attempt,
             ).exists()
         )
         self.assertFalse(
@@ -653,6 +654,8 @@ class IeltsMockTestTests(QuizVisibilityTests):
         )
 
     def test_parent_notified_when_mock_test_completed(self):
+        self.student.phone = '+994501112233'
+        self.student.save(update_fields=['phone'])
         attempt = self._complete_full_mock_attempt()
         self.assertTrue(
             PortalNotification.objects.filter(
@@ -662,12 +665,19 @@ class IeltsMockTestTests(QuizVisibilityTests):
                 is_read=False,
             ).exists()
         )
-        self.assertFalse(
+        self.assertTrue(
             PortalNotification.objects.filter(
                 teacher=self.teacher,
                 kind=PortalNotification.Kind.MOCK_TEST_COMPLETED,
+                ielts_mock_test=attempt,
             ).exists()
         )
+        from portals.utils.notifications import get_notifications
+
+        teacher_items = get_notifications(teacher_id=self.teacher.pk, period='all')
+        mock_items = [item for item in teacher_items if item.get('is_mock_test_completed')]
+        self.assertEqual(len(mock_items), 1)
+        self.assertEqual(mock_items[0]['contact_phone'], '+994501112233')
 
     def test_parent_notified_when_mock_manual_section_reviewed(self):
         attempt = self._complete_full_mock_attempt()

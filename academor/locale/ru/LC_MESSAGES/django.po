@@ -543,6 +543,19 @@ msgstr "Курс не назначен"
 msgid "Courses"
 msgstr "Курсы"
 
+#: academor/templates/includes/site_navbar.html
+#: academor/templates/mock-tests.html
+msgid "Mock tests"
+msgstr "Пробные тесты"
+
+#: academor/templates/includes/site_navbar.html
+msgid "All mock tests"
+msgstr "Все пробные тесты"
+
+#: academor/projects/models/motto_models.py
+msgid "Mock tests page"
+msgstr "Страница пробных тестов"
+
 #: academor/portals/admin/admin_v1.py:712
 msgid "Preview"
 msgstr "Просмотр"
@@ -919,6 +932,12 @@ msgstr "Проверено"
 #: academor/portals/admin/admin_v1.py:1933
 msgid "Student portal"
 msgstr "Студенческий портал"
+
+msgid "What awaits you in the portal?"
+msgstr "Что вас ждёт на портале?"
+
+msgid "Portalda sizi nə gözləyir?"
+msgstr "Что вас ждёт на портале?"
 
 #: academor/portals/admin/admin_v1.py:1934
 msgid "Teachers, Students, Parents, Groups, Lessons, Attendance, Quizzes"
@@ -1871,6 +1890,12 @@ msgstr "Роль портала и доступ администратора д�
 #: academor/templates/portals/teacher/group_detail.html:11
 msgid "Phone"
 msgstr "Телефон"
+
+#: academor/templates/portals/teacher/mock_detail.html:8
+#: academor/templates/portals/teacher/ielts_mock_detail.html:8
+#, python-format
+msgid "%(name)s · Phone: %(phone)s"
+msgstr "%(name)s · Телефон: %(phone)s"
 
 #: academor/portals/forms.py:145
 msgid "Optional. Example: +994501234567 or 0501234567."
@@ -3836,9 +3861,9 @@ msgid ""
 "or change slots."
 msgstr "Расписание управляется администрацией Academor."
 
-#: academor/portals/views/notification_views.py:96
-msgid "Published quiz results from your students."
-msgstr "Опубликованные результаты quiz ваших учеников."
+#: academor/portals/views/notification_views.py:162
+msgid "Published quiz results and completed mock tests."
+msgstr "Опубликованные результаты quiz и завершённые mock-тесты."
 
 #: academor/portals/views/notification_views.py:202
 #, fuzzy
@@ -4351,8 +4376,9 @@ msgstr "Полный пакет — Рассрочка"
 
 #: academor/projects/models/service_models.py
 #: academor/projects/utils/price_package_tabs.py
+#: academor/templates/portals/includes/sidebar.html:101
 msgid "Mock Test"
-msgstr "Mock Test"
+msgstr "Mock-тест"
 
 #: academor/projects/models/service_models.py:208
 #: academor/templates/includes/course_detail_payment_packages_list.html:53
@@ -4796,6 +4822,38 @@ msgstr "Свяжитесь с нами по любому вопросу"
 #: academor/templates/contact.html:56 academor/templates/contact.html:130
 msgid "Get In Touch"
 msgstr "Будем на связи"
+
+#: academor/templates/contact.html
+msgid "Want to sign in to the student portal?"
+msgstr "Хотите войти в студенческий портал?"
+
+#: academor/templates/contact.html
+msgid "If you already have portal credentials, go to the login page."
+msgstr "Если у вас уже есть данные для входа, перейдите на страницу входа."
+
+#: academor/templates/contact.html
+msgid "Student portal login"
+msgstr "Вход в студенческий портал"
+
+#: academor/templates/portals/login.html
+msgid "Need an account or help signing in?"
+msgstr "Нужен аккаунт или помощь со входом?"
+
+#: academor/templates/portals/login.html
+msgid "Contact Academor — we'll help you get portal access."
+msgstr "Свяжитесь с Academor — поможем с доступом к порталу."
+
+#: academor/templates/portals/login.html
+msgid "Contact form"
+msgstr "Форма связи"
+
+#: academor/templates/includes/portal_login_form.html
+msgid "Show password"
+msgstr "Показать пароль"
+
+#: academor/templates/includes/portal_login_form.html
+msgid "Hide password"
+msgstr "Скрыть пароль"
 
 #: academor/templates/contact.html:64
 msgid "Office"
@@ -5928,6 +5986,8 @@ msgid "Qiymətləndirmələr"
 msgstr "Оценки"
 
 #: academor/templates/portals/includes/mobile_bottom_nav.html:24
+#: academor/templates/includes/home_ielts_mock_section.html
+#: academor/templates/includes/home_mock_price_card.html
 msgid "Mock"
 msgstr "Mock"
 
@@ -6808,12 +6868,6 @@ msgstr "Мой профиль"
 msgid "Notifications"
 msgstr "Уведомления"
 
-#: academor/templates/portals/includes/sidebar.html:101
-#, fuzzy
-#| msgid "Test"
-msgid "Mock Test"
-msgstr "Тест"
-
 #: academor/templates/portals/includes/sidebar.html:160
 #: academor/templates/portals/includes/topbar.html:58
 msgid "Main site"
@@ -7507,6 +7561,10 @@ msgstr "Пробный тест завершён"
 msgid "All four sections are submitted. Your teacher has been notified."
 msgstr "Все четыре секции отправлены. Ваш преподаватель уведомлён."
 
+#: academor/templates/portals/student/mock_complete.html:8
+msgid "All sections are submitted. Your teacher has been notified."
+msgstr "Все секции отправлены. Ваш преподаватель уведомлён."
+
 #: academor/templates/portals/student/ielts_mock_complete.html:30
 #: academor/templates/portals/teacher/ielts_mock_detail.html:28
 msgid "Section"
@@ -7546,7 +7604,7 @@ msgstr "Как это работает"
 
 #: academor/templates/portals/student/ielts_mock_landing.html:12
 msgid "One random IELTS task is selected from each section."
-msgstr "Из каждой секции случайным образом выбирается одно задание IELTS."
+msgstr "Из каждого раздела выбирается одно случайное задание IELTS."
 
 #: academor/templates/portals/student/ielts_mock_landing.html:13
 msgid ""
@@ -8768,6 +8826,13 @@ msgstr "Обзор успеваемости"
 msgid "Mock test"
 msgstr "Mock-тест"
 
+#, python-format
+msgid "%(counter)s mock test"
+msgid_plural "%(counter)s mock tests"
+msgstr[0] "%(counter)s mock-тест"
+msgstr[1] "%(counter)s mock-теста"
+msgstr[2] "%(counter)s mock-тестов"
+
 #: portals/templates:0
 msgid "həftəlik bal · orta"
 msgstr "недельных баллов · ср."
@@ -8870,8 +8935,8 @@ msgid ""
 "Complete Listening, Reading, Writing, and Speaking in real exam order — all "
 "in one session."
 msgstr ""
-"Пройдите Listening, Reading, Writing и Speaking в порядке реального экзамена "
-"— всё за одну сессию."
+"Пройдите Listening, Reading, Writing и Speaking в порядке реального экзамена"
+" — всё за одну сессию."
 
 #: academor/templates/portals/customer/ielts_mock_landing.html:9
 msgid "Mock test credits"
@@ -8880,8 +8945,8 @@ msgstr "Кредиты на пробный тест"
 #: academor/templates/portals/customer/ielts_mock_landing.html:17
 msgid ""
 "Each credit lets you start one full IELTS mock test with all four sections. "
-"One credit is used when you confirm Start quiz on the first section. Credits "
-"you buy stay on your account until you use them."
+"One credit is used when you confirm Start quiz on the first section. Credits"
+" you buy stay on your account until you use them."
 msgstr ""
 "Один кредит даёт право начать полный пробный IELTS (все четыре раздела). "
 "После предупреждения в первом разделе при нажатии «Начать викторину» "
@@ -8908,7 +8973,7 @@ msgstr "Купить пакет пробного теста"
 #: academor/templates/portals/includes/customer_dashboard_mock_stat.html:2
 #: academor/templates/portals/includes/customer_dashboard_mock_stat.html:6
 msgid "Mock test results"
-msgstr "Результаты пробного теста"
+msgstr "Результаты mock-теста"
 
 #: academor/templates/portals/customer/dashboard.html:18
 #: academor/templates/portals/customer/ielts_mock_landing.html:60
@@ -8940,9 +9005,9 @@ msgid "No packages are available right now. Please contact Academor."
 msgstr "Сейчас пакеты недоступны. Пожалуйста, свяжитесь с Academor."
 
 #: academor/templates/portals/customer/ielts_mock_landing.html:34
-msgid "Writing and Speaking sections are reviewed and scored by IELTS teachers."
-msgstr ""
-"Разделы Writing и Speaking проверяют и оценивают преподаватели IELTS."
+msgid ""
+"Writing and Speaking sections are reviewed and scored by IELTS teachers."
+msgstr "Разделы Writing и Speaking проверяют и оценивают преподаватели IELTS."
 
 #: academor/templates/portals/customer/ielts_mock_landing.html:53
 msgid "No mock test credits."
@@ -8960,46 +9025,36 @@ msgstr "У вас нет кредитов на пробный тест. Купи
 
 #: academor/payments/views.py
 msgid ""
-"Your payment was successful and mock test credits were added to your "
-"account.\n"
+"Your payment was successful and mock test credits were added to your account.\n"
 "Our team will contact you shortly to send your portal login details."
 msgstr ""
-"Ваш платёж успешно выполнен, и на ваш счёт добавлена возможность пройти "
-"пробный тест.\n"
-"Наша команда скоро свяжется с вами, чтобы отправить данные для входа в "
-"портал."
+"Ваш платёж успешно выполнен, и на ваш счёт добавлена возможность пройти пробный тест.\n"
+"Наша команда скоро свяжется с вами, чтобы отправить данные для входа в портал."
 
 #: academor/payments/views.py
 #, python-format
 msgid ""
-"Your payment was successful and %(credits)s mock test credit(s) were added "
-"to your account.\n"
+"Your payment was successful and %(credits)s mock test credit(s) were added to your account.\n"
 "Our team will contact you shortly to send your portal login details."
 msgstr ""
-"Ваш платёж успешно выполнен, и на ваш счёт добавлено возможностей пробного "
-"теста: %(credits)s.\n"
-"Наша команда скоро свяжется с вами, чтобы отправить данные для входа в "
-"портал."
+"Ваш платёж успешно выполнен, и на ваш счёт добавлено возможностей пробного теста: %(credits)s.\n"
+"Наша команда скоро свяжется с вами, чтобы отправить данные для входа в портал."
 
 #: academor/payments/views.py
 msgid ""
-"Your payment was successful and mock test credits were added to your "
-"account.\n"
+"Your payment was successful and mock test credits were added to your account.\n"
 "You can start a mock test from your portal now."
 msgstr ""
-"Ваш платёж успешно выполнен, и на ваш счёт добавлена возможность пройти "
-"пробный тест.\n"
+"Ваш платёж успешно выполнен, и на ваш счёт добавлена возможность пройти пробный тест.\n"
 "Теперь вы можете начать пробный тест из своего портала."
 
 #: academor/payments/views.py
 #, python-format
 msgid ""
-"Your payment was successful and %(credits)s mock test credit(s) were added "
-"to your account.\n"
+"Your payment was successful and %(credits)s mock test credit(s) were added to your account.\n"
 "You can start a mock test from your portal now."
 msgstr ""
-"Ваш платёж успешно выполнен, и на ваш счёт добавлено возможностей пробного "
-"теста: %(credits)s.\n"
+"Ваш платёж успешно выполнен, и на ваш счёт добавлено возможностей пробного теста: %(credits)s.\n"
 "Теперь вы можете начать пробный тест из своего портала."
 
 #: academor/payments/admin.py
@@ -9011,9 +9066,8 @@ msgid "IELTS mock tests in real exam format"
 msgstr "Пробные тесты IELTS в формате реального экзамена"
 
 #: academor/templates/includes/home_ielts_mock_section.html
-#: academor/templates/includes/home_mock_price_card.html
-msgid "Mock"
-msgstr "Mock"
+msgid "Mock tests in real exam format"
+msgstr "Пробные тесты в формате реального экзамена"
 
 #: academor/templates/includes/home_mock_price_card.html
 #, python-format
@@ -9066,6 +9120,45 @@ msgstr "Реальный формат экзамена"
 msgid "Your results are scored by IELTS teachers"
 msgstr "Ваши результаты оцениваются преподавателями IELTS"
 
+#: academor/templates/portals/includes/mock_package_card.html
+msgid "Automatic scoring for both sections"
+msgstr "Оба раздела оцениваются автоматически"
+
+#: academor/templates/portals/customer/mock_packages.html
+msgid "Your credits"
+msgstr "Ваши кредиты"
+
+#: academor/templates/portals/customer/mock_packages.html
+msgid "IELTS credits"
+msgstr "Кредиты IELTS"
+
+#: academor/templates/portals/customer/mock_packages.html
+msgid "SAT credits"
+msgstr "Кредиты SAT"
+
+#: academor/templates/portals/customer/mock_packages.html
+msgid "Mock packages"
+msgstr "Пакеты mock-тестов"
+
+#: academor/templates/portals/customer/mock_packages.html
+msgid "Available packages"
+msgstr "Доступные пакеты"
+
+#: academor/templates/portals/customer/mock_packages.html
+msgid "Choose a package and pay securely to add credits to your account."
+msgstr "Выберите пакет и безопасно оплатите, чтобы добавить кредиты на счёт."
+
+#: academor/templates/portals/includes/mock_package_card.html
+msgid "credit"
+msgid_plural "credits"
+msgstr[0] "кредит"
+msgstr[1] "кредита"
+msgstr[2] "кредитов"
+
+#: academor/templates/includes/home_mock_price_card.html
+msgid "SAT sections"
+msgstr "Разделы SAT"
+
 #: academor/templates/includes/course_pay_card_mock_static.html
 msgid "Your results are scored by teachers"
 msgstr "Ваши результаты оцениваются преподавателями"
@@ -9080,13 +9173,13 @@ msgid ""
 "Writing and Speaking are reviewed and scored by IELTS teachers."
 msgstr ""
 "Один кредит даёт возможность начать полный пробный IELTS тест из четырёх "
-"разделов. Разделы Writing и Speaking проверяются и оцениваются преподавателями "
-"IELTS."
+"разделов. Разделы Writing и Speaking проверяются и оцениваются "
+"преподавателями IELTS."
 
 #: academor/templates/includes/home_mock_payment_modal.html
 msgid ""
-"After successful payment, our team will send your portal login details to the "
-"phone number you provide."
+"After successful payment, our team will send your portal login details to "
+"the phone number you provide."
 msgstr ""
 "После успешной оплаты наши сотрудники отправят данные для входа в портал на "
 "указанный вами номер телефона."
@@ -9095,38 +9188,6 @@ msgstr ""
 #: academor/templates/includes/home_mock_payment_modal.html
 msgid "Payment agreement"
 msgstr "Договор об оплате"
-
-#: academor/templates/includes/mock_payment_contract.html
-msgid "System information"
-msgstr "Информация о системе"
-
-#: academor/templates/includes/mock_payment_contract.html
-msgid ""
-"Academor provides an online IELTS Mock Test platform through the customer "
-"portal. The service is delivered digitally and does not include classroom "
-"lessons."
-msgstr ""
-"Academor предоставляет онлайн-платформу пробного IELTS теста через клиентский "
-"портал. Услуга оказывается в цифровом формате и не включает очные занятия."
-
-#: academor/templates/includes/mock_payment_contract.html
-msgid "Reading and Listening are completed and scored automatically in the system."
-msgstr "Разделы Reading и Listening выполняются и оцениваются в системе автоматически."
-
-#: academor/templates/includes/mock_payment_contract.html
-msgid ""
-"After successful payment, mock test credits are added to the Customer "
-"account in the portal. Portal login details are provided by Academor."
-msgstr ""
-"После успешной оплаты кредиты на пробный тест добавляются на счёт Клиента в "
-"портале. Данные для входа в портал предоставляет Academor."
-
-#: academor/templates/includes/mock_payment_contract.html
-msgid ""
-"A credit is consumed when the Customer starts a mock test section from the "
-"portal."
-msgstr ""
-"Кредит списывается, когда Клиент начинает раздел пробного теста в портале."
 
 #: academor/templates/includes/mock_payment_contract.html
 msgid ""
@@ -9142,32 +9203,31 @@ msgstr ""
 #: academor/templates/includes/mock_payment_contract.html
 #, python-format
 msgid ""
-"The Provider grants the Customer access to the online IELTS Mock Test "
-"service under the selected package «%(package_name)s», which includes "
-"%(credits_label)s."
+"The Provider grants the Customer access to the online mock test service "
+"under the selected package «%(package_name)s»."
 msgstr ""
-"Исполнитель предоставляет Клиенту доступ к онлайн-услуге пробного IELTS теста "
-"по выбранному пакету «%(package_name)s», который включает %(credits_label)s."
+"Исполнитель предоставляет Клиенту доступ к онлайн-услуге пробного теста по "
+"выбранному пакету «%(package_name)s»."
+
+#: academor/templates/includes/mock_payment_contract.html
+msgid "The service is provided remotely through the Academor customer portal."
+msgstr "Услуга оказывается удалённо через клиентский портал Academor."
 
 #: academor/templates/includes/mock_payment_contract.html
 msgid ""
-"The service is provided remotely through the Academor customer portal and "
-"includes timed mock test sections in the IELTS format."
+"Payment is made online through the secure payment system shown on the "
+"website."
 msgstr ""
-"Услуга оказывается удалённо через клиентский портал Academor и включает "
-"разделы пробного теста в формате IELTS с ограничением по времени."
-
-#: academor/templates/includes/mock_payment_contract.html
-msgid "Payment is made online through the secure payment system shown on the website."
-msgstr "Оплата производится онлайн через защищённую платёжную систему, указанную на сайте."
+"Оплата производится онлайн через защищённую платёжную систему, указанную на "
+"сайте."
 
 #: academor/templates/includes/mock_payment_contract.html
 msgid ""
-"Mock test credits are non-refundable once they have been used to start a "
-"mock test section, unless otherwise required by applicable law."
+"Used mock test access is non-refundable, unless otherwise required by "
+"applicable law."
 msgstr ""
-"Кредиты на пробный тест не подлежат возврату после начала раздела пробного "
-"теста, если иное не предусмотрено применимым законодательством."
+"Использованный доступ к пробному тесту не подлежит возврату, если иное не "
+"предусмотрено применимым законодательством."
 
 #: academor/templates/includes/mock_payment_contract.html
 msgid "3.1. Rights and obligations of the Provider:"
@@ -9175,26 +9235,18 @@ msgstr "3.1. Права и обязанности Исполнителя:"
 
 #: academor/templates/includes/mock_payment_contract.html
 msgid ""
-"3.1.1. To provide access to the online IELTS Mock Test platform after "
-"successful payment."
+"3.1.1. To provide access to the online mock test platform after successful "
+"payment."
 msgstr ""
-"3.1.1. Предоставить доступ к онлайн-платформе пробного IELTS теста после "
-"успешной оплаты."
+"3.1.1. Предоставить доступ к онлайн-платформе пробного теста после успешной "
+"оплаты."
 
 #: academor/templates/includes/mock_payment_contract.html
 msgid ""
-"3.1.2. To review and score Writing and Speaking sections through qualified "
-"IELTS teachers."
-msgstr ""
-"3.1.2. Проверять и оценивать разделы Writing и Speaking квалифицированными "
-"преподавателями IELTS."
-
-#: academor/templates/includes/mock_payment_contract.html
-msgid ""
-"3.1.3. To maintain the technical availability of the portal within "
+"3.1.2. To maintain the technical availability of the portal within "
 "reasonable limits."
 msgstr ""
-"3.1.3. Обеспечивать техническую доступность портала в разумных пределах."
+"3.1.2. Обеспечивать техническую доступность портала в разумных пределах."
 
 #: academor/templates/includes/mock_payment_contract.html
 msgid "3.2. Rights and obligations of the Customer:"
@@ -9202,19 +9254,19 @@ msgstr "3.2. Права и обязанности Клиента:"
 
 #: academor/templates/includes/mock_payment_contract.html
 msgid ""
-"3.2.1. To use purchased credits only for personal mock test practice "
+"3.2.1. To use the purchased package only for personal mock test practice "
 "through the assigned portal account."
 msgstr ""
-"3.2.1. Использовать приобретённые кредиты только для личной практики "
-"пробного теста через назначенный аккаунт портала."
+"3.2.1. Использовать приобретённый пакет только для личной практики пробного "
+"теста через назначенный аккаунт портала."
 
 #: academor/templates/includes/mock_payment_contract.html
 msgid ""
 "3.2.2. To provide accurate contact details and keep portal access "
 "credentials confidential."
 msgstr ""
-"3.2.2. Предоставлять точные контактные данные и сохранять конфиденциальность "
-"данных для входа в портал."
+"3.2.2. Предоставлять точные контактные данные и сохранять конфиденциальность"
+" данных для входа в портал."
 
 #: academor/templates/includes/mock_payment_contract.html
 msgid ""
@@ -9244,14 +9296,10 @@ msgstr "Выбранный пакет"
 #, python-format
 msgid ""
 "Upon payment of %(price)s AZN for «%(package)s», the Customer receives "
-"%(credits)s on the Academor customer portal. Each credit allows the "
-"Customer to start one full online IELTS mock test covering Reading, "
-"Listening, Writing, and Speaking."
+"access to the selected mock test package on the Academor customer portal."
 msgstr ""
-"После оплаты %(price)s AZN за «%(package)s» Клиент получает %(credits)s в "
-"клиентском портале Academor. Каждый кредит позволяет Клиенту начать один "
-"полный онлайн пробный IELTS тест, включающий Reading, Listening, Writing и "
-"Speaking."
+"После оплаты %(price)s AZN за «%(package)s» Клиент получает доступ к "
+"выбранному пакету пробного теста в клиентском портале Academor."
 
 #: academor/payments/forms.py
 msgid "I have read and accept the agreement."
@@ -9268,6 +9316,117 @@ msgstr "Отсутствует номер договора об оплате."
 #: academor/payments/forms.py
 msgid "Invalid payment agreement number."
 msgstr "Неверный номер договора об оплате."
+
+msgid "Complete the full mock in one session — like the Digital SAT."
+msgstr "Пройдите полный mock-тест за одну сессию — как Digital SAT."
+
+msgid "Complete the full mock in one session — just like the real IELTS exam."
+msgstr "Пройдите полный mock-тест за одну сессию — как настоящий IELTS."
+
+msgid ""
+"Each credit lets you start one full SAT mock test. One credit is used when "
+"you begin the first section."
+msgstr ""
+"Каждый кредит позволяет начать один полный SAT mock-тест. Один кредит "
+"списывается при старте первого раздела."
+
+msgid ""
+"Each credit lets you start one full IELTS mock test with all four sections. "
+"One credit is used when you begin the first section."
+msgstr ""
+"Каждый кредит позволяет начать один полный IELTS mock-тест из четырёх "
+"разделов. Один кредит списывается при старте первого раздела."
+
+msgid "%(program)s mock credits"
+msgstr "Кредиты %(program)s mock"
+
+msgid "One random SAT task is selected from each section."
+msgstr "Из каждого раздела выбирается одно случайное задание SAT."
+
+msgid "Sections follow the Digital SAT order:"
+msgstr "Разделы идут в порядке Digital SAT:"
+
+msgid ""
+"Both sections are scored automatically and converted to SAT section scores "
+"(200–800)."
+msgstr ""
+"Оба раздела оцениваются автоматически и переводятся в баллы разделов SAT "
+"(200–800)."
+
+msgid "Sections follow the real IELTS exam order:"
+msgstr "Разделы идут в порядке реального IELTS:"
+
+msgid "Listening and Reading are scored automatically."
+msgstr "Listening и Reading оцениваются автоматически."
+
+msgid "Writing and Speaking are reviewed and scored by IELTS teachers."
+msgstr "Writing и Speaking проверяются и оцениваются преподавателями IELTS."
+
+msgid "Choose which exam program you want to practice."
+msgstr "Выберите экзамен, который хотите потренировать."
+
+msgid "Choose a program"
+msgstr "Выберите программу"
+
+msgid "Open credits, history, and start options for each exam."
+msgstr "Откройте кредиты, историю и варианты старта для каждого экзамена."
+
+msgid "%(program_label)s credits: <strong>%(counter)s</strong>"
+msgid_plural "%(program_label)s credits: <strong>%(counter)s</strong>"
+msgstr[0] "Кредиты %(program_label)s: <strong>%(counter)s</strong>"
+msgstr[1] "Кредиты %(program_label)s: <strong>%(counter)s</strong>"
+msgstr[2] "Кредиты %(program_label)s: <strong>%(counter)s</strong>"
+
+msgid "Ready to start"
+msgstr "Готово к старту"
+
+msgid "No credits"
+msgstr "Нет кредитов"
+
+msgid "Continue"
+msgstr "Продолжить"
+
+msgid "Mock Test — %(program)s"
+msgstr "Mock-тест — %(program)s"
+
+msgid "%(program_label)s mock test"
+msgstr "Mock-тест %(program_label)s"
+
+msgid "View history"
+msgstr "Смотреть историю"
+
+msgid "Purchase a package to start your first mock test."
+msgstr "Купите пакет, чтобы начать первый mock-тест."
+
+msgid "Need more credits? Purchase a mock test package."
+msgstr "Нужно больше кредитов? Купите пакет mock-теста."
+
+msgid "Mock test · %(program)s"
+msgstr "Mock-тест · %(program)s"
+
+msgid "mocks · average score"
+msgstr "mock · средний балл"
+
+msgid "mocks · average band"
+msgstr "mock · средний band"
+
+msgid "Mock completed, awaiting grading."
+msgstr "Mock завершён, ожидается оценка."
+
+msgid "No mock tests completed yet."
+msgstr "Mock-тесты ещё не пройдены."
+
+msgid "Excellent"
+msgstr "Отлично"
+
+msgid "Good"
+msgstr "Хорошо"
+
+msgid "Average"
+msgstr "Средне"
+
+msgid "Weak"
+msgstr "Слабо"
 
 #~ msgid "Manual quizzes: fill teacher feedback, set score, and reviewed date."
 #~ msgstr "Manual quiz: заполните отзыв, балл и дату проверки."
@@ -10769,3 +10928,91 @@ msgstr "Неверный номер договора об оплате."
 
 #~ msgid "View quizzes for your assigned services."
 #~ msgstr "Просмотр quiz для назначенных вам услуг."
+
+#: portals/homework lesson feature
+msgid "Homework text"
+msgstr "Текст домашнего задания"
+
+#: portals/homework lesson feature
+msgid "Homework file"
+msgstr "Файл домашнего задания"
+
+#: portals/homework lesson feature
+msgid "Write your homework here…"
+msgstr "Напишите домашнее задание здесь…"
+
+#: portals/homework lesson feature
+msgid "PDF, Word (.doc, .docx), or text (.txt). Max 10 MB."
+msgstr "PDF, Word (.doc, .docx) или текст (.txt). Макс. 10 МБ."
+
+#: portals/homework lesson feature
+msgid "Upload a PDF, Word, or text file (.pdf, .doc, .docx, .txt)."
+msgstr "Загрузите PDF, Word или текстовый файл (.pdf, .doc, .docx, .txt)."
+
+#: portals/homework lesson feature
+msgid "File must be 10 MB or smaller."
+msgstr "Файл должен быть не больше 10 МБ."
+
+#: portals/homework lesson feature
+msgid "Enter homework text or upload a PDF, Word, or text file."
+msgstr "Введите текст или загрузите PDF, Word или текстовый файл."
+
+#: portals/homework lesson feature
+msgid "Homework submitted successfully."
+msgstr "Домашнее задание успешно отправлено."
+
+#: portals/homework lesson feature
+msgid "Submit homework"
+msgstr "Отправить задание"
+
+#: portals/homework lesson feature
+msgid "Update homework"
+msgstr "Обновить задание"
+
+#: portals/homework lesson feature
+msgid "Download file"
+msgstr "Скачать файл"
+
+#: portals/homework lesson feature
+msgid "No homework submitted yet."
+msgstr "Домашнее задание ещё не отправлено."
+
+#: portals/homework lesson feature
+msgid "Student homework"
+msgstr "Домашние задания учеников"
+
+#: portals/homework lesson feature
+msgid "No homework submitted for this lesson yet."
+msgstr "По этому уроку ещё нет домашних заданий."
+
+#: portals/homework lesson feature
+msgid "Submitted %(when)s"
+msgstr "Отправлено: %(when)s"
+
+#: portals/homework lesson feature
+msgid "Lesson homework"
+msgstr "Домашнее задание к уроку"
+
+#: portals/homework lesson feature
+msgid "Lesson homeworks"
+msgstr "Домашние задания к урокам"
+
+#: portals/homework lesson feature
+msgid "Original filename"
+msgstr "Исходное имя файла"
+
+#: portals/homework lesson feature
+msgid "File type"
+msgstr "Тип файла"
+
+#: portals/homework lesson feature
+msgid "Submitted at"
+msgstr "Отправлено"
+
+#: academor/templates/portals/login.html
+msgid "Assessment"
+msgstr "Оценка"
+
+#: academor/templates/portals/login.html
+msgid "Results"
+msgstr "Результаты"

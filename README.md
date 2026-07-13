@@ -1,8 +1,8 @@
 # Academor
 
-Public website and CMS for **Academor**, an English-language and test-prep education centre in Baku, Azerbaijan. The site promotes courses (IELTS, GMAT, GRE, SAT, YÖS, ALES, and more), study-abroad programmes, team profiles, level tests, English conversation topics, blog posts, reviews, and contact flows. Content is managed in Django admin; rich text fields use CKEditor where configured.
+Public website and CMS for **Academor**, an English-language and test-prep education centre in Baku, Azerbaijan. The site promotes courses (IELTS, GMAT, GRE, SAT, YÖS, ALES, and more), study-abroad programmes, team profiles, level tests, English conversation topics, blog posts, reviews, contact flows, and **paid mock-test packages**. Content is managed in Django admin; rich text fields use CKEditor where configured.
 
-A separate **student portal** (`/portal/`) gives teachers, students, and parents access to schedules, lessons, attendance, scores, quizzes, classrooms, and notifications — with auth isolated from the Django admin session.
+A separate **portal** (`/portal/`) gives **teachers**, **students**, **parents**, and **customers** (paid mock buyers) access to schedules, lessons, attendance, scores, quizzes, classrooms, notifications, and full exam mocks (IELTS and SAT) — with auth isolated from the Django admin session.
 
 **Production:** [academor.az](https://academor.az)
 
@@ -14,12 +14,22 @@ Django **monolith** with server-rendered HTML templates. There is no separate fr
 | --- | --- |
 | Public views | `academor/projects/views/` |
 | Portal views | `academor/portals/views/` |
+| Payments | `academor/payments/` (courses + mock packages) |
 | Query + cache layer | `academor/projects/utils/queries.py` |
 | Cache invalidation | `academor/projects/signals.py` |
 | CMS admin | `academor/projects/admin/admin_v1.py`, `academor/portals/admin/admin_v1.py` |
 | Site templates | `academor/templates/` (public + `portals/` subtree) |
 | Static assets | `academor/projects/static/`, `academor/portals/static/` (Bootstrap 5, custom CSS/JS) |
 | Translations | `academor/locale/{az,en,ru}/` |
+
+```
+Public site (projects)          Portal (portals)              Payments
+─────────────────────           ────────────────              ────────
+Marketing CMS                   Role dashboards               United Payment AZ
+Courses / abroad / blog         Quizzes & scores              Course enrollment
+Mock catalog (/mock-tests/)  ←→ IELTS & SAT mock attempts  ←→ Mock credits
+Navbar portal login             Schedule, lessons, attendance Contracts / fulfill
+```
 
 ## Stack
 
@@ -30,6 +40,7 @@ Django **monolith** with server-rendered HTML templates. There is no separate fr
 | Database | PostgreSQL 15 |
 | Templates | Server-rendered HTML (`academor/templates/`) |
 | Frontend | Bootstrap 5.3, vanilla JS, Swiper, Font Awesome (no bundler) |
+| Portal UI | Custom shell CSS/JS, Tabler icons, Inter font |
 | WSGI (prod) | Gunicorn (2 workers) behind Nginx |
 | Dependency install | [uv](https://github.com/astral-sh/uv) + `pyproject.toml` / `uv.lock` |
 | Images | Pillow, django-imagekit |
@@ -45,14 +56,14 @@ Django **monolith** with server-rendered HTML templates. There is no separate fr
 
 ### `projects` — public site + CMS
 
-Handles almost all business logic: models, views, admin, sitemaps, middleware helpers, static assets under `projects/static/`, and query/cache layers in `projects/utils/`.
+Handles public business logic: models, views, admin, sitemaps, middleware helpers, static assets under `projects/static/`, and query/cache layers in `projects/utils/`.
 
 **Main content models**
 
 | Model | Purpose |
 | --- | --- |
-| **Service** | Course/category pages (slug URLs, instructors, price packages, card icons) |
-| **CoursePricePackage** | Tiered pricing per course; optional homepage carousel and package tabs |
+| **Service** | Course/category pages (slug URLs, instructors, price packages, card icons). Flags `ielts_mock_test` / `sat_mock_test` mark mock products |
+| **CoursePricePackage** | Tiered pricing; for mocks, `credits` grants portal mock attempts after payment |
 | **Sale** | Promotions: homepage banners, optional `%` badge, optional discount on linked course prices, optional `end_date` |
 | **Team**, **Review** | Staff profiles and testimonials |
 | **BlogPost**, **BlogPostImage**, **ContentTag** | Blog posts, gallery images, tag filtering |
@@ -60,8 +71,8 @@ Handles almost all business logic: models, views, admin, sitemaps, middleware he
 | **Contact**, **ContactInquiry** | Contact page settings and form submissions |
 | **AbroadModel**, **University**, **StudyAbroadSection**, **StudyAbroadAdvantage** | Study-abroad programmes |
 | **Test**, **Question**, **Option**, **UserResult** | Level-test flow |
-| **Media** | Shared uploads (hero backgrounds, sale card images, etc.) |
-| **Tagline** | Per-page banner taglines (home, courses, blog, etc.) |
+| **Media** | Shared uploads (hero backgrounds, sale card images, mock-tests page background, etc.) |
+| **Tagline** | Per-page banner taglines (home, courses, blog, mock tests, etc.) |
 | **SiteFaqEntry** | FAQ entries for the services page |
 
 **English conversation topics** are static Python data in `projects/conversation_topics_data.py` (not CMS-managed).
@@ -73,6 +84,8 @@ Handles almost all business logic: models, views, admin, sitemaps, middleware he
 | `/` | Home |
 | `/courses/` | Course listing |
 | `/courses/<slug>/` | Course detail + checkout entry |
+| `/mock-tests/` | Mock-test package listing (IELTS / SAT) |
+| `/mock-tests/<slug>/` | Mock package detail + checkout entry |
 | `/about/`, `/services/`, `/contact/` | Institutional pages |
 | `/abroad/`, `/abroad/<slug>/`, `/abroad/universities/<slug>/` | Study abroad |
 | `/team/`, `/team/<slug>/` | Team listing and profiles |
@@ -83,7 +96,9 @@ Handles almost all business logic: models, views, admin, sitemaps, middleware he
 
 Legacy URL patterns (PK-based blog/team/abroad URLs, old `/learn/english-conversation-topics/` paths) redirect to slug-based routes where applicable.
 
-### `payments` — online course checkout
+Mock-test services are listed under `/mock-tests/`, not under `/courses/`.
+
+### `payments` — course and mock checkout
 
 Integrates with **United Payment Azerbaijan**:
 
@@ -94,95 +109,130 @@ Integrates with **United Payment Azerbaijan**:
 | `/payment/start/<amount>/` | Generic amount checkout |
 | `/payment/success/`, `/cancel/`, `/decline/` | Gateway callbacks |
 
-After successful payment:
+After successful **course** payment:
 
 - **Payment** record is updated with buyer info and transaction details
 - **CourseEnrollment** is created with a generated training agreement (contract HTML)
 - Sale discounts from admin are applied when `Sale.apply_to_service_prices` is enabled
 - Admin can view enrollment contracts and export PDF from the payments admin
 
+After successful **mock** payment (`product_type=mock_test`):
+
+- `fulfill_mock_purchase` credits the buyer’s **CustomerProfile** (`ielts_mock_credits` or `sat_mock_credits` from the package’s `credits`)
+- Creates enrollment + mock contract HTML (`payments/mock_fulfillment.py`, `mock_contract.py`)
+- Public checkout can create a portal customer account (`payments/mock_customer.py`) if the buyer is new
+- Customers can also buy again from `/portal/customer/mock-packages/`
+
 Root URLconf also exposes `/sitemap.xml`, `/robots.txt`, `/i18n/setlang/`, and a secret **ADMIN_URL** prefix.
 
-### `portals` — student / teacher / parent portal
+### `portals` — role portal (teachers, students, parents, customers)
 
-Role-based portal at **`/portal/`** for day-to-day learning workflows. Portal users log in via `/portal/login/` or the login modal on the public site navbar; authenticated users see a **Portal** button that routes to their role dashboard.
+Role-based portal at **`/portal/`** for day-to-day learning and mock-exam workflows. Users log in via `/portal/login/` or the login modal on the public site navbar; authenticated users see a **Portal** button that routes to their role dashboard.
 
-**Auth isolation:** Portal uses its own `portal_sessionid` cookie (scoped to `/portal/` paths) and middleware (`PortalAuthenticationMiddleware`, `PortalSessionMiddleware`), separate from Django admin's `sessionid`. A staff member can stay logged into admin and portal at the same time without session clashes.
+**Auth isolation:** Portal uses its own `portal_sessionid` cookie (scoped to `/portal/` paths) and middleware (`PortalAuthenticationMiddleware`, `PortalSessionMiddleware`, `PortalFragmentMiddleware`), separate from Django admin’s `sessionid`. A staff member can stay logged into admin and portal at the same time without session clashes. Portal-only users are blocked from Django admin (`AdminAccessMiddleware`).
 
-**Roles**
+Role resolution order (`get_portal_role`): **teacher** → **student** → **parent** → **customer**.
+
+#### Roles
 
 | Role | Main capabilities |
 | --- | --- |
-| **Teacher** | Study groups, weekly schedule, lessons (with attachments and video links), attendance (per session or per student), scores and weekly score entry, quiz management, manual grading review, IELTS mock result review, classrooms/textbooks |
-| **Student** | Schedule, lessons, scores, quiz categories and timed attempts (multiple formats), IELTS full mock test, classrooms, notifications |
-| **Parent** | Read-only child views: schedule, lessons, scores, quiz results, attendance, classrooms (child selector when multiple children are linked) |
+| **Teacher** | Study groups, schedule (view; create/edit often admin-managed), lessons (attachments + video), attendance, scores / weekly scores, quiz list + manual review, mock result review, per-student quiz/mock access toggles, classrooms/textbooks, notifications |
+| **Student** | Schedule, lessons, scores, quiz categories and timed attempts, **IELTS / SAT mock picker → landing → chained attempt**, classrooms, notifications |
+| **Parent** | Read-only child views: schedule, lessons, scores, quiz results, attendance, classrooms, mock detail (child selector when multiple children are linked) |
+| **Customer** | Paid mock buyer (not a full student): dashboard, mock packages + portal checkout, mock picker/landing/start/complete, quizzes **only inside an active mock**, notifications, score detail |
 
-**Main models** (`portals/models/`)
+#### Main models (`portals/models/`)
 
 | Model | Purpose |
 | --- | --- |
-| **StudentProfile**, **TeacherProfile**, **ParentProfile** | Portal user profiles linked to Django `User` |
-| **StudentCourseSpecialization**, **TeacherCourseSpecialization** | Which course types (IELTS, GMAT, etc.) a user is enrolled in or teaches |
-| **StudyGroup** | Teacher-led group with students and linked course types |
+| **StudentProfile**, **TeacherProfile**, **ParentProfile**, **CustomerProfile** | Portal user profiles linked to Django `User`. Customers hold `ielts_mock_credits` / `sat_mock_credits` and an optional reviewing teacher |
+| **StudentCourseSpecialization**, **TeacherCourseSpecialization** | Which course types (IELTS, SAT, GMAT, etc.) a user is enrolled in or teaches |
+| **StudyGroup** | Teacher-led group with students and M2M to `projects.Service` |
 | **Schedule**, **Attendance** | Recurring slots and attendance marks |
 | **Lesson**, **LessonCategory**, **LessonAttachment**, **VideoRecord** | Lesson content, PDF/image/video attachments, and recordings |
 | **Classroom** | Group- or teacher-scoped textbook/material spaces (PDF, description) |
 | **Score**, **WeeklyStudentScore** | Teacher-entered assessment scores and weekly rollups |
-| **Quiz**, **QuizCategory**, **QuizQuestion**, **QuizResult** | Quiz builder, MCQ question bank, attempts, and results |
+| **Quiz**, **QuizCategory**, **QuizQuestion**, **QuizResult** | Quiz builder, question bank, attempts, and results (`is_ielts` / `is_sat`, section flags) |
 | **ListeningAudio**, **ListeningQuestion** | IELTS-style listening sections (audio clips + questions) |
 | **ReadingPassage**, **ReadingQuestionGroup**, **ReadingQuestion** | IELTS-style reading passages with grouped auto-scored questions |
 | **SpeakingPart**, **SpeakingQuestion**, **SpeakingRecording** | IELTS-style speaking tasks with student audio uploads |
-| **IeltsMockTestAttempt** | Full mock session chaining Listening → Reading → Writing → Speaking |
+| **IeltsMockTestAttempt** (`MockTestAttempt` alias) | Full mock session; student **xor** customer; `exam_program` is `ielts` or `sat` |
+| **StudentMockAccess** | Teacher unlock per student + exam program |
 | **PortalNotification**, **QuizResultReview** | In-app notifications and teacher review of manual quiz answers |
 
-**Quiz formats**
+Program config lives in `portals/utils/mock_programs.py`.
 
-Each `Quiz` has exactly one format flag (`is_listening`, `is_essay`, `is_speaking`, or `is_reading`); standard MCQ quizzes have all flags off.
+#### Quiz formats
+
+Each `Quiz` has exactly one format flag (`is_listening`, `is_essay`, `is_speaking`, or `is_reading`); standard MCQ quizzes have all flags off. Quizzes may also be tagged `is_ielts` or `is_sat` (mutually exclusive) for mock banks.
 
 | Format | Grading | Student route | Notes |
 | --- | --- | --- | --- |
 | **Standard MCQ** | Auto | `/portal/student/quizzes/<id>/take/` | Random question selection from `QuizQuestion` bank; optional time limit |
-| **Reading** | Auto (IELTS band) | `/portal/student/quizzes/<id>/reading/` | Passages, question groups, 14+ IELTS question types (TFNG, matching, completion, etc.) |
-| **Listening** | Manual (teacher) | Same take flow with listening UI | Audio clips (`ListeningAudio`) and linked questions; teacher reviews submission |
+| **Reading** | Auto (IELTS band / SAT scaled) | `/portal/student/quizzes/<id>/reading/` | Passages, question groups, 14+ IELTS question types (TFNG, matching, completion, etc.) |
+| **Listening** | Auto in mocks; teacher review outside mocks as configured | Manual take UI with listening audio | Audio clips (`ListeningAudio`) and linked questions |
 | **Writing** (`is_essay`) | Manual (teacher) | `/portal/student/quizzes/<id>/manual/` | Free-text essay; teacher scores and writes corrections |
 | **Speaking** (`is_speaking`) | Manual (teacher) | `/portal/student/quizzes/<id>/speaking/` | Part 1/2/3 prompts; student records audio; teacher reviews |
 
-Quizzes are scoped by **course type** (`QuizCategory.service`) and **study group** membership — a student only sees quizzes for services they are enrolled in and groups they belong to. Teachers see quizzes for their specializations and groups.
+Quizzes are scoped by **course type** (`QuizCategory.service`) and **study group** membership — a student only sees quizzes for services they are enrolled in and groups they belong to. Teachers see quizzes for their specializations and groups. Customers only take quizzes while an active mock attempt is in progress.
 
-**IELTS full mock test**
+#### Full mock tests (IELTS & SAT)
 
-Students with IELTS course access can start a chained mock at `/portal/student/ielts-mock/`:
+Program-aware routes replace the older IELTS-only paths. Legacy `/portal/student/ielts-mock/` and `/portal/customer/ielts-mock/` URLs redirect into the new flow.
 
-1. **Listening** — auto-scored quiz picked from available listening quizzes
-2. **Reading** — auto-scored reading quiz
-3. **Writing** — manual essay quiz
-4. **Speaking** — manual speaking quiz
+| Program | Sections | Scoring |
+| --- | --- | --- |
+| **IELTS** | Listening → Reading → Writing → Speaking | IELTS band (0–9) |
+| **SAT** | Reading & Writing → Math | Scaled section scores (200–800) and total (up to 1600) |
 
-Progress is tracked in `IeltsMockTestAttempt`; Listening and Reading bands are computed automatically, Writing and Speaking await teacher review. Teachers view completed mocks at `/portal/teacher/ielts-mock/<id>/`. Quiz-taking routes are excluded from AJAX fragment navigation so timers and recordings are not interrupted.
+**Student flow**
 
-**Portal routes** (`portals/urls_v1.py`, prefix `/portal/`)
+1. Course specialization for `ielts` and/or `sat` → available programs
+2. Optional `StudentMockAccess` unlock by teacher
+3. `/portal/student/mock/` picker (or single-program landing at `/portal/student/mock/<program>/`)
+4. Start → `IeltsMockTestAttempt` → section quiz URLs → complete page
+5. Writing/Speaking (IELTS) await teacher review; parents can open mock detail
+
+**Customer flow**
+
+1. Buy package on public `/mock-tests/<slug>/` or portal `/portal/customer/mock-packages/`
+2. Payment fulfillment grants credits on `CustomerProfile`
+3. `/portal/customer/mock/` picker → landing → start (one credit consumed when the first section starts)
+4. Assigned reviewing teacher grades Writing/Speaking
+
+Teachers open mock detail at `/portal/teacher/mock/<id>/` (legacy `ielts-mock` URL still works). Quiz-taking and mock flows are excluded from AJAX fragment navigation so timers and recordings are not interrupted.
+
+#### Portal routes (`portals/urls_v1.py`, prefix `/portal/`)
 
 | Path | Page |
 | --- | --- |
 | `/portal/login/`, `/portal/logout/` | Portal auth |
 | `/portal/`, `/portal/profile/` | Role-aware dashboard redirect; profile edit (avatar, bio, contact links) |
-| `/portal/teacher/…` | Dashboard, groups, schedule CRUD, lessons CRUD, attendance, scores, weekly scores, quizzes, quiz result review, classrooms, IELTS mock detail, notifications |
-| `/portal/student/…` | Dashboard, schedule, lessons, scores, quizzes (start/take/submit per format), IELTS mock, classrooms, notifications |
-| `/portal/parent/…` | Dashboard and child-linked schedule, lessons, scores, attendance, quiz categories/results, classrooms, notifications |
+| `/portal/teacher/…` | Dashboard, groups, schedule, lessons, attendance, scores, weekly scores, quizzes, quiz result review, classrooms, mock detail, mock/quiz access toggles, notifications |
+| `/portal/student/…` | Dashboard, schedule, lessons, scores, quizzes (start/take/submit per format), **`mock/` picker and `mock/<program>/`**, classrooms, notifications |
+| `/portal/customer/…` | Dashboard, notifications, **`mock/`**, **`mock-packages/`**, package buy, quiz take routes (mock-only), score detail |
+| `/portal/parent/…` | Dashboard and child-linked schedule, lessons, scores, attendance, classrooms, mock detail, notifications |
 
-**AJAX fragment navigation:** Most portal pages support in-app navigation without full page reloads. `portal-nav-ajax.js` intercepts internal links, fetches HTML with `X-Portal-Fragment: 1`, and swaps content via `PortalFragmentMiddleware`. Quiz take pages, IELTS mock flows, login/logout, and some heavy list views are excluded.
+#### AJAX fragment navigation
 
-**Portal admin** (`portals/admin/admin_v1.py`): user creation with role assignment, study groups, schedule, lessons, quiz builder (including reading/listening/speaking inlines), question bank, attendance, scores, classrooms — with branded templates under `templates/admin/portals/` and custom JS for reading passage and quiz question editing.
+Most portal pages support in-app navigation without full page reloads. `portal-nav-ajax.js` intercepts internal links, fetches HTML with `X-Portal-Fragment: 1`, and swaps content via `PortalFragmentMiddleware`. Quiz take pages, mock flows, login/logout, and some heavy list views are excluded.
 
-**Portal templates & static**
+#### Portal admin
+
+`portals/admin/admin_v1.py`: user creation with role assignment (including customers), study groups, schedule, lessons, quiz builder (reading/listening/speaking inlines), question bank, attendance, scores, classrooms, mock access — with branded templates under `templates/admin/portals/` and custom JS for reading passage and quiz question editing.
+
+Quiz creation, study-group editing, and much of schedule management are admin-side; the live teacher portal focuses on operational workflows (lessons, attendance, reviews). See `templates/portals/teacher/README.md`.
+
+#### Portal templates & static
 
 | Location | Contents |
 | --- | --- |
-| `templates/portals/` | Role dashboards, quiz play UI (reading tabs, speaking recorder, manual essay), lesson forms, shared includes |
-| `portals/static/portals/css/` | Portal shell, redesign tokens, quiz-reading/speaking styles, lesson video lightbox |
-| `portals/static/portals/js/` | `portal-nav-ajax.js`, `portal-init.js`, `quiz-take-reading.js`, `quiz-take-speaking.js`, `quiz-take-manual.js`, `quiz-start-gate.js`, `quiz-leave-guard.js`, lesson and score helpers |
+| `templates/portals/` | Role dashboards (`teacher/`, `student/`, `parent/`, `customer/`), quiz play UI, mock picker/landing, shared includes |
+| `portals/static/portals/css/` | Portal shell, mock-packages / mock-picker, quiz-reading/speaking styles, lesson video lightbox |
+| `portals/static/portals/js/` | `portal-nav-ajax.js`, `portal-init.js`, quiz take/leave guards, lesson and score helpers |
 
-**JSON resource banks** (loaded via management commands)
+#### JSON resource banks
 
 | Directory | Purpose |
 | --- | --- |
@@ -190,7 +240,7 @@ Progress is tracked in `IeltsMockTestAttempt`; Listening and Reading bands are c
 | `portals/resources/reading_questions/` | IELTS reading tests (`ielts_reading_test_*.json`, 40 questions each) |
 | `portals/resources/speaking_questions/` | IELTS speaking tests (parts and prompts) |
 
-**Portal management commands**
+#### Portal management commands
 
 | Command | Purpose |
 | --- | --- |
@@ -200,7 +250,14 @@ Progress is tracked in `IeltsMockTestAttempt`; Listening and Reading bands are c
 | `python manage.py load_speaking_quiz_resources` | Import speaking quizzes from `portals/resources/speaking_questions/` (`--file`, `--keep-old`) |
 | `python manage.py generate_ielts_reading_bank` | Regenerate reading JSON from built-in topic bank (tests 2–51; `--dry-run` to validate only) |
 
-**Portal tests:** `python manage.py test portals` — auth isolation, quiz submit/visibility/manual grading, reading and speaking flows, IELTS mock test, notifications, classrooms, attendance, schedule, weekly scores, teacher lessons, admin forms, AJAX fragments, resource loaders.
+#### Portal tests
+
+```bash
+cd academor
+python manage.py test portals
+```
+
+Coverage includes auth isolation, quiz submit/visibility/manual grading, reading and speaking flows, IELTS/SAT mock tests, customer mock credits, notifications, classrooms, attendance, schedule, weekly scores, teacher lessons, admin forms, AJAX fragments, and resource loaders. Payments also has mock enrollment / portal payment tests under `payments/tests/`.
 
 ## Repository layout
 
@@ -208,10 +265,10 @@ Progress is tracked in `IeltsMockTestAttempt`; Listening and Reading bands are c
 Academor/
 ├── academor/                    # Django project root (manage.py lives here)
 │   ├── academor/                # settings, urls, wsgi, middleware, env_load
-│   ├── projects/                # main app: models, views, admin, signals, static, migrations
-│   ├── portals/                 # student/teacher/parent portal: auth, quizzes, schedule, admin
-│   ├── payments/                # payment gateway + enrollment
-│   ├── templates/               # site HTML + includes
+│   ├── projects/                # public CMS: models, views, admin, signals, static
+│   ├── portals/                 # role portal: auth, quizzes, mocks, schedule, admin
+│   ├── payments/                # gateway + course/mock enrollment & fulfillment
+│   ├── templates/               # public HTML + portals/ + payment/
 │   ├── locale/                  # az / en / ru translations
 │   ├── media/                   # uploads (gitignored)
 │   └── staticfiles/             # collectstatic output (gitignored)
@@ -227,7 +284,7 @@ Academor/
 └── README.md
 ```
 
-Environment files are loaded from `docker/.env` first, then `academor/.env` (local overrides). Never commit real secrets.
+Environment files are loaded from `docker/.env` first, then project `.env` / `academor/.env` (local overrides). Never commit real secrets.
 
 ## Environment variables
 
@@ -259,7 +316,7 @@ Environment files are loaded from `docker/.env` first, then `academor/.env` (loc
 | `TURNSTILE_SITE_KEY` | Widget site key (empty = Turnstile disabled) |
 | `TURNSTILE_SECRET_KEY` | Server-side verification key |
 
-### United Payment (course checkout)
+### United Payment (course + mock checkout)
 
 | Variable | Purpose |
 | --- | --- |
@@ -342,7 +399,7 @@ python manage.py runserver
 
 Open `http://127.0.0.1:8000/` and admin at `http://127.0.0.1:8000/<ADMIN_URL>`. Portal login is at `http://127.0.0.1:8000/portal/login/`.
 
-Admin UI is always **English** regardless of the public site language (`CustomLocaleMiddleware`).
+Admin UI language follows `ADMIN_LANGUAGE_CODE` in settings (currently `az`), forced by `CustomLocaleMiddleware` regardless of the public site language cookie.
 
 ### 4. Translations (after editing `.po` files)
 
@@ -416,13 +473,13 @@ In **Sales**:
 The custom admin includes:
 
 - **Public site CMS** (`projects/admin/admin_v1.py`): branded templates under `templates/admin/`, inline help panels, CKEditor, payment/enrollment management
-- **Portal CMS** (`portals/admin/admin_v1.py`): portal user roles, study groups, schedule, lessons, quizzes, question bank, attendance, scores, classrooms — with portal-specific templates under `templates/admin/portals/`
+- **Portal CMS** (`portals/admin/admin_v1.py`): portal user roles (teacher/student/parent/customer), study groups, schedule, lessons, quizzes, question bank, attendance, scores, classrooms — with portal-specific templates under `templates/admin/portals/`
 
 Shared patterns across both:
 
 - Image compression on upload (`AdminImageCompressMixin`)
 - List-editable fields and custom filters for common workflows
-- Contract PDF export for course enrollments (payments admin)
+- Contract PDF export for course and mock enrollments (payments admin)
 
 ## Management commands
 
@@ -433,11 +490,10 @@ Shared patterns across both:
 
 ### Running tests
 
-Portal app tests live under `portals/tests/` (see portal section above for coverage areas):
-
 ```bash
 cd academor
 python manage.py test portals
+python manage.py test payments
 ```
 
 ## Security notes
@@ -450,7 +506,7 @@ python manage.py test portals
 
 ## Known limitations
 
-- **Limited automated tests** — portal app has test coverage (`portals/tests/`); public site and payments flows are still mostly manual.
+- **Limited automated tests** — portal and payments mock flows have coverage; much of the public site is still manual.
 - **No CI/CD** — deploy is manual via Docker Compose.
 - **Conversation topics** are code-managed, not editable in admin.
 - **LocMem cache** does not share state across Gunicorn workers (by design; invalidated via signals).

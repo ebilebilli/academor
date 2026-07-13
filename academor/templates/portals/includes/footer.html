@@ -1,18 +1,7 @@
 {% load i18n static %}
 <footer class="admin-footer">
-  <img
-    src="{% static 'portals/img/footer-formula.webp' %}"
-    alt=""
-    class="admin-footer-formula"
-    width="220"
-    height="56"
-    loading="lazy"
-    decoding="async"
-    aria-hidden="true"
-  >
-  <div class="container-fluid px-3 px-lg-4">
-    <div class="admin-footer-start">
-      <span class="admin-footer-copy">&copy; {% now "Y" %} {% trans 'Academor' %}</span>
-    </div>
+  <div class="admin-footer-inner">
+    <img src="{% static 'assets/img/logo.webp' %}" alt="" class="admin-footer-logo" aria-hidden="true" width="120" height="40" loading="lazy" decoding="async">
+    <p class="mb-0 small admin-footer-copy">© {% now "Y" %} Academor. {% trans "All rights reserved." %}</p>
   </div>
 </footer>

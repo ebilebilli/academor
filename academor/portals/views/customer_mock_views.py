@@ -66,7 +66,10 @@ class CustomerMockLandingView(CustomerRequiredMixin, View):
 
         can_start = customer_can_start_mock(profile.pk, program)
         missing_sections = get_missing_customer_mock_sections(exam_program=program) if can_start else []
-        missing_labels = [get_section_label(program, section) for section in missing_sections]
+        missing_labels = [
+            get_section_label(program, section, translate=False)
+            for section in missing_sections
+        ]
         program_credits = profile.mock_credits_for_program(program)
         return render(
             request,

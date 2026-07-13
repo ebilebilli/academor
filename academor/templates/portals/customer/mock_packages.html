@@ -1,113 +1,58 @@
 {% extends "portals/base.html" %}
-
 {% load i18n static %}
-
-
 
 {% block title %}{% trans 'Paket al' %}{% endblock %}
 
-
-
 {% block extra_css %}
-
-<link rel="stylesheet" href="{% static 'assets/css/payment-ui.css' %}">
-
+<link rel="stylesheet" href="{% static 'portals/css/mock-packages.css' %}?v=20260712c">
 {% endblock %}
-
-
 
 {% block content %}
-
 {% include "portals/includes/portal_page_hero.html" with title=_('Paket al') subtitle=_('Paket seçin və hesabınıza kredit əlavə etmək üçün təhlükəsiz ödəniş edin.') icon="ti-shopping-cart" lottie="portals/animations/study.lottie" %}
 
-
-
-<section class="ds-card mb-4">
-
-  <p class="mb-0">
-    {% trans 'IELTS credits:' %} <strong>{{ customer.ielts_mock_credits }}</strong>
-    · {% trans 'SAT credits:' %} <strong>{{ customer.sat_mock_credits }}</strong>
-  </p>
-
+<section class="mp-balance mb-4" aria-label="{% trans 'Your credits' %}">
+  <div class="mp-balance__card s-stat--indigo">
+    <div class="mp-balance__icon" aria-hidden="true">
+      <i class="ti ti-clipboard-list"></i>
+    </div>
+    <div class="mp-balance__body">
+      <span class="mp-balance__label">{% trans 'IELTS credits' %}</span>
+      <strong class="mp-balance__value">{{ customer.ielts_mock_credits }}</strong>
+    </div>
+  </div>
+  <div class="mp-balance__card s-stat--teal">
+    <div class="mp-balance__icon" aria-hidden="true">
+      <i class="ti ti-notebook"></i>
+    </div>
+    <div class="mp-balance__body">
+      <span class="mp-balance__label">{% trans 'SAT credits' %}</span>
+      <strong class="mp-balance__value">{{ customer.sat_mock_credits }}</strong>
+    </div>
+  </div>
 </section>
-
-
 
 {% if mock_services %}
+<section class="mp-section ds-card mb-4" aria-label="{% trans 'Mock packages' %}">
+  <header class="mp-section__head">
+    <h2 class="mp-section__title">{% trans 'Available packages' %}</h2>
+    <p class="mp-section__hint mb-0">{% trans 'Choose a package and pay securely to add credits to your account.' %}</p>
+  </header>
 
-  {% for service in mock_services %}
-
-  <section class="ds-card mb-4">
-
-    <h2 class="h5 mb-3">{{ service.course.name }}</h2>
-
-    <div class="course-pay-block">
-
-      <ul class="course-pay-packages list-unstyled mb-0" role="listbox" aria-label="{{ service.course.name }}">
-
-        {% for pkg in service.packages %}
-
-        <li class="course-pay-packages__item mb-3">
-
-          <article class="course-pay-card">
-
-            <div class="course-pay-card__header">
-
-              <h3 class="course-pay-card__name h6 mb-0">{{ pkg.name }}</h3>
-
-            </div>
-
-            <p class="course-pay-card__price mb-0">
-
-              <span class="course-pay-card__amount">{{ pkg.price_display }}</span>
-
-              <span class="course-pay-card__currency">AZN</span>
-
-            </p>
-
-            {% include "includes/course_pay_card_mock_static.html" with course=service.course pkg=pkg %}
-
-            <div class="course-pay-card__cta-slot">
-
-            <form method="post" action="{% url 'portals:customer-mock-payment-start' slug=service.course.slug %}" class="w-100">
-
-              {% csrf_token %}
-
-              <input type="hidden" name="price_package_id" value="{{ pkg.id }}">
-
-              <button type="submit" class="btn btn-primary rounded-pill fw-semibold w-100 course-pay-card__cta">
-
-                {% trans "Buy now" %}
-
-              </button>
-
-            </form>
-
-            </div>
-
-          </article>
-
-        </li>
-
-        {% endfor %}
-
-      </ul>
-
-    </div>
-
-  </section>
-
-  {% endfor %}
-
-{% else %}
-
-<section class="ds-card">
-
-  <p class="mb-0 text-muted">{% trans 'No packages are available right now. Please contact Academor.' %}</p>
-
+  <div class="mp-pack-grid">
+    {% for service in mock_services %}
+      {% url 'portals:customer-mock-payment-start' slug=service.course.slug as buy_url %}
+      {% for pkg in service.packages %}
+        {% include "portals/includes/mock_package_card.html" with pkg=pkg exam_program=service.exam checkout_url=buy_url %}
+      {% endfor %}
+    {% endfor %}
+  </div>
 </section>
-
+{% else %}
+<section class="ds-card mp-empty">
+  <div class="mp-empty__icon" aria-hidden="true">
+    <i class="ti ti-book-off"></i>
+  </div>
+  <p class="mb-0 text-muted">{% trans 'No packages are available right now. Please contact Academor.' %}</p>
+</section>
 {% endif %}
-
 {% endblock %}
-

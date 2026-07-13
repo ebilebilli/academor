@@ -1,26 +1,26 @@
-{% load i18n portal_tags %}
-{% if mock_stats_list %}
-<section class="dashboard-perf dashboard-perf--customer ds-card mb-4" aria-label="{% trans 'Mock test results' %}">
-  <div class="s-panel-head">
-    <h2 class="s-panel-title">
-      <i class="ti ti-chart-dots-3" aria-hidden="true"></i>
-      {% trans 'Mock test results' %}
-    </h2>
-    {% if mock_stats_list|length == 1 %}
-    <a href="{% url 'portals:customer-mock-landing' program=mock_stats_list.0.exam_program %}" class="ds-btn ds-btn--ghost btn-sm">
-      {% trans 'Hamısı' %} <i class="ti ti-arrow-right" aria-hidden="true"></i>
-    </a>
-    {% else %}
-    <a href="{% url 'portals:customer-mock-picker' %}" class="ds-btn ds-btn--ghost btn-sm">
-      {% trans 'Hamısı' %} <i class="ti ti-arrow-right" aria-hidden="true"></i>
-    </a>
-    {% endif %}
-  </div>
-
-  <div class="dashboard-perf-grid{% if mock_stats_list|length == 1 %} dashboard-perf-grid--solo{% endif %}">
-    {% for mock_stat in mock_stats_list %}
-      {% include "portals/includes/dashboard_mock_stat_card.html" with mock_stat=mock_stat %}
-    {% endfor %}
-  </div>
-</section>
-{% endif %}
+{% load i18n portal_tags %}
+{% if mock_stats_list %}
+<section class="dashboard-perf dashboard-perf--customer ds-card mb-4" aria-label="{% trans 'Mock test results' %}">
+  <div class="s-panel-head">
+    <h2 class="s-panel-title">
+      <i class="ti ti-chart-dots-3" aria-hidden="true"></i>
+      {% trans 'Mock test results' %}
+    </h2>
+    {% if mock_stats_list|length == 1 %}
+    <a href="{% url 'portals:customer-mock-landing' program=mock_stats_list.0.exam_program %}" class="ds-btn ds-btn--ghost btn-sm">
+      {% trans 'All' %} <i class="ti ti-arrow-right" aria-hidden="true"></i>
+    </a>
+    {% else %}
+    <a href="{% url 'portals:customer-mock-picker' %}" class="ds-btn ds-btn--ghost btn-sm">
+      {% trans 'All' %} <i class="ti ti-arrow-right" aria-hidden="true"></i>
+    </a>
+    {% endif %}
+  </div>
+
+  <div class="dashboard-perf-grid{% if mock_stats_list|length == 1 %} dashboard-perf-grid--solo{% endif %}">
+    {% for mock_stat in mock_stats_list %}
+      {% include "portals/includes/dashboard_mock_stat_card.html" with mock_stat=mock_stat %}
+    {% endfor %}
+  </div>
+</section>
+{% endif %}

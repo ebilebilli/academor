@@ -6,16 +6,16 @@ from django import forms
 def _position_label(position: int) -> str:
     """Human label for a 0-based sort position (0 = first)."""
     if position == 0:
-        return '0 — İlk'
+        return '0 — First'
     if position == 1:
-        return '1 — Sonrakı'
+        return '1 — Next'
     if position == 2:
-        return '2 — 3-cü'
+        return '2 — 3rd'
     if position == 3:
-        return '3 — 4-cü'
+        return '3 — 4th'
     if position == 4:
-        return '4 — 5-ci'
-    return f'{position} — {position + 1}-ci'
+        return '4 — 5th'
+    return f'{position} — {position + 1}th'
 
 
 def build_order_choices(queryset, instance=None, *, extra_last=False):
@@ -56,8 +56,8 @@ def apply_order_choice_field(form, *, model, instance=None, field_name='order'):
         coerce=int,
         label=field.label,
         help_text=getattr(field, 'help_text', '') or (
-            '0 = ilk, 1 = sonrakı, 2 = növbəti və s. '
-            'Saxladıqda sayt, admin siyahısı və naviqasiya dropdown-u yenilənir.'
+            '0 = first, 1 = next, 2 = following, and so on. '
+            'On save, the site, admin list, and navigation dropdown update.'
         ),
         initial=initial,
         required=field.required,

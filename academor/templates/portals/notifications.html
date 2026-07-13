@@ -22,9 +22,11 @@
     data-notification-id="{{ item.id }}"
   >
     <div class="notif-item__icon-wrap">
-      <span class="notif-item__icon{% if item.is_mock_notification %} notif-item__icon--mock{% endif %}">
+      <span class="notif-item__icon{% if item.is_mock_notification %} notif-item__icon--mock{% elif item.is_homework_submitted %} notif-item__icon--homework{% endif %}">
         {% if item.is_mock_notification %}
         <i class="ti ti-clipboard-list" aria-hidden="true"></i>
+        {% elif item.is_homework_submitted %}
+        <i class="ti ti-notebook" aria-hidden="true"></i>
         {% else %}
         <i class="ti ti-star" aria-hidden="true"></i>
         {% endif %}
@@ -48,6 +50,9 @@
           {% else %}
             {% blocktrans with name=item.student_name %}{{ name }} tam IELTS mock testini tamamladı. Writing və Speaking yoxlanılmalıdır.{% endblocktrans %}
           {% endif %}
+          {% if teacher and item.contact_phone %}
+            <span class="notif-item__phone"> · {% trans 'Phone' %}: {{ item.contact_phone }}</span>
+          {% endif %}
         {% elif item.is_mock_test_results %}
           {% if parent %}
             {% blocktrans with name=item.student_name %}{{ name }} — ümumi IELTS mock test nəticəsi dərc olundu{% endblocktrans %}
@@ -56,6 +61,8 @@
           {% else %}
             {% blocktrans with name=item.student_name %}{{ name }} — ümumi IELTS mock test nəticəsi dərc olundu{% endblocktrans %}
           {% endif %}
+        {% elif item.is_homework_submitted %}
+          {% blocktrans with name=item.student_name lesson=item.quiz_topic %}{{ name }} — {{ lesson }} dərsi üçün ev tapşırığı göndərdi{% endblocktrans %}
         {% elif item.is_submission_pending %}
           {% if student %}
             {% trans 'Your answers were submitted for teacher review.' %}
@@ -71,10 +78,12 @@
         {% else %}
           {% blocktrans with name=item.student_name %}{{ name }} — result published{% endblocktrans %}
         {% endif %}
-        {% if not item.is_weekly_score %} · {{ item.grading_mode_label }}{% endif %}
+        {% if not item.is_weekly_score and not item.is_homework_submitted %} · {{ item.grading_mode_label }}{% endif %}
       </p>
       {% if item.is_mock_section_review or item.is_mock_test_completed or item.is_mock_test_results %}
         <span class="ds-badge ds-badge--info">{% trans 'IELTS Mock Test' %}</span>
+      {% elif item.is_homework_submitted %}
+        <span class="ds-badge ds-badge--info">{% trans 'Ev tapşırığı' %}</span>
       {% elif item.is_submission_pending %}
         <span class="ds-badge ds-badge--warning">{% trans 'Yoxlama gözləyir' %}</span>
       {% else %}
@@ -103,6 +112,8 @@
       {% endif %}
       {% if item.is_submission_pending and item.review_url %}
       <a class="ds-btn ds-btn--primary btn-sm" href="{{ item.review_url }}">{% trans 'Yoxla' %}</a>
+      {% elif item.is_homework_submitted and item.review_url %}
+      <a class="ds-btn ds-btn--primary btn-sm" href="{{ item.review_url }}">{% trans 'Bax' %}</a>
       {% endif %}
       <button
         type="button"

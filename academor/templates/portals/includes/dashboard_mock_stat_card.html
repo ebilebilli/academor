@@ -48,14 +48,14 @@
     <p class="dashboard-perf-card__hint">
       {% if mock_stat.graded_count %}
         {% if mock_stat.scoring_mode == 'sat_scaled' %}
-          {{ mock_stat.graded_count }} {% trans 'mock · orta bal' %}
+          {{ mock_stat.graded_count }} {% trans 'mocks · average score' %}
         {% else %}
-          {{ mock_stat.graded_count }} {% trans 'mock · orta band' %}
+          {{ mock_stat.graded_count }} {% trans 'mocks · average band' %}
         {% endif %}
       {% elif mock_stat.total_count %}
-        {% trans 'Mock tamamlanıb, qiymətləndirmə gözlənilir.' %}
+        {% trans 'Mock completed, awaiting grading.' %}
       {% else %}
-        {% trans 'Hələ mock test tamamlanmayıb.' %}
+        {% trans 'No mock tests completed yet.' %}
       {% endif %}
     </p>
   </div>

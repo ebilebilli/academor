@@ -1,56 +1,385 @@
 <!DOCTYPE html>
 {% load static i18n %}
 {% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
+<html lang="{{ LANG_CODE }}" class="portal-login-html">
 <head>
     {% trans "Log in" as portal_login_page_title %}
     {% include "includes/site_layout_head.html" with seo_noindex=True page_title=portal_login_page_title %}
-    <link rel="stylesheet" href="{% static 'portals/css/portal-login.css' %}">
+    <style>
+      html.portal-login-html {
+        overflow-y: scroll;
+        scrollbar-gutter: stable;
+      }
+      .portal-login-page {
+        margin: 0;
+        background: var(--site-surface, #f7f9fb);
+        overflow-x: clip;
+      }
+      .portal-login-page > .navbar.sticky-top { min-height: 92px; }
+      .portal-login-page > .navbar .site-logo {
+        height: 92px;
+        width: auto;
+        aspect-ratio: 276 / 92;
+      }
+      /* Critical layout lock — panel height owns the row; animation fills it */
+      .portal-login-shell {
+        display: grid;
+        grid-template-columns: minmax(0, 36rem) minmax(0, 1fr);
+        align-items: stretch;
+        justify-content: center;
+        column-gap: clamp(1.35rem, 2.6vw, 2.1rem);
+        row-gap: 1.25rem;
+        width: 100%;
+        max-width: min(100%, 92rem);
+        margin-inline: auto;
+        box-sizing: border-box;
+        padding: clamp(2rem, 5.5vh, 3.75rem) clamp(1.75rem, 4.5vw, 3.75rem);
+      }
+      .portal-login-brand {
+        position: relative;
+        display: block;
+        width: 100%;
+        min-width: 0;
+        min-height: 0;
+        align-self: stretch;
+        grid-row: 1;
+        overflow: hidden;
+      }
+      .portal-login-words {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+        width: 100%;
+        overflow: hidden;
+        box-sizing: border-box;
+      }
+      .portal-login-panel {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        min-width: 0;
+        height: auto;
+        align-self: start;
+        grid-row: 1;
+        padding-left: clamp(1.75rem, 5vw, 4rem);
+        box-sizing: border-box;
+      }
+      @media (max-width: 991.98px) {
+        .portal-login-page > .navbar.sticky-top { min-height: 78px; }
+        .portal-login-page > .navbar .site-logo { height: 78px; }
+        .portal-login-shell {
+          grid-template-columns: minmax(0, 1fr);
+          max-width: 100%;
+          min-height: 0;
+          padding: 1.5rem 1.35rem 2rem;
+          column-gap: 0;
+          row-gap: 1.15rem;
+        }
+        .portal-login-brand {
+          position: relative;
+          height: auto;
+          overflow: visible;
+          align-self: auto;
+          width: 100%;
+        }
+        .portal-login-words {
+          position: static;
+          inset: auto;
+          height: auto;
+          width: 100%;
+          max-width: 100%;
+          overflow: visible;
+        }
+        .portal-login-panel {
+          align-items: center;
+          align-self: auto;
+          padding-left: 0;
+        }
+      }
+      @media (max-width: 360px) {
+        .portal-login-page > .navbar.sticky-top { min-height: 68px; }
+        .portal-login-page > .navbar .site-logo { height: 58px; }
+      }
+    </style>
+    <link rel="stylesheet" href="{% static 'portals/css/portal-login.css' %}?v=login-cqi-fit">
 </head>
 <body class="portal-login-page">
-    {% include "includes/site_spinner.html" %}
+    {% include "includes/site_spinner.html" with spinner_hidden=True %}
     {% include "includes/site_navbar.html" %}
+    {% include "includes/page_header_banner.html" with header_mb="mb-0" %}
 
-    <main id="main-content" class="portal-login-page__main">
-        <div class="container py-5">
-            <div class="row justify-content-center">
-                <div class="col-12 col-md-8 col-lg-5">
-                    <div class="portal-login-page__card border-0 rounded-4 shadow-lg overflow-hidden">
-                        <div class="portal-login-modal__header px-4 pt-4 pb-0">
-                            <div class="portal-login-modal__head-row">
-                                <span class="portal-login-modal__head-figure" aria-hidden="true">
-                                    <img
-                                        src="{% static 'assets/img/contract_small_icon.webp' %}"
-                                        alt=""
-                                        class="portal-login-modal__head-icon"
-                                        width="24"
-                                        height="24"
-                                        decoding="async"
-                                    >
-                                </span>
-                                <div class="portal-login-modal__head-text">
-                                    <h1 class="h4 mb-2 portal-login-modal__title">{% trans "Log in" %}</h1>
-                                    <p class="portal-login-modal__subtitle text-muted small mb-0">
-                                        {% trans "Sign in to the student portal with the username and password provided by Academor." %}
-                                    </p>
-                                </div>
-                            </div>
+    <div class="portal-login-shell">
+        <aside class="portal-login-brand" aria-hidden="true">
+            <div class="portal-login-words">
+                <p class="portal-login-words__kicker">{% trans "What awaits you in the portal?" %}</p>
+
+                <div class="portal-login-words__rails">
+                    <div class="portal-login-words__rail">
+                        <div class="portal-login-words__track portal-login-words__track--up">
+                            <span>{% trans "Lessons" %}</span>
+                            <span>{% trans "Quizzes" %}</span>
+                            <span>{% trans "Mock tests" %}</span>
+                            <span>{% trans "Teacher review" %}</span>
+                            <span>{% trans "Assessment" %}</span>
+                            <span>{% trans "Schedule" %}</span>
+                            <span>{% trans "Results" %}</span>
+                            <span>{% trans "Attendance" %}</span>
+                            <span>IELTS</span>
+                            <span>SAT Math</span>
+                            <span>SAT Verbal</span>
+                            <span>{% trans "Lessons" %}</span>
+                            <span>{% trans "Quizzes" %}</span>
+                            <span>{% trans "Mock tests" %}</span>
+                            <span>{% trans "Teacher review" %}</span>
+                            <span>{% trans "Assessment" %}</span>
+                            <span>{% trans "Schedule" %}</span>
+                            <span>{% trans "Results" %}</span>
+                            <span>{% trans "Attendance" %}</span>
+                            <span>IELTS</span>
+                            <span>SAT Math</span>
+                            <span>SAT Verbal</span>
                         </div>
-                        <div class="portal-login-modal__body px-4 pb-4 pt-3">
-                            {% if messages %}
-                                {% for message in messages %}
-                                    <div class="alert alert-{{ message.tags|default:'info' }} py-2 small mb-3" role="alert">{{ message }}</div>
-                                {% endfor %}
-                            {% endif %}
-                            {% include "includes/portal_login_form.html" with next=next %}
+                    </div>
+                    <div class="portal-login-words__rail">
+                        <div class="portal-login-words__track portal-login-words__track--down">
+                            <span>SAT Verbal</span>
+                            <span>SAT Math</span>
+                            <span>IELTS</span>
+                            <span>{% trans "Attendance" %}</span>
+                            <span>{% trans "Results" %}</span>
+                            <span>{% trans "Schedule" %}</span>
+                            <span>{% trans "Assessment" %}</span>
+                            <span>{% trans "Teacher review" %}</span>
+                            <span>{% trans "Mock tests" %}</span>
+                            <span>{% trans "Quizzes" %}</span>
+                            <span>{% trans "Lessons" %}</span>
+                            <span>SAT Verbal</span>
+                            <span>SAT Math</span>
+                            <span>IELTS</span>
+                            <span>{% trans "Attendance" %}</span>
+                            <span>{% trans "Results" %}</span>
+                            <span>{% trans "Schedule" %}</span>
+                            <span>{% trans "Assessment" %}</span>
+                            <span>{% trans "Teacher review" %}</span>
+                            <span>{% trans "Mock tests" %}</span>
+                            <span>{% trans "Quizzes" %}</span>
+                            <span>{% trans "Lessons" %}</span>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </main>
+        </aside>
 
-    {% include "includes/site_footer.html" %}
+        <main id="main-content" class="portal-login-panel">
+            <header class="portal-login-intro">
+                <p class="portal-login-intro__eyebrow">{% trans "Student portal" %}</p>
+                <h1 class="portal-login-intro__title">Academor</h1>
+                <p class="portal-login-intro__lead">
+                    {% trans "Sign in to the student portal with the username and password provided by Academor." %}
+                </p>
+            </header>
+
+            <div class="portal-login-card">
+                <header class="portal-login-card__header">
+                    <h2 class="portal-login-card__title">{% trans "Log in" %}</h2>
+                </header>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %} portal-login-alert" role="alert">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+
+                {% include "includes/portal_login_form.html" with next=next %}
+
+                <aside class="portal-login-contact" aria-labelledby="portal-login-contact-title">
+                    <h2 id="portal-login-contact-title" class="portal-login-contact__title">
+                        {% trans "Need an account or help signing in?" %}
+                    </h2>
+
+                    {% if footer_contact %}
+                    <ul class="portal-login-contact__list">
+                        {% if footer_contact.phone %}
+                        <li>
+                            <i class="fa fa-phone-alt" aria-hidden="true"></i>
+                            <a href="tel:{{ footer_contact.phone_href|default:footer_contact.phone }}">{{ footer_contact.phone }}</a>
+                        </li>
+                        {% endif %}
+                        {% if footer_contact.phone_three %}
+                        <li>
+                            <i class="fa fa-phone-alt" aria-hidden="true"></i>
+                            <a href="tel:{{ footer_contact.phone_three_href|default:footer_contact.phone_three }}">{{ footer_contact.phone_three }}</a>
+                        </li>
+                        {% endif %}
+                        {% if footer_contact.whatsapp_number and footer_contact.whatsapp_number_me %}
+                        <li>
+                            <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                            <a href="https://wa.me/{{ footer_contact.whatsapp_number_me }}" target="_blank" rel="noopener noreferrer">{{ footer_contact.whatsapp_number }}</a>
+                        </li>
+                        {% endif %}
+                        {% if footer_contact.email %}
+                        <li>
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                            <a href="mailto:{{ footer_contact.email }}">{{ footer_contact.email }}</a>
+                        </li>
+                        {% endif %}
+                        {% if footer_contact.instagram %}
+                        <li>
+                            <i class="fab fa-instagram" aria-hidden="true"></i>
+                            <a href="{{ footer_contact.instagram }}" target="_blank" rel="noopener noreferrer">{% trans "Instagram" %}</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    {% endif %}
+
+                    <a class="portal-login-contact__cta" href="{% url 'projects:contact-page' %}">
+                        {% trans "Contact form" %}
+                        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                    </a>
+                </aside>
+            </div>
+        </main>
+    </div>
+
+    {% include "includes/site_footer.html" with footer_eager=True %}
     {% include "includes/site_scripts.html" %}
+    <script>
+    // #region agent log
+    (function () {
+      function send(hypothesisId, message, data) {
+        fetch('http://127.0.0.1:7382/ingest/ef5e58bf-728e-45ee-8b15-87314bfc033a', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Debug-Session-Id': '4bd2f1'
+          },
+          body: JSON.stringify({
+            sessionId: '4bd2f1',
+            runId: 'post-fix-cqi',
+            hypothesisId: hypothesisId,
+            location: 'portals/login.html:intro-fit-debug',
+            message: message,
+            data: data,
+            timestamp: Date.now()
+          })
+        }).catch(function () {});
+      }
+
+      function measureTextWidth(el) {
+        if (!el) return null;
+        var cs = getComputedStyle(el);
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+        if (!ctx) return null;
+        ctx.font = cs.font;
+        return Math.round(ctx.measureText((el.textContent || '').replace(/\s+/g, ' ').trim()).width);
+      }
+
+      function lineBoxes(el) {
+        var text = el.firstChild;
+        if (!text || text.nodeType !== 3) return [];
+        var range = document.createRange();
+        var out = [];
+        var len = text.length;
+        var start = 0;
+        var prevTop = null;
+        for (var i = 0; i <= len; i++) {
+          range.setStart(text, start);
+          range.setEnd(text, i);
+          var rects = range.getClientRects();
+          var last = rects[rects.length - 1];
+          if (!last) continue;
+          if (prevTop === null) prevTop = last.top;
+          if (Math.abs(last.top - prevTop) > 1 || i === len) {
+            var end = i === len ? i : i - 1;
+            if (end > start) {
+              out.push({
+                text: text.nodeValue.slice(start, end),
+                w: Math.round(last.width)
+              });
+            }
+            start = i === len ? i : i - 1;
+            prevTop = last.top;
+          }
+        }
+        return out;
+      }
+
+      function measure() {
+        var panel = document.querySelector('.portal-login-panel');
+        var intro = document.querySelector('.portal-login-intro');
+        var title = document.querySelector('.portal-login-intro__title');
+        var lead = document.querySelector('.portal-login-intro__lead');
+        var eyebrow = document.querySelector('.portal-login-intro__eyebrow');
+        var rails = document.querySelector('.portal-login-words__rails');
+        var upSpans = document.querySelectorAll('.portal-login-words__track--up span');
+        if (!panel || !intro || !lead) {
+          send('D', 'intro-missing', {});
+          return;
+        }
+
+        var leadLines = lineBoxes(lead);
+        var midWordBreaks = leadLines.filter(function (ln) {
+          var t = ln.text.trim();
+          return t.length > 0 && !/\s$/.test(ln.text) && !/^\s/.test(ln.text) && leadLines.length > 1;
+        });
+
+        send('A', 'panel-squeeze', {
+          vw: window.innerWidth,
+          panelW: Math.round(panel.getBoundingClientRect().width),
+          introW: Math.round(intro.getBoundingClientRect().width),
+          padL: getComputedStyle(panel).paddingLeft
+        });
+
+        send('F', 'natural-widths', {
+          eyebrowNatural: measureTextWidth(eyebrow),
+          eyebrowClient: eyebrow ? eyebrow.clientWidth : null,
+          titleNatural: measureTextWidth(title),
+          titleClient: title ? title.clientWidth : null,
+          leadNatural: measureTextWidth(lead),
+          leadClient: lead.clientWidth,
+          leadLines: leadLines,
+          leadLineCount: leadLines.length
+        });
+
+        send('C', 'midword-check', {
+          leadHTML: (lead.textContent || '').trim(),
+          midWordSuspect: leadLines.length > 1 && leadLines.some(function (ln, idx) {
+            if (idx === leadLines.length - 1) return false;
+            var t = ln.text;
+            return t.length > 0 && !/\s$/.test(t);
+          })
+        });
+
+        var truncated = [];
+        Array.prototype.forEach.call(upSpans, function (span) {
+          var t = (span.textContent || '').trim();
+          if (!t) return;
+          if (span.scrollWidth > span.clientWidth + 1) {
+            truncated.push({ text: t, scrollW: span.scrollWidth, clientW: span.clientWidth });
+          }
+        });
+        send('G', 'anim-ellipsis', {
+          railsDisplay: rails ? getComputedStyle(rails).display : null,
+          railsH: rails ? Math.round(rails.getBoundingClientRect().height) : null,
+          railsW: rails ? Math.round(rails.getBoundingClientRect().width) : null,
+          truncated: truncated.slice(0, 8),
+          truncatedCount: truncated.length
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+          requestAnimationFrame(function () { requestAnimationFrame(measure); });
+        });
+      } else {
+        requestAnimationFrame(function () { requestAnimationFrame(measure); });
+      }
+    })();
+    // #endregion
+    </script>
 </body>
 </html>

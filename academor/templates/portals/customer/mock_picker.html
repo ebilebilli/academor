@@ -1,51 +1,64 @@
 {% extends "portals/base.html" %}
-{% load i18n %}
+{% load i18n static %}
 
 {% block title %}{% trans 'Mock Test' %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'portals/css/mock-picker.css' %}?v=20260712b">
+{% endblock %}
 
 {% block content %}
 {% include "portals/includes/portal_page_hero.html" with title=_('Mock Test') subtitle=_('Choose which exam program you want to practice.') icon="ti-clipboard-list" lottie="portals/animations/exam-preparation.lottie" %}
 
-<section class="ds-card">
-  <div class="row g-3">
+<section class="mpick ds-card mb-4" aria-label="{% trans 'Mock Test' %}">
+  <header class="mpick__head">
+    <h2 class="mpick__title">{% trans 'Choose a program' %}</h2>
+    <p class="mpick__hint mb-0">{% trans 'Open credits, history, and start options for each exam.' %}</p>
+  </header>
+
+  <div class="mpick-grid">
     {% for program in mock_programs %}
-    <div class="col-md-6">
-      <a class="ds-card h-100 text-decoration-none d-block p-4 mock-picker-card" href="{{ program.landing_url }}">
-        <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
-          <div>
-            <h2 class="h5 mb-1 text-body">{{ program.label }} {% trans 'Mock Test' %}</h2>
-            <p class="text-muted mb-0 small">
-              {% with program_label=program.label credit_count=program.credits %}
-              {% blocktrans count counter=credit_count with program_label=program_label %}
-              {{ program_label }} credits: {{ counter }}
-              {% plural %}
-              {{ program_label }} credits: {{ counter }}
-              {% endblocktrans %}
-              {% endwith %}
-            </p>
-          </div>
-          <i class="ti ti-chevron-right text-muted mt-1" aria-hidden="true"></i>
-        </div>
+    <a class="mpick-card mpick-card--{{ program.code }}" href="{{ program.landing_url }}">
+      <div class="mpick-card__top">
+        <span class="mpick-card__exam">{{ program.label }}</span>
+        <span class="mpick-card__arrow" aria-hidden="true">
+          <i class="ti ti-chevron-right"></i>
+        </span>
+      </div>
 
-        <div class="d-flex flex-wrap gap-2">
-          {% if program.in_progress %}
-          <span class="ds-badge ds-badge--info">{% trans 'In progress' %}</span>
-          {% elif program.can_start %}
-          <span class="ds-badge ds-badge--success">{% trans 'Ready to start' %}</span>
-          {% elif program.completed_count %}
-          <span class="ds-badge">
-            {% with completed_total=program.completed_count %}
-            {% blocktrans count counter=completed_total %}{{ counter }} completed{% plural %}{{ counter }} completed{% endblocktrans %}
-            {% endwith %}
-          </span>
-          {% endif %}
-        </div>
+      <h3 class="mpick-card__name">{{ program.label }} {% trans 'Mock Test' %}</h3>
 
-        <p class="text-muted mb-0 mt-3 small">
-          {% blocktrans with program_label=program.label %}Open {{ program_label }} mock test credits, history, and start options.{% endblocktrans %}
-        </p>
-      </a>
-    </div>
+      <p class="mpick-card__credits mb-0">
+        {% with program_label=program.label credit_count=program.credits %}
+        {% blocktrans count counter=credit_count with program_label=program_label %}
+        {{ program_label }} credits: <strong>{{ counter }}</strong>
+        {% plural %}
+        {{ program_label }} credits: <strong>{{ counter }}</strong>
+        {% endblocktrans %}
+        {% endwith %}
+      </p>
+
+      <ul class="mpick-card__sections list-unstyled mb-0" aria-hidden="true">
+        {% if program.code == 'sat' %}
+        <li>Reading and Writing</li>
+        <li>Math</li>
+        {% else %}
+        <li>Listening</li>
+        <li>Reading</li>
+        <li>Writing</li>
+        <li>Speaking</li>
+        {% endif %}
+      </ul>
+
+      <p class="mpick-card__cta mb-0">
+        {% if program.in_progress %}
+          {% trans 'Continue' %}
+        {% else %}
+          {% trans 'Open' %}
+        {% endif %}
+        <i class="ti ti-arrow-right" aria-hidden="true"></i>
+      </p>
+    </a>
     {% endfor %}
   </div>
 </section>

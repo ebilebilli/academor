@@ -1,0 +1,74 @@
+{% load i18n %}
+{% if categories %}
+<ul class="mock-tests-grid" role="list">
+    {% for cat in categories %}
+    <li class="mock-tests-grid__item mock-tests-reveal" style="--mt-delay: {{ forloop.counter0 }}">
+        <article class="mock-tests-card{% if active_slug == cat.slug %} mock-tests-card--active{% endif %}">
+            <a href="{% url detail_url_name|default:'projects:mock-test-detail' slug=cat.slug %}" class="mock-tests-card__link">
+                <div class="mock-tests-card__media">
+                    {% if cat.image %}
+                    <img
+                        src="{{ cat.image }}"
+                        alt=""
+                        class="mock-tests-card__img"
+                        loading="lazy"
+                        decoding="async"
+                    >
+                    {% else %}
+                    <div class="mock-tests-card__icon-wrap" aria-hidden="true">
+                        <i class="fa {{ cat.icon }}"></i>
+                    </div>
+                    {% endif %}
+                    <span class="mock-tests-card__media-glow" aria-hidden="true"></span>
+                    {% if cat.on_sale and cat.discount_percent %}
+                    <span class="mock-tests-card__sale" aria-label="{{ cat.sale_badge_aria }}">
+                        -{{ cat.discount_percent }}%
+                    </span>
+                    {% endif %}
+                </div>
+
+                <div class="mock-tests-card__body">
+                    {% if cat.tags %}
+                    <div class="mock-tests-card__tags">
+                        {% for tag in cat.tags %}
+                        <span class="mock-tests-card__tag">{{ tag.name }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <h2 class="mock-tests-card__title">{{ cat.name }}</h2>
+
+                    {% if cat.bullet_items %}
+                    <ul class="mock-tests-card__bullets list-unstyled mb-0">
+                        {% for item in cat.bullet_items|slice:":3" %}
+                        <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% elif cat.description_excerpt %}
+                    <p class="mock-tests-card__excerpt mb-0">{{ cat.description_excerpt }}</p>
+                    {% endif %}
+
+                    <div class="mock-tests-card__footer">
+                        {% if cat.price_display %}
+                        <p class="mock-tests-card__price mb-0">
+                            {% if cat.has_discount and cat.original_price_display %}
+                            <span class="mock-tests-card__price-old">{{ cat.original_price_display }} AZN</span>
+                            {% endif %}
+                            <span class="mock-tests-card__price-current">{{ cat.price_display }}</span>
+                            <span class="mock-tests-card__price-currency">AZN</span>
+                        </p>
+                        {% endif %}
+                        <span class="mock-tests-card__detail-btn">
+                            {% trans "Details" %}
+                            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                </div>
+            </a>
+        </article>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="mock-tests-empty mock-tests-reveal" style="--mt-delay: 0">{% trans "No categories yet." %}</p>
+{% endif %}

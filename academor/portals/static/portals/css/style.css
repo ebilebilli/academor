@@ -1348,54 +1348,38 @@ html[data-theme="dark"] .profile-button .avatar-sm {
 .admin-footer {
   position: relative;
   overflow: hidden;
-  padding: 1.1rem 0 1.35rem;
+  padding: 0.75rem 1rem;
   color: var(--admin-muted);
   font-size: 0.9rem;
-}
-
-.admin-footer-formula {
-  position: absolute;
-  top: 50%;
-  right: clamp(0.35rem, 2vw, 1.5rem);
-  width: clamp(150px, 22vw, 260px);
-  height: auto;
-  opacity: 0.55;
-  pointer-events: none;
-  user-select: none;
-  transform: translateY(-50%);
-}
-
-.admin-footer-start {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  min-width: 0;
+  justify-content: center;
+  text-align: center;
+}
+
+.admin-footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .admin-footer-logo {
   display: block;
   width: auto;
-  height: 28px;
+  height: 20px;
   object-fit: contain;
-  filter: none;
+  filter: brightness(0) invert(1);
+  opacity: 0.45;
+  flex-shrink: 0;
 }
 
 .admin-footer-copy {
   color: var(--admin-muted);
-}
-
-.admin-footer-role {
-  color: var(--admin-muted);
-  white-space: nowrap;
-}
-
-.admin-footer .container-fluid {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
 }
 
 @media (min-width: 992px) {
@@ -1523,22 +1507,6 @@ html[data-theme="dark"] .profile-button .avatar-sm {
     padding: 1.1rem;
   }
 
-  .admin-footer .container-fluid {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .admin-footer-formula {
-    top: auto;
-    bottom: 0.35rem;
-    transform: none;
-    width: min(180px, 52vw);
-    opacity: 0.45;
-  }
-
-  .admin-footer-role {
-    white-space: normal;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

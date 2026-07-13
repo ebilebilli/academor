@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.db.models import Count
 from django.http import Http404, JsonResponse
 from django.shortcuts import redirect, render
@@ -6,6 +7,7 @@ from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.views import View
 
+from portals.homework_forms import StudentLessonHomeworkForm
 from portals.utils.quiz_stats import compute_quiz_average_stats, compute_weekly_average_stats
 from portals.utils.parent_access import parent_has_students, resolve_parent_student
 from portals.utils.student_courses import QUIZ_HISTORY_INITIAL_SIZE, QUIZ_HISTORY_PAGE_SIZE
@@ -13,7 +15,6 @@ from projects.utils.queries import get_background_image
 from portals.utils.queries import (
     build_lesson_category_tabs,
     build_lesson_period_tabs,
-    build_lesson_subject_tabs,
     build_teacher_lesson_group_tabs,
     build_score_period_tabs,
     build_student_performance_by_groups,
@@ -33,7 +34,11 @@ from portals.utils.queries import (
     get_student_lessons,
     get_student_profile,
     get_student_lesson,
+    get_student_lesson_homework,
+    get_student_lesson_homeworks,
+    get_student_homework,
     get_lesson_detail,
+    get_lesson_homeworks_for_teacher,
     get_student_schedules,
     get_student_scores,
     get_student_quiz_results,
@@ -72,6 +77,7 @@ from portals.utils.queries import (
     build_classroom_group_tabs,
     get_classroom_detail,
     serialize_group,
+    serialize_lesson_homework,
     serialize_parent,
     serialize_student,
     serialize_teacher,
@@ -207,7 +213,6 @@ class TeacherLessonsListView(TeacherRequiredMixin, View):
                 request,
                 teacher=serialize_teacher(profile),
                 lessons=lessons,
-                subject_tabs=[],
                 category_tabs=build_lesson_category_tabs(lessons),
                 period_tabs=build_lesson_period_tabs(lessons),
                 score_groups=score_groups,
@@ -231,6 +236,7 @@ class TeacherLessonDetailView(TeacherRequiredMixin, View):
                 request,
                 teacher=serialize_teacher(profile),
                 lesson=get_lesson_detail(lesson),
+                lesson_homeworks=get_lesson_homeworks_for_teacher(lesson),
                 page_eyebrow='Teacher',
                 back_url=reverse('portals:teacher-lessons'),
                 edit_url=reverse('portals:teacher-lesson-edit', kwargs={'pk': pk}),
@@ -659,6 +665,7 @@ class StudentLessonsView(StudentRequiredMixin, View):
         enrich_score_group_counts(group_ctx['score_groups'], lessons, replace=True)
         video_records = get_student_video_records(profile.pk)
         enrich_score_group_counts(group_ctx['score_groups'], video_records)
+        student_homeworks = get_student_lesson_homeworks(profile.pk)
         return render(
             request,
             self.template_name,
@@ -666,10 +673,10 @@ class StudentLessonsView(StudentRequiredMixin, View):
                 request,
                 student=serialize_student(profile),
                 lessons=lessons,
-                subject_tabs=build_lesson_subject_tabs(lessons),
                 category_tabs=build_lesson_category_tabs(lessons),
                 period_tabs=build_lesson_period_tabs(lessons),
                 video_records=video_records,
+                student_homeworks=student_homeworks,
                 **group_ctx,
             ),
         )
@@ -678,13 +685,12 @@ class StudentLessonsView(StudentRequiredMixin, View):
 class StudentLessonDetailView(StudentRequiredMixin, View):
     template_name = 'portals/lesson_detail.html'
 
-    def get(self, request, pk):
-        profile = get_student_profile(request.portal_user)
-        lesson = get_student_lesson(profile.pk, pk)
-        if not lesson:
-            raise Http404
+    def _render(self, request, profile, lesson, form=None):
         group_ctx = student_group_context(request, profile.pk)
         back_url = reverse('portals:student-lessons') + (group_ctx.get('group_query') or '')
+        homework = get_student_lesson_homework(profile.pk, lesson.pk)
+        if form is None:
+            form = StudentLessonHomeworkForm(instance=homework)
         return render(
             request,
             self.template_name,
@@ -692,8 +698,60 @@ class StudentLessonDetailView(StudentRequiredMixin, View):
                 request,
                 student=serialize_student(profile),
                 lesson=get_lesson_detail(lesson),
+                homework=serialize_lesson_homework(homework) if homework else None,
+                homework_form=form,
                 page_eyebrow='Student',
                 back_url=back_url,
+            ),
+        )
+
+    def get(self, request, pk):
+        profile = get_student_profile(request.portal_user)
+        lesson = get_student_lesson(profile.pk, pk)
+        if not lesson:
+            raise Http404
+        return self._render(request, profile, lesson)
+
+    def post(self, request, pk):
+        profile = get_student_profile(request.portal_user)
+        lesson = get_student_lesson(profile.pk, pk)
+        if not lesson:
+            raise Http404
+        existing = get_student_lesson_homework(profile.pk, lesson.pk)
+        form = StudentLessonHomeworkForm(request.POST, request.FILES, instance=existing)
+        if form.is_valid():
+            homework = form.save(lesson=lesson, student=profile)
+            from portals.utils.notifications import create_teacher_homework_notification
+
+            create_teacher_homework_notification(homework)
+            messages.success(request, _('Ev tapşırığı uğurla göndərildi.'))
+            return redirect('portals:student-lesson-detail', pk=pk)
+        return self._render(request, profile, lesson, form=form)
+
+
+class StudentHomeworkDetailView(StudentRequiredMixin, View):
+    template_name = 'portals/student/homework_detail.html'
+
+    def get(self, request, pk):
+        profile = get_student_profile(request.portal_user)
+        homework = get_student_homework(profile.pk, pk)
+        if not homework:
+            raise Http404
+        group_ctx = student_group_context(request, profile.pk)
+        back_url = reverse('portals:student-lessons') + (group_ctx.get('group_query') or '')
+        lesson_url = reverse('portals:student-lesson-detail', kwargs={'pk': homework.lesson_id})
+        lesson_url += group_ctx.get('group_query') or ''
+        return render(
+            request,
+            self.template_name,
+            _portal_context(
+                request,
+                student=serialize_student(profile),
+                homework=serialize_lesson_homework(homework),
+                page_eyebrow='Student',
+                back_url=back_url,
+                lesson_url=lesson_url,
+                can_edit_homework=True,
             ),
         )
 
@@ -988,6 +1046,7 @@ class ParentLessonsView(ParentRequiredMixin, View):
         enrich_score_group_counts(child_ctx['score_groups'], lessons, replace=True)
         video_records = get_student_video_records(student.pk)
         enrich_score_group_counts(child_ctx['score_groups'], video_records)
+        student_homeworks = get_student_lesson_homeworks(student.pk)
         return _render_parent_child_page(
             request,
             profile,
@@ -996,10 +1055,10 @@ class ParentLessonsView(ParentRequiredMixin, View):
             student=student,
             child_ctx=child_ctx,
             lessons=lessons,
-            subject_tabs=build_lesson_subject_tabs(lessons),
             category_tabs=build_lesson_category_tabs(lessons),
             period_tabs=build_lesson_period_tabs(lessons),
             video_records=video_records,
+            student_homeworks=student_homeworks,
         )
 
 
@@ -1013,6 +1072,7 @@ class ParentLessonDetailView(ParentRequiredMixin, View):
         if not lesson:
             raise Http404
         back_url = reverse('portals:parent-lessons') + child_ctx.get('student_query', '')
+        homework = get_student_lesson_homework(student.pk, lesson.pk)
         return render(
             request,
             self.template_name,
@@ -1023,7 +1083,38 @@ class ParentLessonDetailView(ParentRequiredMixin, View):
                 parent=serialize_parent(profile),
                 student=child_ctx['selected_student'],
                 lesson=get_lesson_detail(lesson),
+                homework=serialize_lesson_homework(homework) if homework else None,
                 back_url=back_url,
+                **child_ctx,
+            ),
+        )
+
+
+class ParentHomeworkDetailView(ParentRequiredMixin, View):
+    template_name = 'portals/student/homework_detail.html'
+
+    def get(self, request, pk):
+        profile = get_parent_profile(request.portal_user)
+        student, child_ctx = _parent_student_page(request, profile)
+        homework = get_student_homework(student.pk, pk)
+        if not homework:
+            raise Http404
+        back_url = reverse('portals:parent-lessons') + child_ctx.get('student_query', '')
+        lesson_url = reverse('portals:parent-lesson-detail', kwargs={'pk': homework.lesson_id})
+        lesson_url += child_ctx.get('student_query', '')
+        return render(
+            request,
+            self.template_name,
+            _portal_context(
+                request,
+                page_eyebrow='Parent',
+                page_subtitle=_('Şagirdin göndərdiyi ev tapşırığı.'),
+                parent=serialize_parent(profile),
+                student=child_ctx['selected_student'],
+                homework=serialize_lesson_homework(homework),
+                back_url=back_url,
+                lesson_url=lesson_url,
+                can_edit_homework=False,
                 **child_ctx,
             ),
         )

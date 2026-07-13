@@ -7,7 +7,14 @@ from .profile_models import (
     TeacherCourseSpecialization,
 )
 from .group_models import StudyGroup
-from .lesson_models import Classroom, Lesson, LessonAttachment, LessonCategory, VideoRecord
+from .lesson_models import (
+    Classroom,
+    Lesson,
+    LessonAttachment,
+    LessonCategory,
+    LessonHomework,
+    VideoRecord,
+)
 from .schedule_models import Schedule, Attendance
 from .score_models import Score, WeeklyStudentScore
 from .quiz_models import (
@@ -45,6 +52,7 @@ __all__ = [
     'Lesson',
     'LessonAttachment',
     'LessonCategory',
+    'LessonHomework',
     'VideoRecord',
     'Schedule',
     'Attendance',

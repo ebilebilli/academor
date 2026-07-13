@@ -480,6 +480,84 @@ def get_student_lesson(student_id, lesson_id):
     )
 
 
+def serialize_lesson_homework(homework):
+    from portals.utils.media_cache_bust import media_url
+    from portals.utils.group_services import lesson_effective_subject
+
+    file_url = media_url(homework.file) if homework.file else None
+    student = getattr(homework, 'student', None)
+    lesson = getattr(homework, 'lesson', None)
+    subject = ''
+    if lesson:
+        subject = lesson_effective_subject(lesson) or (lesson.subject or '')
+    return {
+        'id': homework.pk,
+        'lesson_id': homework.lesson_id,
+        'lesson_name': lesson.display_name if lesson else '',
+        'lesson_date': lesson.lesson_date if lesson else None,
+        'subject': subject,
+        'category_id': lesson.category_id if lesson else None,
+        'group_id': lesson.group_id if lesson else None,
+        'group_name': lesson.group.name if lesson and lesson.group_id else '',
+        'student_id': homework.student_id,
+        'student_name': student.full_name if student else '',
+        'text': homework.text or '',
+        'file_url': file_url,
+        'original_filename': homework.original_filename or '',
+        'file_kind': homework.file_kind or '',
+        'file_kind_label': homework.get_file_kind_display() if homework.file_kind else '',
+        'has_file': bool(file_url),
+        'has_text': bool((homework.text or '').strip()),
+        'submitted_at': homework.submitted_at,
+        'created_at': homework.created_at,
+    }
+
+
+def get_student_lesson_homework(student_id, lesson_id):
+    from portals.models import LessonHomework
+
+    return (
+        LessonHomework.objects.filter(student_id=student_id, lesson_id=lesson_id)
+        .select_related('student', 'student__user', 'lesson', 'lesson__group')
+        .first()
+    )
+
+
+def get_student_lesson_homeworks(student_id):
+    from portals.models import LessonHomework
+
+    qs = (
+        LessonHomework.objects.filter(student_id=student_id)
+        .select_related('student', 'student__user', 'lesson', 'lesson__group')
+        .order_by('-submitted_at', 'id')
+    )
+    return [serialize_lesson_homework(row) for row in qs]
+
+
+def get_student_homework(student_id, homework_id):
+    from portals.models import LessonHomework
+
+    return (
+        LessonHomework.objects.filter(pk=homework_id, student_id=student_id)
+        .select_related('student', 'student__user', 'lesson', 'lesson__group', 'lesson__teacher')
+        .first()
+    )
+
+
+def get_lesson_homeworks_for_teacher(lesson):
+    from portals.models import LessonHomework
+
+    if not lesson:
+        return []
+    qs = (
+        LessonHomework.objects.filter(lesson_id=lesson.pk, student__groups=lesson.group_id)
+        .select_related('student', 'student__user', 'lesson', 'lesson__group')
+        .order_by('-submitted_at', 'id')
+        .distinct()
+    )
+    return [serialize_lesson_homework(row) for row in qs]
+
+
 def build_lesson_subject_tabs(lessons, allowed_codes=None):
     from django.utils.translation import gettext as _
 

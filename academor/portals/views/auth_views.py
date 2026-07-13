@@ -14,6 +14,7 @@ from portals.forms import PortalLoginForm
 from portals.utils.portal_session import is_portal_authenticated, portal_login, portal_logout
 from portals.utils.queries import get_portal_role
 from portals.utils.safe_redirect import safe_portal_next_url
+from projects.utils.queries import get_background_image
 
 
 def _append_query(url: str, params: dict) -> str:
@@ -57,6 +58,10 @@ class PortalLoginView(View):
             self.template_name,
             {
                 'next': next_url or reverse('portals:dashboard'),
+                'background_image': (
+                    get_background_image('portal_login')
+                    or get_background_image('portal')
+                ),
             },
         )
         response['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import timedelta
+from datetime import datetime, time, timedelta
 
 from django.db.models import Prefetch
 from django.urls import reverse
@@ -106,19 +106,68 @@ def _mock_attempt_recipient_name(attempt) -> str:
     return ''
 
 
+def _mock_attempt_contact_phone(attempt) -> str:
+    if attempt.customer_id and getattr(attempt, 'customer', None) is not None:
+        return (attempt.customer.phone or '').strip()
+    if attempt.student_id and getattr(attempt, 'student', None) is not None:
+        return (attempt.student.phone or '').strip()
+    return ''
+
+
+def _teacher_ids_for_mock_attempt(attempt) -> set[int]:
+    if attempt.customer_id:
+        from portals.models import CustomerProfile
+
+        teacher_id = (
+            CustomerProfile.objects.filter(pk=attempt.customer_id)
+            .values_list('teacher_id', flat=True)
+            .first()
+        )
+        return {teacher_id} if teacher_id else set()
+
+    for attr in ('writing_result', 'speaking_result', 'listening_result', 'reading_result'):
+        result = getattr(attempt, attr, None)
+        if result is not None:
+            return _teacher_ids_for_quiz_result(result)
+        result_id = getattr(attempt, f'{attr}_id', None)
+        if result_id:
+            result = (
+                QuizResult.objects.select_related('quiz', 'quiz__category')
+                .filter(pk=result_id)
+                .first()
+            )
+            if result:
+                return _teacher_ids_for_quiz_result(result)
+    return set()
+
+
+TEACHER_PORTAL_BELL_KINDS = (
+    PortalNotification.Kind.RESULT_PUBLISHED,
+    PortalNotification.Kind.MOCK_TEST_COMPLETED,
+    PortalNotification.Kind.HOMEWORK_SUBMITTED,
+)
+
+
 def create_mock_test_completed_notifications(attempt) -> None:
-    """Teachers use the review queue; linked parents get a bell notification."""
+    """Notify reviewing teachers (with learner phone on the bell) and linked parents."""
     from portals.models import IeltsMockTestAttempt
 
     if attempt.status != IeltsMockTestAttempt.Status.COMPLETED:
         return
-    if not attempt.student_id:
-        return
 
     defaults = _mock_notification_defaults()
-    for parent_id in _parent_ids_for_student(attempt.student_id):
+    if attempt.student_id:
+        for parent_id in _parent_ids_for_student(attempt.student_id):
+            PortalNotification.objects.update_or_create(
+                parent_id=parent_id,
+                ielts_mock_test=attempt,
+                kind=PortalNotification.Kind.MOCK_TEST_COMPLETED,
+                defaults=defaults,
+            )
+
+    for teacher_id in _teacher_ids_for_mock_attempt(attempt):
         PortalNotification.objects.update_or_create(
-            parent_id=parent_id,
+            teacher_id=teacher_id,
             ielts_mock_test=attempt,
             kind=PortalNotification.Kind.MOCK_TEST_COMPLETED,
             defaults=defaults,
@@ -284,6 +333,7 @@ def create_weekly_score_published_notifications(record) -> None:
         'kind': PortalNotification.Kind.WEEKLY_SCORE_PUBLISHED,
         'quiz_result': None,
         'ielts_mock_test': None,
+        'lesson_homework': None,
     }
     PortalNotification.objects.update_or_create(
         student_id=record.student_id,
@@ -300,6 +350,28 @@ def create_weekly_score_published_notifications(record) -> None:
             weekly_student_score_id=record.pk,
             defaults=defaults,
         )
+
+
+def create_teacher_homework_notification(homework) -> None:
+    """Notify the lesson teacher when a student submits or updates homework."""
+    from portals.models import LessonHomework
+
+    if not isinstance(homework, LessonHomework) or not homework.pk:
+        return
+    teacher_id = getattr(homework.lesson, 'teacher_id', None) if homework.lesson_id else None
+    if not teacher_id:
+        return
+    PortalNotification.objects.update_or_create(
+        teacher_id=teacher_id,
+        lesson_homework_id=homework.pk,
+        kind=PortalNotification.Kind.HOMEWORK_SUBMITTED,
+        defaults={
+            'is_read': False,
+            'quiz_result': None,
+            'ielts_mock_test': None,
+            'weekly_student_score': None,
+        },
+    )
 
 
 def _weekly_score_detail_url(*, role: str) -> str:
@@ -356,6 +428,53 @@ def _serialize_weekly_score_notification(row: PortalNotification, *, role: str) 
     }
 
 
+def _serialize_homework_notification(row: PortalNotification, *, role: str) -> dict:
+    homework = row.lesson_homework
+    mark_read_url = reverse('portals:notification-mark-read', kwargs={'pk': row.pk})
+    delete_url = reverse('portals:notification-delete', kwargs={'pk': row.pk})
+    if not homework:
+        return {
+            'id': row.pk,
+            'kind': row.kind,
+            'is_submission_pending': False,
+            'is_homework_submitted': True,
+            'is_read': row.is_read,
+            'created_at': row.created_at,
+            'student_name': '',
+            'quiz_topic': '',
+            'grading_mode_label': _('Ev tapşırığı'),
+            'total_score': None,
+            'max_value': None,
+            'score_detail_url': '',
+            'review_url': '',
+            'mark_read_url': mark_read_url,
+            'delete_url': delete_url,
+        }
+
+    lesson = homework.lesson
+    lesson_name = lesson.display_name if lesson else ''
+    detail_url = ''
+    if role == 'teacher' and lesson:
+        detail_url = reverse('portals:teacher-lesson-detail', kwargs={'pk': lesson.pk})
+    return {
+        'id': row.pk,
+        'kind': row.kind,
+        'is_submission_pending': False,
+        'is_homework_submitted': True,
+        'is_read': row.is_read,
+        'created_at': row.created_at,
+        'student_name': homework.student.full_name if homework.student_id else '',
+        'quiz_topic': lesson_name,
+        'grading_mode_label': _('Ev tapşırığı'),
+        'total_score': None,
+        'max_value': None,
+        'score_detail_url': detail_url,
+        'review_url': detail_url if role == 'teacher' else '',
+        'mark_read_url': mark_read_url,
+        'delete_url': delete_url,
+    }
+
+
 def dismiss_teacher_submission_notifications(result: QuizResult, *, teacher_id: int | None = None) -> None:
     qs = PortalNotification.objects.filter(
         quiz_result=result,
@@ -409,7 +528,10 @@ def _apply_period_filter(qs, period: str | None):
         return qs
     now = timezone.now()
     if period == 'day':
-        start = now - timedelta(days=1)
+        start = timezone.make_aware(
+            datetime.combine(timezone.localdate(), time.min),
+            timezone.get_current_timezone(),
+        )
     elif period == 'week':
         start = now - timedelta(days=7)
     elif period == 'month':
@@ -435,11 +557,11 @@ def get_teacher_pending_review_count(teacher_id: int) -> int:
 
 @cached_query(timeout='CACHE_TIMEOUT_SHORT')
 def get_teacher_portal_bell_count(teacher_id: int) -> int:
-    """Unread published-result notifications for teachers."""
+    """Unread published-result and mock-completion notifications for teachers."""
     return PortalNotification.objects.filter(
         teacher_id=teacher_id,
         is_read=False,
-        kind=PortalNotification.Kind.RESULT_PUBLISHED,
+        kind__in=TEACHER_PORTAL_BELL_KINDS,
     ).count()
 
 
@@ -474,6 +596,9 @@ def serialize_notification(row: PortalNotification, *, role: str) -> dict:
     if row.kind == PortalNotification.Kind.WEEKLY_SCORE_PUBLISHED and row.weekly_student_score_id:
         return _serialize_weekly_score_notification(row, role=role)
 
+    if row.kind == PortalNotification.Kind.HOMEWORK_SUBMITTED and row.lesson_homework_id:
+        return _serialize_homework_notification(row, role=role)
+
     if row.kind == PortalNotification.Kind.MOCK_TEST_COMPLETED and row.ielts_mock_test_id:
         from portals.utils.ielts_mock_test import serialize_mock_attempt_summary
 
@@ -506,6 +631,7 @@ def serialize_notification(row: PortalNotification, *, role: str) -> dict:
             'is_read': row.is_read,
             'created_at': row.created_at,
             'student_name': _mock_attempt_recipient_name(attempt),
+            'contact_phone': _mock_attempt_contact_phone(attempt) if role == 'teacher' else '',
             'quiz_topic': _('IELTS Mock Test'),
             'grading_mode_label': grading_label,
             'total_score': None,
@@ -645,7 +771,7 @@ def get_notifications(
         role = 'teacher'
         qs = PortalNotification.objects.filter(
             teacher_id=teacher_id,
-            kind=PortalNotification.Kind.RESULT_PUBLISHED,
+            kind__in=TEACHER_PORTAL_BELL_KINDS,
         ).select_related(
             'quiz_result__student__user',
             'quiz_result__customer__user',
@@ -654,6 +780,9 @@ def get_notifications(
             'ielts_mock_test__customer__user',
             'weekly_student_score__student__user',
             'weekly_student_score__teacher__user',
+            'lesson_homework__student__user',
+            'lesson_homework__lesson',
+            'lesson_homework__lesson__group',
         ).order_by('-created_at', '-id')
     elif customer_id:
         role = 'customer'

@@ -5,9 +5,9 @@
 
 {% block content %}
 {% if exam_program == 'sat' %}
-{% include "portals/includes/portal_page_hero.html" with title=exam_program_label|add:" Mock Test" subtitle=_('Complete Reading and Writing, then Math in one session — like the Digital SAT.') icon="ti-clipboard-list" lottie="portals/animations/exam-preparation.lottie" %}
+{% include "portals/includes/portal_page_hero.html" with title=exam_program_label|add:" Mock Test" subtitle=_('Complete the full mock in one session — like the Digital SAT.') icon="ti-clipboard-list" lottie="portals/animations/exam-preparation.lottie" %}
 {% else %}
-{% include "portals/includes/portal_page_hero.html" with title=exam_program_label|add:" Mock Test" subtitle=_('Complete Listening, Reading, Writing, and Speaking in one session — just like the real IELTS exam.') icon="ti-clipboard-list" lottie="portals/animations/exam-preparation.lottie" %}
+{% include "portals/includes/portal_page_hero.html" with title=exam_program_label|add:" Mock Test" subtitle=_('Complete the full mock in one session — just like the real IELTS exam.') icon="ti-clipboard-list" lottie="portals/animations/exam-preparation.lottie" %}
 {% endif %}
 
 <section class="ds-card mb-4" aria-label="{% trans 'Mock test credits' %}">
@@ -38,15 +38,21 @@
   {% if exam_program == 'sat' %}
   <ol class="mb-0 ps-3">
     <li class="mb-2">{% trans 'One random SAT task is selected from each section.' %}</li>
-    <li class="mb-2">{% trans 'Sections follow the Digital SAT order: Reading and Writing → Math.' %}</li>
+    <li class="mb-2">
+      {% trans 'Sections follow the Digital SAT order:' %}
+      Reading and Writing → Math
+    </li>
     <li>{% trans 'Both sections are scored automatically and converted to SAT section scores (200–800).' %}</li>
   </ol>
   {% else %}
   <ol class="mb-0 ps-3">
     <li class="mb-2">{% trans 'One random IELTS task is selected from each section.' %}</li>
-    <li class="mb-2">{% trans 'Sections follow the real IELTS exam order: Listening → Reading → Writing → Speaking.' %}</li>
-    <li class="mb-2">{% trans 'Listening and Reading sections are scored automatically.' %}</li>
-    <li>{% trans 'Writing and Speaking sections are reviewed and scored by IELTS teachers.' %}</li>
+    <li class="mb-2">
+      {% trans 'Sections follow the real IELTS exam order:' %}
+      Listening → Reading → Writing → Speaking
+    </li>
+    <li class="mb-2">{% trans 'Listening and Reading are scored automatically.' %}</li>
+    <li>{% trans 'Writing and Speaking are reviewed and scored by IELTS teachers.' %}</li>
   </ol>
   {% endif %}
 </section>

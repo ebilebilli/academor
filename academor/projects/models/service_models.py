@@ -134,22 +134,22 @@ class Service(SluggedModel):
         blank=True,
         null=True,
         validators=[MaxLengthValidator(2000)],
-        verbose_name='Maddələr siyahısı (AZ)',
-        help_text='Hər sətirdə bir maddə yazın (bullet list).',
+        verbose_name='Bullet list (AZ)',
+        help_text='One item per line (bullet list).',
     )
     bullet_list_en = models.TextField(
         blank=True,
         null=True,
         validators=[MaxLengthValidator(2000)],
-        verbose_name='Maddələr siyahısı (EN)',
+        verbose_name='Bullet list (EN)',
         help_text='One item per line (bullet list).',
     )
     bullet_list_ru = models.TextField(
         blank=True,
         null=True,
         validators=[MaxLengthValidator(2000)],
-        verbose_name='Maddələr siyahısı (RU)',
-        help_text='Один пункт на строку (маркированный список).',
+        verbose_name='Bullet list (RU)',
+        help_text='One item per line (bullet list).',
     )
     card_icon = models.CharField(
         max_length=80,

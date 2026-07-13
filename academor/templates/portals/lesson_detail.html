@@ -5,6 +5,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'portals/css/lesson-video-lightbox.css' %}">
+<link rel="stylesheet" href="{% static 'portals/css/lesson-homework.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -196,15 +197,28 @@
           <h3 class="s-lesson-material__title">{% trans 'Image' %}</h3>
         </div>
         <div class="s-lesson-material__actions">
-          <a class="ds-btn ds-btn--secondary btn-sm" href="{{ lesson.image_url }}" target="_blank" rel="noopener">
-            <i class="ti ti-external-link" aria-hidden="true"></i>
-            {% trans 'View image' %}
-          </a>
+          <button
+            type="button"
+            class="ds-btn ds-btn--secondary btn-sm"
+            data-lesson-image-open
+            data-image-url="{{ lesson.image_url }}"
+            data-image-alt="{{ lesson.name }}"
+          >
+            <i class="ti ti-zoom-in" aria-hidden="true"></i>
+            {% trans 'Şəklə bax' %}
+          </button>
         </div>
       </div>
-      <a class="s-lesson-image-preview" href="{{ lesson.image_url }}" target="_blank" rel="noopener">
+      <button
+        type="button"
+        class="s-lesson-image-preview"
+        data-lesson-image-open
+        data-image-url="{{ lesson.image_url }}"
+        data-image-alt="{{ lesson.name }}"
+        aria-label="{% trans 'Şəklə bax' %}"
+      >
         <img src="{{ lesson.image_url }}" alt="{{ lesson.name }}">
-      </a>
+      </button>
     </article>
     {% endif %}
 
@@ -219,15 +233,28 @@
           <h3 class="s-lesson-material__title">{{ attachment.label }}</h3>
         </div>
         <div class="s-lesson-material__actions">
-          <a class="ds-btn ds-btn--secondary btn-sm" href="{{ attachment.url }}" target="_blank" rel="noopener">
-            <i class="ti ti-external-link" aria-hidden="true"></i>
-            {% trans 'View image' %}
-          </a>
+          <button
+            type="button"
+            class="ds-btn ds-btn--secondary btn-sm"
+            data-lesson-image-open
+            data-image-url="{{ attachment.url }}"
+            data-image-alt="{{ attachment.label }}"
+          >
+            <i class="ti ti-zoom-in" aria-hidden="true"></i>
+            {% trans 'Şəklə bax' %}
+          </button>
         </div>
       </div>
-      <a class="s-lesson-image-preview" href="{{ attachment.url }}" target="_blank" rel="noopener">
+      <button
+        type="button"
+        class="s-lesson-image-preview"
+        data-lesson-image-open
+        data-image-url="{{ attachment.url }}"
+        data-image-alt="{{ attachment.label }}"
+        aria-label="{% trans 'Şəklə bax' %}"
+      >
         <img src="{{ attachment.url }}" alt="{{ attachment.label }}">
-      </a>
+      </button>
     </article>
     {% endif %}
     {% endfor %}
@@ -239,6 +266,149 @@
   </div>
   {% endif %}
 </section>
+
+{% if portal_role == 'student' and homework_form %}
+<section class="ds-card s-lesson-detail-section s-lesson-homework mt-4">
+  <div class="s-panel-head">
+    <h2 class="s-panel-title">
+      <i class="ti ti-notebook" aria-hidden="true"></i>
+      {% trans 'Ev tapşırığı' %}
+    </h2>
+  </div>
+
+  {% if homework %}
+  <div class="s-lesson-homework__current mb-3">
+    <p class="s-lesson-homework__meta">
+      <i class="ti ti-clock" aria-hidden="true"></i>
+      {% blocktrans with when=homework.submitted_at|portal_datetime %}Göndərilib: {{ when }}{% endblocktrans %}
+    </p>
+    {% if homework.has_text %}
+    <div class="s-lesson-homework__text">{{ homework.text|linebreaksbr }}</div>
+    {% endif %}
+    {% if homework.has_file %}
+    <div class="s-lesson-homework__file">
+      <a class="ds-btn ds-btn--secondary btn-sm" href="{{ homework.file_url }}" target="_blank" rel="noopener">
+        <i class="ti ti-download" aria-hidden="true"></i>
+        {% if homework.original_filename %}{{ homework.original_filename }}{% else %}{% trans 'Faylı endir' %}{% endif %}
+      </a>
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <form
+    method="post"
+    enctype="multipart/form-data"
+    class="s-lesson-homework__form"
+    action="{% url 'portals:student-lesson-detail' pk=lesson.id %}"
+  >
+    {% csrf_token %}
+    {% if homework_form.non_field_errors %}
+    <div class="s-lesson-homework__errors" role="alert">
+      {% for error in homework_form.non_field_errors %}
+      <p>{{ error }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+    <div class="s-lesson-homework__field">
+      <label class="form-label" for="{{ homework_form.text.id_for_label }}">{{ homework_form.text.label }}</label>
+      {{ homework_form.text }}
+      {% for error in homework_form.text.errors %}
+      <div class="invalid-feedback d-block">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="s-lesson-homework__field">
+      <label class="form-label" for="{{ homework_form.file.id_for_label }}">{{ homework_form.file.label }}</label>
+      {{ homework_form.file }}
+      {% if homework_form.file.help_text %}
+      <p class="form-text">{{ homework_form.file.help_text }}</p>
+      {% endif %}
+      {% for error in homework_form.file.errors %}
+      <div class="invalid-feedback d-block">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="s-lesson-homework__actions">
+      <button type="submit" class="ds-btn ds-btn--primary">
+        <i class="ti ti-upload" aria-hidden="true"></i>
+        {% if homework %}{% trans 'Ev tapşırığını yenilə' %}{% else %}{% trans 'Ev tapşırığını göndər' %}{% endif %}
+      </button>
+    </div>
+  </form>
+</section>
+{% elif portal_role == 'parent' %}
+<section class="ds-card s-lesson-detail-section s-lesson-homework mt-4">
+  <div class="s-panel-head">
+    <h2 class="s-panel-title">
+      <i class="ti ti-notebook" aria-hidden="true"></i>
+      {% trans 'Ev tapşırığı' %}
+    </h2>
+  </div>
+  {% if homework %}
+  <div class="s-lesson-homework__current">
+    <p class="s-lesson-homework__meta">
+      <i class="ti ti-clock" aria-hidden="true"></i>
+      {% blocktrans with when=homework.submitted_at|portal_datetime %}Göndərilib: {{ when }}{% endblocktrans %}
+    </p>
+    {% if homework.has_text %}
+    <div class="s-lesson-homework__text">{{ homework.text|linebreaksbr }}</div>
+    {% endif %}
+    {% if homework.has_file %}
+    <div class="s-lesson-homework__file">
+      <a class="ds-btn ds-btn--secondary btn-sm" href="{{ homework.file_url }}" target="_blank" rel="noopener">
+        <i class="ti ti-download" aria-hidden="true"></i>
+        {% if homework.original_filename %}{{ homework.original_filename }}{% else %}{% trans 'Faylı endir' %}{% endif %}
+      </a>
+    </div>
+    {% endif %}
+  </div>
+  {% else %}
+  <div class="s-empty-state s-empty-state--compact">
+    <i class="ti ti-notebook-off" aria-hidden="true"></i>
+    <p>{% trans 'Hələ ev tapşırığı göndərilməyib.' %}</p>
+  </div>
+  {% endif %}
+</section>
+{% elif portal_role == 'teacher' %}
+<section class="ds-card s-lesson-detail-section s-lesson-homework mt-4">
+  <div class="s-panel-head">
+    <h2 class="s-panel-title">
+      <i class="ti ti-notebook" aria-hidden="true"></i>
+      {% trans 'Şagird ev tapşırıqları' %}
+    </h2>
+  </div>
+  {% if lesson_homeworks %}
+  <ul class="s-lesson-homework__list">
+    {% for item in lesson_homeworks %}
+    <li class="s-lesson-homework__item">
+      <div class="s-lesson-homework__item-head">
+        <strong class="s-lesson-homework__student">{{ item.student_name }}</strong>
+        <span class="s-lesson-homework__meta">{{ item.submitted_at|portal_datetime }}</span>
+      </div>
+      {% if item.has_text %}
+      <div class="s-lesson-homework__text">{{ item.text|linebreaksbr }}</div>
+      {% endif %}
+      {% if item.has_file %}
+      <div class="s-lesson-homework__file">
+        <a class="ds-btn ds-btn--secondary btn-sm" href="{{ item.file_url }}" target="_blank" rel="noopener">
+          <i class="ti ti-download" aria-hidden="true"></i>
+          {% if item.original_filename %}{{ item.original_filename }}{% else %}{% trans 'Faylı endir' %}{% endif %}
+          {% if item.file_kind_label %}
+          <span class="s-lesson-homework__kind">({{ item.file_kind_label }})</span>
+          {% endif %}
+        </a>
+      </div>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div class="s-empty-state s-empty-state--compact">
+    <i class="ti ti-notebook-off" aria-hidden="true"></i>
+    <p>{% trans 'Bu dərs üçün hələ ev tapşırığı yoxdur.' %}</p>
+  </div>
+  {% endif %}
+</section>
+{% endif %}
 
 {% if lesson.video_is_youtube and lesson.video_embed_url %}
 <div
@@ -265,10 +435,32 @@
   </div>
 </div>
 {% endif %}
+
+{% if lesson.has_image or lesson.extra_images %}
+<div
+  class="s-image-lightbox"
+  id="lessonImageLightbox"
+  data-lesson-image-lightbox
+  hidden
+>
+  <div class="s-image-lightbox__backdrop" data-lesson-image-close tabindex="-1"></div>
+  <div class="s-image-lightbox__dialog" role="dialog" aria-modal="true" aria-label="{% trans 'Dərs şəkli' %}">
+    <button type="button" class="s-image-lightbox__close" data-lesson-image-close aria-label="{% trans 'Bağla' %}">
+      <i class="ti ti-x" aria-hidden="true"></i>
+    </button>
+    <div class="s-image-lightbox__frame">
+      <img data-lesson-image-lightbox-img alt="">
+    </div>
+  </div>
+</div>
+{% endif %}
 {% endblock %}
 
 {% block extra_js %}
 {% if lesson.video_is_youtube and lesson.video_embed_url %}
 <script src="{% static 'portals/js/lesson-video-lightbox.js' %}"></script>
+{% endif %}
+{% if lesson.has_image or lesson.extra_images %}
+<script src="{% static 'portals/js/lesson-image-lightbox.js' %}"></script>
 {% endif %}
 {% endblock %}

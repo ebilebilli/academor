@@ -117,9 +117,12 @@
                 'is_project_page_background_image',
                 'is_courses_page_background_image',
                 'is_tests_page_background_image',
+                'is_mock_tests_page_background_image',
                 'is_service_page_background_image',
                 'is_footer_background_image',
                 'is_abroad_page_background_image',
+                'is_portal_page_background_image',
+                'is_portal_login_page_background_image',
             ];
 
             function syncHeaderBgNoCompress() {
@@ -211,7 +214,7 @@
                 var $progress = $input.siblings('.compress-progress');
                 if ($progress.length === 0) {
                     $progress = $('<div class="compress-progress" style="margin-top: 10px; padding: 10px; background: #e3f2fd; border-radius: 4px; border: 1px solid #2196f3;">' +
-                        '<div style="font-weight: bold; margin-bottom: 5px; color: #1976d2;">🔄 Şəkillər compress edilir...</div>' +
+                        '<div style="font-weight: bold; margin-bottom: 5px; color: #1976d2;">🔄 Compressing images...</div>' +
                         '<div class="compress-info" style="font-size: 12px; color: #666;"></div>' +
                         '<div class="compress-status" style="font-size: 11px; color: #666; margin-top: 5px;"></div>' +
                         '</div>');
@@ -223,8 +226,8 @@
                 imageFiles.forEach(function(file) {
                     totalOriginalSize += file.size;
                 });
-                $progress.find('.compress-info').text('Toplam ' + imageFiles.length + ' şəkil seçildi. Original ölçü: ' + (totalOriginalSize / 1024).toFixed(2) + ' KB');
-                $progress.find('.compress-status').text('Gözləyin...');
+                $progress.find('.compress-info').text('Total ' + imageFiles.length + ' image(s) selected. Original size: ' + (totalOriginalSize / 1024).toFixed(2) + ' KB');
+                $progress.find('.compress-status').text('Please wait...');
                 
                 // Bütün şəkilləri paralel compress et (hər birinin uğursuzluğunu ayrıca idarə et)
                 var compressPromises = imageFiles.map(function(file, index) {
@@ -295,17 +298,17 @@
                     
                     var statusText = '';
                     if (compressedFiles.length > 0) {
-                        statusText += compressedFiles.length + ' şəkil compress edildi:<br>';
+                        statusText += compressedFiles.length + ' image(s) compressed:<br>';
                         compressedFiles.forEach(function(result) {
                             var originalSize = (result.originalFile.size / 1024).toFixed(2);
                             var compressedSize = (result.file.size / 1024).toFixed(2);
                             var saved = ((1 - result.file.size / result.originalFile.size) * 100).toFixed(1);
-                            statusText += '✅ ' + result.file.name + ': ' + originalSize + ' KB → ' + compressedSize + ' KB (' + saved + '% qənaət)<br>';
+                            statusText += '✅ ' + result.file.name + ': ' + originalSize + ' KB → ' + compressedSize + ' KB (' + saved + '% saved)<br>';
                         });
                     }
                     
                     if (failedFiles.length > 0) {
-                        statusText += '<br>' + failedFiles.length + ' şəkil compress edilmədi (original istifadə olunur):<br>';
+                        statusText += '<br>' + failedFiles.length + ' image(s) not compressed (using original):<br>';
                         failedFiles.forEach(function(result) {
                             statusText += '⚠️ ' + result.originalFile.name + '<br>';
                         });
@@ -313,16 +316,16 @@
                     
                     var infoText = '';
                     if (compressedFiles.length === imageFiles.length) {
-                        infoText = '✅ <strong>Bütün şəkillər compress edildi!</strong><br>';
+                        infoText = '✅ <strong>All images compressed!</strong><br>';
                     } else if (compressedFiles.length > 0) {
-                        infoText = '⚠️ <strong>' + compressedFiles.length + ' şəkil compress edildi, ' + failedFiles.length + ' uğursuz oldu</strong><br>';
+                        infoText = '⚠️ <strong>' + compressedFiles.length + ' image(s) compressed, ' + failedFiles.length + ' failed</strong><br>';
                     } else {
-                        infoText = '❌ <strong>Heç bir şəkil compress edilə bilmədi</strong><br>';
+                        infoText = '❌ <strong>No images could be compressed</strong><br>';
                     }
                     
                     if (compressedFiles.length > 0) {
-                        infoText += 'Toplam: ' + (totalOriginalSize / 1024).toFixed(2) + ' KB → ' + (totalCompressedSize / 1024).toFixed(2) + ' KB<br>' +
-                            'Ümumi qənaət: ' + totalSaved + '% (' + totalSavedKB + ' KB)';
+                        infoText += 'Total: ' + (totalOriginalSize / 1024).toFixed(2) + ' KB → ' + (totalCompressedSize / 1024).toFixed(2) + ' KB<br>' +
+                            'Overall savings: ' + totalSaved + '% (' + totalSavedKB + ' KB)';
                     }
                     
                     $progress.find('.compress-info').html(infoText);
@@ -352,8 +355,8 @@
                     console.error('[Image Compress] Unexpected error:', error);
                     $input.data('compression-processing', false);
                     $progress.find('.compress-info').html(
-                        '❌ <strong>Xəta:</strong> ' + error.message + '<br>' +
-                        'Original fayllar istifadə olunacaq.'
+                        '❌ <strong>Error:</strong> ' + error.message + '<br>' +
+                        'Original files will be used.'
                     );
                     $progress.find('.compress-status').text('');
                     $progress.css({

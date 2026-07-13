@@ -1,0 +1,111 @@
+{% extends "portals/base.html" %}
+{% load static i18n portal_tags %}
+
+{% block title %}{% trans 'Ev tapşırığı' %} — {{ homework.lesson_name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'portals/css/lesson-homework.css' %}">
+{% endblock %}
+
+{% block content %}
+{% include "portals/includes/parent_child_header.html" %}
+
+<div class="s-page-toolbar">
+  {% trans 'Dərslərə qayıt' as lessons_back_label %}
+  {% include "portals/includes/portal_back_link.html" with back_url=back_url back_label=lessons_back_label %}
+  {% if can_edit_homework and lesson_url %}
+  <a class="ds-btn ds-btn--primary btn-sm" href="{{ lesson_url }}">
+    <i class="ti ti-pencil" aria-hidden="true"></i>
+    {% trans 'Yenilə' %}
+  </a>
+  {% endif %}
+</div>
+
+<header class="s-page-head s-lesson-detail-head mb-4">
+  <div class="s-page-head__copy">
+    <h1 class="s-page-head__title">
+      <i class="ti ti-notebook" aria-hidden="true"></i>
+      {% trans 'Ev tapşırığı' %}
+    </h1>
+    <div class="s-lesson-detail-meta">
+      <span class="s-lesson-detail-meta__item">
+        <i class="ti ti-clock" aria-hidden="true"></i>
+        {% blocktrans with when=homework.submitted_at|portal_datetime %}Göndərilib: {{ when }}{% endblocktrans %}
+      </span>
+    </div>
+  </div>
+</header>
+
+{% if homework.lesson_id %}
+<section class="ds-card s-lesson-detail-section s-homework-lesson-link mb-4">
+  <div class="s-panel-head">
+    <h2 class="s-panel-title">
+      <i class="ti ti-book-2" aria-hidden="true"></i>
+      {% trans 'Bağlı dərs' %}
+    </h2>
+  </div>
+  <div class="s-homework-lesson-link__body">
+    <div class="s-homework-lesson-link__copy">
+      <h3 class="s-homework-lesson-link__title">{{ homework.lesson_name }}</h3>
+      <div class="s-lesson-detail-meta">
+        {% if homework.lesson_date %}
+        <span class="s-lesson-detail-meta__item">
+          <i class="ti ti-calendar" aria-hidden="true"></i>
+          {{ homework.lesson_date|portal_date_long }}
+        </span>
+        {% endif %}
+        {% if homework.group_name %}
+        <span class="s-lesson-detail-meta__item">
+          <i class="ti ti-users" aria-hidden="true"></i>
+          {{ homework.group_name }}
+        </span>
+        {% endif %}
+      </div>
+    </div>
+    {% if lesson_url %}
+    <a class="ds-btn ds-btn--secondary btn-sm" href="{{ lesson_url }}">
+      <i class="ti ti-external-link" aria-hidden="true"></i>
+      {% trans 'Dərsə keç' %}
+    </a>
+    {% endif %}
+  </div>
+</section>
+{% endif %}
+
+<section class="ds-card s-lesson-detail-section s-lesson-homework">
+  {% if homework.has_text %}
+  <div class="s-panel-head">
+    <h2 class="s-panel-title">
+      <i class="ti ti-align-left" aria-hidden="true"></i>
+      {% trans 'Mətn' %}
+    </h2>
+  </div>
+  <div class="s-lesson-homework__text s-lesson-homework__text--detail">{{ homework.text|linebreaksbr }}</div>
+  {% endif %}
+
+  {% if homework.has_file %}
+  <div class="s-panel-head{% if homework.has_text %} mt-3{% endif %}">
+    <h2 class="s-panel-title">
+      <i class="ti ti-paperclip" aria-hidden="true"></i>
+      {% trans 'Fayl' %}
+    </h2>
+  </div>
+  <div class="s-lesson-homework__file">
+    <a class="ds-btn ds-btn--secondary" href="{{ homework.file_url }}" target="_blank" rel="noopener">
+      <i class="ti ti-download" aria-hidden="true"></i>
+      {% if homework.original_filename %}{{ homework.original_filename }}{% else %}{% trans 'Faylı endir' %}{% endif %}
+      {% if homework.file_kind_label %}
+      <span class="s-lesson-homework__kind">({{ homework.file_kind_label }})</span>
+      {% endif %}
+    </a>
+  </div>
+  {% endif %}
+
+  {% if not homework.has_text and not homework.has_file %}
+  <div class="s-empty-state s-empty-state--compact">
+    <i class="ti ti-notebook-off" aria-hidden="true"></i>
+    <p>{% trans 'Bu tapşırıqda məzmun yoxdur.' %}</p>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

@@ -20,8 +20,8 @@ URL_NAME_TO_TAGLINE_PAGE = {
     'services-page': TaglinePage.SERVICE,
     'courses-page': TaglinePage.COURSES,
     'course-detail': TaglinePage.COURSES,
-    'mock-tests-page': TaglinePage.COURSES,
-    'mock-test-detail': TaglinePage.COURSES,
+    'mock-tests-page': TaglinePage.MOCK_TESTS,
+    'mock-test-detail': TaglinePage.MOCK_TESTS,
     'tests-page': TaglinePage.TESTS,
     'test-take': TaglinePage.TESTS,
     'english-conversation-topics': TaglinePage.TESTS,
@@ -35,6 +35,7 @@ URL_NAME_TO_TAGLINE_PAGE = {
     'blog-tag-page': TaglinePage.BLOG,
     'team-page': TaglinePage.TEAM,
     'team-detail': TaglinePage.TEAM,
+    'login': TaglinePage.PORTAL_LOGIN,
 }
 
 
@@ -199,8 +200,15 @@ def _resolve_page_tagline(url_name, lang):
                 return tagline
         return None
 
-    if url_name in ('courses-page', 'course-detail', 'mock-tests-page', 'mock-test-detail'):
+    if url_name in ('courses-page', 'course-detail'):
         for key in (TaglinePage.COURSES, TaglinePage.SERVICE):
+            tagline = get_page_tagline(key, lang)
+            if tagline:
+                return tagline
+        return None
+
+    if url_name in ('mock-tests-page', 'mock-test-detail'):
+        for key in (TaglinePage.MOCK_TESTS, TaglinePage.SERVICE, TaglinePage.COURSES):
             tagline = get_page_tagline(key, lang)
             if tagline:
                 return tagline

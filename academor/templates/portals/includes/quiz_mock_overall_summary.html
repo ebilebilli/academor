@@ -12,7 +12,7 @@
     <div class="col-md-6">
       <div class="border rounded p-3 h-100">
         <div class="text-muted small mb-1">{% trans 'Auto-graded sections' %}</div>
-        <div class="fw-semibold mb-1">{% trans 'Listening' %} + {% trans 'Reading' %}</div>
+        <div class="fw-semibold mb-1">Listening + Reading</div>
         {% if mock_attempt.auto_score_total is not None %}
         <div>{{ mock_attempt.auto_score_total|format_quiz_score }} / {{ mock_attempt.auto_max_total|format_quiz_score }}</div>
         {% endif %}
@@ -26,7 +26,7 @@
     <div class="col-md-6">
       <div class="border rounded p-3 h-100">
         <div class="text-muted small mb-1">{% trans 'Teacher-graded sections' %}</div>
-        <div class="fw-semibold mb-1">{% trans 'Writing' %} + {% trans 'Speaking' %}</div>
+        <div class="fw-semibold mb-1">Writing + Speaking</div>
         {% if mock_attempt.manual_score_total is not None %}
         <div>{{ mock_attempt.manual_score_total|format_quiz_score }} / {{ mock_attempt.manual_max_total|format_quiz_score }}</div>
         {% endif %}

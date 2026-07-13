@@ -3,6 +3,10 @@
 
 {% block title %}{% trans 'Lessons' %}{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'portals/css/lesson-homework.css' %}">
+{% endblock %}
+
 {% block content %}
 {% include "portals/includes/parent_child_header.html" %}
 
@@ -10,9 +14,9 @@
   data-portal-lessons-filter
   data-portal-scores-filter
   data-portal-lessons-period-tabs="[data-portal-lessons-period-tabs]"
-  data-portal-lessons-subject-tabs="[data-lesson-subject-tabs]"
   data-portal-lessons-category-tabs=".s-lessons-filter-panel__tabs--compact"
   data-portal-lessons-items="#student-lessons-table .s-lesson-card[data-subject]"
+  data-portal-lessons-period-items="[data-portal-student-homeworks] .s-homework-summary-card"
   data-portal-lessons-hide="class"
 >
 
@@ -72,6 +76,64 @@
   <i class="ti ti-filter-off" aria-hidden="true"></i>
   <p>{% trans 'Bu filterlə dərs tapılmadı.' %}</p>
 </div>
+
+{# ── Submitted homework ──────────────────────────────────────── #}
+{% if student_homeworks %}
+<section class="mt-4" data-portal-student-homeworks>
+  <div class="s-panel-head">
+    <h2 class="s-panel-title">
+      <i class="ti ti-notebook" aria-hidden="true"></i>
+      {% trans 'Göndərilmiş ev tapşırıqları' %}
+    </h2>
+  </div>
+  <div class="s-lesson-grid s-homework-summary-grid">
+    {% for item in student_homeworks %}
+    {% if page_eyebrow == 'Parent' %}
+    {% url 'portals:parent-homework-detail' pk=item.id as hw_detail_url %}
+    {% else %}
+    {% url 'portals:student-homework-detail' pk=item.id as hw_detail_url %}
+    {% endif %}
+    <article
+      class="s-lesson-card s-lesson-card--interactive position-relative s-homework-summary-card"
+      data-subject="{{ item.subject|default:'' }}"
+      data-category="{{ item.category_id|default:'' }}"
+      data-lesson-date="{% if item.lesson_date %}{{ item.lesson_date|date:'Y-m-d' }}{% elif item.submitted_at %}{{ item.submitted_at|date:'Y-m-d' }}{% endif %}"
+      data-group-id="{{ item.group_id|default:'' }}"
+      {% if item.group_id %}data-group-ids="{{ item.group_id }}"{% endif %}
+    >
+      <div class="s-lesson-card__head">
+        <span class="s-lesson-card__tag">{% trans 'Ev tapşırığı' %}</span>
+        <time class="s-lesson-card__date">{{ item.submitted_at|portal_datetime }}</time>
+      </div>
+      <h2 class="s-lesson-card__title">{{ item.lesson_name }}</h2>
+      {% if item.lesson_date or item.group_name %}
+      <p class="s-homework-summary-card__meta">
+        {% if item.lesson_date %}
+        <span><i class="ti ti-calendar" aria-hidden="true"></i> {{ item.lesson_date|portal_date_long }}</span>
+        {% endif %}
+        {% if item.group_name %}
+        <span><i class="ti ti-users" aria-hidden="true"></i> {{ item.group_name }}</span>
+        {% endif %}
+      </p>
+      {% endif %}
+      <div class="s-lesson-card__foot">
+        <div class="s-lesson-card__badges">
+          {% if item.has_text %}<span class="ds-badge">{% trans 'Mətn' %}</span>{% endif %}
+          {% if item.has_file %}<span class="ds-badge ds-badge--info">{% trans 'Fayl' %}</span>{% endif %}
+        </div>
+        <a
+          class="ds-btn ds-btn--primary btn-sm s-lesson-card__open stretched-link"
+          href="{{ hw_detail_url }}{{ student_query|default:group_query|default:'' }}"
+          aria-label="{% blocktrans with title=item.lesson_name %}Ev tapşırığını aç: {{ title }}{% endblocktrans %}"
+        >
+          {% trans 'Aç' %}
+        </a>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
 
 {# ── Video recordings ────────────────────────────────────────── #}
 {% if video_records %}

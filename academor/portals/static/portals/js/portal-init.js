@@ -265,6 +265,7 @@
     var categoryTabsSel = root.dataset.portalLessonsCategoryTabs || "#lessonCategoryTabs";
     var periodTabsSel = root.dataset.portalLessonsPeriodTabs || "[data-portal-lessons-period-tabs]";
     var itemsSel = root.dataset.portalLessonsItems;
+    var periodItemsSel = root.dataset.portalLessonsPeriodItems || "";
     var emptyRowSel = root.dataset.portalLessonsEmptyRow || ".lessons-empty-row";
     var filterEmptySel = root.dataset.portalLessonsEmpty || "#lessons-filter-empty";
     var hideMode = root.dataset.portalLessonsHide || "hidden";
@@ -319,8 +320,9 @@
       );
     }
 
-    function itemMatchesPeriod(item) {
-      if (activePeriod === "all") {
+    function itemMatchesPeriod(item, periodCode) {
+      var period = periodCode == null ? activePeriod : periodCode;
+      if (period === "all") {
         return true;
       }
       var lessonDate = parseLocalDate(item.getAttribute("data-lesson-date"));
@@ -330,11 +332,11 @@
       var today = new Date();
       today.setHours(0, 0, 0, 0);
       var start = new Date(today);
-      if (activePeriod === "week") {
+      if (period === "week") {
         start.setDate(start.getDate() - 7);
-      } else if (activePeriod === "month") {
+      } else if (period === "month") {
         start.setDate(start.getDate() - 30);
-      } else if (activePeriod === "year") {
+      } else if (period === "year") {
         start.setDate(start.getDate() - 365);
       } else {
         return true;
@@ -351,6 +353,11 @@
         return !rowCategory;
       }
       return rowCategory === String(activeCategory);
+    }
+
+    function itemMatchesSubject(item) {
+      return activeSubject === "all"
+        || item.getAttribute("data-subject") === activeSubject;
     }
 
     function updateSubjectTabCounts() {
@@ -376,6 +383,37 @@
           return;
         }
         badge.textContent = code === "all" ? counts.all : (counts[code] || 0);
+      });
+    }
+
+    function updatePeriodTabCounts() {
+      if (!periodTablist) {
+        return;
+      }
+      var items = root.querySelectorAll(itemsSel);
+      var counts = { all: 0, week: 0, month: 0, year: 0 };
+      items.forEach(function (item) {
+        if (!itemMatchesGroup(item) || !itemMatchesSubject(item) || !rowMatchesCategory(item)) {
+          return;
+        }
+        counts.all += 1;
+        if (itemMatchesPeriod(item, "week")) {
+          counts.week += 1;
+        }
+        if (itemMatchesPeriod(item, "month")) {
+          counts.month += 1;
+        }
+        if (itemMatchesPeriod(item, "year")) {
+          counts.year += 1;
+        }
+      });
+      periodTablist.querySelectorAll("[data-period]").forEach(function (tab) {
+        var code = tab.getAttribute("data-period");
+        var badge = tab.querySelector(".s-filter-tab__badge");
+        if (!badge || !code) {
+          return;
+        }
+        badge.textContent = counts[code] || 0;
       });
     }
 
@@ -422,9 +460,10 @@
       var items = root.querySelectorAll(itemsSel);
       var visible = 0;
       items.forEach(function (item) {
-        var showSubject = activeSubject === "all"
-          || item.getAttribute("data-subject") === activeSubject;
-        var show = showSubject && rowMatchesCategory(item) && itemMatchesPeriod(item) && itemMatchesGroup(item);
+        var show = itemMatchesSubject(item)
+          && rowMatchesCategory(item)
+          && itemMatchesPeriod(item)
+          && itemMatchesGroup(item);
         setItemVisible(item, show, hideMode);
         if (show) {
           visible += 1;
@@ -434,6 +473,31 @@
         var show = itemMatchesGroup(item);
         setItemVisible(item, show, "class");
       });
+      if (periodItemsSel) {
+        root.querySelectorAll(periodItemsSel).forEach(function (item) {
+          var show = itemMatchesPeriod(item) && itemMatchesGroup(item);
+          if (item.hasAttribute("data-subject") && !itemMatchesSubject(item)) {
+            show = false;
+          }
+          if (item.hasAttribute("data-category") && !rowMatchesCategory(item)) {
+            show = false;
+          }
+          setItemVisible(item, show, "class");
+        });
+        root.querySelectorAll("[data-portal-student-homeworks]").forEach(function (section) {
+          var cards = section.querySelectorAll(".s-homework-summary-card");
+          if (!cards.length) {
+            return;
+          }
+          var anyVisible = false;
+          cards.forEach(function (card) {
+            if (!card.classList.contains("d-none") && !card.hidden) {
+              anyVisible = true;
+            }
+          });
+          section.classList.toggle("d-none", !anyVisible);
+        });
+      }
       var emptyRow = root.querySelector(emptyRowSel);
       if (emptyRow) {
         emptyRow.hidden = true;
@@ -444,6 +508,7 @@
         filterEmpty.classList.toggle("d-none", visible > 0 || items.length === 0);
       }
       updateSubjectTabCounts();
+      updatePeriodTabCounts();
     }
 
     root.addEventListener("click", function (event) {

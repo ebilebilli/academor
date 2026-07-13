@@ -38,9 +38,11 @@ class MediaAdmin(AdminImageCompressMixin, AcademorModelAdmin):
         'is_project_page_background_image',
         'is_courses_page_background_image',
         'is_tests_page_background_image',
+        'is_mock_tests_page_background_image',
         'is_service_page_background_image',
         'is_abroad_page_background_image',
         'is_portal_page_background_image',
+        'is_portal_login_page_background_image',
         'created_at',
     )
     readonly_fields = ('created_at', 'media_preview_detailed')
@@ -57,7 +59,9 @@ class MediaAdmin(AdminImageCompressMixin, AcademorModelAdmin):
             'description': (
                 'Tick exactly one role per image where possible. '
                 'Study abroad page background image: header on /abroad/ and abroad detail pages '
-                '(if unset, the About page background image is used).'
+                '(if unset, the About page background image is used). '
+                'Mock tests page: header on /mock-tests/ (if unset, the Services page image is used). '
+                'Portal login page: header on /portal/login/ (if unset, the Portal page image is used).'
             ),
             'fields': (
                 'is_about_page_background_image',
@@ -65,9 +69,11 @@ class MediaAdmin(AdminImageCompressMixin, AcademorModelAdmin):
                 'is_project_page_background_image',
                 'is_courses_page_background_image',
                 'is_tests_page_background_image',
+                'is_mock_tests_page_background_image',
                 'is_service_page_background_image',
                 'is_abroad_page_background_image',
                 'is_portal_page_background_image',
+                'is_portal_login_page_background_image',
             ),
         }),
     )
@@ -81,10 +87,12 @@ class MediaAdmin(AdminImageCompressMixin, AcademorModelAdmin):
         'is_project_page_background_image',
         'is_courses_page_background_image',
         'is_tests_page_background_image',
+        'is_mock_tests_page_background_image',
         'is_service_page_background_image',
         'is_footer_background_image',
         'is_abroad_page_background_image',
         'is_portal_page_background_image',
+        'is_portal_login_page_background_image',
     )
 
     def get_form(self, request, obj=None, **kwargs):
@@ -102,9 +110,11 @@ class MediaAdmin(AdminImageCompressMixin, AcademorModelAdmin):
             | Q(is_project_page_background_image=True)
             | Q(is_courses_page_background_image=True)
             | Q(is_tests_page_background_image=True)
+            | Q(is_mock_tests_page_background_image=True)
             | Q(is_service_page_background_image=True)
             | Q(is_abroad_page_background_image=True)
             | Q(is_portal_page_background_image=True)
+            | Q(is_portal_login_page_background_image=True)
         )
 
     def media_preview(self, obj):
@@ -132,9 +142,11 @@ class MediaAdmin(AdminImageCompressMixin, AcademorModelAdmin):
             ('is_project_page_background_image', 'Projects page'),
             ('is_courses_page_background_image', 'Courses page'),
             ('is_tests_page_background_image', 'Tests pages'),
+            ('is_mock_tests_page_background_image', 'Mock tests page'),
             ('is_service_page_background_image', 'Services page'),
             ('is_abroad_page_background_image', 'Study abroad page'),
             ('is_portal_page_background_image', 'Portal'),
+            ('is_portal_login_page_background_image', 'Portal login'),
         )
         flags = [label for field, label in page_labels if getattr(obj, field, False)]
         return ' | '.join(flags) if flags else '-'
@@ -157,7 +169,7 @@ class TaglineAdmin(AcademorModelAdmin):
         (None, {
             'fields': ('page', 'is_active'),
             'description': (
-                'One tagline per inner page banner (About, Courses, Blog, etc.). '
+                'One tagline per inner page banner (About, Courses, Blog, Portal login, etc.). '
                 'Homepage is not included.'
             ),
         }),

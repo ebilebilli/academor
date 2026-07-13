@@ -71,6 +71,10 @@ class Media(models.Model):
         default=False,
         verbose_name='Tests pages background image'
     )
+    is_mock_tests_page_background_image = models.BooleanField(
+        default=False,
+        verbose_name='Mock tests page background image'
+    )
     is_footer_background_image = models.BooleanField(
         default=False,
         verbose_name='Footer background image'
@@ -82,6 +86,10 @@ class Media(models.Model):
     is_portal_page_background_image = models.BooleanField(
         default=False,
         verbose_name='Portal page background image'
+    )
+    is_portal_login_page_background_image = models.BooleanField(
+        default=False,
+        verbose_name='Portal login page background image'
     )
 
     created_at = models.DateTimeField(

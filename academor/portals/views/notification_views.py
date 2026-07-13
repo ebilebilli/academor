@@ -40,30 +40,32 @@ from portals.views.mixins import (
 from portals.views.views_v1 import _portal_context
 
 
-PERIOD_CHOICES = ('all', 'day', 'week', 'month', 'year')
+PERIOD_CHOICES = ('day', 'week', 'month', 'year', 'all')
 
 PERIOD_TAB_LABELS = {
-    'all': _('Hamısı'),
     'day': _('Bu gün'),
     'week': _('Bu həftə'),
     'month': _('Bu ay'),
     'year': _('Bu il'),
+    'all': _('Hamısı'),
 }
 
 PERIOD_TAB_SHORT_LABELS = {
-    'all': _('Hamısı'),
     'day': _('Gün'),
     'week': _('Həftə'),
     'month': _('Ay'),
     'year': _('İl'),
+    'all': _('Hamısı'),
 }
 
 
 def _notification_period_queryset(*, teacher_id=None, parent_id=None, student_id=None, customer_id=None):
     if teacher_id:
+        from portals.utils.notifications import TEACHER_PORTAL_BELL_KINDS
+
         return PortalNotification.objects.filter(
             teacher_id=teacher_id,
-            kind=PortalNotification.Kind.RESULT_PUBLISHED,
+            kind__in=TEACHER_PORTAL_BELL_KINDS,
         )
     from portals.utils.notifications import _notification_queryset
 
@@ -159,7 +161,7 @@ class TeacherNotificationsView(TeacherRequiredMixin, View):
                 period_choices=PERIOD_CHOICES,
                 period_tabs=_build_notification_period_tabs(teacher_id=profile.pk),
                 notifications_url_name='portals:teacher-notifications',
-                notifications_subtitle=_('Published quiz results from your students.'),
+                notifications_subtitle=_('Published quiz results and completed mock tests.'),
             ),
         )
 

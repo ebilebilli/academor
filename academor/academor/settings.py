@@ -244,7 +244,7 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'az'
 
 # Django admin stays English (see academor.middleware.CustomLocaleMiddleware)
-ADMIN_LANGUAGE_CODE = 'az'
+ADMIN_LANGUAGE_CODE = 'en'
 
 LANGUAGES = [
     ('az', 'Azərbaycan'),

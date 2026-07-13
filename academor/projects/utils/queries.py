@@ -917,10 +917,12 @@ def get_background_image(page_type):
         'project': 'is_project_page_background_image',
         'courses': 'is_courses_page_background_image',
         'tests': 'is_tests_page_background_image',
+        'mock_tests': 'is_mock_tests_page_background_image',
         'service': 'is_service_page_background_image',
         'footer': 'is_footer_background_image',
         'abroad': 'is_abroad_page_background_image',
         'portal': 'is_portal_page_background_image',
+        'portal_login': 'is_portal_login_page_background_image',
     }
 
     if page_type not in image_map:
@@ -1333,6 +1335,31 @@ def serialize_project_category(category, lang='az', discounts_map=None, package_
         'has_payment': bool(active_packages),
         'tags': _serialize_service_tags_for_seo(category, lang),
     }
+
+
+def serialize_mock_test_list_category(category, lang='az', discounts_map=None, package_discounts_map=None):
+    data = serialize_project_category(
+        category,
+        lang,
+        discounts_map=discounts_map,
+        package_discounts_map=package_discounts_map,
+    )
+    data['description_excerpt'] = _about_plain_excerpt(
+        data.get('description_html') or '',
+        max_chars=120,
+    )
+    bullet_field = get_localized_field_name('bullet_list', lang)
+    raw_bullets = (
+        getattr(category, bullet_field, None)
+        or getattr(category, 'bullet_list_az', None)
+        or ''
+    )
+    data['bullet_items'] = _parse_bullet_list(raw_bullets)
+    if data.get('price') is not None:
+        data['price_display'] = format_decimal_price(data['price'])
+    if data.get('has_discount') and data.get('original_price') is not None:
+        data['original_price_display'] = format_decimal_price(data['original_price'])
+    return data
 
 
 def serialize_project_category_detail(category, lang='az'):
@@ -1791,15 +1818,24 @@ def get_courses_list_data(request, lang):
 def _get_mock_tests_list_data_impl(request, lang):
     contact = get_contact(lang)
     categories = get_project_categories(lang, is_mock_test=True)
+    discounts_map = fetch_active_sale_discounts_by_service_id()
+    package_discounts_map = fetch_active_sale_discounts_by_package_id()
     serialized_categories = [
-        serialize_project_category(category, lang)
+        serialize_mock_test_list_category(
+            category,
+            lang,
+            discounts_map=discounts_map,
+            package_discounts_map=package_discounts_map,
+        )
         for category in categories
     ]
     return {
         'contact': serialize_contact(contact, lang) if contact else None,
         'categories': serialized_categories,
         'language': lang,
-        'background_image': get_background_image('service'),
+        'background_image': (
+            get_background_image('mock_tests') or get_background_image('service')
+        ),
         'detail_url_name': 'projects:mock-test-detail',
     }
 

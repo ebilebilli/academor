@@ -4,7 +4,12 @@
 {% block title %}{% blocktrans with program=exam_program_label %}Mock Test{% endblocktrans %} — {{ mock_attempt.student_name }}{% endblock %}
 
 {% block content %}
+{% if mock_attempt.contact_phone %}
+{% blocktrans with name=mock_attempt.student_name phone=mock_attempt.contact_phone asvar mock_hero_subtitle %}{{ name }} · Phone: {{ phone }}{% endblocktrans %}
+{% include "portals/includes/portal_page_hero.html" with title=exam_program_label|add:" Mock Test" subtitle=mock_hero_subtitle icon="ti-clipboard-list" lottie="portals/animations/learning.lottie" back_url=back_url %}
+{% else %}
 {% include "portals/includes/portal_page_hero.html" with title=exam_program_label|add:" Mock Test" subtitle=mock_attempt.student_name icon="ti-clipboard-list" lottie="portals/animations/learning.lottie" back_url=back_url %}
+{% endif %}
 
 {% include "portals/includes/quiz_mock_overall_summary.html" %}
 
