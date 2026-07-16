@@ -4,64 +4,39 @@ from django.utils.translation import gettext_lazy as _
 
 
 class QuizCategory(models.Model):
-    service = models.CharField(
-        max_length=32,
-        db_index=True,
-        verbose_name=_('Service'),
-    )
     name = models.CharField(
         max_length=255,
         verbose_name=_('Name'),
+    )
+    services = models.ManyToManyField(
+        'projects.Service',
+        related_name='quiz_categories',
+        blank=True,
+        verbose_name=_('Services'),
+        help_text=_('Site courses linked to this quiz category.'),
+        null=True,
+
     )
 
     class Meta:
         verbose_name = _('Quiz category')
         verbose_name_plural = _('Quiz categories')
-        constraints = [
-            models.UniqueConstraint(
-                fields=('service', 'name'),
-                name='portals_quiz_category_uniq',
-            ),
-        ]
-        ordering = ('service', 'name', 'id')
+        ordering = ('name', 'id')
 
     def __str__(self):
         from portals.utils.portal_services import resolve_course_type_label
+        from portals.utils.quiz_category_services import quiz_category_portal_codes
 
-        return f'{resolve_course_type_label(self.service)} — {self.name}'
+        codes = quiz_category_portal_codes(self)
+        if not codes:
+            return self.name
+        labels = [resolve_course_type_label(code) for code in codes]
+        return f'{", ".join(labels)} — {self.name}'
 
-    def _service_is_allowed(self) -> bool:
-        from portals.utils.portal_services import is_active_portal_course_type
+    def get_portal_course_codes(self):
+        from portals.utils.quiz_category_services import quiz_category_portal_codes
 
-        if not self.service or is_active_portal_course_type(self.service):
-            return True
-        if self.pk:
-            previous = (
-                QuizCategory.objects.filter(pk=self.pk)
-                .values_list('service', flat=True)
-                .first()
-            )
-            if previous == self.service:
-                return True
-        return False
-
-    def clean(self):
-        super().clean()
-        if not self._service_is_allowed():
-            raise ValidationError({
-                'service': _('Service "%(code)s" is not linked to an active site service.') % {
-                    'code': self.service,
-                },
-            })
-
-    def save(self, *args, **kwargs):
-        if not self._service_is_allowed():
-            # ValidationError (not ValueError) so admin/forms show a field
-            # error instead of a 500.
-            raise ValidationError(
-                f'Service "{self.service}" is not linked to an active site service.',
-            )
-        super().save(*args, **kwargs)
+        return quiz_category_portal_codes(self)
 
 
 class Quiz(models.Model):
@@ -214,7 +189,14 @@ class Quiz(models.Model):
 
     @property
     def service_code(self):
-        return self.category.service if self.category_id else ''
+        if not self.category_id:
+            return ''
+        from portals.utils.quiz_category_services import quiz_category_primary_portal_code
+
+        category = getattr(self, 'category', None)
+        if category is None:
+            category = QuizCategory.objects.filter(pk=self.category_id).prefetch_related('services').first()
+        return quiz_category_primary_portal_code(category)
 
     @property
     def is_manual_grading(self):
@@ -314,8 +296,14 @@ class Quiz(models.Model):
         return 0
 
     def get_course_type_codes(self):
-        code = self.service_code
-        return [code] if code else []
+        if not self.category_id:
+            return []
+        from portals.utils.quiz_category_services import quiz_category_portal_codes
+
+        category = getattr(self, 'category', None)
+        if category is None:
+            category = QuizCategory.objects.filter(pk=self.category_id).prefetch_related('services').first()
+        return quiz_category_portal_codes(category)
 
     def get_course_type_labels(self):
         from portals.utils.portal_services import get_course_type_label_map

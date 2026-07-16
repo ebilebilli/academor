@@ -182,20 +182,8 @@ def sync_quiz_questions(
 @transaction.atomic
 def load_resource_file(path: Path, *, deactivate_missing: bool = True) -> dict:
     parsed = parse_resource_file(path)
-    if parsed['service'] == 'sat':
-        from projects.models.service_models import Service
 
-        Service.objects.get_or_create(
-            slug='sat',
-            defaults={
-                'name_az': 'SAT',
-                'name_en': 'SAT',
-                'name_ru': 'SAT',
-                'is_active': True,
-            },
-        )
     category, _ = QuizCategory.objects.get_or_create(
-        service=parsed['service'],
         name=parsed['category_name'],
     )
 

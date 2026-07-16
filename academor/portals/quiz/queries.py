@@ -2,8 +2,12 @@
 from django.db.models import Count, Prefetch, Q
 
 from portals.models import Quiz, QuizCategory, QuizQuestion, QuizResult, Score
-from portals.utils.cache_utils import cached_query
-from portals.utils.portal_services import expand_course_types_to_service_slugs
+from portals.utils.quiz_category_services import (
+    category_has_portal_code,
+    quiz_categories_for_portal_codes,
+    quiz_category_primary_portal_code,
+    quiz_category_slugs_for_portal_codes,
+)
 from portals.utils.student_courses import get_student_course_type_codes
 from portals.utils.teacher_courses import get_teacher_course_type_codes
 
@@ -47,11 +51,12 @@ def serialize_quiz_category(category):
     quiz_count = getattr(category, 'quiz_count', None)
     if quiz_count is None:
         quiz_count = category.quizzes.count()
+    service_code = quiz_category_primary_portal_code(category)
     return {
         'id': category.pk,
         'name': category.name,
-        'service': category.service,
-        'service_label': resolve_course_type_label(category.service, lang='en'),
+        'service': service_code,
+        'service_label': resolve_course_type_label(service_code, lang='en') if service_code else '',
         'quiz_count': quiz_count,
     }
 
@@ -82,25 +87,17 @@ def build_quiz_service_tabs(categories):
 
 
 def teacher_can_access_quiz_category(teacher_id, category_id):
-    service = (
-        QuizCategory.objects.filter(pk=category_id)
-        .values_list('service', flat=True)
-        .first()
-    )
-    if not service:
+    row = QuizCategory.objects.filter(pk=category_id).prefetch_related('services').first()
+    if not row:
         return False
-    return service in get_teacher_course_type_codes(teacher_id)
+    return category_has_portal_code(row, get_teacher_course_type_codes(teacher_id))
 
 
 def student_can_access_quiz_category(student_id, category_id):
-    service = (
-        QuizCategory.objects.filter(pk=category_id)
-        .values_list('service', flat=True)
-        .first()
-    )
-    if not service:
+    row = QuizCategory.objects.filter(pk=category_id).prefetch_related('services').first()
+    if not row:
         return False
-    return service in get_student_course_type_codes(student_id)
+    return category_has_portal_code(row, get_student_course_type_codes(student_id))
 
 
 @cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
@@ -108,7 +105,7 @@ def get_teacher_quiz_categories(teacher_id):
     course_codes = get_teacher_course_type_codes(teacher_id)
     if not course_codes:
         return []
-    qs = QuizCategory.objects.filter(service__in=course_codes).order_by('service', 'name', 'id')
+    qs = quiz_categories_for_portal_codes(course_codes).order_by('name', 'id')
     result = []
     for category in qs:
         visible = get_teacher_quizzes_for_category(teacher_id, category.pk)
@@ -125,7 +122,7 @@ def get_student_quiz_categories(student_id):
     course_codes = get_student_course_type_codes(student_id)
     if not course_codes:
         return []
-    qs = QuizCategory.objects.filter(service__in=course_codes).order_by('service', 'name', 'id')
+    qs = quiz_categories_for_portal_codes(course_codes).order_by('name', 'id')
     result = []
     for category in qs:
         visible = get_student_quizzes_for_category(student_id, category.pk)
@@ -177,7 +174,7 @@ def get_teacher_quizzes_for_category(teacher_id, category_id):
     qs = (
         Quiz.objects.filter(
             category_id=category_id,
-            category__service__in=course_codes,
+            category__services__slug__in=quiz_category_slugs_for_portal_codes(course_codes),
         )
         .select_related('category')
         .prefetch_related('questions')
@@ -224,7 +221,7 @@ def get_student_quizzes_for_category(student_id, category_id):
     qs = (
         Quiz.objects.filter(
             category_id=category_id,
-            category__service__in=course_codes,
+            category__services__slug__in=quiz_category_slugs_for_portal_codes(course_codes),
         )
         .select_related('category')
         .prefetch_related('questions')
@@ -445,7 +442,7 @@ def get_teacher_quizzes(teacher_id):
         return []
     qs = (
         Quiz.objects.filter(
-            category__service__in=course_codes,
+            category__services__slug__in=quiz_category_slugs_for_portal_codes(course_codes),
         )
         .select_related('category')
         .prefetch_related('questions')
@@ -466,7 +463,7 @@ def get_teacher_quiz_detail(teacher_id, quiz_id):
     quiz = (
         Quiz.objects.filter(
             pk=quiz_id,
-            category__service__in=course_codes,
+            category__services__slug__in=quiz_category_slugs_for_portal_codes(course_codes),
         )
         .select_related('category')
         .prefetch_related(
@@ -491,7 +488,7 @@ def get_student_quiz_take_data(student_id, quiz_id):
     quiz = (
         Quiz.objects.filter(
             pk=quiz_id,
-            category__service__in=course_codes,
+            category__services__slug__in=quiz_category_slugs_for_portal_codes(course_codes),
         )
         .select_related('category')
         .prefetch_related(
@@ -524,7 +521,7 @@ def get_student_manual_quiz_take_data(student_id, quiz_id):
     quiz = (
         Quiz.objects.filter(
             pk=quiz_id,
-            category__service__in=course_codes,
+            category__services__slug__in=quiz_category_slugs_for_portal_codes(course_codes),
         )
         .select_related('category')
         .prefetch_related(
@@ -624,7 +621,7 @@ def _teacher_pending_quiz_results_queryset(teacher_id):
     return (
         QuizResult.objects.filter(
             reviewed_at__isnull=True,
-            quiz__category__service__in=course_codes,
+            quiz__category__services__slug__in=quiz_category_slugs_for_portal_codes(course_codes),
             student__groups__teacher_id=teacher_id,
             student__groups__courses__slug__in=expand_course_types_to_service_slugs(course_codes),
             student__groups__is_active=True,
@@ -675,7 +672,7 @@ def get_student_quizzes(student_id):
     if not codes:
         return []
     qs = (
-        Quiz.objects.filter(category__service__in=codes)
+        Quiz.objects.filter(category__services__slug__in=quiz_category_slugs_for_portal_codes(codes))
         .select_related('category')
         .prefetch_related('questions')
         .distinct()
@@ -693,7 +690,7 @@ def get_student_quiz_results(student_id):
         _quiz_results_queryset()
         .filter(
             student_id=student_id,
-            quiz__category__service__in=codes,
+            quiz__category__services__slug__in=quiz_category_slugs_for_portal_codes(codes),
         )
         .select_related('quiz__category')
         .distinct()
@@ -719,7 +716,7 @@ def get_teacher_student_quiz_results(teacher_id, student_id):
         _quiz_results_queryset()
         .filter(
             student_id=student_id,
-            quiz__category__service__in=course_codes,
+            quiz__category__services__slug__in=quiz_category_slugs_for_portal_codes(course_codes),
         )
         .select_related('quiz__category')
         .distinct()

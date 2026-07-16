@@ -557,7 +557,7 @@ class SpeakingPartAdminForm(forms.ModelForm):
     new_quiz_category = forms.ModelChoiceField(
         required=False,
         label=_('New quiz category'),
-        queryset=QuizCategory.objects.order_by('service', 'name', 'id'),
+        queryset=QuizCategory.objects.prefetch_related('services').order_by('name', 'id'),
         help_text=_('Category for the new speaking quiz.'),
     )
 

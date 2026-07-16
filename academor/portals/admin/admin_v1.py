@@ -452,7 +452,7 @@ class ReadingPassageAdmin(PortalModelAdmin):
         'question_count_display',
     )
     list_display_links = ('title',)
-    list_filter = ('quiz__category__service',)
+    list_filter = ('quiz__category__services',)
     search_fields = ('title', 'body', 'quiz__topic', 'quiz__category__name')
     autocomplete_fields = ('quiz',)
     ordering = ('quiz', 'order', 'id')
@@ -569,7 +569,7 @@ class ListeningAudioAdmin(PortalModelAdmin):
         'question_count_display',
     )
     list_display_links = ('title',)
-    list_filter = ('quiz__category__service',)
+    list_filter = ('quiz__category__services',)
     search_fields = ('title', 'description', 'quiz__topic', 'quiz__category__name')
     autocomplete_fields = ('quiz',)
     ordering = ('quiz', 'order', 'id')
@@ -612,7 +612,7 @@ class SpeakingPartAdmin(PortalModelAdmin):
         'question_count_display',
     )
     list_display_links = ('title',)
-    list_filter = ('part_type', 'quiz__category__service')
+    list_filter = ('part_type', 'quiz__category__services')
     search_fields = ('title', 'instructions', 'cue_card_topic', 'quiz__topic', 'quiz__category__name')
     autocomplete_fields = ('quiz',)
     ordering = ('quiz', 'order', 'id')
@@ -1647,50 +1647,65 @@ class WeeklyStudentScoreAdmin(PortalModelAdmin):
 class QuizCategoryAdminForm(forms.ModelForm):
     class Meta:
         model = QuizCategory
-        fields = ('service', 'name')
+        fields = ('services', 'name')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        choices = list(get_active_course_type_choices())
-        existing = getattr(self.instance, 'service', None)
-        if existing and existing not in {code for code, _ in choices}:
-            choices = [(existing, resolve_course_type_label(existing)), *choices]
-        self.fields['service'] = forms.ChoiceField(
-            label=_('Service'),
-            choices=choices,
-            required=True,
-        )
+        self.fields['services'].queryset = get_active_services_queryset()
+        self.fields['services'].required = True
+
+    def clean_services(self):
+        services = self.cleaned_data.get('services')
+        if not services:
+            raise forms.ValidationError(_('Select at least one active site service.'))
+        return services
 
 
 @admin.register(QuizCategory)
 class QuizCategoryAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
     form = QuizCategoryAdminForm
-    course_type_field = 'service'
 
     list_display = ('name', 'service_display', 'quiz_count_display')
     list_display_links = ('name',)
-    list_filter = ('service',)
-    search_fields = ('name', 'service')
-    ordering = ('service', 'name', 'id')
+    list_filter = ('services',)
+    search_fields = ('name', 'services__slug', 'services__name_az', 'services__name_en')
+    filter_horizontal = ('services',)
+    ordering = ('name', 'id')
     list_per_page = 25
     fieldsets = (
         (None, {
             'description': _(
-                'Quiz categories group quizzes under a service. '
-                'Teachers and students reach quizzes indirectly through category service.'
+                'Quiz categories group quizzes under linked site services. '
+                'Teachers and students reach quizzes indirectly through category services.'
             ),
-            'fields': ('service', 'name'),
+            'fields': ('services', 'name'),
         }),
     )
     inlines = ()
 
     def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        return qs.annotate(_quiz_count=Count('quizzes', distinct=True))
+        qs = admin.ModelAdmin.get_queryset(self, request)
+        qs = qs.prefetch_related('services').annotate(_quiz_count=Count('quizzes', distinct=True))
+        course_type = request.GET.get(self.course_type_query_param)
+        if course_type:
+            slugs = expand_course_types_to_service_slugs([course_type])
+            qs = qs.filter(services__slug__in=slugs).distinct() if slugs else qs.none()
+        return qs
 
-    @admin.display(description=_('Service'))
+    @admin.display(description=_('Services'))
     def service_display(self, obj):
-        return portal_course_pill(obj.service, resolve_course_type_label(obj.service))
+        services = list(obj.services.all())
+        if not services:
+            return '—'
+        from portals.utils.portal_services import infer_course_type_for_service, localized_service_name
+
+        return ', '.join(
+            portal_course_pill(
+                infer_course_type_for_service(service) or service.slug or '',
+                localized_service_name(service),
+            )
+            for service in services
+        )
 
     @admin.display(description=_('Quizzes'))
     def quiz_count_display(self, obj):
@@ -1786,7 +1801,6 @@ class QuizAdminForm(forms.ModelForm):
 @admin.register(Quiz)
 class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
     form = QuizAdminForm
-    course_type_field = 'category__service'
 
     class Media:
         css = {'all': ('portals/css/quiz-question-admin.css',)}
@@ -1801,8 +1815,8 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
         'created_at',
     )
     list_display_links = ('topic',)
-    list_filter = ('category', 'category__service', 'is_ielts', 'is_sat', 'sat_section', 'created_at')
-    search_fields = ('topic', 'category__name', 'category__service')
+    list_filter = ('category', 'category__services', 'is_ielts', 'is_sat', 'sat_section', 'created_at')
+    search_fields = ('topic', 'category__name', 'category__services__slug')
     autocomplete_fields = ('category',)
     readonly_fields = ('created_at',)
     ordering = ('-created_at', 'id')
@@ -2005,8 +2019,15 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
         return queryset, use_distinct
 
     def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        return qs.annotate(_question_count=Count('questions', distinct=True)).select_related('category')
+        qs = admin.ModelAdmin.get_queryset(self, request)
+        qs = qs.annotate(_question_count=Count('questions', distinct=True)).select_related(
+            'category',
+        ).prefetch_related('category__services')
+        course_type = request.GET.get(self.course_type_query_param)
+        if course_type:
+            slugs = expand_course_types_to_service_slugs([course_type])
+            qs = qs.filter(category__services__slug__in=slugs).distinct() if slugs else qs.none()
+        return qs
 
     @admin.display(description='Questions')
     def question_count(self, obj):
@@ -2032,14 +2053,17 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
             return '—'
         return portal_admin_change_link(obj.category, obj.category.name)
 
-    @admin.display(description=_('Service'))
+    @admin.display(description=_('Services'))
     def service_display(self, obj):
         if not obj.category_id:
             return '—'
-        return portal_course_pill(
-            obj.category.service,
-            resolve_course_type_label(obj.category.service),
-        )
+        from portals.utils.portal_services import localized_service_name
+
+        labels = [localized_service_name(service) for service in obj.category.services.all()]
+        if not labels:
+            return '—'
+        return ', '.join(portal_course_pill(label, 'default') for label in labels)
+
 
 
 @admin.register(QuizQuestion)
@@ -2190,7 +2214,7 @@ class PortalNotificationAdmin(PortalModelAdmin):
 @admin.register(QuizAssignment)
 class QuizAssignmentAdmin(PortalModelAdmin):
     list_display = ('student_display', 'quiz_display', 'is_active', 'assigned_by_display', 'assigned_at')
-    list_filter = ('is_active', 'quiz__category__service')
+    list_filter = ('is_active', 'quiz__category__services')
     list_select_related = ('student__user', 'quiz__category', 'assigned_by__user')
     search_fields = (
         'student__user__username',

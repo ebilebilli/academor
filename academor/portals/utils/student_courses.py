@@ -63,18 +63,31 @@ def student_has_course_access(student_id, course_type):
 def get_quiz_service_code(quiz):
     if not quiz or not getattr(quiz, 'category_id', None):
         return ''
+    from portals.utils.quiz_category_services import quiz_category_primary_portal_code
+
     category = getattr(quiz, 'category', None)
     if category is not None:
-        return category.service or ''
+        return quiz_category_primary_portal_code(category)
     return ''
+
+
+def get_quiz_portal_course_codes(quiz):
+    if not quiz or not getattr(quiz, 'category_id', None):
+        return []
+    from portals.utils.quiz_category_services import quiz_category_portal_codes
+
+    category = getattr(quiz, 'category', None)
+    if category is not None:
+        return quiz_category_portal_codes(category)
+    return []
 
 
 def student_quiz_enrollment_ok(student_id, quiz):
     """True when the student is enrolled in the quiz service (ignores assignment)."""
-    service = get_quiz_service_code(quiz)
-    if not service:
+    codes = get_quiz_portal_course_codes(quiz)
+    if not codes:
         return False
-    return service in set(get_student_course_type_codes(student_id))
+    return bool(set(codes).intersection(get_student_course_type_codes(student_id)))
 
 
 def quiz_visible_to_student(quiz, student_id):
@@ -88,10 +101,10 @@ def quiz_visible_to_student(quiz, student_id):
 def quiz_visible_to_teacher(quiz, teacher_id):
     from portals.utils.teacher_courses import get_teacher_course_type_codes
 
-    service = get_quiz_service_code(quiz)
-    if not service:
+    codes = get_quiz_portal_course_codes(quiz)
+    if not codes:
         return False
-    return service in set(get_teacher_course_type_codes(teacher_id))
+    return bool(set(codes).intersection(get_teacher_course_type_codes(teacher_id)))
 
 
 def filter_quizzes_for_student(quizzes, student_id):
