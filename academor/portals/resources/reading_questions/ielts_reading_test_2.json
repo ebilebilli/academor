@@ -1,5 +1,5 @@
 {
-  "title": "IELTS Academic Reading — Practice Test 2",
+  "title": "Cambridge IELTS 21 Academic Reading Test 3",
   "service": "ielts",
   "category_name": "Reading practice",
   "time_limit_minutes": 60,
@@ -7,379 +7,319 @@
     {
       "order": 1,
       "title": "Passage 1",
-      "instructions": "<p><strong>Questions 1–40</strong></p><p>You should spend about 60 minutes on <strong>Questions 1–40</strong>, which are based on the reading passage below.</p>",
-      "body": "<p><strong>Quantum Computing and Cryptography</strong></p><p><strong>A</strong> Quantum computers exploit superposition and entanglement to perform selected calculations far faster than classical machines. Researchers have warned that this capability could undermine widely deployed encryption, because many security protocols depend on mathematical problems that remain intractable for conventional hardware. Although useful quantum devices are still limited in scale, steady improvements in qubit count and error correction have renewed debate among policymakers and industry leaders about how urgently communication networks must be upgraded before confidential data becomes vulnerable to retrospective decryption by well-resourced adversaries operating across borders and jurisdictions with uneven regulatory maturity in practice.</p><p><strong>B</strong> Public-key cryptography, including RSA, relies on the difficulty of factoring very large integers into prime components. Classical algorithms require exponential time for this task, which is why banks, governments, and e-commerce platforms have trusted these schemes for decades without routine breach. Shor's algorithm, however, could factor large numbers in polynomial time on a sufficiently powerful quantum computer. Experts estimate that thousands of stable logical qubits might be needed before such an attack becomes practical, yet the threshold is no longer considered purely theoretical by national security agencies monitoring hardware progress in competing research laboratories worldwide.</p><p><strong>C</strong> In response, cryptographers are designing post-quantum algorithms believed to resist both classical and quantum adversaries. Lattice-based and hash-based schemes are leading candidates in international standardisation efforts coordinated through public competitions and peer review. Transition planning is complicated because legacy systems cannot always be patched quickly, and organisations must inventory where vulnerable algorithms appear in software libraries, hardware security modules, and archived records that could be decrypted later if ciphertext is harvested and stored today by patient adversaries awaiting future breakthroughs in scalable hardware deployed outside laboratory conditions by state-sponsored programmes worldwide today already in practice.</p><p><strong>D</strong> Quantum key distribution offers a complementary approach by using quantum states to detect eavesdropping on fibre links. If an intruder measures photons en route, the disturbance reveals the breach and the keys are discarded before secure communication proceeds. Proponents argue that this method provides information-theoretic security for key exchange, though critics note that practical deployments face distance limits, high costs, and the need for trusted classical authentication layers that themselves may require post-quantum protection before end-to-end systems are genuinely future-proof in heterogeneous networks spanning campuses, metropolitan areas, and submarine cables owned by competing carriers and consortium partners.</p><p><strong>E</strong> National agencies have begun publishing migration timelines urging operators to adopt hybrid classical and post-quantum protocols during a lengthy overlap period. The author contends that panic is unwarranted because cryptanalytically relevant machines are unlikely to appear without prior warning, yet delaying inventory work is equally unwise. Harvest-now-decrypt-later strategies, in which adversaries store encrypted traffic today for future decoding, mean that sensitive long-lived data such as diplomatic cables, medical records, and trade secrets may already be at risk even before quantum hardware matures commercially in any single jurisdiction or export-controlled facility subject to trade sanctions and monitoring.</p><p><strong>F</strong> Corporate security teams report uneven readiness across sectors. Financial institutions have funded pilot projects and vendor evaluations, whereas smaller software vendors lack expertise to assess marketing claims about quantum safety. Certification frameworks are emerging, but buyers struggle to distinguish promotional language from peer-reviewed cryptographic designs. Training programmes for developers remain scarce, which slows replacement of hard-coded algorithms embedded deep inside enterprise resource planning systems, industrial control software, and firmware that cannot be updated remotely without costly downtime and contractual renegotiation with integrators and maintenance contractors serving critical infrastructure operators nationwide today already in practice now.</p><p><strong>G</strong> Looking ahead, the author believes cryptography will remain viable if societies treat the transition as a managed engineering programme rather than a sudden crisis. Standards bodies, universities, and cloud providers must coordinate interoperability testing so that performance penalties on mobile devices, smart cards, and embedded sensors are understood before mandatory deadlines arrive. Ultimately, quantum technology threatens specific mathematical assumptions, not the broader goal of confidential communication, provided institutions begin systematic upgrades soon rather than postponing decisions until migration becomes chaotic and disruptive for citizens and small enterprises alike that depend on digital services daily worldwide.</p>",
-      "question_groups": [
+      "instructions": "<p><strong>Questions 1–13</strong></p><p>You should spend about 20 minutes on <strong>Questions 1–13</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Saving the saiga</strong></p><p>The saiga, a species of antelope native to Central Asia, once roamed the vast grasslands of this region in enormous herds, many millions strong. Regrettably, such spectacular sights are a thing of the past. Today, the saiga is largely confined to a single country: Kazakhstan. This country is estimated to be home to well over 90% of the global saiga population, with Russia, Mongolia and Uzbekistan accounting for the rest.</p><p>The saiga is perfectly adapted to the tough conditions of the remote wilderness of the steppes of Central Asia. One such adaptation is its bizarre bulbous nose, which enables the animal to survive the extreme seasonal temperature swings of the region. The swollen nostrils of the nose serve several purposes: they filter out dust and cool the blood during hot, dry summers, and they warm the cold air before it enters the saiga's lungs in winter. Other seasonal adaptations include a heavy winter coat that the saiga sheds when the weather warms up.</p><p>Despite these superb adaptations to harsh conditions, the saiga has no defence against the threats posed by humans. It was almost driven to extinction by hunters in the 19th century. Legal protection ensured its survival for a while, and numbers steadily recovered throughout most of the 20th century. But the respite was only temporary. In the ten years following the break-up of the former Soviet Union in 1991, over 95% of the global population was lost - one of the fastest examples of species loss ever recorded for a mammal.</p><p>The dramatic decline during this decade was due to illegal poaching on an industrial scale. Male saiga are a particular target, because their horns are highly prized by traditional medicine practitioners. Poaching reached epidemic levels after misguided conservationists tried to relieve the pressure on threatened African rhinos by actively encouraging the use of saiga horns in traditional medicine as an alternative to those of rhinos. Male saiga were almost wiped out, leading to a population crash from which the species has been struggling to recover ever since.</p><p>Another threat to the survival of the saiga is loss of habitat, as a result of agricultural expansion and human settlement. Physical barriers such as railways, pipelines and fences can block the seasonal migration routes of this transboundary species. In the worst cases, herds may starve to death after being trapped.</p><p>Then there is the risk of disease. In 2015, an outbreak of haemorrhagic septicaemia, caused by the normally harmless bacterium Pasteurella multocida, killed over 75% of the global adult saiga population in just three weeks. In 2017, 60% of the Mongolian saiga population - a subspecies found nowhere else in the world - was killed by a virus that spilled over from livestock. These so-called mass mortality events represent an unpredictable and serious threat to the species.</p><p>Climate change poses a further threat. Although well adapted to cold winters and hot summers, saiga struggle to cope with temperature extremes and unpredictable fluctuations in climate. Experts believe that unusually warm weather may have triggered the 2015 mass mortality event. The steppe region has also become increasingly arid in recent years, and many of the smaller streams that the species normally depended on have dried up and vanished.</p><p>Recent efforts to save the saiga have been spearheaded by the Altyn Dala Conservation Initiative, a project led by the Association for the Conservation of Biodiversity of Kazakhstan, working in partnership with the Kazakh government's Committee for Forestry and Wildlife, Frankfurt Zoological Society and Fauna and Flora, an international conservation charity. Its purpose is to protect and restore Kazakhstan's steppe, semi-desert and desert ecosystems and the many species they support, including the critically endangered saiga. In 2022 the United Nations recognised the initiative as a World Restoration Flagship project, an accolade reserved for the ten best examples of large-scale ecosystem restoration around the globe.</p><p>So, how many saiga are there now? By 2000, the global saiga population had hit an all-time low of just 21,000 individuals. There was some recovery in the first decade of the new millennium but this was then crushed by devastating mass mortality events that saw the loss of hundreds of thousands of the species. But thanks to the intervention of the Altyn Dala Conservation Initiative, the most recent episodes in the ongoing story of the saiga have been relatively uplifting. Three years ago, the Ustyurt Plateau population in Kazakhstan experienced its largest mass birth of saiga calves in many years. An aerial census two years ago recorded an estimated 842,000 saiga across Kazakhstan as a whole, and according to an aerial survey earlier this year, the saiga population in Kazakhstan now exceeds 1.9 million. The world's strangest-looking antelope remains critically endangered, but the direction of travel is positive.</p>",
+      "question_groups": [],
+      "questions": [
         {
           "order": 1,
-          "title": "Questions 11–15",
-          "instructions": "<p>Choose the correct heading for paragraphs <strong>B–F</strong> from the list of headings below.</p><p><em>Write the correct number, <strong>i–vii</strong>, in boxes 11–15 on your answer sheet.</em></p>",
-          "question_type": "matching_headings",
-          "option_pool": [
-            "i. University courses on quantum physics fundamentals",
-            "ii. A classical security assumption under threat",
-            "iii. Photonic methods for detecting interception",
-            "iv. Designing replacements and managing legacy systems",
-            "v. Timelines, stored traffic, and the author's caution",
-            "vi. Unequal corporate preparedness and certification gaps",
-            "vii. Consumer demand for faster mobile applications"
-          ],
-          "questions": [
-            {
-              "order": 11,
-              "question": "<p>Paragraph B</p>",
-              "correct_answer": "ii. A classical security assumption under threat"
-            },
-            {
-              "order": 12,
-              "question": "<p>Paragraph C</p>",
-              "correct_answer": "iv. Designing replacements and managing legacy systems"
-            },
-            {
-              "order": 13,
-              "question": "<p>Paragraph D</p>",
-              "correct_answer": "iii. Photonic methods for detecting interception"
-            },
-            {
-              "order": 14,
-              "question": "<p>Paragraph E</p>",
-              "correct_answer": "v. Timelines, stored traffic, and the author's caution"
-            },
-            {
-              "order": 15,
-              "question": "<p>Paragraph F</p>",
-              "correct_answer": "vi. Unequal corporate preparedness and certification gaps"
-            }
-          ]
+          "question_type": "summary_completion",
+          "question": "<p><strong>The saiga — Adaptations.</strong> Has a large bulbous nose with swollen nostrils that keep ____ out.</p>",
+          "correct_answer": "dust",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
         },
         {
           "order": 2,
-          "title": "Questions 16–20",
-          "instructions": "<p>Which paragraph contains the following information?</p><p><em>Write the correct letter, <strong>A–G</strong>, in boxes 16–20 on your answer sheet.</em></p>",
-          "question_type": "matching_info",
+          "question_type": "summary_completion",
+          "question": "<p>Lower the temperature of its ____ in summer.</p>",
+          "correct_answer": "blood",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 3,
+          "question_type": "summary_completion",
+          "question": "<p>Grows a thick ____ in winter, which it loses in spring.</p>",
+          "correct_answer": "coat",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 4,
+          "question_type": "summary_completion",
+          "question": "<p><strong>Reasons for population decline.</strong> Poaching, especially for the ____ of male saiga.</p>",
+          "correct_answer": "horns",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 5,
+          "question_type": "summary_completion",
+          "question": "<p>Expansion of farms and settlements, causing reduction in the size of the saiga's ____.</p>",
+          "correct_answer": "habitat",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 6,
+          "question_type": "summary_completion",
+          "question": "<p>Loss of access to the ____ which they use for migration.</p>",
+          "correct_answer": "routes",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 7,
+          "question_type": "summary_completion",
+          "question": "<p>Climate change, causing the disappearance of ____ which the saiga relied on.</p>",
+          "correct_answer": "streams",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 8,
+          "question_type": "tfng",
+          "question": "<p>Today, numbers of saiga are distributed evenly across four nations in Central Asia: Kazakhstan, Russia, Mongolia and Uzbekistan.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 9,
+          "question_type": "tfng",
+          "question": "<p>For most of the 20th century, the population of saiga were falling.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 10,
+          "question_type": "tfng",
+          "question": "<p>Efforts to protect rhinos in Africa had a significant effect on saiga populations.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 11,
+          "question_type": "tfng",
+          "question": "<p>Unpredictable fluctuations in climate are threatening the wildlife of Central Asia more than in other parts of the world.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 12,
+          "question_type": "tfng",
+          "question": "<p>The Altyn Dala Conservation Initiative was formed for the benefit of a number of different animals.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 13,
+          "question_type": "tfng",
+          "question": "<p>The Altyn Dala Conservation Initiative's recognition as a World Restoration Flagship project attracted additional international funding for the scheme.</p>",
+          "correct_answer": "Not Given"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Passage 2",
+      "instructions": "<p><strong>Questions 14–26</strong></p><p>You should spend about 20 minutes on <strong>Questions 14–26</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>The problems of getting around the city of Dar es Salaam</strong></p><p>Dar es Salaam in Tanzania is one of the fastest growing cities in Africa. Its population has increased eightfold since 1980 and swells by half a million people every year. United Nations projections anticipate it will become a megacity within seven years as its population passes 10 million, reaching 13.4 million by 2035. Daniel Hoornweg for the Global Cities Institute forecasts the city could be home to an incredible 73.7 million people by 2100.</p><p>Today, four out of five of its people live in single-storey informal settlements on the spreading edges of the city, where the journey to and from the centre regularly takes over two hours. It can be longer if rain turns the dirt roads to mud.</p><p>Even in the middle of the day, traffic frequently slows to a stop without warning. It is not unusual for cars and minibuses to queue for 20 minutes at a key intersection. A single suburban rail line serves residents in a few areas to the south but is tiny in the context of the wider city. Outside the centre many rely on boda boda (motorbike taxis) to navigate the narrow side streets and potholed mud roads that make up much of the metropolis. Their safety record is scandalous.</p><p>Dar es Salaam's reliance on four arterial roads into the city is a legacy of the colonial government that planned the city at the start of the 20th century to cater for a population of 35,000. Most of the current growth is made up of young people arriving from the countryside to find work, and as the population has exploded, Dar es Salaam has grown around those four highways. Nearly all the expansion is happening on the periphery, and nearly all takes place informally without any agreed strategy.</p><p>But Dar es Salaam is pinning its hopes on a solution that could offer a different model for Africa's megacities, giving them an alternative to a future controlled by the private car. Unlike many cities on the continent, Dar es Salaam isn't trying to build a metro. It has chosen a less exciting but cheaper and more achievable method: the bus.</p><p>The DART bus rapid transit (BRT) system runs on bus lanes separated from other traffic, mostly in the middle of the road to reduce stoppages. Ticket purchase and control takes place at stations prior to boarding and the buses are step-free, which means the entire route is accessible to people using wheelchairs or who are travelling with baby buggies.</p><p>'The new buses are much, much better,' says Paulas George, a young IT worker. He takes the bus every day and it has cut his journey time by two-thirds. He says it is not perfect, though, complaining that drivers often refuse to turn on the air conditioning to save fuel.</p><p>That is not the only problem. A shortage of buses after a serious flood at the main depot during the rainy season means the system is carrying 200,000 people a day - half the expected capacity. Smartcards can't be used as the mechanical readers aren't working either, forcing passengers to buy individual paper tickets for every journey. Each is printed with a scannable QR code, but there are no scanners. Staff stand by the gates and tear tickets as people enter. As a result, queues are considerable at peak times.</p><p>Morogoro Road to the north-west of the city was phase I of the BRT project. Phases II and III will install bus lanes along Nyerere Road to the south-west and Kilwa Road to the south. Construction on both routes is due to start imminently. Phase IV, towards Bagamoyo in the north, is in the preliminary design stage. 'Much of the city will have access to a world-class transport system within the space of a few years,' says Chris Kost, the Africa director of ITDP (the Institute for Transportation and Development Policy). All phases are being planned to high standards and, once complete, a third of city residents will be within a short walk of the BRT network.</p><p>The ITDP regrets Africa's obsession with metros. 'With a metro, an international firm will often just parachute in its own system,' says Kost. 'Bus rapid transit allows existing stakeholders to get involved. That's what we did in Dar es Salaam and what we're planning in Nairobi, where the bus bodies will be built in the city and local operators will look after tickets, fare collection and IT ... Bus rapid transit has been transformational for Dar es Salaam. For millions of people in African cities, this is their best hope of ever being connected.'</p>",
+      "question_groups": [],
+      "questions": [
+        {
+          "order": 14,
+          "question_type": "tfng",
+          "question": "<p>The population of Dar es Salaam is rising more rapidly than was previously predicted.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 15,
+          "question_type": "tfng",
+          "question": "<p>Most of the residents of Dar es Salaam live in high-rise blocks on the edge of the city.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 16,
+          "question_type": "tfng",
+          "question": "<p>Residents have been consulted about their views on the suburban rail line in Dar es Salaam.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 17,
+          "question_type": "tfng",
+          "question": "<p>The majority of the present residential development in Dar es Salaam is unplanned.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 18,
+          "question_type": "tfng",
+          "question": "<p>Dar es Salaam's authorities have decided to follow the public transport plan adopted by a large number of African cities.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 19,
+          "question_type": "summary_completion",
+          "question": "<p><strong>Dar es Salaam's DART Bus Rapid Transit system — Features.</strong> The buses use designated ____ to cut down on delays.</p>",
+          "correct_answer": "lanes",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 20,
+          "question_type": "summary_completion",
+          "question": "<p>Passengers pay fares before ____.</p>",
+          "correct_answer": "boarding",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 21,
+          "question_type": "summary_completion",
+          "question": "<p>Passengers in ____ can use every part of the system.</p>",
+          "correct_answer": "wheelchairs",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 22,
+          "question_type": "summary_completion",
+          "question": "<p><strong>Problems.</strong> The temperature control is sometimes not activated in order to reduce ____ use.</p>",
+          "correct_answer": "fuel",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 23,
+          "question_type": "summary_completion",
+          "question": "<p>Insufficient number of vehicles are available due to the effects of a severe ____.</p>",
+          "correct_answer": "flood",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 24,
+          "question_type": "summary_completion",
+          "question": "<p>Passengers are unable to use ____ because some equipment is out of action.</p>",
+          "correct_answer": "smartcards",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 25,
+          "question_type": "summary_completion",
+          "question": "<p>Tickets have to be checked manually at station ____.</p>",
+          "correct_answer": "gates",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 26,
+          "question_type": "summary_completion",
+          "question": "<p>____ frequently build up during rush hours.</p>",
+          "correct_answer": "Queues",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "title": "Passage 3",
+      "instructions": "<p><strong>Questions 27–40</strong></p><p>You should spend about 20 minutes on <strong>Questions 27–40</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Rethinking the Past</strong></p><p>It is by now a truism that the story of human evolution is being rethought. Discoveries have come thick and fast over the last decade or so, and these have forced us to rethink many crucial points, such as how old our species is - about 300,000 years old as opposed to 200,000 - and what extinct hominins, such as our cousins the Neanderthals, were really like. But because there are so many species and eras involved, it's hard to discern the common threads linking them.</p><p>However, I do think it's possible to draw out some overall messages from the blizzard of archaeological finds in recent years. Two things stand out to me. One is the growing evidence that many supposedly 'advanced' behaviours, such as architecture and art, can be traced much further back in time than we thought, often to hominin species that existed before modern humans. And the other is that we have badly misunderstood gender roles in prehistoric societies, imposing patriarchal values onto cultures that had very different ideas about how women should behave.</p><p>Let's start with architecture. At Kalambo Falls in Zambia, researchers found buried logs that had been shaped with stone tools so that they interlocked. They seem to have once been part of a larger structure, perhaps a building. This would be unsurprising if they weren't 476,000 years old. That's almost 200,000 years before our species, Homo sapiens, evolved. Extinct hominins also managed to settle in extreme places. For instance, we now know that extinct hominins such as the Denisovans lived on the frozen heights of high-altitude regions 200,000 years ago - upending the old notion that such environments were only settled by modern humans around 3,600 years ago.</p><p>Art also seems to have been invented by older hominins. We have had evidence for a long time now that Neanderthals painted on cave walls. Even earlier species, such as Homo erectus, may also have made art, for example by engraving patterns on shells. By far the most contentious claim in this area is that Homo naledi made art. H. naledi lived around 250,000 years ago, making it a contemporary of our species. However, it had quite a small brain, typical of older hominins - and was therefore, according to palaeoanthropological dogma, incapable of complex behaviours. Nevertheless, in the Rising Star cave system in South Africa where the H. naledi remains were found, researchers have found what seem to be etchings - resembling rudimentary artwork - on the cave walls, though these have yet to be firmly dated.</p><p>To say these claims about H. naledi are controversial is to understate the situation. Many experts say the evidence presented so far is completely inadequate to support them. The dispute has only been heightened by the way the results were released, in a non-traditional journal that publishes peer reviews publicly alongside the paper. My views on the H. naledi controversy are complicated. I do think more evidence is needed: in particular with regard to the dating of the etchings. At the same time, I think the species' small brains are a distraction. Palaeoanthropologists got fixated on brain size because it was what they could see: if what you have is skeletons, then all you know about brains are their shapes and sizes. But other properties, such as the brain's internal wiring, are surely equally important and may explain how a species like H. naledi might have been capable of complex behaviours, despite their small brains.</p><p>In a sense, we shouldn't be surprised that so many of these behaviours had their origins in older, extinct hominins. Evolution usually works by incremental steps and so does technology. The first birds weren't great at flying, and the first mobile phones weren't great at, well, anything really. The idea that there was a sudden explosion of intelligence and creativity at some point in our evolution isn't inherently ridiculous: sometimes a system hits a tipping point and undergoes runaway change. But there was never that much evidence that human evolution worked this way. Instead, it seems the Neanderthals and many others all walked so we could run.</p><p>One way or another, the H. naledi story is going to be an example of letting our preconceptions get in the way of the evidence. The same is true for our ideas about gender in prehistory. Archaeology was invented by individuals with now unfashionably patriarchal views about gender, and those notions fed into their research. Today's researchers are trying to unpick this stuff, and there have been some significant steps in recent years.</p><p>Perhaps the most dramatic was the demolition of 'Man the Hunter'. This was the idea, promoted for decades, that in most prehistoric societies the men went out to hunt and the women looked after the home. However, a meta-analysis published in June 2023 compiled data on several dozen foraging societies and found women hunted in 80 per cent of them. In line with this, it emerged that an ancient spear-throwing tool called an atlatl enables women to launch projectiles at the same speed as men. We have also seen growing evidence of women occupying positions of authority in ancient societies. The Viking queen Thyra may have helped unify Denmark in the 900s. Going further back, an Iberian leader from around 4000 years ago turned out to be female, not male as many had assumed, when proteins in her teeth were analysed.</p><p>It seems that the more we find out about past societies, the more our preconceptions about the ways society 'has to be' turn out to be wrong. Inequality, authoritarianism and patriarchy aren't inevitable. They're choices, and prehistory shows us that we can choose differently.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 31–34",
+          "instructions": "<p>Complete each sentence with the correct ending, A–F, below.</p><p><em>Write the correct letter, A–F, for each answer.</em></p>",
+          "question_type": "matching_headings",
           "option_pool": [
-            "Paragraph A",
-            "Paragraph B",
-            "Paragraph C",
-            "Paragraph D",
-            "Paragraph E",
-            "Paragraph F",
-            "Paragraph G"
+            "A. Homo sapiens emerged at an earlier point in time than experts previously believed.",
+            "B. Previous assumptions about who had power in the prehistoric world were inaccurate.",
+            "C. Gender roles in extinct hominin species were different from those in Homo sapiens societies.",
+            "D. Experts may have been mistaken about who looked for food in early human communities.",
+            "E. Homo sapiens was probably not the only species capable of sophisticated workmanship.",
+            "F. Other species managed to survive in harsh environments before the arrival of Homo sapiens."
           ],
           "questions": [
             {
-              "order": 16,
-              "question": "<p>a mention of algorithms that may resist quantum attacks</p>",
-              "correct_answer": "Paragraph C"
+              "order": 1,
+              "question": "<p>The findings at Kalambo Falls revealed that ____.</p>",
+              "correct_answer": "E. Homo sapiens was probably not the only species capable of sophisticated workmanship."
             },
             {
-              "order": 17,
-              "question": "<p>reference to photons being measured by an intruder</p>",
-              "correct_answer": "Paragraph D"
+              "order": 2,
+              "question": "<p>Evidence from high-altitude regions suggests that ____.</p>",
+              "correct_answer": "F. Other species managed to survive in harsh environments before the arrival of Homo sapiens."
             },
             {
-              "order": 18,
-              "question": "<p>examples of sectors with different levels of preparation</p>",
-              "correct_answer": "Paragraph F"
+              "order": 3,
+              "question": "<p>An academic publication from June 2023 shows that ____.</p>",
+              "correct_answer": "D. Experts may have been mistaken about who looked for food in early human communities."
             },
             {
-              "order": 19,
-              "question": "<p>discussion of superposition and entanglement</p>",
-              "correct_answer": "Paragraph A"
-            },
-            {
-              "order": 20,
-              "question": "<p>a positive outlook on maintaining confidential communication</p>",
-              "correct_answer": "Paragraph G"
+              "order": 4,
+              "question": "<p>Analysis of a 4000-year-old Iberian leader indicates that ____.</p>",
+              "correct_answer": "B. Previous assumptions about who had power in the prehistoric world were inaccurate."
             }
           ]
         }
       ],
       "questions": [
         {
-          "order": 1,
-          "question_type": "tfng",
-          "question": "<p>Quantum computers can already break all forms of encryption in current use.</p>",
-          "correct_answer": "False"
-        },
-        {
-          "order": 2,
-          "question_type": "tfng",
-          "question": "<p>Shor's algorithm relates to factoring large numbers.</p>",
-          "correct_answer": "True"
-        },
-        {
-          "order": 3,
-          "question_type": "tfng",
-          "question": "<p>Every organisation has completed an inventory of vulnerable algorithms.</p>",
-          "correct_answer": "Not Given"
-        },
-        {
-          "order": 4,
-          "question_type": "tfng",
-          "question": "<p>Quantum key distribution can reveal when a communication line has been interfered with.</p>",
-          "correct_answer": "True"
-        },
-        {
-          "order": 5,
-          "question_type": "tfng",
-          "question": "<p>The author states that useful quantum code-breaking machines will certainly appear without warning.</p>",
-          "correct_answer": "False"
-        },
-        {
-          "order": 6,
-          "question_type": "ynng",
-          "question": "<p>The author believes immediate panic over quantum threats is justified.</p>",
-          "correct_answer": "No"
-        },
-        {
-          "order": 7,
-          "question_type": "ynng",
-          "question": "<p>The writer agrees that storing encrypted data now creates future risk under harvest-now-decrypt-later attacks.</p>",
-          "correct_answer": "Yes"
-        },
-        {
-          "order": 8,
-          "question_type": "ynng",
-          "question": "<p>The author thinks quantum key distribution alone removes the need for classical authentication.</p>",
-          "correct_answer": "No"
-        },
-        {
-          "order": 9,
-          "question_type": "ynng",
-          "question": "<p>The writer claims smaller vendors are generally well prepared for post-quantum migration.</p>",
-          "correct_answer": "No"
-        },
-        {
-          "order": 10,
-          "question_type": "ynng",
-          "question": "<p>The author is confident that confidentiality can be preserved through careful upgrading.</p>",
-          "correct_answer": "Yes"
-        },
-        {
-          "order": 21,
-          "question_type": "sentence_completion",
-          "question": "<p>Many security protocols depend on mathematical problems that are difficult for ____ hardware.</p>",
-          "correct_answer": "conventional",
-          "question_config": {
-            "word_limit": 1,
-            "word_limit_label": "ONE WORD ONLY",
-            "case_insensitive": true
-          }
-        },
-        {
-          "order": 22,
-          "question_type": "sentence_completion",
-          "question": "<p>Shor's algorithm could factor large numbers in ____ time on a powerful quantum computer.</p>",
-          "correct_answer": "polynomial",
-          "question_config": {
-            "word_limit": 1,
-            "word_limit_label": "ONE WORD ONLY",
-            "case_insensitive": true
-          }
-        },
-        {
-          "order": 23,
-          "question_type": "sentence_completion",
-          "question": "<p>Quantum key distribution can detect eavesdropping by observing disturbance to ____ states.</p>",
-          "correct_answer": "quantum",
-          "question_config": {
-            "word_limit": 1,
-            "word_limit_label": "ONE WORD ONLY",
-            "case_insensitive": true
-          }
-        },
-        {
-          "order": 24,
-          "question_type": "sentence_completion",
-          "question": "<p>The author recommends treating the transition as a managed ____ programme.</p>",
-          "correct_answer": "engineering",
-          "question_config": {
-            "word_limit": 1,
-            "word_limit_label": "ONE WORD ONLY",
-            "case_insensitive": true
-          }
-        },
-        {
-          "order": 25,
-          "question_type": "summary_completion",
-          "question": "<p>Public-key schemes such as RSA rely on the hardness of factoring large ____. Post-quantum research includes lattice-based designs.</p>",
-          "correct_answer": "integers",
-          "question_config": {
-            "word_limit": 1,
-            "word_limit_label": "ONE WORD ONLY",
-            "case_insensitive": true
-          }
-        },
-        {
-          "order": 26,
-          "question_type": "summary_completion",
-          "question": "<p>Adversaries may use harvest-now-decrypt-later tactics by storing ____ today.</p>",
-          "correct_answer": "ciphertext",
-          "question_config": {
-            "word_limit": 1,
-            "word_limit_label": "ONE WORD ONLY",
-            "case_insensitive": true
-          }
-        },
-        {
           "order": 27,
-          "question_type": "summary_completion",
-          "question": "<p>Buyers find it hard to separate marketing claims from ____ designs.</p>",
-          "correct_answer": "peer-reviewed",
-          "question_config": {
-            "word_limit": 1,
-            "word_limit_label": "ONE WORD ONLY",
-            "case_insensitive": true
-          }
+          "question_type": "mcq",
+          "question": "<p>What is the writer doing in the second paragraph?</p>",
+          "answer_options": [
+            "pinpointing some key changes in our understanding of prehistory",
+            "outlining some aspects of prehistory which are still poorly understood",
+            "summarising some attitudes towards recent archaeological revelations",
+            "giving an overview of some current disagreements among archaeologists"
+          ],
+          "correct_answer": "pinpointing some key changes in our understanding of prehistory"
         },
         {
           "order": 28,
-          "question_type": "summary_completion",
-          "question": "<p>Cloud providers should coordinate testing before mandatory ____ arrive.</p>",
-          "correct_answer": "deadlines",
-          "question_config": {
-            "word_limit": 1,
-            "word_limit_label": "ONE WORD ONLY",
-            "case_insensitive": true
-          }
+          "question_type": "mcq",
+          "question": "<p>In the sixth paragraph, the writer mentions mobile phones to make the point that</p>",
+          "answer_options": [
+            "most developments happen in a gradual way.",
+            "innovation can come from a variety of sources.",
+            "not all technological advancements are positive.",
+            "the path of evolution can often be unpredictable."
+          ],
+          "correct_answer": "most developments happen in a gradual way."
         },
         {
           "order": 29,
-          "question_type": "table_completion",
-          "question": "<p>Threat mechanism | Shor's algorithm targets integer ____</p>",
-          "correct_answer": "factoring",
-          "question_config": {
-            "word_limit": 1,
-            "word_limit_label": "ONE WORD ONLY",
-            "case_insensitive": true
-          }
+          "question_type": "mcq",
+          "question": "<p>In the seventh paragraph, the phrase 'unpick this stuff' refers to the task of</p>",
+          "answer_options": [
+            "assessing the impact of certain recent research findings.",
+            "questioning the authenticity of evidence used in earlier research.",
+            "conducting research into how prehistoric societies were organised.",
+            "reevaluating research influenced by outdated beliefs about society."
+          ],
+          "correct_answer": "reevaluating research influenced by outdated beliefs about society."
         },
         {
           "order": 30,
-          "question_type": "table_completion",
-          "question": "<p>QKD limitation | Practical links face distance ____</p>",
-          "correct_answer": "limits",
-          "question_config": {
-            "word_limit": 1,
-            "word_limit_label": "ONE WORD ONLY",
-            "case_insensitive": true
-          }
-        },
-        {
-          "order": 31,
-          "question_type": "table_completion",
-          "question": "<p>Migration approach | Agencies urge ____ classical and post-quantum protocols</p>",
-          "correct_answer": "hybrid",
-          "question_config": {
-            "word_limit": 1,
-            "word_limit_label": "ONE WORD ONLY",
-            "case_insensitive": true
-          }
-        },
-        {
-          "order": 32,
           "question_type": "mcq",
-          "question": "<p>What is the main concern about quantum computers in paragraph A?</p>",
+          "question": "<p>What does the writer suggest in the final paragraph?</p>",
           "answer_options": [
-            "They consume too much electricity for data centres.",
-            "They could defeat encryption based on hard mathematical problems.",
-            "They have replaced classical machines in banking networks.",
-            "They make training programmers unnecessary."
+            "Studying past societies could help us create a fairer society today.",
+            "We should not judge past societies by the standards of modern society.",
+            "We still have much to learn about how societies have evolved over history.",
+            "There is more than one way to interpret evidence about societies in prehistoric times."
           ],
-          "correct_answer": "They could defeat encryption based on hard mathematical problems."
-        },
-        {
-          "order": 33,
-          "question_type": "mcq",
-          "question": "<p>According to paragraph B, when might Shor's algorithm become a practical threat?</p>",
-          "answer_options": [
-            "Immediately, with current laboratory devices",
-            "Only if thousands of stable logical qubits exist",
-            "After all smartphones are upgraded",
-            "When RSA keys are shortened deliberately"
-          ],
-          "correct_answer": "Only if thousands of stable logical qubits exist"
-        },
-        {
-          "order": 34,
-          "question_type": "mcq",
-          "question": "<p>Paragraph D suggests a limitation of quantum key distribution is that</p>",
-          "answer_options": [
-            "it cannot operate over any distance",
-            "it eliminates the need for keys entirely",
-            "deployments still depend on classical authentication layers",
-            "it is illegal in most countries"
-          ],
-          "correct_answer": "deployments still depend on classical authentication layers"
+          "correct_answer": "Studying past societies could help us create a fairer society today."
         },
         {
           "order": 35,
-          "question_type": "mcq",
-          "question": "<p>The author uses the term harvest-now-decrypt-later to describe</p>",
-          "answer_options": [
-            "farmers selling encrypted produce online",
-            "storing ciphertext now for decoding when quantum tools mature",
-            "deleting old archives before migration",
-            "harvesting qubits from defective chips"
-          ],
-          "correct_answer": "storing ciphertext now for decoding when quantum tools mature"
+          "question_type": "ynng",
+          "question": "<p>It seems likely that the Neanderthals' cave paintings were the first examples of artwork ever created.</p>",
+          "correct_answer": "No"
         },
         {
           "order": 36,
-          "question_type": "mcq",
-          "question": "<p>The concluding paragraph argues that</p>",
-          "answer_options": [
-            "confidential communication is impossible after quantum advances",
-            "only universities should manage cryptographic standards",
-            "systematic upgrades can preserve confidentiality",
-            "mobile performance penalties should block all change"
-          ],
-          "correct_answer": "systematic upgrades can preserve confidentiality"
+          "question_type": "ynng",
+          "question": "<p>It is very rare to find prehistoric artwork carved onto shells.</p>",
+          "correct_answer": "Not Given"
         },
         {
           "order": 37,
-          "question_type": "short_answer",
-          "question": "<p>Which algorithm is named as a threat to factoring-based cryptography?</p>",
-          "correct_answer": "Shor's",
-          "question_config": {
-            "word_limit": 1,
-            "word_limit_label": "ONE WORD ONLY",
-            "case_insensitive": true
-          }
+          "question_type": "ynng",
+          "question": "<p>The methods which the researchers used to examine the Rising Star cave system were rather unconventional.</p>",
+          "correct_answer": "Yes"
         },
         {
           "order": 38,
-          "question_type": "short_answer",
-          "question": "<p>What mineral-like term describes one family of post-quantum candidate schemes?</p>",
-          "correct_answer": "lattice-based",
-          "question_config": {
-            "word_limit": 2,
-            "word_limit_label": "NO MORE THAN TWO WORDS",
-            "case_insensitive": true
-          }
+          "question_type": "ynng",
+          "question": "<p>It is unclear how old the etchings in the Rising Star cave system are.</p>",
+          "correct_answer": "Yes"
         },
         {
           "order": 39,
-          "question_type": "short_answer",
-          "question": "<p>What type of institutions are urged to coordinate testing with cloud providers?</p>",
-          "correct_answer": "standards bodies",
-          "question_config": {
-            "word_limit": 2,
-            "word_limit_label": "NO MORE THAN TWO WORDS",
-            "case_insensitive": true
-          }
+          "question_type": "ynng",
+          "question": "<p>The means used to publicise the findings from the Rising Star cave system added to the controversy that surrounds them.</p>",
+          "correct_answer": "Yes"
         },
         {
           "order": 40,
-          "question_type": "short_answer",
-          "question": "<p>What kind of penalties on mobile devices must be understood before deadlines?</p>",
-          "correct_answer": "performance",
-          "question_config": {
-            "word_limit": 1,
-            "word_limit_label": "ONE WORD ONLY",
-            "case_insensitive": true
-          }
+          "question_type": "ynng",
+          "question": "<p>The size of H. naledi brains is a key factor in the question of whether these hominins were able to produce art.</p>",
+          "correct_answer": "No"
         }
       ]
     }
