@@ -181,11 +181,10 @@ def sync_quiz_questions(
 
 @transaction.atomic
 def load_resource_file(path: Path, *, deactivate_missing: bool = True) -> dict:
-    parsed = parse_resource_file(path)
+    from portals.utils.quiz_category_services import ensure_quiz_category
 
-    category, _ = QuizCategory.objects.get_or_create(
-        name=parsed['category_name'],
-    )
+    parsed = parse_resource_file(path)
+    category, _ = ensure_quiz_category(parsed['service'], parsed['category_name'])
 
     quiz, quiz_created = ensure_quiz_from_resource(parsed, category)
     question_stats = sync_quiz_questions(

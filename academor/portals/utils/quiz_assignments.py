@@ -6,7 +6,6 @@ from portals.models import Quiz, QuizAssignment, StudentMockAccess
 from portals.utils.cache_utils import invalidate_model_cache
 from portals.utils.mock_programs import MOCK_EXAM_PROGRAMS, get_program_label
 from portals.utils.student_courses import (
-    get_quiz_service_code,
     get_student_course_type_codes,
     quiz_visible_to_teacher,
     student_has_course_access,
@@ -47,12 +46,13 @@ def get_student_quiz_assignment_map(student_id, quiz_ids):
 
 
 def teacher_can_manage_student_quiz(teacher_id, student_id, quiz):
+    from portals.utils.student_courses import student_quiz_enrollment_ok
+
     if not get_teacher_student(teacher_id, student_id):
         return False
     if not quiz or not quiz_visible_to_teacher(quiz, teacher_id):
         return False
-    service = get_quiz_service_code(quiz)
-    return bool(service) and student_has_course_access(student_id, service)
+    return student_quiz_enrollment_ok(student_id, quiz)
 
 
 def set_student_quiz_assignment(teacher_id, student_id, quiz_id, *, is_active):
@@ -196,10 +196,21 @@ def get_teacher_student_quiz_access_rows(teacher_id, student_id):
     if not student_codes:
         return []
 
+    from portals.utils.quiz_category_services import (
+        quiz_category_primary_portal_code,
+        quiz_category_slugs_for_portal_codes,
+    )
+
+    slugs = quiz_category_slugs_for_portal_codes(student_codes)
+    if not slugs:
+        return []
+
     quizzes = (
-        Quiz.objects.filter(category__service__in=student_codes)
+        Quiz.objects.filter(category__services__slug__in=slugs)
         .select_related('category')
-        .order_by('category__service', 'category__name', '-created_at', 'id')
+        .prefetch_related('category__services')
+        .distinct()
+        .order_by('category__name', '-created_at', 'id')
     )
     visible_quizzes = [row for row in quizzes if quiz_visible_to_teacher(row, teacher_id)]
     if not visible_quizzes:
@@ -218,11 +229,12 @@ def get_teacher_student_quiz_access_rows(teacher_id, student_id):
         if bucket is None:
             from portals.utils.portal_services import resolve_course_type_label
 
+            service_code = quiz_category_primary_portal_code(category)
             bucket = {
                 'id': category.pk,
                 'name': category.name,
-                'service': category.service,
-                'service_label': resolve_course_type_label(category.service),
+                'service': service_code,
+                'service_label': resolve_course_type_label(service_code) if service_code else '',
                 'quizzes': [],
             }
             category_index[category.pk] = bucket

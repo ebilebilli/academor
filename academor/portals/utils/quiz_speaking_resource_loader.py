@@ -7,7 +7,7 @@ from pathlib import Path
 
 from django.db import transaction
 
-from portals.models import Quiz, QuizCategory
+from portals.models import Quiz
 from portals.models.speaking_models import SpeakingPart, SpeakingPartType, SpeakingQuestion
 from portals.utils.cache_utils import invalidate_model_cache
 
@@ -158,11 +158,10 @@ def sync_speaking_quiz_content(
 
 @transaction.atomic
 def load_speaking_resource_file(path: Path, *, replace_existing: bool = True) -> dict:
+    from portals.utils.quiz_category_services import ensure_quiz_category
+
     parsed = parse_speaking_resource_file(path)
-    category, _ = QuizCategory.objects.get_or_create(
-        service=parsed['service'],
-        name=parsed['category_name'],
-    )
+    category, _ = ensure_quiz_category(parsed['service'], parsed['category_name'])
 
     defaults = {
         'topic': parsed['resource_name'],

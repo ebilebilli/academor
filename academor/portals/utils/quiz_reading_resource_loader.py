@@ -7,7 +7,7 @@ from pathlib import Path
 
 from django.db import transaction
 
-from portals.models import Quiz, QuizCategory
+from portals.models import Quiz
 from portals.models.reading_models import (
     MATCHING_QUESTION_TYPES,
     ReadingPassage,
@@ -274,11 +274,10 @@ def sync_reading_quiz_content(
 
 @transaction.atomic
 def load_reading_resource_file(path: Path, *, replace_existing: bool = True) -> dict:
+    from portals.utils.quiz_category_services import ensure_quiz_category
+
     parsed = parse_reading_resource_file(path)
-    category, _ = QuizCategory.objects.get_or_create(
-        service=parsed['service'],
-        name=parsed['category_name'],
-    )
+    category, _ = ensure_quiz_category(parsed['service'], parsed['category_name'])
 
     defaults = {
         'topic': parsed['resource_name'],

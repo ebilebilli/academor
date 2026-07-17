@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib import messages
 from django.db.models import Count
 from django.http import Http404, JsonResponse
@@ -419,6 +421,11 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
             quiz_access_categories = get_teacher_student_quiz_access_rows(profile.pk, student_pk)
             quiz_access_count = sum(len(cat.get('quizzes') or []) for cat in quiz_access_categories)
         except Exception:
+            logging.getLogger('portals.quiz_assignments').exception(
+                'Failed to build quiz access rows for teacher=%s student=%s',
+                profile.pk,
+                student_pk,
+            )
             quiz_access_categories = []
             quiz_access_count = 0
 

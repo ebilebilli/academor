@@ -5,7 +5,6 @@ from django.db import transaction
 
 from portals.models import (
     Quiz,
-    QuizCategory,
     QuizQuestion,
 )
 from portals.utils.portal_services import get_active_course_type_codes
@@ -104,10 +103,9 @@ class Command(BaseCommand):
                 skipped += 1
                 continue
 
-            category, _ = QuizCategory.objects.get_or_create(
-                service=service_code,
-                name=category_name,
-            )
+            from portals.utils.quiz_category_services import ensure_quiz_category
+
+            category, _ = ensure_quiz_category(service_code, category_name)
             quiz = Quiz.objects.create(
                 category=category,
                 topic=topic,

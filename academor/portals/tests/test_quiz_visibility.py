@@ -77,14 +77,14 @@ class QuizVisibilityTests(TestCase):
             name='Speaking B',
             max_students=10,
         )
-        from portals.tests.group_helpers import link_study_group_services
+        from portals.tests.group_helpers import create_quiz_category, link_study_group_services
 
         link_study_group_services(self.ielts_group, 'ielts')
         link_study_group_services(self.speaking_group, 'speaking')
         self.ielts_group.students.add(self.student)
 
-        self.ielts_category = QuizCategory.objects.create(service='ielts', name='Reading')
-        self.speaking_category = QuizCategory.objects.create(service='speaking', name='Fluency')
+        self.ielts_category = create_quiz_category('Reading', 'ielts')
+        self.speaking_category = create_quiz_category('Fluency', 'speaking')
 
         self.ielts_quiz = Quiz.objects.create(
             category=self.ielts_category,
@@ -115,7 +115,9 @@ class QuizVisibilityTests(TestCase):
         codes = get_student_course_type_codes(target.pk)
         if not codes:
             return
-        for quiz in Quiz.objects.filter(category__service__in=codes):
+        from portals.utils.quiz_category_services import quizzes_for_portal_codes
+
+        for quiz in quizzes_for_portal_codes(codes):
             self.assign_student_quizzes(quiz, student=target)
 
     def test_student_without_assignment_cannot_see_quiz(self):

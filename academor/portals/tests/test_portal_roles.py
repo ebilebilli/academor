@@ -238,8 +238,10 @@ class PortalRoleMultiGroupTests(PortalRoleFixtureMixin, TestCase):
         self.assertNotContains(response, 'IELTS group A')
 
     def test_student_scores_average_respects_active_group(self):
-        ielts_category = QuizCategory.objects.create(name='IELTS', service='ielts')
-        sat_category = QuizCategory.objects.create(name='SAT', service='sat')
+        from portals.tests.group_helpers import create_quiz_category
+
+        ielts_category = create_quiz_category('IELTS', 'ielts')
+        sat_category = create_quiz_category('SAT', 'sat')
         ielts_quiz = Quiz.objects.create(topic='IELTS quiz', category=ielts_category)
         sat_quiz = Quiz.objects.create(topic='SAT quiz', category=sat_category)
         QuizQuestion.objects.create(

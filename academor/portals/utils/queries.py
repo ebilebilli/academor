@@ -1329,8 +1329,8 @@ def serialize_quiz_result(row):
         'is_pending_review': is_pending_review,
         'completed_at': row.completed_at,
         'course_type': (
-            row.quiz.category.service
-            if row.quiz.category_id and getattr(row.quiz.category, 'service', None)
+            quiz_category_primary_portal_code(row.quiz.category)
+            if row.quiz.category_id
             else ''
         ),
     }
@@ -2968,7 +2968,11 @@ def get_customer_mock_quiz_take_data(customer_id: int, quiz_id: int, *, mock_att
 
     exam_program = attempt.exam_program
     quiz = (
-        Quiz.objects.filter(pk=quiz_id, category__service=exam_program)
+        Quiz.objects.filter(
+            pk=quiz_id,
+            category__services__slug__in=quiz_category_slugs_for_portal_codes([exam_program]),
+        )
+        .distinct()
         .select_related('category')
         .prefetch_related(Prefetch('questions', queryset=QuizQuestion.objects.order_by('order', 'id')))
         .first()

@@ -67,6 +67,16 @@ def ensure_quiz_category(service_code, name):
     if category:
         return category, False
 
+    # Adopt an orphan category with the same name (left over from loaders
+    # that created categories without linking services) instead of duplicating.
+    orphan = (
+        QuizCategory.objects.filter(name=name, services__isnull=True)
+        .first()
+    )
+    if orphan:
+        orphan.services.set(services)
+        return orphan, False
+
     category = QuizCategory.objects.create(name=name)
     category.services.set(services)
     return category, True

@@ -49,12 +49,12 @@ class QuizSubmitTests(TestCase):
             name='IELTS',
             max_students=10,
         )
-        from portals.tests.group_helpers import link_study_group_services
+        from portals.tests.group_helpers import create_quiz_category, link_study_group_services
 
         link_study_group_services(group, 'ielts')
         group.students.add(self.student)
 
-        category = QuizCategory.objects.create(service='ielts', name='Grammar')
+        category = create_quiz_category('Grammar', 'ielts')
         self.quiz = Quiz.objects.create(
             category=category,
             topic='Quick test',

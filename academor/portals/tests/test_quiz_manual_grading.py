@@ -19,7 +19,9 @@ class QuizManualGradingTests(QuizVisibilityTests):
             self.ielts_quiz.full_clean()
 
     def test_manual_quiz_question_skips_variant_validation(self):
-        category = QuizCategory.objects.create(service='ielts', name='Essay cat')
+        from portals.tests.group_helpers import create_quiz_category
+
+        category = create_quiz_category('Essay cat', 'ielts')
         quiz = Quiz.objects.create(
             category=category,
             topic='Essay task',
@@ -510,7 +512,9 @@ class QuizManualGradingTests(QuizVisibilityTests):
     def test_writing_category_manual_quiz_uses_text_responses(self):
         from portals.utils.quiz_submit import submit_manual_quiz_attempt
 
-        writing_category = QuizCategory.objects.create(service='ielts', name='Writing')
+        from portals.tests.group_helpers import create_quiz_category
+
+        writing_category = create_quiz_category('Writing', 'ielts')
         quiz = Quiz.objects.create(
             category=writing_category,
             topic='Writing tasks',

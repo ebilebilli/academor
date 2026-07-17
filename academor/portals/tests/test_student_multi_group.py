@@ -100,7 +100,9 @@ class StudentMultiGroupPortalTests(TestCase):
             course_type='ielts',
             defaults={'is_active': True},
         )
-        category = QuizCategory.objects.create(name='IELTS Cat', service='ielts')
+        from portals.tests.group_helpers import create_quiz_category
+
+        category = create_quiz_category('IELTS Cat', 'ielts')
         quiz = Quiz.objects.create(topic='Listening', category=category)
         result = QuizResult.objects.create(
             student=self.student,

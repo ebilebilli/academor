@@ -230,11 +230,11 @@ class QuizAssignmentNewStudentTests(TestCase):
         self.student = StudentProfile.objects.create(user=self.student_user)
         TeacherCourseSpecialization.objects.create(teacher=self.teacher, course_type='ielts')
         self.group = StudyGroup.objects.create(teacher=self.teacher, name='IELTS C', max_students=10)
-        from portals.tests.group_helpers import link_study_group_services
+        from portals.tests.group_helpers import create_quiz_category, link_study_group_services
 
         link_study_group_services(self.group, 'ielts')
         self.group.students.add(self.student)
-        category = QuizCategory.objects.create(service='ielts', name='Grammar')
+        category = create_quiz_category('Grammar', 'ielts')
         self.quiz = Quiz.objects.create(category=category, topic='New quiz')
 
     def test_new_student_does_not_see_quiz_until_teacher_assigns(self):

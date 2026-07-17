@@ -63,22 +63,12 @@ User = get_user_model()
 class CustomerMockRoleTests(QuizVisibilityTests):
     def setUp(self):
         super().setUp()
-        self.mock_listening_category = QuizCategory.objects.create(
-            service='ielts',
-            name='Listening practice',
-        )
-        self.mock_reading_category = QuizCategory.objects.create(
-            service='ielts',
-            name='Reading practice',
-        )
-        self.mock_writing_category = QuizCategory.objects.create(
-            service='ielts',
-            name='Writing task 2',
-        )
-        self.mock_speaking_category = QuizCategory.objects.create(
-            service='ielts',
-            name='Speaking',
-        )
+        from portals.tests.group_helpers import create_quiz_category
+
+        self.mock_listening_category = create_quiz_category('Listening practice', 'ielts')
+        self.mock_reading_category = create_quiz_category('Reading practice', 'ielts')
+        self.mock_writing_category = create_quiz_category('Writing task 2', 'ielts')
+        self.mock_speaking_category = create_quiz_category('Speaking', 'ielts')
         self._create_mock_quizzes()
         StudentMockAccess.objects.update_or_create(
             student=self.student,
@@ -1209,14 +1199,10 @@ class CustomerSatMockTests(TestCase):
             is_active=True,
         )
 
-        reading_category = QuizCategory.objects.create(
-            service='sat',
-            name='SAT Reading and Writing',
-        )
-        math_category = QuizCategory.objects.create(
-            service='sat',
-            name='SAT Math',
-        )
+        from portals.tests.group_helpers import create_quiz_category
+
+        reading_category = create_quiz_category('SAT Reading and Writing', 'sat')
+        math_category = create_quiz_category('SAT Math', 'sat')
         self.sat_reading_quiz = Quiz.objects.create(
             category=reading_category,
             topic='SAT RW Mock',

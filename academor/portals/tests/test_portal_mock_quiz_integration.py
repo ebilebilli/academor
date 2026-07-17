@@ -67,8 +67,10 @@ class PortalMockQuizIntegrationTests(TestCase):
             defaults={'is_active': True},
         )
 
-        self.rw_category = QuizCategory.objects.create(service='sat', name='SAT Reading and Writing')
-        self.math_category = QuizCategory.objects.create(service='sat', name='SAT Math')
+        from portals.tests.group_helpers import create_quiz_category
+
+        self.rw_category = create_quiz_category('SAT Reading and Writing', 'sat')
+        self.math_category = create_quiz_category('SAT Math', 'sat')
 
         self.sat_reading = self._variant_sat_quiz(self.rw_category, 'SAT Reading pool', 'reading')
         self.sat_writing = self._variant_sat_quiz(self.rw_category, 'SAT Writing pool', 'writing')
@@ -171,7 +173,9 @@ class PortalMockQuizIntegrationTests(TestCase):
         self.assertIn(str(attempt.reading_quiz_id), ctx['mock_redirect'])
 
     def test_locked_quiz_redirects_without_assignment(self):
-        category = QuizCategory.objects.create(service='ielts', name='Locked pool')
+        from portals.tests.group_helpers import create_quiz_category
+
+        category = create_quiz_category('Locked pool', 'ielts')
         quiz = Quiz.objects.create(category=category, topic='Locked quiz')
         QuizQuestion.objects.create(
             quiz=quiz,
@@ -225,7 +229,9 @@ class PortalQuizVariantSubmitSessionTests(TestCase):
         link_study_group_services(group, 'ielts')
         group.students.add(self.student)
 
-        category = QuizCategory.objects.create(service='ielts', name='Grammar')
+        from portals.tests.group_helpers import create_quiz_category
+
+        category = create_quiz_category('Grammar', 'ielts')
         self.quiz = Quiz.objects.create(category=category, topic='Timed variant')
         self.question = QuizQuestion.objects.create(
             quiz=self.quiz,
