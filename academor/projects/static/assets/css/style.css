@@ -997,10 +997,10 @@ h1.animated, h2.animated, h3.animated,
         font-size: 0.9em;
     }
 
-    .navbar-light .navbar-nav .nav-lang-dropdown .nav-link img {
-        width: 17px !important;
-        height: 12px !important;
-        margin-right: 5px !important;
+    .navbar-light .navbar-nav .nav-lang-dropdown .nav-link .nav-lang-flag {
+        width: 17px;
+        height: 12px;
+        margin-right: 5px;
     }
 
     /* Dropdown panel inherits live --nav-fs (including JS fit shrink) */
@@ -1015,6 +1015,22 @@ h1.animated, h2.animated, h3.animated,
 
 .navbar.navbar-light {
     background-color: #00313D !important;
+}
+
+.navbar .nav-lang-flag {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 18px;
+    height: 12px;
+    margin-right: 6px;
+    vertical-align: middle;
+    border-radius: 1px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+}
+
+.navbar .dropdown-item .nav-lang-flag {
+    margin-right: 8px;
 }
 
 .navbar .dropdown-item.lang-option.active {

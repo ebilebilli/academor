@@ -73,11 +73,11 @@
             <div class="nav-item dropdown nav-lang-dropdown">
                 <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
                     {% if LANG == 'az' %}
-                    <img src="{% static 'assets/img/azerbaijan.webp' %}" alt="AZ" width="18" height="12" style="width: 18px; height: 12px; object-fit: cover; margin-right: 6px;">AZ
+                    {% include "includes/lang_flag.html" with code="az" %}AZ
                     {% elif LANG == 'ru' %}
-                    <img src="{% static 'assets/img/russia.webp' %}" alt="RU" width="18" height="12" style="width: 18px; height: 12px; object-fit: cover; margin-right: 6px;">RU
+                    {% include "includes/lang_flag.html" with code="ru" %}RU
                     {% else %}
-                    <img src="{% static 'assets/img/united-kingdom.webp' %}" alt="EN" width="18" height="12" style="width: 18px; height: 12px; object-fit: cover; margin-right: 6px;">EN
+                    {% include "includes/lang_flag.html" with code="en" %}EN
                     {% endif %}
                 </a>
                 <div class="dropdown-menu fade-down m-0">
@@ -86,7 +86,7 @@
                         <input type="hidden" name="next" value="{{ request.get_full_path }}">
                         <input type="hidden" name="language" value="en">
                         <button type="submit" class="dropdown-item d-flex align-items-center lang-option{% if LANG == 'en' %} active{% endif %}"{% if LANG == 'en' %} aria-current="true"{% endif %}>
-                            <img src="{% static 'assets/img/united-kingdom.webp' %}" alt="EN" width="18" height="12" style="width: 18px; height: 12px; object-fit: cover; margin-right: 8px;">{% trans "English" %}
+                            {% include "includes/lang_flag.html" with code="en" %}{% trans "English" %}
                         </button>
                     </form>
                     <form action="{% url 'set_language' %}" method="post" class="lang-switch-form">
@@ -94,7 +94,7 @@
                         <input type="hidden" name="next" value="{{ request.get_full_path }}">
                         <input type="hidden" name="language" value="az">
                         <button type="submit" class="dropdown-item d-flex align-items-center lang-option{% if LANG == 'az' %} active{% endif %}"{% if LANG == 'az' %} aria-current="true"{% endif %}>
-                            <img src="{% static 'assets/img/azerbaijan.webp' %}" alt="AZ" width="18" height="12" style="width: 18px; height: 12px; object-fit: cover; margin-right: 8px;">{% trans "Azerbaijani" %}
+                            {% include "includes/lang_flag.html" with code="az" %}{% trans "Azerbaijani" %}
                         </button>
                     </form>
                     <form action="{% url 'set_language' %}" method="post" class="lang-switch-form">
@@ -102,7 +102,7 @@
                         <input type="hidden" name="next" value="{{ request.get_full_path }}">
                         <input type="hidden" name="language" value="ru">
                         <button type="submit" class="dropdown-item d-flex align-items-center lang-option{% if LANG == 'ru' %} active{% endif %}"{% if LANG == 'ru' %} aria-current="true"{% endif %}>
-                            <img src="{% static 'assets/img/russia.webp' %}" alt="RU" width="18" height="12" style="width: 18px; height: 12px; object-fit: cover; margin-right: 8px;">{% trans "Russian" %}
+                            {% include "includes/lang_flag.html" with code="ru" %}{% trans "Russian" %}
                         </button>
                     </form>
                 </div>
