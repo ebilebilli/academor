@@ -77,6 +77,7 @@ def normalize_portal_course_type(code):
 
 def expand_course_types_to_service_slugs(course_types, lang=None):
     """Map portal course_type codes to active site service slugs for ORM filters."""
+    del lang  # reserved for callers that pass UI language
     slugs = set()
     for code in course_types or []:
         if not code:
@@ -86,6 +87,13 @@ def expand_course_types_to_service_slugs(course_types, lang=None):
             if infer_course_type_for_service(service) == code and service.slug:
                 slugs.add(service.slug)
     return sorted(slugs)
+
+
+def portal_course_keys_overlap(left_keys, right_keys):
+    """True when two portal key sets share an active site service (code or slug)."""
+    left = set(expand_course_types_to_service_slugs(left_keys))
+    right = set(expand_course_types_to_service_slugs(right_keys))
+    return bool(left.intersection(right))
 
 
 def services_for_portal_codes(codes):
@@ -142,34 +150,40 @@ def get_active_services_queryset():
 
 
 def get_active_course_type_codes():
+    """Active portal keys: inferred course codes plus every active service slug.
+
+    Role / enrollment forms store the service slug as the key so each site
+    service is selectable. Legacy inferred codes (``ielts``, ``sat``, …) stay
+    valid for existing rows and filters.
+    """
     codes = set()
     for service in get_active_services_queryset():
         code = infer_course_type_for_service(service)
         if code:
             codes.add(code)
+        slug = (service.slug or '').strip()
+        if slug:
+            codes.add(slug)
     return codes
 
 
 def get_active_course_type_choices(lang=None):
-    """Unique course types from active site services, labeled with the service name."""
-    choices = []
-    seen = set()
-    for service in get_active_services_queryset():
-        code = infer_course_type_for_service(service)
-        if not code or code in seen:
-            continue
-        label = _localized_service_name(service, lang)
-        if not label:
-            continue
-        seen.add(code)
-        choices.append((code, label))
-    return choices
+    """One choice per active site service (value = slug, label = localized name)."""
+    return get_active_service_choices(lang)
 
 
 def get_course_type_label_map(lang=None):
-    labels = {code: str(label) for code, label in get_active_course_type_choices(lang)}
-    for slug, name in get_active_service_choices(lang):
-        labels.setdefault(slug, str(name))
+    labels = {}
+    for service in get_active_services_queryset():
+        name = _localized_service_name(service, lang)
+        if not name:
+            continue
+        slug = (service.slug or '').strip()
+        if slug:
+            labels[slug] = str(name)
+        code = infer_course_type_for_service(service)
+        if code:
+            labels.setdefault(code, str(name))
     return labels
 
 

@@ -52,11 +52,13 @@ def teacher_has_course_access(teacher_id, course_type):
 
 def teacher_has_all_course_codes(teacher_id, course_codes):
     """True when the teacher is specialized in every given portal course_type code."""
+    from portals.utils.portal_services import portal_course_keys_overlap
+
     codes = [code for code in (course_codes or []) if code]
     if not teacher_id or not codes:
         return True
-    assigned = set(get_teacher_course_type_codes(teacher_id))
-    return set(codes).issubset(assigned)
+    assigned = get_teacher_course_type_codes(teacher_id)
+    return all(portal_course_keys_overlap([code], assigned) for code in codes)
 
 
 def teachers_for_portal_course_codes(course_codes):

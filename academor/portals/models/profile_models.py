@@ -233,7 +233,7 @@ class StudentCourseSpecialization(models.Model):
         verbose_name=_('Student'),
     )
     course_type = models.CharField(
-        max_length=32,
+        max_length=255,
         verbose_name=_('Service'),
     )
     is_active = models.BooleanField(
@@ -303,7 +303,7 @@ class TeacherCourseSpecialization(models.Model):
         verbose_name=_('Teacher'),
     )
     course_type = models.CharField(
-        max_length=32,
+        max_length=255,
         verbose_name=_('Course type'),
     )
 

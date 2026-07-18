@@ -2,7 +2,7 @@
 
 from portals.models import StudentCourseSpecialization, StudyGroup
 from portals.utils.cache_utils import cached_query
-from portals.utils.portal_services import expand_course_types_to_service_slugs
+from portals.utils.portal_services import expand_course_types_to_service_slugs, portal_course_keys_overlap
 from portals.utils.teacher_courses import teacher_groups_queryset
 
 SCORE_LIST_LIMIT = 200
@@ -87,7 +87,7 @@ def student_quiz_enrollment_ok(student_id, quiz):
     codes = get_quiz_portal_course_codes(quiz)
     if not codes:
         return False
-    return bool(set(codes).intersection(get_student_course_type_codes(student_id)))
+    return portal_course_keys_overlap(codes, get_student_course_type_codes(student_id))
 
 
 def quiz_visible_to_student(quiz, student_id):
@@ -104,7 +104,7 @@ def quiz_visible_to_teacher(quiz, teacher_id):
     codes = get_quiz_portal_course_codes(quiz)
     if not codes:
         return False
-    return bool(set(codes).intersection(get_teacher_course_type_codes(teacher_id)))
+    return portal_course_keys_overlap(codes, get_teacher_course_type_codes(teacher_id))
 
 
 def filter_quizzes_for_student(quizzes, student_id):
@@ -161,13 +161,13 @@ def filter_quiz_results_for_teacher(results, teacher_id):
             continue
 
         service = get_quiz_service_code(quiz)
-        if not service or service not in teacher_codes:
+        if not service:
             continue
 
         student_id = row.student_id
         if student_id not in student_codes_cache:
             student_codes_cache[student_id] = set(get_student_course_type_codes(student_id))
-        if service not in student_codes_cache[student_id]:
+        if not portal_course_keys_overlap([service], student_codes_cache[student_id]):
             continue
 
         if (student_id, service) in pairs:
@@ -200,7 +200,7 @@ def teacher_can_see_customer_quiz_result(teacher_id, customer_id, quiz):
     service = get_quiz_service_code(quiz)
     if not service:
         return False
-    return service in set(get_teacher_course_type_codes(teacher_id))
+    return portal_course_keys_overlap([service], get_teacher_course_type_codes(teacher_id))
 
 
 def teacher_can_review_quiz_result(teacher_id, result) -> bool:

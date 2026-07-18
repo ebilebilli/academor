@@ -47,8 +47,9 @@ def quizzes_for_portal_codes(course_codes):
 def category_has_portal_code(category, course_codes):
     if not category or not course_codes:
         return False
-    category_codes = set(quiz_category_portal_codes(category))
-    return bool(category_codes.intersection(course_codes))
+    from portals.utils.portal_services import portal_course_keys_overlap
+
+    return portal_course_keys_overlap(quiz_category_portal_codes(category), course_codes)
 
 
 def ensure_quiz_category(service_code, name):

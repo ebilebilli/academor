@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 class LessonCategory(models.Model):
     service = models.CharField(
-        max_length=32,
+        max_length=255,
         db_index=True,
         verbose_name=_('Service'),
     )
@@ -44,7 +44,7 @@ class Lesson(models.Model):
         verbose_name=_('Teacher'),
     )
     subject = models.CharField(
-        max_length=32,
+        max_length=255,
         db_index=True,
         verbose_name=_('Service'),
     )
