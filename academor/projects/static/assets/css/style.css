@@ -1748,58 +1748,6 @@ h1.animated, h2.animated, h3.animated,
     box-shadow: 0 6px 16px rgba(255, 84, 20, 0.26);
 }
 
-.contact-portal-note {
-    margin-bottom: 1.25rem;
-    padding: 1rem 1.15rem 1.1rem;
-    border-radius: 0.95rem;
-    border: 1px solid rgba(0, 49, 61, 0.1);
-    background: rgba(255, 255, 255, 0.88);
-    box-shadow: 0 8px 24px rgba(0, 49, 61, 0.05);
-}
-
-.contact-portal-note__title {
-    margin: 0 0 0.4rem;
-    font-size: 1.15rem;
-    font-weight: 700;
-    letter-spacing: -0.015em;
-    line-height: 1.35;
-    color: var(--primary);
-}
-
-.contact-portal-note__text {
-    margin: 0 0 0.85rem;
-    font-size: 1.02rem;
-    line-height: 1.5;
-    color: rgba(0, 49, 61, 0.68);
-}
-
-.contact-portal-note__link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--accent);
-    text-decoration: none;
-    transition: color 0.15s ease, gap 0.15s ease;
-}
-
-.contact-portal-note__link i {
-    font-size: 0.9rem;
-    transition: transform 0.15s ease;
-}
-
-.contact-portal-note__link:hover,
-.contact-portal-note__link:focus-visible {
-    color: var(--accent-hover);
-    gap: 0.6rem;
-}
-
-.contact-portal-note__link:hover i,
-.contact-portal-note__link:focus-visible i {
-    transform: translateX(2px);
-}
-
 .contact-page-section {
     position: relative;
     isolation: isolate;
