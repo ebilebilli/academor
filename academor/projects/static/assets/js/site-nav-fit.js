@@ -30,7 +30,7 @@
   function isOverflowing(nav) {
     if (nav.scrollWidth > nav.clientWidth + 1) return true;
     var login = qs(".nav-login-btn, .nav-portal-btn", nav);
-    var contact = qs(".navbar-collapse > a.btn.btn-primary", nav);
+    var contact = qs(".navbar-collapse > a.btn.nav-contact-btn, .navbar-collapse > a.btn.btn-primary", nav);
     var edge = Math.max(
       login ? login.getBoundingClientRect().right : 0,
       contact ? contact.getBoundingClientRect().right : 0

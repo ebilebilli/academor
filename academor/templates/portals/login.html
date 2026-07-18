@@ -15,12 +15,6 @@
         background: var(--site-surface, #f7f9fb);
         overflow-x: clip;
       }
-      .portal-login-page > .navbar.sticky-top { min-height: 92px; }
-      .portal-login-page > .navbar .site-logo {
-        height: 92px;
-        width: auto;
-        aspect-ratio: 276 / 92;
-      }
       /* Critical layout lock — panel height owns the row; animation fills it */
       .portal-login-shell {
         display: grid;
@@ -68,8 +62,6 @@
         box-sizing: border-box;
       }
       @media (max-width: 991.98px) {
-        .portal-login-page > .navbar.sticky-top { min-height: 78px; }
-        .portal-login-page > .navbar .site-logo { height: 78px; }
         .portal-login-page .page-header.page-header-hero-band { display: none; }
         .portal-login-shell {
           grid-template-columns: minmax(0, 1fr);
@@ -105,12 +97,8 @@
           grid-column: 1;
         }
       }
-      @media (max-width: 360px) {
-        .portal-login-page > .navbar.sticky-top { min-height: 68px; }
-        .portal-login-page > .navbar .site-logo { height: 58px; }
-      }
     </style>
-    <link rel="stylesheet" href="{% static 'portals/css/portal-login.css' %}?v=login-mobile-center">
+    <link rel="stylesheet" href="{% static 'portals/css/portal-login.css' %}?v=login-nav-fix">
 </head>
 <body class="portal-login-page">
     {% include "includes/site_spinner.html" with spinner_hidden=True %}

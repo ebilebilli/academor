@@ -975,10 +975,12 @@ h1.animated, h2.animated, h3.animated,
         font-size: 0.75em;
     }
 
+    .navbar-light .navbar-collapse > a.btn.btn-primary.nav-contact-btn,
     .navbar-light .navbar-collapse > a.btn.btn-primary.d-none.d-lg-block {
         display: inline-flex !important;
         align-items: center;
         justify-content: center;
+        gap: 0.55rem;
         height: var(--nav-bar-h) !important;
         min-height: var(--nav-bar-h);
         margin: 0 !important;
@@ -987,13 +989,19 @@ h1.animated, h2.animated, h3.animated,
         padding-right: var(--nav-btn-pad-x) !important;
         padding-top: 0 !important;
         padding-bottom: 0 !important;
+        font-family: 'Host Grotesk', sans-serif;
         font-size: var(--nav-btn-fs);
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
         flex-shrink: 0;
         white-space: nowrap;
     }
 
+    .navbar-light .navbar-collapse > a.btn.btn-primary.nav-contact-btn .fa,
     .navbar-light .navbar-collapse > a.btn.btn-primary.d-none.d-lg-block .fa {
-        margin-left: 0.45rem !important;
+        margin-left: 0 !important;
         font-size: 0.9em;
     }
 
@@ -4432,7 +4440,8 @@ h1.animated, h2.animated, h3.animated,
 }
 
 .navbar-light .nav-login-btn,
-.navbar-light .nav-portal-btn {
+.navbar-light .nav-portal-btn,
+.navbar-light .nav-contact-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -4709,7 +4718,8 @@ h1.animated, h2.animated, h3.animated,
     }
 
     .navbar-light .navbar-collapse > .navbar-auth-actions .nav-login-btn,
-    .navbar-light .navbar-collapse > .navbar-auth-actions .nav-portal-btn {
+    .navbar-light .navbar-collapse > .navbar-auth-actions .nav-portal-btn,
+    .navbar-light .navbar-collapse > a.btn.nav-contact-btn {
         height: var(--nav-bar-h);
         min-height: var(--nav-bar-h);
         padding-left: var(--nav-btn-pad-x);
@@ -4728,13 +4738,14 @@ h1.animated, h2.animated, h3.animated,
     .navbar-light a.btn.nav-login-btn {
         width: 100%;
         align-self: stretch;
-        min-height: 50px;
+        min-height: 54px;
         margin: 0;
         border-radius: 0.65rem;
         border: 1px solid rgba(255, 255, 255, 0.22);
         border-left: 1px solid rgba(255, 255, 255, 0.22);
         background: rgba(255, 255, 255, 0.08);
-        padding: 0.85rem 1.25rem;
+        padding: 0.9rem 1.35rem;
+        font-size: 0.82rem;
         box-shadow: none;
     }
 
@@ -4744,13 +4755,14 @@ h1.animated, h2.animated, h3.animated,
 
     .navbar-light .nav-portal-btn {
         width: 100%;
-        min-height: 50px;
+        min-height: 54px;
         margin-top: 0.5rem;
         border-radius: 0.65rem;
         border: 1px solid rgba(255, 255, 255, 0.22);
         color: #ffffff;
         background: rgba(255, 255, 255, 0.08);
-        padding: 0.85rem 1.25rem;
+        padding: 0.9rem 1.35rem;
+        font-size: 0.82rem;
         box-shadow: none;
     }
 

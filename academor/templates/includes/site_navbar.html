@@ -127,7 +127,10 @@
                 <span class="nav-contact-mobile__icon" aria-hidden="true"><i class="fa fa-arrow-right"></i></span>
             </a>
         </div>
-        <a href="{% url 'projects:contact-page' %}" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">{% trans "Contact" %}<i class="fa fa-arrow-right ms-3"></i></a>
+        <a href="{% url 'projects:contact-page' %}" class="btn btn-primary nav-contact-btn d-none d-lg-block{% if u == 'contact-page' %} active{% endif %}">
+            <span class="nav-contact-btn__label">{% trans "Contact" %}</span>
+            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        </a>
     </div>
     <div class="scroll-progress" aria-hidden="true">
         <div id="scrollProgressBar" class="scroll-progress__bar"></div>

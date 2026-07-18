@@ -55,16 +55,7 @@
   opacity: 1 !important;
 }
 
-.portal-login-page > .navbar.sticky-top {
-  min-height: var(--pl-nav-h);
-}
-
-.portal-login-page > .navbar .site-logo {
-  height: var(--pl-nav-h);
-  width: auto;
-  aspect-ratio: 276 / 92;
-  max-width: none;
-}
+/* Keep site navbar fluid sizing — do not force logo/bar height here */
 
 .portal-login-page .page-header.page-header-hero-band {
   margin-bottom: 0;

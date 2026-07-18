@@ -178,6 +178,7 @@ def get_teacher_quizzes_for_category(teacher_id, category_id):
         )
         .select_related('category')
         .prefetch_related('questions')
+        .distinct()
         .order_by('-created_at', 'id')
     )
     visible = [row for row in qs if quiz_visible_to_teacher(row, teacher_id)]
@@ -225,6 +226,7 @@ def get_student_quizzes_for_category(student_id, category_id):
         )
         .select_related('category')
         .prefetch_related('questions')
+        .distinct()
         .order_by('-created_at', 'id')
     )
     enrolled = [row for row in qs if student_quiz_enrollment_ok(student_id, row)]
