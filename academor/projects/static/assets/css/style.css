@@ -659,7 +659,7 @@ h1.animated, h2.animated, h3.animated,
 
 .nav-abroad-uni {
     padding-left: 2rem !important;
-    font-size: 15px;
+    font-size: 0.92em;
     color: #4a5d63;
 }
 
@@ -900,11 +900,12 @@ h1.animated, h2.animated, h3.animated,
  */
 @media (min-width: 992px) {
     .navbar.navbar-light {
-        --nav-fs: clamp(12px, 0.55vw + 0.45rem, 16px);
+        /* Wide screens grow toward 17px when space allows; fit JS shrinks if needed */
+        --nav-fs: clamp(12.5px, 0.7vw + 0.35rem, 17px);
         --nav-gap: clamp(6px, 0.95vw, 30px);
         --nav-pad-y: clamp(11px, 1.05vw, 21px);
         --nav-bar-h: clamp(56px, 4.2vw + 0.85rem, 92px);
-        --nav-btn-fs: clamp(11.5px, 0.45vw + 0.45rem, 15px);
+        --nav-btn-fs: clamp(12px, 0.55vw + 0.4rem, 16px);
         --nav-btn-pad-x: clamp(0.65rem, 1.05vw, 2rem);
         --nav-logo-max: clamp(150px, 16vw, 276px);
         --nav-brand-pad-x: clamp(0.55rem, 1.1vw, 3rem);
@@ -913,11 +914,11 @@ h1.animated, h2.animated, h3.animated,
     /* Longer AZ/RU labels: slightly denser start; JS fit shrinks further if needed */
     html[lang="az"] .navbar.navbar-light,
     html[lang="ru"] .navbar.navbar-light {
-        --nav-fs: clamp(11px, 0.5vw + 0.4rem, 14.5px);
+        --nav-fs: clamp(11.5px, 0.58vw + 0.32rem, 16px);
         --nav-gap: clamp(4px, 0.65vw, 18px);
         --nav-pad-y: clamp(10px, 0.95vw, 18px);
         --nav-bar-h: clamp(52px, 3.8vw + 0.7rem, 84px);
-        --nav-btn-fs: clamp(11px, 0.42vw + 0.38rem, 14px);
+        --nav-btn-fs: clamp(11.5px, 0.5vw + 0.35rem, 15px);
         --nav-btn-pad-x: clamp(0.5rem, 0.85vw, 1.5rem);
         --nav-logo-max: clamp(130px, 13.5vw, 220px);
         --nav-brand-pad-x: clamp(0.45rem, 0.9vw, 1.75rem);
@@ -1000,6 +1001,15 @@ h1.animated, h2.animated, h3.animated,
         width: 17px !important;
         height: 12px !important;
         margin-right: 5px !important;
+    }
+
+    /* Dropdown panel inherits live --nav-fs (including JS fit shrink) */
+    .navbar.navbar-light .dropdown-item {
+        font-size: var(--nav-fs);
+    }
+
+    .navbar.navbar-light .nav-abroad-uni {
+        font-size: calc(var(--nav-fs) * 0.92);
     }
 }
 
@@ -1103,9 +1113,11 @@ h1.animated, h2.animated, h3.animated,
 .navbar .dropdown-item {
     color: #00313D;
     font-weight: 500;
-    font-size: 17px;
-    padding-top: 0.55rem;
-    padding-bottom: 0.55rem;
+    /* Match navbar link size (fluid on desktop via --nav-fs) */
+    font-size: var(--nav-fs, 16px);
+    line-height: 1.35;
+    padding-top: clamp(0.4rem, 0.35em + 0.2rem, 0.65rem);
+    padding-bottom: clamp(0.4rem, 0.35em + 0.2rem, 0.65rem);
 }
 
 .navbar .dropdown-item:hover,
