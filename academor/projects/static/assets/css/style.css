@@ -696,7 +696,7 @@ h1.animated, h2.animated, h3.animated,
 .navbar-light .navbar-nav .nav-link:hover,
 .navbar-light .navbar-nav .nav-link.active {
     color: var(--accent) !important;
-    font-size: 16px;
+    /* Keep size from fluid --nav-fs (do not hardcode 16px) */
     line-height: 1.25;
 }
 
@@ -704,7 +704,6 @@ h1.animated, h2.animated, h3.animated,
 .navbar-light .navbar-nav .show > .nav-link,
 .navbar-light .navbar-nav .nav-link.show {
     color: var(--accent) !important;
-    font-size: 16px;
     line-height: 1.25;
 }
 
@@ -895,54 +894,70 @@ h1.animated, h2.animated, h3.animated,
     }
 }
 
+/*
+ * Desktop navbar fluid type — grows on wide screens, shrinks when space is tight.
+ * CSS vars can be tightened further by site-nav-fit.js when labels overflow.
+ */
 @media (min-width: 992px) {
-    .navbar-light .navbar-collapse > a.btn.btn-primary.d-none.d-lg-block {
-        display: inline-flex !important;
-        align-items: center;
-        justify-content: center;
-        height: 92px !important;
-        min-height: 92px;
-        margin: 0 !important;
-        border-radius: 0 !important;
-        padding-left: 2rem !important;
-        padding-right: 2rem !important;
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
+    .navbar.navbar-light {
+        --nav-fs: clamp(12px, 0.55vw + 0.45rem, 16px);
+        --nav-gap: clamp(6px, 0.95vw, 30px);
+        --nav-pad-y: clamp(11px, 1.05vw, 21px);
+        --nav-bar-h: clamp(56px, 4.2vw + 0.85rem, 92px);
+        --nav-btn-fs: clamp(11.5px, 0.45vw + 0.45rem, 15px);
+        --nav-btn-pad-x: clamp(0.65rem, 1.05vw, 2rem);
+        --nav-logo-max: clamp(150px, 16vw, 276px);
+        --nav-brand-pad-x: clamp(0.55rem, 1.1vw, 3rem);
     }
-}
 
-/* Laptop / tablet landscape: 992px–1199px (e.g. 1024px) — balanced compact nav */
-@media (min-width: 992px) and (max-width: 1199.98px) {
+    /* Longer AZ/RU labels: slightly denser start; JS fit shrinks further if needed */
+    html[lang="az"] .navbar.navbar-light,
+    html[lang="ru"] .navbar.navbar-light {
+        --nav-fs: clamp(11px, 0.5vw + 0.4rem, 14.5px);
+        --nav-gap: clamp(4px, 0.65vw, 18px);
+        --nav-pad-y: clamp(10px, 0.95vw, 18px);
+        --nav-bar-h: clamp(52px, 3.8vw + 0.7rem, 84px);
+        --nav-btn-fs: clamp(11px, 0.42vw + 0.38rem, 14px);
+        --nav-btn-pad-x: clamp(0.5rem, 0.85vw, 1.5rem);
+        --nav-logo-max: clamp(130px, 13.5vw, 220px);
+        --nav-brand-pad-x: clamp(0.45rem, 0.9vw, 1.75rem);
+    }
+
     .navbar-light .navbar-collapse {
         flex-wrap: nowrap;
         align-items: stretch;
+        min-width: 0;
     }
 
     .navbar-light .navbar-nav {
         flex-wrap: nowrap;
         align-items: center;
-        gap: 0.15rem;
+        /* Content-sized so ms-auto keeps links clustered next to auth buttons */
+        flex: 0 1 auto;
+        margin-left: auto !important;
     }
 
     .navbar-brand .site-logo {
-        height: clamp(60px, 6.2vw, 72px);
-        max-width: clamp(175px, 20vw, 210px);
+        height: var(--nav-bar-h);
+        max-width: var(--nav-logo-max);
     }
 
     .navbar-light .navbar-brand {
-        height: clamp(60px, 6.2vw, 72px);
-        padding-left: 0.85rem !important;
-        padding-right: 0.85rem !important;
+        height: var(--nav-bar-h);
+        padding-left: var(--nav-brand-pad-x) !important;
+        padding-right: var(--nav-brand-pad-x) !important;
         flex-shrink: 0;
     }
 
     .navbar-light .navbar-nav .nav-link {
-        margin-right: clamp(10px, 1.15vw, 14px);
-        padding: clamp(12px, 1.35vw, 16px) 0;
-        font-size: clamp(12.5px, 1.2vw, 14px);
+        margin-right: var(--nav-gap);
+        padding-top: var(--nav-pad-y);
+        padding-bottom: var(--nav-pad-y);
+        font-size: var(--nav-fs);
         line-height: 1.25;
-        letter-spacing: 0.015em;
+        letter-spacing: 0.01em;
         white-space: nowrap;
+        flex-shrink: 0;
     }
 
     .navbar-light .navbar-nav .nav-link:hover,
@@ -950,7 +965,7 @@ h1.animated, h2.animated, h3.animated,
     .navbar-light .navbar-nav .nav-link:focus,
     .navbar-light .navbar-nav .show > .nav-link,
     .navbar-light .navbar-nav .nav-link.show {
-        font-size: clamp(12.5px, 1.2vw, 14px);
+        font-size: var(--nav-fs);
         line-height: 1.25;
     }
 
@@ -960,11 +975,18 @@ h1.animated, h2.animated, h3.animated,
     }
 
     .navbar-light .navbar-collapse > a.btn.btn-primary.d-none.d-lg-block {
-        height: clamp(60px, 6.2vw, 72px) !important;
-        min-height: clamp(60px, 6.2vw, 72px);
-        padding-left: clamp(0.85rem, 1.4vw, 1.25rem) !important;
-        padding-right: clamp(0.85rem, 1.4vw, 1.25rem) !important;
-        font-size: clamp(12.5px, 1.2vw, 14px);
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        height: var(--nav-bar-h) !important;
+        min-height: var(--nav-bar-h);
+        margin: 0 !important;
+        border-radius: 0 !important;
+        padding-left: var(--nav-btn-pad-x) !important;
+        padding-right: var(--nav-btn-pad-x) !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        font-size: var(--nav-btn-fs);
         flex-shrink: 0;
         white-space: nowrap;
     }
@@ -978,43 +1000,6 @@ h1.animated, h2.animated, h3.animated,
         width: 17px !important;
         height: 12px !important;
         margin-right: 5px !important;
-    }
-}
-
-/* Small laptops (~1024px): slightly tighter but still spaced */
-@media (min-width: 992px) and (max-width: 1099.98px) {
-    .navbar-brand .site-logo {
-        height: 58px;
-        max-width: 180px;
-    }
-
-    .navbar-light .navbar-brand {
-        height: 58px;
-        padding-left: 0.75rem !important;
-        padding-right: 0.75rem !important;
-    }
-
-    .navbar-light .navbar-nav .nav-link {
-        margin-right: 10px;
-        font-size: 13px;
-        padding-top: 13px;
-        padding-bottom: 13px;
-    }
-
-    .navbar-light .navbar-nav .nav-link:hover,
-    .navbar-light .navbar-nav .nav-link.active,
-    .navbar-light .navbar-nav .nav-link:focus,
-    .navbar-light .navbar-nav .show > .nav-link,
-    .navbar-light .navbar-nav .nav-link.show {
-        font-size: 13px;
-    }
-
-    .navbar-light .navbar-collapse > a.btn.btn-primary.d-none.d-lg-block {
-        height: 58px !important;
-        min-height: 58px;
-        padding-left: 0.9rem !important;
-        padding-right: 0.9rem !important;
-        font-size: 13px;
     }
 }
 
@@ -4692,26 +4677,16 @@ h1.animated, h2.animated, h3.animated,
         display: inline-flex;
         align-items: stretch;
         align-self: stretch;
+        flex-shrink: 0;
     }
 
     .navbar-light .navbar-collapse > .navbar-auth-actions .nav-login-btn,
     .navbar-light .navbar-collapse > .navbar-auth-actions .nav-portal-btn {
-        height: 92px;
-        min-height: 92px;
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-        font-size: 15px;
-    }
-}
-
-@media (min-width: 992px) and (max-width: 1199.98px) {
-    .navbar-light .navbar-collapse > .navbar-auth-actions .nav-login-btn,
-    .navbar-light .navbar-collapse > .navbar-auth-actions .nav-portal-btn {
-        height: clamp(60px, 6.2vw, 72px);
-        min-height: clamp(60px, 6.2vw, 72px);
-        padding-left: clamp(0.85rem, 1.2vw, 1.15rem);
-        padding-right: clamp(0.85rem, 1.2vw, 1.15rem);
-        font-size: clamp(12.5px, 1.2vw, 14px);
+        height: var(--nav-bar-h);
+        min-height: var(--nav-bar-h);
+        padding-left: var(--nav-btn-pad-x);
+        padding-right: var(--nav-btn-pad-x);
+        font-size: var(--nav-btn-fs);
     }
 }
 
