@@ -1,5 +1,5 @@
 {
-  "title": "IELTS Speaking — Practice Test 2",
+  "title": "IELTS Speaking — Full Mock Test 2",
   "service": "ielts",
   "category_name": "Speaking",
   "parts": [
@@ -7,11 +7,11 @@
       "order": 1,
       "part_type": "part_1",
       "title": "Part 1 — Introduction and interview",
-      "instructions": "<p>Answer the examiner's questions about yourself and everyday topics.</p>",
+      "instructions": "<p>The examiner will ask general questions about yourself and a few familiar topics. Answer naturally and try to extend each answer with a reason or example. This part lasts 4–5 minutes.</p>",
       "questions": [
         {
           "order": 1,
-          "question": "<p>Do you like travelling?</p>"
+          "question": "<p>Let's talk about travelling. Do you like to travel?</p>"
         },
         {
           "order": 2,
@@ -19,19 +19,31 @@
         },
         {
           "order": 3,
-          "question": "<p>How much time do you spend using technology every day?</p>"
+          "question": "<p>Did you travel much when you were a child?</p>"
         },
         {
           "order": 4,
-          "question": "<p>What technology do you use most often?</p>"
+          "question": "<p>Now let's talk about technology. How much time do you spend using technology every day?</p>"
         },
         {
           "order": 5,
-          "question": "<p>Do you prefer shopping online or in physical stores?</p>"
+          "question": "<p>What technology do you use most often?</p>"
         },
         {
           "order": 6,
+          "question": "<p>Has technology changed the way you communicate with friends and family?</p>"
+        },
+        {
+          "order": 7,
+          "question": "<p>Let's move on to shopping. Do you prefer shopping online or in physical stores?</p>"
+        },
+        {
+          "order": 8,
           "question": "<p>When was the last time you bought something online?</p>"
+        },
+        {
+          "order": 9,
+          "question": "<p>Do you enjoy shopping, or do you find it stressful?</p>"
         }
       ]
     },
@@ -39,7 +51,7 @@
       "order": 2,
       "part_type": "part_2",
       "title": "Part 2 — Individual long turn",
-      "instructions": "<p>You have one minute to prepare. Then speak for one to two minutes. You may make notes.</p>",
+      "instructions": "<p>You will be given a topic card. You have one minute to prepare and may make notes. Then speak for one to two minutes. Try to keep talking until the examiner stops you.</p>",
       "cue_card_topic": "<p><strong>Describe a memorable trip you have taken.</strong></p>",
       "cue_card_bullets": [
         "where you went",
@@ -51,6 +63,10 @@
         {
           "order": 1,
           "question": ""
+        },
+        {
+          "order": 2,
+          "question": "<p>Would you like to go back to this place again in the future?</p>"
         }
       ]
     },
@@ -58,7 +74,7 @@
       "order": 3,
       "part_type": "part_3",
       "title": "Part 3 — Two-way discussion",
-      "instructions": "<p>Discuss the topic in more detail with the examiner.</p>",
+      "instructions": "<p>The examiner will ask further questions connected to the Part 2 topic. These are more abstract and require you to explain, compare, and speculate. Try to give extended, well-reasoned answers. This part lasts 4–5 minutes.</p>",
       "questions": [
         {
           "order": 1,
@@ -70,11 +86,19 @@
         },
         {
           "order": 3,
-          "question": "<p>Do you think international travel will become easier or more difficult in the future?</p>"
+          "question": "<p>Some people think tourism damages local culture more than it benefits it. Do you agree?</p>"
         },
         {
           "order": 4,
           "question": "<p>How has technology changed the way people plan and experience travel?</p>"
+        },
+        {
+          "order": 5,
+          "question": "<p>Do you think international travel will become easier or more difficult in the future?</p>"
+        },
+        {
+          "order": 6,
+          "question": "<p>Should governments limit the number of tourists visiting popular destinations? Why or why not?</p>"
         }
       ]
     }
