@@ -1870,25 +1870,16 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
     )
 
     def get_inlines(self, request, obj=None):
-        if obj and obj.is_listening:
-            return (ListeningAudioInline,)
-        if obj and (obj.is_reading or obj.is_math):
-            return (ReadingPassageInline,)
-        if obj and obj.is_speaking:
-            return (SpeakingPartInline,)
-        if obj is None and self._quiz_format_flag(request, 'is_speaking'):
-            return (SpeakingPartInline,)
-        if obj is None and self._quiz_format_flag(request, 'is_listening'):
-            return (ListeningAudioInline,)
-        if obj is None and (
-            self._quiz_format_flag(request, 'is_reading')
-            or self._quiz_format_flag(request, 'is_math')
-        ):
-            return (ReadingPassageInline,)
+        if obj and obj.pk:
+            if obj.is_listening:
+                return (ListeningAudioInline,)
+            if obj.is_reading or obj.is_math:
+                return (ReadingPassageInline,)
+            if obj.is_speaking:
+                return (SpeakingPartInline,)
         return (QuizQuestionInline,)
 
-    def _quiz_format_flag(self, request, name: str) -> bool:
-        return request.POST.get(name) in ('on', 'true', 'True', '1')
+      
 
     def get_urls(self):
         urls = super().get_urls()
