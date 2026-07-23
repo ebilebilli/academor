@@ -18,7 +18,7 @@ from portals.models import (
     StudyGroup,
 )
 from portals.utils.cache_utils import cached_query
-from portals.utils.portal_services import expand_course_types_to_service_slugs
+from portals.utils.portal_services import expand_course_types_to_service_slugs, portal_course_keys_overlap
 from portals.utils.queries import serialize_quiz_question
 from portals.utils.student_courses import (
     get_quiz_portal_course_codes,
@@ -47,7 +47,7 @@ def _teacher_ids_for_quiz_result(result: QuizResult) -> set[int]:
         return {teacher_id} if teacher_id else set()
 
     quiz = result.quiz
-    if not quiz:
+    if not quiz or not result.student_id:
         return set()
     course_codes = get_quiz_portal_course_codes(quiz)
     if not course_codes:
@@ -55,15 +55,25 @@ def _teacher_ids_for_quiz_result(result: QuizResult) -> set[int]:
     slugs = expand_course_types_to_service_slugs(course_codes)
     if not slugs:
         return set()
-    return set(
-        StudyGroup.objects.filter(
-            students__pk=result.student_id,
-            is_active=True,
-            courses__slug__in=slugs,
-        )
+    base = StudyGroup.objects.filter(students__pk=result.student_id, is_active=True)
+    teacher_ids = set(
+        base.filter(courses__slug__in=slugs)
         .values_list('teacher_id', flat=True)
         .distinct()
     )
+    if teacher_ids:
+        return {tid for tid in teacher_ids if tid}
+
+    # Fallback when group.courses is empty/mismatched: teachers who share an
+    # active group with the student and whose specialization covers the quiz.
+    from portals.utils.teacher_courses import get_teacher_course_type_codes
+
+    candidates = set(base.values_list('teacher_id', flat=True).distinct())
+    return {
+        tid
+        for tid in candidates
+        if tid and portal_course_keys_overlap(course_codes, get_teacher_course_type_codes(tid))
+    }
 
 
 def _parent_ids_for_student(student_id: int) -> list[int]:

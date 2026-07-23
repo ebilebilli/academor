@@ -134,6 +134,60 @@ class PortalNotificationTests(TestCase):
         self.assertIn(result.pk, score_ids)
         self.assertIn(result.pk, history_ids)
 
+    def test_listening_reaches_teacher_when_group_courses_empty(self):
+        """Parent path ignores group.courses; teacher must still see/notify when courses M2M is empty."""
+        from portals.models import ListeningAudio, ListeningQuestion, StudentCourseSpecialization
+        from portals.utils.queries import get_teacher_scores, get_teacher_student_quiz_results
+        from portals.utils.quiz_submit import submit_listening_quiz_attempt
+
+        self.group.courses.clear()
+        StudentCourseSpecialization.objects.update_or_create(
+            student=self.student,
+            course_type='ielts',
+            defaults={'is_active': True},
+        )
+        self.quiz.is_listening = True
+        self.quiz.save(update_fields=['is_listening'])
+        audio = ListeningAudio.objects.create(
+            quiz=self.quiz,
+            order=1,
+            title='Section 1',
+            audio_url='https://example.com/audio.mp3',
+        )
+        question = ListeningQuestion.objects.create(
+            audio=audio,
+            order=1,
+            question='Name?',
+            correct_answer='Anna',
+        )
+        payload = submit_listening_quiz_attempt(
+            student_id=self.student.pk,
+            quiz_id=self.quiz.pk,
+            given_answers={str(question.pk): 'Anna'},
+            duration_sec=40,
+            session_started_at=timezone.now().isoformat(),
+        )
+        self.assertTrue(payload['success'])
+        result = QuizResult.objects.filter(student=self.student, quiz=self.quiz).latest('id')
+        self.assertTrue(
+            PortalNotification.objects.filter(
+                parent=self.parent,
+                kind=PortalNotification.Kind.RESULT_PUBLISHED,
+                quiz_result=result,
+            ).exists()
+        )
+        self.assertTrue(
+            PortalNotification.objects.filter(
+                teacher=self.teacher,
+                kind=PortalNotification.Kind.RESULT_PUBLISHED,
+                quiz_result=result,
+            ).exists()
+        )
+        score_ids = {row['result_id'] for row in get_teacher_scores(self.teacher.pk)}
+        history_ids = {row['id'] for row in get_teacher_student_quiz_results(self.teacher.pk, self.student.pk)}
+        self.assertIn(result.pk, score_ids)
+        self.assertIn(result.pk, history_ids)
+
     def test_variant_quiz_auto_publishes_and_notifies_teacher_and_parent_only(self):
         payload = submit_variant_quiz_attempt(
             student_id=self.student.pk,

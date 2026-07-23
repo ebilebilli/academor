@@ -1625,8 +1625,8 @@ def get_teacher_student_attendance_detail(teacher_id, student_id):
     }
 
 
-@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_teacher_scores(teacher_id):
+    """Fresh scores list — not cached (LocMem + multi-worker stale after submit)."""
     from portals.utils.student_courses import SCORE_LIST_LIMIT, filter_quiz_results_for_teacher
 
     course_codes = get_teacher_course_type_codes(teacher_id)
@@ -1637,7 +1637,6 @@ def get_teacher_scores(teacher_id):
         .filter(
             quiz__category__services__slug__in=quiz_category_slugs_for_portal_codes(course_codes),
             student__groups__teacher_id=teacher_id,
-            student__groups__courses__slug__in=expand_course_types_to_service_slugs(course_codes),
             student__groups__is_active=True,
         )
         .select_related('quiz__category', 'student')
@@ -2315,14 +2314,15 @@ def _teacher_pending_quiz_results_queryset(teacher_id):
     course_codes = get_teacher_course_type_codes(teacher_id)
     if not course_codes:
         return None
-    expanded = expand_course_types_to_service_slugs(course_codes)
     pending_filter = Q(reviewed_at__isnull=True) & Q(
         quiz__category__services__slug__in=quiz_category_slugs_for_portal_codes(course_codes),
     ) & (Q(quiz__is_essay=True) | Q(quiz__is_speaking=True))
+    # Do not require group.courses slug match here — empty/mismatched courses M2M
+    # would hide mock writing/speaking from the review queue. Python filter applies
+    # teacher_can_see_quiz_result (with shared-group fallback).
     student_filter = pending_filter & Q(
         student__isnull=False,
         student__groups__teacher_id=teacher_id,
-        student__groups__courses__slug__in=expanded,
         student__groups__is_active=True,
     )
     customer_filter = pending_filter & Q(
@@ -2536,8 +2536,8 @@ def get_parent_child_quiz_results(student_id, *, parent_id=None):
     return get_student_quiz_results(student_id)
 
 
-@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_teacher_student_quiz_results(teacher_id, student_id):
+    """Fresh history — includes mock section results; not LocMem-cached."""
     from portals.utils.student_courses import filter_quiz_results_for_teacher
     from portals.utils.teacher_access import get_teacher_student
 
@@ -2551,7 +2551,6 @@ def get_teacher_student_quiz_results(teacher_id, student_id):
         .filter(
             student_id=student_id,
             quiz__category__services__slug__in=quiz_category_slugs_for_portal_codes(course_codes),
-            ielts_mock_attempt__isnull=True,
         )
         .select_related('quiz__category')
         .distinct()
@@ -2560,7 +2559,6 @@ def get_teacher_student_quiz_results(teacher_id, student_id):
     return [serialize_quiz_result(row) for row in visible]
 
 
-@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_teacher_student_scores(teacher_id, student_id):
     from portals.utils.student_courses import filter_quiz_results_for_teacher
     from portals.utils.teacher_access import get_teacher_student

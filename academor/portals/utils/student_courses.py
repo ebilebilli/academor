@@ -185,7 +185,12 @@ def teacher_can_review_quiz_result(teacher_id, result) -> bool:
 
 
 def teacher_can_see_quiz_result(teacher_id, student_id, quiz):
-    """Teacher sees a result for their student when group service matches the quiz category."""
+    """Teacher sees a result when they teach the student and the quiz is in their services.
+
+    Prefer a group whose courses overlap the quiz category. If the group's courses
+    M2M is empty/misconfigured, fall back to any active shared group — parents do
+    not need group courses, so this keeps teacher visibility aligned with that.
+    """
     if not quiz or not quiz_visible_to_teacher(quiz, teacher_id):
         return False
     if not student_quiz_enrollment_ok(student_id, quiz):
@@ -196,12 +201,14 @@ def teacher_can_see_quiz_result(teacher_id, student_id, quiz):
     slugs = expand_course_types_to_service_slugs(course_codes)
     if not slugs:
         return False
-    return StudyGroup.objects.filter(
+    shared = StudyGroup.objects.filter(
         teacher_id=teacher_id,
         students__pk=student_id,
         is_active=True,
-        courses__slug__in=slugs,
-    ).exists()
+    )
+    if shared.filter(courses__slug__in=slugs).exists():
+        return True
+    return shared.exists()
 
 
 def _classroom_portal_codes(classroom):
