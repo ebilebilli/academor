@@ -124,6 +124,36 @@ class PortalNotificationTests(TestCase):
             0,
         )
 
+    def test_variant_quiz_notifies_teacher_when_category_has_multiple_services(self):
+        from projects.models.service_models import Service
+
+        Service.objects.get_or_create(
+            slug='speaking',
+            defaults={'name_az': 'Speaking', 'name_en': 'Speaking', 'is_active': True},
+        )
+        from portals.tests.group_helpers import link_quiz_category_services
+
+        link_quiz_category_services(self.quiz.category, 'ielts', 'speaking')
+        payload = submit_variant_quiz_attempt(
+            student_id=self.student.pk,
+            quiz_id=self.quiz.pk,
+            given_answers={str(self.q1.pk): 0},
+            duration_sec=30,
+            session_started_at=timezone.now().isoformat(),
+        )
+        self.assertTrue(payload['success'])
+        self.assertEqual(
+            PortalNotification.objects.filter(
+                teacher=self.teacher,
+                kind=PortalNotification.Kind.RESULT_PUBLISHED,
+                is_read=False,
+            ).count(),
+            1,
+        )
+        from portals.utils.notifications import get_teacher_portal_bell_count
+
+        self.assertEqual(get_teacher_portal_bell_count(self.teacher.pk), 1)
+
     def test_manual_submit_notifies_teacher_to_review(self):
         self.quiz.is_essay = True
         self.quiz.save(update_fields=['is_essay'])
@@ -346,3 +376,27 @@ class PortalNotificationTests(TestCase):
         self.assertFalse(
             PortalNotification.objects.filter(parent=self.parent, is_read=False).exists(),
         )
+
+    def test_portal_badges_endpoint_returns_teacher_counts(self):
+        result = QuizResult.objects.create(
+            student=self.student,
+            quiz=self.quiz,
+            given_answers={str(self.q1.pk): 0},
+            total_score=1,
+        )
+        PortalNotification.objects.create(
+            teacher=self.teacher,
+            quiz_result=result,
+            kind=PortalNotification.Kind.RESULT_PUBLISHED,
+            is_read=False,
+        )
+        client = Client()
+        _portal_client_login(client, self.teacher_user)
+        response = client.get(
+            reverse('portals:portal-badges'),
+            HTTP_ACCEPT='application/json',
+        )
+        self.assertEqual(response.status_code, 200)
+        payload = response.json()
+        self.assertEqual(payload['unread'], 1)
+        self.assertIn('pending_reviews', payload)

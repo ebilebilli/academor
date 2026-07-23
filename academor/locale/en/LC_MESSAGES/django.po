@@ -6983,10 +6983,8 @@ msgid "Dərs davamiyyəti burada görünəcək."
 msgstr "Lesson attendance will appear here."
 
 #: academor/templates/portals/includes/teacher_student_profile_tab_panel.html:133
-#, fuzzy
-#| msgid "No scores recorded yet."
 msgid "No scores recorded yet"
-msgstr "No scores recorded yet."
+msgstr "No scores recorded yet"
 
 #: academor/templates/portals/includes/teacher_student_profile_tab_panel.html:134
 msgid "Quiz scores grouped by day will show up here."

@@ -13,6 +13,7 @@ from portals.utils.notifications import (
     get_score_detail_for_parent,
     get_score_detail_for_student,
     get_score_detail_for_teacher,
+    get_teacher_pending_review_count,
     get_teacher_portal_bell_count,
     get_unread_notification_count,
     mark_all_notifications_read,
@@ -396,3 +397,31 @@ class NotificationMarkAllReadView(PortalLoginRequiredMixin, View):
             back_url=back,
             recipient_kwargs=recipient_kwargs,
         )
+
+
+class PortalBadgesView(PortalLoginRequiredMixin, View):
+    """Lightweight badge counts for portal polling (no page cache)."""
+
+    def get(self, request):
+        role = get_portal_role(request.portal_user)
+        payload = {'unread': 0, 'pending_reviews': 0}
+
+        if role == 'teacher':
+            profile = get_teacher_profile(request.portal_user)
+            if profile:
+                payload['unread'] = get_teacher_portal_bell_count(profile.pk)
+                payload['pending_reviews'] = get_teacher_pending_review_count(profile.pk)
+        elif role == 'parent':
+            profile = get_parent_profile(request.portal_user)
+            if profile:
+                payload['unread'] = get_unread_notification_count(parent_id=profile.pk)
+        elif role == 'student':
+            profile = get_student_profile(request.portal_user)
+            if profile:
+                payload['unread'] = get_unread_notification_count(student_id=profile.pk)
+        elif role == 'customer':
+            profile = get_customer_profile(request.portal_user)
+            if profile:
+                payload['unread'] = get_unread_notification_count(customer_id=profile.pk)
+
+        return JsonResponse(payload)

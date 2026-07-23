@@ -2740,13 +2740,19 @@ def resolve_teacher_student_profile_back(request, teacher_id, student_id):
 
 @cached_page_data(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_teacher_dashboard_data(request, teacher_id):
+    return {
+        'groups': get_teacher_groups(teacher_id),
+    }
+
+
+def get_teacher_dashboard_stats(teacher_id):
+    """Heavy dashboard counts — loaded via AJAX after the shell renders."""
     from portals.utils.weekly_scores import get_teacher_weekly_scores_list
 
     groups = get_teacher_groups(teacher_id)
     quiz_scores = get_teacher_scores(teacher_id)
     weekly_scores = get_teacher_weekly_scores_list(teacher_id)
     return {
-        'groups': groups,
         'group_count': len(groups),
         'lesson_count': len(get_teacher_lessons(teacher_id)),
         'quiz_count': len(get_teacher_quizzes(teacher_id)),

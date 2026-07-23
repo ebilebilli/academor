@@ -27,7 +27,6 @@ def portal_notification_context(request):
     from django.urls import reverse
 
     from portals.utils.notifications import (
-        get_teacher_pending_review_count,
         get_teacher_portal_bell_count,
         get_unread_notification_count,
     )
@@ -41,7 +40,7 @@ def portal_notification_context(request):
         return {
             'portal_unread_notifications': get_teacher_portal_bell_count(profile.pk),
             'portal_notifications_url': reverse('portals:teacher-notifications'),
-            'portal_pending_reviews_count': get_teacher_pending_review_count(profile.pk),
+            'portal_pending_reviews_count': 0,
             'portal_pending_reviews_url': reverse('portals:teacher-quiz-results'),
         }
     if role == 'parent':

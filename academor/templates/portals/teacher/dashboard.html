@@ -1,5 +1,5 @@
 {% extends "portals/base.html" %}
-{% load i18n portal_tags %}
+{% load i18n portal_tags static %}
 
 {% block title %}{% trans 'Dashboard' %}{% endblock %}
 
@@ -7,39 +7,39 @@
 {% include "portals/includes/portal_portal_banner.html" with greeting_name=teacher.full_name subtitle=_('Dərslərini, tapşırıqlarını və nəticələri bir yerdən izlə') %}
 
 {# ── Stats row ────────────────────────────────────────────────── #}
-<section class="t-stats mb-4" aria-label="{% trans 'Statistika' %}">
+<section class="t-stats mb-4 is-loading" aria-label="{% trans 'Statistika' %}" data-portal-dashboard-stats="{% url 'portals:teacher-dashboard-stats' %}">
   <a class="t-stat text-decoration-none" href="{% url 'portals:teacher-groups' %}">
     <span class="t-stat__icon t-stat__icon--emerald"><i class="ti ti-users" aria-hidden="true"></i></span>
     <div class="t-stat__body">
-      <span class="t-stat__number">{{ student_count|default:0 }}</span>
+      <span class="t-stat__number" data-portal-stat="student_count">{{ student_count|default:0 }}</span>
       <span class="t-stat__label">{% trans 'Şagird' %}</span>
     </div>
   </a>
   <a class="t-stat text-decoration-none" href="{% url 'portals:teacher-groups' %}">
     <span class="t-stat__icon t-stat__icon--teal"><i class="ti ti-users-group" aria-hidden="true"></i></span>
     <div class="t-stat__body">
-      <span class="t-stat__number">{{ group_count|default:0 }}</span>
+      <span class="t-stat__number" data-portal-stat="group_count">{{ group_count|default:0 }}</span>
       <span class="t-stat__label">{% trans 'Qrup' %}</span>
     </div>
   </a>
   <a class="t-stat text-decoration-none" href="{% url 'portals:teacher-lessons' %}">
     <span class="t-stat__icon t-stat__icon--indigo"><i class="ti ti-book" aria-hidden="true"></i></span>
     <div class="t-stat__body">
-      <span class="t-stat__number">{{ lesson_count|default:0 }}</span>
+      <span class="t-stat__number" data-portal-stat="lesson_count">{{ lesson_count|default:0 }}</span>
       <span class="t-stat__label">{% trans 'Dərs' %}</span>
     </div>
   </a>
   <a class="t-stat text-decoration-none" href="{% url 'portals:teacher-scores' %}?view=quiz">
     <span class="t-stat__icon t-stat__icon--amber"><i class="ti ti-forms" aria-hidden="true"></i></span>
     <div class="t-stat__body">
-      <span class="t-stat__number">{{ quiz_result_count|default:0 }}</span>
+      <span class="t-stat__number" data-portal-stat="quiz_result_count">{{ quiz_result_count|default:0 }}</span>
       <span class="t-stat__label">{% trans 'quiz nəticəsi' %}</span>
     </div>
   </a>
   <a class="t-stat text-decoration-none" href="{% url 'portals:teacher-scores' %}?view=weekly">
     <span class="t-stat__icon t-stat__icon--violet"><i class="ti ti-star" aria-hidden="true"></i></span>
     <div class="t-stat__body">
-      <span class="t-stat__number">{{ weekly_score_count|default:0 }}</span>
+      <span class="t-stat__number" data-portal-stat="weekly_score_count">{{ weekly_score_count|default:0 }}</span>
       <span class="t-stat__label">{% trans 'Həftəlik qiymətləndirmə' %}</span>
     </div>
   </a>
@@ -113,4 +113,8 @@
     </table>
   </div>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script defer src="{% static 'portals/js/portal-dashboard-stats.js' %}?v=20260723a" data-portal-page-script="true"></script>
 {% endblock %}

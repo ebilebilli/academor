@@ -46,6 +46,7 @@ from portals.utils.queries import (
     get_student_quiz_results,
     get_student_video_records,
     get_teacher_dashboard_data,
+    get_teacher_dashboard_stats,
     get_teacher_group_detail,
     get_teacher_lessons,
     get_teacher_profile,
@@ -155,9 +156,21 @@ class TeacherDashboardView(TeacherRequiredMixin, View):
             _portal_context(
                 request,
                 teacher=serialize_teacher(profile),
+                dashboard_stats_deferred=True,
+                student_count=0,
+                group_count=0,
+                lesson_count=0,
+                quiz_result_count=0,
+                weekly_score_count=0,
                 **data,
             ),
         )
+
+
+class TeacherDashboardStatsView(TeacherRequiredMixin, View):
+    def get(self, request):
+        profile = get_teacher_profile(request.portal_user)
+        return JsonResponse(get_teacher_dashboard_stats(profile.pk))
 
 
 class TeacherGroupsListView(TeacherRequiredMixin, View):

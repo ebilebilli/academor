@@ -7048,16 +7048,12 @@ msgid "Dərs davamiyyəti burada görünəcək."
 msgstr "Посещаемость уроков появится здесь."
 
 #: academor/templates/portals/includes/teacher_student_profile_tab_panel.html:133
-#, fuzzy
-#| msgid "No scores recorded yet."
 msgid "No scores recorded yet"
-msgstr "Оценки пока не выставлены."
+msgstr "Оценки пока не выставлены"
 
 #: academor/templates/portals/includes/teacher_student_profile_tab_panel.html:134
-#, fuzzy
-#| msgid "Quiz and lesson scores grouped by day will show up here."
 msgid "Quiz scores grouped by day will show up here."
-msgstr "Оценки за тесты и уроки по дням появятся здесь."
+msgstr "Оценки за тесты по дням появятся здесь."
 
 #: academor/templates/portals/includes/teacher_student_quiz_results.html:30
 msgid "Pending review"

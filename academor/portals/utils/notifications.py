@@ -21,7 +21,7 @@ from portals.utils.cache_utils import cached_query
 from portals.utils.portal_services import expand_course_types_to_service_slugs
 from portals.utils.queries import serialize_quiz_question
 from portals.utils.student_courses import (
-    get_quiz_service_code,
+    get_quiz_portal_course_codes,
     teacher_can_review_quiz_result,
     teacher_can_see_quiz_result,
 )
@@ -46,13 +46,16 @@ def _teacher_ids_for_quiz_result(result: QuizResult) -> set[int]:
         )
         return {teacher_id} if teacher_id else set()
 
-    service = get_quiz_service_code(result.quiz)
-    if not service:
+    quiz = result.quiz
+    if not quiz:
         return set()
-    slugs = expand_course_types_to_service_slugs([service])
+    course_codes = get_quiz_portal_course_codes(quiz)
+    if not course_codes:
+        return set()
+    slugs = expand_course_types_to_service_slugs(course_codes)
     if not slugs:
         return set()
-    teacher_ids = set(
+    return set(
         StudyGroup.objects.filter(
             students__pk=result.student_id,
             is_active=True,
@@ -61,7 +64,6 @@ def _teacher_ids_for_quiz_result(result: QuizResult) -> set[int]:
         .values_list('teacher_id', flat=True)
         .distinct()
     )
-    return teacher_ids
 
 
 def _parent_ids_for_student(student_id: int) -> list[int]:
@@ -543,9 +545,9 @@ def _apply_period_filter(qs, period: str | None):
     return qs.filter(created_at__gte=start)
 
 
-@cached_query(timeout='CACHE_TIMEOUT_SHORT')
+@cached_query(timeout=30)
 def get_teacher_pending_review_count(teacher_id: int) -> int:
-    """Cached: runs in the context processor on every teacher portal page."""
+    """Short-lived cache — badge polling and review queue keep this fresh."""
     from portals.utils.queries import _teacher_pending_quiz_results_queryset
     from portals.utils.student_courses import filter_quiz_results_for_teacher
 
@@ -555,7 +557,6 @@ def get_teacher_pending_review_count(teacher_id: int) -> int:
     return len(filter_quiz_results_for_teacher(qs[:100], teacher_id))
 
 
-@cached_query(timeout='CACHE_TIMEOUT_SHORT')
 def get_teacher_portal_bell_count(teacher_id: int) -> int:
     """Unread published-result and mock-completion notifications for teachers."""
     return PortalNotification.objects.filter(

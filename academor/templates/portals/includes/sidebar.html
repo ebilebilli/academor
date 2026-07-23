@@ -58,7 +58,7 @@
       <a class="nav-link{% if u == 'teacher-quiz-results' or u == 'teacher-quiz-result-review' %} active{% endif %}" href="{% url 'portals:teacher-quiz-results' %}">
         <span class="nav-icon"><i class="ti ti-pencil" aria-hidden="true"></i></span>
         <span class="nav-text">{% trans 'Yoxlanmalı olan quizlər' %}</span>
-        {% if portal_pending_reviews_count %}<span class="nav-badge">{{ portal_pending_reviews_count }}</span>{% endif %}
+        {% if portal_pending_reviews_count %}<span class="nav-badge" data-portal-pending-review-badge>{{ portal_pending_reviews_count }}</span>{% else %}<span class="nav-badge d-none" data-portal-pending-review-badge hidden></span>{% endif %}
       </a>
       <a class="nav-link{% if u == 'teacher-notifications' %} active{% endif %}" href="{% url 'portals:teacher-notifications' %}">
         <span class="nav-icon"><i class="ti ti-bell" aria-hidden="true"></i></span>

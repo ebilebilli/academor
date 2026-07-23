@@ -39,7 +39,7 @@
   {% endif %}
   {% block extra_css %}{% endblock %}
 </head>
-<body data-portal-role="{{ portal_role|default:'' }}">
+<body data-portal-role="{{ portal_role|default:'' }}"{% if portal_is_authenticated %} data-portal-badges-url="{% url 'portals:portal-badges' %}"{% endif %}>
   <div class="admin-shell">
     <div class="sidebar-backdrop" data-sidebar-close></div>
     {% include "portals/includes/sidebar.html" %}
@@ -76,6 +76,9 @@
   <script defer src="{% static 'portals/js/main.js' %}"></script>
   <script defer src="{% static 'portals/js/portal-nav-ajax.js' %}?v=20260708a"></script>
   <script defer src="{% static 'portals/js/portal-init.js' %}?v=20260708a"></script>
+  {% if portal_is_authenticated %}
+  <script defer src="{% static 'portals/js/portal-badges.js' %}?v=20260723a"></script>
+  {% endif %}
   <script defer src="{% static 'portals/js/portal-lottie.js' %}?v=20260707b"></script>
   {% block extra_js %}{% endblock %}
   {% if portal_role == 'teacher' %}
