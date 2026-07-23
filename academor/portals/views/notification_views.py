@@ -147,9 +147,9 @@ class TeacherNotificationsView(TeacherRequiredMixin, View):
 
     def get(self, request):
         profile = get_teacher_profile(request.portal_user)
-        period = request.GET.get('period', 'day')
+        period = request.GET.get('period', 'week')
         if period not in PERIOD_CHOICES:
-            period = 'day'
+            period = 'week'
         return render(
             request,
             self.template_name,

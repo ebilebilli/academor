@@ -669,6 +669,29 @@ class IeltsMockTestTests(QuizVisibilityTests):
         self.assertEqual(len(mock_items), 1)
         self.assertEqual(mock_items[0]['contact_phone'], '+994501112233')
 
+    def test_mock_completed_notifies_teacher_via_group_when_quiz_category_has_no_services(self):
+        """Teacher recipients fall back to study-group + exam program when quiz codes are empty."""
+        from portals.utils.notifications import create_mock_test_completed_notifications
+
+        attempt = self._complete_full_mock_attempt()
+        PortalNotification.objects.filter(ielts_mock_test=attempt).delete()
+        for quiz in (
+            self.mock_listening_quiz,
+            self.mock_reading_quiz,
+            self.mock_writing_quiz,
+            self.mock_speaking_quiz,
+        ):
+            quiz.category.services.clear()
+
+        create_mock_test_completed_notifications(attempt)
+        self.assertTrue(
+            PortalNotification.objects.filter(
+                teacher=self.teacher,
+                kind=PortalNotification.Kind.MOCK_TEST_COMPLETED,
+                ielts_mock_test=attempt,
+            ).exists()
+        )
+
     def test_parent_notified_when_mock_manual_section_reviewed(self):
         attempt = self._complete_full_mock_attempt()
         writing_review = submit_teacher_quiz_review(

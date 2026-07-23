@@ -127,20 +127,39 @@ def _teacher_ids_for_mock_attempt(attempt) -> set[int]:
         )
         return {teacher_id} if teacher_id else set()
 
-    for attr in ('writing_result', 'speaking_result', 'listening_result', 'reading_result'):
+    teacher_ids: set[int] = set()
+    for attr in ('writing_result', 'speaking_result', 'listening_result', 'reading_result', 'math_result'):
         result = getattr(attempt, attr, None)
+        if result is None:
+            result_id = getattr(attempt, f'{attr}_id', None)
+            if result_id:
+                result = (
+                    QuizResult.objects.select_related('quiz', 'quiz__category')
+                    .filter(pk=result_id)
+                    .first()
+                )
         if result is not None:
-            return _teacher_ids_for_quiz_result(result)
-        result_id = getattr(attempt, f'{attr}_id', None)
-        if result_id:
-            result = (
-                QuizResult.objects.select_related('quiz', 'quiz__category')
-                .filter(pk=result_id)
-                .first()
-            )
-            if result:
-                return _teacher_ids_for_quiz_result(result)
-    return set()
+            teacher_ids |= _teacher_ids_for_quiz_result(result)
+
+    if teacher_ids:
+        return {tid for tid in teacher_ids if tid}
+
+    # Fallback: teachers of the student's active groups for this exam program,
+    # then any active group teacher if program courses are missing on the group.
+    if not attempt.student_id:
+        return set()
+    program = (getattr(attempt, 'exam_program', None) or '').strip() or 'ielts'
+    slugs = expand_course_types_to_service_slugs([program])
+    base = StudyGroup.objects.filter(students__pk=attempt.student_id, is_active=True)
+    if slugs:
+        teacher_ids = set(
+            base.filter(courses__slug__in=slugs)
+            .values_list('teacher_id', flat=True)
+            .distinct()
+        )
+    if not teacher_ids:
+        teacher_ids = set(base.values_list('teacher_id', flat=True).distinct())
+    return {tid for tid in teacher_ids if tid}
 
 
 TEACHER_PORTAL_BELL_KINDS = (
@@ -152,6 +171,8 @@ TEACHER_PORTAL_BELL_KINDS = (
 
 def create_mock_test_completed_notifications(attempt) -> None:
     """Notify reviewing teachers (with learner phone on the bell) and linked parents."""
+    import logging
+
     from portals.models import IeltsMockTestAttempt
 
     if attempt.status != IeltsMockTestAttempt.Status.COMPLETED:
@@ -167,7 +188,15 @@ def create_mock_test_completed_notifications(attempt) -> None:
                 defaults=defaults,
             )
 
-    for teacher_id in _teacher_ids_for_mock_attempt(attempt):
+    teacher_ids = _teacher_ids_for_mock_attempt(attempt)
+    if not teacher_ids:
+        logging.getLogger(__name__).warning(
+            'Mock completed but no teacher recipients attempt_id=%s student_id=%s program=%s',
+            getattr(attempt, 'pk', None),
+            getattr(attempt, 'student_id', None),
+            getattr(attempt, 'exam_program', None),
+        )
+    for teacher_id in teacher_ids:
         PortalNotification.objects.update_or_create(
             teacher_id=teacher_id,
             ielts_mock_test=attempt,
