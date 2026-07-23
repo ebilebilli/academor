@@ -1879,8 +1879,6 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
                 return (SpeakingPartInline,)
         return (QuizQuestionInline,)
 
-      
-
     def get_urls(self):
         urls = super().get_urls()
         custom = [

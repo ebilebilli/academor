@@ -76,7 +76,6 @@ class ListeningQuestionAdminForm(forms.ModelForm):
         correct = (cleaned.get('correct_answer') or '').strip()
         if len(options) < 2:
             cleaned['answer_options'] = []
-            cleaned['correct_answer'] = ''
             return cleaned
         if not correct:
             self.add_error('correct_answer', _('Enter the correct answer.'))
