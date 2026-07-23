@@ -140,14 +140,6 @@ def get_teacher_student_service_pairs(teacher_id):
 
 
 def filter_quiz_results_for_teacher(results, teacher_id):
-    from portals.utils.teacher_courses import get_teacher_course_type_codes
-
-    teacher_codes = set(get_teacher_course_type_codes(teacher_id))
-    if not teacher_codes:
-        return []
-
-    pairs = get_teacher_student_service_pairs(teacher_id)
-    student_codes_cache = {}
     visible = []
 
     for row in results:
@@ -157,25 +149,7 @@ def filter_quiz_results_for_teacher(results, teacher_id):
                 visible.append(row)
             continue
 
-        if not quiz or not quiz_visible_to_teacher(quiz, teacher_id):
-            continue
-
-        service = get_quiz_service_code(quiz)
-        if not service:
-            continue
-
-        student_id = row.student_id
-        if student_id not in student_codes_cache:
-            student_codes_cache[student_id] = set(get_student_course_type_codes(student_id))
-        if not portal_course_keys_overlap([service], student_codes_cache[student_id]):
-            continue
-
-        if (student_id, service) in pairs:
-            visible.append(row)
-            continue
-
-        expanded = expand_course_types_to_service_slugs([service])
-        if any((student_id, slug) in pairs for slug in expanded):
+        if quiz and row.student_id and teacher_can_see_quiz_result(teacher_id, row.student_id, quiz):
             visible.append(row)
 
     return visible
@@ -216,10 +190,10 @@ def teacher_can_see_quiz_result(teacher_id, student_id, quiz):
         return False
     if not student_quiz_enrollment_ok(student_id, quiz):
         return False
-    service = get_quiz_service_code(quiz)
-    if not service:
+    course_codes = get_quiz_portal_course_codes(quiz)
+    if not course_codes:
         return False
-    slugs = expand_course_types_to_service_slugs([service])
+    slugs = expand_course_types_to_service_slugs(course_codes)
     if not slugs:
         return False
     return StudyGroup.objects.filter(

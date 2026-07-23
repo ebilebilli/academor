@@ -7923,10 +7923,8 @@ msgid "Start recording now"
 msgstr "Speaking / conversation"
 
 #: academor/templates/portals/student/quiz_take_speaking.html:51
-#, fuzzy
-#| msgid "Given answers"
 msgid "Finish answer"
-msgstr "Given answers"
+msgstr "Finish answer"
 
 #: academor/templates/portals/student/quiz_take_speaking.html:61
 #: academor/templates/portals/teacher/quiz_detail.html:39

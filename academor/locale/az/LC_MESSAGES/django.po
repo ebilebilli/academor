@@ -7882,9 +7882,8 @@ msgid "Start recording now"
 msgstr "Danışıq / danışıq"
 
 #: academor/templates/portals/student/quiz_take_speaking.html:51
-#| msgid "Given answers"
 msgid "Finish answer"
-msgstr "Cavablar verilir"
+msgstr "Cavabı bitir"
 
 #: academor/templates/portals/student/quiz_take_speaking.html:61
 #: academor/templates/portals/teacher/quiz_detail.html:39

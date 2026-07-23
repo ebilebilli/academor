@@ -124,6 +124,7 @@ class QuizAssignmentTests(QuizVisibilityTests):
         self.assertTrue(student_has_active_mock_access(self.student.pk))
         state = get_student_mock_access_state(self.student.pk, 'ielts')
         self.assertTrue(state['is_active'])
+        self.assertTrue(state['exists'])
 
         client = Client()
         _portal_client_login(client, self.teacher_user)
@@ -219,7 +220,6 @@ class MockAccessPerProgramTests(TestCase):
             )
         )
         self.assertTrue(student_has_active_mock_access_for_program(self.student.pk, 'ielts'))
-
 
 class QuizAssignmentNewStudentTests(TestCase):
     def setUp(self):
