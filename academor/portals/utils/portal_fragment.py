@@ -86,6 +86,8 @@ def _extract_body_scripts(html: str) -> str:
                 '/main.js',
                 'portal-nav-ajax.js',
                 'portal-init.js',
+                'portal-badges.js',
+                'portal-lottie.js',
             )
         ):
             continue
@@ -95,6 +97,11 @@ def _extract_body_scripts(html: str) -> str:
 
 def build_fragment_document(html: str) -> str:
     title = _extract(r'<title>(.*?)</title>', html, re.IGNORECASE | re.DOTALL)
+    lang = _extract(
+        r'<html\b[^>]*\blang=["\']([^"\']+)["\']',
+        html,
+        re.IGNORECASE,
+    ) or 'az'
     content = _extract(
         r'<main\b[^>]*\bdata-portal-content-root\b[^>]*>(.*?)</main>',
         html,
@@ -110,7 +117,7 @@ def build_fragment_document(html: str) -> str:
 
     parts = [
         '<!DOCTYPE html>',
-        '<html lang="az">',
+        '<html lang="' + lang + '">',
         '<head>',
         f'<title>{title}</title>' if title else '<title>Portal</title>',
     ]

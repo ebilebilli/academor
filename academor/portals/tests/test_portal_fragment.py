@@ -55,3 +55,20 @@ class PortalFragmentTests(SimpleTestCase):
 
         self.assertIn('id="portal-badge-snapshot"', fragment)
         self.assertIn('data-unread-notifications="2"', fragment)
+
+    def test_build_fragment_preserves_lang_attribute(self):
+        html = """
+        <!DOCTYPE html>
+        <html lang="en">
+        <head><title>Dashboard</title></head>
+        <body>
+          <main class="dashboard-content" data-portal-content-root>
+            <div class="container-fluid"><h1>Dashboard</h1></div>
+          </main>
+        </body>
+        </html>
+        """
+
+        fragment = build_fragment_document(html)
+
+        self.assertIn('<html lang="en">', fragment)

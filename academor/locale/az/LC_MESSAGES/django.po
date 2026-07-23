@@ -316,13 +316,11 @@ msgid "Course / service"
 msgstr "Kurs / xidmət"
 
 #: academor/portals/admin/admin_v1.py:238
-#, fuzzy
 #| msgid "Course enrollment"
 msgid "Service enrollment"
 msgstr "Kurs qeydiyyatı"
 
 #: academor/portals/admin/admin_v1.py:239
-#, fuzzy
 #| msgid "Course enrollments"
 msgid "Service enrollments"
 msgstr "Kurs qeydiyyatları"
@@ -361,7 +359,6 @@ msgstr "Suallar"
 
 #: academor/portals/admin/admin_v1.py:296
 #: academor/portals/models/listening_models.py:117
-#, fuzzy
 #| msgid "Discussion questions"
 msgid "Listening question"
 msgstr "Müzakirə sualları"
@@ -372,7 +369,6 @@ msgstr ""
 
 #: academor/portals/admin/admin_v1.py:312
 #: academor/portals/models/listening_models.py:45
-#, fuzzy
 #| msgid "Listening"
 msgid "Listening audio"
 msgstr "Dinləmə"
@@ -383,14 +379,12 @@ msgstr ""
 
 #: academor/portals/admin/admin_v1.py:334
 #: academor/portals/models/reading_models.py:244
-#, fuzzy
 #| msgid "Add question"
 msgid "Reading question"
 msgstr "Sual əlavə et"
 
 #: academor/portals/admin/admin_v1.py:335
 #: academor/portals/models/reading_models.py:245
-#, fuzzy
 #| msgid "Saved questions"
 msgid "Reading questions"
 msgstr "Yadda saxlanan suallar"
@@ -401,7 +395,6 @@ msgid "Reading question group"
 msgstr ""
 
 #: academor/portals/admin/admin_v1.py:347
-#, fuzzy
 #| msgid "Matching headings"
 msgid "Matching question groups"
 msgstr "Başlıqları uyğunlaşdırın"
@@ -417,14 +410,12 @@ msgstr ""
 
 #: academor/portals/admin/admin_v1.py:365
 #: academor/portals/models/speaking_models.py:141
-#, fuzzy
 #| msgid "Speaking / conversation"
 msgid "Speaking question"
 msgstr "Danışıq / danışıq"
 
 #: academor/portals/admin/admin_v1.py:366
 #: academor/portals/models/speaking_models.py:142
-#, fuzzy
 #| msgid "Save questions"
 msgid "Speaking questions"
 msgstr "Sualları yadda saxlayın"
@@ -497,7 +488,6 @@ msgid "Login account"
 msgstr "Giriş hesabı"
 
 #: academor/portals/admin/admin_v1.py:662
-#, fuzzy
 #| msgid ""
 #| "Or use Users form with role Teacher — profile is created automatically"
 msgid ""
@@ -581,7 +571,6 @@ msgid "Account"
 msgstr "Hesab"
 
 #: academor/portals/admin/admin_v1.py:770
-#, fuzzy
 #| msgid ""
 #| "Pick an existing login account, or create one under Users with role Student "
 #| "— a profile is created automatically. Assign study groups on the Study "
@@ -681,7 +670,6 @@ msgstr ""
 "Əvvəlcə müəllim səhifəsində kurs ixtisaslarını təyin edin."
 
 #: academor/portals/admin/admin_v1.py:962
-#, fuzzy
 #| msgid ""
 #| "Only students who share a course with this group (or have no group yet) are "
 #| "listed. A student can belong to more than one group."
@@ -856,7 +844,6 @@ msgid "Grading mode"
 msgstr "Qiymətləndirmə rejimi"
 
 #: academor/portals/admin/admin_v1.py:1608
-#, fuzzy
 #| msgid ""
 #| "Enable at most one manual mode (Listening, Essay, or Speaking). Manual "
 #| "quizzes have no multiple-choice variants — the teacher reviews submissions "
@@ -877,7 +864,6 @@ msgid "Time limit"
 msgstr "Vaxt limiti"
 
 #: academor/portals/admin/admin_v1.py:1615
-#, fuzzy
 #| msgid ""
 #| "Optional countdown for variant quizzes — auto-submits when time runs out."
 msgid "Optional countdown — auto-submits when time runs out."
@@ -933,7 +919,6 @@ msgstr ""
 # Portal admin — models
 #: academor/portals/admin/admin_v1.py:1791
 #: academor/portals/admin/quiz_forms.py:96
-#, fuzzy
 #| msgid "Student profile"
 msgid "Student response"
 msgstr "Tələbə profili"
@@ -1086,13 +1071,11 @@ msgstr ""
 "istifadəçi adı, istəyə görə telefon)"
 
 #: academor/portals/admin/help_texts.py:39
-#, fuzzy
 #| msgid "All services"
 msgid "Assign services"
 msgstr "Bütün xidmətlər"
 
 #: academor/portals/admin/help_texts.py:39
-#, fuzzy
 #| msgid "Add one or more course specializations below"
 msgid "Add one or more active service enrollments below"
 msgstr "Aşağıya bir və ya bir neçə kurs ixtisası əlavə edin"
@@ -1102,13 +1085,11 @@ msgid "Assign groups"
 msgstr "Qruplar təyin edin"
 
 #: academor/portals/admin/help_texts.py:40
-#, fuzzy
 #| msgid "Study groups → pick this student"
 msgid "Study groups → pick this student for schedule"
 msgstr "Tədris qrupları → bu tələbəni seçin"
 
 #: academor/portals/admin/help_texts.py:43
-#, fuzzy
 #| msgid "A student can be in several groups (e.g. IELTS + Speaking)."
 msgid ""
 "A student can be enrolled in several services (e.g. IELTS + Speaking) and "
@@ -1127,7 +1108,6 @@ msgid ""
 msgstr ""
 
 #: academor/portals/admin/help_texts.py:46
-#, fuzzy
 #| msgid "Without any group, the student will not see a schedule."
 msgid ""
 "Without any active service, the student will not see quizzes or classrooms."
@@ -1142,7 +1122,6 @@ msgid "Parents"
 msgstr "Valideynlər"
 
 #: academor/portals/admin/help_texts.py:54
-#, fuzzy
 #| msgid ""
 #| "Parent accounts linked to one or more students. Parents view attendance, "
 #| "scores, and quiz results for linked children only — quiz visibility follows "
@@ -1213,7 +1192,6 @@ msgid "Create group"
 msgstr "Qrup yarat"
 
 #: academor/portals/admin/help_texts.py:78
-#, fuzzy
 #| msgid "Name, teacher, course type"
 msgid "Name, teacher, and linked courses"
 msgstr "Adı, müəllimi, kurs növü"
@@ -1282,7 +1260,6 @@ msgstr "məs. Bazar ertəsi 18:00, 90 dəq"
 
 #: academor/portals/admin/help_texts.py:96
 #: academor/portals/models/schedule_models.py:39
-#, fuzzy
 #| msgid "Active only"
 msgid "Active from"
 msgstr "Yalnız aktiv"
@@ -1448,7 +1425,6 @@ msgid "Lesson link is optional."
 msgstr "Dərs linki isteğe bağlıdır."
 
 #: academor/portals/admin/help_texts.py:160
-#, fuzzy
 #| msgid "Weekly schedule"
 msgid "Weekly scores"
 msgstr "Həftəlik cədvəl"
@@ -1656,7 +1632,6 @@ msgid "Group textbook PDFs created by teachers for their students."
 msgstr ""
 
 #: academor/portals/admin/help_texts.py:231
-#, fuzzy
 #| msgid "Lesson materials visible to students in the selected group."
 msgid "Portal Textbooks page — visible to students in the matching group."
 msgstr "Seçilmiş qrupda tələbələrə görünən dərs materialları."
@@ -1669,13 +1644,11 @@ msgstr ""
 "Aktiv sayt xidmətlərini çoxlu seçim ilə seçin (xidmət slug-u əsasdır)."
 
 #: academor/portals/admin/help_texts.py:234
-#, fuzzy
 #| msgid "Only users on matching portal groups see the room."
 msgid "Only users with a matching active service enrollment see the room."
 msgstr "Otağı yalnız uyğun portal qruplarındakı istifadəçilər görür."
 
 #: academor/portals/admin/quiz_forms.py:36
-#, fuzzy
 #| msgid "JSON list of choices, e.g. [\"Option A\", \"Option B\", \"Option C\"]"
 msgid ""
 "Optional JSON list of choices, e.g. [\"Option A\", \"Option B\", \"Option "
@@ -1683,7 +1656,6 @@ msgid ""
 msgstr "JSON seçim siyahısı, məs. [\"Seçim A\", \"Variant B\", \"Variant C\"]"
 
 #: academor/portals/admin/quiz_forms.py:40
-#, fuzzy
 #| msgid "Enter at least two answer options."
 msgid "Required only when at least two answer options are set."
 msgstr "Ən azı iki cavab variantı daxil edin."
@@ -1747,7 +1719,6 @@ msgstr "Yuxarıdakı siyahıdakı seçimlərdən birinə tam uyğun gəlməlidir
 
 #: academor/portals/admin/quiz_forms.py:176
 #: academor/portals/admin/quiz_forms.py:179
-#, fuzzy
 #| msgid "Only one of Listening, Essay, or Speaking can be enabled."
 msgid "Not used for Listening / Speaking quizzes."
 msgstr "Dinləmə, Esse və Danışıqdan eyni anda yalnız biri aktiv ola bilər."
@@ -1768,27 +1739,23 @@ msgstr "Bu sual növü üçün fayl yükləyin və ya media URL təmin edin."
 
 #: academor/portals/admin/quiz_forms.py:303
 #: academor/portals/admin/quiz_forms.py:307
-#, fuzzy
 #| msgid "Enter a valid JSON list of answer options."
 msgid "Enter a valid JSON list of options."
 msgstr "Cavab seçimlərinin düzgün JSON siyahısını daxil edin."
 
 #: academor/portals/admin/quiz_forms.py:309
-#, fuzzy
 #| msgid "Answer options must be a JSON list."
 msgid "Option pool must be a JSON list."
 msgstr "Cavab seçimləri JSON siyahısı olmalıdır."
 
 #: academor/portals/admin/quiz_forms.py:312
 #: academor/portals/models/reading_models.py:180
-#, fuzzy
 #| msgid "Add at least two answer options."
 msgid "Add at least two options to the pool."
 msgstr "Ən azı iki cavab variantı əlavə edin."
 
 #: academor/portals/admin/quiz_forms.py:319
 #: academor/portals/models/reading_models.py:199
-#, fuzzy
 #| msgid "Question type"
 msgid "Question group"
 msgstr "Sual növü"
@@ -1801,7 +1768,6 @@ msgid ""
 msgstr ""
 
 #: academor/portals/admin/quiz_forms.py:328
-#, fuzzy
 #| msgid "Time limit"
 msgid "Word limit"
 msgstr "Vaxt limiti"
@@ -1850,14 +1816,12 @@ msgid "Selected question group was not found."
 msgstr ""
 
 #: academor/portals/admin/quiz_forms.py:536
-#, fuzzy
 #| msgid "Enter a valid JSON list of answer options."
 msgid "Enter a valid JSON object for question config."
 msgstr "Cavab seçimlərinin düzgün JSON siyahısını daxil edin."
 
 #: academor/portals/admin/quiz_forms.py:540
 #: academor/portals/admin/quiz_forms.py:542
-#, fuzzy
 #| msgid "Answer options must be a JSON list."
 msgid "Question config must be a JSON object."
 msgstr "Cavab seçimləri JSON siyahısı olmalıdır."
@@ -1873,7 +1837,6 @@ msgid ""
 msgstr ""
 
 #: academor/portals/admin/quiz_forms.py:559
-#, fuzzy
 #| msgid "Quiz category"
 msgid "New quiz category"
 msgstr "Quiz kateqoriyası"
@@ -1895,7 +1858,6 @@ msgstr ""
 #: academor/portals/admin/quiz_forms.py:601
 #: academor/portals/admin/quiz_forms.py:606
 #: academor/portals/models/speaking_models.py:101
-#, fuzzy
 #| msgid "See assigned quizzes."
 msgid "Select a speaking quiz."
 msgstr "Təyin olunmuş quizlərə baxın."
@@ -2025,7 +1987,6 @@ msgid "Name"
 msgstr "Ad"
 
 #: academor/portals/models/group_models.py:25
-#, fuzzy
 #| msgid "No students in this group."
 msgid "Site courses linked to this group."
 msgstr "Bu qrupda tələbə yoxdur."
@@ -2049,7 +2010,6 @@ msgid "Study group"
 msgstr "Tədris qrupu"
 
 #: academor/portals/models/ielts_mock_models.py:9
-#, fuzzy
 #| msgid "Question progress"
 msgid "In progress"
 msgstr "Sual irəliləyişi"
@@ -2097,13 +2057,11 @@ msgid "Status"
 msgstr "Status"
 
 #: academor/portals/models/ielts_mock_models.py:43
-#, fuzzy
 #| msgid "Current file"
 msgid "Current section"
 msgstr "Cari fayl"
 
 #: academor/portals/models/ielts_mock_models.py:45
-#, fuzzy
 #| msgid "Started"
 msgid "Started at"
 msgstr "Başlanğıc"
@@ -2114,62 +2072,52 @@ msgid "Completed at"
 msgstr "tamamlandı"
 
 #: academor/portals/models/ielts_mock_models.py:52
-#, fuzzy
 #| msgid "Listening"
 msgid "Listening quiz"
 msgstr "Dinləmə"
 
 #: academor/portals/models/ielts_mock_models.py:58
-#, fuzzy
 #| msgid "Reading"
 msgid "Reading quiz"
 msgstr "Oxu"
 
 #: academor/portals/models/ielts_mock_models.py:64
-#, fuzzy
 #| msgid "Writing"
 msgid "Writing quiz"
 msgstr "Yazı"
 
 #: academor/portals/models/ielts_mock_models.py:70
-#, fuzzy
 #| msgid "Speaking Time"
 msgid "Speaking quiz"
 msgstr "Danışıq müddəti"
 
 #: academor/portals/models/ielts_mock_models.py:79
-#, fuzzy
 #| msgid "Listening"
 msgid "Listening result"
 msgstr "Dinləmə"
 
 #: academor/portals/models/ielts_mock_models.py:87
-#, fuzzy
 #| msgid "Reading passages"
 msgid "Reading result"
 msgstr "Oxu mətnləri"
 
 #: academor/portals/models/ielts_mock_models.py:95
-#, fuzzy
 #| msgid "Writing skills"
 msgid "Writing result"
 msgstr "Yazı bacarıqları"
 
 #: academor/portals/models/ielts_mock_models.py:103
-#, fuzzy
 #| msgid "Speaking part"
 msgid "Speaking result"
 msgstr "Danışıq bölməsi"
 
 #: academor/portals/models/ielts_mock_models.py:107
 #: academor/portals/models/quiz_models.py:504
-#, fuzzy
 #| msgid "completed attempts"
 msgid "IELTS mock test attempt"
 msgstr "tamamlanmış cəhdlər"
 
 #: academor/portals/models/ielts_mock_models.py:108
-#, fuzzy
 #| msgid "completed attempts"
 msgid "IELTS mock test attempts"
 msgstr "tamamlanmış cəhdlər"
@@ -2254,13 +2202,11 @@ msgid "File"
 msgstr ""
 
 #: academor/portals/models/lesson_models.py:142
-#, fuzzy
 #| msgid "Lesson date"
 msgid "Lesson attachment"
 msgstr "Dərs tarixi"
 
 #: academor/portals/models/lesson_models.py:143
-#, fuzzy
 #| msgid "Lesson date"
 msgid "Lesson attachments"
 msgstr "Dərs tarixi"
@@ -2271,13 +2217,12 @@ msgstr ""
 
 #: academor/portals/models/lesson_models.py:197
 #: academor/portals/models/lesson_models.py:206
-#, fuzzy
 #| msgid "Textbooks"
 msgid "Textbook"
 msgstr "Dərslik"
 
 #: academor/portals/models/lesson_models.py:202
-#, fuzzy, python-format
+#, python-format
 #| msgid "Textbooks"
 msgid "Textbook %(pk)s"
 msgstr "Dərslik"
@@ -2321,57 +2266,49 @@ msgid "Short label, e.g. Section 1."
 msgstr ""
 
 #: academor/portals/models/listening_models.py:30
-#, fuzzy
 #| msgid "Written question or caption shown with image / video / audio."
 msgid "Instructions or context shown with the audio."
 msgstr "Şəkil / video / audio ilə göstərilən yazılı sual və ya başlıq."
 
 #: academor/portals/models/listening_models.py:36
-#, fuzzy
 #| msgid "Media file"
 msgid "Audio file"
 msgstr "Media faylı"
 
 #: academor/portals/models/listening_models.py:40
-#, fuzzy
 #| msgid "Audio"
 msgid "Audio URL"
 msgstr "Səs"
 
 #: academor/portals/models/listening_models.py:41
-#, fuzzy
 #| msgid ""
 #| "Optional external link (e.g. YouTube) instead of an uploaded file."
 msgid "Optional external audio link instead of an uploaded file."
 msgstr "Yüklənmiş fayl əvəzinə isteğe bağlı xarici keçid (məsələn, YouTube)."
 
 #: academor/portals/models/listening_models.py:46
-#, fuzzy
 #| msgid "Listening practice"
 msgid "Listening audio clips"
 msgstr "Dinləmə təcrübəsi"
 
 #: academor/portals/models/listening_models.py:53
-#, fuzzy, python-format
+#, python-format
 #| msgid "Listening practice"
 msgid "Listening audio %(pk)s"
 msgstr "Dinləmə təcrübəsi"
 
 #: academor/portals/models/listening_models.py:58
-#, fuzzy
 #| msgid ""
 #| "Upload a media file or provide a media URL for this question type."
 msgid "Upload an audio file or provide an audio URL."
 msgstr "Media faylı yükləyin və ya bu sual növü üçün media URL təmin edin."
 
 #: academor/portals/models/listening_models.py:60
-#, fuzzy
 #| msgid "Select at least one group."
 msgid "Select a listening quiz."
 msgstr "Ən azı bir qrup seçin."
 
 #: academor/portals/models/listening_models.py:79
-#, fuzzy
 #| msgid "Student submission"
 msgid "Audio section"
 msgstr "Tələbə cavabı"
@@ -2389,7 +2326,6 @@ msgid "Answer options"
 msgstr "Cavab variantları"
 
 #: academor/portals/models/listening_models.py:97
-#, fuzzy
 #| msgid "JSON list of choices, e.g. [\"Option A\", \"Option B\", \"Option C\"]"
 msgid ""
 "Optional JSON list of choices, e.g. [\"Option A\", \"Option B\"]. Leave "
@@ -2418,7 +2354,6 @@ msgstr ""
 
 #: academor/portals/models/listening_models.py:112
 #: academor/portals/models/reading_models.py:239
-#, fuzzy
 #| msgid "Question"
 msgid "Question config"
 msgstr "Sual"
@@ -2428,7 +2363,6 @@ msgid "Word limits, alternatives, etc."
 msgstr ""
 
 #: academor/portals/models/listening_models.py:118
-#, fuzzy
 #| msgid "Discussion questions"
 msgid "Listening questions"
 msgstr "Müzakirə sualları"
@@ -2436,7 +2370,7 @@ msgstr "Müzakirə sualları"
 #: academor/portals/models/listening_models.py:124
 #: academor/portals/models/reading_models.py:251
 #: academor/portals/models/speaking_models.py:152
-#, fuzzy, python-format
+#, python-format
 #| msgid "Question %(pk)s"
 msgid "Question %(order)s"
 msgstr "Sual %(pk)s"
@@ -2495,25 +2429,21 @@ msgid "Result published"
 msgstr "Nəticə açıqlanıb"
 
 #: academor/portals/models/notification_models.py:43
-#, fuzzy
 #| msgid "Payment completed"
 msgid "IELTS mock test completed"
 msgstr "Ödəniş tamamlandı"
 
 #: academor/portals/models/notification_models.py:44
-#, fuzzy
 #| msgid "Payment completed"
 msgid "IELTS mock test section review"
 msgstr "Ödəniş tamamlandı"
 
 #: academor/portals/models/notification_models.py:45
-#, fuzzy
 #| msgid "Payment completed"
 msgid "IELTS mock test results published"
 msgstr "Ödəniş tamamlandı"
 
 #: academor/portals/models/notification_models.py:46
-#, fuzzy
 #| msgid "Weekly schedule"
 msgid "Weekly score published"
 msgstr "Həftəlik cədvəl"
@@ -2524,7 +2454,6 @@ msgstr ""
 
 #: academor/portals/models/notification_models.py:94
 #: academor/portals/models/score_models.py:100
-#, fuzzy
 #| msgid "Weekly sessions"
 msgid "Weekly student score"
 msgstr "Həftəlik sessiyalar"
@@ -2624,19 +2553,16 @@ msgstr ""
 
 # Portal admin — models
 #: academor/portals/models/profile_models.py:181
-#, fuzzy
 #| msgid "Student profile"
 msgid "Student service"
 msgstr "Tələbə profili"
 
 #: academor/portals/models/profile_models.py:182
-#, fuzzy
 #| msgid "Student metrics"
 msgid "Student services"
 msgstr "Tələbə göstəriciləri"
 
 #: academor/portals/models/profile_models.py:196
-#, fuzzy
 #| msgid "Inactive"
 msgid "inactive"
 msgstr "Passiv"
@@ -2824,7 +2750,6 @@ msgid ""
 msgstr ""
 
 #: academor/portals/models/quiz_models.py:464
-#, fuzzy
 #| msgid "Single student"
 msgid "Submitted by student"
 msgstr "Tək tələbə"
@@ -2843,7 +2768,6 @@ msgid "Duration (seconds)"
 msgstr "Müddət (saniyə)"
 
 #: academor/portals/models/quiz_models.py:476
-#, fuzzy
 #| msgid "Completed at"
 msgid "Completion trigger"
 msgstr "tamamlandı"
@@ -2858,13 +2782,11 @@ msgid "Corrections, reply, and comments from the teacher."
 msgstr "Müəllimin düzəlişləri, cavabı və şərhləri."
 
 #: academor/portals/models/quiz_models.py:486
-#, fuzzy
 #| msgid "Enter correct answer"
 msgid "Teacher correct answers"
 msgstr "Düzgün cavabı daxil edin"
 
 #: academor/portals/models/quiz_models.py:487
-#, fuzzy
 #| msgid "Map of question id → selected answer."
 msgid "Reading review: map of question id → teacher-entered correct answer."
 msgstr "Sual id xəritəsi → seçilmiş cavab."
@@ -2896,31 +2818,26 @@ msgid "Summary completion"
 msgstr "Xülasəni tamamlayın"
 
 #: academor/portals/models/reading_models.py:14
-#, fuzzy
 #| msgid "Sentence completion"
 msgid "Note completion"
 msgstr "Cümləni tamamlayın"
 
 #: academor/portals/models/reading_models.py:15
-#, fuzzy
 #| msgid "Summary completion"
 msgid "Table completion"
 msgstr "Xülasəni tamamlayın"
 
 #: academor/portals/models/reading_models.py:16
-#, fuzzy
 #| msgid "Summary completion"
 msgid "Flow-chart completion"
 msgstr "Xülasəni tamamlayın"
 
 #: academor/portals/models/reading_models.py:17
-#, fuzzy
 #| msgid "Summary completion"
 msgid "Diagram label completion"
 msgstr "Xülasəni tamamlayın"
 
 #: academor/portals/models/reading_models.py:18
-#, fuzzy
 #| msgid "Your answer"
 msgid "Short answer"
 msgstr "Cavabınız"
@@ -2930,19 +2847,16 @@ msgid "Matching headings"
 msgstr "Başlıqları uyğunlaşdırın"
 
 #: academor/portals/models/reading_models.py:20
-#, fuzzy
 #| msgid "Your information"
 msgid "Matching information"
 msgstr "Məlumatlarınız"
 
 #: academor/portals/models/reading_models.py:21
-#, fuzzy
 #| msgid "Matching headings"
 msgid "Matching features"
 msgstr "Başlıqları uyğunlaşdırın"
 
 #: academor/portals/models/reading_models.py:22
-#, fuzzy
 #| msgid "Matching headings"
 msgid "Matching sentence endings"
 msgstr "Başlıqları uyğunlaşdırın"
@@ -2954,7 +2868,6 @@ msgstr ""
 #: academor/portals/models/reading_models.py:96
 #: academor/portals/models/reading_models.py:143
 #: academor/portals/models/speaking_models.py:50
-#, fuzzy
 #| msgid "Instructors"
 msgid "Instructions"
 msgstr "Müəllimlər"
@@ -2968,7 +2881,6 @@ msgid "Passage text"
 msgstr "Mətn"
 
 #: academor/portals/models/reading_models.py:101
-#, fuzzy
 #| msgid "List of answer choices shown to the student."
 msgid "The reading passage shown to the student."
 msgstr "Tələbəyə göstərilən cavab seçimlərinin siyahısı."
@@ -2980,32 +2892,28 @@ msgid "Reading passages"
 msgstr "Oxu mətnləri"
 
 #: academor/portals/models/reading_models.py:113
-#, fuzzy, python-format
+#, python-format
 #| msgid "Reading passages"
 msgid "Reading passage %(pk)s"
 msgstr "Oxu mətnləri"
 
 #: academor/portals/models/reading_models.py:118
-#, fuzzy
 #| msgid "Enter the question text."
 msgid "Enter the passage text."
 msgstr "Sual mətnini daxil edin."
 
 #: academor/portals/models/reading_models.py:120
-#, fuzzy
 #| msgid "Select at least one group."
 msgid "Select a reading quiz."
 msgstr "Ən azı bir qrup seçin."
 
 #: academor/portals/models/reading_models.py:130
 #: academor/portals/models/reading_models.py:191
-#, fuzzy
 #| msgid "Passage text"
 msgid "Passage"
 msgstr "Mətn"
 
 #: academor/portals/models/reading_models.py:153
-#, fuzzy
 #| msgid "Option A"
 msgid "Option pool"
 msgstr "Variant A"
@@ -3015,13 +2923,12 @@ msgid "Shared choices for matching tasks, e.g. headings or endings."
 msgstr ""
 
 #: academor/portals/models/reading_models.py:159
-#, fuzzy
 #| msgid "Saved questions"
 msgid "Reading question groups"
 msgstr "Yadda saxlanan suallar"
 
 #: academor/portals/models/reading_models.py:166
-#, fuzzy, python-format
+#, python-format
 #| msgid "Question %(pk)s"
 msgid "Question group %(pk)s"
 msgstr "Sual %(pk)s"
@@ -3054,7 +2961,6 @@ msgid "Question group must belong to the same passage."
 msgstr ""
 
 #: academor/portals/models/reading_models.py:283
-#, fuzzy
 #| msgid "No blog posts match the selected topics yet."
 msgid "Question type must match the selected group."
 msgstr "Seçilmiş mövzular üçün blog yazısı tapılmadı."
@@ -3064,7 +2970,6 @@ msgid "Add answer options, a matching group, or use a fixed choice type."
 msgstr ""
 
 #: academor/portals/models/reading_models.py:310
-#, fuzzy
 #| msgid "Enter the question text."
 msgid "Unsupported question type."
 msgstr "Sual mətnini daxil edin."
@@ -3224,13 +3129,11 @@ msgid "Score out of 10 for the week."
 msgstr ""
 
 #: academor/portals/models/score_models.py:96
-#, fuzzy
 #| msgid "Created at"
 msgid "Updated at"
 msgstr "Yaradılma tarixi"
 
 #: academor/portals/models/score_models.py:101
-#, fuzzy
 #| msgid "Weekly sessions"
 msgid "Weekly student scores"
 msgstr "Həftəlik sessiyalar"
@@ -3253,13 +3156,11 @@ msgid "Part"
 msgstr ""
 
 #: academor/portals/models/speaking_models.py:46
-#, fuzzy
 #| msgid "List of answer choices shown to the student."
 msgid "Optional label shown to the student."
 msgstr "Tələbəyə göstərilən cavab seçimlərinin siyahısı."
 
 #: academor/portals/models/speaking_models.py:51
-#, fuzzy
 #| msgid "Optional notes or instructions for students."
 msgid "Official-style task instructions for this part."
 msgstr "Tələbələr üçün istəyə bağlı qeydlər və ya təlimatlar."
@@ -3273,7 +3174,6 @@ msgid "Part 2 only — main topic line on the cue card."
 msgstr ""
 
 #: academor/portals/models/speaking_models.py:61
-#, fuzzy
 #| msgid "Cue card topic"
 msgid "Cue card bullet points"
 msgstr "Tapşırıq kartının mövzusu"
@@ -3284,7 +3184,6 @@ msgstr ""
 
 #: academor/portals/models/speaking_models.py:67
 #: academor/portals/models/speaking_models.py:130
-#, fuzzy
 #| msgid "Preparation time"
 msgid "Preparation time (seconds)"
 msgstr "Hazırlıq müddəti"
@@ -3294,7 +3193,6 @@ msgid "Leave blank to use the IELTS default for this part."
 msgstr ""
 
 #: academor/portals/models/speaking_models.py:73
-#, fuzzy
 #| msgid "Duration (seconds)"
 msgid "Default answer time (seconds)"
 msgstr "Müddət (saniyə)"
@@ -3304,19 +3202,17 @@ msgid "Per-question recording limit when a question has no override."
 msgstr ""
 
 #: academor/portals/models/speaking_models.py:79
-#, fuzzy
 #| msgid "Speaking part"
 msgid "Speaking parts"
 msgstr "Danışıq bölməsi"
 
 #: academor/portals/models/speaking_models.py:84
-#, fuzzy, python-format
+#, python-format
 #| msgid "Speaking part"
 msgid "Speaking part %(pk)s"
 msgstr "Danışıq bölməsi"
 
 #: academor/portals/models/speaking_models.py:104
-#, fuzzy
 #| msgid "Enter at least one answer option."
 msgid "Enter the Part 2 cue card topic."
 msgstr "Ən azı bir cavab variantı daxil edin."
@@ -3332,7 +3228,6 @@ msgid ""
 msgstr ""
 
 #: academor/portals/models/speaking_models.py:136
-#, fuzzy
 #| msgid "Answer options"
 msgid "Answer time (seconds)"
 msgstr "Cavab variantları"
@@ -3342,31 +3237,27 @@ msgid "Maximum recording length for this question."
 msgstr ""
 
 #: academor/portals/models/speaking_models.py:151
-#, fuzzy
 #| msgid "Part 2 — Long Turn"
 msgid "Part 2 long turn"
 msgstr "Bölmə 2 — Fərdi çıxış"
 
 #: academor/portals/models/speaking_models.py:199
-#, fuzzy
 #| msgid "Add video recording"
 msgid "Audio recording"
 msgstr "Video yazısı əlavə et"
 
 #: academor/portals/models/speaking_models.py:207
-#, fuzzy
 #| msgid "Speaking / conversation"
 msgid "Speaking recording"
 msgstr "Danışıq / danışıq"
 
 #: academor/portals/models/speaking_models.py:208
-#, fuzzy
 #| msgid "Video recordings"
 msgid "Speaking recordings"
 msgstr "Video yazıları"
 
 #: academor/portals/models/speaking_models.py:218
-#, fuzzy, python-format
+#, python-format
 #| msgid "Answer choices for question %(n)s"
 msgid "Recording for question %(pk)s"
 msgstr "%(n)s sualı üçün cavab variantları"
@@ -3394,7 +3285,6 @@ msgid "e.g. Grammar, Homework"
 msgstr "məs. Qrammatika, Ev işi"
 
 #: academor/portals/teacher_forms.py:154
-#, fuzzy
 #| msgid ""
 #| "Your own label for filtering lessons (not the service name). Service is set "
 #| "automatically from the groups you select."
@@ -3406,19 +3296,16 @@ msgstr ""
 "qruplardan avtomatik təyin olunur."
 
 #: academor/portals/teacher_forms.py:159
-#, fuzzy
 #| msgid "PDF file"
 msgid "PDF files"
 msgstr "PDF fayl"
 
 #: academor/portals/teacher_forms.py:167
-#, fuzzy
 #| msgid "Image"
 msgid "Images"
 msgstr "Şəkil"
 
 #: academor/portals/teacher_forms.py:175
-#, fuzzy
 #| msgid "Remove question"
 msgid "Remove files"
 msgstr "Sualı silin"
@@ -3432,7 +3319,6 @@ msgid "Select at least one group."
 msgstr "Ən azı bir qrup seçin."
 
 #: academor/portals/teacher_forms.py:309
-#, fuzzy
 #| msgid "You can only schedule slots for your own groups."
 msgid "You can only upload lessons to your own groups."
 msgstr "Siz yalnız öz qruplarınız üçün yerlər planlaşdıra bilərsiniz."
@@ -3443,37 +3329,31 @@ msgid "New video link %(index)s is not a valid URL."
 msgstr ""
 
 #: academor/portals/teacher_forms.py:363
-#, fuzzy
 #| msgid "Add at least two answer options."
 msgid "Add at least one PDF, image, or video link."
 msgstr "Ən azı iki cavab variantı əlavə edin."
 
 #: academor/portals/teacher_forms.py:540
-#, fuzzy
 #| msgid "Remove photo"
 msgid "Remove PDF"
 msgstr "Şəkli sil"
 
 #: academor/portals/teacher_forms.py:584
-#, fuzzy
 #| msgid "PDF file"
 msgid "Upload a PDF file."
 msgstr "PDF fayl"
 
 #: academor/portals/teacher_forms.py:590
-#, fuzzy
 #| msgid "You can only schedule slots for your own groups."
 msgid "You can only add textbooks for your own groups."
 msgstr "Siz yalnız öz qruplarınız üçün yerlər planlaşdıra bilərsiniz."
 
 #: academor/portals/teacher_forms.py:596
-#, fuzzy
 #| msgid "Enter the lesson name."
 msgid "Enter the textbook name."
 msgstr "Dərsin adını daxil edin."
 
 #: academor/portals/templatetags/portal_tags.py:184
-#, fuzzy
 #| msgid "completed attempts"
 msgid "Longest attempt"
 msgstr "tamamlanmış cəhdlər"
@@ -3501,13 +3381,12 @@ msgstr ""
 "dərs yoxdur."
 
 #: academor/portals/utils/ielts_mock_test.py:155
-#, fuzzy, python-format
+#, python-format
 #| msgid "No quizzes available yet."
 msgid "Not enough quizzes are available for: %(sections)s."
 msgstr "Hələ quiz mövcud deyil."
 
 #: academor/portals/utils/ielts_mock_test.py:232
-#, fuzzy
 #| msgid "This quiz is not a reading task."
 msgid "This quiz is not part of your mock test."
 msgstr "Bu quiz oxu tapşırığı deyil."
@@ -3554,19 +3433,17 @@ msgid "Section %(index)s of %(total)s — %(section)s"
 msgstr ""
 
 #: academor/portals/utils/notifications.py:274
-#, fuzzy
 #| msgid "New assessment"
 msgid "Weekly assessment"
 msgstr "Yeni qiymətləndirmə"
 
 #: academor/portals/utils/notifications.py:402
-#, fuzzy
 #| msgid "Payment completed"
 msgid "IELTS mock test — review required"
 msgstr "Ödəniş tamamlandı"
 
 #: academor/portals/utils/notifications.py:404
-#, fuzzy, python-format
+#, python-format
 #| msgid "completed attempts"
 msgid "IELTS mock test — review %(sections)s"
 msgstr "tamamlanmış cəhdlər"
@@ -3583,19 +3460,17 @@ msgid "IELTS Mock Test"
 msgstr "IELTS Sınaq Testi"
 
 #: academor/portals/utils/notifications.py:447
-#, fuzzy, python-format
+#, python-format
 #| msgid "completed attempts"
 msgid "IELTS Mock Test — %(section)s"
 msgstr "tamamlanmış cəhdlər"
 
 #: academor/portals/utils/notifications.py:458
-#, fuzzy
 #| msgid "Next question"
 msgid "Mock test section"
 msgstr "Növbəti sual"
 
 #: academor/portals/utils/notifications.py:485
-#, fuzzy
 #| msgid "Full packages"
 msgid "Overall mock test result"
 msgstr "Full paketlər"
@@ -3666,25 +3541,21 @@ msgid "One acceptable answer per line (e.g. mechanized for mechanised)."
 msgstr ""
 
 #: academor/portals/utils/quiz_reading_admin.py:99
-#, fuzzy
 #| msgid "Correct answer must exactly match one of the options."
 msgid "Must exactly match one of the answer options."
 msgstr "Düzgün cavab variantlardan biri ilə tam uyğun olmalıdır."
 
 #: academor/portals/utils/quiz_reading_admin.py:103
-#, fuzzy
 #| msgid "True / False / Not Given"
 msgid "Enter one of: True, False, Not Given."
 msgstr "Doğru / Yanlış / Verilməyib"
 
 #: academor/portals/utils/quiz_reading_admin.py:107
-#, fuzzy
 #| msgid "Yes / No / Not Given"
 msgid "Enter one of: Yes, No, Not Given."
 msgstr "Bəli / Xeyr / Verilməyib"
 
 #: academor/portals/utils/quiz_reading_admin.py:111
-#, fuzzy
 #| msgid "Must exactly match one of the options in the list above."
 msgid "Must exactly match one option from the selected group pool."
 msgstr "Yuxarıdakı siyahıdakı seçimlərdən birinə tam uyğun gəlməlidir."
@@ -3698,7 +3569,6 @@ msgid "Other answers that should also count as correct (one per line)."
 msgstr ""
 
 #: academor/portals/utils/quiz_reading_score.py:145
-#, fuzzy
 #| msgid "No listening questions found for this category."
 msgid "No reading questions found for this quiz."
 msgstr "Bu kateqoriya üçün dinləmə sualı tapılmadı."
@@ -3748,7 +3618,6 @@ msgid ""
 msgstr ""
 
 #: academor/portals/utils/quiz_submit.py:45
-#, fuzzy
 #| msgid "You have already submitted this quiz."
 msgid "You already submitted this mock test section."
 msgstr "Bu quizi artıq göndərmisiniz."
@@ -3770,7 +3639,6 @@ msgstr "Bu kateqoriya üçün dinləmə sualı tapılmadı."
 
 #: academor/portals/utils/quiz_submit.py:384
 #: academor/portals/utils/quiz_submit.py:778
-#, fuzzy
 #| msgid "No questions were found for this test."
 msgid "No questions found."
 msgstr "Bu test üçün sual tapılmadı."
@@ -3804,7 +3672,6 @@ msgid "This quiz is not a reading task."
 msgstr "Bu quiz oxu tapşırığı deyil."
 
 #: academor/portals/utils/quiz_submit.py:694
-#, fuzzy
 #| msgid "This quiz is not a speaking task."
 msgid "This quiz is not a listening task."
 msgstr "Bu quiz danışıq tapşırığı deyil."
@@ -3831,13 +3698,11 @@ msgid "Could not save the submission."
 msgstr "Təqdimat saxlanıla bilmədi."
 
 #: academor/portals/utils/quiz_submit.py:925
-#, fuzzy
 #| msgid "This quiz is not submitted for manual review."
 msgid "This quiz is not a manual-review task."
 msgstr "Bu quiz manual yoxlama üçün göndərilməyib."
 
 #: academor/portals/utils/quiz_submit.py:945
-#, fuzzy
 #| msgid "Write your answer before submitting."
 msgid "Enter your answer before submitting."
 msgstr "Göndərməzdən əvvəl cavabınızı yazın."
@@ -3848,7 +3713,6 @@ msgid "Result not found."
 msgstr "Nəticə tapılmadı."
 
 #: academor/portals/utils/quiz_submit.py:1048
-#, fuzzy
 #| msgid "Your submission is awaiting teacher review."
 msgid "This submission has already been reviewed."
 msgstr "Təqdimatınız müəllim yoxlamasını gözləyir."
@@ -3871,7 +3735,6 @@ msgstr ""
 "simvollarına icazə verilir."
 
 #: academor/portals/utils/weekly_scores.py:75
-#, fuzzy
 #| msgid "Enter a valid score."
 msgid "Enter a valid score between 0 and 10."
 msgstr "Düzgün bal daxil edin."
@@ -3881,13 +3744,11 @@ msgid "Score must be between 0 and 10."
 msgstr ""
 
 #: academor/portals/utils/weekly_scores.py:266
-#, fuzzy
 #| msgid "You can only schedule slots for your own groups."
 msgid "You can only score students for the current week."
 msgstr "Siz yalnız öz qruplarınız üçün yerlər planlaşdıra bilərsiniz."
 
 #: academor/portals/utils/weekly_scores.py:277
-#, fuzzy
 #| msgid "You cannot review this submission."
 msgid "You cannot score this student."
 msgstr "Bu göndərməni yoxlaya bilməzsiniz."
@@ -3913,7 +3774,6 @@ msgstr ""
 "panelindən istifadə etməlidir."
 
 #: academor/portals/views/mixins.py:48
-#, fuzzy
 #| msgid "Schedule is managed by Academor administration."
 msgid ""
 "Schedule slots are managed by Academor administration. Contact admin to add "
@@ -3925,13 +3785,11 @@ msgid "Published quiz results and completed mock tests."
 msgstr "Açıqlanmış quiz nəticələri və tamamlanmış mock testlər."
 
 #: academor/portals/views/notification_views.py:202
-#, fuzzy
 #| msgid "Back to quizzes"
 msgid "Back to quiz results"
 msgstr "Quizlərə qayıt"
 
 #: academor/portals/views/notification_views.py:204
-#, fuzzy
 #| msgid "Back to home"
 msgid "Back to dashboard"
 msgstr "Ana səhifəyə qayıt"
@@ -3942,7 +3800,6 @@ msgid "Back to notifications"
 msgstr "Bildirişlərə qayıt"
 
 #: academor/portals/views/notification_views.py:244
-#, fuzzy
 #| msgid "All notifications marked as read."
 msgid "Notification marked as read."
 msgstr "Bütün bildirişlər oxundu kimi işarələndi."
@@ -4097,19 +3954,16 @@ msgid "All weekly scores for this week are already saved."
 msgstr ""
 
 #: academor/portals/views/teacher_manage_views.py:642
-#, fuzzy
 #| msgid "No students in this group yet."
 msgid "No unscored students in this group. Switch to All to continue."
 msgstr "Bu qrupda hələ tələbə yoxdur."
 
 #: academor/portals/views/teacher_manage_views.py:644
-#, fuzzy
 #| msgid "No lesson scores yet."
 msgid "No students to score yet."
 msgstr "Hələ dərs balı yoxdur."
 
 #: academor/portals/views/teacher_manage_views.py:666
-#, fuzzy
 #| msgid "Score saved."
 msgid "Weekly scores saved."
 msgstr "Bal yadda saxlanıldı."
@@ -4119,7 +3973,6 @@ msgid "All entered scores were already saved."
 msgstr ""
 
 #: academor/portals/views/teacher_manage_views.py:672
-#, fuzzy
 #| msgid "Select at least one student."
 msgid "Enter a score for at least one student."
 msgstr "Ən azı bir tələbə seçin."
@@ -4138,7 +3991,6 @@ msgid "Student lesson materials and video recordings."
 msgstr "Tələbənin dərs materialları və video yazıları."
 
 #: academor/portals/views/views_v1.py:730
-#, fuzzy
 #| msgid "Daily lesson grades for your linked student."
 msgid "Weekly grades for your linked student."
 msgstr "Əlaqəli tələbənizin günlük dərs balları."
@@ -6003,7 +5855,6 @@ msgstr "Geri al"
 
 #: academor/templates/portals/includes/lesson_form_new_file_rows.html:14
 #: academor/templates/portals/includes/lesson_form_new_file_rows.html:27
-#, fuzzy
 #| msgid "Time filter"
 msgid "Remove file"
 msgstr "Vaxt filtri"
@@ -6018,7 +5869,6 @@ msgstr ""
 
 #: academor/templates/portals/includes/lesson_form_new_video_links.html:15
 #: academor/templates/portals/includes/lesson_form_new_video_links.html:30
-#, fuzzy
 #| msgid "Remove question"
 msgid "Remove video link"
 msgstr "Sualı silin"
@@ -6064,7 +5914,6 @@ msgid "Kateqoriya filteri"
 msgstr "Kateqoriya filteri"
 
 #: academor/templates/portals/includes/mobile_bottom_nav.html:3
-#, fuzzy
 #| msgid "Portal navigation"
 msgid "Bottom navigation"
 msgstr "Portal naviqasiyası"
@@ -6135,7 +5984,6 @@ msgstr "Orta bal və davamiyyət"
 #: academor/templates/portals/includes/profile_performance_showcase.html:11
 #: academor/templates/portals/includes/quiz_average_showcase.html:4
 #: academor/templates/portals/includes/student_quiz_lesson_performance_showcase.html:11
-#, fuzzy
 #| msgid "Quiz categories"
 msgid "Quiz average"
 msgstr "Quiz kateqoriyaları"
@@ -6147,7 +5995,7 @@ msgstr "Orta bal"
 
 #: academor/templates/portals/includes/profile_performance_showcase.html:32
 #: academor/templates/portals/includes/student_quiz_lesson_performance_showcase.html:32
-#, fuzzy, python-format
+#, python-format
 #| msgid ""
 #| "From %(counter)s graded quiz, normalized across different scales."
 #| msgid_plural ""
@@ -6180,13 +6028,12 @@ msgstr "qiymətləndirilib"
 #: academor/templates/portals/includes/profile_performance_showcase.html:52
 #: academor/templates/portals/includes/quiz_average_showcase.html:45
 #: academor/templates/portals/includes/student_quiz_lesson_performance_showcase.html:52
-#, fuzzy
 #| msgid "Awaiting your review"
 msgid "awaiting review"
 msgstr "Yoxlamanızı gözləyir"
 
 #: academor/templates/portals/includes/profile_performance_showcase.html:83
-#, fuzzy, python-format
+#, python-format
 #| msgid "Present at %(present)s of %(total)s recorded sessions."
 msgid ""
 "\n"
@@ -6211,7 +6058,6 @@ msgid "absent"
 msgstr "qeyri-ixtirak"
 
 #: academor/templates/portals/includes/quiz_attempt_timing_panel.html:3
-#, fuzzy
 #| msgid "Quiz question"
 msgid "Quiz timing"
 msgstr "Quiz sualı"
@@ -6234,13 +6080,11 @@ msgid "Time used"
 msgstr "Sərf olunan müddət"
 
 #: academor/templates/portals/includes/quiz_attempt_timing_panel.html:17
-#, fuzzy
 #| msgid "Completed"
 msgid "Completion"
 msgstr "Tamamlandı"
 
 #: academor/templates/portals/includes/quiz_attempt_timing_panel.html:24
-#, fuzzy
 #| msgid ""
 #| "The test will be submitted automatically when the timer reaches zero."
 msgid "The quiz was auto-submitted when the timer reached zero."
@@ -6275,21 +6119,18 @@ msgstr ""
 "quizləri tamamlayın."
 
 #: academor/templates/portals/includes/quiz_categories_panel.html:11
-#, fuzzy
 #| msgid "Fənn filteri"
 msgid "Xidmət filteri"
 msgstr "Fənn filteri"
 
 #: academor/templates/portals/includes/quiz_categories_panel.html:27
 #: academor/templates/portals/student/quiz_category_detail.html:10
-#, fuzzy
 #| msgid "Kateqoriya"
 msgid "Kateqoriyalar"
 msgstr "Kateqoriya"
 
 #: academor/templates/portals/includes/quiz_categories_panel.html:33
 #: academor/templates/portals/student/quiz_categories.html:13
-#, fuzzy
 #| msgid "Quiz category"
 msgid "Quiz kateqoriyaları"
 msgstr "Quiz kateqoriyası"
@@ -6328,7 +6169,6 @@ msgstr "Quiz nəticələri xülasəsi"
 #: academor/templates/portals/parent/dashboard.html:132
 #: academor/templates/portals/parent/quiz_results.html:13
 #: academor/templates/portals/teacher/student_profile.html:138
-#, fuzzy
 #| msgid "Qiymətləndirmələr"
 msgid "Quiz nəticələri"
 msgstr "Qiymətləndirmələr"
@@ -6347,7 +6187,6 @@ msgstr "Bütün tamamlanmış quiz cəhdləri."
 
 #: academor/templates/portals/includes/quiz_history_summary_card.html:24
 #: academor/templates/portals/includes/score_average_showcase.html:44
-#, fuzzy
 #| msgid "Qiymətləndirmələr"
 msgid "qiymətləndirilmiş"
 msgstr "Qiymətləndirmələr"
@@ -6398,13 +6237,13 @@ msgstr "Quizdə qal"
 
 #: academor/templates/portals/includes/quiz_listening_section.html:11
 #: academor/templates/portals/includes/quiz_listening_section.html:72
-#, fuzzy, python-format
+#, python-format
 #| msgid "Question %(pk)s"
 msgid "Section %(num)s"
 msgstr "Sual %(pk)s"
 
 #: academor/templates/portals/includes/quiz_listening_section.html:18
-#, fuzzy, python-format
+#, python-format
 #| msgid "Listening practice"
 msgid "Listening clip %(num)s"
 msgstr "Dinləmə təcrübəsi"
@@ -6414,14 +6253,13 @@ msgid "This clip can only be played once."
 msgstr "Bu fraqment yalnız bir dəfə oxuna bilər."
 
 #: academor/templates/portals/includes/quiz_listening_section.html:49
-#, fuzzy
 #| msgid "No questions in this quiz."
 msgid "Questions for this audio"
 msgstr "Bu quizdə sual yoxdur."
 
 #: academor/templates/portals/includes/quiz_listening_section.html:53
 #: academor/templates/portals/includes/quiz_reading_section.html:38
-#, fuzzy, python-format
+#, python-format
 #| msgid "Question %(pk)s"
 msgid "Question %(num)s"
 msgstr "Sual %(pk)s"
@@ -6443,19 +6281,17 @@ msgstr "S"
 
 #: academor/templates/portals/includes/quiz_listening_variant.html:3
 #: academor/templates/portals/includes/quiz_reading_question_choice.html:3
-#, fuzzy, python-format
+#, python-format
 #| msgid "Answer choices for question %(n)s"
 msgid "Answer choices for question %(n)s"
 msgstr "%(n)s sualı üçün cavab variantları"
 
 #: academor/templates/portals/includes/quiz_listening_variant_review.html:4
-#, fuzzy
 #| msgid "No recording submitted."
 msgid "No answer submitted."
 msgstr "Səs yazısı göndərilməyib."
 
 #: academor/templates/portals/includes/quiz_manual_status_aside.html:2
-#, fuzzy
 #| msgid "Session date"
 msgid "Submission status"
 msgstr "Dərs tarixi"
@@ -6470,13 +6306,11 @@ msgid "Gözlənilir"
 msgstr "Gözlənilir"
 
 #: academor/templates/portals/includes/quiz_manual_status_aside.html:8
-#, fuzzy
 #| msgid "Reviewed"
 msgid "Review pending"
 msgstr "Yoxlanıb"
 
 #: academor/templates/portals/includes/quiz_manual_status_aside.html:10
-#, fuzzy
 #| msgid "Your teacher will review your work and publish feedback."
 msgid ""
 "Your answers were submitted. Your teacher will review your work and publish "
@@ -6485,7 +6319,6 @@ msgstr "Müəllim işinizi yoxlayacaq və rəy bildirəcək."
 
 #: academor/templates/portals/includes/quiz_mock_finish_label.html:5
 #: academor/templates/portals/student/quiz_take_manual.html:52
-#, fuzzy
 #| msgid "Completed"
 msgid "Complete"
 msgstr "Tamamlandı"
@@ -6543,7 +6376,7 @@ msgid "Section submitted"
 msgstr "Bölmə göndərildi"
 
 #: academor/templates/portals/includes/quiz_question_play.html:18
-#, fuzzy, python-format
+#, python-format
 #| msgid "Answer choices for question %(n)s"
 msgid "Answer choices for question %%(n)s"
 msgstr "%(n)s sualı üçün cavab variantları"
@@ -6562,7 +6395,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: academor/templates/portals/includes/quiz_reading_question_text.html:15
-#, fuzzy, python-format
+#, python-format
 #| msgid "Answer choices for question %(n)s"
 msgid "Answer for question %(n)s"
 msgstr "%(n)s sualı üçün cavab variantları"
@@ -6571,13 +6404,13 @@ msgstr "%(n)s sualı üçün cavab variantları"
 #: academor/templates/portals/includes/quiz_reading_tabs.html:22
 #: academor/templates/portals/includes/quiz_reading_teacher_review_section.html:12
 #: academor/templates/portals/includes/quiz_reading_teacher_review_tabs.html:22
-#, fuzzy, python-format
+#, python-format
 #| msgid "Parent: %(name)s"
 msgid "Passage %(num)s"
 msgstr "Valideyn: %(name)s"
 
 #: academor/templates/portals/includes/quiz_reading_section.html:19
-#, fuzzy, python-format
+#, python-format
 #| msgid "Reading passages"
 msgid "Reading passage %(num)s"
 msgstr "Oxu mətnləri"
@@ -6655,7 +6488,6 @@ msgid "You should say:"
 msgstr "Aşağıdakılar haqqında danışın:"
 
 #: academor/templates/portals/includes/quiz_start_gate.html:6
-#, fuzzy
 #| msgid "Could not submit the test. Please try again."
 msgid "Could not start the quiz. Please try again."
 msgstr "Test göndərilə bilmədi. Yenidən cəhd edin."
@@ -6686,20 +6518,17 @@ msgid "Your answer"
 msgstr "Cavabınız"
 
 #: academor/templates/portals/includes/quiz_writing_answer.html:18
-#, fuzzy
 #| msgid "Write your response here…"
 msgid "Write your answer here…"
 msgstr "Cavabınızı buraya yazın…"
 
 #: academor/templates/portals/includes/quiz_writing_answer.html:23
-#, fuzzy
 #| msgid "Your teacher will review your work and publish feedback."
 msgid "Take your time — your teacher will review your work."
 msgstr "Müəllim işinizi yoxlayacaq və rəy bildirəcək."
 
 #: academor/templates/portals/includes/quiz_writing_answer.html:24
 #: academor/templates/portals/student/quiz_take_manual.html:53
-#, fuzzy
 #| msgid "records"
 msgid "words"
 msgstr "qeyd"
@@ -6713,7 +6542,6 @@ msgid "Quiz orta balı"
 msgstr "Quiz orta balı"
 
 #: academor/templates/portals/includes/score_average_showcase.html:18
-#, fuzzy
 #| msgid "Dərs filterləri"
 msgid "Dərs qiymətləri"
 msgstr "Dərs filterləri"
@@ -6759,7 +6587,6 @@ msgstr "Quiz qiymətləri"
 
 #: academor/templates/portals/includes/score_sections.html:31
 #: academor/templates/portals/includes/score_sections_weekly.html:13
-#, fuzzy
 #| msgid "Qiymətləndirmələr"
 msgid "Həftəlik qiymətləndirmələr"
 msgstr "Qiymətləndirmələr"
@@ -6815,7 +6642,6 @@ msgstr "Hələ quiz qiyməti yoxdur."
 #: academor/templates/portals/includes/score_sections_weekly.html:22
 #: academor/templates/portals/includes/weekly_scores_history.html:16
 #: academor/templates/portals/student/schedule.html:27
-#, fuzzy
 #| msgid "Bu həftə"
 msgid "Həftə"
 msgstr "Bu həftə"
@@ -6849,13 +6675,11 @@ msgstr "Hələ həftəlik qiymət yoxdur."
 
 #: academor/templates/portals/includes/score_sections.html:166
 #: academor/templates/portals/includes/score_sections_weekly.html:70
-#, fuzzy
 #| msgid "Bu filterlə dərs tapılmadı."
 msgid "Bu filterlə qiymət tapılmadı."
 msgstr "Bu filterlə dərs tapılmadı."
 
 #: academor/templates/portals/includes/scores_period_filter.html:3
-#, fuzzy
 #| msgid "Dərs filterləri"
 msgid "Qiymət filterləri"
 msgstr "Dərs filterləri"
@@ -6870,7 +6694,6 @@ msgstr "Qrup"
 
 #: academor/templates/portals/includes/scores_period_filter.html:31
 #: academor/templates/portals/includes/teacher_weekly_scores_panel.html:49
-#, fuzzy
 #| msgid "Tarix filteri"
 msgid "Qrup filteri"
 msgstr "Tarix filteri"
@@ -6981,7 +6804,6 @@ msgid "Hələ quiz cəhdi yoxdur."
 msgstr "Hələ quiz cəhdi yoxdur."
 
 #: academor/templates/portals/includes/student_quiz_lesson_performance_showcase.html:5
-#, fuzzy
 #| msgid "Quiz scores"
 msgid "Quiz & weekly scores"
 msgstr "Quiz balları"
@@ -6995,13 +6817,11 @@ msgid "Complete graded quizzes to see the average here."
 msgstr "Orta balı görmək üçün qiymətləndirilmiş quizləri tamamlayın."
 
 #: academor/templates/portals/includes/student_quiz_lesson_performance_showcase.html:63
-#, fuzzy
 #| msgid "Below average"
 msgid "Weekly average"
 msgstr "Orta səviyyədən aşağı"
 
 #: academor/templates/portals/includes/student_quiz_lesson_performance_showcase.html:81
-#, fuzzy
 #| msgid "Average score"
 msgid "Average weekly score"
 msgstr "Orta bal"
@@ -7020,7 +6840,6 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: academor/templates/portals/includes/student_quiz_lesson_performance_showcase.html:90
-#, fuzzy
 #| msgid "Daily lesson grades will appear here once recorded."
 msgid "Weekly grades will appear here once they are recorded."
 msgstr "Qeydə alındıqdan sonra günlük dərs balları burada görünəcək."
@@ -7056,37 +6875,31 @@ msgid "Qrupunuzda hələ həftəlik dərs vaxtları təyin olunmayıb."
 msgstr "Qrupunuzda hələ həftəlik dərs vaxtları təyin olunmayıb."
 
 #: academor/templates/portals/includes/teacher_student_profile_tab_panel.html:9
-#, fuzzy
 #| msgid "created quizzes"
 msgid "Auto-graded quizzes"
 msgstr "yaradılmış quiz"
 
 #: academor/templates/portals/includes/teacher_student_profile_tab_panel.html:13
-#, fuzzy
 #| msgid "No quiz results yet."
 msgid "No auto-graded quiz results yet."
 msgstr "Hələ quiz nəticəsi yoxdur."
 
 #: academor/templates/portals/includes/teacher_student_profile_tab_panel.html:20
-#, fuzzy
 #| msgid "available quizzes"
 msgid "Reviewable quizzes"
 msgstr "mövcud quiz"
 
 #: academor/templates/portals/includes/teacher_student_profile_tab_panel.html:24
-#, fuzzy
 #| msgid "No quiz results yet."
 msgid "No reviewable quiz results yet."
 msgstr "Hələ quiz nəticəsi yoxdur."
 
 #: academor/templates/portals/includes/teacher_student_profile_tab_panel.html:31
-#, fuzzy
 #| msgid "No quiz results yet."
 msgid "No quiz results yet"
 msgstr "Hələ quiz nəticəsi yoxdur."
 
 #: academor/templates/portals/includes/teacher_student_profile_tab_panel.html:32
-#, fuzzy
 #| msgid ""
 #| "Manual quizzes: fill teacher feedback, set score, and reviewed date."
 msgid "Completed quizzes will appear here with scores and review status."
@@ -7155,19 +6968,16 @@ msgid "Pending review"
 msgstr "Yoxlama gözləyir"
 
 #: academor/templates/portals/includes/teacher_weekly_scores_panel.html:17
-#, fuzzy
 #| msgid "Bu həftə"
 msgid "Cari həftə"
 msgstr "Bu həftə"
 
 #: academor/templates/portals/includes/teacher_weekly_scores_panel.html:24
-#, fuzzy
 #| msgid "Qiymətləndirmələr"
 msgid "Qiymətləndirmə irəliləyişi"
 msgstr "Qiymətləndirmələr"
 
 #: academor/templates/portals/includes/teacher_weekly_scores_panel.html:35
-#, fuzzy
 #| msgid "Qiymətləndirmələr"
 msgid "qiymətləndirilib"
 msgstr "Qiymətləndirmələr"
@@ -7284,7 +7094,6 @@ msgid "Open in new tab"
 msgstr "Yeni tabda açın"
 
 #: academor/templates/portals/lesson_detail.html:183
-#, fuzzy
 #| msgid "Lesson video"
 msgid "Open video"
 msgstr "Video dərs"
@@ -7317,7 +7126,6 @@ msgid "Hamısını oxunmuş işarələ"
 msgstr "Hamısını oxunmuş işarələ"
 
 #: academor/templates/portals/notifications.html:36
-#, fuzzy
 #| msgid "Fənn filteri"
 msgid "Zaman filteri"
 msgstr "Fənn filteri"
@@ -7331,7 +7139,7 @@ msgid "Oxunmamış"
 msgstr "Oxunmamış"
 
 #: academor/templates/portals/notifications.html:80
-#, fuzzy, python-format
+#, python-format
 #| msgid "%(name)s — awaiting review"
 msgid "%(name)s — mock test section awaiting review (%(section)s)"
 msgstr "%(name)s — yoxlama gözləyir"
@@ -7417,7 +7225,6 @@ msgid "Cəmi seans"
 msgstr "Cəmi seans"
 
 #: academor/templates/portals/parent/attendance.html:95
-#, fuzzy
 #| msgid "Tarix filteri"
 msgid "Status filteri"
 msgstr "Tarix filteri"
@@ -7427,7 +7234,6 @@ msgid "Hələ davamiyyət qeydi yoxdur."
 msgstr "Hələ davamiyyət qeydi yoxdur."
 
 #: academor/templates/portals/parent/attendance.html:149
-#, fuzzy
 #| msgid "Bu filterlə dərs tapılmadı."
 msgid "Bu filter üçün qeyd tapılmadı."
 msgstr "Bu filterlə dərs tapılmadı."
@@ -7448,7 +7254,6 @@ msgstr "həftəlik dərs"
 
 #: academor/templates/portals/parent/dashboard.html:70
 #: academor/templates/portals/student/dashboard.html:34
-#, fuzzy
 #| msgid "Materials"
 msgid "material"
 msgstr "Materiallar"
@@ -7498,7 +7303,6 @@ msgid "Update your contact phone number."
 msgstr "Əlaqə telefon nömrənizi yeniləyin."
 
 #: academor/templates/portals/profile.html:70
-#, fuzzy
 #| msgid "Update your photo, bio, and social links."
 msgid "Update your photo and bio."
 msgstr "Şəklinizi, bio və sosial şəbəkə linklərinizi yeniləyin."
@@ -7530,7 +7334,6 @@ msgid "View notifications"
 msgstr "Bildirişlərə bax"
 
 #: academor/templates/portals/profile.html:172
-#, fuzzy
 #| msgid "Groups and schedule are assigned by Academor administration."
 msgid "Student links are managed by Academor administration."
 msgstr "Qruplar və cədvəl Academor administrasiyası tərəfindən təyin olunur."
@@ -7560,14 +7363,12 @@ msgstr "Bal detalları"
 
 #: academor/templates/portals/score_detail.html:63
 #: academor/templates/portals/teacher/quiz_result_review.html:52
-#, fuzzy
 #| msgid "Speaking part"
 msgid "Speaking tasks"
 msgstr "Danışıq bölməsi"
 
 #: academor/templates/portals/score_detail.html:69
 #: academor/templates/portals/teacher/quiz_result_review.html:43
-#, fuzzy
 #| msgid "Listening"
 msgid "Listening tasks"
 msgstr "Dinləmə"
@@ -7579,14 +7380,14 @@ msgstr "Tapşırıqlar"
 
 #: academor/templates/portals/score_detail.html:93
 #: academor/templates/portals/teacher/quiz_result_review.html:127
-#, fuzzy, python-format
+#, python-format
 #| msgid "Teacher: %(name)s"
 msgid "Task %(num)s"
 msgstr "Müəllim: %(name)s"
 
 #: academor/templates/portals/student/dashboard.html:11
 #: academor/templates/portals/teacher/dashboard.html:11
-#, fuzzy, python-format
+#, python-format
 #| msgid "#%(name)s"
 msgid "Salam, %(name)s"
 msgstr "#%(name)s"
@@ -7598,7 +7399,6 @@ msgstr "Dərslərini, tapşırıqlarını və nəticələri bir yerdən izlə"
 
 #: academor/templates/portals/student/dashboard.html:22
 #: academor/templates/portals/teacher/dashboard.html:22
-#, fuzzy
 #| msgid "Status"
 msgid "Statistika"
 msgstr "Status"
@@ -7630,13 +7430,11 @@ msgstr "Bu gün dərs yoxdur."
 #: academor/templates/portals/student/dashboard.html:111
 #: academor/templates/portals/student/lessons.html:22
 #: academor/templates/portals/teacher/lessons.html:22
-#, fuzzy
 #| msgid "Dərs filterləri"
 msgid "Dərslər"
 msgstr "Dərs filterləri"
 
 #: academor/templates/portals/student/dashboard.html:119
-#, fuzzy
 #| msgid "Quiz"
 msgid "Quizlər"
 msgstr "Quiz"
@@ -7901,7 +7699,6 @@ msgstr "Hazır olduqda «Bitir» düyməsini basın."
 #: academor/templates/portals/student/quiz_take.html:88
 #: academor/templates/portals/student/quiz_take_manual.html:148
 #: academor/templates/portals/student/quiz_take_reading.html:109
-#, fuzzy
 #| msgid "Payment completed"
 msgid "Test complete"
 msgstr "Ödəniş tamamlandı"
@@ -8080,13 +7877,11 @@ msgid "Next task"
 msgstr "Növbəti tapşırıq"
 
 #: academor/templates/portals/student/quiz_take_speaking.html:50
-#, fuzzy
 #| msgid "Speaking / conversation"
 msgid "Start recording now"
 msgstr "Danışıq / danışıq"
 
 #: academor/templates/portals/student/quiz_take_speaking.html:51
-#, fuzzy
 #| msgid "Given answers"
 msgid "Finish answer"
 msgstr "Cavablar verilir"
@@ -8109,7 +7904,6 @@ msgid "Your teacher will review your recordings and publish feedback."
 msgstr "Müəlliminiz səs yazılarınızı yoxlayacaq və rəyini paylaşacaq."
 
 #: academor/templates/portals/student/quiz_take_speaking.html:152
-#, fuzzy
 #| msgid "Complete every speaking task to finish the test."
 msgid "Complete every speaking task to finish the mock test."
 msgstr "Testi başa çatdırmaq üçün bütün danışıq tapşırıqlarını tamamlayın."
@@ -8143,7 +7937,6 @@ msgid "Track attendance across your groups and mark sessions in a few clicks."
 msgstr "Qruplarınız üzrə davamiyyəti izləyin və bir neçə kliklə qeyd edin."
 
 #: academor/templates/portals/teacher/attendance.html:14
-#, fuzzy
 #| msgid "Attendance rate"
 msgid "Attendance overview"
 msgstr "Davamiyyət faizi"
@@ -8171,7 +7964,6 @@ msgid "Needs attention"
 msgstr "Diqqət tələb edir"
 
 #: academor/templates/portals/teacher/attendance.html:47
-#, fuzzy
 #| msgid "Filter by service type"
 msgid "Filter by group"
 msgstr "Xidmət növünə görə süzün"
@@ -8182,7 +7974,6 @@ msgid "Search students..."
 msgstr "Tələbələrdə axtar…"
 
 #: academor/templates/portals/teacher/attendance.html:75
-#, fuzzy
 msgid "Sort"
 msgstr "Sırala"
 
@@ -8206,7 +7997,6 @@ msgid "Most absences"
 msgstr "Ən çox qaçırmalar"
 
 #: academor/templates/portals/teacher/attendance.html:86
-#, fuzzy
 #| msgid "View image"
 msgid "View mode"
 msgstr "Şəkilə baxın"
@@ -8242,25 +8032,21 @@ msgid "Actions"
 msgstr "Əməliyyatlar"
 
 #: academor/templates/portals/teacher/attendance.html:206
-#, fuzzy
 #| msgid "No students match your filters"
 msgid "No students match your filters"
 msgstr "Filtrlərə uyğun tələbə tapılmadı"
 
 #: academor/templates/portals/teacher/attendance.html:207
-#, fuzzy
 #| msgid "Try a different search or reset the filter."
 msgid "Try a different name or clear the filters."
 msgstr "Başqa axtarış edin və ya filtri sıfırlayın."
 
 #: academor/templates/portals/teacher/attendance.html:209
-#, fuzzy
 #| msgid "Clear filter"
 msgid "Clear filters"
 msgstr "Süzgəci sıfırla"
 
 #: academor/templates/portals/teacher/attendance.html:216
-#, fuzzy
 #| msgid "No students in your groups yet."
 msgid "No students in your groups yet"
 msgstr "Qruplarınızda hələ tələbə yoxdur."
@@ -8275,14 +8061,12 @@ msgstr ""
 "burada görünəcək."
 
 #: academor/templates/portals/teacher/attendance.html:219
-#, fuzzy
 #| msgid "View Group"
 msgid "View groups"
 msgstr "Qrupa bax"
 
 # Portal profile page
 #: academor/templates/portals/teacher/attendance_student.html:40
-#, fuzzy
 #| msgid "My profile"
 msgid "Full profile"
 msgstr "Profilim"
@@ -8300,13 +8084,11 @@ msgid "Time"
 msgstr "Vaxt"
 
 #: academor/templates/portals/teacher/attendance_student.html:137
-#, fuzzy
 #| msgid "No attendance records yet."
 msgid "No attendance records yet"
 msgstr "Hələ davamiyyət qeydi yoxdur."
 
 #: academor/templates/portals/teacher/attendance_student.html:147
-#, fuzzy
 #| msgid "No records for this filter."
 msgid "No records for this filter"
 msgstr "Bu filtr üçün qeyd yoxdur."
@@ -8406,7 +8188,6 @@ msgid "No students in this group yet."
 msgstr "Bu qrupda hələ tələbə yoxdur."
 
 #: academor/templates/portals/teacher/group_detail.html:171
-#, fuzzy
 #| msgid "Groups and schedule are assigned by Academor administration."
 msgid "Students are assigned by Academor administration."
 msgstr "Qruplar və cədvəl Academor administrasiyası tərəfindən təyin olunur."
@@ -8493,7 +8274,6 @@ msgid "No groups yet"
 msgstr "Hələ qrup yoxdur"
 
 #: academor/templates/portals/teacher/groups.html:258
-#, fuzzy
 #| msgid "Groups and schedule are assigned by Academor administration."
 msgid "Study groups are assigned by Academor administration."
 msgstr "Qruplar və cədvəl Academor administrasiyası tərəfindən təyin olunur."
@@ -8516,7 +8296,6 @@ msgid "Material type"
 msgstr "Material növü"
 
 #: academor/templates/portals/teacher/lesson_form.html:165
-#, fuzzy
 #| msgid "Current file"
 msgid "Current PDFs"
 msgstr "Cari fayl"
@@ -8527,7 +8306,6 @@ msgid "Use Delete to remove a file."
 msgstr "Faylı silmək üçün Delete düyməsindən istifadə edin."
 
 #: academor/templates/portals/teacher/lesson_form.html:171
-#, fuzzy
 #| msgid "Add one"
 msgid "Add new PDFs"
 msgstr "Birini əlavə edin"
@@ -8543,19 +8321,16 @@ msgstr ""
 "edin."
 
 #: academor/templates/portals/teacher/lesson_form.html:184
-#, fuzzy
 #| msgid "Course images"
 msgid "Current images"
 msgstr "Kurs şəkilləri"
 
 #: academor/templates/portals/teacher/lesson_form.html:190
-#, fuzzy
 #| msgid "View image"
 msgid "Add new images"
 msgstr "Şəkilə baxın"
 
 #: academor/templates/portals/teacher/lesson_form.html:191
-#, fuzzy
 #| msgid "Add materials"
 msgid "Add another image"
 msgstr "Material əlavə edin"
@@ -8567,7 +8342,6 @@ msgstr ""
 "edin."
 
 #: academor/templates/portals/teacher/lesson_form.html:203
-#, fuzzy
 #| msgid "Current file"
 msgid "Current video links"
 msgstr "Cari fayl"
@@ -8577,7 +8351,6 @@ msgid "Use Delete to remove an existing link."
 msgstr "Mövcud linki silmək üçün Delete düyməsindən istifadə edin."
 
 #: academor/templates/portals/teacher/lesson_form.html:209
-#, fuzzy
 #| msgid "Add video"
 msgid "Add new video links"
 msgstr "Video əlavə et"
@@ -8607,7 +8380,6 @@ msgid "No quizzes in this category yet."
 msgstr "Bu kateqoriyada hələ quiz yoxdur."
 
 #: academor/templates/portals/teacher/quiz_detail.html:45
-#, fuzzy
 #| msgid "View only"
 msgid "Preview only"
 msgstr "Yalnız baxış"
@@ -8621,13 +8393,11 @@ msgid "Review submission"
 msgstr "Göndərişi yoxla"
 
 #: academor/templates/portals/teacher/quiz_result_review.html:4
-#, fuzzy
 #| msgid "Review submission"
 msgid "View submission"
 msgstr "Göndərişi yoxla"
 
 #: academor/templates/portals/teacher/quiz_result_review.html:64
-#, fuzzy
 #| msgid "Auto-scored"
 msgid "Auto-check"
 msgstr "Avtomatik qiymətləndirilir"
@@ -8708,7 +8478,6 @@ msgstr "Həftəlik qiymətlərə baxın."
 
 #: academor/templates/portals/teacher/student_profile.html:4
 #: academor/templates/portals/teacher/student_profile.html:34
-#, fuzzy
 #| msgid "Parent profile"
 msgid "Şagird profili"
 msgstr "Valideyn profili"
@@ -8738,7 +8507,6 @@ msgid "gözləyir"
 msgstr "gözləyir"
 
 #: academor/templates/portals/teacher/student_profile.html:78
-#, fuzzy
 #| msgid "Quiz details"
 msgid "Quiz müddəti"
 msgstr "Quiz sualı təfərrüatları"
@@ -8772,13 +8540,11 @@ msgid "Textbook details"
 msgstr "Dərslik məlumatları"
 
 #: academor/templates/portals/teacher/textbook_form.html:62
-#, fuzzy
 #| msgid "No students in this group yet."
 msgid "Optional notes for students in this group."
 msgstr "Bu qrupda hələ tələbə yoxdur."
 
 #: academor/templates/portals/teacher/textbook_form.html:78
-#, fuzzy
 #| msgid "Current file"
 msgid "Current PDF"
 msgstr "Cari fayl"
@@ -9518,6 +9284,94 @@ msgstr "Orta"
 
 msgid "Weak"
 msgstr "Zəif"
+
+#: portals/homework lesson feature
+msgid "Homework text"
+msgstr "Ev tapşırığı mətni"
+
+#: portals/homework lesson feature
+msgid "Homework file"
+msgstr "Ev tapşırığı faylı"
+
+#: portals/homework lesson feature
+msgid "Write your homework here…"
+msgstr "Ev tapşırığınızı buraya yazın…"
+
+#: portals/homework lesson feature
+msgid "PDF, Word (.doc, .docx), or text (.txt). Max 10 MB."
+msgstr "PDF, Word (.doc, .docx) və ya mətn (.txt). Maks. 10 MB."
+
+#: portals/homework lesson feature
+msgid "Upload a PDF, Word, or text file (.pdf, .doc, .docx, .txt)."
+msgstr "PDF, Word və ya mətn faylı yükləyin (.pdf, .doc, .docx, .txt)."
+
+#: portals/homework lesson feature
+msgid "File must be 10 MB or smaller."
+msgstr "Fayl 10 MB-dan kiçik olmalıdır."
+
+#: portals/homework lesson feature
+msgid "Enter homework text or upload a PDF, Word, or text file."
+msgstr "Ev tapşırığı mətni yazın və ya PDF, Word və ya mətn faylı yükləyin."
+
+#: portals/homework lesson feature
+msgid "Homework submitted successfully."
+msgstr "Ev tapşırığı uğurla göndərildi."
+
+#: portals/homework lesson feature
+msgid "Submit homework"
+msgstr "Ev tapşırığını göndər"
+
+#: portals/homework lesson feature
+msgid "Update homework"
+msgstr "Ev tapşırığını yenilə"
+
+#: portals/homework lesson feature
+msgid "Download file"
+msgstr "Faylı endir"
+
+#: portals/homework lesson feature
+msgid "No homework submitted yet."
+msgstr "Hələ ev tapşırığı göndərilməyib."
+
+#: portals/homework lesson feature
+msgid "Student homework"
+msgstr "Şagird ev tapşırıqları"
+
+#: portals/homework lesson feature
+msgid "No homework submitted for this lesson yet."
+msgstr "Bu dərs üçün hələ ev tapşırığı yoxdur."
+
+#: portals/homework lesson feature
+msgid "Submitted %(when)s"
+msgstr "Göndərilib: %(when)s"
+
+#: portals/homework lesson feature
+msgid "Lesson homework"
+msgstr "Dərs ev tapşırığı"
+
+#: portals/homework lesson feature
+msgid "Lesson homeworks"
+msgstr "Dərs ev tapşırıqları"
+
+#: portals/homework lesson feature
+msgid "Original filename"
+msgstr "Orijinal fayl adı"
+
+#: portals/homework lesson feature
+msgid "File type"
+msgstr "Fayl növü"
+
+#: portals/homework lesson feature
+msgid "Submitted at"
+msgstr "Göndərilmə vaxtı"
+
+#: academor/templates/portals/login.html
+msgid "Assessment"
+msgstr "Qiymətləndirmə"
+
+#: academor/templates/portals/login.html
+msgid "Results"
+msgstr "Nəticələr"
 
 #~ msgid ""
 #~ "Shared classroom PDFs. Pick one or more active site services — only teachers"
@@ -11048,91 +10902,3 @@ msgstr "Zəif"
 
 #~ msgid "View quizzes for your assigned services."
 #~ msgstr "Təyin edilmiş xidmətləriniz üçün quizlərə baxın."
-
-#: portals/homework lesson feature
-msgid "Homework text"
-msgstr "Ev tapşırığı mətni"
-
-#: portals/homework lesson feature
-msgid "Homework file"
-msgstr "Ev tapşırığı faylı"
-
-#: portals/homework lesson feature
-msgid "Write your homework here…"
-msgstr "Ev tapşırığınızı buraya yazın…"
-
-#: portals/homework lesson feature
-msgid "PDF, Word (.doc, .docx), or text (.txt). Max 10 MB."
-msgstr "PDF, Word (.doc, .docx) və ya mətn (.txt). Maks. 10 MB."
-
-#: portals/homework lesson feature
-msgid "Upload a PDF, Word, or text file (.pdf, .doc, .docx, .txt)."
-msgstr "PDF, Word və ya mətn faylı yükləyin (.pdf, .doc, .docx, .txt)."
-
-#: portals/homework lesson feature
-msgid "File must be 10 MB or smaller."
-msgstr "Fayl 10 MB-dan kiçik olmalıdır."
-
-#: portals/homework lesson feature
-msgid "Enter homework text or upload a PDF, Word, or text file."
-msgstr "Ev tapşırığı mətni yazın və ya PDF, Word və ya mətn faylı yükləyin."
-
-#: portals/homework lesson feature
-msgid "Homework submitted successfully."
-msgstr "Ev tapşırığı uğurla göndərildi."
-
-#: portals/homework lesson feature
-msgid "Submit homework"
-msgstr "Ev tapşırığını göndər"
-
-#: portals/homework lesson feature
-msgid "Update homework"
-msgstr "Ev tapşırığını yenilə"
-
-#: portals/homework lesson feature
-msgid "Download file"
-msgstr "Faylı endir"
-
-#: portals/homework lesson feature
-msgid "No homework submitted yet."
-msgstr "Hələ ev tapşırığı göndərilməyib."
-
-#: portals/homework lesson feature
-msgid "Student homework"
-msgstr "Şagird ev tapşırıqları"
-
-#: portals/homework lesson feature
-msgid "No homework submitted for this lesson yet."
-msgstr "Bu dərs üçün hələ ev tapşırığı yoxdur."
-
-#: portals/homework lesson feature
-msgid "Submitted %(when)s"
-msgstr "Göndərilib: %(when)s"
-
-#: portals/homework lesson feature
-msgid "Lesson homework"
-msgstr "Dərs ev tapşırığı"
-
-#: portals/homework lesson feature
-msgid "Lesson homeworks"
-msgstr "Dərs ev tapşırıqları"
-
-#: portals/homework lesson feature
-msgid "Original filename"
-msgstr "Orijinal fayl adı"
-
-#: portals/homework lesson feature
-msgid "File type"
-msgstr "Fayl növü"
-
-#: portals/homework lesson feature
-msgid "Submitted at"
-msgstr "Göndərilmə vaxtı"
-
-#: academor/templates/portals/login.html
-msgid "Assessment"
-msgstr "Qiymətləndirmə"
-
-#: academor/templates/portals/login.html
-msgid "Results"
-msgstr "Nəticələr"

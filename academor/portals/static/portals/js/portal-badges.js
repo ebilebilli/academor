@@ -37,6 +37,9 @@
     if (snapshot && payload.unread != null) {
       snapshot.setAttribute("data-unread-notifications", String(payload.unread || 0));
     }
+    if (snapshot && payload.pending_reviews != null) {
+      snapshot.setAttribute("data-pending-reviews", String(payload.pending_reviews || 0));
+    }
   }
 
   function pollBadges() {

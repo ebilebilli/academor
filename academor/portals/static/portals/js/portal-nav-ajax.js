@@ -35,7 +35,7 @@
 
   var SKIP_PATH_RE = /\/portal\/(login|logout)\/?$|\/portal\/student\/quizzes\/\d+\/(take|manual|reading|speaking)\/?$|\/portal\/student\/(?:ielts-mock|mock\/)(\/|$)|\/portal\/customer\/quizzes\/\d+\/(manual|reading|speaking)\/?$|\/portal\/customer\/ielts-mock(\/|$)/i;
   var PREFETCH_SKIP_PATH_RE = /\/portal\/student\/(scores|notifications)(\/|$)|\/portal\/student\/quizzes(\/category\/|\/|$)|\/portal\/parent\/(scores|notifications)(\/|$)/i;
-  var CORE_SCRIPTS = /bootstrap\.bundle|\/main\.js|portal-nav-ajax\.js|portal-init\.js/i;
+  var CORE_SCRIPTS = /bootstrap\.bundle|\/main\.js|portal-nav-ajax\.js|portal-init\.js|portal-badges\.js|portal-lottie\.js/i;
   var FRAGMENT_HEADERS = {
     Accept: "text/html",
     "X-Requested-With": "XMLHttpRequest",
@@ -495,10 +495,26 @@
       return;
     }
 
-    var count = Math.max(0, parseInt(snapshot.getAttribute("data-unread-notifications"), 10) || 0);
+    var unread = Math.max(0, parseInt(snapshot.getAttribute("data-unread-notifications"), 10) || 0);
+    var pending = Math.max(0, parseInt(snapshot.getAttribute("data-pending-reviews"), 10) || 0);
+    if (typeof window.portalSyncBadges === "function") {
+      window.portalSyncBadges({ unread: unread, pending_reviews: pending });
+      return;
+    }
+
     document.querySelectorAll("[data-portal-unread-badge]").forEach(function (badge) {
-      if (count > 0) {
-        badge.textContent = count;
+      if (unread > 0) {
+        badge.textContent = unread;
+        badge.hidden = false;
+        badge.classList.remove("d-none");
+      } else {
+        badge.hidden = true;
+        badge.classList.add("d-none");
+      }
+    });
+    document.querySelectorAll("[data-portal-pending-review-badge]").forEach(function (badge) {
+      if (pending > 0) {
+        badge.textContent = pending;
         badge.hidden = false;
         badge.classList.remove("d-none");
       } else {

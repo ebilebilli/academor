@@ -1,5 +1,7 @@
 """Per-student quiz and mock-test access controlled by teachers."""
 
+import logging
+
 from django.db import transaction
 
 from portals.models import Quiz, QuizAssignment, StudentMockAccess
@@ -13,6 +15,7 @@ from portals.utils.student_courses import (
 from portals.utils.teacher_access import get_teacher_student
 
 IELTS_SERVICE = 'ielts'
+logger = logging.getLogger(__name__)
 
 
 def student_has_active_quiz_assignment(student_id, quiz_id):
@@ -89,7 +92,12 @@ def student_has_active_mock_access_for_program(student_id, exam_program):
             is_active=True,
         ).exists()
     except Exception:
-        return True
+        logger.exception(
+            'StudentMockAccess lookup failed for student=%s program=%s',
+            student_id,
+            exam_program,
+        )
+        return False
 
 
 def student_has_active_mock_access(student_id):
@@ -115,7 +123,12 @@ def get_student_mock_access_state(student_id, exam_program):
             exam_program=exam_program,
         ).first()
     except Exception:
-        return {'is_active': True, 'exists': False}
+        logger.exception(
+            'StudentMockAccess state lookup failed for student=%s program=%s',
+            student_id,
+            exam_program,
+        )
+        return {'is_active': False, 'exists': False}
     if not row:
         return {'is_active': False, 'exists': False}
     return {'is_active': bool(row.is_active), 'exists': True}

@@ -356,6 +356,41 @@ class PortalNotificationTests(TestCase):
         )
         self.assertFalse(PortalNotification.objects.filter(pk=note.pk).exists())
 
+    def test_teacher_mark_all_read_clears_all_bell_kinds(self):
+        from portals.models import IeltsMockTestAttempt
+        from portals.utils.notifications import (
+            get_teacher_portal_bell_count,
+            mark_all_notifications_read,
+        )
+
+        result = QuizResult.objects.create(
+            student=self.student,
+            quiz=self.quiz,
+            given_answers={str(self.q1.pk): 0},
+            total_score=1,
+        )
+        attempt = IeltsMockTestAttempt.objects.create(
+            student=self.student,
+            exam_program='ielts',
+            status=IeltsMockTestAttempt.Status.COMPLETED,
+            reading_quiz=self.quiz,
+        )
+        PortalNotification.objects.create(
+            teacher=self.teacher,
+            quiz_result=result,
+            kind=PortalNotification.Kind.RESULT_PUBLISHED,
+            is_read=False,
+        )
+        PortalNotification.objects.create(
+            teacher=self.teacher,
+            ielts_mock_test=attempt,
+            kind=PortalNotification.Kind.MOCK_TEST_COMPLETED,
+            is_read=False,
+        )
+        self.assertEqual(get_teacher_portal_bell_count(self.teacher.pk), 2)
+        mark_all_notifications_read(teacher_id=self.teacher.pk)
+        self.assertEqual(get_teacher_portal_bell_count(self.teacher.pk), 0)
+
     def test_score_detail_marks_notification_read(self):
         result = QuizResult.objects.create(
             student=self.student,

@@ -870,6 +870,14 @@ def mark_all_notifications_read(
     student_id: int | None = None,
     customer_id: int | None = None,
 ) -> int:
+    if teacher_id:
+        return (
+            PortalNotification.objects.filter(
+                teacher_id=teacher_id,
+                is_read=False,
+                kind__in=TEACHER_PORTAL_BELL_KINDS,
+            ).update(is_read=True)
+        )
     qs = _notification_queryset(
         teacher_id=teacher_id,
         parent_id=parent_id,

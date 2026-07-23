@@ -148,6 +148,19 @@ def site_seo_context(request):
 
 
 def site_footer_context(request):
+    if request.path.startswith('/portal/') and request.path.rstrip('/') != '/portal/login':
+        return {
+            'footer_contact': None,
+            'footer_background_image': None,
+            'nav_courses': [],
+            'nav_mock_tests': [],
+            'nav_abroad_items': [],
+            'nav_url_name': '',
+            'nav_course_slug': '',
+            'nav_mock_test_slug': '',
+            'nav_abroad_slug': '',
+            'nav_university_slug': '',
+        }
     lang = _request_lang(request)
     contact = get_contact(lang)
     rm = getattr(request, 'resolver_match', None)
