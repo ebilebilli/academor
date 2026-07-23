@@ -10,12 +10,13 @@
   <link rel="preload" href="{% static 'portals/fonts/inter/inter-400.woff2' %}" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{% static 'portals/vendors/tabler-icons/fonts/tabler-icons.woff2' %}" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{% static 'portals/vendors/bootstrap-icons/fonts/bootstrap-icons.woff2' %}" as="font" type="font/woff2" crossorigin>
-  <!-- Match main site typography (Host Grotesk) -->
+  <!-- Match main site typography (Host Grotesk) — async, non-blocking (text font, not icons) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://unpkg.com" crossorigin>
   <link rel="modulepreload" href="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <!-- Self-hosted fonts & icons -->
   <link rel="stylesheet" href="{% static 'portals/css/inter-font.css' %}">
   <!-- Design tokens (must load first) -->
@@ -24,9 +25,8 @@
   <link rel="stylesheet" href="{% static 'portals/css/bootstrap.min.css' %}">
   <!-- Tabler Icons (portal subset — sidebar, dashboards) -->
   <link rel="stylesheet" href="{% static 'portals/css/portal-tabler-icons.css' %}?v=20260709a">
-  <!-- Bootstrap Icons (legacy components — async, non-blocking) -->
-  <link rel="preload" href="{% static 'portals/vendors/bootstrap-icons/bootstrap-icons.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="{% static 'portals/vendors/bootstrap-icons/bootstrap-icons.css' %}"></noscript>
+  <!-- Bootstrap Icons (used across empty states, search, etc. — loaded blocking so icons render on first paint instead of popping in late) -->
+  <link rel="stylesheet" href="{% static 'portals/vendors/bootstrap-icons/bootstrap-icons.css' %}">
   <!-- Base portal styles (full legacy sheet — overridden by layers below) -->
   <link rel="stylesheet" href="{% static 'portals/css/style.css' %}?v=20260712a">
   <!-- Role-specific redesign layer -->
