@@ -38,8 +38,36 @@
   <link rel="stylesheet" href="{% static 'portals/css/weekly-scores.css' %}">
   {% endif %}
   {% block extra_css %}{% endblock %}
+  <style>
+    #page-loader {
+      position: fixed;
+      inset: 0;
+      background: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 99999;
+      transition: opacity 0.25s ease;
+    }
+    #page-loader .spinner {
+      width: 46px;
+      height: 46px;
+      border: 4px solid #e5e7eb;
+      border-top: 4px solid #007bff;
+      border-radius: 50%;
+      animation: page-loader-spin 0.7s linear infinite;
+    }
+    @keyframes page-loader-spin {
+      to { transform: rotate(360deg); }
+    }
+    #page-loader.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
 </head>
 <body data-portal-role="{{ portal_role|default:'' }}"{% if portal_is_authenticated %} data-portal-badges-url="{% url 'portals:portal-badges' %}"{% endif %}>
+  <div id="page-loader"><div class="spinner"></div></div>
   <div class="admin-shell">
     <div class="sidebar-backdrop" data-sidebar-close></div>
     {% include "portals/includes/sidebar.html" %}
@@ -85,5 +113,14 @@
   {% if portal_role == 'teacher' %}
   <script defer src="{% static 'portals/js/weekly-scores.js' %}?v=20260704c" data-portal-page-script="true"></script>
   {% endif %}
+  <script>
+  window.addEventListener("load", function () {
+    var loader = document.getElementById("page-loader");
+    if (loader) {
+      loader.classList.add("hidden");
+      setTimeout(function () { loader.remove(); }, 300);
+    }
+  });
+  </script>
 </body>
 </html>
