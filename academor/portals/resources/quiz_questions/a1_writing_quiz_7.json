@@ -1,0 +1,399 @@
+{
+  "level": "A1",
+  "quiz": 7,
+  "title": "A1 Writing Quiz 7 — Food, Shopping & Travel",
+  "service": "general_english",
+  "category_name": "A1",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Word order",
+      "question": "Choose the correct word order.",
+      "options": [
+        "Vegetables fresh I buy market at the.",
+        "I buy fresh vegetables at the market.",
+        "I fresh vegetables buy at the market.",
+        "Buy I fresh vegetables at the market."
+      ],
+      "answer": 1,
+      "explanation": "Subject + verb + object + place: 'I buy fresh vegetables at the market.'"
+    },
+    {
+      "id": 2,
+      "topic": "Word order",
+      "question": "Choose the correct word order.",
+      "options": [
+        "This shop sells cheap clothes.",
+        "This shop cheap clothes sells.",
+        "Sells this shop cheap clothes.",
+        "Cheap clothes this shop sells."
+      ],
+      "answer": 0,
+      "explanation": "Subject + verb + object: 'This shop sells cheap clothes.'"
+    },
+    {
+      "id": 3,
+      "topic": "Word order",
+      "question": "Choose the correct word order.",
+      "options": [
+        "We a taxi to airport the took.",
+        "Took we a taxi to the airport.",
+        "We took a taxi to the airport.",
+        "A taxi to the airport we took."
+      ],
+      "answer": 2,
+      "explanation": "Subject + verb + object + place: 'We took a taxi to the airport.'"
+    },
+    {
+      "id": 4,
+      "topic": "Word order (questions)",
+      "question": "Choose the correct question word order.",
+      "options": [
+        "How much this cost does bag?",
+        "How much does this bag cost?",
+        "Does this bag how much cost?",
+        "This bag does how much cost?"
+      ],
+      "answer": 1,
+      "explanation": "Wh-phrase + auxiliary + subject + verb: 'How much does this bag cost?'"
+    },
+    {
+      "id": 5,
+      "topic": "Capitalization",
+      "question": "Which sentence uses capital letters correctly?",
+      "options": [
+        "i visited istanbul last summer.",
+        "I visited Istanbul last summer.",
+        "I Visited istanbul Last summer.",
+        "i visited Istanbul last Summer."
+      ],
+      "answer": 1,
+      "explanation": "City names (Istanbul) and the pronoun 'I' are always capitalized."
+    },
+    {
+      "id": 6,
+      "topic": "Capitalization",
+      "question": "Choose the correctly capitalized sentence.",
+      "options": [
+        "we shop at bravo supermarket.",
+        "We shop at Bravo Supermarket.",
+        "We Shop at bravo supermarket.",
+        "we shop At Bravo Supermarket."
+      ],
+      "answer": 1,
+      "explanation": "Store names (Bravo Supermarket) are proper nouns and must be capitalized."
+    },
+    {
+      "id": 7,
+      "topic": "Punctuation (full stop)",
+      "question": "Which sentence has correct punctuation?",
+      "options": [
+        "I need some bread",
+        "I need some bread.",
+        "I need some bread,",
+        "I need some bread!."
+      ],
+      "answer": 1,
+      "explanation": "A simple statement ends with a full stop: 'I need some bread.'"
+    },
+    {
+      "id": 8,
+      "topic": "Punctuation (question mark)",
+      "question": "Which sentence has correct punctuation?",
+      "options": [
+        "Where is the bus stop.",
+        "Where is the bus stop",
+        "Where is the bus stop?",
+        "Where is the bus stop!"
+      ],
+      "answer": 2,
+      "explanation": "A question ends with a question mark: 'Where is the bus stop?'"
+    },
+    {
+      "id": 9,
+      "topic": "Punctuation (comma in a list)",
+      "question": "Choose the sentence with correct commas.",
+      "options": [
+        "I want rice chicken and salad.",
+        "I want rice, chicken and salad.",
+        "I want, rice chicken, and salad.",
+        "I want rice, chicken, and, salad."
+      ],
+      "answer": 1,
+      "explanation": "Use commas to separate items in a list: 'rice, chicken and salad.'"
+    },
+    {
+      "id": 10,
+      "topic": "Punctuation (apostrophe)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Cant find my ticket.",
+        "Can't find my ticket.",
+        "Ca'nt find my ticket.",
+        "Cant' find my ticket."
+      ],
+      "answer": 1,
+      "explanation": "'Can't' is the contraction of 'cannot'."
+    },
+    {
+      "id": 11,
+      "topic": "Sentence completion",
+      "question": "This shop ___ fresh bread every day.",
+      "options": [
+        "sell",
+        "sells",
+        "selling",
+        "sold"
+      ],
+      "answer": 1,
+      "explanation": "Present simple with 'shop' (it) takes -s: 'sells'."
+    },
+    {
+      "id": 12,
+      "topic": "Sentence completion",
+      "question": "We ___ to Georgia last summer.",
+      "options": [
+        "travel",
+        "travels",
+        "travelled",
+        "travelling"
+      ],
+      "answer": 2,
+      "explanation": "'Last summer' signals past simple; regular past of 'travel' is 'travelled'."
+    },
+    {
+      "id": 13,
+      "topic": "Sentence completion",
+      "question": "Hurry up! The train ___ now.",
+      "options": [
+        "leave",
+        "leaves",
+        "is leaving",
+        "left"
+      ],
+      "answer": 2,
+      "explanation": "'Now' signals an action in progress → present continuous: 'is leaving'."
+    },
+    {
+      "id": 14,
+      "topic": "Connectors (and)",
+      "question": "Choose the sentence that correctly uses 'and'.",
+      "options": [
+        "I buy fruit and I buy vegetables.",
+        "I buy fruit and but vegetables.",
+        "I and buy fruit vegetables.",
+        "I buy fruit, and, vegetables."
+      ],
+      "answer": 0,
+      "explanation": "'And' joins two similar actions: 'I buy fruit and I buy vegetables.'"
+    },
+    {
+      "id": 15,
+      "topic": "Connectors (but)",
+      "question": "Choose the sentence that correctly uses 'but'.",
+      "options": [
+        "The hotel is small but clean.",
+        "The hotel is small and but clean.",
+        "But the hotel is small clean.",
+        "The hotel, clean but is small."
+      ],
+      "answer": 0,
+      "explanation": "'But' shows contrast: 'The hotel is small but clean.'"
+    },
+    {
+      "id": 16,
+      "topic": "Connectors (because)",
+      "question": "Choose the sentence that correctly uses 'because'.",
+      "options": [
+        "I missed the bus because I woke up late.",
+        "Because I missed the bus I woke up late.",
+        "I missed the bus woke up late because.",
+        "Because woke up late, missed I the bus."
+      ],
+      "answer": 0,
+      "explanation": "'Because' introduces a reason: 'I missed the bus because I woke up late.'"
+    },
+    {
+      "id": 17,
+      "topic": "Prepositions in sentences",
+      "question": "The supermarket is ___ my house.",
+      "options": [
+        "next to",
+        "on",
+        "at",
+        "for"
+      ],
+      "answer": 0,
+      "explanation": "'Next to' shows position beside something: 'next to my house.'"
+    },
+    {
+      "id": 18,
+      "topic": "Prepositions in sentences",
+      "question": "Our flight leaves ___ 6 a.m.",
+      "options": [
+        "in",
+        "on",
+        "at",
+        "to"
+      ],
+      "answer": 2,
+      "explanation": "'At' is used with clock times: 'at 6 a.m.'"
+    },
+    {
+      "id": 19,
+      "topic": "Article usage in a sentence",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I need a umbrella today.",
+        "I need an umbrella today.",
+        "I need umbrella today.",
+        "I need the a umbrella today."
+      ],
+      "answer": 1,
+      "explanation": "'Umbrella' starts with a vowel sound /ʌ/ → 'an umbrella.'"
+    },
+    {
+      "id": 20,
+      "topic": "Simple email/letter opening",
+      "question": "Which is the correct way to start a message asking a friend to go shopping?",
+      "options": [
+        "Dear Sir/Madam,",
+        "Hi Nigar,",
+        "To Whom It May Concern,",
+        "Yours faithfully,"
+      ],
+      "answer": 1,
+      "explanation": "'Hi [Name],' is the correct informal greeting for a friend."
+    },
+    {
+      "id": 21,
+      "topic": "Simple email/letter closing",
+      "question": "Which is the correct way to end a message to a friend about a trip?",
+      "options": [
+        "Yours faithfully,",
+        "See you soon,",
+        "Regards,",
+        "Sincerely,"
+      ],
+      "answer": 1,
+      "explanation": "'See you soon,' is a friendly, informal closing suitable for a friend."
+    },
+    {
+      "id": 22,
+      "topic": "Formal letter opening",
+      "question": "Which is the correct way to start a formal email to a hotel to book a room?",
+      "options": [
+        "Hi guys,",
+        "Dear Sir/Madam,",
+        "Hey,",
+        "Dear friend,"
+      ],
+      "answer": 1,
+      "explanation": "'Dear Sir/Madam,' is the standard formal opening when the recipient's name is unknown."
+    },
+    {
+      "id": 23,
+      "topic": "Sentence combining",
+      "question": "Which sentence correctly combines 'I like fish.' and 'I like rice.'?",
+      "options": [
+        "I like fish but rice.",
+        "I like fish and rice.",
+        "I like fish, I like rice.",
+        "I fish and rice like."
+      ],
+      "answer": 1,
+      "explanation": "Two related likes can be joined simply: 'I like fish and rice.'"
+    },
+    {
+      "id": 24,
+      "topic": "Word order (adjectives)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "She bought a cotton blue dress.",
+        "She bought a blue cotton dress.",
+        "She bought blue a cotton dress.",
+        "She bought a dress blue cotton."
+      ],
+      "answer": 1,
+      "explanation": "Color usually comes before material: 'a blue cotton dress.'"
+    },
+    {
+      "id": 25,
+      "topic": "Punctuation (exclamation)",
+      "question": "Which sentence correctly shows excitement about a trip?",
+      "options": [
+        "We are going to Paris.",
+        "We are going to Paris!",
+        "We are going to Paris,",
+        "We are going to Paris?"
+      ],
+      "answer": 1,
+      "explanation": "An exclamation mark shows strong excitement: 'We are going to Paris!'"
+    },
+    {
+      "id": 26,
+      "topic": "Sentence completion (there is/are)",
+      "question": "___ a taxi outside the hotel.",
+      "options": [
+        "There is",
+        "There are",
+        "It is",
+        "They are"
+      ],
+      "answer": 0,
+      "explanation": "'A taxi' is singular → 'There is'."
+    },
+    {
+      "id": 27,
+      "topic": "Sentence completion (possessives)",
+      "question": "This is ___ suitcase. (belongs to my brother)",
+      "options": [
+        "brother",
+        "brothers",
+        "brother's",
+        "brothers'"
+      ],
+      "answer": 2,
+      "explanation": "Singular possessive: add apostrophe + s → \"brother's suitcase\"."
+    },
+    {
+      "id": 28,
+      "topic": "Sequencing words",
+      "question": "Choose the sentence that correctly uses sequencing words.",
+      "options": [
+        "First, I pack my bag. Then, I go to the airport.",
+        "First I pack bag then go airport then.",
+        "Go to the airport first then pack I bag.",
+        "Then first, I pack the go bag airport."
+      ],
+      "answer": 0,
+      "explanation": "Sequencing words like 'First,' and 'Then,' organize steps clearly with commas."
+    },
+    {
+      "id": 29,
+      "topic": "Sentence completion (subject-verb agreement)",
+      "question": "The apples and the bananas ___ fresh.",
+      "options": [
+        "is",
+        "am",
+        "are",
+        "be"
+      ],
+      "answer": 2,
+      "explanation": "Compound subject ('The apples and the bananas') is plural → 'are'."
+    },
+    {
+      "id": 30,
+      "topic": "Sentence completion (question formation)",
+      "question": "Choose the correct question.",
+      "options": [
+        "Which platform the train from does leave?",
+        "Which platform does the train leave from?",
+        "Which platform the train does leave from?",
+        "Does which platform the train leave from?"
+      ],
+      "answer": 1,
+      "explanation": "Wh-phrase + auxiliary + subject + verb + preposition: 'Which platform does the train leave from?'"
+    }
+  ]
+}

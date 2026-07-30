@@ -1,0 +1,399 @@
+{
+  "level": "A1",
+  "quiz": 9,
+  "title": "A1 Writing Quiz 9 — School, Family & Free Time",
+  "service": "general_english",
+  "category_name": "A1",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Word order",
+      "question": "Choose the correct word order.",
+      "options": [
+        "Every morning breakfast I eat.",
+        "I eat breakfast every morning.",
+        "I breakfast eat every morning.",
+        "Eat I breakfast every morning."
+      ],
+      "answer": 1,
+      "explanation": "Subject + verb + object + time: 'I eat breakfast every morning.'"
+    },
+    {
+      "id": 2,
+      "topic": "Word order",
+      "question": "Choose the correct word order.",
+      "options": [
+        "My sister studies at a university.",
+        "My sister at a university studies.",
+        "Studies my sister at a university.",
+        "At a university my sister studies."
+      ],
+      "answer": 0,
+      "explanation": "Subject + verb + place: 'My sister studies at a university.'"
+    },
+    {
+      "id": 3,
+      "topic": "Word order",
+      "question": "Choose the correct word order.",
+      "options": [
+        "He a new bicycle has.",
+        "Has he a new bicycle.",
+        "He has a new bicycle.",
+        "A new bicycle he has."
+      ],
+      "answer": 2,
+      "explanation": "Subject + verb + object: 'He has a new bicycle.'"
+    },
+    {
+      "id": 4,
+      "topic": "Word order (questions)",
+      "question": "Choose the correct question word order.",
+      "options": [
+        "Where you live do?",
+        "Where do you live?",
+        "Do where you live?",
+        "You where do live?"
+      ],
+      "answer": 1,
+      "explanation": "Wh-word + auxiliary + subject + verb: 'Where do you live?'"
+    },
+    {
+      "id": 5,
+      "topic": "Capitalization",
+      "question": "Which sentence uses capital letters correctly?",
+      "options": [
+        "i study english on mondays.",
+        "I study English on Mondays.",
+        "I Study english On mondays.",
+        "i study English on Mondays."
+      ],
+      "answer": 1,
+      "explanation": "Languages (English), days of the week (Mondays), and 'I' are always capitalized."
+    },
+    {
+      "id": 6,
+      "topic": "Capitalization",
+      "question": "Choose the correctly capitalized sentence.",
+      "options": [
+        "my family lives in ganja, azerbaijan.",
+        "My family lives in Ganja, Azerbaijan.",
+        "My Family lives in ganja, Azerbaijan.",
+        "my family lives in Ganja, azerbaijan."
+      ],
+      "answer": 1,
+      "explanation": "City names (Ganja) and country names (Azerbaijan) are proper nouns and must be capitalized."
+    },
+    {
+      "id": 7,
+      "topic": "Punctuation (full stop)",
+      "question": "Which sentence has correct punctuation?",
+      "options": [
+        "I have two brothers",
+        "I have two brothers.",
+        "I have two brothers,",
+        "I have two brothers!."
+      ],
+      "answer": 1,
+      "explanation": "A simple statement ends with a full stop: 'I have two brothers.'"
+    },
+    {
+      "id": 8,
+      "topic": "Punctuation (question mark)",
+      "question": "Which sentence has correct punctuation?",
+      "options": [
+        "Do you have any pets.",
+        "Do you have any pets",
+        "Do you have any pets?",
+        "Do you have any pets!"
+      ],
+      "answer": 2,
+      "explanation": "A question ends with a question mark: 'Do you have any pets?'"
+    },
+    {
+      "id": 9,
+      "topic": "Punctuation (comma in a list)",
+      "question": "Choose the sentence with correct commas.",
+      "options": [
+        "I like maths science and art.",
+        "I like maths, science and art.",
+        "I like, maths science, and art.",
+        "I like maths, science, and, art."
+      ],
+      "answer": 1,
+      "explanation": "Use commas to separate items in a list: 'maths, science and art.'"
+    },
+    {
+      "id": 10,
+      "topic": "Punctuation (apostrophe)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Its my favorite subject.",
+        "It's my favorite subject.",
+        "It is'nt my favorite subject.",
+        "Its' my favorite subject."
+      ],
+      "answer": 1,
+      "explanation": "'It's' is the contraction of 'It is'."
+    },
+    {
+      "id": 11,
+      "topic": "Sentence completion",
+      "question": "My teacher ___ us homework every day.",
+      "options": [
+        "give",
+        "gives",
+        "giving",
+        "gave"
+      ],
+      "answer": 1,
+      "explanation": "Present simple with 'teacher' (he/she) takes -s: 'gives'."
+    },
+    {
+      "id": 12,
+      "topic": "Sentence completion",
+      "question": "I ___ at my grandmother's house last weekend.",
+      "options": [
+        "am",
+        "is",
+        "was",
+        "were"
+      ],
+      "answer": 2,
+      "explanation": "'Last weekend' signals past simple; past of 'am' is 'was'."
+    },
+    {
+      "id": 13,
+      "topic": "Sentence completion",
+      "question": "Listen! The children ___ in the garden.",
+      "options": [
+        "play",
+        "plays",
+        "are playing",
+        "played"
+      ],
+      "answer": 2,
+      "explanation": "'Listen!' signals an action happening now → present continuous: 'are playing'."
+    },
+    {
+      "id": 14,
+      "topic": "Connectors (and)",
+      "question": "Choose the sentence that correctly uses 'and'.",
+      "options": [
+        "I like reading and I like drawing.",
+        "I like reading and but drawing.",
+        "I and like reading drawing.",
+        "I like reading, and, drawing."
+      ],
+      "answer": 0,
+      "explanation": "'And' joins two similar activities: 'I like reading and I like drawing.'"
+    },
+    {
+      "id": 15,
+      "topic": "Connectors (but)",
+      "question": "Choose the sentence that correctly uses 'but'.",
+      "options": [
+        "My brother is tall but thin.",
+        "My brother is tall and but thin.",
+        "But my brother is tall thin.",
+        "My brother, thin but is tall."
+      ],
+      "answer": 0,
+      "explanation": "'But' shows contrast: 'My brother is tall but thin.'"
+    },
+    {
+      "id": 16,
+      "topic": "Connectors (so)",
+      "question": "Choose the sentence that correctly uses 'so'.",
+      "options": [
+        "I was tired, so I went to bed early.",
+        "So I was tired I went to bed early.",
+        "I was tired I went so to bed early.",
+        "So, went I to bed tired early."
+      ],
+      "answer": 0,
+      "explanation": "'So' introduces a result: 'I was tired, so I went to bed early.'"
+    },
+    {
+      "id": 17,
+      "topic": "Prepositions in sentences",
+      "question": "The library is ___ the school and the park.",
+      "options": [
+        "between",
+        "on",
+        "at",
+        "for"
+      ],
+      "answer": 0,
+      "explanation": "'Between' describes a position among two things: 'between the school and the park.'"
+    },
+    {
+      "id": 18,
+      "topic": "Prepositions in sentences",
+      "question": "We usually do our homework ___ the evening.",
+      "options": [
+        "in",
+        "on",
+        "at",
+        "to"
+      ],
+      "answer": 0,
+      "explanation": "'In' is used with parts of the day: 'in the evening.'"
+    },
+    {
+      "id": 19,
+      "topic": "Article usage in a sentence",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I need a umbrella.",
+        "I need an umbrella.",
+        "I need umbrella.",
+        "I need the a umbrella."
+      ],
+      "answer": 1,
+      "explanation": "'Umbrella' starts with a vowel sound /ʌ/ → 'an umbrella.'"
+    },
+    {
+      "id": 20,
+      "topic": "Simple email/letter opening",
+      "question": "Which is the correct way to start a message telling a friend about your new pet?",
+      "options": [
+        "Dear Sir/Madam,",
+        "Hi Nigar,",
+        "To Whom It May Concern,",
+        "Yours faithfully,"
+      ],
+      "answer": 1,
+      "explanation": "'Hi [Name],' is the correct informal greeting for a friend."
+    },
+    {
+      "id": 21,
+      "topic": "Simple email/letter closing",
+      "question": "Which is the correct way to end a message inviting a friend to your birthday party?",
+      "options": [
+        "Yours faithfully,",
+        "See you soon, Tofiq",
+        "Regards,",
+        "Sincerely,"
+      ],
+      "answer": 1,
+      "explanation": "'See you soon, [Name]' is a friendly, informal closing suitable for a friend."
+    },
+    {
+      "id": 22,
+      "topic": "Formal letter opening",
+      "question": "Which is the correct way to start a formal email requesting information from a school?",
+      "options": [
+        "Hi teach,",
+        "Dear Mrs. Guliyeva,",
+        "Hey,",
+        "Dear friend,"
+      ],
+      "answer": 1,
+      "explanation": "'Dear Mrs./Mr. [Surname],' is a respectful, semi-formal opening when the name is known."
+    },
+    {
+      "id": 23,
+      "topic": "Sentence combining",
+      "question": "Which sentence correctly combines 'I like football.' and 'I like basketball.'?",
+      "options": [
+        "I like football but basketball.",
+        "I like football and basketball.",
+        "I like football, I like basketball.",
+        "I football and basketball like."
+      ],
+      "answer": 1,
+      "explanation": "Two related likes can be joined simply: 'I like football and basketball.'"
+    },
+    {
+      "id": 24,
+      "topic": "Word order (adjectives)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "She has a leather black bag.",
+        "She has a black leather bag.",
+        "She has black a leather bag.",
+        "She has a bag black leather."
+      ],
+      "answer": 1,
+      "explanation": "Opinion/color adjectives come before material: 'a black leather bag.'"
+    },
+    {
+      "id": 25,
+      "topic": "Punctuation (exclamation)",
+      "question": "Which sentence correctly shows excitement?",
+      "options": [
+        "We won the school competition.",
+        "We won the school competition!",
+        "We won the school competition,",
+        "We won the school competition?"
+      ],
+      "answer": 1,
+      "explanation": "An exclamation mark shows strong feeling of excitement: 'We won the school competition!'"
+    },
+    {
+      "id": 26,
+      "topic": "Sentence completion (there is/are)",
+      "question": "___ many students in my class.",
+      "options": [
+        "There is",
+        "There are",
+        "It is",
+        "They are"
+      ],
+      "answer": 1,
+      "explanation": "'Many students' is plural → 'There are'."
+    },
+    {
+      "id": 27,
+      "topic": "Sentence completion (possessives)",
+      "question": "This is ___ notebook. (belongs to my classmate)",
+      "options": [
+        "classmate",
+        "classmates",
+        "classmate's",
+        "classmates'"
+      ],
+      "answer": 2,
+      "explanation": "Singular possessive: add apostrophe + s → \"classmate's notebook\"."
+    },
+    {
+      "id": 28,
+      "topic": "Sequencing words",
+      "question": "Choose the sentence that correctly uses sequencing words.",
+      "options": [
+        "First, I do my homework. Then, I watch TV.",
+        "First I do homework then watch TV.",
+        "Watch TV first then do I homework.",
+        "Then first, I do the watch homework TV."
+      ],
+      "answer": 0,
+      "explanation": "Sequencing words like 'First,' and 'Then,' organize steps clearly with commas."
+    },
+    {
+      "id": 29,
+      "topic": "Sentence completion (subject-verb agreement)",
+      "question": "My parents and my brother ___ at home.",
+      "options": [
+        "is",
+        "am",
+        "are",
+        "be"
+      ],
+      "answer": 2,
+      "explanation": "Compound subject ('My parents and my brother') is plural → 'are'."
+    },
+    {
+      "id": 30,
+      "topic": "Sentence completion (question formation)",
+      "question": "Choose the correct question.",
+      "options": [
+        "What subject you like do?",
+        "What subject do you like?",
+        "What subject you do like?",
+        "Do what subject you like?"
+      ],
+      "answer": 1,
+      "explanation": "Wh-phrase + auxiliary + subject + verb: 'What subject do you like?'"
+    }
+  ]
+}

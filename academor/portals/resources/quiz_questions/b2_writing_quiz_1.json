@@ -1,0 +1,399 @@
+{
+  "level": "B2",
+  "quiz": 1,
+  "title": "B2 Writing Quiz 1 — Environment & Climate Change",
+  "service": "general_english",
+  "category_name": "B2",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Mixed conditionals",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "If we had invested in renewable energy earlier, we wouldn't be facing this crisis now.",
+        "If we invested in renewable energy earlier, we wouldn't be facing this crisis now.",
+        "If we had invested in renewable energy earlier, we wouldn't have faced this crisis now.",
+        "If we had invested in renewable energy earlier, we won't face this crisis now."
+      ],
+      "answer": 0,
+      "explanation": "Mixed conditional: If + past perfect (past condition), would + base verb (present result): 'If we had invested..., we wouldn't be facing... now.'"
+    },
+    {
+      "id": 2,
+      "topic": "Conditionals without if (unless)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The situation will get worse unless governments won't take action now.",
+        "The situation will get worse unless governments take action now.",
+        "The situation will get worse unless that governments take action now.",
+        "The situation will get worse without governments take action now."
+      ],
+      "answer": 1,
+      "explanation": "'Unless' means 'if...not' and is followed by an affirmative clause: 'unless governments take action now.'"
+    },
+    {
+      "id": 3,
+      "topic": "Passive voice (present perfect)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Several new environmental laws has been passed this year.",
+        "Several new environmental laws have passed this year.",
+        "Several new environmental laws have been passed this year.",
+        "Several new environmental laws have being passed this year."
+      ],
+      "answer": 2,
+      "explanation": "Present perfect passive: have/has been + past participle: 'have been passed this year.'"
+    },
+    {
+      "id": 4,
+      "topic": "Passive voice (modal passive)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "This pollution problem should solved immediately.",
+        "This pollution problem should being solved immediately.",
+        "This pollution problem should be solve immediately.",
+        "This pollution problem should be solved immediately."
+      ],
+      "answer": 3,
+      "explanation": "Modal passive: modal + be + past participle: 'should be solved immediately.'"
+    },
+    {
+      "id": 5,
+      "topic": "Reported speech (commands/requests)",
+      "question": "Choose the correct sentence. (Direct: \"Please reduce your plastic use.\")",
+      "options": [
+        "The activist told us to reduce our plastic use.",
+        "The activist told us reduce our plastic use.",
+        "The activist said us to reduce our plastic use.",
+        "The activist told us that reduce our plastic use."
+      ],
+      "answer": 0,
+      "explanation": "Reported commands: tell + object + to + base verb: 'told us to reduce our plastic use.'"
+    },
+    {
+      "id": 6,
+      "topic": "Reported speech (advice)",
+      "question": "Choose the correct sentence. (Direct: \"You should recycle more.\")",
+      "options": [
+        "She suggested to recycle more.",
+        "She suggested recycling more.",
+        "She suggested me recycling more.",
+        "She suggested that I recycling more."
+      ],
+      "answer": 1,
+      "explanation": "'Suggest' is followed by a gerund or 'that + subject + base verb': 'suggested recycling more.'"
+    },
+    {
+      "id": 7,
+      "topic": "Relative clauses with prepositions",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The organization which she volunteers for it protects endangered species.",
+        "The organization for that she volunteers protects endangered species.",
+        "The organization for which she volunteers protects endangered species.",
+        "The organization she volunteers for which protects endangered species."
+      ],
+      "answer": 2,
+      "explanation": "In formal style, the preposition moves before 'which': 'the organization for which she volunteers.'"
+    },
+    {
+      "id": 8,
+      "topic": "Reduced relative clauses (participle clauses)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The report publishing last week revealed shocking data.",
+        "The report published last week reveal shocking data.",
+        "The report which published last week revealed shocking data.",
+        "The report published last week revealed shocking data."
+      ],
+      "answer": 3,
+      "explanation": "A passive meaning reduces 'which was published' to the past participle alone: 'The report published last week...'"
+    },
+    {
+      "id": 9,
+      "topic": "Modal verbs of past deduction (must have)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The factory must have released toxic chemicals into the river.",
+        "The factory must released toxic chemicals into the river.",
+        "The factory must have release toxic chemicals into the river.",
+        "The factory must has released toxic chemicals into the river."
+      ],
+      "answer": 0,
+      "explanation": "Past deduction: must have + past participle: 'must have released toxic chemicals.'"
+    },
+    {
+      "id": 10,
+      "topic": "Modals of past obligation/regret (should have)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The government should acted sooner to prevent the flooding.",
+        "The government should have acted sooner to prevent the flooding.",
+        "The government should have act sooner to prevent the flooding.",
+        "The government should has acted sooner to prevent the flooding."
+      ],
+      "answer": 1,
+      "explanation": "Past regret/criticism: should have + past participle: 'should have acted sooner.'"
+    },
+    {
+      "id": 11,
+      "topic": "Present perfect vs past simple",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Global temperatures rose significantly over the past century.",
+        "Global temperatures has risen significantly over the past century.",
+        "Global temperatures have risen significantly over the past century.",
+        "Global temperatures have rose significantly over the past century."
+      ],
+      "answer": 2,
+      "explanation": "'Over the past century' links the past to the present, so present perfect is used: 'have risen significantly.'"
+    },
+    {
+      "id": 12,
+      "topic": "Past perfect vs past simple",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "By the time scientists warned us, the ice caps already started melting.",
+        "By the time scientists had warned us, the ice caps already started melting.",
+        "By the time scientists warned us, the ice caps have already started melting.",
+        "By the time scientists warned us, the ice caps had already started melting."
+      ],
+      "answer": 3,
+      "explanation": "The earlier of two past actions takes the past perfect: 'the ice caps had already started melting.'"
+    },
+    {
+      "id": 13,
+      "topic": "Future forms (present continuous for arrangements)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Environmental leaders are meeting next week to discuss new policies.",
+        "Environmental leaders meet next week to discuss new policies.",
+        "Environmental leaders will meeting next week to discuss new policies.",
+        "Environmental leaders are meet next week to discuss new policies."
+      ],
+      "answer": 0,
+      "explanation": "Present continuous expresses a fixed future arrangement: 'are meeting next week.'"
+    },
+    {
+      "id": 14,
+      "topic": "Future in the past (would)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "She said she will attend the climate summit.",
+        "She said she would attend the climate summit.",
+        "She said she would attended the climate summit.",
+        "She said she would have attend the climate summit."
+      ],
+      "answer": 1,
+      "explanation": "In reported speech, 'will' shifts back to 'would': 'she said she would attend the summit.'"
+    },
+    {
+      "id": 15,
+      "topic": "Wish / if only (present regret)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I wish we take climate change more seriously.",
+        "I wish we have taken climate change more seriously.",
+        "I wish we took climate change more seriously.",
+        "I wish we would take climate change more seriously as a society."
+      ],
+      "answer": 2,
+      "explanation": "'Wish' + past simple expresses regret about a present situation: 'I wish we took climate change more seriously.'"
+    },
+    {
+      "id": 16,
+      "topic": "Wish / if only (past regret)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I wish scientists warned us earlier about the risks.",
+        "I wish scientists have warned us earlier about the risks.",
+        "I wish scientists would have warned us earlier about the risks.",
+        "I wish scientists had warned us earlier about the risks."
+      ],
+      "answer": 3,
+      "explanation": "'Wish' + past perfect expresses regret about the past: 'I wish scientists had warned us earlier.'"
+    },
+    {
+      "id": 17,
+      "topic": "Causative (have something done)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "We had solar panels installed on our roof last year.",
+        "We had installed solar panels on our roof last year.",
+        "We had solar panels install on our roof last year.",
+        "We have solar panels installed on our roof last year."
+      ],
+      "answer": 0,
+      "explanation": "Causative form: have + object + past participle shows someone else did the action: 'had solar panels installed.'"
+    },
+    {
+      "id": 18,
+      "topic": "Inversion for emphasis",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Never before the region had experienced such severe droughts.",
+        "Never before had the region experienced such severe droughts.",
+        "Never before did the region experienced such severe droughts.",
+        "Never before has the region had experienced such severe droughts."
+      ],
+      "answer": 1,
+      "explanation": "Negative adverbials at the start trigger inversion: 'Never before had the region experienced...'"
+    },
+    {
+      "id": 19,
+      "topic": "Phrasal verbs (look into)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The committee is looking the causes of the oil spill into.",
+        "The committee is looking in to the causes of the oil spill.",
+        "The committee is looking into the causes of the oil spill.",
+        "The committee is looking into to the causes of the oil spill."
+      ],
+      "answer": 2,
+      "explanation": "'Look into' means 'investigate' and is inseparable: 'looking into the causes.'"
+    },
+    {
+      "id": 20,
+      "topic": "Cleft sentences (What...is)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "What we urgently need are a global agreement on emissions.",
+        "That we urgently need is a global agreement on emissions.",
+        "What we urgently need is global agreement on emissions it.",
+        "What we urgently need is a global agreement on emissions."
+      ],
+      "answer": 3,
+      "explanation": "'What' clefts take a singular verb when the complement is singular: 'What we need is a global agreement.'"
+    },
+    {
+      "id": 21,
+      "topic": "Connectors (whereas)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Some countries have reduced emissions, whereas others continue to increase them.",
+        "Some countries have reduced emissions, whereas others continues to increase them.",
+        "Some countries have reduced emissions whereas, others continue to increase them.",
+        "Some countries have reduced emissions despite others continue to increase them."
+      ],
+      "answer": 0,
+      "explanation": "'Whereas' contrasts two clauses and is followed directly by the subject: 'whereas others continue...'"
+    },
+    {
+      "id": 22,
+      "topic": "Connectors (in spite of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "In spite the new regulations, pollution levels remain high.",
+        "In spite of the new regulations, pollution levels remain high.",
+        "Despite of the new regulations, pollution levels remain high.",
+        "In spite of the new regulations, pollution levels remain high though."
+      ],
+      "answer": 1,
+      "explanation": "'In spite of' is followed by a noun phrase: 'In spite of the new regulations, pollution levels remain high.'"
+    },
+    {
+      "id": 23,
+      "topic": "Quantifiers (a number of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "A number of studies has linked plastic waste to marine life decline.",
+        "The number of studies have linked plastic waste to marine life decline.",
+        "A number of studies have linked plastic waste to marine life decline.",
+        "A great number of studies has linked plastic waste to marine life decline."
+      ],
+      "answer": 2,
+      "explanation": "'A number of' + plural noun takes a plural verb: 'a number of studies have linked...'"
+    },
+    {
+      "id": 24,
+      "topic": "Prepositional phrases (on behalf of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "She spoke in behalf of the entire environmental coalition.",
+        "She spoke on behalf for the entire environmental coalition.",
+        "She spoke behalf of the entire environmental coalition.",
+        "She spoke on behalf of the entire environmental coalition."
+      ],
+      "answer": 3,
+      "explanation": "'On behalf of' means 'representing someone': 'she spoke on behalf of the coalition.'"
+    },
+    {
+      "id": 25,
+      "topic": "Formal register (nominalization)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The implementation of stricter regulations reduced carbon emissions significantly.",
+        "The implement of stricter regulations reduced carbon emissions significantly.",
+        "The implementing of stricter regulations reduced carbon emissions significantly.",
+        "The implementation of stricter regulations reduce carbon emissions significantly."
+      ],
+      "answer": 0,
+      "explanation": "Formal writing often nominalizes verbs into nouns: 'implement' becomes 'the implementation of...'"
+    },
+    {
+      "id": 26,
+      "topic": "Formal email (requesting information)",
+      "question": "Which is the most appropriate formal opening line for an email requesting information about a recycling program?",
+      "options": [
+        "I'm writing to ask you about your organization's recycling initiatives, ok?",
+        "I am writing to enquire about your organization's recycling initiatives.",
+        "Just wanted to know about your organization's recycling initiatives.",
+        "Hey, tell me about your organization's recycling initiatives."
+      ],
+      "answer": 1,
+      "explanation": "'I am writing to enquire about...' is a standard formal opening for information requests."
+    },
+    {
+      "id": 27,
+      "topic": "Making complaints (formal language)",
+      "question": "Which is the most appropriate opening line for a formal complaint about a factory's waste disposal?",
+      "options": [
+        "I'm writing because I'm really mad about the factory's waste disposal methods.",
+        "I want to complain about the factory's waste disposal methods, it's bad.",
+        "I am writing to express my concern about the factory's waste disposal methods.",
+        "I am writing to express my concern about the factory's waste disposal methods, ok."
+      ],
+      "answer": 2,
+      "explanation": "Formal complaints use measured language such as 'I am writing to express my concern about...'"
+    },
+    {
+      "id": 28,
+      "topic": "Adverbs of degree (extremely)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The results of the study were extreme alarming.",
+        "The results of the study were extremely alarm.",
+        "The results of the study were very much alarming.",
+        "The results of the study were extremely alarming."
+      ],
+      "answer": 3,
+      "explanation": "'Extremely' (adverb) modifies the adjective 'alarming': 'were extremely alarming.'"
+    },
+    {
+      "id": 29,
+      "topic": "Discourse markers (moreover)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Renewable energy is cheaper. Moreover, it produces no emissions.",
+        "Renewable energy is cheaper, moreover it produces no emissions.",
+        "Renewable energy is cheaper. Moreover it produces no emissions.",
+        "Renewable energy is cheaper moreover, it produces no emissions."
+      ],
+      "answer": 0,
+      "explanation": "'Moreover' begins a new sentence and is followed by a comma: 'Renewable energy is cheaper. Moreover, it produces no emissions.'"
+    },
+    {
+      "id": 30,
+      "topic": "Question tags (advanced forms)",
+      "question": "Choose the correct question tag.",
+      "options": [
+        "You'd support stronger climate policies, didn't you?",
+        "You'd support stronger climate policies, wouldn't you?",
+        "You'd support stronger climate policies, would you?",
+        "You'd support stronger climate policies, wouldn't it?"
+      ],
+      "answer": 1,
+      "explanation": "A positive statement with 'would' takes a negative tag: 'You'd support..., wouldn't you?'"
+    }
+  ]
+}

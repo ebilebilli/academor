@@ -1,0 +1,399 @@
+{
+  "level": "B1",
+  "quiz": 6,
+  "title": "B1 Writing Quiz 6 — Sports, Hobbies & Free Time",
+  "service": "general_english",
+  "category_name": "B1",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Second conditional",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "If I had more free time, I would learn to paint.",
+        "If I have more free time, I would learn to paint.",
+        "If I had more free time, I will learn to paint.",
+        "If I would have more free time, I would learn to paint."
+      ],
+      "answer": 0,
+      "explanation": "Second conditional: If + past simple, would + base verb: 'If I had more free time, I would learn to paint.'"
+    },
+    {
+      "id": 2,
+      "topic": "Third conditional",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "If he had trained harder, he wouldn't lose the match.",
+        "If he had trained harder, he wouldn't have lost the match.",
+        "If he trained harder, he wouldn't have lost the match.",
+        "If he would have trained harder, he wouldn't have lost the match."
+      ],
+      "answer": 1,
+      "explanation": "Third conditional: If + past perfect, would have + past participle: 'If he had trained..., he wouldn't have lost...'"
+    },
+    {
+      "id": 3,
+      "topic": "Passive voice (present simple)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "This tournament is watched by millions of fans.",
+        "This tournament watches by millions of fans.",
+        "This tournament is watching by millions of fans.",
+        "This tournament watch by millions of fans."
+      ],
+      "answer": 0,
+      "explanation": "Present simple passive: is/are + past participle: 'is watched by millions of fans.'"
+    },
+    {
+      "id": 4,
+      "topic": "Passive voice (past simple)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The match was postponed due to rain.",
+        "The match postponed due to rain.",
+        "The match was postpone due to rain.",
+        "The match is postponed due to rain."
+      ],
+      "answer": 0,
+      "explanation": "Past simple passive: was/were + past participle: 'was postponed due to rain.'"
+    },
+    {
+      "id": 5,
+      "topic": "Relative clauses (defining)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The coach who trained the team retired last year.",
+        "The coach which trained the team retired last year.",
+        "The coach whom trained the team retired last year.",
+        "The coach, who trained the team, retired last year but."
+      ],
+      "answer": 0,
+      "explanation": "'Who' introduces a defining relative clause about a person: 'The coach who trained the team...'"
+    },
+    {
+      "id": 6,
+      "topic": "Relative clauses (non-defining)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "My local gym, which opened last year, is always busy.",
+        "My local gym which opened last year is always busy but.",
+        "My local gym, that opened last year, is always busy.",
+        "My local gym which opened last year, is always busy."
+      ],
+      "answer": 0,
+      "explanation": "Non-defining relative clauses use commas and 'which' for things: 'My local gym, which opened last year, is always busy.'"
+    },
+    {
+      "id": 7,
+      "topic": "Modal verbs of deduction (must/can't)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "That score can't be right, let me check again.",
+        "That score can't to be right, let me check again.",
+        "That score can't being right, let me check again.",
+        "That score cann't be right, let me check again."
+      ],
+      "answer": 0,
+      "explanation": "'Can't' + base verb expresses a confident negative deduction: 'that score can't be right.'"
+    },
+    {
+      "id": 8,
+      "topic": "Modal verbs of deduction (might/could)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The team could be practicing right now.",
+        "The team could being practicing right now.",
+        "The team could to be practicing right now.",
+        "The team coulds be practicing right now."
+      ],
+      "answer": 0,
+      "explanation": "'Could' + base verb expresses a possible deduction: 'the team could be practicing.'"
+    },
+    {
+      "id": 9,
+      "topic": "Present perfect vs present perfect continuous",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I've played five matches this season.",
+        "I've been playing five matches this season.",
+        "I've play five matches this season.",
+        "I'm playing five matches this season already."
+      ],
+      "answer": 0,
+      "explanation": "Present perfect simple is used for a completed number of results: 'I've played five matches.'"
+    },
+    {
+      "id": 10,
+      "topic": "Present perfect continuous",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I've been practicing the guitar for three years.",
+        "I've practiced the guitar since three years.",
+        "I'm practicing the guitar for three years already.",
+        "I've been practice the guitar for three years."
+      ],
+      "answer": 0,
+      "explanation": "Present perfect continuous emphasizes duration of an unfinished action: 'I've been practicing... for three years.'"
+    },
+    {
+      "id": 11,
+      "topic": "Reported speech (statements)",
+      "question": "Choose the correct sentence. (Direct: \"I have joined a new club.\")",
+      "options": [
+        "He said that he has joined a new club.",
+        "He said that he had joined a new club.",
+        "He said that he joined a new club already.",
+        "He said he have joined a new club."
+      ],
+      "answer": 1,
+      "explanation": "In reported speech, present perfect shifts back to past perfect: 'he had joined a new club.'"
+    },
+    {
+      "id": 12,
+      "topic": "Reported speech (questions)",
+      "question": "Choose the correct sentence. (Direct: \"Which team do you support?\")",
+      "options": [
+        "He asked me which team do I support.",
+        "He asked me which team I supported.",
+        "He asked me which team did I support.",
+        "He asked me which team I support."
+      ],
+      "answer": 1,
+      "explanation": "Reported questions use normal word order (no auxiliary inversion) and shift the tense back: 'he asked me which team I supported.'"
+    },
+    {
+      "id": 13,
+      "topic": "Used to",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I used to play football every weekend as a child.",
+        "I use to play football every weekend as a child.",
+        "I was used to play football every weekend as a child.",
+        "I used to playing football every weekend as a child."
+      ],
+      "answer": 0,
+      "explanation": "'Used to' + base verb describes a past habit that no longer happens: 'I used to play football every weekend.'"
+    },
+    {
+      "id": 14,
+      "topic": "Be used to / get used to",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I'm used to training early in the morning now.",
+        "I'm used to train early in the morning now.",
+        "I use to training early in the morning now.",
+        "I'm used training to early in the morning now."
+      ],
+      "answer": 0,
+      "explanation": "'Be used to' is followed by a gerund: 'I'm used to training early in the morning.'"
+    },
+    {
+      "id": 15,
+      "topic": "Phrasal verbs (take up)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "She decided to take up swimming last summer.",
+        "She decided to take swimming up to last summer.",
+        "She decided to take up to swimming last summer.",
+        "She decided to take swimming last summer up."
+      ],
+      "answer": 0,
+      "explanation": "'Take up' means 'start a new hobby': 'take up swimming.'"
+    },
+    {
+      "id": 16,
+      "topic": "Phrasal verbs (warm up)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Athletes always warm up before a race.",
+        "Athletes always warm the race up before.",
+        "Athletes always warm up to before a race.",
+        "Athletes always warm before a race up."
+      ],
+      "answer": 0,
+      "explanation": "'Warm up' means 'prepare the body before exercise': 'warm up before a race.'"
+    },
+    {
+      "id": 17,
+      "topic": "Connectors (despite / although)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Despite the injury, she finished the race.",
+        "Despite of the injury, she finished the race.",
+        "Although the injury, she finished the race.",
+        "Despite the injury was serious, she finished the race."
+      ],
+      "answer": 0,
+      "explanation": "'Despite' is followed by a noun phrase (no 'of'): 'Despite the injury, she finished the race.'"
+    },
+    {
+      "id": 18,
+      "topic": "Connectors (as a result)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "He missed training all week. As a result, he wasn't picked for the game.",
+        "He missed training all week, as a result he wasn't picked for the game.",
+        "As a result he missed training all week he wasn't picked for the game.",
+        "He missed training all week as a result, he wasn't picked for the game."
+      ],
+      "answer": 0,
+      "explanation": "'As a result' starts a new sentence and is followed by a comma: 'He missed training all week. As a result, he wasn't picked for the game.'"
+    },
+    {
+      "id": 19,
+      "topic": "Quantifiers (enough)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "We don't have enough players for a full team.",
+        "We don't have players enough for a full team.",
+        "We don't have enough of players for a full team.",
+        "We hasn't enough players for a full team."
+      ],
+      "answer": 0,
+      "explanation": "'Enough' comes before the noun it modifies: 'enough players.'"
+    },
+    {
+      "id": 20,
+      "topic": "Prepositions (keen on)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "My brother is really keen on cycling.",
+        "My brother is really keen for cycling.",
+        "My brother is really keen at cycling.",
+        "My brother is really keen to cycling."
+      ],
+      "answer": 0,
+      "explanation": "'Keen on' + noun/gerund means 'enthusiastic about': 'keen on cycling.'"
+    },
+    {
+      "id": 21,
+      "topic": "Semi-formal email opening",
+      "question": "Which is the correct way to start an email to a sports club you haven't met, asking to join?",
+      "options": [
+        "Hey there,",
+        "Dear Sir or Madam,",
+        "Yo,",
+        "Hiya,"
+      ],
+      "answer": 1,
+      "explanation": "'Dear Sir or Madam,' is a suitable formal opening when the recipient's exact name is unknown."
+    },
+    {
+      "id": 22,
+      "topic": "Formal email closing",
+      "question": "Which is the correct way to end a formal email to a named club coordinator?",
+      "options": [
+        "Yours faithfully,",
+        "Best regards,",
+        "Later,",
+        "Talk soon,"
+      ],
+      "answer": 1,
+      "explanation": "'Best regards,' is a suitable semi-formal closing when writing to a named professional contact."
+    },
+    {
+      "id": 23,
+      "topic": "Making polite requests",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I was wondering if you could send me the training schedule.",
+        "I was wondering if you could to send me the training schedule.",
+        "I was wondering could you sending me the training schedule.",
+        "I wonder if you send could me the training schedule."
+      ],
+      "answer": 0,
+      "explanation": "'I was wondering if you could' + base verb is a polite way to make a request: 'if you could send me the schedule.'"
+    },
+    {
+      "id": 24,
+      "topic": "Sentence combining (relative clause with whose)",
+      "question": "Which sentence correctly combines 'This is the athlete.' and 'The athlete's record still stands.'?",
+      "options": [
+        "This is the athlete whose record still stands.",
+        "This is the athlete who record still stands.",
+        "This is the athlete which record still stands.",
+        "This is the athlete's record who still stands."
+      ],
+      "answer": 0,
+      "explanation": "'Whose' shows possession in a relative clause: 'the athlete whose record still stands.'"
+    },
+    {
+      "id": 25,
+      "topic": "Word order (adverbs with perfect tenses)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I have never played such a difficult opponent before.",
+        "I have played never such a difficult opponent before.",
+        "Never I have played such a difficult opponent before.",
+        "I have played such a difficult opponent never before."
+      ],
+      "answer": 0,
+      "explanation": "'Never' is placed between the auxiliary and the past participle: 'I have never played such an opponent.'"
+    },
+    {
+      "id": 26,
+      "topic": "Punctuation (indirect question)",
+      "question": "Which sentence has correct punctuation?",
+      "options": [
+        "I'd like to know whether the final has been rescheduled.",
+        "I'd like to know whether has the final been rescheduled?",
+        "I'd like to know, whether the final has been rescheduled.",
+        "I'd like to know whether the final has been rescheduled?"
+      ],
+      "answer": 0,
+      "explanation": "Reported/indirect statements use normal word order and end with a full stop, not a question mark."
+    },
+    {
+      "id": 27,
+      "topic": "Sentence completion (future continuous)",
+      "question": "This time tomorrow, I ___ in the marathon.",
+      "options": [
+        "will run",
+        "will be running",
+        "am running",
+        "run"
+      ],
+      "answer": 1,
+      "explanation": "Future continuous describes an action in progress at a specific future time: 'will be running'."
+    },
+    {
+      "id": 28,
+      "topic": "Sentence completion (future perfect)",
+      "question": "By the end of the season, the team ___ twenty matches.",
+      "options": [
+        "will play",
+        "will have played",
+        "plays",
+        "is playing"
+      ],
+      "answer": 1,
+      "explanation": "Future perfect describes an action completed before a future point: 'will have played'."
+    },
+    {
+      "id": 29,
+      "topic": "Sequencing/discourse markers",
+      "question": "Choose the sentence that correctly uses discourse markers.",
+      "options": [
+        "Firstly, stretch your muscles. Secondly, warm up slowly. Finally, start the workout.",
+        "Firstly we stretch muscles secondly warm finally workout.",
+        "Finally stretch the muscles, firstly warm, secondly start workout.",
+        "Secondly firstly stretch muscles, finally warm up."
+      ],
+      "answer": 0,
+      "explanation": "Discourse markers 'Firstly,', 'Secondly,' and 'Finally,' organize points clearly with commas."
+    },
+    {
+      "id": 30,
+      "topic": "Question formation (tag questions with modals)",
+      "question": "Choose the correct question tag.",
+      "options": [
+        "You wouldn't miss the final match, would you?",
+        "You wouldn't miss the final match, do you?",
+        "You wouldn't miss the final match, wouldn't you?",
+        "You wouldn't miss the final match, will you?"
+      ],
+      "answer": 0,
+      "explanation": "Negative statement with 'would' + positive tag: 'you wouldn't miss..., would you?'"
+    }
+  ]
+}

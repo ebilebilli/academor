@@ -1,0 +1,399 @@
+{
+  "level": "B2",
+  "quiz": 9,
+  "title": "B2 Writing Quiz 9 — Culture & Society",
+  "service": "general_english",
+  "category_name": "B2",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Mixed conditionals",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "If the government had funded the arts more, the local theater wouldn't be closing now.",
+        "If the government funded the arts more, the local theater wouldn't be closing now.",
+        "If the government had funded the arts more, the local theater wouldn't have closed now.",
+        "If the government had funded the arts more, the local theater won't close now."
+      ],
+      "answer": 0,
+      "explanation": "Mixed conditional: If + past perfect (past condition), would + base verb (present result): 'If the government had funded..., the theater wouldn't be closing now.'"
+    },
+    {
+      "id": 2,
+      "topic": "Conditionals without if (unless)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Traditional crafts will keep disappearing unless communities won't preserve them.",
+        "Traditional crafts will keep disappearing unless communities preserve them.",
+        "Traditional crafts will keep disappearing unless that communities preserve them.",
+        "Traditional crafts will keep disappearing without communities preserve them."
+      ],
+      "answer": 1,
+      "explanation": "'Unless' means 'if...not' and is followed by an affirmative clause: 'unless communities preserve them.'"
+    },
+    {
+      "id": 3,
+      "topic": "Passive voice (present perfect)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Several cultural festivals has been cancelled this year.",
+        "Several cultural festivals have cancelled this year.",
+        "Several cultural festivals have been cancelled this year.",
+        "Several cultural festivals have being cancelled this year."
+      ],
+      "answer": 2,
+      "explanation": "Present perfect passive: have/has been + past participle: 'have been cancelled this year.'"
+    },
+    {
+      "id": 4,
+      "topic": "Passive voice (modal passive)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "This historic building should preserved immediately.",
+        "This historic building should being preserved immediately.",
+        "This historic building should be preserve immediately.",
+        "This historic building should be preserved immediately."
+      ],
+      "answer": 3,
+      "explanation": "Modal passive: modal + be + past participle: 'should be preserved immediately.'"
+    },
+    {
+      "id": 5,
+      "topic": "Reported speech (commands/requests)",
+      "question": "Choose the correct sentence. (Direct: \"Please respect local customs.\")",
+      "options": [
+        "The guide told us to respect local customs.",
+        "The guide told us respect local customs.",
+        "The guide said us to respect local customs.",
+        "The guide told us that respect local customs."
+      ],
+      "answer": 0,
+      "explanation": "Reported commands: tell + object + to + base verb: 'told us to respect local customs.'"
+    },
+    {
+      "id": 6,
+      "topic": "Reported speech (advice)",
+      "question": "Choose the correct sentence. (Direct: \"You should learn about local traditions.\")",
+      "options": [
+        "She suggested to learn about local traditions.",
+        "She suggested learning about local traditions.",
+        "She suggested me learning about local traditions.",
+        "She suggested that I learning about local traditions."
+      ],
+      "answer": 1,
+      "explanation": "'Suggest' is followed by a gerund or 'that + subject + base verb': 'suggested learning about local traditions.'"
+    },
+    {
+      "id": 7,
+      "topic": "Relative clauses with prepositions",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The museum which she works for it preserves indigenous artifacts.",
+        "The museum for that she works preserves indigenous artifacts.",
+        "The museum for which she works preserves indigenous artifacts.",
+        "The museum she works for which preserves indigenous artifacts."
+      ],
+      "answer": 2,
+      "explanation": "In formal style, the preposition moves before 'which': 'the museum for which she works.'"
+    },
+    {
+      "id": 8,
+      "topic": "Reduced relative clauses (participle clauses)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The survey publishing last week revealed declining interest in folk music.",
+        "The survey published last week reveal declining interest in folk music.",
+        "The survey which published last week revealed declining interest in folk music.",
+        "The survey published last week revealed declining interest in folk music."
+      ],
+      "answer": 3,
+      "explanation": "A passive meaning reduces 'which was published' to the past participle alone: 'The survey published last week...'"
+    },
+    {
+      "id": 9,
+      "topic": "Modal verbs of past deduction (must have)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The organizers must have underestimated the festival's popularity.",
+        "The organizers must underestimated the festival's popularity.",
+        "The organizers must have underestimate the festival's popularity.",
+        "The organizers must has underestimated the festival's popularity."
+      ],
+      "answer": 0,
+      "explanation": "Past deduction: must have + past participle: 'must have underestimated the festival's popularity.'"
+    },
+    {
+      "id": 10,
+      "topic": "Modals of past obligation/regret (should have)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The council should acted sooner to save the old theater.",
+        "The council should have acted sooner to save the old theater.",
+        "The council should have act sooner to save the old theater.",
+        "The council should has acted sooner to save the old theater."
+      ],
+      "answer": 1,
+      "explanation": "Past regret/criticism: should have + past participle: 'should have acted sooner.'"
+    },
+    {
+      "id": 11,
+      "topic": "Present perfect vs past simple",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Interest in traditional crafts rose significantly over the past few years.",
+        "Interest in traditional crafts has risen significantly over the past few years.",
+        "Interest in traditional crafts have risen significantly over the past few years.",
+        "Interest in traditional crafts have rose significantly over the past few years."
+      ],
+      "answer": 1,
+      "explanation": "'Over the past few years' links the past to the present, so present perfect is used: 'has risen significantly.'"
+    },
+    {
+      "id": 12,
+      "topic": "Past perfect vs past simple",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "By the time we arrived, the parade started.",
+        "By the time we had arrived, the parade started.",
+        "By the time we arrived, the parade have already started.",
+        "By the time we arrived, the parade had already started."
+      ],
+      "answer": 3,
+      "explanation": "The earlier of two past actions takes the past perfect: 'the parade had already started.'"
+    },
+    {
+      "id": 13,
+      "topic": "Future forms (present continuous for arrangements)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Cultural ministers are meeting next week to discuss heritage funding.",
+        "Cultural ministers meet next week to discuss heritage funding.",
+        "Cultural ministers will meeting next week to discuss heritage funding.",
+        "Cultural ministers are meet next week to discuss heritage funding."
+      ],
+      "answer": 0,
+      "explanation": "Present continuous expresses a fixed future arrangement: 'are meeting next week.'"
+    },
+    {
+      "id": 14,
+      "topic": "Future in the past (would)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "She said she will attend the cultural festival.",
+        "She said she would attend the cultural festival.",
+        "She said she would attended the cultural festival.",
+        "She said she would have attend the cultural festival."
+      ],
+      "answer": 1,
+      "explanation": "In reported speech, 'will' shifts back to 'would': 'she said she would attend the festival.'"
+    },
+    {
+      "id": 15,
+      "topic": "Wish / if only (present regret)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I wish young people take an interest in traditional music.",
+        "I wish young people have taken an interest in traditional music.",
+        "I wish young people took an interest in traditional music.",
+        "I wish young people would take an interest in traditional music as a habit."
+      ],
+      "answer": 2,
+      "explanation": "'Wish' + past simple expresses regret about a present situation: 'I wish young people took an interest in traditional music.'"
+    },
+    {
+      "id": 16,
+      "topic": "Wish / if only (past regret)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I wish my grandmother taught me the old recipes earlier.",
+        "I wish my grandmother have taught me the old recipes earlier.",
+        "I wish my grandmother would have taught me the old recipes earlier.",
+        "I wish my grandmother had taught me the old recipes earlier."
+      ],
+      "answer": 3,
+      "explanation": "'Wish' + past perfect expresses regret about the past: 'I wish my grandmother had taught me the old recipes earlier.'"
+    },
+    {
+      "id": 17,
+      "topic": "Causative (have something done)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "We had the old mural restored by local artists.",
+        "We had restored the old mural by local artists.",
+        "We had the old mural restore by local artists.",
+        "We have the old mural restored by local artists last year."
+      ],
+      "answer": 0,
+      "explanation": "Causative form: have + object + past participle shows someone else did the action: 'had the old mural restored.'"
+    },
+    {
+      "id": 18,
+      "topic": "Inversion for emphasis",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Never before the city had celebrated its heritage so widely.",
+        "Never before had the city celebrated its heritage so widely.",
+        "Never before did the city celebrated its heritage so widely.",
+        "Never before has the city had celebrated its heritage so widely."
+      ],
+      "answer": 1,
+      "explanation": "Negative adverbials at the start trigger inversion: 'Never before had the city celebrated...'"
+    },
+    {
+      "id": 19,
+      "topic": "Phrasal verbs (look into)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The council is looking the funding cuts into.",
+        "The council is looking in to the funding cuts.",
+        "The council is looking into the funding cuts.",
+        "The council is looking into to the funding cuts."
+      ],
+      "answer": 2,
+      "explanation": "'Look into' means 'investigate' and is inseparable: 'looking into the funding cuts.'"
+    },
+    {
+      "id": 20,
+      "topic": "Cleft sentences (What...is)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "What the community urgently need are more support for local artisans.",
+        "That the community urgently needs is more support for local artisans.",
+        "What the community urgently needs is more support for local artisans it.",
+        "What the community urgently needs is more support for local artisans."
+      ],
+      "answer": 3,
+      "explanation": "'What' clefts take a singular verb when the complement is singular: 'What the community needs is more support.'"
+    },
+    {
+      "id": 21,
+      "topic": "Connectors (whereas)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Some regions preserve their traditions well, whereas others lose them quickly.",
+        "Some regions preserve their traditions well, whereas others loses them quickly.",
+        "Some regions preserve their traditions well whereas, others lose them quickly.",
+        "Some regions preserve their traditions well despite others lose them quickly."
+      ],
+      "answer": 0,
+      "explanation": "'Whereas' contrasts two clauses and is followed directly by the subject: 'whereas others lose them quickly.'"
+    },
+    {
+      "id": 22,
+      "topic": "Connectors (in spite of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "In spite the funding cuts, the museum stayed open.",
+        "In spite of the funding cuts, the museum stayed open.",
+        "Despite of the funding cuts, the museum stayed open.",
+        "In spite of the funding cuts, the museum stayed open though."
+      ],
+      "answer": 1,
+      "explanation": "'In spite of' is followed by a noun phrase: 'In spite of the funding cuts, the museum stayed open.'"
+    },
+    {
+      "id": 23,
+      "topic": "Quantifiers (a number of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "A number of surveys has linked cultural identity to community wellbeing.",
+        "The number of surveys have linked cultural identity to community wellbeing.",
+        "A number of surveys have linked cultural identity to community wellbeing.",
+        "A great number of surveys has linked cultural identity to community wellbeing."
+      ],
+      "answer": 2,
+      "explanation": "'A number of' + plural noun takes a plural verb: 'a number of surveys have linked...'"
+    },
+    {
+      "id": 24,
+      "topic": "Prepositional phrases (on behalf of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "She spoke in behalf of the entire artisan community.",
+        "She spoke on behalf for the entire artisan community.",
+        "She spoke behalf of the entire artisan community.",
+        "She spoke on behalf of the entire artisan community."
+      ],
+      "answer": 3,
+      "explanation": "'On behalf of' means 'representing someone': 'she spoke on behalf of the community.'"
+    },
+    {
+      "id": 25,
+      "topic": "Formal register (nominalization)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The preservation of historic sites boosted local tourism significantly.",
+        "The preserve of historic sites boosted local tourism significantly.",
+        "The preserving of historic sites boosted local tourism significantly.",
+        "The preservation of historic sites boost local tourism significantly."
+      ],
+      "answer": 0,
+      "explanation": "Formal writing often nominalizes verbs into nouns: 'preserve' becomes 'the preservation of...'"
+    },
+    {
+      "id": 26,
+      "topic": "Formal email (requesting information)",
+      "question": "Which is the most appropriate formal opening line for an email requesting information about a cultural festival?",
+      "options": [
+        "I'm writing to ask you about the festival, ok?",
+        "I am writing to enquire about the details of your upcoming festival.",
+        "Just wanted to know about the festival.",
+        "Hey, tell me about the festival."
+      ],
+      "answer": 1,
+      "explanation": "'I am writing to enquire about...' is a standard formal opening for information requests."
+    },
+    {
+      "id": 27,
+      "topic": "Making complaints (formal language)",
+      "question": "Which is the most appropriate opening line for a formal complaint about the demolition of a historic building?",
+      "options": [
+        "I'm writing because I'm really mad about the demolition.",
+        "I want to complain about the demolition, it's bad.",
+        "I am writing to express my concern about the demolition of a historic building.",
+        "I am writing to express my concern about the demolition of a historic building, ok."
+      ],
+      "answer": 2,
+      "explanation": "Formal complaints use measured language such as 'I am writing to express my concern about...'"
+    },
+    {
+      "id": 28,
+      "topic": "Adverbs of degree (extremely)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The decline in traditional crafts was extreme alarming.",
+        "The decline in traditional crafts was extremely alarm.",
+        "The decline in traditional crafts was very much alarming.",
+        "The decline in traditional crafts was extremely alarming."
+      ],
+      "answer": 3,
+      "explanation": "'Extremely' (adverb) modifies the adjective 'alarming': 'was extremely alarming.'"
+    },
+    {
+      "id": 29,
+      "topic": "Discourse markers (moreover)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The festival celebrates local heritage. Moreover, it supports small businesses.",
+        "The festival celebrates local heritage, moreover it supports small businesses.",
+        "The festival celebrates local heritage. Moreover it supports small businesses.",
+        "The festival celebrates local heritage moreover, it supports small businesses."
+      ],
+      "answer": 0,
+      "explanation": "'Moreover' begins a new sentence and is followed by a comma: 'The festival celebrates local heritage. Moreover, it supports small businesses.'"
+    },
+    {
+      "id": 30,
+      "topic": "Question tags (advanced forms)",
+      "question": "Choose the correct question tag.",
+      "options": [
+        "You'd support more funding for the arts, didn't you?",
+        "You'd support more funding for the arts, wouldn't you?",
+        "You'd support more funding for the arts, would you?",
+        "You'd support more funding for the arts, wouldn't it?"
+      ],
+      "answer": 1,
+      "explanation": "A positive statement with 'would' takes a negative tag: 'You'd support..., wouldn't you?'"
+    }
+  ]
+}

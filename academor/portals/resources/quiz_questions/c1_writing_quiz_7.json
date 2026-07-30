@@ -1,0 +1,399 @@
+{
+  "level": "C1",
+  "quiz": 7,
+  "title": "C1 Writing Quiz 7 — Business & Economy",
+  "service": "general_english",
+  "category_name": "C1",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Inversion (only then)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Only then did the true cost of the merger become apparent.",
+        "Only then the true cost of the merger became apparent.",
+        "Only then became the true cost of the merger apparent did.",
+        "Only then the true cost of the merger did become apparent."
+      ],
+      "answer": 0,
+      "explanation": "Fronting 'only then' triggers inversion: 'Only then did the true cost become apparent.'"
+    },
+    {
+      "id": 2,
+      "topic": "Subjunctive in formal contexts",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "It was suggested that the manager review the contract personally.",
+        "It was suggested that the manager reviews the contract personally.",
+        "It was suggested that the manager will review the contract personally.",
+        "It was suggested that the manager reviewing the contract personally."
+      ],
+      "answer": 0,
+      "explanation": "After 'it was suggested that', formal English uses the subjunctive: 'the manager review the contract.'"
+    },
+    {
+      "id": 3,
+      "topic": "Advanced conditionals (Suppose/Supposing)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Supposing the deal collapses, what is the backup plan?",
+        "Supposing the deal collapse, what is the backup plan?",
+        "Supposed the deal collapses, what is the backup plan?",
+        "Supposing that the deal will collapse, what is the backup plan?"
+      ],
+      "answer": 0,
+      "explanation": "'Supposing' can introduce a hypothetical condition like 'if': 'Supposing the deal collapses, what is the plan?'"
+    },
+    {
+      "id": 4,
+      "topic": "Concession connectors (for all that)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "For all that, the company remains a market leader.",
+        "For all of that, the company remains a market leader.",
+        "For all that, but the company remains a market leader.",
+        "For all it that, the company remains a market leader."
+      ],
+      "answer": 0,
+      "explanation": "'For all that' is a fixed formal concessive phrase meaning 'despite everything': 'For all that, the company remains a leader.'"
+    },
+    {
+      "id": 5,
+      "topic": "Emphatic cleft (It is...that will)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "It is innovation that will determine the industry's future winners.",
+        "It innovation is that will determine the industry's future winners.",
+        "It is innovation which will determine the industry's future winners who.",
+        "It is innovation whom will determine the industry's future winners."
+      ],
+      "answer": 0,
+      "explanation": "Cleft sentences for emphasis on a non-personal subject use 'It is [thing] that...'"
+    },
+    {
+      "id": 6,
+      "topic": "Reporting verbs (allege)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The whistleblower alleges that funds were misappropriated.",
+        "The whistleblower alleges to that funds were misappropriated.",
+        "The whistleblower alleges funds being misappropriated.",
+        "The whistleblower is allege that funds were misappropriated."
+      ],
+      "answer": 0,
+      "explanation": "'Allege' is followed by 'that + clause': 'alleges that funds were misappropriated.'"
+    },
+    {
+      "id": 7,
+      "topic": "Participle clauses (Given that)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Given that inflation remains high, the bank raised interest rates again.",
+        "Give that inflation remains high, the bank raised interest rates again.",
+        "Giving that inflation remains high, the bank raised interest rates again.",
+        "Given that inflation remaining high, the bank raised interest rates again."
+      ],
+      "answer": 0,
+      "explanation": "'Given that' introduces a reason clause: 'Given that inflation remains high, the bank raised rates...'"
+    },
+    {
+      "id": 8,
+      "topic": "Advanced quantifiers (a fraction of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Only a fraction of shareholders has voted so far.",
+        "Only a fraction of shareholders have voted so far.",
+        "Only a fraction of shareholders is voted so far.",
+        "Only the fraction shareholders have voted so far."
+      ],
+      "answer": 1,
+      "explanation": "'A fraction of' + plural noun usually takes a plural verb: 'a fraction of shareholders have voted.'"
+    },
+    {
+      "id": 9,
+      "topic": "Modal perfect (must have)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The figures must have been miscalculated somewhere along the line.",
+        "The figures must been miscalculated somewhere along the line.",
+        "The figures must have miscalculate somewhere along the line.",
+        "The figures must have miscalculating somewhere along the line."
+      ],
+      "answer": 0,
+      "explanation": "'Must have been + past participle' expresses a confident deduction about the past: 'must have been miscalculated.'"
+    },
+    {
+      "id": 10,
+      "topic": "Correlative conjunctions (both...and)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Both the CEO and the CFO were questioned by regulators.",
+        "Both the CEO and the CFO was questioned by regulators.",
+        "Both the CEO or the CFO were questioned by regulators.",
+        "Both the CEO and did the CFO questioned by regulators."
+      ],
+      "answer": 0,
+      "explanation": "'Both...and' takes a plural verb: 'Both the CEO and the CFO were questioned.'"
+    },
+    {
+      "id": 11,
+      "topic": "Hedging language (ostensibly)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The merger was ostensibly aimed at cutting costs.",
+        "The merger was ostensible aimed at cutting costs.",
+        "The merger ostensibly was aimed at cutting costs it.",
+        "The merger was aimed ostensibly at cutting costs, that."
+      ],
+      "answer": 0,
+      "explanation": "'Ostensibly' hedges a stated purpose, implying doubt: 'was ostensibly aimed at cutting costs.'"
+    },
+    {
+      "id": 12,
+      "topic": "Advanced relative clauses (the extent to which)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The report examines the extent to which automation has affected jobs.",
+        "The report examines the extent which automation has affected jobs to.",
+        "The report examines the extent to that automation has affected jobs.",
+        "The report examines to the extent which automation has affected jobs."
+      ],
+      "answer": 0,
+      "explanation": "'The extent to which' is a formal relative structure: 'the extent to which automation has affected jobs.'"
+    },
+    {
+      "id": 13,
+      "topic": "Fronting for emphasis",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Rarely, if ever, does the fund miss its quarterly target.",
+        "Rarely, if ever, the fund misses its quarterly target.",
+        "Rarely if ever the fund does miss its quarterly target.",
+        "Rarely, if ever, misses the fund its quarterly target does."
+      ],
+      "answer": 0,
+      "explanation": "'Rarely, if ever' at the start triggers inversion: 'does the fund miss its quarterly target.'"
+    },
+    {
+      "id": 14,
+      "topic": "Nominalization (formal register)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The disclosure of the accounting error triggered a share sell-off.",
+        "The disclose of the accounting error triggered a share sell-off.",
+        "The disclosure of the accounting error trigger a share sell-off.",
+        "The disclosing the accounting error triggered a share sell-off."
+      ],
+      "answer": 0,
+      "explanation": "Formal writing nominalizes verbs: 'disclose' becomes 'the disclosure of...'"
+    },
+    {
+      "id": 15,
+      "topic": "Passive with modal perfect (may have been)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The data may have been compromised during the breach.",
+        "The data may been compromised during the breach.",
+        "The data may have compromise during the breach.",
+        "The data may have being compromised during the breach."
+      ],
+      "answer": 0,
+      "explanation": "Modal perfect passive: modal + have been + past participle: 'may have been compromised.'"
+    },
+    {
+      "id": 16,
+      "topic": "Ellipsis (formal writing)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The northern branch expanded; the southern, contracted.",
+        "The northern branch expanded; the southern expanded, contracted.",
+        "The northern branch expanded; the southern is contracted.",
+        "The northern branch expanded; the southern contracts already."
+      ],
+      "answer": 0,
+      "explanation": "Ellipsis omits the repeated verb after a semicolon: 'the southern, contracted' (= the southern branch contracted)."
+    },
+    {
+      "id": 17,
+      "topic": "Discourse markers (in other words)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Margins have narrowed. In other words, profitability is under pressure.",
+        "Margins have narrowed, in other words profitability is under pressure.",
+        "Margins have narrowed. In other words profitability is under pressure.",
+        "Margins have narrowed in other words, profitability is under pressure."
+      ],
+      "answer": 0,
+      "explanation": "'In other words' begins a new sentence and is followed by a comma."
+    },
+    {
+      "id": 18,
+      "topic": "Concession connectors (irrespective of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Irrespective of the outcome, the negotiations were valuable.",
+        "Irrespective the outcome, the negotiations were valuable.",
+        "Irrespective of the outcome, but the negotiations were valuable.",
+        "The outcome irrespective of, the negotiations were valuable."
+      ],
+      "answer": 0,
+      "explanation": "'Irrespective of' is followed directly by a noun phrase: 'Irrespective of the outcome...'"
+    },
+    {
+      "id": 19,
+      "topic": "Formal email (apologizing for a delay)",
+      "question": "Which is the most appropriate formal opening line for an email apologizing for a delayed response?",
+      "options": [
+        "Sorry it took forever to get back to you lol.",
+        "Please accept my apologies for the delay in responding to your enquiry.",
+        "My bad, I totally forgot to reply.",
+        "Ugh, sorry for the late reply."
+      ],
+      "answer": 1,
+      "explanation": "'Please accept my apologies for the delay...' is a standard formal apology opening."
+    },
+    {
+      "id": 20,
+      "topic": "Formal complaint (advanced language)",
+      "question": "Which is the most appropriate opening line for a formal complaint about a cancelled contract?",
+      "options": [
+        "I am writing to express my concern regarding the unilateral cancellation of our contract.",
+        "You cancelled our contract and that's totally unfair.",
+        "I am writing to express my concern regarding the unilateral cancellation of our contract, seriously.",
+        "This cancellation is outrageous and I demand an explanation right now."
+      ],
+      "answer": 0,
+      "explanation": "Formal complaints use precise, measured language such as 'I am writing to express my concern regarding...'"
+    },
+    {
+      "id": 21,
+      "topic": "Idiomatic phrasal verbs (bring about)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The new leadership brought about significant cultural change.",
+        "The new leadership brought significant cultural change about of.",
+        "The new leadership brought about of significant cultural change.",
+        "The new leadership brought significant cultural change of about."
+      ],
+      "answer": 0,
+      "explanation": "'Bring about' means 'to cause': 'brought about significant cultural change.'"
+    },
+    {
+      "id": 22,
+      "topic": "Advanced passive (make + object + past participle)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The board made its decision known through a formal statement.",
+        "The board made its decision know through a formal statement.",
+        "The board made known its decision through a formal statement it.",
+        "The board made its decision knowing through a formal statement."
+      ],
+      "answer": 0,
+      "explanation": "'Make + object + past participle' shows the outcome of an action: 'made its decision known.'"
+    },
+    {
+      "id": 23,
+      "topic": "Absolute participle constructions",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Barring unforeseen setbacks, the project will finish on schedule.",
+        "Barred unforeseen setbacks, the project will finish on schedule.",
+        "Bar unforeseen setbacks, the project will finish on schedule.",
+        "Barring unforeseen setbacks that, the project will finish on schedule."
+      ],
+      "answer": 0,
+      "explanation": "'Barring' is a fixed absolute participle meaning 'except for, unless there are': 'Barring unforeseen setbacks...'"
+    },
+    {
+      "id": 24,
+      "topic": "Prepositional phrases (for the sake of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "For the sake of transparency, the firm published its full accounts.",
+        "For the sake transparency, the firm published its full accounts.",
+        "For the sake of transparency that, the firm published its full accounts.",
+        "For sake of the transparency, the firm published its full accounts."
+      ],
+      "answer": 0,
+      "explanation": "'For the sake of' means 'in order to achieve': 'For the sake of transparency, the firm published...'"
+    },
+    {
+      "id": 25,
+      "topic": "Advanced collocations (incur losses)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The fund incurred heavy losses during the downturn.",
+        "The fund suffered heavy losses incur during the downturn.",
+        "The fund made incur heavy losses during the downturn.",
+        "The fund incurred of heavy losses during the downturn."
+      ],
+      "answer": 0,
+      "explanation": "'Incur losses' is a fixed collocation: 'the fund incurred heavy losses.'"
+    },
+    {
+      "id": 26,
+      "topic": "Formal register (adverb placement)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The agency has closely monitored the negotiations.",
+        "The agency has monitored closely the negotiations.",
+        "Closely the agency has monitored the negotiations.",
+        "The agency closely has monitored the negotiations."
+      ],
+      "answer": 0,
+      "explanation": "Adverbs of manner typically follow the auxiliary verb: 'has closely monitored.'"
+    },
+    {
+      "id": 27,
+      "topic": "Discourse markers (on the other hand)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Sales in Europe declined. On the other hand, Asian sales grew.",
+        "Sales in Europe declined, on the other hand Asian sales grew.",
+        "Sales in Europe declined. On the other hand Asian sales grew.",
+        "Sales in Europe declined on the other hand, Asian sales grew."
+      ],
+      "answer": 0,
+      "explanation": "'On the other hand' begins a new sentence and is followed by a comma."
+    },
+    {
+      "id": 28,
+      "topic": "Advanced question tags",
+      "question": "Choose the correct question tag.",
+      "options": [
+        "The panel would rarely overturn such a ruling, would it?",
+        "The panel would rarely overturn such a ruling, wouldn't it?",
+        "The panel would rarely overturn such a ruling, doesn't it?",
+        "The panel would rarely overturn such a ruling, does it?"
+      ],
+      "answer": 0,
+      "explanation": "'Rarely' makes the statement effectively negative, so the tag is positive: 'would rarely overturn..., would it?'"
+    },
+    {
+      "id": 29,
+      "topic": "Formal register (understatement)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The turnaround was not entirely unexpected.",
+        "The turnaround was not all unexpected entirely.",
+        "The turnaround not was entirely unexpected.",
+        "The turnaround was entirely not unexpected."
+      ],
+      "answer": 0,
+      "explanation": "Formal understatement places 'not' before the adverb: 'was not entirely unexpected.'"
+    },
+    {
+      "id": 30,
+      "topic": "Advanced conditionals (Should you require)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Should you require further information, please do not hesitate to contact us.",
+        "Should you requiring further information, please do not hesitate to contact us.",
+        "You should require further information, please do not hesitate to contact us.",
+        "Should you require further information, please not hesitate to contact us do."
+      ],
+      "answer": 0,
+      "explanation": "'Should + subject + base verb' is a formal inverted conditional common in business correspondence: 'Should you require further information, please contact us.'"
+    }
+  ]
+}

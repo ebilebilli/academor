@@ -1,0 +1,399 @@
+{
+  "level": "B1",
+  "quiz": 10,
+  "title": "B1 Writing Quiz 10 — Shopping & Money",
+  "service": "general_english",
+  "category_name": "B1",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Second conditional",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "If I had more money, I will buy a new laptop.",
+        "If I have more money, I would buy a new laptop.",
+        "If I had more money, I would buy a new laptop.",
+        "If I would have more money, I would buy a new laptop."
+      ],
+      "answer": 2,
+      "explanation": "Second conditional: If + past simple, would + base verb: 'If I had more money, I would buy a new laptop.'"
+    },
+    {
+      "id": 2,
+      "topic": "Third conditional",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "If she had checked the price, she wouldn't overpay for the shoes.",
+        "If she checked the price, she wouldn't have overpaid for the shoes.",
+        "If she would have checked the price, she wouldn't have overpaid for the shoes.",
+        "If she had checked the price, she wouldn't have overpaid for the shoes."
+      ],
+      "answer": 3,
+      "explanation": "Third conditional: If + past perfect, would have + past participle: 'If she had checked..., she wouldn't have overpaid...'"
+    },
+    {
+      "id": 3,
+      "topic": "Passive voice (present simple)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "This product is sold in over fifty countries.",
+        "This product sells in over fifty countries.",
+        "This product is selling in over fifty countries.",
+        "This product sell in over fifty countries."
+      ],
+      "answer": 0,
+      "explanation": "Present simple passive: is/are + past participle: 'is sold in over fifty countries.'"
+    },
+    {
+      "id": 4,
+      "topic": "Passive voice (past simple)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The order cancelled due to a payment error.",
+        "The order was cancel due to a payment error.",
+        "The order is cancelled due to a payment error.",
+        "The order was cancelled due to a payment error."
+      ],
+      "answer": 3,
+      "explanation": "Past simple passive: was/were + past participle: 'was cancelled due to a payment error.'"
+    },
+    {
+      "id": 5,
+      "topic": "Relative clauses (defining)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The shop assistant which helped me was very polite.",
+        "The shop assistant who helped me was very polite.",
+        "The shop assistant whom helped me was very polite.",
+        "The shop assistant, who helped me, was very polite but."
+      ],
+      "answer": 1,
+      "explanation": "'Who' introduces a defining relative clause about a person: 'The shop assistant who helped me...'"
+    },
+    {
+      "id": 6,
+      "topic": "Relative clauses (non-defining)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "This store which opened last year offers great discounts but.",
+        "This store, that opened last year, offers great discounts.",
+        "This store which opened last year, offers great discounts.",
+        "This store, which opened last year, offers great discounts."
+      ],
+      "answer": 3,
+      "explanation": "Non-defining relative clauses use commas and 'which' for things: 'This store, which opened last year, offers great discounts.'"
+    },
+    {
+      "id": 7,
+      "topic": "Modal verbs of deduction (must/can't)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "That price can't to be right, it's far too low.",
+        "That price can't be right, it's far too low.",
+        "That price cann't be right, it's far too low.",
+        "That price can't being right, it's far too low."
+      ],
+      "answer": 1,
+      "explanation": "'Can't' + base verb expresses a confident negative deduction: 'that price can't be right.'"
+    },
+    {
+      "id": 8,
+      "topic": "Modal verbs of deduction (might/could)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The store could being closed on public holidays.",
+        "The store could to be closed on public holidays.",
+        "The store coulds be closed on public holidays.",
+        "The store could be closed on public holidays."
+      ],
+      "answer": 3,
+      "explanation": "'Could' + base verb expresses a possible deduction: 'the store could be closed.'"
+    },
+    {
+      "id": 9,
+      "topic": "Present perfect vs present perfect continuous",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I've bought three pairs of shoes this month.",
+        "I've been buying three pairs of shoes this month.",
+        "I'm buying three pairs of shoes this month already.",
+        "I've buy three pairs of shoes this month."
+      ],
+      "answer": 0,
+      "explanation": "Present perfect simple is used for a completed number of results: 'I've bought three pairs of shoes.'"
+    },
+    {
+      "id": 10,
+      "topic": "Present perfect continuous",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I've saved money since six months.",
+        "I've been saving money for six months.",
+        "I'm saving money for six months already.",
+        "I've been save money for six months."
+      ],
+      "answer": 1,
+      "explanation": "Present perfect continuous emphasizes duration of an unfinished action: 'I've been saving... for six months.'"
+    },
+    {
+      "id": 11,
+      "topic": "Reported speech (statements)",
+      "question": "Choose the correct sentence. (Direct: \"I have spent all my salary.\")",
+      "options": [
+        "He said that he has spent all his salary.",
+        "He said he have spent all his salary.",
+        "He said that he spent all his salary already.",
+        "He said that he had spent all his salary."
+      ],
+      "answer": 3,
+      "explanation": "In reported speech, present perfect shifts back to past perfect: 'he had spent all his salary.'"
+    },
+    {
+      "id": 12,
+      "topic": "Reported speech (questions)",
+      "question": "Choose the correct sentence. (Direct: \"How much does this cost?\")",
+      "options": [
+        "She asked me how much did that cost.",
+        "She asked me how much that costs.",
+        "She asked me how much that cost.",
+        "She asked me how much does that cost."
+      ],
+      "answer": 2,
+      "explanation": "Reported questions use normal word order (no auxiliary inversion) and shift the tense back: 'she asked me how much that cost.'"
+    },
+    {
+      "id": 13,
+      "topic": "Used to",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I used to spend all my pocket money on sweets.",
+        "I use to spend all my pocket money on sweets.",
+        "I was used to spend all my pocket money on sweets.",
+        "I used to spending all my pocket money on sweets."
+      ],
+      "answer": 0,
+      "explanation": "'Used to' + base verb describes a past habit that no longer happens: 'I used to spend all my pocket money on sweets.'"
+    },
+    {
+      "id": 14,
+      "topic": "Be used to / get used to",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I use to paying by card now.",
+        "I'm used to pay by card now.",
+        "I'm used paying to by card now.",
+        "I'm used to paying by card now."
+      ],
+      "answer": 3,
+      "explanation": "'Be used to' is followed by a gerund: 'I'm used to paying by card.'"
+    },
+    {
+      "id": 15,
+      "topic": "Phrasal verbs (try on)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Try the jacket on to before you buy it.",
+        "Try on the jacket before you buy it.",
+        "Try on to the jacket before you buy it.",
+        "Try the jacket before on you buy it."
+      ],
+      "answer": 1,
+      "explanation": "'Try on' means 'put on clothes to see if they fit': 'try on the jacket.'"
+    },
+    {
+      "id": 16,
+      "topic": "Phrasal verbs (pay back)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I need to pay back the money I borrowed.",
+        "I need to pay the money back to I borrowed.",
+        "I need to pay back to the money I borrowed.",
+        "I need to pay the money I borrowed back to."
+      ],
+      "answer": 0,
+      "explanation": "'Pay back' means 'return money that was borrowed': 'pay back the money.'"
+    },
+    {
+      "id": 17,
+      "topic": "Connectors (despite / although)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Despite of the high price, she bought the dress.",
+        "Although the high price, she bought the dress.",
+        "Despite the price was high, she bought the dress.",
+        "Despite the high price, she bought the dress."
+      ],
+      "answer": 3,
+      "explanation": "'Despite' is followed by a noun phrase (no 'of'): 'Despite the high price, she bought the dress.'"
+    },
+    {
+      "id": 18,
+      "topic": "Connectors (as a result)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The shop raised its prices, as a result customers stopped buying.",
+        "As a result the shop raised its prices customers stopped buying.",
+        "The shop raised its prices. As a result, customers stopped buying.",
+        "The shop raised its prices as a result, customers stopped buying."
+      ],
+      "answer": 2,
+      "explanation": "'As a result' starts a new sentence and is followed by a comma: 'The shop raised its prices. As a result, customers stopped buying.'"
+    },
+    {
+      "id": 19,
+      "topic": "Quantifiers (enough)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "We don't have cash enough to pay for the taxi.",
+        "We don't have enough cash to pay for the taxi.",
+        "We don't have enough of cash to pay for the taxi.",
+        "We hasn't enough cash to pay for the taxi."
+      ],
+      "answer": 1,
+      "explanation": "'Enough' comes before the noun it modifies: 'enough cash.'"
+    },
+    {
+      "id": 20,
+      "topic": "Prepositions (worried about)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "My father is really worried of the rising prices.",
+        "My father is really worried about the rising prices.",
+        "My father is really worried for the rising prices.",
+        "My father is really worried at the rising prices."
+      ],
+      "answer": 1,
+      "explanation": "'Worried about' + noun/gerund means 'concerned about something': 'worried about the rising prices.'"
+    },
+    {
+      "id": 21,
+      "topic": "Semi-formal email opening",
+      "question": "Which is the correct way to start an email to an online store's customer service you haven't contacted before?",
+      "options": [
+        "Hiya,",
+        "Yo,",
+        "Dear Sir or Madam,",
+        "Hey there,"
+      ],
+      "answer": 2,
+      "explanation": "'Dear Sir or Madam,' is a suitable formal opening when the recipient's exact name is unknown."
+    },
+    {
+      "id": 22,
+      "topic": "Formal email closing",
+      "question": "Which is the correct way to end a formal email to a named store manager?",
+      "options": [
+        "Later,",
+        "Best regards,",
+        "Cheers,",
+        "Talk soon,"
+      ],
+      "answer": 1,
+      "explanation": "'Best regards,' is a suitable semi-formal closing when writing to a named professional contact."
+    },
+    {
+      "id": 23,
+      "topic": "Making polite requests",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I was wondering if you could refund my order.",
+        "I was wondering if you could to refund my order.",
+        "I was wondering could you refunding my order.",
+        "I wonder if you refund could my order."
+      ],
+      "answer": 0,
+      "explanation": "'I was wondering if you could' + base verb is a polite way to make a request: 'if you could refund my order.'"
+    },
+    {
+      "id": 24,
+      "topic": "Sentence combining (relative clause with whose)",
+      "question": "Which sentence correctly combines 'This is the customer.' and 'The customer's card was declined.'?",
+      "options": [
+        "This is the customer which card was declined.",
+        "This is the customer's card who was declined.",
+        "This is the customer whose card was declined.",
+        "This is the customer who card was declined."
+      ],
+      "answer": 2,
+      "explanation": "'Whose' shows possession in a relative clause: 'the customer whose card was declined.'"
+    },
+    {
+      "id": 25,
+      "topic": "Word order (adverbs with perfect tenses)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I have paid such a high price never before.",
+        "I have paid never such a high price before.",
+        "Never I have paid such a high price before.",
+        "I have never paid such a high price before."
+      ],
+      "answer": 3,
+      "explanation": "'Never' is placed between the auxiliary and the past participle: 'I have never paid such a price.'"
+    },
+    {
+      "id": 26,
+      "topic": "Punctuation (indirect question)",
+      "question": "Which sentence has correct punctuation?",
+      "options": [
+        "I'd like to know whether the item has been shipped?",
+        "I'd like to know, whether the item has been shipped.",
+        "I'd like to know whether has the item been shipped?",
+        "I'd like to know whether the item has been shipped."
+      ],
+      "answer": 3,
+      "explanation": "Reported/indirect statements use normal word order and end with a full stop, not a question mark."
+    },
+    {
+      "id": 27,
+      "topic": "Sentence completion (future continuous)",
+      "question": "This time tomorrow, I ___ for a new phone.",
+      "options": [
+        "am shopping",
+        "will shop",
+        "shop",
+        "will be shopping"
+      ],
+      "answer": 3,
+      "explanation": "Future continuous describes an action in progress at a specific future time: 'will be shopping'."
+    },
+    {
+      "id": 28,
+      "topic": "Sentence completion (future perfect)",
+      "question": "By Friday, the shop ___ its whole stock.",
+      "options": [
+        "sells",
+        "is selling",
+        "will sell",
+        "will have sold"
+      ],
+      "answer": 3,
+      "explanation": "Future perfect describes an action completed before a future point: 'will have sold'."
+    },
+    {
+      "id": 29,
+      "topic": "Sequencing/discourse markers",
+      "question": "Choose the sentence that correctly uses discourse markers.",
+      "options": [
+        "Firstly we compare prices secondly check finally purchase.",
+        "Finally compare the prices, firstly check, secondly make purchase.",
+        "Firstly, compare the prices. Secondly, check the reviews. Finally, make the purchase.",
+        "Secondly firstly compare prices, finally check reviews."
+      ],
+      "answer": 2,
+      "explanation": "Discourse markers 'Firstly,', 'Secondly,' and 'Finally,' organize points clearly with commas."
+    },
+    {
+      "id": 30,
+      "topic": "Question formation (tag questions with modals)",
+      "question": "Choose the correct question tag.",
+      "options": [
+        "You wouldn't spend all your savings, will you?",
+        "You wouldn't spend all your savings, do you?",
+        "You wouldn't spend all your savings, would you?",
+        "You wouldn't spend all your savings, wouldn't you?"
+      ],
+      "answer": 2,
+      "explanation": "Negative statement with 'would' + positive tag: 'you wouldn't spend..., would you?'"
+    }
+  ]
+}

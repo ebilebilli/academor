@@ -1,0 +1,399 @@
+{
+  "level": "B2",
+  "quiz": 2,
+  "title": "B2 Writing Quiz 2 — Technology & Social Media",
+  "service": "general_english",
+  "category_name": "B2",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Mixed conditionals",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "If we had developed stronger data protection laws, users wouldn't be at risk now.",
+        "If we developed stronger data protection laws, users wouldn't be at risk now.",
+        "If we had developed stronger data protection laws, users wouldn't have been at risk now.",
+        "If we had developed stronger data protection laws, users won't be at risk now."
+      ],
+      "answer": 0,
+      "explanation": "Mixed conditional: If + past perfect (past condition), would + base verb (present result): 'If we had developed..., users wouldn't be at risk now.'"
+    },
+    {
+      "id": 2,
+      "topic": "Conditionals without if (unless)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Social media addiction will keep rising unless platforms won't change their algorithms.",
+        "Social media addiction will keep rising unless platforms change their algorithms.",
+        "Social media addiction will keep rising unless that platforms change their algorithms.",
+        "Social media addiction will keep rising without platforms change their algorithms."
+      ],
+      "answer": 1,
+      "explanation": "'Unless' means 'if...not' and is followed by an affirmative clause: 'unless platforms change their algorithms.'"
+    },
+    {
+      "id": 3,
+      "topic": "Passive voice (present perfect)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Several new privacy features has been added this year.",
+        "Several new privacy features have added this year.",
+        "Several new privacy features have been added this year.",
+        "Several new privacy features have being added this year."
+      ],
+      "answer": 2,
+      "explanation": "Present perfect passive: have/has been + past participle: 'have been added this year.'"
+    },
+    {
+      "id": 4,
+      "topic": "Passive voice (modal passive)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "This security flaw should fixed immediately.",
+        "This security flaw should being fixed immediately.",
+        "This security flaw should be fix immediately.",
+        "This security flaw should be fixed immediately."
+      ],
+      "answer": 3,
+      "explanation": "Modal passive: modal + be + past participle: 'should be fixed immediately.'"
+    },
+    {
+      "id": 5,
+      "topic": "Reported speech (commands/requests)",
+      "question": "Choose the correct sentence. (Direct: \"Please update your app.\")",
+      "options": [
+        "The developer told us to update our app.",
+        "The developer told us update our app.",
+        "The developer said us to update our app.",
+        "The developer told us that update our app."
+      ],
+      "answer": 0,
+      "explanation": "Reported commands: tell + object + to + base verb: 'told us to update our app.'"
+    },
+    {
+      "id": 6,
+      "topic": "Reported speech (advice)",
+      "question": "Choose the correct sentence. (Direct: \"You should use two-factor authentication.\")",
+      "options": [
+        "She suggested to use two-factor authentication.",
+        "She suggested using two-factor authentication.",
+        "She suggested me using two-factor authentication.",
+        "She suggested that I using two-factor authentication."
+      ],
+      "answer": 1,
+      "explanation": "'Suggest' is followed by a gerund or 'that + subject + base verb': 'suggested using two-factor authentication.'"
+    },
+    {
+      "id": 7,
+      "topic": "Relative clauses with prepositions",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The startup which she works for it develops AI tools.",
+        "The startup for that she works develops AI tools.",
+        "The startup for which she works develops AI tools.",
+        "The startup she works for which develops AI tools."
+      ],
+      "answer": 2,
+      "explanation": "In formal style, the preposition moves before 'which': 'the startup for which she works.'"
+    },
+    {
+      "id": 8,
+      "topic": "Reduced relative clauses (participle clauses)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The app launching last month gained millions of users.",
+        "The app launched last month gain millions of users.",
+        "The app which launched last month gained millions of users.",
+        "The app launched last month gained millions of users."
+      ],
+      "answer": 3,
+      "explanation": "A passive meaning reduces 'which was launched' to the past participle alone: 'The app launched last month...'"
+    },
+    {
+      "id": 9,
+      "topic": "Modal verbs of past deduction (must have)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The hackers must have exploited a weakness in the system.",
+        "The hackers must exploited a weakness in the system.",
+        "The hackers must have exploit a weakness in the system.",
+        "The hackers must has exploited a weakness in the system."
+      ],
+      "answer": 0,
+      "explanation": "Past deduction: must have + past participle: 'must have exploited a weakness.'"
+    },
+    {
+      "id": 10,
+      "topic": "Modals of past obligation/regret (should have)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The company should acted sooner to fix the data breach.",
+        "The company should have acted sooner to fix the data breach.",
+        "The company should have act sooner to fix the data breach.",
+        "The company should has acted sooner to fix the data breach."
+      ],
+      "answer": 1,
+      "explanation": "Past regret/criticism: should have + past participle: 'should have acted sooner.'"
+    },
+    {
+      "id": 11,
+      "topic": "Present perfect vs past simple",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Smartphone usage rose dramatically over the past decade.",
+        "Smartphone usage has risen dramatically over the past decade.",
+        "Smartphone usage have risen dramatically over the past decade.",
+        "Smartphone usage have rose dramatically over the past decade."
+      ],
+      "answer": 1,
+      "explanation": "'Over the past decade' links the past to the present, so present perfect is used: 'has risen dramatically.'"
+    },
+    {
+      "id": 12,
+      "topic": "Past perfect vs past simple",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "By the time the update was released, most users already deleted the app.",
+        "By the time the update had released, most users already deleted the app.",
+        "By the time the update was released, most users have already deleted the app.",
+        "By the time the update was released, most users had already deleted the app."
+      ],
+      "answer": 3,
+      "explanation": "The earlier of two past actions takes the past perfect: 'most users had already deleted the app.'"
+    },
+    {
+      "id": 13,
+      "topic": "Future forms (present continuous for arrangements)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Tech leaders are meeting next week to discuss AI regulation.",
+        "Tech leaders meet next week to discuss AI regulation.",
+        "Tech leaders will meeting next week to discuss AI regulation.",
+        "Tech leaders are meet next week to discuss AI regulation."
+      ],
+      "answer": 0,
+      "explanation": "Present continuous expresses a fixed future arrangement: 'are meeting next week.'"
+    },
+    {
+      "id": 14,
+      "topic": "Future in the past (would)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "He said he will release the update soon.",
+        "He said he would release the update soon.",
+        "He said he would released the update soon.",
+        "He said he would have release the update soon."
+      ],
+      "answer": 1,
+      "explanation": "In reported speech, 'will' shifts back to 'would': 'he said he would release the update soon.'"
+    },
+    {
+      "id": 15,
+      "topic": "Wish / if only (present regret)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I wish social media companies take privacy more seriously.",
+        "I wish social media companies have taken privacy more seriously.",
+        "I wish social media companies took privacy more seriously.",
+        "I wish social media companies would take privacy more seriously as a rule."
+      ],
+      "answer": 2,
+      "explanation": "'Wish' + past simple expresses regret about a present situation: 'I wish social media companies took privacy more seriously.'"
+    },
+    {
+      "id": 16,
+      "topic": "Wish / if only (past regret)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I wish developers warned us earlier about the bug.",
+        "I wish developers have warned us earlier about the bug.",
+        "I wish developers would have warned us earlier about the bug.",
+        "I wish developers had warned us earlier about the bug."
+      ],
+      "answer": 3,
+      "explanation": "'Wish' + past perfect expresses regret about the past: 'I wish developers had warned us earlier.'"
+    },
+    {
+      "id": 17,
+      "topic": "Causative (have something done)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "We had our website redesigned by a professional agency.",
+        "We had redesigned our website by a professional agency.",
+        "We had our website redesign by a professional agency.",
+        "We have our website redesigned by a professional agency last year."
+      ],
+      "answer": 0,
+      "explanation": "Causative form: have + object + past participle shows someone else did the action: 'had our website redesigned.'"
+    },
+    {
+      "id": 18,
+      "topic": "Inversion for emphasis",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Never before the industry had faced such rapid change.",
+        "Never before had the industry faced such rapid change.",
+        "Never before did the industry faced such rapid change.",
+        "Never before has the industry had faced such rapid change."
+      ],
+      "answer": 1,
+      "explanation": "Negative adverbials at the start trigger inversion: 'Never before had the industry faced...'"
+    },
+    {
+      "id": 19,
+      "topic": "Phrasal verbs (look into)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The company is looking the data leak into.",
+        "The company is looking in to the data leak.",
+        "The company is looking into the data leak.",
+        "The company is looking into to the data leak."
+      ],
+      "answer": 2,
+      "explanation": "'Look into' means 'investigate' and is inseparable: 'looking into the data leak.'"
+    },
+    {
+      "id": 20,
+      "topic": "Cleft sentences (What...is)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "What we urgently need are a clear regulation on AI.",
+        "That we urgently need is a clear regulation on AI.",
+        "What we urgently need is clear regulation on AI it.",
+        "What we urgently need is a clear regulation on AI."
+      ],
+      "answer": 3,
+      "explanation": "'What' clefts take a singular verb when the complement is singular: 'What we need is a clear regulation.'"
+    },
+    {
+      "id": 21,
+      "topic": "Connectors (whereas)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Some apps protect user data well, whereas others sell it to advertisers.",
+        "Some apps protect user data well, whereas others sells it to advertisers.",
+        "Some apps protect user data well whereas, others sell it to advertisers.",
+        "Some apps protect user data well despite others sell it to advertisers."
+      ],
+      "answer": 0,
+      "explanation": "'Whereas' contrasts two clauses and is followed directly by the subject: 'whereas others sell it...'"
+    },
+    {
+      "id": 22,
+      "topic": "Connectors (in spite of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "In spite the new safeguards, cyberattacks remain common.",
+        "In spite of the new safeguards, cyberattacks remain common.",
+        "Despite of the new safeguards, cyberattacks remain common.",
+        "In spite of the new safeguards, cyberattacks remain common though."
+      ],
+      "answer": 1,
+      "explanation": "'In spite of' is followed by a noun phrase: 'In spite of the new safeguards, cyberattacks remain common.'"
+    },
+    {
+      "id": 23,
+      "topic": "Quantifiers (a number of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "A number of studies has linked heavy screen time to poor sleep.",
+        "The number of studies have linked heavy screen time to poor sleep.",
+        "A number of studies have linked heavy screen time to poor sleep.",
+        "A great number of studies has linked heavy screen time to poor sleep."
+      ],
+      "answer": 2,
+      "explanation": "'A number of' + plural noun takes a plural verb: 'a number of studies have linked...'"
+    },
+    {
+      "id": 24,
+      "topic": "Prepositional phrases (on behalf of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "She spoke in behalf of the entire developer team.",
+        "She spoke on behalf for the entire developer team.",
+        "She spoke behalf of the entire developer team.",
+        "She spoke on behalf of the entire developer team."
+      ],
+      "answer": 3,
+      "explanation": "'On behalf of' means 'representing someone': 'she spoke on behalf of the team.'"
+    },
+    {
+      "id": 25,
+      "topic": "Formal register (nominalization)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The implementation of stricter encryption reduced data breaches significantly.",
+        "The implement of stricter encryption reduced data breaches significantly.",
+        "The implementing of stricter encryption reduced data breaches significantly.",
+        "The implementation of stricter encryption reduce data breaches significantly."
+      ],
+      "answer": 0,
+      "explanation": "Formal writing often nominalizes verbs into nouns: 'implement' becomes 'the implementation of...'"
+    },
+    {
+      "id": 26,
+      "topic": "Formal email (requesting information)",
+      "question": "Which is the most appropriate formal opening line for an email requesting information about a software subscription?",
+      "options": [
+        "I'm writing to ask you about your subscription plans, ok?",
+        "I am writing to enquire about your subscription plans.",
+        "Just wanted to know about your subscription plans.",
+        "Hey, tell me about your subscription plans."
+      ],
+      "answer": 1,
+      "explanation": "'I am writing to enquire about...' is a standard formal opening for information requests."
+    },
+    {
+      "id": 27,
+      "topic": "Making complaints (formal language)",
+      "question": "Which is the most appropriate opening line for a formal complaint about a delayed software refund?",
+      "options": [
+        "I'm writing because I'm really mad about my delayed refund.",
+        "I want to complain about my delayed refund, it's bad.",
+        "I am writing to express my concern about my delayed refund.",
+        "I am writing to express my concern about my delayed refund, ok."
+      ],
+      "answer": 2,
+      "explanation": "Formal complaints use measured language such as 'I am writing to express my concern about...'"
+    },
+    {
+      "id": 28,
+      "topic": "Adverbs of degree (extremely)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The results of the survey were extreme alarming.",
+        "The results of the survey were extremely alarm.",
+        "The results of the survey were very much alarming.",
+        "The results of the survey were extremely alarming."
+      ],
+      "answer": 3,
+      "explanation": "'Extremely' (adverb) modifies the adjective 'alarming': 'were extremely alarming.'"
+    },
+    {
+      "id": 29,
+      "topic": "Discourse markers (moreover)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The app is faster now. Moreover, it uses less data.",
+        "The app is faster now, moreover it uses less data.",
+        "The app is faster now. Moreover it uses less data.",
+        "The app is faster now moreover, it uses less data."
+      ],
+      "answer": 0,
+      "explanation": "'Moreover' begins a new sentence and is followed by a comma: 'The app is faster now. Moreover, it uses less data.'"
+    },
+    {
+      "id": 30,
+      "topic": "Question tags (advanced forms)",
+      "question": "Choose the correct question tag.",
+      "options": [
+        "You'd recommend stronger privacy settings, didn't you?",
+        "You'd recommend stronger privacy settings, wouldn't you?",
+        "You'd recommend stronger privacy settings, would you?",
+        "You'd recommend stronger privacy settings, wouldn't it?"
+      ],
+      "answer": 1,
+      "explanation": "A positive statement with 'would' takes a negative tag: 'You'd recommend..., wouldn't you?'"
+    }
+  ]
+}

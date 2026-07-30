@@ -1,0 +1,399 @@
+{
+  "level": "A2",
+  "quiz": 10,
+  "title": "A2 Writing Quiz 10 — Nature, Environment & Local Places",
+  "service": "general_english",
+  "category_name": "A2",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Present perfect",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Have you ever planted a tree?",
+        "Have you ever plant a tree?",
+        "Did you ever planted a tree?",
+        "Have you ever plants a tree?"
+      ],
+      "answer": 0,
+      "explanation": "Present perfect question: Have + subject + past participle: 'Have you ever planted a tree?'"
+    },
+    {
+      "id": 2,
+      "topic": "Present perfect vs past simple",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "We have visited that national park last spring.",
+        "We visited that national park last spring.",
+        "We have visit that national park last spring.",
+        "We are visiting that national park last spring."
+      ],
+      "answer": 1,
+      "explanation": "A finished time expression ('last spring') needs past simple, not present perfect."
+    },
+    {
+      "id": 3,
+      "topic": "Past continuous",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "We were walking along the river when we saw a deer.",
+        "We walked along the river when we were seeing a deer.",
+        "We were walk along the river when we saw a deer.",
+        "We walking were along the river when we saw a deer."
+      ],
+      "answer": 0,
+      "explanation": "Past continuous (background) + past simple (main event): 'We were walking... when we saw a deer.'"
+    },
+    {
+      "id": 4,
+      "topic": "Comparatives",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "This forest is greener than the one near my house.",
+        "This forest is more green than the one near my house.",
+        "This forest is greenest than the one near my house.",
+        "This forest is green than the one near my house."
+      ],
+      "answer": 0,
+      "explanation": "One-syllable adjectives take -er for comparatives: 'greener than'."
+    },
+    {
+      "id": 5,
+      "topic": "Superlatives",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "This is the cleanest lake I've ever seen.",
+        "This is the more clean lake I've ever seen.",
+        "This is the most cleanest lake I've ever seen.",
+        "This is clean lake I've ever seen."
+      ],
+      "answer": 0,
+      "explanation": "One-syllable adjective superlative: 'the cleanest'."
+    },
+    {
+      "id": 6,
+      "topic": "Modal verbs (should)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "We should recycle more to protect the environment.",
+        "We should to recycle more to protect the environment.",
+        "We should recycling more to protect the environment.",
+        "We should recycles more to protect the environment."
+      ],
+      "answer": 0,
+      "explanation": "'Should' is followed by the base form of the verb: 'should recycle'."
+    },
+    {
+      "id": 7,
+      "topic": "Modal verbs (must)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Visitors must not feed the animals in the park.",
+        "Visitors must not feeding the animals in the park.",
+        "Visitors must not to feed the animals in the park.",
+        "Visitors must not fed the animals in the park."
+      ],
+      "answer": 0,
+      "explanation": "'Must not' + base verb expresses a strict prohibition: 'must not feed'."
+    },
+    {
+      "id": 8,
+      "topic": "Modal verbs (should have)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "We should have brought a map for the trail.",
+        "We should brought a map for the trail.",
+        "We should have bring a map for the trail.",
+        "We should has brought a map for the trail."
+      ],
+      "answer": 0,
+      "explanation": "'Should have' + past participle expresses regret about the past: 'should have brought'."
+    },
+    {
+      "id": 9,
+      "topic": "Going to future",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "We're going to clean up the beach this weekend.",
+        "We're going clean up the beach this weekend.",
+        "We going to clean up the beach this weekend.",
+        "We're going to cleaning up the beach this weekend."
+      ],
+      "answer": 0,
+      "explanation": "'Going to' + base verb expresses a plan: 'going to clean up'."
+    },
+    {
+      "id": 10,
+      "topic": "First conditional",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "If we protect the forest, animals will have a safe home.",
+        "If we will protect the forest, animals have a safe home.",
+        "If we protect the forest, animals have will a safe home.",
+        "If we protected the forest, animals will have a safe home."
+      ],
+      "answer": 0,
+      "explanation": "First conditional: If + present simple, will + base verb: 'If we protect..., animals will have...'"
+    },
+    {
+      "id": 11,
+      "topic": "Gerunds after verbs",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I love exploring quiet forest trails.",
+        "I love to exploring quiet forest trails.",
+        "I love explore quiet forest trails.",
+        "I love explored quiet forest trails."
+      ],
+      "answer": 0,
+      "explanation": "'Love' can be followed by a gerund (-ing form): 'love exploring'."
+    },
+    {
+      "id": 12,
+      "topic": "Infinitive after verbs",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The village decided protecting the old oak tree.",
+        "The village decided to protect the old oak tree.",
+        "The village decided protect the old oak tree.",
+        "The village decided for protect the old oak tree."
+      ],
+      "answer": 1,
+      "explanation": "'Decide' is followed by the infinitive with 'to': 'decided to protect'."
+    },
+    {
+      "id": 13,
+      "topic": "Quantifiers (a lot of/much/many)",
+      "question": "There isn't ___ pollution in this small village.",
+      "options": [
+        "many",
+        "much",
+        "a few",
+        "several"
+      ],
+      "answer": 1,
+      "explanation": "'Pollution' is uncountable, so use 'much' in negative sentences."
+    },
+    {
+      "id": 14,
+      "topic": "Quantifiers (a few/a little)",
+      "question": "There are ___ birds singing in the trees this morning.",
+      "options": [
+        "a little",
+        "a few",
+        "much",
+        "little"
+      ],
+      "answer": 1,
+      "explanation": "'Birds' is countable, and 'a few' means 'a small number of'."
+    },
+    {
+      "id": 15,
+      "topic": "Connectors (in order to)",
+      "question": "Choose the sentence that correctly uses 'in order to'.",
+      "options": [
+        "We planted trees in order to reduce pollution.",
+        "We planted trees in order reduce pollution.",
+        "In order to we planted trees reduce pollution.",
+        "We planted trees in order to reducing pollution."
+      ],
+      "answer": 0,
+      "explanation": "'In order to' + base verb expresses purpose: 'in order to reduce pollution.'"
+    },
+    {
+      "id": 16,
+      "topic": "Connectors (unless)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The lake will get worse unless we act now.",
+        "The lake will get worse unless we will act now.",
+        "The lake will get worse unless don't we act now.",
+        "The lake will get worse unless we acted now."
+      ],
+      "answer": 0,
+      "explanation": "'Unless' means 'if not' and is followed by present simple: 'unless we act now.'"
+    },
+    {
+      "id": 17,
+      "topic": "Prepositions (along)",
+      "question": "There are many old trees ___ this river.",
+      "options": [
+        "along",
+        "across",
+        "between",
+        "beyond"
+      ],
+      "answer": 0,
+      "explanation": "'Along' + noun describes something following the length of a place: 'along this river.'"
+    },
+    {
+      "id": 18,
+      "topic": "Prepositions (in the middle of)",
+      "question": "The small island is ___ the lake.",
+      "options": [
+        "in the middle of",
+        "in middle of",
+        "on the middle",
+        "at the middle of"
+      ],
+      "answer": 0,
+      "explanation": "'In the middle of' + noun describes a central position: 'in the middle of the lake.'"
+    },
+    {
+      "id": 19,
+      "topic": "Reported speech (simple)",
+      "question": "Choose the correct sentence. (Direct: \"I love hiking in the mountains.\")",
+      "options": [
+        "He said that he loves hiking in the mountains.",
+        "He said that he loved hiking in the mountains.",
+        "He said that he is loving hiking in the mountains.",
+        "He said he love hiking in the mountains."
+      ],
+      "answer": 1,
+      "explanation": "In reported speech, present simple usually shifts to past simple: 'he loved hiking in the mountains.'"
+    },
+    {
+      "id": 20,
+      "topic": "Semi-formal email opening",
+      "question": "Which is the correct way to start an email to a local council about a park cleanup?",
+      "options": [
+        "Hey guys,",
+        "Dear Sir/Madam,",
+        "Yo,",
+        "Hiya,"
+      ],
+      "answer": 1,
+      "explanation": "'Dear Sir/Madam,' is used when writing formally to an organization without knowing the recipient's name."
+    },
+    {
+      "id": 21,
+      "topic": "Formal email closing",
+      "question": "Which is the correct way to end a formal email proposing a community cleanup?",
+      "options": [
+        "Yours faithfully,",
+        "Catch you later,",
+        "Cheers,",
+        "Take care,"
+      ],
+      "answer": 0,
+      "explanation": "'Yours faithfully,' matches 'Dear Sir/Madam,' when the recipient's name is unknown."
+    },
+    {
+      "id": 22,
+      "topic": "Making suggestions",
+      "question": "Choose the correct suggestion.",
+      "options": [
+        "Why don't we organize a tree-planting day?",
+        "Why we don't organize a tree-planting day?",
+        "Why not we organize a tree-planting day?",
+        "Why don't we organizing a tree-planting day?"
+      ],
+      "answer": 0,
+      "explanation": "'Why don't we' + base verb is used to make a suggestion: 'Why don't we organize...'"
+    },
+    {
+      "id": 23,
+      "topic": "Sentence combining (relative clause)",
+      "question": "Which sentence correctly combines 'This is the trail.' and 'We saw wild deer there.'?",
+      "options": [
+        "This is the trail who we saw wild deer.",
+        "This is the trail where we saw wild deer.",
+        "This is the trail which we saw wild deer.",
+        "This is the trail what we saw wild deer."
+      ],
+      "answer": 1,
+      "explanation": "'Where' is used for places in relative clauses: 'the trail where we saw wild deer.'"
+    },
+    {
+      "id": 24,
+      "topic": "Word order (adverbs of frequency)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "We often walk in the nearby forest at weekends.",
+        "We walk often in the nearby forest at weekends.",
+        "Often we walk in the nearby forest at weekends always.",
+        "We walk in the nearby forest often at weekends."
+      ],
+      "answer": 0,
+      "explanation": "Adverbs of frequency usually go before the main verb: 'We often walk in the nearby forest.'"
+    },
+    {
+      "id": 25,
+      "topic": "Punctuation (indirect question)",
+      "question": "Which sentence has correct punctuation?",
+      "options": [
+        "Do you know where the nearest recycling bin is?",
+        "Do you know where is the nearest recycling bin?",
+        "Do you know where the nearest recycling bin is.",
+        "Do you know, where the nearest recycling bin is?"
+      ],
+      "answer": 0,
+      "explanation": "Indirect questions keep normal word order and end with a question mark: 'where the nearest recycling bin is?'"
+    },
+    {
+      "id": 26,
+      "topic": "Sentence completion (present perfect continuous)",
+      "question": "We ___ litter from the park all morning, so it looks much cleaner now.",
+      "options": [
+        "collect",
+        "have collected",
+        "have been collecting",
+        "collected"
+      ],
+      "answer": 2,
+      "explanation": "Present perfect continuous emphasizes an ongoing action explaining a present result: 'have been collecting'."
+    },
+    {
+      "id": 27,
+      "topic": "Sentence completion (possessive pronouns)",
+      "question": "This water bottle isn't mine, it's ___.",
+      "options": [
+        "they",
+        "their",
+        "theirs",
+        "their's"
+      ],
+      "answer": 2,
+      "explanation": "Possessive pronoun (stands alone, no noun after it): 'it's theirs.'"
+    },
+    {
+      "id": 28,
+      "topic": "Sequencing words (advanced)",
+      "question": "Choose the sentence that correctly uses sequencing words.",
+      "options": [
+        "First, collect the rubbish. Next, sort the recycling. Finally, plant new trees.",
+        "First collect rubbish next sort recycling finally plant trees.",
+        "Finally collect rubbish, first sort recycling, next plant trees.",
+        "Next first collect rubbish, finally sort plant trees."
+      ],
+      "answer": 0,
+      "explanation": "Sequencing words 'First,', 'Next,' and 'Finally,' organize steps clearly with commas."
+    },
+    {
+      "id": 29,
+      "topic": "Subject-verb agreement (each/every)",
+      "question": "Every volunteer at the cleanup ___ a pair of gloves.",
+      "options": [
+        "receive",
+        "receives",
+        "receiving",
+        "are receiving"
+      ],
+      "answer": 1,
+      "explanation": "'Every' takes a singular verb: 'Every volunteer receives...'"
+    },
+    {
+      "id": 30,
+      "topic": "Question formation (tag questions)",
+      "question": "Choose the correct question tag.",
+      "options": [
+        "You haven't seen this trail before, have you?",
+        "You haven't seen this trail before, haven't you?",
+        "You haven't seen this trail before, did you?",
+        "You haven't seen this trail before, have?"
+      ],
+      "answer": 0,
+      "explanation": "Negative statement + positive tag: 'You haven't seen this trail before, have you?'"
+    }
+  ]
+}

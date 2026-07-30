@@ -1,0 +1,399 @@
+{
+  "level": "B1",
+  "quiz": 1,
+  "title": "B1 Writing Quiz 1 — Work, Travel & Everyday Decisions",
+  "service": "general_english",
+  "category_name": "B1",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Second conditional",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "If I had more free time, I would learn to paint.",
+        "If I have more free time, I would learn to paint.",
+        "If I had more free time, I will learn to paint.",
+        "If I would have more free time, I would learn to paint."
+      ],
+      "answer": 0,
+      "explanation": "Second conditional: If + past simple, would + base verb: 'If I had more time, I would learn to paint.'"
+    },
+    {
+      "id": 2,
+      "topic": "Third conditional",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "If I had studied harder, I would pass the exam.",
+        "If I had studied harder, I would have passed the exam.",
+        "If I studied harder, I would have passed the exam.",
+        "If I would have studied harder, I would have passed the exam."
+      ],
+      "answer": 1,
+      "explanation": "Third conditional: If + past perfect, would have + past participle: 'If I had studied..., I would have passed.'"
+    },
+    {
+      "id": 3,
+      "topic": "Passive voice (present simple)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "This product is made in three different countries.",
+        "This product makes in three different countries.",
+        "This product is making in three different countries.",
+        "This product made in three different countries."
+      ],
+      "answer": 0,
+      "explanation": "Present simple passive: is/are + past participle: 'is made in three countries.'"
+    },
+    {
+      "id": 4,
+      "topic": "Passive voice (past simple)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The report was written by our team last week.",
+        "The report wrote by our team last week.",
+        "The report was wrote by our team last week.",
+        "The report is written by our team last week."
+      ],
+      "answer": 0,
+      "explanation": "Past simple passive: was/were + past participle: 'was written by our team.'"
+    },
+    {
+      "id": 5,
+      "topic": "Relative clauses (defining)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The manager who hired me has left the company.",
+        "The manager which hired me has left the company.",
+        "The manager whom hired me has left the company.",
+        "The manager, who hired me, has left the company but."
+      ],
+      "answer": 0,
+      "explanation": "'Who' introduces a defining relative clause about a person: 'The manager who hired me...'"
+    },
+    {
+      "id": 6,
+      "topic": "Relative clauses (non-defining)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "My colleague, who speaks four languages, is moving abroad.",
+        "My colleague who speaks four languages is moving abroad but.",
+        "My colleague, that speaks four languages, is moving abroad.",
+        "My colleague which speaks four languages, is moving abroad."
+      ],
+      "answer": 0,
+      "explanation": "Non-defining relative clauses use commas and 'who' for people: 'My colleague, who speaks four languages, is moving abroad.'"
+    },
+    {
+      "id": 7,
+      "topic": "Modal verbs of deduction (must/can't)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "She isn't answering, so she must be busy.",
+        "She isn't answering, so she must to be busy.",
+        "She isn't answering, so she must busy.",
+        "She isn't answering, so she must being busy."
+      ],
+      "answer": 0,
+      "explanation": "'Must' + base verb expresses a confident deduction: 'she must be busy.'"
+    },
+    {
+      "id": 8,
+      "topic": "Modal verbs of deduction (might/could)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "He might be stuck in traffic.",
+        "He might being stuck in traffic.",
+        "He might to be stuck in traffic.",
+        "He mights be stuck in traffic."
+      ],
+      "answer": 0,
+      "explanation": "'Might' + base verb expresses a possible deduction: 'he might be stuck in traffic.'"
+    },
+    {
+      "id": 9,
+      "topic": "Present perfect vs present perfect continuous",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I've written three emails this morning.",
+        "I've been writing three emails this morning.",
+        "I've wrote three emails this morning.",
+        "I'm writing three emails this morning already."
+      ],
+      "answer": 0,
+      "explanation": "Present perfect simple is used for a completed number of results: 'I've written three emails.'"
+    },
+    {
+      "id": 10,
+      "topic": "Present perfect continuous",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I've been working on this project for two weeks.",
+        "I've worked on this project since two weeks.",
+        "I'm working on this project for two weeks already.",
+        "I've been work on this project for two weeks."
+      ],
+      "answer": 0,
+      "explanation": "Present perfect continuous emphasizes duration of an unfinished action: 'I've been working... for two weeks.'"
+    },
+    {
+      "id": 11,
+      "topic": "Reported speech (statements)",
+      "question": "Choose the correct sentence. (Direct: \"I have finished the project.\")",
+      "options": [
+        "He said that he has finished the project.",
+        "He said that he had finished the project.",
+        "He said that he finished the project already.",
+        "He said he have finished the project."
+      ],
+      "answer": 1,
+      "explanation": "In reported speech, present perfect shifts back to past perfect: 'he had finished the project.'"
+    },
+    {
+      "id": 12,
+      "topic": "Reported speech (questions)",
+      "question": "Choose the correct sentence. (Direct: \"Where do you work?\")",
+      "options": [
+        "She asked me where do I work.",
+        "She asked me where I worked.",
+        "She asked me where did I work.",
+        "She asked me where I work."
+      ],
+      "answer": 1,
+      "explanation": "Reported questions use normal word order (no auxiliary inversion) and shift the tense back: 'she asked me where I worked.'"
+    },
+    {
+      "id": 13,
+      "topic": "Used to",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I used to work in retail before I became a teacher.",
+        "I use to work in retail before I became a teacher.",
+        "I was used to work in retail before I became a teacher.",
+        "I used to working in retail before I became a teacher."
+      ],
+      "answer": 0,
+      "explanation": "'Used to' + base verb describes a past habit that no longer happens: 'I used to work in retail.'"
+    },
+    {
+      "id": 14,
+      "topic": "Be used to / get used to",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I'm still getting used to waking up early for work.",
+        "I'm still getting used to wake up early for work.",
+        "I'm still get used to waking up early for work.",
+        "I'm still used to get waking up early for work."
+      ],
+      "answer": 0,
+      "explanation": "'Get used to' is followed by a gerund: 'getting used to waking up early.'"
+    },
+    {
+      "id": 15,
+      "topic": "Phrasal verbs (put off)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "We had to put off the meeting until next week.",
+        "We had to put the meeting off until next week away.",
+        "We had to put off to the meeting until next week.",
+        "We had to put the meeting until next week off."
+      ],
+      "answer": 0,
+      "explanation": "'Put off' means 'postpone': 'put off the meeting until next week.'"
+    },
+    {
+      "id": 16,
+      "topic": "Phrasal verbs (look after)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "My sister looks after my children on Fridays.",
+        "My sister looks my children after on Fridays.",
+        "My sister looks after to my children on Fridays.",
+        "My sister after looks my children on Fridays."
+      ],
+      "answer": 0,
+      "explanation": "'Look after' means 'take care of': 'looks after my children.'"
+    },
+    {
+      "id": 17,
+      "topic": "Connectors (despite / although)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Despite the traffic, we arrived on time.",
+        "Despite of the traffic, we arrived on time.",
+        "Although the traffic, we arrived on time.",
+        "Despite the traffic was heavy, we arrived on time."
+      ],
+      "answer": 0,
+      "explanation": "'Despite' is followed by a noun phrase (no 'of'): 'Despite the traffic, we arrived on time.'"
+    },
+    {
+      "id": 18,
+      "topic": "Connectors (as a result)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The flight was delayed. As a result, we missed our connection.",
+        "The flight was delayed, as a result we missed our connection.",
+        "As a result the flight was delayed we missed our connection.",
+        "The flight was delayed as a result, we missed our connection."
+      ],
+      "answer": 0,
+      "explanation": "'As a result' starts a new sentence and is followed by a comma: 'The flight was delayed. As a result, we missed our connection.'"
+    },
+    {
+      "id": 19,
+      "topic": "Quantifiers (enough)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "We don't have enough time to see everything.",
+        "We don't have time enough to see everything.",
+        "We don't have enough of time to see everything.",
+        "We haven't enough time to see everything."
+      ],
+      "answer": 0,
+      "explanation": "'Enough' comes before the noun it modifies: 'enough time.'"
+    },
+    {
+      "id": 20,
+      "topic": "Prepositions (in terms of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The two job offers are similar in terms of salary.",
+        "The two job offers are similar in terms about salary.",
+        "The two job offers are similar in term of salary.",
+        "The two job offers are similar on terms of salary."
+      ],
+      "answer": 0,
+      "explanation": "'In terms of' + noun means 'regarding': 'similar in terms of salary.'"
+    },
+    {
+      "id": 21,
+      "topic": "Semi-formal email opening",
+      "question": "Which is the correct way to start an email to a new business contact you haven't met?",
+      "options": [
+        "Hey there,",
+        "Dear Mr. Rahimov,",
+        "Yo,",
+        "Hiya,"
+      ],
+      "answer": 1,
+      "explanation": "'Dear Mr./Ms. [Surname],' is a respectful, semi-formal opening for a professional contact."
+    },
+    {
+      "id": 22,
+      "topic": "Formal email closing",
+      "question": "Which is the correct way to end a formal email to a business contact you know by name?",
+      "options": [
+        "Yours faithfully,",
+        "Kind regards,",
+        "Later,",
+        "Talk soon,"
+      ],
+      "answer": 1,
+      "explanation": "'Kind regards,' is a suitable semi-formal closing when writing to a named professional contact."
+    },
+    {
+      "id": 23,
+      "topic": "Making polite requests",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I was wondering if you could send me the file.",
+        "I was wondering if you could to send me the file.",
+        "I was wondering could you sending me the file.",
+        "I wonder if you send me could the file."
+      ],
+      "answer": 0,
+      "explanation": "'I was wondering if you could' + base verb is a polite way to make a request: 'if you could send me the file.'"
+    },
+    {
+      "id": 24,
+      "topic": "Sentence combining (relative clause with whose)",
+      "question": "Which sentence correctly combines 'This is the client.' and 'The client's company won the award.'?",
+      "options": [
+        "This is the client whose company won the award.",
+        "This is the client who company won the award.",
+        "This is the client which company won the award.",
+        "This is the client's company who won the award."
+      ],
+      "answer": 0,
+      "explanation": "'Whose' shows possession in a relative clause: 'the client whose company won the award.'"
+    },
+    {
+      "id": 25,
+      "topic": "Word order (adverbs with perfect tenses)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I have never been to Japan before.",
+        "I have been never to Japan before.",
+        "Never I have been to Japan before.",
+        "I have been to Japan never before."
+      ],
+      "answer": 0,
+      "explanation": "'Never' is placed between the auxiliary and the past participle: 'I have never been to Japan.'"
+    },
+    {
+      "id": 26,
+      "topic": "Punctuation (indirect question)",
+      "question": "Which sentence has correct punctuation?",
+      "options": [
+        "I'd like to know whether the flight has been delayed.",
+        "I'd like to know whether has the flight been delayed?",
+        "I'd like to know, whether the flight has been delayed.",
+        "I'd like to know whether the flight has been delayed?"
+      ],
+      "answer": 0,
+      "explanation": "Reported/indirect statements use normal word order and end with a full stop, not a question mark."
+    },
+    {
+      "id": 27,
+      "topic": "Sentence completion (future continuous)",
+      "question": "This time next week, I ___ on a beach in Turkey.",
+      "options": [
+        "will lie",
+        "will be lying",
+        "am lying",
+        "lie"
+      ],
+      "answer": 1,
+      "explanation": "Future continuous describes an action in progress at a specific future time: 'will be lying'."
+    },
+    {
+      "id": 28,
+      "topic": "Sentence completion (future perfect)",
+      "question": "By the time we land, we ___ for over ten hours.",
+      "options": [
+        "will travel",
+        "will have travelled",
+        "travel",
+        "are travelling"
+      ],
+      "answer": 1,
+      "explanation": "Future perfect describes an action completed before a future point: 'will have travelled'."
+    },
+    {
+      "id": 29,
+      "topic": "Sequencing/discourse markers",
+      "question": "Choose the sentence that correctly uses discourse markers.",
+      "options": [
+        "Firstly, we need a budget. Secondly, we need a timeline. Finally, we need approval.",
+        "Firstly we need budget secondly timeline finally approval.",
+        "Finally we need a budget, firstly a timeline, secondly approval.",
+        "Secondly firstly we need budget, finally approval timeline."
+      ],
+      "answer": 0,
+      "explanation": "Discourse markers 'Firstly,', 'Secondly,' and 'Finally,' organize points clearly with commas."
+    },
+    {
+      "id": 30,
+      "topic": "Question formation (tag questions with modals)",
+      "question": "Choose the correct question tag.",
+      "options": [
+        "You wouldn't mind helping me with this, would you?",
+        "You wouldn't mind helping me with this, do you?",
+        "You wouldn't mind helping me with this, wouldn't you?",
+        "You wouldn't mind helping me with this, will you?"
+      ],
+      "answer": 0,
+      "explanation": "Negative statement with 'would' + positive tag: 'you wouldn't mind..., would you?'"
+    }
+  ]
+}

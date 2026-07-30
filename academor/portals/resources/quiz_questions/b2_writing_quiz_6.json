@@ -1,0 +1,399 @@
+{
+  "level": "B2",
+  "quiz": 6,
+  "title": "B2 Writing Quiz 6 — Work & Career",
+  "service": "general_english",
+  "category_name": "B2",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Mixed conditionals",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "If she had negotiated her salary, she wouldn't be struggling financially now.",
+        "If she negotiated her salary, she wouldn't be struggling financially now.",
+        "If she had negotiated her salary, she wouldn't have struggled financially now.",
+        "If she had negotiated her salary, she won't struggle financially now."
+      ],
+      "answer": 0,
+      "explanation": "Mixed conditional: If + past perfect (past condition), would + base verb (present result): 'If she had negotiated..., she wouldn't be struggling now.'"
+    },
+    {
+      "id": 2,
+      "topic": "Conditionals without if (unless)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Employee turnover will keep rising unless managers won't improve working conditions.",
+        "Employee turnover will keep rising unless managers improve working conditions.",
+        "Employee turnover will keep rising unless that managers improve working conditions.",
+        "Employee turnover will keep rising without managers improve working conditions."
+      ],
+      "answer": 1,
+      "explanation": "'Unless' means 'if...not' and is followed by an affirmative clause: 'unless managers improve working conditions.'"
+    },
+    {
+      "id": 3,
+      "topic": "Passive voice (present perfect)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Several new policies has been introduced this year.",
+        "Several new policies have introduced this year.",
+        "Several new policies have been introduced this year.",
+        "Several new policies have being introduced this year."
+      ],
+      "answer": 2,
+      "explanation": "Present perfect passive: have/has been + past participle: 'have been introduced this year.'"
+    },
+    {
+      "id": 4,
+      "topic": "Passive voice (modal passive)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "This staffing shortage should resolved immediately.",
+        "This staffing shortage should being resolved immediately.",
+        "This staffing shortage should be resolve immediately.",
+        "This staffing shortage should be resolved immediately."
+      ],
+      "answer": 3,
+      "explanation": "Modal passive: modal + be + past participle: 'should be resolved immediately.'"
+    },
+    {
+      "id": 5,
+      "topic": "Reported speech (commands/requests)",
+      "question": "Choose the correct sentence. (Direct: \"Please submit the report by Friday.\")",
+      "options": [
+        "The manager told us to submit the report by Friday.",
+        "The manager told us submit the report by Friday.",
+        "The manager said us to submit the report by Friday.",
+        "The manager told us that submit the report by Friday."
+      ],
+      "answer": 0,
+      "explanation": "Reported commands: tell + object + to + base verb: 'told us to submit the report by Friday.'"
+    },
+    {
+      "id": 6,
+      "topic": "Reported speech (advice)",
+      "question": "Choose the correct sentence. (Direct: \"You should update your resume regularly.\")",
+      "options": [
+        "She suggested to update my resume regularly.",
+        "She suggested updating my resume regularly.",
+        "She suggested me updating my resume regularly.",
+        "She suggested that I updating my resume regularly."
+      ],
+      "answer": 1,
+      "explanation": "'Suggest' is followed by a gerund or 'that + subject + base verb': 'suggested updating my resume regularly.'"
+    },
+    {
+      "id": 7,
+      "topic": "Relative clauses with prepositions",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The company which she works for it values employee wellbeing.",
+        "The company for that she works values employee wellbeing.",
+        "The company for which she works values employee wellbeing.",
+        "The company she works for which values employee wellbeing."
+      ],
+      "answer": 2,
+      "explanation": "In formal style, the preposition moves before 'which': 'the company for which she works.'"
+    },
+    {
+      "id": 8,
+      "topic": "Reduced relative clauses (participle clauses)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The report publishing last week revealed low employee satisfaction.",
+        "The report published last week reveal low employee satisfaction.",
+        "The report which published last week revealed low employee satisfaction.",
+        "The report published last week revealed low employee satisfaction."
+      ],
+      "answer": 3,
+      "explanation": "A passive meaning reduces 'which was published' to the past participle alone: 'The report published last week...'"
+    },
+    {
+      "id": 9,
+      "topic": "Modal verbs of past deduction (must have)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The team must have missed the project deadline.",
+        "The team must missed the project deadline.",
+        "The team must have miss the project deadline.",
+        "The team must has missed the project deadline."
+      ],
+      "answer": 0,
+      "explanation": "Past deduction: must have + past participle: 'must have missed the deadline.'"
+    },
+    {
+      "id": 10,
+      "topic": "Modals of past obligation/regret (should have)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The company should acted sooner to prevent the layoffs.",
+        "The company should have acted sooner to prevent the layoffs.",
+        "The company should have act sooner to prevent the layoffs.",
+        "The company should has acted sooner to prevent the layoffs."
+      ],
+      "answer": 1,
+      "explanation": "Past regret/criticism: should have + past participle: 'should have acted sooner.'"
+    },
+    {
+      "id": 11,
+      "topic": "Present perfect vs past simple",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Remote work rose significantly over the past few years.",
+        "Remote work has risen significantly over the past few years.",
+        "Remote work have risen significantly over the past few years.",
+        "Remote work have rose significantly over the past few years."
+      ],
+      "answer": 1,
+      "explanation": "'Over the past few years' links the past to the present, so present perfect is used: 'has risen significantly.'"
+    },
+    {
+      "id": 12,
+      "topic": "Past perfect vs past simple",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "By the time the meeting started, most employees left the office.",
+        "By the time the meeting had started, most employees left the office.",
+        "By the time the meeting started, most employees have already left the office.",
+        "By the time the meeting started, most employees had already left the office."
+      ],
+      "answer": 3,
+      "explanation": "The earlier of two past actions takes the past perfect: 'most employees had already left the office.'"
+    },
+    {
+      "id": 13,
+      "topic": "Future forms (present continuous for arrangements)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The board is meeting next week to discuss the restructuring.",
+        "The board meet next week to discuss the restructuring.",
+        "The board will meeting next week to discuss the restructuring.",
+        "The board are meet next week to discuss the restructuring."
+      ],
+      "answer": 0,
+      "explanation": "Present continuous expresses a fixed future arrangement: 'is meeting next week.'"
+    },
+    {
+      "id": 14,
+      "topic": "Future in the past (would)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "He said he will finish the project by Monday.",
+        "He said he would finish the project by Monday.",
+        "He said he would finished the project by Monday.",
+        "He said he would have finish the project by Monday."
+      ],
+      "answer": 1,
+      "explanation": "In reported speech, 'will' shifts back to 'would': 'he said he would finish the project.'"
+    },
+    {
+      "id": 15,
+      "topic": "Wish / if only (present regret)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I wish my manager give more constructive feedback.",
+        "I wish my manager have given more constructive feedback.",
+        "I wish my manager gave more constructive feedback.",
+        "I wish my manager would give more constructive feedback as a habit."
+      ],
+      "answer": 2,
+      "explanation": "'Wish' + past simple expresses regret about a present situation: 'I wish my manager gave more constructive feedback.'"
+    },
+    {
+      "id": 16,
+      "topic": "Wish / if only (past regret)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I wish I applied for that promotion last year.",
+        "I wish I have applied for that promotion last year.",
+        "I wish I would have applied for that promotion last year.",
+        "I wish I had applied for that promotion last year."
+      ],
+      "answer": 3,
+      "explanation": "'Wish' + past perfect expresses regret about the past: 'I wish I had applied for that promotion.'"
+    },
+    {
+      "id": 17,
+      "topic": "Causative (have something done)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "We had our office renovated last month.",
+        "We had renovated our office last month.",
+        "We had our office renovate last month.",
+        "We have our office renovated last month, right."
+      ],
+      "answer": 0,
+      "explanation": "Causative form: have + object + past participle shows someone else did the action: 'had our office renovated.'"
+    },
+    {
+      "id": 18,
+      "topic": "Inversion for emphasis",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Never before the company had faced such fierce competition.",
+        "Never before had the company faced such fierce competition.",
+        "Never before did the company faced such fierce competition.",
+        "Never before has the company had faced such fierce competition."
+      ],
+      "answer": 1,
+      "explanation": "Negative adverbials at the start trigger inversion: 'Never before had the company faced...'"
+    },
+    {
+      "id": 19,
+      "topic": "Phrasal verbs (look into)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "HR is looking the complaint into.",
+        "HR is looking in to the complaint.",
+        "HR is looking into the complaint.",
+        "HR is looking into to the complaint."
+      ],
+      "answer": 2,
+      "explanation": "'Look into' means 'investigate' and is inseparable: 'looking into the complaint.'"
+    },
+    {
+      "id": 20,
+      "topic": "Cleft sentences (What...is)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "What the team urgently need are clearer communication channels.",
+        "That the team urgently needs is clearer communication channels.",
+        "What the team urgently needs is clearer communication channels it.",
+        "What the team urgently needs is clearer communication channels."
+      ],
+      "answer": 3,
+      "explanation": "'What' clefts take a singular verb when the complement is singular: 'What the team needs is clearer communication.'"
+    },
+    {
+      "id": 21,
+      "topic": "Connectors (whereas)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Some employees prefer remote work, whereas others favor the office.",
+        "Some employees prefer remote work, whereas others favors the office.",
+        "Some employees prefer remote work whereas, others favor the office.",
+        "Some employees prefer remote work despite others favor the office."
+      ],
+      "answer": 0,
+      "explanation": "'Whereas' contrasts two clauses and is followed directly by the subject: 'whereas others favor the office.'"
+    },
+    {
+      "id": 22,
+      "topic": "Connectors (in spite of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "In spite the tight deadline, the team delivered excellent work.",
+        "In spite of the tight deadline, the team delivered excellent work.",
+        "Despite of the tight deadline, the team delivered excellent work.",
+        "In spite of the tight deadline, the team delivered excellent work though."
+      ],
+      "answer": 1,
+      "explanation": "'In spite of' is followed by a noun phrase: 'In spite of the tight deadline, the team delivered excellent work.'"
+    },
+    {
+      "id": 23,
+      "topic": "Quantifiers (a number of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "A number of surveys has linked flexible schedules to higher productivity.",
+        "The number of surveys have linked flexible schedules to higher productivity.",
+        "A number of surveys have linked flexible schedules to higher productivity.",
+        "A great number of surveys has linked flexible schedules to higher productivity."
+      ],
+      "answer": 2,
+      "explanation": "'A number of' + plural noun takes a plural verb: 'a number of surveys have linked...'"
+    },
+    {
+      "id": 24,
+      "topic": "Prepositional phrases (on behalf of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "She spoke in behalf of the entire marketing team.",
+        "She spoke on behalf for the entire marketing team.",
+        "She spoke behalf of the entire marketing team.",
+        "She spoke on behalf of the entire marketing team."
+      ],
+      "answer": 3,
+      "explanation": "'On behalf of' means 'representing someone': 'she spoke on behalf of the team.'"
+    },
+    {
+      "id": 25,
+      "topic": "Formal register (nominalization)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The implementation of flexible hours improved staff morale significantly.",
+        "The implement of flexible hours improved staff morale significantly.",
+        "The implementing of flexible hours improved staff morale significantly.",
+        "The implementation of flexible hours improve staff morale significantly."
+      ],
+      "answer": 0,
+      "explanation": "Formal writing often nominalizes verbs into nouns: 'implement' becomes 'the implementation of...'"
+    },
+    {
+      "id": 26,
+      "topic": "Formal email (requesting information)",
+      "question": "Which is the most appropriate formal opening line for an email requesting information about a job vacancy?",
+      "options": [
+        "I'm writing to ask you about the job vacancy, ok?",
+        "I am writing to enquire about the job vacancy advertised on your website.",
+        "Just wanted to know about the job vacancy.",
+        "Hey, tell me about the job vacancy."
+      ],
+      "answer": 1,
+      "explanation": "'I am writing to enquire about...' is a standard formal opening for information requests."
+    },
+    {
+      "id": 27,
+      "topic": "Making complaints (formal language)",
+      "question": "Which is the most appropriate opening line for a formal complaint about unpaid overtime?",
+      "options": [
+        "I'm writing because I'm really mad about my unpaid overtime.",
+        "I want to complain about my unpaid overtime, it's bad.",
+        "I am writing to express my concern about unpaid overtime hours.",
+        "I am writing to express my concern about unpaid overtime hours, ok."
+      ],
+      "answer": 2,
+      "explanation": "Formal complaints use measured language such as 'I am writing to express my concern about...'"
+    },
+    {
+      "id": 28,
+      "topic": "Adverbs of degree (extremely)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The findings of the workplace survey were extreme alarming.",
+        "The findings of the workplace survey were extremely alarm.",
+        "The findings of the workplace survey were very much alarming.",
+        "The findings of the workplace survey were extremely alarming."
+      ],
+      "answer": 3,
+      "explanation": "'Extremely' (adverb) modifies the adjective 'alarming': 'were extremely alarming.'"
+    },
+    {
+      "id": 29,
+      "topic": "Discourse markers (moreover)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The new schedule is more flexible. Moreover, it boosts productivity.",
+        "The new schedule is more flexible, moreover it boosts productivity.",
+        "The new schedule is more flexible. Moreover it boosts productivity.",
+        "The new schedule is more flexible moreover, it boosts productivity."
+      ],
+      "answer": 0,
+      "explanation": "'Moreover' begins a new sentence and is followed by a comma: 'The new schedule is more flexible. Moreover, it boosts productivity.'"
+    },
+    {
+      "id": 30,
+      "topic": "Question tags (advanced forms)",
+      "question": "Choose the correct question tag.",
+      "options": [
+        "You'd support a four-day work week, didn't you?",
+        "You'd support a four-day work week, wouldn't you?",
+        "You'd support a four-day work week, would you?",
+        "You'd support a four-day work week, wouldn't it?"
+      ],
+      "answer": 1,
+      "explanation": "A positive statement with 'would' takes a negative tag: 'You'd support..., wouldn't you?'"
+    }
+  ]
+}

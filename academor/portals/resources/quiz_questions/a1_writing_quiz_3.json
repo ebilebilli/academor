@@ -1,0 +1,399 @@
+{
+  "level": "A1",
+  "quiz": 3,
+  "title": "A1 Writing Quiz 3 — School, Family & City Life",
+  "service": "general_english",
+  "category_name": "A1",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Word order",
+      "question": "Choose the correct word order.",
+      "options": [
+        "Football on Saturdays we play.",
+        "We play football on Saturdays.",
+        "We football play on Saturdays.",
+        "Play we football on Saturdays."
+      ],
+      "answer": 1,
+      "explanation": "Subject + verb + object + time: 'We play football on Saturdays.'"
+    },
+    {
+      "id": 2,
+      "topic": "Word order",
+      "question": "Choose the correct word order.",
+      "options": [
+        "My sister lives in London.",
+        "My sister in London lives.",
+        "Lives my sister in London.",
+        "In London my sister lives."
+      ],
+      "answer": 0,
+      "explanation": "Subject + verb + place: 'My sister lives in London.'"
+    },
+    {
+      "id": 3,
+      "topic": "Word order",
+      "question": "Choose the correct word order.",
+      "options": [
+        "He a new phone wants.",
+        "Wants he a new phone.",
+        "He wants a new phone.",
+        "A new phone he wants."
+      ],
+      "answer": 2,
+      "explanation": "Subject + verb + object: 'He wants a new phone.'"
+    },
+    {
+      "id": 4,
+      "topic": "Word order (questions)",
+      "question": "Choose the correct question word order.",
+      "options": [
+        "Why you are late?",
+        "Why are you late?",
+        "You why are late?",
+        "Are why you late?"
+      ],
+      "answer": 1,
+      "explanation": "Wh-word + verb 'to be' + subject: 'Why are you late?'"
+    },
+    {
+      "id": 5,
+      "topic": "Capitalization",
+      "question": "Which sentence uses capital letters correctly?",
+      "options": [
+        "i study english at academor.",
+        "I study English at Academor.",
+        "I Study english at academor.",
+        "i Study English At academor."
+      ],
+      "answer": 1,
+      "explanation": "Languages (English), institution names (Academor), and 'I' are always capitalized."
+    },
+    {
+      "id": 6,
+      "topic": "Capitalization",
+      "question": "Choose the correctly capitalized sentence.",
+      "options": [
+        "we live near caspian plaza in baku.",
+        "We live near Caspian Plaza in Baku.",
+        "We Live near caspian Plaza in baku.",
+        "we live Near Caspian plaza in Baku."
+      ],
+      "answer": 1,
+      "explanation": "Place names (Caspian Plaza, Baku) are proper nouns and must be capitalized."
+    },
+    {
+      "id": 7,
+      "topic": "Punctuation (full stop)",
+      "question": "Which sentence has correct punctuation?",
+      "options": [
+        "I have two children",
+        "I have two children.",
+        "I have two children,",
+        "I have two children!."
+      ],
+      "answer": 1,
+      "explanation": "A simple statement ends with a full stop: 'I have two children.'"
+    },
+    {
+      "id": 8,
+      "topic": "Punctuation (question mark)",
+      "question": "Which sentence has correct punctuation?",
+      "options": [
+        "What is your job.",
+        "What is your job",
+        "What is your job?",
+        "What is your job!"
+      ],
+      "answer": 2,
+      "explanation": "A question ends with a question mark: 'What is your job?'"
+    },
+    {
+      "id": 9,
+      "topic": "Punctuation (comma in a list)",
+      "question": "Choose the sentence with correct commas.",
+      "options": [
+        "I need bread milk and eggs.",
+        "I need bread, milk and eggs.",
+        "I need, bread milk, and eggs.",
+        "I need bread, milk, and, eggs."
+      ],
+      "answer": 1,
+      "explanation": "Use commas to separate items in a list: 'bread, milk and eggs.'"
+    },
+    {
+      "id": 10,
+      "topic": "Punctuation (apostrophe)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Shes my best friend.",
+        "She's my best friend.",
+        "She's' my best friend.",
+        "Shes' my best friend."
+      ],
+      "answer": 1,
+      "explanation": "'She's' is the contraction of 'she is'."
+    },
+    {
+      "id": 11,
+      "topic": "Sentence completion",
+      "question": "Our teacher ___ us new words every lesson.",
+      "options": [
+        "teach",
+        "teaches",
+        "teaching",
+        "taught"
+      ],
+      "answer": 1,
+      "explanation": "Present simple with 'teacher' (he/she) takes -es: 'teaches'."
+    },
+    {
+      "id": 12,
+      "topic": "Sentence completion",
+      "question": "I ___ a new book last week.",
+      "options": [
+        "buy",
+        "buys",
+        "bought",
+        "buying"
+      ],
+      "answer": 2,
+      "explanation": "'Last week' signals past simple; irregular past of 'buy' is 'bought'."
+    },
+    {
+      "id": 13,
+      "topic": "Sentence completion",
+      "question": "Be quiet! The baby ___ now.",
+      "options": [
+        "sleep",
+        "sleeps",
+        "is sleeping",
+        "slept"
+      ],
+      "answer": 2,
+      "explanation": "'Now' signals an action in progress → present continuous: 'is sleeping'."
+    },
+    {
+      "id": 14,
+      "topic": "Connectors (and)",
+      "question": "Choose the sentence that correctly uses 'and'.",
+      "options": [
+        "I study English and I study Math.",
+        "I study English and but Math.",
+        "I and study English Math.",
+        "I study English, and, Math."
+      ],
+      "answer": 0,
+      "explanation": "'And' joins two similar activities: 'I study English and I study Math.'"
+    },
+    {
+      "id": 15,
+      "topic": "Connectors (but)",
+      "question": "Choose the sentence that correctly uses 'but'.",
+      "options": [
+        "It is small but comfortable.",
+        "It is small and but comfortable.",
+        "But it is small comfortable.",
+        "It is, comfortable but small."
+      ],
+      "answer": 0,
+      "explanation": "'But' shows contrast: 'It is small but comfortable.'"
+    },
+    {
+      "id": 16,
+      "topic": "Connectors (because)",
+      "question": "Choose the sentence that correctly uses 'because'.",
+      "options": [
+        "I am happy because I passed my exam.",
+        "Because I am happy passed my exam.",
+        "I am happy passed exam because my.",
+        "Because passed my exam, happy I am."
+      ],
+      "answer": 0,
+      "explanation": "'Because' introduces a reason: 'I am happy because I passed my exam.'"
+    },
+    {
+      "id": 17,
+      "topic": "Prepositions in sentences",
+      "question": "The library is ___ the school and the park.",
+      "options": [
+        "between",
+        "on",
+        "at",
+        "for"
+      ],
+      "answer": 0,
+      "explanation": "'Between' describes a position among two things: 'between the school and the park.'"
+    },
+    {
+      "id": 18,
+      "topic": "Prepositions in sentences",
+      "question": "We usually eat breakfast ___ 8 a.m.",
+      "options": [
+        "in",
+        "on",
+        "at",
+        "to"
+      ],
+      "answer": 2,
+      "explanation": "'At' is used with clock times: 'at 8 a.m.'"
+    },
+    {
+      "id": 19,
+      "topic": "Article usage in a sentence",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "She wants to be a artist.",
+        "She wants to be an artist.",
+        "She wants to be artist.",
+        "She wants to be the a artist."
+      ],
+      "answer": 1,
+      "explanation": "'Artist' starts with a vowel sound /ɑː/ → 'an artist.'"
+    },
+    {
+      "id": 20,
+      "topic": "Simple email/letter opening",
+      "question": "Which is the correct way to start an informal email to a classmate?",
+      "options": [
+        "Dear Sir/Madam,",
+        "Hi Elvin,",
+        "To Whom It May Concern,",
+        "Yours faithfully,"
+      ],
+      "answer": 1,
+      "explanation": "'Hi [Name],' is the correct informal greeting for a classmate."
+    },
+    {
+      "id": 21,
+      "topic": "Simple email/letter closing",
+      "question": "Which is the correct way to end an informal email to a classmate?",
+      "options": [
+        "Yours faithfully,",
+        "Best regards,",
+        "Talk to you soon,",
+        "Sincerely,"
+      ],
+      "answer": 2,
+      "explanation": "'Talk to you soon,' is a friendly, informal closing suitable for a classmate."
+    },
+    {
+      "id": 22,
+      "topic": "Formal letter opening",
+      "question": "Which is the correct way to start a formal email to a company?",
+      "options": [
+        "Hi guys,",
+        "Dear Sir/Madam,",
+        "Hey team,",
+        "Dear friend,"
+      ],
+      "answer": 1,
+      "explanation": "'Dear Sir/Madam,' is the standard formal opening for a company when the name is unknown."
+    },
+    {
+      "id": 23,
+      "topic": "Sentence combining",
+      "question": "Which sentence correctly combines 'I like reading.' and 'I like writing.'?",
+      "options": [
+        "I like reading but I like writing.",
+        "I like reading and writing.",
+        "I like reading, I like writing.",
+        "I reading and writing like."
+      ],
+      "answer": 1,
+      "explanation": "Two related likes can be joined simply: 'I like reading and writing.'"
+    },
+    {
+      "id": 24,
+      "topic": "Word order (adjectives)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I bought a plastic small chair.",
+        "I bought a small plastic chair.",
+        "I bought small a plastic chair.",
+        "I bought a chair small plastic."
+      ],
+      "answer": 1,
+      "explanation": "Size usually comes before material: 'a small plastic chair.'"
+    },
+    {
+      "id": 25,
+      "topic": "Punctuation (exclamation)",
+      "question": "Which sentence correctly shows a warning?",
+      "options": [
+        "Watch out.",
+        "Watch out!",
+        "Watch out,",
+        "Watch out?"
+      ],
+      "answer": 1,
+      "explanation": "An exclamation mark shows urgency or strong feeling: 'Watch out!'"
+    },
+    {
+      "id": 26,
+      "topic": "Sentence completion (there is/are)",
+      "question": "___ a computer in the office.",
+      "options": [
+        "There is",
+        "There are",
+        "It is",
+        "They are"
+      ],
+      "answer": 0,
+      "explanation": "'A computer' is singular → 'There is'."
+    },
+    {
+      "id": 27,
+      "topic": "Sentence completion (possessives)",
+      "question": "This is ___ bag. (belongs to my mother)",
+      "options": [
+        "mother",
+        "mothers",
+        "mother's",
+        "mothers'"
+      ],
+      "answer": 2,
+      "explanation": "Singular possessive: add apostrophe + s → \"mother's bag\"."
+    },
+    {
+      "id": 28,
+      "topic": "Sequencing words",
+      "question": "Choose the sentence that correctly uses sequencing words.",
+      "options": [
+        "First, I wash my hands. Next, I have lunch.",
+        "First I wash hands next have lunch.",
+        "Next first, I wash lunch my hands have.",
+        "I have lunch next, first my hands wash."
+      ],
+      "answer": 0,
+      "explanation": "Sequencing words like 'First,' and 'Next,' organize steps clearly with commas."
+    },
+    {
+      "id": 29,
+      "topic": "Sentence completion (subject-verb agreement)",
+      "question": "My friends and I ___ at the same school.",
+      "options": [
+        "is",
+        "am",
+        "are",
+        "be"
+      ],
+      "answer": 2,
+      "explanation": "Compound subject ('My friends and I') is plural → 'are'."
+    },
+    {
+      "id": 30,
+      "topic": "Sentence completion (question formation)",
+      "question": "Choose the correct question.",
+      "options": [
+        "Where your family from is?",
+        "Where is your family from?",
+        "Where your family is from?",
+        "Is where your family from?"
+      ],
+      "answer": 1,
+      "explanation": "Wh-word + verb 'to be' + subject + preposition: 'Where is your family from?'"
+    }
+  ]
+}

@@ -1,0 +1,399 @@
+{
+  "level": "B1",
+  "quiz": 2,
+  "title": "B1 Writing Quiz 2 — Media, Opinions & Social Life",
+  "service": "general_english",
+  "category_name": "B1",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Second conditional",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "If I were famous, I wouldn't post everything online.",
+        "If I am famous, I wouldn't post everything online.",
+        "If I were famous, I won't post everything online.",
+        "If I would be famous, I wouldn't post everything online."
+      ],
+      "answer": 0,
+      "explanation": "Second conditional: If + past simple, would + base verb: 'If I were famous, I wouldn't post everything online.'"
+    },
+    {
+      "id": 2,
+      "topic": "Third conditional",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "If she had read the reviews, she wouldn't watch that film.",
+        "If she had read the reviews, she wouldn't have watched that film.",
+        "If she read the reviews, she wouldn't have watched that film.",
+        "If she would have read the reviews, she wouldn't have watched that film."
+      ],
+      "answer": 1,
+      "explanation": "Third conditional: If + past perfect, would have + past participle: 'If she had read..., she wouldn't have watched...'"
+    },
+    {
+      "id": 3,
+      "topic": "Passive voice (present simple)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "This magazine is read by millions of people.",
+        "This magazine reads by millions of people.",
+        "This magazine is reading by millions of people.",
+        "This magazine read by millions of people."
+      ],
+      "answer": 0,
+      "explanation": "Present simple passive: is/are + past participle: 'is read by millions of people.'"
+    },
+    {
+      "id": 4,
+      "topic": "Passive voice (past simple)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The article was published last Friday.",
+        "The article published last Friday.",
+        "The article was publish last Friday.",
+        "The article is published last Friday."
+      ],
+      "answer": 0,
+      "explanation": "Past simple passive: was/were + past participle: 'was published last Friday.'"
+    },
+    {
+      "id": 5,
+      "topic": "Relative clauses (defining)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The influencer who started the trend has millions of followers.",
+        "The influencer which started the trend has millions of followers.",
+        "The influencer whom started the trend has millions of followers.",
+        "The influencer, who started the trend, has millions of followers but."
+      ],
+      "answer": 0,
+      "explanation": "'Who' introduces a defining relative clause about a person: 'The influencer who started the trend...'"
+    },
+    {
+      "id": 6,
+      "topic": "Relative clauses (non-defining)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "My favorite podcast, which airs weekly, just hit one million listeners.",
+        "My favorite podcast which airs weekly just hit one million listeners but.",
+        "My favorite podcast, that airs weekly, just hit one million listeners.",
+        "My favorite podcast which airs weekly, just hit one million listeners."
+      ],
+      "answer": 0,
+      "explanation": "Non-defining relative clauses use commas and 'which' for things: 'My favorite podcast, which airs weekly, just hit one million listeners.'"
+    },
+    {
+      "id": 7,
+      "topic": "Modal verbs of deduction (must/can't)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "That story can't be true, it sounds too strange.",
+        "That story can't to be true, it sounds too strange.",
+        "That story can't being true, it sounds too strange.",
+        "That story cann't be true, it sounds too strange."
+      ],
+      "answer": 0,
+      "explanation": "'Can't' + base verb expresses a confident negative deduction: 'that story can't be true.'"
+    },
+    {
+      "id": 8,
+      "topic": "Modal verbs of deduction (might/could)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The article could be exaggerating the facts.",
+        "The article could being exaggerating the facts.",
+        "The article could to be exaggerating the facts.",
+        "The article coulds be exaggerating the facts."
+      ],
+      "answer": 0,
+      "explanation": "'Could' + base verb expresses a possible deduction: 'the article could be exaggerating.'"
+    },
+    {
+      "id": 9,
+      "topic": "Present perfect vs present perfect continuous",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I've watched five episodes today.",
+        "I've been watching five episodes today.",
+        "I've watch five episodes today.",
+        "I'm watching five episodes today already."
+      ],
+      "answer": 0,
+      "explanation": "Present perfect simple is used for a completed number of results: 'I've watched five episodes.'"
+    },
+    {
+      "id": 10,
+      "topic": "Present perfect continuous",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I've been following that debate for months.",
+        "I've followed that debate since months.",
+        "I'm following that debate for months already.",
+        "I've been follow that debate for months."
+      ],
+      "answer": 0,
+      "explanation": "Present perfect continuous emphasizes duration of an unfinished action: 'I've been following... for months.'"
+    },
+    {
+      "id": 11,
+      "topic": "Reported speech (statements)",
+      "question": "Choose the correct sentence. (Direct: \"I have shared the article.\")",
+      "options": [
+        "She said that she has shared the article.",
+        "She said that she had shared the article.",
+        "She said that she shared the article already.",
+        "She said she have shared the article."
+      ],
+      "answer": 1,
+      "explanation": "In reported speech, present perfect shifts back to past perfect: 'she had shared the article.'"
+    },
+    {
+      "id": 12,
+      "topic": "Reported speech (questions)",
+      "question": "Choose the correct sentence. (Direct: \"What do you think of the news?\")",
+      "options": [
+        "He asked me what do I think of the news.",
+        "He asked me what I thought of the news.",
+        "He asked me what did I think of the news.",
+        "He asked me what I think of the news."
+      ],
+      "answer": 1,
+      "explanation": "Reported questions use normal word order (no auxiliary inversion) and shift the tense back: 'he asked me what I thought of the news.'"
+    },
+    {
+      "id": 13,
+      "topic": "Used to",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I used to watch the news every evening before I got my phone.",
+        "I use to watch the news every evening before I got my phone.",
+        "I was used to watch the news every evening before I got my phone.",
+        "I used to watching the news every evening before I got my phone."
+      ],
+      "answer": 0,
+      "explanation": "'Used to' + base verb describes a past habit that no longer happens: 'I used to watch the news every evening.'"
+    },
+    {
+      "id": 14,
+      "topic": "Be used to / get used to",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I'm used to scrolling through the news every morning.",
+        "I'm used to scroll through the news every morning.",
+        "I use to scrolling through the news every morning.",
+        "I'm used scrolling to through the news every morning."
+      ],
+      "answer": 0,
+      "explanation": "'Be used to' is followed by a gerund: 'I'm used to scrolling through the news.'"
+    },
+    {
+      "id": 15,
+      "topic": "Phrasal verbs (bring up)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "She always brings up controversial topics at dinner.",
+        "She always brings controversial topics up at dinner away.",
+        "She always brings up to controversial topics at dinner.",
+        "She always brings controversial topics at dinner up."
+      ],
+      "answer": 0,
+      "explanation": "'Bring up' means 'mention or introduce a topic': 'brings up controversial topics.'"
+    },
+    {
+      "id": 16,
+      "topic": "Phrasal verbs (look into)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The journalist decided to look into the rumors.",
+        "The journalist decided to look the rumors into.",
+        "The journalist decided to look into to the rumors.",
+        "The journalist decided to look rumors into the."
+      ],
+      "answer": 0,
+      "explanation": "'Look into' means 'investigate': 'look into the rumors.'"
+    },
+    {
+      "id": 17,
+      "topic": "Connectors (despite / although)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Despite the criticism, the show remained popular.",
+        "Despite of the criticism, the show remained popular.",
+        "Although the criticism, the show remained popular.",
+        "Despite the criticism was strong, the show remained popular."
+      ],
+      "answer": 0,
+      "explanation": "'Despite' is followed by a noun phrase (no 'of'): 'Despite the criticism, the show remained popular.'"
+    },
+    {
+      "id": 18,
+      "topic": "Connectors (as a result)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The post went viral. As a result, thousands of people commented.",
+        "The post went viral, as a result thousands of people commented.",
+        "As a result the post went viral thousands of people commented.",
+        "The post went viral as a result, thousands of people commented."
+      ],
+      "answer": 0,
+      "explanation": "'As a result' starts a new sentence and is followed by a comma: 'The post went viral. As a result, thousands of people commented.'"
+    },
+    {
+      "id": 19,
+      "topic": "Quantifiers (enough)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The article doesn't give enough evidence for its claims.",
+        "The article doesn't give evidence enough for its claims.",
+        "The article doesn't give enough of evidence for its claims.",
+        "The article hasn't enough evidence for its claims."
+      ],
+      "answer": 0,
+      "explanation": "'Enough' comes before the noun it modifies: 'enough evidence.'"
+    },
+    {
+      "id": 20,
+      "topic": "Prepositions (in favour of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Most readers were in favour of the new policy.",
+        "Most readers were in favour for the new policy.",
+        "Most readers were favour of the new policy.",
+        "Most readers were on favour of the new policy."
+      ],
+      "answer": 0,
+      "explanation": "'In favour of' + noun means 'supporting': 'in favour of the new policy.'"
+    },
+    {
+      "id": 21,
+      "topic": "Semi-formal email opening",
+      "question": "Which is the correct way to start an email to a magazine editor you haven't met, proposing an article?",
+      "options": [
+        "Hey there,",
+        "Dear Editor,",
+        "Yo,",
+        "Hiya,"
+      ],
+      "answer": 1,
+      "explanation": "'Dear Editor,' is a suitable formal opening when the recipient's exact name is unknown."
+    },
+    {
+      "id": 22,
+      "topic": "Formal email closing",
+      "question": "Which is the correct way to end a formal email pitching an idea to a named contact?",
+      "options": [
+        "Yours faithfully,",
+        "Kind regards,",
+        "Later,",
+        "Talk soon,"
+      ],
+      "answer": 1,
+      "explanation": "'Kind regards,' is a suitable semi-formal closing when writing to a named professional contact."
+    },
+    {
+      "id": 23,
+      "topic": "Making polite requests",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I was wondering if you could share your source for the article.",
+        "I was wondering if you could to share your source for the article.",
+        "I was wondering could you sharing your source for the article.",
+        "I wonder if you share could your source for the article."
+      ],
+      "answer": 0,
+      "explanation": "'I was wondering if you could' + base verb is a polite way to make a request: 'if you could share your source.'"
+    },
+    {
+      "id": 24,
+      "topic": "Sentence combining (relative clause with whose)",
+      "question": "Which sentence correctly combines 'This is the author.' and 'The author's book became a bestseller.'?",
+      "options": [
+        "This is the author whose book became a bestseller.",
+        "This is the author who book became a bestseller.",
+        "This is the author which book became a bestseller.",
+        "This is the author's book who became a bestseller."
+      ],
+      "answer": 0,
+      "explanation": "'Whose' shows possession in a relative clause: 'the author whose book became a bestseller.'"
+    },
+    {
+      "id": 25,
+      "topic": "Word order (adverbs with perfect tenses)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I have never shared such a personal post before.",
+        "I have shared never such a personal post before.",
+        "Never I have shared such a personal post before.",
+        "I have shared such a personal post never before."
+      ],
+      "answer": 0,
+      "explanation": "'Never' is placed between the auxiliary and the past participle: 'I have never shared such a post.'"
+    },
+    {
+      "id": 26,
+      "topic": "Punctuation (indirect question)",
+      "question": "Which sentence has correct punctuation?",
+      "options": [
+        "I'd like to know whether the interview has been published.",
+        "I'd like to know whether has the interview been published?",
+        "I'd like to know, whether the interview has been published.",
+        "I'd like to know whether the interview has been published?"
+      ],
+      "answer": 0,
+      "explanation": "Reported/indirect statements use normal word order and end with a full stop, not a question mark."
+    },
+    {
+      "id": 27,
+      "topic": "Sentence completion (future continuous)",
+      "question": "This time tomorrow, I ___ the live broadcast at the studio.",
+      "options": [
+        "will watch",
+        "will be watching",
+        "am watching",
+        "watch"
+      ],
+      "answer": 1,
+      "explanation": "Future continuous describes an action in progress at a specific future time: 'will be watching'."
+    },
+    {
+      "id": 28,
+      "topic": "Sentence completion (future perfect)",
+      "question": "By the end of the year, this channel ___ over ten million subscribers.",
+      "options": [
+        "will reach",
+        "will have reached",
+        "reaches",
+        "is reaching"
+      ],
+      "answer": 1,
+      "explanation": "Future perfect describes an action completed before a future point: 'will have reached'."
+    },
+    {
+      "id": 29,
+      "topic": "Sequencing/discourse markers",
+      "question": "Choose the sentence that correctly uses discourse markers.",
+      "options": [
+        "Firstly, check the source. Secondly, compare other reports. Finally, form your opinion.",
+        "Firstly we check source secondly compare finally opinion.",
+        "Finally check the source, firstly compare, secondly form opinion.",
+        "Secondly firstly check source, finally compare opinion."
+      ],
+      "answer": 0,
+      "explanation": "Discourse markers 'Firstly,', 'Secondly,' and 'Finally,' organize points clearly with commas."
+    },
+    {
+      "id": 30,
+      "topic": "Question formation (tag questions with modals)",
+      "question": "Choose the correct question tag.",
+      "options": [
+        "You wouldn't share fake news, would you?",
+        "You wouldn't share fake news, do you?",
+        "You wouldn't share fake news, wouldn't you?",
+        "You wouldn't share fake news, will you?"
+      ],
+      "answer": 0,
+      "explanation": "Negative statement with 'would' + positive tag: 'you wouldn't share..., would you?'"
+    }
+  ]
+}

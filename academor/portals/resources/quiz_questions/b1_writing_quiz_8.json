@@ -1,0 +1,399 @@
+{
+  "level": "B1",
+  "quiz": 8,
+  "title": "B1 Writing Quiz 8 — Food & Cooking",
+  "service": "general_english",
+  "category_name": "B1",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Second conditional",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "If I had more time, I would cook dinner every night.",
+        "If I have more time, I would cook dinner every night.",
+        "If I had more time, I will cook dinner every night.",
+        "If I would have more time, I would cook dinner every night."
+      ],
+      "answer": 0,
+      "explanation": "Second conditional: If + past simple, would + base verb: 'If I had more time, I would cook dinner every night.'"
+    },
+    {
+      "id": 2,
+      "topic": "Third conditional",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "If she followed the recipe, she wouldn't have burnt the cake.",
+        "If she had followed the recipe, she wouldn't burn the cake.",
+        "If she would have followed the recipe, she wouldn't have burnt the cake.",
+        "If she had followed the recipe, she wouldn't have burnt the cake."
+      ],
+      "answer": 3,
+      "explanation": "Third conditional: If + past perfect, would have + past participle: 'If she had followed..., she wouldn't have burnt...'"
+    },
+    {
+      "id": 3,
+      "topic": "Passive voice (present simple)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "This dish is served with rice in most restaurants.",
+        "This dish serves with rice in most restaurants.",
+        "This dish is serving with rice in most restaurants.",
+        "This dish serve with rice in most restaurants."
+      ],
+      "answer": 0,
+      "explanation": "Present simple passive: is/are + past participle: 'is served with rice.'"
+    },
+    {
+      "id": 4,
+      "topic": "Passive voice (past simple)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The cake ruined because of the high oven temperature.",
+        "The cake was ruin because of the high oven temperature.",
+        "The cake is ruined because of the high oven temperature.",
+        "The cake was ruined because of the high oven temperature."
+      ],
+      "answer": 3,
+      "explanation": "Past simple passive: was/were + past participle: 'was ruined because of the high temperature.'"
+    },
+    {
+      "id": 5,
+      "topic": "Relative clauses (defining)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The chef which prepared this menu trained in Paris.",
+        "The chef who prepared this menu trained in Paris.",
+        "The chef whom prepared this menu trained in Paris.",
+        "The chef, who prepared this menu, trained in Paris but."
+      ],
+      "answer": 1,
+      "explanation": "'Who' introduces a defining relative clause about a person: 'The chef who prepared this menu...'"
+    },
+    {
+      "id": 6,
+      "topic": "Relative clauses (non-defining)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "This restaurant which opened last month is already popular but.",
+        "This restaurant, which opened last month, is already popular.",
+        "This restaurant, that opened last month, is already popular.",
+        "This restaurant which opened last month, is already popular."
+      ],
+      "answer": 1,
+      "explanation": "Non-defining relative clauses use commas and 'which' for things: 'This restaurant, which opened last month, is already popular.'"
+    },
+    {
+      "id": 7,
+      "topic": "Modal verbs of deduction (must/can't)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "That can't being fresh, it smells strange.",
+        "That cann't be fresh, it smells strange.",
+        "That can't be fresh, it smells strange.",
+        "That can't to be fresh, it smells strange."
+      ],
+      "answer": 2,
+      "explanation": "'Can't' + base verb expresses a confident negative deduction: 'that can't be fresh.'"
+    },
+    {
+      "id": 8,
+      "topic": "Modal verbs of deduction (might/could)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The soup could be too salty for some guests.",
+        "The soup could to be too salty for some guests.",
+        "The soup coulds be too salty for some guests.",
+        "The soup could being too salty for some guests."
+      ],
+      "answer": 0,
+      "explanation": "'Could' + base verb expresses a possible deduction: 'the soup could be too salty.'"
+    },
+    {
+      "id": 9,
+      "topic": "Present perfect vs present perfect continuous",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I'm trying five different recipes this month already.",
+        "I've been trying five different recipes this month.",
+        "I've tried five different recipes this month.",
+        "I've try five different recipes this month."
+      ],
+      "answer": 2,
+      "explanation": "Present perfect simple is used for a completed number of results: 'I've tried five recipes.'"
+    },
+    {
+      "id": 10,
+      "topic": "Present perfect continuous",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I've been baking bread for two hours.",
+        "I've baked bread since two hours.",
+        "I'm baking bread for two hours already.",
+        "I've been bake bread for two hours."
+      ],
+      "answer": 0,
+      "explanation": "Present perfect continuous emphasizes duration of an unfinished action: 'I've been baking... for two hours.'"
+    },
+    {
+      "id": 11,
+      "topic": "Reported speech (statements)",
+      "question": "Choose the correct sentence. (Direct: \"I have finished cooking.\")",
+      "options": [
+        "She said that she has finished cooking.",
+        "She said she have finished cooking.",
+        "She said that she finished cooking already.",
+        "She said that she had finished cooking."
+      ],
+      "answer": 3,
+      "explanation": "In reported speech, present perfect shifts back to past perfect: 'she had finished cooking.'"
+    },
+    {
+      "id": 12,
+      "topic": "Reported speech (questions)",
+      "question": "Choose the correct sentence. (Direct: \"What ingredients do you need?\")",
+      "options": [
+        "He asked me what ingredients I needed.",
+        "He asked me what ingredients do I need.",
+        "He asked me what ingredients did I need.",
+        "He asked me what ingredients I need."
+      ],
+      "answer": 0,
+      "explanation": "Reported questions use normal word order (no auxiliary inversion) and shift the tense back: 'he asked me what ingredients I needed.'"
+    },
+    {
+      "id": 13,
+      "topic": "Used to",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I use to cook pasta every Friday as a student.",
+        "I used to cook pasta every Friday as a student.",
+        "I was used to cook pasta every Friday as a student.",
+        "I used to cooking pasta every Friday as a student."
+      ],
+      "answer": 1,
+      "explanation": "'Used to' + base verb describes a past habit that no longer happens: 'I used to cook pasta every Friday.'"
+    },
+    {
+      "id": 14,
+      "topic": "Be used to / get used to",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I'm used to cook for a large family now.",
+        "I use to cooking for a large family now.",
+        "I'm used to cooking for a large family now.",
+        "I'm used cooking to for a large family now."
+      ],
+      "answer": 2,
+      "explanation": "'Be used to' is followed by a gerund: 'I'm used to cooking for a large family.'"
+    },
+    {
+      "id": 15,
+      "topic": "Phrasal verbs (chop up)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Chop the vegetables up before frying them.",
+        "Chop up the vegetables before frying them.",
+        "Chop up to the vegetables before frying them.",
+        "Chop the vegetables before up frying them."
+      ],
+      "answer": 1,
+      "explanation": "'Chop up' means 'cut into small pieces': 'chop up the vegetables.'"
+    },
+    {
+      "id": 16,
+      "topic": "Phrasal verbs (heat up)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Heat up the soup before serving it.",
+        "Heat the soup up to before serving it.",
+        "Heat up to the soup before serving it.",
+        "Heat the soup before serving up it."
+      ],
+      "answer": 0,
+      "explanation": "'Heat up' means 'make something hot again': 'heat up the soup.'"
+    },
+    {
+      "id": 17,
+      "topic": "Connectors (despite / although)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Despite of the mistake, the dish tasted delicious.",
+        "Although the mistake, the dish tasted delicious.",
+        "Despite the mistake was big, the dish tasted delicious.",
+        "Despite the mistake, the dish tasted delicious."
+      ],
+      "answer": 3,
+      "explanation": "'Despite' is followed by a noun phrase (no 'of'): 'Despite the mistake, the dish tasted delicious.'"
+    },
+    {
+      "id": 18,
+      "topic": "Connectors (as a result)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "She added too much salt, as a result the soup was inedible.",
+        "As a result she added too much salt the soup was inedible.",
+        "She added too much salt. As a result, the soup was inedible.",
+        "She added too much salt as a result, the soup was inedible."
+      ],
+      "answer": 2,
+      "explanation": "'As a result' starts a new sentence and is followed by a comma: 'She added too much salt. As a result, the soup was inedible.'"
+    },
+    {
+      "id": 19,
+      "topic": "Quantifiers (enough)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "We don't have flour enough to make bread.",
+        "We don't have enough flour to make bread.",
+        "We don't have enough of flour to make bread.",
+        "We hasn't enough flour to make bread."
+      ],
+      "answer": 1,
+      "explanation": "'Enough' comes before the noun it modifies: 'enough flour.'"
+    },
+    {
+      "id": 20,
+      "topic": "Prepositions (fond of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "My grandmother is really fond at baking.",
+        "My grandmother is really fond to baking.",
+        "My grandmother is really fond for baking.",
+        "My grandmother is really fond of baking."
+      ],
+      "answer": 3,
+      "explanation": "'Fond of' + noun/gerund means 'liking something a lot': 'fond of baking.'"
+    },
+    {
+      "id": 21,
+      "topic": "Semi-formal email opening",
+      "question": "Which is the correct way to start an email to a restaurant you haven't visited, asking about a reservation?",
+      "options": [
+        "Hiya,",
+        "Dear Sir or Madam,",
+        "Hey there,",
+        "Yo,"
+      ],
+      "answer": 1,
+      "explanation": "'Dear Sir or Madam,' is a suitable formal opening when the recipient's exact name is unknown."
+    },
+    {
+      "id": 22,
+      "topic": "Formal email closing",
+      "question": "Which is the correct way to end a formal email to a named restaurant manager?",
+      "options": [
+        "Talk soon,",
+        "Best regards,",
+        "Later,",
+        "Yours faithfully,"
+      ],
+      "answer": 1,
+      "explanation": "'Best regards,' is a suitable semi-formal closing when writing to a named professional contact."
+    },
+    {
+      "id": 23,
+      "topic": "Making polite requests",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I was wondering could you recommending a good recipe.",
+        "I was wondering if you could to recommend a good recipe.",
+        "I was wondering if you could recommend a good recipe.",
+        "I wonder if you recommend could me a good recipe."
+      ],
+      "answer": 2,
+      "explanation": "'I was wondering if you could' + base verb is a polite way to make a request: 'if you could recommend a good recipe.'"
+    },
+    {
+      "id": 24,
+      "topic": "Sentence combining (relative clause with whose)",
+      "question": "Which sentence correctly combines 'This is the chef.' and 'The chef's restaurant won an award.'?",
+      "options": [
+        "This is the chef who restaurant won an award.",
+        "This is the chef's restaurant who won an award.",
+        "This is the chef which restaurant won an award.",
+        "This is the chef whose restaurant won an award."
+      ],
+      "answer": 3,
+      "explanation": "'Whose' shows possession in a relative clause: 'the chef whose restaurant won an award.'"
+    },
+    {
+      "id": 25,
+      "topic": "Word order (adverbs with perfect tenses)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I have tasted such a delicious soup never before.",
+        "Never I have tasted such a delicious soup before.",
+        "I have never tasted such a delicious soup before.",
+        "I have tasted never such a delicious soup before."
+      ],
+      "answer": 2,
+      "explanation": "'Never' is placed between the auxiliary and the past participle: 'I have never tasted such a soup.'"
+    },
+    {
+      "id": 26,
+      "topic": "Punctuation (indirect question)",
+      "question": "Which sentence has correct punctuation?",
+      "options": [
+        "I'd like to know whether the restaurant is open tonight?",
+        "I'd like to know, whether the restaurant is open tonight.",
+        "I'd like to know whether is the restaurant open tonight?",
+        "I'd like to know whether the restaurant is open tonight."
+      ],
+      "answer": 3,
+      "explanation": "Reported/indirect statements use normal word order and end with a full stop, not a question mark."
+    },
+    {
+      "id": 27,
+      "topic": "Sentence completion (future continuous)",
+      "question": "This time tomorrow, I ___ dinner for the guests.",
+      "options": [
+        "will cook",
+        "cook",
+        "am cooking",
+        "will be cooking"
+      ],
+      "answer": 3,
+      "explanation": "Future continuous describes an action in progress at a specific future time: 'will be cooking'."
+    },
+    {
+      "id": 28,
+      "topic": "Sentence completion (future perfect)",
+      "question": "By the end of the evening, we ___ three courses.",
+      "options": [
+        "will serve",
+        "are serving",
+        "will have served",
+        "serve"
+      ],
+      "answer": 2,
+      "explanation": "Future perfect describes an action completed before a future point: 'will have served'."
+    },
+    {
+      "id": 29,
+      "topic": "Sequencing/discourse markers",
+      "question": "Choose the sentence that correctly uses discourse markers.",
+      "options": [
+        "Firstly we chop onions secondly heat finally garlic.",
+        "Firstly, chop the onions. Secondly, heat the oil. Finally, add the garlic.",
+        "Finally chop the onions, firstly heat, secondly add garlic.",
+        "Secondly firstly chop onions, finally heat oil."
+      ],
+      "answer": 1,
+      "explanation": "Discourse markers 'Firstly,', 'Secondly,' and 'Finally,' organize points clearly with commas."
+    },
+    {
+      "id": 30,
+      "topic": "Question formation (tag questions with modals)",
+      "question": "Choose the correct question tag.",
+      "options": [
+        "You wouldn't forget the recipe, wouldn't you?",
+        "You wouldn't forget the recipe, will you?",
+        "You wouldn't forget the recipe, do you?",
+        "You wouldn't forget the recipe, would you?"
+      ],
+      "answer": 3,
+      "explanation": "Negative statement with 'would' + positive tag: 'you wouldn't forget..., would you?'"
+    }
+  ]
+}

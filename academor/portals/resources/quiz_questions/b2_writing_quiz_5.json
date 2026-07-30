@@ -1,0 +1,399 @@
+{
+  "level": "B2",
+  "quiz": 5,
+  "title": "B2 Writing Quiz 5 — Travel & Tourism",
+  "service": "general_english",
+  "category_name": "B2",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Mixed conditionals",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "If we had booked the flights earlier, we wouldn't be paying so much now.",
+        "If we booked the flights earlier, we wouldn't be paying so much now.",
+        "If we had booked the flights earlier, we wouldn't have paid so much now.",
+        "If we had booked the flights earlier, we won't pay so much now."
+      ],
+      "answer": 0,
+      "explanation": "Mixed conditional: If + past perfect (past condition), would + base verb (present result): 'If we had booked..., we wouldn't be paying so much now.'"
+    },
+    {
+      "id": 2,
+      "topic": "Conditionals without if (unless)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Overtourism will keep damaging the coastline unless authorities won't limit visitor numbers.",
+        "Overtourism will keep damaging the coastline unless authorities limit visitor numbers.",
+        "Overtourism will keep damaging the coastline unless that authorities limit visitor numbers.",
+        "Overtourism will keep damaging the coastline without authorities limit visitor numbers."
+      ],
+      "answer": 1,
+      "explanation": "'Unless' means 'if...not' and is followed by an affirmative clause: 'unless authorities limit visitor numbers.'"
+    },
+    {
+      "id": 3,
+      "topic": "Passive voice (present perfect)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Several new flight routes has been added this year.",
+        "Several new flight routes have added this year.",
+        "Several new flight routes have been added this year.",
+        "Several new flight routes have being added this year."
+      ],
+      "answer": 2,
+      "explanation": "Present perfect passive: have/has been + past participle: 'have been added this year.'"
+    },
+    {
+      "id": 4,
+      "topic": "Passive voice (modal passive)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "This overcrowding problem should addressed immediately.",
+        "This overcrowding problem should being addressed immediately.",
+        "This overcrowding problem should be address immediately.",
+        "This overcrowding problem should be addressed immediately."
+      ],
+      "answer": 3,
+      "explanation": "Modal passive: modal + be + past participle: 'should be addressed immediately.'"
+    },
+    {
+      "id": 5,
+      "topic": "Reported speech (commands/requests)",
+      "question": "Choose the correct sentence. (Direct: \"Please keep your passport with you at all times.\")",
+      "options": [
+        "The guide told us to keep our passports with us at all times.",
+        "The guide told us keep our passports with us at all times.",
+        "The guide said us to keep our passports with us at all times.",
+        "The guide told us that keep our passports with us at all times."
+      ],
+      "answer": 0,
+      "explanation": "Reported commands: tell + object + to + base verb: 'told us to keep our passports with us.'"
+    },
+    {
+      "id": 6,
+      "topic": "Reported speech (advice)",
+      "question": "Choose the correct sentence. (Direct: \"You should book accommodation in advance.\")",
+      "options": [
+        "She suggested to book accommodation in advance.",
+        "She suggested booking accommodation in advance.",
+        "She suggested me booking accommodation in advance.",
+        "She suggested that I booking accommodation in advance."
+      ],
+      "answer": 1,
+      "explanation": "'Suggest' is followed by a gerund or 'that + subject + base verb': 'suggested booking accommodation in advance.'"
+    },
+    {
+      "id": 7,
+      "topic": "Relative clauses with prepositions",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The agency which she works for it organizes eco-tours.",
+        "The agency for that she works organizes eco-tours.",
+        "The agency for which she works organizes eco-tours.",
+        "The agency she works for which organizes eco-tours."
+      ],
+      "answer": 2,
+      "explanation": "In formal style, the preposition moves before 'which': 'the agency for which she works.'"
+    },
+    {
+      "id": 8,
+      "topic": "Reduced relative clauses (participle clauses)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The report publishing last week revealed a rise in tourist numbers.",
+        "The report published last week reveal a rise in tourist numbers.",
+        "The report which published last week revealed a rise in tourist numbers.",
+        "The report published last week revealed a rise in tourist numbers."
+      ],
+      "answer": 3,
+      "explanation": "A passive meaning reduces 'which was published' to the past participle alone: 'The report published last week...'"
+    },
+    {
+      "id": 9,
+      "topic": "Modal verbs of past deduction (must have)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The airline must have cancelled the flight due to bad weather.",
+        "The airline must cancelled the flight due to bad weather.",
+        "The airline must have cancel the flight due to bad weather.",
+        "The airline must has cancelled the flight due to bad weather."
+      ],
+      "answer": 0,
+      "explanation": "Past deduction: must have + past participle: 'must have cancelled the flight.'"
+    },
+    {
+      "id": 10,
+      "topic": "Modals of past obligation/regret (should have)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The tour operator should acted sooner to warn tourists.",
+        "The tour operator should have acted sooner to warn tourists.",
+        "The tour operator should have act sooner to warn tourists.",
+        "The tour operator should has acted sooner to warn tourists."
+      ],
+      "answer": 1,
+      "explanation": "Past regret/criticism: should have + past participle: 'should have acted sooner.'"
+    },
+    {
+      "id": 11,
+      "topic": "Present perfect vs past simple",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "International travel rose significantly over the past decade.",
+        "International travel has risen significantly over the past decade.",
+        "International travel have risen significantly over the past decade.",
+        "International travel have rose significantly over the past decade."
+      ],
+      "answer": 1,
+      "explanation": "'Over the past decade' links the past to the present, so present perfect is used: 'has risen significantly.'"
+    },
+    {
+      "id": 12,
+      "topic": "Past perfect vs past simple",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "By the time we reached the airport, our flight left.",
+        "By the time we had reached the airport, our flight left.",
+        "By the time we reached the airport, our flight have already left.",
+        "By the time we reached the airport, our flight had already left."
+      ],
+      "answer": 3,
+      "explanation": "The earlier of two past actions takes the past perfect: 'our flight had already left.'"
+    },
+    {
+      "id": 13,
+      "topic": "Future forms (present continuous for arrangements)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Tourism officials are meeting next week to discuss new regulations.",
+        "Tourism officials meet next week to discuss new regulations.",
+        "Tourism officials will meeting next week to discuss new regulations.",
+        "Tourism officials are meet next week to discuss new regulations."
+      ],
+      "answer": 0,
+      "explanation": "Present continuous expresses a fixed future arrangement: 'are meeting next week.'"
+    },
+    {
+      "id": 14,
+      "topic": "Future in the past (would)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "He said he will visit three countries this summer.",
+        "He said he would visit three countries this summer.",
+        "He said he would visited three countries this summer.",
+        "He said he would have visit three countries this summer."
+      ],
+      "answer": 1,
+      "explanation": "In reported speech, 'will' shifts back to 'would': 'he said he would visit three countries.'"
+    },
+    {
+      "id": 15,
+      "topic": "Wish / if only (present regret)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I wish local authorities take overtourism more seriously.",
+        "I wish local authorities have taken overtourism more seriously.",
+        "I wish local authorities took overtourism more seriously.",
+        "I wish local authorities would take overtourism more seriously as a policy."
+      ],
+      "answer": 2,
+      "explanation": "'Wish' + past simple expresses regret about a present situation: 'I wish local authorities took overtourism more seriously.'"
+    },
+    {
+      "id": 16,
+      "topic": "Wish / if only (past regret)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I wish the guide warned us earlier about the closure.",
+        "I wish the guide have warned us earlier about the closure.",
+        "I wish the guide would have warned us earlier about the closure.",
+        "I wish the guide had warned us earlier about the closure."
+      ],
+      "answer": 3,
+      "explanation": "'Wish' + past perfect expresses regret about the past: 'I wish the guide had warned us earlier.'"
+    },
+    {
+      "id": 17,
+      "topic": "Causative (have something done)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "We had our visas processed by a travel agency.",
+        "We had processed our visas by a travel agency.",
+        "We had our visas process by a travel agency.",
+        "We have our visas processed by a travel agency last year."
+      ],
+      "answer": 0,
+      "explanation": "Causative form: have + object + past participle shows someone else did the action: 'had our visas processed.'"
+    },
+    {
+      "id": 18,
+      "topic": "Inversion for emphasis",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Never before the island had received so many visitors.",
+        "Never before had the island received so many visitors.",
+        "Never before did the island received so many visitors.",
+        "Never before has the island had received so many visitors."
+      ],
+      "answer": 1,
+      "explanation": "Negative adverbials at the start trigger inversion: 'Never before had the island received...'"
+    },
+    {
+      "id": 19,
+      "topic": "Phrasal verbs (look into)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The airline is looking the complaint into.",
+        "The airline is looking in to the complaint.",
+        "The airline is looking into the complaint.",
+        "The airline is looking into to the complaint."
+      ],
+      "answer": 2,
+      "explanation": "'Look into' means 'investigate' and is inseparable: 'looking into the complaint.'"
+    },
+    {
+      "id": 20,
+      "topic": "Cleft sentences (What...is)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "What the region urgently needs are better public transport for tourists.",
+        "That the region urgently needs is better public transport for tourists.",
+        "What the region urgently needs is better public transport for tourists it.",
+        "What the region urgently needs is better public transport for tourists."
+      ],
+      "answer": 3,
+      "explanation": "'What' clefts take a singular verb when the complement is singular: 'What the region needs is better public transport.'"
+    },
+    {
+      "id": 21,
+      "topic": "Connectors (whereas)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Some resorts protect local wildlife, whereas others harm the ecosystem.",
+        "Some resorts protect local wildlife, whereas others harms the ecosystem.",
+        "Some resorts protect local wildlife whereas, others harm the ecosystem.",
+        "Some resorts protect local wildlife despite others harm the ecosystem."
+      ],
+      "answer": 0,
+      "explanation": "'Whereas' contrasts two clauses and is followed directly by the subject: 'whereas others harm the ecosystem.'"
+    },
+    {
+      "id": 22,
+      "topic": "Connectors (in spite of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "In spite the bad weather, the trip was a success.",
+        "In spite of the bad weather, the trip was a success.",
+        "Despite of the bad weather, the trip was a success.",
+        "In spite of the bad weather, the trip was a success though."
+      ],
+      "answer": 1,
+      "explanation": "'In spite of' is followed by a noun phrase: 'In spite of the bad weather, the trip was a success.'"
+    },
+    {
+      "id": 23,
+      "topic": "Quantifiers (a number of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "A number of studies has linked overtourism to environmental damage.",
+        "The number of studies have linked overtourism to environmental damage.",
+        "A number of studies have linked overtourism to environmental damage.",
+        "A great number of studies has linked overtourism to environmental damage."
+      ],
+      "answer": 2,
+      "explanation": "'A number of' + plural noun takes a plural verb: 'a number of studies have linked...'"
+    },
+    {
+      "id": 24,
+      "topic": "Prepositional phrases (on behalf of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "She spoke in behalf of the entire tour group.",
+        "She spoke on behalf for the entire tour group.",
+        "She spoke behalf of the entire tour group.",
+        "She spoke on behalf of the entire tour group."
+      ],
+      "answer": 3,
+      "explanation": "'On behalf of' means 'representing someone': 'she spoke on behalf of the tour group.'"
+    },
+    {
+      "id": 25,
+      "topic": "Formal register (nominalization)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The introduction of a tourist tax reduced overcrowding significantly.",
+        "The introduce of a tourist tax reduced overcrowding significantly.",
+        "The introducing of a tourist tax reduced overcrowding significantly.",
+        "The introduction of a tourist tax reduce overcrowding significantly."
+      ],
+      "answer": 0,
+      "explanation": "Formal writing often nominalizes verbs into nouns: 'introduce' becomes 'the introduction of...'"
+    },
+    {
+      "id": 26,
+      "topic": "Formal email (requesting information)",
+      "question": "Which is the most appropriate formal opening line for an email requesting information about a hotel's cancellation policy?",
+      "options": [
+        "I'm writing to ask you about your cancellation policy, ok?",
+        "I am writing to enquire about your cancellation policy.",
+        "Just wanted to know about your cancellation policy.",
+        "Hey, tell me about your cancellation policy."
+      ],
+      "answer": 1,
+      "explanation": "'I am writing to enquire about...' is a standard formal opening for information requests."
+    },
+    {
+      "id": 27,
+      "topic": "Making complaints (formal language)",
+      "question": "Which is the most appropriate opening line for a formal complaint about a cancelled flight?",
+      "options": [
+        "I'm writing because I'm really mad about my cancelled flight.",
+        "I want to complain about my cancelled flight, it's bad.",
+        "I am writing to express my concern about my cancelled flight.",
+        "I am writing to express my concern about my cancelled flight, ok."
+      ],
+      "answer": 2,
+      "explanation": "Formal complaints use measured language such as 'I am writing to express my concern about...'"
+    },
+    {
+      "id": 28,
+      "topic": "Adverbs of degree (extremely)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The delays at the airport were extreme alarming.",
+        "The delays at the airport were extremely alarm.",
+        "The delays at the airport were very much alarming.",
+        "The delays at the airport were extremely alarming."
+      ],
+      "answer": 3,
+      "explanation": "'Extremely' (adverb) modifies the adjective 'alarming': 'were extremely alarming.'"
+    },
+    {
+      "id": 29,
+      "topic": "Discourse markers (moreover)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The resort is affordable. Moreover, it offers free excursions.",
+        "The resort is affordable, moreover it offers free excursions.",
+        "The resort is affordable. Moreover it offers free excursions.",
+        "The resort is affordable moreover, it offers free excursions."
+      ],
+      "answer": 0,
+      "explanation": "'Moreover' begins a new sentence and is followed by a comma: 'The resort is affordable. Moreover, it offers free excursions.'"
+    },
+    {
+      "id": 30,
+      "topic": "Question tags (advanced forms)",
+      "question": "Choose the correct question tag.",
+      "options": [
+        "You'd recommend this destination, didn't you?",
+        "You'd recommend this destination, wouldn't you?",
+        "You'd recommend this destination, would you?",
+        "You'd recommend this destination, wouldn't it?"
+      ],
+      "answer": 1,
+      "explanation": "A positive statement with 'would' takes a negative tag: 'You'd recommend..., wouldn't you?'"
+    }
+  ]
+}

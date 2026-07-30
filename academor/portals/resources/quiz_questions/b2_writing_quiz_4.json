@@ -1,0 +1,399 @@
+{
+  "level": "B2",
+  "quiz": 4,
+  "title": "B2 Writing Quiz 4 — Health & Medicine",
+  "service": "general_english",
+  "category_name": "B2",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Mixed conditionals",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "If doctors had detected the illness earlier, the patient wouldn't be suffering now.",
+        "If doctors detected the illness earlier, the patient wouldn't be suffering now.",
+        "If doctors had detected the illness earlier, the patient wouldn't have suffered now.",
+        "If doctors had detected the illness earlier, the patient won't suffer now."
+      ],
+      "answer": 0,
+      "explanation": "Mixed conditional: If + past perfect (past condition), would + base verb (present result): 'If doctors had detected..., the patient wouldn't be suffering now.'"
+    },
+    {
+      "id": 2,
+      "topic": "Conditionals without if (unless)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The disease will keep spreading unless people won't get vaccinated.",
+        "The disease will keep spreading unless people get vaccinated.",
+        "The disease will keep spreading unless that people get vaccinated.",
+        "The disease will keep spreading without people get vaccinated."
+      ],
+      "answer": 1,
+      "explanation": "'Unless' means 'if...not' and is followed by an affirmative clause: 'unless people get vaccinated.'"
+    },
+    {
+      "id": 3,
+      "topic": "Passive voice (present perfect)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Several new treatments has been approved this year.",
+        "Several new treatments have approved this year.",
+        "Several new treatments have been approved this year.",
+        "Several new treatments have being approved this year."
+      ],
+      "answer": 2,
+      "explanation": "Present perfect passive: have/has been + past participle: 'have been approved this year.'"
+    },
+    {
+      "id": 4,
+      "topic": "Passive voice (modal passive)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "This shortage of medicine should addressed immediately.",
+        "This shortage of medicine should being addressed immediately.",
+        "This shortage of medicine should be address immediately.",
+        "This shortage of medicine should be addressed immediately."
+      ],
+      "answer": 3,
+      "explanation": "Modal passive: modal + be + past participle: 'should be addressed immediately.'"
+    },
+    {
+      "id": 5,
+      "topic": "Reported speech (commands/requests)",
+      "question": "Choose the correct sentence. (Direct: \"Please take this medicine twice a day.\")",
+      "options": [
+        "The doctor told me to take the medicine twice a day.",
+        "The doctor told me take the medicine twice a day.",
+        "The doctor said me to take the medicine twice a day.",
+        "The doctor told me that take the medicine twice a day."
+      ],
+      "answer": 0,
+      "explanation": "Reported commands: tell + object + to + base verb: 'told me to take the medicine twice a day.'"
+    },
+    {
+      "id": 6,
+      "topic": "Reported speech (advice)",
+      "question": "Choose the correct sentence. (Direct: \"You should exercise more regularly.\")",
+      "options": [
+        "She suggested to exercise more regularly.",
+        "She suggested exercising more regularly.",
+        "She suggested me exercising more regularly.",
+        "She suggested that I exercising more regularly."
+      ],
+      "answer": 1,
+      "explanation": "'Suggest' is followed by a gerund or 'that + subject + base verb': 'suggested exercising more regularly.'"
+    },
+    {
+      "id": 7,
+      "topic": "Relative clauses with prepositions",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The clinic which she works for it treats low-income patients.",
+        "The clinic for that she works treats low-income patients.",
+        "The clinic for which she works treats low-income patients.",
+        "The clinic she works for which treats low-income patients."
+      ],
+      "answer": 2,
+      "explanation": "In formal style, the preposition moves before 'which': 'the clinic for which she works.'"
+    },
+    {
+      "id": 8,
+      "topic": "Reduced relative clauses (participle clauses)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The study publishing last week revealed a rise in heart disease.",
+        "The study published last week reveal a rise in heart disease.",
+        "The study which published last week revealed a rise in heart disease.",
+        "The study published last week revealed a rise in heart disease."
+      ],
+      "answer": 3,
+      "explanation": "A passive meaning reduces 'which was published' to the past participle alone: 'The study published last week...'"
+    },
+    {
+      "id": 9,
+      "topic": "Modal verbs of past deduction (must have)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The patient must have skipped several doses of the medication.",
+        "The patient must skipped several doses of the medication.",
+        "The patient must have skip several doses of the medication.",
+        "The patient must has skipped several doses of the medication."
+      ],
+      "answer": 0,
+      "explanation": "Past deduction: must have + past participle: 'must have skipped several doses.'"
+    },
+    {
+      "id": 10,
+      "topic": "Modals of past obligation/regret (should have)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The hospital should acted sooner to isolate the patient.",
+        "The hospital should have acted sooner to isolate the patient.",
+        "The hospital should have act sooner to isolate the patient.",
+        "The hospital should has acted sooner to isolate the patient."
+      ],
+      "answer": 1,
+      "explanation": "Past regret/criticism: should have + past participle: 'should have acted sooner.'"
+    },
+    {
+      "id": 11,
+      "topic": "Present perfect vs past simple",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Life expectancy rose significantly over the past century.",
+        "Life expectancy has risen significantly over the past century.",
+        "Life expectancy have risen significantly over the past century.",
+        "Life expectancy have rose significantly over the past century."
+      ],
+      "answer": 1,
+      "explanation": "'Over the past century' links the past to the present, so present perfect is used: 'has risen significantly.'"
+    },
+    {
+      "id": 12,
+      "topic": "Past perfect vs past simple",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "By the time help arrived, the patient's condition worsened.",
+        "By the time help had arrived, the patient's condition worsened.",
+        "By the time help arrived, the patient's condition have already worsened.",
+        "By the time help arrived, the patient's condition had already worsened."
+      ],
+      "answer": 3,
+      "explanation": "The earlier of two past actions takes the past perfect: 'the patient's condition had already worsened.'"
+    },
+    {
+      "id": 13,
+      "topic": "Future forms (present continuous for arrangements)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Health officials are meeting next week to discuss the outbreak.",
+        "Health officials meet next week to discuss the outbreak.",
+        "Health officials will meeting next week to discuss the outbreak.",
+        "Health officials are meet next week to discuss the outbreak."
+      ],
+      "answer": 0,
+      "explanation": "Present continuous expresses a fixed future arrangement: 'are meeting next week.'"
+    },
+    {
+      "id": 14,
+      "topic": "Future in the past (would)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "She said she will schedule the surgery next month.",
+        "She said she would schedule the surgery next month.",
+        "She said she would scheduled the surgery next month.",
+        "She said she would have schedule the surgery next month."
+      ],
+      "answer": 1,
+      "explanation": "In reported speech, 'will' shifts back to 'would': 'she said she would schedule the surgery.'"
+    },
+    {
+      "id": 15,
+      "topic": "Wish / if only (present regret)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I wish people take mental health more seriously.",
+        "I wish people have taken mental health more seriously.",
+        "I wish people took mental health more seriously.",
+        "I wish people would take mental health more seriously as a rule."
+      ],
+      "answer": 2,
+      "explanation": "'Wish' + past simple expresses regret about a present situation: 'I wish people took mental health more seriously.'"
+    },
+    {
+      "id": 16,
+      "topic": "Wish / if only (past regret)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I wish doctors warned us earlier about the side effects.",
+        "I wish doctors have warned us earlier about the side effects.",
+        "I wish doctors would have warned us earlier about the side effects.",
+        "I wish doctors had warned us earlier about the side effects."
+      ],
+      "answer": 3,
+      "explanation": "'Wish' + past perfect expresses regret about the past: 'I wish doctors had warned us earlier.'"
+    },
+    {
+      "id": 17,
+      "topic": "Causative (have something done)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I had my blood pressure checked at the clinic yesterday.",
+        "I had checked my blood pressure at the clinic yesterday.",
+        "I had my blood pressure check at the clinic yesterday.",
+        "I have my blood pressure checked at the clinic yesterday."
+      ],
+      "answer": 0,
+      "explanation": "Causative form: have + object + past participle shows someone else did the action: 'had my blood pressure checked.'"
+    },
+    {
+      "id": 18,
+      "topic": "Inversion for emphasis",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Never before the hospital had treated so many patients in one day.",
+        "Never before had the hospital treated so many patients in one day.",
+        "Never before did the hospital treated so many patients in one day.",
+        "Never before has the hospital had treated so many patients in one day."
+      ],
+      "answer": 1,
+      "explanation": "Negative adverbials at the start trigger inversion: 'Never before had the hospital treated...'"
+    },
+    {
+      "id": 19,
+      "topic": "Phrasal verbs (look into)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The health board is looking the cause of the outbreak into.",
+        "The health board is looking in to the cause of the outbreak.",
+        "The health board is looking into the cause of the outbreak.",
+        "The health board is looking into to the cause of the outbreak."
+      ],
+      "answer": 2,
+      "explanation": "'Look into' means 'investigate' and is inseparable: 'looking into the cause of the outbreak.'"
+    },
+    {
+      "id": 20,
+      "topic": "Cleft sentences (What...is)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "What patients urgently need are a faster diagnosis system.",
+        "That patients urgently need is a faster diagnosis system.",
+        "What patients urgently need is faster diagnosis system it.",
+        "What patients urgently need is a faster diagnosis system."
+      ],
+      "answer": 3,
+      "explanation": "'What' clefts take a singular verb when the complement is singular: 'What patients need is a faster diagnosis system.'"
+    },
+    {
+      "id": 21,
+      "topic": "Connectors (whereas)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Some hospitals have modern equipment, whereas others still use outdated machines.",
+        "Some hospitals have modern equipment, whereas others still uses outdated machines.",
+        "Some hospitals have modern equipment whereas, others still use outdated machines.",
+        "Some hospitals have modern equipment despite others still use outdated machines."
+      ],
+      "answer": 0,
+      "explanation": "'Whereas' contrasts two clauses and is followed directly by the subject: 'whereas others still use...'"
+    },
+    {
+      "id": 22,
+      "topic": "Connectors (in spite of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "In spite the new treatment, her symptoms persisted.",
+        "In spite of the new treatment, her symptoms persisted.",
+        "Despite of the new treatment, her symptoms persisted.",
+        "In spite of the new treatment, her symptoms persisted though."
+      ],
+      "answer": 1,
+      "explanation": "'In spite of' is followed by a noun phrase: 'In spite of the new treatment, her symptoms persisted.'"
+    },
+    {
+      "id": 23,
+      "topic": "Quantifiers (a number of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "A number of studies has linked poor sleep to weakened immunity.",
+        "The number of studies have linked poor sleep to weakened immunity.",
+        "A number of studies have linked poor sleep to weakened immunity.",
+        "A great number of studies has linked poor sleep to weakened immunity."
+      ],
+      "answer": 2,
+      "explanation": "'A number of' + plural noun takes a plural verb: 'a number of studies have linked...'"
+    },
+    {
+      "id": 24,
+      "topic": "Prepositional phrases (on behalf of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "She spoke in behalf of the entire nursing staff.",
+        "She spoke on behalf for the entire nursing staff.",
+        "She spoke behalf of the entire nursing staff.",
+        "She spoke on behalf of the entire nursing staff."
+      ],
+      "answer": 3,
+      "explanation": "'On behalf of' means 'representing someone': 'she spoke on behalf of the staff.'"
+    },
+    {
+      "id": 25,
+      "topic": "Formal register (nominalization)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The introduction of stricter hygiene protocols reduced infection rates significantly.",
+        "The introduce of stricter hygiene protocols reduced infection rates significantly.",
+        "The introducing of stricter hygiene protocols reduced infection rates significantly.",
+        "The introduction of stricter hygiene protocols reduce infection rates significantly."
+      ],
+      "answer": 0,
+      "explanation": "Formal writing often nominalizes verbs into nouns: 'introduce' becomes 'the introduction of...'"
+    },
+    {
+      "id": 26,
+      "topic": "Formal email (requesting information)",
+      "question": "Which is the most appropriate formal opening line for an email requesting information about a hospital's visiting hours?",
+      "options": [
+        "I'm writing to ask you about your visiting hours, ok?",
+        "I am writing to enquire about your visiting hours.",
+        "Just wanted to know about your visiting hours.",
+        "Hey, tell me about your visiting hours."
+      ],
+      "answer": 1,
+      "explanation": "'I am writing to enquire about...' is a standard formal opening for information requests."
+    },
+    {
+      "id": 27,
+      "topic": "Making complaints (formal language)",
+      "question": "Which is the most appropriate opening line for a formal complaint about a delayed medical appointment?",
+      "options": [
+        "I'm writing because I'm really mad about my delayed appointment.",
+        "I want to complain about my delayed appointment, it's bad.",
+        "I am writing to express my concern about the delay in my appointment.",
+        "I am writing to express my concern about the delay in my appointment, ok."
+      ],
+      "answer": 2,
+      "explanation": "Formal complaints use measured language such as 'I am writing to express my concern about...'"
+    },
+    {
+      "id": 28,
+      "topic": "Adverbs of degree (extremely)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The results of the blood test were extreme alarming.",
+        "The results of the blood test were extremely alarm.",
+        "The results of the blood test were very much alarming.",
+        "The results of the blood test were extremely alarming."
+      ],
+      "answer": 3,
+      "explanation": "'Extremely' (adverb) modifies the adjective 'alarming': 'were extremely alarming.'"
+    },
+    {
+      "id": 29,
+      "topic": "Discourse markers (moreover)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The new drug is more effective. Moreover, it has fewer side effects.",
+        "The new drug is more effective, moreover it has fewer side effects.",
+        "The new drug is more effective. Moreover it has fewer side effects.",
+        "The new drug is more effective moreover, it has fewer side effects."
+      ],
+      "answer": 0,
+      "explanation": "'Moreover' begins a new sentence and is followed by a comma: 'The new drug is more effective. Moreover, it has fewer side effects.'"
+    },
+    {
+      "id": 30,
+      "topic": "Question tags (advanced forms)",
+      "question": "Choose the correct question tag.",
+      "options": [
+        "You'd recommend regular checkups, didn't you?",
+        "You'd recommend regular checkups, wouldn't you?",
+        "You'd recommend regular checkups, would you?",
+        "You'd recommend regular checkups, wouldn't it?"
+      ],
+      "answer": 1,
+      "explanation": "A positive statement with 'would' takes a negative tag: 'You'd recommend..., wouldn't you?'"
+    }
+  ]
+}

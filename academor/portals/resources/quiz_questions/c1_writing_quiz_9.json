@@ -1,0 +1,399 @@
+{
+  "level": "C1",
+  "quiz": 9,
+  "title": "C1 Writing Quiz 9 — Business & Economy",
+  "service": "general_english",
+  "category_name": "C1",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Inversion (at no point)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "At no point did the CEO deny the allegations.",
+        "At no point the CEO denied the allegations.",
+        "At no point the CEO did deny the allegations.",
+        "At no point deny did the CEO the allegations."
+      ],
+      "answer": 0,
+      "explanation": "'At no point' triggers inversion: 'did the CEO deny the allegations.'"
+    },
+    {
+      "id": 2,
+      "topic": "Subjunctive in formal contexts",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The regulator requires that all banks maintain a minimum capital reserve.",
+        "The regulator requires that all banks maintains a minimum capital reserve.",
+        "The regulator requires that all banks will maintain a minimum capital reserve.",
+        "The regulator requires that all banks maintaining a minimum capital reserve."
+      ],
+      "answer": 0,
+      "explanation": "After 'require that', formal English uses the subjunctive: 'all banks maintain a minimum reserve.'"
+    },
+    {
+      "id": 3,
+      "topic": "Advanced conditionals (If only)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "If only the board had acted sooner, the losses could have been minimized.",
+        "If only the board acted sooner, the losses could have been minimized.",
+        "If only the board had act sooner, the losses could have been minimized.",
+        "If only the board had acted sooner, the losses will have been minimized."
+      ],
+      "answer": 0,
+      "explanation": "'If only' + past perfect expresses regret about the past: 'If only the board had acted sooner...'"
+    },
+    {
+      "id": 4,
+      "topic": "Concession connectors (that being said)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The results were mixed. That being said, the outlook remains positive.",
+        "The results were mixed, that being said the outlook remains positive.",
+        "The results were mixed. That being said the outlook remains positive.",
+        "The results were mixed that being said, the outlook remains positive."
+      ],
+      "answer": 0,
+      "explanation": "'That being said' begins a new sentence and is followed by a comma: 'That being said, the outlook remains positive.'"
+    },
+    {
+      "id": 5,
+      "topic": "Emphatic cleft (It was only when...that)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "It was only when sales dropped that management took notice.",
+        "It was only when sales dropped when management took notice.",
+        "It only was when sales dropped that management took notice.",
+        "It was only when sales dropping that management took notice."
+      ],
+      "answer": 0,
+      "explanation": "The cleft 'It was only when...that' emphasizes a turning point: 'It was only when sales dropped that management took notice.'"
+    },
+    {
+      "id": 6,
+      "topic": "Reporting verbs (speculate)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Analysts speculate that the central bank will cut rates again.",
+        "Analysts speculate to that the central bank will cut rates again.",
+        "Analysts speculate the central bank cutting rates again that.",
+        "Analysts are speculate that the central bank will cut rates again."
+      ],
+      "answer": 0,
+      "explanation": "'Speculate' is followed by 'that + clause': 'speculate that the central bank will cut rates.'"
+    },
+    {
+      "id": 7,
+      "topic": "Participle clauses (Assuming that)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Assuming that costs remain stable, margins should improve next year.",
+        "Assume that costs remain stable, margins should improve next year.",
+        "Assumed that costs remain stable, margins should improve next year.",
+        "Assuming costs remaining stable, margins should improve next year."
+      ],
+      "answer": 0,
+      "explanation": "'Assuming that' introduces a conditional assumption: 'Assuming that costs remain stable, margins should improve.'"
+    },
+    {
+      "id": 8,
+      "topic": "Advanced quantifiers (the bulk of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The bulk of the revenue comes from overseas markets.",
+        "The bulk of the revenue come from overseas markets.",
+        "The bulk of the revenue coming from overseas markets.",
+        "A bulk the revenue comes from overseas markets."
+      ],
+      "answer": 0,
+      "explanation": "'The bulk of' + uncountable noun takes a singular verb: 'the bulk of the revenue comes from overseas markets.'"
+    },
+    {
+      "id": 9,
+      "topic": "Modal perfect (needn't have)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The team needn't have rushed the launch; the deadline was later extended.",
+        "The team needn't rushed the launch; the deadline was later extended.",
+        "The team didn't need have rushed the launch; the deadline was later extended.",
+        "The team needn't have rushing the launch; the deadline was later extended."
+      ],
+      "answer": 0,
+      "explanation": "'Needn't have + past participle' expresses an unnecessary past action: 'needn't have rushed the launch.'"
+    },
+    {
+      "id": 10,
+      "topic": "Correlative conjunctions (not merely...but)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The reform will not merely cut costs but also improve efficiency.",
+        "The reform will not merely cut costs but also improving efficiency.",
+        "The reform not merely will cut costs but also improve efficiency.",
+        "The reform will not merely cutting costs but also improve efficiency."
+      ],
+      "answer": 0,
+      "explanation": "'Not merely...but also' links two parallel verb phrases: 'will not merely cut costs but also improve efficiency.'"
+    },
+    {
+      "id": 11,
+      "topic": "Hedging language (seemingly)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The seemingly minor error caused significant delays.",
+        "The seeming minor error caused significant delays.",
+        "The error seemingly minor it caused significant delays.",
+        "The error caused seemingly minor significant delays."
+      ],
+      "answer": 0,
+      "explanation": "'Seemingly' hedges a description before an adjective: 'the seemingly minor error.'"
+    },
+    {
+      "id": 12,
+      "topic": "Advanced relative clauses (in which case)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Rates may rise further, in which case borrowing costs will increase.",
+        "Rates may rise further, in that case which borrowing costs will increase.",
+        "Rates may rise further, which case borrowing costs will increase.",
+        "Rates may rise further, in which borrowing costs will increase case."
+      ],
+      "answer": 0,
+      "explanation": "'In which case' refers back to a stated possibility: 'Rates may rise further, in which case borrowing costs will increase.'"
+    },
+    {
+      "id": 13,
+      "topic": "Fronting for emphasis",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "So great was the demand that the company doubled production.",
+        "So great the demand was that the company doubled production.",
+        "So great was the demand the company doubled production.",
+        "So great was that the demand the company doubled production."
+      ],
+      "answer": 0,
+      "explanation": "Fronting 'so + adjective' triggers inversion: 'So great was the demand that the company doubled production.'"
+    },
+    {
+      "id": 14,
+      "topic": "Nominalization (formal register)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The reduction in headcount was announced without warning.",
+        "The reduce in headcount was announced without warning.",
+        "The reduction in headcount were announced without warning.",
+        "The reducing headcount was announced without warning."
+      ],
+      "answer": 0,
+      "explanation": "Formal writing nominalizes verbs: 'reduce' becomes 'the reduction in...'"
+    },
+    {
+      "id": 15,
+      "topic": "Passive with modal perfect (need not have been)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The delay need not have been so costly.",
+        "The delay need not been so costly.",
+        "The delay need not have been so cost.",
+        "The delay need not have being so costly."
+      ],
+      "answer": 0,
+      "explanation": "Modal perfect passive: 'need not have been + adjective/participle': 'need not have been so costly.'"
+    },
+    {
+      "id": 16,
+      "topic": "Ellipsis (formal writing)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "One team met the target; the other, fell short.",
+        "One team met the target; the other met, fell short.",
+        "One team met the target; the other is fell short.",
+        "One team met the target; the other falls short already."
+      ],
+      "answer": 0,
+      "explanation": "Ellipsis omits the repeated verb after a semicolon: 'the other, fell short' (= the other team fell short)."
+    },
+    {
+      "id": 17,
+      "topic": "Discourse markers (in turn)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Costs rose. This, in turn, pushed up retail prices.",
+        "Costs rose, this in turn pushed up retail prices.",
+        "Costs rose. This in turn pushed up retail prices.",
+        "Costs rose this, in turn pushed up retail prices."
+      ],
+      "answer": 0,
+      "explanation": "'In turn' is set off by commas mid-sentence: 'This, in turn, pushed up retail prices.'"
+    },
+    {
+      "id": 18,
+      "topic": "Concession connectors (be that as it may)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The costs are high. Be that as it may, the investment is worthwhile.",
+        "The costs are high, be that as it may the investment is worthwhile.",
+        "The costs are high. Be that as it may the investment is worthwhile.",
+        "The costs are high be that as it may, the investment is worthwhile."
+      ],
+      "answer": 0,
+      "explanation": "'Be that as it may' is a fixed formal concessive phrase and begins a new sentence with a comma."
+    },
+    {
+      "id": 19,
+      "topic": "Formal email (introducing oneself professionally)",
+      "question": "Which is the most appropriate formal opening line for an email introducing yourself to a new business contact?",
+      "options": [
+        "Hi, it's me, we should totally connect sometime.",
+        "I am writing to introduce myself as the new account manager for your region.",
+        "Yo, new account manager here, let's chat.",
+        "Hey there, just wanted to say hi and introduce myself."
+      ],
+      "answer": 1,
+      "explanation": "'I am writing to introduce myself as...' is a standard formal introduction opening."
+    },
+    {
+      "id": 20,
+      "topic": "Formal complaint (advanced language)",
+      "question": "Which is the most appropriate opening line for a formal complaint about a missed deadline by a contractor?",
+      "options": [
+        "I am writing to express concern over the failure to meet the agreed deadline.",
+        "You missed the deadline and that's not okay.",
+        "I am writing to express concern over the failure to meet the agreed deadline, seriously.",
+        "The deadline was missed, which is honestly pretty annoying."
+      ],
+      "answer": 0,
+      "explanation": "Formal complaints use precise, measured language such as 'I am writing to express concern over...'"
+    },
+    {
+      "id": 21,
+      "topic": "Idiomatic phrasal verbs (weigh up)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The board needs to weigh up the risks before proceeding.",
+        "The board needs to weigh the risks up of before proceeding.",
+        "The board needs to weigh up of the risks before proceeding.",
+        "The board needs to weigh the risks of up before proceeding."
+      ],
+      "answer": 0,
+      "explanation": "'Weigh up' means 'to carefully consider': 'weigh up the risks before proceeding.'"
+    },
+    {
+      "id": 22,
+      "topic": "Advanced passive (see + object + past participle)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The industry has seen its profit margins squeezed by rising costs.",
+        "The industry has seen its profit margins squeeze by rising costs.",
+        "The industry has seen squeezed its profit margins by rising costs.",
+        "The industry has seen its profit margins squeezing by rising costs."
+      ],
+      "answer": 0,
+      "explanation": "'See + object + past participle' describes an experienced change: 'seen its profit margins squeezed.'"
+    },
+    {
+      "id": 23,
+      "topic": "Absolute participle constructions",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "All told, the quarter was a modest success.",
+        "All telling, the quarter was a modest success.",
+        "All tell, the quarter was a modest success.",
+        "All told that, the quarter was a modest success."
+      ],
+      "answer": 0,
+      "explanation": "'All told' is a fixed absolute participle phrase meaning 'in total, overall.'"
+    },
+    {
+      "id": 24,
+      "topic": "Prepositional phrases (on account of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The flight was delayed on account of adverse weather.",
+        "The flight was delayed on the account of adverse weather.",
+        "The flight was delayed account of adverse weather.",
+        "The flight was delayed on account for adverse weather."
+      ],
+      "answer": 0,
+      "explanation": "'On account of' means 'because of': 'delayed on account of adverse weather.'"
+    },
+    {
+      "id": 25,
+      "topic": "Advanced collocations (bear the brunt)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Small suppliers bore the brunt of the price war.",
+        "Small suppliers carried the brunt of the price war.",
+        "Small suppliers bore of the brunt of the price war.",
+        "Small suppliers took the brunt bore of the price war."
+      ],
+      "answer": 0,
+      "explanation": "'Bear the brunt' is a fixed collocation: 'small suppliers bore the brunt of the price war.'"
+    },
+    {
+      "id": 26,
+      "topic": "Formal register (adverb placement)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The startup has steadily built a loyal customer base.",
+        "The startup has built steadily a loyal customer base.",
+        "Steadily the startup has built a loyal customer base.",
+        "The startup steadily has built a loyal customer base."
+      ],
+      "answer": 0,
+      "explanation": "Adverbs of manner typically follow the auxiliary verb: 'has steadily built.'"
+    },
+    {
+      "id": 27,
+      "topic": "Discourse markers (in any event)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The proposal may be revised. In any event, the deadline stands.",
+        "The proposal may be revised, in any event the deadline stands.",
+        "The proposal may be revised. In any event the deadline stands.",
+        "The proposal may be revised in any event, the deadline stands."
+      ],
+      "answer": 0,
+      "explanation": "'In any event' begins a new sentence and is followed by a comma."
+    },
+    {
+      "id": 28,
+      "topic": "Advanced question tags",
+      "question": "Choose the correct question tag.",
+      "options": [
+        "The directors would seldom overrule the chair, would they?",
+        "The directors would seldom overrule the chair, wouldn't they?",
+        "The directors would seldom overrule the chair, don't they?",
+        "The directors would seldom overrule the chair, do they?"
+      ],
+      "answer": 0,
+      "explanation": "'Seldom' makes the statement effectively negative, so the tag is positive: 'would seldom overrule..., would they?'"
+    },
+    {
+      "id": 29,
+      "topic": "Formal register (understatement)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The audit findings were not entirely surprising.",
+        "The audit findings were not all surprising entirely.",
+        "The audit findings not were entirely surprising.",
+        "The audit findings were entirely not surprising."
+      ],
+      "answer": 0,
+      "explanation": "Formal understatement places 'not' before the adverb: 'were not entirely surprising.'"
+    },
+    {
+      "id": 30,
+      "topic": "Advanced conditionals (Were it to happen)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Were it to happen again, the fallout would be far worse.",
+        "Was it to happen again, the fallout would be far worse.",
+        "Were it happen again, the fallout would be far worse.",
+        "Were it to happen again, the fallout will be far worse."
+      ],
+      "answer": 0,
+      "explanation": "'Were + subject + to + infinitive' is a formal inverted hypothetical conditional: 'Were it to happen again, the fallout would be far worse.'"
+    }
+  ]
+}

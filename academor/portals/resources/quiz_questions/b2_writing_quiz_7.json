@@ -1,0 +1,399 @@
+{
+  "level": "B2",
+  "quiz": 7,
+  "title": "B2 Writing Quiz 7 — Media & Advertising",
+  "service": "general_english",
+  "category_name": "B2",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Mixed conditionals",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "If the network had fact-checked the story, it wouldn't be facing a lawsuit now.",
+        "If the network fact-checked the story, it wouldn't be facing a lawsuit now.",
+        "If the network had fact-checked the story, it wouldn't have faced a lawsuit now.",
+        "If the network had fact-checked the story, it won't face a lawsuit now."
+      ],
+      "answer": 0,
+      "explanation": "Mixed conditional: If + past perfect (past condition), would + base verb (present result): 'If the network had fact-checked..., it wouldn't be facing a lawsuit now.'"
+    },
+    {
+      "id": 2,
+      "topic": "Conditionals without if (unless)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Misinformation will keep spreading unless platforms won't verify sources.",
+        "Misinformation will keep spreading unless platforms verify sources.",
+        "Misinformation will keep spreading unless that platforms verify sources.",
+        "Misinformation will keep spreading without platforms verify sources."
+      ],
+      "answer": 1,
+      "explanation": "'Unless' means 'if...not' and is followed by an affirmative clause: 'unless platforms verify sources.'"
+    },
+    {
+      "id": 3,
+      "topic": "Passive voice (present perfect)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Several misleading ads has been removed this year.",
+        "Several misleading ads have removed this year.",
+        "Several misleading ads have been removed this year.",
+        "Several misleading ads have being removed this year."
+      ],
+      "answer": 2,
+      "explanation": "Present perfect passive: have/has been + past participle: 'have been removed this year.'"
+    },
+    {
+      "id": 4,
+      "topic": "Passive voice (modal passive)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "This false claim should corrected immediately.",
+        "This false claim should being corrected immediately.",
+        "This false claim should be correct immediately.",
+        "This false claim should be corrected immediately."
+      ],
+      "answer": 3,
+      "explanation": "Modal passive: modal + be + past participle: 'should be corrected immediately.'"
+    },
+    {
+      "id": 5,
+      "topic": "Reported speech (commands/requests)",
+      "question": "Choose the correct sentence. (Direct: \"Please verify your sources before publishing.\")",
+      "options": [
+        "The editor told us to verify our sources before publishing.",
+        "The editor told us verify our sources before publishing.",
+        "The editor said us to verify our sources before publishing.",
+        "The editor told us that verify our sources before publishing."
+      ],
+      "answer": 0,
+      "explanation": "Reported commands: tell + object + to + base verb: 'told us to verify our sources.'"
+    },
+    {
+      "id": 6,
+      "topic": "Reported speech (advice)",
+      "question": "Choose the correct sentence. (Direct: \"You should limit your screen time.\")",
+      "options": [
+        "She suggested to limit my screen time.",
+        "She suggested limiting my screen time.",
+        "She suggested me limiting my screen time.",
+        "She suggested that I limiting my screen time."
+      ],
+      "answer": 1,
+      "explanation": "'Suggest' is followed by a gerund or 'that + subject + base verb': 'suggested limiting my screen time.'"
+    },
+    {
+      "id": 7,
+      "topic": "Relative clauses with prepositions",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The magazine which she writes for it covers investigative journalism.",
+        "The magazine for that she writes covers investigative journalism.",
+        "The magazine for which she writes covers investigative journalism.",
+        "The magazine she writes for which covers investigative journalism."
+      ],
+      "answer": 2,
+      "explanation": "In formal style, the preposition moves before 'which': 'the magazine for which she writes.'"
+    },
+    {
+      "id": 8,
+      "topic": "Reduced relative clauses (participle clauses)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The article publishing last week revealed shocking industry secrets.",
+        "The article published last week reveal shocking industry secrets.",
+        "The article which published last week revealed shocking industry secrets.",
+        "The article published last week revealed shocking industry secrets."
+      ],
+      "answer": 3,
+      "explanation": "A passive meaning reduces 'which was published' to the past participle alone: 'The article published last week...'"
+    },
+    {
+      "id": 9,
+      "topic": "Modal verbs of past deduction (must have)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The company must have exaggerated its advertising claims.",
+        "The company must exaggerated its advertising claims.",
+        "The company must have exaggerate its advertising claims.",
+        "The company must has exaggerated its advertising claims."
+      ],
+      "answer": 0,
+      "explanation": "Past deduction: must have + past participle: 'must have exaggerated its claims.'"
+    },
+    {
+      "id": 10,
+      "topic": "Modals of past obligation/regret (should have)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The network should acted sooner to retract the false report.",
+        "The network should have acted sooner to retract the false report.",
+        "The network should have act sooner to retract the false report.",
+        "The network should has acted sooner to retract the false report."
+      ],
+      "answer": 1,
+      "explanation": "Past regret/criticism: should have + past participle: 'should have acted sooner.'"
+    },
+    {
+      "id": 11,
+      "topic": "Present perfect vs past simple",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Advertising spending rose significantly over the past decade.",
+        "Advertising spending has risen significantly over the past decade.",
+        "Advertising spending have risen significantly over the past decade.",
+        "Advertising spending have rose significantly over the past decade."
+      ],
+      "answer": 1,
+      "explanation": "'Over the past decade' links the past to the present, so present perfect is used: 'has risen significantly.'"
+    },
+    {
+      "id": 12,
+      "topic": "Past perfect vs past simple",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "By the time the correction was published, the story went viral.",
+        "By the time the correction had published, the story went viral.",
+        "By the time the correction was published, the story have already gone viral.",
+        "By the time the correction was published, the story had already gone viral."
+      ],
+      "answer": 3,
+      "explanation": "The earlier of two past actions takes the past perfect: 'the story had already gone viral.'"
+    },
+    {
+      "id": 13,
+      "topic": "Future forms (present continuous for arrangements)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Media regulators are meeting next week to discuss new guidelines.",
+        "Media regulators meet next week to discuss new guidelines.",
+        "Media regulators will meeting next week to discuss new guidelines.",
+        "Media regulators are meet next week to discuss new guidelines."
+      ],
+      "answer": 0,
+      "explanation": "Present continuous expresses a fixed future arrangement: 'are meeting next week.'"
+    },
+    {
+      "id": 14,
+      "topic": "Future in the past (would)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "She said she will release the documentary next year.",
+        "She said she would release the documentary next year.",
+        "She said she would released the documentary next year.",
+        "She said she would have release the documentary next year."
+      ],
+      "answer": 1,
+      "explanation": "In reported speech, 'will' shifts back to 'would': 'she said she would release the documentary.'"
+    },
+    {
+      "id": 15,
+      "topic": "Wish / if only (present regret)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I wish news outlets take accuracy more seriously.",
+        "I wish news outlets have taken accuracy more seriously.",
+        "I wish news outlets took accuracy more seriously.",
+        "I wish news outlets would take accuracy more seriously as a rule."
+      ],
+      "answer": 2,
+      "explanation": "'Wish' + past simple expresses regret about a present situation: 'I wish news outlets took accuracy more seriously.'"
+    },
+    {
+      "id": 16,
+      "topic": "Wish / if only (past regret)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I wish the editor warned readers earlier about the bias.",
+        "I wish the editor have warned readers earlier about the bias.",
+        "I wish the editor would have warned readers earlier about the bias.",
+        "I wish the editor had warned readers earlier about the bias."
+      ],
+      "answer": 3,
+      "explanation": "'Wish' + past perfect expresses regret about the past: 'I wish the editor had warned readers earlier.'"
+    },
+    {
+      "id": 17,
+      "topic": "Causative (have something done)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "We had our advertisement reviewed by the regulatory board.",
+        "We had reviewed our advertisement by the regulatory board.",
+        "We had our advertisement review by the regulatory board.",
+        "We have our advertisement reviewed by the regulatory board last year."
+      ],
+      "answer": 0,
+      "explanation": "Causative form: have + object + past participle shows someone else did the action: 'had our advertisement reviewed.'"
+    },
+    {
+      "id": 18,
+      "topic": "Inversion for emphasis",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Never before the channel had reached such a large audience.",
+        "Never before had the channel reached such a large audience.",
+        "Never before did the channel reached such a large audience.",
+        "Never before has the channel had reached such a large audience."
+      ],
+      "answer": 1,
+      "explanation": "Negative adverbials at the start trigger inversion: 'Never before had the channel reached...'"
+    },
+    {
+      "id": 19,
+      "topic": "Phrasal verbs (look into)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The regulator is looking the misleading advert into.",
+        "The regulator is looking in to the misleading advert.",
+        "The regulator is looking into the misleading advert.",
+        "The regulator is looking into to the misleading advert."
+      ],
+      "answer": 2,
+      "explanation": "'Look into' means 'investigate' and is inseparable: 'looking into the misleading advert.'"
+    },
+    {
+      "id": 20,
+      "topic": "Cleft sentences (What...is)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "What the industry urgently need are clearer advertising standards.",
+        "That the industry urgently needs is clearer advertising standards.",
+        "What the industry urgently needs is clearer advertising standards it.",
+        "What the industry urgently needs is clearer advertising standards."
+      ],
+      "answer": 3,
+      "explanation": "'What' clefts take a singular verb when the complement is singular: 'What the industry needs is clearer standards.'"
+    },
+    {
+      "id": 21,
+      "topic": "Connectors (whereas)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Some outlets fact-check thoroughly, whereas others publish rumors.",
+        "Some outlets fact-check thoroughly, whereas others publishes rumors.",
+        "Some outlets fact-check thoroughly whereas, others publish rumors.",
+        "Some outlets fact-check thoroughly despite others publish rumors."
+      ],
+      "answer": 0,
+      "explanation": "'Whereas' contrasts two clauses and is followed directly by the subject: 'whereas others publish rumors.'"
+    },
+    {
+      "id": 22,
+      "topic": "Connectors (in spite of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "In spite the backlash, the ad campaign continued.",
+        "In spite of the backlash, the ad campaign continued.",
+        "Despite of the backlash, the ad campaign continued.",
+        "In spite of the backlash, the ad campaign continued though."
+      ],
+      "answer": 1,
+      "explanation": "'In spite of' is followed by a noun phrase: 'In spite of the backlash, the ad campaign continued.'"
+    },
+    {
+      "id": 23,
+      "topic": "Quantifiers (a number of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "A number of studies has linked social media use to lower attention spans.",
+        "The number of studies have linked social media use to lower attention spans.",
+        "A number of studies have linked social media use to lower attention spans.",
+        "A great number of studies has linked social media use to lower attention spans."
+      ],
+      "answer": 2,
+      "explanation": "'A number of' + plural noun takes a plural verb: 'a number of studies have linked...'"
+    },
+    {
+      "id": 24,
+      "topic": "Prepositional phrases (on behalf of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "She spoke in behalf of the entire editorial team.",
+        "She spoke on behalf for the entire editorial team.",
+        "She spoke behalf of the entire editorial team.",
+        "She spoke on behalf of the entire editorial team."
+      ],
+      "answer": 3,
+      "explanation": "'On behalf of' means 'representing someone': 'she spoke on behalf of the team.'"
+    },
+    {
+      "id": 25,
+      "topic": "Formal register (nominalization)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The introduction of stricter advertising rules reduced misleading claims significantly.",
+        "The introduce of stricter advertising rules reduced misleading claims significantly.",
+        "The introducing of stricter advertising rules reduced misleading claims significantly.",
+        "The introduction of stricter advertising rules reduce misleading claims significantly."
+      ],
+      "answer": 0,
+      "explanation": "Formal writing often nominalizes verbs into nouns: 'introduce' becomes 'the introduction of...'"
+    },
+    {
+      "id": 26,
+      "topic": "Formal email (requesting information)",
+      "question": "Which is the most appropriate formal opening line for an email requesting information about advertising rates?",
+      "options": [
+        "I'm writing to ask you about your advertising rates, ok?",
+        "I am writing to enquire about your advertising rates.",
+        "Just wanted to know about your advertising rates.",
+        "Hey, tell me about your advertising rates."
+      ],
+      "answer": 1,
+      "explanation": "'I am writing to enquire about...' is a standard formal opening for information requests."
+    },
+    {
+      "id": 27,
+      "topic": "Making complaints (formal language)",
+      "question": "Which is the most appropriate opening line for a formal complaint about a misleading advertisement?",
+      "options": [
+        "I'm writing because I'm really mad about your misleading ad.",
+        "I want to complain about your misleading ad, it's bad.",
+        "I am writing to express my concern about a misleading advertisement.",
+        "I am writing to express my concern about a misleading advertisement, ok."
+      ],
+      "answer": 2,
+      "explanation": "Formal complaints use measured language such as 'I am writing to express my concern about...'"
+    },
+    {
+      "id": 28,
+      "topic": "Adverbs of degree (extremely)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The reaction to the campaign was extreme alarming.",
+        "The reaction to the campaign was extremely alarm.",
+        "The reaction to the campaign was very much alarming.",
+        "The reaction to the campaign was extremely alarming."
+      ],
+      "answer": 3,
+      "explanation": "'Extremely' (adverb) modifies the adjective 'alarming': 'was extremely alarming.'"
+    },
+    {
+      "id": 29,
+      "topic": "Discourse markers (moreover)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The campaign reached a wide audience. Moreover, it boosted sales.",
+        "The campaign reached a wide audience, moreover it boosted sales.",
+        "The campaign reached a wide audience. Moreover it boosted sales.",
+        "The campaign reached a wide audience moreover, it boosted sales."
+      ],
+      "answer": 0,
+      "explanation": "'Moreover' begins a new sentence and is followed by a comma: 'The campaign reached a wide audience. Moreover, it boosted sales.'"
+    },
+    {
+      "id": 30,
+      "topic": "Question tags (advanced forms)",
+      "question": "Choose the correct question tag.",
+      "options": [
+        "You'd support stricter ad regulations, didn't you?",
+        "You'd support stricter ad regulations, wouldn't you?",
+        "You'd support stricter ad regulations, would you?",
+        "You'd support stricter ad regulations, wouldn't it?"
+      ],
+      "answer": 1,
+      "explanation": "A positive statement with 'would' takes a negative tag: 'You'd support..., wouldn't you?'"
+    }
+  ]
+}

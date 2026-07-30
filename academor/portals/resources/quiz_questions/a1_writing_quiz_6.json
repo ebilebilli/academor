@@ -1,0 +1,399 @@
+{
+  "level": "A1",
+  "quiz": 6,
+  "title": "A1 Writing Quiz 6 — Hobbies, Work & Weather",
+  "service": "general_english",
+  "category_name": "A1",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Word order",
+      "question": "Choose the correct word order.",
+      "options": [
+        "Music every day I listen to.",
+        "I listen to music every day.",
+        "I every day listen to music.",
+        "Listen I to music every day."
+      ],
+      "answer": 1,
+      "explanation": "Subject + verb + object + time: 'I listen to music every day.'"
+    },
+    {
+      "id": 2,
+      "topic": "Word order",
+      "question": "Choose the correct word order.",
+      "options": [
+        "My aunt teaches at a school.",
+        "My aunt at a school teaches.",
+        "Teaches my aunt at a school.",
+        "At a school my aunt teaches."
+      ],
+      "answer": 0,
+      "explanation": "Subject + verb + place: 'My aunt teaches at a school.'"
+    },
+    {
+      "id": 3,
+      "topic": "Word order",
+      "question": "Choose the correct word order.",
+      "options": [
+        "He an interesting book reads.",
+        "Reads he an interesting book.",
+        "He reads an interesting book.",
+        "An interesting book he reads."
+      ],
+      "answer": 2,
+      "explanation": "Subject + verb + object: 'He reads an interesting book.'"
+    },
+    {
+      "id": 4,
+      "topic": "Word order (questions)",
+      "question": "Choose the correct question word order.",
+      "options": [
+        "How much this shirt does cost?",
+        "How much does this shirt cost?",
+        "Does how much this shirt cost?",
+        "This shirt how much does cost?"
+      ],
+      "answer": 1,
+      "explanation": "Wh-phrase + auxiliary + subject + verb: 'How much does this shirt cost?'"
+    },
+    {
+      "id": 5,
+      "topic": "Capitalization",
+      "question": "Which sentence uses capital letters correctly?",
+      "options": [
+        "i speak russian and turkish.",
+        "I speak Russian and Turkish.",
+        "I Speak russian And turkish.",
+        "i speak Russian and Turkish."
+      ],
+      "answer": 1,
+      "explanation": "Languages (Russian, Turkish) and the pronoun 'I' are always capitalized."
+    },
+    {
+      "id": 6,
+      "topic": "Capitalization",
+      "question": "Choose the correctly capitalized sentence.",
+      "options": [
+        "my sister works at kapital bank.",
+        "My sister works at Kapital Bank.",
+        "My Sister works at kapital bank.",
+        "my sister Works At Kapital Bank."
+      ],
+      "answer": 1,
+      "explanation": "Company names (Kapital Bank) are proper nouns and must be capitalized."
+    },
+    {
+      "id": 7,
+      "topic": "Punctuation (full stop)",
+      "question": "Which sentence has correct punctuation?",
+      "options": [
+        "I live with my parents",
+        "I live with my parents.",
+        "I live with my parents,",
+        "I live with my parents!."
+      ],
+      "answer": 1,
+      "explanation": "A simple statement ends with a full stop: 'I live with my parents.'"
+    },
+    {
+      "id": 8,
+      "topic": "Punctuation (question mark)",
+      "question": "Which sentence has correct punctuation?",
+      "options": [
+        "Can you help me.",
+        "Can you help me",
+        "Can you help me?",
+        "Can you help me!"
+      ],
+      "answer": 2,
+      "explanation": "A question ends with a question mark: 'Can you help me?'"
+    },
+    {
+      "id": 9,
+      "topic": "Punctuation (comma in a list)",
+      "question": "Choose the sentence with correct commas.",
+      "options": [
+        "She likes swimming running and dancing.",
+        "She likes swimming, running and dancing.",
+        "She likes, swimming running, and dancing.",
+        "She likes swimming, running, and, dancing."
+      ],
+      "answer": 1,
+      "explanation": "Use commas to separate items in a list: 'swimming, running and dancing.'"
+    },
+    {
+      "id": 10,
+      "topic": "Punctuation (apostrophe)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Dont worry about it.",
+        "Don't worry about it.",
+        "Do'nt worry about it.",
+        "Dont' worry about it."
+      ],
+      "answer": 1,
+      "explanation": "'Don't' is the contraction of 'do not'."
+    },
+    {
+      "id": 11,
+      "topic": "Sentence completion",
+      "question": "My neighbor ___ a big garden.",
+      "options": [
+        "have",
+        "has",
+        "having",
+        "had"
+      ],
+      "answer": 1,
+      "explanation": "Present simple with 'neighbor' (he/she) → 'has'."
+    },
+    {
+      "id": 12,
+      "topic": "Sentence completion",
+      "question": "They ___ to Turkey two years ago.",
+      "options": [
+        "move",
+        "moves",
+        "moved",
+        "moving"
+      ],
+      "answer": 2,
+      "explanation": "'Two years ago' signals past simple; regular past of 'move' is 'moved'."
+    },
+    {
+      "id": 13,
+      "topic": "Sentence completion",
+      "question": "Look outside! It ___ heavily.",
+      "options": [
+        "rain",
+        "rains",
+        "is raining",
+        "rained"
+      ],
+      "answer": 2,
+      "explanation": "'Look outside!' signals now → present continuous: 'is raining'."
+    },
+    {
+      "id": 14,
+      "topic": "Connectors (and)",
+      "question": "Choose the sentence that correctly uses 'and'.",
+      "options": [
+        "I wash the dishes and I clean the table.",
+        "I wash the dishes and but table.",
+        "I and wash dishes table.",
+        "I wash the dishes, and, table."
+      ],
+      "answer": 0,
+      "explanation": "'And' joins two similar actions: 'I wash the dishes and I clean the table.'"
+    },
+    {
+      "id": 15,
+      "topic": "Connectors (but)",
+      "question": "Choose the sentence that correctly uses 'but'.",
+      "options": [
+        "The soup is spicy but tasty.",
+        "The soup is spicy and but tasty.",
+        "But the soup is spicy tasty.",
+        "The soup, tasty but is spicy."
+      ],
+      "answer": 0,
+      "explanation": "'But' shows contrast: 'The soup is spicy but tasty.'"
+    },
+    {
+      "id": 16,
+      "topic": "Connectors (so)",
+      "question": "Choose the sentence that correctly uses 'so'.",
+      "options": [
+        "I was sick, so I stayed home.",
+        "So I was sick I stayed home.",
+        "I was sick I stayed so home.",
+        "So, stayed I home sick was."
+      ],
+      "answer": 0,
+      "explanation": "'So' introduces a result: 'I was sick, so I stayed home.'"
+    },
+    {
+      "id": 17,
+      "topic": "Prepositions in sentences",
+      "question": "The picture is ___ the wall.",
+      "options": [
+        "in",
+        "on",
+        "at",
+        "for"
+      ],
+      "answer": 1,
+      "explanation": "'On' is used for surfaces: 'on the wall.'"
+    },
+    {
+      "id": 18,
+      "topic": "Prepositions in sentences",
+      "question": "I always feel tired ___ night.",
+      "options": [
+        "in",
+        "on",
+        "at",
+        "to"
+      ],
+      "answer": 2,
+      "explanation": "'At' is used with 'night': 'at night.'"
+    },
+    {
+      "id": 19,
+      "topic": "Article usage in a sentence",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "She is a European teacher.",
+        "She is an European teacher.",
+        "She is European teacher.",
+        "She is the a European teacher."
+      ],
+      "answer": 0,
+      "explanation": "'European' starts with a consonant sound /j/ → 'a European.'"
+    },
+    {
+      "id": 20,
+      "topic": "Simple email/letter opening",
+      "question": "Which is the correct way to start a birthday message to a close friend?",
+      "options": [
+        "Dear Sir/Madam,",
+        "Hey! Happy Birthday!",
+        "To Whom It May Concern,",
+        "Yours faithfully,"
+      ],
+      "answer": 1,
+      "explanation": "'Hey! Happy Birthday!' is a warm, informal way to open a birthday message to a friend."
+    },
+    {
+      "id": 21,
+      "topic": "Simple email/letter closing",
+      "question": "Which is the correct way to end a thank-you note to a family member?",
+      "options": [
+        "Yours faithfully,",
+        "With love, Sara",
+        "Regards,",
+        "Sincerely yours,"
+      ],
+      "answer": 1,
+      "explanation": "'With love, [Name]' is a warm, informal closing suitable for family."
+    },
+    {
+      "id": 22,
+      "topic": "Formal letter opening",
+      "question": "Which is the correct way to start a formal request letter to a university?",
+      "options": [
+        "Hi there,",
+        "Dear Admissions Office,",
+        "Hey,",
+        "Dear friend,"
+      ],
+      "answer": 1,
+      "explanation": "'Dear Admissions Office,' is a suitable formal opening for a university request."
+    },
+    {
+      "id": 23,
+      "topic": "Sentence combining",
+      "question": "Which sentence correctly combines 'I play the guitar.' and 'I play the piano.'?",
+      "options": [
+        "I play the guitar but the piano.",
+        "I play the guitar and the piano.",
+        "I play the guitar, I play the piano.",
+        "I guitar and piano play the."
+      ],
+      "answer": 1,
+      "explanation": "Two related activities can be joined simply: 'I play the guitar and the piano.'"
+    },
+    {
+      "id": 24,
+      "topic": "Word order (adjectives)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "He bought a metal old clock.",
+        "He bought an old metal clock.",
+        "He bought old a metal clock.",
+        "He bought a clock old metal."
+      ],
+      "answer": 1,
+      "explanation": "Age usually comes before material: 'an old metal clock.'"
+    },
+    {
+      "id": 25,
+      "topic": "Punctuation (exclamation)",
+      "question": "Which sentence correctly shows a strong reaction?",
+      "options": [
+        "That is dangerous.",
+        "That is dangerous!",
+        "That is dangerous,",
+        "That is dangerous?"
+      ],
+      "answer": 1,
+      "explanation": "An exclamation mark shows strong feeling or warning: 'That is dangerous!'"
+    },
+    {
+      "id": 26,
+      "topic": "Sentence completion (there is/are)",
+      "question": "___ two windows in my bedroom.",
+      "options": [
+        "There is",
+        "There are",
+        "It is",
+        "They is"
+      ],
+      "answer": 1,
+      "explanation": "'Two windows' is plural → 'There are'."
+    },
+    {
+      "id": 27,
+      "topic": "Sentence completion (possessives)",
+      "question": "These are ___ shoes. (belong to my sisters)",
+      "options": [
+        "sister",
+        "sisters",
+        "sister's",
+        "sisters'"
+      ],
+      "answer": 3,
+      "explanation": "Plural possessive: add apostrophe after the s → \"sisters' shoes\"."
+    },
+    {
+      "id": 28,
+      "topic": "Sequencing words",
+      "question": "Choose the sentence that correctly uses sequencing words.",
+      "options": [
+        "First, I check my email. Finally, I close my laptop.",
+        "First I check email finally close laptop.",
+        "Close laptop first finally check I email.",
+        "Finally first, I check the close laptop email."
+      ],
+      "answer": 0,
+      "explanation": "Sequencing words like 'First,' and 'Finally,' organize steps clearly with commas."
+    },
+    {
+      "id": 29,
+      "topic": "Sentence completion (subject-verb agreement)",
+      "question": "The doctor and the nurse ___ very busy today.",
+      "options": [
+        "is",
+        "am",
+        "are",
+        "be"
+      ],
+      "answer": 2,
+      "explanation": "Compound subject ('The doctor and the nurse') is plural → 'are'."
+    },
+    {
+      "id": 30,
+      "topic": "Sentence completion (question formation)",
+      "question": "Choose the correct question.",
+      "options": [
+        "Who your best friend is?",
+        "Who is your best friend?",
+        "Who your best friend does?",
+        "Is who your best friend?"
+      ],
+      "answer": 1,
+      "explanation": "Wh-word + verb 'to be' + subject: 'Who is your best friend?'"
+    }
+  ]
+}

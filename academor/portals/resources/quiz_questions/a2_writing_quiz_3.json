@@ -1,0 +1,399 @@
+{
+  "level": "A2",
+  "quiz": 3,
+  "title": "A2 Writing Quiz 3 — Sports, Recovery & Outdoor Fun",
+  "service": "general_english",
+  "category_name": "A2",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Present perfect",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "She has already finished her medicine.",
+        "She has already finish her medicine.",
+        "She already has finished her medicine yet.",
+        "She has finished already her medicine."
+      ],
+      "answer": 0,
+      "explanation": "'Already' usually comes between the auxiliary and past participle: 'has already finished'."
+    },
+    {
+      "id": 2,
+      "topic": "Present perfect vs past simple",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "We have played football last Saturday.",
+        "We played football last Saturday.",
+        "We have play football last Saturday.",
+        "We are playing football last Saturday."
+      ],
+      "answer": 1,
+      "explanation": "A finished time expression ('last Saturday') needs past simple, not present perfect."
+    },
+    {
+      "id": 3,
+      "topic": "Past continuous",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The sun was shining when we arrived at the beach.",
+        "The sun shone when we were arriving at the beach.",
+        "The sun was shine when we arrived at the beach.",
+        "The sun shining was when we arrived at the beach."
+      ],
+      "answer": 0,
+      "explanation": "Past continuous (background) + past simple (main event): 'The sun was shining when we arrived.'"
+    },
+    {
+      "id": 4,
+      "topic": "Comparatives",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "This exercise is easyer than the last one.",
+        "This exercise is more easy than the last one.",
+        "This exercise is easier than the last one.",
+        "This exercise is easiest than the last one."
+      ],
+      "answer": 2,
+      "explanation": "Adjectives ending in -y change to -ier: 'easier than'."
+    },
+    {
+      "id": 5,
+      "topic": "Superlatives",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "January is the coldest month of the year here.",
+        "January is the more cold month of the year here.",
+        "January is the most coldest month of the year here.",
+        "January is coldest month of the year here."
+      ],
+      "answer": 0,
+      "explanation": "One-syllable adjective superlative: 'the coldest'."
+    },
+    {
+      "id": 6,
+      "topic": "Modal verbs (can/can't for ability)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "My knee hurts, so I can't run today.",
+        "My knee hurts, so I can't running today.",
+        "My knee hurts, so I not can run today.",
+        "My knee hurts, so I can't to run today."
+      ],
+      "answer": 0,
+      "explanation": "'Can't' is followed by the base form of the verb: 'can't run'."
+    },
+    {
+      "id": 7,
+      "topic": "Modal verbs (had to)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I had to stayed in bed all weekend.",
+        "I had to stay in bed all weekend.",
+        "I have to stay in bed all weekend ago.",
+        "I must to stay in bed all weekend."
+      ],
+      "answer": 1,
+      "explanation": "Past of 'have to' is 'had to' + base verb: 'had to stay'."
+    },
+    {
+      "id": 8,
+      "topic": "Modal verbs (might)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "It might snows later today.",
+        "It might snow later today.",
+        "It might to snow later today.",
+        "It mights snow later today."
+      ],
+      "answer": 1,
+      "explanation": "'Might' + base verb expresses possibility: 'might snow'."
+    },
+    {
+      "id": 9,
+      "topic": "Going to future",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "They aren't going to travel because of the storm.",
+        "They aren't going travel because of the storm.",
+        "They going to not travel because of the storm.",
+        "They aren't go to travel because of the storm."
+      ],
+      "answer": 0,
+      "explanation": "Negative 'going to': aren't/isn't + going to + base verb: 'aren't going to travel'."
+    },
+    {
+      "id": 10,
+      "topic": "First conditional",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "If you drink enough water, you won't get thirsty.",
+        "If you will drink enough water, you won't get thirsty.",
+        "If you drink enough water, you don't get thirsty won't.",
+        "If you drank enough water, you won't get thirsty."
+      ],
+      "answer": 0,
+      "explanation": "First conditional: If + present simple, will/won't + base verb: 'If you drink..., you won't get thirsty.'"
+    },
+    {
+      "id": 11,
+      "topic": "Gerunds after verbs",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "He finished doing his exercises an hour ago.",
+        "He finished to do his exercises an hour ago.",
+        "He finished do his exercises an hour ago.",
+        "He finished did his exercises an hour ago."
+      ],
+      "answer": 0,
+      "explanation": "'Finish' is followed by a gerund (-ing form): 'finished doing'."
+    },
+    {
+      "id": 12,
+      "topic": "Infinitive after verbs",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "We promised visiting grandma this weekend.",
+        "We promised to visit grandma this weekend.",
+        "We promised visit grandma this weekend.",
+        "We promised for visit grandma this weekend."
+      ],
+      "answer": 1,
+      "explanation": "'Promise' is followed by the infinitive with 'to': 'promised to visit'."
+    },
+    {
+      "id": 13,
+      "topic": "Quantifiers (a lot of/much/many)",
+      "question": "There are ___ people at the park because the weather is nice.",
+      "options": [
+        "much",
+        "a lot of",
+        "little",
+        "much of"
+      ],
+      "answer": 1,
+      "explanation": "'A lot of' is used with countable plural nouns in positive sentences: 'a lot of people.'"
+    },
+    {
+      "id": 14,
+      "topic": "Quantifiers (a few/a little)",
+      "question": "Can I have ___ sugar in my tea, please?",
+      "options": [
+        "a few",
+        "a little",
+        "many",
+        "few"
+      ],
+      "answer": 1,
+      "explanation": "'Sugar' is uncountable, and 'a little' means 'a small amount of'."
+    },
+    {
+      "id": 15,
+      "topic": "Connectors (even though)",
+      "question": "Choose the sentence that correctly uses 'even though'.",
+      "options": [
+        "Even though he was sick, he went to work.",
+        "Even though he was sick, but he went to work.",
+        "He went to work, even though but he was sick.",
+        "Even though, he was sick he went to work."
+      ],
+      "answer": 0,
+      "explanation": "'Even though' introduces a contrast clause and doesn't need 'but': 'Even though he was sick, he went to work.'"
+    },
+    {
+      "id": 16,
+      "topic": "Connectors (so that)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I take vitamins so that I stay healthy.",
+        "I take vitamins so that stay healthy.",
+        "I take vitamins for so I stay healthy.",
+        "I take vitamins so that staying healthy."
+      ],
+      "answer": 0,
+      "explanation": "'So that' + clause expresses purpose: 'so that I stay healthy.'"
+    },
+    {
+      "id": 17,
+      "topic": "Prepositions (in spite of)",
+      "question": "We went hiking ___ the bad weather.",
+      "options": [
+        "in spite of",
+        "despite of",
+        "although",
+        "because"
+      ],
+      "answer": 0,
+      "explanation": "'In spite of' is followed by a noun phrase: 'in spite of the bad weather.'"
+    },
+    {
+      "id": 18,
+      "topic": "Prepositions (within)",
+      "question": "The clinic said the results will be ready ___ two days.",
+      "options": [
+        "within",
+        "during",
+        "since",
+        "until"
+      ],
+      "answer": 0,
+      "explanation": "'Within' means 'in less than' a period of time: 'ready within two days.'"
+    },
+    {
+      "id": 19,
+      "topic": "Reported speech (simple)",
+      "question": "Choose the correct sentence. (Direct: \"I can't come today.\")",
+      "options": [
+        "He said that he can't come today.",
+        "He said that he couldn't come that day.",
+        "He said that he couldn't come today.",
+        "He said he can't came today."
+      ],
+      "answer": 1,
+      "explanation": "In reported speech, 'can't' shifts to 'couldn't' and 'today' often shifts to 'that day'."
+    },
+    {
+      "id": 20,
+      "topic": "Semi-formal email opening",
+      "question": "Which is the correct way to start an email to a gym receptionist you don't know?",
+      "options": [
+        "Hi mate,",
+        "Dear Sir/Madam,",
+        "Yo,",
+        "Hey buddy,"
+      ],
+      "answer": 1,
+      "explanation": "'Dear Sir/Madam,' is used when writing formally without knowing the recipient's name."
+    },
+    {
+      "id": 21,
+      "topic": "Formal email closing",
+      "question": "Which is the correct way to end a formal email when you know the recipient's name?",
+      "options": [
+        "Yours faithfully,",
+        "Yours sincerely,",
+        "Take care,",
+        "Bye,"
+      ],
+      "answer": 1,
+      "explanation": "'Yours sincerely,' matches 'Dear [Name],' when the recipient's name is known."
+    },
+    {
+      "id": 22,
+      "topic": "Making suggestions",
+      "question": "Choose the correct suggestion.",
+      "options": [
+        "Let's go cycling if the weather clears up.",
+        "Let's to go cycling if the weather clears up.",
+        "Let's going cycling if the weather clears up.",
+        "Let's went cycling if the weather clears up."
+      ],
+      "answer": 0,
+      "explanation": "'Let's' + base verb is used to make a suggestion: 'Let's go cycling...'"
+    },
+    {
+      "id": 23,
+      "topic": "Sentence combining (relative clause)",
+      "question": "Which sentence correctly combines 'This is the park.' and 'We play football in the park.'?",
+      "options": [
+        "This is the park who we play football in.",
+        "This is the park where we play football.",
+        "This is the park which we play football.",
+        "This is the park what we play football."
+      ],
+      "answer": 1,
+      "explanation": "'Where' is used for places in relative clauses: 'the park where we play football.'"
+    },
+    {
+      "id": 24,
+      "topic": "Word order (adverbs of frequency)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "He often catches a cold in winter.",
+        "He catches often a cold in winter.",
+        "Often he catches a cold in winter always.",
+        "He catches a cold often in winter."
+      ],
+      "answer": 0,
+      "explanation": "Adverbs of frequency usually go before the main verb: 'He often catches a cold.'"
+    },
+    {
+      "id": 25,
+      "topic": "Punctuation (indirect question)",
+      "question": "Which sentence has correct punctuation?",
+      "options": [
+        "Can you tell me if the pool is open today?",
+        "Can you tell me is the pool open today?",
+        "Can you tell me if the pool is open today.",
+        "Can you tell me, if the pool is open today?"
+      ],
+      "answer": 0,
+      "explanation": "Indirect yes/no questions use 'if' with normal word order and end with a question mark."
+    },
+    {
+      "id": 26,
+      "topic": "Sentence completion (present perfect continuous)",
+      "question": "My legs hurt because I ___ all afternoon.",
+      "options": [
+        "walk",
+        "have walked",
+        "have been walking",
+        "walked"
+      ],
+      "answer": 2,
+      "explanation": "Present perfect continuous emphasizes an ongoing action explaining a present result: 'have been walking'."
+    },
+    {
+      "id": 27,
+      "topic": "Sentence completion (possessive pronouns)",
+      "question": "That bicycle isn't mine, it's ___.",
+      "options": [
+        "him",
+        "his",
+        "he's",
+        "his's"
+      ],
+      "answer": 1,
+      "explanation": "Possessive pronoun (stands alone, no noun after it): 'it's his.'"
+    },
+    {
+      "id": 28,
+      "topic": "Sequencing words (advanced)",
+      "question": "Choose the sentence that correctly uses sequencing words.",
+      "options": [
+        "First, drink water. Next, stretch. Finally, start exercising.",
+        "First drink water next stretch finally start exercising.",
+        "Finally drink water, first stretch, next start exercising.",
+        "Next first drink water, finally stretch start exercising."
+      ],
+      "answer": 0,
+      "explanation": "Sequencing words 'First,', 'Next,' and 'Finally,' organize steps clearly with commas."
+    },
+    {
+      "id": 29,
+      "topic": "Subject-verb agreement (each/every)",
+      "question": "Every one of the runners ___ water during the race.",
+      "options": [
+        "need",
+        "needs",
+        "needing",
+        "are needing"
+      ],
+      "answer": 1,
+      "explanation": "'Every one of' takes a singular verb: 'Every one of the runners needs...'"
+    },
+    {
+      "id": 30,
+      "topic": "Question formation (tag questions)",
+      "question": "Choose the correct question tag.",
+      "options": [
+        "You've never tried skiing, have you?",
+        "You've never tried skiing, haven't you?",
+        "You've never tried skiing, do you?",
+        "You've never tried skiing, hadn't you?"
+      ],
+      "answer": 0,
+      "explanation": "'Never' makes the statement negative in meaning, so a positive tag is used: 'have you?'"
+    }
+  ]
+}

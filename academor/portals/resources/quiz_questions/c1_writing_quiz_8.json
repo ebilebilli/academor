@@ -1,0 +1,399 @@
+{
+  "level": "C1",
+  "quiz": 8,
+  "title": "C1 Writing Quiz 8 — Business & Economy",
+  "service": "general_english",
+  "category_name": "C1",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Inversion (nowhere)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Nowhere is the impact of automation more visible than in manufacturing.",
+        "Nowhere the impact of automation is more visible than in manufacturing.",
+        "Nowhere does the impact of automation is more visible than in manufacturing.",
+        "Nowhere the impact of automation more visible is than in manufacturing."
+      ],
+      "answer": 0,
+      "explanation": "'Nowhere' at the start triggers inversion: 'Nowhere is the impact of automation more visible...'"
+    },
+    {
+      "id": 2,
+      "topic": "Subjunctive in formal contexts",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The auditor demanded that the records be made available immediately.",
+        "The auditor demanded that the records are made available immediately.",
+        "The auditor demanded that the records will be made available immediately.",
+        "The auditor demanded that the records being made available immediately."
+      ],
+      "answer": 0,
+      "explanation": "After 'demand that', formal English uses the subjunctive: 'the records be made available.'"
+    },
+    {
+      "id": 3,
+      "topic": "Advanced conditionals (mixed conditional)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "If the firm had invested earlier, it would now be a market leader.",
+        "If the firm invested earlier, it would now be a market leader.",
+        "If the firm had invested earlier, it will now be a market leader.",
+        "If the firm had invest earlier, it would now be a market leader."
+      ],
+      "answer": 0,
+      "explanation": "Mixed conditional: past condition, present result: 'If the firm had invested earlier, it would now be a leader.'"
+    },
+    {
+      "id": 4,
+      "topic": "Concession connectors (much as)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Much as we value the partnership, we cannot accept these terms.",
+        "Much we value the partnership, we cannot accept these terms.",
+        "As much we value the partnership, we cannot accept these terms.",
+        "Much as we valuing the partnership, we cannot accept these terms."
+      ],
+      "answer": 0,
+      "explanation": "'Much as' means 'although' in formal concession: 'Much as we value the partnership, we cannot accept...'"
+    },
+    {
+      "id": 5,
+      "topic": "Emphatic cleft (It is not until...that)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "It is not until profits stabilize that dividends will resume.",
+        "It is not until profits stabilize when dividends will resume.",
+        "It not is until profits stabilize that dividends will resume.",
+        "It is not until profits stabilizing that dividends will resume."
+      ],
+      "answer": 0,
+      "explanation": "The cleft structure 'It is not until...that' emphasizes timing: 'It is not until profits stabilize that dividends will resume.'"
+    },
+    {
+      "id": 6,
+      "topic": "Reporting verbs (acknowledge)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The minister acknowledged that the policy had failed to meet its targets.",
+        "The minister acknowledged to that the policy had failed to meet its targets.",
+        "The minister acknowledged the policy failing to meet its targets that.",
+        "The minister is acknowledge that the policy had failed to meet its targets."
+      ],
+      "answer": 0,
+      "explanation": "'Acknowledge' is followed by 'that + clause': 'acknowledged that the policy had failed.'"
+    },
+    {
+      "id": 7,
+      "topic": "Participle clauses (Judging by)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Judging by the latest figures, the recovery is gaining momentum.",
+        "Judge by the latest figures, the recovery is gaining momentum.",
+        "Judged by the latest figures, the recovery is gaining momentum, that.",
+        "Judging the latest figures by, the recovery is gaining momentum."
+      ],
+      "answer": 0,
+      "explanation": "'Judging by' is a fixed participle phrase meaning 'based on': 'Judging by the latest figures, the recovery is gaining momentum.'"
+    },
+    {
+      "id": 8,
+      "topic": "Advanced quantifiers (a great deal of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "A great deal of uncertainty surround the negotiations.",
+        "A great deal of uncertainty surrounds the negotiations.",
+        "A great deal of uncertainty surrounding the negotiations.",
+        "A great deal uncertainty surrounds the negotiations."
+      ],
+      "answer": 1,
+      "explanation": "'A great deal of' + uncountable noun takes a singular verb: 'a great deal of uncertainty surrounds the negotiations.'"
+    },
+    {
+      "id": 9,
+      "topic": "Modal perfect (would have)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Without the bailout, thousands of jobs would have been lost.",
+        "Without the bailout, thousands of jobs would been lost.",
+        "Without the bailout, thousands of jobs would have lost.",
+        "Without the bailout, thousands of jobs would have being lost."
+      ],
+      "answer": 0,
+      "explanation": "'Would have been + past participle' expresses an unrealized past outcome: 'would have been lost.'"
+    },
+    {
+      "id": 10,
+      "topic": "Correlative conjunctions (as well as)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The CEO, as well as the board, was informed of the breach.",
+        "The CEO, as well as the board, were informed of the breach.",
+        "The CEO as well the board was informed of the breach.",
+        "The CEO, as well as the board, informed of the breach was."
+      ],
+      "answer": 0,
+      "explanation": "With 'as well as', the verb agrees with the first subject only: 'The CEO, as well as the board, was informed.'"
+    },
+    {
+      "id": 11,
+      "topic": "Hedging language (purportedly)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The firm purportedly falsified its safety records.",
+        "The firm purported falsified its safety records.",
+        "The firm is purportedly that falsified its safety records.",
+        "The firm falsified purportedly it its safety records."
+      ],
+      "answer": 0,
+      "explanation": "'Purportedly' hedges an unconfirmed claim and sits before the main verb: 'purportedly falsified its safety records.'"
+    },
+    {
+      "id": 12,
+      "topic": "Advanced relative clauses (on the grounds that)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The court rejected the appeal on the grounds that the evidence was insufficient.",
+        "The court rejected the appeal on the ground of that the evidence was insufficient.",
+        "The court rejected the appeal on grounds that of the evidence was insufficient.",
+        "The court rejected the appeal on the grounds which the evidence was insufficient."
+      ],
+      "answer": 0,
+      "explanation": "'On the grounds that' introduces a formal reason clause: 'rejected the appeal on the grounds that the evidence was insufficient.'"
+    },
+    {
+      "id": 13,
+      "topic": "Fronting for emphasis",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Never before had the industry witnessed such rapid consolidation.",
+        "Never before the industry had witnessed such rapid consolidation.",
+        "Never before did the industry had witnessed such rapid consolidation.",
+        "Never before the industry witnessed had such rapid consolidation."
+      ],
+      "answer": 0,
+      "explanation": "Fronting 'never before' triggers inversion: 'Never before had the industry witnessed such rapid consolidation.'"
+    },
+    {
+      "id": 14,
+      "topic": "Nominalization (formal register)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The retention of key staff was a top priority during the merger.",
+        "The retain of key staff was a top priority during the merger.",
+        "The retention of key staff were a top priority during the merger.",
+        "The retaining key staff was a top priority during the merger."
+      ],
+      "answer": 0,
+      "explanation": "Formal writing nominalizes verbs: 'retain' becomes 'the retention of...'"
+    },
+    {
+      "id": 15,
+      "topic": "Passive with modal perfect (cannot have been)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The results cannot have been calculated correctly given these figures.",
+        "The results cannot been calculated correctly given these figures.",
+        "The results cannot have calculate correctly given these figures.",
+        "The results cannot have being calculated correctly given these figures."
+      ],
+      "answer": 0,
+      "explanation": "Modal perfect passive expressing impossibility: 'cannot have been calculated correctly.'"
+    },
+    {
+      "id": 16,
+      "topic": "Ellipsis (formal writing)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Some markets rebounded quickly; others, not at all.",
+        "Some markets rebounded quickly; others rebounded, not at all.",
+        "Some markets rebounded quickly; others is not at all.",
+        "Some markets rebounded quickly; others rebounds not at all."
+      ],
+      "answer": 0,
+      "explanation": "Ellipsis omits the repeated verb after a semicolon: 'others, not at all' (= others did not rebound at all)."
+    },
+    {
+      "id": 17,
+      "topic": "Discourse markers (accordingly)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The risk assessment changed. Accordingly, the premiums were adjusted.",
+        "The risk assessment changed, accordingly the premiums were adjusted.",
+        "The risk assessment changed. Accordingly the premiums were adjusted.",
+        "The risk assessment changed accordingly, the premiums were adjusted."
+      ],
+      "answer": 0,
+      "explanation": "'Accordingly' begins a new sentence and is followed by a comma."
+    },
+    {
+      "id": 18,
+      "topic": "Concession connectors (all the same)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The results were disappointing. All the same, the board remained optimistic.",
+        "The results were disappointing all the same, the board remained optimistic.",
+        "The results were disappointing. All the same the board remained optimistic.",
+        "The results were disappointing, all the same board remained optimistic."
+      ],
+      "answer": 0,
+      "explanation": "'All the same' means 'nevertheless' and begins a new sentence with a comma: 'All the same, the board remained optimistic.'"
+    },
+    {
+      "id": 19,
+      "topic": "Formal email (requesting an extension)",
+      "question": "Which is the most appropriate formal opening line for an email requesting a deadline extension?",
+      "options": [
+        "I am writing to request an extension of the submission deadline.",
+        "Any chance we could push the deadline back a bit?",
+        "I am writing to request an extension of the submission deadline, cheers.",
+        "We're not gonna make the deadline, so extend it please."
+      ],
+      "answer": 0,
+      "explanation": "'I am writing to request an extension of the submission deadline' is a standard formal request."
+    },
+    {
+      "id": 20,
+      "topic": "Formal complaint (advanced language)",
+      "question": "Which is the most appropriate opening line for a formal complaint about unauthorized charges?",
+      "options": [
+        "I am writing to dispute a series of unauthorized charges on my account.",
+        "There are charges I didn't make and I want them removed now.",
+        "I am writing to dispute a series of unauthorized charges on my account, obviously.",
+        "Someone charged my account and I'm furious about it."
+      ],
+      "answer": 0,
+      "explanation": "Formal complaints use precise, measured language such as 'I am writing to dispute...'"
+    },
+    {
+      "id": 21,
+      "topic": "Idiomatic phrasal verbs (roll out)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The bank plans to roll out the new app nationwide next month.",
+        "The bank plans to roll the new app out of nationwide next month.",
+        "The bank plans to roll out of the new app nationwide next month.",
+        "The bank plans to roll the new app of out nationwide next month."
+      ],
+      "answer": 0,
+      "explanation": "'Roll out' means 'to launch or introduce': 'roll out the new app nationwide.'"
+    },
+    {
+      "id": 22,
+      "topic": "Advanced passive (leave + object + past participle)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The scandal left the company's reputation badly tarnished.",
+        "The scandal left the company's reputation badly tarnish.",
+        "The scandal left tarnished the company's reputation badly.",
+        "The scandal left the company's reputation badly tarnishing."
+      ],
+      "answer": 0,
+      "explanation": "'Leave + object + past participle' shows a resulting state: 'left the company's reputation badly tarnished.'"
+    },
+    {
+      "id": 23,
+      "topic": "Absolute participle constructions",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "All told, the campaign exceeded its fundraising target.",
+        "All telling, the campaign exceeded its fundraising target.",
+        "All tell, the campaign exceeded its fundraising target.",
+        "All told that, the campaign exceeded its fundraising target."
+      ],
+      "answer": 0,
+      "explanation": "'All told' is a fixed absolute participle phrase meaning 'in total, considering everything.'"
+    },
+    {
+      "id": 24,
+      "topic": "Prepositional phrases (at the expense of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The firm boosted short-term profits at the expense of long-term growth.",
+        "The firm boosted short-term profits at expense of long-term growth.",
+        "The firm boosted short-term profits at the expense for long-term growth.",
+        "The firm boosted short-term profits expense of at long-term growth."
+      ],
+      "answer": 0,
+      "explanation": "'At the expense of' means 'to the detriment of': 'boosted profits at the expense of long-term growth.'"
+    },
+    {
+      "id": 25,
+      "topic": "Advanced collocations (meet expectations)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The quarterly results failed to meet analysts' expectations.",
+        "The quarterly results failed to reach analysts' expectations meet.",
+        "The quarterly results failed to make meet analysts' expectations.",
+        "The quarterly results failed to meet of analysts' expectations."
+      ],
+      "answer": 0,
+      "explanation": "'Meet expectations' is a fixed collocation: 'failed to meet analysts' expectations.'"
+    },
+    {
+      "id": 26,
+      "topic": "Formal register (adverb placement)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The council has significantly increased its infrastructure budget.",
+        "The council has increased significantly its infrastructure budget.",
+        "Significantly the council has increased its infrastructure budget.",
+        "The council significantly has increased its infrastructure budget."
+      ],
+      "answer": 0,
+      "explanation": "Adverbs of degree typically follow the auxiliary verb: 'has significantly increased.'"
+    },
+    {
+      "id": 27,
+      "topic": "Discourse markers (by contrast)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The domestic market slowed. By contrast, exports grew strongly.",
+        "The domestic market slowed, by contrast exports grew strongly.",
+        "The domestic market slowed. By contrast exports grew strongly.",
+        "The domestic market slowed by contrast, exports grew strongly."
+      ],
+      "answer": 0,
+      "explanation": "'By contrast' begins a new sentence and is followed by a comma."
+    },
+    {
+      "id": 28,
+      "topic": "Advanced question tags",
+      "question": "Choose the correct question tag.",
+      "options": [
+        "The trustees would hardly agree to such terms, would they?",
+        "The trustees would hardly agree to such terms, wouldn't they?",
+        "The trustees would hardly agree to such terms, don't they?",
+        "The trustees would hardly agree to such terms, do they?"
+      ],
+      "answer": 0,
+      "explanation": "'Hardly' makes the statement effectively negative, so the tag is positive: 'would hardly agree..., would they?'"
+    },
+    {
+      "id": 29,
+      "topic": "Formal register (understatement)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The rebrand was not entirely well received.",
+        "The rebrand was not all well received entirely.",
+        "The rebrand not was entirely well received.",
+        "The rebrand was entirely not well received."
+      ],
+      "answer": 0,
+      "explanation": "Formal understatement places 'not' before the adverb: 'was not entirely well received.'"
+    },
+    {
+      "id": 30,
+      "topic": "Advanced conditionals (Had they not acted)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Had they not acted swiftly, the crisis would have deepened.",
+        "Had they not act swiftly, the crisis would have deepened.",
+        "They had not acted swiftly, the crisis would have deepened.",
+        "Had they not acted swiftly, the crisis will have deepened."
+      ],
+      "answer": 0,
+      "explanation": "'Had + subject + not + past participle' is an inverted third conditional: 'Had they not acted swiftly, the crisis would have deepened.'"
+    }
+  ]
+}

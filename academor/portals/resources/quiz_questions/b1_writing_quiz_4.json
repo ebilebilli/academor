@@ -1,0 +1,399 @@
+{
+  "level": "B1",
+  "quiz": 4,
+  "title": "B1 Writing Quiz 4 — Food, Health & Environment",
+  "service": "general_english",
+  "category_name": "B1",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Second conditional",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "If I ate less sugar, I would feel healthier.",
+        "If I eat less sugar, I would feel healthier.",
+        "If I ate less sugar, I will feel healthier.",
+        "If I would eat less sugar, I would feel healthier."
+      ],
+      "answer": 0,
+      "explanation": "Second conditional: If + past simple, would + base verb: 'If I ate less sugar, I would feel healthier.'"
+    },
+    {
+      "id": 2,
+      "topic": "Third conditional",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "If they had recycled more, the town wouldn't produce so much waste.",
+        "If they had recycled more, the town wouldn't have produced so much waste.",
+        "If they recycled more, the town wouldn't have produced so much waste.",
+        "If they would have recycled more, the town wouldn't have produced so much waste."
+      ],
+      "answer": 1,
+      "explanation": "Third conditional: If + past perfect, would have + past participle: 'If they had recycled..., the town wouldn't have produced...'"
+    },
+    {
+      "id": 3,
+      "topic": "Passive voice (present simple)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "This bread is baked fresh every morning.",
+        "This bread bakes fresh every morning.",
+        "This bread is baking fresh every morning.",
+        "This bread bake fresh every morning."
+      ],
+      "answer": 0,
+      "explanation": "Present simple passive: is/are + past participle: 'is baked fresh every morning.'"
+    },
+    {
+      "id": 4,
+      "topic": "Passive voice (past simple)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The forest was damaged by the fire.",
+        "The forest damaged by the fire.",
+        "The forest was damage by the fire.",
+        "The forest is damaged by the fire."
+      ],
+      "answer": 0,
+      "explanation": "Past simple passive: was/were + past participle: 'was damaged by the fire.'"
+    },
+    {
+      "id": 5,
+      "topic": "Relative clauses (defining)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The doctor who treated me was very patient.",
+        "The doctor which treated me was very patient.",
+        "The doctor whom treated me was very patient.",
+        "The doctor, who treated me, was very patient but."
+      ],
+      "answer": 0,
+      "explanation": "'Who' introduces a defining relative clause about a person: 'The doctor who treated me...'"
+    },
+    {
+      "id": 6,
+      "topic": "Relative clauses (non-defining)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Organic farming, which is growing in popularity, helps protect the soil.",
+        "Organic farming which is growing in popularity helps protect the soil but.",
+        "Organic farming, that is growing in popularity, helps protect the soil.",
+        "Organic farming which is growing in popularity, helps protect the soil."
+      ],
+      "answer": 0,
+      "explanation": "Non-defining relative clauses use commas and 'which' for things: 'Organic farming, which is growing in popularity, helps protect the soil.'"
+    },
+    {
+      "id": 7,
+      "topic": "Modal verbs of deduction (must/can't)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "That can't be fresh fish, it smells odd.",
+        "That can't to be fresh fish, it smells odd.",
+        "That can't being fresh fish, it smells odd.",
+        "That cann't be fresh fish, it smells odd."
+      ],
+      "answer": 0,
+      "explanation": "'Can't' + base verb expresses a confident negative deduction: 'that can't be fresh fish.'"
+    },
+    {
+      "id": 8,
+      "topic": "Modal verbs of deduction (might/could)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The recipe could be missing an ingredient.",
+        "The recipe could being missing an ingredient.",
+        "The recipe could to be missing an ingredient.",
+        "The recipe coulds be missing an ingredient."
+      ],
+      "answer": 0,
+      "explanation": "'Could' + base verb expresses a possible deduction: 'the recipe could be missing an ingredient.'"
+    },
+    {
+      "id": 9,
+      "topic": "Present perfect vs present perfect continuous",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I've tried three new recipes this week.",
+        "I've been trying three new recipes this week.",
+        "I've try three new recipes this week.",
+        "I'm trying three new recipes this week already."
+      ],
+      "answer": 0,
+      "explanation": "Present perfect simple is used for a completed number of results: 'I've tried three new recipes.'"
+    },
+    {
+      "id": 10,
+      "topic": "Present perfect continuous",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I've been following a vegetarian diet for six months.",
+        "I've followed a vegetarian diet since six months.",
+        "I'm following a vegetarian diet for six months already.",
+        "I've been follow a vegetarian diet for six months."
+      ],
+      "answer": 0,
+      "explanation": "Present perfect continuous emphasizes duration of an unfinished action: 'I've been following... for six months.'"
+    },
+    {
+      "id": 11,
+      "topic": "Reported speech (statements)",
+      "question": "Choose the correct sentence. (Direct: \"I have finished the diet plan.\")",
+      "options": [
+        "She said that she has finished the diet plan.",
+        "She said that she had finished the diet plan.",
+        "She said that she finished the diet plan already.",
+        "She said she have finished the diet plan."
+      ],
+      "answer": 1,
+      "explanation": "In reported speech, present perfect shifts back to past perfect: 'she had finished the diet plan.'"
+    },
+    {
+      "id": 12,
+      "topic": "Reported speech (questions)",
+      "question": "Choose the correct sentence. (Direct: \"How often do you exercise?\")",
+      "options": [
+        "She asked me how often do I exercise.",
+        "She asked me how often I exercised.",
+        "She asked me how often did I exercise.",
+        "She asked me how often I exercise."
+      ],
+      "answer": 1,
+      "explanation": "Reported questions use normal word order (no auxiliary inversion) and shift the tense back: 'she asked me how often I exercised.'"
+    },
+    {
+      "id": 13,
+      "topic": "Used to",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I used to eat fast food every day before I changed my habits.",
+        "I use to eat fast food every day before I changed my habits.",
+        "I was used to eat fast food every day before I changed my habits.",
+        "I used to eating fast food every day before I changed my habits."
+      ],
+      "answer": 0,
+      "explanation": "'Used to' + base verb describes a past habit that no longer happens: 'I used to eat fast food every day.'"
+    },
+    {
+      "id": 14,
+      "topic": "Be used to / get used to",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I'm used to cooking without meat now.",
+        "I'm used to cook without meat now.",
+        "I use to cooking without meat now.",
+        "I'm used cooking to without meat now."
+      ],
+      "answer": 0,
+      "explanation": "'Be used to' is followed by a gerund: 'I'm used to cooking without meat.'"
+    },
+    {
+      "id": 15,
+      "topic": "Phrasal verbs (cut down on)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The doctor told him to cut down on salt.",
+        "The doctor told him to cut salt down on.",
+        "The doctor told him to cut down to on salt.",
+        "The doctor told him to cut on salt down."
+      ],
+      "answer": 0,
+      "explanation": "'Cut down on' means 'reduce': 'cut down on salt.'"
+    },
+    {
+      "id": 16,
+      "topic": "Phrasal verbs (give up)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "She decided to give up smoking last year.",
+        "She decided to give smoking up to last year.",
+        "She decided to give up to smoking last year.",
+        "She decided to give smoking last year up."
+      ],
+      "answer": 0,
+      "explanation": "'Give up' means 'stop doing something': 'give up smoking.'"
+    },
+    {
+      "id": 17,
+      "topic": "Connectors (despite / although)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Despite the drought, the farmers had a good harvest.",
+        "Despite of the drought, the farmers had a good harvest.",
+        "Although the drought, the farmers had a good harvest.",
+        "Despite the drought was severe, the farmers had a good harvest."
+      ],
+      "answer": 0,
+      "explanation": "'Despite' is followed by a noun phrase (no 'of'): 'Despite the drought, the farmers had a good harvest.'"
+    },
+    {
+      "id": 18,
+      "topic": "Connectors (as a result)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Pollution levels rose sharply. As a result, the government banned old cars.",
+        "Pollution levels rose sharply, as a result the government banned old cars.",
+        "As a result pollution levels rose sharply the government banned old cars.",
+        "Pollution levels rose sharply as a result, the government banned old cars."
+      ],
+      "answer": 0,
+      "explanation": "'As a result' starts a new sentence and is followed by a comma: 'Pollution levels rose sharply. As a result, the government banned old cars.'"
+    },
+    {
+      "id": 19,
+      "topic": "Quantifiers (enough)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "We don't have enough clean water in some regions.",
+        "We don't have water enough in some regions.",
+        "We don't have enough of water in some regions.",
+        "We hasn't enough water in some regions."
+      ],
+      "answer": 0,
+      "explanation": "'Enough' comes before the noun it modifies: 'enough clean water.'"
+    },
+    {
+      "id": 20,
+      "topic": "Prepositions (aware of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Most people are aware of the dangers of plastic waste.",
+        "Most people are aware for the dangers of plastic waste.",
+        "Most people are aware to the dangers of plastic waste.",
+        "Most people are aware on the dangers of plastic waste."
+      ],
+      "answer": 0,
+      "explanation": "'Aware of' + noun means 'conscious of': 'aware of the dangers.'"
+    },
+    {
+      "id": 21,
+      "topic": "Semi-formal email opening",
+      "question": "Which is the correct way to start an email to a nutritionist you haven't met, asking for advice?",
+      "options": [
+        "Hey there,",
+        "Dear Dr. Ismayilova,",
+        "Yo,",
+        "Hiya,"
+      ],
+      "answer": 1,
+      "explanation": "Using the recipient's title and name, 'Dear Dr. Ismayilova,' is a suitable formal opening."
+    },
+    {
+      "id": 22,
+      "topic": "Formal email closing",
+      "question": "Which is the correct way to end a formal email pitching an environmental project idea to a named contact?",
+      "options": [
+        "Yours faithfully,",
+        "Kind regards,",
+        "Later,",
+        "Talk soon,"
+      ],
+      "answer": 1,
+      "explanation": "'Kind regards,' is a suitable semi-formal closing when writing to a named professional contact."
+    },
+    {
+      "id": 23,
+      "topic": "Making polite requests",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I was wondering if you could suggest a healthier alternative.",
+        "I was wondering if you could to suggest a healthier alternative.",
+        "I was wondering could you suggesting a healthier alternative.",
+        "I wonder if you suggest could a healthier alternative."
+      ],
+      "answer": 0,
+      "explanation": "'I was wondering if you could' + base verb is a polite way to make a request: 'if you could suggest an alternative.'"
+    },
+    {
+      "id": 24,
+      "topic": "Sentence combining (relative clause with whose)",
+      "question": "Which sentence correctly combines 'This is the farmer.' and 'The farmer's vegetables won the prize.'?",
+      "options": [
+        "This is the farmer whose vegetables won the prize.",
+        "This is the farmer who vegetables won the prize.",
+        "This is the farmer which vegetables won the prize.",
+        "This is the farmer's vegetables who won the prize."
+      ],
+      "answer": 0,
+      "explanation": "'Whose' shows possession in a relative clause: 'the farmer whose vegetables won the prize.'"
+    },
+    {
+      "id": 25,
+      "topic": "Word order (adverbs with perfect tenses)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I have never tried such a spicy dish before.",
+        "I have tried never such a spicy dish before.",
+        "Never I have tried such a spicy dish before.",
+        "I have tried such a spicy dish never before."
+      ],
+      "answer": 0,
+      "explanation": "'Never' is placed between the auxiliary and the past participle: 'I have never tried such a dish.'"
+    },
+    {
+      "id": 26,
+      "topic": "Punctuation (indirect question)",
+      "question": "Which sentence has correct punctuation?",
+      "options": [
+        "I'd like to know whether the results have been confirmed.",
+        "I'd like to know whether have the results been confirmed?",
+        "I'd like to know, whether the results have been confirmed.",
+        "I'd like to know whether the results have been confirmed?"
+      ],
+      "answer": 0,
+      "explanation": "Reported/indirect statements use normal word order and end with a full stop, not a question mark."
+    },
+    {
+      "id": 27,
+      "topic": "Sentence completion (future continuous)",
+      "question": "This time tomorrow, I ___ a healthy breakfast for the whole family.",
+      "options": [
+        "will cook",
+        "will be cooking",
+        "am cooking",
+        "cook"
+      ],
+      "answer": 1,
+      "explanation": "Future continuous describes an action in progress at a specific future time: 'will be cooking'."
+    },
+    {
+      "id": 28,
+      "topic": "Sentence completion (future perfect)",
+      "question": "By 2030, scientists ___ many new solutions for clean energy.",
+      "options": [
+        "will develop",
+        "will have developed",
+        "develop",
+        "are developing"
+      ],
+      "answer": 1,
+      "explanation": "Future perfect describes an action completed before a future point: 'will have developed'."
+    },
+    {
+      "id": 29,
+      "topic": "Sequencing/discourse markers",
+      "question": "Choose the sentence that correctly uses discourse markers.",
+      "options": [
+        "Firstly, wash the vegetables. Secondly, chop them finely. Finally, add them to the pan.",
+        "Firstly we wash vegetables secondly chop finally pan.",
+        "Finally wash the vegetables, firstly chop, secondly add pan.",
+        "Secondly firstly wash vegetables, finally chop them."
+      ],
+      "answer": 0,
+      "explanation": "Discourse markers 'Firstly,', 'Secondly,' and 'Finally,' organize points clearly with commas."
+    },
+    {
+      "id": 30,
+      "topic": "Question formation (tag questions with modals)",
+      "question": "Choose the correct question tag.",
+      "options": [
+        "You wouldn't waste food like that, would you?",
+        "You wouldn't waste food like that, do you?",
+        "You wouldn't waste food like that, wouldn't you?",
+        "You wouldn't waste food like that, will you?"
+      ],
+      "answer": 0,
+      "explanation": "Negative statement with 'would' + positive tag: 'you wouldn't waste..., would you?'"
+    }
+  ]
+}

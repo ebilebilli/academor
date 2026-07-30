@@ -1,0 +1,399 @@
+{
+  "level": "C1",
+  "quiz": 2,
+  "title": "C1 Writing Quiz 2 — Politics & Government",
+  "service": "general_english",
+  "category_name": "C1",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Inversion (rarely/seldom)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Seldom a government has faced such widespread public opposition.",
+        "Seldom has a government faced such widespread public opposition.",
+        "Seldom does a government faced such widespread public opposition.",
+        "Seldom a government faces such widespread public opposition has."
+      ],
+      "answer": 1,
+      "explanation": "Negative adverbials like 'seldom' at the start trigger inversion: 'Seldom has a government faced...'"
+    },
+    {
+      "id": 2,
+      "topic": "Subjunctive in formal contexts",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "It is imperative that the minister resigns immediately.",
+        "It is imperative that the minister resign immediately.",
+        "It is imperative that the minister will resign immediately.",
+        "It is imperative that the minister resigning immediately."
+      ],
+      "answer": 1,
+      "explanation": "After 'it is imperative that', formal English uses the subjunctive (base form): 'the minister resign immediately.'"
+    },
+    {
+      "id": 3,
+      "topic": "Advanced conditionals (Were it not for)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Were it not for the opposition's protests, the bill would have passed unchallenged.",
+        "Were it not the opposition's protests, the bill would have passed unchallenged.",
+        "Was it not for the opposition's protests, the bill would have passed unchallenged.",
+        "Were it not for the opposition's protests, the bill will have passed unchallenged."
+      ],
+      "answer": 0,
+      "explanation": "'Were it not for' is a formal inverted conditional meaning 'if it weren't for': 'Were it not for the protests, the bill would have passed.'"
+    },
+    {
+      "id": 4,
+      "topic": "Concession connectors (albeit)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The coalition survived the vote, albeit with a much reduced majority.",
+        "The coalition survived the vote, albeit that a much reduced majority.",
+        "The coalition survived the vote, albeit it a much reduced majority.",
+        "The coalition survived the vote albeit for a much reduced majority."
+      ],
+      "answer": 0,
+      "explanation": "'Albeit' introduces a concession and is typically followed directly by a prepositional or noun phrase: 'albeit with a reduced majority.'"
+    },
+    {
+      "id": 5,
+      "topic": "Emphatic cleft (It was...who/that)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "It was the opposition leader who first raised the corruption allegations.",
+        "It was the opposition leader which first raised the corruption allegations.",
+        "It was the opposition leader whom first raised the corruption allegations.",
+        "It the opposition leader was who first raised the corruption allegations."
+      ],
+      "answer": 0,
+      "explanation": "Cleft sentences for emphasis on a person use 'It was [person] who...': 'It was the opposition leader who first raised...'"
+    },
+    {
+      "id": 6,
+      "topic": "Reporting verbs (assert)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The senator asserts that the policy will reduce unemployment.",
+        "The senator asserts to that the policy will reduce unemployment.",
+        "The senator asserts the policy will reducing unemployment.",
+        "The senator is assert that the policy will reduce unemployment."
+      ],
+      "answer": 0,
+      "explanation": "'Assert' (formal reporting verb) is followed by 'that + clause': 'asserts that the policy will reduce unemployment.'"
+    },
+    {
+      "id": 7,
+      "topic": "Participle clauses (having done)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Having reviewed the evidence, the committee recommended further investigation.",
+        "Having review the evidence, the committee recommended further investigation.",
+        "Have reviewed the evidence, the committee recommended further investigation.",
+        "Having reviewed the evidence, the committee recommending further investigation."
+      ],
+      "answer": 0,
+      "explanation": "'Having + past participle' shows a completed action before the main clause: 'Having reviewed the evidence, the committee recommended...'"
+    },
+    {
+      "id": 8,
+      "topic": "Advanced quantifiers (the vast majority)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The vast majority of voters has expressed dissatisfaction with the current administration.",
+        "The vast majority of voters have expressed dissatisfaction with the current administration.",
+        "A vast majority of voters is expressed dissatisfaction with the current administration.",
+        "The vast majority of voters express dissatisfaction with the current administration already."
+      ],
+      "answer": 1,
+      "explanation": "'The majority of' + plural noun typically takes a plural verb: 'the vast majority of voters have expressed.'"
+    },
+    {
+      "id": 9,
+      "topic": "Modal perfect (needn't have)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The government needn't have imposed such strict measures; the situation improved on its own.",
+        "The government needn't imposed such strict measures; the situation improved on its own.",
+        "The government didn't need have imposed such strict measures; the situation improved on its own.",
+        "The government needn't have impose such strict measures; the situation improved on its own."
+      ],
+      "answer": 0,
+      "explanation": "'Needn't have + past participle' expresses an unnecessary past action: 'needn't have imposed such strict measures.'"
+    },
+    {
+      "id": 10,
+      "topic": "Correlative conjunctions (not only...but also)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Not only did the reform pass, but public approval also rose.",
+        "Not only the reform passed, but public approval also rose.",
+        "Not only did the reform pass, but also public approval rose.",
+        "Not only the reform did pass, but public approval also rose."
+      ],
+      "answer": 0,
+      "explanation": "'Not only' at the start of a clause triggers inversion: 'Not only did the reform pass, but public approval also rose.'"
+    },
+    {
+      "id": 11,
+      "topic": "Hedging language (arguably)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "This is arguably the most controversial policy of the decade.",
+        "This is arguable the most controversial policy of the decade.",
+        "This arguably is the most controversial policy of the decade it.",
+        "This is arguably that the most controversial policy of the decade."
+      ],
+      "answer": 0,
+      "explanation": "'Arguably' is an adverb used to hedge a strong claim: 'this is arguably the most controversial policy.'"
+    },
+    {
+      "id": 12,
+      "topic": "Advanced relative clauses (whereby)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The government introduced a system whereby citizens can report corruption anonymously.",
+        "The government introduced a system where citizens can report corruption anonymously by.",
+        "The government introduced a system by which whereby citizens can report corruption.",
+        "The government introduced a system whereby that citizens can report corruption anonymously."
+      ],
+      "answer": 0,
+      "explanation": "'Whereby' means 'by which' and introduces a formal relative clause describing a process: 'a system whereby citizens can report corruption.'"
+    },
+    {
+      "id": 13,
+      "topic": "Fronting for emphasis",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "So fierce was the debate that the session was adjourned early.",
+        "So fierce the debate was that the session was adjourned early.",
+        "So fierce was the debate the session was adjourned early.",
+        "So fierce was that the debate the session was adjourned early."
+      ],
+      "answer": 0,
+      "explanation": "Fronting 'so + adjective' for emphasis triggers inversion: 'So fierce was the debate that the session was adjourned.'"
+    },
+    {
+      "id": 14,
+      "topic": "Nominalization (formal register)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The ratification of the treaty marked a turning point in foreign policy.",
+        "The ratify of the treaty marked a turning point in foreign policy.",
+        "The ratification of the treaty mark a turning point in foreign policy.",
+        "The ratifying the treaty marked a turning point in foreign policy."
+      ],
+      "answer": 0,
+      "explanation": "Formal writing nominalizes verbs: 'ratify' becomes 'the ratification of...'"
+    },
+    {
+      "id": 15,
+      "topic": "Passive with modal perfect (could have been)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The crisis could have been averted if officials had responded promptly.",
+        "The crisis could been averted if officials had responded promptly.",
+        "The crisis could have averted if officials had responded promptly.",
+        "The crisis could have being averted if officials had responded promptly."
+      ],
+      "answer": 0,
+      "explanation": "Modal perfect passive: modal + have been + past participle: 'could have been averted.'"
+    },
+    {
+      "id": 16,
+      "topic": "Ellipsis (formal writing)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Some officials favor sanctions; others, diplomacy.",
+        "Some officials favor sanctions; others favor, diplomacy.",
+        "Some officials favor sanctions; others is diplomacy.",
+        "Some officials favor sanctions; others favors diplomacy."
+      ],
+      "answer": 0,
+      "explanation": "Ellipsis omits the repeated verb after a semicolon: 'others, diplomacy' (= others favor diplomacy)."
+    },
+    {
+      "id": 17,
+      "topic": "Discourse markers (nevertheless)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The proposal faced strong criticism. Nevertheless, it was approved.",
+        "The proposal faced strong criticism, nevertheless it was approved.",
+        "The proposal faced strong criticism. Nevertheless it was approved.",
+        "The proposal faced strong criticism nevertheless, it was approved."
+      ],
+      "answer": 0,
+      "explanation": "'Nevertheless' begins a new sentence and is followed by a comma: 'The proposal faced criticism. Nevertheless, it was approved.'"
+    },
+    {
+      "id": 18,
+      "topic": "Concession connectors (notwithstanding)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Notwithstanding the criticism, the president signed the bill into law.",
+        "Notwithstanding of the criticism, the president signed the bill into law.",
+        "Notwithstanding the criticism, but the president signed the bill into law.",
+        "The criticism notwithstanding of, the president signed the bill into law."
+      ],
+      "answer": 0,
+      "explanation": "'Notwithstanding' is a formal preposition meaning 'despite' and is followed directly by a noun phrase: 'Notwithstanding the criticism...'"
+    },
+    {
+      "id": 19,
+      "topic": "Formal email (requesting a meeting)",
+      "question": "Which is the most appropriate formal opening line for an email requesting a meeting with a local official?",
+      "options": [
+        "I'm writing to see if you wanna meet up sometime.",
+        "I am writing to request a meeting at your earliest convenience to discuss community concerns.",
+        "Hey, can we meet? I have some concerns.",
+        "Just wondering if you're free to chat about the neighborhood."
+      ],
+      "answer": 1,
+      "explanation": "'I am writing to request a meeting at your earliest convenience...' is a standard formal opening for official correspondence."
+    },
+    {
+      "id": 20,
+      "topic": "Formal complaint (advanced language)",
+      "question": "Which is the most appropriate opening line for a formal complaint about a delayed public service?",
+      "options": [
+        "I'm super annoyed that the service is so delayed.",
+        "I am writing to draw your attention to the persistent delays in the delivery of this public service.",
+        "The service is delayed, and I want to complain.",
+        "I am writing to draw your attention to the persistent delays in the delivery of this public service, ok."
+      ],
+      "answer": 1,
+      "explanation": "Formal complaints use precise, measured language such as 'I am writing to draw your attention to...'"
+    },
+    {
+      "id": 21,
+      "topic": "Idiomatic phrasal verbs (iron out)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The two parties met to iron out their differences before the vote.",
+        "The two parties met to iron their differences out before the vote of.",
+        "The two parties met to iron the differences of before the vote out.",
+        "The two parties met to iron out of their differences before the vote."
+      ],
+      "answer": 0,
+      "explanation": "'Iron out' means 'to resolve' and is commonly used with 'differences': 'iron out their differences before the vote.'"
+    },
+    {
+      "id": 22,
+      "topic": "Advanced passive (get + past participle)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The bill got rejected by the senate after a heated debate.",
+        "The bill got reject by the senate after a heated debate.",
+        "The bill got rejecting by the senate after a heated debate.",
+        "The bill was got rejected by the senate after a heated debate."
+      ],
+      "answer": 0,
+      "explanation": "Informal/semi-formal passive with 'get': get + past participle: 'the bill got rejected by the senate.'"
+    },
+    {
+      "id": 23,
+      "topic": "Absolute participle constructions",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "All things considered, the reform was a reasonable compromise.",
+        "All things consider, the reform was a reasonable compromise.",
+        "All things considering, the reform was a reasonable compromise.",
+        "All things considered that, the reform was a reasonable compromise."
+      ],
+      "answer": 0,
+      "explanation": "'All things considered' is a fixed absolute participle phrase meaning 'taking everything into account.'"
+    },
+    {
+      "id": 24,
+      "topic": "Prepositional phrases (in light of)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "In light of the recent scandal, the minister resigned.",
+        "In the light of the recent scandal, the minister resigned, that.",
+        "Light of the recent scandal, the minister resigned.",
+        "In light for the recent scandal, the minister resigned."
+      ],
+      "answer": 0,
+      "explanation": "'In light of' means 'considering' and is followed by a noun phrase: 'In light of the recent scandal...'"
+    },
+    {
+      "id": 25,
+      "topic": "Advanced collocations (draw criticism)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The proposed reform drew sharp criticism from opposition parties.",
+        "The proposed reform made sharp criticism draw from opposition parties.",
+        "The proposed reform gave sharp criticism draw from opposition parties.",
+        "The proposed reform drew of sharp criticism from opposition parties."
+      ],
+      "answer": 0,
+      "explanation": "'Draw criticism' is a fixed collocation meaning 'to attract criticism': 'the reform drew sharp criticism.'"
+    },
+    {
+      "id": 26,
+      "topic": "Formal register (adverb placement)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The administration has consistently denied any wrongdoing.",
+        "The administration has denied consistently any wrongdoing.",
+        "Consistently the administration has denied any wrongdoing.",
+        "The administration consistently has denied any wrongdoing."
+      ],
+      "answer": 0,
+      "explanation": "Adverbs of frequency in formal writing typically follow the auxiliary verb: 'has consistently denied.'"
+    },
+    {
+      "id": 27,
+      "topic": "Discourse markers (furthermore)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The policy lacks clear funding. Furthermore, its timeline is unrealistic.",
+        "The policy lacks clear funding, furthermore its timeline is unrealistic.",
+        "The policy lacks clear funding. Furthermore its timeline is unrealistic.",
+        "The policy lacks clear funding furthermore, its timeline is unrealistic."
+      ],
+      "answer": 0,
+      "explanation": "'Furthermore' begins a new sentence and is followed by a comma: 'The policy lacks funding. Furthermore, its timeline is unrealistic.'"
+    },
+    {
+      "id": 28,
+      "topic": "Advanced question tags",
+      "question": "Choose the correct question tag.",
+      "options": [
+        "The senator would seldom compromise on this issue, would he?",
+        "The senator would seldom compromise on this issue, wouldn't he?",
+        "The senator would seldom compromise on this issue, don't he?",
+        "The senator would seldom compromise on this issue, does he?"
+      ],
+      "answer": 0,
+      "explanation": "'Seldom' makes the statement effectively negative, so the tag is positive: 'would seldom compromise..., would he?'"
+    },
+    {
+      "id": 29,
+      "topic": "Formal register (understatement)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "The negotiations were not entirely successful.",
+        "The negotiations were not all successful entirely.",
+        "The negotiations not were entirely successful.",
+        "The negotiations were entirely not successful."
+      ],
+      "answer": 0,
+      "explanation": "Formal understatement places 'not' before the adverb: 'The negotiations were not entirely successful.'"
+    },
+    {
+      "id": 30,
+      "topic": "Advanced conditionals (Had it not been for)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Had it not been for international pressure, the ceasefire would have collapsed.",
+        "Had it not for international pressure, the ceasefire would have collapsed.",
+        "Had it not been international pressure, the ceasefire would have collapsed.",
+        "Had it not been for international pressure, the ceasefire will have collapsed."
+      ],
+      "answer": 0,
+      "explanation": "'Had it not been for' is a formal inverted past conditional meaning 'if it hadn't been for': 'Had it not been for the pressure, the ceasefire would have collapsed.'"
+    }
+  ]
+}

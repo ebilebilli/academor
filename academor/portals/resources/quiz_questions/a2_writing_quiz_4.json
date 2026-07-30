@@ -1,0 +1,399 @@
+{
+  "level": "A2",
+  "quiz": 4,
+  "title": "A2 Writing Quiz 4 — Travel, Seasons & Staying Active",
+  "service": "general_english",
+  "category_name": "A2",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Present perfect",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Have you finished packing your bag yet?",
+        "Have you finish packing your bag yet?",
+        "Did you finished packing your bag yet?",
+        "Have you finished packing your bag already?"
+      ],
+      "answer": 0,
+      "explanation": "'Yet' is used in present perfect questions and negatives: 'Have you finished... yet?'"
+    },
+    {
+      "id": 2,
+      "topic": "Present perfect vs past simple",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "We have travelled to Gabala in 2022.",
+        "We travelled to Gabala in 2022.",
+        "We have travel to Gabala in 2022.",
+        "We are travelling to Gabala in 2022."
+      ],
+      "answer": 1,
+      "explanation": "A finished past year ('in 2022') needs past simple, not present perfect."
+    },
+    {
+      "id": 3,
+      "topic": "Past continuous",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "We were hiking when it started to snow.",
+        "We hiked when it was starting to snow.",
+        "We were hike when it started to snow.",
+        "We hiking were when it started to snow."
+      ],
+      "answer": 0,
+      "explanation": "Past continuous (background) + past simple (interrupting event): 'We were hiking when it started to snow.'"
+    },
+    {
+      "id": 4,
+      "topic": "Comparatives",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "This trail is more difficult than the last one.",
+        "This trail is difficulter than the last one.",
+        "This trail is most difficult than the last one.",
+        "This trail is difficult than the last one."
+      ],
+      "answer": 0,
+      "explanation": "Long adjectives use 'more' for comparatives: 'more difficult than'."
+    },
+    {
+      "id": 5,
+      "topic": "Superlatives",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "This is the farest beach from the city.",
+        "This is the most far beach from the city.",
+        "This is the farthest beach from the city.",
+        "This is farthest beach from the city."
+      ],
+      "answer": 2,
+      "explanation": "Irregular superlative of 'far' is 'the farthest': 'the farthest beach'."
+    },
+    {
+      "id": 6,
+      "topic": "Modal verbs (can for permission)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Can I take a break, I feel exhausted?",
+        "Can I to take a break, I feel exhausted?",
+        "Can I taking a break, I feel exhausted?",
+        "I can take a break, I feel exhausted can?"
+      ],
+      "answer": 0,
+      "explanation": "'Can' is followed by the base form of the verb: 'Can I take a break?'"
+    },
+    {
+      "id": 7,
+      "topic": "Modal verbs (need to)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "You need to drink more water in this heat.",
+        "You need drink more water in this heat.",
+        "You needs to drink more water in this heat.",
+        "You need to drinking more water in this heat."
+      ],
+      "answer": 0,
+      "explanation": "'Need to' + base verb expresses necessity: 'need to drink'."
+    },
+    {
+      "id": 8,
+      "topic": "Modal verbs (must have)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "He must have forgot his jacket, it's freezing outside.",
+        "He must have forgotten his jacket, it's freezing outside.",
+        "He must has forgotten his jacket, it's freezing outside.",
+        "He must forgotten his jacket, it's freezing outside."
+      ],
+      "answer": 1,
+      "explanation": "'Must have' + past participle expresses a logical past conclusion: 'must have forgotten'."
+    },
+    {
+      "id": 9,
+      "topic": "Going to future",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "Are you going to join the hiking club?",
+        "Are you go to join the hiking club?",
+        "Do you going to join the hiking club?",
+        "Are you going join the hiking club?"
+      ],
+      "answer": 0,
+      "explanation": "Question form: Are/Is + subject + going to + base verb: 'Are you going to join...?'"
+    },
+    {
+      "id": 10,
+      "topic": "First conditional",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "If the weather improves, we will go camping.",
+        "If the weather will improve, we go camping.",
+        "If the weather improves, we go will camping.",
+        "If the weather improved, we will go camping."
+      ],
+      "answer": 0,
+      "explanation": "First conditional: If + present simple, will + base verb: 'If the weather improves, we will go camping.'"
+    },
+    {
+      "id": 11,
+      "topic": "Gerunds after verbs",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "I don't mind waiting for the bus in the rain.",
+        "I don't mind to wait for the bus in the rain.",
+        "I don't mind wait for the bus in the rain.",
+        "I don't mind waited for the bus in the rain."
+      ],
+      "answer": 0,
+      "explanation": "'Mind' is followed by a gerund (-ing form): 'don't mind waiting'."
+    },
+    {
+      "id": 12,
+      "topic": "Infinitive after verbs",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "We hope visiting the mountains next month.",
+        "We hope to visit the mountains next month.",
+        "We hope visit the mountains next month.",
+        "We hope for visit the mountains next month."
+      ],
+      "answer": 1,
+      "explanation": "'Hope' is followed by the infinitive with 'to': 'hope to visit'."
+    },
+    {
+      "id": 13,
+      "topic": "Quantifiers (a lot of/much/many)",
+      "question": "We didn't take ___ luggage for the trip.",
+      "options": [
+        "many",
+        "much",
+        "a lot",
+        "several"
+      ],
+      "answer": 1,
+      "explanation": "'Luggage' is uncountable, so use 'much' in negative sentences."
+    },
+    {
+      "id": 14,
+      "topic": "Quantifiers (a few/a little)",
+      "question": "There are ___ tourists at the beach this early in the morning.",
+      "options": [
+        "a little",
+        "a few",
+        "much",
+        "little"
+      ],
+      "answer": 1,
+      "explanation": "'Tourists' is countable, and 'a few' means 'a small number of'."
+    },
+    {
+      "id": 15,
+      "topic": "Connectors (while)",
+      "question": "Choose the sentence that correctly uses 'while'.",
+      "options": [
+        "While I was packing, my sister was checking the tickets.",
+        "While I was packing, but my sister checked the tickets.",
+        "I was packing while, my sister was checking the tickets.",
+        "While packing was I, my sister checking tickets."
+      ],
+      "answer": 0,
+      "explanation": "'While' connects two actions happening at the same time: 'While I was packing, my sister was checking the tickets.'"
+    },
+    {
+      "id": 16,
+      "topic": "Connectors (as soon as)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "We'll leave as soon as the rain stops.",
+        "We'll leave as soon as the rain will stop.",
+        "We'll leave as soon the rain stops as.",
+        "We'll leave as soon as the rain stopped."
+      ],
+      "answer": 0,
+      "explanation": "'As soon as' + present simple is used to talk about the near future: 'as soon as the rain stops.'"
+    },
+    {
+      "id": 17,
+      "topic": "Prepositions (on the way to)",
+      "question": "We stopped for lunch ___ the airport.",
+      "options": [
+        "on the way to",
+        "on the way for",
+        "in the way to",
+        "at the way to"
+      ],
+      "answer": 0,
+      "explanation": "'On the way to' + place describes stopping during a journey: 'on the way to the airport.'"
+    },
+    {
+      "id": 18,
+      "topic": "Prepositions (throughout)",
+      "question": "It stayed sunny ___ the whole trip.",
+      "options": [
+        "throughout",
+        "during of",
+        "along",
+        "across"
+      ],
+      "answer": 0,
+      "explanation": "'Throughout' means 'during the entire period of': 'throughout the whole trip.'"
+    },
+    {
+      "id": 19,
+      "topic": "Reported speech (simple)",
+      "question": "Choose the correct sentence. (Direct: \"I will call you tomorrow.\")",
+      "options": [
+        "She said that she will call me tomorrow.",
+        "She said that she would call me the next day.",
+        "She said that she would call me tomorrow.",
+        "She said she calling me the next day."
+      ],
+      "answer": 1,
+      "explanation": "In reported speech, 'will' shifts to 'would' and 'tomorrow' shifts to 'the next day'."
+    },
+    {
+      "id": 20,
+      "topic": "Informal email opening",
+      "question": "Which is the correct way to start an email to a friend telling them about your holiday plans?",
+      "options": [
+        "Dear Sir/Madam,",
+        "Hey Kamran,",
+        "To Whom It May Concern,",
+        "Dear Customer,"
+      ],
+      "answer": 1,
+      "explanation": "'Hey [Name],' is a friendly, informal greeting suitable for a close friend."
+    },
+    {
+      "id": 21,
+      "topic": "Informal email closing",
+      "question": "Which is the correct way to end an email to a friend before a trip?",
+      "options": [
+        "Yours faithfully,",
+        "See you soon,",
+        "Sincerely,",
+        "Regards,"
+      ],
+      "answer": 1,
+      "explanation": "'See you soon,' is a warm, informal closing suitable for a friend before meeting up."
+    },
+    {
+      "id": 22,
+      "topic": "Making suggestions",
+      "question": "Choose the correct suggestion.",
+      "options": [
+        "Shall we book the tickets online?",
+        "Shall we booking the tickets online?",
+        "Shall we to book the tickets online?",
+        "We shall booked the tickets online?"
+      ],
+      "answer": 0,
+      "explanation": "'Shall we' + base verb is used to make a suggestion: 'Shall we book...?'"
+    },
+    {
+      "id": 23,
+      "topic": "Sentence combining (relative clause)",
+      "question": "Which sentence correctly combines 'This is the season.' and 'I enjoy the season the most.'?",
+      "options": [
+        "This is the season who I enjoy the most.",
+        "This is the season which I enjoy the most.",
+        "This is the season where I enjoy the most.",
+        "This is the season what I enjoy the most."
+      ],
+      "answer": 1,
+      "explanation": "'Which' is used for things in relative clauses: 'the season which I enjoy the most.'"
+    },
+    {
+      "id": 24,
+      "topic": "Word order (adverbs of frequency)",
+      "question": "Choose the correct sentence.",
+      "options": [
+        "We always pack our bags the night before.",
+        "We pack always our bags the night before.",
+        "Always we pack our bags the night before always.",
+        "We pack our bags always the night before."
+      ],
+      "answer": 0,
+      "explanation": "Adverbs of frequency usually go before the main verb: 'We always pack our bags.'"
+    },
+    {
+      "id": 25,
+      "topic": "Punctuation (indirect question)",
+      "question": "Which sentence has correct punctuation?",
+      "options": [
+        "Do you know where the nearest pharmacy is?",
+        "Do you know where is the nearest pharmacy?",
+        "Do you know where the nearest pharmacy is.",
+        "Do you know, where the nearest pharmacy is?"
+      ],
+      "answer": 0,
+      "explanation": "Indirect questions keep normal word order and end with a question mark: 'where the nearest pharmacy is?'"
+    },
+    {
+      "id": 26,
+      "topic": "Sentence completion (present perfect continuous)",
+      "question": "I ___ for this trip for weeks, so I'm really excited.",
+      "options": [
+        "plan",
+        "have planned",
+        "have been planning",
+        "planned"
+      ],
+      "answer": 2,
+      "explanation": "Present perfect continuous emphasizes duration of an ongoing action: 'have been planning'."
+    },
+    {
+      "id": 27,
+      "topic": "Sentence completion (possessive pronouns)",
+      "question": "This suitcase isn't ours, it's ___.",
+      "options": [
+        "you",
+        "your",
+        "yours",
+        "your's"
+      ],
+      "answer": 2,
+      "explanation": "Possessive pronoun (stands alone, no noun after it): 'it's yours.'"
+    },
+    {
+      "id": 28,
+      "topic": "Sequencing words (advanced)",
+      "question": "Choose the sentence that correctly uses sequencing words.",
+      "options": [
+        "First, check in. After that, find your gate. Finally, board the plane.",
+        "First check in after that find gate finally board plane.",
+        "Finally check in, first find your gate, after that board.",
+        "After that first check in, finally find gate board plane."
+      ],
+      "answer": 0,
+      "explanation": "Sequencing words 'First,', 'After that,' and 'Finally,' organize steps clearly with commas."
+    },
+    {
+      "id": 29,
+      "topic": "Subject-verb agreement (each/every)",
+      "question": "Every passenger ___ to show their ticket at the gate.",
+      "options": [
+        "need",
+        "needs",
+        "needing",
+        "are needing"
+      ],
+      "answer": 1,
+      "explanation": "'Every' takes a singular verb: 'Every passenger needs...'"
+    },
+    {
+      "id": 30,
+      "topic": "Question formation (tag questions)",
+      "question": "Choose the correct question tag.",
+      "options": [
+        "You've packed your passport, haven't you?",
+        "You've packed your passport, have you?",
+        "You've packed your passport, didn't you?",
+        "You've packed your passport, haven't?"
+      ],
+      "answer": 0,
+      "explanation": "Positive statement + negative tag: 'You've packed your passport, haven't you?'"
+    }
+  ]
+}
