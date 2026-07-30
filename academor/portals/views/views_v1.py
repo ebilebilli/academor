@@ -329,16 +329,10 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
     tab_panel_template_name = 'portals/includes/teacher_student_profile_tab_panel.html'
     page_fragment_template_name = 'portals/includes/teacher_student_profile_page.html'
 
-    def _build_context(self, request, profile, student, tab):
-        from portals.utils.ielts_mock_test import (
-            get_student_completed_mock_attempts,
-            serialize_mock_attempt_summary,
-        )
+    def _build_profile_state(self, request, profile, student):
         from portals.utils.teacher_access import get_teacher_group
 
         student_pk = student.pk
-        quiz_results = get_teacher_student_quiz_results(profile.pk, student_pk)
-        scores = get_teacher_student_scores(profile.pk, student_pk)
         profile_groups = get_teacher_student_profile_groups(profile.pk, student_pk)
         back_url, back_label, from_group_id = resolve_teacher_student_profile_back(
             request, profile.pk, student_pk
@@ -369,15 +363,44 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
                 student_pk,
                 profile_active_group_id,
             )
-            if group_service_codes is not None:
-                quiz_results = filter_teacher_profile_rows_by_group(
-                    quiz_results,
-                    group_service_codes,
-                )
-                scores = filter_teacher_profile_rows_by_group(
-                    scores,
-                    group_service_codes,
-                )
+
+        return {
+            'student_pk': student_pk,
+            'profile_groups': profile_groups,
+            'profile_active_group_id': profile_active_group_id,
+            'profile_from_group_id': from_group_id,
+            'profile_back_url': back_url,
+            'profile_back_label': back_label,
+            'group_service_codes': group_service_codes,
+        }
+
+    def _build_context(self, request, profile, student, tab):
+        from portals.utils.ielts_mock_test import (
+            get_student_completed_mock_attempts,
+            serialize_mock_attempt_summary,
+        )
+
+        state = self._build_profile_state(request, profile, student)
+        student_pk = state['student_pk']
+        profile_groups = state['profile_groups']
+        profile_active_group_id = state['profile_active_group_id']
+        from_group_id = state['profile_from_group_id']
+        back_url = state['profile_back_url']
+        back_label = state['profile_back_label']
+        group_service_codes = state['group_service_codes']
+
+        quiz_results = get_teacher_student_quiz_results(profile.pk, student_pk)
+        scores = get_teacher_student_scores(profile.pk, student_pk)
+
+        if group_service_codes is not None:
+            quiz_results = filter_teacher_profile_rows_by_group(
+                quiz_results,
+                group_service_codes,
+            )
+            scores = filter_teacher_profile_rows_by_group(
+                scores,
+                group_service_codes,
+            )
 
         manual_quiz_results, auto_quiz_results = split_student_quiz_results(quiz_results)
         daily_score_history = group_scores_by_day(scores)
@@ -410,7 +433,6 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
             get_teacher_student_quiz_access_rows,
         )
         from portals.utils.ielts_mock_test import get_student_mock_exam_programs
-        from portals.utils.student_courses import student_has_course_access
 
         has_mock_exam = bool(get_student_mock_exam_programs(student_pk))
         mock_access_programs = get_teacher_student_mock_access_rows(profile.pk, student_pk)
@@ -480,6 +502,140 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
             quiz_access_count=quiz_access_count,
         )
 
+    def _build_tab_panel_context(self, request, profile, student, tab):
+        from portals.utils.ielts_mock_test import (
+            get_student_completed_mock_attempts,
+            serialize_mock_attempt_summary,
+        )
+
+        state = self._build_profile_state(request, profile, student)
+        student_pk = state['student_pk']
+        profile_groups = state['profile_groups']
+        profile_active_group_id = state['profile_active_group_id']
+        from_group_id = state['profile_from_group_id']
+        group_service_codes = state['group_service_codes']
+
+        if tab == 'weekly-scores':
+            weekly_scores = get_teacher_student_weekly_scores(profile.pk, student_pk)
+            if profile_active_group_id and len(profile_groups) > 1:
+                weekly_scores = [
+                    row for row in weekly_scores
+                    if row.get('study_group_id') == profile_active_group_id
+                ]
+            elif from_group_id:
+                weekly_scores = [
+                    row for row in weekly_scores
+                    if row.get('study_group_id') == from_group_id
+                ]
+            return _portal_context(
+                request,
+                student=serialize_student(student),
+                active_tab=tab,
+                weekly_scores=weekly_scores,
+            )
+
+        if tab == 'duration':
+            attendance_detail = get_teacher_student_attendance_detail(profile.pk, student_pk)
+            if profile_active_group_id and len(profile_groups) > 1:
+                attendance_detail = filter_attendance_detail_by_group(
+                    attendance_detail,
+                    profile_active_group_id,
+                )
+            return _portal_context(
+                request,
+                student=serialize_student(student),
+                active_tab=tab,
+                attendance_summary=attendance_detail['summary'] if attendance_detail else None,
+                attendance_records=attendance_detail['records'] if attendance_detail else [],
+            )
+
+        if tab == 'quiz-results':
+            quiz_results = get_teacher_student_quiz_results(profile.pk, student_pk)
+            if group_service_codes is not None:
+                quiz_results = filter_teacher_profile_rows_by_group(
+                    quiz_results,
+                    group_service_codes,
+                )
+            manual_quiz_results, auto_quiz_results = split_student_quiz_results(quiz_results)
+            return _portal_context(
+                request,
+                student=serialize_student(student),
+                active_tab=tab,
+                manual_quiz_results=manual_quiz_results,
+                auto_quiz_results=auto_quiz_results,
+            )
+
+        if tab == 'quiz-access':
+            from portals.utils.quiz_assignments import (
+                get_teacher_student_mock_access_rows,
+                get_teacher_student_quiz_access_rows,
+            )
+
+            quiz_access_categories = []
+            quiz_access_count = 0
+            try:
+                quiz_access_categories = get_teacher_student_quiz_access_rows(profile.pk, student_pk)
+                quiz_access_count = sum(len(cat.get('quizzes') or []) for cat in quiz_access_categories)
+            except Exception:
+                logging.getLogger('portals.quiz_assignments').exception(
+                    'Failed to build quiz access rows for teacher=%s student=%s',
+                    profile.pk,
+                    student_pk,
+                )
+                quiz_access_categories = []
+                quiz_access_count = 0
+
+            mock_access_programs = get_teacher_student_mock_access_rows(profile.pk, student_pk)
+            return _portal_context(
+                request,
+                student=serialize_student(student),
+                active_tab=tab,
+                quiz_access_categories=quiz_access_categories,
+                quiz_access_count=quiz_access_count,
+                mock_access_programs=mock_access_programs,
+            )
+
+        if tab == 'mock-results':
+            from portals.utils.ielts_mock_test import get_student_mock_exam_programs
+
+            has_mock_exam = bool(get_student_mock_exam_programs(student_pk))
+            if not has_mock_exam:
+                return _portal_context(
+                    request,
+                    student=serialize_student(student),
+                    active_tab='quiz-results',
+                )
+
+            mock_attempts = [
+                serialize_mock_attempt_summary(attempt)
+                for attempt in get_student_completed_mock_attempts(student_pk)
+            ]
+            if group_service_codes is not None:
+                mock_attempts = [
+                    attempt for attempt in mock_attempts
+                    if attempt.get('exam_program') in group_service_codes
+                ]
+            return _portal_context(
+                request,
+                student=serialize_student(student),
+                active_tab=tab,
+                mock_attempts=mock_attempts,
+            )
+
+        scores = get_teacher_student_scores(profile.pk, student_pk)
+        if group_service_codes is not None:
+            scores = filter_teacher_profile_rows_by_group(
+                scores,
+                group_service_codes,
+            )
+        daily_score_history = group_scores_by_day(scores)
+        return _portal_context(
+            request,
+            student=serialize_student(student),
+            active_tab=tab,
+            daily_score_history=daily_score_history,
+        )
+
     def get(self, request, student_pk):
         from portals.utils.student_courses import student_has_course_access
 
@@ -494,11 +650,17 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
 
         if tab == 'mock-results' and not get_student_mock_exam_programs(student_pk):
             tab = 'quiz-results'
-        context = self._build_context(request, profile, student, tab)
-        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            if request.headers.get('X-Profile-Fragment') == 'page':
-                return render(request, self.page_fragment_template_name, context)
+
+        is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+        if is_ajax and request.headers.get('X-Profile-Fragment') == 'page':
+            context = self._build_context(request, profile, student, tab)
+            return render(request, self.page_fragment_template_name, context)
+
+        if is_ajax:
+            context = self._build_tab_panel_context(request, profile, student, tab)
             return render(request, self.tab_panel_template_name, context)
+
+        context = self._build_context(request, profile, student, tab)
         return render(request, self.template_name, context)
 
 

@@ -1,6 +1,7 @@
 """Portal access, role isolation, and multi-group UI for each portal role."""
 
 from datetime import date
+from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
 from django.test import Client, RequestFactory, TestCase
@@ -236,6 +237,20 @@ class PortalRoleMultiGroupTests(PortalRoleFixtureMixin, TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'SAT group B')
         self.assertNotContains(response, 'IELTS group A')
+
+    def test_teacher_student_profile_tab_panel_request_skips_full_page_metrics(self):
+        client = Client()
+        portal_client_login(client, self.teacher_a.user)
+
+        with patch('portals.views.views_v1.build_student_performance_by_groups', side_effect=AssertionError('full page metrics should not run')):
+            response = client.get(
+                reverse('portals:teacher-student-profile', kwargs={'student_pk': self.student.pk}),
+                {'tab': 'quiz-results'},
+                HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+            )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'portal-student-empty')
 
     def test_student_scores_average_respects_active_group(self):
         from portals.tests.group_helpers import create_quiz_category
