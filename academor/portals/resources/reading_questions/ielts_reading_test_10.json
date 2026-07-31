@@ -131,7 +131,7 @@
           "order": 1,
           "title": "Questions 14–16",
           "instructions": "<p>Reading Passage 2 has six paragraphs.</p><p>Which paragraph contains the following information?</p><p><em>Write the correct letter, A–F.</em></p><p>You may use any letter more than once.</p>",
-          "question_type": "matching_paragraph_information",
+          "question_type": "matching_info",
           "option_pool": ["A", "B", "C", "D", "E", "F"],
           "questions": [
             {
@@ -221,7 +221,7 @@
         },
         {
           "order": 7,
-          "question_type": "mcq_multi",
+          "question_type": "mcq",
           "question": "<p>Questions 23 and 24: Which TWO comparisons between employees who often procrastinate and those who do not are mentioned in the text? (Answer 1 of 2)</p>",
           "answer_options": [
             "A. Their salaries are lower.",
@@ -234,7 +234,7 @@
         },
         {
           "order": 8,
-          "question_type": "mcq_multi",
+          "question_type": "mcq",
           "question": "<p>Questions 23 and 24: Which TWO comparisons between employees who often procrastinate and those who do not are mentioned in the text? (Answer 2 of 2)</p>",
           "answer_options": [
             "A. Their salaries are lower.",
@@ -247,7 +247,7 @@
         },
         {
           "order": 9,
-          "question_type": "mcq_multi",
+          "question_type": "mcq",
           "question": "<p>Questions 25 and 26: Which TWO recommendations for getting out of a cycle of procrastination does the writer give? (Answer 1 of 2)</p>",
           "answer_options": [
             "A. not judging ourselves harshly",
@@ -260,7 +260,7 @@
         },
         {
           "order": 10,
-          "question_type": "mcq_multi",
+          "question_type": "mcq",
           "question": "<p>Questions 25 and 26: Which TWO recommendations for getting out of a cycle of procrastination does the writer give? (Answer 2 of 2)</p>",
           "answer_options": [
             "A. not judging ourselves harshly",
