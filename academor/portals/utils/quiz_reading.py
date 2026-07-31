@@ -6,6 +6,7 @@ from portals.models import ReadingPassage, ReadingQuestion, Quiz
 from portals.models.reading_models import (
     CHOICE_QUESTION_TYPES,
     TEXT_QUESTION_TYPES,
+    matching_option_index,
     resolve_reading_question_options,
 )
 
@@ -58,8 +59,10 @@ def serialize_reading_question_group(group) -> dict:
         'title': group.title,
         'instructions': group.instructions,
         'question_type': group.question_type,
+        'group_type': group.question_type,
         'question_type_label': group.get_question_type_display(),
         'option_pool': group.pool_options,
+        'question_config': {},
         'order': group.order,
     }
 
@@ -69,8 +72,9 @@ def reading_correct_option_index(question: ReadingQuestion) -> int | None:
     if len(options) < 2:
         return None
     correct = (question.correct_answer or '').strip()
-    if correct and correct in options:
-        return options.index(correct)
+    index = matching_option_index(options, correct)
+    if index is not None:
+        return index
     index = question.correct_option_index
     if 0 <= index < len(options):
         return index
@@ -124,6 +128,17 @@ def reading_teacher_answer_matches(
         student_label = reading_student_answer_display(question, student_raw).strip()
         student_raw_text = str(student_raw or '').strip()
         options = question.variant_options
+        if matching_option_index(options, teacher) is not None:
+            teacher_index = matching_option_index(options, teacher)
+            if student_raw_text.isdigit():
+                index = int(student_raw_text)
+                if 0 <= index < len(options) and index == teacher_index:
+                    return True
+            if student_label and matching_option_index(options, student_label) == teacher_index:
+                return True
+            if student_raw_text and matching_option_index(options, student_raw_text) == teacher_index:
+                return True
+            return False
         teacher_norm = teacher.casefold()
         if student_label and student_label.casefold() == teacher_norm:
             return True

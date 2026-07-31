@@ -26,6 +26,8 @@ from .quiz_models import (
 )
 from .listening_models import ListeningAudio, ListeningQuestion
 from .reading_models import (
+    GROUP_QUESTION_TYPES,
+    MATCHING_QUESTION_TYPES,
     ReadingPassage,
     ReadingQuestion,
     ReadingQuestionGroup,
@@ -65,6 +67,8 @@ __all__ = [
     'QuizResult',
     'ListeningAudio',
     'ListeningQuestion',
+    'GROUP_QUESTION_TYPES',
+    'MATCHING_QUESTION_TYPES',
     'ReadingPassage',
     'ReadingQuestion',
     'ReadingQuestionGroup',

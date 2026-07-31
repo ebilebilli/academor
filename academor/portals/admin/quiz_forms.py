@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 
 from portals.models import ListeningQuestion, Quiz, QuizCategory, QuizQuestion
 from portals.models.reading_models import (
+    GROUP_QUESTION_TYPES,
     MATCHING_QUESTION_TYPES,
     ReadingQuestion,
     ReadingQuestionGroup,
@@ -284,14 +285,25 @@ class ReadingQuestionGroupAdminForm(forms.ModelForm):
         self.fields['question_type'].choices = [
             (value, label)
             for value, label in ReadingQuestionType.choices
-            if value in MATCHING_QUESTION_TYPES
+            if value in GROUP_QUESTION_TYPES
         ]
+        self.fields['option_pool'].required = False
         if self.instance and self.instance.pk:
             pool = self.instance.option_pool or []
             if isinstance(pool, list):
                 self.initial['option_pool'] = json.dumps(pool, ensure_ascii=False, indent=2)
 
+    def clean(self):
+        cleaned = super().clean()
+        question_type = cleaned.get('question_type')
+        if question_type not in MATCHING_QUESTION_TYPES:
+            cleaned['option_pool'] = []
+        return cleaned
+
     def clean_option_pool(self):
+        question_type = self.cleaned_data.get('question_type') or getattr(self.instance, 'question_type', None)
+        if question_type not in MATCHING_QUESTION_TYPES:
+            return []
         raw = self.cleaned_data.get('option_pool')
         if raw in (None, '', []):
             return []
