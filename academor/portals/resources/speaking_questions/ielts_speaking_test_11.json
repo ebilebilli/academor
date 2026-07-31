@@ -1,0 +1,49 @@
+{
+  "title": "Cambridge IELTS 20 Academic Speaking Test 3 (Online Test)",
+  "service": "ielts",
+  "category_name": "Speaking",
+  "parts": [
+    {
+      "order": 1,
+      "part_type": "part_1",
+      "title": "Part 1 — Introduction and interview",
+      "instructions": "<p>The examiner will ask general questions about yourself and a few familiar topics. Answer naturally and try to extend each answer with a reason or example. This part lasts 4–5 minutes.</p>",
+      "questions": [
+        { "order": 1, "question": "<p>Did you enjoy going to museums when you were a child?</p>" },
+        { "order": 2, "question": "<p>Are there any interesting museums near where you live now?</p>" },
+        { "order": 3, "question": "<p>Do you think it is best to go to museums by yourself or with friends?</p>" },
+        { "order": 4, "question": "<p>When you visit another city or country, do you think it's important to go to a museum there?</p>" }
+      ]
+    },
+    {
+      "order": 2,
+      "part_type": "part_2",
+      "title": "Part 2 — Individual long turn",
+      "instructions": "<p>You will be given a topic card. You have one minute to prepare and may make notes. Then speak for one to two minutes. Try to keep talking until the examiner stops you.</p>",
+      "cue_card_topic": "<p><strong>Describe a piece of work you did for your job or your studies that you felt very satisfied with.</strong></p>",
+      "cue_card_bullets": [
+        "what this piece of work was",
+        "why you did this piece of work",
+        "who or what helped you to do this work",
+        "and explain why you felt so satisfied with this piece of work"
+      ],
+      "questions": [
+        { "order": 1, "question": "" }
+      ]
+    },
+    {
+      "order": 3,
+      "part_type": "part_3",
+      "title": "Part 3 — Two-way discussion",
+      "instructions": "<p>The examiner will ask further questions connected to the Part 2 topic. These are more abstract and require you to explain, compare, and speculate. Try to give extended, well-reasoned answers. This part lasts 4–5 minutes.</p>",
+      "questions": [
+        { "order": 1, "question": "<p>What are some aspects of people's lives that they can often be dissatisfied with?</p>" },
+        { "order": 2, "question": "<p>Would you say that having ambitions in life is always a positive thing?</p>" },
+        { "order": 3, "question": "<p>What do you believe the most important components are of a satisfying life?</p>" },
+        { "order": 4, "question": "<p>What makes a job more satisfying: a high salary or having good colleagues?</p>" },
+        { "order": 5, "question": "<p>Do you think people need to change jobs regularly if they want to stay satisfied at work?</p>" },
+        { "order": 6, "question": "<p>Is it possible to find job satisfaction in all types of work?</p>" }
+      ]
+    }
+  ]
+}

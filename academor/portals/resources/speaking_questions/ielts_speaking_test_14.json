@@ -1,0 +1,49 @@
+{
+  "title": "Cambridge IELTS 19 Academic Speaking Test 4 (Online Test)",
+  "service": "ielts",
+  "category_name": "Speaking",
+  "parts": [
+    {
+      "order": 1,
+      "part_type": "part_1",
+      "title": "Part 1 — Introduction and interview",
+      "instructions": "<p>The examiner will ask general questions about yourself and a few familiar topics. Answer naturally and try to extend each answer with a reason or example. This part lasts 4–5 minutes.</p>",
+      "questions": [
+        { "order": 1, "question": "<p>Do you have a favourite cafe? [Why/Why not?]</p>" },
+        { "order": 2, "question": "<p>Do you often go to cafes by yourself? [Why/Why not?]</p>" },
+        { "order": 3, "question": "<p>What do you think helps to make a cafe very popular? [Why?]</p>" },
+        { "order": 4, "question": "<p>Why do some people prefer cafes that are part of large chains, rather than small, local cafes?</p>" }
+      ]
+    },
+    {
+      "order": 2,
+      "part_type": "part_2",
+      "title": "Part 2 — Individual long turn",
+      "instructions": "<p>You will be given a topic card. You have one minute to prepare and may make notes. Then speak for one to two minutes. Try to keep talking until the examiner stops you.</p>",
+      "cue_card_topic": "<p><strong>Describe a place you visited that has beautiful views.</strong></p>",
+      "cue_card_bullets": [
+        "where this place is",
+        "when and why you visited it",
+        "what views you can see from this place",
+        "and explain why you think these views are so beautiful"
+      ],
+      "questions": [
+        { "order": 1, "question": "" }
+      ]
+    },
+    {
+      "order": 3,
+      "part_type": "part_3",
+      "title": "Part 3 — Two-way discussion",
+      "instructions": "<p>The examiner will ask further questions connected to the Part 2 topic. These are more abstract and require you to explain, compare, and speculate. Try to give extended, well-reasoned answers. This part lasts 4–5 minutes.</p>",
+      "questions": [
+        { "order": 1, "question": "<p>Do you agree that most beauty products are a waste of money?</p>" },
+        { "order": 2, "question": "<p>How does the beauty industry advertise its products so successfully?</p>" },
+        { "order": 3, "question": "<p>What do you think of the view that beauty products should not be advertised to children?</p>" },
+        { "order": 4, "question": "<p>Why do many people equate youth with beauty?</p>" },
+        { "order": 5, "question": "<p>Do you think that being beautiful could affect a person's success in life?</p>" },
+        { "order": 6, "question": "<p>Why might society's ideas about beauty change over time?</p>" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "title": "Cambridge IELTS 19 Academic Speaking Test 3 (Online Test)",
+  "service": "ielts",
+  "category_name": "Speaking",
+  "parts": [
+    {
+      "order": 1,
+      "part_type": "part_1",
+      "title": "Part 1 — Introduction and interview",
+      "instructions": "<p>The examiner will ask general questions about yourself and a few familiar topics. Answer naturally and try to extend each answer with a reason or example. This part lasts 4–5 minutes.</p>",
+      "questions": [
+        { "order": 1, "question": "<p>Do you prefer spending holidays with friends or with family? [Why?]</p>" },
+        { "order": 2, "question": "<p>What kind of holiday accommodation do you like to stay in? [Why?]</p>" },
+        { "order": 3, "question": "<p>What plans do you have for your next holiday?</p>" },
+        { "order": 4, "question": "<p>Is your city or region a good place for other people to visit on holiday? [Why/Why not?]</p>" }
+      ]
+    },
+    {
+      "order": 2,
+      "part_type": "part_2",
+      "title": "Part 2 — Individual long turn",
+      "instructions": "<p>You will be given a topic card. You have one minute to prepare and may make notes. Then speak for one to two minutes. Try to keep talking until the examiner stops you.</p>",
+      "cue_card_topic": "<p><strong>Describe a car journey you made that took longer than expected.</strong></p>",
+      "cue_card_bullets": [
+        "where you were going",
+        "who you were with",
+        "how you felt during the journey",
+        "and explain why this car journey took longer than expected"
+      ],
+      "questions": [
+        { "order": 1, "question": "" }
+      ]
+    },
+    {
+      "order": 3,
+      "part_type": "part_3",
+      "title": "Part 3 — Two-way discussion",
+      "instructions": "<p>The examiner will ask further questions connected to the Part 2 topic. These are more abstract and require you to explain, compare, and speculate. Try to give extended, well-reasoned answers. This part lasts 4–5 minutes.</p>",
+      "questions": [
+        { "order": 1, "question": "<p>How interested are young people in your country in learning to drive?</p>" },
+        { "order": 2, "question": "<p>What are the differences between driving in the countryside and driving in the city?</p>" },
+        { "order": 3, "question": "<p>Do you consider most drivers where you live to be good drivers?</p>" },
+        { "order": 4, "question": "<p>How popular are electric cars in your country?</p>" },
+        { "order": 5, "question": "<p>In what ways could more people be persuaded to buy electric cars?</p>" },
+        { "order": 6, "question": "<p>Do you think all cars will be electric one day?</p>" }
+      ]
+    }
+  ]
+}

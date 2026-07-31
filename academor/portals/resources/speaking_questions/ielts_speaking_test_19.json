@@ -1,0 +1,49 @@
+{
+  "title": "Cambridge IELTS 18 Academic Speaking Test 3 (Online Test)",
+  "service": "ielts",
+  "category_name": "Speaking",
+  "parts": [
+    {
+      "order": 1,
+      "part_type": "part_1",
+      "title": "Part 1 — Introduction and interview",
+      "instructions": "<p>The examiner will ask general questions about yourself and a few familiar topics. Answer naturally and try to extend each answer with a reason or example. This part lasts 4–5 minutes.</p>",
+      "questions": [
+        { "order": 1, "question": "<p>How often do you buy things online? [Why?]</p>" },
+        { "order": 2, "question": "<p>What was the last thing you bought online?</p>" },
+        { "order": 3, "question": "<p>Do you ever see things in shops and then buy them online? [Why/Why not?]</p>" },
+        { "order": 4, "question": "<p>Do you think the popularity of online shopping is changing your town or city centre? [Why/Why not?]</p>" }
+      ]
+    },
+    {
+      "order": 2,
+      "part_type": "part_2",
+      "title": "Part 2 — Individual long turn",
+      "instructions": "<p>You will be given a topic card. You have one minute to prepare and may make notes. Then speak for one to two minutes. Try to keep talking until the examiner stops you.</p>",
+      "cue_card_topic": "<p><strong>Describe a time when you enjoyed visiting a member of your family in their home.</strong></p>",
+      "cue_card_bullets": [
+        "who you visited and where they lived",
+        "why you made this visit",
+        "what happened during this visit",
+        "and explain what you enjoyed about this visit"
+      ],
+      "questions": [
+        { "order": 1, "question": "" }
+      ]
+    },
+    {
+      "order": 3,
+      "part_type": "part_3",
+      "title": "Part 3 — Two-way discussion",
+      "instructions": "<p>The examiner will ask further questions connected to the Part 2 topic. These are more abstract and require you to explain, compare, and speculate. Try to give extended, well-reasoned answers. This part lasts 4–5 minutes.</p>",
+      "questions": [
+        { "order": 1, "question": "<p>When do families celebrate together in your country?</p>" },
+        { "order": 2, "question": "<p>How often do all the generations in a family come together in your country?</p>" },
+        { "order": 3, "question": "<p>Why is it that some people might not enjoy attending family occasions?</p>" },
+        { "order": 4, "question": "<p>Do you think it is a good thing for parents to help their children with schoolwork?</p>" },
+        { "order": 5, "question": "<p>How important do you think it is for families to eat together at least once a day?</p>" },
+        { "order": 6, "question": "<p>Do you believe that everyone in a family should share household tasks?</p>" }
+      ]
+    }
+  ]
+}

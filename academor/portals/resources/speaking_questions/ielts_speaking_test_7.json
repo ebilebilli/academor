@@ -1,0 +1,82 @@
+{
+  "title": "Cambridge IELTS 21 Academic Speaking Test 3 (Online Test)",
+  "service": "ielts",
+  "category_name": "Speaking",
+  "parts": [
+    {
+      "order": 1,
+      "part_type": "part_1",
+      "title": "Part 1 — Introduction and interview",
+      "instructions": "<p>The examiner will ask general questions about yourself and a few familiar topics. Answer naturally and try to extend each answer with a reason or example. This part lasts 4–5 minutes.</p>",
+      "questions": [
+        {
+          "order": 1,
+          "question": "<p>When you go shopping, do you usually pay for things by cash or by card?</p>"
+        },
+        {
+          "order": 2,
+          "question": "<p>Are you generally careful about how much money you spend?</p>"
+        },
+        {
+          "order": 3,
+          "question": "<p>Have you ever spent money on something you didn't need?</p>"
+        },
+        {
+          "order": 4,
+          "question": "<p>How important is it to you to save money for the future?</p>"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "part_type": "part_2",
+      "title": "Part 2 — Individual long turn",
+      "instructions": "<p>You will be given a topic card. You have one minute to prepare and may make notes. Then speak for one to two minutes. Try to keep talking until the examiner stops you.</p>",
+      "cue_card_topic": "<p><strong>Describe an interesting garden or park you have seen.</strong></p>",
+      "cue_card_bullets": [
+        "where this garden or park is",
+        "how big it is",
+        "what you saw in this garden/park",
+        "and explain why you think this garden/park is interesting"
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question": ""
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "part_type": "part_3",
+      "title": "Part 3 — Two-way discussion",
+      "instructions": "<p>The examiner will ask further questions connected to the Part 2 topic. These are more abstract and require you to explain, compare, and speculate. Try to give extended, well-reasoned answers. This part lasts 4–5 minutes.</p>",
+      "questions": [
+        {
+          "order": 1,
+          "question": "<p>What are the advantages of having a home with a garden?</p>"
+        },
+        {
+          "order": 2,
+          "question": "<p>How could people living in apartment blocks grow plants and vegetables?</p>"
+        },
+        {
+          "order": 3,
+          "question": "<p>How interested are people in your country in TV shows and magazines about gardens?</p>"
+        },
+        {
+          "order": 4,
+          "question": "<p>Do you think that gardening is a hobby mainly for older people?</p>"
+        },
+        {
+          "order": 5,
+          "question": "<p>What are the benefits for people of gardening as a hobby?</p>"
+        },
+        {
+          "order": 6,
+          "question": "<p>Will gardening be a more popular hobby in the future?</p>"
+        }
+      ]
+    }
+  ]
+}

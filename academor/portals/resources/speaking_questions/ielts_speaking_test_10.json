@@ -1,0 +1,49 @@
+{
+  "title": "Cambridge IELTS 20 Academic Speaking Test 4 (Online Test)",
+  "service": "ielts",
+  "category_name": "Speaking",
+  "parts": [
+    {
+      "order": 1,
+      "part_type": "part_1",
+      "title": "Part 1 — Introduction and interview",
+      "instructions": "<p>The examiner will ask general questions about yourself and a few familiar topics. Answer naturally and try to extend each answer with a reason or example. This part lasts 4–5 minutes.</p>",
+      "questions": [
+        { "order": 1, "question": "<p>What do you think your best personal qualities are? [Why?]</p>" },
+        { "order": 2, "question": "<p>Do you have the same personal qualities as your parents? [Why/Why not?]</p>" },
+        { "order": 3, "question": "<p>What personal qualities are important to you in a friend? [Why?]</p>" },
+        { "order": 4, "question": "<p>Do you think you have the personal qualities to be a good/successful leader? [Why/Why not?]</p>" }
+      ]
+    },
+    {
+      "order": 2,
+      "part_type": "part_2",
+      "title": "Part 2 — Individual long turn",
+      "instructions": "<p>You will be given a topic card. You have one minute to prepare and may make notes. Then speak for one to two minutes. Try to keep talking until the examiner stops you.</p>",
+      "cue_card_topic": "<p><strong>Describe a time when you had a long discussion about a news story.</strong></p>",
+      "cue_card_bullets": [
+        "what the news story was about",
+        "who you discussed this news story with",
+        "what people's opinions were",
+        "and explain why you had such a long discussion about this news story"
+      ],
+      "questions": [
+        { "order": 1, "question": "" }
+      ]
+    },
+    {
+      "order": 3,
+      "part_type": "part_3",
+      "title": "Part 3 — Two-way discussion",
+      "instructions": "<p>The examiner will ask further questions connected to the Part 2 topic. These are more abstract and require you to explain, compare, and speculate. Try to give extended, well-reasoned answers. This part lasts 4–5 minutes.</p>",
+      "questions": [
+        { "order": 1, "question": "<p>How do most people find out about the news in your country?</p>" },
+        { "order": 2, "question": "<p>Are people more interested in local news than national news?</p>" },
+        { "order": 3, "question": "<p>How important is it to know about international news?</p>" },
+        { "order": 4, "question": "<p>Why are discussion programmes involving members of the public popular on TV and radio?</p>" },
+        { "order": 5, "question": "<p>What kinds of people want to take part in discussion programmes?</p>" },
+        { "order": 6, "question": "<p>Do discussion programmes influence people in a good or bad way?</p>" }
+      ]
+    }
+  ]
+}
