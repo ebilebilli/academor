@@ -183,7 +183,7 @@
       "questions": [
         {
           "order": 7,
-          "question_type": "mcq_multi",
+          "question_type": "mcq",
           "question": "<p>Questions 20 and 21: Which TWO of these causes of damage to coral reefs are mentioned by the writer of the text? (Answer 1 of 2)</p>",
           "answer_options": [
             "A. a rising number of extreme storms",
@@ -196,7 +196,7 @@
         },
         {
           "order": 8,
-          "question_type": "mcq_multi",
+          "question_type": "mcq",
           "question": "<p>Questions 20 and 21: Which TWO of these causes of damage to coral reefs are mentioned by the writer of the text? (Answer 2 of 2)</p>",
           "answer_options": [
             "A. a rising number of extreme storms",
@@ -209,7 +209,7 @@
         },
         {
           "order": 9,
-          "question_type": "mcq_multi",
+          "question_type": "mcq",
           "question": "<p>Questions 22 and 23: Which TWO of the following statements are true of the researchers at London Zoo? (Answer 1 of 2)</p>",
           "answer_options": [
             "A. They are hoping to expand the numbers of different corals being bred in laboratories.",
@@ -222,7 +222,7 @@
         },
         {
           "order": 10,
-          "question_type": "mcq_multi",
+          "question_type": "mcq",
           "question": "<p>Questions 22 and 23: Which TWO of the following statements are true of the researchers at London Zoo? (Answer 2 of 2)</p>",
           "answer_options": [
             "A. They are hoping to expand the numbers of different corals being bred in laboratories.",
