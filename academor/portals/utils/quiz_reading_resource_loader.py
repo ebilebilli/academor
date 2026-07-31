@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 from django.db import transaction
+from django.core.exceptions import ValidationError
 
 from portals.models import Quiz
 from portals.models.reading_models import (
@@ -211,7 +212,16 @@ def _create_question(
         correct_answer=item['correct_answer'],
         question_config=item['question_config'],
     )
-    question.full_clean()
+    try:
+        question.full_clean()
+    except ValidationError as exc:
+        pool = group.pool_options if group else item['answer_options']
+        raise ValueError(
+            f"Passage {passage.title!r} (order={passage.order}), "
+            f"question order={item['order']}, type={item['question_type']!r}: "
+            f"correct_answer={item['correct_answer']!r} does not match options {pool!r}. "
+            f"Original error: {exc}"
+        ) from exc
     question.save()
     return question
 
