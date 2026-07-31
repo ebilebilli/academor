@@ -217,7 +217,7 @@
   max-width: min(var(--pl-stack-max), 100%);
   min-width: 0;
   flex: 0 0 auto;
-  padding: clamp(1.65rem, 2.8vw, 2.15rem);
+  padding: clamp(0.85rem, 1.5vw, 1.15rem);
   border-radius: calc(var(--pl-radius) + 0.1rem);
   background: #ffffff;
   border: 1px solid rgba(0, 49, 61, 0.1);
@@ -236,8 +236,8 @@
   box-sizing: border-box;
   width: 100%;
   min-width: 0;
-  margin: 1.5rem 0 0;
-  padding: 1.35rem 0 0;
+  margin: 0.85rem 0 0;
+  padding: 0.85rem 0 0;
   border: 0;
   border-top: 1px solid rgba(0, 49, 61, 0.1);
   border-radius: 0;
@@ -246,8 +246,8 @@
 }
 
 .portal-login-contact__title {
-  margin: 0 0 0.85rem;
-  font-size: 1.05rem;
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: -0.015em;
   line-height: 1.35;
@@ -256,29 +256,29 @@
 
 .portal-login-contact__list {
   list-style: none;
-  margin: 0 0 1rem;
+  margin: 0 0 0.5rem;
   padding: 0;
   display: grid;
-  gap: 0.65rem;
+  gap: 0.4rem;
 }
 
 .portal-login-contact__list li {
   display: flex;
   align-items: center;
-  gap: 0.7rem;
+  gap: 0.5rem;
   min-width: 0;
-  font-size: 1rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 1.3;
   color: var(--pl-primary);
 }
 
 .portal-login-contact__list i {
   flex-shrink: 0;
-  width: 1.2rem;
+  width: 1rem;
   text-align: center;
   color: var(--pl-accent);
-  font-size: 1.05rem;
+  font-size: 0.9rem;
 }
 
 .portal-login-contact__list a {
@@ -297,15 +297,15 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.45rem;
+  gap: 0.35rem;
   width: 100%;
-  min-height: 2.75rem;
-  margin-top: 0.35rem;
-  padding: 0.65rem 1.15rem;
+  min-height: 2rem;
+  margin-top: 0.25rem;
+  padding: 0.45rem 0.85rem;
   border: 1px solid var(--pl-border);
   border-radius: 0.85rem;
   background: #fff;
-  font-size: 0.95rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--pl-primary);
   text-decoration: none;
@@ -313,7 +313,7 @@
 }
 
 .portal-login-contact__cta i {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: var(--pl-accent);
   transition: transform 0.15s ease;
 }
@@ -333,12 +333,12 @@
 
 .portal-login-intro {
   flex-shrink: 0;
-  margin-bottom: 1.35rem;
+  margin-bottom: 0.65rem;
 }
 
 .portal-login-intro__title {
-  margin: 0 0 0.65rem;
-  font-size: clamp(2.15rem, 3.8vw, 2.85rem);
+  margin: 0 0 0.35rem;
+  font-size: clamp(1.25rem, 2.2vw, 1.6rem);
   font-weight: 800;
   letter-spacing: -0.045em;
   line-height: 1;
@@ -348,8 +348,8 @@
 .portal-login-intro__lead {
   margin: 0;
   max-width: 100%;
-  font-size: 1rem;
-  line-height: 1.55;
+  font-size: 0.85rem;
+  line-height: 1.4;
   color: var(--pl-muted);
   overflow-wrap: break-word;
   word-break: normal;
@@ -357,12 +357,12 @@
 }
 
 .portal-login-card__header {
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.85rem;
 }
 
 .portal-login-card__title {
   margin: 0;
-  font-size: clamp(1.35rem, 2.2vw, 1.6rem);
+  font-size: clamp(1.1rem, 1.8vw, 1.35rem);
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--pl-primary);
@@ -385,28 +385,28 @@
    -------------------------------------------------------------------------- */
 
 .portal-login-page .portal-login-form .form-label {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.01em;
   color: var(--pl-primary);
-  margin-bottom: 0.55rem;
+  margin-bottom: 0.35rem;
 }
 
 .portal-login-page .portal-login-form .mb-3 {
-  margin-bottom: 1.15rem !important;
+  margin-bottom: 0.65rem !important;
 }
 
 .portal-login-page .portal-login-form .mb-4 {
-  margin-bottom: 1.65rem !important;
+  margin-bottom: 0.85rem !important;
 }
 
 .portal-login-page .portal-login-form .form-control {
-  min-height: 3.5rem;
+  min-height: 2.5rem;
   border-radius: 0.95rem;
   border: 1px solid var(--pl-border);
   background: #fff;
-  font-size: 1.0625rem;
-  padding: 0.85rem 1.1rem;
+  font-size: 0.9rem;
+  padding: 0.5rem 0.85rem;
   color: var(--pl-primary);
   transition: border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
 }
@@ -418,7 +418,7 @@
 
 .portal-login-password__input {
   width: 100%;
-  padding-right: 3.25rem !important;
+  padding-right: 2.5rem !important;
 }
 
 /* Edge/IE native reveal sits on the right and blocks our button */
@@ -430,14 +430,14 @@
 .portal-login-password__toggle {
   position: absolute;
   top: 50%;
-  right: 0.45rem;
+  right: 0.35rem;
   z-index: 2;
   transform: translateY(-50%);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.65rem;
-  height: 2.65rem;
+  width: 2rem;
+  height: 2rem;
   margin: 0;
   padding: 0;
   border: 0;
@@ -475,12 +475,12 @@
 }
 
 .portal-login-page .portal-login-form__submit {
-  min-height: 3.55rem;
-  margin-top: 0.35rem;
+  min-height: 2.5rem;
+  margin-top: 0.2rem;
   border: none !important;
   border-radius: 999px !important;
   font-weight: 700;
-  font-size: 1.05rem;
+  font-size: 0.9rem;
   letter-spacing: 0.02em;
   background: var(--pl-accent) !important;
   color: #fff !important;
@@ -533,9 +533,9 @@
     grid-template-columns: minmax(0, 1fr);
     max-width: 100%;
     min-height: calc(100dvh - var(--pl-nav-h));
-    padding: 1rem 1.35rem 2rem;
+    padding: 0.75rem 1rem 1.5rem;
     column-gap: 0;
-    row-gap: 1.15rem;
+    row-gap: 0.85rem;
     align-content: center;
   }
 
@@ -608,12 +608,12 @@
   }
 
   .portal-login-intro {
-    margin-bottom: 1.15rem;
+    margin-bottom: 0.65rem;
     text-align: center;
   }
 
   .portal-login-intro__title {
-    font-size: clamp(2rem, 8vw, 2.5rem);
+    font-size: clamp(1.2rem, 5vw, 1.5rem);
     line-height: 1.05;
   }
 
@@ -630,27 +630,27 @@
 
 @media (max-width: 575.98px) {
   .portal-login-shell {
-    padding: 1.1rem 1.15rem 2rem;
+    padding: 0.85rem 0.75rem 1.5rem;
   }
 
   .portal-login-words__rails {
-    height: 6.75rem;
+    height: 4.5rem;
   }
 
   .portal-login-words__track {
-    gap: 0.75rem;
+    gap: 0.5rem;
   }
 
   .portal-login-words__track span {
-    font-size: clamp(1rem, 8cqi, 1.3rem);
+    font-size: clamp(0.9rem, 7cqi, 1.1rem);
   }
 
   .portal-login-card {
-    padding: 1.4rem 1.15rem;
+    padding: 0.9rem 0.75rem;
   }
 
   .portal-login-intro__lead {
-    font-size: 0.95rem;
+    font-size: 0.8rem;
   }
 }
 

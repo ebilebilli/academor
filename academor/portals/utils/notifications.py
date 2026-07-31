@@ -549,6 +549,7 @@ def _notification_queryset(
         'ielts_mock_test__customer__user',
         'weekly_student_score__student__user',
         'weekly_student_score__teacher__user',
+        'offer_notification',
     ).order_by('-created_at', '-id')
     if teacher_id:
         qs = qs.filter(teacher_id=teacher_id)
@@ -633,6 +634,25 @@ def _score_detail_url(*, role: str, result_pk: int) -> str:
 
 
 def serialize_notification(row: PortalNotification, *, role: str) -> dict:
+    if row.kind == PortalNotification.Kind.OFFER_NOTIFICATION and row.offer_notification_id:
+        return {
+            'id': row.pk,
+            'kind': row.kind,
+            'is_offer_notification': True,
+            'is_read': row.is_read,
+            'created_at': row.created_at,
+            'offer_notification_description': row.offer_notification.description,
+            'quiz_topic': row.offer_notification.name,
+            'student_name': 'Academor Training and Development Center',
+            'grading_mode_label': '',
+            'total_score': None,
+            'max_value': None,
+            'score_detail_url': reverse('portals:offer-notification-detail', kwargs={'pk': row.offer_notification.pk}),
+            'review_url': '',
+            'mark_read_url': reverse('portals:notification-mark-read', kwargs={'pk': row.pk}),
+            'delete_url': reverse('portals:notification-delete', kwargs={'pk': row.pk}),
+        }
+
     if row.kind == PortalNotification.Kind.WEEKLY_SCORE_PUBLISHED and row.weekly_student_score_id:
         return _serialize_weekly_score_notification(row, role=role)
 
@@ -823,6 +843,7 @@ def get_notifications(
             'lesson_homework__student__user',
             'lesson_homework__lesson',
             'lesson_homework__lesson__group',
+            'offer_notification',
         ).order_by('-created_at', '-id')
     elif customer_id:
         role = 'customer'

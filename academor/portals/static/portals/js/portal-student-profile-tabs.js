@@ -2,6 +2,9 @@
   "use strict";
 
   var profileClickBound = false;
+  var tabCache = {};
+  var cacheTimestamps = {};
+  var CACHE_TTL = 5 * 60 * 1000; // 5 minutes in milliseconds
 
   function tabFromUrl() {
     var params = new URLSearchParams(window.location.search);
@@ -38,6 +41,14 @@
       params.delete("from_group");
     }
     return window.location.pathname + "?" + params.toString();
+  }
+
+  function isCacheValid(cacheKey) {
+    if (!cacheTimestamps[cacheKey]) {
+      return false;
+    }
+    var now = Date.now();
+    return (now - cacheTimestamps[cacheKey]) < CACHE_TTL;
   }
 
   function afterPanelLoaded(panel, tab) {
@@ -77,6 +88,23 @@
     panel.classList.add("is-loading");
 
     var url = buildProfileUrl(shell, tab);
+    var cacheKey = url;
+
+    if (tabCache[cacheKey] && isCacheValid(cacheKey) && !options.forceReload) {
+      panel.innerHTML = tabCache[cacheKey];
+      if (pushState !== false) {
+        window.history.pushState(
+          {
+            studentProfileTab: tab,
+            url: url,
+          },
+          "",
+          url
+        );
+      }
+      afterPanelLoaded(panel, tab);
+      return Promise.resolve();
+    }
 
     return fetch(url, {
       method: "GET",
@@ -93,6 +121,8 @@
         return response.text();
       })
       .then(function (html) {
+        tabCache[cacheKey] = html;
+        cacheTimestamps[cacheKey] = Date.now();
         panel.innerHTML = html;
         if (pushState !== false) {
           window.history.pushState(
@@ -121,6 +151,7 @@
       return Promise.resolve();
     }
 
+    tabCache = {};
     var tab = tabFromUrl();
     var url = buildProfileUrl(shell, tab, groupId);
     page.setAttribute("aria-busy", "true");

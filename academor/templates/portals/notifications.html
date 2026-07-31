@@ -22,11 +22,13 @@
     data-notification-id="{{ item.id }}"
   >
     <div class="notif-item__icon-wrap">
-      <span class="notif-item__icon{% if item.is_mock_notification %} notif-item__icon--mock{% elif item.is_homework_submitted %} notif-item__icon--homework{% endif %}">
+      <span class="notif-item__icon{% if item.is_mock_notification %} notif-item__icon--mock{% elif item.is_homework_submitted %} notif-item__icon--homework{% elif item.is_offer_notification %} notif-item__icon--offer{% endif %}">
         {% if item.is_mock_notification %}
         <i class="ti ti-clipboard-list" aria-hidden="true"></i>
         {% elif item.is_homework_submitted %}
         <i class="ti ti-notebook" aria-hidden="true"></i>
+        {% elif item.is_offer_notification %}
+        <img src="/static/portals/img/new_logo.webp" alt="Academor" class="notif-item__icon--academor-logo">
         {% else %}
         <i class="ti ti-star" aria-hidden="true"></i>
         {% endif %}
@@ -39,7 +41,7 @@
     <a class="notif-item__body" href="{% if item.is_submission_pending and item.review_url %}{{ item.review_url }}{% else %}{{ item.score_detail_url }}{% endif %}">
       <div class="notif-item__head">
         <h2 class="notif-item__title">{{ item.quiz_topic }}</h2>
-        <time class="notif-item__time">{{ item.created_at|portal_datetime }}</time>
+        <time class="notif-item__time">{{ item.created_at|portal_datetime_relative }}</time>
       </div>
       <p class="notif-item__desc">
         {% if item.is_mock_section_review %}
@@ -75,10 +77,12 @@
           {% else %}
             {% blocktrans with name=item.student_name teacher=item.teacher_name week=item.week_label %}{{ name }} — weekly score from {{ teacher }} for {{ week }}{% endblocktrans %}
           {% endif %}
+        {% elif item.is_offer_notification %}
+          {{ item.offer_notification_description }}
         {% else %}
           {% blocktrans with name=item.student_name %}{{ name }} — result published{% endblocktrans %}
         {% endif %}
-        {% if not item.is_weekly_score and not item.is_homework_submitted %} · {{ item.grading_mode_label }}{% endif %}
+        {% if not item.is_weekly_score and not item.is_homework_submitted and not item.is_offer_notification %} · {{ item.grading_mode_label }}{% endif %}
       </p>
       {% if item.is_mock_section_review or item.is_mock_test_completed or item.is_mock_test_results %}
         <span class="ds-badge ds-badge--info">{% trans 'IELTS Mock Test' %}</span>
@@ -86,7 +90,7 @@
         <span class="ds-badge ds-badge--info">{% trans 'Ev tapşırığı' %}</span>
       {% elif item.is_submission_pending %}
         <span class="ds-badge ds-badge--warning">{% trans 'Yoxlama gözləyir' %}</span>
-      {% else %}
+      {% elif not item.is_offer_notification %}
         <span class="notif-item__score">
           {% if item.is_mock_test_results %}
             {% trans 'Band' %}: {{ item.total_score|format_quiz_score }}/{{ item.max_value|format_quiz_score }}

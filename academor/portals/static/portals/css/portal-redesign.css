@@ -1692,6 +1692,39 @@ a.t-stat:hover { color: var(--color-text); }
 .t-student-hero__meta span { display: flex; align-items: center; gap: 4px; }
 .t-student-hero__actions { display: flex; flex-wrap: wrap; gap: var(--space-2); align-self: flex-start; }
 
+@media (max-width: 768px) {
+  .t-student-hero {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+    padding: var(--space-4);
+  }
+
+  .t-student-hero__avatar {
+    width: 60px;
+    height: 60px;
+  }
+
+  .t-student-hero__info {
+    width: 100%;
+  }
+
+  .t-student-hero__actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .t-student-hero__actions .ds-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .t-student-hero__meta {
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+}
+
 /* Teacher student profile tabs
    Override legacy style.css grid (3-col) which broke 5–6 tabs. */
 .portal-student-tab-shell {
@@ -2371,6 +2404,27 @@ tr.is-quiz-locked td {
   align-items: center;
   justify-content: center;
   font-size: 18px;
+}
+.notif-item__icon--offer {
+  background: #ffffff;
+  color: #00313d;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.notif-item__icon--academor-logo {
+  width: 138px;
+  height: 46px;
+  object-fit: contain;
+}
+.notif-item__icon--mock {
+  background: #dbeafe;
+  color: #2563eb;
+}
+.notif-item__icon--homework {
+  background: #f3e8ff;
+  color: #9333ea;
 }
 .notif-item__dot {
   position: absolute;

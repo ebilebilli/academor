@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 
 from portals.models.quiz_models import Quiz
+from projects.models.service_models import Service
 
 
 class QuizResultReview(models.Model):
@@ -54,6 +55,7 @@ class PortalNotification(models.Model):
         MOCK_TEST_RESULTS_PUBLISHED = 'mock_test_results_published', _('IELTS mock test results published')
         WEEKLY_SCORE_PUBLISHED = 'weekly_score_published', _('Weekly score published')
         HOMEWORK_SUBMITTED = 'homework_submitted', _('Homework submitted')
+        OFFER_NOTIFICATION = 'offer_notification', _('Offer notification')
 
     teacher = models.ForeignKey(
         'TeacherProfile',
@@ -119,6 +121,14 @@ class PortalNotification(models.Model):
         related_name='notifications',
         verbose_name=_('Lesson homework'),
     )
+    offer_notification = models.ForeignKey(
+        'OfferNotification',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='notifications',
+        verbose_name=_('Offer notification'),
+    )
     kind = models.CharField(
         max_length=32,
         choices=Kind.choices,
@@ -148,6 +158,7 @@ class PortalNotification(models.Model):
                     | Q(ielts_mock_test__isnull=False)
                     | Q(weekly_student_score__isnull=False)
                     | Q(lesson_homework__isnull=False)
+                    | Q(offer_notification__isnull=False)
                 ),
                 name='portals_notification_has_target',
             ),
@@ -191,6 +202,16 @@ class PortalNotification(models.Model):
                 condition=Q(customer__isnull=False, ielts_mock_test__isnull=False),
                 name='portals_notification_customer_mock_unique',
             ),
+            models.UniqueConstraint(
+                fields=('student', 'offer_notification'),
+                condition=Q(student__isnull=False, offer_notification__isnull=False),
+                name='portals_notification_student_offer_unique',
+            ),
+            models.UniqueConstraint(
+                fields=('parent', 'offer_notification'),
+                condition=Q(parent__isnull=False, offer_notification__isnull=False),
+                name='portals_notification_parent_offer_unique',
+            ),
         ]
         indexes = [
             models.Index(fields=['teacher', 'is_read', '-created_at']),
@@ -206,5 +227,101 @@ class PortalNotification(models.Model):
             or self.ielts_mock_test_id
             or self.weekly_student_score_id
             or self.lesson_homework_id
+            or self.offer_notification_id
         )
         return f'{recipient} — {self.get_kind_display()} ({target})'
+
+
+class OfferNotification(models.Model):
+    """Admin-created offer notifications for students and parents."""
+
+    class TargetRole(models.TextChoices):
+        STUDENT = 'student', _('Student')
+        PARENT = 'parent', _('Parent')
+        ALL = 'all', _('All students and parents')
+
+    name = models.CharField(
+        max_length=200,
+        verbose_name=_('Name'),
+    )
+    description = models.TextField(
+        verbose_name=_('Description'),
+    )
+    target_role = models.CharField(
+        max_length=16,
+        choices=TargetRole.choices,
+        default=TargetRole.ALL,
+        verbose_name=_('Target role'),
+    )
+    services = models.ManyToManyField(
+        'projects.Service',
+        blank=True,
+        related_name='offer_notifications',
+        verbose_name=_('Services'),
+        help_text=_('Leave empty to send to all services'),
+    )
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created at'))
+    is_active = models.BooleanField(default=True, verbose_name=_('Active'))
+
+    class Meta:
+        verbose_name = _('Offer notification')
+        verbose_name_plural = _('Offer notifications')
+        ordering = ('-created_at', '-id')
+
+    def __str__(self):
+        return self.name
+
+
+class OfferNotificationDelivery(models.Model):
+    """Delivery record for offer notifications to specific users."""
+
+    offer_notification = models.ForeignKey(
+        'OfferNotification',
+        on_delete=models.CASCADE,
+        related_name='deliveries',
+        verbose_name=_('Offer notification'),
+    )
+    student = models.ForeignKey(
+        'StudentProfile',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='offer_notification_deliveries',
+        verbose_name=_('Student'),
+    )
+    parent = models.ForeignKey(
+        'ParentProfile',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='offer_notification_deliveries',
+        verbose_name=_('Parent'),
+    )
+    portal_notification = models.ForeignKey(
+        PortalNotification,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='offer_delivery',
+        verbose_name=_('Portal notification'),
+    )
+    is_sent = models.BooleanField(default=False, verbose_name=_('Sent'))
+    sent_at = models.DateTimeField(null=True, blank=True, verbose_name=_('Sent at'))
+
+    class Meta:
+        verbose_name = _('Offer notification delivery')
+        verbose_name_plural = _('Offer notification deliveries')
+        ordering = ('-sent_at', '-id')
+        constraints = [
+            models.CheckConstraint(
+                condition=(
+                    Q(student__isnull=False, parent__isnull=True)
+                    | Q(student__isnull=True, parent__isnull=False)
+                ),
+                name='portals_offer_notification_delivery_single_recipient',
+            ),
+        ]
+
+    def __str__(self):
+        recipient = self.student or self.parent
+        return f'{self.offer_notification.name} → {recipient}'

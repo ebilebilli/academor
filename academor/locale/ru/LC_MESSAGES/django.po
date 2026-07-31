@@ -10588,6 +10588,39 @@ msgstr "Слабо"
 #~ msgid "Invalid JSON format."
 #~ msgstr "Неверный формат JSON."
 
+#: academor/portals/templatetags/portal_tags.py
+msgid "Just now"
+msgstr "Только что"
+
+#: academor/portals/templatetags/portal_tags.py
+#, python-format
+msgid "1 minute ago"
+msgstr "1 минуту назад"
+
+#: academor/portals/templatetags/portal_tags.py
+#, python-format
+msgid "%(minutes)s minutes ago"
+msgstr "%(minutes)s минут назад"
+
+#: academor/portals/templatetags/portal_tags.py
+#, python-format
+msgid "1 hour ago"
+msgstr "1 час назад"
+
+#: academor/portals/templatetags/portal_tags.py
+#, python-format
+msgid "%(hours)s hours ago"
+msgstr "%(hours)s часов назад"
+
+#: academor/portals/templatetags/portal_tags.py
+msgid "Yesterday"
+msgstr "Вчера"
+
+#: academor/portals/templatetags/portal_tags.py
+#, python-format
+msgid "%(days)s days ago"
+msgstr "%(days)s дней назад"
+
 #~ msgid "Answer options must be a non-empty JSON list."
 #~ msgstr "Варианты ответов должны быть непустым JSON-списком."
 

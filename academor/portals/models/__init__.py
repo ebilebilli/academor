@@ -40,7 +40,7 @@ from .speaking_models import (
     SpeakingRecording,
 )
 from .ielts_mock_models import IeltsMockTestAttempt, MockTestAttempt, StudentMockAccess
-from .notification_models import PortalNotification, QuizResultReview
+from .notification_models import PortalNotification, QuizResultReview, OfferNotification, OfferNotificationDelivery
 
 __all__ = [
     'CustomerProfile',
@@ -81,4 +81,6 @@ __all__ = [
     'StudentMockAccess',
     'PortalNotification',
     'QuizResultReview',
+    'OfferNotification',
+    'OfferNotificationDelivery',
 ]

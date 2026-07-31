@@ -2225,7 +2225,7 @@ msgstr "Dərslik"
 #, python-format
 #| msgid "Textbooks"
 msgid "Textbook %(pk)s"
-msgstr "Dərslik"
+msgstr "Dərslik %(pk)s"
 
 #: academor/portals/models/lesson_models.py:241
 #: academor/portals/models/listening_models.py:24
@@ -2295,7 +2295,7 @@ msgstr "Dinləmə təcrübəsi"
 #, python-format
 #| msgid "Listening practice"
 msgid "Listening audio %(pk)s"
-msgstr "Dinləmə təcrübəsi"
+msgstr "Dinləmə audio %(pk)s"
 
 #: academor/portals/models/listening_models.py:58
 #| msgid ""
@@ -2373,7 +2373,7 @@ msgstr "Müzakirə sualları"
 #, python-format
 #| msgid "Question %(pk)s"
 msgid "Question %(order)s"
-msgstr "Sual %(pk)s"
+msgstr "Sual %(order)s"
 
 #: academor/portals/models/notification_models.py:13
 #: academor/portals/models/notification_models.py:78
@@ -2895,7 +2895,7 @@ msgstr "Oxu mətnləri"
 #, python-format
 #| msgid "Reading passages"
 msgid "Reading passage %(pk)s"
-msgstr "Oxu mətnləri"
+msgstr "Oxu mətni %(pk)s"
 
 #: academor/portals/models/reading_models.py:118
 #| msgid "Enter the question text."
@@ -3210,7 +3210,7 @@ msgstr "Danışıq bölməsi"
 #, python-format
 #| msgid "Speaking part"
 msgid "Speaking part %(pk)s"
-msgstr "Danışıq bölməsi"
+msgstr "Danışıq bölməsi %(pk)s"
 
 #: academor/portals/models/speaking_models.py:104
 #| msgid "Enter at least one answer option."
@@ -3260,7 +3260,7 @@ msgstr "Video yazıları"
 #, python-format
 #| msgid "Answer choices for question %(n)s"
 msgid "Recording for question %(pk)s"
-msgstr "%(n)s sualı üçün cavab variantları"
+msgstr "%(pk)s sualı üçün yazı"
 
 #: academor/portals/quiz/queries.py:72 academor/portals/utils/queries.py:302
 #: academor/portals/utils/queries.py:745
@@ -3384,7 +3384,7 @@ msgstr ""
 #, python-format
 #| msgid "No quizzes available yet."
 msgid "Not enough quizzes are available for: %(sections)s."
-msgstr "Hələ quiz mövcud deyil."
+msgstr "%(sections)s üçün kifayət qədər quiz mövcud deyil."
 
 #: academor/portals/utils/ielts_mock_test.py:232
 #| msgid "This quiz is not a reading task."
@@ -3446,7 +3446,7 @@ msgstr "Ödəniş tamamlandı"
 #, python-format
 #| msgid "completed attempts"
 msgid "IELTS mock test — review %(sections)s"
-msgstr "tamamlanmış cəhdlər"
+msgstr "IELTS mock test — %(sections)s yoxlama"
 
 #: academor/portals/utils/notifications.py:416
 #: academor/portals/utils/notifications.py:445
@@ -3463,7 +3463,7 @@ msgstr "IELTS Sınaq Testi"
 #, python-format
 #| msgid "completed attempts"
 msgid "IELTS Mock Test — %(section)s"
-msgstr "tamamlanmış cəhdlər"
+msgstr "IELTS Mock Test — %(section)s"
 
 #: academor/portals/utils/notifications.py:458
 #| msgid "Next question"
@@ -6009,9 +6009,11 @@ msgid_plural ""
 "              From %(counter)s graded quizzes, normalized across different scales.\n"
 "            "
 msgstr[0] ""
+"\n"
 "%(counter)s qiymətləndirilmiş quiz əsasında, müxtəlif miqyaslar "
 "normallaşdırılıb."
 msgstr[1] ""
+"\n"
 "%(counter)s qiymətləndirilmiş quiz əsasında, müxtəlif miqyaslar "
 "normallaşdırılıb."
 
@@ -6039,7 +6041,9 @@ msgid ""
 "\n"
 "              Present at %(present)s of %(total)s recorded sessions.\n"
 "            "
-msgstr "Qeydə alınmış %(total)s dərsdən %(present)s-ində iştirak edilib."
+msgstr ""
+"\n"
+"Qeydə alınmış %(total)s dərsdən %(present)s-ində iştirak edilib."
 
 #: academor/templates/portals/includes/profile_performance_showcase.html:87
 msgid "Attendance records will appear here once sessions are marked."
@@ -6240,13 +6244,13 @@ msgstr "Quizdə qal"
 #, python-format
 #| msgid "Question %(pk)s"
 msgid "Section %(num)s"
-msgstr "Sual %(pk)s"
+msgstr "Bölmə %(num)s"
 
 #: academor/templates/portals/includes/quiz_listening_section.html:18
 #, python-format
 #| msgid "Listening practice"
 msgid "Listening clip %(num)s"
-msgstr "Dinləmə təcrübəsi"
+msgstr "Dinləmə klipi %(num)s"
 
 #: academor/templates/portals/includes/quiz_listening_section.html:31
 msgid "This clip can only be played once."
@@ -6262,7 +6266,7 @@ msgstr "Bu quizdə sual yoxdur."
 #, python-format
 #| msgid "Question %(pk)s"
 msgid "Question %(num)s"
-msgstr "Sual %(pk)s"
+msgstr "Sual %(num)s"
 
 #: academor/templates/portals/includes/quiz_listening_section.html:55
 #: academor/templates/portals/includes/quiz_reading_section.html:40
@@ -6375,12 +6379,6 @@ msgstr "Bütün bölmələr tamamlandı."
 msgid "Section submitted"
 msgstr "Bölmə göndərildi"
 
-#: academor/templates/portals/includes/quiz_question_play.html:18
-#, python-format
-#| msgid "Answer choices for question %(n)s"
-msgid "Answer choices for question %%(n)s"
-msgstr "%(n)s sualı üçün cavab variantları"
-
 #: academor/templates/portals/includes/quiz_question_prompt.html:22
 #: academor/templates/portals/includes/quiz_question_prompt.html:29
 #: academor/templates/portals/includes/quiz_question_prompt.html:32
@@ -6407,13 +6405,13 @@ msgstr "%(n)s sualı üçün cavab variantları"
 #, python-format
 #| msgid "Parent: %(name)s"
 msgid "Passage %(num)s"
-msgstr "Valideyn: %(name)s"
+msgstr "Mətn %(num)s"
 
 #: academor/templates/portals/includes/quiz_reading_section.html:19
 #, python-format
 #| msgid "Reading passages"
 msgid "Reading passage %(num)s"
-msgstr "Oxu mətnləri"
+msgstr "Oxu mətni %(num)s"
 
 #: academor/templates/portals/includes/quiz_reading_section.html:51
 msgid "View passage"
@@ -7142,7 +7140,7 @@ msgstr "Oxunmamış"
 #, python-format
 #| msgid "%(name)s — awaiting review"
 msgid "%(name)s — mock test section awaiting review (%(section)s)"
-msgstr "%(name)s — yoxlama gözləyir"
+msgstr "%(name)s — mock test bölməsi yoxlama gözləyir (%(section)s)"
 
 #: academor/templates/portals/notifications.html:82
 #, python-format
@@ -7383,7 +7381,7 @@ msgstr "Tapşırıqlar"
 #, python-format
 #| msgid "Teacher: %(name)s"
 msgid "Task %(num)s"
-msgstr "Müəllim: %(name)s"
+msgstr "Tapşırıq %(num)s"
 
 #: academor/templates/portals/student/dashboard.html:11
 #: academor/templates/portals/teacher/dashboard.html:11
@@ -10858,6 +10856,39 @@ msgstr "Nəticələr"
 
 #~ msgid "submitted work for review"
 #~ msgstr "yoxlama üçün iş göndərdi"
+
+#: academor/portals/templatetags/portal_tags.py
+msgid "Just now"
+msgstr "İndi"
+
+#: academor/portals/templatetags/portal_tags.py
+#, python-format
+msgid "1 minute ago"
+msgstr "1 dəqiqə əvvəl"
+
+#: academor/portals/templatetags/portal_tags.py
+#, python-format
+msgid "%(minutes)s minutes ago"
+msgstr "%(minutes)s dəqiqə əvvəl"
+
+#: academor/portals/templatetags/portal_tags.py
+#, python-format
+msgid "1 hour ago"
+msgstr "1 saat əvvəl"
+
+#: academor/portals/templatetags/portal_tags.py
+#, python-format
+msgid "%(hours)s hours ago"
+msgstr "%(hours)s saat əvvəl"
+
+#: academor/portals/templatetags/portal_tags.py
+msgid "Yesterday"
+msgstr "Dünən"
+
+#: academor/portals/templatetags/portal_tags.py
+#, python-format
+msgid "%(days)s days ago"
+msgstr "%(days)s gün əvvəl"
 
 #~ msgid "%(name)s submitted work for review"
 #~ msgstr "%(name)s yoxlama üçün iş göndərdi"

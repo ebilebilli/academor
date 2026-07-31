@@ -5,8 +5,11 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.db.models import Count, Q
 from django.http import JsonResponse
 from django.urls import path, reverse
+from django.utils import timezone
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
+
+import portals.models
 
 from portals.admin.filters import (
     DateJoinedMonthFilter,
@@ -2198,6 +2201,106 @@ class PortalNotificationAdmin(PortalModelAdmin):
     )
     readonly_fields = ('created_at',)
     ordering = ('-created_at', '-id')
+
+
+@admin.register(portals.models.OfferNotification)
+class OfferNotificationAdmin(PortalModelAdmin):
+    list_display = ('name', 'target_role', 'is_active', 'created_at')
+    list_filter = ('target_role', 'is_active', 'services')
+    search_fields = ('name', 'description')
+    filter_horizontal = ('services',)
+    readonly_fields = ('created_at',)
+    ordering = ('-created_at', '-id')
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        if not change and obj.is_active:
+            self._send_notifications(obj)
+
+    def _send_notifications(self, offer_notification):
+        from portals.models.notification_models import OfferNotificationDelivery, PortalNotification
+        from portals.models import StudentProfile, ParentProfile
+
+        # Get students/parents based on target role and services
+        if offer_notification.target_role == offer_notification.TargetRole.STUDENT:
+            recipients = StudentProfile.objects.all()
+        elif offer_notification.target_role == offer_notification.TargetRole.PARENT:
+            recipients = ParentProfile.objects.all()
+        else:  # ALL
+            recipients_student = StudentProfile.objects.all()
+            recipients_parent = ParentProfile.objects.all()
+            recipients = list(recipients_student) + list(recipients_parent)
+
+        # Filter by services if specified
+        if offer_notification.services.exists():
+            service_ids = offer_notification.services.values_list('id', flat=True)
+            if offer_notification.target_role == offer_notification.TargetRole.STUDENT:
+                recipients = recipients.filter(
+                    studentcoursespecialization__course__services__in=service_ids
+                ).distinct()
+            elif offer_notification.target_role == offer_notification.TargetRole.PARENT:
+                child_ids = StudentProfile.objects.filter(
+                    studentcoursespecialization__course__services__in=service_ids
+                ).values_list('id', flat=True)
+                recipients = recipients.filter(child__id__in=child_ids).distinct()
+            else:  # ALL
+                recipients_student = recipients_student.filter(
+                    studentcoursespecialization__course__services__in=service_ids
+                ).distinct()
+                child_ids = recipients_student.values_list('id', flat=True)
+                recipients_parent = recipients_parent.filter(child__id__in=child_ids).distinct()
+                recipients = list(recipients_student) + list(recipients_parent)
+
+        # Create notifications for each recipient
+        for recipient in recipients:
+            delivery = OfferNotificationDelivery.objects.create(
+                offer_notification=offer_notification,
+                student=recipient if isinstance(recipient, StudentProfile) else None,
+                parent=recipient if isinstance(recipient, ParentProfile) else None,
+            )
+
+            # Create portal notification
+            portal_notification = PortalNotification.objects.create(
+                kind=PortalNotification.Kind.OFFER_NOTIFICATION,
+                offer_notification=offer_notification,
+                student=recipient if isinstance(recipient, StudentProfile) else None,
+                parent=recipient if isinstance(recipient, ParentProfile) else None,
+            )
+
+            delivery.portal_notification = portal_notification
+            delivery.is_sent = True
+            delivery.sent_at = timezone.now()
+            delivery.save()
+
+    actions = ['send_notifications']
+
+    @admin.action(description=_('Send notifications to recipients'))
+    def send_notifications(self, request, queryset):
+        count = 0
+        for offer_notification in queryset:
+            if offer_notification.is_active:
+                self._send_notifications(offer_notification)
+                count += 1
+
+        self.message_user(request, f'{count} offer notification(s) sent successfully.')
+
+
+@admin.register(portals.models.OfferNotificationDelivery)
+class OfferNotificationDeliveryAdmin(PortalModelAdmin):
+    list_display = ('offer_notification', 'student', 'parent', 'is_sent', 'sent_at')
+    list_filter = ('is_sent', 'offer_notification')
+    list_select_related = (
+        'offer_notification',
+        'student__user',
+        'parent__user',
+    )
+    search_fields = (
+        'offer_notification__name',
+        'student__user__username',
+        'parent__user__username',
+    )
+    readonly_fields = ('sent_at',)
+    ordering = ('-sent_at', '-id')
 
 
 @admin.register(QuizAssignment)

@@ -223,6 +223,46 @@
     position: static;
     order: -1;
   }
+
+  .portal-quiz-play-card {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  .portal-quiz-play-card__head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .portal-quiz-play-option {
+    padding: 0.85rem 0.75rem;
+    grid-template-columns: auto 1fr;
+    gap: 0.75rem;
+  }
+
+  .portal-quiz-play-option__letter {
+    min-width: 1.5rem;
+    height: 1.5rem;
+    font-size: 0.75rem;
+  }
+
+  .portal-quiz-play-option__text {
+    font-size: 0.95rem;
+  }
+
+  .portal-quiz-take-actions {
+    padding: 0.85rem 1rem;
+  }
+
+  .portal-quiz-take-actions .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .portal-quiz-take-actions .btn:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .portal-quiz-take-toolbar {

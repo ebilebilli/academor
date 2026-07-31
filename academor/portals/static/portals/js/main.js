@@ -279,7 +279,8 @@
 
     body.addEventListener("click", function (event) {
       var link = event.target.closest("#adminSidebar .sidebar-nav .nav-link");
-      if (link && !isDesktop()) {
+      var toggle = event.target.closest("[data-sidebar-toggle]");
+      if (link && !isDesktop() && !toggle) {
         closeMobileSidebar();
       }
     });

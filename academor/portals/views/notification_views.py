@@ -1,11 +1,11 @@
 from django.contrib import messages
 from django.http import Http404, JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.views import View
 
-from portals.models import PortalNotification
+from portals.models import PortalNotification, OfferNotification
 from portals.utils.notifications import (
     delete_notification,
     get_notifications,
@@ -425,3 +425,18 @@ class PortalBadgesView(PortalLoginRequiredMixin, View):
                 payload['unread'] = get_unread_notification_count(customer_id=profile.pk)
 
         return JsonResponse(payload)
+
+
+class OfferNotificationDetailView(PortalLoginRequiredMixin, View):
+    template_name = 'portals/offer_notification_detail.html'
+
+    def get(self, request, pk):
+        offer_notification = get_object_or_404(OfferNotification, pk=pk)
+        return render(
+            request,
+            self.template_name,
+            _portal_context(
+                request,
+                offer_notification=offer_notification,
+            ),
+        )

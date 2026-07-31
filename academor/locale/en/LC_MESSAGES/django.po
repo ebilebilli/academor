@@ -10589,6 +10589,39 @@ msgstr "Weak"
 #~ msgid "Read-only history for staff."
 #~ msgstr "Read-only history for staff."
 
+#: academor/portals/templatetags/portal_tags.py
+msgid "Just now"
+msgstr "Just now"
+
+#: academor/portals/templatetags/portal_tags.py
+#, python-format
+msgid "1 minute ago"
+msgstr "1 minute ago"
+
+#: academor/portals/templatetags/portal_tags.py
+#, python-format
+msgid "%(minutes)s minutes ago"
+msgstr "%(minutes)s minutes ago"
+
+#: academor/portals/templatetags/portal_tags.py
+#, python-format
+msgid "1 hour ago"
+msgstr "1 hour ago"
+
+#: academor/portals/templatetags/portal_tags.py
+#, python-format
+msgid "%(hours)s hours ago"
+msgstr "%(hours)s hours ago"
+
+#: academor/portals/templatetags/portal_tags.py
+msgid "Yesterday"
+msgstr "Yesterday"
+
+#: academor/portals/templatetags/portal_tags.py
+#, python-format
+msgid "%(days)s days ago"
+msgstr "%(days)s days ago"
+
 #~ msgid "Schedule slot actions"
 #~ msgstr "Schedule slot actions"
 

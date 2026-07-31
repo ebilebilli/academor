@@ -1,0 +1,24 @@
+{% extends "portals/base.html" %}
+{% load i18n static portal_tags %}
+
+{% block title %}{{ offer_notification.name }}{% endblock %}
+
+{% block content %}
+{% url 'portals:dashboard' as back_url %}
+{% include "portals/includes/portal_page_hero.html" with title=offer_notification.name icon="ti-gift" back_url=back_url show_back=True %}
+
+<section class="container py-5">
+  <div class="card shadow-sm">
+    <div class="card-body p-4">
+      <h2 class="h4 mb-3">{{ offer_notification.name }}</h2>
+      <p class="text-muted mb-4">{{ offer_notification.description|linebreaks }}</p>
+      
+      <div class="mb-3">
+        <small class="text-muted">
+          {% trans 'Sent by' %}: Academor Training and Development Center
+        </small>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

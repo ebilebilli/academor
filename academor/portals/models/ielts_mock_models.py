@@ -11,12 +11,12 @@ class IeltsMockTestAttempt(models.Model):
         ABANDONED = 'abandoned', _('Abandoned')
 
     class Section(models.TextChoices):
-        LISTENING = 'listening', _('Listening')
-        READING = 'reading', _('Reading')
-        WRITING = 'writing', _('Writing')
-        SPEAKING = 'speaking', _('Speaking')
-        READING_WRITING = 'reading_writing', _('Reading and Writing')
-        MATH = 'math', _('Math')
+        LISTENING = 'listening', 'Listening'
+        READING = 'reading', 'Reading'
+        WRITING = 'writing', 'Writing'
+        SPEAKING = 'speaking', 'Speaking'
+        READING_WRITING = 'reading_writing', 'Reading and Writing'
+        MATH = 'math', 'Math'
 
     SECTION_ORDER = (
         Section.LISTENING,

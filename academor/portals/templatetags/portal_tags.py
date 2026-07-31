@@ -86,7 +86,51 @@ def portal_datetime(value):
     if isinstance(value, datetime):
         dt = timezone.localtime(value) if timezone.is_aware(value) else value
         date_part = format_portal_calendar_day(dt.date(), include_year=True)
-        return f'{date_part} {dt.strftime("%H:%M")}'
+        time_part = dt.strftime("%H:%M")
+        return f'{date_part}, {time_part}'
+    return format_portal_calendar_day(value, include_year=True)
+
+
+@register.filter
+def portal_datetime_relative(value):
+    """Return relative time for recent notifications, otherwise full datetime."""
+    if not value:
+        return '—'
+    if isinstance(value, datetime):
+        dt = timezone.localtime(value) if timezone.is_aware(value) else value
+        now = timezone.localtime()
+        diff = now - dt
+        
+        # For very recent times (less than 1 minute)
+        if diff.total_seconds() < 60:
+            return gettext('Just now')
+        
+        # For less than 1 hour
+        if diff.total_seconds() < 3600:
+            minutes = int(diff.total_seconds() / 60)
+            if minutes == 1:
+                return gettext('1 minute ago')
+            return gettext('%(minutes)s minutes ago') % {'minutes': minutes}
+        
+        # For less than 24 hours
+        if diff.total_seconds() < 86400:
+            hours = int(diff.total_seconds() / 3600)
+            if hours == 1:
+                return gettext('1 hour ago')
+            return gettext('%(hours)s hours ago') % {'hours': hours}
+        
+        # For less than 7 days, show days
+        if diff.total_seconds() < 604800:
+            days = diff.days
+            if days == 1:
+                return gettext('Yesterday')
+            return gettext('%(days)s days ago') % {'days': days}
+        
+        # Otherwise show full date
+        date_part = format_portal_calendar_day(dt.date(), include_year=True)
+        time_part = dt.strftime("%H:%M")
+        return f'{date_part}, {time_part}'
+    
     return format_portal_calendar_day(value, include_year=True)
 
 

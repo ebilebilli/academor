@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="{% block meta_description %}{% trans 'Academor student portal' %}{% endblock %}">
   <title>{% block title %}{% trans 'Portal' %}{% endblock %} | {% trans 'Academor' %}</title>
+  <link rel="icon" type="image/webp" href="{% static 'portals/img/favicon.webp' %}">
   {# Preload critical fonts early (icons + text) #}
   <link rel="preload" href="{% static 'portals/fonts/inter/inter-400.woff2' %}" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{% static 'portals/vendors/tabler-icons/fonts/tabler-icons.woff2' %}" as="font" type="font/woff2" crossorigin>

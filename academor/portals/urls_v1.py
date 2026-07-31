@@ -21,6 +21,7 @@ from portals.views.notification_views import (
     NotificationDeleteView,
     NotificationMarkAllReadView,
     NotificationMarkReadView,
+    OfferNotificationDetailView,
     ParentNotificationsView,
     ParentScoreDetailView,
     PortalBadgesView,
@@ -133,6 +134,7 @@ urlpatterns = [
     path('notifications/<int:pk>/delete/', NotificationDeleteView.as_view(), name='notification-delete'),
     path('notifications/mark-all-read/', NotificationMarkAllReadView.as_view(), name='notification-mark-all-read'),
     path('badges/', PortalBadgesView.as_view(), name='portal-badges'),
+    path('offer-notifications/<int:pk>/', OfferNotificationDetailView.as_view(), name='offer-notification-detail'),
     path('', PortalDashboardView.as_view(), name='dashboard'),
 
     path('teacher/', TeacherDashboardView.as_view(), name='teacher-dashboard'),
