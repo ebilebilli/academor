@@ -16,6 +16,15 @@ from portals.models.reading_models import (
     ReadingQuestionType,
 )
 
+ALLOWED_GROUP_TYPES = {
+    *MATCHING_QUESTION_TYPES,
+    ReadingQuestionType.NOTE_COMPLETION,
+    ReadingQuestionType.SUMMARY_COMPLETION,
+    ReadingQuestionType.TABLE_COMPLETION,
+    ReadingQuestionType.FLOW_CHART_COMPLETION,
+    ReadingQuestionType.DIAGRAM_LABEL_COMPLETION,
+}
+
 RESOURCES_DIR = Path(__file__).resolve().parent.parent / 'resources' / 'reading_questions'
 
 DEFAULT_SERVICE = 'ielts'
@@ -62,7 +71,7 @@ def _normalize_question(raw: dict, *, context: str, default_order: int) -> dict:
 def _normalize_group(raw: dict, *, context: str, default_order: int) -> dict:
     order = int(raw.get('order') or default_order)
     question_type = _normalize_question_type(raw.get('question_type'), context=context)
-    if question_type not in MATCHING_QUESTION_TYPES:
+    if question_type not in ALLOWED_GROUP_TYPES:
         raise ValueError(f'{context}: question_type must be a matching task.')
 
     option_pool = [
