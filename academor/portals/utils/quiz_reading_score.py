@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 
 from portals.models import Quiz, ReadingQuestion
-from portals.models.reading_models import CHOICE_QUESTION_TYPES, TEXT_QUESTION_TYPES
+from portals.models.reading_models import CHOICE_QUESTION_TYPES, TEXT_QUESTION_TYPES, matching_option_index
 from portals.utils.quiz_reading import (
     get_reading_questions_for_quiz,
     reading_correct_option_index,
@@ -61,8 +61,10 @@ def _choice_answer_matches(question: ReadingQuestion, raw_value) -> bool:
         return int(str(raw_value).strip()) == correct_index
     options = resolve_question_options(question)
     submitted = str(raw_value or '').strip()
-    if submitted and submitted in options:
-        return options.index(submitted) == correct_index
+    if submitted:
+        submitted_index = matching_option_index(options, submitted)
+        if submitted_index is not None:
+            return submitted_index == correct_index
     return False
 
 

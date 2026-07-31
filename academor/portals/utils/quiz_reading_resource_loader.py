@@ -9,16 +9,24 @@ from django.db import transaction
 
 from portals.models import Quiz
 from portals.models.reading_models import (
+    GROUP_QUESTION_TYPES,
     MATCHING_QUESTION_TYPES,
     ReadingPassage,
     ReadingQuestion,
     ReadingQuestionGroup,
     ReadingQuestionType,
+    matching_option_index,
 )
 
 RESOURCES_DIR = Path(__file__).resolve().parent.parent / 'resources' / 'reading_questions'
 
 DEFAULT_SERVICE = 'ielts'
+QUESTION_TYPE_ALIASES = {
+    'matching_paragraph_information': ReadingQuestionType.MATCHING_INFO,
+    'mcq_multi': ReadingQuestionType.MCQ,
+    'flow_chart_completion': ReadingQuestionType.FLOWCHART_COMPLETION,
+    'flow-chart-completion': ReadingQuestionType.FLOWCHART_COMPLETION,
+}
 
 
 def _require_text(value, *, field: str, context: str) -> str:
@@ -30,6 +38,7 @@ def _require_text(value, *, field: str, context: str) -> str:
 
 def _normalize_question_type(raw: str, *, context: str) -> str:
     normalized = (raw or ReadingQuestionType.MCQ).strip()
+    normalized = QUESTION_TYPE_ALIASES.get(normalized, normalized)
     if normalized not in ReadingQuestionType.values:
         raise ValueError(f'{context}: unsupported question_type "{raw}".')
     return normalized
@@ -62,16 +71,19 @@ def _normalize_question(raw: dict, *, context: str, default_order: int) -> dict:
 def _normalize_group(raw: dict, *, context: str, default_order: int) -> dict:
     order = int(raw.get('order') or default_order)
     question_type = _normalize_question_type(raw.get('question_type'), context=context)
-    if question_type not in MATCHING_QUESTION_TYPES:
-        raise ValueError(f'{context}: question_type must be a matching task.')
+    if question_type not in GROUP_QUESTION_TYPES:
+        raise ValueError(f'{context}: unsupported group question_type.')
 
     option_pool = [
         str(item).strip()
         for item in (raw.get('option_pool') or [])
         if str(item).strip()
     ]
-    if len(option_pool) < 2:
-        raise ValueError(f'{context}: option_pool needs at least two items.')
+    if question_type in MATCHING_QUESTION_TYPES:
+        if len(option_pool) < 2:
+            raise ValueError(f'{context}: option_pool needs at least two items.')
+    else:
+        option_pool = []
 
     questions_raw = raw.get('questions') or []
     if not isinstance(questions_raw, list) or not questions_raw:
@@ -90,7 +102,7 @@ def _normalize_group(raw: dict, *, context: str, default_order: int) -> dict:
             raise ValueError(
                 f'{context}: group question type must match group question_type.',
             )
-        if item['correct_answer'] not in option_pool:
+        if question_type in MATCHING_QUESTION_TYPES and matching_option_index(option_pool, item['correct_answer']) is None:
             raise ValueError(
                 f'{context}: correct_answer must match an option in option_pool.',
             )

@@ -76,6 +76,16 @@ class QuizReadingTests(QuizVisibilityTests):
         self.assign_student_quizzes(quiz)
         return quiz
 
+    def test_flow_chart_completion_alias_is_accepted(self):
+        self.assertEqual(
+            ReadingQuestionType.FLOW_CHART_COMPLETION,
+            ReadingQuestionType.FLOWCHART_COMPLETION,
+        )
+        self.assertEqual(
+            ReadingQuestionType.FLOW_CHART_COMPLETION.value,
+            'flowchart_completion',
+        )
+
     def test_only_one_format_allowed_with_reading(self):
         quiz = Quiz(
             category=self.ielts_category,
@@ -362,6 +372,47 @@ class ReadingQuestionAdminFieldConfigTests(QuizReadingTests):
         self.assertEqual(question.correct_answer, 'smell')
         self.assertEqual(question.question_config['word_limit'], 1)
         self.assertEqual(question.question_config['accept_alternatives'], ['scent', 'odour'])
+
+    def test_group_question_type_supports_text_completion_groups(self):
+        quiz = self._create_reading_quiz()
+        passage = quiz.reading_passages.first()
+
+        group = ReadingQuestionGroup(
+            passage=passage,
+            order=1,
+            title='Notes',
+            question_type=ReadingQuestionType.NOTE_COMPLETION,
+            option_pool=['not', 'used'],
+        )
+        group.full_clean()
+        group.save()
+        self.assertEqual(group.option_pool, [])
+
+        group = ReadingQuestionGroup(
+            passage=passage,
+            order=2,
+            title='More notes',
+            question_type=ReadingQuestionType.NOTE_COMPLETION,
+            option_pool=[],
+        )
+        group.full_clean()
+        group.save()
+        self.assertEqual(group.option_pool, [])
+
+    def test_official_cambidge_resource_loader_accepts_group_aliases(self):
+        from pathlib import Path
+
+        from portals.utils.quiz_reading_resource_loader import parse_reading_resource_file
+
+        path = Path(__file__).resolve().parent.parent / 'resources' / 'reading_questions' / 'ielts_reading_test_11.json'
+        parsed = parse_reading_resource_file(path)
+        self.assertIn('passages', parsed)
+        group = next(
+            group for passage in parsed['passages'] for group in passage['question_groups']
+            if group['question_type'] == ReadingQuestionType.MATCHING_INFO
+        )
+        self.assertTrue(group['question_type'] == ReadingQuestionType.MATCHING_INFO)
+        self.assertTrue(group['option_pool'])
 
     def test_question_type_fields_admin_view(self):
         from django.contrib.auth import get_user_model

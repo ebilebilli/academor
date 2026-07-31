@@ -1,3 +1,5 @@
+import re
+
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.html import strip_tags
@@ -22,11 +24,22 @@ class ReadingQuestionType(models.TextChoices):
     MATCHING_SENTENCE_ENDINGS = 'matching_sentence_endings', _('Matching sentence endings')
 
 
+ReadingQuestionType.FLOW_CHART_COMPLETION = ReadingQuestionType.FLOWCHART_COMPLETION
+
 MATCHING_QUESTION_TYPES = frozenset({
     ReadingQuestionType.MATCHING_HEADINGS,
     ReadingQuestionType.MATCHING_INFO,
     ReadingQuestionType.MATCHING_FEATURES,
     ReadingQuestionType.MATCHING_SENTENCE_ENDINGS,
+})
+
+GROUP_QUESTION_TYPES = frozenset({
+    *MATCHING_QUESTION_TYPES,
+    ReadingQuestionType.NOTE_COMPLETION,
+    ReadingQuestionType.SUMMARY_COMPLETION,
+    ReadingQuestionType.TABLE_COMPLETION,
+    ReadingQuestionType.FLOWCHART_COMPLETION,
+    ReadingQuestionType.DIAGRAM_LABEL,
 })
 
 CHOICE_QUESTION_TYPES = frozenset({
@@ -48,6 +61,42 @@ TEXT_QUESTION_TYPES = frozenset({
 
 TFNG_OPTIONS = ['True', 'False', 'Not Given']
 YNNG_OPTIONS = ['Yes', 'No', 'Not Given']
+
+
+def _matching_option_variants(value) -> set[str]:
+    variants: set[str] = set()
+    text = str(value or '').strip()
+    if not text:
+        return variants
+    variants.add(text)
+    variants.add(text.casefold())
+    match = re.match(r'^([A-Za-z])\s*[\.)]\s*(.*)$', text)
+    if match:
+        letter = match.group(1).casefold()
+        variants.add(letter)
+        variants.add(match.group(1))
+        if match.group(2).strip():
+            variants.add(match.group(2).strip())
+            variants.add(match.group(2).strip().casefold())
+    plain_letter = re.match(r'^([A-Za-z])$', text)
+    if plain_letter:
+        variants.add(plain_letter.group(1).casefold())
+    return {item for item in variants if item}
+
+
+def matching_option_index(options: list[str], value) -> int | None:
+    answer = str(value or '').strip()
+    if not answer:
+        return None
+    answer_variants = _matching_option_variants(answer)
+    for index, option in enumerate(options):
+        option_text = str(option).strip()
+        if not option_text:
+            continue
+        option_variants = _matching_option_variants(option_text)
+        if answer_variants & option_variants:
+            return index
+    return None
 
 
 def resolve_reading_question_options(question: 'ReadingQuestion') -> list[str]:
@@ -171,14 +220,22 @@ class ReadingQuestionGroup(models.Model):
 
     def clean(self):
         super().clean()
+        if self.question_type not in GROUP_QUESTION_TYPES:
+            raise ValidationError(
+                {'question_type': _('Question group type must be a supported reading task.')},
+            )
+        if self.question_type in MATCHING_QUESTION_TYPES:
+            if len(self.pool_options) < 2:
+                raise ValidationError(
+                    {'option_pool': _('Add at least two options to the pool.')},
+                )
+            return
+        self.option_pool = []
+
+    def save(self, *args, **kwargs):
         if self.question_type not in MATCHING_QUESTION_TYPES:
-            raise ValidationError(
-                {'question_type': _('Question group type must be a matching task.')},
-            )
-        if len(self.pool_options) < 2:
-            raise ValidationError(
-                {'option_pool': _('Add at least two options to the pool.')},
-            )
+            self.option_pool = []
+        super().save(*args, **kwargs)
 
 
 class ReadingQuestion(models.Model):
@@ -292,11 +349,12 @@ class ReadingQuestion(models.Model):
             correct = (self.correct_answer or '').strip()
             if not correct:
                 raise ValidationError({'correct_answer': _('Enter the correct answer.')})
-            if correct not in options:
+            index = matching_option_index(options, correct)
+            if index is None:
                 raise ValidationError(
-                    {'correct_answer': _('Correct answer must exactly match one of the options.')},
+                    {'correct_answer': _('Correct answer must match one of the options or option labels.')},
                 )
-            self.correct_option_index = options.index(correct)
+            self.correct_option_index = index
             return
 
         if self.is_text_type:
@@ -323,6 +381,7 @@ class ReadingQuestion(models.Model):
                         if str(item).strip()
                     ]
                 correct = (self.correct_answer or '').strip()
-                if correct in options:
-                    self.correct_option_index = options.index(correct)
+                index = matching_option_index(options, correct)
+                if index is not None:
+                    self.correct_option_index = index
         super().save(*args, **kwargs)
