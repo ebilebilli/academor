@@ -73,6 +73,47 @@
     }, 0);
   }
 
+  var sessionKeepAliveId = null;
+
+  function stopSessionKeepAlive() {
+    if (sessionKeepAliveId) {
+      window.clearInterval(sessionKeepAliveId);
+      sessionKeepAliveId = null;
+    }
+  }
+
+  function startSessionKeepAlive(modalEl) {
+    stopSessionKeepAlive();
+    var pingUrl = modalEl && modalEl.getAttribute("data-session-ping-url");
+    if (!pingUrl) {
+      return;
+    }
+    function ping() {
+      var root = document.querySelector(
+        "[data-quiz-take], [data-quiz-manual-take], [data-quiz-reading-take], [data-quiz-speaking-take]"
+      );
+      if (root && root.getAttribute("data-quiz-finished") === "true") {
+        stopSessionKeepAlive();
+        return;
+      }
+      fetch(pingUrl, {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCsrfToken(),
+          "X-Requested-With": "XMLHttpRequest",
+        },
+        body: "{}",
+      }).catch(function () {
+        // Ignore transient network errors; submit will surface auth problems.
+      });
+    }
+    ping();
+    sessionKeepAliveId = window.setInterval(ping, 4 * 60 * 1000);
+  }
+
   function initQuizStartGate() {
     var modalEl = document.querySelector("[data-quiz-start-gate]");
     var root = document.querySelector("[data-quiz-take], [data-quiz-manual-take], [data-quiz-reading-take], [data-quiz-speaking-take]");
@@ -127,6 +168,7 @@
         method: "POST",
         credentials: "same-origin",
         headers: {
+          Accept: "application/json",
           "Content-Type": "application/json",
           "X-CSRFToken": csrfToken,
           "X-Requested-With": "XMLHttpRequest",
@@ -145,12 +187,24 @@
             window.location.href = payload.data.redirect_url;
             return;
           }
+          if (payload.data && (payload.data.code === "auth_required" || payload.data.code === "stale_session")) {
+            window.alert(
+              payload.data.error
+                || modalEl.getAttribute("data-msg-session-expired")
+                || "Your session has expired. Please log in again."
+            );
+            if (payload.data.login_url) {
+              window.location.href = payload.data.login_url;
+            }
+            return;
+          }
           if (!payload.ok || !payload.data.success) {
             throw new Error((payload.data && payload.data.error) || msgError);
           }
           root.setAttribute("data-quiz-started", "true");
           hideStartModal(modalEl, modal);
           unlockQuizRoot(root);
+          startSessionKeepAlive(modalEl);
           dispatchQuizStarted();
         })
         .catch(function (err) {

@@ -10970,20 +10970,32 @@ msgid "How your practice score is calculated"
 msgstr "Təcrübə balınız necə hesablanır"
 
 #: portals/includes/sat_scoring_guide.html
-msgid "Each correct answer counts; wrong answers do not subtract points."
-msgstr "Hər düzgün cavab sayılır; yanlış cavablar üçün bal çıxılmır."
+msgid "Each correct answer earns points; wrong answers do not subtract points."
+msgstr "Hər düzgün cavab bal qazandırır; yanlış cavablar üçün bal çıxılmır."
 
 #: portals/includes/sat_scoring_guide.html
-msgid "Section score = correct answers converted to the 200–800 scale."
-msgstr "Bölmə balı = düzgün cavabların 200–800 şkalasına çevrilməsi."
+msgid "Each section score is converted to the 200–800 scale based on the number of correct answers."
+msgstr "Hər bölmə üzrə nəticə düzgün cavabların sayına əsasən 200–800 bal şkalasına çevrilir."
 
 #: portals/includes/sat_scoring_guide.html
-msgid "Total score = Reading and Writing + Math (400–1600)."
-msgstr "Ümumi bal = Reading and Writing + Math (400–1600)."
+msgid "The total score is the sum of the Reading and Writing and Math section scores (400–1600)."
+msgstr "Ümumi nəticə Reading and Writing və Math bölmələrinin ballarının cəmi əsasında hesablanır (400–1600 bal)."
 
 #: portals/includes/sat_scoring_guide.html
-msgid "These are approximate practice estimates — not an official College Board score."
-msgstr "Bunlar təxmini təcrübə qiymətləridir — rəsmi College Board balı deyil."
+msgid "Note: These results are approximate practice estimates and do not reflect an official College Board SAT score."
+msgstr "Qeyd: Bu nəticələr təxmini qiymətləndirmə məqsədi daşıyır və rəsmi College Board SAT balını əks etdirmir."
+
+#~ msgid "Each correct answer counts; wrong answers do not subtract points."
+#~ msgstr "Hər düzgün cavab sayılır; yanlış cavablar üçün bal çıxılmır."
+
+#~ msgid "Section score = correct answers converted to the 200–800 scale."
+#~ msgstr "Bölmə balı = düzgün cavabların 200–800 şkalasına çevrilməsi."
+
+#~ msgid "Total score = Reading and Writing + Math (400–1600)."
+#~ msgstr "Ümumi bal = Reading and Writing + Math (400–1600)."
+
+#~ msgid "These are approximate practice estimates — not an official College Board score."
+#~ msgstr "Bunlar təxmini təcrübə qiymətləridir — rəsmi College Board balı deyil."
 
 #~ msgid "How Digital SAT scores work"
 #~ msgstr "Digital SAT balları necə hesablanır"

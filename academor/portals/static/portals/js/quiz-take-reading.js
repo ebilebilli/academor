@@ -59,6 +59,11 @@
     var labelUnanswered = root.getAttribute("data-label-unanswered") || "Not answered";
     var msgSubmitting = root.getAttribute("data-msg-submitting") || "Submitting…";
     var msgError = root.getAttribute("data-msg-error") || "Could not submit the test.";
+    var msgSessionExpired =
+      root.getAttribute("data-msg-session-expired")
+      || (document.querySelector("[data-quiz-start-gate]")
+        && document.querySelector("[data-quiz-start-gate]").getAttribute("data-msg-session-expired"))
+      || "Your session has expired. Please log in again.";
 
     var startedAt = Date.now();
     var submitting = false;
@@ -338,7 +343,10 @@
       var contentType = (response.headers.get("content-type") || "").toLowerCase();
       if (contentType.indexOf("application/json") === -1) {
         return response.text().then(function (body) {
-          var snippet = (body || "").replace(/\s+/g, " ").trim().slice(0, 120);
+          var snippet = (body || "").replace(/\s+/g, " ").trim().slice(0, 160);
+          if (/portal-login-html|\/portal\/login/i.test(snippet)) {
+            throw new Error(msgSessionExpired);
+          }
           throw new Error(
             snippet
               ? msgError + " (" + response.status + ": " + snippet + ")"
@@ -347,8 +355,19 @@
         });
       }
       return response.json().then(function (data) {
-        return { ok: response.ok, data: data };
+        return { ok: response.ok, data: data || {} };
       });
+    }
+
+    function handleAuthFailure(data) {
+      if (!data || (data.code !== "auth_required" && data.code !== "stale_session")) {
+        return false;
+      }
+      window.alert(data.error || msgSessionExpired);
+      if (data.login_url) {
+        window.location.href = data.login_url;
+      }
+      return true;
     }
 
     function submitQuiz(options) {
@@ -366,8 +385,10 @@
         credentials: "same-origin",
         keepalive: Boolean(options.keepalive),
         headers: {
+          Accept: "application/json",
           "Content-Type": "application/json",
           "X-CSRFToken": getCsrfToken(),
+          "X-Requested-With": "XMLHttpRequest",
         },
         body: JSON.stringify({
           answers: collectAnswers(),
@@ -378,6 +399,10 @@
       })
         .then(parseJsonResponse)
         .then(function (payload) {
+          if (handleAuthFailure(payload.data)) {
+            submitting = false;
+            return { ok: false };
+          }
           if (!payload.ok || !payload.data.success) {
             if (window.PortalQuizMockSection && window.PortalQuizMockSection.redirectIfNeeded(payload.data)) {
               return { ok: false, redirected: true };

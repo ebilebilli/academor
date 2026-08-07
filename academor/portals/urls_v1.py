@@ -1,6 +1,6 @@
 from django.urls import path
 
-from portals.views.auth_views import PortalLoginView, PortalLogoutView
+from portals.views.auth_views import PortalLoginView, PortalLogoutView, PortalSessionPingView
 from portals.views.profile_views import PortalProfileView
 from portals.views.teacher_manage_views import (
     TeacherAttendanceCreateView,
@@ -128,6 +128,7 @@ app_name = 'portals'
 
 urlpatterns = [
     path('login/', PortalLoginView.as_view(), name='login'),
+    path('session/ping/', PortalSessionPingView.as_view(), name='session-ping'),
     path('logout/', PortalLogoutView.as_view(), name='logout'),
     path('profile/', PortalProfileView.as_view(), name='profile'),
     path('notifications/<int:pk>/read/', NotificationMarkReadView.as_view(), name='notification-mark-read'),

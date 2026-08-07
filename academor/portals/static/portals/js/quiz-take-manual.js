@@ -880,17 +880,41 @@
         credentials: "same-origin",
         keepalive: Boolean(options.keepalive),
         headers: {
+          Accept: "application/json",
           "Content-Type": "application/json",
           "X-CSRFToken": getCsrfToken(),
+          "X-Requested-With": "XMLHttpRequest",
         },
         body: JSON.stringify(requestBody),
       })
         .then(function (response) {
+          var contentType = (response.headers.get("content-type") || "").toLowerCase();
+          if (contentType.indexOf("application/json") === -1) {
+            return response.text().then(function (body) {
+              var snippet = (body || "").replace(/\s+/g, " ").trim().slice(0, 160);
+              if (/portal-login-html|\/portal\/login/i.test(snippet)) {
+                throw new Error(
+                  (document.querySelector("[data-quiz-start-gate]")
+                    && document.querySelector("[data-quiz-start-gate]").getAttribute("data-msg-session-expired"))
+                  || "Your session has expired. Please log in again."
+                );
+              }
+              throw new Error(msgError);
+            });
+          }
           return response.json().then(function (data) {
-            return { ok: response.ok, data: data };
+            return { ok: response.ok, data: data || {} };
           });
         })
         .then(function (payload) {
+          if (payload.data && (payload.data.code === "auth_required" || payload.data.code === "stale_session")) {
+            window.alert(payload.data.error || "Your session has expired. Please log in again.");
+            if (payload.data.login_url) {
+              window.location.href = payload.data.login_url;
+            }
+            submitting = false;
+            return false;
+          }
           if (!payload.ok || !payload.data.success) {
             if (window.PortalQuizMockSection && window.PortalQuizMockSection.redirectIfNeeded(payload.data)) {
               return false;

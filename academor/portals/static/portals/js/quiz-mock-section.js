@@ -8,7 +8,12 @@
     });
   }
 
-  function scrollMockPageToTop() {
+  function scrollMockContinueIntoView() {
+    var panel = document.querySelector("[data-mock-section-continue]");
+    if (panel && typeof panel.scrollIntoView === "function") {
+      panel.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -175,8 +180,10 @@
       }
       var offered = offerContinue(data);
       if (offered) {
+        // Defer past any competing smooth scrolls from the result panel.
         requestAnimationFrame(function () {
-          scrollMockPageToTop();
+          scrollMockContinueIntoView();
+          window.setTimeout(scrollMockContinueIntoView, 50);
         });
       }
       return offered;

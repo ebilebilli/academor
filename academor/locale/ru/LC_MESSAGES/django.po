@@ -11086,20 +11086,32 @@ msgid "How your practice score is calculated"
 msgstr "Как считается ваш практический балл"
 
 #: portals/includes/sat_scoring_guide.html
-msgid "Each correct answer counts; wrong answers do not subtract points."
-msgstr "Каждый правильный ответ учитывается; за неправильные баллы не снимаются."
+msgid "Each correct answer earns points; wrong answers do not subtract points."
+msgstr "Каждый правильный ответ приносит баллы; за неправильные ответы баллы не снимаются."
 
 #: portals/includes/sat_scoring_guide.html
-msgid "Section score = correct answers converted to the 200–800 scale."
-msgstr "Балл секции = правильные ответы, переведённые в шкалу 200–800."
+msgid "Each section score is converted to the 200–800 scale based on the number of correct answers."
+msgstr "Результат по каждой секции переводится в шкалу 200–800 на основе числа правильных ответов."
 
 #: portals/includes/sat_scoring_guide.html
-msgid "Total score = Reading and Writing + Math (400–1600)."
-msgstr "Общий балл = Reading and Writing + Math (400–1600)."
+msgid "The total score is the sum of the Reading and Writing and Math section scores (400–1600)."
+msgstr "Общий результат рассчитывается как сумма баллов секций Reading and Writing и Math (400–1600)."
 
 #: portals/includes/sat_scoring_guide.html
-msgid "These are approximate practice estimates — not an official College Board score."
-msgstr "Это приблизительные учебные оценки — не официальный балл College Board."
+msgid "Note: These results are approximate practice estimates and do not reflect an official College Board SAT score."
+msgstr "Примечание: Эти результаты носят приблизительный оценочный характер и не являются официальным баллом College Board SAT."
+
+#~ msgid "Each correct answer counts; wrong answers do not subtract points."
+#~ msgstr "Каждый правильный ответ учитывается; за неправильные баллы не снимаются."
+
+#~ msgid "Section score = correct answers converted to the 200–800 scale."
+#~ msgstr "Балл секции = правильные ответы, переведённые в шкалу 200–800."
+
+#~ msgid "Total score = Reading and Writing + Math (400–1600)."
+#~ msgstr "Общий балл = Reading and Writing + Math (400–1600)."
+
+#~ msgid "These are approximate practice estimates — not an official College Board score."
+#~ msgstr "Это приблизительные учебные оценки — не официальный балл College Board."
 
 #~ msgid "How Digital SAT scores work"
 #~ msgstr "Как считаются баллы Digital SAT"

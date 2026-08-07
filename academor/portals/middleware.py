@@ -12,6 +12,7 @@ from portals.utils.portal_session import (
     PORTAL_COOKIE_SECURE,
     PORTAL_COOKIE_SAMESITE,
     get_portal_user,
+    maybe_touch_portal_session,
 )
 
 
@@ -42,6 +43,14 @@ class PortalSessionMiddleware:
 
     def __call__(self, request):
         response = self.get_response(request)
+
+        # Sliding expiry while browsing / taking long quizzes (after the view,
+        # so logout can clear the session first).
+        if (
+            not getattr(request, '_portal_session_cleared', False)
+            and (request.path or '').startswith('/portal/')
+        ):
+            maybe_touch_portal_session(request)
 
         # Login: save session and set cookie
         if hasattr(request, '_portal_session'):

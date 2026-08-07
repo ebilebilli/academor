@@ -524,17 +524,48 @@
         credentials: "same-origin",
         keepalive: Boolean(options.keepalive),
         headers: {
+          Accept: "application/json",
           "X-CSRFToken": getCsrfToken(),
+          "X-Requested-With": "XMLHttpRequest",
         },
         body: formData,
       })
         .then(function (response) {
+          var contentType = (response.headers.get("content-type") || "").toLowerCase();
+          if (contentType.indexOf("application/json") === -1) {
+            return response.text().then(function (body) {
+              var snippet = (body || "").replace(/\s+/g, " ").trim().slice(0, 160);
+              if (/portal-login-html|\/portal\/login/i.test(snippet)) {
+                return {
+                  ok: false,
+                  payload: {
+                    success: false,
+                    code: "auth_required",
+                    error:
+                      (document.querySelector("[data-quiz-start-gate]")
+                        && document.querySelector("[data-quiz-start-gate]").getAttribute("data-msg-session-expired"))
+                      || "Your session has expired. Please log in again.",
+                  },
+                };
+              }
+              return { ok: false, payload: { success: false, error: msgError } };
+            });
+          }
           return response.json().then(function (payload) {
-            return { ok: response.ok, payload: payload };
+            return { ok: response.ok, payload: payload || {} };
           });
         })
         .then(function (result) {
           submitting = false;
+          if (result.payload && (result.payload.code === "auth_required" || result.payload.code === "stale_session")) {
+            if (!options.silent) {
+              window.alert(result.payload.error || "Your session has expired. Please log in again.");
+            }
+            if (result.payload.login_url) {
+              window.location.href = result.payload.login_url;
+            }
+            return false;
+          }
           if (!result.ok || !result.payload || !result.payload.success) {
             if (
               window.PortalQuizMockSection

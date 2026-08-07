@@ -10857,20 +10857,32 @@ msgid "How your practice score is calculated"
 msgstr "How your practice score is calculated"
 
 #: portals/includes/sat_scoring_guide.html
-msgid "Each correct answer counts; wrong answers do not subtract points."
-msgstr "Each correct answer counts; wrong answers do not subtract points."
+msgid "Each correct answer earns points; wrong answers do not subtract points."
+msgstr "Each correct answer earns points; wrong answers do not subtract points."
 
 #: portals/includes/sat_scoring_guide.html
-msgid "Section score = correct answers converted to the 200–800 scale."
-msgstr "Section score = correct answers converted to the 200–800 scale."
+msgid "Each section score is converted to the 200–800 scale based on the number of correct answers."
+msgstr "Each section score is converted to the 200–800 scale based on the number of correct answers."
 
 #: portals/includes/sat_scoring_guide.html
-msgid "Total score = Reading and Writing + Math (400–1600)."
-msgstr "Total score = Reading and Writing + Math (400–1600)."
+msgid "The total score is the sum of the Reading and Writing and Math section scores (400–1600)."
+msgstr "The total score is the sum of the Reading and Writing and Math section scores (400–1600)."
 
 #: portals/includes/sat_scoring_guide.html
-msgid "These are approximate practice estimates — not an official College Board score."
-msgstr "These are approximate practice estimates — not an official College Board score."
+msgid "Note: These results are approximate practice estimates and do not reflect an official College Board SAT score."
+msgstr "Note: These results are approximate practice estimates and do not reflect an official College Board SAT score."
+
+#~ msgid "Each correct answer counts; wrong answers do not subtract points."
+#~ msgstr "Each correct answer counts; wrong answers do not subtract points."
+
+#~ msgid "Section score = correct answers converted to the 200–800 scale."
+#~ msgstr "Section score = correct answers converted to the 200–800 scale."
+
+#~ msgid "Total score = Reading and Writing + Math (400–1600)."
+#~ msgstr "Total score = Reading and Writing + Math (400–1600)."
+
+#~ msgid "These are approximate practice estimates — not an official College Board score."
+#~ msgstr "These are approximate practice estimates — not an official College Board score."
 
 #~ msgid "How Digital SAT scores work"
 #~ msgstr "How Digital SAT scores work"

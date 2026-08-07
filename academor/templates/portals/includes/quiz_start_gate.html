@@ -3,7 +3,9 @@
   class="portal-quiz-start-modal modal fade"
   data-quiz-start-gate
   data-start-url="{{ start_url }}"
+  data-session-ping-url="{% url 'portals:session-ping' %}"
   data-msg-start-error="{% trans 'Could not start the quiz. Please try again.' %}"
+  data-msg-session-expired="{% trans 'Your session has expired. Please log in again.' %}"
   tabindex="-1"
   role="dialog"
   aria-modal="true"

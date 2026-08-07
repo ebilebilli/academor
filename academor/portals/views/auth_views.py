@@ -2,6 +2,7 @@ from urllib.parse import urlencode, urlparse, urlunparse
 
 from django.contrib import messages
 from django.contrib.auth import authenticate
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.decorators import method_decorator
@@ -11,9 +12,15 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
 
 from portals.forms import PortalLoginForm
-from portals.utils.portal_session import is_portal_authenticated, portal_login, portal_logout
+from portals.utils.portal_session import (
+    is_portal_authenticated,
+    maybe_touch_portal_session,
+    portal_login,
+    portal_logout,
+)
 from portals.utils.queries import get_portal_role
 from portals.utils.safe_redirect import safe_portal_next_url
+from portals.views.mixins import PortalLoginRequiredMixin
 from projects.utils.queries import get_background_image
 
 
@@ -110,3 +117,15 @@ class PortalLogoutView(View):
     def post(self, request):
         portal_logout(request)
         return redirect('projects:home-page')
+
+
+class PortalSessionPingView(PortalLoginRequiredMixin, View):
+    """Keep portal session alive during long idle quiz takes."""
+
+    def post(self, request):
+        maybe_touch_portal_session(request, min_interval_sec=0)
+        return JsonResponse({'success': True, 'ok': True})
+
+    def get(self, request):
+        maybe_touch_portal_session(request, min_interval_sec=0)
+        return JsonResponse({'success': True, 'ok': True})

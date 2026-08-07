@@ -1,8 +1,10 @@
 from urllib.parse import quote
 import json
 
+from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.utils.translation import gettext as _
 
 from portals.utils.portal_session import is_portal_authenticated, portal_logout
 from portals.utils.queries import (
@@ -20,6 +22,31 @@ def _portal_login_redirect(request):
     return redirect(f'{login}?next={next_path}')
 
 
+def request_expects_json(request) -> bool:
+    accept = (request.headers.get('Accept') or '').lower()
+    if 'application/json' in accept:
+        return True
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return True
+    content_type = (request.content_type or '').split(';', 1)[0].strip().lower()
+    return content_type == 'application/json'
+
+
+def _portal_login_response(request, *, error=None, code='auth_required'):
+    """HTML redirect for browsers; JSON 401 for quiz/API fetch calls."""
+    if request_expects_json(request):
+        return JsonResponse(
+            {
+                'success': False,
+                'error': error or str(_('Your session has expired. Please log in again.')),
+                'code': code,
+                'login_url': reverse('portals:login'),
+            },
+            status=401,
+        )
+    return _portal_login_redirect(request)
+
+
 def _portal_profile_for_role(user, role):
     if role == 'teacher':
         return get_teacher_profile(user)
@@ -35,13 +62,17 @@ def _portal_profile_for_role(user, role):
 def _clear_stale_portal_session(request):
     """Session user id present but profile row gone — drop session and send to login."""
     portal_logout(request)
-    return _portal_login_redirect(request)
+    return _portal_login_response(
+        request,
+        error=str(_('Your session is no longer valid. Please log in again.')),
+        code='stale_session',
+    )
 
 
 class PortalLoginRequiredMixin:
     def dispatch(self, request, *args, **kwargs):
         if not is_portal_authenticated(request):
-            return _portal_login_redirect(request)
+            return _portal_login_response(request)
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -50,9 +81,18 @@ class PortalRoleRequiredMixin(PortalLoginRequiredMixin):
 
     def dispatch(self, request, *args, **kwargs):
         if not is_portal_authenticated(request):
-            return _portal_login_redirect(request)
+            return _portal_login_response(request)
         role = get_portal_role(request.portal_user)
         if role != self.required_role:
+            if request_expects_json(request):
+                return JsonResponse(
+                    {
+                        'success': False,
+                        'error': str(_('You do not have permission to perform this action.')),
+                        'code': 'forbidden',
+                    },
+                    status=403,
+                )
             return redirect('portals:dashboard')
         if _portal_profile_for_role(request.portal_user, role) is None:
             return _clear_stale_portal_session(request)
@@ -88,6 +128,15 @@ class StudentQuizTakeRequiredMixin(StudentRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
         role = get_portal_role(request.portal_user) if is_portal_authenticated(request) else None
         if role == 'parent':
+            if request_expects_json(request):
+                return JsonResponse(
+                    {
+                        'success': False,
+                        'error': str(_('Parents cannot take or submit quizzes.')),
+                        'code': 'forbidden',
+                    },
+                    status=403,
+                )
             return redirect('portals:parent-scores')
         return super().dispatch(request, *args, **kwargs)
 
@@ -122,13 +171,31 @@ class CustomerQuizTakeRequiredMixin(CustomerRequiredMixin):
 
     def dispatch(self, request, *args, **kwargs):
         if not is_portal_authenticated(request):
-            return _portal_login_redirect(request)
+            return _portal_login_response(request)
         role = get_portal_role(request.portal_user)
         if role != 'customer':
+            if request_expects_json(request):
+                return JsonResponse(
+                    {
+                        'success': False,
+                        'error': str(_('You do not have permission to perform this action.')),
+                        'code': 'forbidden',
+                    },
+                    status=403,
+                )
             return redirect('portals:dashboard')
         if get_customer_profile(request.portal_user) is None:
             return _clear_stale_portal_session(request)
         if not _customer_mock_id_from_request(request):
+            if request_expects_json(request):
+                return JsonResponse(
+                    {
+                        'success': False,
+                        'error': str(_('Mock test session not found. Please restart the mock test.')),
+                        'code': 'mock_required',
+                    },
+                    status=403,
+                )
             return redirect('portals:customer-dashboard')
         return super(CustomerRequiredMixin, self).dispatch(request, *args, **kwargs)
 
@@ -136,8 +203,17 @@ class CustomerQuizTakeRequiredMixin(CustomerRequiredMixin):
 class TeacherOrStudentRequiredMixin(PortalLoginRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
         if not is_portal_authenticated(request):
-            return _portal_login_redirect(request)
+            return _portal_login_response(request)
         role = get_portal_role(request.portal_user)
         if role not in ('teacher', 'student'):
+            if request_expects_json(request):
+                return JsonResponse(
+                    {
+                        'success': False,
+                        'error': str(_('You do not have permission to perform this action.')),
+                        'code': 'forbidden',
+                    },
+                    status=403,
+                )
             return redirect('portals:dashboard')
         return super(PortalLoginRequiredMixin, self).dispatch(request, *args, **kwargs)

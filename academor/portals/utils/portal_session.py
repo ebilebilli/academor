@@ -106,6 +106,36 @@ def is_portal_authenticated(request) -> bool:
     return get_portal_user_id(request) is not None
 
 
+def maybe_touch_portal_session(request, *, min_interval_sec: int = 300) -> None:
+    """
+    Sliding expiry for portal sessions.
+
+    Quiz take pages can sit idle for a long time; without touching the DB session
+    row (and cookie max-age), the login can expire before submit.
+    """
+    if getattr(request, '_portal_session_cleared', False):
+        return
+    if not is_portal_authenticated(request):
+        return
+    session = _get_portal_session(request)
+    if not session.session_key:
+        return
+
+    import time
+
+    now = int(time.time())
+    last = session.get('_portal_touched_at')
+    try:
+        last_i = int(last) if last is not None else 0
+    except (TypeError, ValueError):
+        last_i = 0
+    if last_i and (now - last_i) < min_interval_sec:
+        return
+
+    session['_portal_touched_at'] = now
+    _save_portal_session(request, session)
+
+
 def clear_portal_session(request) -> None:
     """Clear portal session - for signal use."""
     session = _get_portal_session(request)
