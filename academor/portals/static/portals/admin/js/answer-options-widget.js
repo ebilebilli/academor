@@ -20,6 +20,15 @@
 
         // Critical: sync CKEditor → hidden JSON before Django admin save.
         $(document).on('submit', 'form', function() {
+            if (window.CKEDITOR) {
+                Object.keys(window.CKEDITOR.instances || {}).forEach(function(id) {
+                    try {
+                        window.CKEDITOR.instances[id].updateElement();
+                    } catch (err) {
+                        // ignore destroyed instances
+                    }
+                });
+            }
             syncAllAnswerOptionContainers($(this));
         });
     }
@@ -119,8 +128,9 @@
         var hidden = container.find('.answer-options-hidden');
         var previous = hidden.val() || '[]';
 
-        // If editors are not ready yet and we'd overwrite non-empty JSON with empties, keep previous.
-        if (!opts.force && !hasReadyEditor && allEmpty && previous && previous !== '[]') {
+        // Never wipe saved options with empty values (CKEditor boot/submit race),
+        // even when force=true on form submit.
+        if (allEmpty && previous && previous !== '[]') {
             try {
                 var prevList = JSON.parse(previous);
                 if (Array.isArray(prevList) && prevList.some(function(item) {
@@ -131,6 +141,11 @@
             } catch (e) {
                 // fall through and write
             }
+        }
+
+        // If some editors are still booting, keep previous payload.
+        if (!hasReadyEditor && previous && previous !== '[]' && !opts.force) {
+            return;
         }
 
         hidden.val(JSON.stringify(options));

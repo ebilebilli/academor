@@ -250,6 +250,11 @@ USE_L10N = True
 
 USE_TZ = True
 
+# SAT questions embed base64 images in HTML — allow larger admin POSTs.
+DATA_UPLOAD_MAX_MEMORY_SIZE = 25 * 1024 * 1024  # 25 MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 25 * 1024 * 1024
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 5000
+
 
 # Media / Static configuration
 MEDIA_URL = '/media/'

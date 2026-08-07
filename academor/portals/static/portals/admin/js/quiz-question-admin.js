@@ -124,7 +124,8 @@
         grading_mode: mode,
         show_fields: [],
         hide_fields: ANSWER_FIELDS.concat([RESPONSE_FIELD]),
-        clear_fields: ANSWER_FIELDS.slice(),
+        // Do not clear answer_options — SAT MCQ data lives there.
+        clear_fields: [],
       };
     }
     return {
@@ -167,20 +168,33 @@
     if (!row) {
       return;
     }
+    if (name === "answer_options") {
+      // Only clear the hidden JSON payload — never the CKEditor source textareas.
+      var hidden = row.querySelector("textarea.answer-options-hidden");
+      if (hidden) {
+        hidden.value = "[]";
+      }
+      return;
+    }
     var input = row.querySelector("input, textarea");
     if (!input) {
       return;
     }
-    if (name === "answer_options") {
-      input.value = "[]";
-    } else {
-      input.value = "";
-    }
+    input.value = "";
   }
 
   function applyGradingConfig(block, config) {
     if (!config) {
       return;
+    }
+
+    // Never wipe answer options on an existing quiz-question edit page.
+    // Those fields are the source of truth for SAT MCQ/SPR questions.
+    var isQuestionEdit =
+      !!(block.closest && block.closest("#quizquestion_form")) ||
+      !!(document.querySelector("#quizquestion_form"));
+    if (isQuestionEdit) {
+      config = Object.assign({}, config, { clear_fields: [] });
     }
 
     var allFields = ANSWER_FIELDS.concat([RESPONSE_FIELD]);
@@ -192,6 +206,11 @@
     allFields.forEach(function (name) {
       var row = fieldRow(block, name);
       if (!row) {
+        return;
+      }
+      // On quiz-question change form, keep MCQ/SPR fields visible.
+      if (isQuestionEdit && (name === "answer_options" || name === "correct_answer")) {
+        row.classList.remove("quiz-admin-hidden-field");
         return;
       }
       row.classList.toggle("quiz-admin-hidden-field", !showSet[name]);

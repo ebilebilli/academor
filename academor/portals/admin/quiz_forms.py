@@ -177,9 +177,15 @@ class QuizQuestionAdminForm(forms.ModelForm):
                 'Add answer choices using the + button. Each option can contain rich text.',
             )
         if 'correct_answer' in self.fields:
+            # CKEditor often posts blank on submit race — validate in clean() instead.
+            self.fields['correct_answer'].required = False
             self.fields['correct_answer'].help_text = _(
                 'Must exactly match one of the options in the list above.',
             )
+        if 'answer_options' in self.fields:
+            self.fields['answer_options'].required = False
+        if 'question' in self.fields:
+            self.fields['question'].required = False
         if 'spr_correct_answers' in self.fields:
             self.fields['spr_correct_answers'].help_text = _(
                 'Add one or more accepted correct answers. Each answer can use rich text '
@@ -404,6 +410,13 @@ class QuizQuestionAdminForm(forms.ModelForm):
 
         prompt_type = cleaned.get('prompt_type')
         question = (cleaned.get('question') or '').strip()
+        if not question and self.instance and self.instance.pk:
+            # CKEditor sometimes posts an empty textarea if sync races submit.
+            existing_question = (self.instance.question or '').strip()
+            if existing_question:
+                cleaned['question'] = self.instance.question
+                question = existing_question
+
         media_file = cleaned.get('media_file') or getattr(self.instance, 'media_file', None)
         media_url = (cleaned.get('media_url') or '').strip()
 
@@ -420,6 +433,17 @@ class QuizQuestionAdminForm(forms.ModelForm):
         correct = (cleaned.get('correct_answer') or '').strip()
         if options and correct in options:
             cleaned['correct_option_index'] = options.index(correct)
+        elif options and question_type == QuizQuestion.QuestionType.MCQ:
+            idx = cleaned.get('correct_option_index')
+            if idx is None:
+                idx = getattr(self.instance, 'correct_option_index', 0)
+            try:
+                idx = int(idx)
+            except (TypeError, ValueError):
+                idx = 0
+            if 0 <= idx < len(options):
+                cleaned['correct_answer'] = options[idx]
+                cleaned['correct_option_index'] = idx
 
         return cleaned
 

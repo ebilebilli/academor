@@ -6,6 +6,19 @@
   display: none !important;
 }
 
+/* Always surface fields that failed validation, even if a script hid them. */
+.quiz-admin-hidden-field.errors,
+.form-row.errors.quiz-admin-hidden-field,
+fieldset.module.collapsed .form-row.errors,
+fieldset.collapse .form-row.errors {
+  display: block !important;
+  visibility: visible !important;
+  outline: 2px solid #ba2121;
+  outline-offset: 2px;
+  padding: 0.5rem;
+  background: #fff5f5;
+}
+
 .sat-section-fieldset.quiz-admin-hidden-fieldset {
   display: none !important;
 }

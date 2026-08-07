@@ -1,0 +1,15 @@
+{% extends "admin/change_form.html" %}
+
+{% block form_top %}
+{{ block.super }}
+{% if quiz_admin_error_summary %}
+<div class="errornote" id="quiz-question-admin-error-summary">
+  <strong>Save failed — please fix:</strong>
+  <ul style="margin:0.4rem 0 0 1.2rem;">
+    {% for line in quiz_admin_error_summary %}
+    <li>{{ line }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+{% endblock %}

@@ -2022,9 +2022,10 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
             hide_fields = [response_field]
             clear_fields = []
         elif mode in ('reading', 'math'):
+            # Reading/Math use passage inlines — don't wipe QuizQuestion answer JSON.
             show_fields = []
             hide_fields = [*answer_fields, response_field]
-            clear_fields = list(answer_fields)
+            clear_fields = []
         else:
             show_fields = []
             hide_fields = [*answer_fields, response_field]
@@ -2154,9 +2155,16 @@ class QuizQuestionAdmin(PortalModelAdmin):
     autocomplete_fields = ('quiz',)
     ordering = ('quiz', 'order', 'id')
     list_per_page = 25
-    
+
     class Media:
-        js = ('portals/admin/js/quiz-question-type-toggle.js',)
+        css = {'all': ('portals/css/quiz-question-admin.css',)}
+        js = (
+            'portals/admin/js/quiz-question-admin.js',
+            'portals/admin/js/quiz-question-type-toggle.js',
+        )
+
+    change_form_template = 'admin/portals/quizquestion/change_form.html'
+
     fieldsets = (
         (None, {
             'description': _(
@@ -2165,13 +2173,14 @@ class QuizQuestionAdmin(PortalModelAdmin):
             'fields': ('quiz', 'order', 'prompt_type', 'question_type', 'question', 'media_file', 'media_url'),
         }),
         (_('MCQ Answers'), {
+            'classes': ('quiz-mcq-answers-fieldset',),
             'description': _('Multiple choice: Add answer choices using the + button. Each option can contain rich text.'),
             'fields': ('answer_options', 'correct_answer'),
         }),
         (_('SPR Answers'), {
+            'classes': ('quiz-spr-answers-fieldset',),
             'description': _('Student-Produced Response: correct answers and max length for typed answers.'),
             'fields': ('spr_correct_answers', 'spr_max_length'),
-            'classes': ('collapse',),
         }),
         (_('Student Response'), {
             'description': _('Essay/Manual grading: Student writes answer in text field during quiz.'),
@@ -2226,6 +2235,25 @@ class QuizQuestionAdmin(PortalModelAdmin):
         if len(text) > 60:
             return f'{text[:60]}…'
         return text
+
+    def render_change_form(self, request, context, add=False, change=False, form_url='', obj=None):
+        adminform = context.get('adminform')
+        form = getattr(adminform, 'form', None) if adminform is not None else None
+        if form is not None and form.errors:
+            summary = []
+            for field_name, error_list in form.errors.items():
+                if field_name == '__all__':
+                    label = 'Form'
+                elif field_name in form.fields:
+                    label = str(form.fields[field_name].label or field_name)
+                else:
+                    label = field_name
+                for err in error_list:
+                    summary.append(f'{label}: {err}')
+            context['quiz_admin_error_summary'] = summary
+        return super().render_change_form(
+            request, context, add=add, change=change, form_url=form_url, obj=obj,
+        )
 
 
 @admin.register(QuizResult)
