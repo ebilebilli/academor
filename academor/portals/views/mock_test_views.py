@@ -18,6 +18,7 @@ from portals.utils.ielts_mock_test import (
     get_student_mock_exam_programs,
     is_valid_mock_program,
     resolve_student_mock_exam_program,
+    serialize_mock_attempt_summaries,
     serialize_mock_attempt_summary,
     start_mock_test_attempt,
     student_can_access_mock,
@@ -93,10 +94,9 @@ class StudentMockLandingView(StudentRequiredMixin, View):
                 mock_unlocked=mock_unlocked,
                 can_start=mock_unlocked and not missing_sections,
                 missing_sections=missing_labels,
-                completed_attempts=[
-                    serialize_mock_attempt_summary(attempt)
-                    for attempt in get_student_completed_mock_attempts(profile.pk, exam_program=program)
-                ],
+                completed_attempts=serialize_mock_attempt_summaries(
+                    get_student_completed_mock_attempts(profile.pk, exam_program=program)
+                ),
             ),
         )
 

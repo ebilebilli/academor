@@ -94,24 +94,44 @@ def get_customer_selectable_mock_programs(customer_id: int) -> list[str]:
 
 
 def build_customer_mock_picker_programs(customer_id: int) -> list[dict]:
+    from django.db.models import Count
+
     profile = CustomerProfile.objects.filter(pk=customer_id).first()
     if not profile:
         return []
 
+    programs = get_customer_selectable_mock_programs(customer_id)
+    if not programs:
+        return []
+
+    in_progress_programs = set(
+        IeltsMockTestAttempt.objects.filter(
+            customer_id=customer_id,
+            status=IeltsMockTestAttempt.Status.IN_PROGRESS,
+            exam_program__in=programs,
+        ).values_list('exam_program', flat=True)
+    )
+    completed_counts = dict(
+        IeltsMockTestAttempt.objects.filter(
+            customer_id=customer_id,
+            exam_program__in=programs,
+            status=IeltsMockTestAttempt.Status.COMPLETED,
+        )
+        .values('exam_program')
+        .annotate(c=Count('id'))
+        .values_list('exam_program', 'c')
+    )
+
     cards = []
-    for program in get_customer_selectable_mock_programs(customer_id):
+    for program in programs:
         cards.append({
             'code': program,
             'label': get_program_label(program),
             'landing_url': reverse('portals:customer-mock-landing', kwargs={'program': program}),
             'credits': profile.mock_credits_for_program(program),
-            'in_progress': customer_has_in_progress_mock(customer_id, exam_program=program),
+            'in_progress': program in in_progress_programs,
             'can_start': customer_can_start_mock(customer_id, program),
-            'completed_count': IeltsMockTestAttempt.objects.filter(
-                customer_id=customer_id,
-                exam_program=program,
-                status=IeltsMockTestAttempt.Status.COMPLETED,
-            ).count(),
+            'completed_count': int(completed_counts.get(program, 0)),
         })
     return cards
 

@@ -73,8 +73,14 @@ def score_listening_question(question: ListeningQuestion, raw_value) -> bool:
 def score_listening_quiz(
     quiz: Quiz,
     given_answers: dict,
+    *,
+    questions: list[ListeningQuestion] | None = None,
 ) -> tuple[float, int, list[dict]]:
-    questions = get_listening_questions_for_quiz(quiz)
+    questions = (
+        list(questions)
+        if questions is not None
+        else get_listening_questions_for_quiz(quiz)
+    )
     max_score = len(questions)
     score = 0.0
     breakdown = []

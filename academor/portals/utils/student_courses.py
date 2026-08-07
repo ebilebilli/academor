@@ -32,6 +32,7 @@ def ensure_student_group_course_enrollments(student_id: int, group) -> None:
         )
 
 
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_student_course_type_codes(student_id):
     """Active service enrollments assigned directly on the student profile.
 
@@ -53,11 +54,7 @@ def get_student_course_type_codes(student_id):
 def student_has_course_access(student_id, course_type):
     if not student_id or not course_type:
         return False
-    return StudentCourseSpecialization.objects.filter(
-        student_id=student_id,
-        is_active=True,
-        course_type=course_type,
-    ).exists()
+    return course_type in get_student_course_type_codes(student_id)
 
 
 def get_quiz_service_code(quiz):
@@ -140,18 +137,66 @@ def get_teacher_student_service_pairs(teacher_id):
 
 
 def filter_quiz_results_for_teacher(results, teacher_id):
-    visible = []
+    """Filter results without per-row StudyGroup.exists() queries."""
+    from portals.models import CustomerProfile
+    from portals.utils.teacher_courses import get_teacher_course_type_codes
 
-    for row in results:
+    rows = list(results)
+    if not rows or not teacher_id:
+        return []
+
+    teacher_codes = get_teacher_course_type_codes(teacher_id)
+    if not teacher_codes:
+        return []
+
+    student_ids = {row.student_id for row in rows if row.student_id}
+    customer_ids = {row.customer_id for row in rows if row.customer_id}
+    pairs = get_teacher_student_service_pairs(teacher_id) if student_ids else frozenset()
+    shared_any = set()
+    if student_ids:
+        shared_any = set(
+            StudyGroup.objects.filter(
+                teacher_id=teacher_id,
+                is_active=True,
+                students__pk__in=student_ids,
+            )
+            .values_list('students', flat=True)
+            .distinct()
+        )
+    customer_teacher = {}
+    if customer_ids:
+        customer_teacher = dict(
+            CustomerProfile.objects.filter(pk__in=customer_ids).values_list('pk', 'teacher_id')
+        )
+
+    student_codes_cache = {}
+    visible = []
+    for row in rows:
         quiz = getattr(row, 'quiz', None)
-        if getattr(row, 'customer_id', None):
-            if teacher_can_see_customer_quiz_result(teacher_id, row.customer_id, quiz):
+        if not quiz:
+            continue
+        quiz_codes = get_quiz_portal_course_codes(quiz)
+        if not quiz_codes or not portal_course_keys_overlap(quiz_codes, teacher_codes):
+            continue
+
+        if row.customer_id:
+            if customer_teacher.get(row.customer_id) != teacher_id:
+                continue
+            service = get_quiz_service_code(quiz)
+            if service and portal_course_keys_overlap([service], teacher_codes):
                 visible.append(row)
             continue
 
-        if quiz and row.student_id and teacher_can_see_quiz_result(teacher_id, row.student_id, quiz):
+        if not row.student_id:
+            continue
+        sid = row.student_id
+        if sid not in student_codes_cache:
+            student_codes_cache[sid] = get_student_course_type_codes(sid)
+        if not portal_course_keys_overlap(quiz_codes, student_codes_cache[sid]):
+            continue
+        slugs = expand_course_types_to_service_slugs(quiz_codes)
+        if any((sid, slug) in pairs for slug in slugs) or sid in shared_any:
             visible.append(row)
-
     return visible
 
 
@@ -201,14 +246,14 @@ def teacher_can_see_quiz_result(teacher_id, student_id, quiz):
     slugs = expand_course_types_to_service_slugs(course_codes)
     if not slugs:
         return False
-    shared = StudyGroup.objects.filter(
+    pairs = get_teacher_student_service_pairs(teacher_id)
+    if any((student_id, slug) in pairs for slug in slugs):
+        return True
+    return StudyGroup.objects.filter(
         teacher_id=teacher_id,
         students__pk=student_id,
         is_active=True,
-    )
-    if shared.filter(courses__slug__in=slugs).exists():
-        return True
-    return shared.exists()
+    ).exists()
 
 
 def _classroom_portal_codes(classroom):

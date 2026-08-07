@@ -133,6 +133,7 @@ INSTALLED_APPS = [
     'django_cleanup.apps.CleanupConfig',
     'imagekit',
     'ckeditor',
+    'ckeditor_uploader',
     'compressor',
 
     # Apps
@@ -143,11 +144,21 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_ALLOW_NONIMAGE_FILES = False
+CKEDITOR_IMAGE_BACKEND = 'pillow'
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'full',
         'height': 300,
         'width': '100%',
+        # Enables paste / drag-drop image upload (uploadimage plugin).
+        'filebrowserUploadUrl': '/ckeditor/upload/',
+        'filebrowserBrowseUrl': '/ckeditor/browse/',
+        # Enhanced Image: Word-like drag handles to resize images in the editor.
+        'extraPlugins': 'image2',
+        'removePlugins': 'image',
+        'image2_disableResizer': False,
     },
 }
 

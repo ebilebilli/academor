@@ -479,6 +479,25 @@ msgid ""
 "leave Quiz empty and enter a new topic and category — a speaking quiz will "
 "be created automatically. Add speaking questions in the section below."
 msgstr ""
+"Each part belongs to a speaking quiz. Select an existing speaking quiz, or "
+"leave Quiz empty and enter a new topic and category — a speaking quiz will "
+"be created automatically. Add speaking questions in the section below."
+
+#: academor/templates/portals/includes/quiz_question_play.html
+msgid "Answer format guidelines:"
+msgstr "Answer format guidelines:"
+
+#: academor/templates/portals/includes/quiz_question_play.html
+msgid "Acceptable formats"
+msgstr "Acceptable formats"
+
+#: academor/templates/portals/includes/quiz_question_play.html
+msgid "Unacceptable formats"
+msgstr "Unacceptable formats"
+
+#: academor/templates/portals/includes/quiz_question_play.html
+msgid "Enter fractions as a/b (e.g., 7/2). Do not use mixed numbers or spaces. For decimals, include enough significant digits."
+msgstr "Enter fractions as a/b (e.g., 7/2). Do not use mixed numbers or spaces. For decimals, include enough significant digits."
 
 #: academor/portals/admin/admin_v1.py:659
 msgid "Login account"
@@ -3837,6 +3856,9 @@ msgstr "Back to home"
 #: academor/templates/portals/score_detail.html:19
 msgid "Back to notifications"
 msgstr "Back to notifications"
+
+msgid "Back to scores"
+msgstr "Back to scores"
 
 #: academor/portals/views/notification_views.py:244
 #, fuzzy
@@ -9717,8 +9739,6 @@ msgstr "Weak"
 #~ msgid "Graded"
 #~ msgstr "Graded"
 
-#~ msgid "Total"
-#~ msgstr "Total"
 
 #~ msgid "Once quizzes are graded, the average score will appear here."
 #~ msgstr "Once quizzes are graded, the average score will appear here."
@@ -10814,3 +10834,44 @@ msgstr "Assessment"
 #: academor/templates/portals/login.html
 msgid "Results"
 msgstr "Results"
+
+#: portals/includes/sat_scoring_guide.html
+msgid "How your practice score is calculated"
+msgstr "How your practice score is calculated"
+
+#: portals/includes/sat_scoring_guide.html
+msgid "Each correct answer counts; wrong answers do not subtract points."
+msgstr "Each correct answer counts; wrong answers do not subtract points."
+
+#: portals/includes/sat_scoring_guide.html
+msgid "Section score = correct answers converted to the 200–800 scale."
+msgstr "Section score = correct answers converted to the 200–800 scale."
+
+#: portals/includes/sat_scoring_guide.html
+msgid "Total score = Reading and Writing + Math (400–1600)."
+msgstr "Total score = Reading and Writing + Math (400–1600)."
+
+#: portals/includes/sat_scoring_guide.html
+msgid "These are approximate practice estimates — not an official College Board score."
+msgstr "These are approximate practice estimates — not an official College Board score."
+
+#~ msgid "How Digital SAT scores work"
+#~ msgstr "How Digital SAT scores work"
+
+#~ msgid "Based on College Board Digital SAT scoring model. Exact official equating tables are not published."
+#~ msgstr "Based on College Board Digital SAT scoring model. Exact official equating tables are not published."
+
+#~ msgid "Practice score on Academor"
+#~ msgstr "Practice score on Academor"
+
+#~ msgid "Your section scores here use a simplified conversion from raw correct answers to the 200-800 scale. They are approximate practice estimates - not an official College Board score report."
+#~ msgstr "Your section scores here use a simplified conversion from raw correct answers to the 200-800 scale. They are approximate practice estimates - not an official College Board score report."
+
+#~ msgid "Adaptive modules"
+#~ msgstr "Adaptive modules"
+
+#~ msgid "Equating to scaled score"
+#~ msgstr "Equating to scaled score"
+
+#~ msgid "Conceptual path"
+#~ msgstr "Conceptual path"

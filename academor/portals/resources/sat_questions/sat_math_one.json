@@ -1,0 +1,524 @@
+{
+  "title": "SAT Math One",
+  "category_name": "SAT Math",
+  "service": "sat",
+  "is_sat": true,
+  "sat_section": "algebra",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Line t in the xy-plane has a slope of -1 and passes through the point (9,10). Which equation defines line t?",
+      "question_type": "spr",
+      "spr_correct_answers": [
+        "y = -x + 19",
+        "y=-x+19",
+        "-x+19"
+      ],
+      "spr_max_length": 12,
+      "answer_key": "<p><strong>Correct Answer: y = -x + 19</strong></p><p>Enter the equation as shown. Spaces are optional.</p>"
+    },
+    {
+      "id": 2,
+      "question": "The function models the value, in dollars, of a certain bank account by the end of each year from 1957 through 1972, where x is the number of years after 1957. Which of the following is the best interpretation of \" is approximately equal to 243\" in this context?",
+      "options": [
+        "The value of the bank account is estimated to be approximately 5 dollars greater in 1962 than in 1957.",
+        "The value of the bank account is estimated to be approximately 243 dollars in 1962.",
+        "The value, in dollars, of the bank account is estimated to be approximately 5 times greater in 1962 than in 1957.",
+        "The value of the bank account is estimated to increase by approximately 243 dollars every 5 years between 1957 and 1972."
+      ],
+      "correct": "The value of the bank account is estimated to be approximately 243 dollars in 1962.",
+      "answer_key": "<p><strong>Correct Answer: The value of the bank account is estimated to be approximately 243 dollars in 1962.</strong></p>"
+    },
+    {
+      "id": 3,
+      "question": "For a certain rectangular region, the ratio of its length to its width is 35 to 10. If the width of the rectangular region increases by 7 units, how must the length change to maintain this ratio?",
+      "options": [
+        "It must decrease by 24.5 units.",
+        "It must increase by 24.5 units.",
+        "It must decrease by 7 units.",
+        "It must increase by 7 units."
+      ],
+      "correct": "It must increase by 24.5 units.",
+      "answer_key": "<p><strong>Correct Answer: It must increase by 24.5 units.</strong></p>"
+    },
+    {
+      "id": 4,
+      "question": "Square P has a side length of x inches. Square Q has a perimeter that is 176 inches greater than the perimeter of square P. The function f(x) gives the area of square Q, in square inches. Which of the following defines f(x)?",
+      "question_type": "spr",
+      "spr_correct_answers": [
+        "f(x) = (x + 44)^2",
+        "f(x)=(x+44)^2",
+        "(x+44)^2"
+      ],
+      "spr_max_length": 15,
+      "answer_key": "<p><strong>Correct Answer: f(x) = (x + 44)^2</strong></p><p>Enter the equation as shown. Spaces are optional.</p>"
+    },
+    {
+      "id": 5,
+      "question": "The given equation 1/x + 1/y = 1/z relates the distinct positive real numbers x, y, and z. Which equation correctly expresses z in terms of x and y?",
+      "question_type": "spr",
+      "spr_correct_answers": [
+        "z = (xy) / (x + y)",
+        "z=xy/(x+y)",
+        "(xy)/(x+y)"
+      ],
+      "spr_max_length": 15,
+      "answer_key": "<p><strong>Correct Answer: z = (xy) / (x + y)</strong></p><p>Enter the equation as shown. Spaces are optional.</p>"
+    },
+    {
+      "id": 6,
+      "question": "Point O is the center of a circle. The measure of arc RS on this circle is 100 degrees. What is the measure, in degrees, of its associated angle ROS?",
+      "question_type": "spr",
+      "spr_correct_answers": [
+        "100",
+        "100.0"
+      ],
+      "spr_max_length": 5,
+      "answer_key": "<p><strong>Correct Answer: 100</strong></p><p>Enter the numerical value or fraction as shown. For fractions, use the format a/b (e.g., 7/2). Do not use mixed numbers or spaces.</p>"
+    },
+    {
+      "id": 7,
+      "question": "The expression 16x^4 - 81y^4 is equivalent to (ax^2 + by^2)(cx^2 + dy^2), where a, b, c, and d are positive constants and a > c. What is the value of a?",
+      "question_type": "spr",
+      "spr_correct_answers": [
+        "4",
+        "4.0"
+      ],
+      "spr_max_length": 3,
+      "answer_key": "<p><strong>Correct Answer: 4</strong></p><p>Enter the numerical value or fraction as shown. For fractions, use the format a/b (e.g., 7/2). Do not use mixed numbers or spaces.</p>"
+    },
+    {
+      "id": 8,
+      "question": "A right triangle has sides of length 2√2, 6√2, and √80 units. What is the area of the triangle, in square units?",
+      "options": [
+        "8√2 + √80",
+        "12",
+        "24√80",
+        "24"
+      ],
+      "correct": "12",
+      "answer_key": "<p><strong>Correct Answer: 12</strong></p>"
+    },
+    {
+      "id": 9,
+      "question": "The expression 4x^2 + 8x + 3, where k is a constant, can be rewritten as k(ax + 1)(bx + 2), where a, b, and k are integer constants. Which of the following must be an integer?",
+      "question_type": "spr",
+      "spr_correct_answers": [
+        "k"
+      ],
+      "spr_max_length": 1,
+      "answer_key": "<p><strong>Correct Answer: k</strong></p><p>Enter the variable name as shown.</p>"
+    },
+    {
+      "id": 10,
+      "question": "In the given system of equations, k is a constant. The graphs of the equations in the given system intersect at exactly one point, (x,y), in the xy-plane. What is the value of k?",
+      "question_type": "spr",
+      "spr_correct_answers": [
+        "2",
+        "2.0"
+      ],
+      "spr_max_length": 3,
+      "answer_key": "<p><strong>Correct Answer: 2</strong></p><p>Enter the numerical value or fraction as shown. For fractions, use the format a/b (e.g., 7/2). Do not use mixed numbers or spaces.</p>"
+    },
+    {
+      "id": 11,
+      "question": "An isosceles right triangle has a hypotenuse of length 58 inches. What is the perimeter, in inches, of this triangle?",
+      "options": [
+        "29√2",
+        "58√2",
+        "58 + 58√2",
+        "58 + 116√2"
+      ],
+      "correct": "58 + 58√2",
+      "answer_key": "<p><strong>Correct Answer: 58 + 58√2</strong></p>"
+    },
+    {
+      "id": 12,
+      "question": "In the xy-plane, a parabola has vertex (9, -14) and intersects the x-axis at two points. If the equation of the parabola is written in the form y = ax² + bx + c, where a, b, and c are constants, which of the following could be the value of a + b + c?",
+      "options": [
+        "-23",
+        "-19",
+        "-14",
+        "-12"
+      ],
+      "correct": "-14",
+      "answer_key": "<p><strong>Correct Answer: -14</strong></p>"
+    },
+    {
+      "id": 13,
+      "question": "Function f is defined by f(x) = -a^x + b, where a and b are constants. In the xy-plane, the graph of y = f(x) - 15 has a y-intercept at (0, -99/7). The product of a and b is 65/7. What is the value of a?",
+      "question_type": "spr",
+      "spr_correct_answers": [
+        "5/7",
+        ".7143",
+        "0.7143"
+      ],
+      "spr_max_length": 5,
+      "answer_key": "<p><strong>Correct Answer: 5/7</strong></p><p>Enter the numerical value or fraction as shown. For fractions, use the format a/b (e.g., 7/2). Do not use mixed numbers or spaces.</p>"
+    },
+    {
+      "id": 14,
+      "question": "The line graph shows the estimated number of chipmunks in a state park on April 1 of each year from 1989 to 1999. Based on the line graph, in which year was the estimated number of chipmunks in the state park the greatest?",
+      "options": [
+        "1989",
+        "1994",
+        "1995",
+        "1998"
+      ],
+      "correct": "1995",
+      "answer_key": "<p><strong>Correct Answer: 1995</strong></p>"
+    },
+    {
+      "id": 15,
+      "question": "A fish swam a distance of 5,104 yards. How far did the fish swim, in miles? (1 mile = 1,760 yards)",
+      "options": [
+        "0.3",
+        "2.9",
+        "3,344",
+        "6,864"
+      ],
+      "correct": "2.9",
+      "answer_key": "<p><strong>Correct Answer: 2.9</strong></p>"
+    },
+    {
+      "id": 16,
+      "question": "Which expression is equivalent to 12x³ − 5x³?",
+      "options": [
+        "7x⁶",
+        "17x³",
+        "7x³",
+        "17x⁶"
+      ],
+      "correct": "7x³",
+      "answer_key": "<p><strong>Correct Answer: 7x³</strong></p>"
+    },
+    {
+      "id": 17,
+      "question": "x + y = 18, 5y = x. What is the solution (x, y) to the given system of equations?",
+      "options": [
+        "(15, 3)",
+        "(16, 2)",
+        "(17, 1)",
+        "(18, 0)"
+      ],
+      "correct": "(15, 3)",
+      "answer_key": "<p><strong>Correct Answer: (15, 3)</strong></p>"
+    },
+    {
+      "id": 18,
+      "question": "The point (8, 2) in the xy-plane is a solution to which of the following systems of inequalities?",
+      "options": [
+        "x > 0, y > 0",
+        "x > 0, y < 0",
+        "x < 0, y > 0",
+        "x < 0, y < 0"
+      ],
+      "correct": "x > 0, y > 0",
+      "answer_key": "<p><strong>Correct Answer: x > 0, y > 0</strong></p>"
+    },
+    {
+      "id": 19,
+      "question": "|x − 5| = 10. What is one possible solution to the given equation?",
+      "question_type": "spr",
+      "spr_correct_answers": [
+        "15",
+        "15.0",
+        "-5",
+        "-5.0"
+      ],
+      "spr_max_length": 4,
+      "answer_key": "<p><strong>Correct Answer: 15 or -5</strong></p><p>Enter the numerical value or fraction as shown. For fractions, use the format a/b (e.g., 7/2). Do not use mixed numbers or spaces.</p>"
+    },
+    {
+      "id": 20,
+      "question": "f(x) = 7x + 1. The function gives the total number of people on a company retreat with x managers. What is the total number of people on a company retreat with 7 managers?",
+      "question_type": "spr",
+      "spr_correct_answers": [
+        "50",
+        "50.0"
+      ],
+      "spr_max_length": 4,
+      "answer_key": "<p><strong>Correct Answer: 50</strong></p><p>Enter the numerical value or fraction as shown. For fractions, use the format a/b (e.g., 7/2). Do not use mixed numbers or spaces.</p>"
+    },
+    {
+      "id": 21,
+      "question": "h(x) = x² − 3. Which table gives three values of x and their corresponding values of h(x) for the given function h?",
+      "options": [
+        "x: 1, 2, 3; h(x): -2, 1, 6",
+        "x: 1, 2, 3; h(x): -2, 1, 3",
+        "x: 1, 2, 3; h(x): -1, 1, 3",
+        "x: 1, 2, 3; h(x): -2, 1, 6"
+      ],
+      "correct": "x: 1, 2, 3; h(x): -2, 1, 6",
+      "answer_key": "<p><strong>Correct Answer: A</strong></p>"
+    },
+    {
+      "id": 22,
+      "question": "Section 2, Module 2: Math. If x = 3, what is the value of x^3 - 2x?",
+      "options": [
+        "0",
+        "1",
+        "21",
+        "27"
+      ],
+      "correct": "21",
+      "answer_key": "<p><strong>Correct Answer: 21</strong></p>"
+    },
+    {
+      "id": 23,
+      "question": "To estimate the proportion of a population that has a certain characteristic, a random sample was selected from the population. Based on the sample, it is estimated that the proportion of the population that has the characteristic is 0.49, with an associated margin of error of 0.04. Based on this estimate and margin of error, which of the following is the most appropriate conclusion about the proportion of the population that has the characteristic?",
+      "options": [
+        "It is plausible that the proportion is between 0.45 and 0.53.",
+        "It is plausible that the proportion is less than 0.45.",
+        "The proportion is exactly 0.49.",
+        "It is plausible that the proportion is greater than 0.53."
+      ],
+      "correct": "It is plausible that the proportion is between 0.45 and 0.53.",
+      "answer_key": "<p><strong>Correct Answer: A</strong></p>"
+    },
+    {
+      "id": 24,
+      "question": "A moving truck can tow a trailer if the combined weight of the trailer and the boxes it contains is no more than 4,600 pounds. What is the maximum number of boxes this truck can tow in a trailer with a weight of 500 pounds if each box weighs 120 pounds?",
+      "options": [
+        "34",
+        "35",
+        "38",
+        "39"
+      ],
+      "correct": "34",
+      "answer_key": "<p><strong>Correct Answer: 34</strong></p>"
+    },
+    {
+      "id": 25,
+      "question": "-4x² - 7x = -36. What is the positive solution to the given equation?",
+      "question_type": "spr",
+      "spr_correct_answers": [
+        "9/4",
+        "2.25",
+        "2.250"
+      ],
+      "spr_max_length": 5,
+      "answer_key": "<p><strong>Correct Answer: 9/4 or 2.25</strong></p><p>Enter the numerical value or fraction as shown. For fractions, use the format a/b (e.g., 7/2). Do not use mixed numbers or spaces.</p>"
+    },
+    {
+      "id": 26,
+      "question": "The table summarizes the distribution of color and shape for 100 tiles of equal area. If one of these tiles is selected at random, what is the probability of selecting a red tile? (Express your answer as a decimal or fraction, not as a percent.)",
+      "question_type": "spr",
+      "spr_correct_answers": [
+        "0.35",
+        ".35",
+        "7/20"
+      ],
+      "spr_max_length": 5,
+      "answer_key": "<p><strong>Correct Answer: 0.35 or 7/20</strong></p><p>Enter the numerical value or fraction as shown. For fractions, use the format a/b (e.g., 7/2). Do not use mixed numbers or spaces.</p>"
+    },
+    {
+      "id": 27,
+      "question": "f(x) = 2x + 3. For the given function f, the graph of y = f(x) in the xy-plane is parallel to line j. What is the slope of line j?",
+      "question_type": "spr",
+      "spr_correct_answers": [
+        "2",
+        "2.0"
+      ],
+      "spr_max_length": 3,
+      "answer_key": "<p><strong>Correct Answer: 2</strong></p><p>Enter the numerical value or fraction as shown. For fractions, use the format a/b (e.g., 7/2). Do not use mixed numbers or spaces.</p>"
+    },
+    {
+      "id": 28,
+      "question": "A social media post reported that 15,000 more people voted in favor of the proposal than voted against it. Based on these data, how many people voted against the proposal?",
+      "options": [
+        "5,000",
+        "7,500",
+        "10,000",
+        "15,000"
+      ],
+      "correct": "7,500",
+      "answer_key": "<p><strong>Correct Answer: 7,500</strong></p>"
+    },
+    {
+      "id": 29,
+      "question": "In the figure, lines m and n are parallel. If x = 6k + 13 and y = 8k - 29, what is the value of z?",
+      "options": [
+        "3",
+        "21",
+        "41",
+        "139"
+      ],
+      "correct": "21",
+      "answer_key": "<p><strong>Correct Answer: 21</strong></p>"
+    },
+    {
+      "id": 30,
+      "question": "-3x + 21px = 84. In the given equation, p is a constant. The equation has no solution. What is the value of p?",
+      "question_type": "spr",
+      "spr_correct_answers": [
+        "1/7",
+        ".1429",
+        "0.1429"
+      ],
+      "spr_max_length": 5,
+      "answer_key": "<p><strong>Correct Answer: 1/7</strong></p><p>Enter the numerical value or fraction as shown. For fractions, use the format a/b (e.g., 7/2). Do not use mixed numbers or spaces.</p>"
+    },
+    {
+      "id": 31,
+      "question": "f(x) = (x - 10)(x + 13). The function f is defined by the given equation. For what value of x does f(x) reach its minimum?",
+      "options": [
+        "-1.5",
+        "-13"
+      ],
+      "correct": "-1.5",
+      "answer_key": "<p><strong>Correct Answer: -1.5</strong></p>"
+    },
+    {
+      "id": 32,
+      "question": "The function gives a metal ball's height above the ground, in inches, t seconds after it started moving on a track, where t > 0. Which of the following is the best interpretation of the vertex of the graph of h in the t h-plane?",
+      "options": [
+        "The metal ball's minimum height was 3 inches above the ground.",
+        "The metal ball's minimum height was 7 inches above the ground.",
+        "The metal ball's height was 3 inches above the ground when it started moving.",
+        "The metal ball's height was 7 inches above the ground when it started moving."
+      ],
+      "correct": "The metal ball's minimum height was 3 inches above the ground.",
+      "answer_key": "<p><strong>Correct Answer: A</strong></p>"
+    },
+    {
+      "id": 33,
+      "question": "In triangle JKL, JK = 10 and KL = 6, and angle J is a right angle. What is the value of JL?",
+      "question_type": "spr",
+      "spr_correct_answers": [
+        "8",
+        "8.0"
+      ],
+      "spr_max_length": 3,
+      "answer_key": "<p><strong>Correct Answer: 8</strong></p><p>Enter the numerical value or fraction as shown. For fractions, use the format a/b (e.g., 7/2). Do not use mixed numbers or spaces.</p>"
+    },
+    {
+      "id": 34,
+      "question": "-x^2 + bx - 676 = 0. In the given equation, b is a positive constant. The equation has exactly one solution. What is the value of b?",
+      "question_type": "spr",
+      "spr_correct_answers": [
+        "52",
+        "52.0"
+      ],
+      "spr_max_length": 4,
+      "answer_key": "<p><strong>Correct Answer: 52</strong></p><p>Enter the numerical value or fraction as shown. For fractions, use the format a/b (e.g., 7/2). Do not use mixed numbers or spaces.</p>"
+    },
+    {
+      "id": 35,
+      "question": "If a new graph of three linear equations is created using the system of equations shown and the equation y = 2x + 5, how many solutions will the resulting system of three equations have?",
+      "options": [
+        "Zero",
+        "Exactly one",
+        "Exactly two",
+        "Infinitely many"
+      ],
+      "correct": "Exactly one",
+      "answer_key": "<p><strong>Correct Answer: Exactly one</strong></p>"
+    },
+    {
+      "id": 36,
+      "question": "The function f gives the value, in dollars, of a certain piece of equipment after x months of use. If the value of the equipment decreases each year by p% of its value the preceding year, what is the value of p?",
+      "options": [
+        "4",
+        "5",
+        "36",
+        "64"
+      ],
+      "correct": "36",
+      "answer_key": "<p><strong>Correct Answer: 36</strong></p>"
+    },
+    {
+      "id": 37,
+      "question": "The dot plot represents the 15 values in data set A. Data set B is created by adding 56 to each of the values in data set A. Which of the following correctly compares the medians and the ranges of data sets A and B?",
+      "options": [
+        "The median of data set B is equal to the median of data set A, and the range of data set B is equal to the range of data set A.",
+        "The median of data set B is equal to the median of data set A, and the range of data set B is greater than the range of data set A.",
+        "The median of data set B is greater than the median of data set A, and the range of data set B is equal to the range of data set A.",
+        "The median of data set B is greater than the median of data set A, and the range of data set B is greater than the range of data set A."
+      ],
+      "correct": "The median of data set B is greater than the median of data set A, and the range of data set B is equal to the range of data set A.",
+      "answer_key": "<p><strong>Correct Answer: C</strong></p>"
+    },
+    {
+      "id": 38,
+      "question": "The equation x^2 + y^2 = 100 represents circle A. Circle B is obtained by shifting circle A down 2 units in the xy-plane. Which of the following equations represents circle B?",
+      "question_type": "spr",
+      "spr_correct_answers": [
+        "x^2 + (y + 2)^2 = 100",
+        "x^2+(y+2)^2=100"
+      ],
+      "spr_max_length": 18,
+      "answer_key": "<p><strong>Correct Answer: x^2 + (y + 2)^2 = 100</strong></p><p>Enter the equation as shown. Spaces are optional.</p>"
+    },
+    {
+      "id": 39,
+      "question": "Two identical rectangular prisms each have a height of 90 centimeters (cm). The base of each prism is a square, and the surface area of each prism is 3600 cm^2. If the prisms are glued together along a square base, the resulting prism has a surface area of 6480 cm^2. What is the side length, in cm, of each square base?",
+      "options": [
+        "4",
+        "8",
+        "9",
+        "16"
+      ],
+      "correct": "8",
+      "answer_key": "<p><strong>Correct Answer: 8</strong></p>"
+    },
+    {
+      "id": 40,
+      "question": "210 is p% greater than 30. What is the value of p?",
+      "question_type": "spr",
+      "spr_correct_answers": [
+        "600",
+        "600.0"
+      ],
+      "spr_max_length": 5,
+      "answer_key": "<p><strong>Correct Answer: 600</strong></p><p>Enter the numerical value or fraction as shown. For fractions, use the format a/b (e.g., 7/2). Do not use mixed numbers or spaces.</p>"
+    },
+    {
+      "id": 41,
+      "question": "Triangles ABC and DEF are congruent, where A corresponds to D, and B and E are right angles. The measure of angle A is 62 degrees. What is the measure of angle F?",
+      "question_type": "spr",
+      "spr_correct_answers": [
+        "28",
+        "28.0"
+      ],
+      "spr_max_length": 4,
+      "answer_key": "<p><strong>Correct Answer: 28</strong></p><p>Enter the numerical value or fraction as shown. For fractions, use the format a/b (e.g., 7/2). Do not use mixed numbers or spaces.</p>"
+    },
+    {
+      "id": 42,
+      "question": "The scatterplot shows the relationship between body weight and brain weight for 9 species of animal. Based on the scatterplot, what is the brain weight, in grams, of the species that has the greatest body weight?",
+      "options": [
+        "70",
+        "90",
+        "125",
+        "140"
+      ],
+      "correct": "140",
+      "answer_key": "<p><strong>Correct Answer: 140</strong></p>"
+    },
+    {
+      "id": 43,
+      "question": "What is the y-intercept of the graph shown?",
+      "options": [
+        "(0, 4)",
+        "(0, 12)",
+        "(4, 0)",
+        "(12, 4)"
+      ],
+      "correct": "(0, 12)",
+      "answer_key": "<p><strong>Correct Answer: (0, 12)</strong></p>"
+    },
+    {
+      "id": 44,
+      "question": "If 9x = 54, what is the value of 12x?",
+      "options": [
+        "45",
+        "57",
+        "72",
+        "162"
+      ],
+      "correct": "72",
+      "answer_key": "<p><strong>Correct Answer: 72</strong></p>"
+    }
+  ]
+}

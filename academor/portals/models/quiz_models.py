@@ -365,6 +365,10 @@ class QuizQuestion(models.Model):
         VIDEO = 'video', _('Video')
         AUDIO = 'audio', _('Audio')
 
+    class QuestionType(models.TextChoices):
+        MCQ = 'mcq', _('Multiple Choice')
+        SPR = 'spr', _('Student-Produced Response')
+
     quiz = models.ForeignKey(
         Quiz,
         on_delete=models.CASCADE,
@@ -380,6 +384,13 @@ class QuizQuestion(models.Model):
         choices=PromptType.choices,
         default=PromptType.TEXT,
         verbose_name=_('Question type'),
+    )
+    question_type = models.CharField(
+        max_length=10,
+        choices=QuestionType.choices,
+        default=QuestionType.MCQ,
+        verbose_name=_('Answer type'),
+        help_text=_('MCQ: Multiple choice with options. SPR: Student-Produced Response (typed answer).'),
     )
     question = models.TextField(
         blank=True,
@@ -408,10 +419,27 @@ class QuizQuestion(models.Model):
         default=0,
         verbose_name=_('Correct option index'),
     )
-    correct_answer = models.CharField(
-        max_length=500,
+    correct_answer = models.TextField(
         blank=True,
         verbose_name=_('Correct answer'),
+    )
+    spr_correct_answers = models.JSONField(
+        null=True,
+        blank=True,
+        verbose_name=_('SPR correct answers'),
+        help_text=_(
+            'One or more accepted answers for SPR questions '
+            '(e.g. ["7/2", "3.5"] or ["y = -x + 19"]).'
+        ),
+    )
+    spr_max_length = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        verbose_name=_('SPR max length'),
+        help_text=_(
+            'Optional character limit for the student input. '
+            'Leave blank for equations or free-text answers.'
+        ),
     )
     source_key = models.CharField(
         max_length=64,
@@ -466,19 +494,38 @@ class QuizQuestion(models.Model):
             self.answer_options = []
             self.correct_answer = ''
             self.correct_option_index = 0
+            self.spr_correct_answers = None
+            self.spr_max_length = None
             return
 
-        options = [str(item).strip() for item in (self.answer_options or []) if str(item).strip()]
-        if len(options) < 2:
-            raise ValidationError(_('Add at least two answer options.'))
+        if self.question_type == self.QuestionType.SPR:
+            self.answer_options = []
+            self.correct_answer = ''
+            self.correct_option_index = 0
+            answers = [
+                str(item).strip()
+                for item in (self.spr_correct_answers or [])
+                if str(item).strip()
+            ]
+            if not answers:
+                raise ValidationError(
+                    {'spr_correct_answers': _('SPR questions must have at least one correct answer.')},
+                )
+            self.spr_correct_answers = answers
+        else:
+            self.spr_correct_answers = None
+            self.spr_max_length = None
+            options = [str(item).strip() for item in (self.answer_options or []) if str(item).strip()]
+            if len(options) < 2:
+                raise ValidationError(_('Add at least two answer options.'))
 
-        correct = (self.correct_answer or '').strip()
-        if correct:
-            if correct not in options:
-                raise ValidationError(_('Correct answer must exactly match one of the options.'))
-            self.correct_option_index = options.index(correct)
-        elif self.correct_option_index >= len(options):
-            raise ValidationError(_('Select which answer option is correct.'))
+            correct = (self.correct_answer or '').strip()
+            if correct:
+                if correct not in options:
+                    raise ValidationError(_('Correct answer must exactly match one of the options.'))
+                self.correct_option_index = options.index(correct)
+            elif self.correct_option_index >= len(options):
+                raise ValidationError(_('Select which answer option is correct.'))
 
         if self.prompt_type == self.PromptType.TEXT:
             if not (self.question or '').strip():
@@ -499,9 +546,25 @@ class QuizQuestion(models.Model):
             self.answer_options = []
             self.correct_answer = ''
             self.correct_option_index = 0
+            self.spr_correct_answers = None
+            self.spr_max_length = None
             super().save(*args, **kwargs)
             return
 
+        if self.question_type == self.QuestionType.SPR:
+            self.answer_options = []
+            self.correct_answer = ''
+            self.correct_option_index = 0
+            self.spr_correct_answers = [
+                str(item).strip()
+                for item in (self.spr_correct_answers or [])
+                if str(item).strip()
+            ] or None
+            super().save(*args, **kwargs)
+            return
+
+        self.spr_correct_answers = None
+        self.spr_max_length = None
         options = [str(item).strip() for item in (self.answer_options or []) if str(item).strip()]
         self.answer_options = options
         correct = (self.correct_answer or '').strip()

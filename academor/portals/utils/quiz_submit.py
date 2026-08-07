@@ -1,4 +1,4 @@
-﻿"""Score and persist student quiz attempts."""
+"""Score and persist student quiz attempts."""
 
 from __future__ import annotations
 
@@ -9,6 +9,7 @@ from django.utils.dateparse import parse_datetime
 from django.utils.translation import gettext as _
 
 from portals.models import Quiz, QuizQuestion, QuizResult
+from portals.utils.sat_spr_validation import validate_spr_answer
 
 _COMPLETION_TRIGGERS = {
     value for value, _label in QuizResult.CompletionTrigger.choices
@@ -130,7 +131,7 @@ def _question_correct_index(question) -> int | None:
     return None
 
 
-def _normalize_given_answers(raw: dict) -> dict[int, int | None]:
+def _normalize_given_answers(raw: dict) -> dict[int, int | str | None]:
     normalized = {}
     if not isinstance(raw, dict):
         return normalized
@@ -142,10 +143,12 @@ def _normalize_given_answers(raw: dict) -> dict[int, int | None]:
         if value is None or value == '':
             normalized[question_id] = None
             continue
+        # Keep string values for SPR questions, convert to int for MCQ
         try:
             normalized[question_id] = int(value)
         except (TypeError, ValueError):
-            normalized[question_id] = None
+            # If it's not an integer, keep it as a string (for SPR answers)
+            normalized[question_id] = str(value).strip() if value else None
     return normalized
 
 
@@ -230,13 +233,11 @@ def _load_quiz_for_student(
 
             if not customer_mock_allows_active_section_take(customer_id, mock_attempt_id, quiz_id):
                 return None
-            if _mock_section_submit_error(mock_attempt_id, quiz_id, customer_id=customer_id):
-                return None
             return quiz
         # Active mock session may use section quizzes even if standalone unlock is off.
+        # Mock section validation runs once in the submit helpers (not here) to avoid
+        # duplicate get_active_mock_attempt queries and to return precise errors.
         if not student_quiz_enrollment_ok(student_id, quiz):
-            return None
-        if _mock_section_submit_error(mock_attempt_id, quiz_id, student_id=student_id):
             return None
         return quiz
     if not quiz_visible_to_student(quiz, student_id):
@@ -393,8 +394,13 @@ def _normalize_listening_model_answers(
     quiz: Quiz,
     *,
     ordered_answers: list | None = None,
+    questions=None,
 ) -> dict[str, str]:
-    questions = get_listening_questions_for_quiz(quiz)
+    questions = (
+        list(questions)
+        if questions is not None
+        else get_listening_questions_for_quiz(quiz)
+    )
     question_by_id = {question.pk: question for question in questions}
     question_ids = set(question_by_id)
     normalized: dict[str, str] = {}
@@ -453,8 +459,17 @@ def _normalize_listening_model_answers(
     return normalized
 
 
-def _validate_listening_model_answers(quiz: Quiz, answers: dict[str, str]) -> str | None:
-    questions = get_listening_questions_for_quiz(quiz)
+def _validate_listening_model_answers(
+    quiz: Quiz,
+    answers: dict[str, str],
+    *,
+    questions=None,
+) -> str | None:
+    questions = (
+        list(questions)
+        if questions is not None
+        else get_listening_questions_for_quiz(quiz)
+    )
     if not questions:
         return str(_('No listening questions found for this category.'))
     missing = []
@@ -558,33 +573,77 @@ def score_variant_quiz(
     given_answers: dict,
 ) -> tuple[float, int, list[dict]]:
     answers = _normalize_given_answers(given_answers)
-    questions = list(
-        quiz.questions.order_by('order', 'id').only(
-            'id', 'answer_options', 'correct_answer', 'correct_option_index',
-        ),
-    )
+    cache = getattr(quiz, '_prefetched_objects_cache', None)
+    if cache is not None and 'questions' in cache:
+        questions = list(quiz.questions.all())
+    else:
+        questions = list(
+            quiz.questions.order_by('order', 'id').only(
+                'id', 'answer_options', 'correct_answer', 'correct_option_index',
+                'question_type', 'spr_correct_answers',
+            ),
+        )
     max_score = len(questions)
     score = 0.0
     breakdown = []
 
     for question in questions:
-        correct_index = _question_correct_index(question)
-        selected_index = answers.get(question.pk)
-        is_correct = (
-            correct_index is not None
-            and selected_index is not None
-            and selected_index == correct_index
-        )
-        if is_correct:
-            score += 1.0
-        breakdown.append({
-            'id': question.pk,
-            'selected_index': selected_index,
-            'correct_index': correct_index,
-            'is_correct': is_correct,
-        })
+        # Handle SPR (Student-Produced Response) questions
+        if question.question_type == QuizQuestion.QuestionType.SPR:
+            student_answer = answers.get(question.pk, '')
+            is_correct = False
+            
+            if student_answer and question.spr_correct_answers:
+                validation = validate_spr_answer(
+                    str(student_answer),
+                    question.spr_correct_answers
+                )
+                is_correct = validation['is_correct']
+            
+            if is_correct:
+                score += 1.0
+            
+            breakdown.append({
+                'id': question.pk,
+                'question_type': 'spr',
+                'student_answer': str(student_answer),
+                'is_correct': is_correct,
+            })
+        else:
+            # Handle MCQ (Multiple Choice) questions
+            correct_index = _question_correct_index(question)
+            selected_index = answers.get(question.pk)
+            is_correct = (
+                correct_index is not None
+                and selected_index is not None
+                and selected_index == correct_index
+            )
+            if is_correct:
+                score += 1.0
+            breakdown.append({
+                'id': question.pk,
+                'question_type': 'mcq',
+                'selected_index': selected_index,
+                'correct_index': correct_index,
+                'is_correct': is_correct,
+            })
 
     return score, max_score, breakdown
+
+
+def _variant_breakdown_to_stored_answers(breakdown: list[dict]) -> dict[str, int | str]:
+    stored: dict[str, int | str] = {}
+    for item in breakdown:
+        question_id = str(item['id'])
+        if item.get('question_type') == QuizQuestion.QuestionType.SPR:
+            answer = item.get('student_answer')
+            if answer not in (None, ''):
+                stored[question_id] = answer
+            continue
+        selected_index = item.get('selected_index')
+        if selected_index is not None:
+            stored[question_id] = selected_index
+    return stored
 
 
 def submit_variant_quiz_attempt(
@@ -610,7 +669,7 @@ def submit_variant_quiz_attempt(
     if not quiz.is_variant_quiz:
         return {'success': False, 'error': _('This quiz cannot be submitted automatically.')}
 
-    if not quiz.questions.exists():
+    if not list(quiz.questions.all()):
         return {'success': False, 'error': _('This quiz has no questions yet.')}
 
     mock_error = _mock_section_submit_error(
@@ -633,11 +692,7 @@ def submit_variant_quiz_attempt(
 
     resolved_trigger = _normalize_completion_trigger(completion_trigger)
     score, max_score, breakdown = score_variant_quiz(quiz, given_answers)
-    stored_answers = {
-        str(item['id']): item['selected_index']
-        for item in breakdown
-        if item['selected_index'] is not None
-    }
+    stored_answers = _variant_breakdown_to_stored_answers(breakdown)
 
     try:
         result = _create_quiz_result(
@@ -722,7 +777,10 @@ def submit_reading_quiz_attempt(
     if mock_error:
         return {'success': False, 'error': mock_error}
 
-    normalized = normalize_reading_answers(quiz, given_answers)
+    from portals.utils.quiz_reading import get_reading_questions_for_quiz
+
+    questions = get_reading_questions_for_quiz(quiz)
+    normalized = normalize_reading_answers(quiz, given_answers, questions=questions)
 
     resolved_duration, duration_error = _resolve_duration_sec(
         quiz,
@@ -734,7 +792,11 @@ def submit_reading_quiz_attempt(
         return {'success': False, 'error': duration_error}
 
     resolved_trigger = _normalize_completion_trigger(completion_trigger)
-    score, max_score, breakdown = score_reading_quiz(quiz, normalized)
+    score, max_score, breakdown = score_reading_quiz(
+        quiz,
+        normalized,
+        questions=questions,
+    )
     stored_answers = {
         str(item['id']): normalized.get(str(item['id']), '')
         for item in breakdown
@@ -823,13 +885,19 @@ def submit_listening_quiz_attempt(
     if mock_error:
         return {'success': False, 'error': mock_error}
 
+    questions = get_listening_questions_for_quiz(quiz)
     listening_answers = _normalize_listening_model_answers(
         given_answers,
         quiz,
         ordered_answers=ordered_answers,
+        questions=questions,
     )
     if not allow_empty_submission:
-        validation_error = _validate_listening_model_answers(quiz, listening_answers)
+        validation_error = _validate_listening_model_answers(
+            quiz,
+            listening_answers,
+            questions=questions,
+        )
         if validation_error:
             return {'success': False, 'error': validation_error}
 
@@ -843,7 +911,11 @@ def submit_listening_quiz_attempt(
         return {'success': False, 'error': duration_error}
 
     resolved_trigger = _normalize_completion_trigger(completion_trigger)
-    score, max_score, breakdown = score_listening_quiz(quiz, listening_answers)
+    score, max_score, breakdown = score_listening_quiz(
+        quiz,
+        listening_answers,
+        questions=questions,
+    )
     stored_answers = {
         str(item['id']): listening_answers.get(str(item['id']), '')
         for item in breakdown

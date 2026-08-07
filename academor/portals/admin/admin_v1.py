@@ -335,17 +335,103 @@ class QuizQuestionInline(admin.StackedInline):
     fields = (
         'order',
         'prompt_type',
+        'question_type',
         'question',
         'media_file',
         'media_url',
         'answer_options',
         'correct_answer',
+        'spr_correct_answers',
+        'spr_max_length',
         'student_response_preview',
     )
     ordering = ('order', 'id')
     verbose_name = _('Question')
     verbose_name_plural = _('Questions')
     classes = ('portal-quiz-inline',)
+
+    @staticmethod
+    def _inline_supports_spr_fields(quiz):
+        if not quiz:
+            return True
+        if quiz.is_sat and (
+            quiz.is_math
+            or quiz.sat_section in Quiz.SAT_MATH_SECTIONS
+        ):
+            return True
+        return False
+
+    @classmethod
+    def _inline_answer_fields(cls, quiz):
+        fields = [
+            'order',
+            'prompt_type',
+            'question_type',
+            'question',
+            'media_file',
+            'media_url',
+            'answer_options',
+            'correct_answer',
+        ]
+        if cls._inline_supports_spr_fields(quiz):
+            fields.extend(['spr_correct_answers', 'spr_max_length'])
+        return fields
+
+    class Media:
+        js = ('portals/admin/js/quiz-question-type-toggle.js',)
+
+    def _resolve_parent_quiz(self, request, obj=None):
+        if obj is not None:
+            return obj
+        if not request:
+            return None
+        quiz_id = request.resolver_match.kwargs.get('object_id')
+        if not quiz_id:
+            return None
+        try:
+            return Quiz.objects.get(pk=quiz_id)
+        except (Quiz.DoesNotExist, ValueError, TypeError):
+            return None
+
+    def get_fieldsets(self, request, obj=None):
+        parent_quiz = self._resolve_parent_quiz(request, obj)
+
+        if parent_quiz and parent_quiz.is_essay:
+            return [
+                (None, {'fields': (
+                    'order', 'prompt_type', 'question',
+                    'media_file', 'media_url', 'student_response_preview',
+                )}),
+            ]
+
+        if parent_quiz and parent_quiz.is_manual_grading:
+            return [
+                (None, {'fields': (
+                    'order', 'prompt_type', 'question',
+                    'media_file', 'media_url',
+                )}),
+            ]
+
+        fields = self._inline_answer_fields(parent_quiz)
+        if not parent_quiz or not parent_quiz.is_sat:
+            fields = [*fields, 'student_response_preview']
+        return [(None, {'fields': tuple(fields)})]
+
+    def get_fields(self, request, obj=None):
+        parent_quiz = self._resolve_parent_quiz(request, obj)
+
+        if parent_quiz and parent_quiz.is_essay:
+            return [
+                'order', 'prompt_type', 'question',
+                'media_file', 'media_url', 'student_response_preview',
+            ]
+        if parent_quiz and parent_quiz.is_manual_grading:
+            return ['order', 'prompt_type', 'question', 'media_file', 'media_url']
+
+        fields = self._inline_answer_fields(parent_quiz)
+        if not parent_quiz or not parent_quiz.is_sat:
+            fields = [*fields, 'student_response_preview']
+        return fields
 
 
 class ListeningQuestionInline(admin.StackedInline):
@@ -2061,42 +2147,68 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
 @admin.register(QuizQuestion)
 class QuizQuestionAdmin(PortalModelAdmin):
     form = QuizQuestionAdminForm
-    list_display = ('question_short', 'quiz_display', 'order', 'prompt_type', 'option_count')
+    list_display = ('question_short', 'quiz_display', 'order', 'prompt_type', 'question_type', 'option_count')
     list_display_links = ('question_short',)
-    list_filter = ('prompt_type', 'quiz')
-    search_fields = ('question', 'quiz__topic', 'correct_answer')
+    list_filter = ('prompt_type', 'question_type', 'quiz')
+    search_fields = ('question', 'quiz__topic', 'correct_answer', 'question_type')
     autocomplete_fields = ('quiz',)
     ordering = ('quiz', 'order', 'id')
     list_per_page = 25
+    
+    class Media:
+        js = ('portals/admin/js/quiz-question-type-toggle.js',)
     fieldsets = (
         (None, {
             'description': _(
                 'Pick question type — the form switches instantly between text, image, video, or audio.',
             ),
-            'fields': ('quiz', 'order', 'prompt_type', 'question', 'media_file', 'media_url'),
+            'fields': ('quiz', 'order', 'prompt_type', 'question_type', 'question', 'media_file', 'media_url'),
         }),
-        (_('Answers'), {
-            'description': _('Answer options as JSON list. Correct answer must match one option exactly.'),
+        (_('MCQ Answers'), {
+            'description': _('Multiple choice: Add answer choices using the + button. Each option can contain rich text.'),
             'fields': ('answer_options', 'correct_answer'),
+        }),
+        (_('SPR Answers'), {
+            'description': _('Student-Produced Response: correct answers and max length for typed answers.'),
+            'fields': ('spr_correct_answers', 'spr_max_length'),
+            'classes': ('collapse',),
+        }),
+        (_('Student Response'), {
+            'description': _('Essay/Manual grading: Student writes answer in text field during quiz.'),
+            'fields': ('student_response_preview',),
+            'classes': ('collapse',),
         }),
     )
 
     def get_fieldsets(self, request, obj=None):
         fieldsets = list(super().get_fieldsets(request, obj))
-        if obj and obj.quiz_id and obj.quiz.is_essay:
-            fieldsets[1] = (
-                _('Student response'),
-                {
-                    'description': _(
-                        'Essay quizzes have no multiple-choice options. '
-                        'Students type their answer in a text field during the quiz.',
-                    ),
-                    'fields': ('student_response_preview',),
-                },
-            )
-        elif obj and obj.quiz_id and obj.quiz.is_manual_grading:
-            fieldsets = [fieldsets[0]]
-        return fieldsets
+        
+        # For new objects (obj is None), show all fieldsets so they can choose question type
+        if not obj:
+            return fieldsets
+            
+        # For objects without quiz, show all fieldsets
+        if not obj.quiz_id:
+            return fieldsets
+            
+        # Handle essay questions
+        if obj.quiz.is_essay:
+            return [fieldsets[0], fieldsets[3]]  # Basic + Student Response
+        
+        # Handle manual grading questions
+        if obj.quiz.is_manual_grading:
+            return [fieldsets[0]]  # Only basic fields
+        
+        # Show both MCQ and SPR fieldsets for SAT math quizzes so they can switch between types
+        if obj.quiz.is_sat and obj.quiz.is_math:
+            return [fieldsets[0], fieldsets[1], fieldsets[2]]  # Basic + MCQ + SPR
+        
+        # Handle SPR questions
+        if obj.question_type == 'spr':
+            return [fieldsets[0], fieldsets[2]]  # Basic + SPR
+        
+        # For MCQ questions, hide SPR fieldsets
+        return [fieldsets[0], fieldsets[1]]  # Basic + MCQ
 
     @admin.display(description=_('Quiz'))
     def quiz_display(self, obj):

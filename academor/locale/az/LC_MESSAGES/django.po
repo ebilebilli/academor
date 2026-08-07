@@ -476,7 +476,21 @@ msgid ""
 "override per part. Add speaking questions in the section below."
 msgstr ""
 
-#: academor/portals/admin/admin_v1.py:587
+#: academor/templates/portals/includes/quiz_question_play.html
+msgid "Answer format guidelines:"
+msgstr "Cavab formatı təlimatları:"
+
+#: academor/templates/portals/includes/quiz_question_play.html
+msgid "Acceptable formats"
+msgstr "Qəbul edilən formatlar"
+
+#: academor/templates/portals/includes/quiz_question_play.html
+msgid "Unacceptable formats"
+msgstr "Qəbul edilməyən formatlar"
+
+#: academor/templates/portals/includes/quiz_question_play.html
+msgid "Enter fractions as a/b (e.g., 7/2). Do not use mixed numbers or spaces. For decimals, include enough significant digits."
+msgstr "Kəsrləri a/b formatında daxil edin (məsələn, 7/2). Qarışıq rəqəmlər və ya boşluqlar istifadə etməyin. Ondalıklı sayılar üçün kifayət qədər əhəmiyyətli rəqəm əlavə edin."
 msgid ""
 "Each part belongs to a speaking quiz. Select an existing speaking quiz, or "
 "leave Quiz empty and enter a new topic and category — a speaking quiz will "
@@ -3798,6 +3812,9 @@ msgstr "Ana səhifəyə qayıt"
 #: academor/templates/portals/score_detail.html:19
 msgid "Back to notifications"
 msgstr "Bildirişlərə qayıt"
+
+msgid "Back to scores"
+msgstr "Ballara qayıt"
 
 #: academor/portals/views/notification_views.py:244
 #| msgid "All notifications marked as read."
@@ -9900,8 +9917,6 @@ msgstr "Nəticələr"
 #~ msgid "Graded"
 #~ msgstr "Qiymətləndirilib"
 
-#~ msgid "Total"
-#~ msgstr "Cəmi"
 
 #, python-format
 #~ msgid ""
@@ -10932,3 +10947,44 @@ msgstr "%(days)s gün əvvəl"
 
 #~ msgid "View quizzes for your assigned services."
 #~ msgstr "Təyin edilmiş xidmətləriniz üçün quizlərə baxın."
+
+#: portals/includes/sat_scoring_guide.html
+msgid "How your practice score is calculated"
+msgstr "Təcrübə balınız necə hesablanır"
+
+#: portals/includes/sat_scoring_guide.html
+msgid "Each correct answer counts; wrong answers do not subtract points."
+msgstr "Hər düzgün cavab sayılır; yanlış cavablar üçün bal çıxılmır."
+
+#: portals/includes/sat_scoring_guide.html
+msgid "Section score = correct answers converted to the 200–800 scale."
+msgstr "Bölmə balı = düzgün cavabların 200–800 şkalasına çevrilməsi."
+
+#: portals/includes/sat_scoring_guide.html
+msgid "Total score = Reading and Writing + Math (400–1600)."
+msgstr "Ümumi bal = Reading and Writing + Math (400–1600)."
+
+#: portals/includes/sat_scoring_guide.html
+msgid "These are approximate practice estimates — not an official College Board score."
+msgstr "Bunlar təxmini təcrübə qiymətləridir — rəsmi College Board balı deyil."
+
+#~ msgid "How Digital SAT scores work"
+#~ msgstr "Digital SAT balları necə hesablanır"
+
+#~ msgid "Based on College Board Digital SAT scoring model. Exact official equating tables are not published."
+#~ msgstr "College Board Digital SAT bal modelinə əsaslanır. Rəsmi equating cədvəlləri açıqlanmır."
+
+#~ msgid "Practice score on Academor"
+#~ msgstr "Academor-da təcrübə balı"
+
+#~ msgid "Your section scores here use a simplified conversion from raw correct answers to the 200-800 scale. They are approximate practice estimates - not an official College Board score report."
+#~ msgstr "Buradakı bölmə balları düzgün cavablardan 200-800 şkalasına sadələşdirilmiş çevirmə ilə hesablanır. Bunlar təxmini təcrübə qiymətləridir - rəsmi College Board hesabatı deyil."
+
+#~ msgid "Adaptive modules"
+#~ msgstr "Adaptiv modullar"
+
+#~ msgid "Equating to scaled score"
+#~ msgstr "Equating → scaled score"
+
+#~ msgid "Conceptual path"
+#~ msgstr "Konseptual yol"

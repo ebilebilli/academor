@@ -1,10 +1,11 @@
 import json
 
-from ckeditor.widgets import CKEditorWidget
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
+from portals.admin.widgets import AnswerOptionsFormField, AnswerOptionsWidget
 from portals.models import ListeningQuestion, Quiz, QuizCategory, QuizQuestion
 from portals.models.reading_models import (
     GROUP_QUESTION_TYPES,
@@ -15,17 +16,17 @@ from portals.models.reading_models import (
     TEXT_QUESTION_TYPES,
 )
 from portals.models.speaking_models import SpeakingPart
+from portals.utils.sat_spr_validation import plain_spr_text
 
 
 class ListeningQuestionAdminForm(forms.ModelForm):
+    answer_options = AnswerOptionsFormField()
+
     class Meta:
         model = ListeningQuestion
         fields = ('order', 'question', 'answer_options', 'correct_answer')
         widgets = {
-            'question': CKEditorWidget(),
-            'answer_options': forms.Textarea(
-                attrs={'rows': 4, 'class': 'vLargeTextField portal-quiz-json-field'},
-            ),
+            'question': CKEditorUploadingWidget(),
             'correct_answer': forms.TextInput(attrs={'class': 'vTextField'}),
         }
 
@@ -34,7 +35,7 @@ class ListeningQuestionAdminForm(forms.ModelForm):
         self.fields['answer_options'].required = False
         self.fields['correct_answer'].required = False
         self.fields['answer_options'].help_text = _(
-            'Optional JSON list of choices, e.g. ["Option A", "Option B", "Option C"]. '
+            'Optional: Add answer choices using the + button. Each option can contain rich text. '
             'Leave empty for a free-text answer.',
         )
         self.fields['correct_answer'].help_text = _(
@@ -43,30 +44,35 @@ class ListeningQuestionAdminForm(forms.ModelForm):
         if self.instance and self.instance.pk:
             options = self.instance.answer_options or []
             if isinstance(options, list):
-                self.initial['answer_options'] = json.dumps(
-                    options,
-                    ensure_ascii=False,
-                    indent=2,
-                )
+                self.initial['answer_options'] = options
+
+    class Media:
+        css = {'all': ('portals/css/answer-options-widget.css',)}
+        js = ('portals/admin/js/answer-options-widget.js',)
 
     def clean_answer_options(self):
         raw = self.cleaned_data.get('answer_options')
         if raw in (None, '', []):
             return []
-        if isinstance(raw, str):
+        # The AnswerOptionsWidget returns a list directly
+        if isinstance(raw, list):
+            parsed = raw
+        elif isinstance(raw, str):
             try:
                 parsed = json.loads(raw or '[]')
             except json.JSONDecodeError as exc:
                 raise ValidationError(_('Enter a valid JSON list of answer options.')) from exc
-        elif isinstance(raw, list):
-            parsed = raw
         else:
             raise ValidationError(_('Enter a valid JSON list of answer options.'))
 
         if not isinstance(parsed, list):
             raise ValidationError(_('Answer options must be a JSON list.'))
 
-        options = [str(item).strip() for item in parsed if str(item).strip()]
+        # Filter out empty options but keep HTML content
+        options = [item if item and str(item).strip() else '' for item in parsed]
+        # Remove completely empty options
+        options = [item for item in options if item and str(item).strip()]
+        
         if len(options) < 2:
             return []
         return options
@@ -91,6 +97,14 @@ class ListeningQuestionAdminForm(forms.ModelForm):
 
 
 class QuizQuestionAdminForm(forms.ModelForm):
+    answer_options = AnswerOptionsFormField()
+    spr_correct_answers = AnswerOptionsFormField(
+        widget=AnswerOptionsWidget(
+            item_label='Answer',
+            add_button_label='Add correct answer',
+            remove_title='Remove answer',
+        ),
+    )
     student_response_preview = forms.CharField(
         required=False,
         label=_('Student response'),
@@ -114,22 +128,20 @@ class QuizQuestionAdminForm(forms.ModelForm):
         fields = (
             'order',
             'prompt_type',
+            'question_type',
             'question',
             'media_file',
             'media_url',
             'answer_options',
             'correct_answer',
+            'spr_correct_answers',
+            'spr_max_length',
             'student_response_preview',
         )
         widgets = {
             'prompt_type': forms.Select(attrs={'class': 'quiz-prompt-type', 'data-quiz-prompt-type': ''}),
-            'question': forms.Textarea(
-                attrs={
-                    'rows': 3,
-                    'class': 'vLargeTextField quiz-question-input',
-                    'data-quiz-field': 'question',
-                },
-            ),
+            'question_type': forms.Select(attrs={'class': 'quiz-question-type', 'data-quiz-question-type': ''}),
+            'question': CKEditorUploadingWidget(),
             'media_file': forms.FileInput(
                 attrs={
                     'class': 'quiz-media-file-input',
@@ -143,50 +155,76 @@ class QuizQuestionAdminForm(forms.ModelForm):
                     'placeholder': 'https://',
                 },
             ),
-            'answer_options': forms.Textarea(
-                attrs={'rows': 4, 'class': 'vLargeTextField portal-quiz-json-field'},
-            ),
-            'correct_answer': forms.TextInput(attrs={'class': 'vTextField'}),
+            'correct_answer': CKEditorUploadingWidget(),
+            'spr_max_length': forms.NumberInput(attrs={'class': 'vIntegerField'}),
         }
 
     class Media:
-        css = {'all': ('portals/css/quiz-question-admin.css',)}
-        js = ('portals/admin/js/quiz-question-admin.js',)
+        css = {'all': ('portals/css/quiz-question-admin.css', 'portals/css/answer-options-widget.css',)}
+        js = (
+            'portals/admin/js/quiz-question-admin.js',
+            'portals/admin/js/answer-options-widget.js',
+            'portals/admin/js/quiz-question-type-toggle.js',
+        )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['prompt_type'].label = _('Question type')
-        self.fields['answer_options'].help_text = _(
-            'JSON list of choices, e.g. ["Option A", "Option B", "Option C"]',
-        )
-        self.fields['correct_answer'].help_text = _(
-            'Must exactly match one of the options in the list above.',
-        )
+        if 'question_type' in self.fields:
+            self.fields['question_type'].label = _('Answer type')
+        if 'answer_options' in self.fields:
+            self.fields['answer_options'].help_text = _(
+                'Add answer choices using the + button. Each option can contain rich text.',
+            )
+        if 'correct_answer' in self.fields:
+            self.fields['correct_answer'].help_text = _(
+                'Must exactly match one of the options in the list above.',
+            )
+        if 'spr_correct_answers' in self.fields:
+            self.fields['spr_correct_answers'].help_text = _(
+                'Add one or more accepted correct answers. Each answer can use rich text '
+                '(numbers like 7/2 or 3.5, or equations like y = -x + 19).',
+            )
+        if 'spr_max_length' in self.fields:
+            self.fields['spr_max_length'].required = False
+            self.fields['spr_max_length'].help_text = _(
+                'Optional. Limits how many characters the student may type. '
+                'Leave blank for equations / free-text answers.',
+            )
 
         manual = self._quiz_is_manual()
         essay = self._quiz_is_essay()
-        self.fields['student_response_preview'].initial = ''
+        if 'student_response_preview' in self.fields:
+            self.fields['student_response_preview'].initial = ''
         if essay:
-            self.fields['answer_options'].required = False
-            self.fields['correct_answer'].required = False
+            if 'answer_options' in self.fields:
+                self.fields['answer_options'].required = False
+            if 'correct_answer' in self.fields:
+                self.fields['correct_answer'].required = False
         elif manual:
-            self.fields['answer_options'].required = False
-            self.fields['correct_answer'].required = False
-            self.fields['answer_options'].help_text = _(
-                'Not used for Listening / Speaking quizzes.',
-            )
-            self.fields['correct_answer'].help_text = _(
-                'Not used for Listening / Speaking quizzes.',
-            )
+            if 'answer_options' in self.fields:
+                self.fields['answer_options'].required = False
+                self.fields['answer_options'].help_text = _(
+                    'Not used for Listening / Speaking quizzes.',
+                )
+            if 'correct_answer' in self.fields:
+                self.fields['correct_answer'].required = False
+                self.fields['correct_answer'].help_text = _(
+                    'Not used for Listening / Speaking quizzes.',
+                )
 
         if self.instance and self.instance.pk:
-            options = self.instance.answer_options or []
-            if isinstance(options, list):
-                self.initial['answer_options'] = json.dumps(
-                    options,
-                    ensure_ascii=False,
-                    indent=2,
-                )
+            if 'answer_options' in self.fields:
+                options = self.instance.answer_options or []
+                if isinstance(options, list):
+                    self.initial['answer_options'] = options
+            if 'spr_correct_answers' in self.fields:
+                spr_answers = self.instance.spr_correct_answers or []
+                if isinstance(spr_answers, list):
+                    self.initial['spr_correct_answers'] = spr_answers
+
+    def _field_on_form(self, name):
+        return name in self.fields
 
     def _post_flag(self, name):
         if not self.data:
@@ -213,41 +251,116 @@ class QuizQuestionAdminForm(forms.ModelForm):
             return []
 
         raw = self.cleaned_data.get('answer_options')
-        if isinstance(raw, str):
+        # The AnswerOptionsWidget returns a list directly
+        if isinstance(raw, list):
+            parsed = raw
+        elif isinstance(raw, str):
             try:
                 parsed = json.loads(raw or '[]')
             except json.JSONDecodeError as exc:
                 raise ValidationError(_('Enter a valid JSON list of answer options.')) from exc
-        elif isinstance(raw, list):
-            parsed = raw
         else:
             raise ValidationError(_('Enter a valid JSON list of answer options.'))
 
         if not isinstance(parsed, list):
             raise ValidationError(_('Answer options must be a JSON list.'))
 
-        options = [str(item).strip() for item in parsed if str(item).strip()]
+        # Filter out empty options but keep HTML content
+        options = [item if item and str(item).strip() else '' for item in parsed]
+        # Remove completely empty options
+        options = [item for item in options if item and str(item).strip()]
+        
         if len(options) < 2:
             raise ValidationError(_('Add at least two answer options.'))
         return options
 
+    def clean_spr_correct_answers(self):
+        raw = self.cleaned_data.get('spr_correct_answers')
+        question_type = self.cleaned_data.get('question_type')
+
+        if question_type != QuizQuestion.QuestionType.SPR:
+            return None
+
+        if isinstance(raw, list):
+            parsed = raw
+        elif isinstance(raw, str):
+            try:
+                parsed = json.loads(raw or '[]')
+            except json.JSONDecodeError as exc:
+                raise ValidationError(_('Enter a valid list of correct answers.')) from exc
+        elif raw in (None, ''):
+            parsed = []
+        else:
+            raise ValidationError(_('Enter a valid list of correct answers.'))
+
+        if not isinstance(parsed, list):
+            raise ValidationError(_('Correct answers must be a list.'))
+
+        answers = []
+        for item in parsed:
+            text = str(item or '').strip()
+            if not text or not plain_spr_text(text):
+                continue
+            answers.append(text)
+
+        if not answers:
+            raise ValidationError(_('Add at least one correct answer.'))
+
+        return answers
+
     def clean(self):
         cleaned = super().clean()
+        question_type = cleaned.get('question_type')
+        
         if self._quiz_is_manual():
             cleaned['answer_options'] = []
             cleaned['correct_answer'] = ''
+            cleaned['spr_correct_answers'] = None
+            cleaned['spr_max_length'] = None
             return cleaned
 
-        options = cleaned.get('answer_options') or []
-        correct = (cleaned.get('correct_answer') or '').strip()
-        if options:
-            if not correct:
-                self.add_error('correct_answer', _('Enter the correct answer.'))
-            elif correct not in options:
-                self.add_error(
-                    'correct_answer',
-                    _('Correct answer must exactly match one of the options.'),
-                )
+        if question_type == QuizQuestion.QuestionType.SPR:
+            # SPR-specific validation
+            cleaned['answer_options'] = []
+            cleaned['correct_answer'] = ''
+            cleaned['correct_option_index'] = 0
+
+            if not self._field_on_form('spr_correct_answers'):
+                return cleaned
+
+            spr_correct_answers = cleaned.get('spr_correct_answers')
+            if not spr_correct_answers:
+                self.add_error('spr_correct_answers', _('SPR questions must have at least one correct answer.'))
+            # spr_max_length is optional (needed only for classic short numeric grid-ins)
+        elif question_type == QuizQuestion.QuestionType.MCQ:
+            # MCQ-specific validation
+            cleaned['spr_correct_answers'] = None
+            cleaned['spr_max_length'] = None
+            
+            answer_options = cleaned.get('answer_options')
+            if not answer_options or len(answer_options) < 2:
+                self.add_error('answer_options', _('MCQ questions must have at least two answer options.'))
+            
+            correct_answer = cleaned.get('correct_answer')
+            if not correct_answer:
+                self.add_error('correct_answer', _('MCQ questions must have a correct answer.'))
+        else:
+            # Default case (no specific question type)
+            cleaned['spr_correct_answers'] = None
+            cleaned['spr_max_length'] = None
+            
+            options = cleaned.get('answer_options') or []
+            correct = (cleaned.get('correct_answer') or '').strip()
+            if options:
+                if not correct:
+                    self.add_error('correct_answer', _('Enter the correct answer.'))
+                elif correct not in options:
+                    self.add_error(
+                        'correct_answer',
+                        _('Correct answer must exactly match one of the options.'),
+                    )
+                else:
+                    cleaned['correct_option_index'] = options.index(correct)
 
         prompt_type = cleaned.get('prompt_type')
         question = (cleaned.get('question') or '').strip()
@@ -263,6 +376,8 @@ class QuizQuestionAdminForm(forms.ModelForm):
                 _('Upload a file or provide a media URL for this question type.'),
             )
 
+        options = cleaned.get('answer_options') or []
+        correct = (cleaned.get('correct_answer') or '').strip()
         if options and correct in options:
             cleaned['correct_option_index'] = options.index(correct)
 
@@ -274,7 +389,7 @@ class ReadingQuestionGroupAdminForm(forms.ModelForm):
         model = ReadingQuestionGroup
         fields = ('order', 'title', 'instructions', 'question_type', 'option_pool')
         widgets = {
-            'instructions': CKEditorWidget(),
+            'instructions': CKEditorUploadingWidget(),
             'option_pool': forms.Textarea(
                 attrs={'rows': 5, 'class': 'vLargeTextField portal-quiz-json-field'},
             ),
@@ -364,7 +479,7 @@ class ReadingQuestionAdminForm(forms.ModelForm):
             'question_config',
         )
         widgets = {
-            'question': CKEditorWidget(),
+            'question': CKEditorUploadingWidget(),
             'answer_options': forms.Textarea(
                 attrs={'rows': 4, 'class': 'vLargeTextField portal-quiz-json-field'},
             ),

@@ -1021,11 +1021,12 @@ def _serialize_score_detail(row: QuizResult, *, role: str) -> dict:
         question_count = quiz.questions.count()
     max_value = quiz.score_max_value(question_count=question_count)
     back_routes = {
-        'teacher': 'portals:teacher-notifications',
-        'parent': 'portals:parent-notifications',
-        'student': 'portals:student-notifications',
-        'customer': 'portals:customer-notifications',
+        'teacher': ('portals:teacher-notifications', _('Back to notifications')),
+        'parent': ('portals:parent-notifications', _('Back to notifications')),
+        'student': ('portals:student-scores', _('Back to scores')),
+        'customer': ('portals:customer-notifications', _('Back to notifications')),
     }
+    back_url_name, back_label = back_routes[role]
     latest_review = row.reviews.select_related('reviewer__user').first()
     completion_trigger = getattr(row, 'completion_trigger', 'manual') or 'manual'
     trigger_labels = dict(QuizResult.CompletionTrigger.choices)
@@ -1054,7 +1055,8 @@ def _serialize_score_detail(row: QuizResult, *, role: str) -> dict:
         'student_submission': row.student_submission,
         'teacher_feedback': row.teacher_feedback,
         'reviewer_name': latest_review.reviewer.full_name if latest_review else '',
-        'back_url': reverse(back_routes[role]),
+        'back_url': reverse(back_url_name),
+        'back_label': back_label,
     }
     if quiz.is_variant_quiz:
         data['breakdown'] = _build_variant_breakdown(row)

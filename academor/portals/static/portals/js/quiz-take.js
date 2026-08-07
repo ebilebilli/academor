@@ -72,11 +72,23 @@
     function collectAnswers() {
       var answers = {};
       root.querySelectorAll("[data-quiz-question-card]").forEach(function (card) {
-        var input = card.querySelector(".portal-quiz-play-option__input:checked");
-        var name = input ? input.getAttribute("name") : "";
-        var match = name && name.match(/quiz-q-(\d+)/);
-        if (match) {
-          answers[match[1]] = parseInt(input.value, 10);
+        // Check for SPR input first
+        var sprInput = card.querySelector("[data-quiz-spr-input]");
+        if (sprInput) {
+          var name = sprInput.getAttribute("name");
+          var match = name && name.match(/quiz-q-(\d+)/);
+          if (match) {
+            var value = sprInput.value.trim();
+            answers[match[1]] = value || null;
+          }
+        } else {
+          // Fall back to MCQ radio buttons
+          var input = card.querySelector(".portal-quiz-play-option__input:checked");
+          var name = input ? input.getAttribute("name") : "";
+          var match = name && name.match(/quiz-q-(\d+)/);
+          if (match) {
+            answers[match[1]] = parseInt(input.value, 10);
+          }
         }
       });
       return answers;
@@ -93,6 +105,9 @@
         finishBtn.innerHTML = active ? msgSubmitting : finishBtnHtml;
       }
       root.querySelectorAll(".portal-quiz-play-option__input").forEach(function (input) {
+        input.disabled = active || submitted;
+      });
+      root.querySelectorAll("[data-quiz-spr-input]").forEach(function (input) {
         input.disabled = active || submitted;
       });
     }
@@ -167,16 +182,33 @@
           row.className = "portal-quiz-take-result__item";
           var status = labelUnanswered;
           var tone = "muted";
-          if (item.selected_index === null || item.selected_index === undefined) {
-            status = labelUnanswered;
-            tone = "muted";
-          } else if (item.is_correct) {
-            status = labelCorrect;
-            tone = "success";
+          
+          // Handle SPR questions differently
+          if (item.question_type === 'spr') {
+            if (!item.student_answer || item.student_answer === '') {
+              status = labelUnanswered;
+              tone = "muted";
+            } else if (item.is_correct) {
+              status = labelCorrect;
+              tone = "success";
+            } else {
+              status = labelIncorrect;
+              tone = "danger";
+            }
           } else {
-            status = labelIncorrect;
-            tone = "danger";
+            // MCQ questions
+            if (item.selected_index === null || item.selected_index === undefined) {
+              status = labelUnanswered;
+              tone = "muted";
+            } else if (item.is_correct) {
+              status = labelCorrect;
+              tone = "success";
+            } else {
+              status = labelIncorrect;
+              tone = "danger";
+            }
           }
+          
           row.innerHTML =
             '<span class="portal-quiz-take-result__num">' + (index + 1) + "</span>" +
             '<span class="portal-quiz-take-result__status text-' + tone + '">' + status + "</span>";
@@ -188,6 +220,23 @@
       resultPanel.hidden = false;
       resultPanel.scrollIntoView({ behavior: "smooth", block: "start" });
       root.setAttribute("data-quiz-finished", "true");
+    }
+
+    function parseJsonResponse(response) {
+      var contentType = (response.headers.get("content-type") || "").toLowerCase();
+      if (contentType.indexOf("application/json") === -1) {
+        return response.text().then(function (body) {
+          var snippet = (body || "").replace(/\s+/g, " ").trim().slice(0, 120);
+          throw new Error(
+            snippet
+              ? msgError + " (" + response.status + ": " + snippet + ")"
+              : msgError + " (" + response.status + ")"
+          );
+        });
+      }
+      return response.json().then(function (data) {
+        return { ok: response.ok, data: data };
+      });
     }
 
     function submitQuiz(options) {
@@ -215,11 +264,7 @@
           mock: root.getAttribute("data-mock-id") || undefined,
         }),
       })
-        .then(function (response) {
-          return response.json().then(function (data) {
-            return { ok: response.ok, data: data };
-          });
-        })
+        .then(parseJsonResponse)
         .then(function (payload) {
           if (!payload.ok || !payload.data.success) {
             if (window.PortalQuizMockSection && window.PortalQuizMockSection.redirectIfNeeded(payload.data)) {

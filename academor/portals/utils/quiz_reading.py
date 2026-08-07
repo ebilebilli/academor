@@ -2,10 +2,13 @@
 
 from __future__ import annotations
 
+from django.db.models import Prefetch
+
 from portals.models import ReadingPassage, ReadingQuestion, Quiz
 from portals.models.reading_models import (
     CHOICE_QUESTION_TYPES,
     TEXT_QUESTION_TYPES,
+    ReadingQuestionGroup,
     matching_option_index,
     resolve_reading_question_options,
 )
@@ -18,7 +21,20 @@ def resolve_question_options(question: ReadingQuestion) -> list[str]:
 def get_quiz_reading_passages(quiz_id: int):
     return (
         ReadingPassage.objects.filter(quiz_id=quiz_id)
-        .prefetch_related('question_groups', 'questions__group')
+        .prefetch_related(
+            Prefetch(
+                'question_groups',
+                queryset=ReadingQuestionGroup.objects.order_by('order', 'id'),
+            ),
+            Prefetch(
+                'questions',
+                queryset=(
+                    ReadingQuestion.objects
+                    .select_related('group')
+                    .order_by('order', 'id')
+                ),
+            ),
+        )
         .order_by('order', 'id')
     )
 
@@ -242,11 +258,11 @@ def build_reading_sections_for_quiz(
     for passage in get_quiz_reading_passages(quiz_id):
         groups = [
             serialize_reading_question_group(group)
-            for group in passage.question_groups.all().order_by('order', 'id')
+            for group in passage.question_groups.all()
         ]
         section_questions = []
         seen_group_ids: set[int] = set()
-        for row in passage.questions.all().order_by('order', 'id'):
+        for row in passage.questions.all():
             if not row.is_answerable:
                 continue
             question_number += 1

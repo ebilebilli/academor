@@ -106,10 +106,22 @@ def student_has_active_mock_access(student_id):
     programs = get_student_mock_exam_programs(student_id)
     if not programs:
         return False
-    return any(
-        student_has_active_mock_access_for_program(student_id, program)
-        for program in programs
-    )
+    enrolled = set(get_student_course_type_codes(student_id))
+    eligible = [program for program in programs if program in enrolled]
+    if not eligible:
+        return False
+    try:
+        active = set(
+            StudentMockAccess.objects.filter(
+                student_id=student_id,
+                exam_program__in=eligible,
+                is_active=True,
+            ).values_list('exam_program', flat=True)
+        )
+    except Exception:
+        logger.exception('StudentMockAccess bulk lookup failed for student=%s', student_id)
+        return False
+    return bool(active)
 
 
 def get_student_mock_access_state(student_id, exam_program):
@@ -135,31 +147,42 @@ def get_student_mock_access_state(student_id, exam_program):
 
 
 def get_teacher_manageable_mock_programs(teacher_id, student_id):
-    from portals.models import TeacherCourseSpecialization
     from portals.utils.ielts_mock_test import get_student_mock_exam_programs
+    from portals.utils.teacher_courses import get_teacher_course_type_codes
 
     if not get_teacher_student(teacher_id, student_id):
         return []
     student_programs = set(get_student_mock_exam_programs(student_id))
-    teacher_programs = set(
-        TeacherCourseSpecialization.objects.filter(teacher_id=teacher_id)
-        .values_list('course_type', flat=True)
-    )
+    teacher_programs = set(get_teacher_course_type_codes(teacher_id))
     return sorted(student_programs & teacher_programs & set(MOCK_EXAM_PROGRAMS))
 
 
 def get_teacher_student_mock_access_rows(teacher_id, student_id):
     rows = []
-    for program in get_teacher_manageable_mock_programs(teacher_id, student_id):
-        state = get_student_mock_access_state(student_id, program) or {
-            'is_active': False,
-            'exists': False,
+    programs = get_teacher_manageable_mock_programs(teacher_id, student_id)
+    if not programs:
+        return []
+    try:
+        access_by_program = {
+            row.exam_program: row
+            for row in StudentMockAccess.objects.filter(
+                student_id=student_id,
+                exam_program__in=programs,
+            )
         }
+    except Exception:
+        logger.exception(
+            'StudentMockAccess rows lookup failed for student=%s',
+            student_id,
+        )
+        access_by_program = {}
+    for program in programs:
+        row = access_by_program.get(program)
         rows.append({
             'program': program,
             'label': get_program_label(program),
-            'is_active': state['is_active'],
-            'exists': state['exists'],
+            'is_active': bool(row and row.is_active),
+            'exists': row is not None,
         })
     return rows
 
@@ -197,6 +220,8 @@ def _quiz_format_label(quiz):
         return 'Speaking'
     if quiz.is_essay:
         return 'Writing'
+    if quiz.is_sat and quiz.sat_section:
+        return dict(Quiz.SatSection.choices).get(quiz.sat_section, quiz.sat_section)
     return 'Variant'
 
 
@@ -213,8 +238,14 @@ def get_teacher_student_quiz_access_rows(teacher_id, student_id):
         quiz_category_primary_portal_code,
         quiz_category_slugs_for_portal_codes,
     )
+    from portals.utils.teacher_courses import get_teacher_course_type_codes
 
-    slugs = quiz_category_slugs_for_portal_codes(student_codes)
+    teacher_codes = set(get_teacher_course_type_codes(teacher_id))
+    overlap_codes = student_codes & teacher_codes
+    if not overlap_codes:
+        return []
+
+    slugs = quiz_category_slugs_for_portal_codes(overlap_codes)
     if not slugs:
         return []
 

@@ -13,6 +13,10 @@
 
 {% include "portals/includes/quiz_mock_overall_summary.html" %}
 
+{% if mock_attempt.scoring_mode == 'sat_scaled' %}
+{% include "portals/includes/sat_scoring_guide.html" %}
+{% endif %}
+
 <section class="ds-card">
   <div class="table-responsive">
     <table class="t-table">

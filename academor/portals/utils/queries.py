@@ -934,6 +934,19 @@ def _answerable_question_counts(quiz_rows):
     return counts
 
 
+def _quiz_inline_question_count(quiz):
+    """Prefer annotated/prefetched counts — avoid COUNT(*) after prefetch."""
+    annotated = getattr(quiz, 'inline_question_count', None)
+    if annotated is not None:
+        return annotated
+    cache = getattr(quiz, '_prefetched_objects_cache', None)
+    if cache is not None and 'questions' in cache:
+        return len(quiz.questions.all())
+    if hasattr(quiz, 'questions'):
+        return quiz.questions.count()
+    return 0
+
+
 def serialize_quiz(quiz, *, question_counts=None):
     from portals.utils.portal_services import resolve_course_type_label
     from portals.utils.student_courses import get_quiz_service_code
@@ -941,7 +954,7 @@ def serialize_quiz(quiz, *, question_counts=None):
     code = get_quiz_service_code(quiz)
     label = resolve_course_type_label(code) if code else ''
     category = getattr(quiz, 'category', None)
-    inline_count = quiz.questions.count() if hasattr(quiz, 'questions') else 0
+    inline_count = _quiz_inline_question_count(quiz)
     question_count = inline_count
     if quiz.is_listening or quiz.is_reading or quiz.is_speaking:
         if question_counts is not None:
@@ -1113,7 +1126,8 @@ def get_teacher_quizzes_for_category(teacher_id, category_id):
             category__services__slug__in=quiz_category_slugs_for_portal_codes(course_codes),
         )
         .select_related('category')
-        .prefetch_related('questions')
+        .prefetch_related('category__services')
+        .annotate(inline_question_count=Count('questions', distinct=True))
         .distinct()
         .order_by('-created_at', 'id')
     )
@@ -1188,7 +1202,8 @@ def get_student_quizzes_for_category(student_id, category_id):
             category__services__slug__in=quiz_category_slugs_for_portal_codes(course_codes),
         )
         .select_related('category')
-        .prefetch_related('questions')
+        .prefetch_related('category__services')
+        .annotate(inline_question_count=Count('questions', distinct=True))
         .distinct()
         .order_by('-created_at', 'id')
     )
@@ -1235,12 +1250,14 @@ def serialize_quiz_question_for_student(question, *, student_answer: str = ''):
         'id': question.pk,
         'quiz_id': getattr(question, 'quiz_id', None),
         'prompt_type': question.prompt_type,
+        'question_type': getattr(question, 'question_type', 'mcq'),
         'question': question.question,
         'media_file_url': media_file_url,
         'media_url': question.media_url,
         'answer_options': question.answer_options or [],
         'order': getattr(question, 'order', 0),
         'student_answer': student_answer,
+        'spr_max_length': getattr(question, 'spr_max_length', None),
     }
 
 
@@ -1256,6 +1273,7 @@ def serialize_quiz_question(question):
         'id': question.pk,
         'quiz_id': question.quiz_id,
         'prompt_type': question.prompt_type,
+        'question_type': getattr(question, 'question_type', 'mcq'),
         'question': question.question,
         'media_file_url': media_file_url,
         'media_url': question.media_url,
@@ -1264,6 +1282,7 @@ def serialize_quiz_question(question):
         'correct_option_letter': _quiz_correct_option_letter(question),
         'correct_answer': question.correct_answer,
         'order': question.order,
+        'spr_max_length': getattr(question, 'spr_max_length', None),
     }
 
 
@@ -1286,7 +1305,7 @@ def serialize_quiz_result(row):
 
             question_count = len(get_listening_questions_for_quiz(quiz))
         else:
-            question_count = row.quiz.questions.count()
+            question_count = _quiz_inline_question_count(quiz)
     completion_trigger = getattr(row, 'completion_trigger', 'manual') or 'manual'
     from portals.models import QuizResult as QuizResultModel
     trigger_labels = dict(QuizResultModel.CompletionTrigger.choices)
@@ -1722,7 +1741,8 @@ def get_teacher_quizzes(teacher_id):
             category__services__slug__in=quiz_category_slugs_for_portal_codes(course_codes),
         )
         .select_related('category')
-        .prefetch_related('questions')
+        .prefetch_related('category__services')
+        .annotate(inline_question_count=Count('questions', distinct=True))
         .distinct()
         .order_by('-created_at', 'id')
     )
@@ -1789,10 +1809,7 @@ def get_teacher_quiz_detail(teacher_id, quiz_id):
 def get_student_reading_quiz_take_data(student_id, quiz_id, *, mock_attempt_id: int | None = None):
     from portals.utils.ielts_mock_test import mock_allows_active_section_take
     from portals.utils.student_courses import quiz_visible_to_student, student_quiz_enrollment_ok
-    from portals.utils.quiz_reading import (
-        build_reading_sections_for_quiz,
-        get_reading_questions_for_quiz,
-    )
+    from portals.utils.quiz_reading import build_reading_sections_for_quiz
 
     course_codes = get_student_course_type_codes(student_id)
     if not course_codes:
@@ -1803,6 +1820,7 @@ def get_student_reading_quiz_take_data(student_id, quiz_id, *, mock_attempt_id: 
             category__services__slug__in=quiz_category_slugs_for_portal_codes(course_codes),
         )
         .select_related('category')
+        .prefetch_related('category__services')
         .first()
     )
     if not quiz:
@@ -1814,14 +1832,15 @@ def get_student_reading_quiz_take_data(student_id, quiz_id, *, mock_attempt_id: 
         return None
     if not quiz.is_reading:
         return None
-    if not get_reading_questions_for_quiz(quiz):
+
+    sections = build_reading_sections_for_quiz(quiz.pk)
+    flat_questions = [row for section in sections for row in section['questions']]
+    if not flat_questions:
         return None
+    response_ids = [row['id'] for row in flat_questions]
 
     mock_take = mock_allows_active_section_take(student_id, mock_attempt_id, quiz_id)
     if mock_take:
-        sections = build_reading_sections_for_quiz(quiz.pk)
-        flat_questions = [row for section in sections for row in section['questions']]
-        response_ids = [row['id'] for row in flat_questions]
         return {
             **serialize_quiz(quiz),
             'questions': flat_questions,
@@ -1842,9 +1861,6 @@ def get_student_reading_quiz_take_data(student_id, quiz_id, *, mock_attempt_id: 
         .order_by('-completed_at', '-id')
         .first()
     )
-    sections = build_reading_sections_for_quiz(quiz.pk)
-    flat_questions = [row for section in sections for row in section['questions']]
-    response_ids = [row['id'] for row in flat_questions]
     return {
         **serialize_quiz(quiz),
         'questions': flat_questions,
@@ -1860,10 +1876,7 @@ def get_student_reading_quiz_take_data(student_id, quiz_id, *, mock_attempt_id: 
 def get_student_listening_quiz_take_data(student_id, quiz_id, *, mock_attempt_id: int | None = None):
     from portals.utils.ielts_mock_test import mock_allows_active_section_take
     from portals.utils.student_courses import quiz_visible_to_student, student_quiz_enrollment_ok
-    from portals.utils.quiz_listening import (
-        build_listening_sections_for_quiz,
-        get_listening_questions_for_quiz,
-    )
+    from portals.utils.quiz_listening import build_listening_sections_for_quiz
 
     course_codes = get_student_course_type_codes(student_id)
     if not course_codes:
@@ -1874,6 +1887,7 @@ def get_student_listening_quiz_take_data(student_id, quiz_id, *, mock_attempt_id
             category__services__slug__in=quiz_category_slugs_for_portal_codes(course_codes),
         )
         .select_related('category')
+        .prefetch_related('category__services')
         .first()
     )
     if not quiz:
@@ -1885,14 +1899,15 @@ def get_student_listening_quiz_take_data(student_id, quiz_id, *, mock_attempt_id
         return None
     if not quiz.is_listening:
         return None
-    if not get_listening_questions_for_quiz(quiz):
+
+    sections = build_listening_sections_for_quiz(quiz.pk)
+    flat_questions = [row for section in sections for row in section['questions']]
+    if not flat_questions:
         return None
+    response_ids = [row['id'] for row in flat_questions]
 
     mock_take = mock_allows_active_section_take(student_id, mock_attempt_id, quiz_id)
     if mock_take:
-        sections = build_listening_sections_for_quiz(quiz.pk)
-        flat_questions = [row for section in sections for row in section['questions']]
-        response_ids = [row['id'] for row in flat_questions]
         return {
             **serialize_quiz(quiz),
             'questions': flat_questions,
@@ -1913,9 +1928,6 @@ def get_student_listening_quiz_take_data(student_id, quiz_id, *, mock_attempt_id
         .order_by('-completed_at', '-id')
         .first()
     )
-    sections = build_listening_sections_for_quiz(quiz.pk)
-    flat_questions = [row for section in sections for row in section['questions']]
-    response_ids = [row['id'] for row in flat_questions]
     return {
         **serialize_quiz(quiz),
         'questions': flat_questions,
@@ -2308,6 +2320,35 @@ def serialize_quiz_result_review(row):
     return data
 
 
+def serialize_quiz_result_pending_list(row):
+    """Lightweight pending-queue payload — list UI only needs summary fields."""
+    from portals.utils.ielts_mock_test import find_mock_attempt_for_result, section_for_result_in_attempt
+
+    quiz = row.quiz
+    mock_attempt = find_mock_attempt_for_result(row)
+    mock_section = section_for_result_in_attempt(mock_attempt, row) if mock_attempt else None
+    mock_section_label = ''
+    if mock_section:
+        from portals.models import IeltsMockTestAttempt
+
+        mock_section_label = dict(IeltsMockTestAttempt.Section.choices).get(mock_section, mock_section)
+
+    return {
+        'id': row.pk,
+        'student_name': (
+            row.customer.full_name
+            if row.customer_id
+            else (row.student.full_name if row.student_id else '')
+        ),
+        'quiz_topic': quiz.topic if quiz else '',
+        'grading_mode_label': quiz.get_grading_mode_label() if quiz else '',
+        'completed_at': row.completed_at,
+        'mock_attempt_id': mock_attempt.pk if mock_attempt else None,
+        'mock_section': mock_section,
+        'mock_section_label': mock_section_label,
+    }
+
+
 def _teacher_pending_quiz_results_queryset(teacher_id):
     from django.db.models import Q
 
@@ -2331,7 +2372,8 @@ def _teacher_pending_quiz_results_queryset(teacher_id):
     )
     return (
         QuizResult.objects.filter(student_filter | customer_filter)
-        .select_related('student', 'customer', 'quiz', 'quiz__category')
+        .select_related('student', 'customer', 'quiz', 'quiz__category', 'ielts_mock_attempt')
+        .prefetch_related('quiz__category__services')
         .distinct()
         .order_by('-completed_at', 'id')
     )
@@ -2343,11 +2385,8 @@ def get_teacher_pending_quiz_results(teacher_id):
     qs = _teacher_pending_quiz_results_queryset(teacher_id)
     if qs is None:
         return []
-    qs = qs.prefetch_related(
-        Prefetch('quiz__questions', queryset=QuizQuestion.objects.order_by('order', 'id')),
-    )
     visible = filter_quiz_results_for_teacher(qs, teacher_id)
-    return [serialize_quiz_result_review(row) for row in visible[:100]]
+    return [serialize_quiz_result_pending_list(row) for row in visible[:100]]
 
 
 def get_teacher_quiz_result_detail(teacher_id, result_id):
@@ -2355,9 +2394,16 @@ def get_teacher_quiz_result_detail(teacher_id, result_id):
 
     row = (
         QuizResult.objects.filter(pk=result_id)
-        .select_related('student', 'customer', 'quiz', 'quiz__category')
+        .select_related(
+            'student',
+            'customer',
+            'quiz',
+            'quiz__category',
+            'ielts_mock_attempt',
+        )
         .prefetch_related(
             Prefetch('quiz__questions', queryset=QuizQuestion.objects.order_by('order', 'id')),
+            'quiz__category__services',
         )
         .first()
     )
@@ -2444,7 +2490,8 @@ def get_student_quizzes(student_id):
     qs = (
         Quiz.objects.filter(category__services__slug__in=quiz_category_slugs_for_portal_codes(codes))
         .select_related('category')
-        .prefetch_related('questions')
+        .prefetch_related('category__services')
+        .annotate(inline_question_count=Count('questions', distinct=True))
         .distinct()
         .order_by('-created_at', 'id')
     )
@@ -2766,7 +2813,7 @@ def _student_performance_snapshot(student_id, *, parent_id=None, group_id=None):
     from portals.utils.ielts_mock_test import (
         get_student_completed_mock_attempts,
         get_student_mock_exam_programs,
-        serialize_mock_attempt_summary,
+        serialize_mock_attempt_summaries,
         student_can_access_mock,
     )
     from portals.utils.quiz_stats import (
@@ -2830,11 +2877,11 @@ def _student_performance_snapshot(student_id, *, parent_id=None, group_id=None):
     if group_service_codes is not None:
         mock_programs = [code for code in mock_programs if code in group_service_codes]
     if mock_programs and student_can_access_mock(student_id):
-        mock_attempts = [
-            serialize_mock_attempt_summary(attempt)
+        mock_attempts = serialize_mock_attempt_summaries([
+            attempt
             for attempt in get_student_completed_mock_attempts(student_id)
             if getattr(attempt, 'exam_program', None) in mock_programs
-        ]
+        ])
         mock_stats_list = build_mock_stats_list(mock_attempts)
 
     return {

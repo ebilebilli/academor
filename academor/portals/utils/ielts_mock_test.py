@@ -49,7 +49,7 @@ from portals.utils.mock_programs import (
     section_index_for_program,
 )
 from portals.utils.quiz_assignments import student_has_active_mock_access_for_program
-from portals.utils.student_courses import student_has_course_access
+from portals.utils.student_courses import get_student_course_type_codes, student_has_course_access
 
 # Backward-compatible aliases for existing imports.
 MockTestAttempt = IeltsMockTestAttempt
@@ -62,10 +62,11 @@ logger = logging.getLogger('portals.mock_test')
 
 
 def get_student_mock_exam_programs(student_id: int) -> list[str]:
+    codes = set(get_student_course_type_codes(student_id))
     programs: list[str] = []
-    if student_has_course_access(student_id, IELTS_SERVICE):
+    if IELTS_SERVICE in codes:
         programs.append(IELTS_SERVICE)
-    if student_has_course_access(student_id, SAT_SERVICE):
+    if SAT_SERVICE in codes:
         programs.append(SAT_SERVICE)
     return programs
 
@@ -816,12 +817,64 @@ def maybe_publish_mock_results_for_result(result: QuizResult) -> None:
         maybe_publish_mock_attempt_results(refreshed)
 
 
-def serialize_mock_attempt_summary(attempt: IeltsMockTestAttempt) -> dict:
+def _batch_quiz_max_scores(quizzes) -> dict[int, int]:
+    """One typed-count pass + one variant Count for all quizzes on a page."""
+    from django.db.models import Count
+    from portals.utils.queries import _answerable_question_counts
+
+    unique = []
+    seen = set()
+    for quiz in quizzes or []:
+        if not quiz or quiz.pk in seen:
+            continue
+        seen.add(quiz.pk)
+        unique.append(quiz)
+    if not unique:
+        return {}
+
+    typed = _answerable_question_counts(unique)
+    variant_ids = [
+        quiz.pk
+        for quiz in unique
+        if not quiz.is_manual_grading
+        and not quiz.is_reading
+        and not quiz.is_listening
+    ]
+    variant_counts = {}
+    if variant_ids:
+        variant_counts = dict(
+            QuizQuestion.objects.filter(quiz_id__in=variant_ids)
+            .values('quiz_id')
+            .annotate(c=Count('id'))
+            .values_list('quiz_id', 'c')
+        )
+
+    scores: dict[int, int] = {}
+    for quiz in unique:
+        if quiz.is_manual_grading:
+            scores[quiz.pk] = quiz.MANUAL_REVIEW_MAX_SCORE
+        elif quiz.is_reading or quiz.is_listening or quiz.is_speaking:
+            scores[quiz.pk] = typed.get(quiz.pk, 0)
+        else:
+            scores[quiz.pk] = int(variant_counts.get(quiz.pk, 0))
+    return scores
+
+
+def serialize_mock_attempt_summary(
+    attempt: IeltsMockTestAttempt,
+    *,
+    max_scores: dict[int, int] | None = None,
+) -> dict:
     exam_program = attempt.exam_program
     scoring_mode = get_program_scoring_mode(exam_program)
     auto_sections = get_auto_sections(exam_program)
     manual_sections = get_manual_sections(exam_program)
     section_order = attempt.program_section_order()
+
+    if max_scores is None:
+        max_scores = _batch_quiz_max_scores(
+            [attempt.quiz_for_section(section) for section in section_order]
+        )
 
     sections = []
     section_scores: list[float] = []
@@ -842,7 +895,7 @@ def serialize_mock_attempt_summary(attempt: IeltsMockTestAttempt) -> dict:
         if is_pending_review:
             pending_review_count += 1
 
-        max_score = quiz.score_max_value() if quiz else None
+        max_score = max_scores.get(quiz.pk) if quiz else None
         total_score = result.total_score if result else None
         has_final_score = bool(
             result
@@ -959,6 +1012,22 @@ def serialize_mock_attempt_summary(attempt: IeltsMockTestAttempt) -> dict:
         'manual_max_total': manual_max_total if manual_scores else None,
         'manual_band_average': manual_band_average,
     }
+
+
+def serialize_mock_attempt_summaries(attempts) -> list[dict]:
+    """Serialize many attempts with one batched max-score lookup."""
+    rows = list(attempts or [])
+    quizzes = []
+    for attempt in rows:
+        for section in attempt.program_section_order():
+            quiz = attempt.quiz_for_section(section)
+            if quiz:
+                quizzes.append(quiz)
+    max_scores = _batch_quiz_max_scores(quizzes)
+    return [
+        serialize_mock_attempt_summary(attempt, max_scores=max_scores)
+        for attempt in rows
+    ]
 
 
 def get_student_completed_mock_attempts(

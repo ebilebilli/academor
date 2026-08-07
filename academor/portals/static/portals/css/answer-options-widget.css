@@ -1,0 +1,98 @@
+.answer-options-container {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    background: #f9f9f9;
+}
+
+.answer-options-list {
+    margin-bottom: 10px;
+}
+
+.answer-option-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+}
+
+.answer-option-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.answer-option-label {
+    font-weight: 600;
+    color: #333;
+    font-size: 13px;
+}
+
+.answer-option-remove-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.answer-option-remove-btn:hover {
+    background: #c82333;
+}
+
+.answer-option-textarea {
+    width: 100%;
+    min-height: 60px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.answer-option-textarea.ckeditor-enabled {
+    min-height: 80px;
+}
+
+.answer-option-add-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.answer-option-add-btn:hover {
+    background: #218838;
+}
+
+.answer-options-hidden {
+    display: none;
+}
+
+/* CKEditor specific styles within the widget */
+.answer-options-container .cke {
+    border: 1px solid #ddd !important;
+}
+
+.answer-options-container .cke_top {
+    background: #f8f9fa !important;
+    border-bottom: 1px solid #e0e0e0 !important;
+}
+
+.answer-options-container .cke_bottom {
+    display: none;
+}

@@ -29,39 +29,70 @@ def _normalize_question(raw: dict, index: int, resource_slug: str) -> dict:
     if not question:
         raise ValueError(f'Question #{index + 1} in {resource_slug} is missing text.')
 
-    options_raw = raw.get('options') or raw.get('answer_options') or []
-    options = [str(item).strip() for item in options_raw if str(item).strip()]
-    if len(options) < 2:
-        raise ValueError(f'Question #{index + 1} in {resource_slug} needs at least two options.')
+    # Determine question type (MCQ or SPR)
+    question_type = (raw.get('question_type') or 'mcq').strip().lower()
+    
+    if question_type == 'spr':
+        # SPR (Student-Produced Response) validation
+        spr_correct_answers = raw.get('spr_correct_answers') or []
+        if not isinstance(spr_correct_answers, list):
+            raise ValueError(f'Question #{index + 1} in {resource_slug}: spr_correct_answers must be a list.')
+        
+        if not spr_correct_answers:
+            raise ValueError(f'Question #{index + 1} in {resource_slug}: SPR questions must have at least one correct answer.')
+        
+        spr_max_length = raw.get('spr_max_length')
+        if spr_max_length is None:
+            raise ValueError(f'Question #{index + 1} in {resource_slug}: SPR questions must have spr_max_length specified.')
+        
+        return {
+            'source_key': _source_key(resource_slug, raw, index, question),
+            'question': question,
+            'question_type': QuizQuestion.QuestionType.SPR,
+            'answer_options': [],
+            'correct_answer': '',
+            'correct_option_index': 0,
+            'spr_correct_answers': spr_correct_answers,
+            'spr_max_length': spr_max_length,
+        }
+    else:
+        # MCQ (Multiple Choice) validation
+        options_raw = raw.get('options') or raw.get('answer_options') or []
+        options = [str(item).strip() for item in options_raw if str(item).strip()]
+        if len(options) < 2:
+            raise ValueError(f'Question #{index + 1} in {resource_slug} needs at least two options.')
 
-    correct = (raw.get('correct') or raw.get('correct_answer') or '').strip()
-    if not correct and raw.get('answer') is not None and raw.get('answer') != '':
-        try:
-            answer_index = int(raw['answer'])
-        except (TypeError, ValueError) as exc:
+        correct = (raw.get('correct') or raw.get('correct_answer') or '').strip()
+        if not correct and raw.get('answer') is not None and raw.get('answer') != '':
+            try:
+                answer_index = int(raw['answer'])
+            except (TypeError, ValueError) as exc:
+                raise ValueError(
+                    f'Question #{index + 1} in {resource_slug}: invalid answer index.',
+                ) from exc
+            if not 0 <= answer_index < len(options):
+                raise ValueError(
+                    f'Question #{index + 1} in {resource_slug}: answer index out of range.',
+                )
+            correct = options[answer_index]
+
+        if not correct:
+            raise ValueError(f'Question #{index + 1} in {resource_slug} is missing correct answer.')
+        if correct not in options:
             raise ValueError(
-                f'Question #{index + 1} in {resource_slug}: invalid answer index.',
-            ) from exc
-        if not 0 <= answer_index < len(options):
-            raise ValueError(
-                f'Question #{index + 1} in {resource_slug}: answer index out of range.',
+                f'Question #{index + 1} in {resource_slug}: correct answer must match an option.',
             )
-        correct = options[answer_index]
 
-    if not correct:
-        raise ValueError(f'Question #{index + 1} in {resource_slug} is missing correct answer.')
-    if correct not in options:
-        raise ValueError(
-            f'Question #{index + 1} in {resource_slug}: correct answer must match an option.',
-        )
-
-    return {
-        'source_key': _source_key(resource_slug, raw, index, question),
-        'question': question,
-        'answer_options': options,
-        'correct_answer': correct,
-        'correct_option_index': options.index(correct),
-    }
+        return {
+            'source_key': _source_key(resource_slug, raw, index, question),
+            'question': question,
+            'question_type': QuizQuestion.QuestionType.MCQ,
+            'answer_options': options,
+            'correct_answer': correct,
+            'correct_option_index': options.index(correct),
+            'spr_correct_answers': None,
+            'spr_max_length': None,
+        }
 
 
 def parse_resource_file(path: Path) -> dict:
@@ -152,10 +183,13 @@ def sync_quiz_questions(
             defaults={
                 'order': index + 1,
                 'prompt_type': QuizQuestion.PromptType.TEXT,
+                'question_type': item['question_type'],
                 'question': item['question'],
                 'answer_options': item['answer_options'],
                 'correct_answer': item['correct_answer'],
                 'correct_option_index': item['correct_option_index'],
+                'spr_correct_answers': item['spr_correct_answers'],
+                'spr_max_length': item['spr_max_length'],
             },
         )
         if was_created:

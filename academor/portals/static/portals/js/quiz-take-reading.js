@@ -334,6 +334,23 @@
       root.setAttribute("data-quiz-finished", "true");
     }
 
+    function parseJsonResponse(response) {
+      var contentType = (response.headers.get("content-type") || "").toLowerCase();
+      if (contentType.indexOf("application/json") === -1) {
+        return response.text().then(function (body) {
+          var snippet = (body || "").replace(/\s+/g, " ").trim().slice(0, 120);
+          throw new Error(
+            snippet
+              ? msgError + " (" + response.status + ": " + snippet + ")"
+              : msgError + " (" + response.status + ")"
+          );
+        });
+      }
+      return response.json().then(function (data) {
+        return { ok: response.ok, data: data };
+      });
+    }
+
     function submitQuiz(options) {
       options = options || {};
       if (submitting || submitted || !submitUrl) {
@@ -359,11 +376,7 @@
           mock: root.getAttribute("data-mock-id") || undefined,
         }),
       })
-        .then(function (response) {
-          return response.json().then(function (data) {
-            return { ok: response.ok, data: data };
-          });
-        })
+        .then(parseJsonResponse)
         .then(function (payload) {
           if (!payload.ok || !payload.data.success) {
             if (window.PortalQuizMockSection && window.PortalQuizMockSection.redirectIfNeeded(payload.data)) {

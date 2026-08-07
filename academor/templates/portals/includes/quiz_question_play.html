@@ -2,7 +2,11 @@
 <article class="portal-quiz-play-card" data-quiz-question-card>
   <header class="portal-quiz-play-card__head">
     <span class="portal-quiz-play-card__index">{% trans 'Question' %} {{ number }}</span>
-    {% if q.prompt_type and q.prompt_type != 'text' %}
+    {% if q.question_type == 'spr' %}
+    <span class="portal-quiz-play-card__type badge rounded-pill text-bg-primary border">
+      <i class="bi bi-pencil me-1" aria-hidden="true"></i>{% trans 'Enter answer' %}
+    </span>
+    {% elif q.prompt_type and q.prompt_type != 'text' %}
     <span class="portal-quiz-play-card__type badge rounded-pill text-bg-light border">
       {% if q.prompt_type == 'image' %}<i class="bi bi-image me-1" aria-hidden="true"></i>{% trans 'Image' %}
       {% elif q.prompt_type == 'video' %}<i class="bi bi-camera-video me-1" aria-hidden="true"></i>{% trans 'Video' %}
@@ -14,6 +18,59 @@
 
   {% include "portals/includes/quiz_question_prompt.html" with q=q %}
 
+  {% if q.question_type == 'spr' %}
+  <div class="portal-quiz-play-spr">
+    <label for="quiz-q-{{ q.id }}" class="visually-hidden">{% blocktrans with n=number %}Your answer for question {{ n }}{% endblocktrans %}</label>
+    <input
+      type="text"
+      id="quiz-q-{{ q.id }}"
+      name="quiz-q-{{ q.id }}"
+      class="form-control portal-quiz-play-spr__input"
+      placeholder="{% trans 'Enter your answer' %}"
+      {% if q.spr_max_length %}maxlength="{{ q.spr_max_length }}"{% endif %}
+      data-quiz-spr-input
+    >
+    {% if q.spr_max_length %}
+    <small class="form-text text-muted">{% blocktrans with max=q.spr_max_length %}Maximum {{ max }} characters{% endblocktrans %}</small>
+    {% endif %}
+    
+    <div class="portal-quiz-play-spr__help alert alert-info mt-2">
+      <strong>{% trans 'Answer format guidelines:' %}</strong>
+      <div class="portal-quiz-play-spr__help-table mt-2">
+        <table class="table table-sm table-bordered mb-0">
+          <thead>
+            <tr>
+              <th>{% trans 'Answer' %}</th>
+              <th>{% trans 'Acceptable formats' %}</th>
+              <th>{% trans 'Unacceptable formats' %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>4.5</td>
+              <td>4.5 / 4.50 / 9/2</td>
+              <td>41/2 / 4 1/2</td>
+            </tr>
+            <tr>
+              <td>3/4</td>
+              <td>3/4 / .75 / .7500 / 0.75 / 0.750</td>
+              <td>0.7 / .7 / 0.8 / .8</td>
+            </tr>
+            <tr>
+              <td>-2/5</td>
+              <td>-2/5 / -.4 / -0.4</td>
+              <td>-.40 / -0.40</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <small class="text-muted mt-2 d-block">
+        <i class="bi bi-info-circle me-1"></i>
+        {% trans 'Enter fractions as a/b (e.g., 7/2). Do not use mixed numbers or spaces. For decimals, include enough significant digits.' %}
+      </small>
+    </div>
+  </div>
+  {% else %}
   <fieldset class="portal-quiz-play-options">
     <legend class="visually-hidden">{% blocktrans with n=number %}Answer choices for question {{ n }}{% endblocktrans %}</legend>
     {% for option in q.answer_options %}
@@ -29,4 +86,5 @@
     </label>
     {% endfor %}
   </fieldset>
+  {% endif %}
 </article>

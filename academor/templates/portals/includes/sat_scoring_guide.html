@@ -1,0 +1,17 @@
+{% load i18n %}
+{# Shown on SAT mock complete / detail when scoring_mode is sat_scaled. #}
+<section class="ds-card mb-4 sat-scoring-guide" aria-labelledby="sat-scoring-guide-title">
+  <header class="sat-scoring-guide__header">
+    <h2 id="sat-scoring-guide-title" class="h5 mb-1">{% trans 'How your practice score is calculated' %}</h2>
+  </header>
+
+  <div class="sat-scoring-guide__notice" role="note">
+    <i class="ti ti-info-circle" aria-hidden="true"></i>
+    <ul class="sat-scoring-guide__list sat-scoring-guide__list--bullets mb-0">
+      <li>{% trans 'Each correct answer counts; wrong answers do not subtract points.' %}</li>
+      <li>{% trans 'Section score = correct answers converted to the 200–800 scale.' %}</li>
+      <li>{% trans 'Total score = Reading and Writing + Math (400–1600).' %}</li>
+      <li>{% trans 'These are approximate practice estimates — not an official College Board score.' %}</li>
+    </ul>
+  </div>
+</section>

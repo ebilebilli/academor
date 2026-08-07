@@ -1,12 +1,19 @@
 """Listening-quiz helpers built on ListeningAudio / ListeningQuestion models."""
 
+from django.db.models import Prefetch
+
 from portals.models import ListeningAudio, ListeningQuestion, Quiz
 
 
 def get_quiz_listening_audios(quiz_id: int):
     return (
         ListeningAudio.objects.filter(quiz_id=quiz_id)
-        .prefetch_related('questions')
+        .prefetch_related(
+            Prefetch(
+                'questions',
+                queryset=ListeningQuestion.objects.order_by('order', 'id'),
+            ),
+        )
         .order_by('order', 'id')
     )
 
@@ -137,7 +144,7 @@ def build_listening_sections_for_quiz(
 
     for audio in get_quiz_listening_audios(quiz_id):
         section_questions = []
-        for row in audio.questions.all().order_by('order', 'id'):
+        for row in audio.questions.all():
             if not row.is_answerable:
                 continue
             question_number += 1

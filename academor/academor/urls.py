@@ -12,6 +12,7 @@ from projects.views.errors import handler404
 
 urlpatterns = [
     path(f'{settings.ADMIN_URL}', admin.site.urls),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
     path('i18n/setlang/', set_language, name='set_language'),
     path('robots.txt', robots_txt, name='robots_txt'),
     path(

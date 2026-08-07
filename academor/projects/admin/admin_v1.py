@@ -9,7 +9,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.forms.models import BaseInlineFormSet
 from django.utils.translation import gettext_lazy as _
-from ckeditor.widgets import CKEditorWidget
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 from projects.models import *
 from projects.admin.mixins import AcademorModelAdmin, install_admin_help
@@ -500,9 +500,9 @@ class ServiceAdminForm(forms.ModelForm):
         model = Service
         fields = '__all__'
         widgets = {
-            'description_az': CKEditorWidget(),
-            'description_en': CKEditorWidget(),
-            'description_ru': CKEditorWidget(),
+            'description_az': CKEditorUploadingWidget(),
+            'description_en': CKEditorUploadingWidget(),
+            'description_ru': CKEditorUploadingWidget(),
         }
 
     def __init__(self, *args, **kwargs):
@@ -662,9 +662,9 @@ class SaleAdminForm(forms.ModelForm):
         model = Sale
         fields = '__all__'
         widgets = {
-            'description_az': CKEditorWidget(),
-            'description_en': CKEditorWidget(),
-            'description_ru': CKEditorWidget(),
+            'description_az': CKEditorUploadingWidget(),
+            'description_en': CKEditorUploadingWidget(),
+            'description_ru': CKEditorUploadingWidget(),
         }
 
     def clean(self):
@@ -784,9 +784,9 @@ class AbroadModelAdminForm(forms.ModelForm):
         model = AbroadModel
         fields = '__all__'
         widgets = {
-            'description_az': CKEditorWidget(),
-            'description_en': CKEditorWidget(),
-            'description_ru': CKEditorWidget(),
+            'description_az': CKEditorUploadingWidget(),
+            'description_en': CKEditorUploadingWidget(),
+            'description_ru': CKEditorUploadingWidget(),
         }
 
 
@@ -845,9 +845,9 @@ class UniversityAdminForm(forms.ModelForm):
         model = University
         fields = '__all__'
         widgets = {
-            'description_az': CKEditorWidget(),
-            'description_en': CKEditorWidget(),
-            'description_ru': CKEditorWidget(),
+            'description_az': CKEditorUploadingWidget(),
+            'description_en': CKEditorUploadingWidget(),
+            'description_ru': CKEditorUploadingWidget(),
         }
 
 
@@ -913,9 +913,9 @@ class StudyAbroadSectionAdminForm(forms.ModelForm):
         model = StudyAbroadSection
         fields = '__all__'
         widgets = {
-            'text_az': CKEditorWidget(),
-            'text_en': CKEditorWidget(),
-            'text_ru': CKEditorWidget(),
+            'text_az': CKEditorUploadingWidget(),
+            'text_en': CKEditorUploadingWidget(),
+            'text_ru': CKEditorUploadingWidget(),
         }
 
 
@@ -1201,9 +1201,9 @@ class TeamAdminForm(forms.ModelForm):
         model = Team
         fields = '__all__'
         widgets = {
-            'description_az': CKEditorWidget(),
-            'description_en': CKEditorWidget(),
-            'description_ru': CKEditorWidget(),
+            'description_az': CKEditorUploadingWidget(),
+            'description_en': CKEditorUploadingWidget(),
+            'description_ru': CKEditorUploadingWidget(),
         }
 
 
@@ -1247,9 +1247,9 @@ class BlogPostAdminForm(forms.ModelForm):
         model = BlogPost
         fields = '__all__'
         widgets = {
-            'description_az': CKEditorWidget(),
-            'description_en': CKEditorWidget(),
-            'description_ru': CKEditorWidget(),
+            'description_az': CKEditorUploadingWidget(),
+            'description_en': CKEditorUploadingWidget(),
+            'description_ru': CKEditorUploadingWidget(),
         }
 
 

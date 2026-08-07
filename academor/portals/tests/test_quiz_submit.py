@@ -86,6 +86,35 @@ class QuizSubmitTests(TestCase):
         self.assertEqual(max_score, 2)
         self.assertTrue(all(item['is_correct'] for item in breakdown))
 
+    def test_submit_variant_quiz_with_spr_questions(self):
+        spr_question = QuizQuestion.objects.create(
+            quiz=self.quiz,
+            order=3,
+            question='Enter 3.5',
+            question_type=QuizQuestion.QuestionType.SPR,
+            answer_options=[],
+            correct_answer='',
+            spr_correct_answers=['7/2', '3.5'],
+            spr_max_length=5,
+        )
+        started_at = timezone.now() - timedelta(seconds=45)
+        payload = submit_variant_quiz_attempt(
+            student_id=self.student.pk,
+            quiz_id=self.quiz.pk,
+            given_answers={
+                str(self.q1.pk): 0,
+                str(self.q2.pk): 1,
+                str(spr_question.pk): '3.5',
+            },
+            duration_sec=45,
+            session_started_at=started_at.isoformat(),
+        )
+        self.assertTrue(payload['success'])
+        self.assertEqual(payload['total_score'], 3)
+        self.assertEqual(payload['max_score'], 3)
+        result = QuizResult.objects.filter(student=self.student, quiz=self.quiz).order_by('-completed_at', '-id').first()
+        self.assertEqual(result.given_answers[str(spr_question.pk)], '3.5')
+
     def test_submit_creates_result(self):
         started_at = timezone.now() - timedelta(seconds=90)
         payload = submit_variant_quiz_attempt(

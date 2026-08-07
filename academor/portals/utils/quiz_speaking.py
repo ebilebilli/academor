@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from django.db.models import Prefetch
 from django.utils.html import strip_tags
 from django.utils.translation import gettext as _
 
@@ -59,7 +60,12 @@ def estimate_speaking_quiz_seconds(sections: list[dict]) -> int:
 def get_quiz_speaking_parts(quiz_id: int):
     return (
         SpeakingPart.objects.filter(quiz_id=quiz_id)
-        .prefetch_related('questions')
+        .prefetch_related(
+            Prefetch(
+                'questions',
+                queryset=SpeakingQuestion.objects.order_by('order', 'id'),
+            ),
+        )
         .order_by('order', 'id')
     )
 
@@ -146,7 +152,7 @@ def build_speaking_sections_for_quiz(
     for part in get_quiz_speaking_parts(quiz_id):
         part_questions = []
         part_question_number = 0
-        for row in part.questions.all().order_by('order', 'id'):
+        for row in part.questions.all():
             if not row.is_answerable:
                 continue
             question_number += 1

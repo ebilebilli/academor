@@ -79,8 +79,14 @@ def score_reading_question(question: ReadingQuestion, raw_value) -> bool:
 def score_reading_quiz(
     quiz: Quiz,
     given_answers: dict,
+    *,
+    questions: list[ReadingQuestion] | None = None,
 ) -> tuple[float, int, list[dict]]:
-    questions = get_reading_questions_for_quiz(quiz)
+    questions = (
+        list(questions)
+        if questions is not None
+        else get_reading_questions_for_quiz(quiz)
+    )
     max_score = len(questions)
     score = 0.0
     breakdown = []
@@ -106,8 +112,13 @@ def normalize_reading_answers(
     raw: dict | None,
     *,
     ordered_answers: list | None = None,
+    questions: list[ReadingQuestion] | None = None,
 ) -> dict[str, str]:
-    questions = get_reading_questions_for_quiz(quiz)
+    questions = (
+        list(questions)
+        if questions is not None
+        else get_reading_questions_for_quiz(quiz)
+    )
     normalized: dict[str, str] = {}
     if not isinstance(raw, dict):
         raw = {}
@@ -139,10 +150,19 @@ def normalize_reading_answers(
     return normalized
 
 
-def validate_reading_answers(quiz: Quiz, answers: dict[str, str]) -> str | None:
+def validate_reading_answers(
+    quiz: Quiz,
+    answers: dict[str, str],
+    *,
+    questions: list[ReadingQuestion] | None = None,
+) -> str | None:
     from django.utils.translation import gettext as _
 
-    questions = get_reading_questions_for_quiz(quiz)
+    questions = (
+        list(questions)
+        if questions is not None
+        else get_reading_questions_for_quiz(quiz)
+    )
     if not questions:
         return str(_('No reading questions found for this quiz.'))
 

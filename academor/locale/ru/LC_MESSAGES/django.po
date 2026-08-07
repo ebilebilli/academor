@@ -480,6 +480,22 @@ msgid ""
 "be created automatically. Add speaking questions in the section below."
 msgstr ""
 
+#: academor/templates/portals/includes/quiz_question_play.html
+msgid "Answer format guidelines:"
+msgstr "Руководство по формату ответа:"
+
+#: academor/templates/portals/includes/quiz_question_play.html
+msgid "Acceptable formats"
+msgstr "Допустимые форматы"
+
+#: academor/templates/portals/includes/quiz_question_play.html
+msgid "Unacceptable formats"
+msgstr "Недопустимые форматы"
+
+#: academor/templates/portals/includes/quiz_question_play.html
+msgid "Enter fractions as a/b (e.g., 7/2). Do not use mixed numbers or spaces. For decimals, include enough significant digits."
+msgstr "Вводите дроби в формате a/b (например, 7/2). Не используйте смешанные числа или пробелы. Для десятичных дробей включайте достаточное количество значащих цифр."
+
 #: academor/portals/admin/admin_v1.py:659
 msgid "Login account"
 msgstr "Учётная запись"
@@ -3881,6 +3897,9 @@ msgstr "На главную"
 #: academor/templates/portals/score_detail.html:19
 msgid "Back to notifications"
 msgstr "Назад к уведомлениям"
+
+msgid "Back to scores"
+msgstr "Назад к баллам"
 
 #: academor/portals/views/notification_views.py:244
 #, fuzzy
@@ -9937,8 +9956,6 @@ msgstr "Слабо"
 #~ msgid "Graded"
 #~ msgstr "Оценено"
 
-#~ msgid "Total"
-#~ msgstr "Всего"
 
 #~ msgid "Once quizzes are graded, the average score will appear here."
 #~ msgstr "После оценки викторин средний балл появится здесь."
@@ -11046,3 +11063,44 @@ msgstr "Оценка"
 #: academor/templates/portals/login.html
 msgid "Results"
 msgstr "Результаты"
+
+#: portals/includes/sat_scoring_guide.html
+msgid "How your practice score is calculated"
+msgstr "Как считается ваш практический балл"
+
+#: portals/includes/sat_scoring_guide.html
+msgid "Each correct answer counts; wrong answers do not subtract points."
+msgstr "Каждый правильный ответ учитывается; за неправильные баллы не снимаются."
+
+#: portals/includes/sat_scoring_guide.html
+msgid "Section score = correct answers converted to the 200–800 scale."
+msgstr "Балл секции = правильные ответы, переведённые в шкалу 200–800."
+
+#: portals/includes/sat_scoring_guide.html
+msgid "Total score = Reading and Writing + Math (400–1600)."
+msgstr "Общий балл = Reading and Writing + Math (400–1600)."
+
+#: portals/includes/sat_scoring_guide.html
+msgid "These are approximate practice estimates — not an official College Board score."
+msgstr "Это приблизительные учебные оценки — не официальный балл College Board."
+
+#~ msgid "How Digital SAT scores work"
+#~ msgstr "Как считаются баллы Digital SAT"
+
+#~ msgid "Based on College Board Digital SAT scoring model. Exact official equating tables are not published."
+#~ msgstr "Основано на модели подсчёта баллов Digital SAT от College Board. Точные официальные таблицы приведения (equating) не публикуются."
+
+#~ msgid "Practice score on Academor"
+#~ msgstr "Практический балл в Academor"
+
+#~ msgid "Your section scores here use a simplified conversion from raw correct answers to the 200-800 scale. They are approximate practice estimates - not an official College Board score report."
+#~ msgstr "Баллы секций здесь считаются упрощённым переводом сырых правильных ответов в шкалу 200-800. Это приблизительные учебные оценки, а не официальный отчёт College Board."
+
+#~ msgid "Adaptive modules"
+#~ msgstr "Адаптивные модули"
+
+#~ msgid "Equating to scaled score"
+#~ msgstr "Equating → scaled score"
+
+#~ msgid "Conceptual path"
+#~ msgstr "Концептуальный путь"

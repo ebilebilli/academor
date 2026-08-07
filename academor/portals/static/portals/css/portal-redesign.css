@@ -3005,3 +3005,46 @@ a.dashboard-perf-card:hover .dashboard-perf-card__arrow {
   .dashboard-perf-card__arrow { display: none; }
   .dashboard-perf-card__hint { padding-left: 0; }
 }
+
+/* --------------------------------------------------------------------------
+   Digital SAT scoring guide (mock complete)
+   -------------------------------------------------------------------------- */
+.sat-scoring-guide__header {
+  margin-bottom: var(--space-3);
+}
+
+.sat-scoring-guide__notice {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid color-mix(in srgb, var(--color-info) 28%, var(--color-border));
+  border-radius: var(--radius-lg);
+  background: var(--color-info-subtle);
+  color: var(--color-gray-700);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.sat-scoring-guide__notice > i {
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  color: var(--color-info);
+  font-size: 1.15rem;
+}
+
+.sat-scoring-guide__list {
+  margin: 0;
+  padding-left: 1.15rem;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--color-gray-700);
+}
+
+.sat-scoring-guide__list li + li {
+  margin-top: 0.35rem;
+}
+
+.sat-scoring-guide__list--bullets {
+  margin-bottom: 0;
+}

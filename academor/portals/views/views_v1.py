@@ -377,7 +377,7 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
     def _build_context(self, request, profile, student, tab):
         from portals.utils.ielts_mock_test import (
             get_student_completed_mock_attempts,
-            serialize_mock_attempt_summary,
+            serialize_mock_attempt_summaries,
         )
 
         state = self._build_profile_state(request, profile, student)
@@ -439,10 +439,9 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
         mock_attempts = None
         mock_stats_list = []
         if has_mock_exam:
-            mock_attempts = [
-                serialize_mock_attempt_summary(attempt)
-                for attempt in get_student_completed_mock_attempts(student_pk)
-            ]
+            mock_attempts = serialize_mock_attempt_summaries(
+                get_student_completed_mock_attempts(student_pk)
+            )
             if group_service_codes is not None:
                 mock_attempts = [
                     attempt for attempt in mock_attempts
@@ -505,7 +504,7 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
     def _build_tab_panel_context(self, request, profile, student, tab):
         from portals.utils.ielts_mock_test import (
             get_student_completed_mock_attempts,
-            serialize_mock_attempt_summary,
+            serialize_mock_attempt_summaries,
         )
 
         state = self._build_profile_state(request, profile, student)
@@ -606,10 +605,9 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
                     active_tab='quiz-results',
                 )
 
-            mock_attempts = [
-                serialize_mock_attempt_summary(attempt)
-                for attempt in get_student_completed_mock_attempts(student_pk)
-            ]
+            mock_attempts = serialize_mock_attempt_summaries(
+                get_student_completed_mock_attempts(student_pk)
+            )
             if group_service_codes is not None:
                 mock_attempts = [
                     attempt for attempt in mock_attempts
@@ -948,15 +946,14 @@ class StudentScoresView(StudentRequiredMixin, View):
         from portals.utils.ielts_mock_test import (
             get_student_completed_mock_attempts,
             get_student_mock_exam_programs,
-            serialize_mock_attempt_summary,
+            serialize_mock_attempt_summaries,
             student_can_access_mock,
         )
         if get_student_mock_exam_programs(profile.pk) and student_can_access_mock(profile.pk):
             mock_attempts = filter_mock_attempt_summaries(
-                [
-                    serialize_mock_attempt_summary(attempt)
-                    for attempt in get_student_completed_mock_attempts(profile.pk)
-                ],
+                serialize_mock_attempt_summaries(
+                    get_student_completed_mock_attempts(profile.pk)
+                ),
                 program=resolve_mock_program_param(request),
             )
         return render(
@@ -1309,7 +1306,7 @@ class ParentScoresView(ParentRequiredMixin, View):
         from portals.utils.ielts_mock_test import (
             get_student_completed_mock_attempts,
             get_student_mock_exam_programs,
-            serialize_mock_attempt_summary,
+            serialize_mock_attempt_summaries,
             student_can_access_mock,
         )
 
@@ -1323,10 +1320,9 @@ class ParentScoresView(ParentRequiredMixin, View):
         mock_attempts = None
         if get_student_mock_exam_programs(student.pk) and student_can_access_mock(student.pk):
             mock_attempts = filter_mock_attempt_summaries(
-                [
-                    serialize_mock_attempt_summary(attempt)
-                    for attempt in get_student_completed_mock_attempts(student.pk)
-                ],
+                serialize_mock_attempt_summaries(
+                    get_student_completed_mock_attempts(student.pk)
+                ),
                 program=resolve_mock_program_param(request),
             )
         return _render_parent_child_page(
