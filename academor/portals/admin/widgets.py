@@ -1,3 +1,4 @@
+import html as html_lib
 import json
 
 from django import forms
@@ -82,31 +83,37 @@ class AnswerOptionsWidget(forms.Widget):
         add_label = self.add_button_label
         remove_title = self.remove_title
 
-        html = f'''
-        <div class="answer-options-container" data-field-name="{name}"
-             data-item-label="{item_label}" data-add-label="{add_label}">
+        chunks = [
+            f'''
+        <div class="answer-options-container" data-field-name="{html_lib.escape(name)}"
+             data-item-label="{html_lib.escape(item_label)}" data-add-label="{html_lib.escape(add_label)}">
             <div class="answer-options-list">
         '''
+        ]
 
         for i, option in enumerate(options):
-            html += f'''
+            # Textarea content is raw text (not HTML-parsed), but entities are
+            # decoded by the browser — escape so "</textarea>" cannot break markup.
+            option_html = html_lib.escape(str(option or ''), quote=False)
+            chunks.append(f'''
                 <div class="answer-option-item" data-index="{i}">
                     <div class="answer-option-header">
-                        <span class="answer-option-label">{item_label} {i + 1}</span>
-                        <button type="button" class="answer-option-remove-btn" title="{remove_title}">×</button>
+                        <span class="answer-option-label">{html_lib.escape(item_label)} {i + 1}</span>
+                        <button type="button" class="answer-option-remove-btn" title="{html_lib.escape(remove_title)}">×</button>
                     </div>
-                    <textarea class="answer-option-textarea ckeditor-enabled" rows="2" data-index="{i}">{option}</textarea>
+                    <textarea class="answer-option-textarea ckeditor-enabled" rows="2" data-index="{i}">{option_html}</textarea>
                 </div>
-            '''
+            ''')
 
-        html += f'''
+        hidden_json = html_lib.escape(json.dumps(options, ensure_ascii=False), quote=False)
+        chunks.append(f'''
             </div>
-            <button type="button" class="answer-option-add-btn">{add_label}</button>
-            <textarea name="{name}" class="answer-options-hidden" style="display:none;">{json.dumps(options, ensure_ascii=False)}</textarea>
+            <button type="button" class="answer-option-add-btn">{html_lib.escape(add_label)}</button>
+            <textarea name="{html_lib.escape(name)}" class="answer-options-hidden" style="display:none;">{hidden_json}</textarea>
         </div>
-        '''
+        ''')
 
-        return html
+        return ''.join(chunks)
 
     def value_from_datadict(self, data, files, name):
         hidden_value = data.get(name, '[]')

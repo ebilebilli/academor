@@ -5,14 +5,22 @@
   data-mock-section-continue
   hidden
   data-label-next="{% trans 'Next section' %}"
+  data-label-start="{% trans 'Start now' %}"
   data-label-finish="{% trans 'View mock test summary' %}"
   data-msg-section-done="{% trans 'Section complete. Continue when you are ready.' %}"
   data-msg-mock-done="{% trans 'All sections are complete.' %}"
+  data-msg-rest-warning="{% trans 'When the break ends, {section} will start automatically.' %}"
+  data-label-rest-remaining="{% trans 'Break time remaining' %}"
 >
   <div class="text-center py-2">
     <i class="ti ti-circle-check text-success fs-1" aria-hidden="true"></i>
     <p class="fw-semibold mt-3 mb-1" data-mock-section-continue-title>{% trans 'Section submitted' %}</p>
     <p class="text-muted mb-0" data-mock-section-continue-message></p>
+    <div class="portal-mock-section-rest mt-4 d-none" data-mock-section-rest hidden>
+      <p class="text-warning mb-3" data-mock-section-rest-warning></p>
+      <p class="text-muted small mb-1" data-mock-section-rest-label></p>
+      <p class="fs-2 fw-bold mb-0 font-monospace" data-mock-section-rest-timer aria-live="polite">10:00</p>
+    </div>
   </div>
   <div class="d-flex justify-content-center mt-4">
     <button type="button" class="ds-btn ds-btn--primary" data-mock-section-continue-btn>

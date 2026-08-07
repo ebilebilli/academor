@@ -250,8 +250,11 @@ class QuizQuestionAdminForm(forms.ModelForm):
         if self._quiz_is_manual():
             return []
 
+        question_type = self.cleaned_data.get('question_type') or self.data.get('question_type')
+        if question_type == QuizQuestion.QuestionType.SPR:
+            return []
+
         raw = self.cleaned_data.get('answer_options')
-        # The AnswerOptionsWidget returns a list directly
         if isinstance(raw, list):
             parsed = raw
         elif isinstance(raw, str):
@@ -259,24 +262,33 @@ class QuizQuestionAdminForm(forms.ModelForm):
                 parsed = json.loads(raw or '[]')
             except json.JSONDecodeError as exc:
                 raise ValidationError(_('Enter a valid JSON list of answer options.')) from exc
+        elif raw in (None, ''):
+            parsed = []
         else:
             raise ValidationError(_('Enter a valid JSON list of answer options.'))
 
         if not isinstance(parsed, list):
             raise ValidationError(_('Answer options must be a JSON list.'))
 
-        # Filter out empty options but keep HTML content
-        options = [item if item and str(item).strip() else '' for item in parsed]
-        # Remove completely empty options
-        options = [item for item in options if item and str(item).strip()]
-        
+        options = [item for item in parsed if item and str(item).strip()]
+
+        # Safety net: if the widget posted empty options (CKEditor sync race),
+        # keep the existing saved options instead of wiping the question.
+        if len(options) < 2 and self.instance and self.instance.pk:
+            existing = [
+                item for item in (self.instance.answer_options or [])
+                if item and str(item).strip()
+            ]
+            if len(existing) >= 2:
+                return existing
+
         if len(options) < 2:
             raise ValidationError(_('Add at least two answer options.'))
         return options
 
     def clean_spr_correct_answers(self):
         raw = self.cleaned_data.get('spr_correct_answers')
-        question_type = self.cleaned_data.get('question_type')
+        question_type = self.cleaned_data.get('question_type') or self.data.get('question_type')
 
         if question_type != QuizQuestion.QuestionType.SPR:
             return None
@@ -302,6 +314,15 @@ class QuizQuestionAdminForm(forms.ModelForm):
             if not text or not plain_spr_text(text):
                 continue
             answers.append(text)
+
+        if not answers and self.instance and self.instance.pk:
+            existing = [
+                str(item).strip()
+                for item in (self.instance.spr_correct_answers or [])
+                if str(item).strip() and plain_spr_text(str(item))
+            ]
+            if existing:
+                return existing
 
         if not answers:
             raise ValidationError(_('Add at least one correct answer.'))
@@ -343,7 +364,26 @@ class QuizQuestionAdminForm(forms.ModelForm):
             
             correct_answer = cleaned.get('correct_answer')
             if not correct_answer:
-                self.add_error('correct_answer', _('MCQ questions must have a correct answer.'))
+                # Prefer existing correct option index when CKEditor posted blank.
+                idx = getattr(self.instance, 'correct_option_index', None)
+                if answer_options and idx is not None and 0 <= idx < len(answer_options):
+                    cleaned['correct_answer'] = answer_options[idx]
+                    cleaned['correct_option_index'] = idx
+                else:
+                    self.add_error('correct_answer', _('MCQ questions must have a correct answer.'))
+            elif answer_options and correct_answer not in answer_options:
+                # CKEditor may normalize HTML slightly — fall back to saved index.
+                idx = getattr(self.instance, 'correct_option_index', None)
+                if idx is not None and 0 <= idx < len(answer_options):
+                    cleaned['correct_answer'] = answer_options[idx]
+                    cleaned['correct_option_index'] = idx
+                else:
+                    self.add_error(
+                        'correct_answer',
+                        _('Correct answer must exactly match one of the options.'),
+                    )
+            elif answer_options:
+                cleaned['correct_option_index'] = answer_options.index(correct_answer)
         else:
             # Default case (no specific question type)
             cleaned['spr_correct_answers'] = None

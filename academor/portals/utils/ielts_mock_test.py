@@ -31,6 +31,7 @@ from portals.utils.mock_programs import (
     SAT_SERVICE,
     SAT_TOTAL_SCORE_MAX,
     get_auto_sections,
+    get_inter_section_rest_seconds,
     get_manual_sections,
     get_next_section,
     get_program_first_section,
@@ -645,12 +646,22 @@ def apply_mock_submit_result(
         next_label = get_section_label(attempt.exam_program, next_section)
         response['mock_next_section'] = next_section
         response['mock_next_section_label'] = str(next_label)
-        response['mock_continue_message'] = str(
-            _('%(completed)s is done. Next: %(next)s.') % {
-                'completed': completed_label,
-                'next': next_label,
-            }
-        )
+        rest_seconds = get_inter_section_rest_seconds(attempt.exam_program, section)
+        if rest_seconds:
+            response['mock_rest_seconds'] = rest_seconds
+            response['mock_continue_message'] = str(
+                _('%(completed)s is done. Take a short break before %(next)s.') % {
+                    'completed': completed_label,
+                    'next': next_label,
+                }
+            )
+        else:
+            response['mock_continue_message'] = str(
+                _('%(completed)s is done. Next: %(next)s.') % {
+                    'completed': completed_label,
+                    'next': next_label,
+                }
+            )
     else:
         response['mock_continue_message'] = str(
             _('%(completed)s is done. Your mock test is complete.') % {

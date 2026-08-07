@@ -11,6 +11,7 @@ from django.db import transaction
 from portals.models import Quiz, QuizCategory, QuizQuestion
 
 RESOURCES_DIR = Path(__file__).resolve().parent.parent / 'resources' / 'quiz_questions'
+SAT_RESOURCES_DIR = Path(__file__).resolve().parent.parent / 'resources' / 'sat_questions'
 
 
 DEFAULT_SERVICE = 'general_english'
@@ -42,8 +43,8 @@ def _normalize_question(raw: dict, index: int, resource_slug: str) -> dict:
             raise ValueError(f'Question #{index + 1} in {resource_slug}: SPR questions must have at least one correct answer.')
         
         spr_max_length = raw.get('spr_max_length')
-        if spr_max_length is None:
-            raise ValueError(f'Question #{index + 1} in {resource_slug}: SPR questions must have spr_max_length specified.')
+        if spr_max_length is not None:
+            spr_max_length = int(spr_max_length)
         
         return {
             'source_key': _source_key(resource_slug, raw, index, question),
@@ -243,5 +244,15 @@ def load_all_resources(*, deactivate_missing: bool = True) -> list[dict]:
 
     results = []
     for path in sorted(RESOURCES_DIR.glob('*.json')):
+        results.append(load_resource_file(path, deactivate_missing=deactivate_missing))
+    return results
+
+
+def load_all_sat_resources(*, deactivate_missing: bool = True) -> list[dict]:
+    if not SAT_RESOURCES_DIR.exists():
+        return []
+
+    results = []
+    for path in sorted(SAT_RESOURCES_DIR.glob('*.json')):
         results.append(load_resource_file(path, deactivate_missing=deactivate_missing))
     return results

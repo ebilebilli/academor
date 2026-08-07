@@ -1308,6 +1308,8 @@ class CustomerSatMockTests(TestCase):
         data = response.json()
         self.assertTrue(data['success'], data.get('error'))
         self.assertTrue(data.get('mock_continue'))
+        self.assertEqual(data.get('mock_rest_seconds'), 10 * 60)
+        self.assertEqual(data.get('mock_next_section'), 'math')
 
         attempt.refresh_from_db()
         self.assertEqual(attempt.current_section, 'math')

@@ -51,30 +51,27 @@
     }
     
     function hideMCQFields(form) {
-        // Hide MCQ fieldset
+        // Hide MCQ fieldset only (do not match "SPR Answers")
         form.find('fieldset').each(function() {
             var fieldset = $(this);
-            var legendText = fieldset.find('legend, h2').text();
-            if (legendText.includes('MCQ Answers') || legendText.includes('Answers')) {
+            var legendText = fieldset.find('legend, h2').first().text() || '';
+            if (legendText.includes('MCQ Answers')) {
                 fieldset.hide();
             }
         });
-        
-        // Also hide individual field rows for inline forms
+
         form.find('.field-answer_options, .field-correct_answer').hide();
     }
-    
+
     function showMCQFields(form) {
-        // Show MCQ fieldset
         form.find('fieldset').each(function() {
             var fieldset = $(this);
-            var legendText = fieldset.find('legend, h2').text();
-            if (legendText.includes('MCQ Answers') || legendText.includes('Answers')) {
+            var legendText = fieldset.find('legend, h2').first().text() || '';
+            if (legendText.includes('MCQ Answers')) {
                 fieldset.show();
             }
         });
-        
-        // Also show individual field rows for inline forms
+
         form.find('.field-answer_options, .field-correct_answer').show();
     }
     

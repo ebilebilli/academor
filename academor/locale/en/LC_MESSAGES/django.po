@@ -3445,12 +3445,17 @@ msgstr ""
 #: academor/portals/utils/ielts_mock_test.py:452
 #, python-format
 msgid "%(completed)s is done. Next: %(next)s."
-msgstr ""
+msgstr "%(completed)s is done. Next: %(next)s."
 
 #: academor/portals/utils/ielts_mock_test.py:459
 #, python-format
+msgid "%(completed)s is done. Take a short break before %(next)s."
+msgstr "%(completed)s is done. Take a short break before %(next)s."
+
+#: academor/portals/utils/ielts_mock_test.py:466
+#, python-format
 msgid "%(completed)s is done. Your mock test is complete."
-msgstr ""
+msgstr "%(completed)s is done. Your mock test is complete."
 
 #: academor/portals/utils/ielts_mock_test.py:522
 #: academor/templates/portals/includes/quiz_mock_finish_label.html:7
@@ -6383,23 +6388,35 @@ msgstr[1] ""
 "sections."
 
 #: academor/templates/portals/includes/quiz_mock_section_continue.html:7
-#: academor/templates/portals/includes/quiz_mock_section_continue.html:19
+#: academor/templates/portals/includes/quiz_mock_section_continue.html:27
 msgid "Next section"
 msgstr "Next section"
 
 #: academor/templates/portals/includes/quiz_mock_section_continue.html:8
+msgid "Start now"
+msgstr "Start now"
+
+#: academor/templates/portals/includes/quiz_mock_section_continue.html:9
 msgid "View mock test summary"
 msgstr "View mock test summary"
 
-#: academor/templates/portals/includes/quiz_mock_section_continue.html:9
+#: academor/templates/portals/includes/quiz_mock_section_continue.html:10
 msgid "Section complete. Continue when you are ready."
 msgstr "Section complete. Continue when you are ready."
 
-#: academor/templates/portals/includes/quiz_mock_section_continue.html:10
+#: academor/templates/portals/includes/quiz_mock_section_continue.html:11
 msgid "All sections are complete."
 msgstr "All sections are complete."
 
-#: academor/templates/portals/includes/quiz_mock_section_continue.html:14
+#: academor/templates/portals/includes/quiz_mock_section_continue.html:12
+msgid "When the break ends, {section} will start automatically."
+msgstr "When the break ends, {section} will start automatically."
+
+#: academor/templates/portals/includes/quiz_mock_section_continue.html:13
+msgid "Break time remaining"
+msgstr "Break time remaining"
+
+#: academor/templates/portals/includes/quiz_mock_section_continue.html:17
 msgid "Section submitted"
 msgstr "Section submitted"
 

@@ -21,7 +21,7 @@
       role="listitem"
     >
       <span class="portal-quiz-play-option__letter">{{ forloop.counter0|quiz_option_letter|upper }}</span>
-      <span class="portal-quiz-play-option__text">{{ option }}</span>
+      <span class="portal-quiz-play-option__text">{{ option|safe }}</span>
       {% if forloop.counter0 == q.correct_option_index or option == q.correct_answer %}
       <span class="portal-quiz-teacher-correct-mark"><i class="bi bi-check-lg" aria-hidden="true"></i></span>
       {% endif %}

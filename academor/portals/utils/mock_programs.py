@@ -26,6 +26,17 @@ IELTS_BAND_MAX = 9.0
 SAT_SECTION_SCORE_MIN = 200
 SAT_SECTION_SCORE_MAX = 800
 SAT_TOTAL_SCORE_MAX = 1600
+# Optional break after Reading and Writing before Math auto-starts.
+SAT_SECTION_REST_SECONDS = 10 * 60
+
+
+def get_inter_section_rest_seconds(exam_program: str, completed_section: str) -> int | None:
+    """Return rest-break length after a completed section, or None if none."""
+    if exam_program != SAT_SERVICE:
+        return None
+    if not get_next_section(exam_program, completed_section):
+        return None
+    return SAT_SECTION_REST_SECONDS
 
 
 @dataclass(frozen=True)

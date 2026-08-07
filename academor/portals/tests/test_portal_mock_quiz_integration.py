@@ -153,6 +153,7 @@ class PortalMockQuizIntegrationTests(TestCase):
         data = response.json()
         self.assertTrue(data['success'], data.get('error'))
         self.assertTrue(data.get('mock_continue'))
+        self.assertEqual(data.get('mock_rest_seconds'), 10 * 60)
         attempt.refresh_from_db()
         self.assertEqual(attempt.current_section, 'math')
         result = QuizResult.objects.filter(

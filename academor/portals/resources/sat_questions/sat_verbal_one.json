@@ -4,402 +4,655 @@
   "service": "sat",
   "is_sat": true,
   "sat_section": "reading",
+  "time_limit_minutes": 64,
   "questions": [
     {
       "id": 1,
-      "question": "Artist Marilyn Dingle's intricate, coiled baskets are ______ sweetgrass and palmetto palm. Following a Gullah technique that originated in West Africa, Dingle skillfully winds a thin palm frond around a bunch of sweetgrass with the help of a sewing bone to create the basket's signature look that no factory can reproduce. Which choice completes the text with the most logical and precise word or phrase?",
+      "question": "<p>Artist Marilyn Dingle’s intricate, coiled baskets are ______ sweetgrass and palmetto palm. Following a Gullah technique that originated in West Africa, Dingle skillfully winds a thin palm frond around a bunch of sweetgrass with the help of a “sewing bone” to create the basket’s signature look that no factory can reproduce.<br>Which choice completes the text with the most logical and precise word or phrase?</p>",
       "options": [
         "indicated by",
         "handmade from",
         "represented by",
         "collected with"
       ],
-      "correct": "handmade from"
+      "correct": "handmade from",
+      "answer_key": "<p><strong>Correct Answer: B</strong></p>"
     },
     {
       "id": 2,
-      "question": "The following text is adapted from Nathaniel Hawthorne's 1837 story Dr. Heidegger's Experiment. The main character, a physician, is experimenting with rehydrating a dried flower. At first [the rose] lay lightly on the surface of the fluid, appearing to imbibe none of its moisture. Soon, however, a singular change began to be visible. The crushed and dried petals stirred and assumed a deepening tinge of crimson, as if the flower were reviving from a deathlike slumber. As used in the text, what does the phrase a singular most nearly mean?",
+      "question": "<p>The following text is adapted from Nathaniel Hawthorne’s 1837 story “Dr. Heidegger’s Experiment.” The main character, a physician, is experimenting with rehydrating a dried flower.<br>At first [the rose] lay lightly on the surface of the fluid, appearing to imbibe none of its moisture. Soon, however, a singular change began to be visible. The crushed and dried petals stirred and assumed a deepening tinge of crimson, as if the flower were reviving from a deathlike slumber.<br>As used in the text, what does the phrase “a singular” most nearly mean?</p>",
       "options": [
         "A lonely",
         "A disagreeable",
         "An acceptable",
         "An extraordinary"
       ],
-      "correct": "An extraordinary"
+      "correct": "An extraordinary",
+      "answer_key": "<p><strong>Correct Answer: D</strong></p>"
     },
     {
       "id": 3,
-      "question": "Drivers who strongly believe that the toll they must pay to use the Lewis and Clark Bridge, which spans the Ohio River to connect Indiana and Kentucky, is currently too high are unlikely to be ______ a proposal to increase the toll. Advocates for a higher toll are likely to have more success if they instead direct their arguments toward a more persuadable segment of the population. Which choice completes the text with the most logical and precise word or phrase?",
+      "question": "<p>Drivers who strongly believe that the toll they must pay to use the Lewis and Clark Bridge, which spans the Ohio River to connect Indiana and Kentucky, is currently too high are unlikely to be ______ a proposal to increase the toll. Advocates for a higher toll are likely to have more success if they instead direct their arguments toward a more persuadable segment of the population.<br>Which choice completes the text with the most logical and precise word or phrase?</p>",
       "options": [
         "receptive to",
         "apprised of",
         "incensed by",
         "cited in"
       ],
-      "correct": "receptive to"
+      "correct": "receptive to",
+      "answer_key": "<p><strong>Correct Answer: A</strong></p>"
     },
     {
       "id": 4,
-      "question": "According to a team of neuroeconomists from the University of Zurich, ease of decision making may be linked to communication between two brain regions, the prefrontal cortex and the parietal cortex. Individuals tend to be more decisive if the information flow between the regions is intensified, whereas they make choices more slowly when information flow is ______. Which choice completes the text with the most logical and precise word or phrase?",
+      "question": "<p>According to a team of neuroeconomists from the University of Zurich, ease of decision making may be linked to communication between two brain regions, the prefrontal cortex and the parietal cortex. Individuals tend to be more decisive if the information flow between the regions is intensified, whereas they make choices more slowly when information flow is ______.<br>Which choice completes the text with the most logical and precise word or phrase?</p>",
       "options": [
         "reduced",
         "evaluated",
         "determined",
         "acquired"
       ],
-      "correct": "reduced"
+      "correct": "reduced",
+      "answer_key": "<p><strong>Correct Answer: A</strong></p>"
     },
     {
       "id": 5,
-      "question": "The following text is from Srimati Svarna Kumari Devi's 1894 novel The Fatal Garland (translated by A. Christina Albers in 1910). Shakti is walking near a riverbank that she visited frequently during her childhood. She crossed the woods she knew so well. The trees seemed to extend their branches like welcoming arms. They greeted her as an old friend. Soon she reached the river-side. Which choice best describes the function of the underlined portion in the text as a whole?",
+      "question": "<p>The following text is from Srimati Svarna Kumari Devi’s 1894 novel The Fatal Garland (translated by A. Christina Albers in 1910). Shakti is walking near a riverbank that she visited frequently during her childhood.<br>She crossed the woods she knew so well. The trees seemed to extend their branches like welcoming arms. They greeted her as an old friend. Soon she reached the river-side.<br>Which choice best describes the function of the underlined portion in the text as a whole?</p>",
       "options": [
         "It suggests that Shakti feels uncomfortable near the river.",
         "It indicates that Shakti has lost her sense of direction in the woods.",
-        "It emphasizes Shakti's sense of belonging in the landscape.",
-        "It conveys Shakti's appreciation for her long-term friendships."
+        "It emphasizes Shakti’s sense of belonging in the landscape.",
+        "It conveys Shakti’s appreciation for her long-term friendships."
       ],
-      "correct": "It emphasizes Shakti's sense of belonging in the landscape."
+      "correct": "It emphasizes Shakti’s sense of belonging in the landscape.",
+      "answer_key": "<p><strong>Correct Answer: C</strong></p>"
     },
     {
       "id": 6,
-      "question": "In 1154, Muhammad al-Idrisi completed a collection of maps of the lands known to medieval Arabic and European scholars. This collection was titled Al-Kitāb al-Rujārī (The Book of Roger), after the Norman king Roger II who hired him to create it. To create the collection, al-Idrisi consulted Arabic and Greek maps and interviewed travelers about the lands they visited. He included these travelers' stories alongside the map illustrations. Which choice best states the main purpose of the text?",
+      "question": "<p>In 1154, Muhammad al-Idrisi completed a collection of maps of the lands known to medieval Arabic and European scholars. This collection was titled Al-Kitāb al-Rujārī (The Book of Roger), after the Norman king Roger II who hired him to create it. To create the collection, al-Idrisi consulted Arabic and Greek maps and interviewed travelers about the lands they visited. He included these travelers’ stories alongside the map illustrations.<br>Which choice best states the main purpose of the text?</p>",
       "options": [
         "To discuss the benefits of studying mapmaking",
         "To explain how travelers created maps",
         "To describe a collection of medieval maps and how it was created",
         "To compare medieval Arabic and Greek mapmaking techniques"
       ],
-      "correct": "To describe a collection of medieval maps and how it was created"
+      "correct": "To describe a collection of medieval maps and how it was created",
+      "answer_key": "<p><strong>Correct Answer: C</strong></p>"
     },
     {
       "id": 7,
-      "question": "Text 1 Imagine you and your friend are trying to decide where to eat lunch. When people try to make joint decisions like this, they often don't reveal their true preferences. Instead, they say they would be happy with all options because they think this response will help them appear more easygoing and likable to the other person. Text 2 Research shows that people who don't state their preferences when making a decision with others aren't more likable in the eyes of others. In fact, stating that you have no preference actually makes the decision more difficult for other people. It can also cause them to feel less happy with their ultimate decision and with you. Based on the texts, what response would the author of Text 2 most likely suggest for someone in the situation described in the underlined sentence in Text 1?",
+      "question": "<strong>Text 1</strong><br>Imagine you and your friend are trying to decide where to eat lunch.When people try to make joint decisions like this, they often don’t reveal their true preferences. Instead, they say they would be happy with all options because they think this response will help them appear more easygoing and likable to the other person.<br><strong>Text 2</strong><br>Research shows that people who don’t state their preferences when making a decision with others aren’t more likable in the eyes of others. In fact, stating that you have no preference actually makes the decision more difficult for other people. It can also cause them to feel less happy with their ultimate decision and with you.<br>Based on the texts, what response would the author of Text 2 most likely suggest for someone in the situation described in the underlined sentence in Text 1?",
       "options": [
         "Cancel the plan to have lunch together.",
         "Ask where the friend typically likes to eat.",
         "State a preference about where to eat.",
         "Change the subject to talk about something else."
       ],
-      "correct": "State a preference about where to eat."
+      "correct": "State a preference about where to eat.",
+      "answer_key": "<p><strong>Correct Answer: C</strong></p>"
     },
     {
       "id": 8,
-      "question": "A study by Dr. Paul Hanel and colleagues concluded that people are more likely to behave politely when listening to ideas they disagree with if they think about values before they engage in a discussion. Study participants were assigned to one of two groups. The experimental group spent a few minutes writing about one of their personal values before they had a group discussion on a controversial topic. And the control group spent a few minutes writing about a drink (tea, milk, etc.) before their group discussion on that topic. Hanel and colleagues found that the experimental group's discussion was more civil than the control group's discussion was. Which choice best describes the main purpose of the text?",
+      "question": "<p>A study by Dr. Paul Hanel and colleagues concluded that people are more likely to behave politely when listening to ideas they disagree with if they think about values before they engage in a discussion. Study participants were assigned to one of two groups. The experimental group spent a few minutes writing about one of their personal values before they had a group discussion on a controversial topic. And the control group spent a few minutes writing about a drink (tea, milk, etc.) before their group discussion on that topic. Hanel and colleagues found that the experimental group’s discussion was more civil than the control group’s discussion was.<br>Which choice best describes the main purpose of the text?</p>",
       "options": [
-        "To describe a widely held belief and how a study's results support that belief",
+        "To describe a widely held belief and how a study’s results support that belief",
         "To argue that researchers were surprised by the results of a certain study",
-        "To suggest ways to improve a certain study's experimental design",
-        "To explain a study's conclusion and how a research team arrived at that conclusion"
+        "To suggest ways to improve a certain study’s experimental design",
+        "To explain a study’s conclusion and how a research team arrived at that conclusion"
       ],
-      "correct": "To explain a study's conclusion and how a research team arrived at that conclusion"
+      "correct": "To explain a study’s conclusion and how a research team arrived at that conclusion",
+      "answer_key": "<p><strong>Correct Answer: D</strong></p>"
     },
     {
       "id": 9,
-      "question": "Astronomers are confident that the star Betelgeuse will eventually consume all the helium in its core and explode in a supernova. They are much less confident, however, about when this will happen, since that depends on internal characteristics of Betelgeuse that are largely unknown. Astrophysicist Sarafina El-Badry Nance and colleagues recently investigated whether acoustic waves in the star could be used to determine internal stellar states but concluded that this method could not sufficiently reveal Betelgeuse's internal characteristics to allow its evolutionary state to be firmly fixed. Which choice best describes the function of the second sentence in the overall structure of the text?",
+      "question": "<p>Astronomers are confident that the star Betelgeuse will eventually consume all the helium in its core and explode in a supernova. They are much less confident, however, about when this will happen, since that depends on internal characteristics of Betelgeuse that are largely unknown. Astrophysicist Sarafina El-Badry Nance and colleagues recently investigated whether acoustic waves in the star could be used to determine internal stellar states but concluded that this method could not sufficiently reveal Betelgeuse’s internal characteristics to allow its evolutionary state to be firmly fixed.<br>Which choice best describes the function of the second sentence in the overall structure of the text?</p>",
       "options": [
         "It describes a serious limitation of the method used by Nance and colleagues.",
         "It presents the central finding reported by Nance and colleagues.",
         "It identifies the problem that Nance and colleagues attempted to solve but did not.",
         "It explains how the work of Nance and colleagues was received by others in the field."
       ],
-      "correct": "It describes a serious limitation of the method used by Nance and colleagues."
+      "correct": "It identifies the problem that Nance and colleagues attempted to solve but did not.",
+      "answer_key": "<p><strong>Correct Answer: C</strong></p>"
     },
     {
       "id": 10,
-      "question": "Using NASA's powerful James Webb Space Telescope (JWST), Mercedes López-Morales and colleagues measured the wavelengths of light traveling through the atmosphere of WASP-39b, an exoplanet, or planet outside our solar system. Different molecules absorb different wavelengths of light, and the wavelength measurements showed the presence of carbon dioxide (CO₂) in WASP-39b's atmosphere. This finding not only offers the first decisive evidence of CO₂ in the atmosphere of an exoplanet but also illustrates the potential for future scientific breakthroughs held by the JWST. Which choice best describes the overall structure of the text?",
+      "question": "<p>Using NASA’s powerful James Webb Space Telescope (JWST), Mercedes López-Morales and colleagues measured the wavelengths of light traveling through the atmosphere of WASP-39b, an exoplanet, or planet outside our solar system. Different molecules absorb different wavelengths of light, and the wavelength measurements showed the presence of carbon dioxide (CO₂) in WASP-39b’s atmosphere. This finding not only offers the first decisive evidence of CO₂ in the atmosphere of an exoplanet but also illustrates the potential for future scientific breakthroughs held by the JWST.<br>Which choice best describes the overall structure of the text?</p>",
       "options": [
         "It discusses a method used by some researchers, then states why an alternative method is superior to it.",
         "It describes how researchers made a scientific discovery, then explains the importance of that discovery.",
         "It outlines the steps taken in a scientific study, then presents a hypothesis based on that study.",
         "It examines how a group of scientists reached a conclusion, then shows how other scientists have challenged that conclusion."
       ],
-      "correct": "It describes how researchers made a scientific discovery, then explains the importance of that discovery."
+      "correct": "It describes how researchers made a scientific discovery, then explains the importance of that discovery.",
+      "answer_key": "<p><strong>Correct Answer: B</strong></p>"
     },
     {
       "id": 11,
-      "question": "A common assumption among art historians is that the invention of photography in the mid-nineteenth century displaced the painted portrait in the public consciousness. The diminishing popularity of the portrait miniature, which coincided with the rise of photography, seems to support this claim. However, photography's impact on the portrait miniature may be overstated. Although records from art exhibitions in the Netherlands from 1820 to 1892 show a decrease in the number of both full-sized and miniature portraits submitted, this trend was established before the invention of photography. Based on the text, what can be concluded about the diminishing popularity of the portrait miniature in the nineteenth century?",
+      "question": "<p>A common assumption among art historians is that the invention of photography in the mid-nineteenth century displaced the painted portrait in the public consciousness. The diminishing popularity of the portrait miniature, which coincided with the rise of photography, seems to support this claim. However, photography’s impact on the portrait miniature may be overstated. Although records from art exhibitions in the Netherlands from 1820 to 1892 show a decrease in the number of both full-sized and miniature portraits submitted, this trend was established before the invention of photography.<br>Based on the text, what can be concluded about the diminishing popularity of the portrait miniature in the nineteenth century?</p>",
       "options": [
-        "Factors other than the rise of photography may be more directly responsible for the portrait miniature's decline.",
+        "Factors other than the rise of photography may be more directly responsible for the portrait miniature’s decline.",
         "Although portrait miniatures became less common than photographs, they were widely regarded as having more artistic merit.",
         "The popularity of the portrait miniature likely persisted for longer than art historians have assumed.",
         "As demand for portrait miniatures decreased, portrait artists likely shifted their creative focus to photography."
       ],
-      "correct": "Factors other than the rise of photography may be more directly responsible for the portrait miniature's decline."
+      "correct": "Factors other than the rise of photography may be more directly responsible for the portrait miniature’s decline.",
+      "answer_key": "<p><strong>Correct Answer: A</strong></p>"
     },
     {
       "id": 12,
-      "question": "Believing that living in an impractical space can heighten awareness and even improve health, conceptual artists Madeline Gins and Shusaku Arakawa designed an apartment building in Japan to be more fanciful than functional. A kitchen counter is chest-high on one side and knee-high on the other; a ceiling has a door to nowhere. The effect is disorienting but invigorating: after four years there, filmmaker Nobu Yamaoka reported significant health benefits. Which choice best states the main idea of the text?",
+      "question": "<p>Believing that living in an impractical space can heighten awareness and even improve health, conceptual artists Madeline Gins and Shusaku Arakawa designed an apartment building in Japan to be more fanciful than functional. A kitchen counter is chest-high on one side and knee-high on the other; a ceiling has a door to nowhere. The effect is disorienting but invigorating: after four years there, filmmaker Nobu Yamaoka reported significant health benefits.<br>Which choice best states the main idea of the text?</p>",
       "options": [
         "Although inhabiting a home surrounded by fanciful features such as those designed by Gins and Arakawa can be rejuvenating, it is unsustainable.",
         "Designing disorienting spaces like those in the Gins and Arakawa building is the most effective way to create a physically stimulating environment.",
         "As a filmmaker, Yamaoka has long supported the designs of conceptual artists such as Gins and Arakawa.",
-        "Although impractical, the design of the apartment building by Gins and Arakawa may improve the well-being of the building's residents."
+        "Although impractical, the design of the apartment building by Gins and Arakawa may improve the well-being of the building’s residents."
       ],
-      "correct": "Although impractical, the design of the apartment building by Gins and Arakawa may improve the well-being of the building's residents."
+      "correct": "Although impractical, the design of the apartment building by Gins and Arakawa may improve the well-being of the building’s residents.",
+      "answer_key": "<p><strong>Correct Answer: D</strong></p>"
     },
     {
       "id": 13,
-      "question": "In her 2021 article Throwaway History: Towards a Historiography of Ephemera, scholar Anne Garner discusses John Johnson (1882–1956), a devoted collector of items intended to be discarded, including bus tickets and campaign pamphlets. Johnson recognized that scholarly institutions considered his expansive collection of ephemera to be worthless—indeed, it wasn't until 1968, after Johnson's death, that Oxford University's Bodleian Library acquired the collection, having grasped the items' potential value to historians and other researchers. Hence, the example of Johnson serves to ______ Which choice most logically completes the text?",
+      "question": "<p>In her 2021 article “Throwaway History: Towards a Historiography of Ephemera,” scholar Anne Garner discusses John Johnson (1882–1956), a devoted collector of items intended to be discarded, including bus tickets and campaign pamphlets. Johnson recognized that scholarly institutions considered his expansive collection of ephemera to be worthless—indeed, it wasn’t until 1968, after Johnson’s death, that Oxford University’s Bodleian Library acquired the collection, having grasped the items’ potential value to historians and other researchers. Hence, the example of Johnson serves to ______<br>Which choice most logically completes the text?</p>",
       "options": [
         "demonstrate the difficulties faced by contemporary historians in conducting research at the Bodleian Library without access to ephemera.",
         "represent the challenge of incorporating examples of ephemera into the collections of libraries and other scholarly institutions.",
         "lend support to arguments by historians and other researchers who continue to assert that ephemera holds no value for scholars.",
-        "illustrate both the relatively low scholarly regard in which ephemera was once held and the later recognition of ephemera's possible utility."
+        "illustrate both the relatively low scholarly regard in which ephemera was once held and the later recognition of ephemera’s possible utility."
       ],
-      "correct": "illustrate both the relatively low scholarly regard in which ephemera was once held and the later recognition of ephemera's possible utility."
+      "correct": "illustrate both the relatively low scholarly regard in which ephemera was once held and the later recognition of ephemera’s possible utility.",
+      "answer_key": "<p><strong>Correct Answer: D</strong></p>"
     },
     {
       "id": 14,
-      "question": "Utah is home to Pando, a colony of about 47,000 quaking aspen trees that all share a single root system. Pando is one of the largest single organisms by mass on Earth, but ecologists are worried that its growth is declining in part because of grazing by animals. The ecologists say that strong fences could prevent deer from eating young trees and help Pando start thriving again. According to the text, why are ecologists worried about Pando?",
+      "question": "<p>Utah is home to Pando, a colony of about 47,000 quaking aspen trees that all share a single root system. Pando is one of the largest single organisms by mass on Earth, but ecologists are worried that its growth is declining in part because of grazing by animals. The ecologists say that strong fences could prevent deer from eating young trees and help Pando start thriving again.<br>According to the text, why are ecologists worried about Pando?</p>",
       "options": [
-        "It isn't growing at the same rate it used to.",
-        "It isn't producing young trees anymore.",
-        "It can't grow into new areas because it is blocked by fences.",
-        "Its root system can't support many more new trees."
+        "It isn’t growing at the same rate it used to.",
+        "It isn’t producing young trees anymore.",
+        "It can’t grow into new areas because it is blocked by fences.",
+        "Its root system can’t support many more new trees."
       ],
-      "correct": "It isn't growing at the same rate it used to."
+      "correct": "It isn’t growing at the same rate it used to.",
+      "answer_key": "<p><strong>Correct Answer: A</strong></p>"
     },
     {
       "id": 15,
-      "question": "The practice of logging (cutting down trees for commercial and other uses) is often thought to be at odds with forest conservation (the work of preserving forests). However, a massive study in forest management and preservation spanning 700,000 hectares in Oregon's Malheur National Forest calls that view into question. So far, results of the study suggest that forest plots that have undergone limited logging (the careful removal of a controlled number of trees) may be more robust than plots that haven't been logged at all. These results, in turn, suggest that ______ Which choice most logically completes the text?",
+      "question": "<p>The practice of logging (cutting down trees for commercial and other uses) is often thought to be at odds with forest conservation (the work of preserving forests). However, a massive study in forest management and preservation spanning 700,000 hectares in Oregon’s Malheur National Forest calls that view into question. So far, results of the study suggest that forest plots that have undergone limited logging (the careful removal of a controlled number of trees) may be more robust than plots that haven’t been logged at all. These results, in turn, suggest that ______<br>Which choice most logically completes the text?</p>",
       "options": [
         "logging may be useful for maintaining healthy forests, provided it is limited.",
         "other forest management strategies are more effective than limited logging.",
         "as time passes, it will be difficult to know whether limited logging has any benefits.",
         "the best way to support forest health may be to leave large forests entirely untouched."
       ],
-      "correct": "logging may be useful for maintaining healthy forests, provided it is limited."
+      "correct": "logging may be useful for maintaining healthy forests, provided it is limited.",
+      "answer_key": "<p><strong>Correct Answer: A</strong></p>"
     },
     {
       "id": 16,
-      "question": "High levels of public uncertainty about which economic policies a country will adopt can make planning difficult for businesses, but measures of such uncertainty have not tended to be very detailed. Recently, however, economist Sandile Hlatshwayo analyzed trends in news reports to derive measures not only for general economic policy uncertainty but also for uncertainty related to specific areas of economic policy, like tax or trade policy. One revelation of her work is that a general measure may not fully reflect uncertainty about specific areas of policy, as in the case of the United Kingdom, where general economic policy uncertainty ______ Which choice most effectively uses data from the graph to illustrate the claim?",
+      "question": "<p><img src=\"data:image/png;base64,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\" alt=\"image001.png\" style=\"max-width:100%;height:auto;\"><br>High levels of public uncertainty about which economic policies a country will adopt can make planning difficult for businesses, but measures of such uncertainty have not tended to be very detailed. Recently, however, economist Sandile Hlatshwayo analyzed trends in news reports to derive measures not only for general economic policy uncertainty but also for uncertainty related to specific areas of economic policy, like tax or trade policy. One revelation of her work is that a general measure may not fully reflect uncertainty about specific areas of policy, as in the case of the United Kingdom, where general economic policy uncertainty ______<br>Which choice most effectively uses data from the graph to illustrate the claim?</p>",
       "options": [
         "aligned closely with uncertainty about tax and public spending policy in 2005 but differed from uncertainty about tax and public spending policy by a large amount in 2009.",
         "was substantially lower than uncertainty about tax and public spending policy each year from 2005 to 2010.",
         "reached its highest level between 2005 and 2010 in the same year that uncertainty about trade policy and tax and public spending policy reached their lowest levels.",
         "was substantially lower than uncertainty about trade policy in 2005 and substantially higher than uncertainty about trade policy in 2010."
       ],
-      "correct": "aligned closely with uncertainty about tax and public spending policy in 2005 but differed from uncertainty about tax and public spending policy by a large amount in 2009."
+      "correct": "was substantially lower than uncertainty about trade policy in 2005 and substantially higher than uncertainty about trade policy in 2010.",
+      "answer_key": "<p><strong>Correct Answer: D</strong></p>"
     },
     {
       "id": 17,
-      "question": "When fashion designer Lloyd Henri Kiva New opened his store in Scottsdale, Arizona, in 1945, he quickly became known for creating delicately crafted leather goods, like belts and hats. He was perhaps most renowned for his colorful handbags, which he made by hand using a long and painstaking process. As he gained more customers, New began using sewing machines and other tools to help him ______ Which choice completes the text with the most logical and precise word or phrase?",
+      "question": "<p>When fashion designer Lloyd Henri Kiva New opened his store in Scottsdale, Arizona, in 1945, he quickly became known for creating delicately crafted leather goods, like belts and hats. He was perhaps most renowned for his colorful handbags, which he made by hand using a long and painstaking process. As he gained more customers, New began using sewing machines and other tools to help him produce bags more efficiently, though he continued to handcraft the crucial details that made each bag unique.<br>Based on the text, what would have been the most likely consequence if New had not begun using sewing machines?</p>",
       "options": [
-        "maintain the quality of his handbags",
-        "increase the production of his handbags",
-        "reduce the cost of his handbags",
-        "simplify the design of his handbags"
+        "He would have been unable to ensure that each bag included unique, handcrafted details.",
+        "He would have struggled to meet the increasing demand for his bags.",
+        "He would have had to individually design each bag he produced.",
+        "He would not have been able to generate as much interest in his bags."
       ],
-      "correct": "increase the production of his handbags"
+      "correct": "He would have struggled to meet the increasing demand for his bags.",
+      "answer_key": "<p><strong>Correct Answer: B</strong></p>"
     },
     {
       "id": 18,
-      "question": "A study by ecologist Alexandre Barve and colleagues examined the feathers of 23 Himalayan songbird species and found that species living in colder habitats tend to have feathers with more flat and smooth sections than species living in warmer habitats. This finding ______ a general prediction in evolutionary biology: cold-adapted animals often have specializations that help them retain body heat. Which choice most logically completes the text?",
+      "question": "<p>Biologists have predicted that birds’ feather structures vary with habitat temperature, but this hadn’t been tested in mountain environments. Ornithologist Sahas Barve studied feathers from 249 songbird species inhabiting different elevations—and thus experiencing different temperatures—in the Himalaya Mountains. He found that feathers of high-elevation species not only have a greater proportion of warming downy sections to flat and smooth sections than do feathers of low-elevation species, but high-elevation species’ feathers also tend to be longer, providing a thicker layer of insulation.<br>Which choice best states the main idea of the text?</p>",
       "options": [
-        "contradicts",
-        "confirms",
-        "questions",
-        "complicates"
+        "Barve’s investigation shows that some species of Himalayan songbirds have evolved feathers that better regulate body temperature than do the feathers of other species, contradicting previous predictions.",
+        "Barve found an association between habitat temperature and feather structure among Himalayan songbirds, lending new support to a general prediction.",
+        "Barve discovered that songbirds have adapted to their environment by growing feathers without flat and smooth sections, complicating an earlier hypothesis.",
+        "The results of Barve’s study suggest that the ability of birds to withstand cold temperatures is determined more strongly by feather length than feather structure, challenging an established belief."
       ],
-      "correct": "confirms"
+      "correct": "Barve found an association between habitat temperature and feather structure among Himalayan songbirds, lending new support to a general prediction.",
+      "answer_key": "<p><strong>Correct Answer: B</strong></p>"
     },
     {
       "id": 19,
-      "question": "Nigerian American artist Toyin Ojih Odutola uses black-ink pens to create highly detailed drawings of human figures. Her portrait of novelist Zadie ______ is displayed in the National Portrait Gallery in London. Which choice completes the text so that it conforms to the conventions of Standard English?",
+      "question": "<p>Nigerian American artist Toyin Ojih Odutola uses black-ink pens to create highly detailed drawings of human figures. Her portrait of novelist Zadie ______ is displayed in the National Portrait Gallery in London.<br>Which choice completes the text so that it conforms to the conventions of Standard English?</p>",
       "options": [
-        "Smith",
+        "Top of Form Smith:",
         "Smith—",
-        "Smith,",
-        "Smith."
+        "Smith",
+        "Smith,QBottom of Form"
       ],
-      "correct": "Smith,"
+      "correct": "Smith",
+      "answer_key": "<p><strong>Correct Answer: C</strong></p>"
     },
     {
       "id": 20,
-      "question": "The city of Pompeii, which was buried in ash following the eruption of Mount Vesuvius in 79 CE, continues to be studied by archaeologists. Unfortunately, as ______ attest, archaeological excavations have disrupted ash deposits at the site, causing valuable information about the eruption to be lost. Which choice completes the text so that it conforms to the conventions of Standard English?",
+      "question": "<p>The city of Pompeii, which was buried in ash following the eruption of Mount Vesuvius in 79 CE, continues to be studied by archaeologists. Unfortunately, as ______ attest, archaeological excavations have disrupted ash deposits at the site, causing valuable information about the eruption to be lost.<br>Which choice completes the text so that it conforms to the conventions of Standard English?</p>",
       "options": [
         "researchers, Roberto Scandone and Christopher Kilburn,",
         "researchers, Roberto Scandone and Christopher Kilburn",
         "researchers Roberto Scandone and Christopher Kilburn",
         "researchers Roberto Scandone, and Christopher Kilburn"
       ],
-      "correct": "researchers Roberto Scandone and Christopher Kilburn"
+      "correct": "researchers Roberto Scandone and Christopher Kilburn",
+      "answer_key": "<p><strong>Correct Answer: C</strong></p>"
     },
     {
       "id": 21,
-      "question": "Eli Eisenberg, a genetics expert at Tel Aviv University in Israel, recently discovered that ______ have a special genetic ability called RNA editing that confers evolutionary advantages. Which choice completes the text so that it conforms to the conventions of Standard English?",
+      "question": "<p>Eli Eisenberg, a genetics expert at Tel Aviv University in Israel, recently discovered that ______ have a special genetic ability called RNA editing that confers evolutionary advantages.<br>Which choice completes the text so that it conforms to the conventions of Standard English?</p>",
       "options": [
         "cephalopods, ocean dwellers that include the squid, the octopus, and the cuttlefish",
         "cephalopods—ocean dwellers—that include the squid, the octopus, and the cuttlefish,",
         "cephalopods, ocean dwellers that include: the squid, the octopus, and the cuttlefish,",
-        "cephalopods—ocean dwellers that include the squid, the octopus, and the cuttlefish—"
+        "cephalopods—ocean dwellers that include the squid, the octopus, and the cuttlefish— Bottom of Form"
       ],
-      "correct": "cephalopods, ocean dwellers that include the squid, the octopus, and the cuttlefish"
+      "correct": "cephalopods—ocean dwellers that include the squid, the octopus, and the cuttlefish— Bottom of Form",
+      "answer_key": "<p><strong>Correct Answer: D</strong></p>"
     },
     {
       "id": 22,
-      "question": "By the time Hawaiian king Kamehameha III ______ the throne, the number of longhorn cattle, first introduced to the islands in 1793, had drastically increased, and so too had the need for paniolo (Hawaiian cowboys) to manage the wild herds that then roamed throughout the volcanic terrain. Which choice completes the text so that it conforms to the conventions of Standard English?",
+      "question": "<p>By the time Hawaiian king Kamehameha III ______ the throne, the number of longhorn cattle, first introduced to the islands in 1793, had drastically increased, and so too had the need for paniolo (Hawaiian cowboys) to manage the wild herds that then roamed throughout the volcanic terrain.<br>Which choice completes the text so that it conforms to the conventions of Standard English?<br>1.Top of Form</p>",
       "options": [
         "ascended",
         "will ascend",
         "ascends",
         "is ascending"
       ],
-      "correct": "ascended"
+      "correct": "ascended",
+      "answer_key": "<p><strong>Correct Answer: A</strong></p>"
     },
     {
       "id": 23,
-      "question": "In the late 1960s, inspired in part by the sight of laundry hanging on a clothesline, African American abstract painter Sam Gilliam began to create his iconic Drape paintings. He applied bold, saturated hues to large canvases and ______ them from ceilings or walls, causing the drooping fabric to cascade in dramatic loops and curves. Which choice completes the text so that it conforms to the conventions of Standard English?",
+      "question": "<p>In the late 1960s, inspired in part by the sight of laundry hanging on a clothesline, African American abstract painter Sam Gilliam began to create his iconic “Drape” paintings. He applied bold, saturated hues to large canvases and ______ them from ceilings or walls, causing the drooping fabric to cascade in dramatic loops and curves.<br>Which choice completes the text so that it conforms to the conventions of Standard English?<br>2.Top of Form</p>",
       "options": [
         "had suspended",
         "suspending",
         "to suspend",
         "suspended"
       ],
-      "correct": "suspended"
+      "correct": "suspended",
+      "answer_key": "<p><strong>Correct Answer: D</strong></p>"
     },
     {
       "id": 24,
-      "question": "In 1942, the 1,500-mile Alaska Highway was constructed in under nine months, largely due to the skilled work of nearly 4,000 African American soldiers from US Army engineering regiments. The soldiers' contribution was overlooked for decades. ______ in 2017, lawmakers declared October 25 a day of recognition—Alaska Highway Day—for the troops who helped build this critical roadway. Which choice completes the text with the most logical transition?",
+      "question": "<p>In 1942, the 1,500-mile Alaska Highway was constructed in under nine months, largely due to the skilled work of nearly 4,000 African American soldiers from US Army engineering regiments. The soldiers’ contribution was overlooked for decades. ______ in 2017, lawmakers declared October 25 a day of recognition—“Alaska Highway Day”—for the troops who helped build this critical roadway.<br>Which choice completes the text with the most logical transition?</p>",
       "options": [
         "Lastly,",
         "Then,",
         "Similarly,",
         "For example,"
       ],
-      "correct": "Then,"
+      "correct": "Then,",
+      "answer_key": "<p><strong>Correct Answer: B</strong></p>"
     },
     {
       "id": 25,
-      "question": "Scientists were able to isolate a relatively pure sample of selenium in 1817, the same year they first discovered the element's existence. ______ the isolation process took longer for molybdenum, which was isolated in its pure form three years after scientists first discovered it. Which choice completes the text with the most logical transition?",
+      "question": "<p>Scientists were able to isolate a relatively pure sample of selenium in 1817, the same year they first discovered the element’s existence. ______ the isolation process took longer for molybdenum, which was isolated in its pure form three years after scientists first discovered it.<br>Which choice completes the text with the most logical transition?</p>",
       "options": [
         "By contrast,",
         "Thus,",
         "Similarly,",
         "For instance,"
       ],
-      "correct": "By contrast,"
+      "correct": "By contrast,",
+      "answer_key": "<p><strong>Correct Answer: A</strong></p>"
     },
     {
       "id": 26,
-      "question": "While researching a topic, a student has taken the following notes: As engineered structures, many bird nests are uniquely flexible yet cohesive. A research team led by Yashraj Bhosale wanted to better understand the mechanics behind these structural properties. Bhosale's team used laboratory models that simulated the arrangement of flexible sticks into nest-like structures. The researchers analyzed the points where sticks touched one another. When pressure was applied to the model nests, the number of contact points between the sticks increased, making the structures stiffer. The student wants to present the primary aim of the research study. Which choice most effectively uses relevant information from the notes to accomplish this goal?",
+      "question": "<p>While researching a topic, a student has taken the following notes:<br>The student wants to present the primary aim of the research study. Which choice most effectively uses relevant information from the notes to accomplish this goal?</p>",
       "options": [
-        "Bhosale's team wanted to better understand the mechanics behind bird nests' uniquely flexible yet cohesive structural properties.",
+        "Bhosale’s team wanted to better understand the mechanics behind bird nests’ uniquely flexible yet cohesive structural properties.",
         "The researchers used laboratory models that simulated the arrangement of flexible sticks and analyzed the points where sticks touched one another.",
         "After analyzing the points where sticks touched, the researchers found that the structures became stiffer when pressure was applied.",
-        "As analyzed by Bhosale's team, bird nests are uniquely flexible yet cohesive engineered structures."
+        "As analyzed by Bhosale’s team, bird nests are uniquely flexible yet cohesive engineered structures."
       ],
-      "correct": "Bhosale's team wanted to better understand the mechanics behind bird nests' uniquely flexible yet cohesive structural properties."
+      "correct": "Bhosale’s team wanted to better understand the mechanics behind bird nests’ uniquely flexible yet cohesive structural properties.",
+      "answer_key": "<p><strong>Correct Answer: A</strong></p>"
     },
     {
       "id": 27,
-      "question": "While researching a topic, a student has taken the following notes: Platinum is a rare and expensive metal. It is used as a catalyst for chemical reactions. Platinum catalysts typically require a large amount of platinum to be effective. Researcher Jianbo Tang and his colleagues created a platinum catalyst that combines platinum with liquid gallium. Their catalyst was highly effective and required only trace amounts of platinum (0.0001% of the atoms in the mixture). The student wants to explain an advantage of the new platinum catalyst developed by Jianbo Tang and his colleagues. Which choice most effectively uses relevant information from the notes to accomplish this goal?",
+      "question": "<p>While researching a topic, a student has taken the following notes:<br>The student wants to explain an advantage of the new platinum catalyst developed by Jianbo Tang and his colleagues. Which choice most effectively uses relevant information from the notes to accomplish this goal?</p>",
       "options": [
         "Researcher Jianbo Tang and his colleagues created a platinum catalyst that combines platinum, a rare and expensive metal, with liquid gallium.",
         "Like other platinum catalysts, the new platinum catalyst requires a particular amount of the metal to be effective.",
         "Platinum is a rare and expensive metal that is used as a catalyst for chemical reactions; however, platinum catalysts typically require a large amount of platinum to be effective.",
-        "While still highly effective, the new platinum catalyst requires far less of the rare and expensive metal than do other platinum catalysts."
+        "While still highly effective, the new platinum catalyst requires far less of the rare and expensive metal than do other platinum catalysts. Bottom of Form Bottom of Form Bottom of Form Module 2"
       ],
-      "correct": "While still highly effective, the new platinum catalyst requires far less of the rare and expensive metal than do other platinum catalysts."
+      "correct": "While still highly effective, the new platinum catalyst requires far less of the rare and expensive metal than do other platinum catalysts. Bottom of Form Bottom of Form Bottom of Form Module 2",
+      "answer_key": "<p><strong>Correct Answer: D</strong></p>"
     },
     {
       "id": 28,
-      "question": "The following text is adapted from George Eliot's 1871–72 novel Middlemarch. [Mr. Brooke] had travelled in his younger years, and was held in this part of the country to have contracted a too rambling habit of mind. Mr. Brooke's conclusions were as difficult to predict as the weather. As used in the text, what does the word contracted most nearly mean?",
+      "question": "<p>The following text is adapted from George Eliot’s 1871–72 novel Middlemarch.<br>[Mr. Brooke] had travelled in his younger years, and was held in this part of the country to have contracted a too rambling habit of mind. Mr. Brooke’s conclusions were as difficult to predict as the weather.<br>As used in the text, what does the word “contracted” most nearly mean?</p>",
       "options": [
         "Restricted",
         "Described",
         "Developed",
         "Settled"
       ],
-      "correct": "Developed"
+      "correct": "Developed",
+      "answer_key": "<p><strong>Correct Answer: C</strong></p>"
     },
     {
       "id": 29,
-      "question": "The following text is from F. Scott Fitzgerald's 1925 novel The Great Gatsby. [Jay Gatsby] was balancing himself on the dashboard of his car with that resourcefulness of movement that is so peculiarly American—that comes, I suppose, with the absence of lifting work in youth and, even more, with the formless grace of our nervous, sporadic games. This quality was continually breaking through his punctilious manner in the shape of restlessness. As used in the text, what does the word quality most nearly mean?",
+      "question": "<p>The following text is from F. Scott Fitzgerald’s 1925 novel The Great Gatsby.<br>[Jay Gatsby] was balancing himself on the dashboard of his car with that resourcefulness of movement that is so peculiarly American—that comes, I suppose, with the absence of lifting work in youth and, even more, with the formless grace of our nervous, sporadic games. This quality was continually breaking through his punctilious manner in the shape of restlessness.<br>As used in the text, what does the word “quality” most nearly mean?</p>",
       "options": [
         "Standard",
         "Prestige",
         "Characteristic",
         "Accomplishment"
       ],
-      "correct": "Characteristic"
+      "correct": "Characteristic",
+      "answer_key": "<p><strong>Correct Answer: C</strong></p>"
     },
     {
       "id": 30,
-      "question": "The following text is adapted from Upton Sinclair's 1906 novel The Jungle. Marija is helping to manage her sister's wedding. It was [Marija's] task to see that all things went in due form, and after the best home traditions; and, flying wildly hither and thither, bowling every one out of the way, and scolding and exhorting all day with her tremendous voice, Marija was too eager to see that others conformed to the proprieties to consider them herself. As used in the text, what does the word consider most nearly mean?",
+      "question": "<p>The following text is adapted from Upton Sinclair’s 1906 novel The Jungle. Marija is helping to manage her sister’s wedding.<br>It was [Marija’s] task to see that all things went in due form, and after the best home traditions; and, flying wildly hither and thither, bowling every one out of the way, and scolding and exhorting all day with her tremendous voice, Marija was too eager to see that others conformed to the proprieties to considerthem herself.<br>As used in the text, what does the word “consider” most nearly mean?</p>",
       "options": [
         "Take into account and follow",
         "Admire steadily and praise",
         "Come to a decision about",
         "Have an opinion on"
       ],
-      "correct": "Take into account and follow"
+      "correct": "Take into account and follow",
+      "answer_key": "<p><strong>Correct Answer: A</strong></p>"
     },
     {
       "id": 31,
-      "question": "To develop a method for measuring snow depth with laser beams, NASA physicist Yongxiang Hu relied on ______ ; identifying broad similarities between two seemingly different phenomena, Hu used information about how ants move inside colonies to calculate how the particles of light that make up laser beams travel through snow. Which choice completes the text with the most logical and precise word or phrase?",
+      "question": "<p>To develop a method for measuring snow depth with laser beams, NASA physicist Yongxiang Hu relied on ______ ; identifying broad similarities between two seemingly different phenomena, Hu used information about how ants move inside colonies to calculate how the particles of light that make up laser beams travel through snow.<br>Which choice completes the text with the most logical and precise word or phrase?</p>",
       "options": [
         "a collaboration",
         "an accessory",
         "a contradiction",
         "an analogy"
       ],
-      "correct": "an analogy"
+      "correct": "an analogy",
+      "answer_key": "<p><strong>Correct Answer: D</strong></p>"
     },
     {
       "id": 32,
-      "question": "A journalist and well-respected art critic of nineteenth-century Britain, Lady Elizabeth Rigby Eastlake did not hesitate to publish reviews that went against popular opinion. One of her most divisive works was an essay questioning the idea of photography as an emerging medium for fine art: in the essay, Eastlake ______ that the value of photographs was informational rather than creative. Which choice completes the text with the most logical and precise word or phrase?",
+      "question": "<p>A journalist and well-respected art critic of nineteenth-century Britain, Lady Elizabeth Rigby Eastlake did not hesitate to publish reviews that went against popular opinion. One of her most divisive works was an essay questioning the idea of photography as an emerging medium for fine art: in the essay, Eastlake ______ that the value of photographs was informational rather than creative.<br>Which choice completes the text with the most logical and precise word or phrase?</p>",
       "options": [
         "exposed",
         "asserted",
         "discovered",
         "doubted"
       ],
-      "correct": "asserted"
+      "correct": "asserted",
+      "answer_key": "<p><strong>Correct Answer: B</strong></p>"
     },
     {
       "id": 33,
-      "question": "The following text is from Joseph Conrad's 1907 novel The Secret Agent: A Simple Tale. Mr. Verloc is navigating the London streets on his way to a meeting. Before reaching Knightsbridge, Mr. Verloc took a turn to the left out of the busy main thoroughfare, uproarious with the traffic of swaying omnibuses and trotting vans, in the almost silent, swift flow of hansoms [horse-drawn carriages]. Under his hat, worn with a slight backward tilt, his hair had been carefully brushed into respectful sleekness; for his business was with an Embassy. And Mr. Verloc, steady like a rock—a soft kind of rock—marched now along a street which could with every propriety be described as private. Which choice best describes the function of the underlined phrase in the text as a whole?",
+      "question": "<p>The following text is from Joseph Conrad’s 1907 novel The Secret Agent: A Simple Tale.Mr. Verloc is navigating the London streets on his way to a meeting.<br>Before reaching Knightsbridge, Mr. Verloc took a turn to the left out of the busy main thoroughfare, uproarious with the traffic of swaying omnibuses and trotting vans, in the almost silent, swift flow of hansoms [horse-drawn carriages]. Under his hat, worn with a slight backward tilt, his hair had been carefully brushed into respectful sleekness; for his business was with an Embassy. And Mr. Verloc, steady like a rock—a soft kind of rock—marched now along a street which could with every propriety be described as private.<br>Which choice best describes the function of the underlined phrase in the text as a whole?</p>",
       "options": [
         "It qualifies an earlier description of Mr. Verloc.",
         "It emphasizes an internal struggle Mr. Verloc experiences.",
         "It contrasts Mr. Verloc with his surroundings.",
         "It reveals a private opinion Mr. Verloc holds."
       ],
-      "correct": "It qualifies an earlier description of Mr. Verloc."
+      "correct": "It qualifies an earlier description of Mr. Verloc.",
+      "answer_key": "<p><strong>Correct Answer: A</strong></p>"
     },
     {
       "id": 34,
-      "question": "Why do sand cats purr but lions roar? Researchers hypothesize that this difference between the two feline species may be partly due to a U-shaped bone in their throats called the hyoid. Sand cats, which are much smaller than lions, have a rigid hyoid that rumbles when the cat's larynx vibrates, resulting in a purr. By contrast, lions have a somewhat flexible hyoid, and the bone is attached to the skull with a stretchy ligament that sand cats lack. These traits allow lions and most other species of big cats to produce powerful roars. The same traits may also prevent most big cats from purring. Which choice best describes the overall structure of the text?",
+      "question": "<p>Why do sand cats purr but lions roar? Researchers hypothesize that this difference between the two feline species may be partly due to a U-shaped bone in their throats called the hyoid. Sand cats, which are much smaller than lions, have a rigid hyoid that rumbles when the cat’s larynx vibrates, resulting in a purr. By contrast, lions have a somewhat flexible hyoid, and the bone is attached to the skull with a stretchy ligament that sand cats lack. These traits allow lions and most other species of big cats to produce powerful roars. The same traits may also prevent most big cats from purring.<br>Which choice best describes the overall structure of the text?</p>",
       "options": [
         "The text presents a theory about two species, then discusses facts that weaken it.",
         "The text compares the habitats of two species, then explains how those habitats are changing.",
         "The text describes a behavior shared by two species, then discusses other behaviors shared by them.",
         "The text poses a question about two species, then presents a possible answer."
       ],
-      "correct": "The text poses a question about two species, then presents a possible answer."
+      "correct": "The text poses a question about two species, then presents a possible answer.",
+      "answer_key": "<p><strong>Correct Answer: D</strong></p>"
     },
     {
       "id": 35,
-      "question": "Text 1 Microbes are tiny organisms in the soil, water, and air all around us. They thrive even in very harsh conditions. That's why Noah Fierer and colleagues were surprised when soil samples they collected from an extremely cold, dry area in Antarctica didn't seem to contain any life. The finding doesn't prove that there are no microbes in that area, but the team says it does suggest that the environment severely restricts microbes' survival. Text 2 Microbes are found in virtually every environment on Earth. So it's unlikely they would be completely absent from Fierer's team's study site, no matter how extreme the environment is. There were probably so few organisms in the samples that current technology couldn't detect them. But since a spoonful of typical soil elsewhere might contain billions of microbes, the presence of so few in the Antarctic soil samples would show how challenging the conditions are. Based on the texts, Fierer's team and the author of Text 2 would most likely agree with which statement about microbes?",
+      "question": "<strong>Text 1</strong><br>Microbes are tiny organisms in the soil, water, and air all around us. They thrive even in very harsh conditions. That’s why Noah Fierer and colleagues were surprised when soil samples they collected from an extremely cold, dry area in Antarctica didn’t seem to contain any life. The finding doesn’t prove that there are no microbes in that area, but the team says it does suggest that the environment severely restricts microbes’ survival.<br><strong>Text 2</strong><br>Microbes are found in virtually every environment on Earth. So it’s unlikely they would be completely absent from Fierer’s team’s study site, no matter how extreme the environment is. There were probably so few organisms in the samples that current technology couldn’t detect them. But since a spoonful of typical soil elsewhere might contain billions of microbes, the presence of so few in the Antarctic soil samples would show how challenging the conditions are.<br>Based on the texts, Fierer’s team and the author of Text 2 would most likely agree with which statement about microbes?",
       "options": [
         "Most microbes are better able to survive in environments with extremely dry conditions than in environments with harsh temperatures.",
         "A much higher number of microbes would probably be found if another sample of soil were taken from the Antarctic study site.",
         "Microbes are likely difficult to detect in the soil at the Antarctic study site because they tend to be smaller than microbes found in typical soil elsewhere.",
         "Most microbes are probably unable to withstand the soil conditions at the Antarctic study site."
       ],
-      "correct": "Most microbes are probably unable to withstand the soil conditions at the Antarctic study site."
+      "correct": "Most microbes are probably unable to withstand the soil conditions at the Antarctic study site.",
+      "answer_key": "<p><strong>Correct Answer: D</strong></p>"
     },
     {
       "id": 36,
-      "question": "Companies are providing consumers with more opportunities to purchase customized products than ever before. Whether buying customized sneakers, jewelry, or clothing, consumers can participate in the design of products to meet their specific needs and tastes. In turn, companies profit too: studies have shown that consumers are willing to pay more and wait longer for a customized product. Still, it can be difficult for companies to offer customization while keeping costs low, as the standard methods of mass production may not be able to accommodate making a unique product each time. Which choice best describes the overall structure of the text?",
+      "question": "<p>Companies are providing consumers with more opportunities to purchase customized products than ever before. Whether buying customized sneakers, jewelry, or clothing, consumers can participate in the design of products to meet their specific needs and tastes. In turn, companies profit too: studies have shown that consumers are willing to pay more and wait longer for a customized product. Still, it can be difficult for companies to offer customization while keeping costs low, as the standard methods of mass production may not be able to accommodate making a unique product each time.<br>Which choice best describes the overall structure of the text?</p>",
       "options": [
         "It discusses several recent innovations in product manufacturing and then suggests some potential applications of those innovations.",
-        "It describes a company's recent success with new products and then explains multiple factors that may have contributed to that success.",
+        "It describes a company’s recent success with new products and then explains multiple factors that may have contributed to that success.",
         "It introduces a trend in consumer products and then explains how the trend both benefits and poses a challenge to companies.",
-        "It compares two different approaches to product customization and then argues that one approach is superior to the other."
+        "It presents two contrasting product-marketing techniques and then provides examples of one of those techniques."
       ],
-      "correct": "It introduces a trend in consumer products and then explains how the trend both benefits and poses a challenge to companies."
+      "correct": "It introduces a trend in consumer products and then explains how the trend both benefits and poses a challenge to companies.",
+      "answer_key": "<p><strong>Correct Answer: C</strong></p>"
+    },
+    {
+      "id": 37,
+      "question": "<p>Very little is known about the role nocturnal insects, such as moths, play in flower pollination because it is difficult to monitor insects at night. To address this problem, a team of scientists used time-lapse cameras to record pollinator visits to red clover all day and night. The recordings showed that while most pollinator visits were by bumblebees, one-third of visits were by moths. Additionally, flowers that were visited by both moths and bees produced more seeds than flowers that were only visited by bees.<br>Which choice best states the function of the underlined sentence?</p>",
+      "options": [
+        "To describe an approach a team of scientists used to study pollinators",
+        "To question a claim scientists make about pollinators",
+        "To explain why moths prefer red clover to other flowers",
+        "To announce an unexpected research finding about red clover"
+      ],
+      "correct": "To describe an approach a team of scientists used to study pollinators",
+      "answer_key": "<p><strong>Correct Answer: A</strong></p>"
+    },
+    {
+      "id": 38,
+      "question": "<p>In 1973, poet Miguel Algarín started inviting other writers who, like him, were Nuyorican—a term for New Yorkers of Puerto Rican heritage—to gather in his apartment to present their work. The gatherings were so well attended that Algarín soon had to rent space in a cafe to accommodate them. Thus, the Nuyorican Poets Cafe was born. Moving to a permanent location in 1981, the Nuyorican Poets Cafe expanded its original scope beyond the written word, hosting art exhibitions and musical performances as well. Half a century since its inception, it continues to foster emerging Nuyorican talent.<br>Which choice best describes the overall purpose of the text?</p>",
+      "options": [
+        "To explain what motivated Algarín to found the Nuyorican Poets Cafe",
+        "To situate the Nuyorican Poets Cafe within the cultural life of New York as a whole",
+        "To discuss why the Nuyorican Poets Cafe expanded its scope to include art and music",
+        "To provide an overview of the founding and mission of the Nuyorican Poets Café"
+      ],
+      "correct": "To provide an overview of the founding and mission of the Nuyorican Poets Café",
+      "answer_key": "<p><strong>Correct Answer: D</strong></p>"
+    },
+    {
+      "id": 39,
+      "question": "<p>In 2007, computer scientist Luis von Ahn was working on converting printed books into a digital format. He found that some words were distorted enough that digital scanners couldn’t recognize them, but most humans could easily read them. Based on that finding, von Ahn invented a simple security test to keep automated “bots” out of websites. The first version of the reCAPTCHA test asked users to type one known word and one of the many words scanners couldn’t recognize. Correct answers proved the users were humans and added data to the book-digitizing project.<br>Which choice best states the main purpose of the text?</p>",
+      "options": [
+        "To discuss von Ahn’s invention of reCAPTCHA",
+        "To explain how digital scanners work",
+        "To call attention to von Ahn’s book-digitizing project",
+        "To indicate how popular reCAPTCHA is"
+      ],
+      "correct": "To discuss von Ahn’s invention of reCAPTCHA",
+      "answer_key": "<p><strong>Correct Answer: A</strong></p>"
+    },
+    {
+      "id": 40,
+      "question": "<p>Researchers recently found that disruptions to an enjoyable experience, like a short series of advertisements during a television show, often increase viewers’ reported enjoyment. Suspecting that disruptions to an unpleasant experience would have the opposite effect, the researchers had participants listen to construction noise for 30 minutes and anticipated that those whose listening experience was frequently interrupted with short breaks of silence would thus ______<br>Which choice most logically completes the text?</p>",
+      "options": [
+        "find the disruptions more irritating as time went on.",
+        "rate the listening experience as more negative than those whose listening experience was uninterrupted.",
+        "rate the experience of listening to construction noise as lasting for less time than it actually lasted.",
+        "perceive the volume of the construction noise as growing softer over time."
+      ],
+      "correct": "rate the listening experience as more negative than those whose listening experience was uninterrupted.",
+      "answer_key": "<p><strong>Correct Answer: B</strong></p>"
+    },
+    {
+      "id": 41,
+      "question": "<p>The following text is adapted from Edgar Allan Poe’s 1849 story “Landor’s Cottage.”<br>During a pedestrian trip last summer, through one or two of the river counties of New York, I found myself, as the day declined, somewhat embarrassed about the road I was pursuing. The land undulated very remarkably; and my path, for the last hour, had wound about and about so confusedly, in its effort to keep in the valleys, that I no longer knew in what direction lay the sweet village of B——, where I had determined to stop for the night.<br>Which choice best states the main idea of the text?</p>",
+      "options": [
+        "The narrator remembers a trip he took and admits to getting lost.",
+        "The narrator recalls fond memories of a journey that he took through some beautiful river counties.",
+        "The narrator describes what he saw during a long trip through a frequently visited location.",
+        "The narrator explains the difficulties he encountered on a trip and how he overcame them."
+      ],
+      "correct": "The narrator remembers a trip he took and admits to getting lost.",
+      "answer_key": "<p><strong>Correct Answer: A</strong></p>"
+    },
+    {
+      "id": 42,
+      "question": "<p>“We Are Marching” is a 1921 poem by Carrie Law Morgan Figgs. In the poem, the speaker predicts future success: ______<br>Which quotation from “We Are Marching” most effectively illustrates the claim?</p>",
+      "options": [
+        "“Can’t you hear the sound of feet?”",
+        "“You who are out just get in line.”",
+        "“We have answered duty’s call.”",
+        "“We shall never know defeat.”"
+      ],
+      "correct": "“We shall never know defeat.”",
+      "answer_key": "<p><strong>Correct Answer: D</strong></p>"
+    },
+    {
+      "id": 43,
+      "question": "<p><strong><img src=\"data:image/png;base64,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\" alt=\"image002.png\" style=\"max-width:100%;height:auto;\"></strong><br>To understand how expressions of anger in reviews of products affect readers of those reviews, business scholar Dezhi Yin and colleagues measured study participants’ responses to three versions of the same negative review—a control review expressing no anger, a review expressing a high degree of anger, and a review expressing a low degree of anger. Reviewing the data, a student concludes that the mere presence of anger in a review may not negatively affect readers’ perceptions of the review, but a high degree of anger in a review does worsen readers’ perceptions of the review.<br>Which choice best describes data from the graph that support the students’ conclusion?</p>",
+      "options": [
+        "On average, participants’ ratings of the helpfulness of the review were substantially higher than were participants’ ratings of the reviewed product regardless of which type of review participants had seen.",
+        "Compared with participants who saw the control review, participants who saw the low-anger review rated the review as slightly more helpful, whereas participants who saw the high-anger review rated the review as less helpful.",
+        "Participants who saw the low-anger review rated the review as slightly more helpful than participants who saw the control review did, but participants’ attitude toward the reviewed product was slightly worse when participants saw the low-anger review than when they saw the no-anger review.",
+        "Compared with participants who saw the low-anger review, participants who saw the high-anger review rated the review as less helpful and had a less positive attitude toward the reviewed product."
+      ],
+      "correct": "Compared with participants who saw the control review, participants who saw the low-anger review rated the review as slightly more helpful, whereas participants who saw the high-anger review rated the review as less helpful.",
+      "answer_key": "<p><strong>Correct Answer: B</strong></p>"
+    },
+    {
+      "id": 44,
+      "question": "<p>Arthur Conan Doyle’s stories about detective Sherlock Holmes were published between 1887 and 1927. They have inspired countless successful adaptations, including comic strips, movies, and a television series Sherlock Hound, directed by Hayao Miyazaki, who is celebrated for his animated movies. Until 2014, these stories were copyrighted. The right to adapt was only available to those who could afford the copyright fee and gain approval from the strict copyright holders of Doyle’s estate. Some journalists predict that the number of Sherlock Holmes adaptations is likely to increase since the end of copyright means that ______<br>Which choice most logically completes the text?</p>",
+      "options": [
+        "Doyle’s original stories will become hard to find.",
+        "people will become more interested in detective stories than they were in the 1800s.",
+        "producing adaptations will become easier and less expensive.",
+        "the former copyright holders of Doyle’s estate will return fees they collected."
+      ],
+      "correct": "producing adaptations will become easier and less expensive.",
+      "answer_key": "<p><strong>Correct Answer: C</strong></p>"
+    },
+    {
+      "id": 45,
+      "question": "<p>In recent years, economists around the world have created new tools that quantify the overall well-being of a country’s citizens. Economists in India, for example, use an Ease of Living Index. This tool ______ economic potential, sustainability, and citizens’ quality of life.<br>Which choice completes the text so that it conforms to the conventions of Standard English?</p>",
+      "options": [
+        "measures",
+        "had measured",
+        "would have measured",
+        "will have been measuring"
+      ],
+      "correct": "measures",
+      "answer_key": "<p><strong>Correct Answer: A</strong></p>"
+    },
+    {
+      "id": 46,
+      "question": "<p>If an animal can recognize itself in a reflective surface (“the mirror test”), it is considered to have self-awareness. In a recent study, scientists ______ for evidence of self-awareness in snakes, species that rely primarily on olfactory rather than visual processing, adapted the test to foreground smell, modifying the scent trails of North American eastern garter snakes and African ball pythons.<br>Which choice completes the text so that it conforms to the conventions of Standard English?</p>",
+      "options": [
+        "searched",
+        "searching",
+        "were searching",
+        "have searched"
+      ],
+      "correct": "searching",
+      "answer_key": "<p><strong>Correct Answer: B</strong></p>"
+    },
+    {
+      "id": 47,
+      "question": "<p>The algaita is a double reed wind instrument from West Africa. The reed of a wind instrument is the mouthpiece ______ A double reed contains two pieces of cane that vibrate and produce sound as air passes between them.<br>Which choice completes the text so that it conforms to the conventions of Standard English?</p>",
+      "options": [
+        "where sound is made?",
+        "where is sound made.",
+        "where sound is made.",
+        "where is sound made?"
+      ],
+      "correct": "where sound is made.",
+      "answer_key": "<p><strong>Correct Answer: C</strong></p>"
+    },
+    {
+      "id": 48,
+      "question": "<p>Despite being cheap, versatile, and easy to produce, ______ they are made from nonrenewable petroleum, and most do not biodegrade in landfills.<br>Which choice completes the text so that it conforms to the conventions of Standard English?</p>",
+      "options": [
+        "there are two problems associated with commercial plastics:",
+        "two problems are associated with commercial plastics:",
+        "commercial plastics’ two associated problems are that",
+        "commercial plastics have two associated problems:"
+      ],
+      "correct": "commercial plastics have two associated problems:",
+      "answer_key": "<p><strong>Correct Answer: D</strong></p>"
+    },
+    {
+      "id": 49,
+      "question": "<p>A recent study tracked the number of bee species present in twenty-seven New York apple orchards over a ten-year period. ______ found that when wild growth near an orchard was cleared, the number of different bee species visiting the orchard decreased.<br>Which choice completes the text so that it conforms to the conventions of Standard English?</p>",
+      "options": [
+        "Entomologist Heather Grab:",
+        "Entomologist, Heather Grab,",
+        "Entomologist Heather Grab",
+        "Entomologist Heather Grab,"
+      ],
+      "correct": "Entomologist Heather Grab",
+      "answer_key": "<p><strong>Correct Answer: C</strong></p>"
+    },
+    {
+      "id": 50,
+      "question": "<p>Alexander Lawrence Posey (1873–1908) varied his focus and tone depending on the genre in which he was writing. In his poetry, he used heartfelt language to evoke the beauty and peacefulness of his natural surroundings; in his journalism, ______ he employed humor and satire to comment on political issues affecting his Muskogee Creek community.<br>Which choice completes the text with the most logical transition?</p>",
+      "options": [
+        "that is,",
+        "granted,",
+        "similarly,",
+        "by contrast,"
+      ],
+      "correct": "by contrast,",
+      "answer_key": "<p><strong>Correct Answer: D</strong></p>"
+    },
+    {
+      "id": 51,
+      "question": "<p>In her poetry collection Thomas and Beulah, Rita Dove interweaves the titular characters’ personal stories with broader historical narratives. She places Thomas’s journey from the American South to the Midwest in the early 1900s within the larger context of the Great Migration. _____ Dove sets events from Beulah’s personal life against the backdrop of the US Civil Rights Movement.<br>Which choice completes the text with the most logical transition?</p>",
+      "options": [
+        "Specifically,",
+        "Thus,",
+        "Regardless,",
+        "Similarly,"
+      ],
+      "correct": "Similarly,",
+      "answer_key": "<p><strong>Correct Answer: D</strong></p>"
+    },
+    {
+      "id": 52,
+      "question": "<p>For years, biologists have experimented with using grime-eating bacteria rather than harsh chemicals to clean artworks, and results have been impressive overall. ______ these bacterial strains—which can metabolize centuries’ worth of oil, glue, dirt, and other surface impurities without creating harmful byproducts—have proven more effective than traditional chemical cleaning methods.<br>Which choice completes the text with the most logical transition?</p>",
+      "options": [
+        "However,",
+        "In many cases,",
+        "As a result,",
+        "Additionally,"
+      ],
+      "correct": "In many cases,",
+      "answer_key": "<p><strong>Correct Answer: B</strong></p>"
+    },
+    {
+      "id": 53,
+      "question": "<p>While researching a topic, a student has taken the following notes:<br>The student wants to compare the two women’s contributions to the March on Washington. Which choice most effectively uses relevant information from the notes to accomplish this goal?</p>",
+      "options": [
+        "Hedgeman and Bates contributed to the march in different ways; Bates, for example, delivered a brief but memorable address.",
+        "Hedgeman worked in politics and helped organize the march, while Bates was a journalist and school desegregation advocate.",
+        "Although Hedgeman worked behind the scenes to make sure a woman speaker was included, Bates was the sole woman to speak at the march.",
+        "Many African American women, including Bates and Hedgeman, fought for civil rights, but only one spoke at the march."
+      ],
+      "correct": "Although Hedgeman worked behind the scenes to make sure a woman speaker was included, Bates was the sole woman to speak at the march.",
+      "answer_key": "<p><strong>Correct Answer: C</strong></p>"
+    },
+    {
+      "id": 54,
+      "question": "<p>While researching a topic, a student has taken the following notes:<br>The student wants to describe how the bicycles in Double Phantom/EntroP.R.are fused together. Which choice most effectively uses relevant information from the notes to accomplish this goal?</p>",
+      "options": [
+        "To create the sculpture Double Phantom/EntroP.R., Miguel Luciano fused together two Schwinn Phantom bicycles.",
+        "There are two red Schwinn Phantom bicycles in the sculpture Double Phantom/EntroP.R.",
+        "The two red bicycles in Double Phantom/EntroP.R.are fused together so that they share the same rear wheel while facing opposite directions.",
+        "Double Phantom/EntroP.R. is a sculpture created by multimedia visual artist Miguel Luciano."
+      ],
+      "correct": "The two red bicycles in Double Phantom/EntroP.R.are fused together so that they share the same rear wheel while facing opposite directions.",
+      "answer_key": "<p><strong>Correct Answer: C</strong></p>"
     }
   ]
 }

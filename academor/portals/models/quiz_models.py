@@ -517,23 +517,36 @@ class QuizQuestion(models.Model):
             self.spr_max_length = None
             options = [str(item).strip() for item in (self.answer_options or []) if str(item).strip()]
             if len(options) < 2:
-                raise ValidationError(_('Add at least two answer options.'))
+                raise ValidationError(
+                    {'answer_options': _('Add at least two answer options.')},
+                )
 
             correct = (self.correct_answer or '').strip()
-            if correct:
-                if correct not in options:
-                    raise ValidationError(_('Correct answer must exactly match one of the options.'))
+            if correct and correct in options:
                 self.correct_option_index = options.index(correct)
-            elif self.correct_option_index >= len(options):
-                raise ValidationError(_('Select which answer option is correct.'))
+            elif options and 0 <= int(self.correct_option_index or 0) < len(options):
+                # CKEditor often reformats HTML; keep the saved option index.
+                self.correct_answer = options[int(self.correct_option_index)]
+            elif correct:
+                raise ValidationError(
+                    {
+                        'correct_answer': _(
+                            'Correct answer must exactly match one of the options.',
+                        ),
+                    },
+                )
+            else:
+                raise ValidationError(
+                    {'correct_answer': _('Select which answer option is correct.')},
+                )
 
         if self.prompt_type == self.PromptType.TEXT:
             if not (self.question or '').strip():
-                raise ValidationError(_('Enter the question text.'))
+                raise ValidationError({'question': _('Enter the question text.')})
         elif not self.media_file and not (self.media_url or '').strip():
-            raise ValidationError(
-                _('Upload a media file or provide a media URL for this question type.'),
-            )
+            raise ValidationError({
+                'media_file': _('Upload a media file or provide a media URL for this question type.'),
+            })
 
     def save(self, *args, **kwargs):
         quiz = None

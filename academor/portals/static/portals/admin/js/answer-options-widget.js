@@ -1,33 +1,36 @@
 (function($) {
     'use strict';
-    
-    // Initialize when document is ready
-    $(document).ready(function() {
-        initializeAnswerOptionsWidget();
-    });
-    
+
     function initializeAnswerOptionsWidget() {
-        // Handle add option button
         $(document).on('click', '.answer-option-add-btn', function(e) {
             e.preventDefault();
             addAnswerOption($(this).closest('.answer-options-container'));
         });
-        
-        // Handle remove option button
+
         $(document).on('click', '.answer-option-remove-btn', function(e) {
             e.preventDefault();
             removeAnswerOption($(this).closest('.answer-option-item'));
         });
-        
-        // Initialize CKEditor for existing textareas
+
         initializeCKEditors();
-        
-        // Update hidden field when options change
+
         $(document).on('change', '.answer-option-textarea', function() {
             updateHiddenField($(this).closest('.answer-options-container'));
         });
+
+        // Critical: sync CKEditor → hidden JSON before Django admin save.
+        $(document).on('submit', 'form', function() {
+            syncAllAnswerOptionContainers($(this));
+        });
     }
-    
+
+    function syncAllAnswerOptionContainers(scope) {
+        var $scope = scope && scope.length ? scope : $(document);
+        $scope.find('.answer-options-container').each(function() {
+            updateHiddenField($(this), {force: true});
+        });
+    }
+
     function itemLabelFor(container) {
         return container.attr('data-item-label') || 'Option';
     }
@@ -50,36 +53,25 @@
 
         list.append(optionHtml);
 
-        // Initialize CKEditor for the new textarea
         var newTextarea = list.find('.answer-option-item').last().find('.answer-option-textarea');
         initializeCKEditorForTextarea(newTextarea);
-
-        // Update labels
         updateOptionLabels(container);
-
-        // Update hidden field
-        updateHiddenField(container);
+        updateHiddenField(container, {force: true});
     }
-    
+
     function removeAnswerOption(optionItem) {
         var container = optionItem.closest('.answer-options-container');
-        
-        // Destroy CKEditor instance if exists
         var textarea = optionItem.find('.answer-option-textarea');
         var editorId = textarea.attr('id');
         if (editorId && window.CKEDITOR && window.CKEDITOR.instances[editorId]) {
             window.CKEDITOR.instances[editorId].destroy();
         }
-        
+
         optionItem.remove();
-        
-        // Update labels
         updateOptionLabels(container);
-        
-        // Update hidden field
-        updateHiddenField(container);
+        updateHiddenField(container, {force: true});
     }
-    
+
     function updateOptionLabels(container) {
         var itemLabel = itemLabelFor(container);
         container.find('.answer-option-item').each(function(index) {
@@ -88,50 +80,83 @@
             $(this).find('.answer-option-textarea').attr('data-index', index);
         });
     }
-    
-    function updateHiddenField(container) {
+
+    function readOptionValue(textarea) {
+        var value = textarea.val() || '';
+        var editorId = textarea.attr('id');
+        if (editorId && window.CKEDITOR && window.CKEDITOR.instances[editorId]) {
+            var editor = window.CKEDITOR.instances[editorId];
+            // Avoid wiping saved options while the editor is still booting.
+            if (editor.status === 'ready' || editor.status === 'loaded') {
+                value = editor.getData();
+            }
+        }
+        return value;
+    }
+
+    function updateHiddenField(container, opts) {
+        opts = opts || {};
         var options = [];
+        var hasReadyEditor = false;
+        var allEmpty = true;
+
         container.find('.answer-option-textarea').each(function() {
             var textarea = $(this);
-            var value = textarea.val();
-            
-            // Get value from CKEditor if it's initialized
             var editorId = textarea.attr('id');
             if (editorId && window.CKEDITOR && window.CKEDITOR.instances[editorId]) {
-                value = window.CKEDITOR.instances[editorId].getData();
+                var editor = window.CKEDITOR.instances[editorId];
+                if (editor.status === 'ready' || editor.status === 'loaded') {
+                    hasReadyEditor = true;
+                }
             }
-            
+            var value = readOptionValue(textarea);
+            if (value && String(value).trim()) {
+                allEmpty = false;
+            }
             options.push(value);
         });
-        
-        container.find('.answer-options-hidden').val(JSON.stringify(options));
+
+        var hidden = container.find('.answer-options-hidden');
+        var previous = hidden.val() || '[]';
+
+        // If editors are not ready yet and we'd overwrite non-empty JSON with empties, keep previous.
+        if (!opts.force && !hasReadyEditor && allEmpty && previous && previous !== '[]') {
+            try {
+                var prevList = JSON.parse(previous);
+                if (Array.isArray(prevList) && prevList.some(function(item) {
+                    return item && String(item).trim();
+                })) {
+                    return;
+                }
+            } catch (e) {
+                // fall through and write
+            }
+        }
+
+        hidden.val(JSON.stringify(options));
     }
-    
+
     function initializeCKEditors() {
         $('.answer-option-textarea.ckeditor-enabled').each(function() {
             initializeCKEditorForTextarea($(this));
         });
     }
-    
+
     function initializeCKEditorForTextarea(textarea) {
-        // Check if CKEditor is available
         if (typeof window.CKEDITOR === 'undefined') {
             return;
         }
-        
-        // Ensure the textarea has a unique ID
+
         if (!textarea.attr('id')) {
             var uniqueId = 'answer-option-textarea-' + Math.random().toString(36).substr(2, 9);
             textarea.attr('id', uniqueId);
         }
-        
-        // Destroy existing instance if any
+
         var editorId = textarea.attr('id');
         if (window.CKEDITOR.instances[editorId]) {
-            window.CKEDITOR.instances[editorId].destroy();
+            window.CKEDITOR.instances[editorId].destroy(true);
         }
-        
-        // Initialize CKEditor with image paste/upload + drag-resize (image2)
+
         window.CKEDITOR.replace(editorId, {
             toolbar: [
                 ['Bold', 'Italic', 'Underline'],
@@ -149,18 +174,24 @@
             filebrowserUploadUrl: '/ckeditor/upload/',
             filebrowserBrowseUrl: '/ckeditor/browse/'
         });
-        
-        // Update hidden field when CKEditor content changes
-        window.CKEDITOR.instances[editorId].on('change', function() {
+
+        var editor = window.CKEDITOR.instances[editorId];
+        editor.on('instanceReady', function() {
             updateHiddenField(textarea.closest('.answer-options-container'));
         });
+        editor.on('change', function() {
+            updateHiddenField(textarea.closest('.answer-options-container'), {force: true});
+        });
     }
-    
-    // Also initialize when Django's formsets are added
+
+    $(document).ready(function() {
+        initializeAnswerOptionsWidget();
+    });
+
     if (typeof django !== 'undefined' && django.jQuery) {
-        django.jQuery(document).on('formset:added', function(event, row) {
+        django.jQuery(document).on('formset:added', function() {
             initializeCKEditors();
         });
     }
-    
+
 })(django.jQuery || jQuery);

@@ -82,7 +82,7 @@
         class="portal-quiz-play-option__input"
       >
       <span class="portal-quiz-play-option__letter">{{ forloop.counter0|quiz_option_letter|upper }}</span>
-      <span class="portal-quiz-play-option__text">{{ option }}</span>
+      <span class="portal-quiz-play-option__text">{{ option|safe }}</span>
     </label>
     {% endfor %}
   </fieldset>
