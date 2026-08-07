@@ -140,6 +140,7 @@ class CustomerMockCompleteView(CustomerRequiredMixin, View):
                 exam_program_label=get_program_label(program),
                 mock_attempt=serialize_customer_mock_attempt_summary(attempt),
                 mock_back_url=reverse('portals:customer-mock-landing', kwargs={'program': program}),
+                score_detail_url_name='portals:customer-score-detail',
             ),
         )
 

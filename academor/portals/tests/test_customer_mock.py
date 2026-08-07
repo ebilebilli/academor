@@ -701,6 +701,23 @@ class CustomerProfileIntegrationTests(CustomerMockRoleTests):
         complete_url = reverse('portals:customer-ielts-mock-complete', kwargs={'pk': attempt.pk})
         complete_response = client.get(complete_url)
         self.assertEqual(complete_response.status_code, 200)
+        # Section "View" must use customer score detail — not the student URL.
+        listening_detail = reverse(
+            'portals:customer-score-detail',
+            kwargs={'result_pk': attempt.listening_result_id},
+        )
+        reading_detail = reverse(
+            'portals:customer-score-detail',
+            kwargs={'result_pk': attempt.reading_result_id},
+        )
+        self.assertContains(complete_response, listening_detail)
+        self.assertContains(complete_response, reading_detail)
+        self.assertNotContains(
+            complete_response,
+            reverse('portals:student-score-detail', kwargs={'result_pk': attempt.listening_result_id}),
+        )
+        self.assertEqual(client.get(listening_detail).status_code, 200)
+        self.assertEqual(client.get(reading_detail).status_code, 200)
 
         dashboard_response = client.get(reverse('portals:customer-dashboard'))
         self.assertEqual(dashboard_response.status_code, 200)

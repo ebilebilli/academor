@@ -174,11 +174,11 @@
 
         window.CKEDITOR.replace(editorId, {
             toolbar: [
-                ['Bold', 'Italic', 'Underline'],
+                ['Bold', 'Italic', 'Underline', 'Subscript', 'Superscript'],
                 ['NumberedList', 'BulletedList'],
                 ['Link', 'Unlink'],
                 ['Image'],
-                ['RemoveFormat']
+                ['SpecialChar', 'RemoveFormat']
             ],
             height: 60,
             width: '100%',
@@ -186,6 +186,18 @@
             removePlugins: 'image,elementspath',
             resize_enabled: false,
             image2_disableResizer: false,
+            // Keep pasted math / unicode / Word markup as-is.
+            allowedContent: true,
+            pasteFilter: null,
+            forcePasteAsPlainText: false,
+            pasteFromWordRemoveFontStyles: false,
+            pasteFromWordRemoveStyles: false,
+            pasteFromWordPromptCleanup: false,
+            entities: false,
+            basicEntities: true,
+            entities_latin: false,
+            entities_greek: false,
+            entities_processNumerical: false,
             filebrowserUploadUrl: '/ckeditor/upload/',
             filebrowserBrowseUrl: '/ckeditor/browse/'
         });

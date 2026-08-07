@@ -114,6 +114,18 @@ CKEDITOR_CONFIGS = {
         'extraPlugins': 'image2',
         'removePlugins': 'image',
         'image2_disableResizer': False,
+        # Keep pasted math symbols, unicode, and Word formatting (do not auto-simplify).
+        'allowedContent': True,
+        'pasteFilter': None,
+        'forcePasteAsPlainText': False,
+        'pasteFromWordRemoveFontStyles': False,
+        'pasteFromWordRemoveStyles': False,
+        'pasteFromWordPromptCleanup': False,
+        'entities': False,
+        'basicEntities': True,
+        'entities_latin': False,
+        'entities_greek': False,
+        'entities_processNumerical': False,
     },
 }
 
