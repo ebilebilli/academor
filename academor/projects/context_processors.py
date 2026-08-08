@@ -24,6 +24,7 @@ URL_NAME_TO_TAGLINE_PAGE = {
     'mock-test-detail': TaglinePage.MOCK_TESTS,
     'tests-page': TaglinePage.TESTS,
     'test-take': TaglinePage.TESTS,
+    'results-page': TaglinePage.TESTS,
     'english-conversation-topics': TaglinePage.TESTS,
     'english-conversation-topic-detail': TaglinePage.TESTS,
     'english-conversation-topic-two-legacy': TaglinePage.TESTS,

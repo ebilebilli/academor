@@ -1461,6 +1461,74 @@ class UserResultAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     ordering = ('-created_at',)
     list_per_page = 25
 
+
+class MockTestResultAdminForm(forms.ModelForm):
+    auto_calculate_rank = forms.BooleanField(
+        required=False,
+        label=_('Calculate rank automatically'),
+        help_text=_(
+            'When checked, results in each training program are re-ranked by score '
+            '(highest first) after save. When unchecked, the Rank field you enter is kept as-is.'
+        ),
+    )
+
+    class Meta:
+        model = MockTestResult
+        fields = '__all__'
+
+
+@admin.register(MockTestResult)
+class MockTestResultAdmin(AcademorModelAdmin):
+    form = MockTestResultAdminForm
+    list_display = ('id', 'full_name', 'program_az', 'code', 'score', 'rank', 'show', 'updated_at')
+    list_display_links = ('full_name',)
+    list_editable = ('show',)
+    list_filter = ('show',)
+    search_fields = ('full_name', 'code', 'program_az', 'program_en', 'program_ru')
+    ordering = ('rank', '-score', 'full_name')
+    list_per_page = 50
+    readonly_fields = ('created_at', 'updated_at')
+    actions = ('action_recalculate_ranks',)
+    fieldsets = (
+        (None, {
+            'fields': (
+                'full_name',
+                'code',
+                'score',
+                'rank',
+                'auto_calculate_rank',
+                'show',
+            ),
+        }),
+        (_('Training program'), {
+            'fields': ('program_az', 'program_en', 'program_ru'),
+            'description': _(
+                'Enter the program name manually in AZ / EN / RU. '
+                'At least one language is required.'
+            ),
+        }),
+        (_('Timestamps'), {
+            'classes': ('collapse',),
+            'fields': ('created_at', 'updated_at'),
+        }),
+    )
+
+    @admin.action(description=_('Recalculate ranks by score'))
+    def action_recalculate_ranks(self, request, queryset):
+        count = MockTestResult.recalculate_ranks()
+        self.message_user(
+            request,
+            _('Ranks recalculated for %(count)s results.') % {'count': count},
+        )
+
+    def save_model(self, request, obj, form, change):
+        auto = bool(form.cleaned_data.get('auto_calculate_rank'))
+        super().save_model(request, obj, form, change)
+        if auto:
+            MockTestResult.recalculate_ranks()
+            obj.refresh_from_db(fields=['rank'])
+
+
 @admin.register(ContactInquiry)
 class ContactInquiryAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     list_display = (

@@ -9404,6 +9404,82 @@ msgstr "Qiymətləndirmə"
 msgid "Results"
 msgstr "Nəticələr"
 
+#: academor/templates/mock-results.html
+msgid "Enter your phone number or the unique code you were given to view your mock test result."
+msgstr "Mock test nəticənizi görmək üçün telefon nömrənizi və ya sizə verilmiş unikal kodu daxil edin."
+
+#: academor/templates/mock-results.html
+msgid "Code"
+msgstr "Kod"
+
+#: academor/templates/mock-results.html
+msgid "Training program"
+msgstr "Təlim proqramı"
+
+#: academor/templates/mock-results.html
+msgid "Phone number or unique code"
+msgstr "Telefon nömrəsi və ya unikal kod"
+
+#: academor/templates/mock-results.html
+msgid "Search"
+msgstr "Axtar"
+
+#: academor/templates/mock-results.html
+msgid "Rank"
+msgstr "Sıra"
+
+#: academor/templates/mock-results.html
+msgid "No result found for this code."
+msgstr "Bu kodla nəticə tapılmadı."
+
+#: academor/templates/mock-results.html
+msgid "Top 5"
+msgstr "İlk 5-lik"
+
+#: academor/templates/mock-results.html
+msgid "No results yet."
+msgstr "Hələ nəticə yoxdur."
+
+#: academor/projects/views/mock_results_views.py
+msgid "Training program not found."
+msgstr "Təlim proqramı tapılmadı."
+
+#: academor/projects/views/mock_results_views.py
+msgid "Look up your mock test result by phone number or unique code."
+msgstr "Telefon nömrəsi və ya unikal kod ilə mock test nəticənizi yoxlayın."
+
+#: academor/projects/models/mock_result_models.py
+msgid "Show in Top 5"
+msgstr "İlk 5-likdə göstər"
+
+#: academor/projects/models/mock_result_models.py
+msgid "If enabled, this person can appear in the public Top 5 list."
+msgstr "Aktivdirsə, bu şəxs ictimai İlk 5-lik siyahısında görünə bilər."
+
+#: academor/projects/models/mock_result_models.py
+msgid "Training program (AZ)"
+msgstr "Təlim proqramı (AZ)"
+
+#: academor/projects/models/mock_result_models.py
+msgid "Training program (EN)"
+msgstr "Təlim proqramı (EN)"
+
+#: academor/projects/models/mock_result_models.py
+msgid "Training program (RU)"
+msgstr "Təlim proqramı (RU)"
+
+#: academor/projects/models/mock_result_models.py
+msgid "Fill in at least one training program field (AZ / EN / RU)."
+msgstr "Ən azı bir təlim proqramı sahəsini doldurun (AZ / EN / RU)."
+
+#: academor/projects/models/mock_result_models.py
+msgid "Mock test result"
+msgstr "Mock test nəticəsi"
+
+#: academor/projects/models/mock_result_models.py
+msgid "Mock test results"
+msgstr "Mock test nəticələri"
+
 #~ msgid ""
 #~ "Shared classroom PDFs. Pick one or more active site services — only teachers"
 #~ " and students on matching groups see the room in the portal."

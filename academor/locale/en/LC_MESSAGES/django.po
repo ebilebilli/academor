@@ -10852,6 +10852,82 @@ msgstr "Assessment"
 msgid "Results"
 msgstr "Results"
 
+#: academor/templates/mock-results.html
+msgid "Enter your phone number or the unique code you were given to view your mock test result."
+msgstr "Enter your phone number or the unique code you were given to view your mock test result."
+
+#: academor/templates/mock-results.html
+msgid "Code"
+msgstr "Code"
+
+#: academor/templates/mock-results.html
+msgid "Training program"
+msgstr "Training program"
+
+#: academor/templates/mock-results.html
+msgid "Phone number or unique code"
+msgstr "Phone number or unique code"
+
+#: academor/templates/mock-results.html
+msgid "Search"
+msgstr "Search"
+
+#: academor/templates/mock-results.html
+msgid "Rank"
+msgstr "Rank"
+
+#: academor/templates/mock-results.html
+msgid "No result found for this code."
+msgstr "No result found for this code."
+
+#: academor/templates/mock-results.html
+msgid "Top 5"
+msgstr "Top 5"
+
+#: academor/templates/mock-results.html
+msgid "No results yet."
+msgstr "No results yet."
+
+#: academor/projects/views/mock_results_views.py
+msgid "Training program not found."
+msgstr "Training program not found."
+
+#: academor/projects/views/mock_results_views.py
+msgid "Look up your mock test result by phone number or unique code."
+msgstr "Look up your mock test result by phone number or unique code."
+
+#: academor/projects/models/mock_result_models.py
+msgid "Show in Top 5"
+msgstr "Show in Top 5"
+
+#: academor/projects/models/mock_result_models.py
+msgid "If enabled, this person can appear in the public Top 5 list."
+msgstr "If enabled, this person can appear in the public Top 5 list."
+
+#: academor/projects/models/mock_result_models.py
+msgid "Training program (AZ)"
+msgstr "Training program (AZ)"
+
+#: academor/projects/models/mock_result_models.py
+msgid "Training program (EN)"
+msgstr "Training program (EN)"
+
+#: academor/projects/models/mock_result_models.py
+msgid "Training program (RU)"
+msgstr "Training program (RU)"
+
+#: academor/projects/models/mock_result_models.py
+msgid "Fill in at least one training program field (AZ / EN / RU)."
+msgstr "Fill in at least one training program field (AZ / EN / RU)."
+
+#: academor/projects/models/mock_result_models.py
+msgid "Mock test result"
+msgstr "Mock test result"
+
+#: academor/projects/models/mock_result_models.py
+msgid "Mock test results"
+msgstr "Mock test results"
+
 #: portals/includes/sat_scoring_guide.html
 msgid "How your practice score is calculated"
 msgstr "How your practice score is calculated"

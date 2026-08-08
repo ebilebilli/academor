@@ -205,6 +205,59 @@ class QuizReadingTests(QuizVisibilityTests):
         quiz = self._create_reading_quiz()
         self.assertFalse(quiz.requires_teacher_review)
 
+    def test_build_reading_sections_uses_question_order_for_numbers(self):
+        """Display labels must follow admin Order, not render-sequence index."""
+        from portals.utils.quiz_reading import build_reading_sections_for_quiz
+
+        quiz = Quiz.objects.create(
+            category=self.ielts_category,
+            topic='Order numbering',
+            is_reading=True,
+        )
+        passage = ReadingPassage.objects.create(
+            quiz=quiz,
+            order=3,
+            title='Passage 3',
+            body='<p>Body</p>',
+        )
+        group = ReadingQuestionGroup.objects.create(
+            passage=passage,
+            order=1,
+            title='Questions 31–34',
+            question_type=ReadingQuestionType.MATCHING_HEADINGS,
+            option_pool=['i. One', 'ii. Two', 'iii. Three', 'iv. Four', 'v. Five'],
+        )
+        # Matching stored with higher Order values (Cambridge Q31–34).
+        for index, order in enumerate((31, 32, 33, 34), start=1):
+            ReadingQuestion.objects.create(
+                passage=passage,
+                group=group,
+                order=order,
+                question_type=ReadingQuestionType.MATCHING_HEADINGS,
+                question=f'<p>Paragraph {index}</p>',
+                correct_answer=['i. One', 'ii. Two', 'iii. Three', 'iv. Four'][index - 1],
+            )
+        # Standalone MCQs with lower Order (Cambridge Q27–30) must still render first.
+        for index, order in enumerate((27, 28, 29, 30), start=1):
+            ReadingQuestion.objects.create(
+                passage=passage,
+                order=order,
+                question_type=ReadingQuestionType.MCQ,
+                question=f'<p>MCQ {index}</p>',
+                answer_options=['A', 'B', 'C', 'D'],
+                correct_answer='A',
+            )
+
+        sections = build_reading_sections_for_quiz(quiz.pk)
+        questions = sections[0]['questions']
+        self.assertEqual([q['number'] for q in questions], [27, 28, 29, 30, 31, 32, 33, 34])
+        self.assertEqual([q['order'] for q in questions], [27, 28, 29, 30, 31, 32, 33, 34])
+        self.assertEqual(sections[0]['question_range_start'], 27)
+        self.assertEqual(sections[0]['question_range_end'], 34)
+        self.assertTrue(questions[4].get('group_start'))
+        self.assertEqual(questions[0]['question_type'], ReadingQuestionType.MCQ)
+        self.assertEqual(questions[4]['question_type'], ReadingQuestionType.MATCHING_HEADINGS)
+
     def test_build_reading_sections_inline_group_instructions(self):
         from portals.utils.quiz_reading import build_reading_sections_for_quiz
 
@@ -413,6 +466,19 @@ class ReadingQuestionAdminFieldConfigTests(QuizReadingTests):
         )
         self.assertTrue(group['question_type'] == ReadingQuestionType.MATCHING_INFO)
         self.assertTrue(group['option_pool'])
+
+    def test_resource_loader_maps_relative_orders_from_question_titles(self):
+        from pathlib import Path
+
+        from portals.utils.quiz_reading_resource_loader import parse_reading_resource_file
+
+        path = Path(__file__).resolve().parent.parent / 'resources' / 'reading_questions' / 'ielts_reading_test_11.json'
+        parsed = parse_reading_resource_file(path)
+        passage3 = parsed['passages'][2]
+        group_orders = [q['order'] for q in passage3['question_groups'][0]['questions']]
+        standalone_orders = [q['order'] for q in passage3['questions']]
+        self.assertEqual(group_orders, [31, 32, 33, 34, 35])
+        self.assertEqual(standalone_orders, [27, 28, 29, 30, 36, 37, 38, 39, 40])
 
     def test_question_type_fields_admin_view(self):
         from django.contrib.auth import get_user_model

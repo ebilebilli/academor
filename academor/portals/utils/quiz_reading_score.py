@@ -99,6 +99,8 @@ def score_reading_quiz(
         breakdown.append({
             'id': question.pk,
             'question_type': question.question_type,
+            'order': question.order,
+            'number': question.order if question.order else None,
             'student_answer': raw,
             'is_correct': is_correct,
             'correct_answer': question.correct_answer,

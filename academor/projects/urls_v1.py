@@ -24,6 +24,7 @@ from projects.views.views_v1 import (
     BlogDetailPageView,
 )
 from projects.views.test_views import TestListPageView, TestTakePageView
+from projects.views.mock_results_views import MockResultsPageView, MockResultsTop5View
 from projects.views.conversation_topics_views import (
     EnglishConversationTopicsListView,
     EnglishConversationTopicDetailView,
@@ -145,6 +146,16 @@ urlpatterns = [
         'tests/<int:test_id>/',
         TestTakePageView.as_view(),
         name='test-take',
+    ),
+    path(
+        'results/',
+        MockResultsPageView.as_view(),
+        name='results-page',
+    ),
+    path(
+        'results/top5/',
+        MockResultsTop5View.as_view(),
+        name='results-top5',
     ),
     path(
         'topics/',

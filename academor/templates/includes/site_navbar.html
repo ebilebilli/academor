@@ -64,10 +64,11 @@
             </div>
             <a href="{% url 'portals:login' %}" class="nav-item nav-link{% if u == 'portal-login' %} active{% endif %}">{% trans "Portal" %}</a>
             <div class="nav-item dropdown">
-                <a href="{% url 'projects:tests-page' %}" class="nav-link dropdown-toggle{% if u == 'tests-page' or u == 'test-take' or u == 'english-conversation-topics' or u == 'english-conversation-topic-detail' %} active{% endif %}" data-bs-toggle="dropdown" aria-expanded="false">{% trans "More" %}</a>
+                <a href="{% url 'projects:tests-page' %}" class="nav-link dropdown-toggle{% if u == 'tests-page' or u == 'test-take' or u == 'results-page' or u == 'english-conversation-topics' or u == 'english-conversation-topic-detail' %} active{% endif %}" data-bs-toggle="dropdown" aria-expanded="false">{% trans "More" %}</a>
                 <div class="dropdown-menu fade-down m-0 shadow-sm">
                     <a href="{% url 'projects:tests-page' %}" class="dropdown-item{% if u == 'tests-page' or u == 'test-take' %} active{% endif %}">{% trans "Level Test" %}</a>
                     <a href="{% url 'projects:english-conversation-topics' %}" class="dropdown-item{% if u == 'english-conversation-topics' or u == 'english-conversation-topic-detail' %} active{% endif %}">{% trans "Topics" %}</a>
+                    <a href="{% url 'projects:results-page' %}" class="dropdown-item{% if u == 'results-page' %} active{% endif %}">{% trans "Results" %}</a>
                 </div>
             </div>
             <div class="nav-item dropdown nav-lang-dropdown">

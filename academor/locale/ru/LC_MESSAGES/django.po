@@ -11081,6 +11081,82 @@ msgstr "Оценка"
 msgid "Results"
 msgstr "Результаты"
 
+#: academor/templates/mock-results.html
+msgid "Enter your phone number or the unique code you were given to view your mock test result."
+msgstr "Введите номер телефона или уникальный код, чтобы посмотреть результат mock-теста."
+
+#: academor/templates/mock-results.html
+msgid "Code"
+msgstr "Код"
+
+#: academor/templates/mock-results.html
+msgid "Training program"
+msgstr "Учебная программа"
+
+#: academor/templates/mock-results.html
+msgid "Phone number or unique code"
+msgstr "Номер телефона или уникальный код"
+
+#: academor/templates/mock-results.html
+msgid "Search"
+msgstr "Найти"
+
+#: academor/templates/mock-results.html
+msgid "Rank"
+msgstr "Место"
+
+#: academor/templates/mock-results.html
+msgid "No result found for this code."
+msgstr "Результат по этому коду не найден."
+
+#: academor/templates/mock-results.html
+msgid "Top 5"
+msgstr "Топ 5"
+
+#: academor/templates/mock-results.html
+msgid "No results yet."
+msgstr "Пока нет результатов."
+
+#: academor/projects/views/mock_results_views.py
+msgid "Training program not found."
+msgstr "Учебная программа не найдена."
+
+#: academor/projects/views/mock_results_views.py
+msgid "Look up your mock test result by phone number or unique code."
+msgstr "Проверьте результат mock-теста по номеру телефона или уникальному коду."
+
+#: academor/projects/models/mock_result_models.py
+msgid "Show in Top 5"
+msgstr "Показать в Топ 5"
+
+#: academor/projects/models/mock_result_models.py
+msgid "If enabled, this person can appear in the public Top 5 list."
+msgstr "Если включено, этот человек может отображаться в публичном списке Топ 5."
+
+#: academor/projects/models/mock_result_models.py
+msgid "Training program (AZ)"
+msgstr "Учебная программа (AZ)"
+
+#: academor/projects/models/mock_result_models.py
+msgid "Training program (EN)"
+msgstr "Учебная программа (EN)"
+
+#: academor/projects/models/mock_result_models.py
+msgid "Training program (RU)"
+msgstr "Учебная программа (RU)"
+
+#: academor/projects/models/mock_result_models.py
+msgid "Fill in at least one training program field (AZ / EN / RU)."
+msgstr "Заполните хотя бы одно поле учебной программы (AZ / EN / RU)."
+
+#: academor/projects/models/mock_result_models.py
+msgid "Mock test result"
+msgstr "Результат mock-теста"
+
+#: academor/projects/models/mock_result_models.py
+msgid "Mock test results"
+msgstr "Результаты mock-тестов"
+
 #: portals/includes/sat_scoring_guide.html
 msgid "How your practice score is calculated"
 msgstr "Как считается ваш практический балл"

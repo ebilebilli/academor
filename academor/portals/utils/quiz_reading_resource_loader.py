@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 from django.db import transaction
@@ -29,6 +30,69 @@ QUESTION_TYPE_ALIASES = {
     'flow-chart-completion': ReadingQuestionType.FLOWCHART_COMPLETION,
     'diagram_label_completion': ReadingQuestionType.DIAGRAM_LABEL,
 }
+_QUESTION_RANGE_RE = re.compile(
+    r'Questions?\s+(\d+)\s*[–—-]\s*(\d+)',
+    re.IGNORECASE,
+)
+
+
+def _parse_question_range(text: str) -> tuple[int, int] | None:
+    match = _QUESTION_RANGE_RE.search(text or '')
+    if not match:
+        return None
+    start, end = int(match.group(1)), int(match.group(2))
+    if start > end:
+        return None
+    return start, end
+
+
+def _is_relative_one_based(orders: list[int]) -> bool:
+    return bool(orders) and orders == list(range(1, len(orders) + 1))
+
+
+def _apply_absolute_orders_from_title(questions: list[dict], title: str) -> None:
+    """Map relative 1..n group orders onto 'Questions 31–35' style titles."""
+    title_range = _parse_question_range(title)
+    if not title_range:
+        return
+    start, end = title_range
+    if end - start + 1 != len(questions):
+        return
+    if not _is_relative_one_based([item['order'] for item in questions]):
+        return
+    for index, item in enumerate(questions):
+        item['order'] = start + index
+
+
+def _apply_absolute_orders_for_passage(
+    *,
+    groups: list[dict],
+    standalone: list[dict],
+    title: str,
+    instructions: str,
+) -> None:
+    """Fill absolute IELTS numbers for standalones using passage range minus group claims."""
+    for group in groups:
+        _apply_absolute_orders_from_title(group['questions'], group.get('title') or '')
+
+    if not _is_relative_one_based([item['order'] for item in standalone]):
+        return
+
+    passage_range = _parse_question_range(instructions) or _parse_question_range(title)
+    if not passage_range:
+        return
+    start, end = passage_range
+    claimed = {
+        item['order']
+        for group in groups
+        for item in group['questions']
+    }
+    available = [number for number in range(start, end + 1) if number not in claimed]
+    if len(available) != len(standalone):
+        return
+    for item, order in zip(standalone, available):
+        item['order'] = order
+
 
 
 def _require_text(value, *, field: str, context: str) -> str:
@@ -152,10 +216,19 @@ def _normalize_passage(raw: dict, *, context: str, default_order: int) -> dict:
     if not groups and not standalone_questions:
         raise ValueError(f'{context}: add question_groups and/or questions.')
 
+    title = (raw.get('title') or '').strip()
+    instructions = (raw.get('instructions') or '').strip()
+    _apply_absolute_orders_for_passage(
+        groups=groups,
+        standalone=standalone_questions,
+        title=title,
+        instructions=instructions,
+    )
+
     return {
         'order': order,
-        'title': (raw.get('title') or '').strip(),
-        'instructions': (raw.get('instructions') or '').strip(),
+        'title': title,
+        'instructions': instructions,
         'body': body,
         'question_groups': groups,
         'questions': standalone_questions,

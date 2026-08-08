@@ -11,6 +11,7 @@ from .contact_models import Contact
 from .team_models import Team
 from .review_models import Review
 from .test_models import Test, Question, Option, UserResult
+from .mock_result_models import MockTestResult
 from .appeal_models import ContactInquiry
 from .motto_models import Tagline, TaglinePage
 from .faq_models import SiteFaqEntry

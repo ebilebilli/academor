@@ -283,6 +283,21 @@ ADMIN_HELP = {
       'Use filters to find results by test or date.',
     ],
   },
+  'MockTestResult': {
+    'title': 'Mock test public results',
+    'summary': (
+      'Manual results for mock tests. Visitors look them up on /results/ by phone number '
+      'or unique code.'
+    ),
+    'where': 'Public Results page (More → Results) and optional Top 5 sidebar.',
+    'tips': [
+      'Enter Training program manually in AZ / EN / RU (at least one language).',
+      'Code must be unique — usually a mobile number or an assigned lookup code.',
+      'Tick "Show in Top 5" to include someone in the public leaderboard (only if at least one is ticked).',
+      'Tick "Calculate rank automatically" on save (or use the list action) to re-rank by score within each program.',
+      'Leave that checkbox off to set Rank manually.',
+    ],
+  },
 
   # --- Payments (payments app) ---
   'Payment': {
@@ -345,8 +360,8 @@ ADMIN_INDEX_HELP = {
     },
     {
       'name': 'Messages & tests',
-      'items': 'Contact inquiries, Tests, Questions, Results',
-      'desc': 'Form submissions and online placement tests.',
+      'items': 'Contact inquiries, Tests, Questions, Results, Mock test results',
+      'desc': 'Form submissions, online placement tests, and public mock test result lookups.',
     },
     {
       'name': 'Payments',

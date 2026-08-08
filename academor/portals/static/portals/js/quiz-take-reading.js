@@ -322,8 +322,9 @@
             status = item.is_correct ? labelCorrect : labelIncorrect;
             tone = item.is_correct ? "success" : "danger";
           }
+          var displayNumber = item.number || item.order || (index + 1);
           row.innerHTML =
-            '<span class="portal-quiz-take-result__num">' + (index + 1) + "</span>" +
+            '<span class="portal-quiz-take-result__num">' + displayNumber + "</span>" +
             '<span class="portal-quiz-take-result__status text-' + tone + '">' + status + "</span>";
           resultList.appendChild(row);
         });

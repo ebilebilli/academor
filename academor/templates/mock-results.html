@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+{% load static i18n %}{% get_current_language as LANG_CODE %}
+<html lang="{{ LANG_CODE }}">
+<head>
+    {% include "includes/site_layout_head.html" %}
+    <style>
+        .mock-results-page {
+            --mr-primary: var(--bs-primary, #00313d);
+            --mr-border: rgba(0, 49, 61, 0.1);
+            --mr-muted: #64748b;
+            --mr-surface: #f4f7f8;
+            --mr-radius: 16px;
+        }
+        .mock-results-page__intro {
+            max-width: 40rem;
+            margin: 0 auto 2.5rem;
+            text-align: center;
+        }
+        .mock-results-page__intro h1 {
+            margin-bottom: 0.75rem;
+        }
+        .mock-results-page__intro p {
+            margin: 0;
+            color: var(--mr-muted);
+        }
+        .mock-results-layout {
+            display: grid;
+            gap: 1.5rem;
+            max-width: 56rem;
+            margin: 0 auto;
+            align-items: stretch;
+        }
+        .mock-results-layout.has-top5 {
+            max-width: 72rem;
+        }
+        @media (min-width: 992px) {
+            .mock-results-layout.has-top5 {
+                grid-template-columns: 1fr 1fr;
+                gap: 1.75rem;
+            }
+        }
+        .mock-results-panel {
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            border: 1px solid var(--mr-border);
+            border-radius: var(--mr-radius);
+            box-shadow: 0 10px 28px rgba(0, 49, 61, 0.06);
+            padding: 1.75rem;
+            min-height: 100%;
+        }
+        .mock-results-panel__title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--mr-primary);
+            margin: 0 0 1.25rem;
+            padding-bottom: 0.85rem;
+            border-bottom: 1px solid var(--mr-border);
+            text-align: center;
+        }
+        .mock-results-form .form-label {
+            display: block;
+            text-align: center;
+            margin-bottom: 0.65rem;
+        }
+        .mock-results-form__row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 0.75rem;
+            align-items: stretch;
+        }
+        @media (max-width: 575.98px) {
+            .mock-results-form__row {
+                grid-template-columns: 1fr;
+            }
+        }
+        .mock-results-form .form-control {
+            min-height: 48px;
+            border-radius: 10px;
+            border-color: var(--mr-border);
+        }
+        .mock-results-form .form-control:focus {
+            border-color: var(--mr-primary);
+            box-shadow: 0 0 0 0.2rem rgba(0, 49, 61, 0.12);
+        }
+        .mock-results-form__submit {
+            min-height: 48px;
+            min-width: 7.5rem;
+            border-radius: 10px;
+            padding-left: 1.25rem;
+            padding-right: 1.25rem;
+        }
+        #mock-results-feedback {
+            margin-top: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        #mock-results-feedback:empty {
+            display: none;
+        }
+        .mock-results-outcome {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.85rem;
+            margin: 0;
+        }
+        @media (max-width: 420px) {
+            .mock-results-outcome {
+                grid-template-columns: 1fr;
+            }
+        }
+        .mock-results-outcome__item {
+            background: var(--mr-surface);
+            border: 1px solid var(--mr-border);
+            border-radius: 12px;
+            padding: 1rem 0.95rem;
+            text-align: center;
+            min-height: 5.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.35rem;
+        }
+        .mock-results-outcome__item--wide {
+            grid-column: 1 / -1;
+        }
+        .mock-results-outcome__label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            color: var(--mr-muted);
+        }
+        .mock-results-outcome__value {
+            display: block;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #0f172a;
+            word-break: break-word;
+        }
+        .mock-results-alert {
+            margin: 0;
+            text-align: center;
+            border-radius: 12px;
+        }
+        .mock-results-top5__program {
+            text-align: center;
+            color: var(--mr-muted);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin: -0.35rem 0 1rem;
+        }
+        .mock-results-top5__tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.45rem;
+            margin: 0 0 1.15rem;
+        }
+        .mock-results-top5__tab {
+            border: 1px solid var(--mr-border);
+            background: var(--mr-surface);
+            color: #0f172a;
+            border-radius: 999px;
+            padding: 0.4rem 0.9rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            line-height: 1.2;
+            cursor: pointer;
+            transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+        }
+        .mock-results-top5__tab:hover {
+            border-color: rgba(0, 49, 61, 0.35);
+        }
+        .mock-results-top5__tab.is-active {
+            background: var(--mr-primary);
+            border-color: var(--mr-primary);
+            color: #fff;
+        }
+        .mock-results-top5__tab:disabled {
+            opacity: 0.65;
+            cursor: wait;
+        }
+        .mock-results-top5__list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            counter-reset: top5;
+            flex: 1;
+        }
+        .mock-results-top5__list.is-loading {
+            opacity: 0.55;
+        }
+        .mock-results-top5__list > li {
+            counter-increment: top5;
+            display: grid;
+            grid-template-columns: 2rem 1fr auto;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.8rem 0.35rem;
+            border-bottom: 1px solid var(--mr-border);
+            min-height: 3.25rem;
+        }
+        .mock-results-top5__list > li:last-child {
+            border-bottom: 0;
+        }
+        .mock-results-top5__list > li::before {
+            content: counter(top5);
+            width: 2rem;
+            height: 2rem;
+            border-radius: 999px;
+            background: rgba(0, 49, 61, 0.08);
+            color: var(--mr-primary);
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .mock-results-top5__name {
+            min-width: 0;
+            font-weight: 600;
+            color: #0f172a;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .mock-results-top5__score {
+            font-weight: 700;
+            color: var(--mr-primary);
+            white-space: nowrap;
+            text-align: right;
+            min-width: 3rem;
+        }
+        .mock-results-top5__empty-item {
+            display: block !important;
+            border: 0 !important;
+            padding: 1.5rem 0.5rem !important;
+            min-height: 0 !important;
+            text-align: center;
+            counter-increment: none !important;
+        }
+        .mock-results-top5__empty-item::before {
+            display: none !important;
+            content: none !important;
+        }
+        .mock-results-top5__empty {
+            margin: 0;
+            color: var(--mr-muted);
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    {% include "includes/site_spinner.html" %}
+    {% include "includes/site_navbar.html" %}
+
+    <div class="container-xxl py-5 mock-results-page">
+        <div class="container">
+            <div class="mock-results-page__intro wow fadeInUp" data-wow-delay="0.1s">
+                <h1>{% trans "Results" %}</h1>
+                <p>{% trans "Enter your phone number or the unique code you were given to view your mock test result." %}</p>
+            </div>
+
+            <div class="mock-results-layout{% if show_top5 %} has-top5{% endif %} wow fadeInUp" data-wow-delay="0.15s">
+                <section class="mock-results-panel" aria-label="{% trans 'Results' %}">
+                    <h2 class="mock-results-panel__title">{% trans "Search" %}</h2>
+                    <form
+                        method="post"
+                        class="mock-results-form"
+                        action="{% url 'projects:results-page' %}"
+                        id="mock-results-form"
+                        novalidate
+                    >
+                        {% csrf_token %}
+                        <label class="form-label fw-semibold" for="mock-result-code">{% trans "Code" %}</label>
+                        <div class="mock-results-form__row">
+                            <input
+                                id="mock-result-code"
+                                type="text"
+                                name="code"
+                                class="form-control"
+                                value="{{ submitted_code }}"
+                                placeholder="{% trans 'Phone number or unique code' %}"
+                                autocomplete="off"
+                                required
+                            >
+                            <button type="submit" class="btn btn-primary mock-results-form__submit" id="mock-results-submit">
+                                {% trans "Search" %}
+                            </button>
+                        </div>
+                    </form>
+
+                    <div id="mock-results-feedback" aria-live="polite">
+                        {% if result %}
+                        <div class="mock-results-outcome" role="status">
+                            <div class="mock-results-outcome__item mock-results-outcome__item--wide">
+                                <span class="mock-results-outcome__label">{% trans "Full name" %}</span>
+                                <span class="mock-results-outcome__value">{{ result.full_name }}</span>
+                            </div>
+                            <div class="mock-results-outcome__item mock-results-outcome__item--wide">
+                                <span class="mock-results-outcome__label">{% trans "Training program" %}</span>
+                                <span class="mock-results-outcome__value">{{ result.program }}</span>
+                            </div>
+                            <div class="mock-results-outcome__item">
+                                <span class="mock-results-outcome__label">{% trans "Score" %}</span>
+                                <span class="mock-results-outcome__value">{{ result.score }}</span>
+                            </div>
+                            <div class="mock-results-outcome__item">
+                                <span class="mock-results-outcome__label">{% trans "Rank" %}</span>
+                                <span class="mock-results-outcome__value">{{ result.rank }}</span>
+                            </div>
+                        </div>
+                        {% elif not_found %}
+                        <div class="alert alert-warning mock-results-alert" role="alert">
+                            {% trans "No result found for this code." %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </section>
+
+                {% if show_top5 %}
+                <aside
+                    class="mock-results-panel mock-results-top5"
+                    aria-label="{% trans 'Top 5' %}"
+                    data-top5-url="{% url 'projects:results-top5' %}"
+                    id="mock-results-top5"
+                >
+                    <h2 class="mock-results-panel__title">{% trans "Top 5" %}</h2>
+                    {% if program_tabs|length > 1 %}
+                    <div class="mock-results-top5__tabs" role="tablist" aria-label="{% trans 'Training program' %}">
+                        {% for tab in program_tabs %}
+                        <button
+                            type="button"
+                            class="mock-results-top5__tab{% if tab.key == active_program_key %} is-active{% endif %}"
+                            role="tab"
+                            aria-selected="{% if tab.key == active_program_key %}true{% else %}false{% endif %}"
+                            data-program-key="{{ tab.key }}"
+                        >{{ tab.label }}</button>
+                        {% endfor %}
+                    </div>
+                    {% elif program_tabs %}
+                    <p class="mock-results-top5__program">{{ program_tabs.0.label }}</p>
+                    {% endif %}
+                    <ol class="mock-results-top5__list" id="mock-results-top5-list">
+                        {% for row in top5 %}
+                        <li>
+                            <span class="mock-results-top5__name">{{ row.full_name }}</span>
+                            <span class="mock-results-top5__score">{{ row.score }}</span>
+                        </li>
+                        {% empty %}
+                        <li class="mock-results-top5__empty-item">
+                            <p class="mock-results-top5__empty">{% trans "No results yet." %}</p>
+                        </li>
+                        {% endfor %}
+                    </ol>
+                </aside>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% include "includes/site_footer.html" %}
+    {% include "includes/site_scripts.html" %}
+    <script>
+    (function () {
+        function escapeHtml(value) {
+            return String(value == null ? '' : value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        var form = document.getElementById('mock-results-form');
+        var feedback = document.getElementById('mock-results-feedback');
+        var submitBtn = document.getElementById('mock-results-submit');
+
+        if (form && feedback) {
+            var labels = {
+                fullName: '{% filter escapejs %}{% trans "Full name" %}{% endfilter %}',
+                program: '{% filter escapejs %}{% trans "Training program" %}{% endfilter %}',
+                score: '{% filter escapejs %}{% trans "Score" %}{% endfilter %}',
+                rank: '{% filter escapejs %}{% trans "Rank" %}{% endfilter %}',
+                notFound: '{% filter escapejs %}{% trans "No result found for this code." %}{% endfilter %}',
+                search: '{% filter escapejs %}{% trans "Search" %}{% endfilter %}',
+                searching: '…'
+            };
+
+            function renderResult(result) {
+                feedback.innerHTML =
+                    '<div class="mock-results-outcome" role="status">' +
+                        '<div class="mock-results-outcome__item mock-results-outcome__item--wide">' +
+                            '<span class="mock-results-outcome__label">' + labels.fullName + '</span>' +
+                            '<span class="mock-results-outcome__value">' + escapeHtml(result.full_name) + '</span>' +
+                        '</div>' +
+                        '<div class="mock-results-outcome__item mock-results-outcome__item--wide">' +
+                            '<span class="mock-results-outcome__label">' + labels.program + '</span>' +
+                            '<span class="mock-results-outcome__value">' + escapeHtml(result.program) + '</span>' +
+                        '</div>' +
+                        '<div class="mock-results-outcome__item">' +
+                            '<span class="mock-results-outcome__label">' + labels.score + '</span>' +
+                            '<span class="mock-results-outcome__value">' + escapeHtml(result.score) + '</span>' +
+                        '</div>' +
+                        '<div class="mock-results-outcome__item">' +
+                            '<span class="mock-results-outcome__label">' + labels.rank + '</span>' +
+                            '<span class="mock-results-outcome__value">' + escapeHtml(result.rank) + '</span>' +
+                        '</div>' +
+                    '</div>';
+            }
+
+            function renderError(message) {
+                feedback.innerHTML =
+                    '<div class="alert alert-warning mock-results-alert" role="alert">' +
+                        escapeHtml(message || labels.notFound) +
+                    '</div>';
+            }
+
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                var codeInput = form.querySelector('[name="code"]');
+                var code = (codeInput && codeInput.value || '').trim();
+                if (!code) {
+                    renderError(labels.notFound);
+                    if (codeInput) codeInput.focus();
+                    return;
+                }
+
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = labels.searching;
+                }
+
+                fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form),
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    },
+                    credentials: 'same-origin'
+                })
+                .then(function (response) {
+                    return response.json().then(function (data) {
+                        return { data: data };
+                    });
+                })
+                .then(function (payload) {
+                    if (payload.data && payload.data.ok && payload.data.result) {
+                        renderResult(payload.data.result);
+                    } else {
+                        renderError((payload.data && payload.data.error) || labels.notFound);
+                    }
+                })
+                .catch(function () {
+                    renderError(labels.notFound);
+                })
+                .finally(function () {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = labels.search;
+                    }
+                });
+            });
+        }
+
+        var top5Box = document.getElementById('mock-results-top5');
+        var top5List = document.getElementById('mock-results-top5-list');
+        if (!top5Box || !top5List) return;
+
+        var top5Url = top5Box.getAttribute('data-top5-url');
+        var tabs = top5Box.querySelectorAll('.mock-results-top5__tab');
+        var emptyText = '{% filter escapejs %}{% trans "No results yet." %}{% endfilter %}';
+        var cache = {};
+        var activeKey = '';
+        var requestId = 0;
+
+        tabs.forEach(function (tab) {
+            if (tab.classList.contains('is-active')) {
+                activeKey = tab.getAttribute('data-program-key') || '';
+            }
+        });
+
+        function renderTop5Items(items) {
+            if (!items || !items.length) {
+                top5List.innerHTML =
+                    '<li class="mock-results-top5__empty-item">' +
+                        '<p class="mock-results-top5__empty">' + escapeHtml(emptyText) + '</p>' +
+                    '</li>';
+                return;
+            }
+            top5List.innerHTML = items.map(function (item) {
+                return (
+                    '<li>' +
+                        '<span class="mock-results-top5__name">' + escapeHtml(item.full_name) + '</span>' +
+                        '<span class="mock-results-top5__score">' + escapeHtml(item.score) + '</span>' +
+                    '</li>'
+                );
+            }).join('');
+        }
+
+        function setActiveTab(key) {
+            tabs.forEach(function (tab) {
+                var isActive = tab.getAttribute('data-program-key') === key;
+                tab.classList.toggle('is-active', isActive);
+                tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            });
+            activeKey = key;
+        }
+
+        function setTabsDisabled(disabled) {
+            tabs.forEach(function (tab) {
+                tab.disabled = disabled;
+            });
+        }
+
+        function loadProgram(key) {
+            if (!key || !top5Url || (key === activeKey && cache[key])) {
+                if (cache[key]) renderTop5Items(cache[key]);
+                return;
+            }
+            if (cache[key]) {
+                setActiveTab(key);
+                renderTop5Items(cache[key]);
+                return;
+            }
+
+            var currentRequest = ++requestId;
+            setActiveTab(key);
+            setTabsDisabled(true);
+            top5List.classList.add('is-loading');
+
+            var url = top5Url + (top5Url.indexOf('?') >= 0 ? '&' : '?') + 'program=' + encodeURIComponent(key);
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                },
+                credentials: 'same-origin'
+            })
+            .then(function (response) {
+                return response.json().then(function (data) {
+                    return { okHttp: response.ok, data: data };
+                });
+            })
+            .then(function (payload) {
+                if (currentRequest !== requestId) return;
+                var items = (payload.data && payload.data.items) || [];
+                if (payload.data && payload.data.ok) {
+                    cache[key] = items;
+                }
+                renderTop5Items(items);
+            })
+            .catch(function () {
+                if (currentRequest !== requestId) return;
+                renderTop5Items([]);
+            })
+            .finally(function () {
+                if (currentRequest !== requestId) return;
+                top5List.classList.remove('is-loading');
+                setTabsDisabled(false);
+            });
+        }
+
+        if (activeKey && top5List.children.length) {
+            cache[activeKey] = Array.prototype.map.call(
+                top5List.querySelectorAll('li:not(.mock-results-top5__empty-item)'),
+                function (li) {
+                    var name = li.querySelector('.mock-results-top5__name');
+                    var score = li.querySelector('.mock-results-top5__score');
+                    return {
+                        full_name: name ? name.textContent.trim() : '',
+                        score: score ? score.textContent.trim() : ''
+                    };
+                }
+            );
+        }
+
+        tabs.forEach(function (tab) {
+            tab.addEventListener('click', function () {
+                var key = tab.getAttribute('data-program-key') || '';
+                if (!key || key === activeKey) return;
+                loadProgram(key);
+            });
+        });
+    })();
+    </script>
+</body>
+</html>

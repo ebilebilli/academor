@@ -244,6 +244,16 @@ def serialize_reading_question(
     return payload
 
 
+def reading_display_number(question: ReadingQuestion, *, fallback: int) -> int:
+    """Prefer admin Order for student-facing labels (IELTS Q27, Q31, …)."""
+    order = getattr(question, 'order', None)
+    try:
+        order_int = int(order)
+    except (TypeError, ValueError):
+        order_int = 0
+    return order_int if order_int > 0 else fallback
+
+
 def build_reading_sections_for_quiz(
     quiz_id: int,
     *,
@@ -253,7 +263,7 @@ def build_reading_sections_for_quiz(
 ) -> list[dict]:
     response_map = response_map or {}
     sections: list[dict] = []
-    question_number = 0
+    fallback_number = 0
 
     for passage in get_quiz_reading_passages(quiz_id):
         groups = [
@@ -262,10 +272,11 @@ def build_reading_sections_for_quiz(
         ]
         section_questions = []
         seen_group_ids: set[int] = set()
+        # Prefetch already orders by (order, id); keep that as render order.
         for row in passage.questions.all():
             if not row.is_answerable:
                 continue
-            question_number += 1
+            fallback_number += 1
             group_start = False
             group_instructions = None
             if row.group_id and row.group_id not in seen_group_ids:
@@ -275,7 +286,7 @@ def build_reading_sections_for_quiz(
             question_payload = serialize_reading_question(
                 row,
                 student_answer=response_map.get(str(row.pk), ''),
-                number=question_number,
+                number=reading_display_number(row, fallback=fallback_number),
                 correct_answer_map=correct_answer_map,
                 use_admin_answer_keys=use_admin_answer_keys,
             )
@@ -283,13 +294,14 @@ def build_reading_sections_for_quiz(
             if group_instructions is not None:
                 question_payload['group_instructions'] = group_instructions
             section_questions.append(question_payload)
+        numbers = [item['number'] for item in section_questions]
         sections.append({
             'passage': serialize_reading_passage(passage),
             'groups': groups,
             'questions': section_questions,
             'section_number': len(sections) + 1,
-            'question_range_start': section_questions[0]['number'] if section_questions else None,
-            'question_range_end': section_questions[-1]['number'] if section_questions else None,
+            'question_range_start': min(numbers) if numbers else None,
+            'question_range_end': max(numbers) if numbers else None,
         })
 
     return sections
