@@ -501,6 +501,19 @@
       }
     });
 
+    root.querySelectorAll(".portal-quiz-play-option__input, input[data-reading-answer]").forEach(function (input) {
+      input.addEventListener("keydown", function (event) {
+        if (
+          event.key === "ArrowUp" ||
+          event.key === "ArrowDown" ||
+          event.key === "ArrowLeft" ||
+          event.key === "ArrowRight"
+        ) {
+          event.preventDefault();
+        }
+      });
+    });
+
     if (window.PortalQuizLeaveGuard) {
       window.PortalQuizLeaveGuard.init({
         root: root,

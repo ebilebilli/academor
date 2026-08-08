@@ -956,14 +956,14 @@ def serialize_quiz(quiz, *, question_counts=None):
     category = getattr(quiz, 'category', None)
     inline_count = _quiz_inline_question_count(quiz)
     question_count = inline_count
-    if quiz.is_listening or quiz.is_reading or quiz.is_speaking:
+    if quiz.is_listening or quiz.is_reading or quiz.is_math or quiz.is_speaking:
         if question_counts is not None:
             typed_count = question_counts.get(quiz.pk, 0)
         elif quiz.is_listening:
             from portals.utils.quiz_listening import get_listening_questions_for_quiz
 
             typed_count = len(get_listening_questions_for_quiz(quiz))
-        elif quiz.is_reading:
+        elif quiz.is_reading or quiz.is_math:
             from portals.utils.quiz_reading import get_reading_questions_for_quiz
 
             typed_count = len(get_reading_questions_for_quiz(quiz))
@@ -985,7 +985,8 @@ def serialize_quiz(quiz, *, question_counts=None):
         'is_listening': quiz.is_listening,
         'is_essay': quiz.is_essay,
         'is_speaking': quiz.is_speaking,
-        'is_reading': quiz.is_reading,
+        'is_reading': quiz.is_reading or quiz.is_math,
+        'is_math': quiz.is_math,
         'is_manual_grading': quiz.is_manual_grading,
         'requires_teacher_review': quiz.requires_teacher_review,
         'uses_per_question_text_responses': quiz.uses_per_question_text_responses,
@@ -1296,7 +1297,7 @@ def serialize_quiz_result(row):
     # annotation yields 0 for them. Treat 0 as "unknown" and recount, else
     # max_value comes out as 0 and percentages break.
     if not question_count:
-        if quiz.is_reading:
+        if quiz.is_reading or quiz.is_math:
             from portals.utils.quiz_reading import get_reading_questions_for_quiz
 
             question_count = len(get_reading_questions_for_quiz(quiz))
@@ -1784,12 +1785,13 @@ def get_teacher_quiz_detail(teacher_id, quiz_id):
         payload['listening_sections'] = build_listening_sections_for_quiz(quiz.pk)
         flat_questions = [row for section in payload['listening_sections'] for row in section['questions']]
         payload['response_question_count'] = len(flat_questions)
-    elif quiz.is_reading:
+    elif quiz.is_reading or quiz.is_math:
         from portals.utils.quiz_reading import build_reading_sections_for_quiz
 
         payload['reading_sections'] = build_reading_sections_for_quiz(quiz.pk)
         flat_questions = [row for section in payload['reading_sections'] for row in section['questions']]
         payload['response_question_count'] = len(flat_questions)
+        payload['is_reading'] = True
     elif quiz.is_speaking:
         from portals.utils.quiz_speaking import (
             build_speaking_sections_for_quiz,
@@ -1830,7 +1832,7 @@ def get_student_reading_quiz_take_data(student_id, quiz_id, *, mock_attempt_id: 
             return None
     elif not quiz_visible_to_student(quiz, student_id):
         return None
-    if not quiz.is_reading:
+    if not quiz.is_reading_quiz:
         return None
 
     sections = build_reading_sections_for_quiz(quiz.pk)
@@ -2264,7 +2266,7 @@ def serialize_quiz_result_review(row):
             response_map=response_map,
             use_admin_answer_keys=True,
         )
-    elif quiz.is_reading:
+    elif quiz.is_reading or quiz.is_math:
         from portals.utils.quiz_reading import build_reading_sections_for_quiz
 
         response_map = {
@@ -2276,6 +2278,7 @@ def serialize_quiz_result_review(row):
             for key, value in (row.teacher_correct_answers or {}).items()
             if str(value).strip()
         }
+        data['is_reading'] = True
         data['reading_review_editable'] = False
         data['reading_sections'] = build_reading_sections_for_quiz(
             quiz.pk,
@@ -3045,7 +3048,7 @@ def get_customer_mock_quiz_take_data(customer_id: int, quiz_id: int, *, mock_att
             'is_mock_section': True,
         }
 
-    if quiz.is_reading:
+    if quiz.is_reading_quiz:
         from portals.utils.quiz_reading import build_reading_sections_for_quiz, get_reading_questions_for_quiz
 
         if not get_reading_questions_for_quiz(quiz):

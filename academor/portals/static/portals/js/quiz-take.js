@@ -384,6 +384,16 @@
     }
 
     root.querySelectorAll(".portal-quiz-play-option__input").forEach(function (input) {
+      input.addEventListener("keydown", function (event) {
+        if (
+          event.key === "ArrowUp" ||
+          event.key === "ArrowDown" ||
+          event.key === "ArrowLeft" ||
+          event.key === "ArrowRight"
+        ) {
+          event.preventDefault();
+        }
+      });
       input.addEventListener("change", function () {
         var card = input.closest("[data-quiz-question-card]");
         if (!card) {

@@ -765,7 +765,7 @@ def submit_reading_quiz_attempt(
     )
     if not quiz:
         return {'success': False, 'error': _('Quiz not found.')}
-    if not quiz.is_reading:
+    if not quiz.is_reading_quiz:
         return {'success': False, 'error': _('This quiz is not a reading task.')}
 
     mock_error = _mock_section_submit_error(

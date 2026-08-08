@@ -1,16 +1,16 @@
-{% load i18n %}
+{% load i18n portal_tags %}
 <article
   class="portal-reading-review-row{% if not review_editable %}{% if q.is_correct is True %} portal-reading-review-row--correct{% elif q.is_correct is False %} portal-reading-review-row--incorrect{% else %} portal-reading-review-row--unanswered{% endif %}{% endif %}"
 >
   <div class="portal-reading-review-row__num">{{ q.number }}</div>
   <div class="portal-reading-review-row__body">
     {% if q.question %}
-    <div class="portal-reading-review-row__prompt">{{ q.question|safe }}</div>
+    <div class="portal-reading-review-row__prompt">{{ q.question|quiz_html }}</div>
     {% endif %}
     <div class="portal-reading-review-row__answers">
       <div class="portal-reading-review-row__answer">
         <span class="portal-reading-review-row__label">{% trans 'Student' %}</span>
-        <span class="portal-reading-review-row__value">{{ q.student_answer_display|default:q.student_answer|default:"—" }}</span>
+        <span class="portal-reading-review-row__value">{{ q.student_answer_display|default:q.student_answer|default:"—"|quiz_html }}</span>
       </div>
       <div class="portal-reading-review-row__answer portal-reading-review-row__answer--correct">
         <span class="portal-reading-review-row__label">{% trans 'Correct' %}</span>
@@ -25,7 +25,7 @@
           placeholder="{% trans 'Enter correct answer' %}"
         >
         {% else %}
-        <span class="portal-reading-review-row__value">{{ q.correct_answer_display|default:q.correct_answer|default:"—" }}</span>
+        <span class="portal-reading-review-row__value">{{ q.correct_answer_display|default:q.correct_answer|default:"—"|quiz_html }}</span>
         {% endif %}
       </div>
     </div>

@@ -488,6 +488,47 @@ class PortalNotificationTests(TestCase):
         mark_all_notifications_read(teacher_id=self.teacher.pk)
         self.assertEqual(get_teacher_portal_bell_count(self.teacher.pk), 0)
 
+    def test_score_detail_renders_html_math_question_content(self):
+        """SAT Math stores formula images as HTML; history must not escape them."""
+        html_q = (
+            '<p>If <img alt="x" src="data:image/png;base64,abc" width="8" /> '
+            'is a constant, which must be an integer?</p>'
+        )
+        option_html = '<img alt="optA" src="data:image/png;base64,def" width="9" />'
+        self.q1.question = html_q
+        self.q1.answer_options = [option_html, 'B']
+        self.q1.correct_answer = option_html
+        self.q1.correct_option_index = 0
+        self.q1.save(
+            update_fields=['question', 'answer_options', 'correct_answer', 'correct_option_index'],
+        )
+
+        result = QuizResult.objects.create(
+            student=self.student,
+            quiz=self.quiz,
+            given_answers={str(self.q1.pk): 0},
+            total_score=1,
+        )
+        client = Client()
+        _portal_client_login(client, self.student_user)
+        response = client.get(
+            reverse('portals:student-score-detail', kwargs={'result_pk': result.pk}),
+        )
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        self.assertIn('<img alt="x"', content)
+        self.assertIn('<img alt="optA"', content)
+        self.assertNotIn('&lt;img alt="x"', content)
+        self.assertNotIn('&lt;img alt="optA"', content)
+        self.assertNotIn('&lt;p&gt;', content)
+
+    def test_quiz_html_unescapes_double_encoded_markup(self):
+        from portals.templatetags.portal_tags import quiz_html
+
+        rendered = str(quiz_html('&lt;p&gt;Hello &lt;strong&gt;world&lt;/strong&gt;&lt;/p&gt;'))
+        self.assertIn('<p>Hello <strong>world</strong></p>', rendered)
+        self.assertNotIn('&lt;p&gt;', rendered)
+
     def test_score_detail_marks_notification_read(self):
         result = QuizResult.objects.create(
             student=self.student,

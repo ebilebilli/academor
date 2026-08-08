@@ -40,7 +40,7 @@ def get_quiz_reading_passages(quiz_id: int):
 
 
 def get_reading_questions_for_quiz(quiz: Quiz) -> list[ReadingQuestion]:
-    if not quiz.is_reading or not quiz.pk:
+    if not quiz.is_reading_quiz or not quiz.pk:
         return []
     return [
         question

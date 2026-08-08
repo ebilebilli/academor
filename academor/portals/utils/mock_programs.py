@@ -221,7 +221,7 @@ def resolve_take_url_kind(exam_program: str, section_key: str, quiz) -> str:
     if not spec:
         return 'variant'
     if exam_program == SAT_SERVICE and isinstance(quiz, Quiz):
-        if quiz.is_reading:
+        if quiz.is_reading_quiz:
             return 'reading'
         if quiz.is_essay or quiz.is_listening:
             return 'manual'

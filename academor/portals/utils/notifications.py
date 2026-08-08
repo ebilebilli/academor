@@ -1005,7 +1005,7 @@ def _serialize_score_detail(row: QuizResult, *, role: str) -> dict:
     from portals.utils.quiz_submit import build_essay_question_responses
 
     quiz = row.quiz
-    if quiz.is_reading:
+    if quiz.is_reading_quiz:
         from portals.utils.quiz_reading import get_reading_questions_for_quiz
 
         question_count = len(get_reading_questions_for_quiz(quiz))
@@ -1060,7 +1060,7 @@ def _serialize_score_detail(row: QuizResult, *, role: str) -> dict:
     }
     if quiz.is_variant_quiz:
         data['breakdown'] = _build_variant_breakdown(row)
-    elif quiz.is_reading:
+    elif quiz.is_reading_quiz:
         from portals.utils.quiz_reading import build_reading_sections_for_quiz
 
         response_map = {

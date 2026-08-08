@@ -1,11 +1,21 @@
 from datetime import date, datetime
+from html import unescape
+import re
 
 from django import template
 from django.utils import timezone
+from django.utils.safestring import mark_safe
 from django.utils.translation import get_language, gettext
-import re
 
 register = template.Library()
+
+# Orphan attribute crumbs left when an opening <img …> was truncated.
+_ORPHAN_ATTR_PREFIX_RE = re.compile(
+    r'^(?:[a-zA-Z-:]+="[^"]*"\s*)+/?\s*>',
+    re.ASCII,
+)
+_EMPTY_P_RE = re.compile(r'<p(?:\s[^>]*)?>\s*(?:<br\s*/?>)?\s*</p>', re.IGNORECASE)
+_LEADING_BR_RE = re.compile(r'^(?:\s*<br\s*/?>)+', re.IGNORECASE)
 
 _PORTAL_WEEKDAY_NAMES = {
     'az': [
@@ -340,6 +350,23 @@ def quiz_option_letter(index):
     if value < 0 or value > 25:
         return ''
     return chr(97 + value)
+
+
+@register.filter
+def quiz_html(value):
+    """Render quiz HTML (formulas/images) without leaking raw tags or empty shells."""
+    if value is None:
+        return ''
+    text = str(value).strip()
+    if not text:
+        return ''
+    # Double-encoded markup would otherwise show literal "<p>" / "<img" on the page.
+    if '&lt;' in text and any(token in text for token in ('&lt;p', '&lt;img', '&lt;br', '&lt;strong')):
+        text = unescape(text)
+    text = _ORPHAN_ATTR_PREFIX_RE.sub('', text, count=1).strip()
+    text = _EMPTY_P_RE.sub('', text)
+    text = _LEADING_BR_RE.sub('', text).strip()
+    return mark_safe(text)
 
 
 @register.filter

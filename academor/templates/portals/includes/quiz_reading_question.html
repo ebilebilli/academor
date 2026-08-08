@@ -16,7 +16,7 @@
   </header>
 
   {% if q.question %}
-  <div class="portal-reading-task__prompt">{{ q.question|safe }}</div>
+  <div class="portal-reading-task__prompt">{{ q.question|quiz_html }}</div>
   {% endif %}
 
   <div class="portal-reading-task__response">

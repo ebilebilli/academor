@@ -582,6 +582,16 @@
     });
 
     root.querySelectorAll('input[type="radio"][data-manual-submission]').forEach(function (radio) {
+      radio.addEventListener("keydown", function (event) {
+        if (
+          event.key === "ArrowUp" ||
+          event.key === "ArrowDown" ||
+          event.key === "ArrowLeft" ||
+          event.key === "ArrowRight"
+        ) {
+          event.preventDefault();
+        }
+      });
       radio.addEventListener("change", function () {
         updateWritingUi(root);
       });

@@ -254,6 +254,36 @@
   .portal-reading-tabs__nav .nav-item {
     flex-shrink: 0;
   }
+
+  .portal-reading-tabs__panels {
+    padding: 0.75rem;
+  }
+
+  .portal-reading-section__body,
+  .portal-reading-task__prompt {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .portal-reading-section__body img,
+  .portal-reading-task__prompt img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .portal-reading-review-row__answers {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-reading-tabs__panels {
+    padding: 0.65rem 0.55rem;
+  }
+
+  .portal-reading-task {
+    padding-inline: 0.15rem;
+  }
 }
 
 /* Teacher review — compact answer grid */

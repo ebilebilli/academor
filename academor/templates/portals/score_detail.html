@@ -4,9 +4,9 @@
 {% block title %}{% trans 'Score detail' %}{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}">
+<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20260808d">
 {% if detail.is_reading %}
-<link rel="stylesheet" href="{% static 'portals/css/quiz-reading.css' %}?v=20260703i">
+<link rel="stylesheet" href="{% static 'portals/css/quiz-reading.css' %}?v=20260808d">
 {% endif %}
 {% if detail.is_speaking %}
 <link rel="stylesheet" href="{% static 'portals/css/quiz-speaking.css' %}?v=20260703">
@@ -41,19 +41,36 @@
 {% elif detail.breakdown %}
 <section class="panel mb-4">
   <h2 class="h6 mb-3">{% trans 'Answers' %}</h2>
-  <div class="portal-quiz-writing-stack">
+  <div class="portal-quiz-play-stack">
     {% for row in detail.breakdown %}
-    <article class="panel mb-2 {% if row.is_correct %}border-success{% else %}border-danger{% endif %}">
-      <p class="fw-semibold mb-2">{{ forloop.counter }}. {{ row.question }}</p>
-      <ul class="list-unstyled mb-0 small">
+    <article class="portal-quiz-play-card {% if row.is_correct %}border-success{% else %}border-danger{% endif %}">
+      <header class="portal-quiz-play-card__head">
+        <span class="portal-quiz-play-card__index">{% trans 'Question' %} {{ forloop.counter }}</span>
+        {% if row.is_correct %}
+        <span class="badge rounded-pill text-bg-success">{% trans 'Correct' %}</span>
+        {% else %}
+        <span class="badge rounded-pill text-bg-danger">{% trans 'Incorrect' %}</span>
+        {% endif %}
+      </header>
+      <div class="portal-quiz-prompt__text">{{ row.question|quiz_html }}</div>
+      {% if row.answer_options %}
+      <div class="portal-quiz-play-options portal-quiz-teacher-options" role="list">
         {% for option in row.answer_options %}
-        <li class="{% if forloop.counter0 == row.correct_index %}text-success fw-semibold{% endif %}{% if forloop.counter0 == row.selected_index and not row.is_correct %} text-danger fw-semibold{% endif %}">
-          {% if forloop.counter0 == row.selected_index %}<i class="bi bi-arrow-return-right me-1" aria-hidden="true"></i>{% endif %}
-          {{ option }}
-          {% if forloop.counter0 == row.correct_index %}<span class="badge text-bg-success ms-1">{% trans 'Correct' %}</span>{% endif %}
-        </li>
+        <div
+          class="portal-quiz-play-option portal-quiz-teacher-option{% if forloop.counter0 == row.correct_index %} is-correct{% endif %}{% if forloop.counter0 == row.selected_index and not row.is_correct %} is-selected is-wrong{% endif %}"
+          role="listitem"
+        >
+          <span class="portal-quiz-play-option__letter">{{ forloop.counter0|quiz_option_letter|upper }}</span>
+          <span class="portal-quiz-play-option__text">{{ option|quiz_html }}</span>
+          {% if forloop.counter0 == row.correct_index %}
+          <span class="portal-quiz-teacher-correct-mark"><i class="bi bi-check-lg" aria-hidden="true"></i></span>
+          {% elif forloop.counter0 == row.selected_index %}
+          <span class="portal-quiz-teacher-correct-mark text-danger"><i class="bi bi-x-lg" aria-hidden="true"></i></span>
+          {% endif %}
+        </div>
         {% endfor %}
-      </ul>
+      </div>
+      {% endif %}
     </article>
     {% endfor %}
   </div>

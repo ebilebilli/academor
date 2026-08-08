@@ -849,6 +849,7 @@ def _batch_quiz_max_scores(quizzes) -> dict[int, int]:
         for quiz in unique
         if not quiz.is_manual_grading
         and not quiz.is_reading
+        and not quiz.is_math
         and not quiz.is_listening
     ]
     variant_counts = {}
@@ -864,7 +865,7 @@ def _batch_quiz_max_scores(quizzes) -> dict[int, int]:
     for quiz in unique:
         if quiz.is_manual_grading:
             scores[quiz.pk] = quiz.MANUAL_REVIEW_MAX_SCORE
-        elif quiz.is_reading or quiz.is_listening or quiz.is_speaking:
+        elif quiz.is_reading or quiz.is_math or quiz.is_listening or quiz.is_speaking:
             scores[quiz.pk] = typed.get(quiz.pk, 0)
         else:
             scores[quiz.pk] = int(variant_counts.get(quiz.pk, 0))

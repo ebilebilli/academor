@@ -212,7 +212,12 @@ class Quiz(models.Model):
 
     @property
     def is_variant_quiz(self):
-        return not self.is_manual_grading and not self.is_reading and not self.is_listening
+        return (
+            not self.is_manual_grading
+            and not self.is_reading
+            and not self.is_math
+            and not self.is_listening
+        )
 
     @property
     def uses_per_question_text_responses(self):

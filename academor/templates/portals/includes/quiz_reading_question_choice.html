@@ -3,13 +3,13 @@
   <legend class="visually-hidden">{% blocktrans with n=q.number %}Answer choices for question {{ n }}{% endblocktrans %}</legend>
   {% if view_only %}
     {% if q.student_answer_display or q.student_answer %}
-    <div class="portal-quiz-writing-area__readonly">{{ q.student_answer_display|default:q.student_answer|linebreaksbr }}</div>
+    <div class="portal-quiz-writing-area__readonly">{{ q.student_answer_display|default:q.student_answer|quiz_html }}</div>
     {% elif q.answer_options %}
     <ul class="portal-quiz-play-options portal-quiz-play-options--preview list-unstyled mb-0">
       {% for option in q.answer_options %}
       <li class="portal-quiz-play-option portal-quiz-play-option--reading portal-quiz-play-option--preview">
         <span class="portal-quiz-play-option__letter">{{ forloop.counter0|quiz_option_letter|upper }}</span>
-        <span class="portal-quiz-play-option__text">{{ option }}</span>
+        <span class="portal-quiz-play-option__text">{{ option|quiz_html }}</span>
       </li>
       {% endfor %}
     </ul>
@@ -27,7 +27,7 @@
         {% if q.has_selected_option and forloop.counter0 == q.selected_option_index %}checked{% endif %}
       >
       <span class="portal-quiz-play-option__letter">{{ forloop.counter0|quiz_option_letter|upper }}</span>
-      <span class="portal-quiz-play-option__text">{{ option }}</span>
+      <span class="portal-quiz-play-option__text">{{ option|quiz_html }}</span>
     </label>
     {% endfor %}
   {% endif %}

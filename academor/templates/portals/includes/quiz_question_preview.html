@@ -2,6 +2,6 @@
 {% include "portals/includes/quiz_question_prompt.html" with q=q %}
 <ul class="portal-quiz-option-list">
   {% for option in q.answer_options %}
-  <li{% if option == q.correct_answer %} class="is-correct"{% endif %}>{{ forloop.counter0|quiz_option_letter|upper }}) {{ option|safe }}</li>
+  <li{% if option == q.correct_answer %} class="is-correct"{% endif %}>{{ forloop.counter0|quiz_option_letter|upper }}) {{ option|quiz_html }}</li>
   {% endfor %}
 </ul>
