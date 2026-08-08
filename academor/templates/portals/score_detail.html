@@ -4,7 +4,7 @@
 {% block title %}{% trans 'Score detail' %}{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20260808d">
+<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20260808e">
 {% if detail.is_reading %}
 <link rel="stylesheet" href="{% static 'portals/css/quiz-reading.css' %}?v=20260808d">
 {% endif %}
@@ -53,7 +53,22 @@
         {% endif %}
       </header>
       <div class="portal-quiz-prompt__text">{{ row.question|quiz_html }}</div>
-      {% if row.answer_options %}
+      {% if row.question_type == 'spr' %}
+      <div class="portal-quiz-spr-review">
+        <div class="portal-quiz-spr-review__row">
+          <span class="portal-quiz-spr-review__label">{% trans 'Your answer' %}</span>
+          <span class="portal-quiz-spr-review__value{% if not row.is_correct %} is-wrong{% endif %}">
+            {% if row.student_answer %}{{ row.student_answer }}{% else %}—{% endif %}
+          </span>
+        </div>
+        <div class="portal-quiz-spr-review__row portal-quiz-spr-review__row--correct">
+          <span class="portal-quiz-spr-review__label">{% trans 'Correct answer' %}</span>
+          <span class="portal-quiz-spr-review__value is-correct">
+            {% if row.correct_label %}{{ row.correct_label }}{% else %}—{% endif %}
+          </span>
+        </div>
+      </div>
+      {% elif row.answer_options %}
       <div class="portal-quiz-play-options portal-quiz-teacher-options" role="list">
         {% for option in row.answer_options %}
         <div

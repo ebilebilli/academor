@@ -1008,6 +1008,50 @@ html[data-theme="dark"] .portal-quiz-start-modal__icon {
   color: #fff;
 }
 
+.portal-quiz-spr-review {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 0.35rem;
+}
+
+.portal-quiz-spr-review__row {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--admin-border);
+  border-radius: 10px;
+  background: var(--admin-surface-soft);
+}
+
+.portal-quiz-spr-review__row--correct {
+  border-color: rgba(22, 163, 74, 0.35);
+  background: rgba(22, 163, 74, 0.08);
+}
+
+.portal-quiz-spr-review__label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--admin-muted);
+}
+
+.portal-quiz-spr-review__value {
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--admin-text);
+  overflow-wrap: anywhere;
+}
+
+.portal-quiz-spr-review__value.is-wrong {
+  color: #dc2626;
+}
+
+.portal-quiz-spr-review__value.is-correct {
+  color: #15803d;
+}
+
 /* --------------------------------------------------------------------------
    Listening quiz — audio sections + linked questions
    -------------------------------------------------------------------------- */

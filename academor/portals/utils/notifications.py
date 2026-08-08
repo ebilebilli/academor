@@ -962,27 +962,49 @@ def customer_can_view_quiz_result(customer_id: int, result: QuizResult) -> bool:
 
 
 def _build_variant_breakdown(result: QuizResult) -> list[dict]:
-    given = result.given_answers or {}
-    quiz = result.quiz
-    questions = list(quiz.questions.order_by('order', 'id'))
+    from portals.utils.quiz_submit import _normalize_given_answers, _question_correct_index
+    from portals.utils.sat_spr_validation import plain_spr_text, validate_spr_answer
+
+    given = _normalize_given_answers(result.given_answers or {})
+    questions = list(result.quiz.questions.order_by('order', 'id'))
 
     breakdown = []
     for question in questions:
-        selected_raw = given.get(str(question.pk), given.get(question.pk))
-        selected_index = None
-        if selected_raw is not None and selected_raw != '':
-            try:
-                selected_index = int(selected_raw)
-            except (TypeError, ValueError):
-                selected_index = None
+        if question.question_type == QuizQuestion.QuestionType.SPR:
+            raw_answer = given.get(question.pk)
+            student_answer = plain_spr_text('' if raw_answer is None else str(raw_answer))
+            correct_answers = [
+                plain_spr_text(item)
+                for item in (question.spr_correct_answers or [])
+                if plain_spr_text(item)
+            ]
+            is_correct = False
+            if student_answer and correct_answers:
+                is_correct = bool(
+                    validate_spr_answer(student_answer, correct_answers).get('is_correct'),
+                )
+            breakdown.append({
+                'id': question.pk,
+                'question': question.question,
+                'question_type': 'spr',
+                'answer_options': [],
+                'student_answer': student_answer,
+                'correct_answers': correct_answers,
+                'correct_label': ', '.join(correct_answers),
+                'selected_index': None,
+                'selected_label': student_answer,
+                'correct_index': None,
+                'is_correct': is_correct,
+            })
+            continue
+
+        selected_raw = given.get(question.pk)
+        selected_index = selected_raw if isinstance(selected_raw, int) else None
         options = question.answer_options or []
-        correct_index = question.correct_option_index
-        correct = (question.correct_answer or '').strip()
-        if correct and correct in options:
-            correct_index = options.index(correct)
+        correct_index = _question_correct_index(question)
         is_correct = (
             selected_index is not None
-            and 0 <= correct_index < len(options)
+            and correct_index is not None
             and selected_index == correct_index
         )
         selected_label = ''
@@ -991,11 +1013,18 @@ def _build_variant_breakdown(result: QuizResult) -> list[dict]:
         breakdown.append({
             'id': question.pk,
             'question': question.question,
+            'question_type': 'mcq',
             'answer_options': options,
             'selected_index': selected_index,
             'selected_label': selected_label,
-            'correct_index': correct_index if 0 <= correct_index < len(options) else None,
-            'correct_label': options[correct_index] if 0 <= correct_index < len(options) else question.correct_answer,
+            'correct_index': correct_index if correct_index is not None and 0 <= correct_index < len(options) else None,
+            'correct_label': (
+                options[correct_index]
+                if correct_index is not None and 0 <= correct_index < len(options)
+                else question.correct_answer
+            ),
+            'student_answer': selected_label,
+            'correct_answers': [],
             'is_correct': is_correct,
         })
     return breakdown

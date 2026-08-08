@@ -529,6 +529,45 @@ class PortalNotificationTests(TestCase):
         self.assertIn('<p>Hello <strong>world</strong></p>', rendered)
         self.assertNotIn('&lt;p&gt;', rendered)
 
+    def test_score_detail_shows_spr_student_and_correct_answers(self):
+        from portals.utils.notifications import get_score_detail_for_student
+
+        spr = QuizQuestion.objects.create(
+            quiz=self.quiz,
+            order=2,
+            question='What is 7/2?',
+            question_type=QuizQuestion.QuestionType.SPR,
+            answer_options=[],
+            correct_answer='',
+            spr_correct_answers=['7/2', '3.5'],
+            spr_max_length=5,
+        )
+        result = QuizResult.objects.create(
+            student=self.student,
+            quiz=self.quiz,
+            given_answers={str(self.q1.pk): 0, str(spr.pk): '3'},
+            total_score=1,
+        )
+        detail = get_score_detail_for_student(self.student.pk, result.pk)
+        self.assertIsNotNone(detail)
+        spr_row = next(row for row in detail['breakdown'] if row['id'] == spr.pk)
+        self.assertEqual(spr_row['question_type'], 'spr')
+        self.assertEqual(spr_row['student_answer'], '3')
+        self.assertFalse(spr_row['is_correct'])
+        self.assertIn('7/2', spr_row['correct_label'])
+        self.assertIn('3.5', spr_row['correct_label'])
+
+        client = Client()
+        _portal_client_login(client, self.student_user)
+        response = client.get(
+            reverse('portals:student-score-detail', kwargs={'result_pk': result.pk}),
+        )
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        self.assertIn('portal-quiz-spr-review', content)
+        self.assertIn('7/2, 3.5', content)
+        self.assertIn(spr_row['student_answer'], content)
+
     def test_score_detail_marks_notification_read(self):
         result = QuizResult.objects.create(
             student=self.student,
