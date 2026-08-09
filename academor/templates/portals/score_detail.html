@@ -4,7 +4,7 @@
 {% block title %}{% trans 'Score detail' %}{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20260809a">
+<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20260809b">
 {% if detail.is_reading %}
 <link rel="stylesheet" href="{% static 'portals/css/quiz-reading.css' %}?v=20260808d">
 {% endif %}
@@ -41,11 +41,12 @@
 {% elif detail.breakdown %}
 <section class="panel mb-4">
   <h2 class="h6 mb-3">{% trans 'Answers' %}</h2>
-  <nav class="portal-score-qnav" aria-label="{% trans 'Question results' %}">
+  <nav class="portal-score-qnav" aria-label="{% trans 'Question results' %}" data-score-qnav>
     {% for row in detail.breakdown %}
     <a
       href="#score-q-{{ forloop.counter }}"
       class="portal-score-qnav__dot{% if row.is_correct %} is-correct{% else %} is-wrong{% endif %}"
+      data-score-qnav-target="score-q-{{ forloop.counter }}"
       title="{% if row.is_correct %}{% trans 'Correct' %}{% else %}{% trans 'Incorrect' %}{% endif %} — {% blocktrans with num=forloop.counter %}Question {{ num }}{% endblocktrans %}"
     >{{ forloop.counter }}</a>
     {% endfor %}
@@ -156,5 +157,11 @@
   <div class="portal-lesson-description">{{ detail.teacher_feedback|linebreaksbr }}</div>
 </section>
 {% endif %}
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+{% if detail.breakdown %}
+<script src="{% static 'portals/js/score-qnav.js' %}?v=20260809b"></script>
 {% endif %}
 {% endblock %}
