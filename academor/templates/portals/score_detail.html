@@ -4,7 +4,7 @@
 {% block title %}{% trans 'Score detail' %}{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20260808e">
+<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20260809a">
 {% if detail.is_reading %}
 <link rel="stylesheet" href="{% static 'portals/css/quiz-reading.css' %}?v=20260808d">
 {% endif %}
@@ -41,9 +41,18 @@
 {% elif detail.breakdown %}
 <section class="panel mb-4">
   <h2 class="h6 mb-3">{% trans 'Answers' %}</h2>
+  <nav class="portal-score-qnav" aria-label="{% trans 'Question results' %}">
+    {% for row in detail.breakdown %}
+    <a
+      href="#score-q-{{ forloop.counter }}"
+      class="portal-score-qnav__dot{% if row.is_correct %} is-correct{% else %} is-wrong{% endif %}"
+      title="{% if row.is_correct %}{% trans 'Correct' %}{% else %}{% trans 'Incorrect' %}{% endif %} — {% blocktrans with num=forloop.counter %}Question {{ num }}{% endblocktrans %}"
+    >{{ forloop.counter }}</a>
+    {% endfor %}
+  </nav>
   <div class="portal-quiz-play-stack">
     {% for row in detail.breakdown %}
-    <article class="portal-quiz-play-card {% if row.is_correct %}border-success{% else %}border-danger{% endif %}">
+    <article id="score-q-{{ forloop.counter }}" class="portal-quiz-play-card portal-score-q-target {% if row.is_correct %}border-success{% else %}border-danger{% endif %}">
       <header class="portal-quiz-play-card__head">
         <span class="portal-quiz-play-card__index">{% trans 'Question' %} {{ forloop.counter }}</span>
         {% if row.is_correct %}

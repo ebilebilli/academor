@@ -16,6 +16,62 @@
   gap: 1rem;
 }
 
+.portal-score-qnav {
+  position: sticky;
+  top: 0.75rem;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0 0 1rem;
+  padding: 0.65rem 0.7rem;
+  border: 1px solid var(--admin-border);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--admin-card-bg) 92%, transparent);
+  backdrop-filter: blur(8px);
+  max-height: min(30vh, 11rem);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.portal-score-qnav__dot {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1;
+  text-decoration: none;
+  color: #fff;
+  border: 1px solid transparent;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+}
+
+.portal-score-qnav__dot.is-correct {
+  background: #198754;
+}
+
+.portal-score-qnav__dot.is-wrong {
+  background: #dc3545;
+}
+
+.portal-score-qnav__dot:hover,
+.portal-score-qnav__dot:focus-visible {
+  color: #fff;
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  outline: none;
+}
+
+.portal-score-q-target {
+  scroll-margin-top: 5.5rem;
+}
+
 .portal-quiz-play-card {
   padding: 1.15rem 1.2rem;
   border: 1px solid var(--admin-border);
@@ -400,6 +456,24 @@
 
   .portal-quiz-play-card {
     padding: 0.85rem 0.75rem;
+  }
+
+  .portal-score-qnav {
+    top: 0.5rem;
+    gap: 0.3rem;
+    padding: 0.5rem;
+    max-height: min(28vh, 9.5rem);
+    border-radius: 12px;
+  }
+
+  .portal-score-qnav__dot {
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 0.7rem;
+  }
+
+  .portal-score-q-target {
+    scroll-margin-top: 4.75rem;
   }
 
   .portal-quiz-play-option {
