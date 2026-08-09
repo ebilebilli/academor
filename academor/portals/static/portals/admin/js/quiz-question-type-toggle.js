@@ -43,12 +43,16 @@
 
     function hideMCQFields(form) {
         form.find('.quiz-mcq-answers-fieldset').hide();
-        form.find('.field-answer_options, .field-correct_answer').hide();
+        form.find(
+            '.field-answer_options, .field-correct_answer, .field-correct_option_number, .field-correct_option_index',
+        ).hide();
     }
 
     function showMCQFields(form) {
         form.find('.quiz-mcq-answers-fieldset').show();
-        form.find('.field-answer_options, .field-correct_answer').show();
+        form.find('.field-answer_options, .field-correct_option_number').show();
+        // Hidden inputs stay in DOM but their rows can remain visually quiet.
+        form.find('.field-correct_answer, .field-correct_option_index').hide();
     }
 
     function hideSPRFields(form) {

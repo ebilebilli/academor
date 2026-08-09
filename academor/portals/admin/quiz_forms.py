@@ -98,6 +98,17 @@ class ListeningQuestionAdminForm(forms.ModelForm):
 
 class QuizQuestionAdminForm(forms.ModelForm):
     answer_options = AnswerOptionsFormField()
+    # Visible 1-based selector — scoring source of truth for MCQ (avoids CKEditor HTML mismatch).
+    correct_option_number = forms.IntegerField(
+        label=_('Correct option'),
+        required=False,
+        min_value=1,
+        help_text=_(
+            'Enter 1 for Option 1, 2 for Option 2, 3 for Option 3, 4 for Option 4. '
+            'This is what auto-scoring uses.',
+        ),
+        widget=forms.NumberInput(attrs={'class': 'vIntegerField', 'style': 'max-width: 6rem;'}),
+    )
     spr_correct_answers = AnswerOptionsFormField(
         widget=AnswerOptionsWidget(
             item_label='Answer',
@@ -134,6 +145,7 @@ class QuizQuestionAdminForm(forms.ModelForm):
             'media_url',
             'answer_options',
             'correct_answer',
+            'correct_option_index',
             'spr_correct_answers',
             'spr_max_length',
             'student_response_preview',
@@ -155,7 +167,9 @@ class QuizQuestionAdminForm(forms.ModelForm):
                     'placeholder': 'https://',
                 },
             ),
-            'correct_answer': CKEditorUploadingWidget(),
+            # Stored from correct_option_number; do not edit as free HTML (silent revert bug).
+            'correct_answer': forms.HiddenInput(),
+            'correct_option_index': forms.HiddenInput(),
             'spr_max_length': forms.NumberInput(attrs={'class': 'vIntegerField'}),
         }
 
@@ -176,12 +190,12 @@ class QuizQuestionAdminForm(forms.ModelForm):
             self.fields['answer_options'].help_text = _(
                 'Add answer choices using the + button. Each option can contain rich text.',
             )
+        if 'correct_option_number' in self.fields:
+            self.fields['correct_option_number'].required = False
         if 'correct_answer' in self.fields:
-            # CKEditor often posts blank on submit race — validate in clean() instead.
             self.fields['correct_answer'].required = False
-            self.fields['correct_answer'].help_text = _(
-                'Must exactly match one of the options in the list above.',
-            )
+        if 'correct_option_index' in self.fields:
+            self.fields['correct_option_index'].required = False
         if 'answer_options' in self.fields:
             self.fields['answer_options'].required = False
         if 'question' in self.fields:
@@ -207,6 +221,8 @@ class QuizQuestionAdminForm(forms.ModelForm):
                 self.fields['answer_options'].required = False
             if 'correct_answer' in self.fields:
                 self.fields['correct_answer'].required = False
+            if 'correct_option_number' in self.fields:
+                self.fields['correct_option_number'].required = False
         elif manual:
             if 'answer_options' in self.fields:
                 self.fields['answer_options'].required = False
@@ -218,6 +234,8 @@ class QuizQuestionAdminForm(forms.ModelForm):
                 self.fields['correct_answer'].help_text = _(
                     'Not used for Listening / Speaking quizzes.',
                 )
+            if 'correct_option_number' in self.fields:
+                self.fields['correct_option_number'].required = False
 
         if self.instance and self.instance.pk:
             if 'answer_options' in self.fields:
@@ -228,6 +246,13 @@ class QuizQuestionAdminForm(forms.ModelForm):
                 spr_answers = self.instance.spr_correct_answers or []
                 if isinstance(spr_answers, list):
                     self.initial['spr_correct_answers'] = spr_answers
+            if 'correct_option_number' in self.fields:
+                idx = getattr(self.instance, 'correct_option_index', None)
+                if idx is not None:
+                    try:
+                        self.initial['correct_option_number'] = int(idx) + 1
+                    except (TypeError, ValueError):
+                        pass
 
     def _field_on_form(self, name):
         return name in self.fields
@@ -360,53 +385,66 @@ class QuizQuestionAdminForm(forms.ModelForm):
                 self.add_error('spr_correct_answers', _('SPR questions must have at least one correct answer.'))
             # spr_max_length is optional (needed only for classic short numeric grid-ins)
         elif question_type == QuizQuestion.QuestionType.MCQ:
-            # MCQ-specific validation
+            # MCQ-specific validation — correct_option_number is the source of truth.
             cleaned['spr_correct_answers'] = None
             cleaned['spr_max_length'] = None
-            
+
             answer_options = cleaned.get('answer_options')
             if not answer_options or len(answer_options) < 2:
                 self.add_error('answer_options', _('MCQ questions must have at least two answer options.'))
-            
-            correct_answer = cleaned.get('correct_answer')
-            if not correct_answer:
-                # Prefer existing correct option index when CKEditor posted blank.
-                idx = getattr(self.instance, 'correct_option_index', None)
-                if answer_options and idx is not None and 0 <= idx < len(answer_options):
-                    cleaned['correct_answer'] = answer_options[idx]
-                    cleaned['correct_option_index'] = idx
+            else:
+                option_number = cleaned.get('correct_option_number')
+                if option_number in (None, ''):
+                    # Keep existing index when the number field was left blank.
+                    idx = getattr(self.instance, 'correct_option_index', None)
+                    if idx is not None and 0 <= int(idx) < len(answer_options):
+                        cleaned['correct_option_index'] = int(idx)
+                        cleaned['correct_answer'] = answer_options[int(idx)]
+                        cleaned['correct_option_number'] = int(idx) + 1
+                    else:
+                        self.add_error(
+                            'correct_option_number',
+                            _('Enter which option is correct (1 = Option 1, 2 = Option 2, …).'),
+                        )
                 else:
-                    self.add_error('correct_answer', _('MCQ questions must have a correct answer.'))
-            elif answer_options and correct_answer not in answer_options:
-                # CKEditor may normalize HTML slightly — fall back to saved index.
-                idx = getattr(self.instance, 'correct_option_index', None)
-                if idx is not None and 0 <= idx < len(answer_options):
-                    cleaned['correct_answer'] = answer_options[idx]
-                    cleaned['correct_option_index'] = idx
-                else:
-                    self.add_error(
-                        'correct_answer',
-                        _('Correct answer must exactly match one of the options.'),
-                    )
-            elif answer_options:
-                cleaned['correct_option_index'] = answer_options.index(correct_answer)
+                    try:
+                        idx = int(option_number) - 1
+                    except (TypeError, ValueError):
+                        idx = -1
+                    if not (0 <= idx < len(answer_options)):
+                        self.add_error(
+                            'correct_option_number',
+                            _('Enter a number from 1 to %(count)s.') % {'count': len(answer_options)},
+                        )
+                    else:
+                        cleaned['correct_option_index'] = idx
+                        cleaned['correct_answer'] = answer_options[idx]
         else:
             # Default case (no specific question type)
             cleaned['spr_correct_answers'] = None
             cleaned['spr_max_length'] = None
-            
+
             options = cleaned.get('answer_options') or []
-            correct = (cleaned.get('correct_answer') or '').strip()
+            option_number = cleaned.get('correct_option_number')
             if options:
-                if not correct:
-                    self.add_error('correct_answer', _('Enter the correct answer.'))
-                elif correct not in options:
+                if option_number in (None, ''):
                     self.add_error(
-                        'correct_answer',
-                        _('Correct answer must exactly match one of the options.'),
+                        'correct_option_number',
+                        _('Enter which option is correct (1 = Option 1, 2 = Option 2, …).'),
                     )
                 else:
-                    cleaned['correct_option_index'] = options.index(correct)
+                    try:
+                        idx = int(option_number) - 1
+                    except (TypeError, ValueError):
+                        idx = -1
+                    if not (0 <= idx < len(options)):
+                        self.add_error(
+                            'correct_option_number',
+                            _('Enter a number from 1 to %(count)s.') % {'count': len(options)},
+                        )
+                    else:
+                        cleaned['correct_option_index'] = idx
+                        cleaned['correct_answer'] = options[idx]
 
         prompt_type = cleaned.get('prompt_type')
         question = (cleaned.get('question') or '').strip()
@@ -428,22 +466,6 @@ class QuizQuestionAdminForm(forms.ModelForm):
                 'media_file',
                 _('Upload a file or provide a media URL for this question type.'),
             )
-
-        options = cleaned.get('answer_options') or []
-        correct = (cleaned.get('correct_answer') or '').strip()
-        if options and correct in options:
-            cleaned['correct_option_index'] = options.index(correct)
-        elif options and question_type == QuizQuestion.QuestionType.MCQ:
-            idx = cleaned.get('correct_option_index')
-            if idx is None:
-                idx = getattr(self.instance, 'correct_option_index', 0)
-            try:
-                idx = int(idx)
-            except (TypeError, ValueError):
-                idx = 0
-            if 0 <= idx < len(options):
-                cleaned['correct_answer'] = options[idx]
-                cleaned['correct_option_index'] = idx
 
         return cleaned
 

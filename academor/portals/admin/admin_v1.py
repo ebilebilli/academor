@@ -340,7 +340,9 @@ class QuizQuestionInline(admin.StackedInline):
         'media_file',
         'media_url',
         'answer_options',
+        'correct_option_number',
         'correct_answer',
+        'correct_option_index',
         'spr_correct_answers',
         'spr_max_length',
         'student_response_preview',
@@ -371,7 +373,9 @@ class QuizQuestionInline(admin.StackedInline):
             'media_file',
             'media_url',
             'answer_options',
+            'correct_option_number',
             'correct_answer',
+            'correct_option_index',
         ]
         if cls._inline_supports_spr_fields(quiz):
             fields.extend(['spr_correct_answers', 'spr_max_length'])
@@ -2010,7 +2014,12 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
         else:
             mode = 'variant'
 
-        answer_fields = ('answer_options', 'correct_answer')
+        answer_fields = (
+            'answer_options',
+            'correct_option_number',
+            'correct_answer',
+            'correct_option_index',
+        )
         response_field = 'student_response_preview'
 
         if mode == 'essay':
@@ -2018,8 +2027,8 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
             hide_fields = list(answer_fields)
             clear_fields = list(answer_fields)
         elif mode == 'variant':
-            show_fields = list(answer_fields)
-            hide_fields = [response_field]
+            show_fields = ['answer_options', 'correct_option_number']
+            hide_fields = [response_field, 'correct_answer', 'correct_option_index']
             clear_fields = []
         elif mode in ('reading', 'math'):
             # Reading/Math use passage inlines — don't wipe QuizQuestion answer JSON.
@@ -2174,8 +2183,15 @@ class QuizQuestionAdmin(PortalModelAdmin):
         }),
         (_('MCQ Answers'), {
             'classes': ('quiz-mcq-answers-fieldset',),
-            'description': _('Multiple choice: Add answer choices using the + button. Each option can contain rich text.'),
-            'fields': ('answer_options', 'correct_answer'),
+            'description': _(
+                'Multiple choice: add options with +, then set Correct option to 1, 2, 3, or 4.',
+            ),
+            'fields': (
+                'answer_options',
+                'correct_option_number',
+                'correct_answer',
+                'correct_option_index',
+            ),
         }),
         (_('SPR Answers'), {
             'classes': ('quiz-spr-answers-fieldset',),

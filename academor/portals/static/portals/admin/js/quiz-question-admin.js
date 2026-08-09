@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var ANSWER_FIELDS = ["answer_options", "correct_answer"];
+  var ANSWER_FIELDS = ["answer_options", "correct_option_number", "correct_answer", "correct_option_index"];
   var RESPONSE_FIELD = "student_response_preview";
   var GRADING_INPUTS = ["is_essay", "is_listening", "is_speaking", "is_reading", "is_math"];
 
@@ -114,8 +114,8 @@
     if (mode === "variant") {
       return {
         grading_mode: mode,
-        show_fields: ANSWER_FIELDS.slice(),
-        hide_fields: [RESPONSE_FIELD],
+        show_fields: ["answer_options", "correct_option_number"],
+        hide_fields: [RESPONSE_FIELD, "correct_answer", "correct_option_index"],
         clear_fields: [],
       };
     }
@@ -208,9 +208,13 @@
       if (!row) {
         return;
       }
-      // On quiz-question change form, keep MCQ/SPR fields visible.
-      if (isQuestionEdit && (name === "answer_options" || name === "correct_answer")) {
+      // On quiz-question change form, keep MCQ option fields visible.
+      if (isQuestionEdit && (name === "answer_options" || name === "correct_option_number")) {
         row.classList.remove("quiz-admin-hidden-field");
+        return;
+      }
+      if (isQuestionEdit && (name === "correct_answer" || name === "correct_option_index")) {
+        row.classList.add("quiz-admin-hidden-field");
         return;
       }
       row.classList.toggle("quiz-admin-hidden-field", !showSet[name]);
