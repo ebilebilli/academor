@@ -4,7 +4,7 @@
 {% block title %}{% trans 'Score detail' %}{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20260809b">
+<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20260809c">
 {% if detail.is_reading %}
 <link rel="stylesheet" href="{% static 'portals/css/quiz-reading.css' %}?v=20260808d">
 {% endif %}
@@ -39,8 +39,7 @@
   {% include "portals/includes/quiz_reading_teacher_review_tabs.html" with sections=detail.reading_sections review_editable=False %}
 </section>
 {% elif detail.breakdown %}
-<section class="panel mb-4">
-  <h2 class="h6 mb-3">{% trans 'Answers' %}</h2>
+<div class="portal-score-qnav-slot mb-3" data-score-qnav-slot>
   <nav class="portal-score-qnav" aria-label="{% trans 'Question results' %}" data-score-qnav>
     {% for row in detail.breakdown %}
     <a
@@ -51,6 +50,9 @@
     >{{ forloop.counter }}</a>
     {% endfor %}
   </nav>
+</div>
+<section class="panel mb-4">
+  <h2 class="h6 mb-3">{% trans 'Answers' %}</h2>
   <div class="portal-quiz-play-stack">
     {% for row in detail.breakdown %}
     <article id="score-q-{{ forloop.counter }}" class="portal-quiz-play-card portal-score-q-target {% if row.is_correct %}border-success{% else %}border-danger{% endif %}">
@@ -162,6 +164,6 @@
 
 {% block extra_js %}
 {% if detail.breakdown %}
-<script src="{% static 'portals/js/score-qnav.js' %}?v=20260809b"></script>
+<script src="{% static 'portals/js/score-qnav.js' %}?v=20260809c"></script>
 {% endif %}
 {% endblock %}

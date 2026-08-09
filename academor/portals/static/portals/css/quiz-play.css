@@ -16,15 +16,16 @@
   gap: 1rem;
 }
 
+.portal-score-qnav-slot {
+  position: relative;
+  z-index: 30;
+}
+
 .portal-score-qnav {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(1.55rem, 1fr));
   gap: 0.28rem;
-  margin: 0 0 1rem;
+  margin: 0;
   padding: 0.55rem 0.6rem;
   border: 1px solid var(--admin-border);
   border-radius: 14px;
@@ -32,16 +33,23 @@
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
+.portal-score-qnav.is-fixed {
+  position: fixed;
+  z-index: 1040;
+  margin: 0;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
+}
+
 .portal-score-qnav__dot {
   box-sizing: border-box;
-  flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.7rem;
-  height: 1.7rem;
+  width: 100%;
+  aspect-ratio: 1;
+  min-height: 1.55rem;
   border-radius: 999px;
-  font-size: 0.68rem;
+  font-size: 0.66rem;
   font-weight: 800;
   line-height: 1;
   text-decoration: none;
@@ -68,7 +76,7 @@
 }
 
 .portal-score-q-target {
-  scroll-margin-top: var(--score-qnav-offset, 8.5rem);
+  scroll-margin-top: var(--score-qnav-offset, 7rem);
 }
 
 .portal-quiz-play-card {
@@ -458,20 +466,19 @@
   }
 
   .portal-score-qnav {
-    top: 0;
+    grid-template-columns: repeat(auto-fill, minmax(1.4rem, 1fr));
     gap: 0.22rem;
     padding: 0.45rem 0.5rem;
     border-radius: 12px;
   }
 
   .portal-score-qnav__dot {
-    width: 1.55rem;
-    height: 1.55rem;
-    font-size: 0.62rem;
+    min-height: 1.4rem;
+    font-size: 0.6rem;
   }
 
   .portal-score-q-target {
-    scroll-margin-top: var(--score-qnav-offset, 9.5rem);
+    scroll-margin-top: var(--score-qnav-offset, 8rem);
   }
 
   .portal-quiz-play-option {
