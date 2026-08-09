@@ -1546,6 +1546,8 @@ def serialize_about(about, lang='az'):
         'first_image': first_image,
         'video': video,
         'video_cover': video_cover,
+        # Full-resolution cover for Open Graph / social share (display spec is smaller).
+        'video_cover_full': video_cover_full or video_cover,
         'medias': medias,
     }
 
@@ -1666,6 +1668,15 @@ def get_home_page_data(request, lang):
     featured = ctx.get('blog_featured') or []
     if featured and featured[0].get('cover'):
         ctx['lcp_image_url'] = featured[0]['cover']
+    # Homepage OG image: About section video cover (even if About block is hidden on home).
+    about_share = ctx.get('about')
+    if not about_share:
+        about_obj = get_about(lang)
+        about_share = serialize_about(about_obj, lang) if about_obj else None
+    if about_share:
+        share_img = about_share.get('video_cover_full') or about_share.get('video_cover')
+        if share_img:
+            ctx['og_image_url'] = share_img
     return ctx
 
 

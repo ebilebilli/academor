@@ -39,15 +39,15 @@
 <link rel="canonical" href="{{ canonical_url }}">
 <meta property="og:site_name" content="Academor">
 <meta property="og:type" content="{{ og_type|default:'website' }}">
-<meta property="og:title" content="{% if seo_route_url_name == 'home-page' %}{{ page_title|default:seo_home_title|default:'Academor' }}{% else %}{{ page_title|default:default_seo_title|default:'Academor' }}{% endif %}">
+<meta property="og:title" content="{% if og_title %}{{ og_title }}{% elif seo_route_url_name == 'home-page' %}{{ page_title|default:seo_home_title|default:'Academor' }}{% else %}{{ page_title|default:default_seo_title|default:'Academor' }}{% endif %}">
 {% if seo_route_url_name == 'home-page' %}
-{% with effective_description=page_description|default:seo_home_description %}
+{% with effective_description=og_description|default:page_description|default:seo_home_description %}
 {% if effective_description %}
 <meta property="og:description" content="{{ effective_description }}">
 {% endif %}
 {% endwith %}
 {% else %}
-{% with effective_description=page_description|default:default_seo_description %}
+{% with effective_description=og_description|default:page_description|default:default_seo_description %}
 {% if effective_description %}
 <meta property="og:description" content="{{ effective_description }}">
 {% endif %}
@@ -56,7 +56,7 @@
 <meta property="og:url" content="{{ canonical_url }}">
 {% firstof og_image_url lcp_image_url as share_image %}
 <meta property="og:image" content="{% if share_image %}{% if '://' in share_image %}{{ share_image }}{% else %}{{ seo_origin }}{{ share_image }}{% endif %}{% else %}{{ request.scheme }}://{{ request.get_host }}{% static 'assets/img/banner.webp' %}{% endif %}">
-<meta property="og:image:alt" content="{% if seo_route_url_name == 'home-page' %}{{ page_title|default:seo_home_title|default:'Academor' }}{% else %}{{ page_title|default:default_seo_title|default:'Academor' }}{% endif %}">
+<meta property="og:image:alt" content="{% if og_title %}{{ og_title }}{% elif seo_route_url_name == 'home-page' %}{{ page_title|default:seo_home_title|default:'Academor' }}{% else %}{{ page_title|default:default_seo_title|default:'Academor' }}{% endif %}">
 <meta property="og:locale" content="{{ page_og_locale|default:seo_og_locale|default:'az_AZ' }}">
 {% if og_article_published_time %}
 <meta property="article:published_time" content="{{ og_article_published_time }}">
@@ -65,15 +65,15 @@
 <meta name="geo.placename" content="{{ page_geo_placename|default:seo_geo_placename|default:'Baku' }}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="{% if share_image %}{% if '://' in share_image %}{{ share_image }}{% else %}{{ seo_origin }}{{ share_image }}{% endif %}{% else %}{{ request.scheme }}://{{ request.get_host }}{% static 'assets/img/banner.webp' %}{% endif %}">
-<meta name="twitter:title" content="{% if seo_route_url_name == 'home-page' %}{{ page_title|default:seo_home_title|default:'Academor' }}{% else %}{{ page_title|default:default_seo_title|default:'Academor' }}{% endif %}">
+<meta name="twitter:title" content="{% if og_title %}{{ og_title }}{% elif seo_route_url_name == 'home-page' %}{{ page_title|default:seo_home_title|default:'Academor' }}{% else %}{{ page_title|default:default_seo_title|default:'Academor' }}{% endif %}">
 {% if seo_route_url_name == 'home-page' %}
-{% with effective_description=page_description|default:seo_home_description %}
+{% with effective_description=og_description|default:page_description|default:seo_home_description %}
 {% if effective_description %}
 <meta name="twitter:description" content="{{ effective_description }}">
 {% endif %}
 {% endwith %}
 {% else %}
-{% with effective_description=page_description|default:default_seo_description %}
+{% with effective_description=og_description|default:page_description|default:default_seo_description %}
 {% if effective_description %}
 <meta name="twitter:description" content="{{ effective_description }}">
 {% endif %}

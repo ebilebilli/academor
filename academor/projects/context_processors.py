@@ -47,6 +47,11 @@ SEO_HOME = {
             "Learn English fast and effectively with Academor in Baku, Azerbaijan. "
             "English lessons, IELTS, GMAT, SAT, GRE, YÖS, ALES, study abroad support and Only Speaking."
         ),
+        "og_title": "We don't sell courses — we change lives",
+        "og_description": (
+            "As Academor Training Center, we develop people's knowledge and skills through training "
+            "programs across various fields and help them reach their goals."
+        ),
         "keywords": (
             "english lessons, english language courses, learn english, english in baku, english course, study abroad, "
             "english classes baku, english lessons baku, learn english baku, english language school baku, "
@@ -64,6 +69,11 @@ SEO_HOME = {
         "description": (
             "Academor Bakıda: ingilis dili dərsləri, IELTS, GMAT, SAT, GRE, YÖS və ALES hazırlığı, "
             "xaricdə təhsil dəstəyi və Only Speaking. Sürətli və effektiv öyrənmə — Azərbaycan."
+        ),
+        "og_title": "Biz kurs satmırıq, biz həyat dəyişirik",
+        "og_description": (
+            "Academor Təlim Mərkəzi olaraq müxtəlif istiqamətlər üzrə təlim proqramları ilə "
+            "insanların bilik və bacarıqlarını inkişaf etdirir, məqsədlərinə çatmalarına dəstək oluruq."
         ),
         "keywords": (
             "ingilis dili dərsləri, IELTS, GMAT, SAT, GRE, YÖS, ALES, xaricdə təhsil, Only Speaking, "
@@ -85,6 +95,11 @@ SEO_HOME = {
         "description": (
             "Изучайте английский быстрее и эффективнее с Academor в Баку, Азербайджан. "
             "Уроки английского, IELTS, GMAT, SAT, GRE, YÖS, ALES, поддержка по обучению за рубежом и Only Speaking."
+        ),
+        "og_title": "Мы не продаём курсы — мы меняем жизни",
+        "og_description": (
+            "Как учебный центр Academor мы развиваем знания и навыки людей через программы обучения "
+            "по разным направлениям и помогаем достигать целей."
         ),
         "keywords": (
             "уроки английского, курсы английского языка, выучить английский, английский язык баку, курс английского, "
@@ -131,7 +146,7 @@ def site_seo_context(request):
     rm = getattr(request, "resolver_match", None)
     url_name = getattr(rm, "url_name", None) or ""
     page_defaults = get_page_seo_defaults(url_name, lang)
-    return {
+    ctx = {
         "canonical_url": canonical_url_for_request(request),
         "seo_route_url_name": url_name,
         "seo_home_title": data["title"],
@@ -146,6 +161,11 @@ def site_seo_context(request):
         "default_seo_keywords": page_defaults.get("keywords"),
         "seo_origin": _canonical_origin(),
     }
+    # Homepage social share copy (keeps SEO <title>/meta description keyword-focused).
+    if url_name == "home-page":
+        ctx["og_title"] = data.get("og_title") or data["title"]
+        ctx["og_description"] = data.get("og_description") or data["description"]
+    return ctx
 
 
 def site_footer_context(request):
