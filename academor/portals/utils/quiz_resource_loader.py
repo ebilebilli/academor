@@ -11,7 +11,6 @@ from django.db import transaction
 from portals.models import Quiz, QuizCategory, QuizQuestion
 
 RESOURCES_DIR = Path(__file__).resolve().parent.parent / 'resources' / 'quiz_questions'
-SAT_RESOURCES_DIR = Path(__file__).resolve().parent.parent / 'resources' / 'sat_questions'
 
 
 DEFAULT_SERVICE = 'general_english'
@@ -244,15 +243,5 @@ def load_all_resources(*, deactivate_missing: bool = True) -> list[dict]:
 
     results = []
     for path in sorted(RESOURCES_DIR.glob('*.json')):
-        results.append(load_resource_file(path, deactivate_missing=deactivate_missing))
-    return results
-
-
-def load_all_sat_resources(*, deactivate_missing: bool = True) -> list[dict]:
-    if not SAT_RESOURCES_DIR.exists():
-        return []
-
-    results = []
-    for path in sorted(SAT_RESOURCES_DIR.glob('*.json')):
         results.append(load_resource_file(path, deactivate_missing=deactivate_missing))
     return results
