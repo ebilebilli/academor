@@ -1012,6 +1012,7 @@ def serialize_quiz_category(category):
     return {
         'id': category.pk,
         'name': category.name,
+        'order': category.order,
         'service': service_code,
         'service_label': resolve_course_type_label(service_code, lang='en') if service_code else '',
         'quiz_count': quiz_count,
@@ -1067,7 +1068,7 @@ def _quiz_categories_with_counts(course_codes):
         quiz_categories_for_portal_codes(course_codes)
         .annotate(quiz_count=Count('quizzes', distinct=True))
         .filter(quiz_count__gt=0)
-        .order_by('name', 'id')
+        .order_by('order', 'name', 'id')
     )
 
 

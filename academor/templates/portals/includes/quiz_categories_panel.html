@@ -1,24 +1,79 @@
 {% load i18n %}
 <section
   class="ds-card mb-4"
-  data-portal-service-tabs
-  data-portal-service-match="single"
-  data-portal-service-table="#quiz-categories-table"
-  data-portal-service-empty-row=".quiz-categories-empty-row"
-  data-portal-service-filter-empty="#quiz-categories-filter-empty"
+  data-portal-quiz-category-filters
+  data-portal-quiz-table="#quiz-categories-table"
+  data-portal-quiz-empty-row=".quiz-categories-empty-row"
+  data-portal-quiz-filter-empty="#quiz-categories-filter-empty"
 >
-  {% if service_tabs|length > 1 %}
-  <div class="s-filter-tabs px-0 pt-0 pb-3" id="quizServiceTabs" role="group" data-portal-service-tablist aria-label="{% trans 'Xidmət filteri' %}">
-    {% for tab in service_tabs %}
-    <button
-      class="s-filter-tab{% if forloop.first %} is-active{% endif %}"
-      type="button"
-      data-service="{{ tab.code }}"
-      {% if forloop.first %}aria-selected="true"{% else %}aria-selected="false"{% endif %}
+  {% if service_tabs|length > 1 or categories|length > 1 %}
+  <div class="s-lessons-filter-panel mb-3" aria-label="{% trans 'Quiz filterləri' %}">
+    {% if service_tabs|length > 1 %}
+    <div class="s-lessons-filter-panel__row">
+      <span class="s-lessons-filter-panel__label">
+        <i class="ti ti-briefcase" aria-hidden="true"></i>
+        {% trans 'Xidmət' %}
+      </span>
+      <div
+        class="s-lessons-filter-panel__tabs s-lessons-filter-panel__tabs--seg"
+        id="quizServiceTabs"
+        role="group"
+        data-portal-quiz-service-tablist
+        aria-label="{% trans 'Xidmət filteri' %}"
+      >
+        {% for tab in service_tabs %}
+        <button
+          class="s-filter-tab{% if forloop.first %} is-active{% endif %}"
+          type="button"
+          data-service="{{ tab.code }}"
+          {% if forloop.first %}aria-selected="true"{% else %}aria-selected="false"{% endif %}
+        >
+          {{ tab.label }} <span class="s-filter-tab__badge">{{ tab.count }}</span>
+        </button>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if categories|length > 1 %}
+    <div
+      class="s-lessons-filter-panel__row{% if service_tabs|length > 1 %} s-lessons-filter-panel__row--bordered{% endif %}"
+      data-portal-quiz-category-filter-row
     >
-      {{ tab.label }} <span class="s-filter-tab__badge">{{ tab.count }}</span>
-    </button>
-    {% endfor %}
+      <span class="s-lessons-filter-panel__label">
+        <i class="ti ti-category" aria-hidden="true"></i>
+        {% trans 'Kateqoriya' %}
+      </span>
+      <div
+        class="s-lessons-filter-panel__tabs s-lessons-filter-panel__tabs--compact"
+        role="group"
+        data-portal-quiz-category-tablist
+        aria-label="{% trans 'Kateqoriya filteri' %}"
+      >
+        <button
+          class="s-pill is-active"
+          type="button"
+          data-category="all"
+          aria-selected="true"
+        >
+          {% trans 'Hamısı' %}
+          <span class="s-pill__count">{{ categories|length }}</span>
+        </button>
+        {% for category in categories %}
+        <button
+          class="s-pill"
+          type="button"
+          data-category="{{ category.id }}"
+          data-service="{{ category.service }}"
+          aria-selected="false"
+        >
+          {{ category.name }}
+          <span class="s-pill__count">{{ category.quiz_count }}</span>
+        </button>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
   </div>
   {% else %}
   <div class="s-panel-head">
@@ -41,7 +96,7 @@
       </thead>
       <tbody>
         {% for category in categories %}
-        <tr data-service="{{ category.service }}">
+        <tr data-service="{{ category.service }}" data-category="{{ category.id }}">
           <td class="fw-500" data-label="{% trans 'Kateqoriya' %}">{{ category.name }}</td>
           <td data-label="{% trans 'Xidmət' %}"><span class="ds-badge">{{ category.service_label }}</span></td>
           <td data-label="{% trans 'Quiz' %}"><span class="ds-badge">{{ category.quiz_count }}</span></td>
@@ -66,6 +121,6 @@
   </div>
   <div class="s-empty-state d-none" id="quiz-categories-filter-empty">
     <i class="ti ti-filter-off" aria-hidden="true"></i>
-    <p>{% trans 'Bu xidmət üçün kateqoriya yoxdur.' %}</p>
+    <p>{% trans 'Bu filter üçün kateqoriya yoxdur.' %}</p>
   </div>
 </section>

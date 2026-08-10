@@ -201,6 +201,7 @@ ADMIN_HELP = {
         'tips': [
             _('Same service + name must be unique.'),
             _('Service must match an active site service.'),
+            _('Drag rows on the category list to set portal tab order (filter by service first).'),
         ],
     },
     'Quiz': {

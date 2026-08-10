@@ -1,0 +1,15 @@
+{% extends "admin/portals/portals_change_list.html" %}
+{% load i18n %}
+
+{% block content %}
+<div
+  id="quiz-category-reorder-config"
+  hidden
+  data-reorder-url="{{ quiz_category_reorder_url }}"
+></div>
+<p class="quiz-category-reorder-hint">
+  {% trans "Drag rows to reorder. Prefer filtering by one service first, then drag. Order saves automatically and appears on portal quiz category tabs." %}
+</p>
+<p id="quiz-category-reorder-status" aria-live="polite"></p>
+{{ block.super }}
+{% endblock %}

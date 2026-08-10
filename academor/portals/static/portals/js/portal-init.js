@@ -82,6 +82,143 @@
     });
   }
 
+  /* ── Quiz categories: service tabs + category tabs ── */
+  function initQuizCategoryFilters(root) {
+    if (root.dataset.portalQuizCategoryFiltersBound === "true") {
+      return;
+    }
+    var table = root.querySelector(root.dataset.portalQuizTable || "#quiz-categories-table");
+    if (!table) {
+      return;
+    }
+    var serviceTablist = root.querySelector("[data-portal-quiz-service-tablist]");
+    var categoryTablist = root.querySelector("[data-portal-quiz-category-tablist]");
+    var categoryFilterRow = root.querySelector("[data-portal-quiz-category-filter-row]");
+    if (!serviceTablist && !categoryTablist) {
+      return;
+    }
+    var rows = table.querySelectorAll("tbody tr[data-category]");
+    var emptyRow = root.dataset.portalQuizEmptyRow
+      ? root.querySelector(root.dataset.portalQuizEmptyRow)
+      : null;
+    var filterEmpty = root.dataset.portalQuizFilterEmpty
+      ? root.querySelector(root.dataset.portalQuizFilterEmpty)
+      : null;
+    var serviceTabs = serviceTablist
+      ? serviceTablist.querySelectorAll(".s-filter-tab[data-service], .nav-link[data-service]")
+      : [];
+    var categoryTabs = categoryTablist
+      ? categoryTablist.querySelectorAll(".s-pill[data-category], .s-filter-tab[data-category]")
+      : [];
+    var allCategoryTab = categoryTablist
+      ? categoryTablist.querySelector('[data-category="all"]')
+      : null;
+    var activeService = "all";
+    var activeCategory = "all";
+    root.dataset.portalQuizCategoryFiltersBound = "true";
+
+    function setActiveTabs(tabs, attr, value, activeClass) {
+      tabs.forEach(function (tab) {
+        var isActive = tab.getAttribute(attr) === value;
+        tab.classList.toggle(activeClass, isActive);
+        tab.classList.toggle("active", isActive);
+        tab.setAttribute("aria-selected", isActive ? "true" : "false");
+      });
+    }
+
+    function syncCategoryTabs() {
+      if (!categoryTablist) {
+        return;
+      }
+      var visibleSpecific = 0;
+      var activeStillVisible = activeCategory === "all";
+      categoryTabs.forEach(function (tab) {
+        var cat = tab.getAttribute("data-category");
+        if (cat === "all") {
+          tab.classList.remove("d-none");
+          return;
+        }
+        var show = activeService === "all" || tab.getAttribute("data-service") === activeService;
+        tab.classList.toggle("d-none", !show);
+        if (show) {
+          visibleSpecific += 1;
+          if (cat === activeCategory) {
+            activeStillVisible = true;
+          }
+        }
+      });
+      if (allCategoryTab) {
+        var allCount = 0;
+        rows.forEach(function (row) {
+          if (activeService === "all" || row.getAttribute("data-service") === activeService) {
+            allCount += 1;
+          }
+        });
+        var badge = allCategoryTab.querySelector(".s-pill__count, .s-filter-tab__badge");
+        if (badge) {
+          badge.textContent = String(allCount);
+        }
+      }
+      if (categoryFilterRow) {
+        categoryFilterRow.classList.toggle("d-none", visibleSpecific <= 1);
+      }
+      if (!activeStillVisible || visibleSpecific <= 1) {
+        activeCategory = "all";
+        setActiveTabs(categoryTabs, "data-category", "all", "is-active");
+      }
+    }
+
+    function applyFilters() {
+      var visible = 0;
+      rows.forEach(function (row) {
+        var serviceOk = activeService === "all" || row.getAttribute("data-service") === activeService;
+        var categoryOk = activeCategory === "all" || row.getAttribute("data-category") === activeCategory;
+        var show = serviceOk && categoryOk;
+        row.classList.toggle("d-none", !show);
+        if (show) {
+          visible += 1;
+        }
+      });
+      if (emptyRow) {
+        emptyRow.classList.add("d-none");
+      }
+      if (filterEmpty) {
+        filterEmpty.classList.toggle("d-none", visible > 0 || rows.length === 0);
+      }
+    }
+
+    serviceTabs.forEach(function (tab) {
+      tab.addEventListener("click", function () {
+        activeService = tab.getAttribute("data-service") || "all";
+        activeCategory = "all";
+        setActiveTabs(serviceTabs, "data-service", activeService, "is-active");
+        setActiveTabs(categoryTabs, "data-category", "all", "is-active");
+        syncCategoryTabs();
+        applyFilters();
+      });
+    });
+
+    categoryTabs.forEach(function (tab) {
+      tab.addEventListener("click", function () {
+        if (tab.classList.contains("d-none")) {
+          return;
+        }
+        activeCategory = tab.getAttribute("data-category") || "all";
+        setActiveTabs(categoryTabs, "data-category", activeCategory, "is-active");
+        applyFilters();
+      });
+    });
+
+    if (serviceTabs.length) {
+      var activeServiceTab = serviceTablist.querySelector(".s-filter-tab.is-active, .nav-link.active, .nav-link.is-active");
+      if (activeServiceTab) {
+        activeService = activeServiceTab.getAttribute("data-service") || "all";
+      }
+    }
+    syncCategoryTabs();
+    applyFilters();
+  }
+
   /* ── Status tabs (attendance) ── */
   function initStatusTabs(root) {
     if (root.dataset.portalStatusTabsBound === "true") {
@@ -950,6 +1087,7 @@
 
   function initAll() {
     document.querySelectorAll("[data-portal-service-tabs]").forEach(initServiceTabs);
+    document.querySelectorAll("[data-portal-quiz-category-filters]").forEach(initQuizCategoryFilters);
     document.querySelectorAll("[data-portal-status-tabs]").forEach(initStatusTabs);
     document.querySelectorAll("[data-portal-child-switcher]").forEach(initSwitcher);
     document.querySelectorAll("[data-portal-lessons-filter]").forEach(initLessonsFilter);

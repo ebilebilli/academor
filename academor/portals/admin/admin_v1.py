@@ -1740,12 +1740,20 @@ class WeeklyStudentScoreAdmin(PortalModelAdmin):
 class QuizCategoryAdminForm(forms.ModelForm):
     class Meta:
         model = QuizCategory
-        fields = ('services', 'name')
+        fields = ('services', 'name', 'order')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['services'].queryset = get_active_services_queryset()
         self.fields['services'].required = True
+        from projects.admin.order_fields import apply_order_choice_field
+
+        apply_order_choice_field(
+            self,
+            model=QuizCategory,
+            instance=self.instance,
+            field_name='order',
+        )
 
     def clean_services(self):
         services = self.cleaned_data.get('services')
@@ -1757,24 +1765,98 @@ class QuizCategoryAdminForm(forms.ModelForm):
 @admin.register(QuizCategory)
 class QuizCategoryAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
     form = QuizCategoryAdminForm
+    change_list_template = 'admin/portals/quizcategory/change_list.html'
 
-    list_display = ('name', 'service_display', 'quiz_count_display')
+    list_display = ('drag_handle', 'order', 'name', 'service_display', 'quiz_count_display')
     list_display_links = ('name',)
     list_filter = ('services',)
     search_fields = ('name', 'services__slug', 'services__name_az', 'services__name_en')
     filter_horizontal = ('services',)
-    ordering = ('name', 'id')
-    list_per_page = 25
+    ordering = ('order', 'name', 'id')
+    list_per_page = 200
     fieldsets = (
         (None, {
             'description': _(
                 'Quiz categories group quizzes under linked site services. '
-                'Teachers and students reach quizzes indirectly through category services.'
+                'Teachers and students reach quizzes indirectly through category services. '
+                'On the list page, drag rows to set portal tab order.'
             ),
-            'fields': ('services', 'name'),
+            'fields': ('services', 'name', 'order'),
         }),
     )
     inlines = ()
+
+    class Media:
+        css = {
+            'all': (
+                'portals/css/portal-admin.css',
+                'portals/admin/css/quiz-category-reorder.css',
+            ),
+        }
+        js = (
+            'assets/js/admin_image_compress.js',
+            'portals/admin/js/quiz-category-reorder.js',
+        )
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom = [
+            path(
+                'reorder/',
+                self.admin_site.admin_view(self.reorder_view),
+                name='portals_quizcategory_reorder',
+            ),
+        ]
+        return custom + urls
+
+    def changelist_view(self, request, extra_context=None):
+        extra_context = extra_context or {}
+        extra_context['quiz_category_reorder_url'] = reverse(
+            'admin:portals_quizcategory_reorder',
+        )
+        return super().changelist_view(request, extra_context=extra_context)
+
+    def reorder_view(self, request):
+        import json
+
+        from django.db import transaction
+
+        if request.method != 'POST':
+            return JsonResponse({'error': _('POST required.')}, status=405)
+        try:
+            payload = json.loads(request.body.decode('utf-8') or '{}')
+        except json.JSONDecodeError:
+            return JsonResponse({'error': _('Invalid JSON.')}, status=400)
+        raw_ids = payload.get('ids') or []
+        try:
+            ordered_ids = [int(pk) for pk in raw_ids]
+        except (TypeError, ValueError):
+            return JsonResponse({'error': _('Invalid category ids.')}, status=400)
+        if not ordered_ids:
+            return JsonResponse({'error': _('No categories to reorder.')}, status=400)
+        if len(ordered_ids) != len(set(ordered_ids)):
+            return JsonResponse({'error': _('Duplicate category ids.')}, status=400)
+
+        allowed = set(
+            self.get_queryset(request).filter(pk__in=ordered_ids).values_list('pk', flat=True)
+        )
+        if set(ordered_ids) != allowed:
+            return JsonResponse({'error': _('One or more categories are not available.')}, status=400)
+
+        with transaction.atomic():
+            categories = {
+                row.pk: row
+                for row in QuizCategory.objects.filter(pk__in=ordered_ids)
+            }
+            for index, pk in enumerate(ordered_ids):
+                category = categories.get(pk)
+                if category is None:
+                    continue
+                if category.order != index:
+                    category.order = index
+                    category.save(update_fields=['order'])
+
+        return JsonResponse({'ok': True, 'count': len(ordered_ids)})
 
     def get_queryset(self, request):
         qs = admin.ModelAdmin.get_queryset(self, request)
@@ -1784,6 +1866,13 @@ class QuizCategoryAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
             slugs = expand_course_types_to_service_slugs([course_type])
             qs = qs.filter(services__slug__in=slugs).distinct() if slugs else qs.none()
         return qs
+
+    @admin.display(description='')
+    def drag_handle(self, obj):
+        return format_html(
+            '<span class="quiz-cat-drag-handle" title="{}">⠿</span>',
+            _('Drag to reorder'),
+        )
 
     @admin.display(description=_('Services'))
     def service_display(self, obj):

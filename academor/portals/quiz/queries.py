@@ -58,6 +58,7 @@ def serialize_quiz_category(category):
     return {
         'id': category.pk,
         'name': category.name,
+        'order': category.order,
         'service': service_code,
         'service_label': resolve_course_type_label(service_code, lang='en') if service_code else '',
         'quiz_count': quiz_count,
@@ -108,7 +109,7 @@ def get_teacher_quiz_categories(teacher_id):
     course_codes = get_teacher_course_type_codes(teacher_id)
     if not course_codes:
         return []
-    qs = quiz_categories_for_portal_codes(course_codes).order_by('name', 'id')
+    qs = quiz_categories_for_portal_codes(course_codes).order_by('order', 'name', 'id')
     result = []
     for category in qs:
         visible = get_teacher_quizzes_for_category(teacher_id, category.pk)
@@ -125,7 +126,7 @@ def get_student_quiz_categories(student_id):
     course_codes = get_student_course_type_codes(student_id)
     if not course_codes:
         return []
-    qs = quiz_categories_for_portal_codes(course_codes).order_by('name', 'id')
+    qs = quiz_categories_for_portal_codes(course_codes).order_by('order', 'name', 'id')
     result = []
     for category in qs:
         visible = get_student_quizzes_for_category(student_id, category.pk)

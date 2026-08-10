@@ -10,6 +10,11 @@ class QuizCategory(models.Model):
         max_length=255,
         verbose_name=_('Name'),
     )
+    order = models.PositiveIntegerField(
+        default=0,
+        verbose_name=_('Order'),
+        help_text=_('Lower numbers appear first in the portal quiz category list.'),
+    )
     services = models.ManyToManyField(
         'projects.Service',
         related_name='quiz_categories',
@@ -23,7 +28,7 @@ class QuizCategory(models.Model):
     class Meta:
         verbose_name = _('Quiz category')
         verbose_name_plural = _('Quiz categories')
-        ordering = ('name', 'id')
+        ordering = ('order', 'name', 'id')
 
     def __str__(self):
         from portals.utils.portal_services import resolve_course_type_label
