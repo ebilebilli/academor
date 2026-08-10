@@ -1817,6 +1817,8 @@ class QuizAdminForm(forms.ModelForm):
             'is_speaking',
             'is_reading',
             'is_math',
+            'has_shared_passage',
+            'shared_passage',
             'is_ielts',
             'is_sat',
             'sat_section',
@@ -1888,6 +1890,17 @@ class QuizAdminForm(forms.ModelForm):
         else:
             cleaned['time_limit_minutes'] = None
 
+        if any(format_flags):
+            cleaned['has_shared_passage'] = False
+        elif cleaned.get('has_shared_passage'):
+            from django.utils.html import strip_tags
+
+            if not strip_tags(cleaned.get('shared_passage') or '').strip():
+                self.add_error(
+                    'shared_passage',
+                    _('Enter the shared passage text, or turn off shared passage layout.'),
+                )
+
         return cleaned
 
 
@@ -1933,6 +1946,16 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
             ),
             'fields': ('is_listening', 'is_essay', 'is_speaking', 'is_reading', 'is_math'),
             'classes': ('quiz-grading-fieldset',),
+        }),
+        (_('Shared passage'), {
+            'description': _(
+                'Optional for standard multiple-choice quizzes (and SAT Writing / Algebra / Geometry). '
+                'When enabled, a fixed passage stays at the top and questions appear below '
+                '(Reading-style layout). Not available with Listening, Writing essay, Speaking, '
+                'Reading, or Math formats.'
+            ),
+            'fields': ('has_shared_passage', 'shared_passage'),
+            'classes': ('quiz-shared-passage-fieldset',),
         }),
         (_('Exam program'), {
             'description': _(

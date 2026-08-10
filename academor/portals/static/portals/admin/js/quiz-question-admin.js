@@ -239,6 +239,7 @@
     });
     applyTimeLimitVisibility(!!(config && config.hide_time_limit));
     applyQuizInlineMode(config && config.grading_mode);
+    syncSharedPassageFieldVisibility();
   }
 
   function applyQuizInlineMode(mode) {
@@ -332,6 +333,35 @@
     }
   }
 
+  function syncSharedPassageFieldVisibility() {
+    var form = quizForm();
+    if (!form) {
+      return;
+    }
+    var fieldset = form.querySelector(".quiz-shared-passage-fieldset");
+    if (!fieldset) {
+      return;
+    }
+    var isVariant = gradingModeFromQuizForm() === "variant";
+    fieldset.classList.toggle("quiz-admin-hidden-fieldset", !isVariant);
+
+    var flagInput = form.querySelector("#id_has_shared_passage");
+    var passageRow = form.querySelector(".field-shared_passage");
+    if (!isVariant) {
+      if (flagInput) {
+        flagInput.checked = false;
+      }
+      if (passageRow) {
+        passageRow.classList.add("quiz-admin-hidden-field");
+      }
+      return;
+    }
+    var enabled = !!(flagInput && flagInput.checked);
+    if (passageRow) {
+      passageRow.classList.toggle("quiz-admin-hidden-field", !enabled);
+    }
+  }
+
   function selectedSatSection() {
     var form = quizForm();
     if (!form) {
@@ -376,6 +406,7 @@
       ieltsRow.classList.toggle("quiz-admin-hidden-field", satEnabled);
     }
     syncMathFieldVisibility();
+    syncSharedPassageFieldVisibility();
   }
 
   var satSectionRequestId = 0;
@@ -448,6 +479,11 @@
       input.addEventListener("change", syncGradingModeViaAjax);
     });
 
+    var sharedPassageInput = form.querySelector("#id_has_shared_passage");
+    if (sharedPassageInput) {
+      sharedPassageInput.addEventListener("change", syncSharedPassageFieldVisibility);
+    }
+
     var satInput = form.querySelector("#id_is_sat");
     if (satInput) {
       satInput.addEventListener("change", function () {
@@ -467,6 +503,7 @@
 
     form.dataset.quizGradingBound = "1";
     syncSatSectionFieldVisibility();
+    syncSharedPassageFieldVisibility();
     syncSatSectionViaAjax();
   }
 

@@ -5,6 +5,10 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20260808d">
+{% if quiz.uses_shared_passage_layout %}
+<link rel="stylesheet" href="{% static 'portals/css/quiz-reading.css' %}?v=20260810a">
+<link rel="stylesheet" href="{% static 'portals/css/quiz-shared-passage.css' %}?v=20260810a">
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -24,7 +28,7 @@
 {% portal_page_heading icon="bi-ui-checks" raw_title=quiz.topic raw_subtitle=quiz.course_type_label %}
 
 <div
-  class="portal-quiz-take{% if quiz.is_time_limited %} portal-quiz-take--timed{% endif %}"
+  class="portal-quiz-take{% if quiz.is_time_limited %} portal-quiz-take--timed{% endif %}{% if quiz.uses_shared_passage_layout %} portal-quiz-take--shared-passage{% endif %}"
   data-quiz-take
   data-quiz-started="false"
   data-quiz-id="{{ quiz.id }}"
@@ -67,11 +71,39 @@
   {% endif %}
 
   <form class="portal-quiz-take-form" data-quiz-take-form novalidate>
+  {% if quiz.uses_shared_passage_layout %}
+  <section class="portal-reading-section portal-shared-passage-section mb-4" aria-labelledby="shared-passage-title">
+    <div class="portal-reading-section__layout">
+      <div class="portal-reading-section__passage panel portal-shared-passage__passage">
+        <header class="portal-reading-section__passage-head">
+          <h2 class="portal-reading-section__title" id="shared-passage-title">{% trans 'Passage' %}</h2>
+        </header>
+        <div class="portal-reading-section__body">{{ quiz.shared_passage|safe }}</div>
+      </div>
+      <div class="portal-reading-section__tasks panel">
+        <div class="portal-reading-section__tasks-head">
+          <div class="portal-reading-section__tasks-head-text">
+            <p class="portal-reading-section__tasks-label mb-1">{% trans 'Questions' %}</p>
+            <p class="portal-reading-section__tasks-hint mb-0">
+              {% blocktrans count counter=quiz.questions|length %}{{ counter }} question{% plural %}{{ counter }} questions{% endblocktrans %}
+            </p>
+          </div>
+        </div>
+        <div class="portal-quiz-play-stack portal-reading-section__task-list">
+          {% for q in quiz.questions %}
+          {% include "portals/includes/quiz_question_play.html" with q=q number=forloop.counter %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+  {% else %}
   <div class="portal-quiz-play-stack mb-4">
     {% for q in quiz.questions %}
     {% include "portals/includes/quiz_question_play.html" with q=q number=forloop.counter %}
     {% endfor %}
   </div>
+  {% endif %}
 
   <div class="portal-quiz-take-actions panel">
     <button type="button" class="btn btn-primary" data-quiz-finish-btn>

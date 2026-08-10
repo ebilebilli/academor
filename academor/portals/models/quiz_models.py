@@ -1,5 +1,7 @@
+from ckeditor.fields import RichTextField
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils.html import strip_tags
 from django.utils.translation import gettext_lazy as _
 
 
@@ -90,6 +92,20 @@ class Quiz(models.Model):
             'SAT Math section — auto-scored with passages/questions like Reading. '
             'Only available when SAT is enabled. Choose this yourself; it is not set automatically.'
         ),
+    )
+    has_shared_passage = models.BooleanField(
+        default=False,
+        verbose_name=_('Shared passage layout'),
+        help_text=_(
+            'For standard multiple-choice quizzes only. When enabled, a fixed passage stays at the top '
+            'and questions appear below (Reading-style layout). Leave off for plain question lists. '
+            'Not used with Listening, Writing, Speaking, Reading, or Math formats.'
+        ),
+    )
+    shared_passage = RichTextField(
+        blank=True,
+        verbose_name=_('Shared passage text'),
+        help_text=_('Fixed text shown above all questions when shared passage layout is enabled.'),
     )
     is_ielts = models.BooleanField(
         default=False,
@@ -218,6 +234,13 @@ class Quiz(models.Model):
             and not self.is_math
             and not self.is_listening
         )
+
+    @property
+    def uses_shared_passage_layout(self):
+        """Variant MCQ with a fixed passage above the question list."""
+        if not self.has_shared_passage or not self.is_variant_quiz:
+            return False
+        return bool(strip_tags(self.shared_passage or '').strip())
 
     @property
     def uses_per_question_text_responses(self):
@@ -351,6 +374,19 @@ class Quiz(models.Model):
         else:
             self.sat_section = ''
             self.is_math = False
+
+        if (
+            self.is_listening
+            or self.is_essay
+            or self.is_speaking
+            or self.is_reading
+            or self.is_math
+        ):
+            self.has_shared_passage = False
+        elif self.has_shared_passage and not strip_tags(self.shared_passage or '').strip():
+            raise ValidationError({
+                'shared_passage': _('Enter the shared passage text, or turn off shared passage layout.'),
+            })
 
         if self.is_time_limited:
             if not self.time_limit_minutes or self.time_limit_minutes < 1:
