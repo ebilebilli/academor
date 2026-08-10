@@ -1,0 +1,131 @@
+{
+  "level": "B1",
+  "quiz": 7,
+  "title": "Who Should Pay for Public Transport?",
+  "service": "general_english",
+  "category_name": "B1 Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Public transport debates often start with ticket prices, but the deeper question is who should fund the network. If fares cover the full cost, low-income workers may be priced out of reliable commuting. If taxes cover almost everything, people who never use buses may protest.</p><p>Economists note that cars also receive hidden support through road space, parking rules and pollution that others breathe. When these costs are ignored, private driving looks cheaper than it truly is, and buses seem expensive by comparison.</p><p>Some cities keep fares low and invest in frequency: a bus every six minutes attracts riders who would otherwise drive. Higher ridership can justify the subsidy because fewer cars mean less congestion for everyone, including drivers.</p><p>Other cities experiment with peak pricing — higher tickets at rush hour — to spread demand. Critics say this punishes workers with fixed schedules. Supporters reply that free travel for students and shift workers can protect fairness.</p><p>There is no single correct formula. A healthy system usually mixes fares, local taxes and targeted discounts, guided by clear goals: access to jobs, cleaner air and predictable journey times.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What deeper issue sits behind ticket-price arguments?",
+      "options": [
+        "How the transport network should be funded",
+        "Which bus colour passengers prefer",
+        "Whether trains should serve museums only",
+        "How to ban all local taxes",
+        "Whether drivers need free parking everywhere"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "What risk appears if fares must cover the full cost?",
+      "options": [
+        "Low-income workers may be unable to afford reliable commuting",
+        "Buses will arrive every six minutes automatically",
+        "Air pollution will disappear",
+        "Students will receive unlimited free travel",
+        "Congestion will end without subsidies"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 3,
+      "question": "Why can private driving look artificially cheap?",
+      "options": [
+        "Hidden costs like road space and pollution are often ignored",
+        "Buses never receive any public money",
+        "Ticket machines always overcharge cars",
+        "Economists ban parking rules",
+        "Rush-hour pricing removes all taxes"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 4,
+      "question": "How can frequent service justify subsidies?",
+      "options": [
+        "It attracts riders, cuts car use and reduces congestion for everyone",
+        "It forces non-users to ride buses daily",
+        "It raises pollution in city centres",
+        "It eliminates the need for journey-time goals",
+        "It removes discounts for shift workers"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 5,
+      "question": "What is peak pricing designed to do?",
+      "options": [
+        "Spread demand away from the busiest hours",
+        "Make weekends more crowded than weekdays",
+        "Ban students from public transport",
+        "Increase traffic for private cars only",
+        "Replace all local tax funding"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "Why do critics dislike peak pricing?",
+      "options": [
+        "Workers with fixed schedules may be unfairly punished",
+        "It always lowers fares at rush hour",
+        "It guarantees free travel for every passenger",
+        "It removes buses from the timetable",
+        "It hides the cost of road space"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 7,
+      "question": "How do supporters of peak pricing suggest protecting fairness?",
+      "options": [
+        "By offering free or protected travel for students and shift workers",
+        "By ending all discounts permanently",
+        "By charging children the highest fares",
+        "By closing routes to job centres",
+        "By ignoring air-quality goals"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 8,
+      "question": "What funding mix does the writer generally favour?",
+      "options": [
+        "Fares, local taxes and targeted discounts together",
+        "Fares only, with no public contribution",
+        "Taxes only, with no tickets at all",
+        "Tourism fees paid by museums exclusively",
+        "Parking fines as the only income source"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 9,
+      "question": "Which goals should guide the system, according to the text?",
+      "options": [
+        "Job access, cleaner air and predictable journey times",
+        "Maximum profit from every single ride",
+        "Empty buses for advertising photos",
+        "Longer car queues in every district",
+        "Removing services from low-income areas"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "What is the best title?",
+      "options": [
+        "Who Should Pay for Public Transport?",
+        "Baking Bread at Home",
+        "Football Transfer Rumours",
+        "Beach Holiday Photos",
+        "Laptop Battery Care"
+      ],
+      "answer": 0
+    }
+  ]
+}

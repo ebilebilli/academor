@@ -1,0 +1,131 @@
+{
+  "level": "B1",
+  "quiz": 8,
+  "title": "AI Tools in Classrooms",
+  "service": "general_english",
+  "category_name": "B1 Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Artificial intelligence tools can draft essays, explain maths steps and translate reading texts within seconds. Enthusiastic teachers see a chance to give every student a patient tutor. Sceptical teachers fear that students will submit machine-written work and learn less.</p><p>The strongest classroom uses are often supportive rather than replacement-based. AI can generate practice questions at different levels, summarise a difficult article for preparation, or help learners check grammar before a teacher reviews ideas and arguments.</p><p>Assessment design must change with the technology. If homework only asks for a polished final text, cheating becomes easy. Tasks that require process notes, oral defence of ideas or personal data from local projects are harder to outsource to a chatbot.</p><p>Equity is another concern. Students with fast devices and quiet study space gain more from AI practice than classmates sharing a phone. Schools that ignore this gap may widen existing inequalities while celebrating “innovation.”</p><p>Used carefully, AI is a powerful assistant. Used blindly, it becomes a shortcut that weakens thinking. The difference depends less on the software itself than on the learning goals teachers set around it.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What opportunity do enthusiastic teachers see in AI?",
+      "options": [
+        "A patient tutor available to every student",
+        "A way to close all schools",
+        "A replacement for every oral exam",
+        "A ban on homework forever",
+        "A tool that removes teacher planning"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "What do sceptical teachers mainly fear?",
+      "options": [
+        "Students submitting machine-written work and learning less",
+        "AI refusing to translate any text",
+        "Practice questions becoming too difficult",
+        "Devices becoming slower than books",
+        "Grammar checks disappearing completely"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 3,
+      "question": "Which classroom uses does the text call strongest?",
+      "options": [
+        "Supportive uses such as practice, summaries and grammar checks before review",
+        "Replacing teachers in every lesson",
+        "Letting chatbots grade oral defence alone",
+        "Stopping all personal projects",
+        "Removing process notes from assessment"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 4,
+      "question": "Why must assessment design change?",
+      "options": [
+        "Polished final-text homework is easy to outsource to chatbots",
+        "Students no longer need ideas or arguments",
+        "Oral defence has become impossible",
+        "Local projects cannot include personal data",
+        "Grammar practice is now illegal"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 5,
+      "question": "Which task features make AI outsourcing harder?",
+      "options": [
+        "Process notes, oral defence and local personal project data",
+        "Only asking for a perfect final essay",
+        "Allowing unlimited anonymous chatbot submission",
+        "Removing all teacher review",
+        "Translating texts without discussion"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "What equity problem does the passage highlight?",
+      "options": [
+        "Students with better devices and space benefit more from AI practice",
+        "All students share identical study conditions",
+        "Innovation always reduces inequality automatically",
+        "Phones cannot run any AI tool",
+        "Quiet space is irrelevant to learning gaps"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 7,
+      "question": "What risk do schools face if they ignore the access gap?",
+      "options": [
+        "Celebrating innovation while widening inequality",
+        "Making every student equally advanced overnight",
+        "Eliminating the need for learning goals",
+        "Banning supportive AI uses forever",
+        "Removing maths explanations from class"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 8,
+      "question": "According to the writer, what mainly decides AI’s educational value?",
+      "options": [
+        "The learning goals teachers set around the tools",
+        "The brand name of the software alone",
+        "Whether essays can be drafted in seconds",
+        "How colourful the chatbot interface is",
+        "Whether translation features exist"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 9,
+      "question": "Which statement best matches the writer’s balanced view?",
+      "options": [
+        "AI helps when it supports thinking and harms when it replaces thinking",
+        "AI should write every assessed essay",
+        "Teachers should never allow grammar checking",
+        "Device access differences do not matter",
+        "Assessment can stay unchanged forever"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "What is the best title?",
+      "options": [
+        "AI Tools in Classrooms",
+        "Zoo Animal Feeding Times",
+        "Winter Coat Sales",
+        "Train Platform Closures",
+        "Guitar Lesson Prices"
+      ],
+      "answer": 0
+    }
+  ]
+}
