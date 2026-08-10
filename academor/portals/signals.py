@@ -3,6 +3,7 @@ Portal ORM signals: profile image resize + cache invalidation.
 
 Keep in sync with portals.utils.queries @cached_query / @cached_page_data readers.
 """
+from django.core.signals import request_finished, request_started
 from django.db import transaction
 from django.db.models.signals import m2m_changed, post_delete, post_save, pre_save
 from django.dispatch import receiver
@@ -45,6 +46,8 @@ from portals.models import (
 from portals.utils.admin_access import strip_admin_flags_for_portal_user
 from portals.utils.cache_utils import invalidate_model_cache
 from portals.utils.image_resize import resize_image_field
+from portals.utils.portal_services import reset_active_service_snapshot
+from projects.models.service_models import Service
 
 PROFILE_IMAGE_MAX_PX = 400
 LESSON_IMAGE_MAX_WIDTH = 1920
@@ -295,3 +298,17 @@ def resize_lesson_attachment_image(sender, instance, **kwargs):
 @receiver(post_delete, sender=LessonAttachment)
 def invalidate_lesson_on_attachment_change(sender, instance, **kwargs):
     _invalidate_on_commit('Lesson')
+
+
+# portal_services memoizes the active-service lookups for the duration of a
+# single request; drop it at both request boundaries and whenever a Service
+# row changes so no request ever reads a stale course/service mapping.
+request_started.connect(reset_active_service_snapshot, dispatch_uid='portals_service_snapshot_start')
+request_finished.connect(reset_active_service_snapshot, dispatch_uid='portals_service_snapshot_end')
+
+
+@receiver(post_save, sender=Service)
+@receiver(post_delete, sender=Service)
+def reset_service_snapshot_on_change(sender, instance, **kwargs):
+    reset_active_service_snapshot()
+    _invalidate_on_commit('Service')

@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "B1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Weekend craft markets attract tourists with handmade goods and live music.</p><p>Crowds create litter problems so volunteers clean after closing.</p><p>Stall rent rose this year and the city may lower rent for new artists.</p><p>Support keeps culture local.</p>",
+  "shared_passage": "<p>Weekend markets bring energy to quiet streets. Early in the morning, sellers arrange fruit, handmade crafts and second-hand books while musicians prepare small performances.</p><p>Visitors enjoy the atmosphere as much as the products. Walking between stalls, people meet neighbours they rarely see during busy weekdays. Tourists also discover local specialities that shops may not display.</p><p>Organisers must manage space carefully. Crowded aisles can be unsafe for children and older visitors. Waste bins and toilets need to be easy to find.</p><p>Weather always affects attendance. Sudden rain can empty outdoor markets within minutes, so temporary covers and flexible stall plans help.</p><p>When weekend markets are well organised, they support small makers and create a sense of place. A city feels more human when people gather face to face.</p><p>Local councils can support markets with temporary road closures and clear signage. When access is easy, families come earlier and stay longer, which helps every seller.</p><p>Markets also preserve stories: an older craftsperson can explain techniques that online shops cannot show. That human exchange is part of the value.</p><p>Evening markets in summer attract workers who cannot come in the morning. Extending hours widens access without building new shopping centres.</p><p>Local radio announcements before market day increase attendance without expensive advertising.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "What do weekend markets bring to quiet streets?",
       "options": [
-        "Weekend Markets",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "Energy",
+        "Silence only",
+        "Closed shops forever",
+        "No visitors"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "What products are mentioned?",
       "options": [
-        "Nobody is mentioned",
-        "Weekend craft markets attract tourists with handmade goods and live music",
-        "This detail is not in the text",
-        "The opposite happened"
+        "Fruit, handmade crafts and second-hand books",
+        "Only airline tickets",
+        "Only cars",
+        "Only computers"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "What do visitors enjoy besides products?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Weekend craft markets attract tourists with handmade goods and live music",
-        "Nothing matches"
+        "The atmosphere and meeting neighbours",
+        "Only online chats",
+        "Empty aisles",
+        "No music"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "What must organisers manage carefully?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Weekend craft markets attract tourists with handmade goods and live music"
+        "Space, safety, bins and toilets",
+        "Only music volume to maximum",
+        "Removing all stalls",
+        "Hiding tourists"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "What can sudden rain do?",
       "options": [
-        "Weekend craft markets attract tourists with handmade goods and live music",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Empty outdoor markets quickly",
+        "Increase sales forever",
+        "Stop all weather forever",
+        "Close indoor shops only"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "What helps with bad weather?",
       "options": [
-        "Only maths appears",
-        "Weekend craft markets attract tourists with handmade goods and live music",
-        "Nothing matches",
-        "The text is empty"
+        "Temporary covers and flexible plans",
+        "No covers",
+        "Ignoring rain",
+        "Removing bins"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "Who do well-organised markets support?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Weekend craft markets attract tourists with handmade goods and live music",
-        "Nothing matches"
+        "Small makers",
+        "Only giant factories abroad",
+        "Nobody",
+        "Only online sellers far away"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "What sense can markets create?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Weekend craft markets attract tourists with handmade goods and live music"
+        "A sense of place",
+        "A sense of isolation only",
+        "Fear of neighbours",
+        "No human contact"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "When do sellers arrive to arrange goods?",
       "options": [
-        "Weekend craft markets attract tourists with handmade goods and live music",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Early in the morning",
+        "After midnight only",
+        "Late at night after closing",
+        "Never"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "Weekend craft markets attract tourists with handmade goods and live music",
-        "Nothing matches",
-        "The text is empty"
+        "Weekend Markets",
+        "Exam Stress",
+        "Bank Fraud",
+        "Silent Movies"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

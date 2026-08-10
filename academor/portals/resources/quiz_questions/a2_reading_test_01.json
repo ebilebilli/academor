@@ -5,11 +5,110 @@
   "service": "general_english",
   "category_name": "A2 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Yesterday evening Anna lost her flat keys near the station.</p><p>She felt worried and called her brother.</p><p>After twenty minutes she found the keys under a bench.</p><p>Now she checks her pockets carefully before she leaves.</p>",
+  "shared_passage": "<p>Yesterday evening Anna left work at six o’clock and walked to the station. She was tired because she had a long day at the office. Near the entrance she put her bag on a bench for a moment to find her phone.</p><p>When the train arrived, she quickly picked up her bag and got on. Ten minutes later she wanted to open her flat door, but her keys were not in the bag. She felt worried and checked every pocket twice.</p><p>Anna called her brother from the station cafe. He told her to go back and look carefully. After twenty minutes she found the keys under the same bench, next to an empty coffee cup.</p><p>Now Anna has a new habit. Before she leaves any place, she checks her pockets and counts her keys. She also keeps a spare key at her brother’s house.</p><p>She laughed about the story later, but she does not want to lose her keys again. Small mistakes can waste a lot of time.</p><p>Anna also told her colleagues the story the next morning. They agreed that busy evenings make people careless. She now keeps her keys on a bright key ring so they are easier to see.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "Why was Anna tired?",
+      "options": [
+        "She ran a marathon",
+        "She had a long day at the office",
+        "She slept too much",
+        "She missed breakfast only"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 2,
+      "question": "Where did she put her bag for a moment?",
+      "options": [
+        "On a bench near the station entrance",
+        "On the train roof",
+        "In a taxi",
+        "At her office desk"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 3,
+      "question": "When did she notice the keys were missing?",
+      "options": [
+        "On the train immediately",
+        "When she wanted to open her flat door",
+        "The next morning",
+        "At work"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 4,
+      "question": "Who did she call?",
+      "options": [
+        "Her brother",
+        "Her boss",
+        "The police",
+        "A stranger"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 5,
+      "question": "Where did she find the keys?",
+      "options": [
+        "Under the same bench",
+        "In the train toilet",
+        "At the office",
+        "In her shoe"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "What was next to the keys?",
+      "options": [
+        "An empty coffee cup",
+        "A suitcase",
+        "A dog",
+        "A ticket machine"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 7,
+      "question": "What new habit does Anna have?",
+      "options": [
+        "She checks her pockets and counts her keys",
+        "She never leaves home",
+        "She buys a new phone daily",
+        "She sleeps at the station"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 8,
+      "question": "Where is her spare key?",
+      "options": [
+        "At her brother’s house",
+        "At the cafe",
+        "Under the bench forever",
+        "At school"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 9,
+      "question": "How did she feel when the keys were missing?",
+      "options": [
+        "Worried",
+        "Excited",
+        "Bored",
+        "Angry at football"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "What is the best title?",
       "options": [
         "Lost Keys",
         "Space News",
@@ -17,105 +116,6 @@
         "Silent Movies"
       ],
       "answer": 0
-    },
-    {
-      "id": 2,
-      "question": "Which detail is in the text?",
-      "options": [
-        "Nobody is mentioned",
-        "Yesterday evening Anna lost her flat keys near the station",
-        "This detail is not in the text",
-        "The opposite happened"
-      ],
-      "answer": 1
-    },
-    {
-      "id": 3,
-      "question": "Which statement matches the text? (3)",
-      "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Yesterday evening Anna lost her flat keys near the station",
-        "Nothing matches"
-      ],
-      "answer": 2
-    },
-    {
-      "id": 4,
-      "question": "Which statement matches the text? (4)",
-      "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Yesterday evening Anna lost her flat keys near the station"
-      ],
-      "answer": 3
-    },
-    {
-      "id": 5,
-      "question": "Which statement matches the text? (5)",
-      "options": [
-        "Yesterday evening Anna lost her flat keys near the station",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
-      ],
-      "answer": 0
-    },
-    {
-      "id": 6,
-      "question": "Which statement matches the text? (6)",
-      "options": [
-        "Only maths appears",
-        "Yesterday evening Anna lost her flat keys near the station",
-        "Nothing matches",
-        "The text is empty"
-      ],
-      "answer": 1
-    },
-    {
-      "id": 7,
-      "question": "Which statement matches the text? (7)",
-      "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Yesterday evening Anna lost her flat keys near the station",
-        "Nothing matches"
-      ],
-      "answer": 2
-    },
-    {
-      "id": 8,
-      "question": "Which statement matches the text? (8)",
-      "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Yesterday evening Anna lost her flat keys near the station"
-      ],
-      "answer": 3
-    },
-    {
-      "id": 9,
-      "question": "Which statement matches the text? (9)",
-      "options": [
-        "Yesterday evening Anna lost her flat keys near the station",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
-      ],
-      "answer": 0
-    },
-    {
-      "id": 10,
-      "question": "Which statement matches the text? (10)",
-      "options": [
-        "Only maths appears",
-        "Yesterday evening Anna lost her flat keys near the station",
-        "Nothing matches",
-        "The text is empty"
-      ],
-      "answer": 1
     }
   ]
 }

@@ -5,7 +5,7 @@
   "service": "general_english",
   "category_name": "A1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Sara is ten years old.</p><p>She lives with her mother, father and one brother.</p><p>Her brother is called Ali and he is seven.</p><p>They live in a small flat in Baku.</p><p>Sara likes drawing.</p><p>In the evening the family reads stories together.</p>",
+  "shared_passage": "<p>My name is Sara. I am ten years old and I live in Baku with my family.</p><p>My mother is a nurse and my father works in a small shop. I have one brother. His name is Ali and he is seven years old.</p><p>We live in a small flat near a park. My room is blue and I have many pencils there. I like drawing pictures of animals and trees.</p><p>After school Ali and I play in the park. In the evening our family sits together and reads short stories. On Sundays we visit our grandmother.</p><p>I love my family very much. We are happy and we help each other every day.</p>",
   "questions": [
     {
       "id": 1,
@@ -75,36 +75,36 @@
     },
     {
       "id": 7,
-      "question": "Who lives with Sara?",
+      "question": "What is Sara’s mother’s job?",
       "options": [
-        "Only her teacher",
-        "Nobody",
-        "Her mother, father and brother",
-        "Only her friends"
+        "Teacher",
+        "Nurse",
+        "Driver",
+        "Cook"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 8,
+      "question": "What colour is Sara’s room?",
+      "options": [
+        "Red",
+        "Green",
+        "Blue",
+        "Yellow"
       ],
       "answer": 2
     },
     {
-      "id": 8,
-      "question": "What is Sara’s city?",
-      "options": [
-        "London",
-        "Paris",
-        "Rome",
-        "Baku"
-      ],
-      "answer": 3
-    },
-    {
       "id": 9,
-      "question": "How old is Ali?",
+      "question": "When do they visit their grandmother?",
       "options": [
-        "Seven",
-        "Ten",
-        "Fifteen",
-        "Three"
+        "On Mondays",
+        "On Sundays",
+        "Every night",
+        "Never"
       ],
-      "answer": 0
+      "answer": 1
     },
     {
       "id": 10,

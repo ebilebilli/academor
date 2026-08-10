@@ -5,11 +5,110 @@
   "service": "general_english",
   "category_name": "A2 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Samir joined an evening cooking class with Chef Leila.</p><p>He tried to make vegetable soup but added too much salt.</p><p>His friends laughed kindly and he tried again.</p><p>The second soup tasted better and he wants to cook at home.</p>",
+  "shared_passage": "<p>Every Wednesday evening I join a cooking class at the community centre. There are twelve students in the group and our teacher is Chef Nigar.</p><p>In the first weeks we learned how to make simple salads and soups. Last week we cooked chicken with rice and a tomato sauce. Everyone worked in pairs.</p><p>My partner was a student from Italy called Marco. He cut the vegetables while I prepared the sauce. We laughed when I added too much salt, but Chef Nigar helped us fix it.</p><p>At the end of each class we sit together and taste the food. We also clean the kitchen before we leave. The class finishes at eight o’clock.</p><p>I used to eat only fast food, but now I cook at home twice a week. The class has changed my habits in a good way.</p><p>Chef Nigar always reminds us to wash our hands and keep knives safe. I now feel more confident cooking for my family at weekends, not only during class.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "When is the cooking class?",
+      "options": [
+        "Every Wednesday evening",
+        "Every Monday morning",
+        "Only in summer",
+        "Once a year"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "How many students are in the group?",
+      "options": [
+        "Eight",
+        "Ten",
+        "Twelve",
+        "Twenty"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 3,
+      "question": "Who is the teacher?",
+      "options": [
+        "Chef Nigar",
+        "Chef Marco",
+        "Ms. Gunel",
+        "Mr. Rashad"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 4,
+      "question": "What did they cook last week?",
+      "options": [
+        "Chicken with rice and tomato sauce",
+        "Only pizza",
+        "Only cake",
+        "Burgers"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 5,
+      "question": "Who was the writer’s partner?",
+      "options": [
+        "Marco",
+        "Nigar",
+        "Anna",
+        "Elvin"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "What mistake did the writer make?",
+      "options": [
+        "Added too much salt",
+        "Burned the kitchen",
+        "Forgot to come",
+        "Broke all the plates"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 7,
+      "question": "What do they do at the end of class?",
+      "options": [
+        "Taste the food and clean",
+        "Leave without cleaning",
+        "Sell the food outside",
+        "Sleep in the kitchen"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 8,
+      "question": "What time does the class finish?",
+      "options": [
+        "At eight o’clock",
+        "At noon",
+        "At midnight",
+        "At six in the morning"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 9,
+      "question": "How often does the writer cook at home now?",
+      "options": [
+        "Twice a week",
+        "Never",
+        "Every hour",
+        "Only once a year"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "What is the best title?",
       "options": [
         "Cooking Class",
         "Space News",
@@ -17,105 +116,6 @@
         "Silent Movies"
       ],
       "answer": 0
-    },
-    {
-      "id": 2,
-      "question": "Which detail is in the text?",
-      "options": [
-        "Nobody is mentioned",
-        "Samir joined an evening cooking class with Chef Leila",
-        "This detail is not in the text",
-        "The opposite happened"
-      ],
-      "answer": 1
-    },
-    {
-      "id": 3,
-      "question": "Which statement matches the text? (3)",
-      "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Samir joined an evening cooking class with Chef Leila",
-        "Nothing matches"
-      ],
-      "answer": 2
-    },
-    {
-      "id": 4,
-      "question": "Which statement matches the text? (4)",
-      "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Samir joined an evening cooking class with Chef Leila"
-      ],
-      "answer": 3
-    },
-    {
-      "id": 5,
-      "question": "Which statement matches the text? (5)",
-      "options": [
-        "Samir joined an evening cooking class with Chef Leila",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
-      ],
-      "answer": 0
-    },
-    {
-      "id": 6,
-      "question": "Which statement matches the text? (6)",
-      "options": [
-        "Only maths appears",
-        "Samir joined an evening cooking class with Chef Leila",
-        "Nothing matches",
-        "The text is empty"
-      ],
-      "answer": 1
-    },
-    {
-      "id": 7,
-      "question": "Which statement matches the text? (7)",
-      "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Samir joined an evening cooking class with Chef Leila",
-        "Nothing matches"
-      ],
-      "answer": 2
-    },
-    {
-      "id": 8,
-      "question": "Which statement matches the text? (8)",
-      "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Samir joined an evening cooking class with Chef Leila"
-      ],
-      "answer": 3
-    },
-    {
-      "id": 9,
-      "question": "Which statement matches the text? (9)",
-      "options": [
-        "Samir joined an evening cooking class with Chef Leila",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
-      ],
-      "answer": 0
-    },
-    {
-      "id": 10,
-      "question": "Which statement matches the text? (10)",
-      "options": [
-        "Only maths appears",
-        "Samir joined an evening cooking class with Chef Leila",
-        "Nothing matches",
-        "The text is empty"
-      ],
-      "answer": 1
     }
   ]
 }

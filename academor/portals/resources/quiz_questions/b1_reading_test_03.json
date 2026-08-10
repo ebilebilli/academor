@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "B1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Plastic waste harms rivers near cities.</p><p>Volunteers collected 3 tonnes last month and some shops stopped free plastic bags.</p><p>Students designed reusable bottles, though reusable options can cost more at first.</p><p>The city aims to cut plastic by 30%, and the writer asks readers to refuse straws.</p>",
+  "shared_passage": "<p>Plastic waste is visible almost everywhere: on beaches, in rivers and even in city parks after public events. Single-use bottles and bags are convenient, but they stay in the environment for a very long time.</p><p>Scientists warn that tiny pieces of plastic can enter the food chain. Fish may swallow microplastics, and people later eat those fish. The full health effects are still being studied, which makes the issue urgent.</p><p>Some cities have banned free plastic bags in shops. Customers now bring reusable bags or pay a small fee. Supermarkets also offer refill stations for cleaning products to reduce packaging.</p><p>Young activists organise weekend clean-ups and create social media campaigns. Their message is simple: refuse unnecessary plastic, reuse what you can, and recycle correctly.</p><p>Governments, companies and ordinary people all share responsibility. Changing habits is not always easy, but small daily choices can reduce the mountain of waste that future generations will inherit.</p><p>Schools are joining the effort by replacing single-use bottles at events with refill stations. When students see practical alternatives, lectures about the environment become more convincing.</p><p>International agreements can set targets, but daily behaviour decides whether plastic piles grow or shrink. Every avoided bottle is a small vote for a cleaner future.</p><p>Designers are experimenting with packaging made from seaweed or paper that breaks down faster. Innovation must accompany behaviour change.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "Where is plastic waste visible, according to the text?",
       "options": [
-        "Plastic Waste",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "Beaches, rivers and city parks",
+        "Only inside factories",
+        "Only on the moon",
+        "Nowhere"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "Why are single-use plastics a long-term problem?",
       "options": [
-        "Nobody is mentioned",
-        "Plastic waste harms rivers near cities",
-        "This detail is not in the text",
-        "The opposite happened"
+        "They stay in the environment a long time",
+        "They disappear in one day",
+        "They are always recycled perfectly",
+        "They are made of metal"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "What can enter the food chain?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Plastic waste harms rivers near cities",
-        "Nothing matches"
+        "Tiny pieces of plastic",
+        "Only paper cups",
+        "Reusable bags",
+        "Refill stations"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "What have some cities banned?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Plastic waste harms rivers near cities"
+        "Free plastic bags in shops",
+        "All fish",
+        "Reusable bags",
+        "Social media"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "What do supermarkets offer to reduce packaging?",
       "options": [
-        "Plastic waste harms rivers near cities",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Refill stations for cleaning products",
+        "More free bottles",
+        "Plastic-only aisles",
+        "Nothing"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "What do young activists organise?",
       "options": [
-        "Only maths appears",
-        "Plastic waste harms rivers near cities",
-        "Nothing matches",
-        "The text is empty"
+        "Weekend clean-ups and campaigns",
+        "Plastic factories",
+        "Beach parties with more waste",
+        "Car races"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "What is their simple message?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Plastic waste harms rivers near cities",
-        "Nothing matches"
+        "Refuse, reuse and recycle correctly",
+        "Buy more plastic",
+        "Ignore recycling",
+        "Throw everything in rivers"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "Who shares responsibility?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Plastic waste harms rivers near cities"
+        "Governments, companies and ordinary people",
+        "Only children",
+        "Only tourists",
+        "Nobody"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "Are the full health effects of microplastics fully known?",
       "options": [
-        "Plastic waste harms rivers near cities",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "They are still being studied",
+        "They are completely known and harmless",
+        "There is no research",
+        "Doctors say plastic is food"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "Plastic waste harms rivers near cities",
-        "Nothing matches",
-        "The text is empty"
+        "Plastic Waste",
+        "Surprise Party",
+        "Lost Keys",
+        "Silent Movies"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

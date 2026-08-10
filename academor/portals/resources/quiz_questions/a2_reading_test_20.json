@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A2 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Friends of Lala planned a surprise party and hid in the living room.</p><p>Lala arrived at seven and they shouted surprise.</p><p>There was lemon cake, a book gift and her favourite songs.</p><p>She cried happily.</p>",
+  "shared_passage": "<p>Last Friday we organised a surprise party for our classmate Nigar because she was moving to another city. We planned everything in secret for one week.</p><p>After the last lesson we asked her to come to the classroom for a “group photo”. When she opened the door, we shouted and showed a banner with her name.</p><p>There was a cake, soft drinks and a box for handwritten notes. Each student wrote one wish for her new school life.</p><p>Nigar cried happy tears and hugged everyone. She said she would video-call us every month. We took many photos together.</p><p>Surprise parties need careful planning, but the smile on a friend’s face makes the work worthwhile.</p><p>Before she left, we gave Nigar a photo album from the party. She promised to keep it on her new desk as a reminder of our class.</p><p>Some students still message Nigar in the class chat. Distance changed our daily routine, but it did not end the friendship.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "Why was the party for Nigar?",
       "options": [
-        "Surprise Party",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "She was moving to another city",
+        "It was a national holiday only",
+        "She won a lottery",
+        "She became a teacher"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "How long did they plan in secret?",
       "options": [
-        "Nobody is mentioned",
-        "Friends of Lala planned a surprise party and hid in the living room",
-        "This detail is not in the text",
-        "The opposite happened"
+        "One week",
+        "One hour",
+        "One year",
+        "One day only without plans"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "How did they get her to the classroom?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Friends of Lala planned a surprise party and hid in the living room",
-        "Nothing matches"
+        "Asked her to come for a group photo",
+        "Told her about the party early",
+        "Sent a taxi",
+        "Locked her outside"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "What was on the banner?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Friends of Lala planned a surprise party and hid in the living room"
+        "Her name",
+        "A football score",
+        "A map of Canada",
+        "Nothing"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "What did students write?",
       "options": [
-        "Friends of Lala planned a surprise party and hid in the living room",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "One wish for her new school life",
+        "Homework answers",
+        "Complaints only",
+        "Shopping lists"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "How did Nigar react?",
       "options": [
-        "Only maths appears",
-        "Friends of Lala planned a surprise party and hid in the living room",
-        "Nothing matches",
-        "The text is empty"
+        "Cried happy tears and hugged everyone",
+        "Got angry and left",
+        "Ignored everyone",
+        "Cancelled the move immediately"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "What did she promise?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Friends of Lala planned a surprise party and hid in the living room",
-        "Nothing matches"
+        "To video-call every month",
+        "Never to call again",
+        "To return the next day forever",
+        "To delete all contacts"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "When was the party?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Friends of Lala planned a surprise party and hid in the living room"
+        "Last Friday after the last lesson",
+        "On Sunday morning",
+        "During an exam",
+        "At midnight in the park"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "What food and drink were there?",
       "options": [
-        "Friends of Lala planned a surprise party and hid in the living room",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Cake and soft drinks",
+        "Only water",
+        "A full restaurant menu",
+        "Nothing to eat"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "Friends of Lala planned a surprise party and hid in the living room",
-        "Nothing matches",
-        "The text is empty"
+        "Surprise Party",
+        "Bank Fraud",
+        "Space News",
+        "Silent Movies"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

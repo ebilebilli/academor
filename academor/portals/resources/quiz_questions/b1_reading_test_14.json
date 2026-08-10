@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "B1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>A school recycling drive used clear bins for paper, plastic and metal.</p><p>Collection rose each week as classes competed for a small prize.</p><p>Food waste contaminated bins at first until posters explained sorting.</p><p>Students started sorting at home and the drive will continue next term.</p>",
+  "shared_passage": "<p>Last autumn our neighbourhood organised a recycling drive in the central square. Volunteers set up coloured containers for paper, plastic, glass and metal, and explained what could not be recycled.</p><p>In one afternoon, residents brought old magazines, bottles and tin cans. A local company provided a truck and weighed each category. Paper was the largest amount by weight.</p><p>Children designed posters with slogans about reducing waste. A short talk explained how contaminated items — for example, dirty pizza boxes — can spoil a whole recycling load.</p><p>Some people admitted they had thrown recyclable materials into general rubbish before because rules felt confusing. Clear signs and friendly volunteers helped change that habit.</p><p>The drive collected useful materials, but its bigger success was education. When people understand why sorting matters, everyday behaviour starts to change.</p><p>Follow-up matters after a one-day event. The neighbourhood committee plans monthly collection points so recycling becomes a habit rather than a rare festival.</p><p>When schools join these points, children bring the message home and often correct family sorting mistakes with surprising confidence.</p><p>Local artists painted the collection containers with bright designs so recycling points are easy to notice. Visibility increases participation.</p><p>Publishing the weighed totals on a noticeboard made the community proud and curious about next month’s target.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "Where was the recycling drive?",
       "options": [
-        "Recycling Drive",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "In the central square",
+        "At the airport",
+        "In a closed factory only",
+        "Online only"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "Which materials had separate containers?",
       "options": [
-        "Nobody is mentioned",
-        "A school recycling drive used clear bins for paper, plastic and metal",
-        "This detail is not in the text",
-        "The opposite happened"
+        "Paper, plastic, glass and metal",
+        "Only food waste",
+        "Only clothes",
+        "Only electronics"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "What was the largest amount by weight?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "A school recycling drive used clear bins for paper, plastic and metal",
-        "Nothing matches"
+        "Paper",
+        "Glass",
+        "Metal only",
+        "Plastic only"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "Who provided a truck?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "A school recycling drive used clear bins for paper, plastic and metal"
+        "A local company",
+        "The children alone",
+        "An airline",
+        "Nobody"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "What example of contamination is given?",
       "options": [
-        "A school recycling drive used clear bins for paper, plastic and metal",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Dirty pizza boxes",
+        "Clean glass bottles",
+        "Dry newspapers",
+        "Empty metal cans"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "Why had some people used general rubbish before?",
       "options": [
-        "Only maths appears",
-        "A school recycling drive used clear bins for paper, plastic and metal",
-        "Nothing matches",
-        "The text is empty"
+        "Rules felt confusing",
+        "They hated paper",
+        "There were no materials",
+        "Volunteers banned recycling"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "What helped change habits?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "A school recycling drive used clear bins for paper, plastic and metal",
-        "Nothing matches"
+        "Clear signs and friendly volunteers",
+        "Hidden containers",
+        "No explanations",
+        "Confusing rules only"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "What was the bigger success than collection?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "A school recycling drive used clear bins for paper, plastic and metal"
+        "Education",
+        "Weighing the truck only",
+        "Designing one poster",
+        "Closing the square"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "What did children design?",
       "options": [
-        "A school recycling drive used clear bins for paper, plastic and metal",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Posters with slogans",
+        "The truck engine",
+        "New laws alone",
+        "Pizza boxes"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "A school recycling drive used clear bins for paper, plastic and metal",
-        "Nothing matches",
-        "The text is empty"
+        "Recycling Drive",
+        "Lost Keys",
+        "Surprise Party",
+        "Silent Movies"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

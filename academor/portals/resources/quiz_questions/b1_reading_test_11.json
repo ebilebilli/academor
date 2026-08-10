@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "B1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Food delivery is convenient yet fees and tips add up quickly.</p><p>Riders face traffic and weather risks and packaging creates extra waste.</p><p>Some restaurants earn more online while people cook less at home.</p><p>Order less often, tip fairly, and support city rules for rider safety.</p>",
+  "shared_passage": "<p>Food delivery apps have grown quickly in cities. With a few clicks, customers can order meals from many restaurants and track the rider on a map.</p><p>For busy students and office workers, delivery saves time after long days. Restaurants can reach customers who rarely eat out. During bad weather, demand often rises.</p><p>There are downsides. Packaging waste increases, and frequent orders can become expensive. Some riders face pressure to deliver quickly in heavy traffic, which raises safety concerns.</p><p>A balanced approach is possible: use delivery occasionally, choose restaurants with less packaging, and tip fairly when service is good. Cooking at home a few nights a week still matters for health and budget.</p><p>Delivery is convenient, but it should not replace all shared meals. Sitting at a table with family or friends remains a valuable social habit.</p><p>Restaurants can improve sustainability by offering reusable packaging schemes and clearer allergen information in apps. Customers who read those details carefully make safer and greener choices.</p><p>Cities may also regulate delivery parking and rider safety equipment. Convenience for customers should not ignore the people who carry the food through traffic.</p><p>Comparing restaurant prices in-app with eating in person also teaches budget awareness. Convenience has a cost that should stay visible.</p><p>Allergen filters in apps help families with food sensitivities order more safely when eating out is difficult.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "What can customers do with delivery apps?",
       "options": [
-        "Food Delivery",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "Order meals and track riders",
+        "Drive the restaurant kitchen",
+        "Remove all packaging forever",
+        "Stop all traffic"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "Who finds delivery especially useful?",
       "options": [
-        "Nobody is mentioned",
-        "Food delivery is convenient yet fees and tips add up quickly",
-        "This detail is not in the text",
-        "The opposite happened"
+        "Busy students and office workers",
+        "Only professional chefs",
+        "Only people who never eat",
+        "Only airport staff abroad"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "When does demand often rise?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Food delivery is convenient yet fees and tips add up quickly",
-        "Nothing matches"
+        "During bad weather",
+        "Only on sunny holidays abroad",
+        "When restaurants close forever",
+        "When apps disappear"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "What downside is mentioned about packaging?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Food delivery is convenient yet fees and tips add up quickly"
+        "Waste increases",
+        "Waste disappears",
+        "Packaging is always reusable glass",
+        "There is no packaging"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "Why are riders’ conditions a concern?",
       "options": [
-        "Food delivery is convenient yet fees and tips add up quickly",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Pressure to deliver quickly in traffic",
+        "They never work",
+        "They earn unlimited free time",
+        "Roads are empty always"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "What balanced advice is given?",
       "options": [
-        "Only maths appears",
-        "Food delivery is convenient yet fees and tips add up quickly",
-        "Nothing matches",
-        "The text is empty"
+        "Use delivery occasionally and cook at home some nights",
+        "Order every meal forever",
+        "Never tip",
+        "Avoid all restaurants online and offline"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "What social habit remains valuable?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Food delivery is convenient yet fees and tips add up quickly",
-        "Nothing matches"
+        "Shared meals at a table",
+        "Eating alone while walking in traffic",
+        "Never eating with others",
+        "Only ordering at midnight"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "How can restaurants benefit?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Food delivery is convenient yet fees and tips add up quickly"
+        "They reach customers who rarely eat out",
+        "They must close kitchens",
+        "They lose all orders",
+        "They stop cooking"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "What can frequent orders do to budgets?",
       "options": [
-        "Food delivery is convenient yet fees and tips add up quickly",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Become expensive",
+        "Always save money automatically",
+        "Remove all costs",
+        "Pay the customer"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "Food delivery is convenient yet fees and tips add up quickly",
-        "Nothing matches",
-        "The text is empty"
+        "Food Delivery",
+        "Lost Keys",
+        "Museum Visit",
+        "Silent Movies"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

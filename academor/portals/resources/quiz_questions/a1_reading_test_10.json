@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>On Saturday Leyla visits her grandma.</p><p>On Sunday she does homework.</p><p>She also watches a film and eats pizza.</p><p>She sleeps late at the weekend.</p><p>She calls her friends and walks in the park.</p><p>On Monday she is ready for school.</p>",
+  "shared_passage": "<p>At the weekend I do not go to school. On Saturday morning I help my mother clean the house. Then we go to the market to buy fruit and vegetables.</p><p>On Saturday afternoon I visit my grandparents. My grandmother makes cakes and my grandfather tells funny stories.</p><p>On Sunday I meet my friends in the park. We play basketball or ride our bikes. If it rains, we go to the cinema.</p><p>In the evening I prepare my school bag for Monday. I also call my cousin and talk for ten minutes.</p><p>Weekends are short but happy. I rest and I also help my family.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What does Leyla do on Saturday?",
+      "question": "What does the writer do on Saturday morning?",
       "options": [
-        "Visits her grandma",
-        "Goes to work abroad",
-        "Flies to space",
-        "Closes the school"
-      ],
-      "answer": 0
-    },
-    {
-      "id": 2,
-      "question": "What does she do on Sunday?",
-      "options": [
-        "Only drives",
-        "Does homework",
-        "Only sleeps all day",
-        "Only shops"
+        "Sleeps all day",
+        "Helps clean the house",
+        "Goes to school",
+        "Works in a bank"
       ],
       "answer": 1
     },
     {
-      "id": 3,
-      "question": "What does she watch?",
+      "id": 2,
+      "question": "Where do they go after cleaning?",
       "options": [
-        "A football match only",
-        "Nothing",
-        "A film",
-        "The news only"
+        "To the market",
+        "To the airport",
+        "To the office",
+        "To the gym only"
       ],
-      "answer": 2
+      "answer": 0
+    },
+    {
+      "id": 3,
+      "question": "Who does the writer visit on Saturday afternoon?",
+      "options": [
+        "Teachers",
+        "Grandparents",
+        "Strangers",
+        "The police"
+      ],
+      "answer": 1
     },
     {
       "id": 4,
-      "question": "What does she eat?",
+      "question": "What does the grandmother make?",
       "options": [
         "Soup only",
-        "Salad only",
-        "Fish only",
-        "Pizza"
+        "Cakes",
+        "Pizza every day",
+        "Nothing"
       ],
-      "answer": 3
+      "answer": 1
     },
     {
       "id": 5,
-      "question": "Does she sleep late?",
+      "question": "Where do friends meet on Sunday?",
       "options": [
-        "Yes",
-        "No, she wakes at 4 am",
-        "She never sleeps",
-        "Only at school"
+        "In the park",
+        "At the bank",
+        "At the hospital",
+        "At the station only"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Who does she call?",
+      "question": "What do they do if it rains?",
       "options": [
-        "Nobody",
-        "Her friends",
-        "Her boss only",
-        "A doctor only"
-      ],
-      "answer": 1
-    },
-    {
-      "id": 7,
-      "question": "Where does she walk?",
-      "options": [
-        "In the hospital",
-        "In the bank",
-        "In the park",
-        "In the airport"
-      ],
-      "answer": 2
-    },
-    {
-      "id": 8,
-      "question": "How does she feel on Monday?",
-      "options": [
-        "Lost",
-        "Angry at everyone",
-        "Afraid of pizza",
-        "Ready for school"
-      ],
-      "answer": 3
-    },
-    {
-      "id": 9,
-      "question": "Who is the text about?",
-      "options": [
-        "Leyla",
-        "Farid",
-        "Omar",
-        "Tom"
+        "Go to the cinema",
+        "Play outside only",
+        "Swim in the sea",
+        "Go camping"
       ],
       "answer": 0
     },
     {
-      "id": 10,
-      "question": "Best title?",
+      "id": 7,
+      "question": "What does the writer prepare on Sunday evening?",
       "options": [
-        "Lost Keys",
-        "Weekend",
-        "City Noise",
-        "Bike Lanes"
+        "A party",
+        "The school bag for Monday",
+        "A trip abroad",
+        "A big dinner for school"
       ],
       "answer": 1
+    },
+    {
+      "id": 8,
+      "question": "How long does the writer talk to the cousin?",
+      "options": [
+        "One minute",
+        "Ten minutes",
+        "One hour",
+        "All night"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 9,
+      "question": "How does the writer feel about weekends?",
+      "options": [
+        "Bored",
+        "Happy",
+        "Angry",
+        "Afraid"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 10,
+      "question": "What is the best title?",
+      "options": [
+        "Weekend",
+        "City Noise",
+        "Lost Keys",
+        "Exam Stress"
+      ],
+      "answer": 0
     }
   ]
 }

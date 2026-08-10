@@ -19,9 +19,10 @@
       return;
     }
     row.classList.toggle("is-inactive", !isActive);
+    row.classList.toggle("is-partial", false);
   }
 
-  function postToggle(url, isActive) {
+  function postJson(url, body) {
     return fetch(url, {
       method: "POST",
       credentials: "same-origin",
@@ -30,18 +31,22 @@
         "X-Requested-With": "XMLHttpRequest",
         "X-CSRFToken": getCsrfToken(),
       },
-      body: JSON.stringify({ is_active: !!isActive }),
+      body: JSON.stringify(body),
     }).then(function (response) {
       if (!response.ok) {
-        throw new Error("toggle failed");
+        throw new Error("request failed");
       }
       return response.json();
     }).then(function (data) {
       if (!data.ok) {
-        throw new Error("toggle rejected");
+        throw new Error("request rejected");
       }
       return data;
     });
+  }
+
+  function postToggle(url, isActive) {
+    return postJson(url, { is_active: !!isActive });
   }
 
   function bindToggle(toggle) {
@@ -110,6 +115,49 @@
     setActiveCategory(root, "all");
   }
 
+  function applyToggleState(toggle, isActive) {
+    toggle.checked = isActive;
+    setRowState(toggle.closest("[data-quiz-access-row]"), isActive);
+  }
+
+  function bindCategoryToggles(root) {
+    var bulkUrl = root.getAttribute("data-quiz-access-bulk-url");
+    root.querySelectorAll("[data-quiz-access-category-toggle]").forEach(function (toggle) {
+      if (!toggle || toggle.dataset.quizAccessBound === "true") {
+        return;
+      }
+      toggle.dataset.quizAccessBound = "true";
+      setRowState(toggle.closest("[data-quiz-access-row]"), toggle.checked);
+
+      toggle.addEventListener("change", function () {
+        if (!bulkUrl) {
+          return;
+        }
+        var categoryId = toggle.getAttribute("data-category-id");
+        var previous = !toggle.checked;
+        var row = toggle.closest("[data-quiz-access-row]");
+        toggle.disabled = true;
+
+        postJson(bulkUrl, {
+          is_active: toggle.checked,
+          category_id: categoryId,
+          general_only: true,
+        })
+          .then(function (data) {
+            toggle.checked = !!data.is_active;
+            setRowState(row, toggle.checked);
+          })
+          .catch(function () {
+            toggle.checked = previous;
+            setRowState(row, previous);
+          })
+          .finally(function () {
+            toggle.disabled = false;
+          });
+      });
+    });
+  }
+
   function bindBulkActions(root) {
     if (root.dataset.quizAccessBulkBound === "true") {
       return;
@@ -123,18 +171,20 @@
       }
       event.preventDefault();
 
+      var bulkUrl = root.getAttribute("data-quiz-access-bulk-url");
       var mode = btn.getAttribute("data-quiz-access-bulk");
       var categoryId = btn.getAttribute("data-quiz-access-bulk-category");
+      var scope = btn.getAttribute("data-quiz-access-bulk-scope") || "program";
       var section = root.querySelector(
         '[data-quiz-access-category="' + categoryId + '"]'
       );
-      if (!section) {
+      if (!bulkUrl || !section) {
         return;
       }
 
       var wantActive = mode === "on";
       var toggles = Array.prototype.slice.call(
-        section.querySelectorAll(".portal-quiz-access-toggle")
+        section.querySelectorAll(".portal-quiz-access-toggle[data-quiz-id]")
       ).filter(function (toggle) {
         return !!toggle.checked !== wantActive;
       });
@@ -143,32 +193,53 @@
         return;
       }
 
+      var previous = toggles.map(function (toggle) {
+        return toggle.checked;
+      });
       btn.disabled = true;
-      var chain = Promise.resolve();
       toggles.forEach(function (toggle) {
-        chain = chain.then(function () {
-          var url = toggle.getAttribute("data-toggle-url");
-          if (!url) {
-            return;
-          }
-          toggle.disabled = true;
-          return postToggle(url, wantActive)
-            .then(function (data) {
-              toggle.checked = !!data.is_active;
-              setRowState(toggle.closest("[data-quiz-access-row]"), toggle.checked);
-            })
-            .catch(function () {
-              /* leave previous state */
-            })
-            .finally(function () {
-              toggle.disabled = false;
-            });
-        });
+        toggle.disabled = true;
+        applyToggleState(toggle, wantActive);
       });
 
-      chain.finally(function () {
-        btn.disabled = false;
-      });
+      var payload = {
+        is_active: wantActive,
+        category_id: categoryId,
+        quiz_ids: toggles.map(function (toggle) {
+          return toggle.getAttribute("data-quiz-id");
+        }),
+      };
+      if (scope === "program") {
+        payload.program_flagged_only = true;
+      } else if (scope === "general") {
+        payload.general_only = true;
+      }
+
+      postJson(bulkUrl, payload)
+        .then(function (data) {
+          var applied = {};
+          (data.quiz_ids || []).forEach(function (quizId) {
+            applied[String(quizId)] = true;
+          });
+          toggles.forEach(function (toggle, index) {
+            var quizId = toggle.getAttribute("data-quiz-id");
+            applyToggleState(
+              toggle,
+              applied[String(quizId)] ? !!data.is_active : previous[index]
+            );
+          });
+        })
+        .catch(function () {
+          toggles.forEach(function (toggle, index) {
+            applyToggleState(toggle, previous[index]);
+          });
+        })
+        .finally(function () {
+          toggles.forEach(function (toggle) {
+            toggle.disabled = false;
+          });
+          btn.disabled = false;
+        });
     });
   }
 
@@ -178,6 +249,9 @@
     }
     root.querySelectorAll(".portal-quiz-access-toggle").forEach(function (toggle) {
       if (toggle.hasAttribute("data-mock-access-toggle")) {
+        return;
+      }
+      if (toggle.hasAttribute("data-quiz-access-category-toggle")) {
         return;
       }
       setRowState(toggle.closest("[data-quiz-access-row]"), toggle.checked);
@@ -209,6 +283,7 @@
       });
     });
 
+    bindCategoryToggles(root);
     bindCategoryTabs(root);
     bindBulkActions(root);
   }

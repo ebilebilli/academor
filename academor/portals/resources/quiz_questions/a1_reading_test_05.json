@@ -5,7 +5,7 @@
   "service": "general_english",
   "category_name": "A1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Nara has a white cat called Mimi.</p><p>Mimi is two years old.</p><p>The cat eats fish.</p><p>Mimi sleeps on the sofa.</p><p>She plays with a ball.</p><p>Mimi likes sunny windows.</p>",
+  "shared_passage": "<p>Nara has a white cat called Mimi. Mimi is two years old and she lives in Nara’s flat in Ganja.</p><p>Every morning Nara gives Mimi a little fish and clean water. Mimi likes to sit on the sofa and sleep in the sun near the window.</p><p>In the afternoon Mimi plays with a small red ball. Sometimes she runs after a toy mouse. Nara laughs when Mimi jumps.</p><p>At night Mimi sleeps on Nara’s bed. Nara brushes Mimi’s fur on Saturdays. The cat is soft and quiet.</p><p>Nara loves her pet very much. She says Mimi is her best friend at home.</p>",
   "questions": [
     {
       "id": 1,
@@ -31,91 +31,91 @@
     },
     {
       "id": 3,
-      "question": "What colour is Mimi?",
+      "question": "How old is Mimi?",
       "options": [
-        "Brown",
-        "Grey",
-        "White",
-        "Black"
+        "One",
+        "Two",
+        "Three",
+        "Five"
       ],
-      "answer": 2
+      "answer": 1
     },
     {
       "id": 4,
-      "question": "How old is Mimi?",
+      "question": "What does Mimi eat in the morning?",
       "options": [
-        "Ten years",
-        "One month",
-        "Five years",
-        "Two years"
+        "Bread",
+        "Fish",
+        "Rice",
+        "Cheese"
       ],
-      "answer": 3
+      "answer": 1
     },
     {
       "id": 5,
-      "question": "What does Mimi eat?",
+      "question": "Where does Mimi like to sit?",
       "options": [
-        "Fish",
-        "Bread",
-        "Pizza",
-        "Apples"
+        "On the sofa",
+        "In the garden",
+        "At school",
+        "In a car"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Where does Mimi sleep?",
+      "question": "What colour is the ball?",
       "options": [
-        "At school",
-        "On the sofa",
-        "In the garden",
-        "On the bus"
-      ],
-      "answer": 1
-    },
-    {
-      "id": 7,
-      "question": "What does Mimi play with?",
-      "options": [
-        "A bike",
-        "A book",
-        "A ball",
-        "A phone"
+        "Blue",
+        "Green",
+        "Red",
+        "Yellow"
       ],
       "answer": 2
     },
     {
-      "id": 8,
-      "question": "What does Mimi like?",
+      "id": 7,
+      "question": "Where does Mimi sleep at night?",
       "options": [
-        "Loud music",
-        "Cold rain",
-        "Dark rooms only",
-        "Sunny windows"
+        "On the floor",
+        "On Nara’s bed",
+        "In the kitchen",
+        "Outside"
       ],
-      "answer": 3
+      "answer": 1
+    },
+    {
+      "id": 8,
+      "question": "When does Nara brush Mimi’s fur?",
+      "options": [
+        "Every Monday",
+        "On Saturdays",
+        "Never",
+        "Every night"
+      ],
+      "answer": 1
     },
     {
       "id": 9,
-      "question": "Who owns the pet?",
+      "question": "Where does Nara live?",
       "options": [
-        "Nara",
-        "Omar",
-        "Lina",
-        "Tom"
+        "In Baku",
+        "In Ganja",
+        "In London",
+        "In Paris"
       ],
-      "answer": 0
+      "answer": 1
     },
     {
       "id": 10,
-      "question": "Best title?",
+      "question": "What is the best title?",
       "options": [
-        "Clothes",
         "Pets",
         "Train Trip",
-        "Plastic Waste"
+        "City Noise",
+        "Bank Fraud"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

@@ -3,6 +3,7 @@
 import logging
 
 from django.db import transaction
+from django.utils import timezone
 
 from portals.models import Quiz, QuizAssignment, StudentMockAccess
 from portals.utils.cache_utils import invalidate_model_cache
@@ -11,6 +12,7 @@ from portals.utils.student_courses import (
     get_student_course_type_codes,
     quiz_visible_to_teacher,
     student_has_course_access,
+    student_quiz_enrollment_ok,
 )
 from portals.utils.teacher_access import get_teacher_student
 
@@ -49,8 +51,6 @@ def get_student_quiz_assignment_map(student_id, quiz_ids):
 
 
 def teacher_can_manage_student_quiz(teacher_id, student_id, quiz):
-    from portals.utils.student_courses import student_quiz_enrollment_ok
-
     if not get_teacher_student(teacher_id, student_id):
         return False
     if not quiz or not quiz_visible_to_teacher(quiz, teacher_id):
@@ -225,8 +225,26 @@ def _quiz_format_label(quiz):
     return 'Variant'
 
 
-def get_teacher_student_quiz_access_rows(teacher_id, student_id):
-    """Quizzes the teacher may assign, grouped by category, with active state."""
+def quiz_has_program_flag(quiz):
+    """IELTS/SAT-flagged quizzes are toggled one-by-one on the student profile."""
+    return bool(getattr(quiz, 'is_ielts', False) or getattr(quiz, 'is_sat', False))
+
+
+def quiz_access_control_count(categories):
+    """Nav/badge count: 1 per general category toggle + 1 per IELTS/SAT quiz."""
+    total = 0
+    for category in categories or []:
+        if category.get('control_count') is not None:
+            total += int(category['control_count'])
+            continue
+        if category.get('category_access'):
+            total += 1
+        total += len(category.get('quizzes') or [])
+    return total
+
+
+def teacher_assignable_quizzes(teacher_id, student_id):
+    """Quiz rows the teacher may activate for this student, category-ordered."""
     if not get_teacher_student(teacher_id, student_id):
         return []
 
@@ -234,10 +252,7 @@ def get_teacher_student_quiz_access_rows(teacher_id, student_id):
     if not student_codes:
         return []
 
-    from portals.utils.quiz_category_services import (
-        quiz_category_primary_portal_code,
-        quiz_category_slugs_for_portal_codes,
-    )
+    from portals.utils.quiz_category_services import quiz_category_slugs_for_portal_codes
     from portals.utils.teacher_courses import get_teacher_course_type_codes
 
     teacher_codes = set(get_teacher_course_type_codes(teacher_id))
@@ -256,7 +271,96 @@ def get_teacher_student_quiz_access_rows(teacher_id, student_id):
         .distinct()
         .order_by('category__name', '-created_at', 'id')
     )
-    visible_quizzes = [row for row in quizzes if quiz_visible_to_teacher(row, teacher_id)]
+    return [row for row in quizzes if quiz_visible_to_teacher(row, teacher_id)]
+
+
+def set_student_quiz_assignments(
+    teacher_id,
+    student_id,
+    *,
+    is_active,
+    category_id=None,
+    quiz_ids=None,
+    general_only=False,
+    program_flagged_only=False,
+):
+    """Toggle many quizzes in one pass.
+
+    The per-quiz endpoint revalidated access and bumped the portal cache for
+    every quiz, so "activate all" cost one request and a cache flush per row.
+
+    ``general_only`` limits the batch to quizzes without IELTS/SAT flags
+    (category-level control). ``program_flagged_only`` keeps only IELTS/SAT rows.
+    """
+    targets = teacher_assignable_quizzes(teacher_id, student_id)
+    if not targets:
+        return None
+
+    if category_id is not None:
+        targets = [quiz for quiz in targets if quiz.category_id == category_id]
+    if quiz_ids is not None:
+        wanted = set(quiz_ids)
+        targets = [quiz for quiz in targets if quiz.pk in wanted]
+    if general_only:
+        targets = [quiz for quiz in targets if not quiz_has_program_flag(quiz)]
+    if program_flagged_only:
+        targets = [quiz for quiz in targets if quiz_has_program_flag(quiz)]
+    targets = [quiz for quiz in targets if student_quiz_enrollment_ok(student_id, quiz)]
+    if not targets:
+        return []
+
+    target_ids = [quiz.pk for quiz in targets]
+    is_active = bool(is_active)
+    now = timezone.now()
+    with transaction.atomic():
+        existing = {
+            row.quiz_id: row
+            for row in QuizAssignment.objects.filter(
+                student_id=student_id,
+                quiz_id__in=target_ids,
+            )
+        }
+        changed = []
+        for row in existing.values():
+            if row.is_active == is_active and row.assigned_by_id == teacher_id:
+                continue
+            row.is_active = is_active
+            row.assigned_by_id = teacher_id
+            row.assigned_at = now
+            changed.append(row)
+        if changed:
+            QuizAssignment.objects.bulk_update(
+                changed,
+                ['is_active', 'assigned_by', 'assigned_at'],
+                batch_size=200,
+            )
+        missing = [
+            QuizAssignment(
+                student_id=student_id,
+                quiz_id=quiz_id,
+                is_active=is_active,
+                assigned_by_id=teacher_id,
+            )
+            for quiz_id in target_ids
+            if quiz_id not in existing
+        ]
+        if missing:
+            QuizAssignment.objects.bulk_create(missing, batch_size=200, ignore_conflicts=True)
+
+    # bulk_update / bulk_create skip post_save, so bump the cache once here.
+    invalidate_model_cache('QuizAssignment')
+    return target_ids
+
+
+def get_teacher_student_quiz_access_rows(teacher_id, student_id):
+    """Quizzes the teacher may assign, grouped by category, with active state.
+
+    General quizzes (no IELTS/SAT flag) appear as one category-level toggle.
+    IELTS/SAT-flagged quizzes are listed individually for per-quiz control.
+    """
+    from portals.utils.quiz_category_services import quiz_category_primary_portal_code
+
+    visible_quizzes = teacher_assignable_quizzes(teacher_id, student_id)
     if not visible_quizzes:
         return []
 
@@ -279,14 +383,48 @@ def get_teacher_student_quiz_access_rows(teacher_id, student_id):
                 'name': category.name,
                 'service': service_code,
                 'service_label': resolve_course_type_label(service_code) if service_code else '',
+                'category_access': None,
+                'general_quizzes': [],
                 'quizzes': [],
             }
             category_index[category.pk] = bucket
             categories.append(bucket)
-        bucket['quizzes'].append({
-            'id': quiz.pk,
-            'topic': quiz.topic,
-            'format_label': _quiz_format_label(quiz),
-            'is_active': assignment_map.get(quiz.pk, False),
-        })
-    return categories
+
+        is_active = assignment_map.get(quiz.pk, False)
+        if quiz_has_program_flag(quiz):
+            program_label = ''
+            if quiz.is_ielts:
+                program_label = 'IELTS'
+            elif quiz.is_sat:
+                program_label = 'SAT'
+            bucket['quizzes'].append({
+                'id': quiz.pk,
+                'topic': quiz.topic,
+                'format_label': _quiz_format_label(quiz),
+                'program_label': program_label,
+                'is_ielts': bool(quiz.is_ielts),
+                'is_sat': bool(quiz.is_sat),
+                'is_active': is_active,
+            })
+        else:
+            bucket['general_quizzes'].append({
+                'id': quiz.pk,
+                'is_active': is_active,
+            })
+
+    for bucket in categories:
+        general = bucket.pop('general_quizzes')
+        if general:
+            active_count = sum(1 for row in general if row['is_active'])
+            quiz_count = len(general)
+            bucket['category_access'] = {
+                'quiz_count': quiz_count,
+                'active_count': active_count,
+                'is_active': active_count == quiz_count,
+                'is_partial': 0 < active_count < quiz_count,
+            }
+        bucket['control_count'] = (
+            (1 if bucket.get('category_access') else 0)
+            + len(bucket.get('quizzes') or [])
+        )
+    return [bucket for bucket in categories if bucket.get('category_access') or bucket.get('quizzes')]

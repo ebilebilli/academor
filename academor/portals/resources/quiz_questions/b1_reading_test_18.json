@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "B1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>A tourist boom brings money and pressure.</p><p>Hotels create seasonal jobs but rents rise for local residents.</p><p>Popular sites fill with trash and some cities limit short-term rentals.</p><p>Local guides share real history; visitors should respect neighbourhoods and growth needs planning.</p>",
+  "shared_passage": "<p>A sudden tourist boom can bring money and jobs to a historic town. Hotels fill up, restaurants hire staff and craft sellers find more customers for handmade goods.</p><p>Yet rapid growth also creates pressure. Narrow streets become crowded, housing rents rise, and local people may feel pushed out of their own centre. Waste and water systems struggle when visitor numbers jump too quickly.</p><p>City planners recommend limits on short-term apartment rentals and better public transport to popular sites. Guided visits at different times of day can reduce peak overcrowding.</p><p>Tourists also have responsibility: respect local rules, support small businesses and avoid damaging monuments for photos. Sustainable tourism protects the place that visitors come to enjoy.</p><p>The goal is balance. A town should welcome guests without losing the daily life that makes it authentic.</p><p>Data can guide decisions: counting visitors by hour shows when sites need extra staff or temporary one-way walking routes. Planning with numbers reduces conflict between residents and guests.</p><p>Cultural festivals that celebrate local traditions can spread visits across the year instead of concentrating pressure on one famous street every summer weekend.</p><p>Training local guides creates jobs and keeps visitor stories accurate. Residents then benefit directly from tourism income.</p><p>Off-season promotions for museums and cafes spread income across the year and ease summer pressure.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "What positive effects can a tourist boom bring?",
       "options": [
-        "Tourist Boom",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "Money, jobs and more customers for crafts",
+        "Only empty hotels",
+        "Lower rents always",
+        "Less restaurant work"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "What housing problem can appear?",
       "options": [
-        "Nobody is mentioned",
-        "A tourist boom brings money and pressure",
-        "This detail is not in the text",
-        "The opposite happened"
+        "Rents rise",
+        "Rents disappear",
+        "Free homes for all tourists",
+        "No housing pressure"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "What systems may struggle?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "A tourist boom brings money and pressure",
-        "Nothing matches"
+        "Waste and water systems",
+        "Only airline systems abroad",
+        "Only school exams",
+        "Nothing"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "What do planners recommend for rentals?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "A tourist boom brings money and pressure"
+        "Limits on short-term apartment rentals",
+        "Unlimited rentals with no rules",
+        "Closing all hotels",
+        "Banning all guests"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "How can overcrowding at sites be reduced?",
       "options": [
-        "A tourist boom brings money and pressure",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Guided visits at different times",
+        "Sending all tourists at noon only",
+        "Closing transport",
+        "Damaging monuments"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "What responsibility do tourists have?",
       "options": [
-        "Only maths appears",
-        "A tourist boom brings money and pressure",
-        "Nothing matches",
-        "The text is empty"
+        "Respect rules and support small businesses",
+        "Ignore local life",
+        "Damage monuments for photos",
+        "Avoid all small shops"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "What does sustainable tourism protect?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "A tourist boom brings money and pressure",
-        "Nothing matches"
+        "The place visitors come to enjoy",
+        "Only airline profits",
+        "Only photo opportunities",
+        "Nothing local"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "What is the goal?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "A tourist boom brings money and pressure"
+        "Welcome guests without losing authentic daily life",
+        "Replace residents completely",
+        "Stop all tourism forever",
+        "Maximise crowds only"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "What happens to narrow streets?",
       "options": [
-        "A tourist boom brings money and pressure",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "They become crowded",
+        "They become wider automatically",
+        "They close to residents only forever",
+        "They empty completely"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "A tourist boom brings money and pressure",
-        "Nothing matches",
-        "The text is empty"
+        "Tourist Boom",
+        "Lost Keys",
+        "Bike Repair",
+        "Silent Movies"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

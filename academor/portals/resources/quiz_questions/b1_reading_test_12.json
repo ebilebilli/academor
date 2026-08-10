@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "B1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Community gardens turn unused land into planting beds and build stronger neighbourhoods.</p><p>Families share tools and seeds and children learn where food comes from.</p><p>Watering schedules caused arguments until clear rules reduced conflict.</p><p>Extra harvest goes to a food bank and neighbours want a second plot.</p>",
+  "shared_passage": "<p>Community gardens turn empty city spaces into green shared projects. Neighbours grow vegetables, herbs and flowers together and learn from one another’s experience.</p><p>These gardens improve local air quality and offer quiet places to relax. Children who help plant seeds often understand food production better than classmates who only see supermarket shelves.</p><p>Organisation is important. Clear schedules for watering, shared tool storage and simple rules about harvesting prevent arguments. Some gardens also hold monthly meetings to plan seasonal work.</p><p>Challenges include theft, dry summers and unequal participation. Successful groups solve problems early and welcome new volunteers without making the work feel exclusive.</p><p>A community garden is small compared with a farm, yet its social value can be large. People who dig soil side by side often build trust that spreads beyond the garden fence.</p><p>Some gardens partner with schools so classes can visit during science weeks. Measuring soil, watering schedules and harvest weights turns the garden into an outdoor classroom.</p><p>When harvest season arrives, shared cooking events help neighbours celebrate the results together and invite people who have never planted anything before.</p><p>Rainwater collection barrels can reduce water bills during dry months. Practical design makes community gardens more resilient.</p><p>Shared calendars for watering duties stop plants from being forgotten during holiday weeks.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "What do community gardens use?",
       "options": [
-        "Community Garden",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "Empty city spaces",
+        "Only private farms far away",
+        "Airport runways",
+        "School exam halls"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "What do neighbours grow together?",
       "options": [
-        "Nobody is mentioned",
-        "Community gardens turn unused land into planting beds and build stronger neighbourhoods",
-        "This detail is not in the text",
-        "The opposite happened"
+        "Vegetables, herbs and flowers",
+        "Only plastic plants",
+        "Cars",
+        "Nothing"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "What benefit for children is mentioned?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Community gardens turn unused land into planting beds and build stronger neighbourhoods",
-        "Nothing matches"
+        "Better understanding of food production",
+        "Less interest in nature",
+        "Only supermarket knowledge",
+        "Avoiding all planting"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "What organisation details prevent arguments?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Community gardens turn unused land into planting beds and build stronger neighbourhoods"
+        "Watering schedules, tool storage and harvesting rules",
+        "No meetings ever",
+        "Secret tool hiding",
+        "No schedules"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "What challenges are listed?",
       "options": [
-        "Community gardens turn unused land into planting beds and build stronger neighbourhoods",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Theft, dry summers and unequal participation",
+        "Too much rain every day forever",
+        "No volunteers needed",
+        "Unlimited free workers"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "How do successful groups act?",
       "options": [
-        "Only maths appears",
-        "Community gardens turn unused land into planting beds and build stronger neighbourhoods",
-        "Nothing matches",
-        "The text is empty"
+        "Solve problems early and welcome volunteers",
+        "Make work exclusive",
+        "Ignore new people",
+        "Close after one week"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "What social value can gardens create?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Community gardens turn unused land into planting beds and build stronger neighbourhoods",
-        "Nothing matches"
+        "Trust beyond the garden fence",
+        "Only competition and anger",
+        "Less neighbour contact",
+        "Closed communities with no talk"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "What environmental benefit is mentioned?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Community gardens turn unused land into planting beds and build stronger neighbourhoods"
+        "Improved local air quality",
+        "More traffic pollution",
+        "Less green space",
+        "No quiet places"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "How often may some gardens meet to plan?",
       "options": [
-        "Community gardens turn unused land into planting beds and build stronger neighbourhoods",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Monthly",
+        "Once in ten years",
+        "Every hour",
+        "Never"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "Community gardens turn unused land into planting beds and build stronger neighbourhoods",
-        "Nothing matches",
-        "The text is empty"
+        "Community Garden",
+        "Bank Fraud",
+        "Airport Delay",
+        "Silent Movies"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

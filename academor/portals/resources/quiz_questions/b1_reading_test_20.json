@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "B1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Small neighbour disputes grow if ignored.</p><p>Noise and parking cause most complaints and a calm first talk often helps.</p><p>Written notes should stay polite and mediators can join difficult cases.</p><p>Building rules must be clear; revenge makes problems worse and the goal is peaceful shared spaces.</p>",
+  "shared_passage": "<p>Living close to other people can create small conflicts that grow if nobody talks calmly. Common disputes include loud music at night, parking in shared spaces and rubbish left in corridors.</p><p>Many problems start from misunderstanding rather than bad intentions. A neighbour who works night shifts may sleep during the day and feel disturbed by afternoon renovations.</p><p>Useful first steps are polite conversation and clear examples instead of angry messages. Written building rules help when emotions are high. In serious cases, a building manager or local mediation service can assist.</p><p>Good neighbour relationships are built daily: greeting people, sharing information about repairs and respecting quiet hours. Prevention is easier than formal complaints.</p><p>A peaceful building does not require friendship with everyone. It requires basic respect, communication and a willingness to find practical compromises.</p><p>In apartment buildings, shared messaging groups can help if they stay polite and practical. Posting repair schedules reduces surprise noise and shows respect for other people’s routines.</p><p>When disputes escalate, keeping records of dates and attempts to solve the issue helps mediation. Calm evidence works better than emotional accusations.</p><p>Celebrating shared successes, such as a clean stairway campaign, builds positive identity in a building and makes future cooperation easier.</p><p>Simple courtesy, such as warning neighbours before a party, prevents most conflicts from starting.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "What common disputes are mentioned?",
       "options": [
-        "Neighbour Disputes",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "Loud music, parking and corridor rubbish",
+        "Only garden flowers",
+        "Only school grades",
+        "Airline delays"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "How do many problems start?",
       "options": [
-        "Nobody is mentioned",
-        "Small neighbour disputes grow if ignored",
-        "This detail is not in the text",
-        "The opposite happened"
+        "From misunderstanding rather than bad intentions",
+        "Always from planned harm",
+        "From friendship only",
+        "From no neighbours existing"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "Why might afternoon renovations cause conflict?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Small neighbour disputes grow if ignored",
-        "Nothing matches"
+        "A night-shift neighbour may be sleeping",
+        "Nobody sleeps by day ever",
+        "Renovations are silent",
+        "Rules ban all talk"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "What first steps are useful?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Small neighbour disputes grow if ignored"
+        "Polite conversation and clear examples",
+        "Only angry messages",
+        "Immediate formal war",
+        "Ignoring everyone forever"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "What helps when emotions are high?",
       "options": [
-        "Small neighbour disputes grow if ignored",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Written building rules",
+        "Louder music",
+        "More corridor rubbish",
+        "No manager contact"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "Who can assist in serious cases?",
       "options": [
-        "Only maths appears",
-        "Small neighbour disputes grow if ignored",
-        "Nothing matches",
-        "The text is empty"
+        "A building manager or mediation service",
+        "Only social media strangers",
+        "Nobody",
+        "Only tourists"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "How are good neighbour relationships built?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Small neighbour disputes grow if ignored",
-        "Nothing matches"
+        "Daily respect, greetings and quiet hours",
+        "Formal complaints first always",
+        "Never speaking",
+        "Avoiding all rules"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "What is easier than formal complaints?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Small neighbour disputes grow if ignored"
+        "Prevention",
+        "Escalation",
+        "Night parties",
+        "Corridor waste"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "What does a peaceful building require?",
       "options": [
-        "Small neighbour disputes grow if ignored",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Respect, communication and compromise",
+        "Friendship with everyone mandatory",
+        "No communication",
+        "Victory in every argument"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "Small neighbour disputes grow if ignored",
-        "Nothing matches",
-        "The text is empty"
+        "Neighbour Disputes",
+        "Lost Keys",
+        "Surprise Party",
+        "Silent Movies"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

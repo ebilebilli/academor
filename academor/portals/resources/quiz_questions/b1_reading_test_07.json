@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "B1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Local markets support small producers and more young people visit on weekends.</p><p>Prices can be higher than supermarkets, yet customers value freshness.</p><p>Markets reduce packaging waste, but bad weather hurts seller income.</p><p>The city may build a roofed area and the author supports the plan.</p>",
+  "shared_passage": "<p>Local markets are more than places to buy food. They are social spaces where neighbours meet, farmers sell seasonal produce and traditional recipes stay alive.</p><p>Compared with large supermarkets, markets often offer fresher fruit and vegetables because items travel shorter distances. Customers can also ask sellers about growing methods and taste samples before buying.</p><p>In some towns, markets struggle when shopping centres open nearby. Younger people may prefer online delivery for speed. To survive, many markets add evening hours, live music or cooking demonstrations.</p><p>Supporting local markets can strengthen the community economy. Money spent with small producers is more likely to stay in the area and create local jobs.</p><p>A weekly market visit can also teach children where food comes from. Seeing real tomatoes on a stall is different from selecting plastic-packed options without thinking.</p><p>Some markets now accept card payments to attract younger shoppers who carry little cash. Others create social media pages that announce weekly specials and seasonal fruit.</p><p>Preserving markets is not nostalgia alone. It is a practical way to keep food culture visible and to protect small producers from being replaced completely by distant supply chains.</p><p>Food waste stations at markets can collect unsold fruit for community kitchens. That turns surplus into support instead of rubbish.</p><p>Storytelling sessions at market stalls can attract families and keep cultural knowledge alive for children.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "What else are local markets besides shops?",
       "options": [
-        "Local Market",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "Social spaces for neighbours and traditions",
+        "Only online websites",
+        "Silent empty halls",
+        "Airports"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "Why may market produce be fresher?",
       "options": [
-        "Nobody is mentioned",
-        "Local markets support small producers and more young people visit on weekends",
-        "This detail is not in the text",
-        "The opposite happened"
+        "Shorter travel distances",
+        "Longer storage in factories",
+        "More plastic packaging",
+        "Online delivery only"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "What can customers ask sellers?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Local markets support small producers and more young people visit on weekends",
-        "Nothing matches"
+        "About growing methods",
+        "About airline tickets",
+        "About bank passwords",
+        "About school exams"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "What threatens some markets?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Local markets support small producers and more young people visit on weekends"
+        "Nearby shopping centres and online delivery",
+        "Too many farmers",
+        "Free music forever",
+        "Too much freshness"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "How do markets try to survive?",
       "options": [
-        "Local markets support small producers and more young people visit on weekends",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Evening hours, music or cooking demonstrations",
+        "Closing permanently",
+        "Selling only plastic",
+        "Banning young people"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "How can markets help the local economy?",
       "options": [
-        "Only maths appears",
-        "Local markets support small producers and more young people visit on weekends",
-        "Nothing matches",
-        "The text is empty"
+        "Money is more likely to stay in the area",
+        "All money leaves immediately",
+        "Jobs disappear",
+        "Only tourists benefit abroad"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "What can children learn from market visits?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Local markets support small producers and more young people visit on weekends",
-        "Nothing matches"
+        "Where food comes from",
+        "How to fly planes",
+        "How to ignore farmers",
+        "How to shop only online"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "What can customers do before buying?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Local markets support small producers and more young people visit on weekends"
+        "Taste samples",
+        "Take food without paying",
+        "Close the stall",
+        "Remove all sellers"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "What preference of younger people is mentioned?",
       "options": [
-        "Local markets support small producers and more young people visit on weekends",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Online delivery for speed",
+        "Only traditional recipes",
+        "Never shopping",
+        "Only evening concerts"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "Local markets support small producers and more young people visit on weekends",
-        "Nothing matches",
-        "The text is empty"
+        "Local Market",
+        "Airport Delay",
+        "Bank Fraud",
+        "Silent Movies"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

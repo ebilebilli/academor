@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Aida’s English teacher is Mr Brown.</p><p>He is kind and funny.</p><p>He writes on the board and helps every student.</p><p>He gives short homework.</p><p>The class starts at nine.</p><p>Aida likes his lessons.</p>",
+  "shared_passage": "<p>My favourite teacher is Mr. Rashad. He teaches history at our school. He is tall and he always smiles.</p><p>His lessons are interesting. He tells stories about old cities and famous people. Sometimes he shows pictures on the board.</p><p>Mr. Rashad is strict but fair. He wants us to listen carefully and do our homework on time. He helps students who do not understand.</p><p>Last month our class visited a museum with him. We learned about ancient coins and maps. It was my best school trip.</p><p>I like Mr. Rashad because he believes in us. He says hard work can open many doors.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "Who is Aida’s teacher?",
+      "question": "What does Mr. Rashad teach?",
       "options": [
-        "Mr Brown",
-        "Dr Hasan",
-        "Ms Ayla",
-        "Ms Reza"
+        "History",
+        "Sport",
+        "Music",
+        "Cooking"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "What subject does he teach?",
+      "question": "How does he look?",
       "options": [
-        "Music only",
-        "English",
-        "Maths only",
-        "Art only"
+        "Tall and always smiling",
+        "Short and angry",
+        "Old and quiet only",
+        "Never at school"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "What is Mr Brown like?",
+      "question": "What makes his lessons interesting?",
       "options": [
-        "Late always",
-        "Absent",
-        "Kind and funny",
-        "Angry and quiet"
+        "Stories about old cities and people",
+        "Only tests",
+        "Long silence",
+        "No talking"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Where does he write?",
+      "question": "How is he as a teacher?",
       "options": [
-        "On the floor",
-        "On the bus",
-        "On the wall only at home",
-        "On the board"
+        "Strict but fair",
+        "Never in class",
+        "Always angry",
+        "Always late"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Who does he help?",
+      "question": "What does he want students to do?",
       "options": [
-        "Every student",
-        "Only one student",
-        "Nobody",
-        "Only teachers"
+        "Listen and do homework on time",
+        "Sleep in class",
+        "Ignore homework",
+        "Leave school"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "What homework does he give?",
+      "question": "Where did the class go last month?",
       "options": [
-        "Only sports",
-        "Short homework",
-        "No homework ever",
-        "Only long projects always"
+        "To a museum",
+        "To the airport",
+        "To a bank",
+        "To a factory"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "When does class start?",
+      "question": "What did they learn about?",
       "options": [
-        "At 5 pm",
-        "At midnight",
-        "At nine",
-        "At noon"
+        "Ancient coins and maps",
+        "Only football",
+        "Cooking recipes",
+        "Car engines"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "How does Aida feel about lessons?",
+      "question": "What does he say about hard work?",
       "options": [
-        "She hates them",
-        "She never goes",
-        "She teaches them",
-        "She likes them"
+        "It can open many doors",
+        "It is useless",
+        "It is boring only",
+        "It is for robots"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Who is the text about?",
+      "question": "Why does the writer like him?",
       "options": [
-        "Aida",
-        "Orkhan",
-        "Omar",
-        "Tom"
+        "He believes in students",
+        "He gives no homework",
+        "He cancels all lessons",
+        "He is never there"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Best title?",
+      "question": "What is the best title?",
       "options": [
-        "Bus Ride",
         "My Teacher",
-        "Plastic Waste",
-        "Birthday"
+        "Lost Keys",
+        "City Noise",
+        "Airport Delay"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

@@ -81,10 +81,71 @@ class QuizAssignmentTests(QuizVisibilityTests):
         self.assertIsNone(assignment)
 
     def test_teacher_quiz_access_rows_include_assignment_state(self):
+        self.ielts_quiz.is_ielts = True
+        self.ielts_quiz.save(update_fields=['is_ielts'])
         rows = get_teacher_student_quiz_access_rows(self.teacher.pk, self.student.pk)
         self.assertEqual(len(rows), 1)
+        self.assertIsNone(rows[0]['category_access'])
         self.assertEqual(rows[0]['quizzes'][0]['id'], self.ielts_quiz.pk)
         self.assertTrue(rows[0]['quizzes'][0]['is_active'])
+
+    def test_teacher_quiz_access_general_quizzes_use_category_toggle(self):
+        """Non-IELTS/SAT quizzes are controlled by category name, not quiz titles."""
+        from portals.tests.group_helpers import create_quiz_category
+        from portals.utils.quiz_assignments import (
+            quiz_access_control_count,
+            set_student_quiz_assignments,
+        )
+
+        Service.objects.get_or_create(
+            slug='general-english',
+            defaults={
+                'name_az': 'General English',
+                'name_en': 'General English',
+                'is_active': True,
+            },
+        )
+        TeacherCourseSpecialization.objects.get_or_create(
+            teacher=self.teacher,
+            course_type='general_english',
+        )
+        StudentCourseSpecialization.objects.update_or_create(
+            student=self.student,
+            course_type='general_english',
+            defaults={'is_active': True},
+        )
+        ge_category = create_quiz_category('A1 Reading Tests', 'general_english')
+        q1 = Quiz.objects.create(category=ge_category, topic='My Family', is_ielts=False, is_sat=False)
+        q2 = Quiz.objects.create(category=ge_category, topic='My School', is_ielts=False, is_sat=False)
+        QuizAssignment.objects.create(
+            student=self.student, quiz=q1, is_active=True, assigned_by=self.teacher,
+        )
+        QuizAssignment.objects.create(
+            student=self.student, quiz=q2, is_active=False, assigned_by=self.teacher,
+        )
+
+        rows = get_teacher_student_quiz_access_rows(self.teacher.pk, self.student.pk)
+        ge_row = next((row for row in rows if row['id'] == ge_category.pk), None)
+        self.assertIsNotNone(ge_row)
+        self.assertEqual(ge_row['quizzes'], [])
+        self.assertIsNotNone(ge_row['category_access'])
+        self.assertEqual(ge_row['category_access']['quiz_count'], 2)
+        self.assertEqual(ge_row['category_access']['active_count'], 1)
+        self.assertTrue(ge_row['category_access']['is_partial'])
+        self.assertFalse(ge_row['category_access']['is_active'])
+
+        updated = set_student_quiz_assignments(
+            self.teacher.pk,
+            self.student.pk,
+            is_active=True,
+            category_id=ge_category.pk,
+            general_only=True,
+        )
+        self.assertEqual(set(updated), {q1.pk, q2.pk})
+        rows = get_teacher_student_quiz_access_rows(self.teacher.pk, self.student.pk)
+        ge_row = next(row for row in rows if row['id'] == ge_category.pk)
+        self.assertTrue(ge_row['category_access']['is_active'])
+        self.assertGreaterEqual(quiz_access_control_count(rows), 1)
 
     def test_teacher_toggle_endpoint_updates_assignment(self):
         client = Client()

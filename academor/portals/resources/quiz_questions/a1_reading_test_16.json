@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Gulnar goes to the school library.</p><p>She likes animal books.</p><p>Students must be quiet.</p><p>She sits at a wood desk.</p><p>She borrows two books for one week.</p><p>The librarian is Ms Ayla.</p><p>Gulnar likes the soft chairs.</p>",
+  "shared_passage": "<p>There is a public library near my school. It is open from nine in the morning until six in the evening.</p><p>I go there twice a week after lessons. I like the quiet rooms and the big shelves full of books.</p><p>Last week I borrowed two story books and one book about animals. I can keep them for two weeks.</p><p>The librarian is called Mrs. Sevinc. She helps children find easy books. She also reads stories on Fridays at four o’clock.</p><p>At home I read for thirty minutes every night. Books help me learn new words and they make me happy.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "Where does Gulnar go?",
+      "question": "Where is the library?",
       "options": [
-        "The school library",
-        "The cinema",
-        "The pool",
-        "The market"
+        "Near the school",
+        "Far in another country",
+        "At the airport",
+        "Inside a hospital"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "What books does she like?",
+      "question": "When is the library open?",
       "options": [
-        "Only newspapers",
-        "Animal books",
-        "Only cookbooks",
-        "Only maps"
-      ],
-      "answer": 1
-    },
-    {
-      "id": 3,
-      "question": "What must students be?",
-      "options": [
-        "Late",
-        "Hungry",
-        "Quiet",
-        "Noisy"
-      ],
-      "answer": 2
-    },
-    {
-      "id": 4,
-      "question": "Where does she sit?",
-      "options": [
-        "On the floor",
-        "Outside only",
-        "On a bus",
-        "At a wood desk"
-      ],
-      "answer": 3
-    },
-    {
-      "id": 5,
-      "question": "How many books does she borrow?",
-      "options": [
-        "Two",
-        "Ten",
-        "Zero",
-        "Twenty"
+        "From 9 to 6",
+        "Only at night",
+        "Never",
+        "Only on Sundays"
       ],
       "answer": 0
     },
     {
-      "id": 6,
-      "question": "For how long?",
+      "id": 3,
+      "question": "How often does the writer go?",
       "options": [
-        "One day only",
-        "One week",
-        "One year",
+        "Twice a week",
+        "Once a year",
+        "Every hour",
+        "Never"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 4,
+      "question": "What did the writer borrow last week?",
+      "options": [
+        "Two story books and one animal book",
+        "Only magazines",
+        "A laptop",
+        "Clothes"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 5,
+      "question": "How long can the books be kept?",
+      "options": [
+        "Two days",
+        "Two weeks",
+        "Two years",
         "One hour"
       ],
       "answer": 1
     },
     {
-      "id": 7,
+      "id": 6,
       "question": "Who is the librarian?",
       "options": [
-        "Dr Hasan",
-        "Ms Reza",
-        "Ms Ayla",
-        "Mr Brown"
+        "Mrs. Sevinc",
+        "Mr. Ali",
+        "Miss Nara",
+        "Mr. Farid"
       ],
-      "answer": 2
+      "answer": 0
+    },
+    {
+      "id": 7,
+      "question": "When does she read stories?",
+      "options": [
+        "On Fridays at four",
+        "Every Monday at eight",
+        "Never",
+        "Only in summer"
+      ],
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "What does she like in the library?",
+      "question": "How long does the writer read at home?",
       "options": [
-        "Loud music",
-        "Sports",
-        "Cooking",
-        "The soft chairs"
+        "Five minutes",
+        "Thirty minutes",
+        "Three hours",
+        "All night"
       ],
-      "answer": 3
+      "answer": 1
     },
     {
       "id": 9,
-      "question": "Who is the text about?",
+      "question": "Why does the writer like books?",
       "options": [
-        "Gulnar",
-        "Ramin",
-        "Omar",
-        "Tom"
+        "They help learn new words",
+        "They are heavy",
+        "They are expensive",
+        "They are noisy"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Best title?",
+      "question": "What is the best title?",
       "options": [
-        "Friends",
         "Library",
-        "Camping",
-        "Food Delivery"
+        "Lost Keys",
+        "City Noise",
+        "Airport Delay"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

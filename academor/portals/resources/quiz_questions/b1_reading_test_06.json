@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "B1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Small habits beat sudden big changes.</p><p>Teenagers need regular sleep times and adding vegetables is easier than strict dieting.</p><p>A 20-minute walk helps mood and phone-free dinners improve talk.</p><p>Tracking apps help some people, but social media can create pressure; progress matters more than perfection.</p>",
+  "shared_passage": "<p>Healthy habits are built from small actions repeated over time. Sleeping enough, drinking water, moving every day and eating regular meals sound simple, yet many students struggle to keep them.</p><p>Research often links short sleep with weaker concentration in morning classes. Teenagers who scroll on phones after midnight may feel tired even if they stay in bed for eight hours.</p><p>Schools can help by offering short activity breaks and healthier canteen choices. Families can support routines by eating together when possible and limiting late-night screens.</p><p>Extreme diets or sudden intense exercise are rarely sustainable. A realistic plan — a 20-minute walk, fruit instead of sugary snacks, and a fixed bedtime — usually works better.</p><p>Health is not only about looking fit. Mood, energy and long-term focus improve when daily habits are steady. Progress matters more than perfection.</p><p>Peer support can make habits stick. Friends who walk together after school are more likely to continue than people who try alone for one week and stop.</p><p>Doctors also remind teenagers that energy drinks are not a substitute for sleep. Short-term alertness often hides longer-term tiredness that appears during exams.</p><p>Schools that start later in the morning sometimes report better attendance and mood. Sleep science increasingly influences education policy debates.</p><p>Tracking habits in a simple weekly checklist turns vague intentions into visible routines.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "How are healthy habits built?",
       "options": [
-        "Healthy Habits",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "From small actions repeated over time",
+        "From one perfect day only",
+        "From ignoring sleep",
+        "From midnight scrolling"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "What is linked with weaker morning concentration?",
       "options": [
-        "Nobody is mentioned",
-        "Small habits beat sudden big changes",
-        "This detail is not in the text",
-        "The opposite happened"
+        "Short sleep",
+        "Drinking water",
+        "Short walks",
+        "Eating fruit"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "What may make teenagers tired despite long time in bed?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Small habits beat sudden big changes",
-        "Nothing matches"
+        "Phone scrolling after midnight",
+        "Fixed bedtimes",
+        "Family dinners",
+        "Activity breaks"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "How can schools help?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Small habits beat sudden big changes"
+        "Activity breaks and healthier canteen choices",
+        "Longer night exams",
+        "More sugary snacks only",
+        "Banning all water"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "What family supports are mentioned?",
       "options": [
-        "Small habits beat sudden big changes",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Eating together and limiting late screens",
+        "No routines",
+        "Extreme diets only",
+        "Removing all exercise"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "Why are extreme diets rarely useful here?",
       "options": [
-        "Only maths appears",
-        "Small habits beat sudden big changes",
-        "Nothing matches",
-        "The text is empty"
+        "They are rarely sustainable",
+        "They always work forever",
+        "Doctors require them daily",
+        "They replace sleep"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "What realistic plan is suggested?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Small habits beat sudden big changes",
-        "Nothing matches"
+        "A short walk, fruit instead of sugary snacks, fixed bedtime",
+        "No sleep for a week",
+        "Only intense exercise suddenly",
+        "Skipping all meals"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "What improves with steady habits?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Small habits beat sudden big changes"
+        "Mood, energy and long-term focus",
+        "Only phone battery",
+        "Only exam fees",
+        "Nothing"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "What matters more than perfection?",
       "options": [
-        "Small habits beat sudden big changes",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Progress",
+        "Looking fit only",
+        "Midnight scrolling",
+        "Extreme change"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "Small habits beat sudden big changes",
-        "Nothing matches",
-        "The text is empty"
+        "Healthy Habits",
+        "Bank Fraud",
+        "Lost Keys",
+        "Silent Movies"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

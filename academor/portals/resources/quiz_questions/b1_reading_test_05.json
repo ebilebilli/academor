@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "B1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Travel apps help users compare hotel prices quickly, but reviews can be fake.</p><p>Travellers should check recent guest photos and download offline maps.</p><p>Free apps show more ads, so paid plans may feel clearer.</p><p>Share live location with family and talk to locals, not only screens.</p>",
+  "shared_passage": "<p>Travel apps have become everyday tools for people who move between cities or countries. With a few taps, travellers can compare ticket prices, check hotel reviews and download offline maps.</p><p>Useful features include real-time transport updates and translation cameras that turn street signs into another language. Students on exchange programmes especially value apps that show safe walking routes at night.</p><p>Still, technology can create new problems. If the phone battery dies, a tourist without a paper map may feel lost. Some apps also collect personal data, so privacy settings matter.</p><p>Experienced travellers recommend a simple backup plan: screenshot key tickets, save the hotel address offline, and keep a small amount of local cash.</p><p>Apps make travel easier, but they do not replace common sense. Looking up from the screen, asking local people politely, and noticing surroundings remain essential skills.</p><p>Another risk is over-dependence on ratings. A hotel with perfect stars may still be noisy, and a lower-rated local guesthouse may offer warmer service. Reading recent reviews carefully is wiser than trusting a single number.</p><p>Before long trips, travellers should also tell family their route and keep emergency contacts offline. Digital tools help, but safety planning remains a human task.</p><p>Offline mode should be tested before departure, not after landing. A quick check at home prevents stressful surprises in places with weak signal.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "What can travellers do with travel apps?",
       "options": [
-        "Travel Apps",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "Compare tickets, check hotels and download maps",
+        "Control the weather",
+        "Replace all languages permanently",
+        "Build hotels"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "What feature helps with street signs?",
       "options": [
-        "Nobody is mentioned",
-        "Travel apps help users compare hotel prices quickly, but reviews can be fake",
-        "This detail is not in the text",
-        "The opposite happened"
+        "Translation cameras",
+        "Louder music",
+        "Battery drain only",
+        "Cash machines"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "Who especially values safe walking-route apps?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Travel apps help users compare hotel prices quickly, but reviews can be fake",
-        "Nothing matches"
+        "Students on exchange programmes",
+        "Only airline pilots",
+        "Only hotel owners",
+        "Nobody"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "What problem happens if the battery dies?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Travel apps help users compare hotel prices quickly, but reviews can be fake"
+        "A tourist without a paper map may feel lost",
+        "The city disappears",
+        "Hotels close",
+        "Apps become free forever"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "Why do privacy settings matter?",
       "options": [
-        "Travel apps help users compare hotel prices quickly, but reviews can be fake",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Some apps collect personal data",
+        "Apps never collect data",
+        "Phones cannot store addresses",
+        "Cash is digital only"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "What backup plan is recommended?",
       "options": [
-        "Only maths appears",
-        "Travel apps help users compare hotel prices quickly, but reviews can be fake",
-        "Nothing matches",
-        "The text is empty"
+        "Screenshot tickets, save hotel address offline, keep local cash",
+        "Carry no phone and no cash",
+        "Trust only memory",
+        "Delete all apps before travel"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "What skills remain essential?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Travel apps help users compare hotel prices quickly, but reviews can be fake",
-        "Nothing matches"
+        "Noticing surroundings and asking locals politely",
+        "Looking only at the screen",
+        "Ignoring people",
+        "Never using maps"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "Do apps replace common sense, according to the text?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Travel apps help users compare hotel prices quickly, but reviews can be fake"
+        "No",
+        "Yes completely",
+        "Only at night",
+        "Only for students"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "What transport feature is mentioned?",
       "options": [
-        "Travel apps help users compare hotel prices quickly, but reviews can be fake",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Real-time transport updates",
+        "Free private jets",
+        "Horse riding maps only",
+        "No transport information"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "Travel apps help users compare hotel prices quickly, but reviews can be fake",
-        "Nothing matches",
-        "The text is empty"
+        "Travel Apps",
+        "Lost Keys",
+        "Surprise Party",
+        "Silent Movies"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

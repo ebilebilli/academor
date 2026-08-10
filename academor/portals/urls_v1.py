@@ -32,6 +32,7 @@ from portals.views.notification_views import (
 )
 from portals.views.quiz_assignment_views import (
     TeacherMockAccessToggleView,
+    TeacherQuizAssignmentBulkView,
     TeacherQuizAssignmentToggleView,
 )
 from portals.views.quiz_views import (
@@ -163,6 +164,11 @@ urlpatterns = [
         'teacher/students/<int:student_pk>/',
         TeacherStudentProfileView.as_view(),
         name='teacher-student-profile',
+    ),
+    path(
+        'teacher/students/<int:student_pk>/quiz-access/bulk/',
+        TeacherQuizAssignmentBulkView.as_view(),
+        name='teacher-quiz-assignment-bulk',
     ),
     path(
         'teacher/students/<int:student_pk>/quiz-access/<int:quiz_pk>/',

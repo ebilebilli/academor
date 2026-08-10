@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A2 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Mina shares a flat with two students.</p><p>She cleans on Tuesdays and asks for quiet after 10 pm.</p><p>They cook simple meals and split the bills.</p><p>Once they lost the Wi-Fi password and wrote it on the fridge.</p>",
+  "shared_passage": "<p>When I started university, I moved into a shared flat with two other students, Lala and Orkhan. The flat has three bedrooms, a kitchen and a small balcony.</p><p>We made simple house rules in the first week. Everyone cleans the kitchen after cooking. We take turns buying shared food like rice, oil and tea. Quiet hours start at eleven at night.</p><p>At first it was difficult because Orkhan liked loud music. After a calm conversation he agreed to use headphones in the evening.</p><p>On Sundays we often cook dinner together and talk about our week. Sometimes we invite classmates for a film night.</p><p>Sharing a flat teaches responsibility. I have learned to plan money better and to respect other people’s space.</p><p>We also created a shared shopping list on our phones. Paying for shared items fairly has stopped small arguments about money and made flat life calmer.</p><p>When guests visit, we agree the night before so nobody is surprised. Clear communication has become the most important house rule of all.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "How many students share the flat?",
       "options": [
-        "Flat Share",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "Three",
+        "Two",
+        "Four",
+        "Five"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "What rooms does the flat have?",
       "options": [
-        "Nobody is mentioned",
-        "Mina shares a flat with two students",
-        "This detail is not in the text",
-        "The opposite happened"
+        "Three bedrooms, a kitchen and a balcony",
+        "Only one room",
+        "Five bathrooms only",
+        "A shop and an office"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "When do quiet hours start?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Mina shares a flat with two students",
-        "Nothing matches"
+        "At eleven at night",
+        "At six in the morning",
+        "Never",
+        "At noon"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "What problem happened at first?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Mina shares a flat with two students"
+        "Orkhan liked loud music",
+        "There was no kitchen",
+        "Lala left forever",
+        "The balcony fell"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "How was the problem solved?",
       "options": [
-        "Mina shares a flat with two students",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "He agreed to use headphones",
+        "They called the police",
+        "They moved out immediately",
+        "They broke the speakers"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "What do they often do on Sundays?",
       "options": [
-        "Only maths appears",
-        "Mina shares a flat with two students",
-        "Nothing matches",
-        "The text is empty"
+        "Cook dinner together",
+        "Have exams all day",
+        "Travel abroad",
+        "Clean another building"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "What shared food do they buy?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Mina shares a flat with two students",
-        "Nothing matches"
+        "Rice, oil and tea",
+        "Only pizza daily",
+        "Cars",
+        "Tickets"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "What has the writer learned?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Mina shares a flat with two students"
+        "To plan money and respect space",
+        "To ignore all rules",
+        "To sleep all day",
+        "To avoid classmates"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "Who are the flatmates?",
       "options": [
-        "Mina shares a flat with two students",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Lala and Orkhan",
+        "Only teachers",
+        "Anna and Marco only",
+        "Strangers from the market"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "Mina shares a flat with two students",
-        "Nothing matches",
-        "The text is empty"
+        "Flat Share",
+        "Bank Fraud",
+        "Space News",
+        "Silent Movies"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

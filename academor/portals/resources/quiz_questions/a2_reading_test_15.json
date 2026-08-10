@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A2 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Sevil joined an English club that meets on Wednesdays.</p><p>They play speaking games with a partner from Italy.</p><p>She writes short diary notes and felt shy at first.</p><p>Now she speaks more confidently and wants to join debates.</p>",
+  "shared_passage": "<p>Our school has an English language club that meets every Thursday after lessons. About fifteen students come each week. The club leader is a volunteer teacher called Mr. Samir.</p><p>We practise speaking through short role-plays, such as ordering food or asking for directions. Sometimes we watch a short video and discuss it in simple English.</p><p>Last month we prepared a mini drama about a family trip. I played the father and I had to learn twenty lines. It was difficult, but my friends helped me practise.</p><p>After the drama night, some shy students started speaking more. The club feels friendly and nobody laughs when someone makes a mistake.</p><p>I join because I want to feel confident in real conversations. Grades are important, but speaking practice helps me outside the classroom too.</p><p>Next month the club will invite a guest speaker who lived abroad. We will prepare questions in advance so that shy members can still take part.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "When does the club meet?",
       "options": [
-        "Language Club",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "Every Thursday after lessons",
+        "Every Monday morning",
+        "Only in exams week",
+        "Once a year"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "About how many students come?",
       "options": [
-        "Nobody is mentioned",
-        "Sevil joined an English club that meets on Wednesdays",
-        "This detail is not in the text",
-        "The opposite happened"
+        "Fifteen",
+        "Fifty",
+        "Two",
+        "One hundred"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "Who is the club leader?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Sevil joined an English club that meets on Wednesdays",
-        "Nothing matches"
+        "Mr. Samir",
+        "Ms. Gunel",
+        "Chef Nigar",
+        "Mrs. Sevinc"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "What speaking activities do they do?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Sevil joined an English club that meets on Wednesdays"
+        "Role-plays like ordering food",
+        "Only grammar tests",
+        "Silent reading only",
+        "Maths problems"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "What did they prepare last month?",
       "options": [
-        "Sevil joined an English club that meets on Wednesdays",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "A mini drama about a family trip",
+        "A sports day only",
+        "A cooking exam",
+        "A bank project"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "What role did the writer play?",
       "options": [
-        "Only maths appears",
-        "Sevil joined an English club that meets on Wednesdays",
-        "Nothing matches",
-        "The text is empty"
+        "The father",
+        "A tree",
+        "The teacher",
+        "A bus driver"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "How many lines did the writer learn?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Sevil joined an English club that meets on Wednesdays",
-        "Nothing matches"
+        "Twenty",
+        "Two",
+        "Two hundred",
+        "None"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "What changed after drama night?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Sevil joined an English club that meets on Wednesdays"
+        "Shy students spoke more",
+        "The club closed",
+        "Everyone left school",
+        "Mistakes were punished"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "Why does the writer join?",
       "options": [
-        "Sevil joined an English club that meets on Wednesdays",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "To feel confident in real conversations",
+        "Only to get free food",
+        "To avoid all English",
+        "To sleep after school"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "Sevil joined an English club that meets on Wednesdays",
-        "Nothing matches",
-        "The text is empty"
+        "Language Club",
+        "Bank Fraud",
+        "Space News",
+        "Silent Movies"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

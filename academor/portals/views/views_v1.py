@@ -70,6 +70,7 @@ from portals.utils.queries import (
     get_teacher_student_quiz_results,
     get_teacher_student_scores,
     group_scores_by_day,
+    quiz_result_row_as_score_row,
     resolve_scores_view_param,
     split_score_rows_by_source,
     split_student_quiz_results,
@@ -329,7 +330,7 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
     tab_panel_template_name = 'portals/includes/teacher_student_profile_tab_panel.html'
     page_fragment_template_name = 'portals/includes/teacher_student_profile_page.html'
 
-    def _build_profile_state(self, request, profile, student):
+    def _build_profile_state(self, request, profile, student, *, with_back_link=True):
         from portals.utils.teacher_access import get_teacher_group
 
         student_pk = student.pk
@@ -347,14 +348,17 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
             profile_active_group_id = from_group_id
 
         if profile_active_group_id and len(profile_groups) > 1:
-            group = get_teacher_group(profile.pk, profile_active_group_id)
-            if group:
-                from_group_id = profile_active_group_id
-                back_url = reverse(
-                    'portals:teacher-group-detail',
-                    kwargs={'pk': profile_active_group_id},
-                )
-                back_label = group.name
+            from_group_id = profile_active_group_id
+            if with_back_link:
+                # Only the full page renders the breadcrumb, so tab fragments
+                # skip loading the group just to read its name.
+                group = get_teacher_group(profile.pk, profile_active_group_id)
+                if group:
+                    back_url = reverse(
+                        'portals:teacher-group-detail',
+                        kwargs={'pk': profile_active_group_id},
+                    )
+                    back_label = group.name
 
         group_service_codes = None
         if profile_active_group_id and len(profile_groups) > 1:
@@ -390,17 +394,14 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
         group_service_codes = state['group_service_codes']
 
         quiz_results = get_teacher_student_quiz_results(profile.pk, student_pk)
-        scores = get_teacher_student_scores(profile.pk, student_pk)
-
         if group_service_codes is not None:
             quiz_results = filter_teacher_profile_rows_by_group(
                 quiz_results,
                 group_service_codes,
             )
-            scores = filter_teacher_profile_rows_by_group(
-                scores,
-                group_service_codes,
-            )
+        # Score rows are the same results reshaped, so reuse them instead of
+        # re-running (and re-serializing) the identical query.
+        scores = [quiz_result_row_as_score_row(row) for row in quiz_results]
 
         manual_quiz_results, auto_quiz_results = split_student_quiz_results(quiz_results)
         daily_score_history = group_scores_by_day(scores)
@@ -431,6 +432,7 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
         from portals.utils.quiz_assignments import (
             get_teacher_student_mock_access_rows,
             get_teacher_student_quiz_access_rows,
+            quiz_access_control_count,
         )
         from portals.utils.ielts_mock_test import get_student_mock_exam_programs
 
@@ -453,7 +455,7 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
         quiz_access_count = 0
         try:
             quiz_access_categories = get_teacher_student_quiz_access_rows(profile.pk, student_pk)
-            quiz_access_count = sum(len(cat.get('quizzes') or []) for cat in quiz_access_categories)
+            quiz_access_count = quiz_access_control_count(quiz_access_categories)
         except Exception:
             logging.getLogger('portals.quiz_assignments').exception(
                 'Failed to build quiz access rows for teacher=%s student=%s',
@@ -507,7 +509,7 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
             serialize_mock_attempt_summaries,
         )
 
-        state = self._build_profile_state(request, profile, student)
+        state = self._build_profile_state(request, profile, student, with_back_link=False)
         student_pk = state['student_pk']
         profile_groups = state['profile_groups']
         profile_active_group_id = state['profile_active_group_id']
@@ -568,13 +570,14 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
             from portals.utils.quiz_assignments import (
                 get_teacher_student_mock_access_rows,
                 get_teacher_student_quiz_access_rows,
+                quiz_access_control_count,
             )
 
             quiz_access_categories = []
             quiz_access_count = 0
             try:
                 quiz_access_categories = get_teacher_student_quiz_access_rows(profile.pk, student_pk)
-                quiz_access_count = sum(len(cat.get('quizzes') or []) for cat in quiz_access_categories)
+                quiz_access_count = quiz_access_control_count(quiz_access_categories)
             except Exception:
                 logging.getLogger('portals.quiz_assignments').exception(
                     'Failed to build quiz access rows for teacher=%s student=%s',

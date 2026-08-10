@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A2 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Students cleaned the beach and filled twelve bags.</p><p>They wore gloves and worked in small teams.</p><p>They took a group photo and felt tired but proud.</p><p>They want to volunteer again.</p>",
+  "shared_passage": "<p>Our town organised a Volunteer Day in April. Students and adults cleaned parks, painted old benches and collected plastic bottles.</p><p>I joined a group that cleaned the riverside path. We wore gloves and carried big bags. In three hours we filled twelve bags with rubbish.</p><p>A local cafe gave free tea to volunteers at midday. People took photos and shared them online to encourage others.</p><p>In the afternoon we planted ten small trees near the playground. A gardener showed us how to water them correctly.</p><p>At the end of the day I felt useful and tired. Volunteer Day showed me that small actions can improve a place for everyone.</p><p>Our teacher later asked us to write a short report about Volunteer Day. I wrote that teamwork made the riverside cleaner and made strangers talk like neighbours.</p><p>Next year I want to lead a small team on Volunteer Day. Leading would help me practise organisation skills for school projects too.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "When was Volunteer Day?",
       "options": [
-        "Volunteer Day",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "In April",
+        "In December",
+        "Every Monday forever",
+        "Last night only"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "What did the writer’s group clean?",
       "options": [
-        "Nobody is mentioned",
-        "Students cleaned the beach and filled twelve bags",
-        "This detail is not in the text",
-        "The opposite happened"
+        "The riverside path",
+        "A bank office",
+        "The airport runway",
+        "School exams"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "How many bags did they fill?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Students cleaned the beach and filled twelve bags",
-        "Nothing matches"
+        "Twelve",
+        "Two",
+        "One hundred",
+        "None"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "How long did the cleaning take?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Students cleaned the beach and filled twelve bags"
+        "Three hours",
+        "Ten minutes",
+        "One week",
+        "All month"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "What did the cafe give volunteers?",
       "options": [
-        "Students cleaned the beach and filled twelve bags",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Free tea",
+        "Free phones",
+        "Free tickets abroad",
+        "Nothing"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "How many trees did they plant?",
       "options": [
-        "Only maths appears",
-        "Students cleaned the beach and filled twelve bags",
-        "Nothing matches",
-        "The text is empty"
+        "Ten",
+        "One",
+        "Fifty",
+        "Zero"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "Who showed them how to water the trees?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Students cleaned the beach and filled twelve bags",
-        "Nothing matches"
+        "A gardener",
+        "A pilot",
+        "A banker",
+        "Nobody"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "How did the writer feel at the end?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Students cleaned the beach and filled twelve bags"
+        "Useful and tired",
+        "Angry and bored",
+        "Afraid",
+        "Indifferent"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "What else did volunteers do in town?",
       "options": [
-        "Students cleaned the beach and filled twelve bags",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Painted benches and collected bottles",
+        "Closed all parks",
+        "Built a stadium in one hour",
+        "Cancelled school"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "Students cleaned the beach and filled twelve bags",
-        "Nothing matches",
-        "The text is empty"
+        "Volunteer Day",
+        "Bank Fraud",
+        "Space News",
+        "Silent Movies"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

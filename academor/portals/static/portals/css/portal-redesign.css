@@ -2077,6 +2077,25 @@ a.t-stat:hover { color: var(--color-text); }
   opacity: 0.55;
 }
 
+.portal-quiz-access-category-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--portal-border, #d9e2ec);
+  border-radius: 12px;
+  background: var(--portal-surface, #fff);
+}
+
+.portal-quiz-access-category-toggle.is-inactive {
+  opacity: 0.72;
+}
+
+.portal-quiz-access-category-toggle.is-partial {
+  border-style: dashed;
+}
+
 .portal-quiz-access-toggle {
   cursor: pointer;
   width: 2.5rem;

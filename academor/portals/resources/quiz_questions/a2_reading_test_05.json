@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A2 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Nigar took a morning train from Baku to Ganja.</p><p>She had a window seat and read a magazine.</p><p>She ate sandwiches during a ten-minute delay.</p><p>She arrived in the afternoon.</p>",
+  "shared_passage": "<p>Last weekend my cousin and I took a train from Baku to Gabala. We bought tickets online the night before and arrived at the station early.</p><p>The train left at nine o’clock. We found seats by the window and watched the countryside change from city buildings to green hills. A ticket inspector checked our tickets after thirty minutes.</p><p>We shared sandwiches and tea from a thermos. An old woman opposite us told stories about Gabala in the past. The journey lasted about four hours.</p><p>When we arrived, it was raining lightly. We took a short taxi ride to our aunt’s house. She cooked a big dinner and we felt welcome.</p><p>On Sunday evening we returned by train again. I slept most of the way home. It was a simple trip, but I enjoyed every part of it.</p><p>During the trip I wrote short notes in my diary about the hills and villages. My cousin took photos from the window, and later we compared our favourite moments from the journey.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "Where did they travel?",
       "options": [
-        "Train Trip",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "From Baku to Gabala",
+        "From Gabala to London",
+        "Only inside one station",
+        "From Baku to the airport only"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "How did they buy tickets?",
       "options": [
-        "Nobody is mentioned",
-        "Nigar took a morning train from Baku to Ganja",
-        "This detail is not in the text",
-        "The opposite happened"
+        "Online the night before",
+        "On the train without tickets",
+        "From a friend for free",
+        "They did not need tickets"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "What time did the train leave?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Nigar took a morning train from Baku to Ganja",
-        "Nothing matches"
+        "At nine o’clock",
+        "At noon",
+        "At midnight",
+        "At five in the evening"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "Who checked the tickets?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Nigar took a morning train from Baku to Ganja"
+        "A ticket inspector",
+        "The aunt",
+        "A taxi driver",
+        "Nobody"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "How long was the journey?",
       "options": [
-        "Nigar took a morning train from Baku to Ganja",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "About four hours",
+        "Twenty minutes",
+        "One day",
+        "Ten hours"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "What was the weather like on arrival?",
       "options": [
-        "Only maths appears",
-        "Nigar took a morning train from Baku to Ganja",
-        "Nothing matches",
-        "The text is empty"
+        "Light rain",
+        "Heavy snow",
+        "Very hot and dry",
+        "A sandstorm"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "How did they get to their aunt’s house?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Nigar took a morning train from Baku to Ganja",
-        "Nothing matches"
+        "By short taxi ride",
+        "By plane",
+        "By walking for five hours",
+        "By boat"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "What did the aunt do?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Nigar took a morning train from Baku to Ganja"
+        "Cooked a big dinner",
+        "Closed the door",
+        "Left town",
+        "Sold the house"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "What did the writer do on the return trip?",
       "options": [
-        "Nigar took a morning train from Baku to Ganja",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Slept most of the way",
+        "Drove the train",
+        "Walked home",
+        "Stayed in Gabala forever"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "Nigar took a morning train from Baku to Ganja",
-        "Nothing matches",
-        "The text is empty"
+        "Train Trip",
+        "Bank Fraud",
+        "Silent Movies",
+        "Space News"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

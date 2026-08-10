@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A2 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Neighbours started a garden project and planted tomatoes.</p><p>They water every morning and built a small fence.</p><p>Children help too, though some plants died at first.</p><p>They learned about soil and hope for a big harvest.</p>",
+  "shared_passage": "<p>Our class started a garden project behind the school in March. Each group is responsible for one vegetable bed. My group grows tomatoes and herbs.</p><p>Twice a week we water the plants and remove weeds. We keep a simple notebook with dates, weather notes and plant growth.</p><p>In May some plants looked weak because there was little rain. Our teacher suggested natural compost, and after two weeks the plants looked stronger.</p><p>Parents visited on Open Day and tasted a small herb salad we made. They asked many questions and took photos.</p><p>The project taught us patience. Plants do not grow in one day, and careful work brings better results than rushing.</p><p>We also measured plant height every Friday and drew simple charts. Seeing growth on paper made the science feel practical, not only theoretical.</p><p>In June we harvested the first tomatoes and shared them with another class. The taste was better than supermarket tomatoes, and that surprised many students.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "When did the garden project start?",
       "options": [
-        "Garden Project",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "In March",
+        "In December",
+        "In July only",
+        "Last week suddenly"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "What does the writer’s group grow?",
       "options": [
-        "Nobody is mentioned",
-        "Neighbours started a garden project and planted tomatoes",
-        "This detail is not in the text",
-        "The opposite happened"
+        "Tomatoes and herbs",
+        "Only flowers",
+        "Trees for wood",
+        "Nothing"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "How often do they water the plants?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Neighbours started a garden project and planted tomatoes",
-        "Nothing matches"
+        "Twice a week",
+        "Every hour",
+        "Once a year",
+        "Never"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "What do they write in the notebook?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Neighbours started a garden project and planted tomatoes"
+        "Dates, weather and growth",
+        "Only jokes",
+        "Exam answers",
+        "Shopping lists"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "Why did some plants look weak in May?",
       "options": [
-        "Neighbours started a garden project and planted tomatoes",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Little rain",
+        "Too much snow",
+        "Students ate them all",
+        "No soil"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "What did the teacher suggest?",
       "options": [
-        "Only maths appears",
-        "Neighbours started a garden project and planted tomatoes",
-        "Nothing matches",
-        "The text is empty"
+        "Natural compost",
+        "Cutting all plants",
+        "Closing the garden",
+        "Using less water forever"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "What happened on Open Day?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Neighbours started a garden project and planted tomatoes",
-        "Nothing matches"
+        "Parents tasted a herb salad",
+        "The garden was destroyed",
+        "Nobody came",
+        "It snowed inside"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "What did the project teach?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Neighbours started a garden project and planted tomatoes"
+        "Patience",
+        "How to rush everything",
+        "How to avoid work",
+        "How to hate plants"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "Where is the garden?",
       "options": [
-        "Neighbours started a garden project and planted tomatoes",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Behind the school",
+        "On the roof of a bank",
+        "At the airport",
+        "In another city"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "Neighbours started a garden project and planted tomatoes",
-        "Nothing matches",
-        "The text is empty"
+        "Garden Project",
+        "Bank Fraud",
+        "Space News",
+        "Silent Movies"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

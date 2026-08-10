@@ -5,16 +5,16 @@
   "service": "general_english",
   "category_name": "A1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Kamran goes to Central Park.</p><p>There are many trees.</p><p>He sits on a bench and feeds the birds.</p><p>He runs on the path near a small lake.</p><p>He buys ice cream.</p><p>He goes home at five.</p>",
+  "shared_passage": "<p>Near my home there is a big city park. It has tall trees, a small lake and a playground for children.</p><p>In the morning many people walk or run there. Old people sit on benches and talk. Children play on the swings and the slide.</p><p>There is a little cafe next to the lake. You can buy ice cream and juice. In spring the flowers are beautiful and colourful.</p><p>On Sundays my family goes to the park after lunch. We take a ball and play for one hour. Then we feed the ducks near the water.</p><p>The park is clean and quiet. I feel happy when I go there.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "Which park does Kamran visit?",
+      "question": "What is near the writer’s home?",
       "options": [
-        "Central Park",
-        "No park",
-        "A school yard only",
-        "An airport"
+        "A big city park",
+        "An airport",
+        "A factory",
+        "A hospital only"
       ],
       "answer": 0
     },
@@ -22,100 +22,100 @@
       "id": 2,
       "question": "What is in the park?",
       "options": [
-        "Only planes",
-        "Many trees",
+        "Tall trees, a lake and a playground",
         "Only cars",
-        "Only shops"
+        "Only shops",
+        "Only houses"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 3,
+      "question": "What do old people do there?",
+      "options": [
+        "Play football",
+        "Sit on benches and talk",
+        "Drive cars",
+        "Sell tickets"
       ],
       "answer": 1
     },
     {
-      "id": 3,
-      "question": "Where does he sit?",
-      "options": [
-        "In a boat only",
-        "At a bank desk",
-        "On a bench",
-        "On the bus roof"
-      ],
-      "answer": 2
-    },
-    {
       "id": 4,
-      "question": "What does he feed?",
+      "question": "What can you buy at the cafe?",
       "options": [
-        "The dogs only",
-        "The cats only",
-        "Nobody",
-        "The birds"
+        "Ice cream and juice",
+        "Cars",
+        "Books only",
+        "Clothes"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Where does he run?",
+      "question": "When are the flowers beautiful?",
       "options": [
-        "On the path",
-        "On the motorway",
-        "In the classroom",
-        "At the market"
+        "In spring",
+        "Only in winter",
+        "Never",
+        "Only at night"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "What is near the path?",
+      "question": "When does the family go to the park?",
       "options": [
-        "A stadium only",
-        "A small lake",
-        "A hospital",
-        "A factory"
-      ],
-      "answer": 1
-    },
-    {
-      "id": 7,
-      "question": "What does he buy?",
-      "options": [
-        "Books",
-        "Shoes",
-        "Ice cream",
-        "Tickets"
-      ],
-      "answer": 2
-    },
-    {
-      "id": 8,
-      "question": "When does he go home?",
-      "options": [
-        "At midnight",
-        "At 8 am",
-        "At noon only",
-        "At five"
-      ],
-      "answer": 3
-    },
-    {
-      "id": 9,
-      "question": "Who is the text about?",
-      "options": [
-        "Kamran",
-        "Maryam",
-        "Sara",
-        "Emil"
+        "On Sundays after lunch",
+        "Every midnight",
+        "Only on Mondays before school",
+        "Never"
       ],
       "answer": 0
     },
     {
-      "id": 10,
-      "question": "Best title?",
+      "id": 7,
+      "question": "How long do they play?",
       "options": [
-        "Pets",
-        "City Park",
-        "Exam Stress",
-        "First Job"
+        "Ten minutes",
+        "One hour",
+        "All day",
+        "One minute"
       ],
       "answer": 1
+    },
+    {
+      "id": 8,
+      "question": "What do they feed?",
+      "options": [
+        "The ducks",
+        "The cats at school",
+        "The dogs at the bank",
+        "Nothing"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 9,
+      "question": "How is the park?",
+      "options": [
+        "Dirty and noisy",
+        "Clean and quiet",
+        "Closed always",
+        "Very dark"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 10,
+      "question": "What is the best title?",
+      "options": [
+        "City Park",
+        "Lost Keys",
+        "Bank Fraud",
+        "Exam Stress"
+      ],
+      "answer": 0
     }
   ]
 }

@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "B1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Learning a second language opens job and travel opportunities.</p><p>Short daily practice beats long rare sessions.</p><p>Fear of mistakes stops many learners, so conversation clubs help.</p><p>Apps build vocabulary but not speaking alone; progress is uneven but real.</p>",
+  "shared_passage": "<p>Learning a second language opens doors to study, travel and work. It also trains the brain to notice patterns and switch between different ways of expressing ideas.</p><p>Many learners focus only on grammar rules and forget real communication. Short daily conversations, even five minutes with a partner, often build fluency faster than long silent textbook weeks.</p><p>Mistakes are part of progress. Students who fear errors may stay quiet and practise less. Supportive classrooms treat mistakes as information, not as failure.</p><p>Technology offers podcasts, language apps and online tutors. Still, human interaction remains powerful because people adapt speed, explain meaning and encourage speakers.</p><p>A second language is a long journey. Consistency matters more than talent. Learners who practise a little every day usually go further than those who study intensively once a month.</p><p>Travel and films in the target language can support classroom learning. Hearing natural speed helps learners accept that understanding every word is not required for successful communication.</p><p>Communities with language exchange cafes give free practice opportunities. A friendly conversation over tea can be as useful as another grammar worksheet.</p><p>Setting a personal goal — for example, ordering food in the new language — turns study into real life. Meaningful goals keep motivation alive.</p><p>Recording yourself speaking for one minute a day creates clear evidence of progress and makes improvement visible over months.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "What opportunities can a second language open?",
       "options": [
-        "Second Languages",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "Study, travel and work",
+        "Only silent reading forever",
+        "Only grammar tests without speaking",
+        "No real-world use"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "What do many learners forget when focusing only on grammar?",
       "options": [
-        "Nobody is mentioned",
-        "Learning a second language opens job and travel opportunities",
-        "This detail is not in the text",
-        "The opposite happened"
+        "Real communication",
+        "All vocabulary forever",
+        "How to write numbers",
+        "School timetables"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "What often builds fluency faster?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Learning a second language opens job and travel opportunities",
-        "Nothing matches"
+        "Short daily conversations",
+        "Long silent textbook weeks only",
+        "Avoiding partners",
+        "Studying once a month only"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "How should supportive classrooms treat mistakes?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Learning a second language opens job and travel opportunities"
+        "As information, not failure",
+        "As a reason to stay quiet forever",
+        "As proof of no talent",
+        "As unimportant"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "What technology tools are mentioned?",
       "options": [
-        "Learning a second language opens job and travel opportunities",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Podcasts, apps and online tutors",
+        "Only paper dictionaries from 1800",
+        "Only classroom chalk",
+        "No technology"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "Why is human interaction powerful?",
       "options": [
-        "Only maths appears",
-        "Learning a second language opens job and travel opportunities",
-        "Nothing matches",
-        "The text is empty"
+        "People adapt speed, explain and encourage",
+        "Humans never make mistakes",
+        "Apps cannot exist",
+        "Textbooks talk back"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "What matters more than talent?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Learning a second language opens job and travel opportunities",
-        "Nothing matches"
+        "Consistency",
+        "Studying once a month",
+        "Fear of errors",
+        "Avoiding practice"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "Who usually progresses further?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Learning a second language opens job and travel opportunities"
+        "Learners who practise a little every day",
+        "Those who study intensively once a month only",
+        "Those who never speak",
+        "Those who fear all mistakes and stop"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "What brain benefit is mentioned?",
       "options": [
-        "Learning a second language opens job and travel opportunities",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Noticing patterns and switching expression styles",
+        "Forgetting the first language automatically",
+        "Sleeping less",
+        "Avoiding travel"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "Learning a second language opens job and travel opportunities",
-        "Nothing matches",
-        "The text is empty"
+        "Second Languages",
+        "Lost Keys",
+        "Airport Delay",
+        "Silent Movies"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

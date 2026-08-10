@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Kenan meets his friend Rashad in the park.</p><p>They play basketball on Saturday.</p><p>After the game they eat ice cream.</p><p>They talk about films.</p><p>Kenan goes home at 6 pm.</p><p>He is happy.</p>",
+  "shared_passage": "<p>My best friend is called Elvin. He is eleven years old and he lives next to my house in Mingachevir.</p><p>We go to the same school and we sit together in class. Elvin is good at maths and he helps me with difficult numbers.</p><p>After school we ride our bikes in the park. Sometimes we play football with other children. On rainy days we stay inside and draw pictures.</p><p>Elvin has a small dog called Rocky. I like playing with Rocky because he is funny and fast.</p><p>At the weekend we visit each other’s homes. I am happy because I have a kind friend.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "Who is Kenan’s friend?",
+      "question": "What is the friend’s name?",
       "options": [
-        "Rashad",
-        "Omar",
         "Ali",
-        "Tom"
-      ],
-      "answer": 0
-    },
-    {
-      "id": 2,
-      "question": "Where do they meet?",
-      "options": [
-        "At the airport",
-        "In the park",
-        "At the hospital",
-        "At the bank"
+        "Elvin",
+        "Kamran",
+        "Orkhan"
       ],
       "answer": 1
     },
     {
-      "id": 3,
-      "question": "What do they play?",
+      "id": 2,
+      "question": "How old is Elvin?",
       "options": [
-        "Chess only",
-        "Football only",
-        "Basketball",
-        "Tennis only"
+        "Nine",
+        "Ten",
+        "Eleven",
+        "Twelve"
       ],
       "answer": 2
     },
     {
-      "id": 4,
-      "question": "Which day?",
+      "id": 3,
+      "question": "Where does Elvin live?",
       "options": [
-        "Monday",
-        "Tuesday",
-        "Friday",
-        "Saturday"
+        "Far away",
+        "Next to the writer’s house",
+        "In another country",
+        "At school"
       ],
-      "answer": 3
+      "answer": 1
+    },
+    {
+      "id": 4,
+      "question": "What is Elvin good at?",
+      "options": [
+        "Art only",
+        "Maths",
+        "Cooking",
+        "Driving"
+      ],
+      "answer": 1
     },
     {
       "id": 5,
-      "question": "What do they eat after the game?",
+      "question": "What do they do after school?",
       "options": [
-        "Ice cream",
-        "Soup",
-        "Fish",
-        "Salad"
+        "Sleep only",
+        "Ride bikes in the park",
+        "Go to work",
+        "Watch the news"
       ],
-      "answer": 0
+      "answer": 1
     },
     {
       "id": 6,
-      "question": "What do they talk about?",
+      "question": "What do they do on rainy days?",
       "options": [
-        "Planes only",
-        "Films",
-        "Banks",
-        "Taxes"
+        "Swim",
+        "Stay inside and draw",
+        "Play outside football",
+        "Go shopping"
       ],
       "answer": 1
     },
     {
       "id": 7,
-      "question": "When does Kenan go home?",
+      "question": "What is the dog’s name?",
       "options": [
-        "At 8 am",
-        "At noon",
-        "At 6 pm",
-        "At midnight"
+        "Mimi",
+        "Rocky",
+        "Tom",
+        "Max"
       ],
-      "answer": 2
+      "answer": 1
     },
     {
       "id": 8,
-      "question": "How does Kenan feel?",
+      "question": "Where do they live?",
       "options": [
-        "Sad",
-        "Angry",
-        "Afraid",
-        "Happy"
-      ],
-      "answer": 3
-    },
-    {
-      "id": 9,
-      "question": "Who is the text about?",
-      "options": [
-        "Kenan",
-        "Sara",
-        "Lina",
-        "Nara"
+        "In Mingachevir",
+        "In London",
+        "In Paris",
+        "In Rome"
       ],
       "answer": 0
     },
     {
-      "id": 10,
-      "question": "Best title?",
+      "id": 9,
+      "question": "When do they visit each other’s homes?",
       "options": [
-        "City Noise",
-        "Friends",
-        "Doctor Visit",
-        "Remote Work"
+        "Every night",
+        "At the weekend",
+        "Never",
+        "Only in winter"
       ],
       "answer": 1
+    },
+    {
+      "id": 10,
+      "question": "What is the best title?",
+      "options": [
+        "Friends",
+        "Airport Delay",
+        "City Noise",
+        "Bank Fraud"
+      ],
+      "answer": 0
     }
   ]
 }

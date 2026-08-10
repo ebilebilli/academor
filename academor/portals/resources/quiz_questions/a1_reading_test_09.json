@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Today the weather is sunny for Farid.</p><p>It is 25 degrees.</p><p>He wears a T-shirt.</p><p>He goes to the park.</p><p>There is no wind.</p><p>Tomorrow it will be rainy, so he takes an umbrella.</p><p>Farid likes the sun.</p>",
+  "shared_passage": "<p>Today the weather in Baku is sunny and warm. The sky is blue and there are no clouds. People walk in the park and children play football.</p><p>Yesterday it was rainy and cold. I took my umbrella to school. The streets were wet and the buses were slow.</p><p>In winter it is often windy here. I wear a coat, a hat and warm shoes. Sometimes we see a little snow.</p><p>In summer it is very hot. We drink a lot of water and stay in the shade at noon. In the evening it is nicer.</p><p>I like sunny days best because I can ride my bike and visit my friends outside.</p>",
   "questions": [
     {
       "id": 1,
       "question": "What is the weather today?",
       "options": [
-        "Sunny",
+        "Rainy",
+        "Sunny and warm",
         "Snowy",
-        "Stormy",
-        "Foggy only"
+        "Foggy"
       ],
-      "answer": 0
+      "answer": 1
     },
     {
       "id": 2,
-      "question": "What is the temperature?",
+      "question": "What was the weather yesterday?",
       "options": [
-        "0 degrees",
-        "25 degrees",
-        "5 degrees",
-        "40 degrees"
+        "Sunny",
+        "Rainy and cold",
+        "Hot",
+        "Windy and dry"
       ],
       "answer": 1
     },
     {
       "id": 3,
-      "question": "What does Farid wear?",
+      "question": "What did the writer take to school yesterday?",
       "options": [
-        "Boots only",
-        "A scarf only",
-        "A T-shirt",
-        "A heavy coat only"
+        "A ball",
+        "An umbrella",
+        "A bike",
+        "A kite"
       ],
-      "answer": 2
+      "answer": 1
     },
     {
       "id": 4,
-      "question": "Where does he go?",
+      "question": "What is winter often like?",
       "options": [
-        "To the hospital",
-        "To the bank",
-        "To the airport",
-        "To the park"
+        "Always hot",
+        "Often windy",
+        "Always dry",
+        "Never cold"
       ],
-      "answer": 3
+      "answer": 1
     },
     {
       "id": 5,
-      "question": "Is there wind today?",
+      "question": "What does the writer wear in winter?",
       "options": [
-        "No wind",
-        "Strong wind",
-        "A hurricane",
-        "Only at night"
+        "A coat, a hat and warm shoes",
+        "Only a T-shirt",
+        "Swim clothes",
+        "Nothing"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "What will tomorrow be like?",
+      "question": "What is summer like?",
       "options": [
-        "Hot and dry only",
-        "Rainy",
-        "Sunny again only",
-        "Snowy"
+        "Very hot",
+        "Very cold",
+        "Always rainy",
+        "Always snowy"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 7,
+      "question": "What do they do at noon in summer?",
+      "options": [
+        "Stay in the shade",
+        "Play in the sun only",
+        "Go skiing",
+        "Make a snowman"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 8,
+      "question": "Which days does the writer like best?",
+      "options": [
+        "Rainy days",
+        "Sunny days",
+        "Snowy nights only",
+        "Foggy mornings"
       ],
       "answer": 1
     },
     {
-      "id": 7,
-      "question": "What does he take for tomorrow?",
-      "options": [
-        "A cake",
-        "A ticket",
-        "An umbrella",
-        "A bike"
-      ],
-      "answer": 2
-    },
-    {
-      "id": 8,
-      "question": "What does Farid like?",
-      "options": [
-        "Heavy rain",
-        "Cold wind",
-        "Dark clouds only",
-        "The sun"
-      ],
-      "answer": 3
-    },
-    {
       "id": 9,
-      "question": "Who is the text about?",
+      "question": "Where do people walk today?",
       "options": [
-        "Farid",
-        "Nina",
-        "Sara",
-        "Lina"
+        "In the park",
+        "In the snow",
+        "In a museum only",
+        "At the airport"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Best title?",
+      "question": "What is the best title?",
       "options": [
-        "Library",
         "Weather",
-        "First Job",
-        "Food Delivery"
+        "Bank Fraud",
+        "Exam Stress",
+        "Lost Keys"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

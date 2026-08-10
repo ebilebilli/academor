@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A2 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Farida ordered headphones from an online shop.</p><p>She waited three days but the box arrived damaged.</p><p>She called support and got a free replacement.</p><p>She left an honest review and now keeps order numbers.</p>",
+  "shared_passage": "<p>Last month I ordered a pair of running shoes from an online shop. The website showed good reviews and free delivery in three days.</p><p>I chose size 42 and paid by card. The next day I received an email with a tracking number. I checked the map every evening.</p><p>On the third day the parcel arrived, but the shoes were size 40. I felt disappointed and opened the shop’s help page.</p><p>I wrote a short message explaining the mistake and attached a photo of the box label. The next morning the shop replied and offered a free exchange.</p><p>One week later I received the correct size. Now I always double-check product details before I click “buy”. Online shopping is easy, but careful reading is important.</p><p>I left a polite review after the exchange arrived. Honest feedback helps other buyers, and it also encourages shops to check sizes more carefully before shipping.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "What did the writer order?",
       "options": [
-        "Online Shop",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "Running shoes",
+        "A laptop",
+        "Books",
+        "Food"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "What size did the writer choose?",
       "options": [
-        "Nobody is mentioned",
-        "Farida ordered headphones from an online shop",
-        "This detail is not in the text",
-        "The opposite happened"
+        "42",
+        "40",
+        "38",
+        "44"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "How long was free delivery promised?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Farida ordered headphones from an online shop",
-        "Nothing matches"
+        "Three days",
+        "One day",
+        "One month",
+        "Same hour"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "What size arrived first?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Farida ordered headphones from an online shop"
+        "40",
+        "42",
+        "38",
+        "44"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "How did the writer contact the shop?",
       "options": [
-        "Farida ordered headphones from an online shop",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Wrote a message with a photo",
+        "Visited a bank",
+        "Called the police",
+        "Did nothing"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "What did the shop offer?",
       "options": [
-        "Only maths appears",
-        "Farida ordered headphones from an online shop",
-        "Nothing matches",
-        "The text is empty"
+        "A free exchange",
+        "No help",
+        "Extra wrong shoes",
+        "A holiday"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "When did the correct size arrive?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Farida ordered headphones from an online shop",
-        "Nothing matches"
+        "One week later",
+        "The same night",
+        "Never",
+        "After one year"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "What does the writer do now before buying?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Farida ordered headphones from an online shop"
+        "Double-checks product details",
+        "Buys without reading",
+        "Orders five pairs always",
+        "Avoids all websites forever"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "How did the writer pay?",
       "options": [
-        "Farida ordered headphones from an online shop",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "By card",
+        "With cash on the street",
+        "With fruit",
+        "The shoes were free"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "Farida ordered headphones from an online shop",
-        "Nothing matches",
-        "The text is empty"
+        "Online Shop",
+        "Bank Fraud",
+        "Space News",
+        "Silent Movies"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

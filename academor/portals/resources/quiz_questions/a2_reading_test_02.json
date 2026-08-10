@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A2 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Jamal’s new neighbour is Mrs Park from Korea.</p><p>She moved in last Monday and brought homemade cookies.</p><p>Jamal helped carry boxes and they talked about the city.</p><p>She has many plants and invited him for tea.</p>",
+  "shared_passage": "<p>Last month a new family moved into the flat next to ours. Their name is the Hasanovs. There are three people: Mr. Hasanov, his wife and their daughter Nilay, who is fourteen.</p><p>On the first day they carried many boxes up the stairs. My father helped them with a heavy table. In the evening Mrs. Hasanov brought us homemade baklava to say thank you.</p><p>Nilay goes to the same school as me, but she is in a different class. We sometimes walk home together and talk about music and homework. She likes drawing and she wants to study design later.</p><p>The Hasanovs are quiet neighbours. They do not play loud music at night. On Sundays they clean the shared stairs with us.</p><p>I am happy they live next door. A good neighbour can make a building feel like a friendly place.</p><p>Sometimes Mrs. Hasanov asks my mother for advice about local shops and schools. The two families already feel comfortable with each other, and the building is friendlier than before.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "When did the new family move in?",
       "options": [
-        "New Neighbour",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "Last month",
+        "Last year",
+        "Yesterday only",
+        "Ten years ago"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "How many people are in the Hasanov family?",
       "options": [
-        "Nobody is mentioned",
-        "Jamal’s new neighbour is Mrs Park from Korea",
-        "This detail is not in the text",
-        "The opposite happened"
+        "Two",
+        "Three",
+        "Four",
+        "Five"
       ],
       "answer": 1
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "How old is Nilay?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Jamal’s new neighbour is Mrs Park from Korea",
-        "Nothing matches"
+        "Twelve",
+        "Fourteen",
+        "Sixteen",
+        "Eighteen"
       ],
-      "answer": 2
+      "answer": 1
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "How did the writer’s father help?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Jamal’s new neighbour is Mrs Park from Korea"
+        "He carried a heavy table",
+        "He painted the flat",
+        "He cooked dinner",
+        "He drove a truck abroad"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "What did Mrs. Hasanov bring?",
       "options": [
-        "Jamal’s new neighbour is Mrs Park from Korea",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Homemade baklava",
+        "A new TV",
+        "School books",
+        "Loud speakers"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "Do Nilay and the writer go to the same school?",
       "options": [
-        "Only maths appears",
-        "Jamal’s new neighbour is Mrs Park from Korea",
-        "Nothing matches",
-        "The text is empty"
+        "Yes",
+        "No",
+        "Only on Fridays",
+        "They study online only"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "What does Nilay like?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Jamal’s new neighbour is Mrs Park from Korea",
-        "Nothing matches"
+        "Drawing",
+        "Loud night music",
+        "Driving trucks",
+        "Banking"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "What do they do on Sundays?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Jamal’s new neighbour is Mrs Park from Korea"
+        "Clean the shared stairs",
+        "Have noisy parties",
+        "Travel to space",
+        "Close the building"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "How are the Hasanovs as neighbours?",
       "options": [
-        "Jamal’s new neighbour is Mrs Park from Korea",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Quiet",
+        "Very noisy every night",
+        "Never at home",
+        "Always angry"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "Jamal’s new neighbour is Mrs Park from Korea",
-        "Nothing matches",
-        "The text is empty"
+        "New Neighbour",
+        "Airport Delay",
+        "Bank Fraud",
+        "Space News"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

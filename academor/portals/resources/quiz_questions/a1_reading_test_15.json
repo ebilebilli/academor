@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Ramin is nine years old.</p><p>He has a birthday party at home.</p><p>Six friends come.</p><p>There is a chocolate cake.</p><p>He gets a football as a gift.</p><p>They play music games and take photos.</p><p>The party ends at nine.</p>",
+  "shared_passage": "<p>Last Saturday was my birthday. I turned twelve years old. In the morning my parents gave me a new blue bike.</p><p>In the afternoon my friends came to our flat. There were eight children at the party. We played games and listened to music.</p><p>My mother made a big chocolate cake with twelve candles. Everyone sang “Happy Birthday” and I blew out the candles.</p><p>I got books, a football and a red cap as presents. My grandmother gave me a warm jumper.</p><p>In the evening we ate pizza and cake. I was tired but very happy. It was a wonderful day.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "How old is Ramin?",
+      "question": "When was the birthday?",
       "options": [
-        "Nine",
-        "Six",
-        "Twelve",
-        "Fifteen"
+        "Last Saturday",
+        "Last Monday",
+        "Next week",
+        "Yesterday morning only"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Where is the party?",
+      "question": "How old did the writer turn?",
       "options": [
-        "At the bank",
-        "At home",
-        "At school only",
-        "At the airport"
-      ],
-      "answer": 1
-    },
-    {
-      "id": 3,
-      "question": "How many friends come?",
-      "options": [
-        "Twenty",
-        "Zero",
-        "Six",
-        "Two"
+        "Ten",
+        "Eleven",
+        "Twelve",
+        "Thirteen"
       ],
       "answer": 2
     },
     {
-      "id": 4,
-      "question": "What kind of cake is there?",
+      "id": 3,
+      "question": "What did the parents give in the morning?",
       "options": [
-        "No cake",
-        "Only fruit",
-        "Only bread",
-        "Chocolate cake"
+        "A new blue bike",
+        "A phone",
+        "A car",
+        "A dog"
       ],
-      "answer": 3
+      "answer": 0
+    },
+    {
+      "id": 4,
+      "question": "How many children were at the party?",
+      "options": [
+        "Four",
+        "Six",
+        "Eight",
+        "Twelve"
+      ],
+      "answer": 2
     },
     {
       "id": 5,
-      "question": "What gift does he get?",
+      "question": "What kind of cake was it?",
       "options": [
-        "A football",
-        "A phone",
-        "A bike",
-        "A book only"
+        "Chocolate",
+        "Lemon only",
+        "No cake",
+        "Cheese"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "What games do they play?",
+      "question": "How many candles were on the cake?",
       "options": [
-        "No games",
-        "Music games",
-        "Football only",
-        "Chess only"
-      ],
-      "answer": 1
-    },
-    {
-      "id": 7,
-      "question": "What do they take?",
-      "options": [
-        "Trains",
-        "Planes",
-        "Photos",
-        "Exams"
+        "Ten",
+        "Eleven",
+        "Twelve",
+        "Twenty"
       ],
       "answer": 2
     },
     {
-      "id": 8,
-      "question": "When does the party end?",
+      "id": 7,
+      "question": "What presents did the writer get?",
       "options": [
-        "At noon",
-        "At 6 am",
-        "At midnight only",
-        "At nine"
+        "Books, a football and a red cap",
+        "Only money",
+        "A plane ticket",
+        "Nothing"
       ],
-      "answer": 3
+      "answer": 0
+    },
+    {
+      "id": 8,
+      "question": "What did the grandmother give?",
+      "options": [
+        "A warm jumper",
+        "A bike",
+        "A football",
+        "A cake"
+      ],
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Who is the text about?",
+      "question": "What did they eat in the evening?",
       "options": [
-        "Ramin",
-        "Seda",
-        "Sara",
-        "Emil"
+        "Pizza and cake",
+        "Only salad",
+        "Soup only",
+        "Nothing"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Best title?",
+      "question": "What is the best title?",
       "options": [
-        "Weather",
         "Birthday",
-        "Plastic Waste",
-        "City Noise"
+        "Lost Keys",
+        "City Noise",
+        "Exam Stress"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

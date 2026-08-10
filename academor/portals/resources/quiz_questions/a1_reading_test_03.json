@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Lina goes to the corner shop in the morning.</p><p>She buys bread and milk.</p><p>The seller is Mr Karimov.</p><p>The milk costs three manat.</p><p>Lina also buys apples.</p><p>She puts everything in a blue bag.</p><p>Then she walks home.</p>",
+  "shared_passage": "<p>Every Saturday morning Ramin goes to the shop with his mother. The shop is near their house and it opens at nine o’clock.</p><p>Today they need milk, bread, eggs and apples. Ramin puts the bread and milk in the basket. His mother chooses six red apples and a box of eggs.</p><p>There are many people in the shop. The shop assistant is friendly. She smiles and helps them find the eggs.</p><p>Ramin’s mother pays at the counter. The food costs twelve manats. Then they walk home together.</p><p>At home Ramin helps put the food in the kitchen. He likes shopping days because he can choose the fruit.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "When does Lina go to the shop?",
+      "question": "When does Ramin go to the shop?",
       "options": [
-        "In the morning",
-        "At midnight",
-        "Only on Sunday night",
-        "Never"
+        "Every Monday",
+        "Every Saturday morning",
+        "Every night",
+        "Only in summer"
       ],
-      "answer": 0
+      "answer": 1
     },
     {
       "id": 2,
-      "question": "What does she buy first?",
+      "question": "What time does the shop open?",
       "options": [
-        "Phones",
-        "Bread and milk",
-        "Shoes",
-        "Tickets"
+        "At eight",
+        "At nine",
+        "At ten",
+        "At twelve"
       ],
       "answer": 1
     },
     {
       "id": 3,
-      "question": "Who is the seller?",
+      "question": "What do they need today?",
       "options": [
-        "Dr Hasan",
-        "Mr Brown",
-        "Mr Karimov",
-        "Ms Ayla"
+        "Only water",
+        "Milk, bread, eggs and apples",
+        "Only meat",
+        "Clothes"
       ],
-      "answer": 2
+      "answer": 1
     },
     {
       "id": 4,
-      "question": "How much is the milk?",
+      "question": "How many apples do they buy?",
       "options": [
-        "One manat",
-        "Ten manat",
-        "Free",
-        "Three manat"
-      ],
-      "answer": 3
-    },
-    {
-      "id": 5,
-      "question": "What else does she buy?",
-      "options": [
-        "Apples",
-        "Fish",
-        "Books",
-        "Hats"
-      ],
-      "answer": 0
-    },
-    {
-      "id": 6,
-      "question": "What colour is her bag?",
-      "options": [
-        "Green",
-        "Blue",
-        "Red",
-        "Black"
-      ],
-      "answer": 1
-    },
-    {
-      "id": 7,
-      "question": "How does she go home?",
-      "options": [
-        "She drives a taxi",
-        "She takes a plane",
-        "She walks home",
-        "She flies"
+        "Two",
+        "Four",
+        "Six",
+        "Ten"
       ],
       "answer": 2
     },
     {
-      "id": 8,
-      "question": "Where does she shop?",
+      "id": 5,
+      "question": "Who helps them find the eggs?",
       "options": [
-        "The airport",
-        "The school",
-        "The hospital",
-        "The corner shop"
+        "A teacher",
+        "The shop assistant",
+        "A policeman",
+        "A driver"
       ],
-      "answer": 3
+      "answer": 1
+    },
+    {
+      "id": 6,
+      "question": "How much does the food cost?",
+      "options": [
+        "Five manats",
+        "Ten manats",
+        "Twelve manats",
+        "Twenty manats"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 7,
+      "question": "Where is the shop?",
+      "options": [
+        "Far from their house",
+        "Near their house",
+        "In another city",
+        "At school"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 8,
+      "question": "What does Ramin put in the basket?",
+      "options": [
+        "Apples only",
+        "Bread and milk",
+        "Eggs only",
+        "Clothes"
+      ],
+      "answer": 1
     },
     {
       "id": 9,
-      "question": "Who is the main person?",
+      "question": "Why does Ramin like shopping days?",
       "options": [
-        "Lina",
-        "Ali",
-        "Tom",
-        "Sara"
+        "He can sleep",
+        "He can choose the fruit",
+        "He can drive",
+        "He can watch TV"
       ],
-      "answer": 0
+      "answer": 1
     },
     {
       "id": 10,
-      "question": "Best title?",
+      "question": "What is the best title?",
       "options": [
-        "Exam Stress",
         "At the Shop",
-        "Remote Work",
-        "Bike Lanes"
+        "Train Trip",
+        "Exam Stress",
+        "City Noise"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

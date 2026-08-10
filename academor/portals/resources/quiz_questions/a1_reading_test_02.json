@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Tom goes to Green Hill School.</p><p>Lessons start at 8:30.</p><p>His favourite subjects are maths and English.</p><p>His best friend is Maya.</p><p>They eat lunch in the canteen.</p><p>On Friday Tom plays football after school.</p><p>School ends at 3:00.</p>",
+  "shared_passage": "<p>My name is Leyla. I am nine years old and I go to Green School in Sumgayit.</p><p>My school starts at eight o’clock in the morning. I have five lessons every day. My favourite lesson is English because we sing songs and play games.</p><p>There are twenty children in my class. Our teacher is Mrs. Aysel. She is kind and she helps us with our homework.</p><p>At break time I eat an apple and talk with my friends. After school I walk home with my sister. In the evening I do my homework at the table.</p><p>I like my school. The classrooms are clean and the garden has many flowers.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "Where does Tom study?",
+      "question": "How old is Leyla?",
       "options": [
-        "Green Hill School",
-        "City Bank",
-        "A hospital",
-        "A museum"
-      ],
-      "answer": 0
-    },
-    {
-      "id": 2,
-      "question": "What time do lessons start?",
-      "options": [
-        "12:00",
-        "8:30",
-        "7:00",
-        "10:00"
+        "Seven",
+        "Nine",
+        "Eleven",
+        "Thirteen"
       ],
       "answer": 1
     },
     {
-      "id": 3,
-      "question": "Who is Tom’s best friend?",
+      "id": 2,
+      "question": "Where is her school?",
       "options": [
-        "Ali",
-        "Omar",
-        "Maya",
-        "Sara"
+        "In Baku",
+        "In Ganja",
+        "In Sumgayit",
+        "In Lankaran"
       ],
       "answer": 2
     },
     {
-      "id": 4,
-      "question": "Where do they eat lunch?",
+      "id": 3,
+      "question": "What time does school start?",
       "options": [
-        "At home only",
-        "In the park",
-        "On the bus",
-        "In the canteen"
+        "At seven",
+        "At eight",
+        "At nine",
+        "At ten"
       ],
-      "answer": 3
+      "answer": 1
+    },
+    {
+      "id": 4,
+      "question": "How many lessons does she have every day?",
+      "options": [
+        "Three",
+        "Four",
+        "Five",
+        "Six"
+      ],
+      "answer": 2
     },
     {
       "id": 5,
-      "question": "What does Tom play on Friday?",
+      "question": "What is her favourite lesson?",
       "options": [
-        "Football",
-        "Tennis",
-        "Chess only",
-        "Piano only"
+        "Maths",
+        "English",
+        "Sport",
+        "Art"
       ],
-      "answer": 0
+      "answer": 1
     },
     {
       "id": 6,
-      "question": "When does school end?",
+      "question": "Who is her teacher?",
       "options": [
-        "9:00",
-        "3:00",
-        "8:30",
-        "6:00"
+        "Mr. Ali",
+        "Mrs. Aysel",
+        "Miss Nigar",
+        "Mr. Kamran"
       ],
       "answer": 1
     },
     {
       "id": 7,
-      "question": "Which subjects does Tom like?",
+      "question": "What does she eat at break time?",
       "options": [
-        "Only music",
-        "Only PE",
-        "Maths and English",
-        "Only art"
-      ],
-      "answer": 2
-    },
-    {
-      "id": 8,
-      "question": "What day is football day?",
-      "options": [
-        "Monday",
-        "Sunday",
-        "Wednesday",
-        "Friday"
-      ],
-      "answer": 3
-    },
-    {
-      "id": 9,
-      "question": "Who is the main person?",
-      "options": [
-        "Tom",
-        "Maya’s father",
-        "A doctor",
-        "A driver"
+        "An apple",
+        "Pizza",
+        "Soup",
+        "Cake"
       ],
       "answer": 0
     },
     {
-      "id": 10,
-      "question": "Best title?",
+      "id": 8,
+      "question": "How many children are in her class?",
       "options": [
-        "Airport Delay",
-        "My School",
-        "Pets",
-        "Holidays"
+        "Ten",
+        "Fifteen",
+        "Twenty",
+        "Thirty"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 9,
+      "question": "Who walks home with Leyla?",
+      "options": [
+        "Her brother",
+        "Her sister",
+        "Her teacher",
+        "Nobody"
       ],
       "answer": 1
+    },
+    {
+      "id": 10,
+      "question": "What is the best title?",
+      "options": [
+        "My School",
+        "Lost Keys",
+        "City Noise",
+        "Airport Delay"
+      ],
+      "answer": 0
     }
   ]
 }

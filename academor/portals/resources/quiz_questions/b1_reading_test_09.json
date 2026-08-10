@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "B1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Social media connects people and also distracts them.</p><p>Students join study groups online, yet constant scrolling reduces focus.</p><p>One school teaches digital balance and bans phones during class discussions.</p><p>Parents should model good habits; creating content can build skills if daily limits are kept.</p>",
+  "shared_passage": "<p>Social media platforms connect friends, share news and open creative opportunities. Young people can learn skills from short videos, follow educational channels and join study groups across cities.</p><p>At the same time, constant notifications can break concentration. Comparing perfect online images with real life may increase anxiety. Not every post is true, so media literacy is essential.</p><p>Experts suggest practical limits: turn off non-essential alerts during homework, avoid screens one hour before sleep, and ask whether a post is helpful before sharing it.</p><p>Schools that teach students how to check sources and recognise advertising see better critical thinking. Parents who discuss online experiences calmly often guide more effectively than strict bans alone.</p><p>Social media is a tool. Like any tool, it can help or harm depending on how carefully people use it.</p><p>Creators also carry responsibility. Channels that present opinions as proven facts can mislead thousands in minutes. Labelling sponsored content clearly is one basic ethical rule.</p><p>Digital wellbeing is a skill like reading or swimming. It needs practice, guidance and honest conversations at home and at school.</p><p>Reporting harmful content quickly protects vulnerable users. Platforms improve only when users and moderators both take action.</p><p>Choosing follow accounts carefully is another practical skill. A smaller, higher-quality feed often reduces stress better than endless scrolling.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "What positive uses of social media are mentioned?",
       "options": [
-        "Social Media",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "Learning skills, education channels and study groups",
+        "Only spreading false news",
+        "Only breaking concentration",
+        "Only increasing anxiety"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "What can constant notifications do?",
       "options": [
-        "Nobody is mentioned",
-        "Social media connects people and also distracts them",
-        "This detail is not in the text",
-        "The opposite happened"
+        "Break concentration",
+        "Improve deep sleep automatically",
+        "Remove all anxiety",
+        "Make every post true"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "Why may anxiety increase?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Social media connects people and also distracts them",
-        "Nothing matches"
+        "Comparing perfect images with real life",
+        "Turning off alerts",
+        "Checking sources",
+        "Calm family talks"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "What limit is suggested before sleep?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Social media connects people and also distracts them"
+        "Avoid screens one hour before sleep",
+        "Use screens all night",
+        "Share every post",
+        "Ignore homework alerts only by posting more"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "What should people ask before sharing?",
       "options": [
-        "Social media connects people and also distracts them",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Whether a post is helpful",
+        "Whether it will get maximum anger",
+        "Whether nobody checks it",
+        "Whether it is the longest"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "What do schools teach for better thinking?",
       "options": [
-        "Only maths appears",
-        "Social media connects people and also distracts them",
-        "Nothing matches",
-        "The text is empty"
+        "How to check sources and recognise advertising",
+        "How to ban all books",
+        "How to avoid all friends",
+        "How to believe every post"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "What parental approach is described as effective?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Social media connects people and also distracts them",
-        "Nothing matches"
+        "Discussing experiences calmly",
+        "Only strict bans with no talk",
+        "Ignoring online life",
+        "Deleting schools"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "How does the text describe social media?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Social media connects people and also distracts them"
+        "As a tool that can help or harm",
+        "As always safe",
+        "As always harmful",
+        "As unnecessary for learning"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "What should students turn off during homework?",
       "options": [
-        "Social media connects people and also distracts them",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Non-essential alerts",
+        "All education channels",
+        "All study groups",
+        "All clocks"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "Social media connects people and also distracts them",
-        "Nothing matches",
-        "The text is empty"
+        "Social Media",
+        "Lost Keys",
+        "Bike Repair",
+        "Silent Movies"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

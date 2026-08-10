@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A2 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Deniz’s family planned a picnic at Riverside Park.</p><p>Heavy rain began so they sat under a roof.</p><p>Later they ate indoors, played cards and took funny photos.</p><p>They still had fun.</p>",
+  "shared_passage": "<p>We planned a picnic in the park for Saturday. My friends and I prepared sandwiches, fruit and a football. The morning was cloudy, but we still hoped for sun.</p><p>At eleven o’clock we arrived and put a blanket under a large tree. After twenty minutes the rain started suddenly. At first it was light, then it became heavy.</p><p>We quickly packed our food and ran to a nearby cafe. We were wet but we laughed a lot. Inside the cafe we ate our sandwiches and drank hot chocolate.</p><p>When the rain stopped, we returned to the park for a short football game. The grass was wet, so we played carefully.</p><p>The day was not perfect, but it was still fun. We learned to keep a plan flexible when the weather changes.</p><p>Later we sent a group message with funny photos from the cafe. Everyone agreed that a wet picnic can still be a good memory if friends stay positive.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "What did they plan for Saturday?",
       "options": [
-        "Rainy Picnic",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "A picnic in the park",
+        "A flight abroad",
+        "An exam",
+        "A bank visit"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "What food did they prepare?",
       "options": [
-        "Nobody is mentioned",
-        "Deniz’s family planned a picnic at Riverside Park",
-        "This detail is not in the text",
-        "The opposite happened"
+        "Sandwiches and fruit",
+        "Only soup",
+        "Only pizza from a restaurant",
+        "Nothing"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "What time did they arrive?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Deniz’s family planned a picnic at Riverside Park",
-        "Nothing matches"
+        "At eleven o’clock",
+        "At six in the morning",
+        "At midnight",
+        "At three only"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "Where did they put the blanket?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Deniz’s family planned a picnic at Riverside Park"
+        "Under a large tree",
+        "On a bus",
+        "In a cafe first",
+        "On the football roof"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "Where did they go when it rained heavily?",
       "options": [
-        "Deniz’s family planned a picnic at Riverside Park",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "To a nearby cafe",
+        "Home immediately forever",
+        "To the cinema only",
+        "To school"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "What did they drink in the cafe?",
       "options": [
-        "Only maths appears",
-        "Deniz’s family planned a picnic at Riverside Park",
-        "Nothing matches",
-        "The text is empty"
+        "Hot chocolate",
+        "Cold water only",
+        "Coffee with salt",
+        "Nothing"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "What did they do after the rain stopped?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Deniz’s family planned a picnic at Riverside Park",
-        "Nothing matches"
+        "Played football carefully",
+        "Slept under the tree",
+        "Left the country",
+        "Cancelled all friendships"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "Why did they play carefully?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Deniz’s family planned a picnic at Riverside Park"
+        "The grass was wet",
+        "They had no ball",
+        "It was night",
+        "The cafe was closed"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "What lesson did they learn?",
       "options": [
-        "Deniz’s family planned a picnic at Riverside Park",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Keep plans flexible when weather changes",
+        "Never go outside",
+        "Rain means failure",
+        "Picnics are impossible"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "Deniz’s family planned a picnic at Riverside Park",
-        "Nothing matches",
-        "The text is empty"
+        "Rainy Picnic",
+        "Bank Fraud",
+        "Space News",
+        "Silent Movies"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

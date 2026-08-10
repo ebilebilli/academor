@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Ilkin has a cold.</p><p>He goes to the clinic.</p><p>Dr Hasan checks his throat.</p><p>The doctor gives him medicine.</p><p>Ilkin must rest and drink warm water.</p><p>He stays home from school tomorrow.</p>",
+  "shared_passage": "<p>Yesterday I felt ill. I had a headache and a sore throat. My mother took me to the doctor in the afternoon.</p><p>We waited fifteen minutes in the waiting room. Then the doctor called my name. She asked me questions and looked at my throat.</p><p>The doctor said I had a cold. She told me to rest at home and drink warm tea. She also gave me some medicine.</p><p>I did not go to school today. I stayed in bed and slept a lot. My mother made soup for me.</p><p>I feel a little better now. Tomorrow I hope I can go back to school and see my friends.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "How does Ilkin feel?",
+      "question": "How did the writer feel yesterday?",
       "options": [
-        "He has a cold",
-        "He is fine",
-        "He is hungry only",
-        "He is angry only"
+        "Ill",
+        "Very happy",
+        "Hungry only",
+        "Angry"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Where does he go?",
+      "question": "What symptoms did the writer have?",
       "options": [
-        "To the park",
-        "To the clinic",
-        "To the beach",
-        "To the cinema"
+        "A headache and a sore throat",
+        "A broken leg",
+        "Only a toothache",
+        "Nothing"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 3,
+      "question": "Who took the writer to the doctor?",
+      "options": [
+        "The teacher",
+        "The mother",
+        "A friend",
+        "Nobody"
       ],
       "answer": 1
     },
     {
-      "id": 3,
-      "question": "Who is the doctor?",
-      "options": [
-        "Mr Brown",
-        "Ms Reza",
-        "Dr Hasan",
-        "Ms Ayla"
-      ],
-      "answer": 2
-    },
-    {
       "id": 4,
-      "question": "What does the doctor check?",
+      "question": "How long did they wait?",
       "options": [
-        "His bag",
-        "His phone",
-        "His bike",
-        "His throat"
+        "Five minutes",
+        "Fifteen minutes",
+        "One hour",
+        "All day"
       ],
-      "answer": 3
+      "answer": 1
     },
     {
       "id": 5,
-      "question": "What does the doctor give?",
+      "question": "What did the doctor say?",
       "options": [
-        "Medicine",
-        "A ticket",
-        "A gift",
-        "A book"
+        "It was a cold",
+        "It was nothing",
+        "Go to sport now",
+        "Travel today"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "What must Ilkin do?",
+      "question": "What should the writer drink?",
       "options": [
-        "Go shopping",
-        "Rest",
-        "Run a race",
-        "Play football"
+        "Warm tea",
+        "Cold cola",
+        "Coffee",
+        "Nothing"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "What should he drink?",
+      "question": "Did the writer go to school today?",
       "options": [
-        "Coffee only",
-        "Nothing",
-        "Warm water",
-        "Cold cola only"
+        "No",
+        "Yes",
+        "Only in the morning",
+        "Only for sport"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "What about school tomorrow?",
+      "question": "What did the mother make?",
       "options": [
-        "He teaches the class",
-        "He goes on a trip",
-        "He opens a shop",
-        "He stays home"
+        "Soup",
+        "Pizza",
+        "Cake",
+        "Ice cream"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Who is the text about?",
+      "question": "How does the writer feel now?",
       "options": [
-        "Ilkin",
-        "Gulnar",
-        "Sara",
-        "Emil"
+        "A little better",
+        "Much worse",
+        "The same and angry",
+        "Afraid of school"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Best title?",
+      "question": "What is the best title?",
       "options": [
-        "Sports",
         "Doctor Visit",
-        "Bike Lanes",
-        "Weekend"
+        "Lost Keys",
+        "City Noise",
+        "Train Trip"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

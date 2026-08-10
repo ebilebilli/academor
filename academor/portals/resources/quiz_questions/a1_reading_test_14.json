@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Seda takes bus 21 near her house.</p><p>She sits by the window.</p><p>The ride takes 20 minutes.</p><p>She reads a book and buys a ticket.</p><p>The driver is friendly.</p><p>She gets off at the library.</p>",
+  "shared_passage": "<p>Every day I take the bus to school. The bus stop is in front of our building. The number 12 bus comes at twenty past seven.</p><p>The bus is often full in the morning. I usually find a seat near the window. I look at the shops and trees on the way.</p><p>The ride takes about twenty-five minutes. Sometimes the bus is late when there is a lot of traffic.</p><p>Yesterday a kind old man gave me his seat because the bus was crowded. I said thank you and smiled.</p><p>I like the bus ride because I can meet friends and talk before lessons start.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "Which bus does Seda take?",
+      "question": "How does the writer go to school?",
       "options": [
-        "Bus 21",
-        "Bus 1",
-        "Bus 99",
-        "No bus"
+        "By bus",
+        "By plane",
+        "By boat",
+        "By taxi every day"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Where is the stop?",
+      "question": "Where is the bus stop?",
       "options": [
-        "At the hospital only",
-        "Near her house",
-        "Near the airport only",
-        "Inside the school"
+        "In front of the building",
+        "Far in another city",
+        "Inside the school",
+        "At the airport"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Where does she sit?",
+      "question": "Which bus does the writer take?",
       "options": [
-        "Next to the driver only",
-        "Outside",
-        "By the window",
-        "On the floor"
+        "Number 5",
+        "Number 12",
+        "Number 20",
+        "Number 100"
       ],
-      "answer": 2
+      "answer": 1
     },
     {
       "id": 4,
-      "question": "How long is the ride?",
+      "question": "What time does the bus come?",
       "options": [
-        "2 hours",
-        "10 seconds",
-        "All day",
-        "20 minutes"
+        "At seven",
+        "At twenty past seven",
+        "At eight",
+        "At nine"
       ],
-      "answer": 3
+      "answer": 1
     },
     {
       "id": 5,
-      "question": "What does she read?",
+      "question": "How long is the ride?",
       "options": [
-        "A book",
-        "A map of Mars",
-        "A bank form only",
-        "Nothing"
+        "Five minutes",
+        "About twenty-five minutes",
+        "Two hours",
+        "All day"
       ],
-      "answer": 0
+      "answer": 1
     },
     {
       "id": 6,
-      "question": "What does she buy?",
+      "question": "When is the bus sometimes late?",
       "options": [
-        "A bike",
-        "A ticket",
-        "A car",
-        "A house"
-      ],
-      "answer": 1
-    },
-    {
-      "id": 7,
-      "question": "What is the driver like?",
-      "options": [
-        "Silent always",
-        "Absent",
-        "Friendly",
-        "Angry"
-      ],
-      "answer": 2
-    },
-    {
-      "id": 8,
-      "question": "Where does she get off?",
-      "options": [
-        "At the beach",
-        "At the stadium",
-        "At the airport",
-        "At the library"
-      ],
-      "answer": 3
-    },
-    {
-      "id": 9,
-      "question": "Who is the text about?",
-      "options": [
-        "Seda",
-        "Kamran",
-        "Omar",
-        "Tom"
+        "When there is a lot of traffic",
+        "When it is Sunday",
+        "When school is closed",
+        "Never"
       ],
       "answer": 0
     },
     {
-      "id": 10,
-      "question": "Best title?",
+      "id": 7,
+      "question": "What happened yesterday?",
       "options": [
-        "Sports",
-        "Bus Ride",
-        "Social Media",
-        "Holidays"
+        "A kind old man gave the writer a seat",
+        "The bus did not come",
+        "The writer drove a car",
+        "School was cancelled"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 8,
+      "question": "Where does the writer usually sit?",
+      "options": [
+        "Near the window",
+        "On the floor",
+        "Outside",
+        "In the driver’s seat"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 9,
+      "question": "Why does the writer like the bus ride?",
+      "options": [
+        "To sleep only",
+        "To meet friends and talk",
+        "To cook food",
+        "To buy a car"
       ],
       "answer": 1
+    },
+    {
+      "id": 10,
+      "question": "What is the best title?",
+      "options": [
+        "Bus Ride",
+        "City Noise",
+        "Bank Fraud",
+        "Exam Stress"
+      ],
+      "answer": 0
     }
   ]
 }

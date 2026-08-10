@@ -905,7 +905,7 @@ def _answerable_question_counts(quiz_rows):
     from portals.models import ListeningQuestion, ReadingQuestion, SpeakingQuestion
 
     counts = {}
-    reading_ids = [q.pk for q in quiz_rows if q.is_reading]
+    reading_ids = [q.pk for q in quiz_rows if q.is_reading_quiz]
     listening_ids = [q.pk for q in quiz_rows if q.is_listening]
     speaking_ids = [q.pk for q in quiz_rows if q.is_speaking]
     for quiz_id in reading_ids + listening_ids + speaking_ids:
@@ -1290,26 +1290,37 @@ def serialize_quiz_question(question):
     }
 
 
-def serialize_quiz_result(row):
+def serialize_quiz_result(row, *, question_counts=None):
     from portals.utils.quiz_stats import quiz_average_score_tier, quiz_score_percent
 
-    question_count = getattr(row, 'question_count', None)
+    annotated_count = getattr(row, 'question_count', None)
+    question_count = annotated_count
     quiz = row.quiz
     # The annotated Count('quiz__questions') only counts inline variant
     # questions; reading/listening questions live in separate tables, so the
     # annotation yields 0 for them. Treat 0 as "unknown" and recount, else
-    # max_value comes out as 0 and percentages break.
+    # max_value comes out as 0 and percentages break. ``question_counts`` lets
+    # list callers resolve every typed quiz in one query instead of per row.
     if not question_count:
-        if quiz.is_reading or quiz.is_math:
-            from portals.utils.quiz_reading import get_reading_questions_for_quiz
+        if quiz.is_reading_quiz:
+            if question_counts is None:
+                from portals.utils.quiz_reading import get_reading_questions_for_quiz
 
-            question_count = len(get_reading_questions_for_quiz(quiz))
+                question_count = len(get_reading_questions_for_quiz(quiz))
+            else:
+                question_count = question_counts.get(quiz.pk, 0)
         elif quiz.is_listening:
-            from portals.utils.quiz_listening import get_listening_questions_for_quiz
+            if question_counts is None:
+                from portals.utils.quiz_listening import get_listening_questions_for_quiz
 
-            question_count = len(get_listening_questions_for_quiz(quiz))
-        else:
+                question_count = len(get_listening_questions_for_quiz(quiz))
+            else:
+                question_count = question_counts.get(quiz.pk, 0)
+        elif annotated_count is None:
             question_count = _quiz_inline_question_count(quiz)
+        else:
+            # Annotated zero on a non-typed quiz really means "no questions".
+            question_count = 0
     completion_trigger = getattr(row, 'completion_trigger', 'manual') or 'manual'
     from portals.models import QuizResult as QuizResultModel
     trigger_labels = dict(QuizResultModel.CompletionTrigger.choices)
@@ -1412,8 +1423,22 @@ def latest_quiz_result_per_quiz(rows, *, limit=None):
     return latest_rows
 
 
-def serialize_quiz_result_as_score(row):
-    data = serialize_quiz_result(row)
+def serialize_quiz_result_rows(rows):
+    """Serialize result rows, resolving typed question counts in one pass."""
+    rows = list(rows)
+    if not rows:
+        return []
+    quizzes = {}
+    for row in rows:
+        quiz = getattr(row, 'quiz', None)
+        if quiz is not None and quiz.pk not in quizzes:
+            quizzes[quiz.pk] = quiz
+    question_counts = _answerable_question_counts(list(quizzes.values()))
+    return [serialize_quiz_result(row, question_counts=question_counts) for row in rows]
+
+
+def quiz_result_row_as_score_row(data):
+    """Reshape an already-serialized quiz result into a score-list row."""
     value = data['total_score']
     if data['is_pending_review']:
         value_label = None
@@ -1445,9 +1470,27 @@ def serialize_quiz_result_as_score(row):
     }
 
 
+def serialize_quiz_result_as_score(row):
+    return quiz_result_row_as_score_row(serialize_quiz_result(row))
+
+
+def serialize_quiz_result_rows_as_scores(rows):
+    return [quiz_result_row_as_score_row(data) for data in serialize_quiz_result_rows(rows)]
+
+
 def _quiz_results_queryset():
+    # student__user / customer__user feed ``full_name``, and category services
+    # feed the course_type lookup — both were one query per row without this.
     return (
-        QuizResult.objects.select_related('student', 'quiz')
+        QuizResult.objects.select_related(
+            'student',
+            'student__user',
+            'customer',
+            'customer__user',
+            'quiz',
+            'quiz__category',
+        )
+        .prefetch_related('quiz__category__services')
         .annotate(question_count=Count('quiz__questions', distinct=True))
         .order_by('-completed_at', '-id')
     )
@@ -1666,8 +1709,7 @@ def get_teacher_scores(teacher_id):
         .distinct()[:500]
     )
     quiz_visible = filter_quiz_results_for_teacher(quiz_qs, teacher_id)
-    quiz_rows = [serialize_quiz_result_as_score(row) for row in quiz_visible[:SCORE_LIST_LIMIT]]
-    return quiz_rows
+    return serialize_quiz_result_rows_as_scores(quiz_visible[:SCORE_LIST_LIMIT])
 
 
 def split_teacher_score_rows(rows):
@@ -2481,8 +2523,7 @@ def get_student_scores(student_id):
         .distinct()[:500]
     )
     quiz_visible = filter_quiz_results_for_student(quiz_qs, student_id)
-    quiz_rows = [serialize_quiz_result_as_score(row) for row in quiz_visible[:SCORE_LIST_LIMIT]]
-    return quiz_rows
+    return serialize_quiz_result_rows_as_scores(quiz_visible[:SCORE_LIST_LIMIT])
 
 
 @cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
@@ -2577,7 +2618,7 @@ def get_student_quiz_results(student_id, *, quiz_ids=None):
     if quiz_ids is not None:
         qs = qs.filter(quiz_id__in=list(quiz_ids))
     visible = filter_quiz_results_for_student(qs, student_id)
-    return _attach_attempt_metadata([serialize_quiz_result(row) for row in visible])
+    return _attach_attempt_metadata(serialize_quiz_result_rows(visible))
 
 
 @cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
@@ -2609,30 +2650,15 @@ def get_teacher_student_quiz_results(teacher_id, student_id):
         .distinct()
     )
     visible = filter_quiz_results_for_teacher(qs, teacher_id)
-    return [serialize_quiz_result(row) for row in visible]
+    return serialize_quiz_result_rows(visible)
 
 
 def get_teacher_student_scores(teacher_id, student_id):
-    from portals.utils.student_courses import filter_quiz_results_for_teacher
-    from portals.utils.teacher_access import get_teacher_student
-
-    if not get_teacher_student(teacher_id, student_id):
-        return []
-    course_codes = get_teacher_course_type_codes(teacher_id)
-    if not course_codes:
-        return []
-    quiz_qs = (
-        _quiz_results_queryset()
-        .filter(
-            student_id=student_id,
-            quiz__category__services__slug__in=quiz_category_slugs_for_portal_codes(course_codes),
-        )
-        .select_related('quiz__category', 'student')
-        .distinct()
-    )
-    quiz_visible = filter_quiz_results_for_teacher(quiz_qs, teacher_id)
-    quiz_rows = [serialize_quiz_result_as_score(row) for row in quiz_visible]
-    return quiz_rows
+    """Same visible results as get_teacher_student_quiz_results, as score rows."""
+    return [
+        quiz_result_row_as_score_row(row)
+        for row in get_teacher_student_quiz_results(teacher_id, student_id)
+    ]
 
 
 def group_scores_by_day(scores):

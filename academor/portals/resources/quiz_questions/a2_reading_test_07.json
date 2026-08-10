@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A2 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Roya called her cousin to plan a birthday picnic.</p><p>They agreed to meet in the park at noon.</p><p>Roya will buy fruit and check the weather.</p><p>She feels very excited.</p>",
+  "shared_passage": "<p>On Monday night my phone rang while I was doing homework. It was my uncle calling from Canada. I had not spoken to him for two months.</p><p>He asked about school and my football team. Then he told me he might visit Azerbaijan in August. He wants to see our family and take a trip to the mountains.</p><p>We talked for almost forty minutes. The connection was clear at first, but later there was some noise. I moved near the window and the sound became better.</p><p>Before we finished, my uncle asked me to send photos of my recent school project. I promised to send them the next day.</p><p>After the call I felt happy and a little homesick for family meetings. Long calls can make faraway people feel closer.</p><p>After the call I wrote the August dates in my calendar. I also told my parents the news, and they started planning which mountain places we could visit together.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "When did the phone ring?",
       "options": [
-        "Phone Call",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "On Monday night",
+        "On Sunday morning",
+        "At school lunch",
+        "During a football match only"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "Who called?",
       "options": [
-        "Nobody is mentioned",
-        "Roya called her cousin to plan a birthday picnic",
-        "This detail is not in the text",
-        "The opposite happened"
+        "The writer’s uncle",
+        "A teacher",
+        "A stranger",
+        "The police"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "Where was the uncle calling from?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Roya called her cousin to plan a birthday picnic",
-        "Nothing matches"
+        "Canada",
+        "Italy",
+        "Gabala",
+        "The next room"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "When might the uncle visit?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Roya called her cousin to plan a birthday picnic"
+        "In August",
+        "Next week only",
+        "In December for sure",
+        "Never"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "What trip does he want to take?",
       "options": [
-        "Roya called her cousin to plan a birthday picnic",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "To the mountains",
+        "To the moon",
+        "To a bank vault",
+        "To a silent movie set"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "How long did they talk?",
       "options": [
-        "Only maths appears",
-        "Roya called her cousin to plan a birthday picnic",
-        "Nothing matches",
-        "The text is empty"
+        "Almost forty minutes",
+        "Two minutes",
+        "Three hours",
+        "All night without stopping"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "How did the writer improve the sound?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Roya called her cousin to plan a birthday picnic",
-        "Nothing matches"
+        "Moved near the window",
+        "Bought a new house",
+        "Ended the call",
+        "Went outside forever"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "What did the uncle ask the writer to send?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Roya called her cousin to plan a birthday picnic"
+        "Photos of a school project",
+        "Money",
+        "Train tickets",
+        "A football"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "How did the writer feel after the call?",
       "options": [
-        "Roya called her cousin to plan a birthday picnic",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Happy",
+        "Angry",
+        "Bored",
+        "Afraid"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "Roya called her cousin to plan a birthday picnic",
-        "Nothing matches",
-        "The text is empty"
+        "Phone Call",
+        "Bank Fraud",
+        "Silent Movies",
+        "Space News"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A2 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>A family flight to Istanbul was delayed two hours because of bad weather.</p><p>The gate changed twice and they bought sandwiches.</p><p>The children watched cartoons until they finally boarded.</p><p>They landed safely.</p>",
+  "shared_passage": "<p>In July my parents and I flew to Turkey for a short holiday. We arrived at the airport three hours before the flight, but the departure board soon showed a delay.</p><p>At first the delay was one hour. Later it became three hours because of strong winds. Many families sat on the floor near the gate and waited.</p><p>The airline gave us water and small sandwiches. My father downloaded offline games for me, and my mother read a book. I walked around the terminal to stay awake.</p><p>Finally we boarded at night. The flight was calm and we landed safely. We reached the hotel after midnight, tired but relieved.</p><p>Now I always pack a light jumper and a power bank for airport waits. Delays are annoying, but good preparation makes them easier.</p><p>At the hotel we slept late the next morning and then walked around the city slowly. The delay taught us to pack patience as carefully as we pack clothes.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "Where were they flying?",
       "options": [
-        "Airport Delay",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "To Turkey",
+        "To Canada",
+        "To Gabala by plane",
+        "Nowhere"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "How early did they arrive at the airport?",
       "options": [
-        "Nobody is mentioned",
-        "A family flight to Istanbul was delayed two hours because of bad weather",
-        "This detail is not in the text",
-        "The opposite happened"
+        "Three hours before the flight",
+        "Ten minutes before",
+        "One day before",
+        "After the flight left"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "Why was the flight delayed later?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "A family flight to Istanbul was delayed two hours because of bad weather",
-        "Nothing matches"
+        "Strong winds",
+        "No tickets",
+        "A lost passport only for them",
+        "The hotel was full"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "How long was the final delay?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "A family flight to Istanbul was delayed two hours because of bad weather"
+        "Three hours",
+        "One hour only",
+        "Ten hours",
+        "One minute"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "What did the airline give?",
       "options": [
-        "A family flight to Istanbul was delayed two hours because of bad weather",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Water and small sandwiches",
+        "Free hotel rooms for all",
+        "New phones",
+        "Nothing"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "What did the father do?",
       "options": [
-        "Only maths appears",
-        "A family flight to Istanbul was delayed two hours because of bad weather",
-        "Nothing matches",
-        "The text is empty"
+        "Downloaded offline games",
+        "Slept outside",
+        "Cancelled the holiday",
+        "Drove the plane"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "When did they board?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "A family flight to Istanbul was delayed two hours because of bad weather",
-        "Nothing matches"
+        "At night",
+        "In the early morning only",
+        "Never",
+        "At lunch the next week"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "When did they reach the hotel?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "A family flight to Istanbul was delayed two hours because of bad weather"
+        "After midnight",
+        "At noon the same day",
+        "Before the delay",
+        "One week later"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "What does the writer pack now for waits?",
       "options": [
-        "A family flight to Istanbul was delayed two hours because of bad weather",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "A light jumper and a power bank",
+        "Only heavy furniture",
+        "Nothing",
+        "Extra tickets only"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "A family flight to Istanbul was delayed two hours because of bad weather",
-        "Nothing matches",
-        "The text is empty"
+        "Airport Delay",
+        "Bank Fraud",
+        "Space News",
+        "Silent Movies"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A2 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>The boy scouts camped by a lake and put up two tents.</p><p>They made a small fire and cooked noodles.</p><p>They watched the stars and there was light rain at night.</p><p>In the morning they swam carefully and packed everything clean.</p>",
+  "shared_passage": "<p>In May our youth club went camping near a lake for two nights. We travelled by minibus and arrived in the afternoon.</p><p>First we put up the tents. It took longer than we expected because the wind was strong. Then we collected wood for a small fire with the leader’s help.</p><p>In the evening we cooked pasta and sat under the stars. Someone played a guitar and we sang quiet songs. At night the forest sounded different from the city.</p><p>The next day we hiked for three hours and saw many birds. One student fell in soft mud, but nobody was hurt and we all laughed.</p><p>On the last morning we cleaned the campsite carefully. Camping taught us teamwork and respect for nature.</p><p>Before bed we checked that food was stored safely away from animals. The leader also explained how to leave no rubbish behind, even small pieces of plastic.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "How long was the camping trip?",
       "options": [
-        "Camping",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "Two nights",
+        "One hour",
+        "Two weeks",
+        "One month"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "Where did they camp?",
       "options": [
-        "Nobody is mentioned",
-        "The boy scouts camped by a lake and put up two tents",
-        "This detail is not in the text",
-        "The opposite happened"
+        "Near a lake",
+        "In the city centre",
+        "At school",
+        "At an airport"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "Why was putting up tents difficult?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "The boy scouts camped by a lake and put up two tents",
-        "Nothing matches"
+        "The wind was strong",
+        "There were no tents",
+        "It was snowing heavily",
+        "Nobody helped"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "What did they cook in the evening?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "The boy scouts camped by a lake and put up two tents"
+        "Pasta",
+        "Pizza only",
+        "Soup from a restaurant",
+        "Nothing"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "How long was the hike?",
       "options": [
-        "The boy scouts camped by a lake and put up two tents",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Three hours",
+        "Ten minutes",
+        "One day without stop",
+        "Thirty seconds"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "What happened to one student?",
       "options": [
-        "Only maths appears",
-        "The boy scouts camped by a lake and put up two tents",
-        "Nothing matches",
-        "The text is empty"
+        "Fell in soft mud",
+        "Got lost forever",
+        "Broke a leg",
+        "Left by plane"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "What did they do on the last morning?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "The boy scouts camped by a lake and put up two tents",
-        "Nothing matches"
+        "Cleaned the campsite",
+        "Built a house",
+        "Started a fire without rules",
+        "Left rubbish everywhere"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "What did camping teach them?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "The boy scouts camped by a lake and put up two tents"
+        "Teamwork and respect for nature",
+        "How to drive",
+        "How to ignore rules",
+        "How to hate forests"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "How did they travel there?",
       "options": [
-        "The boy scouts camped by a lake and put up two tents",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "By minibus",
+        "By plane",
+        "By boat only",
+        "On foot for two days"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "The boy scouts camped by a lake and put up two tents",
-        "Nothing matches",
-        "The text is empty"
+        "Camping",
+        "Bank Fraud",
+        "Space News",
+        "Silent Movies"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

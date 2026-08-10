@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "B1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Exam stress is common but manageable when plans are clear.</p><p>A weekly study plan reduces panic and short breaks improve memory.</p><p>Late-night cramming hurts results and peer pressure can make stress worse.</p><p>Talking to teachers helps; one exam does not define a person.</p>",
+  "shared_passage": "<p>Exam periods can create heavy pressure for students. Long study hours, fear of disappointing family and comparison with classmates often combine into stress that affects sleep and appetite.</p><p>Some stress can motivate careful preparation. Too much stress, however, reduces memory and makes simple mistakes more likely. Students may reread pages without understanding them.</p><p>Helpful strategies include breaking revision into short sessions, practising past papers under timed conditions and asking teachers early about unclear topics. Exercise and short breaks protect concentration.</p><p>Parents help most when they offer calm support instead of constant reminders about rankings. Friends can form study groups that share notes without turning into silent competition.</p><p>Exams measure performance on a day, not a person’s whole value. Remembering that perspective can make the process more manageable.</p><p>Counsellors advise students to notice warning signs such as constant headaches, irritability or complete avoidance of study. Early support from a trusted adult can prevent stress from becoming overwhelming.</p><p>After exams, recovery time matters too. Sleep, light exercise and social contact help the mind reset before the next academic challenge.</p><p>Teachers can reduce stress by publishing exam formats early and avoiding surprise content. Predictability helps students prepare with focus rather than panic.</p><p>Celebrating effort after hard revision, not only final scores, helps students keep healthier motivation.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "What can create heavy pressure in exam periods?",
       "options": [
-        "Exam Stress",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "Long study, fear of disappointing family and comparison",
+        "Only short breaks",
+        "Only exercise",
+        "Calm support"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "What can too much stress reduce?",
       "options": [
-        "Nobody is mentioned",
-        "Exam stress is common but manageable when plans are clear",
-        "This detail is not in the text",
-        "The opposite happened"
+        "Memory",
+        "All mistakes forever",
+        "The need for sleep",
+        "Teacher questions"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "What unhelpful study behaviour is described?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Exam stress is common but manageable when plans are clear",
-        "Nothing matches"
+        "Rereading without understanding",
+        "Practising past papers",
+        "Asking teachers early",
+        "Taking short breaks"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "Which revision strategy is recommended?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Exam stress is common but manageable when plans are clear"
+        "Short sessions and timed past papers",
+        "Studying only the night before with no breaks",
+        "Avoiding teachers",
+        "Comparing rankings all day"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "How do parents help most?",
       "options": [
-        "Exam stress is common but manageable when plans are clear",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Calm support instead of constant ranking reminders",
+        "More pressure about rankings",
+        "Ignoring students completely",
+        "Cancelling all exams"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "How can friends help?",
       "options": [
-        "Only maths appears",
-        "Exam stress is common but manageable when plans are clear",
-        "Nothing matches",
-        "The text is empty"
+        "Study groups that share notes without silent competition",
+        "Only competing silently",
+        "Hiding all notes",
+        "Increasing fear"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "What do exams measure, according to the text?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Exam stress is common but manageable when plans are clear",
-        "Nothing matches"
+        "Performance on a day, not a person’s whole value",
+        "A person’s whole value forever",
+        "Only family income",
+        "Only sports ability"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "What protects concentration?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Exam stress is common but manageable when plans are clear"
+        "Exercise and short breaks",
+        "No sleep",
+        "Nonstop comparison",
+        "Skipping meals always"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "When should students ask about unclear topics?",
       "options": [
-        "Exam stress is common but manageable when plans are clear",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Early",
+        "Only after the exam",
+        "Never",
+        "Only if friends forbid it"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "Exam stress is common but manageable when plans are clear",
-        "Nothing matches",
-        "The text is empty"
+        "Exam Stress",
+        "Lost Keys",
+        "Surprise Party",
+        "Silent Movies"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

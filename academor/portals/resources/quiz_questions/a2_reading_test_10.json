@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A2 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Class 8B visited the History Museum with a friendly guide.</p><p>They saw old coins and maps and could not use flash photos.</p><p>They answered a museum quiz and won stickers.</p><p>They returned by bus and must write a short report.</p>",
+  "shared_passage": "<p>On a school trip last month we visited the National History Museum. We left school by bus at nine and arrived forty minutes later.</p><p>A guide met us at the entrance and explained the rules. We could take photos without flash, but we could not touch the objects. Our class stayed together in small groups.</p><p>I liked the room with ancient tools and maps. There was also a short film about life in the past. My friend preferred the jewellery exhibition.</p><p>At one o’clock we had lunch in the museum cafe. Then we had free time in the gift shop. I bought a small notebook with old city pictures on the cover.</p><p>Before we left, we wrote three new facts in our worksheets. The trip helped me understand history better than a normal lesson.</p><p>Back at school we prepared a short presentation about our favourite museum room. I spoke about the ancient maps and explained why history feels more real when you see original objects.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "Where did they go?",
       "options": [
-        "Museum Visit",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "The National History Museum",
+        "A cinema",
+        "A football stadium",
+        "An airport"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "How long did the bus ride take?",
       "options": [
-        "Nobody is mentioned",
-        "Class 8B visited the History Museum with a friendly guide",
-        "This detail is not in the text",
-        "The opposite happened"
+        "Forty minutes",
+        "Five minutes",
+        "Three hours",
+        "All day"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "What photo rule was there?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Class 8B visited the History Museum with a friendly guide",
-        "Nothing matches"
+        "Photos without flash",
+        "No photos at all",
+        "Only flash photos",
+        "Video with loud music"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "What room did the writer like?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Class 8B visited the History Museum with a friendly guide"
+        "Ancient tools and maps",
+        "Only the cafe",
+        "The car park",
+        "The gift shop only"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "What did the friend prefer?",
       "options": [
-        "Class 8B visited the History Museum with a friendly guide",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "The jewellery exhibition",
+        "The bus ride",
+        "Homework",
+        "The rules talk only"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "Where did they have lunch?",
       "options": [
-        "Only maths appears",
-        "Class 8B visited the History Museum with a friendly guide",
-        "Nothing matches",
-        "The text is empty"
+        "In the museum cafe",
+        "At school",
+        "At home",
+        "On the bus floor"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "What did the writer buy?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Class 8B visited the History Museum with a friendly guide",
-        "Nothing matches"
+        "A small notebook",
+        "A real ancient tool",
+        "A ticket to Canada",
+        "Nothing"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "What did they write before leaving?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Class 8B visited the History Museum with a friendly guide"
+        "Three new facts in worksheets",
+        "A long novel",
+        "A complaint letter only",
+        "Nothing"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "What time did they leave school?",
       "options": [
-        "Class 8B visited the History Museum with a friendly guide",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "At nine",
+        "At noon",
+        "At four",
+        "At midnight"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "Class 8B visited the History Museum with a friendly guide",
-        "Nothing matches",
-        "The text is empty"
+        "Museum Visit",
+        "Bank Fraud",
+        "Space News",
+        "Silent Movies"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Omar wakes up at 7:00.</p><p>He washes his face and eats eggs and tea.</p><p>He leaves home at 7:45.</p><p>He takes bus number 12.</p><p>He studies at City School.</p><p>He arrives at 8:15 and feels happy.</p>",
+  "shared_passage": "<p>My name is Kamran. I wake up at seven o’clock every morning. First I wash my face and brush my teeth.</p><p>Then I put on my school clothes. My mother makes breakfast for me. I usually eat bread with cheese and drink a cup of tea.</p><p>After breakfast I put my books in my bag. I leave the house at half past seven. I walk to school with my friend Orkhan.</p><p>School is not far. It takes fifteen minutes. Sometimes we talk about football on the way.</p><p>I like mornings when the sun is bright. I feel ready for my lessons.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What time does Omar wake up?",
+      "question": "What time does Kamran wake up?",
       "options": [
-        "7:00",
-        "9:00",
-        "6:00",
-        "8:15"
+        "At six",
+        "At seven",
+        "At eight",
+        "At nine"
       ],
-      "answer": 0
+      "answer": 1
     },
     {
       "id": 2,
-      "question": "What does he eat?",
+      "question": "What does he do first?",
       "options": [
-        "Nothing",
-        "Eggs and tea",
-        "Pizza only",
-        "Cake only"
+        "Watch TV",
+        "Wash his face and brush his teeth",
+        "Play football",
+        "Call his friend"
       ],
       "answer": 1
     },
     {
       "id": 3,
-      "question": "When does he leave home?",
+      "question": "What does he usually eat for breakfast?",
       "options": [
-        "7:00",
-        "10:00",
-        "7:45",
-        "8:15"
+        "Pizza",
+        "Bread with cheese",
+        "Soup",
+        "Cake only"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 4,
+      "question": "What does he drink?",
+      "options": [
+        "Coffee",
+        "Juice",
+        "Tea",
+        "Milkshake"
       ],
       "answer": 2
     },
     {
-      "id": 4,
-      "question": "Which bus does he take?",
-      "options": [
-        "Number 1",
-        "Number 99",
-        "No bus",
-        "Number 12"
-      ],
-      "answer": 3
-    },
-    {
       "id": 5,
-      "question": "Where does he study?",
+      "question": "What time does he leave the house?",
       "options": [
-        "City School",
-        "Green Hill School",
-        "A cafe",
-        "A library only"
+        "At seven",
+        "At half past seven",
+        "At eight",
+        "At nine"
       ],
-      "answer": 0
+      "answer": 1
     },
     {
       "id": 6,
-      "question": "What time does he arrive?",
+      "question": "Who walks to school with him?",
       "options": [
-        "3:00",
-        "8:15",
-        "7:00",
-        "7:45"
+        "His sister",
+        "Orkhan",
+        "His teacher",
+        "Nobody"
       ],
       "answer": 1
     },
     {
       "id": 7,
-      "question": "How does Omar feel?",
+      "question": "How long does it take to walk to school?",
       "options": [
-        "Bored",
-        "Afraid",
-        "Happy",
-        "Angry"
+        "Five minutes",
+        "Fifteen minutes",
+        "One hour",
+        "Two hours"
       ],
-      "answer": 2
+      "answer": 1
     },
     {
       "id": 8,
-      "question": "What does he do first?",
+      "question": "What do they sometimes talk about?",
       "options": [
-        "Goes to sleep",
-        "Buys a car",
-        "Plays football",
-        "Washes his face"
-      ],
-      "answer": 3
-    },
-    {
-      "id": 9,
-      "question": "Who is the text about?",
-      "options": [
-        "Omar",
-        "Lina",
-        "Sara",
-        "Tom"
+        "Football",
+        "Cooking",
+        "Trains",
+        "Banks"
       ],
       "answer": 0
     },
     {
-      "id": 10,
-      "question": "Best title?",
+      "id": 9,
+      "question": "Who makes breakfast?",
       "options": [
-        "Museum Visit",
-        "My Morning",
-        "Camping",
-        "City Noise"
+        "His father",
+        "His mother",
+        "Orkhan",
+        "His teacher"
       ],
       "answer": 1
+    },
+    {
+      "id": 10,
+      "question": "What is the best title?",
+      "options": [
+        "My Morning",
+        "Lost Keys",
+        "Airport Delay",
+        "City Noise"
+      ],
+      "answer": 0
     }
   ]
 }

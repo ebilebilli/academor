@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A2 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Friends bought comedy tickets online and sat in the middle.</p><p>They shared popcorn and laughed a lot.</p><p>The film ended at 10 pm and they walked home together.</p><p>They plan another cinema night soon.</p>",
+  "shared_passage": "<p>Last Saturday my friends and I went to the cinema to watch a comedy film. We bought tickets for the 7:30 showing and arrived twenty minutes early.</p><p>The cinema was crowded, so we sat near the side. Before the film, there were many adverts. We bought popcorn and shared it.</p><p>The film was funny and not too long. My favourite part was when the main character got lost in a supermarket. We laughed so much that a person in front turned around and smiled.</p><p>After the film we walked to a nearby cafe and talked about the story. We all agreed the ending was surprising but happy.</p><p>Cinema night has become our monthly tradition. It is a cheap way to relax and spend time together after a busy week.</p><p>One friend suggested choosing a drama next time. We agreed to take turns picking genres so that cinema night stays interesting for everyone.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "What kind of film did they watch?",
       "options": [
-        "Cinema Night",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "A comedy",
+        "A horror film",
+        "A documentary only",
+        "A silent news report"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "What time was the showing?",
       "options": [
-        "Nobody is mentioned",
-        "Friends bought comedy tickets online and sat in the middle",
-        "This detail is not in the text",
-        "The opposite happened"
+        "7:30",
+        "5:00",
+        "Midnight",
+        "9:00 only"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "How early did they arrive?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Friends bought comedy tickets online and sat in the middle",
-        "Nothing matches"
+        "Twenty minutes early",
+        "Two hours early",
+        "Exactly on time with no wait",
+        "After the film ended"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "Where did they sit?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Friends bought comedy tickets online and sat in the middle"
+        "Near the side",
+        "In the front middle always",
+        "Outside",
+        "On the stage"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "What was the writer’s favourite part?",
       "options": [
-        "Friends bought comedy tickets online and sat in the middle",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "The character got lost in a supermarket",
+        "The adverts only",
+        "Leaving early",
+        "The tickets queue"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "Where did they go after the film?",
       "options": [
-        "Only maths appears",
-        "Friends bought comedy tickets online and sat in the middle",
-        "Nothing matches",
-        "The text is empty"
+        "To a nearby cafe",
+        "Straight home in silence",
+        "To school",
+        "To the airport"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "How did they describe the ending?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Friends bought comedy tickets online and sat in the middle",
-        "Nothing matches"
+        "Surprising but happy",
+        "Sad and confusing only",
+        "Missing",
+        "Boring"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "How often is cinema night?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Friends bought comedy tickets online and sat in the middle"
+        "Monthly",
+        "Every day",
+        "Once in a lifetime",
+        "Never again"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "What did they buy to eat?",
       "options": [
-        "Friends bought comedy tickets online and sat in the middle",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Popcorn",
+        "A full dinner in the cinema seats",
+        "Only water",
+        "Nothing"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "Friends bought comedy tickets online and sat in the middle",
-        "Nothing matches",
-        "The text is empty"
+        "Cinema Night",
+        "Bank Fraud",
+        "Space News",
+        "Silent Movies"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

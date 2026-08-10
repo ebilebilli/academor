@@ -3,10 +3,11 @@
   class="portal-quiz-access-panel"
   data-quiz-access-panel
   data-student-id="{{ student.id }}"
+  data-quiz-access-bulk-url="{% url 'portals:teacher-quiz-assignment-bulk' student_pk=student.id %}"
   aria-label="{% trans 'Quiz icazələri' %}"
 >
   <p class="text-muted small mb-3">
-    {% trans 'Hansı quizlərin bu şagird üçün aktiv olacağını buradan idarə edin. Bağlı quizlər şagirdə kilid kimi görünür.' %}
+    {% trans 'Adi quizlər kateqoriya üzrə açılır/bağlanır. IELTS və SAT quizləri isə tək-tək idarə olunur. Bağlı quizlər şagirdə kilid kimi görünür.' %}
   </p>
 
   {% if mock_access_programs %}
@@ -61,7 +62,7 @@
     >
       <i class="ti ti-category" aria-hidden="true"></i>
       <span>{{ category.name }}</span>
-      <em>{{ category.quizzes|length }}</em>
+      <em>{{ category.control_count|default:0 }}</em>
     </button>
     {% endfor %}
   </nav>
@@ -76,30 +77,66 @@
           <h3 class="h6 mb-0">{{ category.name }}</h3>
           <span class="badge rounded-pill text-bg-light border">{{ category.service_label }}</span>
         </div>
+        {% if category.quizzes %}
         <div class="portal-quiz-access-category__actions">
           <button
             type="button"
             class="ds-btn ds-btn--ghost btn-sm"
             data-quiz-access-bulk="on"
             data-quiz-access-bulk-category="{{ category.id }}"
+            data-quiz-access-bulk-scope="program"
           >
-            {% trans 'Hamısını aç' %}
+            {% trans 'IELTS/SAT hamısını aç' %}
           </button>
           <button
             type="button"
             class="ds-btn ds-btn--ghost btn-sm"
             data-quiz-access-bulk="off"
             data-quiz-access-bulk-category="{{ category.id }}"
+            data-quiz-access-bulk-scope="program"
           >
-            {% trans 'Hamısını bağla' %}
+            {% trans 'IELTS/SAT hamısını bağla' %}
           </button>
         </div>
+        {% endif %}
       </header>
-      <div class="table-responsive">
+
+      {% if category.category_access %}
+      <div
+        class="portal-quiz-access-category-toggle{% if category.category_access.is_partial %} is-partial{% endif %}{% if not category.category_access.is_active %} is-inactive{% endif %}"
+        data-quiz-access-row="category-{{ category.id }}"
+      >
+        <div>
+          <strong>{{ category.name }}</strong>
+          <p class="text-muted small mb-0">
+            {% blocktrans with active=category.category_access.active_count total=category.category_access.quiz_count %}
+              Kateqoriya üzrə {{ active }}/{{ total }} quiz aktivdir. Adi quiz adları ayrı-ayrı göstərilmir.
+            {% endblocktrans %}
+          </p>
+        </div>
+        <div class="form-check form-switch mb-0">
+          <input
+            class="form-check-input portal-quiz-access-toggle"
+            type="checkbox"
+            role="switch"
+            id="quiz-access-cat-{{ student.id }}-{{ category.id }}"
+            data-quiz-access-category-toggle
+            data-category-id="{{ category.id }}"
+            {% if category.category_access.is_active %}checked{% endif %}
+          >
+          <label class="form-check-label" for="quiz-access-cat-{{ student.id }}-{{ category.id }}">
+            {% trans 'Kateqoriya aktiv' %}
+          </label>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if category.quizzes %}
+      <div class="table-responsive{% if category.category_access %} mt-3{% endif %}">
         <table class="t-table portal-quiz-access-table">
           <thead>
             <tr>
-              <th>{% trans 'Quiz' %}</th>
+              <th>{% trans 'IELTS / SAT quiz' %}</th>
               <th>{% trans 'Format' %}</th>
               <th class="text-end">{% trans 'Aktiv' %}</th>
             </tr>
@@ -107,7 +144,12 @@
           <tbody>
             {% for quiz in category.quizzes %}
             <tr data-quiz-access-row="{{ quiz.id }}">
-              <td>{{ quiz.topic }}</td>
+              <td>
+                {{ quiz.topic }}
+                {% if quiz.program_label %}
+                <span class="badge rounded-pill text-bg-light border ms-1">{{ quiz.program_label }}</span>
+                {% endif %}
+              </td>
               <td><span class="badge rounded-pill text-bg-light border">{{ quiz.format_label }}</span></td>
               <td class="text-end">
                 <div class="form-check form-switch d-inline-flex align-items-center justify-content-end mb-0">
@@ -130,6 +172,7 @@
           </tbody>
         </table>
       </div>
+      {% endif %}
     </section>
     {% endfor %}
   {% elif not mock_access_programs %}

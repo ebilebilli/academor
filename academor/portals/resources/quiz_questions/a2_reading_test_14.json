@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A2 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Vugar had a flat tyre and took his bike to a repair shop.</p><p>The repair cost eight manat and was ready in one hour.</p><p>The mechanic gave safety tips and Vugar rode home slowly.</p><p>He now checks tyre pressure weekly and feels happy again.</p>",
+  "shared_passage": "<p>My bike chain broke on the way to school last Tuesday. I had to walk the last kilometre and I arrived late for the first lesson.</p><p>After school I took the bike to a small repair shop near the bus station. The mechanic looked at it and said the chain and one brake pad needed changing.</p><p>The repair cost eighteen manats and took one hour. While I waited, I read a sports magazine in the shop.</p><p>The mechanic also showed me how to check tyre pressure every week. He said many problems start from small forgotten details.</p><p>Now my bike feels safe again. I leave home ten minutes earlier so I am not late if something goes wrong.</p><p>I wrote the mechanic’s tips in my phone notes. Checking the chain and brakes every week now feels normal, and I arrive at school with less stress.</p><p>My classmates now ask me for bike advice before long rides. Helping them check brakes makes me feel useful, not only repaired.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What is the best short title?",
+      "question": "What broke on the bike?",
       "options": [
-        "Bike Repair",
-        "Space News",
-        "Bank Fraud",
-        "Silent Movies"
+        "The chain",
+        "The wheel forever",
+        "The seat only",
+        "The bell"
       ],
       "answer": 0
     },
     {
       "id": 2,
-      "question": "Which detail is in the text?",
+      "question": "How far did the writer walk?",
       "options": [
-        "Nobody is mentioned",
-        "Vugar had a flat tyre and took his bike to a repair shop",
-        "This detail is not in the text",
-        "The opposite happened"
+        "The last kilometre",
+        "Ten kilometres",
+        "One metre",
+        "All the way to another city"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 3,
-      "question": "Which statement matches the text? (3)",
+      "question": "Where was the repair shop?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Vugar had a flat tyre and took his bike to a repair shop",
-        "Nothing matches"
+        "Near the bus station",
+        "Inside the school",
+        "At home",
+        "At the airport"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 4,
-      "question": "Which statement matches the text? (4)",
+      "question": "What needed changing?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Vugar had a flat tyre and took his bike to a repair shop"
+        "The chain and one brake pad",
+        "Only the colour",
+        "The whole bike frame",
+        "Nothing"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 5,
-      "question": "Which statement matches the text? (5)",
+      "question": "How much did the repair cost?",
       "options": [
-        "Vugar had a flat tyre and took his bike to a repair shop",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Eighteen manats",
+        "Eighty manats",
+        "Free",
+        "Two manats"
       ],
       "answer": 0
     },
     {
       "id": 6,
-      "question": "Which statement matches the text? (6)",
+      "question": "How long did the repair take?",
       "options": [
-        "Only maths appears",
-        "Vugar had a flat tyre and took his bike to a repair shop",
-        "Nothing matches",
-        "The text is empty"
+        "One hour",
+        "One day",
+        "Ten minutes",
+        "One week"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": 7,
-      "question": "Which statement matches the text? (7)",
+      "question": "What tip did the mechanic give?",
       "options": [
-        "The text is empty",
-        "Only maths appears",
-        "Vugar had a flat tyre and took his bike to a repair shop",
-        "Nothing matches"
+        "Check tyre pressure every week",
+        "Never ride again",
+        "Sell the bike immediately",
+        "Ignore all problems"
       ],
-      "answer": 2
+      "answer": 0
     },
     {
       "id": 8,
-      "question": "Which statement matches the text? (8)",
+      "question": "What does the writer do now?",
       "options": [
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears",
-        "Vugar had a flat tyre and took his bike to a repair shop"
+        "Leaves home ten minutes earlier",
+        "Stops using the bike",
+        "Takes a plane to school",
+        "Sleeps in the shop"
       ],
-      "answer": 3
+      "answer": 0
     },
     {
       "id": 9,
-      "question": "Which statement matches the text? (9)",
+      "question": "Why was the writer late?",
       "options": [
-        "Vugar had a flat tyre and took his bike to a repair shop",
-        "Nothing matches",
-        "The text is empty",
-        "Only maths appears"
+        "Had to walk after the chain broke",
+        "Forgot school exists",
+        "The teacher cancelled class",
+        "Slept until noon"
       ],
       "answer": 0
     },
     {
       "id": 10,
-      "question": "Which statement matches the text? (10)",
+      "question": "What is the best title?",
       "options": [
-        "Only maths appears",
-        "Vugar had a flat tyre and took his bike to a repair shop",
-        "Nothing matches",
-        "The text is empty"
+        "Bike Repair",
+        "Bank Fraud",
+        "Space News",
+        "Silent Movies"
       ],
-      "answer": 1
+      "answer": 0
     }
   ]
 }

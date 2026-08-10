@@ -5,117 +5,117 @@
   "service": "general_english",
   "category_name": "A1 Reading Tests",
   "has_shared_passage": true,
-  "shared_passage": "<p>Emil goes swimming at the city pool.</p><p>He swims on Monday and Thursday.</p><p>His coach is Ms Reza.</p><p>Each lesson is one hour.</p><p>He drinks water and wants to swim fast.</p><p>Last month he won a small medal.</p>",
+  "shared_passage": "<p>My name is Farid and I love sports. Three times a week I go swimming at the sports centre near my school.</p><p>On Tuesdays and Thursdays I play football with my class. I am a goalkeeper. Our team wears blue shirts.</p><p>At the weekend I sometimes play table tennis with my father. He is very good and he usually wins, but I am learning fast.</p><p>My sister prefers running. She runs in the park every morning before school. She wants to join a running club.</p><p>Sport helps me feel strong and happy. After exercise I drink water and rest for a short time.</p>",
   "questions": [
     {
       "id": 1,
-      "question": "What sport does Emil do?",
+      "question": "How often does Farid go swimming?",
       "options": [
-        "Swimming",
-        "Football only",
-        "Tennis only",
-        "Chess only"
+        "Every day",
+        "Three times a week",
+        "Once a month",
+        "Never"
       ],
-      "answer": 0
+      "answer": 1
     },
     {
       "id": 2,
       "question": "Where does he swim?",
       "options": [
+        "In the sea only",
+        "At the sports centre",
         "At home",
-        "The city pool",
-        "The sea only",
-        "A river only"
+        "At the airport"
       ],
       "answer": 1
     },
     {
       "id": 3,
-      "question": "Which days?",
+      "question": "When does he play football?",
       "options": [
-        "Sunday only",
-        "Friday only",
-        "Monday and Thursday",
-        "Saturday only"
+        "On Mondays only",
+        "On Tuesdays and Thursdays",
+        "Every night",
+        "Only in winter"
       ],
-      "answer": 2
+      "answer": 1
     },
     {
       "id": 4,
-      "question": "Who is the coach?",
+      "question": "What position does he play?",
       "options": [
-        "Mr Brown",
-        "Dr Hasan",
-        "Mr Karimov",
-        "Ms Reza"
+        "Striker",
+        "Goalkeeper",
+        "Referee",
+        "Coach"
       ],
-      "answer": 3
+      "answer": 1
     },
     {
       "id": 5,
-      "question": "How long is each lesson?",
+      "question": "What colour are the team shirts?",
       "options": [
-        "One hour",
-        "Five hours",
-        "Ten minutes",
-        "All day"
+        "Red",
+        "Blue",
+        "Yellow",
+        "Black"
       ],
-      "answer": 0
+      "answer": 1
     },
     {
       "id": 6,
-      "question": "What does he drink?",
+      "question": "Who does he play table tennis with?",
       "options": [
-        "Milk only",
-        "Water",
-        "Cola only",
-        "Coffee only"
+        "His sister",
+        "His father",
+        "His teacher",
+        "Nobody"
       ],
       "answer": 1
     },
     {
       "id": 7,
-      "question": "What is his goal?",
+      "question": "What sport does his sister prefer?",
       "options": [
-        "Only watch TV",
-        "Only run",
-        "Swim fast",
-        "Stop swimming"
+        "Swimming",
+        "Football",
+        "Running",
+        "Tennis"
       ],
       "answer": 2
     },
     {
       "id": 8,
-      "question": "What did he win?",
+      "question": "When does his sister run?",
       "options": [
-        "A car",
-        "A house",
-        "A phone",
-        "A small medal"
-      ],
-      "answer": 3
-    },
-    {
-      "id": 9,
-      "question": "Who is the text about?",
-      "options": [
-        "Emil",
-        "Leyla",
-        "Sara",
-        "Nina"
+        "Every morning before school",
+        "Only at night",
+        "Only on Sundays",
+        "Never"
       ],
       "answer": 0
     },
     {
-      "id": 10,
-      "question": "Best title?",
+      "id": 9,
+      "question": "What does he drink after exercise?",
       "options": [
-        "Clothes",
-        "Sports",
-        "Plastic Waste",
-        "Tourist Boom"
+        "Cola",
+        "Water",
+        "Coffee",
+        "Soup"
       ],
       "answer": 1
+    },
+    {
+      "id": 10,
+      "question": "What is the best title?",
+      "options": [
+        "Sports",
+        "Lost Keys",
+        "City Noise",
+        "Bank Fraud"
+      ],
+      "answer": 0
     }
   ]
 }
