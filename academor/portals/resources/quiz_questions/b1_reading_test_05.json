@@ -1,0 +1,121 @@
+{
+  "level": "B1",
+  "quiz": 5,
+  "title": "Travel Apps",
+  "service": "general_english",
+  "category_name": "B1 Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Travel apps help users compare hotel prices quickly, but reviews can be fake.</p><p>Travellers should check recent guest photos and download offline maps.</p><p>Free apps show more ads, so paid plans may feel clearer.</p><p>Share live location with family and talk to locals, not only screens.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is the best short title?",
+      "options": [
+        "Travel Apps",
+        "Space News",
+        "Bank Fraud",
+        "Silent Movies"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "Which detail is in the text?",
+      "options": [
+        "Nobody is mentioned",
+        "Travel apps help users compare hotel prices quickly, but reviews can be fake",
+        "This detail is not in the text",
+        "The opposite happened"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "Which statement matches the text? (3)",
+      "options": [
+        "The text is empty",
+        "Only maths appears",
+        "Travel apps help users compare hotel prices quickly, but reviews can be fake",
+        "Nothing matches"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "Which statement matches the text? (4)",
+      "options": [
+        "Nothing matches",
+        "The text is empty",
+        "Only maths appears",
+        "Travel apps help users compare hotel prices quickly, but reviews can be fake"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 5,
+      "question": "Which statement matches the text? (5)",
+      "options": [
+        "Travel apps help users compare hotel prices quickly, but reviews can be fake",
+        "Nothing matches",
+        "The text is empty",
+        "Only maths appears"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "Which statement matches the text? (6)",
+      "options": [
+        "Only maths appears",
+        "Travel apps help users compare hotel prices quickly, but reviews can be fake",
+        "Nothing matches",
+        "The text is empty"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "Which statement matches the text? (7)",
+      "options": [
+        "The text is empty",
+        "Only maths appears",
+        "Travel apps help users compare hotel prices quickly, but reviews can be fake",
+        "Nothing matches"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "Which statement matches the text? (8)",
+      "options": [
+        "Nothing matches",
+        "The text is empty",
+        "Only maths appears",
+        "Travel apps help users compare hotel prices quickly, but reviews can be fake"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 9,
+      "question": "Which statement matches the text? (9)",
+      "options": [
+        "Travel apps help users compare hotel prices quickly, but reviews can be fake",
+        "Nothing matches",
+        "The text is empty",
+        "Only maths appears"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "Which statement matches the text? (10)",
+      "options": [
+        "Only maths appears",
+        "Travel apps help users compare hotel prices quickly, but reviews can be fake",
+        "Nothing matches",
+        "The text is empty"
+      ],
+      "answer": 1
+    }
+  ]
+}

@@ -134,12 +134,21 @@ def parse_resource_file(path: Path) -> dict:
         'is_sat': bool(data.get('is_sat')),
         'sat_section': (data.get('sat_section') or '').strip(),
         'time_limit_minutes': data.get('time_limit_minutes'),
+        'has_shared_passage': bool(data.get('has_shared_passage')),
+        'shared_passage': (data.get('shared_passage') or data.get('passage') or '').strip(),
         'questions': questions,
     }
 
 
 def ensure_quiz_from_resource(parsed: dict, category: QuizCategory) -> tuple[Quiz, bool]:
     """Create or update a Quiz row for a loaded JSON resource."""
+    has_shared = bool(parsed.get('has_shared_passage'))
+    shared_passage = (parsed.get('shared_passage') or '').strip()
+    if has_shared and not shared_passage:
+        raise ValueError(
+            f'{parsed["resource_slug"]}: has_shared_passage is true but shared_passage is empty.',
+        )
+
     defaults = {
         'topic': parsed['resource_name'],
         'is_listening': False,
@@ -150,6 +159,8 @@ def ensure_quiz_from_resource(parsed: dict, category: QuizCategory) -> tuple[Qui
         'is_ielts': False,
         'is_sat': parsed.get('is_sat', False),
         'sat_section': parsed.get('sat_section', ''),
+        'has_shared_passage': has_shared,
+        'shared_passage': shared_passage if has_shared else '',
     }
     time_limit = parsed.get('time_limit_minutes')
     if time_limit:

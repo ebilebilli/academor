@@ -1,0 +1,121 @@
+{
+  "level": "A1",
+  "quiz": 12,
+  "title": "Clothes",
+  "service": "general_english",
+  "category_name": "A1 Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Maryam has a red coat and black shoes.</p><p>At school she wears a uniform.</p><p>At the weekend she wears jeans and a sweater.</p><p>She has a blue hat and gloves for cold days.</p><p>She buys clothes with her mum.</p><p>Her favourite item is a yellow scarf.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What colour is Maryam’s coat?",
+      "options": [
+        "Red",
+        "Blue",
+        "Green",
+        "White"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "What colour are her shoes?",
+      "options": [
+        "Orange",
+        "Black",
+        "Yellow",
+        "Pink"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "What does she wear at school?",
+      "options": [
+        "Only a scarf",
+        "Only a hat",
+        "A uniform",
+        "Only jeans"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "What does she wear at the weekend?",
+      "options": [
+        "A uniform only",
+        "Only gloves",
+        "Only boots",
+        "Jeans and a sweater"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 5,
+      "question": "What colour is her hat?",
+      "options": [
+        "Blue",
+        "Red",
+        "Black",
+        "Yellow"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "When does she wear gloves?",
+      "options": [
+        "Only at night parties",
+        "On cold days",
+        "Only in summer",
+        "Never"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "Who shops with her?",
+      "options": [
+        "Her doctor",
+        "Nobody",
+        "Her mum",
+        "Her coach"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "What is her favourite item?",
+      "options": [
+        "A red bike",
+        "A blue phone",
+        "A black bag only",
+        "A yellow scarf"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 9,
+      "question": "Who is the text about?",
+      "options": [
+        "Maryam",
+        "Emil",
+        "Omar",
+        "Tom"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "Best title?",
+      "options": [
+        "Food",
+        "Clothes",
+        "Remote Work",
+        "Camping"
+      ],
+      "answer": 1
+    }
+  ]
+}

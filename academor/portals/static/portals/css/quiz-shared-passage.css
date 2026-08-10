@@ -1,9 +1,10 @@
 /* Shared passage layout for variant MCQ quizzes (fixed text above questions). */
 
-.portal-quiz-take--shared-passage {
+.portal-shared-passage-section {
   --shared-passage-sticky-offset: 0px;
 }
 
+.portal-quiz-take--shared-passage.portal-quiz-take--timed .portal-shared-passage-section,
 .portal-quiz-take--shared-passage.portal-quiz-take--timed {
   --shared-passage-sticky-offset: var(--portal-quiz-timer-bar-height, 5.75rem);
 }
@@ -16,7 +17,7 @@
 
 .portal-shared-passage__passage {
   position: sticky;
-  top: var(--shared-passage-sticky-offset);
+  top: var(--shared-passage-sticky-offset, 0px);
   z-index: 2;
   max-height: min(42vh, 22rem);
   overflow: auto;
@@ -32,6 +33,6 @@
   }
 
   .portal-shared-passage__passage {
-    max-height: calc(100vh - var(--shared-passage-sticky-offset) - 2rem);
+    max-height: calc(100vh - var(--shared-passage-sticky-offset, 0px) - 2rem);
   }
 }

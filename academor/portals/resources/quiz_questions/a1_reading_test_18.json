@@ -1,0 +1,121 @@
+{
+  "level": "A1",
+  "quiz": 18,
+  "title": "At the Cafe",
+  "service": "general_english",
+  "category_name": "A1 Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Zahra goes to Sunrise Cafe.</p><p>She orders tea and a sandwich.</p><p>She sits at a window table.</p><p>She meets Sevda and they talk about school.</p><p>Zahra pays with a card.</p><p>There is soft music.</p><p>They leave at four.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Which cafe does Zahra visit?",
+      "options": [
+        "Sunrise Cafe",
+        "Moon Cafe",
+        "No cafe",
+        "A school canteen only"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "What does she order?",
+      "options": [
+        "Only juice",
+        "Tea and a sandwich",
+        "Only water",
+        "Only cake"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "Where does she sit?",
+      "options": [
+        "On the floor",
+        "In a car",
+        "At a window table",
+        "Outside in the rain"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "Who does she meet?",
+      "options": [
+        "Ilkin",
+        "Omar",
+        "Tom",
+        "Sevda"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 5,
+      "question": "What do they talk about?",
+      "options": [
+        "School",
+        "Banks",
+        "Planes only",
+        "Taxes"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "How does she pay?",
+      "options": [
+        "With a phone only forever",
+        "With a card",
+        "With gold",
+        "She does not pay"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "What music is there?",
+      "options": [
+        "Only loud rock",
+        "Only silence alarms",
+        "Soft music",
+        "No music"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "When do they leave?",
+      "options": [
+        "At midnight",
+        "At 8 am",
+        "At noon only",
+        "At four"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 9,
+      "question": "Who is the text about?",
+      "options": [
+        "Zahra",
+        "Ilkin",
+        "Sara",
+        "Emil"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "Best title?",
+      "options": [
+        "Train Trip",
+        "At the Cafe",
+        "Exam Stress",
+        "Pets"
+      ],
+      "answer": 1
+    }
+  ]
+}

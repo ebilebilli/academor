@@ -5,8 +5,11 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20260809c">
-{% if detail.is_reading %}
+{% if detail.is_reading or detail.uses_shared_passage_layout %}
 <link rel="stylesheet" href="{% static 'portals/css/quiz-reading.css' %}?v=20260808d">
+{% endif %}
+{% if detail.uses_shared_passage_layout %}
+<link rel="stylesheet" href="{% static 'portals/css/quiz-shared-passage.css' %}?v=20260810a">
 {% endif %}
 {% if detail.is_speaking %}
 <link rel="stylesheet" href="{% static 'portals/css/quiz-speaking.css' %}?v=20260703">
@@ -51,57 +54,39 @@
     {% endfor %}
   </nav>
 </div>
+{% if detail.uses_shared_passage_layout and detail.shared_passage %}
+<section class="portal-reading-section portal-shared-passage-section mb-4" aria-labelledby="score-shared-passage-title">
+  <div class="portal-reading-section__layout">
+    <div class="portal-reading-section__passage panel portal-shared-passage__passage">
+      <header class="portal-reading-section__passage-head">
+        <h2 class="portal-reading-section__title" id="score-shared-passage-title">{% trans 'Passage' %}</h2>
+      </header>
+      <div class="portal-reading-section__body">{{ detail.shared_passage|safe }}</div>
+    </div>
+    <div class="portal-reading-section__tasks panel">
+      <div class="portal-reading-section__tasks-head">
+        <div class="portal-reading-section__tasks-head-text">
+          <p class="portal-reading-section__tasks-label mb-1">{% trans 'Answers' %}</p>
+        </div>
+      </div>
+      <div class="portal-quiz-play-stack portal-reading-section__task-list">
+        {% for row in detail.breakdown %}
+        {% include "portals/includes/quiz_score_breakdown_card.html" with row=row number=forloop.counter %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+{% else %}
 <section class="panel mb-4">
   <h2 class="h6 mb-3">{% trans 'Answers' %}</h2>
   <div class="portal-quiz-play-stack">
     {% for row in detail.breakdown %}
-    <article id="score-q-{{ forloop.counter }}" class="portal-quiz-play-card portal-score-q-target {% if row.is_correct %}border-success{% else %}border-danger{% endif %}">
-      <header class="portal-quiz-play-card__head">
-        <span class="portal-quiz-play-card__index">{% trans 'Question' %} {{ forloop.counter }}</span>
-        {% if row.is_correct %}
-        <span class="badge rounded-pill text-bg-success">{% trans 'Correct' %}</span>
-        {% else %}
-        <span class="badge rounded-pill text-bg-danger">{% trans 'Incorrect' %}</span>
-        {% endif %}
-      </header>
-      <div class="portal-quiz-prompt__text">{{ row.question|quiz_html }}</div>
-      {% if row.question_type == 'spr' %}
-      <div class="portal-quiz-spr-review">
-        <div class="portal-quiz-spr-review__row">
-          <span class="portal-quiz-spr-review__label">{% trans 'Your answer' %}</span>
-          <span class="portal-quiz-spr-review__value{% if not row.is_correct %} is-wrong{% endif %}">
-            {% if row.student_answer %}{{ row.student_answer }}{% else %}—{% endif %}
-          </span>
-        </div>
-        <div class="portal-quiz-spr-review__row portal-quiz-spr-review__row--correct">
-          <span class="portal-quiz-spr-review__label">{% trans 'Correct answer' %}</span>
-          <span class="portal-quiz-spr-review__value is-correct">
-            {% if row.correct_label %}{{ row.correct_label }}{% else %}—{% endif %}
-          </span>
-        </div>
-      </div>
-      {% elif row.answer_options %}
-      <div class="portal-quiz-play-options portal-quiz-teacher-options" role="list">
-        {% for option in row.answer_options %}
-        <div
-          class="portal-quiz-play-option portal-quiz-teacher-option{% if forloop.counter0 == row.correct_index %} is-correct{% endif %}{% if forloop.counter0 == row.selected_index and not row.is_correct %} is-selected is-wrong{% endif %}"
-          role="listitem"
-        >
-          <span class="portal-quiz-play-option__letter">{{ forloop.counter0|quiz_option_letter|upper }}</span>
-          <span class="portal-quiz-play-option__text">{{ option|quiz_html }}</span>
-          {% if forloop.counter0 == row.correct_index %}
-          <span class="portal-quiz-teacher-correct-mark"><i class="bi bi-check-lg" aria-hidden="true"></i></span>
-          {% elif forloop.counter0 == row.selected_index %}
-          <span class="portal-quiz-teacher-correct-mark text-danger"><i class="bi bi-x-lg" aria-hidden="true"></i></span>
-          {% endif %}
-        </div>
-        {% endfor %}
-      </div>
-      {% endif %}
-    </article>
+    {% include "portals/includes/quiz_score_breakdown_card.html" with row=row number=forloop.counter %}
     {% endfor %}
   </div>
 </section>
+{% endif %}
 {% elif detail.is_speaking and detail.speaking_sections %}
 <section class="panel mb-4">
   <h2 class="h6 mb-3">{% trans 'Speaking tasks' %}</h2>

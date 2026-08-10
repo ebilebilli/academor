@@ -1,0 +1,121 @@
+{
+  "level": "A1",
+  "quiz": 8,
+  "title": "My House",
+  "service": "general_english",
+  "category_name": "A1 Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Nina’s house has three rooms and a big kitchen.</p><p>There is a small garden.</p><p>The house is yellow.</p><p>Nina’s desk is near the window.</p><p>She shares a room with her sister.</p><p>They live on a quiet street.</p><p>Nina loves her balcony.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "How many rooms are there?",
+      "options": [
+        "Three",
+        "One",
+        "Ten",
+        "Zero"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "What is special about the kitchen?",
+      "options": [
+        "It is closed",
+        "It is big",
+        "It is missing",
+        "It is outside"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "What colour is the house?",
+      "options": [
+        "Black",
+        "Red",
+        "Yellow",
+        "Blue"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "Where is Nina’s desk?",
+      "options": [
+        "In the garden",
+        "On the bus",
+        "At school",
+        "Near the window"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 5,
+      "question": "Who shares Nina’s room?",
+      "options": [
+        "Her sister",
+        "Her teacher",
+        "Her neighbour",
+        "Nobody"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "What is the street like?",
+      "options": [
+        "A market",
+        "Quiet",
+        "Very noisy always",
+        "A motorway"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "What does Nina love?",
+      "options": [
+        "Loud music",
+        "Dark rooms",
+        "Her balcony",
+        "Traffic"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "Is there a garden?",
+      "options": [
+        "No garden",
+        "Only a garage",
+        "Only a pool",
+        "Yes, a small garden"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 9,
+      "question": "Who is the main person?",
+      "options": [
+        "Nina",
+        "Kenan",
+        "Omar",
+        "Tom"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "Best title?",
+      "options": [
+        "Exam Stress",
+        "My House",
+        "Airport Delay",
+        "Plastic Waste"
+      ],
+      "answer": 1
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "level": "A1",
+  "quiz": 15,
+  "title": "Birthday",
+  "service": "general_english",
+  "category_name": "A1 Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Ramin is nine years old.</p><p>He has a birthday party at home.</p><p>Six friends come.</p><p>There is a chocolate cake.</p><p>He gets a football as a gift.</p><p>They play music games and take photos.</p><p>The party ends at nine.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "How old is Ramin?",
+      "options": [
+        "Nine",
+        "Six",
+        "Twelve",
+        "Fifteen"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "Where is the party?",
+      "options": [
+        "At the bank",
+        "At home",
+        "At school only",
+        "At the airport"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "How many friends come?",
+      "options": [
+        "Twenty",
+        "Zero",
+        "Six",
+        "Two"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "What kind of cake is there?",
+      "options": [
+        "No cake",
+        "Only fruit",
+        "Only bread",
+        "Chocolate cake"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 5,
+      "question": "What gift does he get?",
+      "options": [
+        "A football",
+        "A phone",
+        "A bike",
+        "A book only"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "What games do they play?",
+      "options": [
+        "No games",
+        "Music games",
+        "Football only",
+        "Chess only"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "What do they take?",
+      "options": [
+        "Trains",
+        "Planes",
+        "Photos",
+        "Exams"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "When does the party end?",
+      "options": [
+        "At noon",
+        "At 6 am",
+        "At midnight only",
+        "At nine"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 9,
+      "question": "Who is the text about?",
+      "options": [
+        "Ramin",
+        "Seda",
+        "Sara",
+        "Emil"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "Best title?",
+      "options": [
+        "Weather",
+        "Birthday",
+        "Plastic Waste",
+        "City Noise"
+      ],
+      "answer": 1
+    }
+  ]
+}

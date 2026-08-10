@@ -1,0 +1,121 @@
+{
+  "level": "A1",
+  "quiz": 14,
+  "title": "Bus Ride",
+  "service": "general_english",
+  "category_name": "A1 Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Seda takes bus 21 near her house.</p><p>She sits by the window.</p><p>The ride takes 20 minutes.</p><p>She reads a book and buys a ticket.</p><p>The driver is friendly.</p><p>She gets off at the library.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Which bus does Seda take?",
+      "options": [
+        "Bus 21",
+        "Bus 1",
+        "Bus 99",
+        "No bus"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "Where is the stop?",
+      "options": [
+        "At the hospital only",
+        "Near her house",
+        "Near the airport only",
+        "Inside the school"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "Where does she sit?",
+      "options": [
+        "Next to the driver only",
+        "Outside",
+        "By the window",
+        "On the floor"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "How long is the ride?",
+      "options": [
+        "2 hours",
+        "10 seconds",
+        "All day",
+        "20 minutes"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 5,
+      "question": "What does she read?",
+      "options": [
+        "A book",
+        "A map of Mars",
+        "A bank form only",
+        "Nothing"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "What does she buy?",
+      "options": [
+        "A bike",
+        "A ticket",
+        "A car",
+        "A house"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "What is the driver like?",
+      "options": [
+        "Silent always",
+        "Absent",
+        "Friendly",
+        "Angry"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "Where does she get off?",
+      "options": [
+        "At the beach",
+        "At the stadium",
+        "At the airport",
+        "At the library"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 9,
+      "question": "Who is the text about?",
+      "options": [
+        "Seda",
+        "Kamran",
+        "Omar",
+        "Tom"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "Best title?",
+      "options": [
+        "Sports",
+        "Bus Ride",
+        "Social Media",
+        "Holidays"
+      ],
+      "answer": 1
+    }
+  ]
+}

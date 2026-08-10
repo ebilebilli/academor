@@ -1,0 +1,121 @@
+{
+  "level": "A1",
+  "quiz": 5,
+  "title": "Pets",
+  "service": "general_english",
+  "category_name": "A1 Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Nara has a white cat called Mimi.</p><p>Mimi is two years old.</p><p>The cat eats fish.</p><p>Mimi sleeps on the sofa.</p><p>She plays with a ball.</p><p>Mimi likes sunny windows.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What pet does Nara have?",
+      "options": [
+        "A cat",
+        "A dog",
+        "A bird",
+        "A fish"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "What is the cat’s name?",
+      "options": [
+        "Maya",
+        "Mimi",
+        "Ali",
+        "Tom"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "What colour is Mimi?",
+      "options": [
+        "Brown",
+        "Grey",
+        "White",
+        "Black"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "How old is Mimi?",
+      "options": [
+        "Ten years",
+        "One month",
+        "Five years",
+        "Two years"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 5,
+      "question": "What does Mimi eat?",
+      "options": [
+        "Fish",
+        "Bread",
+        "Pizza",
+        "Apples"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "Where does Mimi sleep?",
+      "options": [
+        "At school",
+        "On the sofa",
+        "In the garden",
+        "On the bus"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "What does Mimi play with?",
+      "options": [
+        "A bike",
+        "A book",
+        "A ball",
+        "A phone"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "What does Mimi like?",
+      "options": [
+        "Loud music",
+        "Cold rain",
+        "Dark rooms only",
+        "Sunny windows"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 9,
+      "question": "Who owns the pet?",
+      "options": [
+        "Nara",
+        "Omar",
+        "Lina",
+        "Tom"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "Best title?",
+      "options": [
+        "Clothes",
+        "Pets",
+        "Train Trip",
+        "Plastic Waste"
+      ],
+      "answer": 1
+    }
+  ]
+}

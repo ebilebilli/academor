@@ -1,0 +1,121 @@
+{
+  "level": "A2",
+  "quiz": 4,
+  "title": "First Job",
+  "service": "general_english",
+  "category_name": "A2 Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Tural started work as a cafe waiter in June.</p><p>He works four hours a day and learned to take orders.</p><p>He got a good tip from a kind boss.</p><p>He felt tired but proud and saves money for a bike.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is the best short title?",
+      "options": [
+        "First Job",
+        "Space News",
+        "Bank Fraud",
+        "Silent Movies"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "Which detail is in the text?",
+      "options": [
+        "Nobody is mentioned",
+        "Tural started work as a cafe waiter in June",
+        "This detail is not in the text",
+        "The opposite happened"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "Which statement matches the text? (3)",
+      "options": [
+        "The text is empty",
+        "Only maths appears",
+        "Tural started work as a cafe waiter in June",
+        "Nothing matches"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "Which statement matches the text? (4)",
+      "options": [
+        "Nothing matches",
+        "The text is empty",
+        "Only maths appears",
+        "Tural started work as a cafe waiter in June"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 5,
+      "question": "Which statement matches the text? (5)",
+      "options": [
+        "Tural started work as a cafe waiter in June",
+        "Nothing matches",
+        "The text is empty",
+        "Only maths appears"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "Which statement matches the text? (6)",
+      "options": [
+        "Only maths appears",
+        "Tural started work as a cafe waiter in June",
+        "Nothing matches",
+        "The text is empty"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "Which statement matches the text? (7)",
+      "options": [
+        "The text is empty",
+        "Only maths appears",
+        "Tural started work as a cafe waiter in June",
+        "Nothing matches"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "Which statement matches the text? (8)",
+      "options": [
+        "Nothing matches",
+        "The text is empty",
+        "Only maths appears",
+        "Tural started work as a cafe waiter in June"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 9,
+      "question": "Which statement matches the text? (9)",
+      "options": [
+        "Tural started work as a cafe waiter in June",
+        "Nothing matches",
+        "The text is empty",
+        "Only maths appears"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "Which statement matches the text? (10)",
+      "options": [
+        "Only maths appears",
+        "Tural started work as a cafe waiter in June",
+        "Nothing matches",
+        "The text is empty"
+      ],
+      "answer": 1
+    }
+  ]
+}

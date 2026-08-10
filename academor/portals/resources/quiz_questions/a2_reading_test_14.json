@@ -1,0 +1,121 @@
+{
+  "level": "A2",
+  "quiz": 14,
+  "title": "Bike Repair",
+  "service": "general_english",
+  "category_name": "A2 Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Vugar had a flat tyre and took his bike to a repair shop.</p><p>The repair cost eight manat and was ready in one hour.</p><p>The mechanic gave safety tips and Vugar rode home slowly.</p><p>He now checks tyre pressure weekly and feels happy again.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is the best short title?",
+      "options": [
+        "Bike Repair",
+        "Space News",
+        "Bank Fraud",
+        "Silent Movies"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "Which detail is in the text?",
+      "options": [
+        "Nobody is mentioned",
+        "Vugar had a flat tyre and took his bike to a repair shop",
+        "This detail is not in the text",
+        "The opposite happened"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "Which statement matches the text? (3)",
+      "options": [
+        "The text is empty",
+        "Only maths appears",
+        "Vugar had a flat tyre and took his bike to a repair shop",
+        "Nothing matches"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "Which statement matches the text? (4)",
+      "options": [
+        "Nothing matches",
+        "The text is empty",
+        "Only maths appears",
+        "Vugar had a flat tyre and took his bike to a repair shop"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 5,
+      "question": "Which statement matches the text? (5)",
+      "options": [
+        "Vugar had a flat tyre and took his bike to a repair shop",
+        "Nothing matches",
+        "The text is empty",
+        "Only maths appears"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "Which statement matches the text? (6)",
+      "options": [
+        "Only maths appears",
+        "Vugar had a flat tyre and took his bike to a repair shop",
+        "Nothing matches",
+        "The text is empty"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "Which statement matches the text? (7)",
+      "options": [
+        "The text is empty",
+        "Only maths appears",
+        "Vugar had a flat tyre and took his bike to a repair shop",
+        "Nothing matches"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "Which statement matches the text? (8)",
+      "options": [
+        "Nothing matches",
+        "The text is empty",
+        "Only maths appears",
+        "Vugar had a flat tyre and took his bike to a repair shop"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 9,
+      "question": "Which statement matches the text? (9)",
+      "options": [
+        "Vugar had a flat tyre and took his bike to a repair shop",
+        "Nothing matches",
+        "The text is empty",
+        "Only maths appears"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "Which statement matches the text? (10)",
+      "options": [
+        "Only maths appears",
+        "Vugar had a flat tyre and took his bike to a repair shop",
+        "Nothing matches",
+        "The text is empty"
+      ],
+      "answer": 1
+    }
+  ]
+}

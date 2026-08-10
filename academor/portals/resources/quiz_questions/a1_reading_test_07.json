@@ -1,0 +1,121 @@
+{
+  "level": "A1",
+  "quiz": 7,
+  "title": "Friends",
+  "service": "general_english",
+  "category_name": "A1 Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Kenan meets his friend Rashad in the park.</p><p>They play basketball on Saturday.</p><p>After the game they eat ice cream.</p><p>They talk about films.</p><p>Kenan goes home at 6 pm.</p><p>He is happy.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Who is Kenan’s friend?",
+      "options": [
+        "Rashad",
+        "Omar",
+        "Ali",
+        "Tom"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "Where do they meet?",
+      "options": [
+        "At the airport",
+        "In the park",
+        "At the hospital",
+        "At the bank"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "What do they play?",
+      "options": [
+        "Chess only",
+        "Football only",
+        "Basketball",
+        "Tennis only"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "Which day?",
+      "options": [
+        "Monday",
+        "Tuesday",
+        "Friday",
+        "Saturday"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 5,
+      "question": "What do they eat after the game?",
+      "options": [
+        "Ice cream",
+        "Soup",
+        "Fish",
+        "Salad"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "What do they talk about?",
+      "options": [
+        "Planes only",
+        "Films",
+        "Banks",
+        "Taxes"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "When does Kenan go home?",
+      "options": [
+        "At 8 am",
+        "At noon",
+        "At 6 pm",
+        "At midnight"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "How does Kenan feel?",
+      "options": [
+        "Sad",
+        "Angry",
+        "Afraid",
+        "Happy"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 9,
+      "question": "Who is the text about?",
+      "options": [
+        "Kenan",
+        "Sara",
+        "Lina",
+        "Nara"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "Best title?",
+      "options": [
+        "City Noise",
+        "Friends",
+        "Doctor Visit",
+        "Remote Work"
+      ],
+      "answer": 1
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "level": "A1",
+  "quiz": 13,
+  "title": "City Park",
+  "service": "general_english",
+  "category_name": "A1 Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Kamran goes to Central Park.</p><p>There are many trees.</p><p>He sits on a bench and feeds the birds.</p><p>He runs on the path near a small lake.</p><p>He buys ice cream.</p><p>He goes home at five.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Which park does Kamran visit?",
+      "options": [
+        "Central Park",
+        "No park",
+        "A school yard only",
+        "An airport"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "What is in the park?",
+      "options": [
+        "Only planes",
+        "Many trees",
+        "Only cars",
+        "Only shops"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "Where does he sit?",
+      "options": [
+        "In a boat only",
+        "At a bank desk",
+        "On a bench",
+        "On the bus roof"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "What does he feed?",
+      "options": [
+        "The dogs only",
+        "The cats only",
+        "Nobody",
+        "The birds"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 5,
+      "question": "Where does he run?",
+      "options": [
+        "On the path",
+        "On the motorway",
+        "In the classroom",
+        "At the market"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "What is near the path?",
+      "options": [
+        "A stadium only",
+        "A small lake",
+        "A hospital",
+        "A factory"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "What does he buy?",
+      "options": [
+        "Books",
+        "Shoes",
+        "Ice cream",
+        "Tickets"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "When does he go home?",
+      "options": [
+        "At midnight",
+        "At 8 am",
+        "At noon only",
+        "At five"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 9,
+      "question": "Who is the text about?",
+      "options": [
+        "Kamran",
+        "Maryam",
+        "Sara",
+        "Emil"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "Best title?",
+      "options": [
+        "Pets",
+        "City Park",
+        "Exam Stress",
+        "First Job"
+      ],
+      "answer": 1
+    }
+  ]
+}

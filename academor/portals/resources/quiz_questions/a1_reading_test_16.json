@@ -1,0 +1,121 @@
+{
+  "level": "A1",
+  "quiz": 16,
+  "title": "Library",
+  "service": "general_english",
+  "category_name": "A1 Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Gulnar goes to the school library.</p><p>She likes animal books.</p><p>Students must be quiet.</p><p>She sits at a wood desk.</p><p>She borrows two books for one week.</p><p>The librarian is Ms Ayla.</p><p>Gulnar likes the soft chairs.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Where does Gulnar go?",
+      "options": [
+        "The school library",
+        "The cinema",
+        "The pool",
+        "The market"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "What books does she like?",
+      "options": [
+        "Only newspapers",
+        "Animal books",
+        "Only cookbooks",
+        "Only maps"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "What must students be?",
+      "options": [
+        "Late",
+        "Hungry",
+        "Quiet",
+        "Noisy"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "Where does she sit?",
+      "options": [
+        "On the floor",
+        "Outside only",
+        "On a bus",
+        "At a wood desk"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 5,
+      "question": "How many books does she borrow?",
+      "options": [
+        "Two",
+        "Ten",
+        "Zero",
+        "Twenty"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "For how long?",
+      "options": [
+        "One day only",
+        "One week",
+        "One year",
+        "One hour"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "Who is the librarian?",
+      "options": [
+        "Dr Hasan",
+        "Ms Reza",
+        "Ms Ayla",
+        "Mr Brown"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "What does she like in the library?",
+      "options": [
+        "Loud music",
+        "Sports",
+        "Cooking",
+        "The soft chairs"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 9,
+      "question": "Who is the text about?",
+      "options": [
+        "Gulnar",
+        "Ramin",
+        "Omar",
+        "Tom"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "Best title?",
+      "options": [
+        "Friends",
+        "Library",
+        "Camping",
+        "Food Delivery"
+      ],
+      "answer": 1
+    }
+  ]
+}

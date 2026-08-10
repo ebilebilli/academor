@@ -1,0 +1,121 @@
+{
+  "level": "A2",
+  "quiz": 2,
+  "title": "New Neighbour",
+  "service": "general_english",
+  "category_name": "A2 Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Jamal’s new neighbour is Mrs Park from Korea.</p><p>She moved in last Monday and brought homemade cookies.</p><p>Jamal helped carry boxes and they talked about the city.</p><p>She has many plants and invited him for tea.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is the best short title?",
+      "options": [
+        "New Neighbour",
+        "Space News",
+        "Bank Fraud",
+        "Silent Movies"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "Which detail is in the text?",
+      "options": [
+        "Nobody is mentioned",
+        "Jamal’s new neighbour is Mrs Park from Korea",
+        "This detail is not in the text",
+        "The opposite happened"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "Which statement matches the text? (3)",
+      "options": [
+        "The text is empty",
+        "Only maths appears",
+        "Jamal’s new neighbour is Mrs Park from Korea",
+        "Nothing matches"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "Which statement matches the text? (4)",
+      "options": [
+        "Nothing matches",
+        "The text is empty",
+        "Only maths appears",
+        "Jamal’s new neighbour is Mrs Park from Korea"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 5,
+      "question": "Which statement matches the text? (5)",
+      "options": [
+        "Jamal’s new neighbour is Mrs Park from Korea",
+        "Nothing matches",
+        "The text is empty",
+        "Only maths appears"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "Which statement matches the text? (6)",
+      "options": [
+        "Only maths appears",
+        "Jamal’s new neighbour is Mrs Park from Korea",
+        "Nothing matches",
+        "The text is empty"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "Which statement matches the text? (7)",
+      "options": [
+        "The text is empty",
+        "Only maths appears",
+        "Jamal’s new neighbour is Mrs Park from Korea",
+        "Nothing matches"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "Which statement matches the text? (8)",
+      "options": [
+        "Nothing matches",
+        "The text is empty",
+        "Only maths appears",
+        "Jamal’s new neighbour is Mrs Park from Korea"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 9,
+      "question": "Which statement matches the text? (9)",
+      "options": [
+        "Jamal’s new neighbour is Mrs Park from Korea",
+        "Nothing matches",
+        "The text is empty",
+        "Only maths appears"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "Which statement matches the text? (10)",
+      "options": [
+        "Only maths appears",
+        "Jamal’s new neighbour is Mrs Park from Korea",
+        "Nothing matches",
+        "The text is empty"
+      ],
+      "answer": 1
+    }
+  ]
+}

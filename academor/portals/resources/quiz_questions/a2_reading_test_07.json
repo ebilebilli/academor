@@ -1,0 +1,121 @@
+{
+  "level": "A2",
+  "quiz": 7,
+  "title": "Phone Call",
+  "service": "general_english",
+  "category_name": "A2 Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Roya called her cousin to plan a birthday picnic.</p><p>They agreed to meet in the park at noon.</p><p>Roya will buy fruit and check the weather.</p><p>She feels very excited.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is the best short title?",
+      "options": [
+        "Phone Call",
+        "Space News",
+        "Bank Fraud",
+        "Silent Movies"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "Which detail is in the text?",
+      "options": [
+        "Nobody is mentioned",
+        "Roya called her cousin to plan a birthday picnic",
+        "This detail is not in the text",
+        "The opposite happened"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "Which statement matches the text? (3)",
+      "options": [
+        "The text is empty",
+        "Only maths appears",
+        "Roya called her cousin to plan a birthday picnic",
+        "Nothing matches"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "Which statement matches the text? (4)",
+      "options": [
+        "Nothing matches",
+        "The text is empty",
+        "Only maths appears",
+        "Roya called her cousin to plan a birthday picnic"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 5,
+      "question": "Which statement matches the text? (5)",
+      "options": [
+        "Roya called her cousin to plan a birthday picnic",
+        "Nothing matches",
+        "The text is empty",
+        "Only maths appears"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "Which statement matches the text? (6)",
+      "options": [
+        "Only maths appears",
+        "Roya called her cousin to plan a birthday picnic",
+        "Nothing matches",
+        "The text is empty"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "Which statement matches the text? (7)",
+      "options": [
+        "The text is empty",
+        "Only maths appears",
+        "Roya called her cousin to plan a birthday picnic",
+        "Nothing matches"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "Which statement matches the text? (8)",
+      "options": [
+        "Nothing matches",
+        "The text is empty",
+        "Only maths appears",
+        "Roya called her cousin to plan a birthday picnic"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 9,
+      "question": "Which statement matches the text? (9)",
+      "options": [
+        "Roya called her cousin to plan a birthday picnic",
+        "Nothing matches",
+        "The text is empty",
+        "Only maths appears"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "Which statement matches the text? (10)",
+      "options": [
+        "Only maths appears",
+        "Roya called her cousin to plan a birthday picnic",
+        "Nothing matches",
+        "The text is empty"
+      ],
+      "answer": 1
+    }
+  ]
+}

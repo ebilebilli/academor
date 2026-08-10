@@ -1,0 +1,45 @@
+{% load i18n portal_tags %}
+<article id="score-q-{{ number }}" class="portal-quiz-play-card portal-score-q-target {% if row.is_correct %}border-success{% else %}border-danger{% endif %}">
+  <header class="portal-quiz-play-card__head">
+    <span class="portal-quiz-play-card__index">{% trans 'Question' %} {{ number }}</span>
+    {% if row.is_correct %}
+    <span class="badge rounded-pill text-bg-success">{% trans 'Correct' %}</span>
+    {% else %}
+    <span class="badge rounded-pill text-bg-danger">{% trans 'Incorrect' %}</span>
+    {% endif %}
+  </header>
+  <div class="portal-quiz-prompt__text">{{ row.question|quiz_html }}</div>
+  {% if row.question_type == 'spr' %}
+  <div class="portal-quiz-spr-review">
+    <div class="portal-quiz-spr-review__row">
+      <span class="portal-quiz-spr-review__label">{% trans 'Your answer' %}</span>
+      <span class="portal-quiz-spr-review__value{% if not row.is_correct %} is-wrong{% endif %}">
+        {% if row.student_answer %}{{ row.student_answer }}{% else %}—{% endif %}
+      </span>
+    </div>
+    <div class="portal-quiz-spr-review__row portal-quiz-spr-review__row--correct">
+      <span class="portal-quiz-spr-review__label">{% trans 'Correct answer' %}</span>
+      <span class="portal-quiz-spr-review__value is-correct">
+        {% if row.correct_label %}{{ row.correct_label }}{% else %}—{% endif %}
+      </span>
+    </div>
+  </div>
+  {% elif row.answer_options %}
+  <div class="portal-quiz-play-options portal-quiz-teacher-options" role="list">
+    {% for option in row.answer_options %}
+    <div
+      class="portal-quiz-play-option portal-quiz-teacher-option{% if forloop.counter0 == row.correct_index %} is-correct{% endif %}{% if forloop.counter0 == row.selected_index and not row.is_correct %} is-selected is-wrong{% endif %}"
+      role="listitem"
+    >
+      <span class="portal-quiz-play-option__letter">{{ forloop.counter0|quiz_option_letter|upper }}</span>
+      <span class="portal-quiz-play-option__text">{{ option|quiz_html }}</span>
+      {% if forloop.counter0 == row.correct_index %}
+      <span class="portal-quiz-teacher-correct-mark"><i class="bi bi-check-lg" aria-hidden="true"></i></span>
+      {% elif forloop.counter0 == row.selected_index %}
+      <span class="portal-quiz-teacher-correct-mark text-danger"><i class="bi bi-x-lg" aria-hidden="true"></i></span>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</article>

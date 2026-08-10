@@ -1086,6 +1086,9 @@ def _serialize_score_detail(row: QuizResult, *, role: str) -> dict:
         'reviewer_name': latest_review.reviewer.full_name if latest_review else '',
         'back_url': reverse(back_url_name),
         'back_label': back_label,
+        'has_shared_passage': quiz.has_shared_passage,
+        'uses_shared_passage_layout': quiz.uses_shared_passage_layout,
+        'shared_passage': quiz.shared_passage if quiz.uses_shared_passage_layout else '',
     }
     if quiz.is_variant_quiz:
         data['breakdown'] = _build_variant_breakdown(row)

@@ -1,0 +1,121 @@
+{
+  "level": "A1",
+  "quiz": 9,
+  "title": "Weather",
+  "service": "general_english",
+  "category_name": "A1 Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Today the weather is sunny for Farid.</p><p>It is 25 degrees.</p><p>He wears a T-shirt.</p><p>He goes to the park.</p><p>There is no wind.</p><p>Tomorrow it will be rainy, so he takes an umbrella.</p><p>Farid likes the sun.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is the weather today?",
+      "options": [
+        "Sunny",
+        "Snowy",
+        "Stormy",
+        "Foggy only"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "What is the temperature?",
+      "options": [
+        "0 degrees",
+        "25 degrees",
+        "5 degrees",
+        "40 degrees"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "What does Farid wear?",
+      "options": [
+        "Boots only",
+        "A scarf only",
+        "A T-shirt",
+        "A heavy coat only"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "Where does he go?",
+      "options": [
+        "To the hospital",
+        "To the bank",
+        "To the airport",
+        "To the park"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 5,
+      "question": "Is there wind today?",
+      "options": [
+        "No wind",
+        "Strong wind",
+        "A hurricane",
+        "Only at night"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "What will tomorrow be like?",
+      "options": [
+        "Hot and dry only",
+        "Rainy",
+        "Sunny again only",
+        "Snowy"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "What does he take for tomorrow?",
+      "options": [
+        "A cake",
+        "A ticket",
+        "An umbrella",
+        "A bike"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "What does Farid like?",
+      "options": [
+        "Heavy rain",
+        "Cold wind",
+        "Dark clouds only",
+        "The sun"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 9,
+      "question": "Who is the text about?",
+      "options": [
+        "Farid",
+        "Nina",
+        "Sara",
+        "Lina"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "Best title?",
+      "options": [
+        "Library",
+        "Weather",
+        "First Job",
+        "Food Delivery"
+      ],
+      "answer": 1
+    }
+  ]
+}

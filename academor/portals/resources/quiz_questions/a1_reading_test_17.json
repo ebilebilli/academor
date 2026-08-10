@@ -1,0 +1,121 @@
+{
+  "level": "A1",
+  "quiz": 17,
+  "title": "Doctor Visit",
+  "service": "general_english",
+  "category_name": "A1 Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Ilkin has a cold.</p><p>He goes to the clinic.</p><p>Dr Hasan checks his throat.</p><p>The doctor gives him medicine.</p><p>Ilkin must rest and drink warm water.</p><p>He stays home from school tomorrow.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "How does Ilkin feel?",
+      "options": [
+        "He has a cold",
+        "He is fine",
+        "He is hungry only",
+        "He is angry only"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "Where does he go?",
+      "options": [
+        "To the park",
+        "To the clinic",
+        "To the beach",
+        "To the cinema"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "Who is the doctor?",
+      "options": [
+        "Mr Brown",
+        "Ms Reza",
+        "Dr Hasan",
+        "Ms Ayla"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "What does the doctor check?",
+      "options": [
+        "His bag",
+        "His phone",
+        "His bike",
+        "His throat"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 5,
+      "question": "What does the doctor give?",
+      "options": [
+        "Medicine",
+        "A ticket",
+        "A gift",
+        "A book"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "What must Ilkin do?",
+      "options": [
+        "Go shopping",
+        "Rest",
+        "Run a race",
+        "Play football"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "What should he drink?",
+      "options": [
+        "Coffee only",
+        "Nothing",
+        "Warm water",
+        "Cold cola only"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "What about school tomorrow?",
+      "options": [
+        "He teaches the class",
+        "He goes on a trip",
+        "He opens a shop",
+        "He stays home"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 9,
+      "question": "Who is the text about?",
+      "options": [
+        "Ilkin",
+        "Gulnar",
+        "Sara",
+        "Emil"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "Best title?",
+      "options": [
+        "Sports",
+        "Doctor Visit",
+        "Bike Lanes",
+        "Weekend"
+      ],
+      "answer": 1
+    }
+  ]
+}

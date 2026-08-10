@@ -1,0 +1,121 @@
+{
+  "level": "A1",
+  "quiz": 3,
+  "title": "At the Shop",
+  "service": "general_english",
+  "category_name": "A1 Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Lina goes to the corner shop in the morning.</p><p>She buys bread and milk.</p><p>The seller is Mr Karimov.</p><p>The milk costs three manat.</p><p>Lina also buys apples.</p><p>She puts everything in a blue bag.</p><p>Then she walks home.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "When does Lina go to the shop?",
+      "options": [
+        "In the morning",
+        "At midnight",
+        "Only on Sunday night",
+        "Never"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "What does she buy first?",
+      "options": [
+        "Phones",
+        "Bread and milk",
+        "Shoes",
+        "Tickets"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "Who is the seller?",
+      "options": [
+        "Dr Hasan",
+        "Mr Brown",
+        "Mr Karimov",
+        "Ms Ayla"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "How much is the milk?",
+      "options": [
+        "One manat",
+        "Ten manat",
+        "Free",
+        "Three manat"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 5,
+      "question": "What else does she buy?",
+      "options": [
+        "Apples",
+        "Fish",
+        "Books",
+        "Hats"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "What colour is her bag?",
+      "options": [
+        "Green",
+        "Blue",
+        "Red",
+        "Black"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "How does she go home?",
+      "options": [
+        "She drives a taxi",
+        "She takes a plane",
+        "She walks home",
+        "She flies"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "Where does she shop?",
+      "options": [
+        "The airport",
+        "The school",
+        "The hospital",
+        "The corner shop"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 9,
+      "question": "Who is the main person?",
+      "options": [
+        "Lina",
+        "Ali",
+        "Tom",
+        "Sara"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "Best title?",
+      "options": [
+        "Exam Stress",
+        "At the Shop",
+        "Remote Work",
+        "Bike Lanes"
+      ],
+      "answer": 1
+    }
+  ]
+}

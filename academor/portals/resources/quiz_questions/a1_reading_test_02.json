@@ -1,0 +1,121 @@
+{
+  "level": "A1",
+  "quiz": 2,
+  "title": "My School",
+  "service": "general_english",
+  "category_name": "A1 Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Tom goes to Green Hill School.</p><p>Lessons start at 8:30.</p><p>His favourite subjects are maths and English.</p><p>His best friend is Maya.</p><p>They eat lunch in the canteen.</p><p>On Friday Tom plays football after school.</p><p>School ends at 3:00.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Where does Tom study?",
+      "options": [
+        "Green Hill School",
+        "City Bank",
+        "A hospital",
+        "A museum"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "What time do lessons start?",
+      "options": [
+        "12:00",
+        "8:30",
+        "7:00",
+        "10:00"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "Who is Tom’s best friend?",
+      "options": [
+        "Ali",
+        "Omar",
+        "Maya",
+        "Sara"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "Where do they eat lunch?",
+      "options": [
+        "At home only",
+        "In the park",
+        "On the bus",
+        "In the canteen"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 5,
+      "question": "What does Tom play on Friday?",
+      "options": [
+        "Football",
+        "Tennis",
+        "Chess only",
+        "Piano only"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "When does school end?",
+      "options": [
+        "9:00",
+        "3:00",
+        "8:30",
+        "6:00"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "Which subjects does Tom like?",
+      "options": [
+        "Only music",
+        "Only PE",
+        "Maths and English",
+        "Only art"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "What day is football day?",
+      "options": [
+        "Monday",
+        "Sunday",
+        "Wednesday",
+        "Friday"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 9,
+      "question": "Who is the main person?",
+      "options": [
+        "Tom",
+        "Maya’s father",
+        "A doctor",
+        "A driver"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "Best title?",
+      "options": [
+        "Airport Delay",
+        "My School",
+        "Pets",
+        "Holidays"
+      ],
+      "answer": 1
+    }
+  ]
+}

@@ -5,8 +5,11 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}">
-{% if quiz.is_reading %}
+{% if quiz.is_reading or quiz.uses_shared_passage_layout %}
 <link rel="stylesheet" href="{% static 'portals/css/quiz-reading.css' %}?v=20260703f">
+{% endif %}
+{% if quiz.uses_shared_passage_layout %}
+<link rel="stylesheet" href="{% static 'portals/css/quiz-shared-passage.css' %}?v=20260810a">
 {% endif %}
 {% if quiz.is_speaking %}
 <link rel="stylesheet" href="{% static 'portals/css/quiz-speaking.css' %}?v=20260703">
@@ -78,6 +81,25 @@
   {% endfor %}
 </div>
 {% elif quiz.questions %}
+{% if quiz.uses_shared_passage_layout and quiz.shared_passage %}
+<section class="portal-reading-section portal-shared-passage-section mb-4" aria-labelledby="teacher-shared-passage-title">
+  <div class="portal-reading-section__layout">
+    <div class="portal-reading-section__passage panel portal-shared-passage__passage">
+      <header class="portal-reading-section__passage-head">
+        <h2 class="portal-reading-section__title" id="teacher-shared-passage-title">{% trans 'Passage' %}</h2>
+      </header>
+      <div class="portal-reading-section__body">{{ quiz.shared_passage|safe }}</div>
+    </div>
+    <div class="portal-reading-section__tasks panel">
+      <div class="portal-quiz-play-stack portal-reading-section__task-list">
+        {% for q in quiz.questions %}
+        {% include "portals/includes/quiz_question_teacher_view.html" with q=q number=forloop.counter %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+{% else %}
 <section class="panel">
   <div class="portal-quiz-play-stack">
     {% for q in quiz.questions %}
@@ -85,6 +107,7 @@
     {% endfor %}
   </div>
 </section>
+{% endif %}
 {% else %}
 <section class="panel">
   <div class="portal-quiz-empty">{% trans 'No questions in this quiz yet.' %}</div>

@@ -1,0 +1,121 @@
+{
+  "level": "A1",
+  "quiz": 6,
+  "title": "Food",
+  "service": "general_english",
+  "category_name": "A1 Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Aysel’s favourite food is plov.</p><p>Her mother cooks it.</p><p>Aysel drinks compote with dinner.</p><p>She likes oranges.</p><p>She never eats spicy food.</p><p>Dinner is at 7 pm and she helps in the kitchen.</p><p>Sometimes there is cake for dessert.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is Aysel’s favourite food?",
+      "options": [
+        "Plov",
+        "Pizza",
+        "Sushi",
+        "Burgers"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "Who cooks the plov?",
+      "options": [
+        "A neighbour",
+        "Her mother",
+        "Her teacher",
+        "Her brother"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "What does she drink?",
+      "options": [
+        "Cola only",
+        "Milkshake only",
+        "Compote",
+        "Coffee only"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "Which fruit does she like?",
+      "options": [
+        "Only lemons",
+        "Only bananas",
+        "No fruit",
+        "Oranges"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 5,
+      "question": "What does she never eat?",
+      "options": [
+        "Spicy food",
+        "Bread",
+        "Rice",
+        "Fruit"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "What time is dinner?",
+      "options": [
+        "5 am",
+        "7 pm",
+        "12 pm",
+        "9 am"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "How does she help?",
+      "options": [
+        "On the bus",
+        "At the airport",
+        "In the kitchen",
+        "At the bank"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "What dessert is sometimes there?",
+      "options": [
+        "Soup",
+        "Salad",
+        "Cheese",
+        "Cake"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 9,
+      "question": "Who is the main person?",
+      "options": [
+        "Aysel",
+        "Nara",
+        "Omar",
+        "Tom"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "Best title?",
+      "options": [
+        "Lost Keys",
+        "Food",
+        "Bike Repair",
+        "Social Media"
+      ],
+      "answer": 1
+    }
+  ]
+}

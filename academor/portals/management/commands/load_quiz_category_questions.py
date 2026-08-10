@@ -16,6 +16,11 @@ class Command(BaseCommand):
             help='Load a single JSON file (name under resources/quiz_questions/ or full path).',
         )
         parser.add_argument(
+            '--glob',
+            dest='glob_pattern',
+            help='Load only files matching this glob under resources/quiz_questions/ (e.g. "*_reading_test_*.json").',
+        )
+        parser.add_argument(
             '--keep-old',
             action='store_true',
             help='Do not deactivate questions missing from the resource file.',
@@ -32,6 +37,18 @@ class Command(BaseCommand):
             if not path.is_file():
                 raise CommandError(f'Resource file not found: {options["file"]}')
             results = [load_resource_file(path, deactivate_missing=deactivate_missing)]
+        elif options['glob_pattern']:
+            if not RESOURCES_DIR.exists():
+                raise CommandError(f'Resources directory not found: {RESOURCES_DIR}')
+            paths = sorted(RESOURCES_DIR.glob(options['glob_pattern']))
+            if not paths:
+                raise CommandError(
+                    f'No JSON files matched {options["glob_pattern"]!r} in {RESOURCES_DIR}.',
+                )
+            results = [
+                load_resource_file(path, deactivate_missing=deactivate_missing)
+                for path in paths
+            ]
         else:
             results = load_all_resources(deactivate_missing=deactivate_missing)
             if not results:

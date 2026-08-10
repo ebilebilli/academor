@@ -1,0 +1,121 @@
+{
+  "level": "A1",
+  "quiz": 20,
+  "title": "My Teacher",
+  "service": "general_english",
+  "category_name": "A1 Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Aida’s English teacher is Mr Brown.</p><p>He is kind and funny.</p><p>He writes on the board and helps every student.</p><p>He gives short homework.</p><p>The class starts at nine.</p><p>Aida likes his lessons.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Who is Aida’s teacher?",
+      "options": [
+        "Mr Brown",
+        "Dr Hasan",
+        "Ms Ayla",
+        "Ms Reza"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "What subject does he teach?",
+      "options": [
+        "Music only",
+        "English",
+        "Maths only",
+        "Art only"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "What is Mr Brown like?",
+      "options": [
+        "Late always",
+        "Absent",
+        "Kind and funny",
+        "Angry and quiet"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "Where does he write?",
+      "options": [
+        "On the floor",
+        "On the bus",
+        "On the wall only at home",
+        "On the board"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 5,
+      "question": "Who does he help?",
+      "options": [
+        "Every student",
+        "Only one student",
+        "Nobody",
+        "Only teachers"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "What homework does he give?",
+      "options": [
+        "Only sports",
+        "Short homework",
+        "No homework ever",
+        "Only long projects always"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "When does class start?",
+      "options": [
+        "At 5 pm",
+        "At midnight",
+        "At nine",
+        "At noon"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "How does Aida feel about lessons?",
+      "options": [
+        "She hates them",
+        "She never goes",
+        "She teaches them",
+        "She likes them"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 9,
+      "question": "Who is the text about?",
+      "options": [
+        "Aida",
+        "Orkhan",
+        "Omar",
+        "Tom"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "Best title?",
+      "options": [
+        "Bus Ride",
+        "My Teacher",
+        "Plastic Waste",
+        "Birthday"
+      ],
+      "answer": 1
+    }
+  ]
+}

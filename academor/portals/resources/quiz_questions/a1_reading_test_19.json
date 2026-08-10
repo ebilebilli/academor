@@ -1,0 +1,121 @@
+{
+  "level": "A1",
+  "quiz": 19,
+  "title": "Holidays",
+  "service": "general_english",
+  "category_name": "A1 Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Orkhan goes to the seaside for a holiday.</p><p>He stays in a small hotel.</p><p>He swims every morning.</p><p>He builds sandcastles and eats fish.</p><p>He takes many photos.</p><p>He stays five days and feels very happy.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Where does Orkhan go?",
+      "options": [
+        "The seaside",
+        "The mountains only",
+        "The desert only",
+        "The city centre only"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "Where does he stay?",
+      "options": [
+        "On a bus",
+        "In a small hotel",
+        "At school",
+        "At the clinic"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "When does he swim?",
+      "options": [
+        "Only at night",
+        "Only once a year",
+        "Every morning",
+        "Never"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "What does he build?",
+      "options": [
+        "Houses of brick",
+        "Cars",
+        "Computers",
+        "Sandcastles"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 5,
+      "question": "What does he eat?",
+      "options": [
+        "Fish",
+        "Only pizza",
+        "Only salad",
+        "Only cake"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "What does he take?",
+      "options": [
+        "Many tickets only",
+        "Many photos",
+        "Many exams",
+        "Many trains"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "How many days does he stay?",
+      "options": [
+        "Thirty",
+        "Zero",
+        "Five",
+        "One"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "How does he feel?",
+      "options": [
+        "Very angry",
+        "Very bored",
+        "Very afraid",
+        "Very happy"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 9,
+      "question": "Who is the text about?",
+      "options": [
+        "Orkhan",
+        "Zahra",
+        "Sara",
+        "Tom"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "Best title?",
+      "options": [
+        "Library",
+        "Holidays",
+        "City Noise",
+        "Clothes"
+      ],
+      "answer": 1
+    }
+  ]
+}

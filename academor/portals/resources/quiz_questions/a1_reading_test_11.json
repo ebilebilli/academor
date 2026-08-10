@@ -1,0 +1,121 @@
+{
+  "level": "A1",
+  "quiz": 11,
+  "title": "Sports",
+  "service": "general_english",
+  "category_name": "A1 Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Emil goes swimming at the city pool.</p><p>He swims on Monday and Thursday.</p><p>His coach is Ms Reza.</p><p>Each lesson is one hour.</p><p>He drinks water and wants to swim fast.</p><p>Last month he won a small medal.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What sport does Emil do?",
+      "options": [
+        "Swimming",
+        "Football only",
+        "Tennis only",
+        "Chess only"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "Where does he swim?",
+      "options": [
+        "At home",
+        "The city pool",
+        "The sea only",
+        "A river only"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "Which days?",
+      "options": [
+        "Sunday only",
+        "Friday only",
+        "Monday and Thursday",
+        "Saturday only"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "Who is the coach?",
+      "options": [
+        "Mr Brown",
+        "Dr Hasan",
+        "Mr Karimov",
+        "Ms Reza"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 5,
+      "question": "How long is each lesson?",
+      "options": [
+        "One hour",
+        "Five hours",
+        "Ten minutes",
+        "All day"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "What does he drink?",
+      "options": [
+        "Milk only",
+        "Water",
+        "Cola only",
+        "Coffee only"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "What is his goal?",
+      "options": [
+        "Only watch TV",
+        "Only run",
+        "Swim fast",
+        "Stop swimming"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "What did he win?",
+      "options": [
+        "A car",
+        "A house",
+        "A phone",
+        "A small medal"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 9,
+      "question": "Who is the text about?",
+      "options": [
+        "Emil",
+        "Leyla",
+        "Sara",
+        "Nina"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "Best title?",
+      "options": [
+        "Clothes",
+        "Sports",
+        "Plastic Waste",
+        "Tourist Boom"
+      ],
+      "answer": 1
+    }
+  ]
+}
