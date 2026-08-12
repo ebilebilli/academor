@@ -64,6 +64,10 @@
       || (document.querySelector("[data-quiz-start-gate]")
         && document.querySelector("[data-quiz-start-gate]").getAttribute("data-msg-session-expired"))
       || "Your session has expired. Please log in again.";
+    var labelPinPassage = root.getAttribute("data-label-pin-passage") || "Pin passage";
+    var labelUnpinPassage = root.getAttribute("data-label-unpin-passage") || "Unpin passage";
+    var quizId = root.getAttribute("data-quiz-id") || "0";
+    var passagePinStorageKey = "portal-reading-passage-pinned:" + quizId;
 
     var startedAt = Date.now();
     var submitting = false;
@@ -79,6 +83,57 @@
     var timerSpacer = root.querySelector(".portal-quiz-take-toolbar-spacer");
     var readingTabs = root.querySelector("[data-reading-tabs]");
     var readingTabsNav = root.querySelector(".portal-reading-tabs__nav");
+
+    function isPassagePinned() {
+      try {
+        return window.sessionStorage.getItem(passagePinStorageKey) === "1";
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function setPassagePinned(pinned) {
+      try {
+        if (pinned) {
+          window.sessionStorage.setItem(passagePinStorageKey, "1");
+        } else {
+          window.sessionStorage.removeItem(passagePinStorageKey);
+        }
+      } catch (error) {
+        /* ignore */
+      }
+      syncPassagePinState();
+    }
+
+    function syncPassagePinButton(section, pinned) {
+      if (!section) {
+        return;
+      }
+      var btn = section.querySelector("[data-reading-pin-passage]");
+      if (!btn) {
+        return;
+      }
+      var label = btn.querySelector("[data-reading-pin-label]");
+      var icon = btn.querySelector("[data-reading-pin-icon]");
+      btn.setAttribute("aria-pressed", pinned ? "true" : "false");
+      btn.classList.toggle("is-active", pinned);
+      if (label) {
+        label.textContent = pinned ? labelUnpinPassage : labelPinPassage;
+      }
+      if (icon) {
+        icon.classList.toggle("bi-pin-angle", !pinned);
+        icon.classList.toggle("bi-pin-angle-fill", pinned);
+      }
+    }
+
+    function syncPassagePinState() {
+      var pinned = isPassagePinned();
+      root.querySelectorAll(".portal-reading-section").forEach(function (section) {
+        section.classList.toggle("is-passage-pinned", pinned);
+        syncPassagePinButton(section, pinned);
+      });
+      syncReturnButton();
+    }
 
     function getActiveReturnControls() {
       var panel = getActiveReadingPanel();
@@ -178,6 +233,12 @@
     }
 
     function syncReturnButton() {
+      if (isPassagePinned()) {
+        root.querySelectorAll("[data-reading-return-bar]").forEach(function (bar) {
+          bar.hidden = true;
+        });
+        return;
+      }
       root.querySelectorAll("[data-reading-return-bar]").forEach(function (bar) {
         bar.hidden = true;
       });
@@ -494,6 +555,13 @@
     }
 
     root.addEventListener("click", function (event) {
+      var pinBtn = event.target.closest("[data-reading-pin-passage]");
+      if (pinBtn && root.contains(pinBtn)) {
+        event.preventDefault();
+        setPassagePinned(!isPassagePinned());
+        return;
+      }
+
       var btn = event.target.closest("[data-reading-return-btn]");
       if (btn && root.contains(btn)) {
         event.preventDefault();
@@ -541,12 +609,14 @@
           syncReadingTabMetrics();
           window.requestAnimationFrame(function () {
             scrollToReadingPanel(panel);
+            syncPassagePinState();
             window.requestAnimationFrame(syncReturnButton);
           });
         }
       });
     }
 
+    syncPassagePinState();
     syncReturnButton();
   }
 

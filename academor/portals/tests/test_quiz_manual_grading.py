@@ -473,6 +473,42 @@ class QuizManualGradingTests(QuizVisibilityTests):
         self.assertTrue(variant['is_correct'])
         self.assertEqual(variant['student_answer_display'], 'First option')
 
+    def test_listening_text_review_includes_answer_metadata(self):
+        from portals.models import ListeningAudio, ListeningQuestion
+        from portals.utils.notifications import get_score_detail_for_student
+        from portals.utils.quiz_submit import submit_listening_quiz_attempt
+
+        self.ielts_quiz.is_listening = True
+        self.ielts_quiz.save(update_fields=['is_listening'])
+        audio = ListeningAudio.objects.create(
+            quiz=self.ielts_quiz,
+            order=1,
+            title='Section 1',
+            audio_url='https://example.com/audio.mp3',
+        )
+        question = ListeningQuestion.objects.create(
+            audio=audio,
+            order=1,
+            question='What is the customer name?',
+            correct_answer='Anna',
+        )
+
+        outcome = submit_listening_quiz_attempt(
+            student_id=self.student.pk,
+            quiz_id=self.ielts_quiz.pk,
+            given_answers={str(question.pk): 'Anna'},
+        )
+        self.assertTrue(outcome['success'])
+        result = QuizResult.objects.filter(student=self.student, quiz=self.ielts_quiz).order_by('-completed_at', '-id').first()
+        detail = get_score_detail_for_student(self.student.pk, result.pk)
+        text_q = detail['listening_sections'][0]['questions'][0]
+        self.assertFalse(text_q['is_variant'])
+        self.assertEqual(text_q['student_answer'], 'Anna')
+        self.assertEqual(text_q['student_answer_display'], 'Anna')
+        self.assertEqual(text_q['correct_answer'], 'Anna')
+        self.assertEqual(text_q['correct_answer_display'], 'Anna')
+        self.assertTrue(text_q['is_correct'])
+
     def test_listening_auto_submit_allows_retake(self):
         from portals.models import ListeningAudio, ListeningQuestion
         from portals.utils.queries import get_student_listening_quiz_take_data, get_student_manual_quiz_take_data

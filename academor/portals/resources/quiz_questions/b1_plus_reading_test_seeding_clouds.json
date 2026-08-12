@@ -1,0 +1,83 @@
+{
+  "level": "B1+",
+  "quiz": 4,
+  "title": "Seeding clouds to make rain",
+  "service": "general_english",
+  "category_name": "Upper Intermediate Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Drought is an increasing problem in our warming world. All continents have been experiencing more extended periods without rain, leading to forest fires and poor crop growth. Consequently, people are looking at cloud seeding to solve the problem. Cloud seeding is a method of encouraging precipitation by distributing small particles of silver iodide into clouds.</p><p>Cloud-seeding expert Arlen Huggins has been studying its effectiveness. \u2018My earliest experience was to use cloud seeding to reduce the amount of hail in northeast Colorado. They don\u2019t get huge hailstones here, like in the Midwest, but they get it more often. We didn\u2019t have any luck with that, but we had success later on in increasing snowfall in Utah. Now, the focus is shifting towards increasing rainfall from summer clouds, which is far more unpredictable.\u2019</p><p>The problem is that it\u2019s pretty hard to know whether precipitation resulted directly from cloud seeding. It might have rained or snowed anyway. Even if you cloud seed in one place and don\u2019t in another, it\u2019s impossible to know for sure what caused the precipitation unless the cloud system is straightforward, like fog that otherwise has no chance of forming rain or snow.</p><p>However, it\u2019s not during foggy and snowy conditions that people think of increasing the chance of rainfall. It\u2019s when a country is hit by drought, and then cloud seeding isn\u2019t an option due to the lack of clouds. In warm conditions, only storm clouds can produce rain by seeding, while during drought, skies tend to be clear with a few wispy clouds. The best option to prevent drought is to seed at times of the year when rainfall levels are normal or higher. That way, slightly more rain can be extracted and stored in reservoirs for the dry season.</p><p>As cloud seeding is expensive and its effectiveness tenuous, its usefulness is still a matter of opinion. University of Colorado researcher Katja Friedrich says cloud seeding can\u2019t end a drought. However, it can be beneficial, provided it occurs alongside other water conservation strategies. Arlen Huggins is of the same mind. Increasing precipitation through cloud seeding would significantly benefit the economy in the large water basin where he works. Still, for that to happen, the water would need to be captured and stored effectively.</p><p>There are also environmental issues regarding the impact of cloud seeding. At high levels, silver iodide can harm humans and other mammals, and some studies have found silver compounds to be slightly toxic. However, several ecological studies have shown minor environmental and health impacts. Where cloud seeding has taken place, the amount of silver compounds in the soil and vegetation has been found to be no higher than natural levels. Even so, some environmentalists are concerned about the long-term impacts, as there isn\u2019t data on how much silver iodide accumulates in the environment over periods exceeding ten years.</p><p>Another fear is that cloud seeding could potentially steal water from neighbouring areas by encouraging the water in clouds that would otherwise fall somewhere else to fall in your location. According to Maarten Ambaum from the University of Reading, it is possible to use cloud seeding to make rain fall on your farm, which otherwise would fall on your neighbour\u2019s farm. It\u2019s not the case, though, that if one country uses cloud seeding to create rain, a neighbouring country will lose out because clouds are constantly forming and reforming.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What was Arlen Huggins able to do through cloud seeding?",
+      "options": [
+        "Decrease the size of hailstones.",
+        "Decrease the amount of hail.",
+        "Increase the amount of snow.",
+        "Increase the chance of rain."
+      ],
+      "answer": 2,
+      "explanation": "The text mentions that they didn't have any luck reducing the amount of hail in northeast Colorado, but they had success later on in increasing snowfall in Utah."
+    },
+    {
+      "id": 2,
+      "question": "What is the relationship between cloud seeding, precipitation and fog?",
+      "options": [
+        "You are more likely to get snow than rain when you cloud seed in fog.",
+        "Obtaining precipitation by cloud seeding in fog can be proof that cloud seeding works.",
+        "When you cloud seed in fog and it rains, you have no way of knowing what caused the rain.",
+        "There is no chance of getting either rain or snow when you cloud seed into fog."
+      ],
+      "answer": 1,
+      "explanation": "The text states that it's impossible to know for sure what caused precipitation unless the cloud system is straightforward, like fog that otherwise has no chance of forming rain or snow. This implies that if fog, which wouldn't naturally produce rain or snow, produces precipitation after cloud seeding, it indicates the effectiveness of cloud seeding."
+    },
+    {
+      "id": 3,
+      "question": "In order to avoid a drought, it is recommended that you...",
+      "options": [
+        "cloud seed into fog in the dry season.",
+        "cloud seed into storm clouds in the warm season.",
+        "cloud seed into clear skies with wispy clouds.",
+        "cloud seed into rain clouds in the wet season."
+      ],
+      "answer": 3,
+      "explanation": "The text highlights that the best option to prevent drought is to seed at times of the year when rainfall levels are normal or higher."
+    },
+    {
+      "id": 4,
+      "question": "Both Katja Friedrich and Arlen Huggins agree that cloud seeding...",
+      "options": [
+        "costs too much for it to be economically viable.",
+        "is only effective if water is conserved well.",
+        "can help both the economy and the environment.",
+        "has little benefit for preventing droughts."
+      ],
+      "answer": 1,
+      "explanation": "Katja Friedrich mentions cloud seeding can be beneficial if it's done alongside other water conservation strategies. Arlen Huggins emphasises the importance of capturing and storing the water effectively."
+    },
+    {
+      "id": 5,
+      "question": "What is true about the environmental impact of cloud seeding?",
+      "options": [
+        "Cloud seeding is harmful to mammals because of the silver iodide content.",
+        "There is more toxic silver in the soil and vegetation where cloud seeding occurs.",
+        "Evidence shows that cloud seeding has negative environmental impacts after ten years.",
+        "Currently, there is no evidence that cloud seeding harms the environment."
+      ],
+      "answer": 3,
+      "explanation": "The text says that where cloud seeding has taken place, the amount of silver compounds in the soil and vegetation has been found to be no higher than natural levels."
+    },
+    {
+      "id": 6,
+      "question": "Maarten Ambaum says that stealing rain by cloud seeding...",
+      "options": [
+        "is not possible at either a local level or an international level.",
+        "is possible at a local level but not an international level.",
+        "is possible at an international level but not at a local level.",
+        "is possible at both a local level and an international level."
+      ],
+      "answer": 1,
+      "explanation": "Maarten Ambaum suggests that it's possible to make rain fall on your farm (local level) via cloud seeding that would otherwise fall on your neighbour's farm. However, at the country level, using cloud seeding in one country doesn't mean a neighbouring country will lose out, as clouds are constantly forming and reforming."
+    }
+  ]
+}

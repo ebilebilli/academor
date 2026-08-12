@@ -1,0 +1,327 @@
+{
+  "title": "IELTS Academic Reading Practice Test — Mock Set C",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–13</strong></p><p>You should spend about 20 minutes on <strong>Questions 1–13</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>The Greenland shark: a life in the deep</strong></p><p>The Greenland shark, a slow-moving predator found in the frigid waters of the Arctic and North Atlantic, is among the longest-lived vertebrates known to science. For much of the twentieth century it was dismissed by fishermen as a sluggish nuisance, its flesh considered too toxic to eat and its economic value limited to the oil that could be extracted from its enormous liver. Only in the last two decades, as researchers have begun to piece together just how long these animals can live and how vulnerable their populations really are, has the species attracted serious scientific and conservation attention.</p><p>Surviving in near-freezing water for centuries depends on a remarkable set of biochemical adaptations. The shark's tissues contain unusually high concentrations of a compound called trimethylamine oxide, or TMAO, which stabilises its proteins and prevents the formation of damaging ice crystals within its cells even at sub-zero temperatures. This same compound, ironically, is what renders the shark's flesh toxic to humans and most other predators unless it is specially treated. The species also operates on an extraordinarily slow metabolism, moving through the water at little more than walking pace and expending only a fraction of the energy used by faster-swimming sharks, a strategy that allows it to survive on relatively little food in an environment where prey can be scarce. Many individuals carry a parasitic copepod attached to one or both eyes, which gradually clouds their vision; remarkably, this appears to cause the shark little inconvenience, since it hunts primarily by detecting the faint electrical fields and scent trails given off by its prey rather than by sight.</p><p>Radiocarbon dating of the proteins in the lens of the shark's eye, a tissue that stops changing once formed, has allowed scientists to estimate the age of individual sharks with a fair degree of confidence. The oldest specimen examined so far is thought to have been around 392 years old, meaning it was already alive before the invention of the telescope, and researchers believe the species may be capable of living for close to five hundred years, making it the longest-lived vertebrate currently known. For much of the twentieth century, however, this longevity did nothing to protect the species from commercial hunters, who caught tens of thousands of Greenland sharks annually across Norwegian and Icelandic waters purely for the oil in their livers, which was used to fuel lamps and lubricate machinery before the widespread adoption of petroleum products.</p><p>Although targeted hunting for liver oil largely ceased by the mid-twentieth century, the species now faces a different set of pressures. Greenland sharks are frequently caught as accidental bycatch in trawl nets and longlines set for other Arctic species such as halibut, and because they are rarely the target catch, reliable figures on how many are killed this way each year simply do not exist. This uncertainty is compounded by the fact that Greenland sharks appear not to reach sexual maturity until they are around 150 years old, meaning that a population depleted today would take many human generations to recover even under the most favourable conditions.</p><p>Climate change presents a further, less direct threat. As Arctic sea ice retreats and water temperatures shift, the distribution of the fish and marine mammals that Greenland sharks scavenge and hunt is also changing, potentially forcing the sharks into unfamiliar territory or reducing the availability of carcasses that have historically supplemented their diet. Some researchers have also raised concerns that industrial fishing vessels moving into newly ice-free Arctic waters could increase the rate of accidental bycatch even further.</p><p>Recognition of these risks has been slow in coming, largely because the species was for so long considered commercially worthless and biologically unremarkable. In 2020, an international coalition of Arctic research institutions, coordinated through the Greenland Shark Research Group, launched a satellite-tagging programme intended to map the species' migratory range across Arctic waters and identify areas where bycatch reduction measures, such as modified fishing gear, might have the greatest effect.</p><p>Because Greenland sharks are so difficult to study directly, population figures remain far less precise than those for many other endangered marine species. A regional assessment conducted five years ago estimated the population in Atlantic Canadian waters alone at several thousand mature individuals, though scientists caution that this figure carries a wide margin of error. What is clear is that a species capable of living for centuries can absorb only the slowest of population declines before recovery becomes practically impossible, and researchers involved in the tagging programme argue that the coming decade will be critical in determining whether current bycatch levels are sustainable.</p>",
+      "question_groups": [],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "summary_completion",
+          "question": "<p><strong>The Greenland shark — Adaptations.</strong> High levels of a compound called TMAO stop the formation of damaging ice ____ within its cells.</p>",
+          "correct_answer": "crystals",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 2,
+          "question_type": "summary_completion",
+          "question": "<p>The species has an extremely slow ____, allowing it to survive on very little food.</p>",
+          "correct_answer": "metabolism",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 3,
+          "question_type": "summary_completion",
+          "question": "<p>Many individuals have a parasitic ____ attached to one or both eyes, which gradually clouds their vision.</p>",
+          "correct_answer": "copepod",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 4,
+          "question_type": "summary_completion",
+          "question": "<p><strong>Reasons for decline.</strong> Hunted for centuries for the oil found in its ____.</p>",
+          "correct_answer": "liver",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 5,
+          "question_type": "summary_completion",
+          "question": "<p>Now often caught unintentionally as ____ in nets and longlines set for other species.</p>",
+          "correct_answer": "bycatch",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 6,
+          "question_type": "summary_completion",
+          "question": "<p>Does not reach sexual ____ until it is around 150 years old, which slows population recovery.</p>",
+          "correct_answer": "maturity",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 7,
+          "question_type": "summary_completion",
+          "question": "<p>Climate change is altering the distribution of the ____ that sharks hunt and scavenge.</p>",
+          "correct_answer": "prey",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 8,
+          "question_type": "tfng",
+          "question": "<p>The Greenland shark's flesh has always been considered a valuable food source.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 9,
+          "question_type": "tfng",
+          "question": "<p>The lens of the shark's eye stops changing once it has formed.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 10,
+          "question_type": "tfng",
+          "question": "<p>Commercial hunting of Greenland sharks for their liver oil continues today.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 11,
+          "question_type": "tfng",
+          "question": "<p>Accurate figures exist for how many Greenland sharks are caught as bycatch each year.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 12,
+          "question_type": "tfng",
+          "question": "<p>The Greenland Shark Research Group's tagging programme is intended to identify where bycatch reduction measures could be most effective.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 13,
+          "question_type": "tfng",
+          "question": "<p>The regional population assessment in Atlantic Canadian waters found the species to be increasing in number.</p>",
+          "correct_answer": "Not Given"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Passage 2",
+      "instructions": "<p><strong>Questions 14–26</strong></p><p>You should spend about 20 minutes on <strong>Questions 14–26</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Cooling down Phoenix</strong></p><p>Phoenix, Arizona, sits in the Sonoran Desert and has long been one of the hottest major cities in the United States, but in recent years its summers have grown markedly more dangerous. The city recorded more than fifty consecutive days with temperatures above 43°C two years ago, a run that contributed to the highest number of heat-related deaths ever documented in the county in a single year. Unlike a heatwave that eventually breaks, this intensifying heat is now a near-permanent feature of Phoenix's summer, driven both by a warming regional climate and by the city's own rapid, low-density expansion across the desert floor.</p><p>Much of the problem stems from what scientists call the urban heat island effect. Asphalt roads, concrete pavements and dark rooftops absorb solar energy throughout the day and release it slowly after sunset, meaning that some Phoenix neighbourhoods now stay 5 to 8 degrees warmer overnight than the surrounding desert. Because Phoenix expanded rapidly from the 1950s onward through sprawling subdivisions built around wide, multi-lane roads designed primarily for cars, the city has an unusually large surface area of heat-absorbing asphalt relative to its population, and comparatively little tree cover to offset it.</p><p>That tree cover, where it exists, is distributed very unevenly. Wealthier neighbourhoods on the city's northern edge often have canopy coverage exceeding 20 per cent, while some lower-income districts closer to the city centre have less than 5 per cent, leaving residents there with markedly higher exposure to extreme daytime temperatures and correspondingly higher rates of heat-related illness.</p><p>One response, now in its third year, is the city's cool pavement programme, which involves resurfacing selected streets with a light grey, reflective sealant designed to lower surface temperatures by reflecting more sunlight back into the atmosphere rather than absorbing it. Early trials showed that treated streets could be as much as 6 degrees cooler at the surface during peak afternoon heat compared with untreated asphalt nearby.</p><p>'The daytime effect is genuinely impressive, but it isn't the whole story,' says Dana Whitfield, an urban forester with the city's Office of Heat Response and Mitigation. She notes that the cool pavement coating currently produces little measurable benefit after dark, precisely when overnight heat poses the greatest risk to vulnerable residents, since reflected sunlight cannot help once the sun has set. For that reason, the city treats the pavement programme as one part of a broader strategy rather than a solution on its own.</p><p>The complementary strand of that strategy is a long-term tree-planting initiative, which aims to raise canopy cover to 25 per cent across every council district within fifteen years, with planting prioritised in the neighbourhoods currently least shaded. Unlike reflective pavement, mature trees cool the air both day and night, through shade and through the release of moisture from their leaves, but the programme faces an obvious constraint: a newly planted tree can take a decade or more to provide meaningful shade, meaning residents in the hottest, least-shaded districts will not feel the full benefit for a generation.</p><p>A pilot phase of cool pavement treatment covered around 60 kilometres of residential streets in its first year; a second phase, now underway, will extend the treatment to a further 160 kilometres, concentrated in the districts identified as having both high surface temperatures and low tree canopy. A third and final phase, still being costed, would extend coverage to arterial roads across the city, though officials acknowledge that the higher traffic volumes on these roads may wear away the reflective coating considerably faster than on quieter residential streets.</p><p>Whitfield remains cautiously optimistic. 'No single measure is going to undo forty years of development decisions overnight,' she says. 'But between the pavement, the trees and stricter building standards for new developments, we are at least moving the temperature in the right direction, street by street.'</p>",
+      "question_groups": [],
+      "questions": [
+        {
+          "order": 14,
+          "question_type": "tfng",
+          "question": "<p>Phoenix's extreme heat is now largely limited to occasional short heatwaves.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 15,
+          "question_type": "tfng",
+          "question": "<p>Wealthier neighbourhoods in Phoenix generally have more tree cover than lower-income districts closer to the centre.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 16,
+          "question_type": "tfng",
+          "question": "<p>The cool pavement sealant produces a measurable cooling effect during the day.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 17,
+          "question_type": "tfng",
+          "question": "<p>The cool pavement sealant is equally effective at reducing temperatures after dark.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 18,
+          "question_type": "tfng",
+          "question": "<p>Phoenix's tree-planting initiative has already reached its 25 per cent canopy-cover target in most districts.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 19,
+          "question_type": "summary_completion",
+          "question": "<p><strong>Phoenix's cool pavement programme — Features.</strong> Streets are resurfaced with a light grey, reflective ____.</p>",
+          "correct_answer": "sealant",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 20,
+          "question_type": "summary_completion",
+          "question": "<p>The coating lowers surface temperature by reflecting ____ back into the atmosphere.</p>",
+          "correct_answer": "sunlight",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 21,
+          "question_type": "summary_completion",
+          "question": "<p>Trials showed treated streets could be up to 6 degrees cooler at the ____ during peak afternoon heat.</p>",
+          "correct_answer": "surface",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 22,
+          "question_type": "summary_completion",
+          "question": "<p><strong>Problems.</strong> The coating produces little measurable benefit after ____.</p>",
+          "correct_answer": "dark",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 23,
+          "question_type": "summary_completion",
+          "question": "<p>A complementary long-term ____ initiative aims to raise canopy cover to 25 per cent.</p>",
+          "correct_answer": "tree-planting",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 24,
+          "question_type": "summary_completion",
+          "question": "<p>Newly planted trees can take a ____ or more to provide meaningful shade.</p>",
+          "correct_answer": "decade",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 25,
+          "question_type": "summary_completion",
+          "question": "<p>The pilot phase covered around 60 kilometres of ____ streets.</p>",
+          "correct_answer": "residential",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 26,
+          "question_type": "summary_completion",
+          "question": "<p>Officials worry that higher traffic volumes on arterial roads may wear away the ____ coating faster.</p>",
+          "correct_answer": "reflective",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "title": "Passage 3",
+      "instructions": "<p><strong>Questions 27–40</strong></p><p>You should spend about 20 minutes on <strong>Questions 27–40</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Rethinking the origins of language</strong></p><p>It has become something of a truism that our understanding of how language evolved is being rewritten. Fresh anatomical, genetic and behavioural evidence continues to push back the dates at which our ancestors, and even other species entirely, may have become capable of complex vocal communication. Because the evidence is so varied - fossilised throat bones, animal recordings, comparative genetics - it can be difficult to see what pattern, if any, links these discoveries together.</p><p>Two broad threads, however, run through this recent research. The first is growing evidence that the physical and cognitive prerequisites for complex vocal communication existed much earlier, and in more species, than linguists traditionally assumed. The second is a reassessment of who, within early human groups, actually drove the development of language - a question long answered, without much evidence, by assuming that adult male hunters coordinating a kill were responsible for the earliest meaningful communication.</p><p>Consider the physical evidence first. The hyoid bone, a small, delicate structure in the throat that anchors muscles used in speech, has been recovered from Neanderthal skeletons and found to closely resemble that of modern humans, suggesting that Neanderthals may have possessed a vocal tract capable of producing a similar range of speech sounds to our own, hundreds of thousands of years before the rise of Homo sapiens. Genetic evidence has added weight to this picture: Neanderthal remains carry a version of a gene linked to speech and language processing in modern humans that is functionally almost identical to our own.</p><p>The most contentious claim in this field, though, concerns a very different species altogether. Research led by the biologist Con Slobodchikoff into the alarm calls of prairie dogs, a burrowing rodent native to the grasslands of North America, suggests that these calls encode strikingly specific descriptive information - not simply 'predator approaching', but details corresponding to a predator's size, colour and even the shape of an unfamiliar object moving through their territory. If accurate, this would place a remarkable degree of descriptive, almost grammatical structure in the vocalisations of a small mammal with a brain a fraction of the size of a primate's. The claim has proved deeply controversial among linguists, not least because much of the supporting analysis was first published through a specialist journal that invites open commentary from readers alongside the formal peer review, rather than relying solely on traditional anonymous review.</p><p>My own reaction to the prairie dog research is cautious but not dismissive. I think the claim that these calls constitute anything resembling full language remains a considerable stretch, and independent replication of the acoustic analysis would help enormously. At the same time, I suspect that some of the resistance to the idea stems from an old assumption that complex referential communication requires a large, human-like brain. But the relevant question may not be brain size at all, but rather how efficiently a smaller brain's neural circuitry is organised for a narrow, highly specific task such as predator identification.</p><p>None of this should surprise us as much as it initially does. Just as the earliest telegraph systems transmitted only the crudest bursts of information before evolving, over decades, into the rich bandwidth of modern telecommunications, the emergence of complex communication in evolutionary history is likely to have been gradual and distributed across many species and periods, rather than arriving suddenly and completely formed in a single lineage.</p><p>A parallel reassessment concerns who actually drove the development of early language. For much of the twentieth century, theories of language origin were built around male-coded activities such as coordinated hunting and tool manufacture, on the assumption that these contexts demanded the earliest sophisticated vocal signals. Anthropology, like many other disciplines, developed within a scholarly culture that took male activity as the default subject of study, and this shaped which behaviours were considered worth investigating.</p><p>More recent research points elsewhere. A cross-cultural study of infant-directed speech, commonly known as 'motherese', found that caregivers across dozens of unrelated language communities modify their pitch, rhythm and repetition in strikingly similar ways when speaking to infants, regardless of the surrounding language's structure, suggesting a deep evolutionary origin for this style of communication rather than a culturally learned habit. Primatologists have documented comparable exaggerated vocal patterns in chimpanzee mothers communicating with their infants, hinting that the roots of complex, emotionally expressive vocalisation may lie in caregiving relationships rather than in hunting or toolmaking contexts. A meta-analysis of vocabulary in surviving foraging societies published last year found that words relating to kinship, care and social bonding vastly outnumbered those relating to hunting technique or weaponry.</p><p>What connects both threads of this research is a broader lesson about how far our assumptions can distort scientific inquiry. If the anatomical capacity for speech reaches back further, and if caregiving rather than hunting fostered the earliest complex vocal exchanges, then the true origins of language may lie somewhere quieter and more intimate than the dramatic hunting scenes so often used to illustrate it.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 31–34",
+          "instructions": "<p>Complete each sentence with the correct ending, A–F, below.</p><p><em>Write the correct letter, A–F, for each answer.</em></p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "A. Genetic evidence supported a claim about an extinct species' capacity for speech.",
+            "B. A widely-used communication style was found to share features across unrelated cultures.",
+            "C. A study of existing societies found care-related words far outnumbered hunting-related ones.",
+            "D. A controversial claim's publication method contributed to disagreement among specialists.",
+            "E. A structure resembling that of modern humans was found in an extinct species' remains.",
+            "F. A pattern once linked exclusively to human infants was also observed in another primate species."
+          ],
+          "questions": [
+            {
+              "order": 1,
+              "question": "<p>The discovery of the Neanderthal hyoid bone suggests that ____.</p>",
+              "correct_answer": "E. A structure resembling that of modern humans was found in an extinct species' remains."
+            },
+            {
+              "order": 2,
+              "question": "<p>Analysis of prairie dog alarm calls generated controversy partly because ____.</p>",
+              "correct_answer": "D. A controversial claim's publication method contributed to disagreement among specialists."
+            },
+            {
+              "order": 3,
+              "question": "<p>The cross-cultural study of infant-directed speech found that ____.</p>",
+              "correct_answer": "B. A widely-used communication style was found to share features across unrelated cultures."
+            },
+            {
+              "order": 4,
+              "question": "<p>Observations of chimpanzee mothers indicate that ____.</p>",
+              "correct_answer": "F. A pattern once linked exclusively to human infants was also observed in another primate species."
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 27,
+          "question_type": "mcq",
+          "question": "<p>What is the writer doing in the second paragraph?</p>",
+          "answer_options": [
+            "identifying two broad themes running through recent research on language evolution",
+            "outlining aspects of language evolution that remain completely unexplained",
+            "summarising public reactions to recent linguistic discoveries",
+            "comparing different theories of how grammar developed"
+          ],
+          "correct_answer": "identifying two broad themes running through recent research on language evolution"
+        },
+        {
+          "order": 28,
+          "question_type": "mcq",
+          "question": "<p>In the sixth paragraph, the writer refers to early telegraph systems to make the point that</p>",
+          "answer_options": [
+            "most developments happen in a gradual way.",
+            "communication technology advances faster than biological evolution.",
+            "early inventions are rarely improved upon significantly.",
+            "the pace of change in evolution is impossible to predict."
+          ],
+          "correct_answer": "most developments happen in a gradual way."
+        },
+        {
+          "order": 29,
+          "question_type": "mcq",
+          "question": "<p>In the seventh paragraph, the phrase 'took male activity as the default subject of study' suggests that early researchers</p>",
+          "answer_options": [
+            "deliberately excluded women from anthropological fieldwork.",
+            "assumed male behaviour was the natural focus of research without questioning that choice.",
+            "believed that female behaviour was more difficult to observe.",
+            "were required by their institutions to study only male subjects."
+          ],
+          "correct_answer": "assumed male behaviour was the natural focus of research without questioning that choice."
+        },
+        {
+          "order": 30,
+          "question_type": "mcq",
+          "question": "<p>What does the writer suggest in the final paragraph?</p>",
+          "answer_options": [
+            "The true origins of language will never be established with certainty.",
+            "Our assumptions about what mattered most may have hidden where language really began.",
+            "Hunting played no role at all in the development of human communication.",
+            "Caregiving is a more important human activity than hunting."
+          ],
+          "correct_answer": "Our assumptions about what mattered most may have hidden where language really began."
+        },
+        {
+          "order": 35,
+          "question_type": "ynng",
+          "question": "<p>It seems likely that Neanderthals could produce a similar range of speech sounds to modern humans.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 36,
+          "question_type": "ynng",
+          "question": "<p>Prairie dogs are known to alter their alarm calls depending on the season.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 37,
+          "question_type": "ynng",
+          "question": "<p>The method used to publish the prairie dog research differed from conventional academic publishing.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 38,
+          "question_type": "ynng",
+          "question": "<p>The writer believes independent replication of the prairie dog acoustic analysis is unnecessary.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 39,
+          "question_type": "ynng",
+          "question": "<p>The cross-cultural similarities in infant-directed speech occurred regardless of the structure of the local language.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 40,
+          "question_type": "ynng",
+          "question": "<p>According to the writer, brain size is definitely the most important factor in an animal's capacity for referential communication.</p>",
+          "correct_answer": "No"
+        }
+      ]
+    }
+  ]
+}

@@ -50,6 +50,13 @@ def _is_relative_one_based(orders: list[int]) -> bool:
     return bool(orders) and orders == list(range(1, len(orders) + 1))
 
 
+def _is_consecutive(orders: list[int]) -> bool:
+    if not orders:
+        return False
+    sorted_orders = sorted(orders)
+    return sorted_orders == list(range(sorted_orders[0], sorted_orders[0] + len(sorted_orders)))
+
+
 def _apply_absolute_orders_from_title(questions: list[dict], title: str) -> None:
     """Map relative 1..n group orders onto 'Questions 31–35' style titles."""
     title_range = _parse_question_range(title)
@@ -75,7 +82,7 @@ def _apply_absolute_orders_for_passage(
     for group in groups:
         _apply_absolute_orders_from_title(group['questions'], group.get('title') or '')
 
-    if not _is_relative_one_based([item['order'] for item in standalone]):
+    if not standalone:
         return
 
     passage_range = _parse_question_range(instructions) or _parse_question_range(title)
@@ -90,6 +97,15 @@ def _apply_absolute_orders_for_passage(
     available = [number for number in range(start, end + 1) if number not in claimed]
     if len(available) != len(standalone):
         return
+
+    current_orders = sorted(item['order'] for item in standalone)
+    if current_orders == available:
+        return
+
+    orders = [item['order'] for item in standalone]
+    if not (_is_relative_one_based(orders) or _is_consecutive(orders)):
+        return
+
     for item, order in zip(standalone, available):
         item['order'] = order
 

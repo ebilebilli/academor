@@ -1,0 +1,327 @@
+{
+  "title": "IELTS Academic Reading Practice Test — Mock Set B",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–13</strong></p><p>You should spend about 20 minutes on <strong>Questions 1–13</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>The return of the beaver</strong></p><p>The Eurasian beaver, once found in vast numbers across the rivers and wetlands of Europe and northern Asia, is one of nature's most remarkable engineers. Prized for centuries for its dense, waterproof fur and for castoreum, a scent-gland secretion once used in perfumes and traditional medicine, the beaver was hunted so relentlessly that by the early twentieth century it had vanished from almost the entire continent. Today, thanks to decades of conservation work, small founder populations that survived in remote pockets of Russia, Germany, France and Norway have been used to re-establish the species across dozens of countries, and the beaver is once again shaping the landscapes it once dominated.</p><p>The beaver's success as a semi-aquatic mammal depends on a suite of remarkable physical adaptations. Its fur consists of two layers: a dense, insulating underfur that traps air close to the skin, and an outer layer of long guard hairs coated in oil produced by special glands, which keeps the animal dry even after hours submerged in cold water. When diving, transparent membranes slide across the beaver's eyes, functioning much like a pair of built-in goggles, while valve-like flaps seal off the nostrils and ears to prevent water from entering. Its broad, flattened tail, covered in tough scales rather than fur, serves multiple purposes: it acts as a rudder while swimming, a prop when the animal is gnawing at a tree trunk, and a warning device, since a hard slap of the tail against the water's surface alerts other beavers to danger.</p><p>Despite these adaptations, the beaver proved powerless against organised human hunting. The fur trade, which reached its peak between the sixteenth and nineteenth centuries, saw millions of pelts shipped to Europe's fashion centres to be made into hats and coats, while castoreum commanded high prices from apothecaries who believed it could cure everything from headaches to epilepsy. Combined with the drainage of wetlands for agriculture, this pressure drove the beaver to the brink of extinction; by 1900, only around 1,200 individuals survived in eight isolated refuges across the whole of Eurasia.</p><p>Habitat loss remains one of the beaver's principal challenges even now. As wetlands were drained and rivers straightened and channelled for farming and flood control, the slow-moving, well-vegetated waterways that beavers need for building dams and lodges became increasingly scarce. Where beavers have returned, meanwhile, their dam-building habits sometimes bring them into conflict with farmers, since the pools created can flood low-lying fields or roads. In parts of Bavaria and Scotland, this has led to disputes between conservationists and landowners over whether problem dams should be removed.</p><p>The species also faces occasional outbreaks of tularemia, a bacterial disease that can spread rapidly through dense beaver colonies and, in the worst recorded case, wiped out an entire reintroduced population in a Scandinavian river system within a single season. Yet the ecological benefits beavers bring generally far outweigh such setbacks. Their dams slow the flow of water, trapping sediment and creating ponds that raise the water table; this in turn creates rich wetland habitats for fish, amphibians, dragonflies and wading birds, while also acting as a natural buffer against both flooding and drought.</p><p>Rising summer temperatures and increasingly erratic rainfall patterns pose a further, less predictable threat, since prolonged droughts can dry up the shallow ponds beavers depend on, forcing them to abandon otherwise suitable territory. Even so, reintroduction has been a resounding success story in several countries. In Britain, licensed releases in Scotland and parts of England have been followed by rapid natural spread along river catchments, aided by the fact that beavers require no supplementary feeding once released and simply resume their dam-building behaviour within days of arriving in a new territory.</p><p>Much of this progress has been coordinated by the Eurasian Beaver Recovery Partnership, a collaboration between the Rivers and Wetlands Trust, national forestry agencies and independent ecologists, whose remit is to monitor reintroduced populations, mediate conflicts with landowners and advise on the management of problem dams. In 2021, the partnership's work in the river catchments of southern Scotland was cited by a European wildlife body as one of the continent's leading examples of species-led habitat restoration.</p><p>So how many beavers are there today? At the population's lowest point, in the early 1900s, barely a thousand individuals clung on across the whole of Eurasia. Steady, government-backed reintroduction programmes throughout the second half of the twentieth century saw numbers climb into the hundreds of thousands, though isolated outbreaks of disease periodically set back local populations. A continent-wide survey conducted three years ago put the total Eurasian beaver population at approximately 1.5 million, and preliminary figures from a more recent survey, completed earlier this year, suggest the number has now passed 1.9 million. The beaver's reputation as an ecosystem engineer, once entirely forgotten, is once again widely recognised.</p>",
+      "question_groups": [],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "summary_completion",
+          "question": "<p><strong>The return of the beaver — Adaptations.</strong> Transparent membranes slide across the eyes while diving, acting like a pair of ____.</p>",
+          "correct_answer": "goggles",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 2,
+          "question_type": "summary_completion",
+          "question": "<p>Valve-like flaps seal off the nostrils and ears to keep out ____.</p>",
+          "correct_answer": "water",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 3,
+          "question_type": "summary_completion",
+          "question": "<p>The tail is broad and flat, and covered in tough ____ rather than fur.</p>",
+          "correct_answer": "scales",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 4,
+          "question_type": "summary_completion",
+          "question": "<p><strong>Reasons for population decline.</strong> Hunted for its fur and for ____, a secretion used in perfumes and medicine.</p>",
+          "correct_answer": "castoreum",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 5,
+          "question_type": "summary_completion",
+          "question": "<p>Drainage of wetlands for farming, causing a loss of the beaver's ____.</p>",
+          "correct_answer": "habitat",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 6,
+          "question_type": "summary_completion",
+          "question": "<p>Conflict with farmers when dams cause flooding of ____ or roads.</p>",
+          "correct_answer": "fields",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 7,
+          "question_type": "summary_completion",
+          "question": "<p>Outbreaks of a disease called ____, which spreads rapidly through colonies.</p>",
+          "correct_answer": "tularemia",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 8,
+          "question_type": "tfng",
+          "question": "<p>The beaver's fur trade was at its most active between the 1500s and the 1900s.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 9,
+          "question_type": "tfng",
+          "question": "<p>Castoreum was valued mainly for its use in the fashion industry.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 10,
+          "question_type": "tfng",
+          "question": "<p>By 1900, beavers survived in fewer than ten locations worldwide.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 11,
+          "question_type": "tfng",
+          "question": "<p>All conservationists agree that problem dams built by reintroduced beavers should be left in place.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 12,
+          "question_type": "tfng",
+          "question": "<p>Prolonged periods of dry weather can cause beavers to leave places that would otherwise suit them.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 13,
+          "question_type": "tfng",
+          "question": "<p>The European wildlife body's recognition of the Eurasian Beaver Recovery Partnership resulted in an increase in its funding.</p>",
+          "correct_answer": "Not Given"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Passage 2",
+      "instructions": "<p><strong>Questions 14–26</strong></p><p>You should spend about 20 minutes on <strong>Questions 14–26</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Getting water to Mexico City</strong></p><p>Mexico City, home to over nine million people within the city limits and more than twenty-two million across its wider metropolitan area, sits in a natural basin that was once occupied by a network of five interconnected lakes. When the Aztecs founded Tenochtitlan here in 1325, the settlement was built on an island amid the largest of these lakes, Lake Texcoco, linked to the surrounding shore by causeways and canals. Following the Spanish conquest in the sixteenth century, colonial engineers, fearful of the flooding that had periodically devastated the Aztec city, began a centuries-long project to drain the lake basin entirely in order to build a European-style city on dry land.</p><p>That decision continues to shape the city's fortunes today. With the lake gone, the only remaining water source for much of the twentieth century was the aquifer lying beneath the old lakebed, and the city has drawn on it so heavily that it now extracts roughly twice as much water each year as natural rainfall can replenish. As the clay-rich soil loses the water that once buoyed it up, the ground beneath Mexico City is sinking, in some districts by as much as forty centimetres a year, cracking building foundations, buckling roads and rupturing the very pipes that carry the city's water supply.</p><p>Access to that water supply, meanwhile, is starkly unequal. Wealthier districts close to the historic centre typically enjoy a reliable piped supply, while many of the informal settlements that have spread across the basin's dry southern and eastern edges receive running water only a few hours a week, if at all. Residents in these neighbourhoods often depend on pipas, tanker trucks that sell water at prices many times higher than the metered rate paid by households with a functioning connection.</p><p>Underlying all of this is a system riddled with physical losses. Independent estimates suggest that as much as 40 per cent of the water pumped into Mexico City's ageing distribution network leaks away before it ever reaches a tap, seeping into the same soft ground that the extraction is causing to subside in the first place.</p><p>One initiative attempting to address this crisis from a different angle is a programme run by the non-profit organisation Isla Urbana, which installs rooftop rainwater-harvesting systems in homes across the poorer, unconnected districts of the city. Each system channels rain from the roof through a first-flush filter, which diverts the initial, dirtiest run-off away from the storage tank, before the cleaner remaining water is piped into large rooftop or underground cisterns and treated for drinking.</p><p>'For a household that has never had reliable piped water, a rooftop system can supply drinking-quality water for eight or nine months of the year,' says Renata Fenton, an engineer who has worked with the programme since its early expansion. She notes that the systems are not without their limitations, however, pointing out that during the driest months, from December to April, when almost no rain falls across the basin, households must still fall back on tanker deliveries or bottled water.</p><p>By the end of last year, the programme had fitted systems in more than 30,000 homes, collectively capturing an estimated two billion litres of rainwater annually - enough, organisers calculate, to meet the basic drinking and washing needs of roughly 150,000 people. A second phase now underway aims to extend coverage to schools and community centres in the same neighbourhoods, providing a stable supply for children even when a household's own system runs dry. A further, more ambitious phase, still in the planning stage, would combine household harvesting with larger-scale infrastructure to capture stormwater currently lost to the city's drainage system and use it to recharge the depleted aquifer directly.</p><p>Fenton is cautious about overstating what rainwater harvesting alone can achieve. 'It is not a substitute for fixing the leaks or slowing down how much we pump out of the ground,' she says. 'But for families who have been asking the government for a working tap for twenty years, it is the first real improvement they have seen in their lifetime.'</p>",
+      "question_groups": [],
+      "questions": [
+        {
+          "order": 14,
+          "question_type": "tfng",
+          "question": "<p>Mexico City was originally built on solid ground rather than in a lake.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 15,
+          "question_type": "tfng",
+          "question": "<p>The colonial authorities drained the lake mainly in order to prevent flooding.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 16,
+          "question_type": "tfng",
+          "question": "<p>The rate of ground subsidence in Mexico City is the same across all districts.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 17,
+          "question_type": "tfng",
+          "question": "<p>Isla Urbana's rainwater-harvesting programme has received financial backing from the national government.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 18,
+          "question_type": "tfng",
+          "question": "<p>Water lost through leaks seeps into the same ground that is affected by subsidence.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 19,
+          "question_type": "summary_completion",
+          "question": "<p><strong>Isla Urbana's rainwater-harvesting system — Features.</strong> Rainwater is collected from the ____ of each house.</p>",
+          "correct_answer": "roof",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 20,
+          "question_type": "summary_completion",
+          "question": "<p>A filter removes the dirtiest initial ____ before the water is stored.</p>",
+          "correct_answer": "run-off",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 21,
+          "question_type": "summary_completion",
+          "question": "<p>Filtered water is stored in large ____ before being treated for drinking.</p>",
+          "correct_answer": "cisterns",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 22,
+          "question_type": "summary_completion",
+          "question": "<p><strong>Problems.</strong> During the driest months, households must rely on tanker deliveries or ____ water.</p>",
+          "correct_answer": "bottled",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 23,
+          "question_type": "summary_completion",
+          "question": "<p>By the end of last year, more than 30,000 ____ had been fitted with systems.</p>",
+          "correct_answer": "homes",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 24,
+          "question_type": "summary_completion",
+          "question": "<p>The programme's second phase will extend coverage to schools and community ____.</p>",
+          "correct_answer": "centres",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 25,
+          "question_type": "summary_completion",
+          "question": "<p>A further phase would use captured stormwater to recharge the depleted ____.</p>",
+          "correct_answer": "aquifer",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        },
+        {
+          "order": 26,
+          "question_type": "summary_completion",
+          "question": "<p>According to the programme's engineer, rainwater harvesting is not a substitute for repairing ____ in the network.</p>",
+          "correct_answer": "leaks",
+          "question_config": { "word_limit": 1, "word_limit_label": "ONE WORD ONLY", "case_insensitive": true }
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "title": "Passage 3",
+      "instructions": "<p><strong>Questions 27–40</strong></p><p>You should spend about 20 minutes on <strong>Questions 27–40</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Rethinking animal minds</strong></p><p>It has become something of a truism that our understanding of animal minds is being turned upside down. Barely a year now passes without a fresh study forcing scientists to revise long-held assumptions - about which species can plan for the future, which can recognise themselves, and which live in societies far more complex than we once imagined. Yet because the discoveries span so many species and disciplines, from marine biology to primatology, it can be difficult to see what, if anything, ties them together.</p><p>Two broad patterns, however, do stand out to me. The first is a steady stream of evidence that cognitive feats once thought to be the preserve of humans and perhaps a handful of great apes - tool use, forward planning, self-awareness - are turning out to be far more widespread across the animal kingdom than researchers assumed even a decade ago. The second is that our picture of social organisation in the animal world has been distorted by an unspoken assumption that dominant, decision-making roles belong to males; recent research suggests that this assumption owes more to the biases of the mostly male scientists who first studied these societies than to the animals themselves.</p><p>Consider tool use. For decades, the manufacture of tools by New Caledonian crows, which strip and shape twigs into hooks for extracting grubs from tree bark, was celebrated as a rare example of non-primate ingenuity. We now know that this is only the beginning. Wrasse, a family of reef fish, have been filmed selecting rocks to use as anvils, smashing shellfish against them to crack the shells open. Veined octopuses carry coconut shell halves across the seabed, apparently assembling a portable shelter from the pieces later. Even bumblebees, an animal not previously suspected of possessing such capabilities, have been trained under laboratory conditions to roll small balls into a target for a food reward, and to pass on that skill to other bees who merely observed them.</p><p>By far the most contentious claim in this area concerns the cleaner wrasse, a small reef fish that removes parasites from the skin of larger fish. In a series of experiments, researchers marked wrasse with a coloured spot visible only in a mirror and reported that the fish subsequently tried to scrape the mark off against a rock while checking the mirror - behaviour long considered a hallmark of self-recognition, and previously documented only in a small number of mammals and birds. The claim that a fish, whose brain bears little resemblance to that of a primate, might recognise its own reflection has proved deeply controversial, not least because the results were first released through a preprint platform that publishes reviewer comments openly alongside the paper, rather than through conventional peer review.</p><p>My own view of the wrasse controversy is mixed. I think the behavioural evidence deserves to be treated with some caution, and independent replication in other laboratories would settle a great deal. At the same time, I suspect that much of the scepticism stems from an unhelpful fixation on brain size: fish brains are small and structured quite differently from our own, and researchers have historically assumed that this rules out sophisticated cognition. But a small brain organised efficiently may achieve more than a large one organised poorly, and the relevant comparison is surely the density and connectivity of neurons, not simply the overall size of the organ that contains them.</p><p>None of this ought to surprise us quite as much as it does. Evolution, like technology, generally advances by small increments rather than sudden leaps: the first aircraft designed by the Wright brothers could barely stay airborne for a few seconds, and the earliest electronic computers, room-sized and prone to failure, bear little resemblance to the machines on our desks today. It would be strange, on reflection, if sophisticated cognition had appeared only once, fully formed, in a single lineage, rather than having deep roots that stretch back across many branches of the evolutionary tree.</p><p>A similar reassessment is under way regarding social hierarchy, particularly the long-standing assumption that leadership in animal groups defaults to males. Zoology, like archaeology, was founded largely by researchers working within a particular set of assumptions about sex roles, and those assumptions quietly shaped which behaviours got noticed, recorded and published, and which were dismissed as anomalies.</p><p>Killer whale pods, for instance, are now understood to be led by post-reproductive females - grandmothers who guide their extended families to distant, seasonal feeding grounds using decades of accumulated memory, a role earlier researchers had simply failed to document because they were focused on the more visible males. Female spotted hyenas outrank every male in their clan regardless of age, a pattern once dismissed as an oddity rather than recognised as the norm for the species. Among elephants, meanwhile, an older matriarch's knowledge of seasonal water sources during drought years can determine whether her entire family group survives, and a comparative study of primate societies published last year found that female-led coalitions kept male aggression in check in a majority of the bonobo troops surveyed.</p><p>What emerges from all this is not simply a set of isolated curiosities but a broader lesson about how easily our expectations can colour our observations. If sophisticated cognition and female-led social structures turn out to be far more common across the animal kingdom than several generations of researchers assumed, then perhaps the more important question is not what animals are capable of, but what else we have failed to notice because we were not looking for it.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 31–34",
+          "instructions": "<p>Complete each sentence with the correct ending, A–F, below.</p><p><em>Write the correct letter, A–F, for each answer.</em></p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "A. A species not previously thought capable of tool use has been shown learning a skill from another individual.",
+            "B. Long-held assumptions about male dominance in some species have been shown to be inaccurate.",
+            "C. A species has been observed using a found object for shelter rather than for feeding.",
+            "D. A controversial claim's publication method added to the disagreement surrounding it.",
+            "E. A species was probably not the only one capable of complex tool manufacture.",
+            "F. Long-term observation revealed the importance of older female group members."
+          ],
+          "questions": [
+            {
+              "order": 1,
+              "question": "<p>The behaviour of bumblebees in laboratory experiments showed that ____.</p>",
+              "correct_answer": "A. A species not previously thought capable of tool use has been shown learning a skill from another individual."
+            },
+            {
+              "order": 2,
+              "question": "<p>The behaviour of veined octopuses suggests that ____.</p>",
+              "correct_answer": "C. A species has been observed using a found object for shelter rather than for feeding."
+            },
+            {
+              "order": 3,
+              "question": "<p>Research on killer whale pods revealed that ____.</p>",
+              "correct_answer": "F. Long-term observation revealed the importance of older female group members."
+            },
+            {
+              "order": 4,
+              "question": "<p>The findings about the cleaner wrasse were controversial partly because ____.</p>",
+              "correct_answer": "D. A controversial claim's publication method added to the disagreement surrounding it."
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 27,
+          "question_type": "mcq",
+          "question": "<p>What is the writer doing in the second paragraph?</p>",
+          "answer_options": [
+            "identifying two broad patterns emerging from recent research into animal minds",
+            "outlining aspects of animal behaviour that remain poorly understood",
+            "summarising public attitudes towards recent scientific controversies",
+            "giving an overview of disagreements among biologists"
+          ],
+          "correct_answer": "identifying two broad patterns emerging from recent research into animal minds"
+        },
+        {
+          "order": 28,
+          "question_type": "mcq",
+          "question": "<p>In the sixth paragraph, the writer mentions early aircraft and computers to make the point that</p>",
+          "answer_options": [
+            "most developments happen in a gradual way.",
+            "innovation can come from a variety of unexpected sources.",
+            "not all technological advances bring positive outcomes.",
+            "the pace of evolutionary change is impossible to predict."
+          ],
+          "correct_answer": "most developments happen in a gradual way."
+        },
+        {
+          "order": 29,
+          "question_type": "mcq",
+          "question": "<p>In the seventh paragraph, the phrase 'quietly shaped' suggests that researchers' assumptions</p>",
+          "answer_options": [
+            "were deliberately used to falsify scientific results.",
+            "had a subtle but significant influence on which findings were reported.",
+            "were openly acknowledged by early zoologists at the time.",
+            "have since been proven correct by later research."
+          ],
+          "correct_answer": "had a subtle but significant influence on which findings were reported."
+        },
+        {
+          "order": 30,
+          "question_type": "mcq",
+          "question": "<p>What does the writer suggest in the final paragraph?</p>",
+          "answer_options": [
+            "Researchers should focus future studies only on female-led species.",
+            "The most significant discoveries about animal minds are yet to be made.",
+            "Assumptions can prevent us from noticing things that are already there.",
+            "Disagreement among scientists about animal cognition is unavoidable."
+          ],
+          "correct_answer": "Assumptions can prevent us from noticing things that are already there."
+        },
+        {
+          "order": 35,
+          "question_type": "ynng",
+          "question": "<p>It seems likely that tool use among wrasse was the first case of tool-related behaviour ever observed in a fish species.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 36,
+          "question_type": "ynng",
+          "question": "<p>It is common for octopuses to build permanent shelters from shells they find on the seabed.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 37,
+          "question_type": "ynng",
+          "question": "<p>The method used to publish the wrasse mirror-test findings was unconventional.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 38,
+          "question_type": "ynng",
+          "question": "<p>The disagreement over the wrasse mirror test could potentially be resolved through further research.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 39,
+          "question_type": "ynng",
+          "question": "<p>The way in which the wrasse study's results were released increased the level of scientific disagreement surrounding it.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 40,
+          "question_type": "ynng",
+          "question": "<p>According to the writer, the size of an animal's brain is the most important factor in determining its cognitive abilities.</p>",
+          "correct_answer": "No"
+        }
+      ]
+    }
+  ]
+}

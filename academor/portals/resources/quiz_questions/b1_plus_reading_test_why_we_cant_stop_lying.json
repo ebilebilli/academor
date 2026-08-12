@@ -1,0 +1,107 @@
+{
+  "level": "B1+",
+  "quiz": 1,
+  "title": "Why we can't stop lying",
+  "service": "general_english",
+  "category_name": "Upper Intermediate Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Let’s begin with some honesty. You lie. I lie. Everyone lies. If you claim you don’t, I regret to inform you that you’ve just proved my point. Researchers often say that lying is a normal human behaviour. In fact, one study reported that people lie several times a day, although many participants later admitted having underestimated the number. In other words, not only are we liars, but we are bad at counting our lies too.</p><p>Scientists have been curious about this for decades. In one classic experiment, researchers asked people about their habits, such as exercise, charity, and even voting. Most participants confidently insisted that they were responsible, healthy citizens. However, when the data was checked, it revealed a slightly different story. When confronted, some people explained that they had intended to behave better, while others simply refused to admit anything at all.</p><p>So why do we lie? Psychologists generally suggest that lying serves a purpose. In fact, experts argue that lying is often a learned behaviour with surprisingly deep roots. One of the reasons for lying is that it can be used as a shield. Many people admit to using lies to protect themselves from criticism or embarrassment. For example, you might tell your boss you missed a deadline because of technical issues when, in reality, you were watching videos. In that moment, a lie feels safer than the truth.</p><p>Another reason for telling lies is to control our image. Some psychologists claim that lying allows us to manage how others see us. By carefully editing reality, we can appear more successful, more interesting, or just more awake on Monday mornings. Social media is the perfect example: people rarely admit to having spent hours doing nothing. Instead, they prefer to present a polished version of their lives.</p><p>Experts warn that the more you lie, the easier it becomes. Over time, the brain may even see lying as the normal thing to do. Some researchers have gone so far as to suggest that repeated lying reduces the emotional reaction we normally feel when we are dishonest. In simple terms, your brain stops complaining.</p><p>Unfortunately, lying is often connected to deeper issues. Therapists frequently point out that anxiety, low self-esteem, or fear of rejection can all play a role. People who struggle with these feelings may feel compelled to create a safer version of reality to protect themselves from others. One expert explained that they use lying to cope with difficult situations in their lives, and it doesn’t necessarily make them bad people.</p><p>Although lying is often considered an unacceptable behaviour, psychologists don’t usually recommend trying to eliminate lying completely, which is lucky, because that would be impossible. Instead, they advise becoming more aware of it. Experts suggest paying attention to when you feel the need to lie. Is it when you’re afraid of disappointing someone? Or when you want to avoid conflict? Next, they recommend taking a moment before speaking and asking yourself why. Another useful strategy is to practice small truths. Instead of pretending to be busy, you could simply say, “I’m too tired.” It sounds terrifying, but many people later report feeling surprisingly better.</p><p>Finally, professionals often encourage finding one person you trust completely. Someone you can be honest with. Someone who won’t judge you if you admit to having lied about eating the last slice of pizza.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is the writer's main point in the first paragraph?",
+      "options": [
+        "People tend to lie more often than they realise.",
+        "Liars usually feel guilty about their behaviour.",
+        "Scientists are unable to explain why people lie.",
+        "Research shows what people usually lie about."
+      ],
+      "answer": 0,
+      "explanation": "The paragraph says 'Everyone lies' and that people 'underestimate' how often they lie. So the main point is that people lie more than they realise."
+    },
+    {
+      "id": 2,
+      "question": "What does 'this' refer to in the second paragraph?",
+      "options": [
+        "The most common reason for lying in everyday situations.",
+        "The result of previous research into human behaviour.",
+        "The experiment that asks people about their habits.",
+        "The difference between people's answers and data."
+      ],
+      "answer": 3,
+      "explanation": "The previous paragraph explains that people lie and underestimate how often they do it. Paragraph 2 shows that people say one thing but the data shows something different. So 'this' refers to the difference between what people say and what is true."
+    },
+    {
+      "id": 3,
+      "question": "What does paragraph 2 suggest about the participants in the experiment?",
+      "options": [
+        "They were unaware that their answers were incorrect.",
+        "They preferred to talk about what they planned to do.",
+        "They became annoyed when scientists doubted them.",
+        "They avoided answering questions about their habits."
+      ],
+      "answer": 1,
+      "explanation": "The paragraph says participants claimed they were responsible, but when confronted, some said they had 'intended to behave better'. This shows they focused on what they planned to do rather than what they actually did."
+    },
+    {
+      "id": 4,
+      "question": "In paragraph 3, why does the writer include the example of missing a deadline?",
+      "options": [
+        "To explain that lying in a work environment is sometimes necessary.",
+        "To show that lying is acceptable when the truth can upset others.",
+        "To suggest that a negative environment can cause dishonesty.",
+        "To prove that people lie to avoid negative consequences."
+      ],
+      "answer": 3,
+      "explanation": "The example shows someone lying about missing a deadline to avoid getting into trouble. This supports the idea that people lie to protect themselves from criticism or embarrassment."
+    },
+    {
+      "id": 5,
+      "question": "Why does the writer talk about social media in paragraph 4?",
+      "options": [
+        "To show that people tend to be more honest online than in real life.",
+        "To suggest that dishonest behaviours can spread quickly online.",
+        "To illustrate how people hide some aspects of their lives.",
+        "To explain why people find it easy to talk about themselves online."
+      ],
+      "answer": 2,
+      "explanation": "The paragraph uses social media as an example and even says 'Social media is the perfect example'. This shows the writer is illustrating how people present a 'polished version' of their lives and hide certain aspects of reality."
+    },
+    {
+      "id": 6,
+      "question": "What does paragraph 5 suggest about repeated lying?",
+      "options": [
+        "It causes strong feelings against people who lie.",
+        "It is likely that the truth will eventually come out.",
+        "It can turn into a habit that is difficult to control.",
+        "It makes people less aware that they are lying."
+      ],
+      "answer": 2,
+      "explanation": "The paragraph says that the more you lie, the easier it becomes and that the brain may start to see lying as normal. This suggests that lying can become a habit over time."
+    },
+    {
+      "id": 7,
+      "question": "What does the writer imply in paragraph 6?",
+      "options": [
+        "People often lie to conceal personal issues.",
+        "People struggling with personal difficulties are better liars.",
+        "People sometimes lie because they are trying to avoid dealing with reality.",
+        "People who lie often find it difficult to socialise."
+      ],
+      "answer": 0,
+      "explanation": "The paragraph links lying to anxiety, low self-esteem and fear of rejection. It also says people create a 'safer version of reality' to protect themselves. This suggests they lie to hide or cope with personal difficulties."
+    },
+    {
+      "id": 8,
+      "question": "What is the writer's overall attitude towards lying?",
+      "options": [
+        "It is a useful tool that people use in everyday situations.",
+        "It is a natural behaviour that people should reflect on.",
+        "It should be completely removed from people's behaviour.",
+        "It should be avoided unless it is strictly necessary."
+      ],
+      "answer": 1,
+      "explanation": "The writer explains that lying is normal and cannot be completely eliminated, but suggests becoming more aware of it and reflecting on why we do it. This shows a balanced view."
+    }
+  ]
+}

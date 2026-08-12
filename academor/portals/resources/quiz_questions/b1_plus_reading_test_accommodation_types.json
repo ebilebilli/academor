@@ -1,0 +1,123 @@
+{
+  "level": "B1+",
+  "quiz": 6,
+  "title": "What type of accommodation best suits you?",
+  "service": "general_english",
+  "category_name": "Upper Intermediate Reading Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<p>Choosing a place to live involves exploring various types of accommodation, each with unique features and benefits. Whether you prefer the privacy of a detached house, the charm of a cottage, or the convenience of a city flat, understanding these options can help you find the best fit for your lifestyle. Below, we outline some common types of housing to give you a clearer picture of what each offers.</p><h3>A. Detached House</h3><p>A detached house is a single, stand-alone home that doesn\u2019t share any walls with other houses. It\u2019s often found on the outskirts of an urban area or in rural areas, providing more privacy and space compared to other types of homes. These houses usually come with a front and back garden, allowing for outdoor activities or gardening. Inside, a detached house typically has multiple rooms, including bedrooms, bathrooms, a kitchen, and a living area. Due to its large size, utility bills are often more expensive in a detached house than those in an apartment. Because it is not connected to any other house, you won\u2019t hear noise from neighbours through the walls.</p><h3>B. Terraced House</h3><p>A terraced house is one of a row of houses that are connected to each other by shared walls on both sides. These houses are often found in the older part of towns or cities because they were built many years ago. For this reason, it is important to check for signs of damp or mould on the walls. Each terraced house has its own entrance and small garden, but the space is usually smaller than in a detached house. Inside, a terraced house typically has two floors. Usually, the kitchen and the living area are downstairs, while the bedrooms are upstairs. The bathroom can be on either floor. These homes are popular because they are affordable for families and first-time homebuyers.</p><h3>C. Cottage/Cabin</h3><p>A cottage or cabin is a small, cosy house often located in rural areas or the countryside. These homes are usually made from wood or stone and have a traditional, charming appearance. Cottages are often used as vacation homes or weekend getaways, providing a peaceful retreat from the busy city. Inside, a cottage or cabin usually has a simple layout with a few bedrooms, a small kitchen, and a living area, often centred around a fireplace. The outdoor space might include a garden or forested area.</p><h3>D. Bedsit</h3><p>A bedsit is a small, single room that combines the functions of a bedroom and a living space, often including a kitchenette. It\u2019s typically found in city centres and is a very affordable option for people living alone. It is usually rented as temporary accommodation for students or professionals who commute long distances. The room might have a small area for cooking with a stove and sink, and its layout is simple and functional.</p><h3>E. Flat/Apartment</h3><p>A flat \u2013 also known as an \u2018apartment\u2019 in the USA \u2013 is a self-contained living space within a larger building that has multiple units. Flats are common in cities and can vary in size from small studios to bigger multi-bedroom units \u2013 which can be quite expensive. Each flat typically includes a kitchen, living room, one or more bedrooms, and a bathroom. Some blocks of flats offer additional amenities like a parking area, a gym, or a garden for everyone to use. Flats are a popular choice for people who want to live in urban areas, close to work, shops, and public transport.</p><h3>F. Penthouse</h3><p>A penthouse is a luxurious apartment located on the top floor of a building, often offering stunning views of the city. Penthouses are usually larger and more expensive than other apartments in the building and may include high-end features like private terraces, large windows, and upscale finishes. Inside, a penthouse typically has multiple bedrooms, bathrooms, a spacious living area with a modern open-plan kitchen/dining room. Some penthouses also have access to the rooftop.</p>",
+  "questions": [
+    {
+      "id": 1,
+      "question": "A _____ offers a good balance between cost and space for small families.",
+      "options": [
+        "Detached house",
+        "Terraced house",
+        "Cottage or cabin",
+        "Bedsit",
+        "Flat or apartment",
+        "Penthouse"
+      ],
+      "answer": 1,
+      "explanation": "A terraced house provides an affordable option with a balance between space and cost, making it suitable for small families."
+    },
+    {
+      "id": 2,
+      "question": "The luxury and prime location of a _____ come at a very high cost.",
+      "options": [
+        "Detached house",
+        "Terraced house",
+        "Cottage or cabin",
+        "Bedsit",
+        "Flat or apartment",
+        "Penthouse"
+      ],
+      "answer": 5,
+      "explanation": "Penthouses are luxurious and located in prime areas, but they are very costly."
+    },
+    {
+      "id": 3,
+      "question": "A _____ is a budget-friendly option for short-term tenants who live on their own.",
+      "options": [
+        "Detached house",
+        "Terraced house",
+        "Cottage or cabin",
+        "Bedsit",
+        "Flat or apartment",
+        "Penthouse"
+      ],
+      "answer": 3,
+      "explanation": "Bedsits are small, affordable, and ideal for people living alone on a short-term basis."
+    },
+    {
+      "id": 4,
+      "question": "Families who want more space and a quieter living environment usually choose to live in a _____.",
+      "options": [
+        "Detached house",
+        "Terraced house",
+        "Cottage or cabin",
+        "Bedsit",
+        "Flat or apartment",
+        "Penthouse"
+      ],
+      "answer": 0,
+      "explanation": "Detached houses offer more space and privacy, making them a great choice for families who prefer a quiet setting."
+    },
+    {
+      "id": 5,
+      "question": "A _____ is perfect for people who love nature and prefer a quiet, simple lifestyle.",
+      "options": [
+        "Detached house",
+        "Terraced house",
+        "Cottage or cabin",
+        "Bedsit",
+        "Flat or apartment",
+        "Penthouse"
+      ],
+      "answer": 2,
+      "explanation": "Cottages and cabins are often found in natural, rural areas and are perfect for those who enjoy a simple, nature-oriented lifestyle."
+    },
+    {
+      "id": 6,
+      "question": "Because of their convenient location, the cost of a large _____ can be as high as that of a house.",
+      "options": [
+        "Detached house",
+        "Terraced house",
+        "Cottage or cabin",
+        "Bedsit",
+        "Flat or apartment",
+        "Penthouse"
+      ],
+      "answer": 4,
+      "explanation": "Large flats or apartments in convenient city locations can be as expensive as a house due to their location and size."
+    },
+    {
+      "id": 7,
+      "question": "A _____ is an independent building away from noisy neighbours.",
+      "options": [
+        "Detached house",
+        "Terraced house",
+        "Cottage or cabin",
+        "Bedsit",
+        "Flat or apartment",
+        "Penthouse"
+      ],
+      "answer": 0,
+      "explanation": "A detached house stands independently, offering privacy without shared walls or noise from neighbours."
+    },
+    {
+      "id": 8,
+      "question": "Those who live in a _____ can usually share a garden with their neighbours.",
+      "options": [
+        "Detached house",
+        "Terraced house",
+        "Cottage or cabin",
+        "Bedsit",
+        "Flat or apartment",
+        "Penthouse"
+      ],
+      "answer": 4,
+      "explanation": "Flats or apartments may have shared outdoor spaces like a communal garden, especially in large apartment blocks."
+    }
+  ]
+}

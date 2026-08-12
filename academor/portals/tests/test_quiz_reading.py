@@ -480,6 +480,26 @@ class ReadingQuestionAdminFieldConfigTests(QuizReadingTests):
         self.assertEqual(group_orders, [31, 32, 33, 34, 35])
         self.assertEqual(standalone_orders, [27, 28, 29, 30, 36, 37, 38, 39, 40])
 
+    def test_resource_loader_maps_continuation_standalone_orders(self):
+        """Standalone blocks authored as 7..n after a 1..6 group must map to passage range."""
+        from pathlib import Path
+
+        from portals.utils.quiz_reading_resource_loader import parse_reading_resource_file
+
+        path = Path(__file__).resolve().parent.parent / 'resources' / 'reading_questions' / 'ielts_reading_test_1.json'
+        parsed = parse_reading_resource_file(path)
+        passage2 = parsed['passages'][1]
+        group_orders = [q['order'] for q in passage2['question_groups'][0]['questions']]
+        standalone_orders = [q['order'] for q in passage2['questions']]
+        self.assertEqual(group_orders, [14, 15, 16, 17, 18, 19])
+        self.assertEqual(standalone_orders, [20, 21, 22, 23, 24, 25, 26])
+
+        passage3 = parsed['passages'][2]
+        group_orders = [q['order'] for q in passage3['question_groups'][0]['questions']]
+        standalone_orders = [q['order'] for q in passage3['questions']]
+        self.assertEqual(group_orders, [27, 28, 29, 30, 31, 32])
+        self.assertEqual(standalone_orders, [33, 34, 35, 36, 37, 38, 39, 40])
+
     def test_question_type_fields_admin_view(self):
         from django.contrib.auth import get_user_model
 

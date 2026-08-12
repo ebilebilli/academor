@@ -1,0 +1,32 @@
+{% load i18n %}
+<div
+  class="portal-listening-text-review{% if q.is_correct is True %} portal-listening-text-review--correct{% elif q.is_correct is False %} portal-listening-text-review--incorrect{% else %} portal-listening-text-review--unanswered{% endif %}"
+>
+  <div class="portal-listening-text-review__answers">
+    <div class="portal-listening-text-review__answer">
+      <span class="portal-listening-text-review__label">{% trans 'Student' %}</span>
+      <span class="portal-listening-text-review__value">
+        {% if q.student_answer_display or q.student_answer %}
+        {{ q.student_answer_display|default:q.student_answer|linebreaksbr }}
+        {% else %}
+        —
+        {% endif %}
+      </span>
+    </div>
+    <div class="portal-listening-text-review__answer portal-listening-text-review__answer--correct">
+      <span class="portal-listening-text-review__label">{% trans 'Correct' %}</span>
+      <span class="portal-listening-text-review__value">
+        {{ q.correct_answer_display|default:q.correct_answer|default:"—" }}
+      </span>
+    </div>
+  </div>
+  <div class="portal-listening-text-review__status" aria-hidden="true">
+    {% if q.is_correct is True %}
+    <i class="bi bi-check-lg text-success"></i>
+    {% elif q.is_correct is False %}
+    <i class="bi bi-x-lg text-danger"></i>
+    {% else %}
+    <i class="bi bi-dash-lg text-muted"></i>
+    {% endif %}
+  </div>
+</div>
