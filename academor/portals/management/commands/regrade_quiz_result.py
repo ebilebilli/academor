@@ -9,9 +9,10 @@ Examples (dry-run first, then apply):
     python manage.py regrade_quiz_result --result-id 123 --verbose
     python manage.py regrade_quiz_result --result-id 123 --apply
 
-    python manage.py regrade_quiz_result --mock-attempt-id 45 --section math --verbose
+    python manage.py regrade_quiz_result --mock-attempt-id 45 --section listening --verbose
+    python manage.py regrade_quiz_result --mock-attempt-id 45 --section reading --apply
 
-Delete this command after use.
+Supports variant (MCQ/SPR), reading, and listening auto-scored quizzes.
 """
 
 from __future__ import annotations
@@ -22,6 +23,7 @@ from django.db import transaction
 from portals.models import IeltsMockTestAttempt, QuizQuestion, QuizResult
 from portals.utils.quiz_submit import (
     _normalize_given_answers,
+    _normalize_listening_model_answers,
     _question_correct_index,
     score_variant_quiz,
 )
@@ -39,6 +41,7 @@ def _short(value, limit: int = 60) -> str:
 class Command(BaseCommand):
     help = (
         'Re-score QuizResult(s) using stored given_answers and current correct answers. '
+        'Supports variant, reading, and listening quizzes. '
         'Dry-run by default; pass --apply to save. Use --verbose for per-question detail.'
     )
 
@@ -98,8 +101,13 @@ class Command(BaseCommand):
 
         changed = 0
         for result in results:
-            if verbose and result.quiz.is_variant_quiz:
-                self._print_variant_diagnostics(result)
+            if verbose:
+                if result.quiz.is_variant_quiz:
+                    self._print_variant_diagnostics(result)
+                elif result.quiz.is_reading_quiz:
+                    self._print_reading_diagnostics(result)
+                elif result.quiz.is_listening:
+                    self._print_listening_diagnostics(result)
 
             old_score, new_score, max_score = self._regrade_one(result, apply=apply)
             owner = result.student or result.customer
@@ -219,6 +227,95 @@ class Command(BaseCommand):
                 'or make correct_answer exactly match one option string.',
             ))
 
+    def _print_reading_diagnostics(self, result: QuizResult) -> None:
+        from portals.utils.quiz_reading import get_reading_questions_for_quiz
+        from portals.utils.quiz_reading_score import (
+            normalize_reading_answers,
+            score_reading_question,
+        )
+
+        quiz = result.quiz
+        questions = get_reading_questions_for_quiz(quiz)
+        answers = normalize_reading_answers(
+            quiz,
+            result.given_answers or {},
+            questions=questions,
+        )
+        answered = 0
+        blank = 0
+        correct_count = 0
+
+        self.stdout.write(self.style.NOTICE(
+            f'--- Reading diagnostics result={result.pk} quiz={quiz.pk} '
+            f'({len(questions)} questions) ---',
+        ))
+        for q in questions:
+            raw = answers.get(str(q.pk), '')
+            prefix = f'Q{q.order or "?"} id={q.pk} {q.question_type}'
+            if not str(raw).strip():
+                blank += 1
+                mark = 'WRONG'
+                student = 'BLANK'
+            else:
+                answered += 1
+                student = _short(raw)
+                ok = score_reading_question(q, raw)
+                if ok:
+                    correct_count += 1
+                mark = 'OK' if ok else 'WRONG'
+            key = _short(q.spr_accepted_answers or q.correct_answer)
+            self.stdout.write(f'{prefix}  student={student}  key={key}  {mark}')
+
+        self.stdout.write(
+            f'--- Summary: answered={answered}/{len(questions)} blank={blank} '
+            f'correct_now={correct_count} ---',
+        )
+
+    def _print_listening_diagnostics(self, result: QuizResult) -> None:
+        from portals.utils.quiz_listening import get_listening_questions_for_quiz
+        from portals.utils.quiz_listening_score import score_listening_question
+
+        quiz = result.quiz
+        questions = get_listening_questions_for_quiz(quiz)
+        answers = _normalize_listening_model_answers(
+            result.given_answers or {},
+            quiz,
+            questions=questions,
+        )
+        answered = 0
+        blank = 0
+        correct_count = 0
+
+        self.stdout.write(self.style.NOTICE(
+            f'--- Listening diagnostics result={result.pk} quiz={quiz.pk} '
+            f'({len(questions)} questions) ---',
+        ))
+        for q in questions:
+            raw = answers.get(str(q.pk), '')
+            qtype = 'variant' if q.is_variant else 'spr'
+            prefix = f'Q{q.order or "?"} id={q.pk} {qtype}'
+            if not str(raw).strip():
+                blank += 1
+                mark = 'WRONG'
+                student = 'BLANK'
+            else:
+                answered += 1
+                student = _short(raw)
+                ok = score_listening_question(q, raw)
+                if ok:
+                    correct_count += 1
+                mark = 'OK' if ok else 'WRONG'
+            if q.is_variant:
+                key = _short(q.correct_answer)
+            else:
+                key = _short(q.spr_accepted_answers or q.correct_answer)
+            self.stdout.write(f'{prefix}  student={student}  key={key}  {mark}')
+
+        self.stdout.write(
+            f'--- Summary: answered={answered}/{len(questions)} blank={blank} '
+            f'correct_now={correct_count} ---',
+        )
+
     def _regrade_one(self, result: QuizResult, *, apply: bool) -> tuple[float | None, float, int]:
         quiz = result.quiz
         if quiz.is_variant_quiz:
@@ -237,6 +334,21 @@ class Command(BaseCommand):
                 questions=questions,
             )
             new_score, max_score, _breakdown = score_reading_quiz(
+                quiz,
+                normalized,
+                questions=questions,
+            )
+        elif quiz.is_listening:
+            from portals.utils.quiz_listening import get_listening_questions_for_quiz
+            from portals.utils.quiz_listening_score import score_listening_quiz
+
+            questions = get_listening_questions_for_quiz(quiz)
+            normalized = _normalize_listening_model_answers(
+                result.given_answers or {},
+                quiz,
+                questions=questions,
+            )
+            new_score, max_score, _breakdown = score_listening_quiz(
                 quiz,
                 normalized,
                 questions=questions,

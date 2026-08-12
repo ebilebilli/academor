@@ -84,6 +84,28 @@ class QuizResultWordExportTests(TestCase):
         self.assertTrue(payload['items'][0]['student_answer']['is_html'])
         self.assertIn('<img alt="optA"', payload['items'][0]['student_answer']['value'])
 
+    def test_plain_answers_decode_html_entities(self):
+        quiz = Quiz.objects.create(category=self.category, topic='Entities')
+        question = QuizQuestion.objects.create(
+            quiz=quiz,
+            order=1,
+            question='Which sign is 5 &ne; 3?',
+            answer_options=['5 &ne; 3', '5 &lt; 3'],
+            correct_answer='5 &ne; 3',
+        )
+        result = QuizResult.objects.create(
+            student=self.student,
+            quiz=quiz,
+            given_answers={str(question.pk): 0},
+            total_score=1,
+        )
+        payload = build_quiz_result_word_export(result)
+        item = payload['items'][0]
+        self.assertFalse(item['question']['is_html'])
+        self.assertIn('≠', item['question']['value'])
+        self.assertIn('≠', item['student_answer']['value'])
+        self.assertNotIn('&ne;', item['student_answer']['value'])
+
     def test_customer_owner_name_used(self):
         quiz = Quiz.objects.create(category=self.category, topic='Customer quiz')
         question = QuizQuestion.objects.create(

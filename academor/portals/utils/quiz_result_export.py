@@ -28,7 +28,8 @@ def quiz_result_supports_word_export(quiz) -> bool:
 
 
 def _plain(value) -> str:
-    return strip_tags(str(value or '')).strip()
+    """Plain text with real characters — entities like &ne; must not reach Word literally."""
+    return unescape(strip_tags(str(value or ''))).strip()
 
 
 def _rich_html(value) -> str:
@@ -54,14 +55,12 @@ def _is_html(value: str) -> bool:
 
 def _content_field(value) -> dict:
     html = _rich_html(value)
-    plain = _plain(html) if html else ''
-    return {
-        'html': html if _is_html(html) else '',
-        'text': plain if not _is_html(html) else plain,
-        # Prefer HTML when present; JS uses html first.
-        'value': html,
-        'is_html': _is_html(html),
-    }
+    if not html:
+        return {'value': '', 'text': '', 'is_html': False}
+    if _is_html(html):
+        return {'value': html, 'text': _plain(html), 'is_html': True}
+    plain = _plain(html)
+    return {'value': plain, 'text': plain, 'is_html': False}
 
 
 def _owner_name(result: QuizResult) -> str:
