@@ -61,6 +61,12 @@
     if (textField) {
       return (textField.value || "").trim();
     }
+    var sprInput = root.querySelector(
+      'input[type="text"][data-question-id="' + questionId + '"][data-manual-submission]'
+    );
+    if (sprInput) {
+      return (sprInput.value || "").trim();
+    }
     var radio = root.querySelector(
       'input[type="radio"][data-question-id="' + questionId + '"]:checked'
     );

@@ -545,6 +545,90 @@ class QuizManualGradingTests(QuizVisibilityTests):
         self.assertFalse(data['view_only'])
         self.assertFalse(data['is_pending_review'])
 
+    def test_listening_spr_answers_accept_alternatives_and_max_length(self):
+        from portals.models import ListeningAudio, ListeningQuestion
+        from portals.utils.quiz_listening import serialize_listening_question
+        from portals.utils.quiz_listening_score import score_listening_question
+        from portals.utils.quiz_submit import submit_listening_quiz_attempt
+
+        self.ielts_quiz.is_listening = True
+        self.ielts_quiz.save(update_fields=['is_listening'])
+        audio = ListeningAudio.objects.create(
+            quiz=self.ielts_quiz,
+            order=1,
+            title='Section 1',
+            audio_url='https://example.com/audio.mp3',
+        )
+        question = ListeningQuestion(
+            audio=audio,
+            order=1,
+            question='Where does she work?',
+            spr_correct_answers=['library', 'the library'],
+            spr_max_length=7,
+        )
+        question.full_clean()
+        question.save()
+        question.refresh_from_db()
+
+        self.assertEqual(question.correct_answer, 'library')
+        self.assertEqual(question.spr_correct_answers, ['library', 'the library'])
+        self.assertTrue(score_listening_question(question, 'library'))
+        self.assertTrue(score_listening_question(question, 'Library'))
+        self.assertFalse(score_listening_question(question, 'museum'))
+        # Over max length is rejected even if the text would otherwise match.
+        self.assertFalse(score_listening_question(question, 'the library'))
+
+        payload = serialize_listening_question(question, use_admin_answer_keys=True)
+        self.assertEqual(payload['question_type'], 'spr')
+        self.assertEqual(payload['spr_max_length'], 7)
+        self.assertIn('the library', payload['correct_answer_display'])
+
+        outcome = submit_listening_quiz_attempt(
+            student_id=self.student.pk,
+            quiz_id=self.ielts_quiz.pk,
+            given_answers={str(question.pk): 'library'},
+        )
+        self.assertTrue(outcome['success'])
+        self.assertEqual(outcome['total_score'], 1)
+        self.assertEqual(outcome['breakdown'][0]['question_type'], 'spr')
+
+    def test_convert_legacy_listening_gapfill_to_spr(self):
+        from portals.admin.quiz_forms import ListeningQuestionAdminForm
+        from portals.models import ListeningAudio, ListeningQuestion
+        from portals.utils.quiz_listening import convert_listening_gapfill_to_spr
+        from portals.utils.quiz_listening_score import score_listening_question
+
+        self.ielts_quiz.is_listening = True
+        self.ielts_quiz.save(update_fields=['is_listening'])
+        audio = ListeningAudio.objects.create(
+            quiz=self.ielts_quiz,
+            order=1,
+            title='Section 1',
+            audio_url='https://example.com/audio.mp3',
+        )
+        # Legacy JSON style: single correct_answer, no options, optional alternatives.
+        question = ListeningQuestion.objects.create(
+            audio=audio,
+            order=1,
+            question='Name of the street',
+            answer_options=[],
+            correct_answer='Park Lane',
+            question_config={'accept_alternatives': ['Parklane']},
+        )
+        # Bypass model save promotion to simulate pre-SPR rows if needed:
+        ListeningQuestion.objects.filter(pk=question.pk).update(spr_correct_answers=None)
+        question.refresh_from_db()
+        self.assertIsNone(question.spr_correct_answers)
+
+        self.assertTrue(convert_listening_gapfill_to_spr(question))
+        question.refresh_from_db()
+        self.assertEqual(question.spr_correct_answers, ['Park Lane', 'Parklane'])
+        self.assertTrue(score_listening_question(question, 'Parklane'))
+
+        form = ListeningQuestionAdminForm(instance=question)
+        self.assertEqual(form.initial.get('spr_correct_answers'), ['Park Lane', 'Parklane'])
+
+
     def test_writing_category_manual_quiz_uses_text_responses(self):
         from portals.utils.quiz_submit import submit_manual_quiz_attempt
 

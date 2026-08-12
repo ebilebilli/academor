@@ -1,0 +1,29 @@
+{% load i18n %}
+<div class="portal-quiz-play-spr portal-quiz-play-spr--listening">
+  <label for="listening-spr-{{ q.id }}" class="visually-hidden">
+    {% blocktrans with n=q.number %}Your answer for question {{ n }}{% endblocktrans %}
+  </label>
+  {% if view_only %}
+  <div class="portal-quiz-writing-area__readonly">{{ q.student_answer|default:'' }}</div>
+  {% else %}
+  <input
+    type="text"
+    id="listening-spr-{{ q.id }}"
+    name="listening-q-{{ q.id }}"
+    class="form-control portal-quiz-play-spr__input"
+    placeholder="{% trans 'Enter your answer' %}"
+    value="{{ q.student_answer|default:'' }}"
+    data-manual-submission
+    data-question-id="{{ q.id }}"
+    data-quiz-spr-input
+    autocomplete="off"
+    spellcheck="true"
+    {% if q.spr_max_length %}maxlength="{{ q.spr_max_length }}"{% endif %}
+  >
+  {% if q.spr_max_length %}
+  <small class="form-text text-muted">
+    {% blocktrans with max=q.spr_max_length %}Maximum {{ max }} characters{% endblocktrans %}
+  </small>
+  {% endif %}
+  {% endif %}
+</div>

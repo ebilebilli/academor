@@ -1,5 +1,5 @@
 {% load i18n %}
-<div class="portal-reading-text-answer">
+<div class="portal-reading-text-answer portal-quiz-play-spr portal-quiz-play-spr--reading">
   {% if q.word_limit_label %}
   <p class="portal-reading-text-answer__hint text-muted small mb-2">{{ q.word_limit_label }}</p>
   {% elif q.word_limit %}
@@ -11,18 +11,29 @@
   {% if view_only %}
   <div class="portal-quiz-writing-area__readonly">{{ q.student_answer_display|default:q.student_answer|linebreaksbr }}</div>
   {% else %}
-  <label class="visually-hidden" for="reading-text-{{ q.id }}">
+  <label class="visually-hidden" for="reading-spr-{{ q.id }}">
     {% blocktrans with n=q.number %}Answer for question {{ n }}{% endblocktrans %}
   </label>
   <input
     type="text"
-    id="reading-text-{{ q.id }}"
-    class="form-control portal-reading-text-answer__input"
+    id="reading-spr-{{ q.id }}"
+    class="form-control portal-reading-text-answer__input portal-quiz-play-spr__input"
+    name="reading-q-{{ q.id }}"
     data-reading-answer
     data-question-id="{{ q.id }}"
+    data-quiz-spr-input
+    data-manual-submission
+    placeholder="{% trans 'Enter your answer' %}"
+    value="{{ q.student_answer|default:'' }}"
     {% if q.word_limit %}data-word-limit="{{ q.word_limit }}"{% endif %}
+    {% if q.spr_max_length %}maxlength="{{ q.spr_max_length }}"{% endif %}
     autocomplete="off"
-    spellcheck="false"
+    spellcheck="true"
   >
+  {% if q.spr_max_length %}
+  <small class="form-text text-muted">
+    {% blocktrans with max=q.spr_max_length %}Maximum {{ max }} characters{% endblocktrans %}
+  </small>
+  {% endif %}
   {% endif %}
 </div>

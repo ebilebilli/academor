@@ -7,6 +7,8 @@
     "question_config",
     "word_limit",
     "case_insensitive",
+    "spr_correct_answers",
+    "spr_max_length",
     "accept_alternatives_text",
     "question",
     "correct_answer",
@@ -19,11 +21,15 @@
     answer_options:
       "JSON list for multiple choice only. Leave empty for fixed or group options.",
     question_config:
-      "Advanced JSON only. Prefer word limit and alternative answer fields.",
+      "Advanced JSON only. Prefer SPR answers and word limit fields.",
     word_limit: "Maximum words accepted from the student.",
     case_insensitive: "Ignore letter case when auto-scoring text answers.",
+    spr_correct_answers:
+      "One or more accepted correct answers for typed gap-fill tasks.",
+    spr_max_length:
+      "Optional character limit for the student typed answer.",
     accept_alternatives_text:
-      "One acceptable answer per line (e.g. mechanized for mechanised).",
+      "Legacy — prefer SPR correct answers.",
     group_ref:
       "Choose a matching group. New groups appear here as soon as you enter a title below.",
   };
@@ -256,7 +262,7 @@
 
   function fallbackQuestionFieldConfig(questionType) {
     var type = questionType || "mcq";
-    var showSet = { question: true, correct_answer: true };
+    var showSet = { question: true };
     var clearFields = [];
 
     if (MATCHING_TYPES[type]) {
@@ -275,9 +281,19 @@
       showSet.question_config = true;
       showSet.word_limit = true;
       showSet.case_insensitive = true;
-      showSet.accept_alternatives_text = true;
+      showSet.spr_correct_answers = true;
+      showSet.spr_max_length = true;
+      clearFields.push("correct_answer", "accept_alternatives_text");
     } else {
-      clearFields.push("question_config", "word_limit", "case_insensitive", "accept_alternatives_text");
+      showSet.correct_answer = true;
+      clearFields.push(
+        "question_config",
+        "word_limit",
+        "case_insensitive",
+        "spr_correct_answers",
+        "spr_max_length",
+        "accept_alternatives_text"
+      );
     }
 
     var fieldHelp = {
@@ -286,6 +302,10 @@
       answer_options: FALLBACK_HELP.answer_options,
       question_config: FALLBACK_HELP.question_config,
       group_ref: FALLBACK_HELP.group_ref,
+      spr_correct_answers: FALLBACK_HELP.spr_correct_answers,
+      spr_max_length: FALLBACK_HELP.spr_max_length,
+      word_limit: FALLBACK_HELP.word_limit,
+      case_insensitive: FALLBACK_HELP.case_insensitive,
     };
 
     if (type === "mcq") {
@@ -298,9 +318,6 @@
       fieldHelp.correct_answer =
         "Must exactly match one option from the selected group pool.";
     } else if (TEXT_TYPES[type]) {
-      fieldHelp.correct_answer = "Primary expected answer for auto-scoring and feedback.";
-      fieldHelp.accept_alternatives_text =
-        "Other answers that should also count as correct (one per line).";
       fieldHelp.question_config = "Advanced JSON only.";
     }
 

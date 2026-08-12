@@ -1,8 +1,99 @@
 """Listening-quiz helpers built on ListeningAudio / ListeningQuestion models."""
 
-from django.db.models import Prefetch
+from django.db.models import Prefetch, QuerySet
 
 from portals.models import ListeningAudio, ListeningQuestion, Quiz
+
+
+def build_listening_spr_answers(question: ListeningQuestion) -> list[str]:
+    """
+    Build accepted SPR answers for a gap-fill listening question.
+
+    Prefer existing spr_correct_answers; otherwise seed from correct_answer
+    and question_config.accept_alternatives (legacy JSON / admin single-answer).
+    """
+    from portals.utils.sat_spr_validation import plain_spr_text
+
+    answers = [
+        plain_spr_text(item)
+        for item in (question.spr_correct_answers or [])
+        if plain_spr_text(item)
+    ]
+    if answers:
+        return answers
+
+    combined: list[str] = []
+    primary = plain_spr_text(question.correct_answer or '')
+    if primary:
+        combined.append(primary)
+    config = question.question_config or {}
+    for item in config.get('accept_alternatives') or []:
+        text = plain_spr_text(item)
+        if text and text not in combined:
+            combined.append(text)
+    return combined
+
+
+def convert_listening_gapfill_to_spr(
+    question: ListeningQuestion,
+    *,
+    save: bool = True,
+) -> bool:
+    """
+    Convert a typed gap-fill ListeningQuestion (no MCQ options) to SPR fields.
+
+    Returns True when spr_correct_answers was written/updated.
+    MCQ questions (2+ answer_options) are skipped.
+    """
+    if len(question.variant_options) >= 2:
+        return False
+
+    answers = build_listening_spr_answers(question)
+    if not answers:
+        return False
+
+    already = [
+        str(item).strip()
+        for item in (question.spr_correct_answers or [])
+        if str(item).strip()
+    ]
+    if already == answers and (question.correct_answer or '').strip() == answers[0][:500]:
+        return False
+
+    question.answer_options = []
+    question.correct_option_index = 0
+    question.spr_correct_answers = answers
+    question.correct_answer = answers[0][:500]
+    if save:
+        question.save(
+            update_fields=[
+                'answer_options',
+                'correct_option_index',
+                'spr_correct_answers',
+                'correct_answer',
+            ],
+        )
+    return True
+
+
+def convert_listening_queryset_gapfill_to_spr(qs: QuerySet) -> dict:
+    """Bulk-convert gap-fill listening questions in a queryset to SPR."""
+    converted = 0
+    skipped_mcq = 0
+    skipped_empty = 0
+    for question in qs.iterator():
+        if len(question.variant_options) >= 2:
+            skipped_mcq += 1
+            continue
+        if convert_listening_gapfill_to_spr(question, save=True):
+            converted += 1
+        else:
+            skipped_empty += 1
+    return {
+        'converted': converted,
+        'skipped_mcq': skipped_mcq,
+        'skipped_empty': skipped_empty,
+    }
 
 
 def get_quiz_listening_audios(quiz_id: int):
@@ -77,13 +168,18 @@ def listening_accept_alternatives(question: ListeningQuestion) -> list[str]:
 def listening_correct_answer_display(question: ListeningQuestion) -> str:
     from django.utils.translation import gettext as _
 
-    primary = (question.correct_answer or '').strip()
-    alternatives = listening_accept_alternatives(question)
-    if not alternatives:
-        return primary
-    if not primary:
-        return ', '.join(alternatives)
-    return f'{primary} ({_("also")}: {", ".join(alternatives)})'
+    answers = question.spr_accepted_answers
+    if not answers:
+        primary = (question.correct_answer or '').strip()
+        alternatives = listening_accept_alternatives(question)
+        if not alternatives:
+            return primary
+        if not primary:
+            return ', '.join(alternatives)
+        return f'{primary} ({_("also")}: {", ".join(alternatives)})'
+    if len(answers) == 1:
+        return answers[0]
+    return f'{answers[0]} ({_("also")}: {", ".join(answers[1:])})'
 
 
 def serialize_listening_question(
@@ -109,6 +205,8 @@ def serialize_listening_question(
         'prompt_type': 'variant' if is_variant else 'text',
         'is_variant': is_variant,
         'answer_options': options if is_variant else [],
+        'spr_max_length': question.spr_max_length if not is_variant else None,
+        'question_type': 'variant' if is_variant else 'spr',
     }
     if is_variant:
         selected_index = listening_selected_option_index(question, student_answer)
@@ -122,6 +220,7 @@ def serialize_listening_question(
 
         payload['correct_answer'] = question.correct_answer
         payload['correct_answer_display'] = listening_correct_answer_display(question)
+        payload['spr_correct_answers'] = list(question.spr_accepted_answers)
         if is_variant:
             payload['correct_option_index'] = listening_correct_option_index(question)
         if student_answer not in ('', None):

@@ -8,6 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from portals.admin.widgets import AnswerOptionsFormField, AnswerOptionsWidget
 from portals.models import ListeningQuestion, Quiz, QuizCategory, QuizQuestion
 from portals.models.reading_models import (
+    CHOICE_QUESTION_TYPES,
     GROUP_QUESTION_TYPES,
     MATCHING_QUESTION_TYPES,
     ReadingQuestion,
@@ -21,34 +22,77 @@ from portals.utils.sat_spr_validation import plain_spr_text
 
 class ListeningQuestionAdminForm(forms.ModelForm):
     answer_options = AnswerOptionsFormField()
+    spr_correct_answers = AnswerOptionsFormField(
+        widget=AnswerOptionsWidget(
+            item_label='Answer',
+            add_button_label='Add correct answer',
+            remove_title='Remove answer',
+        ),
+    )
 
     class Meta:
         model = ListeningQuestion
-        fields = ('order', 'question', 'answer_options', 'correct_answer')
+        fields = (
+            'order',
+            'question',
+            'answer_options',
+            'correct_answer',
+            'spr_correct_answers',
+            'spr_max_length',
+        )
         widgets = {
             'question': CKEditorUploadingWidget(),
             'correct_answer': forms.TextInput(attrs={'class': 'vTextField'}),
+            'spr_max_length': forms.NumberInput(attrs={'class': 'vIntegerField'}),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['answer_options'].required = False
         self.fields['correct_answer'].required = False
+        self.fields['spr_correct_answers'].required = False
+        self.fields['spr_max_length'].required = False
         self.fields['answer_options'].help_text = _(
-            'Optional: Add answer choices using the + button. Each option can contain rich text. '
-            'Leave empty for a free-text answer.',
+            'Optional: Add answer choices using the + button for multiple-choice. '
+            'Leave empty for a typed (SPR) answer.',
         )
         self.fields['correct_answer'].help_text = _(
-            'Required only when at least two answer options are set.',
+            'For multiple-choice: must exactly match one option. '
+            'For typed answers, prefer SPR correct answers below.',
+        )
+        self.fields['spr_correct_answers'].help_text = _(
+            'Typed answers: add one or more accepted correct answers '
+            '(e.g. library / the library). Ignored when multiple-choice options are set.',
+        )
+        self.fields['spr_max_length'].help_text = _(
+            'Optional character limit for the student typed answer. Leave blank for free text.',
         )
         if self.instance and self.instance.pk:
             options = self.instance.answer_options or []
             if isinstance(options, list):
                 self.initial['answer_options'] = options
+            spr_answers = self.instance.spr_correct_answers or []
+            if isinstance(spr_answers, list) and spr_answers:
+                self.initial['spr_correct_answers'] = spr_answers
+            elif (self.instance.correct_answer or '').strip() and len(options) < 2:
+                # Backfill widget from legacy single correct_answer + alternatives.
+                from portals.utils.sat_spr_validation import plain_spr_text
+
+                config = self.instance.question_config or {}
+                seed = [plain_spr_text(self.instance.correct_answer)]
+                seed.extend(
+                    plain_spr_text(item)
+                    for item in (config.get('accept_alternatives') or [])
+                    if plain_spr_text(item)
+                )
+                self.initial['spr_correct_answers'] = [item for item in seed if item]
 
     class Media:
         css = {'all': ('portals/css/answer-options-widget.css',)}
-        js = ('portals/admin/js/answer-options-widget.js',)
+        js = (
+            'portals/admin/js/answer-options-widget.js',
+            'portals/admin/js/listening-question-type-toggle.js',
+        )
 
     def clean_answer_options(self):
         raw = self.cleaned_data.get('answer_options')
@@ -77,22 +121,64 @@ class ListeningQuestionAdminForm(forms.ModelForm):
             return []
         return options
 
+    def clean_spr_correct_answers(self):
+        raw = self.cleaned_data.get('spr_correct_answers')
+        if isinstance(raw, list):
+            parsed = raw
+        elif isinstance(raw, str):
+            try:
+                parsed = json.loads(raw or '[]')
+            except json.JSONDecodeError as exc:
+                raise ValidationError(_('Enter a valid list of correct answers.')) from exc
+        elif raw in (None, ''):
+            parsed = []
+        else:
+            raise ValidationError(_('Enter a valid list of correct answers.'))
+
+        if not isinstance(parsed, list):
+            raise ValidationError(_('Correct answers must be a list.'))
+
+        answers = []
+        for item in parsed:
+            text = plain_spr_text(item)
+            if text and text not in answers:
+                answers.append(text)
+        return answers
+
     def clean(self):
         cleaned = super().clean()
         options = cleaned.get('answer_options') or []
         correct = (cleaned.get('correct_answer') or '').strip()
-        if len(options) < 2:
-            cleaned['answer_options'] = []
+        spr_answers = cleaned.get('spr_correct_answers') or []
+
+        if len(options) >= 2:
+            cleaned['answer_options'] = options
+            cleaned['spr_correct_answers'] = None
+            cleaned['spr_max_length'] = None
+            if not correct:
+                self.add_error('correct_answer', _('Enter the correct answer.'))
+            elif correct not in options:
+                self.add_error(
+                    'correct_answer',
+                    _('Correct answer must exactly match one of the options.'),
+                )
+            else:
+                cleaned['correct_option_index'] = options.index(correct)
             return cleaned
-        if not correct:
-            self.add_error('correct_answer', _('Enter the correct answer.'))
-        elif correct not in options:
+
+        cleaned['answer_options'] = []
+        cleaned['correct_option_index'] = 0
+        if not spr_answers and correct:
+            spr_answers = [plain_spr_text(correct)]
+        if not spr_answers:
             self.add_error(
-                'correct_answer',
-                _('Correct answer must exactly match one of the options.'),
+                'spr_correct_answers',
+                _('Add at least one correct answer for typed questions.'),
             )
-        else:
-            cleaned['correct_option_index'] = options.index(correct)
+            return cleaned
+
+        cleaned['spr_correct_answers'] = spr_answers
+        cleaned['correct_answer'] = spr_answers[0][:500]
         return cleaned
 
 
@@ -546,10 +632,18 @@ class ReadingQuestionAdminForm(forms.ModelForm):
         label=_('Case insensitive'),
         help_text=_('Ignore letter case when auto-scoring text answers.'),
     )
+    spr_correct_answers = AnswerOptionsFormField(
+        required=False,
+        widget=AnswerOptionsWidget(
+            item_label='Answer',
+            add_button_label='Add correct answer',
+            remove_title='Remove answer',
+        ),
+    )
     accept_alternatives_text = forms.CharField(
         required=False,
-        label=_('Alternative acceptable answers'),
-        help_text=_('One answer per line. Also counted as correct during auto-scoring.'),
+        label=_('Alternative acceptable answers (legacy)'),
+        help_text=_('Legacy — prefer SPR correct answers. One answer per line.'),
         widget=forms.Textarea(attrs={'rows': 3, 'class': 'vLargeTextField'}),
     )
 
@@ -562,6 +656,8 @@ class ReadingQuestionAdminForm(forms.ModelForm):
             'question',
             'answer_options',
             'correct_answer',
+            'spr_correct_answers',
+            'spr_max_length',
             'question_config',
         )
         widgets = {
@@ -572,7 +668,12 @@ class ReadingQuestionAdminForm(forms.ModelForm):
             'question_config': forms.Textarea(
                 attrs={'rows': 4, 'class': 'vLargeTextField portal-quiz-json-field'},
             ),
+            'spr_max_length': forms.NumberInput(attrs={'class': 'vIntegerField'}),
         }
+
+    class Media:
+        css = {'all': ('portals/css/answer-options-widget.css',)}
+        js = ('portals/admin/js/answer-options-widget.js',)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -585,11 +686,20 @@ class ReadingQuestionAdminForm(forms.ModelForm):
             self.fields['group_ref'].widget.attrs.update({'class': 'reading-question-group-ref'})
         self.fields['answer_options'].required = False
         self.fields['question_config'].required = False
+        self.fields['correct_answer'].required = False
+        self.fields['spr_correct_answers'].required = False
+        self.fields['spr_max_length'].required = False
         self.fields['answer_options'].help_text = _(
             'JSON list for multiple choice only. Leave empty for fixed or group options.',
         )
         self.fields['question_config'].help_text = _(
-            'Advanced JSON only. Prefer the fields below for word limits and alternatives.',
+            'Advanced JSON only. Prefer SPR answers and word limit fields above.',
+        )
+        self.fields['spr_correct_answers'].help_text = _(
+            'Typed gap-fill: add one or more accepted correct answers.',
+        )
+        self.fields['spr_max_length'].help_text = _(
+            'Optional character limit for the student typed answer.',
         )
         config = {}
         if self.instance and self.instance.pk:
@@ -601,6 +711,20 @@ class ReadingQuestionAdminForm(forms.ModelForm):
                 self.initial['question_config'] = json.dumps(config, ensure_ascii=False, indent=2)
             if self.instance.group_id:
                 self.initial['group_ref'] = f'id:{self.instance.group_id}'
+            spr_answers = self.instance.spr_correct_answers or []
+            if isinstance(spr_answers, list) and spr_answers:
+                self.initial['spr_correct_answers'] = spr_answers
+            elif (
+                self.instance.question_type in TEXT_QUESTION_TYPES
+                and (self.instance.correct_answer or '').strip()
+            ):
+                seed = [plain_spr_text(self.instance.correct_answer)]
+                seed.extend(
+                    plain_spr_text(item)
+                    for item in (config.get('accept_alternatives') or [])
+                    if plain_spr_text(item)
+                )
+                self.initial['spr_correct_answers'] = [item for item in seed if item]
         if isinstance(config, dict):
             if config.get('word_limit') not in (None, ''):
                 self.initial['word_limit'] = config.get('word_limit')
@@ -635,6 +759,30 @@ class ReadingQuestionAdminForm(forms.ModelForm):
     def clean_group_ref(self):
         return (self.cleaned_data.get('group_ref') or '').strip()
 
+    def clean_spr_correct_answers(self):
+        raw = self.cleaned_data.get('spr_correct_answers')
+        if isinstance(raw, list):
+            parsed = raw
+        elif isinstance(raw, str):
+            try:
+                parsed = json.loads(raw or '[]')
+            except json.JSONDecodeError as exc:
+                raise ValidationError(_('Enter a valid list of correct answers.')) from exc
+        elif raw in (None, ''):
+            parsed = []
+        else:
+            raise ValidationError(_('Enter a valid list of correct answers.'))
+
+        if not isinstance(parsed, list):
+            raise ValidationError(_('Correct answers must be a list.'))
+
+        answers = []
+        for item in parsed:
+            text = plain_spr_text(item)
+            if text and text not in answers:
+                answers.append(text)
+        return answers
+
     def clean_accept_alternatives_text(self):
         raw = (self.cleaned_data.get('accept_alternatives_text') or '').strip()
         if not raw:
@@ -651,6 +799,8 @@ class ReadingQuestionAdminForm(forms.ModelForm):
         question_type = cleaned.get('question_type')
         if question_type in {ReadingQuestionType.TFNG, ReadingQuestionType.YNNG}:
             cleaned['answer_options'] = []
+            cleaned['spr_correct_answers'] = None
+            cleaned['spr_max_length'] = None
         if question_type in TEXT_QUESTION_TYPES:
             cleaned['answer_options'] = []
             config = cleaned.get('question_config') or {}
@@ -665,12 +815,36 @@ class ReadingQuestionAdminForm(forms.ModelForm):
                 config['case_insensitive'] = True
             else:
                 config['case_insensitive'] = False
-            alternatives = cleaned.get('accept_alternatives_text') or []
-            if alternatives:
-                config['accept_alternatives'] = alternatives
+
+            spr_answers = cleaned.get('spr_correct_answers') or []
+            legacy_alts = cleaned.get('accept_alternatives_text') or []
+            correct = plain_spr_text(cleaned.get('correct_answer') or '')
+            if not spr_answers:
+                seed = []
+                if correct:
+                    seed.append(correct)
+                seed.extend(plain_spr_text(item) for item in legacy_alts if plain_spr_text(item))
+                spr_answers = []
+                for item in seed:
+                    if item and item not in spr_answers:
+                        spr_answers.append(item)
+            if not spr_answers:
+                self.add_error(
+                    'spr_correct_answers',
+                    _('Add at least one correct answer for typed questions.'),
+                )
             else:
-                config.pop('accept_alternatives', None)
+                cleaned['spr_correct_answers'] = spr_answers
+                cleaned['correct_answer'] = spr_answers[0][:500]
+                # Keep legacy alternatives in sync for older result tooling.
+                if len(spr_answers) > 1:
+                    config['accept_alternatives'] = spr_answers[1:]
+                else:
+                    config.pop('accept_alternatives', None)
             cleaned['question_config'] = config
+        elif question_type in CHOICE_QUESTION_TYPES or question_type in MATCHING_QUESTION_TYPES:
+            cleaned['spr_correct_answers'] = None
+            cleaned['spr_max_length'] = None
 
         cleaned.pop('word_limit', None)
         cleaned.pop('case_insensitive', None)

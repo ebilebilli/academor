@@ -1,0 +1,15 @@
+{% load i18n %}
+{% if word_export %}
+<div class="portal-quiz-word-export mt-4 mb-2">
+  <button
+    type="button"
+    class="{{ word_export_button_class|default:'ds-btn ds-btn--secondary btn-sm' }}"
+    data-quiz-result-word-export
+    data-quiz-result-word-source="{{ word_export_script_id }}"
+  >
+    <i class="{{ word_export_icon|default:'ti ti-file-word' }}" aria-hidden="true"></i>
+    {% trans 'Download Word' %}
+  </button>
+  {{ word_export|json_script:word_export_script_id }}
+</div>
+{% endif %}

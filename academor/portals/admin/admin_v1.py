@@ -442,10 +442,20 @@ class ListeningQuestionInline(admin.StackedInline):
     model = ListeningQuestion
     form = ListeningQuestionAdminForm
     extra = 0
-    fields = ('order', 'question', 'answer_options', 'correct_answer')
+    fields = (
+        'order',
+        'question',
+        'answer_options',
+        'correct_answer',
+        'spr_correct_answers',
+        'spr_max_length',
+    )
     ordering = ('order', 'id')
     verbose_name = _('Listening question')
     verbose_name_plural = _('Listening questions (student answer lines)')
+
+    class Media:
+        js = ('portals/admin/js/listening-question-type-toggle.js',)
 
 
 class ListeningAudioInline(admin.StackedInline):
@@ -476,6 +486,8 @@ class ReadingQuestionInline(admin.StackedInline):
         'question',
         'answer_options',
         'correct_answer',
+        'spr_correct_answers',
+        'spr_max_length',
         'word_limit',
         'case_insensitive',
         'accept_alternatives_text',
@@ -484,6 +496,13 @@ class ReadingQuestionInline(admin.StackedInline):
     ordering = ('order', 'id')
     verbose_name = _('Reading question')
     verbose_name_plural = _('Reading questions')
+
+    class Media:
+        css = {'all': ('portals/css/answer-options-widget.css',)}
+        js = (
+            'portals/admin/js/answer-options-widget.js',
+            'portals/admin/js/reading-passage-admin.js',
+        )
 
 
 class ReadingQuestionGroupInline(admin.StackedInline):
@@ -550,6 +569,7 @@ class ReadingPassageAdmin(PortalModelAdmin):
     autocomplete_fields = ('quiz',)
     ordering = ('quiz', 'order', 'id')
     inlines = (ReadingQuestionGroupInline, ReadingQuestionInline,)
+    actions = ['convert_gapfill_questions_to_spr']
     fieldsets = (
         (None, {
             'description': _(
@@ -561,8 +581,16 @@ class ReadingPassageAdmin(PortalModelAdmin):
     )
 
     class Media:
-        css = {'all': ('portals/css/quiz-question-admin.css',)}
-        js = ('portals/admin/js/reading-passage-admin.js',)
+        css = {
+            'all': (
+                'portals/css/quiz-question-admin.css',
+                'portals/css/answer-options-widget.css',
+            ),
+        }
+        js = (
+            'portals/admin/js/answer-options-widget.js',
+            'portals/admin/js/reading-passage-admin.js',
+        )
 
     def get_urls(self):
         urls = super().get_urls()
@@ -652,6 +680,21 @@ class ReadingPassageAdmin(PortalModelAdmin):
         count = obj.questions.count()
         return portal_count_badge(count, 'questions', tone='teal')
 
+    @admin.action(description=_('Convert gap-fill questions to SPR answers'))
+    def convert_gapfill_questions_to_spr(self, request, queryset):
+        from portals.utils.quiz_reading import convert_reading_queryset_gapfill_to_spr
+
+        stats = convert_reading_queryset_gapfill_to_spr(
+            ReadingQuestion.objects.filter(passage__in=queryset).order_by('id'),
+        )
+        self.message_user(
+            request,
+            _(
+                'Converted %(converted)s gap-fill question(s) to SPR. '
+                'Skipped choice/matching: %(skipped_choice)s. Unchanged/empty: %(skipped_empty)s.'
+            ) % stats,
+        )
+
 
 @admin.register(ListeningAudio)
 class ListeningAudioAdmin(PortalModelAdmin):
@@ -667,6 +710,7 @@ class ListeningAudioAdmin(PortalModelAdmin):
     autocomplete_fields = ('quiz',)
     ordering = ('quiz', 'order', 'id')
     inlines = (ListeningQuestionInline,)
+    actions = ['convert_gapfill_questions_to_spr']
     fieldsets = (
         (None, {
             'description': _(
@@ -692,6 +736,21 @@ class ListeningAudioAdmin(PortalModelAdmin):
     def question_count_display(self, obj):
         count = obj.questions.count()
         return portal_count_badge(count, 'questions', tone='teal')
+
+    @admin.action(description=_('Convert gap-fill questions to SPR answers'))
+    def convert_gapfill_questions_to_spr(self, request, queryset):
+        from portals.utils.quiz_listening import convert_listening_queryset_gapfill_to_spr
+
+        stats = convert_listening_queryset_gapfill_to_spr(
+            ListeningQuestion.objects.filter(audio__in=queryset).order_by('id'),
+        )
+        self.message_user(
+            request,
+            _(
+                'Converted %(converted)s gap-fill question(s) to SPR. '
+                'Skipped MCQ: %(skipped_mcq)s. Unchanged/empty: %(skipped_empty)s.'
+            ) % stats,
+        )
 
 
 @admin.register(SpeakingPart)
@@ -2394,15 +2453,16 @@ class QuizResultAdmin(PortalModelAdmin):
         'duration_display',
         'completed_at',
     )
-    list_display_links = ('student_display',)
+    list_display_links = ('student_display', 'quiz_display')
     list_filter = ('quiz', 'completed_at', 'student__groups')
     search_fields = (
         'student__user__username',
+        'customer__user__username',
         'quiz__topic',
     )
-    autocomplete_fields = ('student', 'quiz')
-    list_select_related = ('student__user', 'quiz', 'quiz__category')
-    readonly_fields = ('completed_at',)
+    autocomplete_fields = ('student', 'customer', 'quiz')
+    list_select_related = ('student__user', 'customer__user', 'quiz', 'quiz__category')
+    readonly_fields = ('completed_at', 'word_export_panel')
     date_hierarchy = 'completed_at'
     ordering = ('-completed_at', 'id')
     list_per_page = 25
@@ -2412,7 +2472,15 @@ class QuizResultAdmin(PortalModelAdmin):
                 'Variant quizzes are scored automatically. '
                 'Listening / Essay / Speaking quizzes are reviewed by the teacher.'
             ),
-            'fields': ('student', 'quiz', 'total_score', 'duration_sec', 'completed_at', 'reviewed_at'),
+            'fields': (
+                'student',
+                'customer',
+                'quiz',
+                'total_score',
+                'duration_sec',
+                'completed_at',
+                'reviewed_at',
+            ),
         }),
         (_('Student submission'), {
             'fields': ('student_submission', 'given_answers'),
@@ -2420,19 +2488,28 @@ class QuizResultAdmin(PortalModelAdmin):
         (_('Teacher review'), {
             'fields': ('teacher_feedback',),
         }),
+        (_('Export'), {
+            'fields': ('word_export_panel',),
+        }),
     )
+
+    class Media(PortalModelAdmin.Media):
+        js = PortalModelAdmin.Media.js + ('portals/js/quiz-result-word-export.js',)
 
     @admin.display(description=_('Student'))
     def student_display(self, obj):
-        if not obj.student_id:
-            return '—'
-        return portal_admin_change_link(obj.student, obj.student.full_name)
+        # Plain text so list_display_links opens this QuizResult (not the profile).
+        if obj.student_id:
+            return obj.student.full_name or '—'
+        if obj.customer_id:
+            return obj.customer.full_name or '—'
+        return '—'
 
     @admin.display(description=_('Quiz'))
     def quiz_display(self, obj):
         if not obj.quiz_id:
             return '—'
-        return portal_admin_change_link(obj.quiz, obj.quiz.topic)
+        return obj.quiz.topic or '—'
 
     @admin.display(description=_('Review'))
     def review_status_display(self, obj):
@@ -2448,6 +2525,31 @@ class QuizResultAdmin(PortalModelAdmin):
         if minutes:
             return f'{minutes}m {seconds}s'
         return f'{seconds}s'
+
+    @admin.display(description=_('Word'))
+    def word_export_panel(self, obj):
+        from django.template.loader import render_to_string
+        from django.utils.safestring import mark_safe
+
+        from portals.utils.quiz_result_export import build_quiz_result_word_export
+
+        if not obj or not obj.pk:
+            return '—'
+        payload = build_quiz_result_word_export(obj)
+        if not payload:
+            return _('Word export is not available for listening or writing results.')
+        return mark_safe(
+            render_to_string(
+                'portals/includes/quiz_result_word_export.html',
+                {
+                    'word_export': payload,
+                    'word_export_uid': obj.pk,
+                    'word_export_script_id': f'quiz-result-word-{obj.pk}',
+                    'word_export_button_class': 'button',
+                    'word_export_icon': 'bi bi-filetype-docx',
+                },
+            ),
+        )
 
 
 @admin.register(PortalNotification)

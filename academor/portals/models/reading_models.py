@@ -291,6 +291,24 @@ class ReadingQuestion(models.Model):
         verbose_name=_('Correct answer'),
         help_text=_('Exact text for gap-fill tasks or the matching option label.'),
     )
+    spr_correct_answers = models.JSONField(
+        null=True,
+        blank=True,
+        verbose_name=_('SPR correct answers'),
+        help_text=_(
+            'One or more accepted answers for typed (gap-fill) reading questions '
+            '(e.g. ["library", "the library"]). Leave empty for choice/matching tasks.'
+        ),
+    )
+    spr_max_length = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        verbose_name=_('SPR max length'),
+        help_text=_(
+            'Optional character limit for the student input on typed answers. '
+            'Leave blank for free-text answers.'
+        ),
+    )
     question_config = models.JSONField(
         default=dict,
         blank=True,
@@ -325,11 +343,21 @@ class ReadingQuestion(models.Model):
         return len(self.variant_options) >= 2
 
     @property
+    def spr_accepted_answers(self) -> list[str]:
+        from portals.utils.quiz_reading import build_reading_spr_answers
+
+        return build_reading_spr_answers(self)
+
+    @property
     def is_answerable(self) -> bool:
         if self.is_choice_type:
             return True
         if self.is_text_type:
-            return bool(strip_tags(self.question or '').strip()) or bool((self.correct_answer or '').strip())
+            return (
+                bool(strip_tags(self.question or '').strip())
+                or bool(self.spr_accepted_answers)
+                or bool((self.correct_answer or '').strip())
+            )
         return bool(strip_tags(self.question or '').strip())
 
     def clean(self):
@@ -343,6 +371,8 @@ class ReadingQuestion(models.Model):
 
         options = self.variant_options
         if self.is_choice_type:
+            self.spr_correct_answers = None
+            self.spr_max_length = None
             if len(options) < 2:
                 raise ValidationError(
                     _('Add answer options, a matching group, or use a fixed choice type.'),
@@ -361,18 +391,32 @@ class ReadingQuestion(models.Model):
         if self.is_text_type:
             self.answer_options = []
             self.correct_option_index = 0
-            correct = (self.correct_answer or '').strip()
-            if not correct:
-                raise ValidationError({'correct_answer': _('Enter the correct answer.')})
+            from portals.utils.quiz_reading import build_reading_spr_answers
+
+            spr_answers = build_reading_spr_answers(self)
+            if not spr_answers:
+                raise ValidationError({
+                    'spr_correct_answers': _('Add at least one correct answer for typed questions.'),
+                })
+            self.spr_correct_answers = spr_answers
+            self.correct_answer = spr_answers[0][:500]
             return
 
         raise ValidationError({'question_type': _('Unsupported question type.')})
 
     def save(self, *args, **kwargs):
         if self.is_text_type:
+            from portals.utils.quiz_reading import build_reading_spr_answers
+
             self.answer_options = []
             self.correct_option_index = 0
+            spr_answers = build_reading_spr_answers(self)
+            if spr_answers:
+                self.spr_correct_answers = spr_answers
+                self.correct_answer = spr_answers[0][:500]
         elif self.is_choice_type:
+            self.spr_correct_answers = None
+            self.spr_max_length = None
             options = self.variant_options
             if len(options) >= 2:
                 if self.question_type == ReadingQuestionType.MCQ:

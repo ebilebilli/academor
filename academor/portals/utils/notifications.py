@@ -1059,6 +1059,11 @@ def _serialize_score_detail(row: QuizResult, *, role: str) -> dict:
     latest_review = row.reviews.select_related('reviewer__user').first()
     completion_trigger = getattr(row, 'completion_trigger', 'manual') or 'manual'
     trigger_labels = dict(QuizResult.CompletionTrigger.choices)
+    from portals.utils.quiz_result_export import (
+        build_quiz_result_word_export,
+        quiz_result_supports_word_export,
+    )
+
     data = {
         'id': row.pk,
         'student_name': (
@@ -1070,6 +1075,9 @@ def _serialize_score_detail(row: QuizResult, *, role: str) -> dict:
         'grading_mode_label': quiz.get_grading_mode_label(),
         'is_manual_grading': quiz.is_manual_grading,
         'is_essay': quiz.is_essay,
+        'supports_word_export': quiz_result_supports_word_export(quiz),
+        'word_export': build_quiz_result_word_export(row),
+        'word_export_script_id': f'quiz-result-word-{row.pk}',
         'total_score': row.total_score,
         'max_value': max_value,
         'duration_sec': row.duration_sec,

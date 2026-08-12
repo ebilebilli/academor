@@ -106,6 +106,24 @@ class ListeningQuestion(models.Model):
         verbose_name=_('Correct answer'),
         help_text=_('Exact text for gap-fill tasks or the matching option label.'),
     )
+    spr_correct_answers = models.JSONField(
+        null=True,
+        blank=True,
+        verbose_name=_('SPR correct answers'),
+        help_text=_(
+            'One or more accepted answers for typed (gap-fill) listening questions '
+            '(e.g. ["library", "the library"]). Leave empty for multiple-choice tasks.'
+        ),
+    )
+    spr_max_length = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        verbose_name=_('SPR max length'),
+        help_text=_(
+            'Optional character limit for the student input on typed answers. '
+            'Leave blank for free-text answers.'
+        ),
+    )
     question_config = models.JSONField(
         default=dict,
         blank=True,
@@ -133,15 +151,27 @@ class ListeningQuestion(models.Model):
         return [str(item).strip() for item in (self.answer_options or []) if str(item).strip()]
 
     @property
+    def spr_accepted_answers(self) -> list[str]:
+        """Accepted typed answers: SPR list, else correct_answer + config alternatives."""
+        from portals.utils.quiz_listening import build_listening_spr_answers
+
+        return build_listening_spr_answers(self)
+
+    @property
     def is_answerable(self) -> bool:
         if self.is_variant:
+            return True
+        if self.spr_accepted_answers:
             return True
         return bool(strip_tags(self.question or '').strip())
 
     def clean(self):
         super().clean()
+
         options = self.variant_options
         if len(options) >= 2:
+            self.spr_correct_answers = None
+            self.spr_max_length = None
             correct = (self.correct_answer or '').strip()
             if not correct:
                 raise ValidationError({'correct_answer': _('Enter the correct answer.')})
@@ -152,20 +182,35 @@ class ListeningQuestion(models.Model):
             self.correct_option_index = options.index(correct)
             return
 
+        # Typed gap-fill (legacy single correct_answer / JSON answer) → SPR list.
         self.answer_options = []
         self.correct_option_index = 0
-        correct = (self.correct_answer or '').strip()
-        if not correct:
-            raise ValidationError({'correct_answer': _('Enter the correct answer.')})
+        from portals.utils.quiz_listening import build_listening_spr_answers
+
+        spr_answers = build_listening_spr_answers(self)
+        if not spr_answers:
+            raise ValidationError({
+                'spr_correct_answers': _('Add at least one correct answer for typed questions.'),
+            })
+        self.spr_correct_answers = spr_answers
+        self.correct_answer = spr_answers[0][:500]
 
     def save(self, *args, **kwargs):
         options = self.variant_options
         if len(options) >= 2:
             self.answer_options = options
+            self.spr_correct_answers = None
+            self.spr_max_length = None
             correct = (self.correct_answer or '').strip()
             if correct in options:
                 self.correct_option_index = options.index(correct)
         else:
+            from portals.utils.quiz_listening import build_listening_spr_answers
+
             self.answer_options = []
             self.correct_option_index = 0
+            spr_answers = build_listening_spr_answers(self)
+            if spr_answers:
+                self.spr_correct_answers = spr_answers
+                self.correct_answer = spr_answers[0][:500]
         super().save(*args, **kwargs)

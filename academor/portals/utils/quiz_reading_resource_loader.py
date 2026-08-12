@@ -13,6 +13,7 @@ from portals.models import Quiz
 from portals.models.reading_models import (
     GROUP_QUESTION_TYPES,
     MATCHING_QUESTION_TYPES,
+    TEXT_QUESTION_TYPES,
     ReadingPassage,
     ReadingQuestion,
     ReadingQuestionGroup,
@@ -130,21 +131,47 @@ def _normalize_question(raw: dict, *, context: str, default_order: int) -> dict:
     order = int(raw.get('order') or default_order)
     question_type = _normalize_question_type(raw.get('question_type'), context=context)
     question = (raw.get('question') or '').strip()
+
+    spr_answers_raw = raw.get('spr_correct_answers')
+    spr_answers = []
+    if isinstance(spr_answers_raw, list):
+        spr_answers = [str(item).strip() for item in spr_answers_raw if str(item).strip()]
+
     correct_answer = (raw.get('correct_answer') or '').strip()
+    if not correct_answer and spr_answers:
+        correct_answer = spr_answers[0]
     if not correct_answer:
-        raise ValueError(f'{context}: correct_answer is required.')
+        raise ValueError(f'{context}: correct_answer or spr_correct_answers is required.')
+
+    config = raw.get('question_config') or {}
+    if not isinstance(config, dict):
+        config = {}
+    if not spr_answers:
+        spr_answers = [correct_answer]
+        for item in config.get('accept_alternatives') or []:
+            text = str(item).strip()
+            if text and text not in spr_answers:
+                spr_answers.append(text)
+
+    spr_max_length = raw.get('spr_max_length')
+    if spr_max_length is not None and spr_max_length != '':
+        spr_max_length = int(spr_max_length)
+    else:
+        spr_max_length = None
 
     payload = {
         'order': order,
         'question_type': question_type,
         'question': question,
         'correct_answer': correct_answer,
+        'spr_correct_answers': spr_answers if question_type in TEXT_QUESTION_TYPES else None,
+        'spr_max_length': spr_max_length if question_type in TEXT_QUESTION_TYPES else None,
         'answer_options': [
             str(item).strip()
             for item in (raw.get('answer_options') or [])
             if str(item).strip()
         ],
-        'question_config': raw.get('question_config') or {},
+        'question_config': config,
         'group_order': raw.get('group_order'),
     }
     return payload
@@ -299,6 +326,8 @@ def _create_question(
         question=item['question'],
         answer_options=item['answer_options'],
         correct_answer=item['correct_answer'],
+        spr_correct_answers=item.get('spr_correct_answers'),
+        spr_max_length=item.get('spr_max_length'),
         question_config=item['question_config'],
     )
     try:

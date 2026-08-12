@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from django.db.models import Prefetch
+from django.db.models import Prefetch, QuerySet
 
 from portals.models import ReadingPassage, ReadingQuestion, Quiz
 from portals.models.reading_models import (
@@ -12,6 +12,92 @@ from portals.models.reading_models import (
     matching_option_index,
     resolve_reading_question_options,
 )
+
+
+def build_reading_spr_answers(question: ReadingQuestion) -> list[str]:
+    """
+    Build accepted SPR answers for a typed reading question.
+
+    Prefer spr_correct_answers; otherwise seed from correct_answer and
+    question_config.accept_alternatives (legacy gap-fill admin/JSON).
+    """
+    from portals.utils.sat_spr_validation import plain_spr_text
+
+    answers = [
+        plain_spr_text(item)
+        for item in (question.spr_correct_answers or [])
+        if plain_spr_text(item)
+    ]
+    if answers:
+        return answers
+
+    combined: list[str] = []
+    primary = plain_spr_text(question.correct_answer or '')
+    if primary:
+        combined.append(primary)
+    config = question.question_config or {}
+    for item in config.get('accept_alternatives') or []:
+        text = plain_spr_text(item)
+        if text and text not in combined:
+            combined.append(text)
+    return combined
+
+
+def convert_reading_gapfill_to_spr(
+    question: ReadingQuestion,
+    *,
+    save: bool = True,
+) -> bool:
+    """Convert a typed reading gap-fill question to SPR fields. Returns True if updated."""
+    if question.question_type not in TEXT_QUESTION_TYPES:
+        return False
+
+    answers = build_reading_spr_answers(question)
+    if not answers:
+        return False
+
+    already = [
+        str(item).strip()
+        for item in (question.spr_correct_answers or [])
+        if str(item).strip()
+    ]
+    if already == answers and (question.correct_answer or '').strip() == answers[0][:500]:
+        return False
+
+    question.answer_options = []
+    question.correct_option_index = 0
+    question.spr_correct_answers = answers
+    question.correct_answer = answers[0][:500]
+    if save:
+        question.save(
+            update_fields=[
+                'answer_options',
+                'correct_option_index',
+                'spr_correct_answers',
+                'correct_answer',
+            ],
+        )
+    return True
+
+
+def convert_reading_queryset_gapfill_to_spr(qs: QuerySet) -> dict:
+    """Bulk-convert typed reading questions in a queryset to SPR."""
+    converted = 0
+    skipped_choice = 0
+    skipped_empty = 0
+    for question in qs.iterator():
+        if question.question_type not in TEXT_QUESTION_TYPES:
+            skipped_choice += 1
+            continue
+        if convert_reading_gapfill_to_spr(question, save=True):
+            converted += 1
+        else:
+            skipped_empty += 1
+    return {
+        'converted': converted,
+        'skipped_choice': skipped_choice,
+        'skipped_empty': skipped_empty,
+    }
 
 
 def resolve_question_options(question: ReadingQuestion) -> list[str]:
@@ -112,6 +198,9 @@ def reading_student_answer_display(question: ReadingQuestion, raw_value) -> str:
 
 
 def reading_accept_alternatives(question: ReadingQuestion) -> list[str]:
+    answers = build_reading_spr_answers(question)
+    if len(answers) > 1:
+        return answers[1:]
     config = question.question_config or {}
     return [
         str(item).strip()
@@ -123,13 +212,18 @@ def reading_accept_alternatives(question: ReadingQuestion) -> list[str]:
 def reading_correct_answer_display(question: ReadingQuestion) -> str:
     from django.utils.translation import gettext as _
 
-    primary = (question.correct_answer or '').strip()
-    alternatives = reading_accept_alternatives(question)
-    if not alternatives:
-        return primary
-    if not primary:
-        return ', '.join(alternatives)
-    return f'{primary} ({_("also")}: {", ".join(alternatives)})'
+    answers = build_reading_spr_answers(question)
+    if not answers:
+        primary = (question.correct_answer or '').strip()
+        alternatives = reading_accept_alternatives(question)
+        if not alternatives:
+            return primary
+        if not primary:
+            return ', '.join(alternatives)
+        return f'{primary} ({_("also")}: {", ".join(alternatives)})'
+    if len(answers) == 1:
+        return answers[0]
+    return f'{answers[0]} ({_("also")}: {", ".join(answers[1:])})'
 
 
 def reading_teacher_answer_matches(
@@ -166,13 +260,18 @@ def reading_teacher_answer_matches(
                 return True
         return False
 
-    from portals.utils.quiz_reading_score import _normalize_text_answer
+    from portals.utils.quiz_reading_score import score_reading_question
 
-    submitted = _normalize_text_answer(
-        '' if student_raw is None else str(student_raw),
-        case_insensitive=True,
-    )
-    return submitted == _normalize_text_answer(teacher, case_insensitive=True)
+    # Teacher override: temporarily score against the teacher key as primary SPR answer.
+    original_spr = question.spr_correct_answers
+    original_correct = question.correct_answer
+    try:
+        question.spr_correct_answers = [teacher]
+        question.correct_answer = teacher[:500]
+        return score_reading_question(question, student_raw)
+    finally:
+        question.spr_correct_answers = original_spr
+        question.correct_answer = original_correct
 
 
 def serialize_reading_question(
@@ -208,6 +307,7 @@ def serialize_reading_question(
         'answer_options': options if is_choice else [],
         'word_limit': config.get('word_limit'),
         'word_limit_label': config.get('word_limit_label', ''),
+        'spr_max_length': question.spr_max_length if not is_choice else None,
         'question_config': config,
     }
     if is_choice:
@@ -236,6 +336,7 @@ def serialize_reading_question(
 
         payload['correct_answer'] = question.correct_answer
         payload['accept_alternatives'] = reading_accept_alternatives(question)
+        payload['spr_correct_answers'] = list(build_reading_spr_answers(question))
         payload['correct_answer_display'] = reading_correct_answer_display(question)
         if student_answer not in ('', None):
             payload['is_correct'] = score_reading_question(question, student_answer)

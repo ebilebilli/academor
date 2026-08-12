@@ -43,8 +43,29 @@ def _text_answer_matches(question: ReadingQuestion, raw_value) -> bool:
         if limit is not None and _word_count(str(raw_value or '').strip()) > limit:
             return False
 
-    candidates = [question.correct_answer]
-    candidates.extend(config.get('accept_alternatives') or [])
+    spr_max = question.spr_max_length
+    if spr_max is not None:
+        try:
+            max_len = int(spr_max)
+        except (TypeError, ValueError):
+            max_len = None
+        if max_len is not None and len(str(raw_value or '').strip()) > max_len:
+            return False
+
+    from portals.utils.quiz_reading import build_reading_spr_answers
+
+    candidates = list(build_reading_spr_answers(question))
+    if not candidates:
+        candidates = [question.correct_answer]
+        candidates.extend(config.get('accept_alternatives') or [])
+
+    # Same SPR matching rules as SAT Math / Listening (numeric + normalized text).
+    if question.spr_correct_answers:
+        from portals.utils.sat_spr_validation import validate_spr_answer
+
+        if validate_spr_answer(str(raw_value or ''), candidates).get('is_correct'):
+            return True
+
     normalized_candidates = [
         _normalize_text_answer(str(item), case_insensitive=bool(config.get('case_insensitive', True)))
         for item in candidates
@@ -104,6 +125,11 @@ def score_reading_quiz(
             'student_answer': raw,
             'is_correct': is_correct,
             'correct_answer': question.correct_answer,
+            'spr_correct_answers': (
+                list(question.spr_accepted_answers)
+                if question.question_type in TEXT_QUESTION_TYPES
+                else None
+            ),
         })
 
     return score, max_score, breakdown

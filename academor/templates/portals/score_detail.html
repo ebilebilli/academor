@@ -145,10 +145,17 @@
 </section>
 {% endif %}
 {% endif %}
+
+{% if detail.supports_word_export and detail.word_export %}
+{% include "portals/includes/quiz_result_word_export.html" with word_export=detail.word_export word_export_uid=detail.id word_export_script_id=detail.word_export_script_id %}
+{% endif %}
 {% endblock %}
 
 {% block extra_js %}
 {% if detail.breakdown %}
 <script src="{% static 'portals/js/score-qnav.js' %}?v=20260809c"></script>
+{% endif %}
+{% if detail.supports_word_export and detail.word_export %}
+<script src="{% static 'portals/js/quiz-result-word-export.js' %}?v=20260812b"></script>
 {% endif %}
 {% endblock %}

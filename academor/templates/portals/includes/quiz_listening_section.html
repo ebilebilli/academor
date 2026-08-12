@@ -75,6 +75,10 @@
           <span class="portal-listening-task__type badge rounded-pill text-bg-light border">
             <i class="bi bi-ui-radios me-1" aria-hidden="true"></i>{% trans 'Multiple choice' %}
           </span>
+          {% else %}
+          <span class="portal-listening-task__type badge rounded-pill text-bg-primary border">
+            <i class="bi bi-pencil me-1" aria-hidden="true"></i>{% trans 'Enter answer' %}
+          </span>
           {% endif %}
         </header>
 
@@ -93,7 +97,7 @@
           {% if review_mode %}
           {% include "portals/includes/quiz_listening_text_review.html" with q=q %}
           {% else %}
-          {% include "portals/includes/quiz_writing_answer.html" with question_id=q.id view_only=view_only student_answer=q.student_answer compact=True hide_label=True %}
+          {% include "portals/includes/quiz_listening_spr.html" with q=q view_only=view_only %}
           {% endif %}
           {% endif %}
         </div>

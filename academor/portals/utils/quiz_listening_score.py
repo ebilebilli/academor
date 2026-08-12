@@ -41,8 +41,28 @@ def _text_answer_matches(question: ListeningQuestion, raw_value) -> bool:
         if limit is not None and _word_count(str(raw_value or '').strip()) > limit:
             return False
 
-    candidates = [question.correct_answer]
-    candidates.extend(config.get('accept_alternatives') or [])
+    spr_max = question.spr_max_length
+    if spr_max is not None:
+        try:
+            max_len = int(spr_max)
+        except (TypeError, ValueError):
+            max_len = None
+        if max_len is not None and len(str(raw_value or '').strip()) > max_len:
+            return False
+
+    # Prefer SPR multi-answer list (SAT-style). Fall back to legacy correct_answer + alternatives.
+    candidates = list(question.spr_accepted_answers)
+    if not candidates:
+        candidates = [question.correct_answer]
+        candidates.extend(config.get('accept_alternatives') or [])
+
+    # Numeric / equation-friendly match when SPR answers are set (same rules as SAT Math).
+    if question.spr_correct_answers:
+        from portals.utils.sat_spr_validation import validate_spr_answer
+
+        if validate_spr_answer(str(raw_value or ''), candidates).get('is_correct'):
+            return True
+
     normalized_candidates = [
         _normalize_text_answer(str(item), case_insensitive=bool(config.get('case_insensitive', True)))
         for item in candidates
@@ -92,10 +112,13 @@ def score_listening_quiz(
             score += 1.0
         breakdown.append({
             'id': question.pk,
-            'question_type': 'variant' if question.is_variant else 'text',
+            'question_type': 'variant' if question.is_variant else 'spr',
             'student_answer': raw,
             'is_correct': is_correct,
             'correct_answer': question.correct_answer,
+            'spr_correct_answers': (
+                None if question.is_variant else list(question.spr_accepted_answers)
+            ),
         })
 
     return score, max_score, breakdown

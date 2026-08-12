@@ -1,4 +1,5 @@
 from datetime import timedelta
+import json
 
 from django.core.exceptions import ValidationError
 from django.urls import reverse
@@ -394,11 +395,13 @@ class ReadingQuestionAdminFieldConfigTests(QuizReadingTests):
 
         config = reading_question_admin_field_config(ReadingQuestionType.SENTENCE_COMPLETION)
         self.assertIn('question_config', config['show_fields'])
-        self.assertIn('accept_alternatives_text', config['show_fields'])
+        self.assertIn('spr_correct_answers', config['show_fields'])
+        self.assertIn('spr_max_length', config['show_fields'])
         self.assertIn('word_limit', config['show_fields'])
         self.assertIn('answer_options', config['hide_fields'])
+        self.assertIn('correct_answer', config['hide_fields'])
 
-    def test_reading_question_admin_form_stores_alternatives(self):
+    def test_reading_question_admin_form_stores_spr_answers(self):
         from portals.admin.quiz_forms import ReadingQuestionAdminForm
 
         quiz = self._create_reading_quiz()
@@ -409,10 +412,9 @@ class ReadingQuestionAdminFieldConfigTests(QuizReadingTests):
                 'order': 5,
                 'question_type': ReadingQuestionType.SENTENCE_COMPLETION,
                 'question': '<p>Some seabirds identify their home colony partly by its ____.</p>',
-                'correct_answer': 'smell',
+                'spr_correct_answers': json.dumps(['smell', 'scent', 'odour']),
                 'word_limit': 1,
                 'case_insensitive': True,
-                'accept_alternatives_text': 'scent\nodour',
                 'answer_options': '[]',
                 'question_config': '{}',
             },
@@ -423,8 +425,32 @@ class ReadingQuestionAdminFieldConfigTests(QuizReadingTests):
         question.save()
         question.refresh_from_db()
         self.assertEqual(question.correct_answer, 'smell')
+        self.assertEqual(question.spr_correct_answers, ['smell', 'scent', 'odour'])
         self.assertEqual(question.question_config['word_limit'], 1)
         self.assertEqual(question.question_config['accept_alternatives'], ['scent', 'odour'])
+
+    def test_convert_legacy_reading_gapfill_to_spr(self):
+        from portals.utils.quiz_reading import convert_reading_gapfill_to_spr
+        from portals.utils.quiz_reading_score import score_reading_question
+
+        quiz = self._create_reading_quiz()
+        passage = quiz.reading_passages.first()
+        question = ReadingQuestion.objects.create(
+            passage=passage,
+            order=20,
+            question_type=ReadingQuestionType.SENTENCE_COMPLETION,
+            question='Fill ____',
+            correct_answer='smell',
+            question_config={'accept_alternatives': ['scent'], 'case_insensitive': True},
+        )
+        ReadingQuestion.objects.filter(pk=question.pk).update(spr_correct_answers=None)
+        question.refresh_from_db()
+        self.assertIsNone(question.spr_correct_answers)
+
+        self.assertTrue(convert_reading_gapfill_to_spr(question))
+        question.refresh_from_db()
+        self.assertEqual(question.spr_correct_answers, ['smell', 'scent'])
+        self.assertTrue(score_reading_question(question, 'Scent'))
 
     def test_group_question_type_supports_text_completion_groups(self):
         quiz = self._create_reading_quiz()
