@@ -42,6 +42,17 @@ def link_pending_listening_question_groups(
             continue
         if 0 <= pending_index < len(saved_groups_in_form_order):
             group = saved_groups_in_form_order[pending_index]
-            if question_form.instance.group_id != group.pk:
-                question_form.instance.group = group
-                question_form.instance.save(update_fields=['group'])
+            question = question_form.instance
+            update_fields = []
+            if question.group_id != group.pk:
+                question.group = group
+                update_fields.append('group')
+            # Options live on the group for map/plan tasks.
+            if question.answer_options:
+                question.answer_options = []
+                update_fields.append('answer_options')
+            if question.spr_correct_answers:
+                question.spr_correct_answers = None
+                update_fields.append('spr_correct_answers')
+            if update_fields:
+                question.save(update_fields=update_fields)

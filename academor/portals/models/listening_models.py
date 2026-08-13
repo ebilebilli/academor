@@ -285,6 +285,17 @@ class ListeningQuestion(models.Model):
             raise ValidationError({'group': _('Question group must belong to the same audio clip.')})
 
         options = self.variant_options
+        if self.group_id:
+            pool = self.group.pool_options if self.group_id else []
+            if len(pool) >= 2:
+                options = pool
+            elif len(options) < 2:
+                raise ValidationError({
+                    'group': _(
+                        'Map/plan group needs at least two label options (e.g. A through G).'
+                    ),
+                })
+
         if len(options) >= 2:
             self.spr_correct_answers = None
             self.spr_max_length = None

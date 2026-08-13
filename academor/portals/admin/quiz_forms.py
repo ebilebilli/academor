@@ -173,7 +173,8 @@ class ListeningQuestionAdminForm(forms.ModelForm):
         self.fields['spr_max_length'].required = False
         self.fields['answer_options'].help_text = _(
             'Optional: Add answer choices using the + button for multiple-choice. '
-            'Leave empty for a typed (SPR) answer.',
+            'Leave empty for a typed (SPR) answer, or when using a Map / plan group '
+            '(letters come from the group Label options).',
         )
         self.fields['spr_correct_answers'].help_text = _(
             'Typed answers: add one or more accepted correct answers '
@@ -286,6 +287,58 @@ class ListeningQuestionAdminForm(forms.ModelForm):
     def clean_group_ref(self):
         return (self.cleaned_data.get('group_ref') or '').strip()
 
+    def _update_errors(self, errors):
+        if hasattr(errors, 'error_dict'):
+            remapped = {}
+            for field, field_errors in errors.error_dict.items():
+                if field == 'group' and 'group_ref' in self.fields:
+                    target = 'group_ref'
+                elif field in self.fields or field is None or field == '__all__':
+                    target = field
+                elif 'group_ref' in self.fields and field in {'group', 'option_pool'}:
+                    target = 'group_ref'
+                else:
+                    target = None
+                remapped.setdefault(target, [])
+                remapped[target].extend(field_errors)
+            errors = ValidationError(remapped)
+        super()._update_errors(errors)
+
+    @staticmethod
+    def _parse_label_pool_text(raw) -> list[str]:
+        text = (raw or '').strip()
+        if not text:
+            return []
+        options = []
+        for line in text.replace(',', '\n').splitlines():
+            value = line.strip()
+            if value and value not in options:
+                options.append(value)
+        return options
+
+    def _inline_group_pools_from_data(self) -> dict[str, list[str]]:
+        """Read map/plan Label options from the same admin POST (may not be in DB yet)."""
+        if not self.data:
+            return {}
+        pools: dict[str, list[str]] = {}
+        for key in self.data:
+            if not str(key).endswith('-option_pool_text'):
+                continue
+            parts = str(key).rsplit('-', 2)
+            if len(parts) != 3 or parts[2] != 'option_pool_text':
+                continue
+            prefix, index = parts[0], parts[1]
+            if self.data.get(f'{prefix}-{index}-DELETE'):
+                continue
+            pool = self._parse_label_pool_text(self.data.get(key))
+            pools[f'idx:{index}'] = pool
+            pk_raw = self.data.get(f'{prefix}-{index}-id') or ''
+            try:
+                pools[f'id:{int(pk_raw)}'] = pool
+            except (TypeError, ValueError):
+                pass
+        return pools
+
     def _choice_options_for_cleaned(self, cleaned):
         probe = self.instance.__class__()
         probe.answer_options = cleaned.get('answer_options') or []
@@ -294,12 +347,36 @@ class ListeningQuestionAdminForm(forms.ModelForm):
             probe.group = getattr(self.instance, 'group', None)
         return resolve_listening_question_options(probe)
 
+    def _apply_label_group_choice_fields(self, cleaned, options):
+        cleaned['spr_correct_answers'] = None
+        cleaned['spr_max_length'] = None
+        correct = (cleaned.get('correct_answer') or '').strip()
+        resolved = sync_correct_option_fields(
+            options,
+            option_number=cleaned.get('correct_option_number'),
+            existing_index=getattr(self.instance, 'correct_option_index', None),
+            existing_answer=correct,
+            match_answer=lambda opts, value: opts.index(value) if value in opts else None,
+        )
+        if resolved is None:
+            self.add_error(
+                'correct_option_number',
+                _('Enter which option is correct (1 = A/Option 1, 2 = B/Option 2, …).'),
+            )
+            return cleaned
+        idx, answer = resolved
+        cleaned['correct_option_index'] = idx
+        cleaned['correct_answer'] = answer
+        cleaned['correct_option_number'] = idx + 1
+        return cleaned
+
     def clean(self):
         cleaned = super().clean()
 
         self._pending_group_index = None
         group_ref = (cleaned.pop('group_ref', '') or '').strip()
         audio_id = self._resolve_audio_id()
+        post_pools = self._inline_group_pools_from_data()
 
         if not group_ref:
             cleaned['group'] = None
@@ -321,6 +398,9 @@ class ListeningQuestionAdminForm(forms.ModelForm):
                     cleaned['group'] = None
                     self.instance.group = None
                 else:
+                    post_pool = post_pools.get(f'id:{group.pk}')
+                    if post_pool is not None:
+                        group.option_pool = post_pool
                     cleaned['group'] = group
                     self.instance.group = group
         elif group_ref.startswith('idx:'):
@@ -335,38 +415,45 @@ class ListeningQuestionAdminForm(forms.ModelForm):
             cleaned['group'] = None
             self.instance.group = None
 
+        in_label_group = bool(cleaned.get('group') or self._pending_group_index is not None)
         options = self._choice_options_for_cleaned(cleaned)
+        if cleaned.get('group'):
+            post_pool = post_pools.get(f'id:{cleaned["group"].pk}') or []
+            if len(post_pool) >= 2:
+                options = post_pool
+            elif len(cleaned['group'].pool_options) >= 2:
+                options = cleaned['group'].pool_options
+        elif self._pending_group_index is not None:
+            post_pool = post_pools.get(f'idx:{self._pending_group_index}') or []
+            if len(post_pool) >= 2:
+                options = post_pool
+
         inline_options = cleaned.get('answer_options') or []
-        if len(inline_options) >= 2:
+        if len(inline_options) >= 2 and not in_label_group:
             options = inline_options
         correct = (cleaned.get('correct_answer') or '').strip()
         spr_answers = cleaned.get('spr_correct_answers') or []
 
-        if len(options) >= 2:
-            if cleaned.get('group'):
-                cleaned['answer_options'] = []
-            else:
-                cleaned['answer_options'] = options
-            cleaned['spr_correct_answers'] = None
-            cleaned['spr_max_length'] = None
-            resolved = sync_correct_option_fields(
-                options,
-                option_number=cleaned.get('correct_option_number'),
-                existing_index=getattr(self.instance, 'correct_option_index', None),
-                existing_answer=correct,
-                match_answer=lambda opts, value: opts.index(value) if value in opts else None,
-            )
-            if resolved is None:
+        if in_label_group:
+            if len(options) < 2:
                 self.add_error(
-                    'correct_option_number',
-                    _('Enter which option is correct (1 = Option 1, 2 = Option 2, …).'),
+                    'group_ref',
+                    _(
+                        'This map/plan group needs Label options (one letter per line, '
+                        'e.g. A–G). Fill them on the group above, then save.'
+                    ),
                 )
-            else:
-                idx, answer = resolved
-                cleaned['correct_option_index'] = idx
-                cleaned['correct_answer'] = answer
-                cleaned['correct_option_number'] = idx + 1
-            return cleaned
+                cleaned['answer_options'] = []
+                cleaned['spr_correct_answers'] = None
+                cleaned['spr_max_length'] = None
+                return cleaned
+            # Pending group is linked after save — keep options on the question until then.
+            cleaned['answer_options'] = [] if cleaned.get('group') else list(options)
+            return self._apply_label_group_choice_fields(cleaned, options)
+
+        if len(options) >= 2:
+            cleaned['answer_options'] = options
+            return self._apply_label_group_choice_fields(cleaned, options)
 
         cleaned['answer_options'] = []
         cleaned['correct_option_index'] = 0
