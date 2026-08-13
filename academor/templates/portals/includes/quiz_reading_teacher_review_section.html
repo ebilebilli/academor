@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n portal_tags %}
 <section
   class="portal-reading-review-section"
   aria-labelledby="reading-review-section-{{ section.section_number }}-title"
@@ -7,7 +7,7 @@
     <summary class="portal-reading-review-passage__summary">
       <span class="portal-reading-review-passage__title" id="reading-review-section-{{ section.section_number }}-title">
         {% if section.passage.title %}
-          {{ section.passage.title }}
+          {{ section.passage.title|quiz_plain }}
         {% else %}
           {% blocktrans with num=section.section_number %}Passage {{ num }}{% endblocktrans %}
         {% endif %}
@@ -17,9 +17,9 @@
       </span>
     </summary>
     {% if section.passage.instructions %}
-    <div class="portal-reading-review-passage__instructions">{{ section.passage.instructions|safe }}</div>
+    <div class="portal-reading-review-passage__instructions">{{ section.passage.instructions|quiz_html }}</div>
     {% endif %}
-    <div class="portal-reading-review-passage__body">{{ section.passage.body|safe }}</div>
+    <div class="portal-reading-review-passage__body">{{ section.passage.body|quiz_html }}</div>
   </details>
 
   {% if section.questions %}
@@ -28,10 +28,10 @@
     {% if q.group_start and q.group_instructions %}
     <div class="portal-reading-review-group panel mb-2">
       {% if q.group_instructions.title %}
-      <p class="portal-reading-review-group__title mb-1">{{ q.group_instructions.title }}</p>
+      <p class="portal-reading-review-group__title mb-1">{{ q.group_instructions.title|quiz_plain }}</p>
       {% endif %}
       {% if q.group_instructions.instructions %}
-      <div class="portal-reading-review-group__body small text-muted mb-0">{{ q.group_instructions.instructions|safe }}</div>
+      <div class="portal-reading-review-group__body small text-muted mb-0">{{ q.group_instructions.instructions|quiz_html }}</div>
       {% endif %}
     </div>
     {% endif %}

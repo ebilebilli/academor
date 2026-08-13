@@ -1,10 +1,22 @@
 from __future__ import annotations
 
+from html import unescape
+
 from django.db.models import Prefetch
 from django.utils.html import strip_tags
 from django.utils.translation import gettext as _
 
 from portals.models import Quiz, SpeakingPart, SpeakingPartType, SpeakingQuestion
+
+
+def _plain_speaking_text(value: str) -> str:
+    text = strip_tags(str(value or ''))
+    for _ in range(2):
+        decoded = unescape(text)
+        if decoded == text:
+            break
+        text = decoded
+    return ' '.join(text.split())
 
 
 # Official IELTS speaking section time labels (exam-style overview).
@@ -120,7 +132,7 @@ def serialize_speaking_question(
     part_question_number: int = 0,
 ) -> dict:
     part = question.part
-    question_text = strip_tags(question.question or '').strip()
+    question_text = _plain_speaking_text(question.question or '')
     return {
         'id': question.pk,
         'part_id': part.pk,

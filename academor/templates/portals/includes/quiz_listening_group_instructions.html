@@ -1,16 +1,16 @@
-{% load i18n %}
+{% load i18n portal_tags %}
 <section class="portal-listening-group-instructions panel mb-3">
   {% if group.title %}
-  <h3 class="portal-listening-group-instructions__title h6 mb-2">{{ group.title }}</h3>
+  <h3 class="portal-listening-group-instructions__title h6 mb-2">{{ group.title|quiz_plain }}</h3>
   {% endif %}
   {% if group.instructions %}
-  <div class="portal-listening-group-instructions__body mb-3">{{ group.instructions|safe }}</div>
+  <div class="portal-listening-group-instructions__body mb-3">{{ group.instructions|quiz_html }}</div>
   {% endif %}
   {% if group.diagram_image_url %}
   <figure class="portal-listening-group-instructions__diagram mb-0">
     <img
       src="{{ group.diagram_image_url }}"
-      alt="{% if group.title %}{{ group.title }}{% else %}{% trans 'Map / plan diagram' %}{% endif %}"
+      alt="{% if group.title %}{{ group.title|quiz_plain }}{% else %}{% trans 'Map / plan diagram' %}{% endif %}"
       class="portal-listening-group-instructions__diagram-img"
     >
   </figure>

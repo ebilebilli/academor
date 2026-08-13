@@ -1,17 +1,17 @@
-{% load i18n %}
+{% load i18n portal_tags %}
 <section class="portal-reading-group-instructions panel mb-3">
   {% if group.title %}
-  <h3 class="portal-reading-group-instructions__title h6 mb-2">{{ group.title }}</h3>
+  <h3 class="portal-reading-group-instructions__title h6 mb-2">{{ group.title|quiz_plain }}</h3>
   {% endif %}
   {% if group.instructions %}
-  <div class="portal-reading-group-instructions__body mb-3">{{ group.instructions|safe }}</div>
+  <div class="portal-reading-group-instructions__body mb-3">{{ group.instructions|quiz_html }}</div>
   {% endif %}
   {% if group.option_pool %}
   <div class="portal-reading-group-instructions__pool">
     <p class="portal-reading-group-instructions__pool-label small text-muted mb-2">{% trans 'Options' %}</p>
     <ul class="portal-reading-group-instructions__pool-list list-unstyled mb-0">
       {% for option in group.option_pool %}
-      <li class="portal-reading-group-instructions__pool-item">{{ option }}</li>
+      <li class="portal-reading-group-instructions__pool-item">{{ option|quiz_plain }}</li>
       {% endfor %}
     </ul>
   </div>

@@ -10,7 +10,7 @@
         <tr>
           <th scope="col" class="portal-listening-map-matrix__corner"></th>
           {% for letter in group.option_pool %}
-          <th scope="col" class="portal-listening-map-matrix__col-head">{{ letter }}</th>
+          <th scope="col" class="portal-listening-map-matrix__col-head">{{ letter|quiz_plain }}</th>
           {% endfor %}
         </tr>
       </thead>
@@ -19,7 +19,7 @@
         <tr class="portal-listening-map-matrix__row">
           <th scope="row" class="portal-listening-map-matrix__row-head">
             <span class="portal-listening-map-matrix__num">{{ q.number }}</span>
-            <span class="portal-listening-map-matrix__label">{{ q.question|striptags }}</span>
+            <span class="portal-listening-map-matrix__label">{{ q.question|quiz_plain }}</span>
           </th>
           {% for letter in group.option_pool %}
           <td class="portal-listening-map-matrix__cell">

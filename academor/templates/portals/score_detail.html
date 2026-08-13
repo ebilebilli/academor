@@ -61,7 +61,7 @@
       <header class="portal-reading-section__passage-head">
         <h2 class="portal-reading-section__title" id="score-shared-passage-title">{% trans 'Passage' %}</h2>
       </header>
-      <div class="portal-reading-section__body">{{ detail.shared_passage|safe }}</div>
+      <div class="portal-reading-section__body">{{ detail.shared_passage|quiz_html }}</div>
     </div>
     <div class="portal-reading-section__tasks panel">
       <div class="portal-reading-section__tasks-head">
@@ -121,7 +121,7 @@
     <article class="panel mb-3">
       <p class="fw-semibold mb-2">{% blocktrans with num=item.number %}Task {{ num }}{% endblocktrans %}</p>
       {% if item.question %}
-      <div class="text-muted small mb-2">{{ item.question|safe }}</div>
+      <div class="text-muted small mb-2">{{ item.question|quiz_html }}</div>
       {% endif %}
       <div class="portal-lesson-description">{{ item.student_answer|linebreaksbr }}</div>
     </article>

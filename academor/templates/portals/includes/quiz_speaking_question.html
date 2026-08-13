@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n portal_tags %}
 {% if is_part_2 %}
 <article
   class="portal-speaking-question portal-speaking-question--part-2{% if q.has_recording %} portal-speaking-question--done{% endif %}"
@@ -36,9 +36,9 @@
     <span class="portal-speaking-question-item__number">{{ q.part_question_number }}.</span>
     <div class="portal-speaking-question-item__body">
       {% if q.question %}
-      <div class="portal-speaking-question-item__text">{{ q.question|safe }}</div>
+      <div class="portal-speaking-question-item__text">{{ q.question|quiz_html }}</div>
       {% elif q.question_plain %}
-      <div class="portal-speaking-question-item__text">{{ q.question_plain }}</div>
+      <div class="portal-speaking-question-item__text">{{ q.question_plain|quiz_plain }}</div>
       {% endif %}
       {% if view_only and q.student_audio_url %}
       <div class="portal-speaking-playback mt-2">

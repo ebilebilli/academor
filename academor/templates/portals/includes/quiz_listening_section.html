@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n portal_tags %}
 <section
   class="portal-listening-section"
   aria-labelledby="listening-section-{{ section.section_number }}-title"
@@ -93,7 +93,7 @@
         </header>
 
         {% if q.question %}
-        <div class="portal-listening-task__prompt">{{ q.question|safe }}</div>
+        <div class="portal-listening-task__prompt">{{ q.question|quiz_html }}</div>
         {% endif %}
 
         <div class="portal-listening-task__response">

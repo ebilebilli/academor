@@ -370,6 +370,23 @@ def quiz_html(value):
 
 
 @register.filter
+def quiz_plain(value):
+    """Strip HTML tags and decode entities (&nbsp;, &amp;, …) for compact labels."""
+    from django.utils.html import strip_tags
+
+    if value is None:
+        return ''
+    text = strip_tags(str(value))
+    # CKEditor often stores &nbsp; / &amp;nbsp; — decode until stable (max 2 passes).
+    for _ in range(2):
+        decoded = unescape(text)
+        if decoded == text:
+            break
+        text = decoded
+    return ' '.join(text.split())
+
+
+@register.filter
 def youtube_embed_url(value):
     if not value:
         return ''

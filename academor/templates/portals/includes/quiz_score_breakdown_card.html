@@ -14,13 +14,13 @@
     <div class="portal-quiz-spr-review__row">
       <span class="portal-quiz-spr-review__label">{% trans 'Your answer' %}</span>
       <span class="portal-quiz-spr-review__value{% if not row.is_correct %} is-wrong{% endif %}">
-        {% if row.student_answer %}{{ row.student_answer }}{% else %}—{% endif %}
+        {% if row.student_answer %}{{ row.student_answer|quiz_plain }}{% else %}—{% endif %}
       </span>
     </div>
     <div class="portal-quiz-spr-review__row portal-quiz-spr-review__row--correct">
       <span class="portal-quiz-spr-review__label">{% trans 'Correct answer' %}</span>
       <span class="portal-quiz-spr-review__value is-correct">
-        {% if row.correct_label %}{{ row.correct_label }}{% else %}—{% endif %}
+        {% if row.correct_label %}{{ row.correct_label|quiz_plain }}{% else %}—{% endif %}
       </span>
     </div>
   </div>

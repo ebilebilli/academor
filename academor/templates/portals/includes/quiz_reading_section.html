@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n portal_tags %}
 <section
   class="portal-reading-section{% if in_tabs %} portal-reading-section--tabbed{% endif %}"
   aria-labelledby="reading-section-{{ section.section_number }}-title"
@@ -36,10 +36,10 @@
       </header>
 
       {% if section.passage.instructions %}
-      <div class="portal-reading-section__instructions">{{ section.passage.instructions|safe }}</div>
+      <div class="portal-reading-section__instructions">{{ section.passage.instructions|quiz_html }}</div>
       {% endif %}
 
-      <div class="portal-reading-section__body">{{ section.passage.body|safe }}</div>
+      <div class="portal-reading-section__body">{{ section.passage.body|quiz_html }}</div>
     </div>
 
     {% if section.questions %}

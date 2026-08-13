@@ -529,6 +529,13 @@ class PortalNotificationTests(TestCase):
         self.assertIn('<p>Hello <strong>world</strong></p>', rendered)
         self.assertNotIn('&lt;p&gt;', rendered)
 
+    def test_quiz_plain_strips_tags_and_nbsp_entities(self):
+        from portals.templatetags.portal_tags import quiz_plain
+
+        self.assertEqual(quiz_plain('<p>bridge&nbsp;foundations</p>'), 'bridge foundations')
+        self.assertEqual(quiz_plain('<p>Animal&amp;nbsp;bones</p>'), 'Animal bones')
+        self.assertEqual(quiz_plain('Pieces of jewellery'), 'Pieces of jewellery')
+
     def test_score_detail_shows_spr_student_and_correct_answers(self):
         from portals.utils.notifications import get_score_detail_for_student
 

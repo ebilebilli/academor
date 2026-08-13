@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n portal_tags %}
 <section
   class="portal-speaking-section{% if is_last %} portal-speaking-section--last{% endif %}"
   data-speaking-section
@@ -22,7 +22,7 @@
     </p>
     {% endif %}
     {% if section.part.instructions %}
-    <div class="portal-speaking-section__instructions">{{ section.part.instructions|safe }}</div>
+    <div class="portal-speaking-section__instructions">{{ section.part.instructions|quiz_html }}</div>
     {% endif %}
   </header>
 
@@ -30,13 +30,13 @@
   <div class="portal-speaking-cue-card">
     <p class="portal-speaking-cue-card__label mb-2">{% trans 'Cue Card' %}</p>
     {% if section.part.cue_card_topic %}
-    <div class="portal-speaking-cue-card__topic">{{ section.part.cue_card_topic|safe }}</div>
+    <div class="portal-speaking-cue-card__topic">{{ section.part.cue_card_topic|quiz_html }}</div>
     {% endif %}
     {% if section.part.cue_card_bullets %}
     <p class="portal-speaking-cue-card__hint mb-2 mt-3">{% trans 'You should say:' %}</p>
     <ul class="portal-speaking-cue-card__bullets mb-0">
       {% for bullet in section.part.cue_card_bullets %}
-      <li>{{ bullet }}</li>
+      <li>{{ bullet|quiz_plain }}</li>
       {% endfor %}
     </ul>
     {% endif %}

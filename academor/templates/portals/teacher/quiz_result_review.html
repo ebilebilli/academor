@@ -128,7 +128,7 @@
     <article class="panel mb-3">
       <p class="fw-semibold mb-2">{% blocktrans with num=item.number %}Task {{ num }}{% endblocktrans %}</p>
       {% if item.question %}
-      <div class="text-muted small mb-2">{{ item.question|safe }}</div>
+      <div class="text-muted small mb-2">{{ item.question|quiz_html }}</div>
       {% endif %}
       <div class="portal-quiz-writing-area__readonly">{{ item.student_answer|linebreaksbr }}</div>
     </article>

@@ -78,7 +78,7 @@
         <header class="portal-reading-section__passage-head">
           <h2 class="portal-reading-section__title" id="shared-passage-title">{% trans 'Passage' %}</h2>
         </header>
-        <div class="portal-reading-section__body">{{ quiz.shared_passage|safe }}</div>
+        <div class="portal-reading-section__body">{{ quiz.shared_passage|quiz_html }}</div>
       </div>
       <div class="portal-reading-section__tasks panel">
         <div class="portal-reading-section__tasks-head">

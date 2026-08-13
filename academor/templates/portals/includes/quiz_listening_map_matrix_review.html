@@ -10,7 +10,7 @@
         <tr>
           <th scope="col" class="portal-listening-map-matrix__corner"></th>
           {% for letter in group.option_pool %}
-          <th scope="col" class="portal-listening-map-matrix__col-head">{{ letter }}</th>
+          <th scope="col" class="portal-listening-map-matrix__col-head">{{ letter|quiz_plain }}</th>
           {% endfor %}
         </tr>
       </thead>
@@ -19,10 +19,10 @@
         <tr class="portal-listening-map-matrix__row{% if q.is_correct is True %} is-correct{% elif q.is_correct is False %} is-incorrect{% endif %}">
           <th scope="row" class="portal-listening-map-matrix__row-head">
             <span class="portal-listening-map-matrix__num">{{ q.number }}</span>
-            <span class="portal-listening-map-matrix__label">{{ q.question|striptags }}</span>
+            <span class="portal-listening-map-matrix__label">{{ q.question|quiz_plain }}</span>
             {% if q.correct_option_label %}
             <span class="portal-listening-map-matrix__answer-key small text-muted d-block mt-1">
-              {% trans 'Answer' %}: {{ q.correct_option_label }}
+              {% trans 'Answer' %}: {{ q.correct_option_label|quiz_plain }}
             </span>
             {% endif %}
           </th>
