@@ -71,15 +71,30 @@ class ListeningQuestionGroupAdminForm(forms.ModelForm):
     def clean(self):
         cleaned = super().clean()
         pool = cleaned.get('option_pool_text') or []
-        cleaned['option_pool'] = pool
-        cleaned.pop('option_pool_text', None)
         question_type = cleaned.get('question_type')
         if question_type in LABEL_GROUP_QUESTION_TYPES:
             if len(pool) < 2:
-                self.add_error('option_pool_text', _('Add at least two label options (e.g. A through G).'))
+                self.add_error(
+                    'option_pool_text',
+                    _('Add at least two label options (e.g. A through G).'),
+                )
         else:
-            cleaned['option_pool'] = []
+            pool = []
+        # Keep on instance so model.clean() sees the pool (field is not in Meta.fields).
+        cleaned['option_pool'] = pool
+        self.instance.option_pool = pool
         return cleaned
+
+    def _update_errors(self, errors):
+        # Model validates option_pool; admin UI only has option_pool_text.
+        if hasattr(errors, 'error_dict') and 'option_pool' in errors.error_dict:
+            remapped = {}
+            for field, field_errors in errors.error_dict.items():
+                target = 'option_pool_text' if field == 'option_pool' else field
+                remapped.setdefault(target, [])
+                remapped[target].extend(field_errors)
+            errors = ValidationError(remapped)
+        super()._update_errors(errors)
 
     def save(self, commit=True):
         instance = super().save(commit=False)
