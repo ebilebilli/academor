@@ -186,12 +186,15 @@ class ListeningQuestionAdminForm(forms.ModelForm):
             )
             if initial_number is not None:
                 self.initial['correct_option_number'] = initial_number
+            if self.instance.group_id:
+                self.initial['group_ref'] = f'id:{self.instance.group_id}'
 
     class Media:
-        css = {'all': ('portals/css/answer-options-widget.css',)}
+        css = {'all': ('portals/css/answer-options-widget.css', 'portals/css/quiz-question-admin.css',)}
         js = (
             'portals/admin/js/answer-options-widget.js',
             'portals/admin/js/listening-question-type-toggle.js',
+            'portals/admin/js/listening-audio-admin.js',
         )
 
     def clean_answer_options(self):
@@ -244,19 +247,6 @@ class ListeningQuestionAdminForm(forms.ModelForm):
             if text and text not in answers:
                 answers.append(text)
         return answers
-
-            if initial_number is not None:
-                self.initial['correct_option_number'] = initial_number
-            if self.instance.group_id:
-                self.initial['group_ref'] = f'id:{self.instance.group_id}'
-
-    class Media:
-        css = {'all': ('portals/css/answer-options-widget.css', 'portals/css/quiz-question-admin.css',)}
-        js = (
-            'portals/admin/js/answer-options-widget.js',
-            'portals/admin/js/listening-question-type-toggle.js',
-            'portals/admin/js/listening-audio-admin.js',
-        )
 
     def _resolve_audio_id(self):
         if self.instance and self.instance.audio_id:
