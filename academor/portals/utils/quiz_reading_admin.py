@@ -100,7 +100,8 @@ def reading_question_admin_field_config(question_type: str | None) -> dict:
         )),
         'correct_answer': str(_('Exact text for gap-fill tasks or the matching option label.')),
         'answer_options': str(_(
-            'JSON list for multiple choice only. Leave empty for fixed or group options.',
+            'Add answer choices using the + button for multiple choice. '
+            'Leave empty for matching or typed tasks.',
         )),
         'question_config': str(_(
             'Advanced JSON only. Prefer SPR answers and word limit fields above.',

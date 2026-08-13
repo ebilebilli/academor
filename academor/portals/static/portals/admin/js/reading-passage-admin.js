@@ -23,7 +23,7 @@
       "Enter 1 for Option 1, 2 for Option 2, 3 for Option 3, 4 for Option 4. This is what auto-scoring uses.",
     correct_answer: "Stored automatically from the selected option number.",
     answer_options:
-      "JSON list for multiple choice only. Leave empty for fixed or group options.",
+      "Add answer choices using the + button for multiple choice.",
     question_config:
       "Advanced JSON only. Prefer SPR answers and word limit fields.",
     word_limit: "Maximum words accepted from the student.",
@@ -462,7 +462,10 @@
   }
 
   function isQuestionInlineBlock(block) {
-    return Boolean(block.querySelector("[name$='-correct_answer']"));
+    return Boolean(
+      block.querySelector("[name$='-correct_answer']") ||
+      block.querySelector("[name$='-correct_option_number']")
+    );
   }
 
   function collectQuestionBlocks(root) {

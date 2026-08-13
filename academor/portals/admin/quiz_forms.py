@@ -67,8 +67,11 @@ class ListeningQuestionAdminForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['answer_options'].required = False
         self.fields['correct_answer'].required = False
+        self.fields['correct_answer'].widget = forms.HiddenInput()
         self.fields['correct_option_index'].required = False
+        self.fields['correct_option_index'].widget = forms.HiddenInput()
         self.fields['correct_option_number'].required = False
+        self.fields['correct_option_number'].label = _('Correct option (1, 2, 3…)')
         self.fields['spr_correct_answers'].required = False
         self.fields['spr_max_length'].required = False
         self.fields['answer_options'].help_text = _(
@@ -640,6 +643,7 @@ class ReadingQuestionGroupAdminForm(forms.ModelForm):
 
 
 class ReadingQuestionAdminForm(forms.ModelForm):
+    answer_options = AnswerOptionsFormField()
     correct_option_number = forms.IntegerField(
         label=_('Correct option'),
         required=False,
@@ -702,9 +706,6 @@ class ReadingQuestionAdminForm(forms.ModelForm):
         )
         widgets = {
             'question': CKEditorUploadingWidget(),
-            'answer_options': forms.Textarea(
-                attrs={'rows': 4, 'class': 'vLargeTextField portal-quiz-json-field'},
-            ),
             'question_config': forms.Textarea(
                 attrs={'rows': 4, 'class': 'vLargeTextField portal-quiz-json-field'},
             ),
@@ -714,8 +715,16 @@ class ReadingQuestionAdminForm(forms.ModelForm):
         }
 
     class Media:
-        css = {'all': ('portals/css/answer-options-widget.css',)}
-        js = ('portals/admin/js/answer-options-widget.js',)
+        css = {
+            'all': (
+                'portals/css/quiz-question-admin.css',
+                'portals/css/answer-options-widget.css',
+            ),
+        }
+        js = (
+            'portals/admin/js/answer-options-widget.js',
+            'portals/admin/js/reading-passage-admin.js',
+        )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -727,15 +736,19 @@ class ReadingQuestionAdminForm(forms.ModelForm):
         if 'group_ref' in self.fields:
             self.fields['group_ref'].widget.attrs.update({'class': 'reading-question-group-ref'})
         self.fields['answer_options'].required = False
+        self.fields['answer_options'].help_text = _(
+            'Add answer choices using the + button for multiple choice. '
+            'Leave empty for matching or typed tasks.',
+        )
         self.fields['question_config'].required = False
         self.fields['correct_answer'].required = False
+        self.fields['correct_answer'].widget = forms.HiddenInput()
         self.fields['correct_option_index'].required = False
+        self.fields['correct_option_index'].widget = forms.HiddenInput()
         self.fields['correct_option_number'].required = False
+        self.fields['correct_option_number'].label = _('Correct option (1, 2, 3…)')
         self.fields['spr_correct_answers'].required = False
         self.fields['spr_max_length'].required = False
-        self.fields['answer_options'].help_text = _(
-            'JSON list for multiple choice only. Leave empty for fixed or group options.',
-        )
         self.fields['question_config'].help_text = _(
             'Advanced JSON only. Prefer SPR answers and word limit fields above.',
         )
@@ -749,7 +762,7 @@ class ReadingQuestionAdminForm(forms.ModelForm):
         if self.instance and self.instance.pk:
             options = self.instance.answer_options or []
             if isinstance(options, list):
-                self.initial['answer_options'] = json.dumps(options, ensure_ascii=False, indent=2)
+                self.initial['answer_options'] = options
             config = self.instance.question_config or {}
             if isinstance(config, dict):
                 self.initial['question_config'] = json.dumps(config, ensure_ascii=False, indent=2)
@@ -991,20 +1004,34 @@ class ReadingQuestionAdminForm(forms.ModelForm):
 
     def clean_answer_options(self):
         raw = self.cleaned_data.get('answer_options')
-        if raw in (None, '', []):
+        question_type = self.cleaned_data.get('question_type') or self.data.get('question_type')
+        if question_type != ReadingQuestionType.MCQ:
             return []
-        if isinstance(raw, str):
+
+        if isinstance(raw, list):
+            parsed = raw
+        elif isinstance(raw, str):
             try:
                 parsed = json.loads(raw or '[]')
             except json.JSONDecodeError as exc:
                 raise ValidationError(_('Enter a valid JSON list of answer options.')) from exc
-        elif isinstance(raw, list):
-            parsed = raw
+        elif raw in (None, ''):
+            parsed = []
         else:
             raise ValidationError(_('Enter a valid JSON list of answer options.'))
+
         if not isinstance(parsed, list):
             raise ValidationError(_('Answer options must be a JSON list.'))
-        return [str(item).strip() for item in parsed if str(item).strip()]
+
+        options = [item for item in parsed if item and str(item).strip()]
+        if len(options) < 2 and self.instance and self.instance.pk:
+            existing = [
+                item for item in (self.instance.answer_options or [])
+                if item and str(item).strip()
+            ]
+            if len(existing) >= 2:
+                return existing
+        return options
 
     def clean_question_config(self):
         raw = self.cleaned_data.get('question_config')
@@ -1022,11 +1049,6 @@ class ReadingQuestionAdminForm(forms.ModelForm):
         if not isinstance(parsed, dict):
             raise ValidationError(_('Question config must be a JSON object.'))
         return parsed
-
-    class Media:
-        css = {'all': ('portals/css/quiz-question-admin.css',)}
-        js = ('portals/admin/js/reading-passage-admin.js',)
-
 
 class SpeakingPartAdminForm(forms.ModelForm):
     new_quiz_topic = forms.CharField(

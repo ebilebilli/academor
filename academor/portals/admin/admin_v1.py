@@ -455,9 +455,14 @@ class ListeningQuestionInline(admin.StackedInline):
     ordering = ('order', 'id')
     verbose_name = _('Listening question')
     verbose_name_plural = _('Listening questions (student answer lines)')
+    classes = ('portal-quiz-inline',)
 
     class Media:
-        js = ('portals/admin/js/listening-question-type-toggle.js',)
+        css = {'all': ('portals/css/answer-options-widget.css', 'portals/css/quiz-question-admin.css',)}
+        js = (
+            'portals/admin/js/answer-options-widget.js',
+            'portals/admin/js/listening-question-type-toggle.js',
+        )
 
 
 class ListeningAudioInline(admin.StackedInline):
@@ -473,7 +478,10 @@ class ListeningAudioInline(admin.StackedInline):
     ordering = ('order', 'id')
     show_change_link = True
     verbose_name = _('Listening audio')
-    verbose_name_plural = _('Listening audio sections (add audio, then edit questions)')
+    verbose_name_plural = _(
+        'Listening audio — save the quiz, then click an audio title to edit questions '
+        '(Correct option: 1, 2, 3…)'
+    )
 
 
 class ReadingQuestionInline(admin.StackedInline):
@@ -500,9 +508,15 @@ class ReadingQuestionInline(admin.StackedInline):
     ordering = ('order', 'id')
     verbose_name = _('Reading question')
     verbose_name_plural = _('Reading questions')
+    classes = ('portal-quiz-inline',)
 
     class Media:
-        css = {'all': ('portals/css/answer-options-widget.css',)}
+        css = {
+            'all': (
+                'portals/css/quiz-question-admin.css',
+                'portals/css/answer-options-widget.css',
+            ),
+        }
         js = (
             'portals/admin/js/answer-options-widget.js',
             'portals/admin/js/reading-passage-admin.js',
@@ -528,7 +542,10 @@ class ReadingPassageInline(admin.StackedInline):
     ordering = ('order', 'id')
     show_change_link = True
     verbose_name = _('Reading passage')
-    verbose_name_plural = _('Reading passages (add passage, then edit questions)')
+    verbose_name_plural = _(
+        'Reading passages — save the quiz, then click a passage title to edit questions '
+        '(Correct option: 1, 2, 3…)'
+    )
 
 
 class SpeakingQuestionInline(admin.StackedInline):
@@ -578,7 +595,9 @@ class ReadingPassageAdmin(PortalModelAdmin):
         (None, {
             'description': _(
                 'Each passage belongs to a reading quiz. '
-                'Add matching groups and questions in the sections below.'
+                'Add matching groups and questions in the sections below. '
+                'For MCQ / T/F / matching tasks, set Correct option to 1, 2, 3… '
+                '(not the option text).'
             ),
             'fields': ('quiz', 'order', 'title', 'instructions', 'body'),
         }),
@@ -719,11 +738,24 @@ class ListeningAudioAdmin(PortalModelAdmin):
         (None, {
             'description': _(
                 'Each audio clip belongs to a listening quiz. '
-                'Add listening questions in the section below.'
+                'Add listening questions in the section below. '
+                'For multiple choice, set Correct option to 1, 2, 3, or 4.'
             ),
             'fields': ('quiz', 'order', 'title', 'description', 'audio_file', 'audio_url'),
         }),
     )
+
+    class Media:
+        css = {
+            'all': (
+                'portals/css/quiz-question-admin.css',
+                'portals/css/answer-options-widget.css',
+            ),
+        }
+        js = (
+            'portals/admin/js/answer-options-widget.js',
+            'portals/admin/js/listening-question-type-toggle.js',
+        )
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'quiz':
