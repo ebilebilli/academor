@@ -654,3 +654,65 @@ class QuizManualGradingTests(QuizVisibilityTests):
         result = QuizResult.objects.filter(student=self.student, quiz=quiz).order_by('-completed_at', '-id').first()
         self.assertEqual(len(result.given_answers), 2)
         self.assertEqual(result.student_submission, '')
+
+    def test_listening_map_labelling_group_renders_matrix_block(self):
+        from portals.models import ListeningAudio, ListeningQuestion, ListeningQuestionGroup
+        from portals.models.listening_models import ListeningQuestionType
+        from portals.utils.quiz_listening import build_listening_sections_for_quiz
+        from portals.utils.quiz_submit import submit_listening_quiz_attempt
+
+        self.ielts_quiz.is_listening = True
+        self.ielts_quiz.save(update_fields=['is_listening'])
+        audio = ListeningAudio.objects.create(
+            quiz=self.ielts_quiz,
+            order=1,
+            title='Section 2',
+            audio_url='https://example.com/section2.mp3',
+        )
+        group = ListeningQuestionGroup.objects.create(
+            audio=audio,
+            order=1,
+            title='Questions 17–20',
+            instructions='<p>Label the map below.</p>',
+            question_type=ListeningQuestionType.MAP_LABELLING,
+            option_pool=['A', 'B', 'C', 'D', 'E', 'F', 'G'],
+        )
+        rows = [
+            (17, 'bridge foundations', 1),
+            (18, 'rubbish pit', 0),
+            (19, 'meeting hall', 6),
+            (20, 'fish pond', 4),
+        ]
+        questions = []
+        for order, text, correct_index in rows:
+            questions.append(ListeningQuestion.objects.create(
+                audio=audio,
+                group=group,
+                order=order,
+                question=text,
+                correct_option_index=correct_index,
+                correct_answer=group.pool_options[correct_index],
+            ))
+
+        sections = build_listening_sections_for_quiz(self.ielts_quiz.pk)
+        self.assertEqual(len(sections), 1)
+        self.assertEqual(len(sections[0]['task_items']), 1)
+        matrix = sections[0]['task_items'][0]
+        self.assertEqual(matrix['type'], 'label_matrix')
+        self.assertEqual(len(matrix['questions']), 4)
+        self.assertEqual(matrix['group']['title'], 'Questions 17–20')
+        self.assertEqual(matrix['questions'][0]['number'], 17)
+        self.assertEqual(matrix['questions'][0]['answer_options'], group.pool_options)
+
+        outcome = submit_listening_quiz_attempt(
+            student_id=self.student.pk,
+            quiz_id=self.ielts_quiz.pk,
+            given_answers={
+                str(questions[0].pk): '1',
+                str(questions[1].pk): '0',
+                str(questions[2].pk): '6',
+                str(questions[3].pk): '4',
+            },
+        )
+        self.assertTrue(outcome['success'])
+        self.assertEqual(outcome['total_score'], 4)

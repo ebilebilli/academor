@@ -1,0 +1,49 @@
+{% load i18n portal_tags %}
+<div class="portal-listening-map-matrix panel">
+  {% if group %}
+  {% include "portals/includes/quiz_listening_group_instructions.html" with group=group %}
+  {% endif %}
+
+  <div class="portal-listening-map-matrix__table-wrap">
+    <table class="portal-listening-map-matrix__table">
+      <thead>
+        <tr>
+          <th scope="col" class="portal-listening-map-matrix__corner"></th>
+          {% for letter in group.option_pool %}
+          <th scope="col" class="portal-listening-map-matrix__col-head">{{ letter }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for q in questions %}
+        <tr class="portal-listening-map-matrix__row">
+          <th scope="row" class="portal-listening-map-matrix__row-head">
+            <span class="portal-listening-map-matrix__num">{{ q.number }}</span>
+            <span class="portal-listening-map-matrix__label">{{ q.question|striptags }}</span>
+          </th>
+          {% for letter in group.option_pool %}
+          <td class="portal-listening-map-matrix__cell">
+            {% if view_only %}
+            <span class="portal-listening-map-matrix__readonly-mark" aria-hidden="true">·</span>
+            {% else %}
+            <label class="portal-listening-map-matrix__choice">
+              <input
+                type="radio"
+                name="listening-q-{{ q.id }}"
+                value="{{ forloop.counter0 }}"
+                class="portal-listening-map-matrix__input visually-hidden"
+                data-manual-submission
+                data-question-id="{{ q.id }}"
+                aria-label="{% blocktrans with num=q.number letter=letter %}Question {{ num }} — {{ letter }}{% endblocktrans %}"
+              >
+              <span class="portal-listening-map-matrix__dot" aria-hidden="true"></span>
+            </label>
+            {% endif %}
+          </td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>

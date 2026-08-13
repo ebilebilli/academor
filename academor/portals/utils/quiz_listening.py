@@ -2,7 +2,7 @@
 
 from django.db.models import Prefetch, QuerySet
 
-from portals.models import ListeningAudio, ListeningQuestion, Quiz
+from portals.models import ListeningAudio, ListeningQuestion, ListeningQuestionGroup, Quiz
 
 
 def build_listening_spr_answers(question: ListeningQuestion) -> list[str]:
@@ -101,8 +101,12 @@ def get_quiz_listening_audios(quiz_id: int):
         ListeningAudio.objects.filter(quiz_id=quiz_id)
         .prefetch_related(
             Prefetch(
+                'question_groups',
+                queryset=ListeningQuestionGroup.objects.order_by('order', 'id'),
+            ),
+            Prefetch(
                 'questions',
-                queryset=ListeningQuestion.objects.order_by('order', 'id'),
+                queryset=ListeningQuestion.objects.select_related('group').order_by('order', 'id'),
             ),
         )
         .order_by('order', 'id')
@@ -119,6 +123,64 @@ def get_listening_questions_for_quiz(quiz: Quiz) -> list[ListeningQuestion]:
         .order_by('audio__order', 'audio_id', 'order', 'id')
         if question.is_answerable
     ]
+
+
+def serialize_listening_question_group(group: ListeningQuestionGroup) -> dict:
+    diagram_url = ''
+    if group.diagram_image:
+        try:
+            diagram_url = group.diagram_image.url
+        except ValueError:
+            diagram_url = ''
+    return {
+        'id': group.pk,
+        'title': group.title,
+        'instructions': group.instructions,
+        'question_type': group.question_type,
+        'question_type_label': group.get_question_type_display(),
+        'option_pool': group.pool_options,
+        'diagram_image_url': diagram_url,
+        'is_label_group': group.is_label_group,
+        'order': group.order,
+    }
+
+
+def listening_display_number(question: ListeningQuestion, *, fallback: int) -> int:
+    order = getattr(question, 'order', None)
+    try:
+        order_int = int(order)
+    except (TypeError, ValueError):
+        order_int = 0
+    return order_int if order_int > 0 else fallback
+
+
+def build_listening_task_items(questions: list[dict]) -> list[dict]:
+    items: list[dict] = []
+    index = 0
+    while index < len(questions):
+        row = questions[index]
+        if row.get('in_label_group') and row.get('group_start'):
+            group = row.get('group_instructions') or {}
+            group_id = group.get('id')
+            block = [row]
+            cursor = index + 1
+            while cursor < len(questions):
+                next_row = questions[cursor]
+                if next_row.get('group_id') == group_id:
+                    block.append(next_row)
+                    cursor += 1
+                else:
+                    break
+            items.append({
+                'type': 'label_matrix',
+                'group': group,
+                'questions': block,
+            })
+            index = cursor
+            continue
+        items.append({'type': 'question', 'question': row})
+        index += 1
+    return items
 
 
 def serialize_listening_audio(audio: ListeningAudio) -> dict:
@@ -193,9 +255,11 @@ def serialize_listening_question(
 
     options = question.variant_options
     is_variant = len(options) >= 2
+    in_label_group = bool(question.in_label_group)
     payload = {
         'id': question.pk,
         'audio_id': question.audio_id,
+        'group_id': question.group_id,
         'question': question.question,
         'order': question.order,
         'student_answer': student_answer,
@@ -204,9 +268,12 @@ def serialize_listening_question(
         'number': number,
         'prompt_type': 'variant' if is_variant else 'text',
         'is_variant': is_variant,
+        'in_label_group': in_label_group,
         'answer_options': options if is_variant else [],
         'spr_max_length': question.spr_max_length if not is_variant else None,
-        'question_type': 'variant' if is_variant else 'spr',
+        'question_type': 'label_matrix' if in_label_group else ('variant' if is_variant else 'spr'),
+        'group_start': False,
+        'group_instructions': None,
     }
     if is_variant:
         selected_index = listening_selected_option_index(question, student_answer)
@@ -214,6 +281,9 @@ def serialize_listening_question(
             'selected_option_index': selected_index,
             'has_selected_option': selected_index is not None,
         })
+        correct_index = listening_correct_option_index(question)
+        if correct_index is not None and 0 <= correct_index < len(options):
+            payload['correct_option_label'] = options[correct_index]
 
     if use_admin_answer_keys:
         from portals.utils.quiz_listening_score import score_listening_question
@@ -239,28 +309,45 @@ def build_listening_sections_for_quiz(
     """Build student-facing sections from a listening quiz."""
     response_map = response_map or {}
     sections: list[dict] = []
-    question_number = 0
 
     for audio in get_quiz_listening_audios(quiz_id):
+        groups = [
+            serialize_listening_question_group(group)
+            for group in audio.question_groups.all()
+        ]
         section_questions = []
+        seen_group_ids: set[int] = set()
+        fallback_number = 0
         for row in audio.questions.all():
             if not row.is_answerable:
                 continue
-            question_number += 1
-            section_questions.append(
-                serialize_listening_question(
-                    row,
-                    student_answer=response_map.get(str(row.pk), ''),
-                    number=question_number,
-                    use_admin_answer_keys=use_admin_answer_keys,
-                )
+            fallback_number += 1
+            group_start = False
+            group_instructions = None
+            if row.group_id and row.group_id not in seen_group_ids:
+                seen_group_ids.add(row.group_id)
+                group_start = True
+                if row.group:
+                    group_instructions = serialize_listening_question_group(row.group)
+            question_payload = serialize_listening_question(
+                row,
+                student_answer=response_map.get(str(row.pk), ''),
+                number=listening_display_number(row, fallback=fallback_number),
+                use_admin_answer_keys=use_admin_answer_keys,
             )
+            question_payload['group_start'] = group_start
+            if group_instructions is not None:
+                question_payload['group_instructions'] = group_instructions
+            section_questions.append(question_payload)
+        numbers = [item['number'] for item in section_questions]
         sections.append({
             'audio': serialize_listening_audio(audio),
+            'groups': groups,
             'questions': section_questions,
+            'task_items': build_listening_task_items(section_questions),
             'section_number': len(sections) + 1,
-            'question_range_start': section_questions[0]['number'] if section_questions else None,
-            'question_range_end': section_questions[-1]['number'] if section_questions else None,
+            'question_range_start': min(numbers) if numbers else None,
+            'question_range_end': max(numbers) if numbers else None,
         })
 
     return sections

@@ -1655,3 +1655,128 @@ html[data-theme="dark"] .portal-quiz-start-modal__icon {
   padding-top: 0.15rem;
   font-size: 1.1rem;
 }
+
+.portal-listening-group-instructions__diagram-img {
+  display: block;
+  max-width: min(100%, 520px);
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid #dbeafe;
+  background: #fff;
+}
+
+.portal-listening-map-matrix__table-wrap {
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+.portal-listening-map-matrix__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.portal-listening-map-matrix__corner,
+.portal-listening-map-matrix__col-head,
+.portal-listening-map-matrix__row-head {
+  background: #f8fafc;
+  border: 1px solid #dbeafe;
+  padding: 0.65rem 0.75rem;
+  vertical-align: middle;
+}
+
+.portal-listening-map-matrix__col-head {
+  text-align: center;
+  font-weight: 700;
+  min-width: 2.5rem;
+}
+
+.portal-listening-map-matrix__row-head {
+  min-width: 12rem;
+  text-align: left;
+}
+
+.portal-listening-map-matrix__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.75rem;
+  height: 1.75rem;
+  margin-right: 0.5rem;
+  border-radius: 999px;
+  background: #2563eb;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.portal-listening-map-matrix__label {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.portal-listening-map-matrix__cell {
+  border: 1px solid #dbeafe;
+  text-align: center;
+  padding: 0.35rem;
+}
+
+.portal-listening-map-matrix__choice {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  margin: 0;
+  cursor: pointer;
+}
+
+.portal-listening-map-matrix__dot {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 999px;
+  border: 2px solid #94a3b8;
+  background: #fff;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.portal-listening-map-matrix__input:checked + .portal-listening-map-matrix__dot,
+.portal-listening-map-matrix__choice:has(.portal-listening-map-matrix__input:checked) .portal-listening-map-matrix__dot {
+  border-color: #2563eb;
+  background: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
+}
+
+.portal-listening-map-matrix__cell.is-correct .portal-listening-map-matrix__dot {
+  border-color: #16a34a;
+  background: #16a34a;
+}
+
+.portal-listening-map-matrix__cell.is-selected-wrong .portal-listening-map-matrix__dot {
+  border-color: #dc2626;
+  background: #dc2626;
+}
+
+.portal-listening-map-matrix__cell.is-selected-correct .portal-listening-map-matrix__dot {
+  border-color: #16a34a;
+  background: #16a34a;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.18);
+}
+
+.portal-listening-map-matrix--review .portal-listening-map-matrix__choice {
+  pointer-events: none;
+}
+
+@media (min-width: 992px) {
+  .portal-listening-map-matrix.panel {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) minmax(280px, 1.1fr);
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  .portal-listening-map-matrix__table-wrap {
+    margin-top: 0;
+  }
+}

@@ -1,0 +1,39 @@
+{% load i18n portal_tags %}
+<div class="portal-listening-map-matrix panel portal-listening-map-matrix--review">
+  {% if group %}
+  {% include "portals/includes/quiz_listening_group_instructions.html" with group=group %}
+  {% endif %}
+
+  <div class="portal-listening-map-matrix__table-wrap">
+    <table class="portal-listening-map-matrix__table">
+      <thead>
+        <tr>
+          <th scope="col" class="portal-listening-map-matrix__corner"></th>
+          {% for letter in group.option_pool %}
+          <th scope="col" class="portal-listening-map-matrix__col-head">{{ letter }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for q in questions %}
+        <tr class="portal-listening-map-matrix__row{% if q.is_correct is True %} is-correct{% elif q.is_correct is False %} is-incorrect{% endif %}">
+          <th scope="row" class="portal-listening-map-matrix__row-head">
+            <span class="portal-listening-map-matrix__num">{{ q.number }}</span>
+            <span class="portal-listening-map-matrix__label">{{ q.question|striptags }}</span>
+            {% if q.correct_option_label %}
+            <span class="portal-listening-map-matrix__answer-key small text-muted d-block mt-1">
+              {% trans 'Answer' %}: {{ q.correct_option_label }}
+            </span>
+            {% endif %}
+          </th>
+          {% for letter in group.option_pool %}
+          <td class="portal-listening-map-matrix__cell{% if q.correct_option_index is not None and forloop.counter0 == q.correct_option_index %} is-correct{% endif %}{% if q.has_selected_option and forloop.counter0 == q.selected_option_index %}{% if q.is_correct %} is-selected-correct{% else %} is-selected-wrong{% endif %}{% endif %}">
+            <span class="portal-listening-map-matrix__dot" aria-hidden="true"></span>
+          </td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>

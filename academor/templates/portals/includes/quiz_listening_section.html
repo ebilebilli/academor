@@ -60,7 +60,17 @@
     </div>
 
     <div class="portal-listening-section__task-list">
-      {% for q in section.questions %}
+      {% for item in section.task_items %}
+      {% if item.type == 'label_matrix' %}
+      <article class="portal-listening-task portal-listening-task--matrix" data-listening-task>
+        {% if review_mode %}
+        {% include "portals/includes/quiz_listening_map_matrix_review.html" with group=item.group questions=item.questions %}
+        {% else %}
+        {% include "portals/includes/quiz_listening_map_matrix.html" with group=item.group questions=item.questions view_only=view_only %}
+        {% endif %}
+      </article>
+      {% else %}
+      {% with q=item.question %}
       <article class="portal-listening-task" data-quiz-writing-card data-listening-task>
         <header class="portal-listening-task__head">
           <span class="portal-listening-task__index">
@@ -102,6 +112,8 @@
           {% endif %}
         </div>
       </article>
+      {% endwith %}
+      {% endif %}
       {% endfor %}
     </div>
   </div>

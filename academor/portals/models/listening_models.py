@@ -5,6 +5,17 @@ from django.utils.translation import gettext_lazy as _
 from ckeditor.fields import RichTextField
 
 
+class ListeningQuestionType(models.TextChoices):
+    MAP_LABELLING = 'map_labelling', _('Map labelling')
+    PLAN_LABELLING = 'plan_labelling', _('Plan labelling')
+
+
+LABEL_GROUP_QUESTION_TYPES = frozenset({
+    ListeningQuestionType.MAP_LABELLING,
+    ListeningQuestionType.PLAN_LABELLING,
+})
+
+
 class ListeningAudio(models.Model):
     """Listening clip for a listening quiz (IELTS-style audio section)."""
 
@@ -69,6 +80,96 @@ class ListeningAudio(models.Model):
         return ''
 
 
+class ListeningQuestionGroup(models.Model):
+    """Shared map/plan diagram and letter pool for IELTS labelling tasks (e.g. Q17–20)."""
+
+    audio = models.ForeignKey(
+        ListeningAudio,
+        on_delete=models.CASCADE,
+        related_name='question_groups',
+        verbose_name=_('Audio section'),
+    )
+    order = models.PositiveIntegerField(
+        default=0,
+        verbose_name=_('Order'),
+    )
+    title = models.CharField(
+        max_length=255,
+        blank=True,
+        verbose_name=_('Title'),
+        help_text=_('Shown to students, e.g. Questions 17–20.'),
+    )
+    instructions = RichTextField(
+        blank=True,
+        verbose_name=_('Instructions'),
+        help_text=_('Task instructions shown above the map/plan.'),
+    )
+    question_type = models.CharField(
+        max_length=32,
+        choices=ListeningQuestionType.choices,
+        default=ListeningQuestionType.MAP_LABELLING,
+        verbose_name=_('Task type'),
+    )
+    diagram_image = models.ImageField(
+        upload_to='portals/listening/diagrams/',
+        blank=True,
+        null=True,
+        verbose_name=_('Map / plan image'),
+        help_text=_('Upload the labelled diagram (map or floor plan).'),
+    )
+    option_pool = models.JSONField(
+        default=list,
+        blank=True,
+        verbose_name=_('Label options'),
+        help_text=_('Letter pool shown as columns, e.g. ["A", "B", "C", "D", "E", "F", "G"].'),
+    )
+
+    class Meta:
+        verbose_name = _('Listening question group')
+        verbose_name_plural = _('Listening question groups')
+        ordering = ('order', 'id')
+
+    def __str__(self):
+        label = (self.title or self.get_question_type_display() or '').strip()
+        if label:
+            return label[:80]
+        return str(_('Listening group %(pk)s') % {'pk': self.pk or '—'})
+
+    @property
+    def pool_options(self) -> list[str]:
+        return [str(item).strip() for item in (self.option_pool or []) if str(item).strip()]
+
+    @property
+    def is_label_group(self) -> bool:
+        return self.question_type in LABEL_GROUP_QUESTION_TYPES
+
+    def clean(self):
+        super().clean()
+        if self.question_type in LABEL_GROUP_QUESTION_TYPES:
+            if len(self.pool_options) < 2:
+                raise ValidationError(
+                    {'option_pool': _('Add at least two label options (e.g. A through G).')},
+                )
+            if not self.diagram_image and not strip_tags(self.instructions or '').strip():
+                raise ValidationError(
+                    _('Upload a map/plan image or add instructions with the diagram.'),
+                )
+            return
+        self.option_pool = []
+
+
+def resolve_listening_question_options(question: 'ListeningQuestion') -> list[str]:
+    if question.group_id and question.group:
+        pool = question.group.pool_options
+        if len(pool) >= 2:
+            return pool
+    return [
+        str(item).strip()
+        for item in (question.answer_options or [])
+        if str(item).strip()
+    ]
+
+
 class ListeningQuestion(models.Model):
     """Gap-fill / short-answer task under a listening audio clip."""
 
@@ -77,6 +178,15 @@ class ListeningQuestion(models.Model):
         on_delete=models.CASCADE,
         related_name='questions',
         verbose_name=_('Audio section'),
+    )
+    group = models.ForeignKey(
+        ListeningQuestionGroup,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='questions',
+        verbose_name=_('Question group'),
+        help_text=_('Optional map/plan labelling group with a shared letter pool.'),
     )
     order = models.PositiveIntegerField(
         default=0,
@@ -148,7 +258,11 @@ class ListeningQuestion(models.Model):
 
     @property
     def variant_options(self) -> list[str]:
-        return [str(item).strip() for item in (self.answer_options or []) if str(item).strip()]
+        return resolve_listening_question_options(self)
+
+    @property
+    def in_label_group(self) -> bool:
+        return bool(self.group_id and self.group and self.group.is_label_group)
 
     @property
     def spr_accepted_answers(self) -> list[str]:
@@ -167,11 +281,15 @@ class ListeningQuestion(models.Model):
 
     def clean(self):
         super().clean()
+        if self.group_id and self.group.audio_id != self.audio_id:
+            raise ValidationError({'group': _('Question group must belong to the same audio clip.')})
 
         options = self.variant_options
         if len(options) >= 2:
             self.spr_correct_answers = None
             self.spr_max_length = None
+            if self.in_label_group:
+                self.answer_options = []
             from portals.utils.quiz_correct_option import sync_correct_option_fields
 
             resolved = sync_correct_option_fields(
@@ -205,7 +323,10 @@ class ListeningQuestion(models.Model):
     def save(self, *args, **kwargs):
         options = self.variant_options
         if len(options) >= 2:
-            self.answer_options = options
+            if not self.in_label_group:
+                self.answer_options = options
+            else:
+                self.answer_options = []
             self.spr_correct_answers = None
             self.spr_max_length = None
             from portals.utils.quiz_correct_option import sync_correct_option_fields

@@ -28,6 +28,11 @@ from portals.admin.display import (
     portal_score_chip,
 )
 from portals.admin.mixins import CourseTypeTabFilterMixin, PortalModelAdmin
+from portals.admin.listening_inline_formsets import (
+    ListeningQuestionGroupInlineFormSet,
+    ListeningQuestionInlineFormSet,
+    link_pending_listening_question_groups,
+)
 from portals.admin.reading_inline_formsets import (
     ReadingQuestionGroupInlineFormSet,
     ReadingQuestionInlineFormSet,
@@ -35,6 +40,7 @@ from portals.admin.reading_inline_formsets import (
 )
 from portals.admin.quiz_forms import (
     ListeningQuestionAdminForm,
+    ListeningQuestionGroupAdminForm,
     QuizQuestionAdminForm,
     ReadingQuestionAdminForm,
     ReadingQuestionGroupAdminForm,
@@ -77,6 +83,7 @@ from portals.models import (
     LessonHomework,
     ListeningAudio,
     ListeningQuestion,
+    ListeningQuestionGroup,
     ReadingPassage,
     ReadingQuestion,
     ReadingQuestionGroup,
@@ -438,12 +445,26 @@ class QuizQuestionInline(admin.StackedInline):
         return fields
 
 
+class ListeningQuestionGroupInline(admin.StackedInline):
+    model = ListeningQuestionGroup
+    form = ListeningQuestionGroupAdminForm
+    formset = ListeningQuestionGroupInlineFormSet
+    extra = 0
+    fields = ('order', 'title', 'instructions', 'question_type', 'diagram_image', 'option_pool_text')
+    ordering = ('order', 'id')
+    show_change_link = True
+    verbose_name = _('Map / plan group')
+    verbose_name_plural = _('Map / plan groups (Questions 17–20 style)')
+
+
 class ListeningQuestionInline(admin.StackedInline):
     model = ListeningQuestion
     form = ListeningQuestionAdminForm
+    formset = ListeningQuestionInlineFormSet
     extra = 0
     fields = (
         'order',
+        'group_ref',
         'question',
         'answer_options',
         'correct_option_number',
@@ -462,6 +483,7 @@ class ListeningQuestionInline(admin.StackedInline):
         js = (
             'portals/admin/js/answer-options-widget.js',
             'portals/admin/js/listening-question-type-toggle.js',
+            'portals/admin/js/listening-audio-admin.js',
         )
 
 
@@ -732,14 +754,15 @@ class ListeningAudioAdmin(PortalModelAdmin):
     search_fields = ('title', 'description', 'quiz__topic', 'quiz__category__name')
     autocomplete_fields = ('quiz',)
     ordering = ('quiz', 'order', 'id')
-    inlines = (ListeningQuestionInline,)
+    inlines = (ListeningQuestionGroupInline, ListeningQuestionInline,)
     actions = ['convert_gapfill_questions_to_spr']
     fieldsets = (
         (None, {
             'description': _(
                 'Each audio clip belongs to a listening quiz. '
-                'Add listening questions in the section below. '
-                'For multiple choice, set Correct option to 1, 2, 3, or 4.'
+                'Add a Map / plan group for IELTS labelling tasks (Q17–20 style), '
+                'then link questions to that group. Set Correct option to 1, 2, 3… '
+                '(column letter from the group pool).'
             ),
             'fields': ('quiz', 'order', 'title', 'description', 'audio_file', 'audio_url'),
         }),
@@ -755,7 +778,61 @@ class ListeningAudioAdmin(PortalModelAdmin):
         js = (
             'portals/admin/js/answer-options-widget.js',
             'portals/admin/js/listening-question-type-toggle.js',
+            'portals/admin/js/listening-audio-admin.js',
         )
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom = [
+            path(
+                'group-options/',
+                self.admin_site.admin_view(self.group_options_view),
+                name='portals_listeningaudio_group_options',
+            ),
+        ]
+        return custom + urls
+
+    def group_options_view(self, request):
+        audio_id = request.GET.get('audio_id')
+        if not audio_id:
+            return JsonResponse({'groups': []})
+        try:
+            audio_pk = int(audio_id)
+        except (TypeError, ValueError):
+            return JsonResponse({'groups': []})
+        groups = (
+            ListeningQuestionGroup.objects.filter(audio_id=audio_pk)
+            .order_by('order', 'id')
+            .values('id', 'title', 'order', 'question_type')
+        )
+        return JsonResponse({
+            'groups': [
+                {
+                    'id': row['id'],
+                    'title': row['title'] or '',
+                    'order': row['order'],
+                    'question_type': row['question_type'],
+                }
+                for row in groups
+            ],
+        })
+
+    def save_related(self, request, form, formsets, change):
+        group_formset = None
+        question_formset = None
+        for inline_formset in formsets:
+            if inline_formset.model is ListeningQuestionGroup:
+                group_formset = inline_formset
+            elif inline_formset.model is ListeningQuestion:
+                question_formset = inline_formset
+        super().save_related(request, form, formsets, change)
+        link_pending_listening_question_groups(group_formset, question_formset)
+
+    def render_change_form(self, request, context, add=False, change=False, form_url='', obj=None):
+        context['listening_group_options_url'] = reverse(
+            'admin:portals_listeningaudio_group_options',
+        )
+        return super().render_change_form(request, context, add, change, form_url, obj)
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'quiz':

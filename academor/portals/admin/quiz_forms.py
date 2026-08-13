@@ -6,7 +6,12 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from portals.admin.widgets import AnswerOptionsFormField, AnswerOptionsWidget
-from portals.models import ListeningQuestion, Quiz, QuizCategory, QuizQuestion
+from portals.models import ListeningQuestion, ListeningQuestionGroup, Quiz, QuizCategory, QuizQuestion
+from portals.models.listening_models import (
+    LABEL_GROUP_QUESTION_TYPES,
+    ListeningQuestionType,
+    resolve_listening_question_options,
+)
 from portals.models.reading_models import (
     CHOICE_QUESTION_TYPES,
     GROUP_QUESTION_TYPES,
@@ -24,7 +29,72 @@ from portals.utils.quiz_correct_option import (
 from portals.utils.sat_spr_validation import plain_spr_text
 
 
+class ListeningQuestionGroupAdminForm(forms.ModelForm):
+    option_pool_text = forms.CharField(
+        required=False,
+        label=_('Label options'),
+        help_text=_('One letter per line, e.g. A through G for map labelling.'),
+        widget=forms.Textarea(attrs={'rows': 4, 'class': 'vLargeTextField'}),
+    )
+
+    class Meta:
+        model = ListeningQuestionGroup
+        fields = (
+            'order',
+            'title',
+            'instructions',
+            'question_type',
+            'diagram_image',
+            'option_pool',
+        )
+        widgets = {
+            'instructions': CKEditorUploadingWidget(),
+            'option_pool': forms.HiddenInput(),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['option_pool'].required = False
+        if self.instance and self.instance.pk:
+            pool = self.instance.option_pool or []
+            if isinstance(pool, list) and pool:
+                self.initial['option_pool_text'] = '\n'.join(str(item) for item in pool)
+
+    def clean_option_pool_text(self):
+        raw = (self.cleaned_data.get('option_pool_text') or '').strip()
+        if not raw:
+            return []
+        options = []
+        for line in raw.replace(',', '\n').splitlines():
+            value = line.strip()
+            if value and value not in options:
+                options.append(value)
+        return options
+
+    def clean(self):
+        cleaned = super().clean()
+        pool = cleaned.get('option_pool_text') or []
+        cleaned['option_pool'] = pool
+        cleaned.pop('option_pool_text', None)
+        question_type = cleaned.get('question_type')
+        if question_type in LABEL_GROUP_QUESTION_TYPES:
+            if len(pool) < 2:
+                self.add_error('option_pool_text', _('Add at least two label options (e.g. A through G).'))
+        else:
+            cleaned['option_pool'] = []
+        return cleaned
+
+
 class ListeningQuestionAdminForm(forms.ModelForm):
+    group_ref = forms.ChoiceField(
+        required=False,
+        label=_('Map / plan group'),
+        choices=[('', '---------')],
+        help_text=_(
+            'Choose a map/plan labelling group. Letters come from the group pool — '
+            'set Correct option to 1, 2, 3… (column number).',
+        ),
+    )
     correct_option_number = forms.IntegerField(
         label=_('Correct option'),
         required=False,
@@ -48,6 +118,7 @@ class ListeningQuestionAdminForm(forms.ModelForm):
         model = ListeningQuestion
         fields = (
             'order',
+            'group',
             'question',
             'answer_options',
             'correct_option_number',
@@ -58,6 +129,7 @@ class ListeningQuestionAdminForm(forms.ModelForm):
         )
         widgets = {
             'question': CKEditorUploadingWidget(),
+            'group': forms.HiddenInput(),
             'correct_answer': forms.HiddenInput(),
             'correct_option_index': forms.HiddenInput(),
             'spr_max_length': forms.NumberInput(attrs={'class': 'vIntegerField'}),
@@ -65,6 +137,11 @@ class ListeningQuestionAdminForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self._pending_group_index = None
+        if 'group' in self.fields:
+            self.fields['group'].required = False
+        if 'group_ref' in self.fields:
+            self.fields['group_ref'].widget.attrs.update({'class': 'listening-question-group-ref'})
         self.fields['answer_options'].required = False
         self.fields['correct_answer'].required = False
         self.fields['correct_answer'].widget = forms.HiddenInput()
@@ -168,14 +245,98 @@ class ListeningQuestionAdminForm(forms.ModelForm):
                 answers.append(text)
         return answers
 
+            if initial_number is not None:
+                self.initial['correct_option_number'] = initial_number
+            if self.instance.group_id:
+                self.initial['group_ref'] = f'id:{self.instance.group_id}'
+
+    class Media:
+        css = {'all': ('portals/css/answer-options-widget.css', 'portals/css/quiz-question-admin.css',)}
+        js = (
+            'portals/admin/js/answer-options-widget.js',
+            'portals/admin/js/listening-question-type-toggle.js',
+            'portals/admin/js/listening-audio-admin.js',
+        )
+
+    def _resolve_audio_id(self):
+        if self.instance and self.instance.audio_id:
+            return self.instance.audio_id
+        raw = ''
+        if self.data:
+            raw = (
+                self.data.get(self.add_prefix('audio'))
+                or self.data.get('audio')
+                or ''
+            )
+        try:
+            return int(raw) if raw else None
+        except (TypeError, ValueError):
+            return None
+
+    def clean_group_ref(self):
+        return (self.cleaned_data.get('group_ref') or '').strip()
+
+    def _choice_options_for_cleaned(self, cleaned):
+        probe = self.instance.__class__()
+        probe.answer_options = cleaned.get('answer_options') or []
+        probe.group = cleaned.get('group')
+        if probe.group is None and getattr(self.instance, 'group_id', None):
+            probe.group = getattr(self.instance, 'group', None)
+        return resolve_listening_question_options(probe)
+
     def clean(self):
         cleaned = super().clean()
-        options = cleaned.get('answer_options') or []
+
+        self._pending_group_index = None
+        group_ref = (cleaned.pop('group_ref', '') or '').strip()
+        audio_id = self._resolve_audio_id()
+
+        if not group_ref:
+            cleaned['group'] = None
+            self.instance.group = None
+        elif group_ref.startswith('id:'):
+            try:
+                group_pk = int(group_ref[3:])
+            except (TypeError, ValueError):
+                self.add_error('group_ref', _('Invalid question group.'))
+                cleaned['group'] = None
+                self.instance.group = None
+            else:
+                group_qs = ListeningQuestionGroup.objects.filter(pk=group_pk)
+                if audio_id:
+                    group_qs = group_qs.filter(audio_id=audio_id)
+                group = group_qs.first()
+                if not group:
+                    self.add_error('group_ref', _('Selected question group was not found.'))
+                    cleaned['group'] = None
+                    self.instance.group = None
+                else:
+                    cleaned['group'] = group
+                    self.instance.group = group
+        elif group_ref.startswith('idx:'):
+            try:
+                self._pending_group_index = int(group_ref[4:])
+            except (TypeError, ValueError):
+                self.add_error('group_ref', _('Invalid question group.'))
+            cleaned['group'] = None
+            self.instance.group = None
+        else:
+            self.add_error('group_ref', _('Invalid question group.'))
+            cleaned['group'] = None
+            self.instance.group = None
+
+        options = self._choice_options_for_cleaned(cleaned)
+        inline_options = cleaned.get('answer_options') or []
+        if len(inline_options) >= 2:
+            options = inline_options
         correct = (cleaned.get('correct_answer') or '').strip()
         spr_answers = cleaned.get('spr_correct_answers') or []
 
         if len(options) >= 2:
-            cleaned['answer_options'] = options
+            if cleaned.get('group'):
+                cleaned['answer_options'] = []
+            else:
+                cleaned['answer_options'] = options
             cleaned['spr_correct_answers'] = None
             cleaned['spr_max_length'] = None
             resolved = sync_correct_option_fields(
