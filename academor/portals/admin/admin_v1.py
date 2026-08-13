@@ -479,7 +479,12 @@ class ListeningQuestionInline(admin.StackedInline):
     classes = ('portal-quiz-inline',)
 
     class Media:
-        css = {'all': ('portals/css/answer-options-widget.css', 'portals/css/quiz-question-admin.css',)}
+        css = {
+            'all': (
+                'portals/css/quiz-question-admin.css',
+                'portals/css/answer-options-widget.css',
+            ),
+        }
         js = (
             'portals/admin/js/answer-options-widget.js',
             'portals/admin/js/listening-question-type-toggle.js',

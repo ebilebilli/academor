@@ -29,6 +29,35 @@ from portals.utils.quiz_correct_option import (
 from portals.utils.sat_spr_validation import plain_spr_text
 
 
+class DynamicGroupRefChoiceField(forms.ChoiceField):
+    """
+    Map/plan group select is filled by admin JS (id:<pk> / idx:<n>).
+    Those values are not known at form class definition time, so accept them here.
+    """
+
+    def valid_value(self, value):
+        if value in ('', None):
+            return True
+        text = str(value).strip()
+        if text.startswith(('id:', 'idx:')):
+            suffix = text.split(':', 1)[1]
+            try:
+                int(suffix)
+            except (TypeError, ValueError):
+                return False
+            return True
+        return super().valid_value(value)
+
+
+def _group_ref_choices_from_groups(groups, *, label_fallback='Group'):
+    choices = [('', '---------')]
+    for group in groups:
+        title = (getattr(group, 'title', None) or '').strip()
+        label = title or f'{label_fallback} {getattr(group, "order", "") or group.pk}'
+        choices.append((f'id:{group.pk}', label))
+    return choices
+
+
 class ListeningQuestionGroupAdminForm(forms.ModelForm):
     option_pool_text = forms.CharField(
         required=False,
@@ -106,7 +135,7 @@ class ListeningQuestionGroupAdminForm(forms.ModelForm):
 
 
 class ListeningQuestionAdminForm(forms.ModelForm):
-    group_ref = forms.ChoiceField(
+    group_ref = DynamicGroupRefChoiceField(
         required=False,
         label=_('Map / plan group'),
         choices=[('', '---------')],
@@ -162,6 +191,7 @@ class ListeningQuestionAdminForm(forms.ModelForm):
             self.fields['group'].required = False
         if 'group_ref' in self.fields:
             self.fields['group_ref'].widget.attrs.update({'class': 'listening-question-group-ref'})
+            self._configure_listening_group_ref_choices()
         self.fields['answer_options'].required = False
         self.fields['correct_answer'].required = False
         self.fields['correct_answer'].widget = forms.HiddenInput()
@@ -211,12 +241,48 @@ class ListeningQuestionAdminForm(forms.ModelForm):
                 self.initial['group_ref'] = f'id:{self.instance.group_id}'
 
     class Media:
-        css = {'all': ('portals/css/answer-options-widget.css', 'portals/css/quiz-question-admin.css',)}
+        css = {
+            'all': (
+                'portals/css/quiz-question-admin.css',
+                'portals/css/answer-options-widget.css',
+            ),
+        }
         js = (
             'portals/admin/js/answer-options-widget.js',
             'portals/admin/js/listening-question-type-toggle.js',
             'portals/admin/js/listening-audio-admin.js',
         )
+
+    def _configure_listening_group_ref_choices(self):
+        audio_id = self._resolve_audio_id()
+        groups = []
+        if audio_id:
+            groups = list(
+                ListeningQuestionGroup.objects.filter(audio_id=audio_id).order_by('order', 'id'),
+            )
+        choices = _group_ref_choices_from_groups(groups, label_fallback='Group')
+        seen = {value for value, _label in choices}
+        if self.data:
+            posted = (self.data.get(self.add_prefix('group_ref')) or '').strip()
+            if posted and posted not in seen:
+                choices.append((posted, posted))
+                seen.add(posted)
+            for key in self.data:
+                if not str(key).endswith('-option_pool_text'):
+                    continue
+                parts = str(key).rsplit('-', 2)
+                if len(parts) != 3:
+                    continue
+                prefix, index = parts[0], parts[1]
+                if self.data.get(f'{prefix}-{index}-DELETE'):
+                    continue
+                ref = f'idx:{index}'
+                if ref in seen:
+                    continue
+                title = (self.data.get(f'{prefix}-{index}-title') or '').strip()
+                choices.append((ref, title or f'New group {index}'))
+                seen.add(ref)
+        self.fields['group_ref'].choices = choices
 
     def clean_answer_options(self):
         raw = self.cleaned_data.get('answer_options')
@@ -912,7 +978,7 @@ class ReadingQuestionAdminForm(forms.ModelForm):
         ),
         widget=forms.NumberInput(attrs={'class': 'vIntegerField', 'style': 'max-width: 6rem;'}),
     )
-    group_ref = forms.ChoiceField(
+    group_ref = DynamicGroupRefChoiceField(
         required=False,
         label=_('Question group'),
         choices=[('', '---------')],
@@ -993,6 +1059,7 @@ class ReadingQuestionAdminForm(forms.ModelForm):
             self.fields['group'].widget = forms.HiddenInput()
         if 'group_ref' in self.fields:
             self.fields['group_ref'].widget.attrs.update({'class': 'reading-question-group-ref'})
+            self._configure_reading_group_ref_choices()
         self.fields['answer_options'].required = False
         self.fields['answer_options'].help_text = _(
             'Add answer choices using the + button for multiple choice. '
@@ -1057,6 +1124,43 @@ class ReadingQuestionAdminForm(forms.ModelForm):
                     for item in alternatives
                     if str(item).strip()
                 )
+
+    def _configure_reading_group_ref_choices(self):
+        passage_id = self._resolve_passage_id()
+        groups = []
+        if passage_id:
+            groups = list(
+                ReadingQuestionGroup.objects.filter(passage_id=passage_id).order_by('order', 'id'),
+            )
+        choices = _group_ref_choices_from_groups(groups, label_fallback='Group')
+        seen = {value for value, _label in choices}
+        if self.data:
+            posted = (self.data.get(self.add_prefix('group_ref')) or '').strip()
+            if posted and posted not in seen:
+                choices.append((posted, posted))
+                seen.add(posted)
+            for key in self.data:
+                if not str(key).endswith('-title'):
+                    continue
+                parts = str(key).rsplit('-', 2)
+                if len(parts) != 3 or parts[2] != 'title':
+                    continue
+                prefix, index = parts[0], parts[1]
+                # Only reading question group inlines expose option_pool (not option_pool_text).
+                if (
+                    self.data.get(f'{prefix}-{index}-option_pool') is None
+                    and self.data.get(f'{prefix}-{index}-option_pool_text') is None
+                ):
+                    continue
+                if self.data.get(f'{prefix}-{index}-DELETE'):
+                    continue
+                ref = f'idx:{index}'
+                if ref in seen:
+                    continue
+                title = (self.data.get(key) or '').strip()
+                choices.append((ref, title or f'New group {index}'))
+                seen.add(ref)
+        self.fields['group_ref'].choices = choices
 
     def _resolve_passage_id(self):
         if self.instance and self.instance.passage_id:

@@ -454,6 +454,45 @@ class ReadingQuestionAdminFieldConfigTests(QuizReadingTests):
         self.assertEqual(question.correct_option_index, 0)
         self.assertEqual(question.correct_answer, 'One')
 
+    def test_listening_map_group_ref_accepts_dynamic_choice(self):
+        from portals.admin.quiz_forms import ListeningQuestionAdminForm
+        from portals.models import ListeningAudio, ListeningQuestionGroup, Quiz
+        from portals.models.listening_models import ListeningQuestionType
+
+        quiz = Quiz.objects.create(
+            category=self.ielts_category,
+            topic='Listening Map',
+            is_listening=True,
+        )
+        audio = ListeningAudio.objects.create(quiz=quiz, order=1, title='Section 2')
+        group = ListeningQuestionGroup.objects.create(
+            audio=audio,
+            order=1,
+            title='Questions 17–20',
+            question_type=ListeningQuestionType.MAP_LABELLING,
+            option_pool=['A', 'B', 'C', 'D', 'E', 'F', 'G'],
+        )
+        form = ListeningQuestionAdminForm(
+            data={
+                'audio': audio.pk,
+                'order': 17,
+                'group_ref': f'id:{group.pk}',
+                'question': '<p>bridge foundations</p>',
+                'answer_options': '[]',
+                'correct_option_number': 2,
+                'spr_correct_answers': '[]',
+            },
+        )
+        self.assertTrue(form.is_valid(), form.errors)
+        question = form.save(commit=False)
+        question.audio = audio
+        question.save()
+        question.refresh_from_db()
+        self.assertEqual(question.group_id, group.pk)
+        self.assertEqual(question.correct_option_index, 1)
+        self.assertEqual(question.correct_answer, 'B')
+        self.assertFalse(question.spr_correct_answers)
+
     def test_reading_question_admin_form_stores_spr_answers(self):
         from portals.admin.quiz_forms import ReadingQuestionAdminForm
 
