@@ -377,15 +377,21 @@ class ReadingQuestion(models.Model):
                 raise ValidationError(
                     _('Add answer options, a matching group, or use a fixed choice type.'),
                 )
-            correct = (self.correct_answer or '').strip()
-            if not correct:
-                raise ValidationError({'correct_answer': _('Enter the correct answer.')})
-            index = matching_option_index(options, correct)
-            if index is None:
+            from portals.utils.quiz_correct_option import sync_correct_option_fields
+
+            resolved = sync_correct_option_fields(
+                options,
+                existing_index=self.correct_option_index,
+                existing_answer=(self.correct_answer or '').strip(),
+                match_answer=matching_option_index,
+            )
+            if resolved is None:
                 raise ValidationError(
-                    {'correct_answer': _('Correct answer must match one of the options or option labels.')},
+                    {'correct_answer': _('Select which answer option is correct.')},
                 )
-            self.correct_option_index = index
+            idx, answer = resolved
+            self.correct_option_index = idx
+            self.correct_answer = answer
             return
 
         if self.is_text_type:
@@ -425,8 +431,16 @@ class ReadingQuestion(models.Model):
                         for item in (self.answer_options or [])
                         if str(item).strip()
                     ]
-                correct = (self.correct_answer or '').strip()
-                index = matching_option_index(options, correct)
-                if index is not None:
-                    self.correct_option_index = index
+                from portals.utils.quiz_correct_option import sync_correct_option_fields
+
+                resolved = sync_correct_option_fields(
+                    options,
+                    existing_index=self.correct_option_index,
+                    existing_answer=(self.correct_answer or '').strip(),
+                    match_answer=matching_option_index,
+                )
+                if resolved is not None:
+                    idx, answer = resolved
+                    self.correct_option_index = idx
+                    self.correct_answer = answer
         super().save(*args, **kwargs)

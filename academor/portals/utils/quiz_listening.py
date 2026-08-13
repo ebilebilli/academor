@@ -139,12 +139,12 @@ def listening_correct_option_index(question: ListeningQuestion) -> int | None:
     options = question.variant_options
     if len(options) < 2:
         return None
-    correct = (question.correct_answer or '').strip()
-    if correct and correct in options:
-        return options.index(correct)
     index = question.correct_option_index
     if 0 <= index < len(options):
         return index
+    correct = (question.correct_answer or '').strip()
+    if correct and correct in options:
+        return options.index(correct)
     return None
 
 

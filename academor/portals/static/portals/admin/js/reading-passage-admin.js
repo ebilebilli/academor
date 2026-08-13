@@ -11,13 +11,17 @@
     "spr_max_length",
     "accept_alternatives_text",
     "question",
+    "correct_option_number",
     "correct_answer",
+    "correct_option_index",
   ];
 
   var FALLBACK_HELP = {
     question:
       "Prompt, table, flow-chart, or diagram context. Leave blank for a numbered answer line only when appropriate.",
-    correct_answer: "Exact text for gap-fill tasks or the matching option label.",
+    correct_option_number:
+      "Enter 1 for Option 1, 2 for Option 2, 3 for Option 3, 4 for Option 4. This is what auto-scoring uses.",
+    correct_answer: "Stored automatically from the selected option number.",
     answer_options:
       "JSON list for multiple choice only. Leave empty for fixed or group options.",
     question_config:
@@ -283,9 +287,9 @@
       showSet.case_insensitive = true;
       showSet.spr_correct_answers = true;
       showSet.spr_max_length = true;
-      clearFields.push("correct_answer", "accept_alternatives_text");
+      clearFields.push("correct_option_number", "correct_answer", "correct_option_index", "accept_alternatives_text");
     } else {
-      showSet.correct_answer = true;
+      showSet.correct_option_number = true;
       clearFields.push(
         "question_config",
         "word_limit",
@@ -298,6 +302,7 @@
 
     var fieldHelp = {
       question: FALLBACK_HELP.question,
+      correct_option_number: FALLBACK_HELP.correct_option_number,
       correct_answer: FALLBACK_HELP.correct_answer,
       answer_options: FALLBACK_HELP.answer_options,
       question_config: FALLBACK_HELP.question_config,
@@ -309,14 +314,14 @@
     };
 
     if (type === "mcq") {
-      fieldHelp.correct_answer = "Must exactly match one of the answer options.";
+      fieldHelp.correct_option_number = "Enter the option number (1 = first option, 2 = second, …).";
     } else if (type === "tfng") {
-      fieldHelp.correct_answer = "Enter one of: True, False, Not Given.";
+      fieldHelp.correct_option_number = "Enter 1 for True, 2 for False, 3 for Not Given.";
     } else if (type === "ynng") {
-      fieldHelp.correct_answer = "Enter one of: Yes, No, Not Given.";
+      fieldHelp.correct_option_number = "Enter 1 for Yes, 2 for No, 3 for Not Given.";
     } else if (MATCHING_TYPES[type]) {
-      fieldHelp.correct_answer =
-        "Must exactly match one option from the selected group pool.";
+      fieldHelp.correct_option_number =
+        "Enter the option number from the selected group pool (1 = first, 2 = second, …).";
     } else if (TEXT_TYPES[type]) {
       fieldHelp.question_config = "Advanced JSON only.";
     }

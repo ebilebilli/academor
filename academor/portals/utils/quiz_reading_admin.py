@@ -19,6 +19,9 @@ READING_QUESTION_TOGGLE_FIELDS = (
     'spr_correct_answers',
     'spr_max_length',
     'accept_alternatives_text',
+    'correct_option_number',
+    'correct_answer',
+    'correct_option_index',
 )
 
 
@@ -46,11 +49,18 @@ def reading_question_admin_field_config(question_type: str | None) -> dict:
             'case_insensitive',
             'question_config',
         ])
-        hide_fields.extend(['correct_answer', 'accept_alternatives_text'])
+        hide_fields.extend([
+            'correct_option_number',
+            'correct_answer',
+            'correct_option_index',
+            'accept_alternatives_text',
+        ])
         clear_fields.append('accept_alternatives_text')
     else:
-        show_fields.append('correct_answer')
+        show_fields.append('correct_option_number')
         hide_fields.extend([
+            'correct_answer',
+            'correct_option_index',
             'spr_correct_answers',
             'spr_max_length',
             'word_limit',
@@ -84,6 +94,10 @@ def reading_question_admin_field_config(question_type: str | None) -> dict:
             'Prompt, table, flow-chart, or diagram context. '
             'Leave blank for a numbered answer line only when appropriate.',
         )),
+        'correct_option_number': str(_(
+            'Enter 1 for Option 1, 2 for Option 2, 3 for Option 3, 4 for Option 4. '
+            'This is what auto-scoring uses.',
+        )),
         'correct_answer': str(_('Exact text for gap-fill tasks or the matching option label.')),
         'answer_options': str(_(
             'JSON list for multiple choice only. Leave empty for fixed or group options.',
@@ -109,20 +123,20 @@ def reading_question_admin_field_config(question_type: str | None) -> dict:
     }
 
     if is_mcq:
-        field_help['correct_answer'] = str(
-            _('Must exactly match one of the answer options.'),
+        field_help['correct_option_number'] = str(
+            _('Enter the option number (1 = first option, 2 = second, …).'),
         )
     elif is_tfng:
-        field_help['correct_answer'] = str(
-            _('Enter one of: True, False, Not Given.'),
+        field_help['correct_option_number'] = str(
+            _('Enter 1 for True, 2 for False, 3 for Not Given.'),
         )
     elif is_ynng:
-        field_help['correct_answer'] = str(
-            _('Enter one of: Yes, No, Not Given.'),
+        field_help['correct_option_number'] = str(
+            _('Enter 1 for Yes, 2 for No, 3 for Not Given.'),
         )
     elif is_matching:
-        field_help['correct_answer'] = str(
-            _('Must exactly match one option from the selected group pool.'),
+        field_help['correct_option_number'] = str(
+            _('Enter the option number from the selected group pool (1 = first, 2 = second, …).'),
         )
 
     return {

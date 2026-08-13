@@ -380,6 +380,8 @@ class ReadingQuestionAdminFieldConfigTests(QuizReadingTests):
 
         config = reading_question_admin_field_config(ReadingQuestionType.MCQ)
         self.assertIn('answer_options', config['show_fields'])
+        self.assertIn('correct_option_number', config['show_fields'])
+        self.assertIn('correct_answer', config['hide_fields'])
         self.assertIn('group_ref', config['hide_fields'])
         self.assertIn('group_ref', config['clear_fields'])
 
@@ -399,7 +401,58 @@ class ReadingQuestionAdminFieldConfigTests(QuizReadingTests):
         self.assertIn('spr_max_length', config['show_fields'])
         self.assertIn('word_limit', config['show_fields'])
         self.assertIn('answer_options', config['hide_fields'])
+        self.assertIn('correct_option_number', config['hide_fields'])
         self.assertIn('correct_answer', config['hide_fields'])
+
+    def test_reading_mcq_admin_form_uses_option_number(self):
+        from portals.admin.quiz_forms import ReadingQuestionAdminForm
+
+        quiz = self._create_reading_quiz()
+        passage = quiz.reading_passages.first()
+        form = ReadingQuestionAdminForm(
+            data={
+                'passage': passage.pk,
+                'order': 6,
+                'question_type': ReadingQuestionType.MCQ,
+                'question': '<p>Pick one.</p>',
+                'answer_options': json.dumps(['Alpha', 'Beta', 'Gamma']),
+                'correct_option_number': 2,
+            },
+        )
+        self.assertTrue(form.is_valid(), form.errors)
+        question = form.save(commit=False)
+        question.passage = passage
+        question.save()
+        question.refresh_from_db()
+        self.assertEqual(question.correct_option_index, 1)
+        self.assertEqual(question.correct_answer, 'Beta')
+
+    def test_listening_mcq_admin_form_uses_option_number(self):
+        from portals.admin.quiz_forms import ListeningQuestionAdminForm
+        from portals.models import ListeningAudio, Quiz
+
+        quiz = Quiz.objects.create(
+            category=self.ielts_category,
+            topic='Listening MCQ',
+            is_listening=True,
+        )
+        audio = ListeningAudio.objects.create(quiz=quiz, order=1, title='Section 1')
+        form = ListeningQuestionAdminForm(
+            data={
+                'audio': audio.pk,
+                'order': 1,
+                'question': '<p>Choose.</p>',
+                'answer_options': json.dumps(['One', 'Two']),
+                'correct_option_number': 1,
+            },
+        )
+        self.assertTrue(form.is_valid(), form.errors)
+        question = form.save(commit=False)
+        question.audio = audio
+        question.save()
+        question.refresh_from_db()
+        self.assertEqual(question.correct_option_index, 0)
+        self.assertEqual(question.correct_answer, 'One')
 
     def test_reading_question_admin_form_stores_spr_answers(self):
         from portals.admin.quiz_forms import ReadingQuestionAdminForm

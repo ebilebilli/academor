@@ -24,7 +24,7 @@
       return;
     }
     var isMcq = optionCount(form) >= 2;
-    form.find('.field-correct_answer').toggle(isMcq);
+    form.find('.field-correct_option_number, .field-correct_answer, .field-correct_option_index').toggle(isMcq);
     form.find('.field-spr_correct_answers, .field-spr_max_length').toggle(!isMcq);
   }
 

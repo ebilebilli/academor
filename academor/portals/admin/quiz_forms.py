@@ -17,10 +17,24 @@ from portals.models.reading_models import (
     TEXT_QUESTION_TYPES,
 )
 from portals.models.speaking_models import SpeakingPart
+from portals.utils.quiz_correct_option import (
+    initial_option_number_from_index,
+    sync_correct_option_fields,
+)
 from portals.utils.sat_spr_validation import plain_spr_text
 
 
 class ListeningQuestionAdminForm(forms.ModelForm):
+    correct_option_number = forms.IntegerField(
+        label=_('Correct option'),
+        required=False,
+        min_value=1,
+        help_text=_(
+            'Enter 1 for Option 1, 2 for Option 2, 3 for Option 3, 4 for Option 4. '
+            'This is what auto-scoring uses.',
+        ),
+        widget=forms.NumberInput(attrs={'class': 'vIntegerField', 'style': 'max-width: 6rem;'}),
+    )
     answer_options = AnswerOptionsFormField()
     spr_correct_answers = AnswerOptionsFormField(
         widget=AnswerOptionsWidget(
@@ -36,13 +50,16 @@ class ListeningQuestionAdminForm(forms.ModelForm):
             'order',
             'question',
             'answer_options',
+            'correct_option_number',
             'correct_answer',
+            'correct_option_index',
             'spr_correct_answers',
             'spr_max_length',
         )
         widgets = {
             'question': CKEditorUploadingWidget(),
-            'correct_answer': forms.TextInput(attrs={'class': 'vTextField'}),
+            'correct_answer': forms.HiddenInput(),
+            'correct_option_index': forms.HiddenInput(),
             'spr_max_length': forms.NumberInput(attrs={'class': 'vIntegerField'}),
         }
 
@@ -50,15 +67,13 @@ class ListeningQuestionAdminForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['answer_options'].required = False
         self.fields['correct_answer'].required = False
+        self.fields['correct_option_index'].required = False
+        self.fields['correct_option_number'].required = False
         self.fields['spr_correct_answers'].required = False
         self.fields['spr_max_length'].required = False
         self.fields['answer_options'].help_text = _(
             'Optional: Add answer choices using the + button for multiple-choice. '
             'Leave empty for a typed (SPR) answer.',
-        )
-        self.fields['correct_answer'].help_text = _(
-            'For multiple-choice: must exactly match one option. '
-            'For typed answers, prefer SPR correct answers below.',
         )
         self.fields['spr_correct_answers'].help_text = _(
             'Typed answers: add one or more accepted correct answers '
@@ -86,6 +101,11 @@ class ListeningQuestionAdminForm(forms.ModelForm):
                     if plain_spr_text(item)
                 )
                 self.initial['spr_correct_answers'] = [item for item in seed if item]
+            initial_number = initial_option_number_from_index(
+                getattr(self.instance, 'correct_option_index', None),
+            )
+            if initial_number is not None:
+                self.initial['correct_option_number'] = initial_number
 
     class Media:
         css = {'all': ('portals/css/answer-options-widget.css',)}
@@ -155,15 +175,23 @@ class ListeningQuestionAdminForm(forms.ModelForm):
             cleaned['answer_options'] = options
             cleaned['spr_correct_answers'] = None
             cleaned['spr_max_length'] = None
-            if not correct:
-                self.add_error('correct_answer', _('Enter the correct answer.'))
-            elif correct not in options:
+            resolved = sync_correct_option_fields(
+                options,
+                option_number=cleaned.get('correct_option_number'),
+                existing_index=getattr(self.instance, 'correct_option_index', None),
+                existing_answer=correct,
+                match_answer=lambda opts, value: opts.index(value) if value in opts else None,
+            )
+            if resolved is None:
                 self.add_error(
-                    'correct_answer',
-                    _('Correct answer must exactly match one of the options.'),
+                    'correct_option_number',
+                    _('Enter which option is correct (1 = Option 1, 2 = Option 2, …).'),
                 )
             else:
-                cleaned['correct_option_index'] = options.index(correct)
+                idx, answer = resolved
+                cleaned['correct_option_index'] = idx
+                cleaned['correct_answer'] = answer
+                cleaned['correct_option_number'] = idx + 1
             return cleaned
 
         cleaned['answer_options'] = []
@@ -612,6 +640,16 @@ class ReadingQuestionGroupAdminForm(forms.ModelForm):
 
 
 class ReadingQuestionAdminForm(forms.ModelForm):
+    correct_option_number = forms.IntegerField(
+        label=_('Correct option'),
+        required=False,
+        min_value=1,
+        help_text=_(
+            'Enter 1 for Option 1, 2 for Option 2, 3 for Option 3, 4 for Option 4. '
+            'This is what auto-scoring uses.',
+        ),
+        widget=forms.NumberInput(attrs={'class': 'vIntegerField', 'style': 'max-width: 6rem;'}),
+    )
     group_ref = forms.ChoiceField(
         required=False,
         label=_('Question group'),
@@ -655,7 +693,9 @@ class ReadingQuestionAdminForm(forms.ModelForm):
             'question_type',
             'question',
             'answer_options',
+            'correct_option_number',
             'correct_answer',
+            'correct_option_index',
             'spr_correct_answers',
             'spr_max_length',
             'question_config',
@@ -668,6 +708,8 @@ class ReadingQuestionAdminForm(forms.ModelForm):
             'question_config': forms.Textarea(
                 attrs={'rows': 4, 'class': 'vLargeTextField portal-quiz-json-field'},
             ),
+            'correct_answer': forms.HiddenInput(),
+            'correct_option_index': forms.HiddenInput(),
             'spr_max_length': forms.NumberInput(attrs={'class': 'vIntegerField'}),
         }
 
@@ -687,6 +729,8 @@ class ReadingQuestionAdminForm(forms.ModelForm):
         self.fields['answer_options'].required = False
         self.fields['question_config'].required = False
         self.fields['correct_answer'].required = False
+        self.fields['correct_option_index'].required = False
+        self.fields['correct_option_number'].required = False
         self.fields['spr_correct_answers'].required = False
         self.fields['spr_max_length'].required = False
         self.fields['answer_options'].help_text = _(
@@ -725,6 +769,11 @@ class ReadingQuestionAdminForm(forms.ModelForm):
                     if plain_spr_text(item)
                 )
                 self.initial['spr_correct_answers'] = [item for item in seed if item]
+            initial_number = initial_option_number_from_index(
+                getattr(self.instance, 'correct_option_index', None),
+            )
+            if initial_number is not None:
+                self.initial['correct_option_number'] = initial_number
         if isinstance(config, dict):
             if config.get('word_limit') not in (None, ''):
                 self.initial['word_limit'] = config.get('word_limit')
@@ -794,6 +843,52 @@ class ReadingQuestionAdminForm(forms.ModelForm):
                 alternatives.append(value)
         return alternatives
 
+    def _choice_options_for_cleaned(self, cleaned):
+        from portals.models.reading_models import resolve_reading_question_options
+
+        probe = self.instance.__class__()
+        probe.question_type = cleaned.get('question_type') or self.instance.question_type
+        probe.answer_options = cleaned.get('answer_options') or []
+        probe.group = cleaned.get('group')
+        if probe.group is None and getattr(self.instance, 'group_id', None):
+            probe.group = getattr(self.instance, 'group', None)
+        return resolve_reading_question_options(probe)
+
+    def _apply_choice_correct_option(self, cleaned):
+        from portals.models.reading_models import CHOICE_QUESTION_TYPES, matching_option_index
+
+        question_type = cleaned.get('question_type')
+        if question_type not in CHOICE_QUESTION_TYPES:
+            return cleaned
+
+        options = self._choice_options_for_cleaned(cleaned)
+        if len(options) < 2:
+            return cleaned
+
+        resolved = sync_correct_option_fields(
+            options,
+            option_number=cleaned.get('correct_option_number'),
+            existing_index=(
+                cleaned.get('correct_option_index')
+                if cleaned.get('correct_option_index') is not None
+                else getattr(self.instance, 'correct_option_index', None)
+            ),
+            existing_answer=(cleaned.get('correct_answer') or '').strip(),
+            match_answer=matching_option_index,
+        )
+        if resolved is None:
+            self.add_error(
+                'correct_option_number',
+                _('Enter which option is correct (1 = Option 1, 2 = Option 2, …).'),
+            )
+            return cleaned
+
+        idx, answer = resolved
+        cleaned['correct_option_index'] = idx
+        cleaned['correct_answer'] = answer
+        cleaned['correct_option_number'] = idx + 1
+        return cleaned
+
     def clean(self):
         cleaned = super().clean()
         question_type = cleaned.get('question_type')
@@ -857,7 +952,7 @@ class ReadingQuestionAdminForm(forms.ModelForm):
         if not group_ref:
             cleaned['group'] = None
             self.instance.group = None
-            return cleaned
+            return self._apply_choice_correct_option(cleaned)
 
         if group_ref.startswith('id:'):
             try:
@@ -878,7 +973,7 @@ class ReadingQuestionAdminForm(forms.ModelForm):
                 return cleaned
             cleaned['group'] = group
             self.instance.group = group
-            return cleaned
+            return self._apply_choice_correct_option(cleaned)
 
         if group_ref.startswith('idx:'):
             try:
@@ -887,12 +982,12 @@ class ReadingQuestionAdminForm(forms.ModelForm):
                 self.add_error('group_ref', _('Invalid question group.'))
             cleaned['group'] = None
             self.instance.group = None
-            return cleaned
+            return self._apply_choice_correct_option(cleaned)
 
         self.add_error('group_ref', _('Invalid question group.'))
         cleaned['group'] = None
         self.instance.group = None
-        return cleaned
+        return self._apply_choice_correct_option(cleaned)
 
     def clean_answer_options(self):
         raw = self.cleaned_data.get('answer_options')

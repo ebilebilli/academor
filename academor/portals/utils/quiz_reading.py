@@ -173,14 +173,11 @@ def reading_correct_option_index(question: ReadingQuestion) -> int | None:
     options = question.variant_options
     if len(options) < 2:
         return None
-    correct = (question.correct_answer or '').strip()
-    index = matching_option_index(options, correct)
-    if index is not None:
-        return index
     index = question.correct_option_index
     if 0 <= index < len(options):
         return index
-    return None
+    correct = (question.correct_answer or '').strip()
+    return matching_option_index(options, correct)
 
 
 def reading_selected_option_index(question: ReadingQuestion, raw_value) -> int | None:

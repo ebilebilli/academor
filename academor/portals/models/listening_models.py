@@ -172,14 +172,21 @@ class ListeningQuestion(models.Model):
         if len(options) >= 2:
             self.spr_correct_answers = None
             self.spr_max_length = None
-            correct = (self.correct_answer or '').strip()
-            if not correct:
-                raise ValidationError({'correct_answer': _('Enter the correct answer.')})
-            if correct not in options:
+            from portals.utils.quiz_correct_option import sync_correct_option_fields
+
+            resolved = sync_correct_option_fields(
+                options,
+                existing_index=self.correct_option_index,
+                existing_answer=(self.correct_answer or '').strip(),
+                match_answer=lambda opts, value: opts.index(value) if value in opts else None,
+            )
+            if resolved is None:
                 raise ValidationError(
-                    {'correct_answer': _('Correct answer must exactly match one of the options.')},
+                    {'correct_answer': _('Select which answer option is correct.')},
                 )
-            self.correct_option_index = options.index(correct)
+            idx, answer = resolved
+            self.correct_option_index = idx
+            self.correct_answer = answer
             return
 
         # Typed gap-fill (legacy single correct_answer / JSON answer) → SPR list.
@@ -201,9 +208,18 @@ class ListeningQuestion(models.Model):
             self.answer_options = options
             self.spr_correct_answers = None
             self.spr_max_length = None
-            correct = (self.correct_answer or '').strip()
-            if correct in options:
-                self.correct_option_index = options.index(correct)
+            from portals.utils.quiz_correct_option import sync_correct_option_fields
+
+            resolved = sync_correct_option_fields(
+                options,
+                existing_index=self.correct_option_index,
+                existing_answer=(self.correct_answer or '').strip(),
+                match_answer=lambda opts, value: opts.index(value) if value in opts else None,
+            )
+            if resolved is not None:
+                idx, answer = resolved
+                self.correct_option_index = idx
+                self.correct_answer = answer
         else:
             from portals.utils.quiz_listening import build_listening_spr_answers
 

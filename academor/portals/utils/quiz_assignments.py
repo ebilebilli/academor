@@ -355,8 +355,8 @@ def set_student_quiz_assignments(
 def get_teacher_student_quiz_access_rows(teacher_id, student_id):
     """Quizzes the teacher may assign, grouped by category, with active state.
 
-    General quizzes (no IELTS/SAT flag) appear as one category-level toggle.
-    IELTS/SAT-flagged quizzes are listed individually for per-quiz control.
+    Each category has a master toggle covering every quiz in that category.
+    IELTS/SAT-flagged quizzes are also listed individually for per-quiz control.
     """
     from portals.utils.quiz_category_services import quiz_category_primary_portal_code
 
@@ -414,9 +414,12 @@ def get_teacher_student_quiz_access_rows(teacher_id, student_id):
 
     for bucket in categories:
         general = bucket.pop('general_quizzes')
-        if general:
-            active_count = sum(1 for row in general if row['is_active'])
-            quiz_count = len(general)
+        program = bucket.get('quizzes') or []
+        # Category master switch covers every quiz in the category (general + IELTS/SAT).
+        all_rows = list(general) + [{'is_active': row['is_active']} for row in program]
+        if all_rows:
+            active_count = sum(1 for row in all_rows if row['is_active'])
+            quiz_count = len(all_rows)
             bucket['category_access'] = {
                 'quiz_count': quiz_count,
                 'active_count': active_count,
@@ -425,6 +428,6 @@ def get_teacher_student_quiz_access_rows(teacher_id, student_id):
             }
         bucket['control_count'] = (
             (1 if bucket.get('category_access') else 0)
-            + len(bucket.get('quizzes') or [])
+            + len(program)
         )
     return [bucket for bucket in categories if bucket.get('category_access') or bucket.get('quizzes')]
