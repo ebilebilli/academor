@@ -9,7 +9,7 @@
     role="listitem"
   >
     <span class="portal-quiz-play-option__letter">{{ forloop.counter0|quiz_option_letter|upper }}</span>
-    <span class="portal-quiz-play-option__text">{{ option }}</span>
+    <span class="portal-quiz-play-option__text">{{ option|quiz_html }}</span>
     <span class="portal-quiz-teacher-option-marks">
       {% if q.correct_option_index is not None and forloop.counter0 == q.correct_option_index %}
       <span class="portal-quiz-teacher-correct-mark" title="{% trans 'Correct answer' %}">
