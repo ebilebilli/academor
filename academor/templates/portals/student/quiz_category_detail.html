@@ -100,7 +100,7 @@
               <a class="ds-btn ds-btn--secondary btn-sm" href="{% url 'portals:student-score-detail' result_pk=quiz.result_id %}">{% trans 'Bal' %}</a>
               <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:student-manual-quiz-take' pk=quiz.id %}">{% trans 'Təkrar' %}</a>
               {% else %}
-              <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:student-manual-quiz-take' pk=quiz.id %}">{% trans 'Təqdim et' %}</a>
+              <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:student-manual-quiz-take' pk=quiz.id %}">{% trans 'Başla' %}</a>
               {% endif %}
             {% else %}
             <span class="text-muted">—</span>

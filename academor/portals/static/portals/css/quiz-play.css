@@ -236,10 +236,11 @@
 
 .portal-quiz-play-option {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto minmax(0, 1fr);
   gap: 0.65rem;
   align-items: start;
   margin: 0;
+  max-width: 100%;
   padding: 0.75rem 0.85rem;
   border: 1px solid var(--admin-border);
   border-radius: 12px;
@@ -285,8 +286,12 @@
 }
 
 .portal-quiz-play-option__text {
+  min-width: 0;
+  max-width: 100%;
   line-height: 1.45;
   padding-top: 0.15rem;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .portal-quiz-answer-key {
@@ -437,7 +442,6 @@
 }
 
 @media (max-width: 575.98px) {
-  .portal-quiz-take,
   .portal-quiz-take-form,
   .portal-quiz-play-stack,
   .portal-quiz-play-card,
@@ -445,10 +449,6 @@
   .portal-quiz-play-option__text {
     min-width: 0;
     max-width: 100%;
-  }
-
-  .portal-quiz-take {
-    overflow-x: clip;
   }
 
   .portal-quiz-prompt__text,
@@ -728,6 +728,12 @@ html[data-theme="dark"] .portal-quiz-take-toolbar--timed {
 
 .portal-quiz-take--has-dock {
   padding-bottom: 6.5rem;
+}
+
+.portal-quiz-take {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 .portal-manual-quiz-layout {
@@ -1148,11 +1154,15 @@ html[data-theme="dark"] .portal-quiz-start-modal__icon {
 .portal-listening-stack {
   display: grid;
   gap: 1.5rem;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .portal-listening-section {
   display: grid;
   gap: 0;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .portal-listening-section__audio {
@@ -1360,6 +1370,8 @@ html[data-theme="dark"] .portal-quiz-start-modal__icon {
 }
 
 .portal-listening-section__tasks {
+  min-width: 0;
+  max-width: 100%;
   border: 1px solid var(--admin-border);
   border-top: 0;
   border-radius: 0 0 16px 16px;
@@ -1376,6 +1388,10 @@ html[data-theme="dark"] .portal-quiz-start-modal__icon {
   border-radius: 12px;
   background: var(--admin-surface-soft);
   border: 1px dashed rgba(13, 148, 136, 0.28);
+}
+
+.portal-listening-section__tasks-copy {
+  min-width: 0;
 }
 
 .portal-listening-section__connector {
@@ -1427,9 +1443,13 @@ html[data-theme="dark"] .portal-quiz-start-modal__icon {
 .portal-listening-section__task-list {
   display: grid;
   gap: 0.85rem;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .portal-listening-task {
+  min-width: 0;
+  max-width: 100%;
   padding: 1rem 1.05rem;
   border: 1px solid var(--admin-border);
   border-radius: 14px;
@@ -1490,10 +1510,14 @@ html[data-theme="dark"] .portal-quiz-start-modal__icon {
 }
 
 .portal-listening-task__prompt {
+  min-width: 0;
+  max-width: 100%;
   margin-bottom: 0.85rem;
   font-size: 0.98rem;
   line-height: 1.55;
   color: var(--admin-text);
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .portal-listening-task__prompt p:last-child {
