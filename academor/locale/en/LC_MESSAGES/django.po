@@ -6262,33 +6262,25 @@ msgstr "Stay on quiz"
 
 #: academor/templates/portals/includes/quiz_listening_section.html:11
 #: academor/templates/portals/includes/quiz_listening_section.html:72
-#, fuzzy, python-format
-#| msgid "Question %(pk)s"
 msgid "Section %(num)s"
-msgstr "Question %(pk)s"
+msgstr "Section %(num)s"
 
 #: academor/templates/portals/includes/quiz_listening_section.html:18
-#, fuzzy, python-format
-#| msgid "Listening practice"
 msgid "Listening clip %(num)s"
-msgstr "Listening practice"
+msgstr "Listening clip %(num)s"
 
 #: academor/templates/portals/includes/quiz_listening_section.html:31
 msgid "This clip can only be played once."
 msgstr "This clip can only be played once."
 
 #: academor/templates/portals/includes/quiz_listening_section.html:49
-#, fuzzy
-#| msgid "No questions in this quiz."
 msgid "Questions for this audio"
-msgstr "No questions in this quiz."
+msgstr "Questions for this audio"
 
 #: academor/templates/portals/includes/quiz_listening_section.html:53
 #: academor/templates/portals/includes/quiz_reading_section.html:38
-#, fuzzy, python-format
-#| msgid "Question %(pk)s"
 msgid "Question %(num)s"
-msgstr "Question %(pk)s"
+msgstr "Question %(num)s"
 
 #: academor/templates/portals/includes/quiz_listening_section.html:55
 #: academor/templates/portals/includes/quiz_reading_section.html:40
@@ -6305,6 +6297,33 @@ msgstr "Listen to the clip above, then answer below."
 msgid "Q"
 msgstr "Q"
 
+#: academor/templates/portals/includes/quiz_listening_section.html:90
+msgid "Enter answer"
+msgstr "Enter answer"
+
+#: academor/templates/portals/includes/quiz_listening_group_instructions.html:13
+msgid "Map / plan diagram"
+msgstr "Map / plan diagram"
+
+#: academor/templates/portals/includes/quiz_listening_spr.html:4
+#, python-format
+msgid "Your answer for question %(n)s"
+msgstr "Your answer for question %(n)s"
+
+#: academor/templates/portals/includes/quiz_listening_spr.html:14
+msgid "Enter your answer"
+msgstr "Enter your answer"
+
+#: academor/templates/portals/includes/quiz_listening_spr.html:25
+#, python-format
+msgid "Maximum %(max)s characters"
+msgstr "Maximum %(max)s characters"
+
+#: academor/templates/portals/includes/quiz_listening_map_matrix.html:37
+#, python-format
+msgid "Question %(num)s — %(letter)s"
+msgstr "Question %(num)s — %(letter)s"
+
 #: academor/templates/portals/includes/quiz_listening_variant.html:3
 #: academor/templates/portals/includes/quiz_reading_question_choice.html:3
 #, fuzzy, python-format
@@ -6313,10 +6332,8 @@ msgid "Answer choices for question %(n)s"
 msgstr "Answer choices for question %(n)s"
 
 #: academor/templates/portals/includes/quiz_listening_variant_review.html:4
-#, fuzzy
-#| msgid "No recording submitted."
 msgid "No answer submitted."
-msgstr "No recording submitted."
+msgstr "No answer submitted."
 
 #: academor/templates/portals/includes/quiz_manual_status_aside.html:2
 #, fuzzy

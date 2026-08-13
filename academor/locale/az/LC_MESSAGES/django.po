@@ -6281,7 +6281,7 @@ msgstr "Bu fraqment yalnız bir dəfə oxuna bilər."
 #: academor/templates/portals/includes/quiz_listening_section.html:49
 #| msgid "No questions in this quiz."
 msgid "Questions for this audio"
-msgstr "Bu quizdə sual yoxdur."
+msgstr "Bu audio üçün suallar"
 
 #: academor/templates/portals/includes/quiz_listening_section.html:53
 #: academor/templates/portals/includes/quiz_reading_section.html:38
@@ -6305,6 +6305,33 @@ msgstr "Yuxarıdakı fraqmenti dinləyin, sonra aşağıda cavab verin."
 msgid "Q"
 msgstr "S"
 
+#: academor/templates/portals/includes/quiz_listening_section.html:90
+msgid "Enter answer"
+msgstr "Cavabı yazın"
+
+#: academor/templates/portals/includes/quiz_listening_group_instructions.html:13
+msgid "Map / plan diagram"
+msgstr "Xəritə / plan diaqramı"
+
+#: academor/templates/portals/includes/quiz_listening_spr.html:4
+#, python-format
+msgid "Your answer for question %(n)s"
+msgstr "%(n)s sualı üçün cavabınız"
+
+#: academor/templates/portals/includes/quiz_listening_spr.html:14
+msgid "Enter your answer"
+msgstr "Cavabınızı yazın"
+
+#: academor/templates/portals/includes/quiz_listening_spr.html:25
+#, python-format
+msgid "Maximum %(max)s characters"
+msgstr "Maksimum %(max)s simvol"
+
+#: academor/templates/portals/includes/quiz_listening_map_matrix.html:37
+#, python-format
+msgid "Question %(num)s — %(letter)s"
+msgstr "Sual %(num)s — %(letter)s"
+
 #: academor/templates/portals/includes/quiz_listening_variant.html:3
 #: academor/templates/portals/includes/quiz_reading_question_choice.html:3
 #, python-format
@@ -6315,7 +6342,7 @@ msgstr "%(n)s sualı üçün cavab variantları"
 #: academor/templates/portals/includes/quiz_listening_variant_review.html:4
 #| msgid "No recording submitted."
 msgid "No answer submitted."
-msgstr "Səs yazısı göndərilməyib."
+msgstr "Cavab göndərilməyib."
 
 #: academor/templates/portals/includes/quiz_manual_status_aside.html:2
 #| msgid "Session date"
