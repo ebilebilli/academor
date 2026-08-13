@@ -45,16 +45,13 @@ class ListeningQuestionGroupAdminForm(forms.ModelForm):
             'instructions',
             'question_type',
             'diagram_image',
-            'option_pool',
         )
         widgets = {
             'instructions': CKEditorUploadingWidget(),
-            'option_pool': forms.HiddenInput(),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['option_pool'].required = False
         if self.instance and self.instance.pk:
             pool = self.instance.option_pool or []
             if isinstance(pool, list) and pool:
@@ -83,6 +80,14 @@ class ListeningQuestionGroupAdminForm(forms.ModelForm):
         else:
             cleaned['option_pool'] = []
         return cleaned
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        instance.option_pool = self.cleaned_data.get('option_pool') or []
+        if commit:
+            instance.save()
+            self.save_m2m()
+        return instance
 
 
 class ListeningQuestionAdminForm(forms.ModelForm):
