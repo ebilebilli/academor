@@ -1,0 +1,377 @@
+{
+  "title": "Academor IELTS Academic Reading Test 1",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–13</strong></p><p>You should spend about 20 minutes on <strong>Questions 1–13</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>The Return of the Wolf to Yellowstone</strong></p><p>When Yellowstone National Park was established in 1872, wolves were a common sight across its forests and valleys. Within decades, however, they had all but disappeared. Under a federal programme designed to protect livestock and increase populations of game animals such as elk and deer, park rangers trapped, shot and poisoned wolves throughout the early twentieth century. By 1926, the last known pack in Yellowstone had been wiped out, and for nearly seventy years no wolf howl was heard in the park.</p><p>In the decades that followed, the elk population, freed from its principal predator, expanded dramatically. Herds grew so large that they placed immense pressure on the park's vegetation, particularly the willow, aspen and cottonwood trees that grew along rivers and streams. Because elk found little reason to avoid these open, grassy areas, they grazed there heavily and continuously, preventing young trees from ever reaching maturity. Scientists observing the park in the 1980s and early 1990s noted that many riverbank areas had become almost entirely treeless.</p><p>In 1995 and 1996, wildlife officials undertook an ambitious experiment: they captured 31 wolves in the Canadian province of Alberta and released them into Yellowstone. The move was controversial, provoking fierce opposition from ranchers in neighbouring states who feared for their livestock, but conservationists argued that restoring the top predator was essential to the long-term health of the ecosystem.</p><p>Within a few years, researchers began to notice striking changes. Elk numbers fell, partly due to direct predation, but perhaps more significantly, the surviving elk altered their behaviour. Rather than lingering in open valleys and along riverbanks - places where an approaching wolf pack could be seen for miles - elk became warier, retreating more often to areas with tree cover, where escape was easier. Biologists refer to this shift in behaviour, driven not by hunting alone but by fear of predators, as the 'ecology of fear'.</p><p>With grazing pressure reduced along the waterways, willow and aspen began, for the first time in decades, to grow tall enough to escape the reach of hungry elk. This regeneration of streamside vegetation had an unexpected beneficiary: the beaver. Beavers depend on young willow for both food and the construction material for their dams, and as the trees recovered, beaver colonies re-established themselves throughout the park. The dams they built created new ponds and wetlands, which in turn supported a wider variety of fish, waterfowl and amphibians than the park had seen in generations.</p><p>Wolves also altered the fortunes of the park's scavengers. A wolf kill, unlike a carcass that has died of natural causes, is typically only partially consumed, leaving substantial amounts of meat for other animals. Ravens, magpies, eagles and even grizzly bears have all been documented feeding at wolf kill sites, and some researchers believe this reliable new food source has boosted survival rates among certain scavenger species during the harsh winter months.</p><p>Not every scientist accepts the tidy narrative that has grown up around the reintroduction, however. Some ecologists caution that the recovery of Yellowstone's vegetation cannot be attributed to wolves alone; changes in elk hunting policy outside the park, a series of severe droughts, and the natural culling effect of harsh winters have also played a part. These researchers argue that describing the wolf as having single-handedly transformed the landscape - a claim sometimes made in popular accounts - oversimplifies a far more complicated ecological picture.</p><p>Whatever the precise scientific verdict, the reintroduction has proved to be an economic boon for the region. Visitor surveys conducted by the park suggest that a significant proportion of tourists now travel to Yellowstone specifically in the hope of glimpsing, or simply hearing, a wild wolf, and researchers have estimated that wolf-related tourism contributes tens of millions of dollars each year to the local economy. Outside the park's boundaries, though, the relationship between wolves and people remains far more fraught. Ranchers continue to report livestock losses, and disputes over compensation payments and hunting quotas remain a persistent source of tension in the region.</p>",
+      "question_groups": [],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "tfng",
+          "question": "<p>Wolves were eliminated from Yellowstone as part of an official government policy.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 2,
+          "question_type": "tfng",
+          "question": "<p>Elk numbers decreased steadily throughout the period when wolves were absent from the park.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 3,
+          "question_type": "tfng",
+          "question": "<p>All of the wolves reintroduced in 1995 and 1996 were captured within the United States.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 4,
+          "question_type": "tfng",
+          "question": "<p>The presence of wolves altered the areas where elk chose to graze.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 5,
+          "question_type": "tfng",
+          "question": "<p>Every scientist agrees that wolves were the main cause of the vegetation recovery.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 6,
+          "question_type": "tfng",
+          "question": "<p>Wolf reintroduction has caused local ranchers to lose interest in raising livestock altogether.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 7,
+          "question_type": "tfng",
+          "question": "<p>Tourists visiting Yellowstone specifically hope to see or hear wolves.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 8,
+          "question_type": "summary_completion",
+          "question": "<p><strong>The ecological effects of wolf reintroduction.</strong> By the time of reintroduction, decades of unchecked browsing had severely damaged the park's ____ along rivers and streams.</p>",
+          "correct_answer": "vegetation",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 9,
+          "question_type": "summary_completion",
+          "question": "<p>Once wolves returned, elk began avoiding open ground near water, fearing ____.</p>",
+          "correct_answer": "predators",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 10,
+          "question_type": "summary_completion",
+          "question": "<p>Freed from constant grazing, young willow and aspen trees were able to grow tall again, which in turn attracted ____ back into the area.</p>",
+          "correct_answer": "beavers",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 11,
+          "question_type": "summary_completion",
+          "question": "<p>The dams these animals built created new ____, benefiting a wide range of other species.</p>",
+          "correct_answer": "wetlands",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 12,
+          "question_type": "summary_completion",
+          "question": "<p>Scavengers such as ravens and bears also benefited, since a wolf ____ typically leaves meat for other animals to eat.</p>",
+          "correct_answer": "kill",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 13,
+          "question_type": "summary_completion",
+          "question": "<p>Beyond its ecological effects, the wolves' return has also brought considerable benefits to local ____.</p>",
+          "correct_answer": "tourism",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Passage 2",
+      "instructions": "<p><strong>Questions 14–26</strong></p><p>You should spend about 20 minutes on <strong>Questions 14–26</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Sleep, Screens and the Teenage Brain</strong></p><p>Parents of teenagers will be familiar with the nightly battle to get their children into bed at a reasonable hour, followed by the near-impossible task of rousing them the next morning. For a long time, this pattern was put down to laziness or poor discipline. Sleep researchers, however, have identified a biological explanation: as children move into adolescence, their internal body clocks undergo a genuine shift. Hormonal changes mean that melatonin, the hormone that signals to the brain that it is time to sleep, begins to be released later in the evening than it did in childhood, delaying the onset of natural sleepiness by roughly two hours on average.</p><p>Researchers sometimes describe the resulting mismatch between a teenager's internal clock and the conventional daily schedule as a form of permanent jet lag, since the adolescent brain is, in effect, operating on a different time zone from the rest of the household. The degree of this shift varies considerably from one individual to another, influenced by genetic factors as well as by the amount of daylight a teenager is exposed to during the day, so not all adolescents experience the change to the same extent.</p><p>Unfortunately, this newly delayed body clock arrives at precisely the moment when many education systems demand early starts. Secondary schools in numerous countries begin lessons at 8 a.m. or earlier, requiring many teenagers to wake at an hour when their bodies are still producing melatonin and are, biologically speaking, still primed for sleep. The clash between school timetables and adolescent biology has led some researchers to describe the current arrangement as a mismatch between institutional demands and a fundamental aspect of human development.</p><p>Compounding matters further is the widespread use of electronic devices among teenagers in the hours before bed. Smartphones, tablets and laptop screens emit a form of light rich in blue wavelengths, which has been shown to suppress melatonin production even more than ordinary indoor lighting. Beyond the physiological effect of the light itself, the content teenagers engage with - messaging friends, scrolling through social media feeds or watching videos - is often psychologically stimulating in ways that make falling asleep more difficult, regardless of how tired the body may be.</p><p>The cumulative result, for a great many adolescents, is chronic sleep deprivation. Surveys conducted in several countries suggest that a majority of secondary-school students fail to get the eight to ten hours of sleep recommended for their age group on a typical school night. The consequences extend well beyond simple tiredness. Because deep sleep plays a critical role in consolidating what has been learned during the day, chronically sleep-deprived students often struggle to retain new information, regardless of how attentively they studied. Insufficient sleep has also been linked to mood disturbances, reduced impulse control, and even measurable effects on physical health, including a weakened immune response.</p><p>One of the most closely watched natural experiments in this field took place when a large school district in the north-western United States delayed its high-school start time by nearly an hour, moving the first bell from 7:50 a.m. to 8:45 a.m. Researchers who tracked the change found that average sleep duration among students increased by roughly half an hour per night, and that attendance rates improved noticeably. Median grades in some subjects rose as well, although the researchers were careful to note that grades are influenced by many factors and that the improvement could not be attributed to sleep alone with complete certainty.</p><p>None of this means that persuading teenagers simply to 'go to bed earlier' is likely to solve the problem. Adolescents' social lives, part-time jobs, sporting commitments and homework loads all compete for the hours before bedtime, and a body clock that has not yet caught up with an earlier bedtime will often resist sleep regardless of how firmly a curfew is enforced. Sleep specialists increasingly argue that meaningful change requires adjustments at a structural level - most obviously, in the timing of the school day - rather than relying on individual willpower alone.</p><p>For now, most schools continue to operate on schedules designed with an earlier era's assumptions about human biology in mind. As evidence accumulates that adolescent sleep needs differ fundamentally from those of younger children and adults, an increasing number of education authorities are beginning to reconsider whether the traditional early start truly serves the interests of the students it is intended to educate.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 14–19",
+          "instructions": "<p>Complete the summary using the list of words, A–J, below.</p><p><em>Write the correct letter, A–J, for each answer.</em></p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "A. shift",
+            "B. jet lag",
+            "C. mismatch",
+            "D. electronic devices",
+            "E. sleep deprivation",
+            "F. physical health",
+            "G. academic pressure",
+            "H. natural rhythm",
+            "I. screen addiction",
+            "J. late nights"
+          ],
+          "questions": [
+            {
+              "order": 1,
+              "question": "<p>As children move into their teenage years, their body clocks undergo a marked ____.</p>",
+              "correct_answer": "A. shift"
+            },
+            {
+              "order": 2,
+              "question": "<p>This gives teenagers a kind of biological ____ compared with younger children and adults.</p>",
+              "correct_answer": "B. jet lag"
+            },
+            {
+              "order": 3,
+              "question": "<p>Unfortunately, this leads to a clear ____ with the timetables imposed by most secondary schools.</p>",
+              "correct_answer": "C. mismatch"
+            },
+            {
+              "order": 4,
+              "question": "<p>Compounding the problem is the widespread use of ____ among teenagers in the hours before bed.</p>",
+              "correct_answer": "D. electronic devices"
+            },
+            {
+              "order": 5,
+              "question": "<p>Over time, the result for many adolescents is chronic ____.</p>",
+              "correct_answer": "E. sleep deprivation"
+            },
+            {
+              "order": 6,
+              "question": "<p>This has knock-on effects for concentration, mood and even ____.</p>",
+              "correct_answer": "F. physical health"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 7,
+          "question_type": "ynng",
+          "question": "<p>According to researchers, teenagers' changing sleep patterns are primarily caused by lifestyle choices rather than biology.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 8,
+          "question_type": "ynng",
+          "question": "<p>Homework loads have increased in recent years, making the problem of teenage sleep loss worse.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 9,
+          "question_type": "ynng",
+          "question": "<p>Delaying school start times has been shown to improve students' attendance record.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 10,
+          "question_type": "ynng",
+          "question": "<p>All teenagers experience exactly the same shift in their sleep timing.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 11,
+          "question_type": "mcq",
+          "question": "<p>What does the writer say about blue light from screens?</p>",
+          "answer_options": [
+            "It affects melatonin production more than standard household lighting.",
+            "It is more damaging to teenagers than to younger children.",
+            "It has a greater effect on boys than on girls.",
+            "Researchers are uncertain whether it affects sleep at all."
+          ],
+          "correct_answer": "It affects melatonin production more than standard household lighting."
+        },
+        {
+          "order": 12,
+          "question_type": "mcq",
+          "question": "<p>Why, according to the passage, is simply advising teenagers to 'go to bed earlier' unlikely to work?</p>",
+          "answer_options": [
+            "Teenagers deliberately choose to ignore parental advice.",
+            "A range of competing commitments and an unadjusted body clock make early bedtimes difficult to achieve.",
+            "Most teenagers do not believe that sleep affects their health.",
+            "School authorities have not communicated the importance of sleep clearly enough."
+          ],
+          "correct_answer": "A range of competing commitments and an unadjusted body clock make early bedtimes difficult to achieve."
+        },
+        {
+          "order": 13,
+          "question_type": "mcq",
+          "question": "<p>What is the writer's overall conclusion about how schools should respond to the evidence on teenage sleep?</p>",
+          "answer_options": [
+            "Individual students should be given more responsibility for managing their own bedtimes.",
+            "Parents need to enforce stricter curfews at home.",
+            "Structural changes, such as adjusting school start times, are more likely to help than relying on personal willpower.",
+            "Schools should reduce homework to compensate for lost sleep."
+          ],
+          "correct_answer": "Structural changes, such as adjusting school start times, are more likely to help than relying on personal willpower."
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "title": "Passage 3",
+      "instructions": "<p><strong>Questions 27–40</strong></p><p>You should spend about 20 minutes on <strong>Questions 27–40</strong>, which are based on the reading passage below.</p>",
+      "body": "<p><strong>Bound by Hand: reviving the lost craft of bookbinding</strong></p><p><em>A review of Eleanor Voss's book Bound by Hand</em></p><p>In 2013, Eleanor Voss, then working as a museum conservator in Edinburgh, decided to make her sister an unusual wedding present: a hand-bound leather journal in which the newlyweds might record their life together. What began as a modest, sentimental gesture turned into an eight-year obsession, involving a string of technical setbacks that would have discouraged anyone with less persistence. It ended with Voss founding one of only a handful of workshops in Europe producing entirely handmade, bespoke books.</p><p>The first surprise recounted in Bound by Hand, Voss's account of this unplanned adventure, is quite how difficult it proved to source a genuinely well-made book. This might seem odd, given that bookbinding is one of the oldest crafts in the world; the practice of sewing folded sheets together and protecting them within stiff covers dates back at least to the second century CE, and elaborately bound volumes were treasured possessions among wealthy collectors for centuries afterwards. The French bibliophile Jean Grolier, whose personal library in the sixteenth century included books bound in tooled and gilded leather of exceptional quality, remains a byword among specialists for binding at its most refined. Surely, Voss reasoned, ordering a decent modern equivalent would be a simple matter of finding the right supplier.</p><p>She was soon disabused of this notion. A straightforward shop purchase, it turned out, was not going to solve her problem. The book trade, she discovered, had almost entirely abandoned traditional binding in favour of mechanised mass production generations earlier. What remained on the market fell into two unsatisfactory categories: basic kits intended for hobby use, offered by craft suppliers for beginners experimenting with bookbinding as a pastime, and genuine antique volumes sold by specialist dealers at prices far beyond what Voss could justify for a wedding gift.</p><p>Determined not to compromise, Voss travelled to workshops in Florence and Kyoto, two cities with long-standing reputations for fine binding, in the hope of finding a craftsperson willing to take on a single commission. In both places, she found that the specialist knowledge she was seeking had largely died out along with the generation of binders who once possessed it; the handful of practitioners she did track down were either fully retired or unwilling to take on outside work.</p><p>Undeterred, Voss resolved to bind the book herself, and in the process encountered almost every difficulty imaginable. Sewing the folded sheets, or signatures, into a text block sturdy enough to survive decades of use proved far harder than instructional books suggested, and her first several attempts collapsed the moment she tried to attach the covers. Leather, she learned, has a maddening tendency to warp unpredictably as it dries, so that a cover cut and shaped with painstaking care could, within days, no longer fit the book it was meant to protect.</p><p>Among the many technical hurdles Voss describes, none frustrated her more than gilding - the application of gold leaf to the edges of the pages and the decorative tooling on the cover. The gold leaf she initially bought was so thin that the slightest draught sent it drifting off the workbench, and applying it required a steady hand and an adhesive with exactly the right degree of tackiness, a combination it took her the better part of a year to perfect. Right at the point when she believed she had finally mastered the technique, she discovered that heat from her tooling irons had scorched a faint line across the leather cover - invisible at first glance, but glaringly obvious once the book was opened under bright light.</p><p>Voss's account of her own technical struggles is interwoven with portraits of well-known binders of earlier centuries, and it is clear she recognises something of herself in each of them. She writes with particular admiration for the eighteenth-century French binder Nicolas-Denis Derome, celebrated for the intricate lace-like tooling patterns that conservators still study today, and for the English binder T. J. Cobden-Sanderson, whose devotion to his craft in the early twentieth century was so absolute that he was said to have destroyed the specially cast metal type used by his own press rather than risk it falling into commercial hands.</p><p>Although Bound by Hand is, in large part, a celebration of a revived craft, it also reads as a quiet lament for skills that have nearly vanished. When Voss began her project, she struggled to find anyone able to teach her the specific hand-sewing techniques used in historical bindings, and several of the elderly craftspeople who eventually agreed to share their knowledge with her have since died. Voss writes candidly of her fear that, without deliberate efforts to pass such skills on to a new generation, entire techniques developed over centuries could disappear within a single lifetime.</p><p>Voss's sister did, eventually, receive her wedding journal - two years after the wedding itself. Voss went on to establish a small workshop that now produces around 200 bespoke volumes a year for private clients, some of whom commission books to mark anniversaries, retirements or the birth of a child. Bound by Hand, generously illustrated with photographs charting the various stages of Voss's journey alongside images of historic bindings, offers little practical guidance for anyone hoping to replicate her commercial success. What it does offer, in abundance, is a vivid sense of the patience, and occasional obsession, required to keep an old craft alive.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 27–32",
+          "instructions": "<p>Complete the summary using the list of words, A–J, below.</p><p><em>Write the correct letter, A–J, for each answer.</em></p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "A. hobby use",
+            "B. lengthy project",
+            "C. numerous setbacks",
+            "D. shop purchase",
+            "E. specialist knowledge",
+            "F. basic kits",
+            "G. rare materials",
+            "H. skilled craftsmen",
+            "I. financial support",
+            "J. online tutorials"
+          ],
+          "questions": [
+            {
+              "order": 1,
+              "question": "<p>Eleanor Voss's plan to bind a journal for her sister's wedding turned into an unexpectedly ____.</p>",
+              "correct_answer": "B. lengthy project"
+            },
+            {
+              "order": 2,
+              "question": "<p>She had to overcome ____.</p>",
+              "correct_answer": "C. numerous setbacks"
+            },
+            {
+              "order": 3,
+              "question": "<p>She quickly discovered that a simple ____ would not solve her problem.</p>",
+              "correct_answer": "D. shop purchase"
+            },
+            {
+              "order": 4,
+              "question": "<p>Some ____ that had been intended for hobbyists were available, as were some expensive antique volumes, but these were beyond her budget.</p>",
+              "correct_answer": "F. basic kits"
+            },
+            {
+              "order": 5,
+              "question": "<p>Some basic kits that had been intended for ____ were available, as were some expensive antique volumes, but these were beyond her budget.</p>",
+              "correct_answer": "A. hobby use"
+            },
+            {
+              "order": 6,
+              "question": "<p>She even travelled to places where people might still have the ____, but Voss could not find the help she wanted.</p>",
+              "correct_answer": "E. specialist knowledge"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 7,
+          "question_type": "ynng",
+          "question": "<p>The common assumption that early societies knew very little about bookbinding is accurate.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 8,
+          "question_type": "ynng",
+          "question": "<p>Jean Grolier was criticised by his contemporaries for the extravagance of his book collection.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 9,
+          "question_type": "ynng",
+          "question": "<p>The tooling patterns developed by Derome have been recreated exactly by modern binders.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 10,
+          "question_type": "ynng",
+          "question": "<p>Voss assumed she would have little difficulty finding a well-made book to buy.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 11,
+          "question_type": "mcq",
+          "question": "<p>When Voss discovered the scorch mark left by her tooling irons, she</p>",
+          "answer_options": [
+            "decided to complete the project as quickly as possible regardless of small flaws.",
+            "became aware of a problem she had not anticipated.",
+            "began to doubt the quality of the leather she had purchased.",
+            "considered abandoning the project altogether."
+          ],
+          "correct_answer": "became aware of a problem she had not anticipated."
+        },
+        {
+          "order": 12,
+          "question_type": "mcq",
+          "question": "<p>The reviewer mentions other bookbinders of the past because</p>",
+          "answer_options": [
+            "Voss was directly inspired by their specific techniques.",
+            "their achievements are largely unknown to modern readers.",
+            "Voss had something in common with each of them.",
+            "their difficulties could easily have been avoided."
+          ],
+          "correct_answer": "Voss had something in common with each of them."
+        },
+        {
+          "order": 13,
+          "question_type": "mcq",
+          "question": "<p>What point is made about Voss later in the review?</p>",
+          "answer_options": [
+            "She built long-term working relationships with many craftspeople.",
+            "She is untroubled by the general decline of interest in traditional crafts.",
+            "She places great importance on careful planning.",
+            "She regrets that so many hand-binding skills have nearly been lost."
+          ],
+          "correct_answer": "She regrets that so many hand-binding skills have nearly been lost."
+        },
+        {
+          "order": 14,
+          "question_type": "mcq",
+          "question": "<p>What does the reviewer say about Voss's book in the final paragraph?</p>",
+          "answer_options": [
+            "It provides little practical guidance on running a successful bindery business.",
+            "It overlooks several important historical bookbinders.",
+            "It fails to address the future of the craft.",
+            "It gives insufficient detail about individual customers."
+          ],
+          "correct_answer": "It provides little practical guidance on running a successful bindery business."
+        }
+      ]
+    }
+  ]
+}

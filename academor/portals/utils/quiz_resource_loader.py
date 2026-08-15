@@ -136,6 +136,7 @@ def parse_resource_file(path: Path) -> dict:
         'time_limit_minutes': data.get('time_limit_minutes'),
         'has_shared_passage': bool(data.get('has_shared_passage')),
         'shared_passage': (data.get('shared_passage') or data.get('passage') or '').strip(),
+        'shared_youtube_url': (data.get('shared_youtube_url') or '').strip(),
         'questions': questions,
     }
 
@@ -144,10 +145,18 @@ def ensure_quiz_from_resource(parsed: dict, category: QuizCategory) -> tuple[Qui
     """Create or update a Quiz row for a loaded JSON resource."""
     has_shared = bool(parsed.get('has_shared_passage'))
     shared_passage = (parsed.get('shared_passage') or '').strip()
+    shared_youtube_url = (parsed.get('shared_youtube_url') or '').strip()
     if has_shared and not shared_passage:
         raise ValueError(
             f'{parsed["resource_slug"]}: has_shared_passage is true but shared_passage is empty.',
         )
+    if has_shared and shared_youtube_url:
+        from portals.utils.lesson_media import extract_youtube_video_id
+
+        if not extract_youtube_video_id(shared_youtube_url):
+            raise ValueError(
+                f'{parsed["resource_slug"]}: shared_youtube_url must be a valid YouTube URL.',
+            )
 
     defaults = {
         'topic': parsed['resource_name'],
@@ -161,6 +170,7 @@ def ensure_quiz_from_resource(parsed: dict, category: QuizCategory) -> tuple[Qui
         'sat_section': parsed.get('sat_section', ''),
         'has_shared_passage': has_shared,
         'shared_passage': shared_passage if has_shared else '',
+        'shared_youtube_url': shared_youtube_url if has_shared else '',
     }
     time_limit = parsed.get('time_limit_minutes')
     if time_limit:

@@ -2085,6 +2085,8 @@ class QuizAdminForm(forms.ModelForm):
             'is_math',
             'has_shared_passage',
             'shared_passage',
+            'shared_audio_file',
+            'shared_youtube_url',
             'is_ielts',
             'is_sat',
             'sat_section',
@@ -2166,6 +2168,17 @@ class QuizAdminForm(forms.ModelForm):
                     'shared_passage',
                     _('Enter the shared passage text, or turn off shared passage layout.'),
                 )
+            if cleaned.get('shared_audio_file') and (cleaned.get('shared_youtube_url') or '').strip():
+                self.add_error(
+                    'shared_youtube_url',
+                    _('Choose either an audio file or a YouTube URL, not both.'),
+                )
+            youtube_url = (cleaned.get('shared_youtube_url') or '').strip()
+            if youtube_url:
+                from portals.utils.lesson_media import extract_youtube_video_id
+
+                if not extract_youtube_video_id(youtube_url):
+                    self.add_error('shared_youtube_url', _('Enter a valid YouTube video URL.'))
 
         return cleaned
 
@@ -2220,7 +2233,12 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
                 '(Reading-style layout). Not available with Listening, Writing essay, Speaking, '
                 'Reading, or Math formats.'
             ),
-            'fields': ('has_shared_passage', 'shared_passage'),
+            'fields': (
+                'has_shared_passage',
+                'shared_passage',
+                'shared_audio_file',
+                'shared_youtube_url',
+            ),
             'classes': ('quiz-shared-passage-fieldset',),
         }),
         (_('Exam program'), {

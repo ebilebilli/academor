@@ -346,20 +346,28 @@
     fieldset.classList.toggle("quiz-admin-hidden-fieldset", !isVariant);
 
     var flagInput = form.querySelector("#id_has_shared_passage");
-    var passageRow = form.querySelector(".field-shared_passage");
+    var sharedContentRows = [
+      form.querySelector(".field-shared_passage"),
+      form.querySelector(".field-shared_audio_file"),
+      form.querySelector(".field-shared_youtube_url")
+    ];
     if (!isVariant) {
       if (flagInput) {
         flagInput.checked = false;
       }
-      if (passageRow) {
-        passageRow.classList.add("quiz-admin-hidden-field");
-      }
+      sharedContentRows.forEach(function (row) {
+        if (row) {
+          row.classList.add("quiz-admin-hidden-field");
+        }
+      });
       return;
     }
     var enabled = !!(flagInput && flagInput.checked);
-    if (passageRow) {
-      passageRow.classList.toggle("quiz-admin-hidden-field", !enabled);
-    }
+    sharedContentRows.forEach(function (row) {
+      if (row) {
+        row.classList.toggle("quiz-admin-hidden-field", !enabled);
+      }
+    });
   }
 
   function selectedSatSection() {

@@ -1,0 +1,24 @@
+{% load i18n portal_tags %}
+{% if source.shared_audio_file_url %}
+<div class="portal-shared-passage__media">
+  <audio class="portal-shared-passage__audio" controls preload="metadata">
+    <source src="{{ source.shared_audio_file_url }}">
+    {% trans 'Your browser does not support audio playback.' %}
+  </audio>
+</div>
+{% elif source.shared_youtube_url %}
+  {% with embed_url=source.shared_youtube_url|youtube_embed_url %}
+  {% if embed_url %}
+  <div class="portal-shared-passage__media portal-shared-passage__video">
+    <iframe
+      src="{{ embed_url }}"
+      title="{% trans 'Passage video' %}"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen
+      loading="lazy"
+      referrerpolicy="strict-origin-when-cross-origin"
+    ></iframe>
+  </div>
+  {% endif %}
+  {% endwith %}
+{% endif %}

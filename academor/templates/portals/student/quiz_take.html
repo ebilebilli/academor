@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20260813b">
 {% if quiz.uses_shared_passage_layout %}
 <link rel="stylesheet" href="{% static 'portals/css/quiz-reading.css' %}?v=20260810a">
-<link rel="stylesheet" href="{% static 'portals/css/quiz-shared-passage.css' %}?v=20260810a">
+<link rel="stylesheet" href="{% static 'portals/css/quiz-shared-passage.css' %}?v=20260815a">
 {% endif %}
 {% endblock %}
 
@@ -78,6 +78,7 @@
         <header class="portal-reading-section__passage-head">
           <h2 class="portal-reading-section__title" id="shared-passage-title">{% trans 'Passage' %}</h2>
         </header>
+        {% include "portals/includes/quiz_shared_passage_media.html" with source=quiz %}
         <div class="portal-reading-section__body">{{ quiz.shared_passage|quiz_html }}</div>
       </div>
       <div class="portal-reading-section__tasks panel">

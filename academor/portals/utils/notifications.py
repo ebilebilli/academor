@@ -1097,6 +1097,12 @@ def _serialize_score_detail(row: QuizResult, *, role: str) -> dict:
         'has_shared_passage': quiz.has_shared_passage,
         'uses_shared_passage_layout': quiz.uses_shared_passage_layout,
         'shared_passage': quiz.shared_passage if quiz.uses_shared_passage_layout else '',
+        'shared_audio_file_url': (
+            quiz.shared_audio_file_url if quiz.uses_shared_passage_layout else ''
+        ),
+        'shared_youtube_url': (
+            quiz.shared_youtube_url if quiz.uses_shared_passage_layout else ''
+        ),
     }
     if quiz.is_variant_quiz:
         data['breakdown'] = _build_variant_breakdown(row)

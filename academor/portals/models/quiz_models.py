@@ -112,6 +112,18 @@ class Quiz(models.Model):
         verbose_name=_('Shared passage text'),
         help_text=_('Fixed text shown above all questions when shared passage layout is enabled.'),
     )
+    shared_audio_file = models.FileField(
+        upload_to='portals/quiz/shared-media/',
+        blank=True,
+        null=True,
+        verbose_name=_('Shared audio file'),
+        help_text=_('Optional audio shown with the shared passage.'),
+    )
+    shared_youtube_url = models.URLField(
+        blank=True,
+        verbose_name=_('Shared YouTube URL'),
+        help_text=_('Optional YouTube video shown with the shared passage.'),
+    )
     is_ielts = models.BooleanField(
         default=False,
         verbose_name=_('IELTS'),
@@ -246,6 +258,15 @@ class Quiz(models.Model):
         if not self.has_shared_passage or not self.is_variant_quiz:
             return False
         return bool(strip_tags(self.shared_passage or '').strip())
+
+    @property
+    def shared_audio_file_url(self):
+        if not self.shared_audio_file:
+            return ''
+        try:
+            return self.shared_audio_file.url
+        except ValueError:
+            return ''
 
     @property
     def uses_per_question_text_responses(self):
@@ -388,10 +409,22 @@ class Quiz(models.Model):
             or self.is_math
         ):
             self.has_shared_passage = False
-        elif self.has_shared_passage and not strip_tags(self.shared_passage or '').strip():
-            raise ValidationError({
-                'shared_passage': _('Enter the shared passage text, or turn off shared passage layout.'),
-            })
+        elif self.has_shared_passage:
+            if not strip_tags(self.shared_passage or '').strip():
+                raise ValidationError({
+                    'shared_passage': _('Enter the shared passage text, or turn off shared passage layout.'),
+                })
+            if self.shared_audio_file and (self.shared_youtube_url or '').strip():
+                raise ValidationError(
+                    _('Choose either a shared audio file or a YouTube URL, not both.'),
+                )
+            if (self.shared_youtube_url or '').strip():
+                from portals.utils.lesson_media import extract_youtube_video_id
+
+                if not extract_youtube_video_id(self.shared_youtube_url):
+                    raise ValidationError({
+                        'shared_youtube_url': _('Enter a valid YouTube video URL.'),
+                    })
 
         if self.is_time_limited:
             if not self.time_limit_minutes or self.time_limit_minutes < 1:
