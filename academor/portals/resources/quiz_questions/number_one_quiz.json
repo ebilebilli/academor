@@ -1,0 +1,111 @@
+{
+  "level": "A1",
+  "quiz": 6,
+  "title": "Home Sweet Home: Furniture and Location",
+  "service": "general_english",
+  "category_name": "Elementary Listening Tests",
+  "has_shared_passage": false,
+  "shared_passage": "",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Where is the desk in the bedroom?",
+      "options": [
+        "Under a window, next to the door.",
+        "Next to the wardrobe.",
+        "Behind the bed."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "What is over the bed in the bedroom?",
+      "options": [
+        "A lamp.",
+        "A large picture.",
+        "A rug."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "Where is the microwave in the kitchen?",
+      "options": [
+        "Next to the fridge.",
+        "Between the cooker and the sink.",
+        "Over the sink."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 4,
+      "question": "Where is the table in the kitchen?",
+      "options": [
+        "Opposite the sink.",
+        "Next to the fridge.",
+        "Under the window."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 5,
+      "question": "Where is the second bookshelf in the living room?",
+      "options": [
+        "Next to the sofa.",
+        "Under the window.",
+        "Beside the TV, behind an armchair."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 6,
+      "question": "What is in front of the window in the living room?",
+      "options": [
+        "A small TV.",
+        "A sofa.",
+        "A coffee table."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 7,
+      "question": "What is next to the drawers in the study?",
+      "options": [
+        "A beautiful plant.",
+        "A bookshelf.",
+        "An armchair."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 8,
+      "question": "Where are the two shelves in the study?",
+      "options": [
+        "Over the desk.",
+        "Above the plant.",
+        "Next to the door."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 9,
+      "question": "What is between the two armchairs in the dining room?",
+      "options": [
+        "A chest of drawers.",
+        "A table and chairs.",
+        "A rug."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 10,
+      "question": "What is on the second chest of drawers in the dining room?",
+      "options": [
+        "Two lamps.",
+        "A small picture.",
+        "A plant."
+      ],
+      "answer": 2
+    }
+  ]
+}
