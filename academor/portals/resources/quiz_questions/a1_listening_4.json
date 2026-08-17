@@ -1,0 +1,101 @@
+{
+  "level": "A2",
+  "quiz": 2,
+  "title": "Comparing Things and People",
+  "service": "general_english",
+  "category_name": "Pre-intermediate Listening Tests",
+  "has_shared_passage": false,
+  "shared_passage": "",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Which car is more expensive?",
+      "options": [
+        "The red Nissan",
+        "The black Kia"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "Which car is better for parking?",
+      "options": [
+        "The red Nissan",
+        "The black Kia"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "Which jeans are more expensive?",
+      "options": [
+        "The blue jeans",
+        "The black jeans"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 4,
+      "question": "Which jeans are warmer?",
+      "options": [
+        "The blue jeans",
+        "The black jeans"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 5,
+      "question": "Which brother is taller?",
+      "options": [
+        "Liam",
+        "Mike"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 6,
+      "question": "Which brother is happier?",
+      "options": [
+        "Liam",
+        "Mike"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "Which phone has a smaller screen?",
+      "options": [
+        "iPhone",
+        "Samsung"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 8,
+      "question": "Which phone is safer?",
+      "options": [
+        "iPhone",
+        "Samsung"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 9,
+      "question": "Which apartment is more modern?",
+      "options": [
+        "The apartment on Maple Avenue",
+        "The apartment on Pine Street"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "Which apartment is cheaper?",
+      "options": [
+        "The apartment on Maple Avenue",
+        "The apartment on Pine Street"
+      ],
+      "answer": 1
+    }
+  ]
+}

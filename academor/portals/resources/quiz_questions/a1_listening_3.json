@@ -1,0 +1,91 @@
+{
+  "level": "A1",
+  "quiz": 4,
+  "title": "Making Plans for the Weekend",
+  "service": "general_english",
+  "category_name": "Elementary Listening Tests",
+  "has_shared_passage": false,
+  "shared_passage": "",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Mark is going to...",
+      "options": [
+        "visit his family.",
+        "travel.",
+        "buy a new car."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 2,
+      "question": "Mark is also going to...",
+      "options": [
+        "ride a bike.",
+        "buy a new bike for his daughter.",
+        "buy new furniture."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 3,
+      "question": "James is going to...",
+      "options": [
+        "spend one month with his grandparents.",
+        "go fishing.",
+        "read a book."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 4,
+      "question": "Sam is going to...",
+      "options": [
+        "call James.",
+        "visit her family for a few days.",
+        "read a book."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 5,
+      "question": "Jake is going to...",
+      "options": [
+        "help his dad.",
+        "go to the cinema.",
+        "cook pizza."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "Carla is going to...",
+      "options": [
+        "make popcorn.",
+        "visit a friend.",
+        "go to the beach."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 7,
+      "question": "Tom is NOT going to...",
+      "options": [
+        "have a shower.",
+        "eat dinner with his family.",
+        "drive."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 8,
+      "question": "Daniel and Tom are going to...",
+      "options": [
+        "travel.",
+        "go to the pub.",
+        "watch a match."
+      ],
+      "answer": 2
+    }
+  ]
+}
