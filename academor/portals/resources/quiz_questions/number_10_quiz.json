@@ -1,0 +1,83 @@
+{
+  "level": "A1",
+  "quiz": 12,
+  "title": "Police Looking for a Suspect",
+  "service": "general_english",
+  "category_name": "Elementary Listening Tests",
+  "has_shared_passage": false,
+  "shared_passage": "",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Benjamin lives on this street.",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 2,
+      "question": "He is tall.",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "He has blond hair and a blond beard.",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 4,
+      "question": "His eyes are green and blue.",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 5,
+      "question": "He wears glasses only when he needs to read.",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 6,
+      "question": "He loves wearing hats.",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 7,
+      "question": "His jacket is black.",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 8,
+      "question": "His dog is all white.",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "answer": 1
+    }
+  ]
+}
