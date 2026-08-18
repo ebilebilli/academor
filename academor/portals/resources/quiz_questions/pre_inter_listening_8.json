@@ -10,58 +10,113 @@
   "questions": [
     {
       "id": 1,
-      "question": "What are Hanna's hobbies?",
+      "question": "What is one of Hanna's hobbies?",
       "options": [
         "Hiking",
         "Painting",
         "Watching films",
         "Playing in a band"
       ],
-      "answer": [1, 2]
+      "answer": 1
     },
     {
       "id": 2,
-      "question": "What are Kate's hobbies?",
+      "question": "What is another one of Hanna's hobbies?",
+      "options": [
+        "Hiking",
+        "Painting",
+        "Watching films",
+        "Playing in a band"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 3,
+      "question": "What is one of Kate's hobbies?",
       "options": [
         "Playing a computer game",
         "Gardening",
         "Cooking",
         "Collecting"
       ],
-      "answer": [0, 3]
+      "answer": 0
     },
     {
-      "id": 3,
-      "question": "What are Will's hobbies?",
+      "id": 4,
+      "question": "What is another one of Kate's hobbies?",
+      "options": [
+        "Playing a computer game",
+        "Gardening",
+        "Cooking",
+        "Collecting"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 5,
+      "question": "What is one of Will's hobbies?",
       "options": [
         "Playing in a band",
         "Gardening",
         "Partying",
         "Reading"
       ],
-      "answer": [0, 3]
+      "answer": 0
     },
     {
-      "id": 4,
-      "question": "What are Simon's hobbies?",
+      "id": 6,
+      "question": "What is another one of Will's hobbies?",
+      "options": [
+        "Playing in a band",
+        "Gardening",
+        "Partying",
+        "Reading"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 7,
+      "question": "What is one of Simon's hobbies?",
       "options": [
         "Gardening",
         "Hiking",
         "Cooking",
         "Partying"
       ],
-      "answer": [1, 2]
+      "answer": 1
     },
     {
-      "id": 5,
-      "question": "What are Patty's hobbies?",
+      "id": 8,
+      "question": "What is another one of Simon's hobbies?",
+      "options": [
+        "Gardening",
+        "Hiking",
+        "Cooking",
+        "Partying"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 9,
+      "question": "What is one of Patty's hobbies?",
       "options": [
         "Playing in a band",
         "Watching films",
         "Partying",
         "Collecting"
       ],
-      "answer": [2, 3]
+      "answer": 2
+    },
+    {
+      "id": 10,
+      "question": "What is another one of Patty's hobbies?",
+      "options": [
+        "Playing in a band",
+        "Watching films",
+        "Partying",
+        "Collecting"
+      ],
+      "answer": 3
     }
   ]
 }
