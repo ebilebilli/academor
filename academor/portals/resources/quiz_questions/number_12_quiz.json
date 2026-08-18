@@ -1,0 +1,71 @@
+{
+  "level": "A2",
+  "quiz": 6,
+  "title": "A Day in Katherine's Job",
+  "service": "general_english",
+  "category_name": "Elementary Listening Tests",
+  "has_shared_passage": false,
+  "shared_passage": "",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is Katherine's job?",
+      "options": [
+        "computer technician",
+        "nurse",
+        "receptionist"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "What time does she start work?",
+      "options": [
+        "7.30",
+        "8.30",
+        "9.00"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "What time does she usually get home after work?",
+      "options": [
+        "5.00",
+        "5.30",
+        "6.30"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "How does she get to work?",
+      "options": [
+        "bike",
+        "bus",
+        "car"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 5,
+      "question": "Katherine thinks her job is...",
+      "options": [
+        "tiring.",
+        "easy.",
+        "boring."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 6,
+      "question": "What does she dislike about her job?",
+      "options": [
+        "her colleagues",
+        "her office",
+        "her pay"
+      ],
+      "answer": 1
+    }
+  ]
+}
