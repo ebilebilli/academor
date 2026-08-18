@@ -1,0 +1,72 @@
+{
+  "level": "A2",
+  "quiz": 11,
+  "title": "Teens and Their Household Duties",
+  "service": "general_english",
+  "category_name": "Pre-intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Listen to two teenagers talking about household chores. For questions 1 to 6, choose the correct answer.</h5><p><strong>MAYA:</strong> Wow, Leo, your bedroom is really tidy and clean. Do you guys have a cleaner?</p><p><strong>LEO:</strong> Yeah, sure. My mom hired a cleaner, and that cleaner is... me! I have to tidy my room and make my bed every day.</p><p><strong>MAYA:</strong> Every day?</p><p><strong>LEO:</strong> Yeah. And once a week, I have to clean the whole room.</p><p><strong>MAYA:</strong> What do you mean by clean?</p><p><strong>LEO:</strong> You know… vacuum the floor, dust the desk, and organize my stuff. And I have to clean the window every other week. And my mom says I mustn't complain about it.</p><p><strong>MAYA:</strong> I'm impressed. You could come over and clean my room. It's a mess.</p><p><strong>LEO:</strong> You never do it?</p><p><strong>MAYA:</strong> Well, I should do it — my mom insists I must — but I'm too lazy. I always make up excuses so I don't have to clean.</p><p><strong>LEO:</strong> What kind of excuses?</p><p><strong>MAYA:</strong> I don't know. Things like I'm not feeling well, or I have exams and need to study. You know, stuff like that.</p><p><strong>LEO:</strong> Lucky you. That doesn't work with my mom.</p><p><strong>MAYA:</strong> Well, I mean, I do have to do some chores.</p><p><strong>LEO:</strong> Like what?</p><p><strong>MAYA:</strong> Well, I have to set the table and clear it after dinner every day, and put everything in the dishwasher. And I have to take the trash out on weekends.</p><p><strong>LEO:</strong> Is that all? That's not too bad.</p><p><strong>MAYA:</strong> Yeah, well, and my little brother doesn't have to do any of that. It's just me.</p><p><strong>LEO:</strong> Maya, but your brother is five!</p><p><strong>MAYA:</strong> Yeah, and?</p><p><strong>LEO:</strong> Did you have to set and clear the table when you were five?</p><p><strong>MAYA:</strong> No, I don't think so. But I'm sure I had to do other things.</p><p><strong>LEO:</strong> Did you have to make your bed or take out the trash?</p><p><strong>MAYA:</strong> No. OK, I get it.</p><p><strong>LEO:</strong> You can't complain.</p><p><strong>MAYA:</strong> Yeah, but my mom is constantly saying, 'You must do this, you must do that.'</p><p><strong>LEO:</strong> Yes. Parents love saying that. My mom is always like, 'You must put your clothes in the laundry basket. You mustn't leave your jacket in the hall. You must put all these things away before going to bed...'</p><p><strong>MAYA:</strong> One day we'll have children of our own, and I'm sure we'll say these things too.</p><p><strong>LEO:</strong> I don't want to have children. They're lazy and ungrateful.</p><p><strong>MAYA:</strong> Well, you don't have to have children if you don't want to. But if you do, they can help you with the chores!</p>",
+  "shared_youtube_url": "https://youtu.be/jpQE85tmlCY",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Who tidies Leo's room every day?",
+      "options": [
+        "Leo",
+        "A cleaner",
+        "His mom"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "How often is the window cleaned?",
+      "options": [
+        "Every week",
+        "Once a month",
+        "Twice a month"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 3,
+      "question": "Maya...",
+      "options": [
+        "has too much work to clean her room.",
+        "only helps in the kitchen and with the trash.",
+        "has a brother who helps her with the chores."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 4,
+      "question": "When Maya was five, she...",
+      "options": [
+        "had to do more chores than her brother.",
+        "had to do fewer chores than her brother.",
+        "didn't help much, just like her brother."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 5,
+      "question": "Maya thinks when she has children, she won't ask them to do chores.",
+      "options": [
+        "True",
+        "False",
+        "Not mentioned"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 6,
+      "question": "Leo thinks children...",
+      "options": [
+        "don't do what they are asked to do.",
+        "should do more chores",
+        "don't have to do chores."
+      ],
+      "answer": 0
+    }
+  ]
+}

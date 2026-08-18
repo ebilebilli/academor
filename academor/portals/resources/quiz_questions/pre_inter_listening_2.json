@@ -1,0 +1,82 @@
+{
+  "level": "A2",
+  "quiz": 9,
+  "title": "Front Desk: Hotel Check-In",
+  "service": "general_english",
+  "category_name": "Pre-intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Listen to a woman checking into a hotel, and for questions 1 to 7, choose the correct answer.</h5><p><strong>RECEPTIONIST:</strong> Good evening. Welcome to Saint John's Manor Hotel. How can I help you?</p><p><strong>WOMAN:</strong> Hi, I have a reservation under the name Lisa Berardelli.</p><p><strong>RECEPTIONIST:</strong> Let me check. Lisa Berardelli. How do you spell that?</p><p><strong>WOMAN:</strong> B-E-R-A-R-D-E-DOUBLE L-I.</p><p><strong>RECEPTIONIST:</strong> Thank you, Ms. Berardelli. I see a reservation for a twin room for two nights.</p><p><strong>WOMAN:</strong> Actually, I booked a single room for one night.</p><p><strong>RECEPTIONIST:</strong> I'm terribly sorry. I was looking at a different reservation. Let me find the correct one. Ah, here it is—a single room for one night.</p><p><strong>WOMAN:</strong> No problem.</p><p><strong>RECEPTIONIST:</strong> May I please see some ID?</p><p><strong>WOMAN:</strong> Sure, here's my passport.</p><p><strong>RECEPTIONIST:</strong> Thank you. Breakfast is included and is served from 7 am to 10 am in the dining area.</p><p><strong>WOMAN:</strong> Great, thanks. Can I have dinner at the restaurant this evening?</p><p><strong>RECEPTIONIST:</strong> I'm afraid we don't have any tables available this evening, but you can order room service. Just dial 0 to talk to the reception desk.</p><p><strong>WOMAN:</strong> OK, thank you.</p><p><strong>RECEPTIONIST:</strong> Here is your key card and the Wi-Fi password. Check-out time is 11 am.</p><p><strong>WOMAN:</strong> Is it possible to do a late check-out?</p><p><strong>RECEPTIONIST:</strong> Unfortunately, that's not possible, but you can leave your luggage at reception and check out at 12.</p><p><strong>WOMAN:</strong> That works. Thank you.</p><p><strong>RECEPTIONIST:</strong> Is there anything else you need?</p><p><strong>WOMAN:</strong> Yes, actually. My phone is running out of battery, and I forgot my charger. Can I request a wake-up call?</p><p><strong>RECEPTIONIST:</strong> Of course, no problem. What time would you like the call?</p><p><strong>WOMAN:</strong> At 7:00 am, please. Um, actually, make it 7:30.</p><p><strong>RECEPTIONIST:</strong> Of course.</p><p><strong>WOMAN:</strong> Thanks.</p><p><strong>RECEPTIONIST:</strong> You're welcome. If you need anything else, just let us know. Have a pleasant stay.</p><p><strong>WOMAN:</strong> Thank you, goodnight.</p>",
+  "shared_youtube_url": "https://youtu.be/PuQg1ynLpiw",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What's Lisa's surname?",
+      "options": [
+        "Berardelli",
+        "Bernardeli",
+        "Bianardelli"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "What room has Lisa booked?",
+      "options": [
+        "double",
+        "twin",
+        "single"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 3,
+      "question": "What was the problem with the reservation?",
+      "options": [
+        "Lisa booked a different room",
+        "The computer didn't show a reservation",
+        "The receptionist made a mistake"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "Where can Lisa have dinner today?",
+      "options": [
+        "In the dining area",
+        "In the restaurant",
+        "In her room"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 5,
+      "question": "What time will Lisa check out tomorrow?",
+      "options": [
+        "12 pm",
+        "11 am",
+        "Before 11 am"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "What does Lisa ask the receptionist?",
+      "options": [
+        "She asks her to wake her up tomorrow.",
+        "She asks her for a phone charger.",
+        "She asks her to let her charge her phone."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 7,
+      "question": "What time does Lisa want to get up tomorrow?",
+      "options": [
+        "7:00 am",
+        "7:30 am",
+        "8:00 am"
+      ],
+      "answer": 1
+    }
+  ]
+}
