@@ -1,0 +1,72 @@
+{
+  "level": "A2",
+  "quiz": 17,
+  "title": "Sally, John, and Darren's New Year Plans",
+  "service": "general_english",
+  "category_name": "Pre-intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Listen to three people talking about what they are going to do differently in the new year and answer the questions.</h5><p><strong>SALLY:</strong> I put on weight last year when I had my kids, and I want to lose it. But I don't want to stop eating unhealthy food. I like cakes and chocolate too much! So, I'm going to join a gym. It's expensive, but if I pay for it, I will go. There are parent and baby swim classes every morning, and I want to go to all of those. I hope I can meet people there. I don't have many friends now because I quit my job and I'm with the kids all day. I'd love to take a class at the college, like photography, but I can't now. The kids need me. Maybe I will next year.</p><p><strong>JOHN:</strong> Well, last year, I decided to do more exercise, so I started cycling. But I fell off after one month and hurt my back. So I'm not going to do that again! But I want to lose weight, so I'm going to stop eating burgers and eat more vegetables. I'm also going to go swimming at the sports center twice a week. My wife swims every day, but I don't want to do that because I want to work in the garden too. That will take a lot of time and keep me fit. I also want to spend more time with my friends. My kids are older now, so they don't need me at home.</p><p><strong>DARREN:</strong> I got a new bike for Christmas, and I plan to use it. I want to go a hundred miles each week on it. I also want to join the photography classes at the local college. Then I can take some great pictures when I'm out on my rides. And I'm going to spend more time with my kids. Last year, I spent a lot of time driving to work, so I didn't see them in the mornings or evenings. But now I have a new job and I work from home, so I can be here for them. We can do fun things like making cakes and playing in the garden. It will be fun!</p>",
+  "shared_youtube_url": "https://youtu.be/cpZNkogmg2s",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Who is going to go swimming every day?",
+      "options": [
+        "John",
+        "Sally",
+        "Darren"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 2,
+      "question": "Who is going to tidy the garden?",
+      "options": [
+        "John",
+        "Sally",
+        "Darren"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 3,
+      "question": "Who is going to try to make new friends?",
+      "options": [
+        "John",
+        "Sally",
+        "Darren"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 4,
+      "question": "Who is going to cycle more often?",
+      "options": [
+        "John",
+        "Sally",
+        "Darren"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 5,
+      "question": "Who is going to start photography classes?",
+      "options": [
+        "John",
+        "Sally",
+        "Darren"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 6,
+      "question": "Who is going to eat more healthily?",
+      "options": [
+        "John",
+        "Sally",
+        "Darren"
+      ],
+      "answer": 0
+    }
+  ]
+}
