@@ -1,0 +1,92 @@
+{
+  "level": "A2",
+  "quiz": 12,
+  "title": "At the Car Rental Office",
+  "service": "general_english",
+  "category_name": "Pre-intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Listen to a woman renting a car at a car rental office. For questions 1 to 8, choose the correct answer.</h5><p><strong>RENTAL AGENT:</strong> Hi, can I help you?</p><p><strong>KAREN:</strong> Hello, I was wondering... Do you have any cars available from tomorrow? I know it's a busy time of year, and I haven't booked…</p><p><strong>RENTAL AGENT:</strong> Don't worry, you are in luck. We have three cars available. A small car, a medium and a large.</p><p><strong>KAREN:</strong> How many seats do they have?</p><p><strong>RENTAL AGENT:</strong> The small car can carry four people, the medium car has five seats, and the large one has enough seats for seven people.</p><p><strong>KAREN:</strong> Are they all four-door cars?</p><p><strong>RENTAL AGENT:</strong> The small car has two doors. The others have four.</p><p><strong>KAREN:</strong> Well, I'd really like four doors, not two. But there are only four of us. I don't need seven seats.</p><p><strong>RENTAL AGENT:</strong> So, this one will be best for you, I think.</p><p><strong>KAREN:</strong> That looks great.</p><p><strong>RENTAL AGENT:</strong> So how long do you want it for?</p><p><strong>KAREN:</strong> Hmm, well, we have five more days of vacation here after today, so… I think I'd like it for three days, please, because I want to spend our last two days here in this town.</p><p><strong>RENTAL AGENT:</strong> That's fine. And will you be the only driver?</p><p><strong>KAREN:</strong> My son would like to drive, but my husband doesn't want to. He hates driving on narrow roads.</p><p><strong>RENTAL AGENT:</strong> How old is your son?</p><p><strong>KAREN:</strong> He's eighteen.</p><p><strong>RENTAL AGENT:</strong> I'm afraid only people over the age of 20 can drive our cars.</p><p><strong>KAREN:</strong> Really? That's a shame. He will be disappointed. Never mind. Just me, then.</p><p><strong>RENTAL AGENT:</strong> Sure. So, where do you plan to drive it?</p><p><strong>KAREN:</strong> I'd like to visit the churches up in the mountains. I've seen some photos of them. They look really lovely. We're tired of spending time on the beach.</p><p><strong>RENTAL AGENT:</strong> Sure, well, you will need to be careful. Those roads are steep and narrow. Do you want to take out extra insurance?</p><p><strong>KAREN:</strong> Aren't the cars insured?</p><p><strong>RENTAL AGENT:</strong> Yes, but if they are damaged, you will have to pay 1,500 euros. But if you take out the extra insurance, you will only pay 50 euros if you damage the car.</p><p><strong>KAREN:</strong> How much is the insurance?</p><p><strong>RENTAL AGENT:</strong> 20 euros per day. So, that's 60 in total.</p><p><strong>KAREN:</strong> It seems like a good idea. I could easily hit something, or a stone could fly up and hit the window.</p><p><strong>RENTAL AGENT:</strong> Sure. Well, if you just fill out this form, I can book that all for you. So, with the extra insurance, that's 386 euros, please.</p><p><strong>KAREN:</strong> Here you are.</p><p><strong>RENTAL AGENT:</strong> Great, that's all gone through. So, your car's tank will be full. Please return it full, or you will have to pay extra.</p><p><strong>KAREN:</strong> Sure. And what time can I pick it up in the morning?</p><p><strong>RENTAL AGENT:</strong> We are open from eight o'clock.</p><p><strong>KAREN:</strong> Well, we won't be here that early. We haven't gotten up before ten o'clock since we arrived here. But tomorrow, we will make an effort to get up early and enjoy the day. I'll aim to be here at nine.</p><p><strong>RENTAL AGENT:</strong> Sure. I'll see you then.</p>",
+  "shared_youtube_url": "https://youtu.be/nQeHtJCfbBo",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Karen...",
+      "options": [
+        "wants to rent a car today.",
+        "didn't book a car.",
+        "can choose from two different types of cars."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 2,
+      "question": "Which car does she choose?",
+      "options": [
+        "The small car.",
+        "The medium car.",
+        "The large car."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "How much longer will the woman be on holiday here?",
+      "options": [
+        "Two days.",
+        "Three days.",
+        "Five days."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "Who will drive the car?",
+      "options": [
+        "The woman and her husband.",
+        "The woman and her son.",
+        "The woman only."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 5,
+      "question": "Why do they want to hire the car?",
+      "options": [
+        "To visit some churches.",
+        "To hike in the mountains.",
+        "To get to the beach."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "If the woman damages the car after this conversation, she must pay...",
+      "options": [
+        "20 euros.",
+        "50 euros.",
+        "60 euros."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "The man advises the woman to buy fuel…",
+      "options": [
+        "as soon as she collects the car.",
+        "before driving into the mountains.",
+        "before returning the car."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "What's the earliest time the car can be collected tomorrow?",
+      "options": [
+        "8 a.m.",
+        "9 a.m.",
+        "10 a.m."
+      ],
+      "answer": 0
+    }
+  ]
+}

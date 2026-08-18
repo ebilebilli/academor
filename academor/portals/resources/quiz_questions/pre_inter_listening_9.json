@@ -1,0 +1,62 @@
+{
+  "level": "A2",
+  "quiz": 15,
+  "title": "John's Life Experiences Quiz",
+  "service": "general_english",
+  "category_name": "Pre-intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Listen to a conversation between John and Sally and answer the questions.</h5><p><strong>SALLY:</strong> Hey, John, do you want to try this quiz? It's called Have You Ever. I ask you some questions about your life. You get a point for every experience you have had.</p><p><strong>JOHN:</strong> Er yes okay. That sounds fun.</p><p><strong>SALLY:</strong> Right, so question one. Have you ever been on television?</p><p><strong>JOHN:</strong> Yes, actually, I have.</p><p><strong>SALLY:</strong> Really? When was that?</p><p><strong>JOHN:</strong> It was last year. I was watching a big football game with my dad. The game was on TV, and the camera showed us in the crowd.</p><p><strong>SALLY:</strong> What were you doing when you were on TV?</p><p><strong>JOHN:</strong> We were cheering after a goal.</p><p><strong>SALLY:</strong> Great! So, one point for you! Next question. Have you ever met a famous person?</p><p><strong>JOHN:</strong> Yes, I have! I've met Nicholas Cage.</p><p><strong>SALLY:</strong> The actor?</p><p><strong>JOHN:</strong> Yes! It was about three years ago. I was in the shopping mall, and there was a big crowd of people. They were all taking photos.</p><p><strong>SALLY:</strong> Did you get a photo too?</p><p><strong>JOHN:</strong> Well, I had to wait a long time because many people wanted to take a picture. But I finally got a selfie with him. He was very friendly. I'll show it to you.</p><p><strong>SALLY:</strong> Wow! Lucky you! I've never met anyone famous. So, two points. Next question. Have you ever broken a bone?</p><p><strong>JOHN:</strong> Yes, I have. But it was a long time ago. I was about 7.</p><p><strong>SALLY:</strong> What did you break?</p><p><strong>JOHN:</strong> My arm.</p><p><strong>SALLY:</strong> How did you break it?</p><p><strong>JOHN:</strong> I was on holiday with my parents. I was running down a hill, and I fell onto some stones.</p><p><strong>SALLY:</strong> Ouch! But that's three points for you. The next question is: have you ever climbed a mountain?</p><p><strong>JOHN:</strong> Yes, I've climbed several mountains.</p><p><strong>SALLY:</strong> Really? Which one was your favourite?</p><p><strong>JOHN:</strong> Mmm, I think my favourite was Snowdon in Wales. It was warm and sunny when we climbed it. That's why I liked it. The other mountains were in Scotland, and we climbed them in the rain. I want to climb the tallest mountain in England next. I haven't climbed any English mountains.</p><p><strong>SALLY:</strong> Did it take a long time?</p><p><strong>JOHN:</strong> It took about six hours to go up and down.</p><p><strong>SALLY:</strong> Well done! So, last question. Have you ever sent a Valentine's Day card?</p><p><strong>JOHN:</strong> Mm, yes, I have.</p><p><strong>SALLY:</strong> Really? When? Last February?</p><p><strong>JOHN:</strong> Yes, I sent one earlier this year and one last year too.</p><p><strong>SALLY:</strong> Who did you send it to?</p><p><strong>JOHN:</strong> I'm not telling you!</p><p><strong>SALLY:</strong> Ah! Well, I've never sent one, and I've never received one either.</p><p><strong>JOHN:</strong> Poor you! I'll send you one next year!</p>",
+  "shared_youtube_url": "https://youtu.be/LjEb7YPblPE",
+  "questions": [
+    {
+      "id": 1,
+      "question": "John was on television when…",
+      "options": [
+        "he was playing football.",
+        "he was watching a match.",
+        "he was cheering for his dad."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 2,
+      "question": "What happened when John met Nicholas Cage?",
+      "options": [
+        "Nicholas Cage was friendly but didn't let John take a photo.",
+        "John couldn't take a photo because there were too many people.",
+        "John took a photo with Nicholas Cage, who was friendly."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 3,
+      "question": "What is NOT true about John and his broken bone?",
+      "options": [
+        "He fell on some stones.",
+        "He broke his arm.",
+        "He broke it while riding his bike."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "Which sentence is true about John?",
+      "options": [
+        "He has climbed Snowdon in the rain.",
+        "He has climbed Scottish mountains in the rain.",
+        "He has climbed an English mountain."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 5,
+      "question": "Which sentence is true about John?",
+      "options": [
+        "He sent Sally a Valentine's Day card earlier this year.",
+        "He has never sent a Valentine's Day card to Sally.",
+        "He sent a Valentine's Day card last year, but not this year."
+      ],
+      "answer": 1
+    }
+  ]
+}
