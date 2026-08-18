@@ -1,0 +1,72 @@
+{
+  "level": "A2",
+  "quiz": 3,
+  "title": "Making Arrangements with Friends",
+  "service": "general_english",
+  "category_name": "Elementary Listening Tests",
+  "has_shared_passage": false,
+  "shared_passage": "",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What do they decide to do?",
+      "options": [
+        "They will play tennis on Saturday at 10 a.m.",
+        "They will play tennis on Saturday at 4 p.m.",
+        "They won't play tennis this weekend."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 2,
+      "question": "What do they decide to do?",
+      "options": [
+        "Go to the Italian restaurant at 5.30, and to Alex's house at 7 pm.",
+        "Go to Alex's house after work, and to the Italian restaurant at 7 pm.",
+        "Go to a bar after work, and to the Italian restaurant at 7 pm."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "What time will they see Romeo and Juliet?",
+      "options": [
+        "6:30",
+        "7:30",
+        "8:30"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 4,
+      "question": "Which day will they see the play?",
+      "options": [
+        "Tuesday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 5,
+      "question": "When will they see the band Sheep and Cows?",
+      "options": [
+        "8 pm on Thursday",
+        "9 pm on Thursday",
+        "8 pm on Friday",
+        "9 pm on Friday"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 6,
+      "question": "What will they do before they see the band?",
+      "options": [
+        "have a drink at the nightclub",
+        "have a drink in the bar in the park",
+        "do yoga"
+      ],
+      "answer": 1
+    }
+  ]
+}
