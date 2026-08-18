@@ -4,7 +4,7 @@
 {% block title %}{% trans 'Quiz categories' %}{% endblock %}
 
 {% block content %}
-{% include "portals/includes/portal_page_hero.html" with title=_('Quiz kateqoriyaları') subtitle=_('Xidmətləriniz üzrə quizlərə baxın.') icon="ti-forms" lottie="portals/animations/learning.lottie" %}
+{% include "portals/includes/portal_page_hero.html" with title=_('Quizlər') subtitle=_('Xidmətləriniz üzrə quizlərə baxın.') %}
 
 {% include "portals/includes/quiz_categories_panel.html" with category_detail_url_name='portals:teacher-quiz-category' category_action_label=_('View') empty_message=_('No quiz categories for your services yet.') %}
 {% endblock %}

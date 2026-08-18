@@ -10,116 +10,105 @@
 {% trans 'Kateqoriyalar' as categories_back_label %}
 {% include "portals/includes/portal_back_link.html" with back_url=categories_list_url back_suffix=category_url_suffix back_label=categories_back_label %}
 
-{% include "portals/includes/portal_page_hero.html" with title=category.name subtitle=category.service_label icon="ti-forms" lottie="portals/animations/student.lottie" %}
+{% include "portals/includes/portal_page_hero.html" with title=category.name subtitle=category.service_label %}
 
-<section class="ds-card">
-  <div class="table-responsive">
-    <table class="t-table" aria-label="{% trans 'Quiz siyahısı' %}">
-      <thead>
-        <tr>
-          <th>{% trans 'Mövzu' %}</th>
-          <th>{% trans 'Növ' %}</th>
-          <th>{% trans 'Sual' %}</th>
-          {% if can_take_quiz %}
-          <th class="text-end">{% trans 'Əməliyyat' %}</th>
+<div class="qdetail">
+  {% for quiz in quizzes %}
+  <div class="qdetail__card {% if quiz.is_locked %}qdetail__card--locked{% elif quiz.has_attempt %}qdetail__card--done{% endif %}">
+
+    {# Status strip #}
+    <div class="qdetail__status-strip">
+      {% if quiz.is_locked %}
+        <span class="qdetail__status qdetail__status--locked"><i class="bi bi-lock-fill"></i> {% trans 'Bağlı' %}</span>
+      {% elif quiz.is_pending_review %}
+        <span class="qdetail__status qdetail__status--pending"><i class="ti ti-clock"></i> {% trans 'Gözlənilir' %}</span>
+      {% elif quiz.has_attempt %}
+        <span class="qdetail__status qdetail__status--done"><i class="ti ti-circle-check"></i> {% trans 'Tamamlandı' %}</span>
+      {% else %}
+        <span class="qdetail__status qdetail__status--new"><i class="ti ti-sparkles"></i> {% trans 'Yeni' %}</span>
+      {% endif %}
+    </div>
+
+    {# Card body #}
+    <div class="qdetail__body">
+      <div class="qdetail__info">
+        <h3 class="qdetail__topic">{{ quiz.topic }}</h3>
+        <div class="qdetail__badges">
+          <span class="qdetail__badge qdetail__badge--type{% if quiz.is_manual_grading %} qdetail__badge--manual{% endif %}">
+            {{ quiz.grading_mode_label }}
+          </span>
+          <span class="qdetail__badge">
+            <i class="ti ti-list-numbers" aria-hidden="true"></i>
+            {{ quiz.question_count|default:0 }} {% trans 'sual' %}
+          </span>
+        </div>
+
+        {% if not quiz.is_locked and quiz.attempt_count %}
+        <div class="qdetail__history">
+          <span><i class="ti ti-repeat" aria-hidden="true"></i> {{ quiz.attempt_count }}×</span>
+          {% if quiz.best_score is not None %}<span><i class="ti ti-trophy" aria-hidden="true"></i> {% trans 'Ən yaxşı' %}: {{ quiz.best_score|format_quiz_score }}</span>{% endif %}
+          {% if quiz.last_score is not None %}<span><i class="ti ti-history" aria-hidden="true"></i> {% trans 'Son' %}: {{ quiz.last_score|format_quiz_score }}</span>{% endif %}
+          {% if quiz.last_attempt_at %}<span><i class="ti ti-calendar" aria-hidden="true"></i> {{ quiz.last_attempt_at|portal_date_long }}</span>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if quiz.is_locked %}
+        <p class="qdetail__lock-hint">{% trans 'Bu quiz hazırda bağlıdır. Açılması üçün təlimçi ilə danışın.' %}</p>
+        {% endif %}
+      </div>
+
+      {% if can_take_quiz %}
+      <div class="qdetail__actions">
+        {% if quiz.is_locked %}
+          <span class="qdetail__lock-badge"><i class="bi bi-lock-fill" aria-hidden="true"></i></span>
+        {% elif quiz.is_variant_quiz and quiz.question_count %}
+          <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:student-quiz-take' pk=quiz.id %}">
+            {% if quiz.has_attempt %}{% trans 'Təkrar' %}{% else %}{% trans 'Başla' %}{% endif %}
+          </a>
+        {% elif quiz.is_reading and quiz.question_count %}
+          <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:student-reading-quiz-take' pk=quiz.id %}">
+            {% if quiz.has_attempt %}{% trans 'Təkrar' %}{% else %}{% trans 'Başla' %}{% endif %}
+          </a>
+          {% if quiz.has_attempt %}
+          <a class="ds-btn ds-btn--ghost btn-sm" href="{% url 'portals:student-score-detail' result_pk=quiz.result_id %}">{% trans 'Bal' %}</a>
           {% endif %}
-        </tr>
-      </thead>
-      <tbody>
-        {% for quiz in quizzes %}
-        <tr class="{% if quiz.is_locked %}is-quiz-locked{% endif %}">
-          <td class="fw-500">
-            <div class="d-flex align-items-start gap-2">
-              {% if quiz.is_locked %}
-              <span class="portal-quiz-lock-icon" title="{% trans 'Bağlı' %}" aria-hidden="true"><i class="bi bi-lock-fill"></i></span>
-              {% endif %}
-              <div>
-                <div>{{ quiz.topic }}</div>
-                {% if quiz.is_locked %}
-                <div class="portal-quiz-lock-hint text-muted small mt-1">
-                  {% trans 'Bu quiz hazırda bağlıdır. Açılması üçün təlimçi ilə danışın.' %}
-                </div>
-                {% elif quiz.attempt_count %}
-                <div class="text-muted small mt-1">
-                  <div>{% trans 'Completed' %} {{ quiz.attempt_count }} {% trans 'times' %}</div>
-                  {% if quiz.best_score is not None %}<div>{% trans 'Best score' %}: {{ quiz.best_score|format_quiz_score }}</div>{% endif %}
-                  {% if quiz.last_score is not None %}<div>{% trans 'Last score' %}: {{ quiz.last_score|format_quiz_score }}</div>{% endif %}
-                  {% if quiz.last_attempt_at %}<div>{% trans 'Last attempt' %}: {{ quiz.last_attempt_at|portal_date_long }}</div>{% endif %}
-                </div>
-                {% endif %}
-              </div>
-            </div>
-          </td>
-          <td>
-            <span class="ds-badge{% if quiz.is_manual_grading %} ds-badge--role{% endif %}">
-              {{ quiz.grading_mode_label }}
-            </span>
-          </td>
-          <td>{{ quiz.question_count|default:0 }}</td>
-          {% if can_take_quiz %}
-          <td class="text-end">
-            {% if quiz.is_locked %}
-            <span class="portal-quiz-lock-badge" title="{% trans 'Bağlı' %}">
-              <i class="bi bi-lock-fill" aria-hidden="true"></i>
-              <span>{% trans 'Bağlı' %}</span>
-            </span>
-            {% elif quiz.is_variant_quiz and quiz.question_count %}
-            <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:student-quiz-take' pk=quiz.id %}">
-              {% if quiz.has_attempt %}{% trans 'Təkrar' %}{% else %}{% trans 'Başla' %}{% endif %}
-            </a>
-            {% elif quiz.is_reading and quiz.question_count %}
-            <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:student-reading-quiz-take' pk=quiz.id %}">
-              {% if quiz.has_attempt %}{% trans 'Təkrar' %}{% else %}{% trans 'Başla' %}{% endif %}
-            </a>
-            {% if quiz.has_attempt %}
-            <a class="ds-btn ds-btn--secondary btn-sm ms-1" href="{% url 'portals:student-score-detail' result_pk=quiz.result_id %}">{% trans 'Bal' %}</a>
-            {% endif %}
-            {% elif quiz.is_listening and quiz.question_count %}
-            <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:student-manual-quiz-take' pk=quiz.id %}">
-              {% if quiz.has_attempt %}{% trans 'Təkrar' %}{% else %}{% trans 'Başla' %}{% endif %}
-            </a>
-            {% if quiz.has_attempt %}
-            <a class="ds-btn ds-btn--secondary btn-sm ms-1" href="{% url 'portals:student-score-detail' result_pk=quiz.result_id %}">{% trans 'Bal' %}</a>
-            {% endif %}
-            {% elif quiz.is_speaking and quiz.question_count %}
-            <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:student-speaking-quiz-take' pk=quiz.id %}">
-              {% if quiz.is_pending_review %}
-              {% trans 'Bax' %}
-              {% elif quiz.has_attempt %}{% trans 'Təkrar' %}{% else %}{% trans 'Başla' %}{% endif %}
-            </a>
-            {% if quiz.is_pending_review %}
-            <span class="ds-badge ds-badge--warning ms-1">{% trans 'Gözlənilir' %}</span>
-            {% elif quiz.has_attempt and quiz.is_reviewed %}
-            <a class="ds-btn ds-btn--secondary btn-sm ms-1" href="{% url 'portals:student-score-detail' result_pk=quiz.result_id %}">{% trans 'Bal' %}</a>
-            {% endif %}
-            {% elif quiz.is_manual_grading and quiz.question_count %}
-              {% if quiz.is_pending_review %}
-              <a class="ds-btn ds-btn--secondary btn-sm" href="{% url 'portals:student-manual-quiz-take' pk=quiz.id %}">{% trans 'Bax' %}</a>
-              <span class="ds-badge ds-badge--warning ms-1">{% trans 'Gözlənilir' %}</span>
-              {% elif quiz.is_reviewed %}
-              <a class="ds-btn ds-btn--secondary btn-sm" href="{% url 'portals:student-score-detail' result_pk=quiz.result_id %}">{% trans 'Bal' %}</a>
-              <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:student-manual-quiz-take' pk=quiz.id %}">{% trans 'Təkrar' %}</a>
-              {% else %}
-              <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:student-manual-quiz-take' pk=quiz.id %}">{% trans 'Başla' %}</a>
-              {% endif %}
-            {% else %}
-            <span class="text-muted">—</span>
-            {% endif %}
-          </td>
+        {% elif quiz.is_listening and quiz.question_count %}
+          <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:student-manual-quiz-take' pk=quiz.id %}">
+            {% if quiz.has_attempt %}{% trans 'Təkrar' %}{% else %}{% trans 'Başla' %}{% endif %}
+          </a>
+          {% if quiz.has_attempt %}
+          <a class="ds-btn ds-btn--ghost btn-sm" href="{% url 'portals:student-score-detail' result_pk=quiz.result_id %}">{% trans 'Bal' %}</a>
           {% endif %}
-        </tr>
-        {% empty %}
-        <tr>
-          <td colspan="{% if can_take_quiz %}4{% else %}3{% endif %}">
-            <div class="s-empty-state">
-              <i class="ti ti-forms" aria-hidden="true"></i>
-              <p>{% trans 'Bu kateqoriyada hələ quiz yoxdur.' %}</p>
-            </div>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+        {% elif quiz.is_speaking and quiz.question_count %}
+          <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:student-speaking-quiz-take' pk=quiz.id %}">
+            {% if quiz.is_pending_review %}{% trans 'Bax' %}
+            {% elif quiz.has_attempt %}{% trans 'Təkrar' %}{% else %}{% trans 'Başla' %}{% endif %}
+          </a>
+          {% if quiz.has_attempt and quiz.is_reviewed %}
+          <a class="ds-btn ds-btn--ghost btn-sm" href="{% url 'portals:student-score-detail' result_pk=quiz.result_id %}">{% trans 'Bal' %}</a>
+          {% endif %}
+        {% elif quiz.is_manual_grading and quiz.question_count %}
+          {% if quiz.is_pending_review %}
+            <a class="ds-btn ds-btn--ghost btn-sm" href="{% url 'portals:student-manual-quiz-take' pk=quiz.id %}">{% trans 'Bax' %}</a>
+          {% elif quiz.is_reviewed %}
+            <a class="ds-btn ds-btn--ghost btn-sm" href="{% url 'portals:student-score-detail' result_pk=quiz.result_id %}">{% trans 'Bal' %}</a>
+            <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:student-manual-quiz-take' pk=quiz.id %}">{% trans 'Təkrar' %}</a>
+          {% else %}
+            <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:student-manual-quiz-take' pk=quiz.id %}">{% trans 'Başla' %}</a>
+          {% endif %}
+        {% else %}
+          <span class="text-muted small">—</span>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+
   </div>
-</section>
+  {% empty %}
+  <div class="qdetail__empty">
+    <span class="qdetail__empty-icon"><i class="ti ti-forms" aria-hidden="true"></i></span>
+    <p>{% trans 'Bu kateqoriyada hələ quiz yoxdur.' %}</p>
+  </div>
+  {% endfor %}
+</div>
 {% endblock %}

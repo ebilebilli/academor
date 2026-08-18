@@ -13,7 +13,7 @@
     {% trans 'Şagirdin quiz kateqoriyaları (yalnız baxış).' as page_subtitle %}
   {% endif %}
 {% endif %}
-{% include "portals/includes/portal_page_hero.html" with title=_('Quiz kateqoriyaları') subtitle=page_subtitle icon="ti-forms" lottie="portals/animations/exam-preparation.lottie" %}
+{% include "portals/includes/portal_page_hero.html" with title=_('Quizlər') subtitle=page_subtitle %}
 
 {% include "portals/includes/quiz_categories_panel.html" with category_detail_url_name=category_detail_url_name category_url_suffix=category_url_suffix empty_message=_('No quiz categories for your services yet.') %}
 {% endblock %}
