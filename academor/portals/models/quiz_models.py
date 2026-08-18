@@ -471,6 +471,14 @@ class QuizQuestion(models.Model):
         verbose_name=_('Answer type'),
         help_text=_('MCQ: Multiple choice with options. SPR: Student-Produced Response (typed answer).'),
     )
+    is_dropdown = models.BooleanField(
+        default=False,
+        verbose_name=_('Dropdown answers'),
+        help_text=_(
+            'Show answer choices in a dropdown menu instead of a list. '
+            'Use this when there are too many options for radio buttons.'
+        ),
+    )
     question = models.TextField(
         blank=True,
         verbose_name=_('Question text'),
@@ -575,12 +583,14 @@ class QuizQuestion(models.Model):
             self.correct_option_index = 0
             self.spr_correct_answers = None
             self.spr_max_length = None
+            self.is_dropdown = False
             return
 
         if self.question_type == self.QuestionType.SPR:
             self.answer_options = []
             self.correct_answer = ''
             self.correct_option_index = 0
+            self.is_dropdown = False
             answers = [
                 str(item).strip()
                 for item in (self.spr_correct_answers or [])
@@ -640,6 +650,7 @@ class QuizQuestion(models.Model):
             self.correct_option_index = 0
             self.spr_correct_answers = None
             self.spr_max_length = None
+            self.is_dropdown = False
             super().save(*args, **kwargs)
             return
 
@@ -647,6 +658,7 @@ class QuizQuestion(models.Model):
             self.answer_options = []
             self.correct_answer = ''
             self.correct_option_index = 0
+            self.is_dropdown = False
             self.spr_correct_answers = [
                 str(item).strip()
                 for item in (self.spr_correct_answers or [])
@@ -668,6 +680,10 @@ class QuizQuestion(models.Model):
         else:
             self.correct_answer = ''
         super().save(*args, **kwargs)
+
+    @property
+    def uses_dropdown_answer(self):
+        return bool(self.is_dropdown) and self.question_type != self.QuestionType.SPR
 
     @property
     def correct_option_label(self):

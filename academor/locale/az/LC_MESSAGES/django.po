@@ -6322,6 +6322,22 @@ msgstr "%(n)s sualı üçün cavabınız"
 msgid "Enter your answer"
 msgstr "Cavabınızı yazın"
 
+#: academor/templates/portals/includes/quiz_question_play.html
+msgid "- please select -"
+msgstr "- seçin -"
+
+#: academor/portals/models/quiz_models.py
+msgid "Dropdown answers"
+msgstr "Dropdown cavablar"
+
+#: academor/portals/models/quiz_models.py
+msgid "Show answer choices in a dropdown menu instead of a list. Use this when there are too many options for radio buttons."
+msgstr "Cavab variantlarını siyahı əvəzinə dropdown menyuda göstər. Radio düymələri üçün çox variant olanda istifadə edin."
+
+#: academor/templates/portals/includes/quiz_question_teacher_view.html
+msgid "Dropdown"
+msgstr "Dropdown"
+
 #: academor/templates/portals/includes/quiz_listening_spr.html:25
 #, python-format
 msgid "Maximum %(max)s characters"

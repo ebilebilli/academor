@@ -86,14 +86,24 @@
             var value = sprInput.value.trim();
             answers[match[1]] = value || null;
           }
-        } else {
-          // Fall back to MCQ radio buttons
-          var input = card.querySelector(".portal-quiz-play-option__input:checked");
-          var name = input ? input.getAttribute("name") : "";
-          var match = name && name.match(/quiz-q-(\d+)/);
-          if (match) {
-            answers[match[1]] = parseInt(input.value, 10);
+          return;
+        }
+
+        var dropdown = card.querySelector("[data-quiz-dropdown]");
+        if (dropdown) {
+          var dropdownName = dropdown.getAttribute("name");
+          var dropdownMatch = dropdownName && dropdownName.match(/quiz-q-(\d+)/);
+          if (dropdownMatch && dropdown.value !== "") {
+            answers[dropdownMatch[1]] = parseInt(dropdown.value, 10);
           }
+          return;
+        }
+
+        var input = card.querySelector(".portal-quiz-play-option__input:checked");
+        var radioName = input ? input.getAttribute("name") : "";
+        var radioMatch = radioName && radioName.match(/quiz-q-(\d+)/);
+        if (radioMatch) {
+          answers[radioMatch[1]] = parseInt(input.value, 10);
         }
       });
       return answers;
@@ -110,6 +120,9 @@
         finishBtn.innerHTML = active ? msgSubmitting : finishBtnHtml;
       }
       root.querySelectorAll(".portal-quiz-play-option__input").forEach(function (input) {
+        input.disabled = active || submitted;
+      });
+      root.querySelectorAll("[data-quiz-dropdown]").forEach(function (input) {
         input.disabled = active || submitted;
       });
       root.querySelectorAll("[data-quiz-spr-input]").forEach(function (input) {

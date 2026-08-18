@@ -16,6 +16,24 @@ RESOURCES_DIR = Path(__file__).resolve().parent.parent / 'resources' / 'quiz_que
 DEFAULT_SERVICE = 'general_english'
 
 
+def _as_bool(value) -> bool:
+    if isinstance(value, str):
+        return value.strip().lower() in {'1', 'true', 'yes', 'y', 'on'}
+    return bool(value)
+
+
+def _question_is_dropdown(raw: dict, quiz_default: bool = False) -> bool:
+    for key in ('type', 'answer_type', 'answer_ui'):
+        if str(raw.get(key) or '').strip().lower() == 'dropdown':
+            return True
+    question_type = str(raw.get('question_type') or '').strip().lower()
+    if question_type == 'dropdown':
+        return True
+    if 'is_dropdown' in raw:
+        return _as_bool(raw.get('is_dropdown'))
+    return quiz_default
+
+
 def _source_key(resource_slug: str, raw: dict, index: int, question_text: str) -> str:
     question_id = raw.get('id')
     if question_id is not None:
@@ -24,14 +42,24 @@ def _source_key(resource_slug: str, raw: dict, index: int, question_text: str) -
     return digest[:16]
 
 
-def _normalize_question(raw: dict, index: int, resource_slug: str) -> dict:
+def _normalize_question(
+    raw: dict,
+    index: int,
+    resource_slug: str,
+    *,
+    quiz_is_dropdown: bool = False,
+) -> dict:
     question = (raw.get('question') or '').strip()
     if not question:
         raise ValueError(f'Question #{index + 1} in {resource_slug} is missing text.')
 
     # Determine question type (MCQ or SPR)
     question_type = (raw.get('question_type') or 'mcq').strip().lower()
-    
+    is_dropdown = _question_is_dropdown(raw, quiz_is_dropdown)
+    if question_type == 'dropdown':
+        question_type = 'mcq'
+        is_dropdown = True
+
     if question_type == 'spr':
         # SPR (Student-Produced Response) validation
         spr_correct_answers = raw.get('spr_correct_answers') or []
@@ -49,6 +77,7 @@ def _normalize_question(raw: dict, index: int, resource_slug: str) -> dict:
             'source_key': _source_key(resource_slug, raw, index, question),
             'question': question,
             'question_type': QuizQuestion.QuestionType.SPR,
+            'is_dropdown': False,
             'answer_options': [],
             'correct_answer': '',
             'correct_option_index': 0,
@@ -87,6 +116,7 @@ def _normalize_question(raw: dict, index: int, resource_slug: str) -> dict:
             'source_key': _source_key(resource_slug, raw, index, question),
             'question': question,
             'question_type': QuizQuestion.QuestionType.MCQ,
+            'is_dropdown': is_dropdown,
             'answer_options': options,
             'correct_answer': correct,
             'correct_option_index': options.index(correct),
@@ -120,8 +150,11 @@ def parse_resource_file(path: Path) -> dict:
         resource_name = path.stem
 
     resource_slug = path.stem
+    quiz_is_dropdown = _as_bool(data.get('is_dropdown')) or str(
+        data.get('answer_ui') or '',
+    ).strip().lower() == 'dropdown'
     questions = [
-        _normalize_question(item, index, resource_slug)
+        _normalize_question(item, index, resource_slug, quiz_is_dropdown=quiz_is_dropdown)
         for index, item in enumerate(questions_raw)
     ]
 
@@ -205,6 +238,7 @@ def sync_quiz_questions(
                 'order': index + 1,
                 'prompt_type': QuizQuestion.PromptType.TEXT,
                 'question_type': item['question_type'],
+                'is_dropdown': item.get('is_dropdown', False),
                 'question': item['question'],
                 'answer_options': item['answer_options'],
                 'correct_answer': item['correct_answer'],

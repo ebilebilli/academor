@@ -581,6 +581,7 @@ class QuizQuestionAdminForm(forms.ModelForm):
             'order',
             'prompt_type',
             'question_type',
+            'is_dropdown',
             'question',
             'media_file',
             'media_url',

@@ -1014,6 +1014,7 @@ def _build_variant_breakdown(result: QuizResult) -> list[dict]:
             'id': question.pk,
             'question': question.question,
             'question_type': 'mcq',
+            'is_dropdown': bool(getattr(question, 'is_dropdown', False)),
             'answer_options': options,
             'selected_index': selected_index,
             'selected_label': selected_label,

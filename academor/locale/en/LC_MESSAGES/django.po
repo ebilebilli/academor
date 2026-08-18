@@ -6314,6 +6314,22 @@ msgstr "Your answer for question %(n)s"
 msgid "Enter your answer"
 msgstr "Enter your answer"
 
+#: academor/templates/portals/includes/quiz_question_play.html
+msgid "- please select -"
+msgstr "- please select -"
+
+#: academor/portals/models/quiz_models.py
+msgid "Dropdown answers"
+msgstr "Dropdown answers"
+
+#: academor/portals/models/quiz_models.py
+msgid "Show answer choices in a dropdown menu instead of a list. Use this when there are too many options for radio buttons."
+msgstr "Show answer choices in a dropdown menu instead of a list. Use this when there are too many options for radio buttons."
+
+#: academor/templates/portals/includes/quiz_question_teacher_view.html
+msgid "Dropdown"
+msgstr "Dropdown"
+
 #: academor/templates/portals/includes/quiz_listening_spr.html:25
 #, python-format
 msgid "Maximum %(max)s characters"

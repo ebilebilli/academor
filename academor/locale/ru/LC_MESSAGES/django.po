@@ -6371,6 +6371,22 @@ msgstr "Ваш ответ на вопрос %(n)s"
 msgid "Enter your answer"
 msgstr "Введите ваш ответ"
 
+#: academor/templates/portals/includes/quiz_question_play.html
+msgid "- please select -"
+msgstr "- выберите -"
+
+#: academor/portals/models/quiz_models.py
+msgid "Dropdown answers"
+msgstr "Выпадающие ответы"
+
+#: academor/portals/models/quiz_models.py
+msgid "Show answer choices in a dropdown menu instead of a list. Use this when there are too many options for radio buttons."
+msgstr "Показывать варианты ответа в выпадающем меню, а не списком. Используйте, когда вариантов слишком много для радиокнопок."
+
+#: academor/templates/portals/includes/quiz_question_teacher_view.html
+msgid "Dropdown"
+msgstr "Список"
+
 #: academor/templates/portals/includes/quiz_listening_spr.html:25
 #, python-format
 msgid "Maximum %(max)s characters"

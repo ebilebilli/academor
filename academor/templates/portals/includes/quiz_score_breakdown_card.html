@@ -24,6 +24,21 @@
       </span>
     </div>
   </div>
+  {% elif row.is_dropdown %}
+  <div class="portal-quiz-spr-review">
+    <div class="portal-quiz-spr-review__row">
+      <span class="portal-quiz-spr-review__label">{% trans 'Your answer' %}</span>
+      <span class="portal-quiz-spr-review__value{% if not row.is_correct %} is-wrong{% endif %}">
+        {% if row.selected_label %}{{ row.selected_label|quiz_plain }}{% else %}—{% endif %}
+      </span>
+    </div>
+    <div class="portal-quiz-spr-review__row portal-quiz-spr-review__row--correct">
+      <span class="portal-quiz-spr-review__label">{% trans 'Correct answer' %}</span>
+      <span class="portal-quiz-spr-review__value is-correct">
+        {% if row.correct_label %}{{ row.correct_label|quiz_plain }}{% else %}—{% endif %}
+      </span>
+    </div>
+  </div>
   {% elif row.answer_options %}
   <div class="portal-quiz-play-options portal-quiz-teacher-options" role="list">
     {% for option in row.answer_options %}

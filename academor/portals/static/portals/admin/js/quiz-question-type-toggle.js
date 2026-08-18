@@ -44,13 +44,13 @@
     function hideMCQFields(form) {
         form.find('.quiz-mcq-answers-fieldset').hide();
         form.find(
-            '.field-answer_options, .field-correct_answer, .field-correct_option_number, .field-correct_option_index',
+            '.field-answer_options, .field-correct_answer, .field-correct_option_number, .field-correct_option_index, .field-is_dropdown',
         ).hide();
     }
 
     function showMCQFields(form) {
         form.find('.quiz-mcq-answers-fieldset').show();
-        form.find('.field-answer_options, .field-correct_option_number').show();
+        form.find('.field-answer_options, .field-correct_option_number, .field-is_dropdown').show();
         // Hidden inputs stay in DOM but their rows can remain visually quiet.
         form.find('.field-correct_answer, .field-correct_option_index').hide();
     }

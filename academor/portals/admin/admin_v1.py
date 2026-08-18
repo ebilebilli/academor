@@ -343,6 +343,7 @@ class QuizQuestionInline(admin.StackedInline):
         'order',
         'prompt_type',
         'question_type',
+        'is_dropdown',
         'question',
         'media_file',
         'media_url',
@@ -376,6 +377,7 @@ class QuizQuestionInline(admin.StackedInline):
             'order',
             'prompt_type',
             'question_type',
+            'is_dropdown',
             'question',
             'media_file',
             'media_url',
@@ -2494,6 +2496,7 @@ class QuizQuestionAdmin(PortalModelAdmin):
                 'Multiple choice: add options with +, then set Correct option to 1, 2, 3, or 4.',
             ),
             'fields': (
+                'is_dropdown',
                 'answer_options',
                 'correct_option_number',
                 'correct_answer',

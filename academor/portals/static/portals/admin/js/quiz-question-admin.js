@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var ANSWER_FIELDS = ["answer_options", "correct_option_number", "correct_answer", "correct_option_index"];
+  var ANSWER_FIELDS = ["answer_options", "correct_option_number", "correct_answer", "correct_option_index", "is_dropdown"];
   var RESPONSE_FIELD = "student_response_preview";
   var GRADING_INPUTS = ["is_essay", "is_listening", "is_speaking", "is_reading", "is_math"];
 
@@ -114,7 +114,7 @@
     if (mode === "variant") {
       return {
         grading_mode: mode,
-        show_fields: ["answer_options", "correct_option_number"],
+        show_fields: ["answer_options", "correct_option_number", "is_dropdown"],
         hide_fields: [RESPONSE_FIELD, "correct_answer", "correct_option_index"],
         clear_fields: [],
       };

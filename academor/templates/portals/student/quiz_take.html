@@ -4,7 +4,7 @@
 {% block title %}{{ quiz.topic }}{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20260813b">
+<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20260818b">
 {% if quiz.uses_shared_passage_layout %}
 <link rel="stylesheet" href="{% static 'portals/css/quiz-reading.css' %}?v=20260810a">
 <link rel="stylesheet" href="{% static 'portals/css/quiz-shared-passage.css' %}?v=20260815a">
@@ -161,5 +161,5 @@
 {% if mock_id %}<script src="{% static 'portals/js/quiz-mock-section.js' %}?v=20260808a"></script>{% endif %}
 <script src="{% static 'portals/js/quiz-start-gate.js' %}?v=20260808b"></script>
 <script src="{% static 'portals/js/quiz-leave-guard.js' %}?v=20260703"></script>
-<script src="{% static 'portals/js/quiz-take.js' %}?v=20260808c"></script>
+<script src="{% static 'portals/js/quiz-take.js' %}?v=20260818a"></script>
 {% endblock %}

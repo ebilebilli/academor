@@ -1262,6 +1262,10 @@ def serialize_quiz_question_for_student(question, *, student_answer: str = ''):
         'quiz_id': getattr(question, 'quiz_id', None),
         'prompt_type': question.prompt_type,
         'question_type': getattr(question, 'question_type', 'mcq'),
+        'is_dropdown': (
+            bool(getattr(question, 'is_dropdown', False))
+            and getattr(question, 'question_type', 'mcq') != 'spr'
+        ),
         'question': question.question,
         'media_file_url': media_file_url,
         'media_url': question.media_url,
@@ -1285,6 +1289,10 @@ def serialize_quiz_question(question):
         'quiz_id': question.quiz_id,
         'prompt_type': question.prompt_type,
         'question_type': getattr(question, 'question_type', 'mcq'),
+        'is_dropdown': (
+            bool(getattr(question, 'is_dropdown', False))
+            and getattr(question, 'question_type', 'mcq') != 'spr'
+        ),
         'question': question.question,
         'media_file_url': media_file_url,
         'media_url': question.media_url,
