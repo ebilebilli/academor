@@ -1,0 +1,71 @@
+{
+  "level": "A2",
+  "quiz": 5,
+  "title": "Hobbies: Cooking and Music",
+  "service": "general_english",
+  "category_name": "Elementary Listening Tests",
+  "has_shared_passage": false,
+  "shared_passage": "",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Ella...",
+      "options": [
+        "works at the library.",
+        "likes watching movies on TV.",
+        "is at school."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 2,
+      "question": "Where was Ella's Japanese cooking course?",
+      "options": [
+        "at the library",
+        "at the college",
+        "at school"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "How many weeks was Ella's Japanese cooking course?",
+      "options": [
+        "seven",
+        "eight",
+        "nine"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 4,
+      "question": "At the moment, Jack is learning...",
+      "options": [
+        "how to record music.",
+        "how to play the violin.",
+        "about classical music."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 5,
+      "question": "What instrument can't Jack play well?",
+      "options": [
+        "the violin",
+        "the drums",
+        "the guitar"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 6,
+      "question": "How many concerts does Jack plan to see this month?",
+      "options": [
+        "two",
+        "four",
+        "six"
+      ],
+      "answer": 0
+    }
+  ]
+}

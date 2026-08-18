@@ -331,6 +331,7 @@ a:hover { color: var(--color-role-dark); }
 }
 
 .dashboard-content.is-ajax-swapped > .container-fluid {
+  visibility: hidden;
   animation: none !important;
 }
 
@@ -1635,8 +1636,8 @@ a:hover { color: var(--color-role-dark); }
   color: #ffffff !important;
 }
 
-/* ── Animations: page content fade-in ────────────────────────────────── */
-.dashboard-content > .container-fluid {
+/* ── Animations: page content fade-in (initial load only) ─────────────── */
+body:not([data-portal-ajax-nav]) .dashboard-content > .container-fluid {
   animation: ds-page-in 0.35s ease;
 }
 

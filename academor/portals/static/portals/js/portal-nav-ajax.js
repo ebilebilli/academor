@@ -453,14 +453,6 @@
       root.classList.add("is-ajax-swapped");
     }
 
-    mountContent(nextContent.innerHTML, nextContent);
-    syncLinkStates("#adminSidebar", doc);
-    syncLinkStates(".mobile-bottom-nav", doc);
-    syncActiveNavFromUrl(url);
-    syncBadgesFromSnapshot(doc);
-    syncTopbarBadges(doc);
-    setLoading(false);
-
     if (push !== false) {
       window.history.pushState(
         Object.assign({}, window.history.state, { portalAjax: true, url: url }),
@@ -471,7 +463,15 @@
 
     window.__portalNavPending = false;
 
-    return Promise.all([ensureStyles(doc), loadPageScripts(doc)]).then(function () {
+    return ensureStyles(doc).then(function () {
+      mountContent(nextContent.innerHTML, nextContent);
+      syncLinkStates("#adminSidebar", doc);
+      syncLinkStates(".mobile-bottom-nav", doc);
+      syncActiveNavFromUrl(url);
+      syncBadgesFromSnapshot(doc);
+      syncTopbarBadges(doc);
+      return loadPageScripts(doc);
+    }).then(function () {
       dispatchPortalContentLoaded(url, false);
       if (window.AcademorPortal && typeof window.AcademorPortal.initPageContent === "function") {
         window.AcademorPortal.initPageContent();
@@ -480,10 +480,9 @@
       window.scrollTo(0, 0);
 
       if (root) {
-        window.requestAnimationFrame(function () {
-          root.classList.remove("is-ajax-swapped");
-        });
+        root.classList.remove("is-ajax-swapped");
       }
+      document.body.setAttribute("data-portal-ajax-nav", "");
     });
   }
 

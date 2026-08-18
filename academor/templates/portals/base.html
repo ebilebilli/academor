@@ -33,7 +33,7 @@
   <!-- Role-specific redesign layer -->
   <link rel="stylesheet" href="{% static 'portals/css/portal-redesign.css' %}?v=20260807a">
   <!-- Shell overrides (loads last) -->
-  <link rel="stylesheet" href="{% static 'portals/css/portal-shell.css' %}?v=20260712a">
+  <link rel="stylesheet" href="{% static 'portals/css/portal-shell.css' %}?v=20260818b">
   <link rel="stylesheet" href="{% static 'portals/css/portal-lottie.css' %}?v=20260707c">
   {% if portal_role == 'teacher' or portal_role == 'student' or portal_role == 'parent' %}
   <link rel="stylesheet" href="{% static 'portals/css/weekly-scores.css' %}">
@@ -104,7 +104,7 @@
   {% endif %}
   <script defer src="{% static 'portals/js/bootstrap.bundle.min.js' %}"></script>
   <script defer src="{% static 'portals/js/main.js' %}"></script>
-  <script defer src="{% static 'portals/js/portal-nav-ajax.js' %}?v=20260708a"></script>
+  <script defer src="{% static 'portals/js/portal-nav-ajax.js' %}?v=20260818a"></script>
   <script defer src="{% static 'portals/js/portal-init.js' %}?v=20260810quizcat"></script>
   {% if portal_is_authenticated %}
   <script defer src="{% static 'portals/js/portal-badges.js' %}?v=20260723a"></script>
