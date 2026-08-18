@@ -1,0 +1,83 @@
+{
+  "level": "A2",
+  "quiz": 7,
+  "title": "Sophie's Trip to Egypt",
+  "service": "general_english",
+  "category_name": "Elementary Listening Tests",
+  "has_shared_passage": false,
+  "shared_passage": "",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Sophie went on holiday to Britain last year.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 2,
+      "question": "Sophie went on holiday with her friends.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "Sophie stayed in guest houses on her holiday.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 4,
+      "question": "Sophie's accommodation was comfortable.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 5,
+      "question": "Sophie's guide book said that food from the market was safe and delicious.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 6,
+      "question": "Sophie got sick after buying food from a market.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "Sophie was only sick for one day.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 8,
+      "question": "Sophie's favourite part of the trip was taking boat trips.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 0
+    }
+  ]
+}
