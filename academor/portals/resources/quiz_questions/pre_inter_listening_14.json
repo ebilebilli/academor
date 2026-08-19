@@ -1,0 +1,48 @@
+{
+  "level": "A2",
+  "quiz": 20,
+  "title": "The City Where I Live",
+  "service": "general_english",
+  "category_name": "Pre-intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Listen to Tom talking about living in Brighton. For questions 1 to 6, choose the correct answer.</h5><p>Let me see. I've worked here for four years now, but for one year, I commuted into Brighton by train. But after that, I got a room in a shared house in Brighton, and I lived there for a year before I got my own flat here two years ago. Lots of people like Brighton because it's on the coast, but I grew up by the sea so that's nothing special for me. There's always plenty going on though. Festivals, shows, sports events. I like that. My friends say the nightlife is good too, but I don't go out to bars much, so I wouldn't know. My things are always getting stolen! Two bikes, a bag, two phones. And recently I read about someone who was attacked just after getting off the bus stop outside my flat! It's a shame, because most people are really friendly and care about the city. It used to be a really dirty place, but volunteers do a great job cleaning it up. Well, I used to cycle everywhere, but since my last bike was taken 18 months ago, I've used a skateboard instead. I can carry it into shops with me, or into the office. If I need to, I can take it on the bus. I don't drive. None of my friends do, because it's so hard to find places to park a car. Well, there are lots of great restaurants in the city, but I think my favourite place to eat out is a little café. It is on the edge of town, three or four miles from the city centre. It's on the beach, on the other side of the harbour. I go there in the mornings before work for a coffee and a bacon roll. It's a great start to the day before I go to the office.</p>",
+  "shared_youtube_url": "https://youtu.be/iF952iK8StE",
+  "questions": [
+    {
+      "id": 1,
+      "question": "How long has Tom lived in Brighton?",
+      "options": ["1 year", "2 years", "3 years"],
+      "answer": 2
+    },
+    {
+      "id": 2,
+      "question": "How long has he lived in his flat?",
+      "options": ["1 year", "2 years", "3 years"],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "What does he like about the city?",
+      "options": ["the sea", "the events", "the nightlife"],
+      "answer": 1
+    },
+    {
+      "id": 4,
+      "question": "What does he dislike about the city?",
+      "options": ["the crime", "the poor transport", "how dirty it is"],
+      "answer": 0
+    },
+    {
+      "id": 5,
+      "question": "How does he get around the city now?",
+      "options": ["bike and skateboard", "bus and skateboard", "skateboard and car"],
+      "answer": 1
+    },
+    {
+      "id": 6,
+      "question": "Which is his favourite place to eat out?",
+      "options": ["a restaurant in the city centre", "a café near his office", "a café by the sea"],
+      "answer": 2
+    }
+  ]
+}

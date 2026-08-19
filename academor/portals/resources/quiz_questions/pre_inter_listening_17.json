@@ -1,0 +1,60 @@
+{
+  "level": "A2",
+  "quiz": 23,
+  "title": "Applying for a Camp Job",
+  "service": "general_english",
+  "category_name": "Pre-intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Listen to Philip speaking to Rose Jasper at an interview for a job at a children's camp. For questions 1 to 8, decide whether the statements are true or false.</h5><p><strong>ROSE:</strong> Good afternoon; I'm Rose Jasper. How do you do?<br><strong>PHILLIP:</strong> How do you do? Philip West.<br><strong>ROSE:</strong> Nice to meet you, Philip. Please, have a seat. So, you are applying for the job of activity leader at our children's summer camps. Do you have any experience of working with children?<br><strong>PHILLIP:</strong> Yes, I do. When I was at school, I volunteered with my local soccer club. I assisted at practice sessions, and I was responsible for communicating the dates and times of matches to the children and their families, and I made sure the children were safe.<br><strong>ROSE:</strong> Great! So what problems did you have in your role as a volunteer, and how did you deal with these problems?<br><strong>PHILLIP:</strong> Mm, one of the big problems was motivation. Sometimes children wanted to leave the club, and when one child left, their friends wanted to leave too. I solved this problem in different ways. First, I made sure the children enjoyed the soccer sessions. I encouraged them and praised them for their progress. I told jokes and gave the kids attention. Because of me, some children decided not to quit. I was happy about that.<br><strong>ROSE:</strong> Well done! Those are very useful skills. Now, at the camp, you will have to work long hours. Do you have experience with that?<br><strong>PHILLIP:</strong> Yes, I do. In my summer holidays last year, I worked in a factory as a machine operator. I wanted to earn money, so I did a lot of overtime. It wasn't interesting work, but I didn't mind that.<br><strong>ROSE:</strong> That's good to know. Now, as an activity leader, it's important to have a good relationship with your co-workers. Do you work well with other people?<br><strong>PHILLIP:</strong> Yes, I enjoy working in a team, and I always get on with my co-workers. For example, at the factory, I helped my colleagues when they were busy, and I was always motivated and positive. Plus, I always followed instructions from my boss without complaining, even when the work was hard.<br><strong>ROSE:</strong> Great. Well, thank you for your time, Philip. I'll be in touch.</p>",
+  "shared_youtube_url": "https://youtu.be/csa3GO4rZOQ",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Philip is applying for a job as an activity leader.",
+      "options": ["True", "False"],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "Philip worked as a teacher in a school.",
+      "options": ["True", "False"],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "Philip was responsible for communicating to team members.",
+      "options": ["True", "False"],
+      "answer": 0
+    },
+    {
+      "id": 4,
+      "question": "Philip quit the team because he did not get enough praise and encouragement.",
+      "options": ["True", "False"],
+      "answer": 1
+    },
+    {
+      "id": 5,
+      "question": "Philip worked long hours when he worked at a factory.",
+      "options": ["True", "False"],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "Philip thought the work at the factory was interesting.",
+      "options": ["True", "False"],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "Philip's co-workers at the factory helped him a lot.",
+      "options": ["True", "False"],
+      "answer": 1
+    },
+    {
+      "id": 8,
+      "question": "Some of Phillip's co-workers at the factory were often complaining to the boss.",
+      "options": ["True", "False"],
+      "answer": 1
+    }
+  ]
+}

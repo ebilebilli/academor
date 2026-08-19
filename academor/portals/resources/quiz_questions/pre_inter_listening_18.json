@@ -1,0 +1,90 @@
+{
+  "level": "A2",
+  "quiz": 24,
+  "title": "Recent Changes in Life",
+  "service": "general_english",
+  "category_name": "Pre-intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Listen to five people talking about recent life changes. For questions 1 to 6, match the person to their life change. There is one extra option that does not match any of the speakers.</h5><p><strong>OLIVER:</strong> I used to work such long hours that I didn't have time to enjoy life. I was like a robot; get up, go to work, go back home, sleep. I had no personal life, and I started to feel really miserable. I decided that I wanted to have more free time, so I told my boss that I was going through some personal issues and that I needed to work part time. She agreed! Now I have time to do everything I want. I don't have as much money, but I'm much, much happier.</p><p><strong>LOUISE:</strong> Jasmine is three weeks old today. I remember a month or so ago, thinking that I would go back to work within two or three months. Now I know that's not going to happen! I just can't imagine leaving her with someone else! I'll miss my colleagues of course, but work will pay me an allowance for a year, so I've decided to take that.</p><p><strong>KAREN:</strong> I worked as a singing teacher for ten years, and I've had some really good success stories. But I felt that I had gone as far as I could go in that career and I wanted a change. I didn't just want to do a different job in music. I want to do something completely different. That's why I applied to do this engineering course. It's challenging, definitely, but I really love it.</p><p><strong>SAM:</strong> For the last nine years I've done the responsible thing. I got a well-paid job close to home so that my wife didn't have to work and I could be home by half past four to spend time with the kids. It's worked, but I really began to hate work! Now, the kids are older, so after some discussion, my wife agreed I could get a job I loved, even though I will be home much later, and earn less. I started last week. It's great!</p><p><strong>OSCAR:</strong> My wife and I both had really good jobs, which we really enjoyed. But we rarely saw our kids, and they started to have difficulties at school. We began to think we were being selfish. Together, we were earning far more money than we needed. So, we decided that I would give up work and teach the children myself, at home. It's not easy, but now we spend a lot more time together and it's good for all of us.</p>",
+  "shared_youtube_url": "https://youtu.be/FjnuvNMmpKE",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Oliver...",
+      "options": [
+        "had a baby.",
+        "started to spend more time with his/her children.",
+        "started studying.",
+        "was fired by his/her employer.",
+        "stopped working full time.",
+        "got a new job."
+      ],
+      "answer": 4
+    },
+    {
+      "id": 2,
+      "question": "Louise...",
+      "options": [
+        "had a baby.",
+        "started to spend more time with his/her children.",
+        "started studying.",
+        "was fired by his/her employer.",
+        "stopped working full time.",
+        "got a new job."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 3,
+      "question": "Karen...",
+      "options": [
+        "had a baby.",
+        "started to spend more time with his/her children.",
+        "started studying.",
+        "was fired by his/her employer.",
+        "stopped working full time.",
+        "got a new job."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "Sam...",
+      "options": [
+        "had a baby.",
+        "started to spend more time with his/her children.",
+        "started studying.",
+        "was fired by his/her employer.",
+        "stopped working full time.",
+        "got a new job."
+      ],
+      "answer": 5
+    },
+    {
+      "id": 5,
+      "question": "Oscar...",
+      "options": [
+        "had a baby.",
+        "started to spend more time with his/her children.",
+        "started studying.",
+        "was fired by his/her employer.",
+        "stopped working full time.",
+        "got a new job."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 6,
+      "question": "None of the speakers...",
+      "options": [
+        "had a baby.",
+        "started to spend more time with his/her children.",
+        "started studying.",
+        "were fired by their employer.",
+        "stopped working full time.",
+        "got a new job."
+      ],
+      "answer": 3
+    }
+  ]
+}

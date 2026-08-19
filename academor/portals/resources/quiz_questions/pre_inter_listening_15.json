@@ -1,0 +1,72 @@
+{
+  "level": "A2",
+  "quiz": 21,
+  "title": "My Friends",
+  "service": "general_english",
+  "category_name": "Pre-intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Listen to Nicolas talking about his friends. For questions 1 to 10, choose true or false.</h5><p>Well my first best friend was Kevin. We've known each other since we were babies. My mum and his made friends at those classes that women go to when they are pregnant. They both went swimming together before Kevin and I were born. Our mums always hung out when we were babies and so we did too. At primary school, we were always together. We were both smart so we could always sit together in class. In our free time, we used to play computer games and watch war movies. We both hated sports. At secondary school, we grew apart though. He got interested in girls and chose to spend time with them, not me. He started going to the gym too, which never interested me. I joined a board games club and met new friends there, but we were never as close as Kevin and I had been. I've only seen him a couple of times since high school. He moved to Dubai and got married. At university, I made friends with a housemate called Charlie. He's completely different from me. I'm quite quiet, but he is really noisy, chatty, friendly and crazy. He opened up my world, introducing me to night clubs, rock concerts, beach holidays. I used to wonder why he liked me – he was so sociable and I was so serious. But I later found out that his family life had been very difficult as a kid. I was honest and reliable, and his parents were not. After university, Charlie and I got jobs in different cities and saw less of each other. We both had serious relationships, but we both broke up at about the same time. To get over it, the two of us went on holiday together. We had a really good time, and after that, Charlie quit his job and moved to my city. Now we hang out at least once a week. We usually play computer games or go to a bar. He wants me to play racquetball with him, but I'm not interested in that.</p>",
+  "shared_youtube_url": "https://youtu.be/oyZd45RYexU",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Nicolas met Kevin at primary school.",
+      "options": ["True", "False"],
+      "answer": 1
+    },
+    {
+      "id": 2,
+      "question": "Nicolas and Kevin often went swimming together.",
+      "options": ["True", "False"],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "Nicolas and Kevin were both good at their schoolwork at primary school.",
+      "options": ["True", "False"],
+      "answer": 0
+    },
+    {
+      "id": 4,
+      "question": "Neither Nicolas nor Kevin enjoyed playing sports.",
+      "options": ["True", "False"],
+      "answer": 0
+    },
+    {
+      "id": 5,
+      "question": "Kevin enjoyed going to the gym at secondary school, but Nicolas didn't.",
+      "options": ["True", "False"],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "Nicolas doesn't see Kevin very often these days.",
+      "options": ["True", "False"],
+      "answer": 0
+    },
+    {
+      "id": 7,
+      "question": "Charlie and Nicolas have similar personalities.",
+      "options": ["True", "False"],
+      "answer": 1
+    },
+    {
+      "id": 8,
+      "question": "Charlie liked Nicolas because he was similar to his parents.",
+      "options": ["True", "False"],
+      "answer": 1
+    },
+    {
+      "id": 9,
+      "question": "Charlie and Nicolas both finished relationships at about the same time.",
+      "options": ["True", "False"],
+      "answer": 0
+    },
+    {
+      "id": 10,
+      "question": "Charlie and Nicolas play computer games and racquetball together.",
+      "options": ["True", "False"],
+      "answer": 1
+    }
+  ]
+}
