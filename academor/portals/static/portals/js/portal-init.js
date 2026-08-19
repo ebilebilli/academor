@@ -1061,6 +1061,58 @@
     setActiveTab(groupNav, activeChip, "data-score-group");
   }
 
+  function applyQuizHubService(hub, service) {
+    var activeService = service || "all";
+    hub.querySelectorAll("[data-portal-quiz-service-tablist] .qhub__service-btn").forEach(function (btn) {
+      var active = btn.getAttribute("data-service") === activeService;
+      btn.classList.toggle("is-active", active);
+      btn.setAttribute("aria-selected", active ? "true" : "false");
+    });
+    hub.querySelectorAll("[data-portal-quiz-category-tablist] .qhub__nav-item").forEach(function (item) {
+      var cat = item.getAttribute("data-category");
+      if (cat === "all") {
+        item.style.display = "";
+        item.classList.add("is-active");
+        item.setAttribute("aria-selected", "true");
+        return;
+      }
+      var show = activeService === "all" || item.getAttribute("data-service") === activeService;
+      item.style.display = show ? "" : "none";
+      item.classList.remove("is-active");
+    });
+    var visible = 0;
+    hub.querySelectorAll(".qhub__card").forEach(function (card) {
+      var show = activeService === "all" || card.getAttribute("data-service") === activeService;
+      card.style.display = show ? "" : "none";
+      if (show) {
+        visible += 1;
+      }
+    });
+    var emptyMsg = hub.querySelector("#quiz-categories-filter-empty");
+    if (emptyMsg) {
+      emptyMsg.classList.toggle("d-none", visible > 0);
+    }
+  }
+
+  function handleQuizHubClick(event) {
+    var hub = event.target.closest("[data-quiz-hub]");
+    if (!hub) {
+      return;
+    }
+    var svcBtn = event.target.closest("[data-portal-quiz-service-tablist] .qhub__service-btn");
+    if (svcBtn && hub.contains(svcBtn)) {
+      event.preventDefault();
+      applyQuizHubService(hub, svcBtn.getAttribute("data-service") || "all");
+      return;
+    }
+    var allBtn = event.target.closest('[data-portal-quiz-category-tablist] [data-category="all"]');
+    if (allBtn && hub.contains(allBtn)) {
+      event.preventDefault();
+      var activeSvc = hub.querySelector("[data-portal-quiz-service-tablist] .qhub__service-btn.is-active");
+      applyQuizHubService(hub, activeSvc ? activeSvc.getAttribute("data-service") : "all");
+    }
+  }
+
   function handleScoreGroupClick(event) {
     var groupBtn = event.target.closest("[data-score-group]");
     if (!groupBtn) {
@@ -1099,6 +1151,7 @@
     window.requestAnimationFrame(initAll);
   }
 
+  document.addEventListener("click", handleQuizHubClick);
   document.addEventListener("click", handleScoreGroupClick);
   document.addEventListener("portal:content-loaded", scheduleInitAll);
   bindContentLoaded(scheduleInitAll);

@@ -3088,6 +3088,9 @@ a.dashboard-perf-card:hover .dashboard-perf-card__arrow {
   padding: var(--space-3);
   position: sticky;
   top: 80px;
+  z-index: 2;
+  max-height: calc(100vh - 112px);
+  overflow-y: auto;
 }
 
 .qhub__nav-label {
@@ -3126,7 +3129,15 @@ a.dashboard-perf-card:hover .dashboard-perf-card__arrow {
   font-weight: var(--font-medium);
   cursor: pointer;
   text-align: left;
+  text-decoration: none;
+  box-sizing: border-box;
   transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+a.qhub__nav-item:hover,
+a.qhub__nav-item:focus {
+  text-decoration: none;
+  color: var(--color-role);
 }
 
 .qhub__nav-item:hover {

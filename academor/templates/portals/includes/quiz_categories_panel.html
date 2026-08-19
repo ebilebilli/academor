@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<div class="qhub" id="quiz-hub">
+<div class="qhub" id="quiz-hub" data-quiz-hub>
 
   {# ── Left sidebar: category nav ─────────────────────────── #}
   <aside class="qhub__nav" id="quizCategoryNav" aria-label="{% trans 'Kateqoriyalar' %}">
@@ -36,16 +36,15 @@
       </button>
 
       {% for category in categories %}
-      <button
+      <a
         class="qhub__nav-item"
-        type="button"
+        href="{% url category_detail_url_name category.id %}{{ category_url_suffix|default:'' }}"
         data-category="{{ category.id }}"
         data-service="{{ category.service }}"
-        aria-selected="false"
       >
         <span class="qhub__nav-item-label">{{ category.name }}</span>
         <span class="qhub__nav-item-count">{{ category.quiz_count }}</span>
-      </button>
+      </a>
       {% endfor %}
     </nav>
   </aside>
@@ -90,73 +89,3 @@
 
   </main>
 </div>
-
-<script>
-(function () {
-  var hub = document.getElementById('quiz-hub');
-  if (!hub) return;
-
-  var navItems  = hub.querySelectorAll('[data-portal-quiz-category-tablist] .qhub__nav-item');
-  var cards     = hub.querySelectorAll('.qhub__card');
-  var emptyMsg  = hub.querySelector('#quiz-categories-filter-empty');
-  var svcBtns   = hub.querySelectorAll('[data-portal-quiz-service-tablist] .qhub__service-btn');
-
-  var activeService  = 'all';
-  var activeCategory = 'all';
-
-  function filterCards() {
-    var visible = 0;
-    cards.forEach(function (card) {
-      var matchSvc = activeService === 'all' || card.dataset.service === activeService;
-      var matchCat = activeCategory === 'all' || card.dataset.category === activeCategory;
-      var show = matchSvc && matchCat;
-      card.style.display = show ? '' : 'none';
-      if (show) visible++;
-    });
-    if (emptyMsg) emptyMsg.classList.toggle('d-none', visible > 0);
-  }
-
-  function updateNavVisibility() {
-    navItems.forEach(function (btn) {
-      var cat = btn.dataset.category;
-      if (cat === 'all') { btn.style.display = ''; return; }
-      var matchSvc = activeService === 'all' || btn.dataset.service === activeService;
-      btn.style.display = matchSvc ? '' : 'none';
-    });
-    /* If active category is now hidden, reset to 'all' */
-    var activeBtn = hub.querySelector('[data-portal-quiz-category-tablist] .qhub__nav-item.is-active');
-    if (activeBtn && activeBtn.style.display === 'none') {
-      setCategory('all');
-    }
-  }
-
-  function setCategory(cat) {
-    activeCategory = cat;
-    navItems.forEach(function (btn) {
-      var active = btn.dataset.category === cat;
-      btn.classList.toggle('is-active', active);
-      btn.setAttribute('aria-selected', active ? 'true' : 'false');
-    });
-    filterCards();
-  }
-
-  function setService(svc) {
-    activeService = svc;
-    svcBtns.forEach(function (btn) {
-      var active = btn.dataset.service === svc;
-      btn.classList.toggle('is-active', active);
-      btn.setAttribute('aria-selected', active ? 'true' : 'false');
-    });
-    updateNavVisibility();
-    filterCards();
-  }
-
-  navItems.forEach(function (btn) {
-    btn.addEventListener('click', function () { setCategory(btn.dataset.category); });
-  });
-
-  svcBtns.forEach(function (btn) {
-    btn.addEventListener('click', function () { setService(btn.dataset.service); });
-  });
-}());
-</script>

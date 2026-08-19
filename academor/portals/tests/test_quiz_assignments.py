@@ -261,6 +261,19 @@ class QuizAssignmentTests(QuizVisibilityTests):
             ).is_active
         )
 
+    def test_quiz_hub_category_nav_links_to_category_detail(self):
+        client = Client()
+        _portal_client_login(client, self.student_user)
+        response = client.get(reverse('portals:student-quizzes'))
+        self.assertEqual(response.status_code, 200)
+        category_url = reverse(
+            'portals:student-quiz-category',
+            kwargs={'category_pk': self.ielts_category.pk},
+        )
+        self.assertContains(response, 'data-quiz-hub')
+        self.assertContains(response, 'data-portal-quiz-category-tablist')
+        self.assertContains(response, f'href="{category_url}"')
+
 
 class MockAccessPerProgramTests(TestCase):
     def setUp(self):
@@ -333,6 +346,7 @@ class MockAccessPerProgramTests(TestCase):
             )
         )
         self.assertTrue(student_has_active_mock_access_for_program(self.student.pk, 'ielts'))
+
 
 class QuizAssignmentNewStudentTests(TestCase):
     def setUp(self):
