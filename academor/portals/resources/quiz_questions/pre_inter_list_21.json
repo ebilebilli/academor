@@ -1,0 +1,82 @@
+{
+  "level": "A2",
+  "quiz": 21,
+  "title": "Learning a New Job",
+  "service": "general_english",
+  "category_name": "Pre-intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Listen to Marta talking about her apprenticeship. For questions 1 to 7, choose the correct answer.</h5>",
+  "shared_youtube_url": "https://youtu.be/XOHFPSb1Go4",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What did Marta do after leaving school?",
+      "options": [
+        "She got a job.",
+        "She went to university.",
+        "She started her apprenticeship."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "How did she find out about the apprenticeship?",
+      "options": [
+        "from a friend",
+        "from a university jobcentre",
+        "from a magazine"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 3,
+      "question": "How many departments does she work in each year?",
+      "options": [
+        "three",
+        "four",
+        "five"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 4,
+      "question": "Which department is she working in at the moment?",
+      "options": [
+        "administration",
+        "services",
+        "environment"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 5,
+      "question": "How often does she attend lectures?",
+      "options": [
+        "one day a week",
+        "two days a week",
+        "three days a week"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 6,
+      "question": "How many apprentices attend her lectures?",
+      "options": [
+        "four",
+        "twelve",
+        "fifty"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "Which sentence is NOT true about her plans for after the apprenticeship?",
+      "options": [
+        "She must work for the company for four years.",
+        "She is interested in working in planning.",
+        "She would like to work in Indonesia."
+      ],
+      "answer": 0
+    }
+  ]
+}
