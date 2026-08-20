@@ -1,0 +1,72 @@
+{
+  "level": "B1",
+  "quiz": 27,
+  "title": "Sports Scandals That Shocked the World",
+  "service": "general_english",
+  "category_name": "Intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Watch a video about famous cheating scandals in sports, and for questions 1 to 6, choose the correct option.</h5>",
+  "shared_youtube_url": "https://youtu.be/uJGpWg3eKYc",
+  "questions": [
+    {
+      "id": 1,
+      "question": "American runner Fred Lorz...",
+      "options": [
+        "drove his own car instead of running.",
+        "was helped to cheat in the marathon.",
+        "drank brandy and poison."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 2,
+      "question": "The Chicago White Sox team...",
+      "options": [
+        "was earlier called the Black Sox.",
+        "paid money to win games.",
+        "had players who had to retire from the sport."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 3,
+      "question": "Maradona...",
+      "options": [
+        "gave the famous name to his illegal goal.",
+        "scored another illegal goal during the same World Cup.",
+        "never totally admitted what he did."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 4,
+      "question": "Nancy Kerrigan...",
+      "options": [
+        "cheated to be at the Winter Olympics.",
+        "got hit in her knee while skating.",
+        "reached success after a difficult situation."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 5,
+      "question": "What is true about Spain's Paralympic basketball team?",
+      "options": [
+        "A person lied to them to expose the truth.",
+        "One of its players told the truth.",
+        "None of the players had disabilities."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "Lance Armstrong...",
+      "options": [
+        "used drugs to compete in 1999, 2005, and 2012.",
+        "lost most of his Tour de France titles.",
+        "told the truth in front of the cameras."
+      ],
+      "answer": 2
+    }
+  ]
+}

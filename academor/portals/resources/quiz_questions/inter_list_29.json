@@ -1,0 +1,92 @@
+{
+  "level": "B1",
+  "quiz": 30,
+  "title": "The Daily Commute",
+  "service": "general_english",
+  "category_name": "Intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Listen to four commuters talk about their daily journeys to work. For questions 1 to 8, choose the correct answer.</h5>",
+  "shared_youtube_url": "https://youtu.be/QXdcjN0bqOQ",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What does Piers say about the bus?",
+      "options": [
+        "It takes him fifteen minutes to get to the bus stop.",
+        "He can often sit and relax on the bus.",
+        "He often cannot relax on the bus."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 2,
+      "question": "What does Piers think about the underground?",
+      "options": [
+        "It's sad and he hates it.",
+        "It's much better than driving.",
+        "He loves it, but only when he can sit."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "Sydney...",
+      "options": [
+        "relaxes and watches the sunrise before going to work.",
+        "doesn't like loud music in the car.",
+        "drinks coffee on her way to work."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "Which is true about Sydney?",
+      "options": [
+        "She always has to slow down due to speed cameras.",
+        "She always finds traffic jams when entering the city.",
+        "She sometimes feels her journey to work is too short."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 5,
+      "question": "Brenda...",
+      "options": [
+        "began to enjoy cycling in New York.",
+        "enjoys her bike ride to work but not so much the ferry.",
+        "enjoys both her bicycle and ferry ride."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 6,
+      "question": "Brenda says that she...",
+      "options": [
+        "has a plan B for her commute on certain days.",
+        "sometimes has no patience to wait for the ferry.",
+        "never takes the underground."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 7,
+      "question": "Nick...",
+      "options": [
+        "spends one hour in his car every day.",
+        "feels miserable about his daily commute.",
+        "turned his daily commute into an opportunity."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 8,
+      "question": "Nick says that...",
+      "options": [
+        "he often gets frustrated in traffic jams.",
+        "learning French might help him get a new job.",
+        "he likes his current job."
+      ],
+      "answer": 1
+    }
+  ]
+}

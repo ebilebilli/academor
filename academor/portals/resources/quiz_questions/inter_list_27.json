@@ -1,0 +1,72 @@
+{
+  "level": "B1",
+  "quiz": 28,
+  "title": "Strange Driving Laws Around the World",
+  "service": "general_english",
+  "category_name": "Intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Watch a video about strange driving rules around the world, and for questions 1 to 6, choose the correct option.</h5>",
+  "shared_youtube_url": "https://youtu.be/ZlT-W_HrlWo",
+  "questions": [
+    {
+      "id": 1,
+      "question": "When is running out of fuel on a German motorway allowed?",
+      "options": [
+        "Never.",
+        "Only when it's an emergency.",
+        "Only when you can prevent traffic congestion or an accident."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "What must you do before taking your car in Denmark?",
+      "options": [
+        "Check that the children are sitting safely.",
+        "Check that your children are using their seats.",
+        "Check that there are no kids near your car."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 3,
+      "question": "What is true in Spain?",
+      "options": [
+        "You can't wear sandals unless coming from the beach.",
+        "You must always wear safe footwear.",
+        "You can wear comfortable shoes or no shoes at all."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 4,
+      "question": "What does the video imply about the law in Alaska?",
+      "options": [
+        "You cannot carry a pet unless it's tied.",
+        "You can't let your dog climb onto the roof of your car.",
+        "You mustn't carry your pet on the roof of your car."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 5,
+      "question": "When can you drive in Manila?",
+      "options": [
+        "It depends on the number on your number plate.",
+        "If you can drive on Monday, you cannot drive on Tuesday.",
+        "It depends on the colour of your number plate."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "In Thailand, you mustn't drive without a shirt…",
+      "options": [
+        "because it's not decent.",
+        "unless it's very hot.",
+        "unless your air conditioning is not working."
+      ],
+      "answer": 0
+    }
+  ]
+}
