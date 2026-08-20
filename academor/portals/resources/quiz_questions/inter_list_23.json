@@ -1,0 +1,82 @@
+{
+  "level": "B1",
+  "quiz": 24,
+  "title": "School Days: Personal Journeys",
+  "service": "general_english",
+  "category_name": "Intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Listen to four people share their personal school experiences, and for questions 1 to 7, choose the correct answer.</h5>",
+  "shared_youtube_url": "https://youtu.be/YmFZUvKu1PU",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Why does Sam mention the essays?",
+      "options": [
+        "To describe how hard he has to work.",
+        "Because he is proud of his last essay.",
+        "To state that he needs to stop."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "Why are Sam's exams so crucial?",
+      "options": [
+        "Because it's his last semester.",
+        "Because he wants to study in a foreign country.",
+        "Because he needs a good mark in German."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "Why did Jessica have to drop a class last term?",
+      "options": [
+        "Because she wanted more flexibility in her schedule.",
+        "Because balancing both work and school was too much.",
+        "Because the assignments were too hard."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 4,
+      "question": "What does Jessica say she's learning from studying online?",
+      "options": [
+        "How to use digital tools.",
+        "How to be more productive.",
+        "How to work with people."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 5,
+      "question": "Why did Liam have to retake some exams?",
+      "options": [
+        "Because he didn't take them when he was at school.",
+        "Because they weren't easy.",
+        "Because his marks weren't good enough."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 6,
+      "question": "What would Liam like to do after his graduation?",
+      "options": [
+        "Pursue advanced studies in engineering.",
+        "Start a business.",
+        "Work in a different field."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 7,
+      "question": "Why didn't Daniel get good grades in high school?",
+      "options": [
+        "He had trouble adapting to all the changes.",
+        "He was hanging out with the wrong people.",
+        "He didn't understand the importance of studying."
+      ],
+      "answer": 1
+    }
+  ]
+}

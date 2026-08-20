@@ -1,0 +1,72 @@
+{
+  "level": "B1",
+  "quiz": 22,
+  "title": "Life on the Road: Working Abroad",
+  "service": "general_english",
+  "category_name": "Intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Listen to three people talking about their experience working while travelling the world, and for questions 1 to 6, choose the correct answer.</h5>",
+  "shared_youtube_url": "https://youtu.be/JBR55CY28k4",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Which of these things is most important to Tom?",
+      "options": [
+        "The weather",
+        "The money",
+        "The work environment"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "Which is true about Tom's work routine?",
+      "options": [
+        "He sometimes works in the evenings.",
+        "He is not very organised and often works different hours.",
+        "He works from different types of places."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 3,
+      "question": "Which of these words better describes Alex's job?",
+      "options": [
+        "Performer",
+        "Assistant",
+        "Bingo caller"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 4,
+      "question": "What does Alex think about his future?",
+      "options": [
+        "He doesn't want to work 12 hours a day forever.",
+        "He'd like to keep his job and have a family.",
+        "He'd like to quit his job and have children someday."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 5,
+      "question": "Where does Emma mainly sell her art?",
+      "options": [
+        "Popular places",
+        "Art shops",
+        "Restaurants"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "What is most important to Emma when choosing a destination?",
+      "options": [
+        "People should understand English.",
+        "It should be affordable and interesting.",
+        "There should be lots of local artists."
+      ],
+      "answer": 1
+    }
+  ]
+}
