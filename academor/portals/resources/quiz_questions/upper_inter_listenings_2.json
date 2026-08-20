@@ -1,0 +1,75 @@
+{
+  "level": "B1+",
+  "quiz": 1,
+  "title": "Interview: The Rise of Transhumanism",
+  "service": "general_english",
+  "category_name": "Upper-intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Listen to an interview about the future of humans and technology. For questions 1–7, decide if the statements are True or False.</h5><p><strong>ANNA (HOST):</strong> Welcome back to FutureTalk! I'm Anna, and today we're asking a big question: Will humans become supermachines in the future? To help us understand, we're speaking with Dr Lina Gray, a science writer who has studied the predictions of transhumanists—people who believe that technology will one day help us go far beyond our natural limits. Welcome, Dr Gray!</p><p><strong>DR GRAY:</strong> Hi Anna, thank you! I'm happy to be here.</p><p><strong>ANNA:</strong> So let's start with the basics. What do transhumanists believe?</p><p><strong>DR GRAY:</strong> Transhumanists believe that we can and should use technology to improve the human body and mind. They want to go beyond human limits—live longer, think faster, even become stronger. Some think we may one day upload our minds into computers or live for hundreds of years.</p><p><strong>ANNA:</strong> Wow! So they think we'll be like part machine?</p><p><strong>DR GRAY:</strong> Exactly. They talk about brain implants that connect us directly to the internet, robotic body parts that are better than biological ones, or even changing our genes to avoid disease and live much longer. In short, they imagine a future where humans are no longer only biological—but a mix of human and machine. People who live like this are sometimes called posthuman. That means they are still human in some ways, but their bodies and minds have been changed by technology so much that they no longer fit the concept of 'human' as we understand it today.</p><p><strong>ANNA:</strong> That sounds like science fiction. But could it really happen?</p><p><strong>DR GRAY:</strong> Some parts are already starting. We have smart prosthetics, brain–computer interfaces, and gene editing. But many predictions—like uploading the mind—are still far from reality. It might happen one day, but there's still a lot we don't know about it. And there are big technical and ethical questions.</p><p><strong>ANNA:</strong> Like what?</p><p><strong>DR GRAY:</strong> Well, first: who will control the technology? If only well-off people can upgrade their bodies, the gap between social groups could grow a lot. Also, if AI becomes super-intelligent, will it still respect human values? And what happens if someone hacks your brain? These are serious concerns.</p><p><strong>ANNA:</strong> True. So transhumanism isn't all good news?</p><p><strong>DR GRAY:</strong> Not necessarily. It depends on how we use the technology. Some people dream of a perfect future with no sickness or ageing. Others warn that we could lose something important—our humanity, our connection to nature, or even control over our own lives.</p><p><strong>ANNA:</strong> I've heard about something called the Singularity. What is that?</p><p><strong>DR GRAY:</strong> Ah yes—the Singularity is one of the most famous ideas in transhumanist thinking. It's the moment when artificial intelligence becomes smarter than humans. Some believe this could happen in the next few decades. After that point, machines could start improving themselves without our help—and change the world very quickly.</p><p><strong>ANNA:</strong> That sounds exciting… and maybe a bit frightening.</p><p><strong>DR GRAY:</strong> Yes, it could bring amazing things—new medicines, cleaner energy, even solutions to climate change. But if we're not ready, it could also bring chaos. That's why many experts say we need to prepare carefully and create strong rules for how AI is developed. Unfortunately, that kind of preparation isn't really happening yet.</p><p><strong>ANNA:</strong> Do you think we'll become 'posthuman' in our lifetime?</p><p><strong>DR GRAY:</strong> I think we'll see more and more changes. Maybe not full posthumans yet—but smarter machines, improved health, and new ways of living. The question is: will we stay in charge of those changes, or let the technology lead us? That second option could be very dangerous for humanity.</p><p><strong>ANNA:</strong> That's a powerful question. Thank you, Dr Gray, for such a fascinating conversation.</p><p><strong>DR GRAY:</strong> Thank you, Anna! It's been a pleasure.</p>",
+  "shared_youtube_url": "https://youtu.be/wdwcI2E4IXU",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Transhumanists think uploading our minds into computers is the key to extending our lives for hundreds of years.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 2,
+      "question": "Dr Gray implies that we won't need a computer to get online.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 3,
+      "question": "A posthuman is someone who wouldn't be considered fully human by today's standards.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 4,
+      "question": "Dr Gray believes that uploading human minds will never be possible.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 5,
+      "question": "One of the things Dr Gray is most concerned about is inequality between the rich and the poor.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "Dr Gray is very excited about the Singularity.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "Dr Gray believes the idea of becoming posthuman may be great as long as we control how we change.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 0
+    }
+  ]
+}
