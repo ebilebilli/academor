@@ -1,0 +1,75 @@
+{
+  "level": "B1",
+  "quiz": 41,
+  "title": "The Life of a Genius: Albert Einstein",
+  "service": "general_english",
+  "category_name": "Intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Watch a video about Albert Einstein. For questions 1 to 7, choose true or false.</h5>",
+  "shared_youtube_url": "https://youtu.be/bafs5tVOV8M",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Albert Einstein invented lasers and satellites.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 2,
+      "question": "Albert Einstein was born in Munich in 1879.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "After graduating, it was difficult for Einstein to find a job because of a recommendation letter.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 4,
+      "question": "Einstein's first job was in an office.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 5,
+      "question": "Einstein explained relativity comparing how fast or slow time seemed to pass in different situations.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "Einstein's general theory of relativity was proven in 1915.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "Einstein was offered to be president of Israel and didn't accept.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 0
+    }
+  ]
+}

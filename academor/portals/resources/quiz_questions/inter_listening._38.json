@@ -1,0 +1,72 @@
+{
+  "level": "B1",
+  "quiz": 39,
+  "title": "The Race to Reach Mars",
+  "service": "general_english",
+  "category_name": "Intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Watch a video about Mars. For questions 1 to 6, choose the correct answer.</h5>",
+  "shared_youtube_url": "https://youtu.be/40R69SHPpYQ",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Before landing on the Moon, humans ...",
+      "options": [
+        "tried to go to Mars.",
+        "saw Mars as the next destination.",
+        "thought going to Mars was impossible."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 2,
+      "question": "What is similar between the Earth and Mars?",
+      "options": [
+        "Their seasons.",
+        "Their air.",
+        "Their surface."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 3,
+      "question": "Humans have sent more space probes to Mars than to any other planet because ...",
+      "options": [
+        "we are convinced we will find life.",
+        "it's easier to go today.",
+        "the presence of life is a possibility."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "Elon Musk ...",
+      "options": [
+        "is working with NASA to send people to Mars.",
+        "will send humans to Mars within the next two decades.",
+        "wants to send humans to Mars in 2024."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 5,
+      "question": "The journey to Mars ...",
+      "options": [
+        "can only be made once every nine months.",
+        "takes 26 months.",
+        "can only be made when the planets are aligned."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 6,
+      "question": "According to the video...",
+      "options": [
+        "At present, taking humans to Mars is too expensive.",
+        "It's not possible to find life on Mars.",
+        "Some people will probably die trying to get to Mars."
+      ],
+      "answer": 2
+    }
+  ]
+}

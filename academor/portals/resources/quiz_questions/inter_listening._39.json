@@ -1,0 +1,82 @@
+{
+  "level": "B1",
+  "quiz": 40,
+  "title": "Vanishing Voices: Languages in Danger",
+  "service": "general_english",
+  "category_name": "Intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Watch a video about languages. For questions 1 to 7, choose the correct answer.</h5>",
+  "shared_youtube_url": "https://youtu.be/UIpNy4MHAr0",
+  "questions": [
+    {
+      "id": 1,
+      "question": "The words he mentions at the beginning of the video belong to languages...",
+      "options": [
+        "that might disappear soon.",
+        "that were spoken in the past.",
+        "that he would like to speak."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "Which sentence is correct?",
+      "options": [
+        "One out of three languages in the world have fewer than 1,000 speakers.",
+        "40% of languages have disappeared.",
+        "Over 17,000 languages are spoken in the world."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 3,
+      "question": "According to the video, Latin...",
+      "options": [
+        "is still spoken today but in different forms.",
+        "died over 2,000 ago.",
+        "was the first important language to die."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 4,
+      "question": "The chart shows...",
+      "options": [
+        "languages in danger of extinction.",
+        "the languages that are still spoken and extinct languages.",
+        "the health of today's languages."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 5,
+      "question": "In the Soviet Union, ...",
+      "options": [
+        "the government forced the people to speak only Russian.",
+        "young people saw how necessary it was to speak Russian.",
+        "some people refused to speak Russian."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 6,
+      "question": "Hebrew...",
+      "options": [
+        "is the official language in more than one country.",
+        "is the only dead language that came to life again.",
+        "has four million speakers."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "Cornish is...",
+      "options": [
+        "the second most spoken language in Wales.",
+        "a dead language.",
+        "a language spoken only by a few."
+      ],
+      "answer": 2
+    }
+  ]
+}

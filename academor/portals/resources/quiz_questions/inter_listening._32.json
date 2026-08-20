@@ -1,0 +1,89 @@
+{
+  "level": "B1",
+  "quiz": 33,
+  "title": "Do We Really Need Exams?",
+  "service": "general_english",
+  "category_name": "Intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Listen to three people talk about the necessity of exams. Match each opinion with a person. There are two opinions for each person, and there is one extra opinion that none of the speakers talks about.</h5>",
+  "shared_youtube_url": "",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Still takes exams as a way to measure progress in his/her new interests.",
+      "options": [
+        "Olivia",
+        "Ava",
+        "Noah",
+        "No one"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "Doing well in exams doesn't give you useful workplace skills.",
+      "options": [
+        "Olivia",
+        "Ava",
+        "Noah",
+        "No one"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 3,
+      "question": "Exams can test many different skills if they are well-designed.",
+      "options": [
+        "Olivia",
+        "Ava",
+        "Noah",
+        "No one"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 4,
+      "question": "Doing exams has had an impact on his/her personality.",
+      "options": [
+        "Olivia",
+        "Ava",
+        "Noah",
+        "No one"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 5,
+      "question": "People would learn better if they could study what they liked.",
+      "options": [
+        "Olivia",
+        "Ava",
+        "Noah",
+        "No one"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 6,
+      "question": "Without exams, people would not be motivated to learn.",
+      "options": [
+        "Olivia",
+        "Ava",
+        "Noah",
+        "No one"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "Passing an exam was necessary to get his/her current job.",
+      "options": [
+        "Olivia",
+        "Ava",
+        "Noah",
+        "No one"
+      ],
+      "answer": 2
+    }
+  ]
+}
