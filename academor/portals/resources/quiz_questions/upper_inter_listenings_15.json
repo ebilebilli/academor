@@ -1,0 +1,75 @@
+{
+  "level": "B1+",
+  "quiz": 13,
+  "title": "Autumn's Story: Surviving a Plane Crash",
+  "service": "general_english",
+  "category_name": "Upper-intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Watch a video about a teenager who survived a plane crash. For questions 1 to 7, decide if the statements are true or false.</h5><p><strong>AUTUMN VEATCH:</strong> I was positive I was gonna die, and then I was positive I was gonna live.</p><p>With just 30 minutes left in their flight, the plane hit stormy weather and crashed into a mountain in the North Cascades.</p><p>She couldn't get to her grandmother through the flames and burned her hand trying to free her grandfather.</p><p>Veatch said she thought she had fallen asleep and was having a nightmare, but there would be no sleep for two more days.</p><p>Having watched shows like Survivorman, she knew if she found a stream, she could follow it to a trail, then a highway.</p><p><strong>AUTUMN VEATCH:</strong> I was trying to hitchhike, trying to get a ride, flag somebody down, but nobody would stop.</p><p><strong>AUTUMN VEATCH:</strong> I definitely have never wanted to live more in my life. Having a second chance is the best thing that could have ever happened.</p>",
+  "shared_youtube_url": "https://youtu.be/gvoZbVPyx4U",
+  "questions": [
+    {
+      "id": 1,
+      "question": "She never thought she was going to survive.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 2,
+      "question": "The plane crashed due to a storm.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 3,
+      "question": "After the crash, she tried to rescue her grandfather.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 4,
+      "question": "When the plane crashed, she was sleeping.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 5,
+      "question": "She could find her way out of the forest thanks to a TV show.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "Once she reached the highway, a car took her immediately.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "After what happened, it's hard for her to find the strength to live again.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 1
+    }
+  ]
+}
