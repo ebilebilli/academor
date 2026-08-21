@@ -1,0 +1,82 @@
+{
+  "level": "B1+",
+  "quiz": 47,
+  "title": "Talking Movies with a Hollywood Star",
+  "service": "general_english",
+  "category_name": "Upper-intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Watch an interview with an actor about his latest film. For questions 1 to 7, choose the best answer (A, B, or C).</h5>",
+  "shared_youtube_url": "https://youtu.be/cPIuLne23WU",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What do they say about the movie?",
+      "options": [
+        "The movie has been in cinemas for one week.",
+        "It has earned 100 million dollars in the US.",
+        "Jake was sure it would be a success."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "What does Jake say about the locations?",
+      "options": [
+        "The movie was shot in two main locations.",
+        "Some of the locations were dangerous.",
+        "It was tough to shoot in some of the locations."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 3,
+      "question": "What does Jake say about his character?",
+      "options": [
+        "It's the most different character he's ever played.",
+        "He worked with the director to learn combat techniques.",
+        "The script helped him get into the role."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "What do they say about the cast?",
+      "options": [
+        "None of them were big stars, but they were all very talented.",
+        "Some actors gave better performances than others.",
+        "Some celebrities make brief appearances in the film."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 5,
+      "question": "What does Jake say about the special effects?",
+      "options": [
+        "It wasn't easy to interact with things that weren't there.",
+        "They used AI to create the visuals.",
+        "The special effects were used to show his character's imagination."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "What do they say about the critics?",
+      "options": [
+        "Most reviews say it's a must-see film.",
+        "The film has received mixed reviews.",
+        "Jake doesn't agree with some of the reviews."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "Will there be a second part of this movie?",
+      "options": [
+        "Most likely, yes.",
+        "Probably not.",
+        "It depends."
+      ],
+      "answer": 2
+    }
+  ]
+}

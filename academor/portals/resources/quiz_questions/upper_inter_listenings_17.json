@@ -1,0 +1,72 @@
+{
+  "level": "B1+",
+  "quiz": 44,
+  "title": "Matters of the Heart",
+  "service": "general_english",
+  "category_name": "Upper-intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Listen to three people talking about relationship issues. For questions 1 to 6, choose the correct answer (A, B, or C).</h5>",
+  "shared_youtube_url": "https://youtu.be/SiCauzY8Emg",
+  "questions": [
+    {
+      "id": 1,
+      "question": "At the party, Emma…",
+      "options": [
+        "liked Josh but didn't feel attracted to him at first.",
+        "thought she and Josh had good chemistry.",
+        "liked Josh although she thought he was a bit too forward."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 2,
+      "question": "After a few dates she…",
+      "options": [
+        "is completely in love with Josh.",
+        "thinks they are moving too fast.",
+        "is trying not to get too excited."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 3,
+      "question": "Sofia…",
+      "options": [
+        "used to admire Ashley a great deal.",
+        "thinks Ashley hates her.",
+        "has fallen out with Ashley and is mad at her."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 4,
+      "question": "She feels…",
+      "options": [
+        "Ashley may be bitter because of her bad breakup.",
+        "she spends too much time with Ashley.",
+        "it's not worth fighting for this relationship anymore."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 5,
+      "question": "Daniel…",
+      "options": [
+        "no longer has any feelings for his girlfriend.",
+        "works with her and feels they spend too much time together.",
+        "longs for a more passionate relationship."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 6,
+      "question": "He thinks…",
+      "options": [
+        "he and Laura don't put much effort into the relationship anymore.",
+        "a bit of drama occasionally wouldn't be so bad.",
+        "there is no future with Laura."
+      ],
+      "answer": 0
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "level": "B1+",
+  "quiz": 45,
+  "title": "Healing Through Sound: Music Therapy",
+  "service": "general_english",
+  "category_name": "Upper-intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Listen to an interview with a music therapist. For questions 1 to 7, choose the correct answer (A, B, or C).</h5>",
+  "shared_youtube_url": "https://youtu.be/d-ZMWvmg0WA",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What does Sarah say to describe music therapy?",
+      "options": [
+        "It relies on listening to your favourite music.",
+        "It is designed to improve mental and physical health.",
+        "It's entertainment used for healing."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 2,
+      "question": "What best distinguishes music therapy from casual listening?",
+      "options": [
+        "Casual listening does not affect people's emotions.",
+        "Music therapy requires guidance.",
+        "Both are equally effective for therapy."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "According to Sarah, who can music therapy support?",
+      "options": [
+        "Only people with emotional issues or brain injuries.",
+        "People suffering from anxiety and insomnia.",
+        "People with mental health or mobility issues."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "What progress did Mia make thanks to music therapy?",
+      "options": [
+        "She improved her mobility and speech.",
+        "Singing helped her walk correctly again.",
+        "She fully recovered her speech."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 5,
+      "question": "What emotional effects can music therapy have on patients?",
+      "options": [
+        "It helps people be more focused.",
+        "Angry people can listen to an old favourite song and calm down.",
+        "Playing an instrument can help with anger or frustration."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 6,
+      "question": "Which statement is NOT mentioned by Sarah as a common misconception?",
+      "options": [
+        "Any type of music can help a patient.",
+        "It only works with people who believe in it.",
+        "You don't need to be musical to have therapy."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "What does Sarah say about the future of music therapy?",
+      "options": [
+        "It is already becoming part of many care institutions.",
+        "There is still not enough scientific support.",
+        "It will replace traditional treatments for some conditions."
+      ],
+      "answer": 0
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "level": "B1+",
+  "quiz": 14,
+  "title": "The Hyperloop: Transportation Reimagined",
+  "service": "general_english",
+  "category_name": "Upper-intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Watch a video about the Hyperloop, a new concept of transportation. For questions 1 to 5, choose the correct answer.</h5><p>But even cooler than the concept, it's actually the engineering behind it. Not only will this run completely on solar power, but people will travel on this thing with amazing comfort.</p><p>And speaking of speed, this sucker is fast. How fast? Well, four times faster than Eurostar, the high-speed railway that connects London to Paris and Brussels. It's also about three times faster than Japan's bullet train, and nearly 200 miles faster than a Boeing 737.</p><p>You'll be able to travel from LA to New York in just 30 minutes, New York to China in just two hours, and be able to take an around the world trip in just six hours.</p><p>This, my friends, is a very real concept. Some of the brightest minds in the world are actually working on it right now.</p><p>It'll cost less than 1/10 that of a high-speed rail transport system, and about 1/4 the price of the new highway.</p>",
+  "shared_youtube_url": "https://youtu.be/Ios5h2WUwHU",
+  "questions": [
+    {
+      "id": 1,
+      "question": "The Hyperloop is going to use...",
+      "options": [
+        "Solar energy.",
+        "The energy from the vacuum created in the tube.",
+        "The vacuum and fuel."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "The Hyperloop is going to be...",
+      "options": [
+        "4 times faster than Japan's bullet train.",
+        "Faster than a plane.",
+        "3 times faster than Eurostar."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "You will be able to travel around the world in...",
+      "options": [
+        "less than 6 hours",
+        "6 hours",
+        "16 hours"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 4,
+      "question": "The Hyperloop tube is...",
+      "options": [
+        "something that experts think could be made in a far future.",
+        "still science fiction, and it's not very likely that it will exist.",
+        "something that is already being developed."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 5,
+      "question": "The cost of the Hyperloop is going to be...",
+      "options": [
+        "0.25% of the cost of the underground",
+        "0.15% of the cost of a road",
+        "0.10% the cost of a train"
+      ],
+      "answer": 2
+    }
+  ]
+}
