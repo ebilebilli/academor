@@ -1,5 +1,6 @@
 """Map active public site services (courses) to portal course_type codes."""
 
+import re
 import threading
 import time
 from typing import NamedTuple
@@ -263,6 +264,11 @@ def get_active_service_choices(lang=None):
     return list(_snapshot().choices(_normalize_lang(lang)))
 
 
+def _service_match_tokens(text):
+    """Alphanumeric tokens for course-type matching (avoids 'sat' in 'conversation')."""
+    return set(re.findall(r'[a-z0-9]+', (text or '').lower()))
+
+
 def infer_course_type_for_service(service):
     """Return portal course_type code for an active service, or None if unmappable."""
     parts = [
@@ -275,8 +281,15 @@ def infer_course_type_for_service(service):
         if not text:
             continue
         normalized = text.replace('_', '-')
+        tokens = _service_match_tokens(text)
         for fragment, code in _SERVICE_COURSE_TYPE_FRAGMENTS:
-            if fragment in normalized:
+            frag = fragment.replace('_', '-')
+            frag_tokens = frag.split('-')
+            if len(frag_tokens) == 1:
+                # Whole-token match only — substring would map Conversation→sat.
+                if frag_tokens[0] in tokens:
+                    return code
+            elif frag in normalized or set(frag_tokens) <= tokens:
                 return code
     return None
 

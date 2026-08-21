@@ -31,14 +31,7 @@ class QuizCategory(models.Model):
         ordering = ('order', 'name', 'id')
 
     def __str__(self):
-        from portals.utils.portal_services import resolve_course_type_label
-        from portals.utils.quiz_category_services import quiz_category_portal_codes
-
-        codes = quiz_category_portal_codes(self)
-        if not codes:
-            return self.name
-        labels = [resolve_course_type_label(code) for code in codes]
-        return f'{", ".join(labels)} — {self.name}'
+        return self.name
 
     def get_portal_course_codes(self):
         from portals.utils.quiz_category_services import quiz_category_portal_codes
