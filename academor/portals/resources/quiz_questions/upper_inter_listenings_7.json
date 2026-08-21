@@ -1,0 +1,212 @@
+{
+  "level": "B1+",
+  "quiz": 5,
+  "title": "A Journey Through the Solar System",
+  "service": "general_english",
+  "category_name": "Upper-intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Listen to a journey through the solar system. For questions 1 to 20, choose the correct answer.</h5><p>Let's go on a journey through the solar system. Let's start at the center of our solar system: the Sun. The Sun is a giant ball of burning gas, mostly hydrogen and helium. It weighs about 330,000 times as much as Earth, and it's so big that about 1.3 million Earths could fit inside it.</p><p>Next up is Mercury, the closest planet to the Sun. Mercury is the smallest planet in our solar system, and it experiences extreme temperatures. Daytime temperatures can rise to 800 degrees Fahrenheit (430 degrees Celsius). At night, without an atmosphere to retain the heat, temperatures can plummet to minus 290 degrees Fahrenheit (minus 180 degrees Celsius). And days and nights are long! On Mercury, one full cycle of day and night, from one sunrise to the next, takes 176 Earth days. So, both daytime and nighttime last about 88 Earth days each.</p><p>Venus, the second planet from the Sun, is often called Earth's 'sister planet' because they are similar in size. However, Venus's thick atmosphere, filled with carbon dioxide, makes it the hottest planet in our solar system, even hotter than Mercury! So, if we don't want to end up like Venus, we'd better stop sending any more CO₂ into our atmosphere.</p><p>Earth, our home, is the third planet from the Sun and the only planet known to support life. About 71% of Earth's surface is covered by water, making it appear blue from space. In contrast, Mars, the fourth planet, is often called the 'Red Planet.'</p><p>After Mars, Jupiter is the fifth planet from the Sun and the largest in our solar system. It's so big that all the other planets could fit inside it! Jupiter has a visible Red Spot, which is not lava or a volcano but a giant storm that has been raging for at least 150 years or maybe longer, according to NASA. Jupiter also has 95 known moons, including Ganymede, the largest moon in the solar system and larger than Mercury.</p><p>Saturn, the sixth planet from the Sun, has the second largest moon in the solar system, Titan, which is larger than Mercury. Saturn itself is very large, second only to Jupiter, and has 146 known moons out of the total 293 moons orbiting planets in our solar system. It is the planet with the most moons, and this number increases each year as new moons are discovered.</p><p>Uranus, the seventh planet, is an ice giant that has recently gained popularity among scientists due to the belief that its atmospheric conditions could cause diamond rain. Yes, they think it rains diamonds on this planet! The same is believed about Neptune, the eighth and farthest planet from the Sun, which is quite similar to Uranus in size and composition. Known for its intense blue colour, Neptune experiences the fastest winds in the solar system, reaching speeds of over 1,200 miles per hour (2,000 kilometres per hour).</p><p>Finally, let's visit Pluto, which was once considered the ninth planet but is now classified as a dwarf planet. Pluto is smaller than Earth's moon and is about 39 times farther away from the Sun than Earth. From this distance, it takes sunlight approximately 5.5 hours to travel from the Sun to Pluto, whereas it takes just 8 minutes for sunlight to reach Earth. Pluto is so far that it would take around ten years to travel there on a spaceship that could take you to the moon in about 80 hours.</p>",
+  "shared_youtube_url": "https://youtu.be/z5FpbSCeKFE",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is the Sun mostly made of?",
+      "options": [
+        "Hydrogen and helium",
+        "Carbon and oxygen",
+        "Iron and nickel"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "How much more does the Sun weigh compared to Earth?",
+      "options": [
+        "About 33,000 times",
+        "About 330,000 times",
+        "About 3.3 million times"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "How many Earths could fit inside the Sun?",
+      "options": [
+        "130,000",
+        "1.3 million",
+        "13 million"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 4,
+      "question": "Which planet is the smallest in the solar system?",
+      "options": [
+        "Mercury",
+        "Mars",
+        "Venus"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 5,
+      "question": "What is Mercury's approximate daytime temperature?",
+      "options": [
+        "430 degrees Celsius",
+        "180 degrees Celsius",
+        "290 degrees Celsius"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 6,
+      "question": "How long does one full day-night cycle last on Mercury?",
+      "options": [
+        "88 Earth days",
+        "176 Earth days",
+        "365 Earth days"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "Why is Venus sometimes called Earth's 'sister planet'?",
+      "options": [
+        "They are similar in size.",
+        "They have the same atmosphere.",
+        "They are the same distance from the Sun."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 8,
+      "question": "Why is Venus the hottest planet in the solar system?",
+      "options": [
+        "It is the closest planet to the Sun.",
+        "Its thick atmosphere is full of carbon dioxide.",
+        "It has no atmosphere at all."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 9,
+      "question": "Which planet is the only one known to support life?",
+      "options": [
+        "Mars",
+        "Venus",
+        "Earth"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 10,
+      "question": "What percentage of Earth's surface is covered by water?",
+      "options": [
+        "51%",
+        "71%",
+        "91%"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 11,
+      "question": "Which planet is known as the 'Red Planet'?",
+      "options": [
+        "Mars",
+        "Jupiter",
+        "Saturn"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 12,
+      "question": "Which planet is the largest in the solar system?",
+      "options": [
+        "Saturn",
+        "Jupiter",
+        "Neptune"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 13,
+      "question": "What is Jupiter's Red Spot?",
+      "options": [
+        "A volcano",
+        "A giant storm",
+        "A pool of lava"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 14,
+      "question": "Which moon is the largest in the solar system?",
+      "options": [
+        "Titan",
+        "Ganymede",
+        "Mercury"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 15,
+      "question": "Which planet has the second largest moon in the solar system, Titan?",
+      "options": [
+        "Jupiter",
+        "Uranus",
+        "Saturn"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 16,
+      "question": "How many known moons does Saturn have?",
+      "options": [
+        "95",
+        "146",
+        "293"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 17,
+      "question": "What do scientists believe might happen on Uranus and Neptune?",
+      "options": [
+        "It rains diamonds.",
+        "It rains iron.",
+        "It never rains at all."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 18,
+      "question": "What is special about Neptune's winds?",
+      "options": [
+        "They are the slowest in the solar system.",
+        "They are the fastest in the solar system.",
+        "There are no winds on Neptune."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 19,
+      "question": "What is Pluto now classified as?",
+      "options": [
+        "The ninth planet",
+        "A dwarf planet",
+        "A moon of Neptune"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 20,
+      "question": "How long does it take sunlight to travel from the Sun to Pluto?",
+      "options": [
+        "8 minutes",
+        "1.5 hours",
+        "5.5 hours"
+      ],
+      "answer": 2
+    }
+  ]
+}
