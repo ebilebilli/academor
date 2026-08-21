@@ -1,0 +1,75 @@
+{
+  "level": "B1",
+  "quiz": 29,
+  "title": "Exploring Medieval York",
+  "service": "general_english",
+  "category_name": "Intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Watch a video about the city of York in England. For questions 1 to 7, say if the statements are true or false.</h5>",
+  "shared_youtube_url": "https://youtu.be/lSVF33ONzkA",
+  "questions": [
+    {
+      "id": 1,
+      "question": "The Romans are the origin of the city of York.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "Most of the castle built in 1070 is still there.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "No other towns preserve their medieval walls like York.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 4,
+      "question": "York was a rich town thanks to its river.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 5,
+      "question": "The cathedral, called the Minster, was built in 627.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 6,
+      "question": "The Minster has the biggest windows in the world.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 7,
+      "question": "The King's Screen features 15 sculptures of William the Conqueror and Henry VI.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": 1
+    }
+  ]
+}
