@@ -1201,7 +1201,10 @@ def _attach_quiz_attempt_summaries(quizzes, quiz_results):
 
 
 def get_student_quizzes_for_category(student_id, category_id):
-    from portals.utils.quiz_assignments import get_student_quiz_assignment_map
+    from portals.utils.quiz_assignments import (
+        get_student_quiz_assignment_map,
+        quiz_has_program_flag,
+    )
     from portals.utils.student_courses import student_quiz_enrollment_ok
 
     if not student_can_access_quiz_category(student_id, category_id):
@@ -1219,15 +1222,21 @@ def get_student_quizzes_for_category(student_id, category_id):
         .order_by('-created_at', 'id')
     )
     enrolled = [row for row in qs if student_quiz_enrollment_ok(student_id, row)]
+    program_quizzes = [row for row in enrolled if quiz_has_program_flag(row)]
     assignment_map = get_student_quiz_assignment_map(
         student_id,
-        [row.pk for row in enrolled],
+        [row.pk for row in program_quizzes],
     )
     question_counts = _answerable_question_counts(enrolled)
     quizzes = []
     for row in enrolled:
         data = serialize_quiz(row, question_counts=question_counts)
-        is_unlocked = bool(assignment_map.get(row.pk, False))
+        # Regular quizzes are always unlocked; only IELTS/SAT need teacher activation.
+        is_unlocked = (
+            True
+            if not quiz_has_program_flag(row)
+            else bool(assignment_map.get(row.pk, False))
+        )
         data['is_unlocked'] = is_unlocked
         data['is_locked'] = not is_unlocked
         quizzes.append(data)

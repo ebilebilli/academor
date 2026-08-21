@@ -159,6 +159,9 @@ class QuizVisibilityTests(TestCase):
         self.assertNotIn(self.ielts_quiz.pk, quiz_ids)
 
     def test_inactive_assignment_hides_quiz(self):
+        # Locking only applies to IELTS/SAT-flagged quizzes.
+        self.ielts_quiz.is_ielts = True
+        self.ielts_quiz.save(update_fields=['is_ielts'])
         QuizAssignment.objects.filter(
             student=self.student,
             quiz=self.ielts_quiz,
@@ -168,6 +171,20 @@ class QuizVisibilityTests(TestCase):
         self.assertEqual(len(quizzes), 1)
         self.assertTrue(quizzes[0]['is_locked'])
         self.assertFalse(quizzes[0]['is_unlocked'])
+
+    def test_regular_quiz_stays_open_without_assignment(self):
+        """Non-IELTS/SAT quizzes are open by default once enrolled."""
+        QuizAssignment.objects.filter(
+            student=self.student,
+            quiz=self.ielts_quiz,
+        ).delete()
+        self.assertFalse(self.ielts_quiz.is_ielts)
+        self.assertFalse(self.ielts_quiz.is_sat)
+        self.assertTrue(quiz_visible_to_student(self.ielts_quiz, self.student.pk))
+        quizzes = get_student_quizzes_for_category(self.student.pk, self.ielts_category.pk)
+        self.assertEqual(len(quizzes), 1)
+        self.assertTrue(quizzes[0]['is_unlocked'])
+        self.assertFalse(quizzes[0]['is_locked'])
 
     def test_teacher_sees_quiz_for_assigned_service(self):
         self.assertTrue(quiz_visible_to_teacher(self.ielts_quiz, self.teacher.pk))

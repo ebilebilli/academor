@@ -7,7 +7,7 @@
   aria-label="{% trans 'Quiz icazələri' %}"
 >
   <p class="text-muted small mb-3">
-    {% trans 'Kateqoriya açılınca həmin kateqoriyadakı bütün quizlər açılır/bağlanır. IELTS və SAT quizlərini tək-tək və ya «hamısını aç/bağla» ilə də idarə edə bilərsiniz. Bağlı quizlər şagirdə kilid kimi görünür.' %}
+    {% trans 'Yalnız IELTS və SAT quizlərini aça və bağlaya bilərsiniz. Digər adi kateqoriya quizləri tələbə üçün avtomatik açıqdır və bağlamaq mümkün deyil. Bağlı IELTS/SAT quizləri şagirdə kilid kimi görünür.' %}
   </p>
 
   {% if mock_access_programs %}
@@ -101,43 +101,8 @@
         {% endif %}
       </header>
 
-      {% if category.category_access %}
-      <div
-        class="portal-quiz-access-category-toggle{% if category.category_access.is_partial %} is-partial{% endif %}{% if not category.category_access.is_active %} is-inactive{% endif %}"
-        data-quiz-access-row="category-{{ category.id }}"
-      >
-        <div>
-          <strong>{{ category.name }}</strong>
-          <p
-            class="text-muted small mb-0"
-            data-quiz-access-category-summary
-            data-summary-template="{% blocktrans %}Kateqoriya üzrə __ACTIVE__/__TOTAL__ quiz aktivdir. Adi quiz adları ayrı-ayrı göstərilmir.{% endblocktrans %}"
-          >
-            {% blocktrans with active=category.category_access.active_count total=category.category_access.quiz_count %}
-              Kateqoriya üzrə {{ active }}/{{ total }} quiz aktivdir. Adi quiz adları ayrı-ayrı göstərilmir.
-            {% endblocktrans %}
-          </p>
-        </div>
-        <div class="form-check form-switch mb-0">
-          <input
-            class="form-check-input portal-quiz-access-toggle"
-            type="checkbox"
-            role="switch"
-            id="quiz-access-cat-{{ student.id }}-{{ category.id }}"
-            data-quiz-access-category-toggle
-            data-category-id="{{ category.id }}"
-            data-category-quiz-count="{{ category.category_access.quiz_count }}"
-            {% if category.category_access.is_active %}checked{% endif %}
-          >
-          <label class="form-check-label" for="quiz-access-cat-{{ student.id }}-{{ category.id }}">
-            {% trans 'Kateqoriya aktiv' %}
-          </label>
-        </div>
-      </div>
-      {% endif %}
-
       {% if category.quizzes %}
-      <div class="table-responsive{% if category.category_access %} mt-3{% endif %}">
+      <div class="table-responsive">
         <table class="t-table portal-quiz-access-table">
           <thead>
             <tr>
@@ -183,8 +148,8 @@
   {% elif not mock_access_programs %}
     <div class="portal-student-empty">
       <div class="portal-student-empty-icon"><i class="ti ti-forms" aria-hidden="true"></i></div>
-      <h3>{% trans 'Təyin oluna bilən quiz yoxdur' %}</h3>
-      <p>{% trans 'Şagirdin aktiv kurs qeydiyyatı və ya uyğun quiz tapılmadı.' %}</p>
+      <h3>{% trans 'Təyin oluna bilən IELTS/SAT quiz yoxdur' %}</h3>
+      <p>{% trans 'Bu şagird üçün açılıb bağlana bilən IELTS və ya SAT quiz tapılmadı. Adi kateqoriya quizləri avtomatik açıqdır.' %}</p>
     </div>
   {% endif %}
 </div>

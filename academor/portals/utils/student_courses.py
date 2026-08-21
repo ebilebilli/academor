@@ -90,8 +90,14 @@ def student_quiz_enrollment_ok(student_id, quiz):
 def quiz_visible_to_student(quiz, student_id):
     if not student_quiz_enrollment_ok(student_id, quiz):
         return False
-    from portals.utils.quiz_assignments import student_has_active_quiz_assignment
+    from portals.utils.quiz_assignments import (
+        quiz_has_program_flag,
+        student_has_active_quiz_assignment,
+    )
 
+    # Regular (non-IELTS/SAT) quizzes stay open once the student is enrolled.
+    if not quiz_has_program_flag(quiz):
+        return True
     return student_has_active_quiz_assignment(student_id, quiz.pk)
 
 

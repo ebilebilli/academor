@@ -37,7 +37,7 @@ def _read_payload(request):
 
 
 class TeacherQuizAssignmentToggleView(TeacherRequiredMixin, View):
-    """Activate or deactivate a quiz for one student (teacher portal)."""
+    """Activate or deactivate an IELTS/SAT quiz for one student (teacher portal)."""
 
     def post(self, request, student_pk, quiz_pk):
         profile = get_teacher_profile(request.portal_user)
@@ -63,7 +63,7 @@ class TeacherQuizAssignmentToggleView(TeacherRequiredMixin, View):
 
 
 class TeacherQuizAssignmentBulkView(TeacherRequiredMixin, View):
-    """Activate or deactivate a whole quiz category for one student in one call."""
+    """Activate or deactivate IELTS/SAT quizzes for one student in one call."""
 
     def post(self, request, student_pk):
         profile = get_teacher_profile(request.portal_user)

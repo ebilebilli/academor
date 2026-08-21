@@ -63,20 +63,12 @@
 
       var row = toggle.closest("[data-quiz-access-row]");
       var previous = !toggle.checked;
-      var root = toggle.closest("[data-quiz-access-panel]");
-      var section = toggle.closest("[data-quiz-access-category]");
-      var categoryId = section
-        ? section.getAttribute("data-quiz-access-category")
-        : null;
       toggle.disabled = true;
 
       postToggle(url, toggle.checked)
         .then(function (data) {
           toggle.checked = !!data.is_active;
           setRowState(row, toggle.checked);
-          if (root && categoryId) {
-            syncCategoryToggleFromQuizzes(root, categoryId);
-          }
         })
         .catch(function () {
           toggle.checked = previous;
@@ -126,170 +118,6 @@
   function applyToggleState(toggle, isActive) {
     toggle.checked = isActive;
     setRowState(toggle.closest("[data-quiz-access-row]"), isActive);
-  }
-
-  function categoryQuizToggles(root, categoryId) {
-    var section = root.querySelector(
-      '[data-quiz-access-category="' + categoryId + '"]'
-    );
-    if (!section) {
-      return [];
-    }
-    return Array.prototype.slice.call(
-      section.querySelectorAll(".portal-quiz-access-toggle[data-quiz-id]")
-    );
-  }
-
-  function updateCategoryAccessSummary(row, activeCount, totalCount) {
-    if (!row) {
-      return;
-    }
-    var summary = row.querySelector("[data-quiz-access-category-summary]");
-    if (!summary) {
-      return;
-    }
-    var template = summary.getAttribute("data-summary-template") || "";
-    if (!template) {
-      return;
-    }
-    summary.textContent = template
-      .replace("__ACTIVE__", String(activeCount))
-      .replace("__TOTAL__", String(totalCount));
-  }
-
-  function syncCategoryToggleFromQuizzes(root, categoryId) {
-    var section = root.querySelector(
-      '[data-quiz-access-category="' + categoryId + '"]'
-    );
-    if (!section) {
-      return;
-    }
-    var categoryToggle = section.querySelector(
-      "[data-quiz-access-category-toggle]"
-    );
-    if (!categoryToggle) {
-      return;
-    }
-    var row = categoryToggle.closest("[data-quiz-access-row]");
-    var toggles = categoryQuizToggles(root, categoryId);
-    var visibleTotal = toggles.length;
-    var visibleActive = toggles.filter(function (toggle) {
-      return !!toggle.checked;
-    }).length;
-    var declaredTotal = parseInt(
-      categoryToggle.getAttribute("data-category-quiz-count") || String(visibleTotal),
-      10
-    );
-    if (Number.isNaN(declaredTotal) || declaredTotal < visibleTotal) {
-      declaredTotal = visibleTotal;
-    }
-
-    var isFullyActive = visibleTotal > 0 && visibleActive === visibleTotal && declaredTotal === visibleTotal;
-    var isPartial =
-      visibleActive > 0 &&
-      (visibleActive < visibleTotal || declaredTotal > visibleTotal);
-    categoryToggle.checked = isFullyActive;
-    if (row) {
-      row.classList.toggle("is-inactive", !isFullyActive);
-      row.classList.toggle("is-partial", isPartial);
-      // Visible IELTS/SAT count is authoritative for the summary when generals
-      // are also present only if declared equals visible; otherwise show partial.
-      var summaryActive = isFullyActive ? declaredTotal : visibleActive;
-      updateCategoryAccessSummary(row, summaryActive, declaredTotal);
-    }
-  }
-
-  function bindCategoryToggles(root) {
-    var bulkUrl = root.getAttribute("data-quiz-access-bulk-url");
-    root.querySelectorAll("[data-quiz-access-category-toggle]").forEach(function (toggle) {
-      if (!toggle || toggle.dataset.quizAccessBound === "true") {
-        return;
-      }
-      toggle.dataset.quizAccessBound = "true";
-      setRowState(toggle.closest("[data-quiz-access-row]"), toggle.checked);
-
-      toggle.addEventListener("change", function () {
-        if (!bulkUrl) {
-          return;
-        }
-        var categoryId = toggle.getAttribute("data-category-id");
-        var previous = !toggle.checked;
-        var row = toggle.closest("[data-quiz-access-row]");
-        var quizToggles = categoryQuizToggles(root, categoryId);
-        var previousQuizStates = quizToggles.map(function (quizToggle) {
-          return quizToggle.checked;
-        });
-        var wantActive = toggle.checked;
-        toggle.disabled = true;
-        quizToggles.forEach(function (quizToggle) {
-          quizToggle.disabled = true;
-          applyToggleState(quizToggle, wantActive);
-        });
-        if (row) {
-          row.classList.toggle("is-partial", false);
-          var total = parseInt(
-            toggle.getAttribute("data-category-quiz-count") || String(quizToggles.length),
-            10
-          );
-          updateCategoryAccessSummary(
-            row,
-            wantActive ? total : 0,
-            Number.isNaN(total) ? quizToggles.length : total
-          );
-        }
-
-        // Category master switch updates every quiz in the category.
-        postJson(bulkUrl, {
-          is_active: wantActive,
-          category_id: categoryId,
-        })
-          .then(function (data) {
-            toggle.checked = !!data.is_active;
-            setRowState(row, toggle.checked);
-            var applied = {};
-            (data.quiz_ids || []).forEach(function (quizId) {
-              applied[String(quizId)] = true;
-            });
-            quizToggles.forEach(function (quizToggle, index) {
-              var quizId = quizToggle.getAttribute("data-quiz-id");
-              applyToggleState(
-                quizToggle,
-                applied[String(quizId)] ? !!data.is_active : previousQuizStates[index]
-              );
-            });
-            if (row) {
-              row.classList.toggle("is-partial", false);
-              var total = parseInt(
-                toggle.getAttribute("data-category-quiz-count") || String(quizToggles.length),
-                10
-              );
-              var activeVisible = quizToggles.filter(function (quizToggle) {
-                return !!quizToggle.checked;
-              }).length;
-              updateCategoryAccessSummary(
-                row,
-                data.is_active
-                  ? (Number.isNaN(total) ? activeVisible : total)
-                  : 0,
-                Number.isNaN(total) ? quizToggles.length : total
-              );
-            }
-          })
-          .catch(function () {
-            toggle.checked = previous;
-            setRowState(row, previous);
-            quizToggles.forEach(function (quizToggle, index) {
-              applyToggleState(quizToggle, previousQuizStates[index]);
-            });
-          })
-          .finally(function () {
-            quizToggles.forEach(function (quizToggle) {
-              quizToggle.disabled = false;
-            });
-            toggle.disabled = false;
-          });
-      });
-    });
   }
 
   function bindBulkActions(root) {
@@ -362,7 +190,6 @@
               applied[String(quizId)] ? !!data.is_active : previous[index]
             );
           });
-          syncCategoryToggleFromQuizzes(root, categoryId);
         })
         .catch(function () {
           toggles.forEach(function (toggle, index) {
@@ -384,9 +211,6 @@
     }
     root.querySelectorAll(".portal-quiz-access-toggle").forEach(function (toggle) {
       if (toggle.hasAttribute("data-mock-access-toggle")) {
-        return;
-      }
-      if (toggle.hasAttribute("data-quiz-access-category-toggle")) {
         return;
       }
       setRowState(toggle.closest("[data-quiz-access-row]"), toggle.checked);
@@ -418,7 +242,6 @@
       });
     });
 
-    bindCategoryToggles(root);
     bindCategoryTabs(root);
     bindBulkActions(root);
   }

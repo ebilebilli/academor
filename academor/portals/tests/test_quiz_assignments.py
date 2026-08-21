@@ -47,6 +47,8 @@ def _portal_client_login(client: Client, user) -> None:
 
 class QuizAssignmentTests(QuizVisibilityTests):
     def test_inactive_assignment_hides_quiz(self):
+        self.ielts_quiz.is_ielts = True
+        self.ielts_quiz.save(update_fields=['is_ielts'])
         QuizAssignment.objects.filter(
             student=self.student,
             quiz=self.ielts_quiz,
@@ -58,6 +60,8 @@ class QuizAssignmentTests(QuizVisibilityTests):
         self.assertFalse(quizzes[0]['is_unlocked'])
 
     def test_teacher_can_activate_quiz_for_student(self):
+        self.ielts_quiz.is_ielts = True
+        self.ielts_quiz.save(update_fields=['is_ielts'])
         QuizAssignment.objects.filter(
             student=self.student,
             quiz=self.ielts_quiz,
@@ -73,6 +77,8 @@ class QuizAssignmentTests(QuizVisibilityTests):
         self.assertTrue(quiz_visible_to_student(self.ielts_quiz, self.student.pk))
 
     def test_teacher_cannot_assign_quiz_for_non_group_student(self):
+        self.ielts_quiz.is_ielts = True
+        self.ielts_quiz.save(update_fields=['is_ielts'])
         assignment = set_student_quiz_assignment(
             self.teacher.pk,
             self.other_student.pk,
@@ -81,18 +87,31 @@ class QuizAssignmentTests(QuizVisibilityTests):
         )
         self.assertIsNone(assignment)
 
+    def test_teacher_cannot_toggle_regular_quiz(self):
+        """Regular quizzes stay open; teachers cannot open/close them."""
+        self.assertFalse(self.ielts_quiz.is_ielts)
+        self.assertFalse(self.ielts_quiz.is_sat)
+        assignment = set_student_quiz_assignment(
+            self.teacher.pk,
+            self.student.pk,
+            self.ielts_quiz.pk,
+            is_active=False,
+        )
+        self.assertIsNone(assignment)
+        self.assertTrue(quiz_visible_to_student(self.ielts_quiz, self.student.pk))
+
     def test_teacher_quiz_access_rows_include_assignment_state(self):
         self.ielts_quiz.is_ielts = True
         self.ielts_quiz.save(update_fields=['is_ielts'])
         rows = get_teacher_student_quiz_access_rows(self.teacher.pk, self.student.pk)
         self.assertEqual(len(rows), 1)
-        self.assertIsNotNone(rows[0]['category_access'])
-        self.assertEqual(rows[0]['category_access']['quiz_count'], 1)
-        self.assertTrue(rows[0]['category_access']['is_active'])
+        self.assertIsNone(rows[0]['category_access'])
         self.assertEqual(rows[0]['quizzes'][0]['id'], self.ielts_quiz.pk)
         self.assertTrue(rows[0]['quizzes'][0]['is_active'])
-    def test_teacher_quiz_access_general_quizzes_use_category_toggle(self):
-        """Non-IELTS/SAT quizzes are controlled by category name, not quiz titles."""
+        self.assertEqual(rows[0]['control_count'], 1)
+
+    def test_teacher_quiz_access_hides_regular_quizzes(self):
+        """Non-IELTS/SAT quizzes are not shown on the teacher access panel."""
         from portals.tests.group_helpers import create_quiz_category
         from portals.utils.quiz_assignments import (
             quiz_access_control_count,
@@ -119,38 +138,26 @@ class QuizAssignmentTests(QuizVisibilityTests):
         ge_category = create_quiz_category('A1 Reading Tests', 'general_english')
         q1 = Quiz.objects.create(category=ge_category, topic='My Family', is_ielts=False, is_sat=False)
         q2 = Quiz.objects.create(category=ge_category, topic='My School', is_ielts=False, is_sat=False)
-        QuizAssignment.objects.create(
-            student=self.student, quiz=q1, is_active=True, assigned_by=self.teacher,
-        )
-        QuizAssignment.objects.create(
-            student=self.student, quiz=q2, is_active=False, assigned_by=self.teacher,
-        )
 
         rows = get_teacher_student_quiz_access_rows(self.teacher.pk, self.student.pk)
         ge_row = next((row for row in rows if row['id'] == ge_category.pk), None)
-        self.assertIsNotNone(ge_row)
-        self.assertEqual(ge_row['quizzes'], [])
-        self.assertIsNotNone(ge_row['category_access'])
-        self.assertEqual(ge_row['category_access']['quiz_count'], 2)
-        self.assertEqual(ge_row['category_access']['active_count'], 1)
-        self.assertTrue(ge_row['category_access']['is_partial'])
-        self.assertFalse(ge_row['category_access']['is_active'])
+        self.assertIsNone(ge_row)
+        self.assertTrue(quiz_visible_to_student(q1, self.student.pk))
+        self.assertTrue(quiz_visible_to_student(q2, self.student.pk))
 
         updated = set_student_quiz_assignments(
             self.teacher.pk,
             self.student.pk,
-            is_active=True,
+            is_active=False,
             category_id=ge_category.pk,
             general_only=True,
         )
-        self.assertEqual(set(updated), {q1.pk, q2.pk})
-        rows = get_teacher_student_quiz_access_rows(self.teacher.pk, self.student.pk)
-        ge_row = next(row for row in rows if row['id'] == ge_category.pk)
-        self.assertTrue(ge_row['category_access']['is_active'])
-        self.assertGreaterEqual(quiz_access_control_count(rows), 1)
+        self.assertEqual(updated, [])
+        self.assertTrue(quiz_visible_to_student(q1, self.student.pk))
+        self.assertGreaterEqual(quiz_access_control_count(rows), 0)
 
-    def test_category_toggle_updates_ielts_quizzes_too(self):
-        """Category master switch activates every quiz in the category, including IELTS."""
+    def test_bulk_toggle_only_updates_ielts_sat_quizzes(self):
+        """Bulk category toggle only affects IELTS/SAT rows; regular stay open."""
         from portals.utils.quiz_assignments import set_student_quiz_assignments
 
         self.ielts_quiz.is_ielts = True
@@ -164,20 +171,13 @@ class QuizAssignmentTests(QuizVisibilityTests):
         QuizAssignment.objects.filter(student=self.student, quiz=self.ielts_quiz).update(
             is_active=False,
         )
-        QuizAssignment.objects.create(
-            student=self.student,
-            quiz=general,
-            is_active=False,
-            assigned_by=self.teacher,
-        )
 
         rows = get_teacher_student_quiz_access_rows(self.teacher.pk, self.student.pk)
         cat = next(row for row in rows if row['id'] == self.ielts_category.pk)
-        self.assertEqual(cat['category_access']['quiz_count'], 2)
-        self.assertEqual(cat['category_access']['active_count'], 0)
-        self.assertFalse(cat['category_access']['is_active'])
+        self.assertIsNone(cat['category_access'])
         self.assertEqual(len(cat['quizzes']), 1)
         self.assertFalse(cat['quizzes'][0]['is_active'])
+        self.assertTrue(quiz_visible_to_student(general, self.student.pk))
 
         updated = set_student_quiz_assignments(
             self.teacher.pk,
@@ -185,21 +185,22 @@ class QuizAssignmentTests(QuizVisibilityTests):
             is_active=True,
             category_id=self.ielts_category.pk,
         )
-        self.assertEqual(set(updated), {self.ielts_quiz.pk, general.pk})
+        self.assertEqual(set(updated), {self.ielts_quiz.pk})
 
         rows = get_teacher_student_quiz_access_rows(self.teacher.pk, self.student.pk)
         cat = next(row for row in rows if row['id'] == self.ielts_category.pk)
-        self.assertTrue(cat['category_access']['is_active'])
-        self.assertEqual(cat['category_access']['active_count'], 2)
         self.assertTrue(cat['quizzes'][0]['is_active'])
         self.assertTrue(
             QuizAssignment.objects.get(student=self.student, quiz=self.ielts_quiz).is_active
         )
-        self.assertTrue(
-            QuizAssignment.objects.get(student=self.student, quiz=general).is_active
+        self.assertFalse(
+            QuizAssignment.objects.filter(student=self.student, quiz=general).exists()
         )
+        self.assertTrue(quiz_visible_to_student(general, self.student.pk))
 
     def test_teacher_toggle_endpoint_updates_assignment(self):
+        self.ielts_quiz.is_ielts = True
+        self.ielts_quiz.save(update_fields=['is_ielts'])
         client = Client()
         _portal_client_login(client, self.teacher_user)
         url = reverse(
@@ -224,6 +225,22 @@ class QuizAssignmentTests(QuizVisibilityTests):
         )
         quizzes = get_student_quizzes_for_category(self.student.pk, self.ielts_category.pk)
         self.assertTrue(quizzes[0]['is_locked'])
+
+    def test_teacher_toggle_endpoint_rejects_regular_quiz(self):
+        client = Client()
+        _portal_client_login(client, self.teacher_user)
+        url = reverse(
+            'portals:teacher-quiz-assignment-toggle',
+            kwargs={'student_pk': self.student.pk, 'quiz_pk': self.ielts_quiz.pk},
+        )
+        response = client.post(
+            url,
+            data=json.dumps({'is_active': False}),
+            content_type='application/json',
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        self.assertEqual(response.status_code, 403)
+        self.assertTrue(quiz_visible_to_student(self.ielts_quiz, self.student.pk))
 
     def test_teacher_can_toggle_mock_access(self):
         self.assertFalse(student_has_active_mock_access(self.student.pk))
@@ -273,7 +290,6 @@ class QuizAssignmentTests(QuizVisibilityTests):
         self.assertContains(response, 'data-quiz-hub')
         self.assertContains(response, 'data-portal-quiz-category-tablist')
         self.assertContains(response, f'href="{category_url}"')
-
 
 class MockAccessPerProgramTests(TestCase):
     def setUp(self):
@@ -364,7 +380,13 @@ class QuizAssignmentNewStudentTests(TestCase):
         category = create_quiz_category('Grammar', 'ielts')
         self.quiz = Quiz.objects.create(category=category, topic='New quiz')
 
-    def test_new_student_does_not_see_quiz_until_teacher_assigns(self):
+    def test_new_student_sees_regular_quiz_by_default(self):
+        """Regular quizzes are open once enrolled — no teacher assignment needed."""
+        self.assertTrue(quiz_visible_to_student(self.quiz, self.student.pk))
+
+    def test_new_student_does_not_see_ielts_quiz_until_teacher_assigns(self):
+        self.quiz.is_ielts = True
+        self.quiz.save(update_fields=['is_ielts'])
         self.assertFalse(quiz_visible_to_student(self.quiz, self.student.pk))
         set_student_quiz_assignment(
             self.teacher.pk,
