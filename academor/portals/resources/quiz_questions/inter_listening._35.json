@@ -1,0 +1,72 @@
+{
+  "level": "B1",
+  "quiz": 36,
+  "title": "Young Entrepreneurs: Kids Chasing Big Dreams",
+  "service": "general_english",
+  "category_name": "Intermediate Listening Tests",
+  "has_shared_passage": true,
+  "shared_passage": "<h5>Watch a video about children who have started their own businesses. For questions 1 to 6, choose the correct answer.</h5>",
+  "shared_youtube_url": "https://youtu.be/_i90T2Cr7KU",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Thomas ...",
+      "options": [
+        "is a 15 year old billionaire",
+        "sells mobile apps",
+        "films videos for Youtube"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 2,
+      "question": "This summer Thomas ...",
+      "options": [
+        "has plans to go somewhere",
+        "wants to improve 3D printing",
+        "wants to use a 3D printer to create a new product"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "The main objective of the school in the video is to teach the students ...",
+      "options": [
+        "how to create their own business",
+        "how to advertise their a product",
+        "how to use social media"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 4,
+      "question": "One of the three twelve-year-old children says that children can be better at creating things because ...",
+      "options": [
+        "they can be more original",
+        "they work faster",
+        "they know a lot about technology"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 5,
+      "question": "What seven-year-old Kiowa Kavovit likes about being an entrepreneur is that ...",
+      "options": [
+        "she can be an inventor",
+        "she can be on TV",
+        "she can do what she wants"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 6,
+      "question": "Kiowa ...",
+      "options": [
+        "wants to be a zoologist in the future",
+        "has animals at home",
+        "likes zoos"
+      ],
+      "answer": 0
+    }
+  ]
+}
