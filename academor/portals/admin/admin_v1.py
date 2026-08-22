@@ -2517,33 +2517,26 @@ class QuizQuestionAdmin(PortalModelAdmin):
 
     def get_fieldsets(self, request, obj=None):
         fieldsets = list(super().get_fieldsets(request, obj))
-        
+
         # For new objects (obj is None), show all fieldsets so they can choose question type
         if not obj:
             return fieldsets
-            
+
         # For objects without quiz, show all fieldsets
         if not obj.quiz_id:
             return fieldsets
-            
+
         # Handle essay questions
         if obj.quiz.is_essay:
             return [fieldsets[0], fieldsets[3]]  # Basic + Student Response
-        
+
         # Handle manual grading questions
         if obj.quiz.is_manual_grading:
             return [fieldsets[0]]  # Only basic fields
-        
-        # Show both MCQ and SPR fieldsets for SAT math quizzes so they can switch between types
-        if obj.quiz.is_sat and obj.quiz.is_math:
-            return [fieldsets[0], fieldsets[1], fieldsets[2]]  # Basic + MCQ + SPR
-        
-        # Handle SPR questions
-        if obj.question_type == 'spr':
-            return [fieldsets[0], fieldsets[2]]  # Basic + SPR
-        
-        # For MCQ questions, hide SPR fieldsets
-        return [fieldsets[0], fieldsets[1]]  # Basic + MCQ
+
+        # Always include MCQ + SPR so Answer type can switch without a reload.
+        # Visibility is toggled client-side by quiz-question-type-toggle.js.
+        return [fieldsets[0], fieldsets[1], fieldsets[2]]
 
     @admin.display(description=_('Quiz'))
     def quiz_display(self, obj):

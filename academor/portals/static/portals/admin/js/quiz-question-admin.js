@@ -183,6 +183,14 @@
     input.value = "";
   }
 
+  function isQuizQuestionAdminForm(block) {
+    return (
+      !!(block && block.closest && block.closest("#quizquestion_form")) ||
+      !!(block && block.id === "quizquestion_form") ||
+      !!document.querySelector("#quizquestion_form")
+    );
+  }
+
   function applyGradingConfig(block, config) {
     if (!config) {
       return;
@@ -190,11 +198,12 @@
 
     // Never wipe answer options on an existing quiz-question edit page.
     // Those fields are the source of truth for SAT MCQ/SPR questions.
-    var isQuestionEdit =
-      !!(block.closest && block.closest("#quizquestion_form")) ||
-      !!(document.querySelector("#quizquestion_form"));
+    var isQuestionEdit = isQuizQuestionAdminForm(block);
     if (isQuestionEdit) {
       config = Object.assign({}, config, { clear_fields: [] });
+      // MCQ/SPR visibility is owned by quiz-question-type-toggle.js — do not
+      // force-show answer_options here (that broke Multiple Choice after SPR).
+      return;
     }
 
     var allFields = ANSWER_FIELDS.concat([RESPONSE_FIELD]);
@@ -206,15 +215,6 @@
     allFields.forEach(function (name) {
       var row = fieldRow(block, name);
       if (!row) {
-        return;
-      }
-      // On quiz-question change form, keep MCQ option fields visible.
-      if (isQuestionEdit && (name === "answer_options" || name === "correct_option_number")) {
-        row.classList.remove("quiz-admin-hidden-field");
-        return;
-      }
-      if (isQuestionEdit && (name === "correct_answer" || name === "correct_option_index")) {
-        row.classList.add("quiz-admin-hidden-field");
         return;
       }
       row.classList.toggle("quiz-admin-hidden-field", !showSet[name]);
@@ -240,6 +240,9 @@
     applyTimeLimitVisibility(!!(config && config.hide_time_limit));
     applyQuizInlineMode(config && config.grading_mode);
     syncSharedPassageFieldVisibility();
+    if (typeof window.quizQuestionTypeToggleSync === "function") {
+      window.quizQuestionTypeToggleSync(document);
+    }
   }
 
   function applyQuizInlineMode(mode) {

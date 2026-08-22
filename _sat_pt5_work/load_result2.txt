@@ -1,0 +1,34 @@
+﻿docker : System check identified some issues:
+At C:\Users\user\AppData\Local\Temp\ps-script-4fde9d56-010b-4fff-9779-0006d4cc00f1.ps1:76 char:1
++ docker exec -w /app/academor academor_web_local python manage.py load ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (System check identified some issues::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+WARNINGS:
+?: (ckeditor.W001) django-ckeditor bundles CKEditor 4.22.1 which isn't supported anymore and which does have unfixed se
+curity issues, see for example https://ckeditor.com/cke4/release/CKEditor-4.24.0-LTS . You should consider strongly swi
+tching to a different editor (maybe CKEditor 5 respectively django-ckeditor-5 after checking whether the CKEditor 5 lic
+ense terms work for you) or switch to the non-free CKEditor 4 LTS package. See https://ckeditor.com/ckeditor-4-support/
+ for more on this. (Note! This notice has been added by the django-ckeditor developers and we are not affiliated with C
+KSource and were not involved in the licensing change, so please refrain from complaining to us. Thanks.)
+portals.QuizCategory.services: (fields.W340) null has no effect on ManyToManyField.
+sat_math_one.json -> SAT Math: Quiz SAT Math One (updated, id=259); questions 0 created, 44 updated, 0 deleted (44 total).
+sat_practice_test_10_math.json -> SAT Math: Quiz SAT Practice Test 10 Math (updated, id=362); questions 0 created, 44 updated, 0 deleted (44 total).
+sat_practice_test_10_verbal.json -> SAT Reading and Writing: Quiz SAT Practice Test 10 Reading and Writing (updated, id=363); questions 0 created, 54 updated, 0 deleted (54 total).
+sat_practice_test_11_math.json -> SAT Math: Quiz SAT Practice Test 11 Math (updated, id=364); questions 0 created, 44 updated, 0 deleted (44 total).
+sat_practice_test_11_verbal.json -> SAT Reading and Writing: Quiz SAT Practice Test 11 Reading and Writing (updated, id=365); questions 0 created, 54 updated, 0 deleted (54 total).
+sat_practice_test_4_math.json -> SAT Math: Quiz SAT Practice Test 4 Math (updated, id=366); questions 0 created, 44 updated, 0 deleted (44 total).
+sat_practice_test_4_verbal.json -> SAT Reading and Writing: Quiz SAT Practice Test 4 Reading and Writing (updated, id=367); questions 0 created, 54 updated, 0 deleted (54 total).
+sat_practice_test_5_math.json -> SAT Math: Quiz SAT Practice Test 5 Math (created, id=368); questions 44 created, 0 updated, 0 deleted (44 total).
+sat_practice_test_5_verbal.json -> SAT Reading and Writing: Quiz SAT Practice Test 5 Reading and Writing (updated, id=361); questions 0 created, 54 updated, 0 deleted (54 total).
+sat_practice_test_6_math.json -> SAT Math: Quiz SAT Practice Test 6 Math (created, id=369); questions 44 created, 0 updated, 0 deleted (44 total).
+sat_practice_test_6_verbal.json -> SAT Reading and Writing: Quiz SAT Practice Test 6 Reading and Writing (created, id=370); questions 54 created, 0 updated, 0 deleted (54 total).
+sat_practice_test_7_math.json -> SAT Math: Quiz SAT Practice Test 7 Math (created, id=371); questions 44 created, 0 updated, 0 deleted (44 total).
+sat_practice_test_7_verbal.json -> SAT Reading and Writing: Quiz SAT Practice Test 7 Reading and Writing (created, id=372); questions 54 created, 0 updated, 0 deleted (54 total).
+sat_practice_test_8_math.json -> SAT Math: Quiz SAT Practice Test 8 Math (created, id=373); questions 44 created, 0 updated, 0 deleted (44 total).
+sat_practice_test_8_verbal.json -> SAT Reading and Writing: Quiz SAT Practice Test 8 Reading and Writing (created, id=374); questions 54 created, 0 updated, 0 deleted (54 total).
+sat_practice_test_9_math.json -> SAT Math: Quiz SAT Practice Test 9 Math (created, id=375); questions 44 created, 0 updated, 0 deleted (44 total).
+sat_practice_test_9_verbal.json -> SAT Reading and Writing: Quiz SAT Practice Test 9 Reading and Writing (created, id=376); questions 54 created, 0 updated, 0 deleted (54 total).
+sat_verbal_one.json -> SAT Verbal: Quiz SAT Verbal One (updated, id=260); questions 0 created, 54 updated, 0 deleted (54 total).

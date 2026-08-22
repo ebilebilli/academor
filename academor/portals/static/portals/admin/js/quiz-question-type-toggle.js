@@ -7,62 +7,80 @@
     });
 
     function initializeQuestionTypeToggle() {
-        $(document).on('change', 'select[name="question_type"], select[data-quiz-question-type]', function() {
+        $(document).on('change', 'select[name="question_type"], select[name$="-question_type"], select[data-quiz-question-type]', function() {
             toggleQuestionTypeFields($(this));
         });
 
-        $('select[name="question_type"], select[data-quiz-question-type"]').each(function() {
+        $('select[name="question_type"], select[name$="-question_type"], select[data-quiz-question-type]').each(function() {
             toggleQuestionTypeFields($(this));
         });
 
         if (typeof django !== 'undefined' && django.jQuery) {
             django.jQuery(document).on('formset:added', function(event, row) {
-                row.find('select[name="question_type"], select[data-quiz-question-type"]').each(function() {
+                row.find('select[name="question_type"], select[name$="-question_type"], select[data-quiz-question-type]').each(function() {
                     toggleQuestionTypeFields($(this));
                 });
             });
         }
     }
 
+    function fieldScope(selectElement) {
+        // Prefer the inline row so one question's type does not hide siblings.
+        var scope = selectElement.closest('.inline-related');
+        if (scope.length) {
+            return scope;
+        }
+        scope = selectElement.closest('form');
+        if (scope.length) {
+            return scope;
+        }
+        return selectElement.closest('.module');
+    }
+
     function toggleQuestionTypeFields(selectElement) {
         var questionType = selectElement.val();
-        var form = selectElement.closest('form');
-
-        if (!form.length) {
-            form = selectElement.closest('.inline-related, .module');
+        var scope = fieldScope(selectElement);
+        if (!scope.length) {
+            return;
         }
 
         if (questionType === 'spr') {
-            hideMCQFields(form);
-            showSPRFields(form);
+            hideMCQFields(scope);
+            showSPRFields(scope);
         } else {
-            showMCQFields(form);
-            hideSPRFields(form);
+            showMCQFields(scope);
+            hideSPRFields(scope);
         }
     }
 
-    function hideMCQFields(form) {
-        form.find('.quiz-mcq-answers-fieldset').hide();
-        form.find(
+    function hideMCQFields(scope) {
+        scope.find('.quiz-mcq-answers-fieldset').addClass('quiz-admin-hidden-fieldset');
+        scope.find(
             '.field-answer_options, .field-correct_answer, .field-correct_option_number, .field-correct_option_index, .field-is_dropdown',
-        ).hide();
+        ).addClass('quiz-admin-hidden-field');
     }
 
-    function showMCQFields(form) {
-        form.find('.quiz-mcq-answers-fieldset').show();
-        form.find('.field-answer_options, .field-correct_option_number, .field-is_dropdown').show();
-        // Hidden inputs stay in DOM but their rows can remain visually quiet.
-        form.find('.field-correct_answer, .field-correct_option_index').hide();
+    function showMCQFields(scope) {
+        scope.find('.quiz-mcq-answers-fieldset').removeClass('quiz-admin-hidden-fieldset');
+        scope.find('.field-answer_options, .field-correct_option_number, .field-is_dropdown')
+            .removeClass('quiz-admin-hidden-field')
+            .show();
+        // Hidden inputs stay in DOM but their rows stay visually quiet.
+        scope.find('.field-correct_answer, .field-correct_option_index')
+            .addClass('quiz-admin-hidden-field');
     }
 
-    function hideSPRFields(form) {
-        form.find('.quiz-spr-answers-fieldset').hide();
-        form.find('.field-spr_correct_answers, .field-spr_max_length').hide();
+    function hideSPRFields(scope) {
+        scope.find('.quiz-spr-answers-fieldset').addClass('quiz-admin-hidden-fieldset');
+        scope.find('.field-spr_correct_answers, .field-spr_max_length')
+            .addClass('quiz-admin-hidden-field');
     }
 
-    function showSPRFields(form) {
-        form.find('.quiz-spr-answers-fieldset').show();
-        form.find('.field-spr_correct_answers, .field-spr_max_length').show();
+    function showSPRFields(scope) {
+        scope.find('.quiz-spr-answers-fieldset').removeClass('quiz-admin-hidden-fieldset');
+        scope.find('.field-spr_correct_answers, .field-spr_max_length')
+            .removeClass('quiz-admin-hidden-field')
+            .show();
     }
 
     function revealValidationErrors() {
@@ -115,5 +133,13 @@
             $banner[0].scrollIntoView({behavior: 'smooth', block: 'start'});
         }
     }
+
+    // Expose so grading-mode sync can re-apply after it touches field visibility.
+    window.quizQuestionTypeToggleSync = function(root) {
+        var $root = root ? $(root) : $(document);
+        $root.find('select[name="question_type"], select[name$="-question_type"], select[data-quiz-question-type]').each(function() {
+            toggleQuestionTypeFields($(this));
+        });
+    };
 
 })(django.jQuery || jQuery);

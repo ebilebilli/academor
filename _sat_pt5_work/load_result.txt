@@ -1,0 +1,51 @@
+﻿docker : System check identified some issues:
+At C:\Users\user\AppData\Local\Temp\ps-script-0995c6e8-5210-4904-8dd3-6eec663590d3.ps1:76 char:1
++ docker exec -w /app/academor academor_web_local python manage.py load ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (System check identified some issues::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+WARNINGS:
+?: (ckeditor.W001) django-ckeditor bundles CKEditor 4.22.1 which isn't supported anymore and which does have unfixed se
+curity issues, see for example https://ckeditor.com/cke4/release/CKEditor-4.24.0-LTS . You should consider strongly swi
+tching to a different editor (maybe CKEditor 5 respectively django-ckeditor-5 after checking whether the CKEditor 5 lic
+ense terms work for you) or switch to the non-free CKEditor 4 LTS package. See https://ckeditor.com/ckeditor-4-support/
+ for more on this. (Note! This notice has been added by the django-ckeditor developers and we are not affiliated with C
+KSource and were not involved in the licensing change, so please refrain from complaining to us. Thanks.)
+portals.QuizCategory.services: (fields.W340) null has no effect on ManyToManyField.
+Traceback (most recent call last):
+  File "/app/academor/manage.py", line 22, in <module>
+    main()
+  File "/app/academor/manage.py", line 18, in main
+    execute_from_command_line(sys.argv)
+  File "/usr/local/lib/python3.11/site-packages/django/core/management/__init__.py", line 442, in execute_from_command_
+line
+    utility.execute()
+  File "/usr/local/lib/python3.11/site-packages/django/core/management/__init__.py", line 436, in execute
+    self.fetch_command(subcommand).run_from_argv(self.argv)
+  File "/usr/local/lib/python3.11/site-packages/django/core/management/base.py", line 420, in run_from_argv
+    self.execute(*args, **cmd_options)
+  File "/usr/local/lib/python3.11/site-packages/django/core/management/base.py", line 464, in execute
+    output = self.handle(*args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/academor/portals/management/commands/load_sat_quiz_resources.py", line 40, in handle
+    results = load_all_sat_resources(deactivate_missing=deactivate_missing)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/academor/portals/utils/quiz_resource_loader.py", line 312, in load_all_sat_resources
+    results.append(load_resource_file(path, deactivate_missing=deactivate_missing))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/contextlib.py", line 81, in inner
+    return func(*args, **kwds)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/app/academor/portals/utils/quiz_resource_loader.py", line 276, in load_resource_file
+    parsed = parse_resource_file(path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/academor/portals/utils/quiz_resource_loader.py", line 157, in parse_resource_file
+    questions = [
+                ^
+  File "/app/academor/portals/utils/quiz_resource_loader.py", line 158, in <listcomp>
+    _normalize_question(item, index, resource_slug, quiz_is_dropdown=quiz_is_dropdown)
+  File "/app/academor/portals/utils/quiz_resource_loader.py", line 93, in _normalize_question
+    raise ValueError(f'Question #{index + 1} in {resource_slug} needs at least two options.')
+ValueError: Question #16 in sat_practice_test_5_math needs at least two options.
