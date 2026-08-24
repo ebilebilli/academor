@@ -3,6 +3,7 @@ from django import template
 from payments.contract import (
     build_package_details_summary,
     build_payment_clause,
+    package_is_bron,
     generate_contract_number,
     is_valid_contract_number,
 )
@@ -13,7 +14,7 @@ from payments.mock_contract import (
 register = template.Library()
 
 
-@register.inclusion_tag('includes/course_payment_contract.html')
+@register.inclusion_tag('includes/course_payment_contract_router.html')
 def course_payment_contract(course, package, contract_number=None):
     number = contract_number or generate_contract_number()
     return {
@@ -25,6 +26,7 @@ def course_payment_contract(course, package, contract_number=None):
         'buyer_name': '',
         'buyer_phone': '',
         'contract_date': None,
+        'is_bron': package_is_bron(package),
     }
 
 

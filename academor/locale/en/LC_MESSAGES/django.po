@@ -4399,6 +4399,18 @@ msgstr "Premium"
 msgid "Highlight this package with a distinct card style when selected."
 msgstr "Highlight this package with a distinct card style when selected."
 
+#: academor/projects/models/service_models.py:316
+msgid "Bron contract"
+msgstr "Bron contract"
+
+#: academor/projects/models/service_models.py:317
+msgid ""
+"If enabled, checkout shows the bron agreement instead of the standard "
+"training agreement."
+msgstr ""
+"If enabled, checkout shows the bron agreement instead of the standard "
+"training agreement."
+
 #: academor/projects/models/service_models.py:246
 msgid "Show on homepage"
 msgstr "Show on homepage"

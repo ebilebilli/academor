@@ -371,6 +371,7 @@ class CoursePricePackageInline(admin.StackedInline):
                 'order',
                 'is_active',
                 'is_premium',
+                'is_bron',
                 'show_on_homepage',
             ),
         }),
@@ -399,11 +400,12 @@ class CoursePricePackageAdmin(AcademorModelAdmin):
         'order',
         'is_active',
         'is_premium',
+        'is_bron',
         'show_on_homepage',
     )
-    list_filter = ('package_tab', 'is_active', 'is_premium', 'show_on_homepage', 'course')
+    list_filter = ('package_tab', 'is_active', 'is_premium', 'is_bron', 'show_on_homepage', 'course')
     search_fields = ('name_az', 'name_en', 'name_ru', 'course__name_az', 'course__slug')
-    list_editable = ('order', 'is_active', 'show_on_homepage')
+    list_editable = ('order', 'is_active', 'is_bron', 'show_on_homepage')
     ordering = ('course', 'package_tab', 'order', 'id')
     autocomplete_fields = ('course',)
     fieldsets = (
@@ -414,6 +416,7 @@ class CoursePricePackageAdmin(AcademorModelAdmin):
                 'order',
                 'is_active',
                 'is_premium',
+                'is_bron',
                 'show_on_homepage',
             ),
             'description': (

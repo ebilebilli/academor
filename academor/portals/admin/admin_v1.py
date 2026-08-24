@@ -360,20 +360,10 @@ class QuizQuestionInline(admin.StackedInline):
     verbose_name_plural = _('Questions')
     classes = ('portal-quiz-inline',)
 
-    @staticmethod
-    def _inline_supports_spr_fields(quiz):
-        if not quiz:
-            return True
-        if quiz.is_sat and (
-            quiz.is_math
-            or quiz.sat_section in Quiz.SAT_MATH_SECTIONS
-        ):
-            return True
-        return False
-
     @classmethod
     def _inline_answer_fields(cls, quiz):
-        fields = [
+        # Always render MCQ + SPR inputs; quiz-question-type-toggle.js switches visibility.
+        return [
             'order',
             'prompt_type',
             'question_type',
@@ -385,10 +375,9 @@ class QuizQuestionInline(admin.StackedInline):
             'correct_option_number',
             'correct_answer',
             'correct_option_index',
+            'spr_correct_answers',
+            'spr_max_length',
         ]
-        if cls._inline_supports_spr_fields(quiz):
-            fields.extend(['spr_correct_answers', 'spr_max_length'])
-        return fields
 
     class Media:
         js = ('portals/admin/js/quiz-question-type-toggle.js',)

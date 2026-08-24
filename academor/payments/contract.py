@@ -28,6 +28,18 @@ def _contract_lang(lang: str | None = None) -> str:
     return (lang or get_language() or 'az')[:2]
 
 
+def package_is_bron(package) -> bool:
+    if isinstance(package, dict):
+        return bool(package.get('is_bron'))
+    return bool(getattr(package, 'is_bron', False))
+
+
+def course_contract_template_name(package) -> str:
+    if package_is_bron(package):
+        return 'includes/course_bron_contract.html'
+    return 'includes/course_payment_contract.html'
+
+
 def _format_months_label(package: dict, lang: str) -> str:
     months_display = (package.get('months_display') or '').strip()
     if months_display:
@@ -117,6 +129,7 @@ def build_contract_context(
     package_dict = (
         serialize_price_package(package, lang=lang) if package else {}
     )
+    is_bron = package_is_bron(package_dict)
     return {
         'course': {'name': course_display_name(course, lang)},
         'package': package_dict,
@@ -126,6 +139,7 @@ def build_contract_context(
         'buyer_name': (buyer_name or '').strip(),
         'buyer_phone': (buyer_phone or '').strip(),
         'contract_date': contract_date,
+        'is_bron': is_bron,
     }
 
 
@@ -151,6 +165,6 @@ def render_course_contract_html(
     )
     with translation.override(lang):
         return render_to_string(
-            'includes/course_payment_contract.html',
+            course_contract_template_name(context.get('package') or {}),
             context,
         )

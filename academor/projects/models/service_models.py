@@ -313,6 +313,11 @@ class CoursePricePackage(models.Model):
         verbose_name=_('Premium'),
         help_text=_('Highlight this package with a distinct card style when selected.'),
     )
+    is_bron = models.BooleanField(
+        default=False,
+        verbose_name=_('Bron contract'),
+        help_text=_('If enabled, checkout shows the bron agreement instead of the standard training agreement.'),
+    )
     show_on_homepage = models.BooleanField(
         default=False,
         verbose_name=_('Show on homepage'),

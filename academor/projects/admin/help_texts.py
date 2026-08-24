@@ -180,6 +180,7 @@ ADMIN_HELP = {
       'number of mock tests granted after payment.',
       'Lower "Order" = appears first within the same tab on the course page.',
       '"Premium" marks a highlighted/recommended package in the UI (not used on mock test cards).',
+      '"Bron contract" switches this package to a bron agreement instead of the standard training agreement during checkout.',
       '"Show on homepage" adds the package to the homepage price carousel (regular courses only).',
       'Turn off "Active" to hide a package without deleting it.',
     ],

@@ -183,12 +183,25 @@
     input.value = "";
   }
 
+  function answerTypeSelect(block) {
+    if (!block || !block.querySelector) {
+      return null;
+    }
+    return block.querySelector(
+      'select[name="question_type"], select[name$="-question_type"], select[data-quiz-question-type]'
+    );
+  }
+
   function isQuizQuestionAdminForm(block) {
     return (
       !!(block && block.closest && block.closest("#quizquestion_form")) ||
       !!(block && block.id === "quizquestion_form") ||
       !!document.querySelector("#quizquestion_form")
     );
+  }
+
+  function isAnswerTypeToggleManaged(block) {
+    return isQuizQuestionAdminForm(block) || Boolean(answerTypeSelect(block));
   }
 
   function applyGradingConfig(block, config) {
@@ -198,8 +211,7 @@
 
     // Never wipe answer options on an existing quiz-question edit page.
     // Those fields are the source of truth for SAT MCQ/SPR questions.
-    var isQuestionEdit = isQuizQuestionAdminForm(block);
-    if (isQuestionEdit) {
+    if (isAnswerTypeToggleManaged(block)) {
       config = Object.assign({}, config, { clear_fields: [] });
       // MCQ/SPR visibility is owned by quiz-question-type-toggle.js — do not
       // force-show answer_options here (that broke Multiple Choice after SPR).

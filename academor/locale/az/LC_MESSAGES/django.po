@@ -4360,6 +4360,18 @@ msgstr "Premium"
 msgid "Highlight this package with a distinct card style when selected."
 msgstr "Seçildikdə bu paketi fərqli kart stili ilə vurğulayır."
 
+#: academor/projects/models/service_models.py:316
+msgid "Bron contract"
+msgstr "Bron müqaviləsi"
+
+#: academor/projects/models/service_models.py:317
+msgid ""
+"If enabled, checkout shows the bron agreement instead of the standard "
+"training agreement."
+msgstr ""
+"Aktivdirsə, ödəniş zamanı standart tədris müqaviləsi əvəzinə bron "
+"müqaviləsi göstərilir."
+
 #: academor/projects/models/service_models.py:246
 msgid "Show on homepage"
 msgstr "Ana səhifədə göstər"

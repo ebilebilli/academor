@@ -1,0 +1,67 @@
+<div class="course-payment-contract__doc" data-contract-number="{{ contract_number }}">
+    <p class="course-payment-contract__meta text-end mb-3">
+        <strong>Bakı şəhəri &nbsp;&nbsp;&nbsp;&nbsp; Bron Müqaviləsi № {{ contract_number }}</strong>
+    </p>
+
+    <p class="course-payment-contract__lead">
+        Bir tərəfdən «Academor Training and Development Center » MMC-nin (bundan sonra – Kurs), digər tərəfdən isə
+        hazırlıq kursunun dinləyicisi (bundan sonra – Dinləyici) bu müqaviləni aşağıdakı şərtlərlə bağladılar:
+    </p>
+
+    <section class="course-payment-contract__section">
+        <h4 class="course-payment-contract__heading">1. Müqavilənin Predmeti</h4>
+        <p class="mb-2"><strong>1.1.</strong> Bu müqavilə Dinləyicinin seçdiyi fənn üzrə dərslərə qoşulmaq üçün yer bron etməsi məqsədilə bağlanır. Bron edilmiş yer dərs başlayana qədər Dinləyici üçün saxlanılır. Dinləyicinin bron etdiyi fənn: <strong>{{ course.name }}</strong>{% if package_details %} ({{ package_details }}){% endif %}</p>
+        <p class="mb-1"><strong>1.2.</strong> Bron tarixi: _____</p>
+        <p class="mb-0"><strong>1.3.</strong> Dərs başlama tarixi: _____</p>
+    </section>
+
+    <section class="course-payment-contract__section">
+        <h4 class="course-payment-contract__heading">2. Tərəflərin Hüquq və Vəzifələri</h4>
+        <p class="mb-1"><strong>2.1. Kursun hüquq və vəzifələri:</strong></p>
+        <ul class="course-payment-contract__list">
+            <li>2.1.1. Dinləyici üçün bron edilmiş yeri müəyyən edilmiş tarixə qədər saxlamaq.</li>
+            <li>2.1.2. Dərs başlamazdan əvvəl cədvəli və lazımi məlumatları vaxtında Dinləyiciyə çatdırmaq.</li>
+            <li>2.1.3. Kurs müəyyən edilmiş tarixdə başlamazsa, ilkin ödənişi 5 (beş) iş günü ərzində geri qaytarmaq.</li>
+            <li>2.1.4. Kurs başladıqdan sonra Dinləyiciyə keyfiyyətli tədris xidməti göstərmək və kursu müvəffəqiyyətlə tamamlayan Dinləyiciyə müvafiq sertifikat vermək.</li>
+        </ul>
+        <p class="mb-1"><strong>3.1. Dinləyicinin hüquq və vəzifələri:</strong></p>
+        <ul class="course-payment-contract__list">
+            <li>3.1.1. İlkin ödənişi müqavilədə göstərilən tarixdə həyata keçirmək.</li>
+            <li>3.1.2. Kursdan imtina etmək istədiyi halda Kursu ən azı 3 (üç) iş günü əvvəl yazılı şəkildə xəbərdar etmək.</li>
+            <li>3.1.3. Kurs başladıqdan sonra tam ödənişi müəyyən edilmiş müddətdə həyata keçirmək və dərs cədvəlinə uyğun olaraq dərslərə vaxtında gəlmək.</li>
+            <li>3.1.4. Müəllimin tapşırıqlarını yerinə yetirmək, dərs cədvəlini pozmamaq.</li>
+            <li>3.1.5. Dərsin keçirildiyi otaqda nizam-intizama riayət etmək.</li>
+        </ul>
+    </section>
+
+    <section class="course-payment-contract__section">
+        <h4 class="course-payment-contract__heading">4. Ümumi müddəalar</h4>
+        <ul class="course-payment-contract__list mb-0">
+            <li>4.1. Bu müqavilə imzalandığı andan qüvvəyə minir və ilkin ödənişin geri qaytarılması və ya kursun tam ödənişi həyata keçirilənə qədər qüvvədə qalır.</li>
+            <li>4.2. Müqavilədə nəzərdə tutulmayan hallarda Azərbaycan Respublikasının mülki qanunvericiliyi tətbiq edilir.</li>
+            <li>4.3. Tərəflər arasında yarana biləcək mübahisələr danışıqlar yolu ilə həll edilir; razılığa gəlinmədikdə məsələ məhkəməyə verilir.</li>
+            <li>4.4. Bu müqavilə 2 (iki) nüsxədə tərtib edilmişdir; hər iki nüsxə eyni hüquqi qüvvəyə malikdir.</li>
+        </ul>
+    </section>
+
+    <section class="course-payment-contract__section course-payment-contract__parties">
+        <h4 class="course-payment-contract__heading">5. Tərəflərin rekvizitləri</h4>
+        <div class="row g-3">
+            <div class="col-sm-6">
+                <p class="mb-1 fw-semibold">6.1. Academor Training and Development Center</p>
+                <p class="mb-0">TEL: +994 55 123 00 77</p>
+                <p class="mb-0">VÖEN: 1507376041</p>
+                <p class="mb-0 mt-3">İMZA: __________________</p>
+                <p class="mb-0">Academor Kursları</p>
+            </div>
+            <div class="col-sm-6">
+                <p class="mb-1 fw-semibold">6.2. Dinləyici</p>
+                <p class="mb-0">Şəxs. vəs. №: _______________</p>
+                <p class="mb-0">Adı, Soyadı: {% if buyer_name %}<strong>{{ buyer_name }}</strong>{% else %}<span class="course-payment-contract__fill" data-contract-buyer-name>_______________</span>{% endif %}</p>
+                <p class="mb-0">Tel: {% if buyer_phone %}<strong>{{ buyer_phone }}</strong>{% else %}<span class="course-payment-contract__fill" data-contract-buyer-phone>_______________</span>{% endif %}</p>
+                <p class="mb-0">Tarix: {% if contract_date %}{{ contract_date|date:"d.m.Y" }}{% else %}_____{% endif %}</p>
+                <p class="mb-0 mt-3">İmza: __________________</p>
+            </div>
+        </div>
+    </section>
+</div>

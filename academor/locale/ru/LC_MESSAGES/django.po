@@ -4447,6 +4447,18 @@ msgstr "Премиум"
 msgid "Highlight this package with a distinct card style when selected."
 msgstr "Выделяет этот пакет особым стилем карточки при выборе."
 
+#: academor/projects/models/service_models.py:316
+msgid "Bron contract"
+msgstr "Бронь-договор"
+
+#: academor/projects/models/service_models.py:317
+msgid ""
+"If enabled, checkout shows the bron agreement instead of the standard "
+"training agreement."
+msgstr ""
+"Если включено, при оплате отображается договор на бронь вместо стандартного "
+"договора об обучении."
+
 #: academor/projects/models/service_models.py:246
 msgid "Show on homepage"
 msgstr "Показать на главной"

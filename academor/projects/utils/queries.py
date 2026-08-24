@@ -1242,6 +1242,7 @@ def serialize_price_package(package, lang='az', sale_percent=None):
         'discount_percent': sale_percent if has_discount else None,
         'has_discount': has_discount,
         'is_premium': bool(package.is_premium),
+        'is_bron': bool(getattr(package, 'is_bron', False)),
         'package_tab': package.package_tab,
         'credits': package.credits,
     }
