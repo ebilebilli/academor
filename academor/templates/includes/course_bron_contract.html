@@ -11,8 +11,7 @@
     <section class="course-payment-contract__section">
         <h4 class="course-payment-contract__heading">1. Müqavilənin Predmeti</h4>
         <p class="mb-2"><strong>1.1.</strong> Bu müqavilə Dinləyicinin seçdiyi fənn üzrə dərslərə qoşulmaq üçün yer bron etməsi məqsədilə bağlanır. Bron edilmiş yer dərs başlayana qədər Dinləyici üçün saxlanılır. Dinləyicinin bron etdiyi fənn: <strong>{{ course.name }}</strong>{% if package_details %} ({{ package_details }}){% endif %}</p>
-        <p class="mb-1"><strong>1.2.</strong> Bron tarixi: _____</p>
-        <p class="mb-0"><strong>1.3.</strong> Dərs başlama tarixi: _____</p>
+        <p class="mb-0"><strong>1.2.</strong> Bron tarixi: {% if contract_date %}{{ contract_date|date:"d.m.Y" }}{% else %}{% now "d.m.Y" %}{% endif %}</p>
     </section>
 
     <section class="course-payment-contract__section">
