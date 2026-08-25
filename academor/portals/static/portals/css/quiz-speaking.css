@@ -99,7 +99,9 @@
 }
 
 .portal-speaking-question-item__text {
-  color: #0f172a;
+  color: var(--admin-text, #00313D);
+  font-size: 0.9rem;
+  line-height: 1.45;
 }
 
 .portal-speaking-question-item__text p {

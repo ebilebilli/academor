@@ -6156,12 +6156,11 @@ msgstr "Complete graded quizzes to see the normalized average here."
 msgid "Xidmət filteri"
 msgstr "Subject filter"
 
-#: academor/templates/portals/includes/quiz_categories_panel.html:27
+#: academor/templates/portals/includes/quiz_categories_panel.html:6
+#: academor/templates/portals/includes/quiz_categories_panel.html:25
 #: academor/templates/portals/student/quiz_category_detail.html:10
-#, fuzzy
-#| msgid "Kateqoriya"
 msgid "Kateqoriyalar"
-msgstr "Category"
+msgstr "Categories"
 
 #: academor/templates/portals/includes/quiz_categories_panel.html:33
 #: academor/templates/portals/student/quiz_categories.html:13
@@ -7557,11 +7556,10 @@ msgstr "No classes today."
 msgid "Dərslər"
 msgstr "Lesson filters"
 
-#: academor/templates/portals/student/dashboard.html:119
-#, fuzzy
-#| msgid "Quiz"
+#: academor/templates/portals/student/quiz_categories.html:16
+#: academor/templates/portals/teacher/quiz_categories.html:7
 msgid "Quizlər"
-msgstr "Quiz"
+msgstr "Quizzes"
 
 #: academor/templates/portals/student/ielts_mock_complete.html:4
 #: academor/templates/portals/student/ielts_mock_complete.html:11
@@ -7700,6 +7698,10 @@ msgstr "Download"
 msgid "Kateqoriya seçin — xidmətlər tədris qruplarınıza uyğundur."
 msgstr "Choose a category — services match your study groups."
 
+#: academor/templates/portals/teacher/quiz_categories.html:7
+msgid "Xidmətləriniz üzrə quizlərə baxın."
+msgstr "View quizzes for your services."
+
 #: academor/templates/portals/student/quiz_categories.html:16
 msgid "Şagirdin quiz kateqoriyaları (yalnız baxış)."
 msgstr "Student quiz categories (view only)."
@@ -7708,6 +7710,14 @@ msgstr "Student quiz categories (view only)."
 #: academor/templates/portals/teacher/quiz_categories.html:9
 msgid "No quiz categories for your services yet."
 msgstr "No quiz categories for your services yet."
+
+#: academor/templates/portals/includes/quiz_categories_panel.html:75
+msgid "quiz"
+msgstr "quiz"
+
+#: academor/templates/portals/includes/quiz_categories_panel.html:87
+msgid "Bu filter üçün kateqoriya yoxdur."
+msgstr "No categories for this filter."
 
 #: academor/templates/portals/student/quiz_category_detail.html:25
 msgid "Quiz siyahısı"
@@ -8980,6 +8990,7 @@ msgstr "Buy mock package"
 
 #: academor/templates/portals/includes/customer_dashboard_mock_stat.html:2
 #: academor/templates/portals/includes/customer_dashboard_mock_stat.html:6
+#: academor/projects/models/mock_result_models.py
 msgid "Mock test results"
 msgstr "Mock test results"
 
@@ -10968,10 +10979,6 @@ msgstr "Fill in at least one training program field (AZ / EN / RU)."
 #: academor/projects/models/mock_result_models.py
 msgid "Mock test result"
 msgstr "Mock test result"
-
-#: academor/projects/models/mock_result_models.py
-msgid "Mock test results"
-msgstr "Mock test results"
 
 #: portals/includes/sat_scoring_guide.html
 msgid "How your practice score is calculated"

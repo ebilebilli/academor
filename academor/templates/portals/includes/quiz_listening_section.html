@@ -71,7 +71,7 @@
       </article>
       {% else %}
       {% with q=item.question %}
-      <article class="portal-listening-task" data-quiz-writing-card data-listening-task>
+      <article id="quiz-nav-q-{{ q.number }}" class="portal-listening-task portal-quiz-q-target" data-quiz-writing-card data-listening-task data-quiz-question-card data-quiz-nav-number="{{ q.number }}">
         <header class="portal-listening-task__head">
           <span class="portal-listening-task__index">
             <span class="portal-listening-task__index-label">{% trans 'Q' %}</span>

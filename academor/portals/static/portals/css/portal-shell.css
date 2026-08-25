@@ -1524,39 +1524,41 @@ a:hover { color: var(--color-role-dark); }
 
 /* ── Quiz play ───────────────────────────────────────────────────────── */
 .portal-quiz-play-card {
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-xs);
-  padding: var(--space-5);
+  border-radius: 10px;
+  border: 1px solid rgba(0, 49, 61, 0.08);
+  background: transparent;
+  box-shadow: none;
+  padding: var(--space-4);
 }
 
 .portal-quiz-play-card__index {
-  font-weight: var(--font-semibold);
-  color: var(--color-role);
+  font-weight: var(--font-medium);
+  font-size: var(--text-xs);
+  color: var(--color-muted);
 }
 
 .portal-quiz-prompt__text {
-  font-weight: var(--font-semibold);
-  font-size: var(--text-base);
+  font-weight: var(--font-medium);
+  font-size: var(--text-sm);
   line-height: var(--line-height);
 }
 
 .portal-quiz-option {
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(0, 49, 61, 0.1);
+  background: transparent;
   transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast), opacity var(--transition-fast);
 }
 
 .portal-quiz-option:hover {
-  border-color: var(--color-role-light);
-  background: var(--color-role-subtle);
+  border-color: color-mix(in srgb, var(--color-role) 35%, transparent);
+  background: color-mix(in srgb, var(--color-role) 4%, transparent);
 }
 
 .portal-quiz-option.is-selected {
-  border-color: var(--color-role);
-  background: var(--color-role-subtle);
-  box-shadow: var(--focus-ring);
+  border-color: color-mix(in srgb, var(--color-role) 45%, transparent);
+  background: color-mix(in srgb, var(--color-role) 5%, transparent);
+  box-shadow: none;
 }
 
 /* ── Course radio cards ──────────────────────────────────────────────── */

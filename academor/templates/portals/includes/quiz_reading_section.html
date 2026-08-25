@@ -73,7 +73,7 @@
         {% if q.group_start and q.group_instructions %}
         {% include "portals/includes/quiz_reading_group_instructions.html" with group=q.group_instructions %}
         {% endif %}
-        {% include "portals/includes/quiz_reading_question.html" with q=q view_only=view_only %}
+        {% include "portals/includes/quiz_reading_question.html" with q=q view_only=view_only section=section %}
         {% endfor %}
       </div>
     </div>

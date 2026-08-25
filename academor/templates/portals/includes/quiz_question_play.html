@@ -1,5 +1,5 @@
 {% load i18n portal_tags %}
-<article class="portal-quiz-play-card{% if q.is_dropdown and q.question_type != 'spr' %} portal-quiz-play-card--dropdown{% endif %}" data-quiz-question-card>
+<article id="quiz-nav-q-{{ number }}" class="portal-quiz-play-card portal-quiz-q-target{% if q.is_dropdown and q.question_type != 'spr' %} portal-quiz-play-card--dropdown{% endif %}" data-quiz-question-card data-quiz-nav-number="{{ number }}">
   {% if q.question_type != 'spr' and q.is_dropdown %}
   {% if q.prompt_type and q.prompt_type != 'text' %}
   {% include "portals/includes/quiz_question_prompt.html" with q=q %}

@@ -771,6 +771,10 @@
     function showManualResult(data) {
       hideTimerToolbar();
       root.setAttribute("data-quiz-finished", "true");
+      var qnav = root.querySelector("[data-quiz-qnav]");
+      if (qnav) {
+        qnav.hidden = true;
+      }
       root.querySelectorAll(
         ".panel, .portal-quiz-writing-stack, .portal-quiz-writing-card--solo, .portal-listening-stack, [data-quiz-take-actions-inline]"
       ).forEach(function (el) {

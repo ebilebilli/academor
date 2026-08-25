@@ -1,0 +1,74 @@
+{% load i18n %}
+{# Question jump pad for quiz take. Pass questions=... and/or reading_sections=... / listening_sections=... #}
+<div class="portal-quiz-qnav" data-quiz-qnav>
+  <div class="portal-quiz-qnav__panel" id="quiz-qnav-panel" data-quiz-qnav-panel hidden>
+    <div class="portal-quiz-qnav__panel-head">
+      <span class="portal-quiz-qnav__panel-title">{% trans 'Questions' %}</span>
+      <button type="button" class="portal-quiz-qnav__close" data-quiz-qnav-close aria-label="{% trans 'Close' %}">
+        <i class="bi bi-x-lg" aria-hidden="true"></i>
+      </button>
+    </div>
+    <nav class="portal-score-qnav portal-quiz-qnav__dots" aria-label="{% trans 'Jump to question' %}" data-quiz-qnav-nav>
+      {% if reading_sections %}
+        {% for section in reading_sections %}
+          {% for q in section.questions %}
+          <button
+            type="button"
+            class="portal-score-qnav__dot is-unanswered"
+            data-quiz-qnav-target="quiz-nav-q-{{ q.number }}"
+            data-quiz-qnav-section="{{ section.section_number }}"
+            title="{% blocktrans with num=q.number %}Question {{ num }}{% endblocktrans %}"
+          >{{ q.number }}</button>
+          {% endfor %}
+        {% endfor %}
+      {% elif listening_sections %}
+        {% for section in listening_sections %}
+          {% for item in section.task_items %}
+            {% if item.type == 'label_matrix' %}
+              {% for q in item.questions %}
+              <button
+                type="button"
+                class="portal-score-qnav__dot is-unanswered"
+                data-quiz-qnav-target="quiz-nav-q-{{ q.number }}"
+                title="{% blocktrans with num=q.number %}Question {{ num }}{% endblocktrans %}"
+              >{{ q.number }}</button>
+              {% endfor %}
+            {% else %}
+              {% with q=item.question %}
+              <button
+                type="button"
+                class="portal-score-qnav__dot is-unanswered"
+                data-quiz-qnav-target="quiz-nav-q-{{ q.number }}"
+                title="{% blocktrans with num=q.number %}Question {{ num }}{% endblocktrans %}"
+              >{{ q.number }}</button>
+              {% endwith %}
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
+      {% else %}
+        {% for q in questions %}
+        <button
+          type="button"
+          class="portal-score-qnav__dot is-unanswered"
+          data-quiz-qnav-target="quiz-nav-q-{{ forloop.counter }}"
+          title="{% blocktrans with num=forloop.counter %}Question {{ num }}{% endblocktrans %}"
+        >{{ forloop.counter }}</button>
+        {% endfor %}
+      {% endif %}
+    </nav>
+    <p class="portal-quiz-qnav__legend mb-0">
+      <span class="portal-quiz-qnav__legend-item"><i class="portal-quiz-qnav__swatch is-unanswered" aria-hidden="true"></i>{% trans 'Unanswered' %}</span>
+      <span class="portal-quiz-qnav__legend-item"><i class="portal-quiz-qnav__swatch is-answered" aria-hidden="true"></i>{% trans 'Answered' %}</span>
+    </p>
+  </div>
+  <button
+    type="button"
+    class="portal-quiz-qnav__toggle btn btn-primary"
+    data-quiz-qnav-toggle
+    aria-expanded="false"
+    aria-controls="quiz-qnav-panel"
+  >
+    <i class="bi bi-grid-3x3-gap-fill" aria-hidden="true"></i>
+    <span>{% trans 'Questions' %}</span>
+  </button>
+</div>

@@ -4,9 +4,9 @@
 {% block title %}{{ quiz.topic }}{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20260818b">
+<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20260825a">
 {% if quiz.uses_shared_passage_layout %}
-<link rel="stylesheet" href="{% static 'portals/css/quiz-reading.css' %}?v=20260810a">
+<link rel="stylesheet" href="{% static 'portals/css/quiz-reading.css' %}?v=20260825a">
 <link rel="stylesheet" href="{% static 'portals/css/quiz-shared-passage.css' %}?v=20260815a">
 {% endif %}
 {% endblock %}
@@ -122,6 +122,10 @@
   </div>
   </form>
 
+  {% if quiz.questions %}
+  {% include "portals/includes/quiz_take_qnav.html" with questions=quiz.questions %}
+  {% endif %}
+
   <section class="portal-quiz-take-result panel d-none" data-quiz-result hidden>
     <div class="portal-quiz-take-result__head text-center mb-4">
       <p class="portal-quiz-take-result__eyebrow mb-2">{% trans 'Test complete' %}</p>
@@ -162,4 +166,5 @@
 <script src="{% static 'portals/js/quiz-start-gate.js' %}?v=20260808b"></script>
 <script src="{% static 'portals/js/quiz-leave-guard.js' %}?v=20260703"></script>
 <script src="{% static 'portals/js/quiz-take.js' %}?v=20260818a"></script>
+<script src="{% static 'portals/js/quiz-take-qnav.js' %}?v=20260825a"></script>
 {% endblock %}

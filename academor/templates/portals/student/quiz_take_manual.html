@@ -4,7 +4,7 @@
 {% block title %}{{ quiz.topic }}{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20260813b">
+<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20260825a">
 {% endblock %}
 
 {% block content %}
@@ -177,6 +177,12 @@
           </div>
         </section>
         {% endif %}
+
+        {% if quiz.is_listening and quiz.listening_sections %}
+        {% include "portals/includes/quiz_take_qnav.html" with listening_sections=quiz.listening_sections %}
+        {% elif quiz.questions %}
+        {% include "portals/includes/quiz_take_qnav.html" with questions=quiz.questions %}
+        {% endif %}
       </div>
     </div>
 
@@ -218,5 +224,6 @@
 <script src="{% static 'portals/js/quiz-leave-guard.js' %}?v=20260703"></script>
 <script src="{% static 'portals/js/quiz-take-manual.js' %}?v=20260808c"></script>
 {% endif %}
+<script src="{% static 'portals/js/quiz-take-qnav.js' %}?v=20260825a"></script>
 {% endblock %}
 

@@ -16,7 +16,7 @@
       </thead>
       <tbody>
         {% for q in questions %}
-        <tr class="portal-listening-map-matrix__row">
+        <tr id="quiz-nav-q-{{ q.number }}" class="portal-listening-map-matrix__row portal-quiz-q-target" data-quiz-question-card data-quiz-nav-number="{{ q.number }}">
           <th scope="row" class="portal-listening-map-matrix__row-head">
             <span class="portal-listening-map-matrix__num">{{ q.number }}</span>
             <span class="portal-listening-map-matrix__label">{{ q.question|quiz_plain }}</span>

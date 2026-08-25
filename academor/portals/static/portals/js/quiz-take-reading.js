@@ -318,6 +318,10 @@
       if (form) {
         form.classList.add("d-none");
       }
+      var qnav = root.querySelector("[data-quiz-qnav]");
+      if (qnav) {
+        qnav.hidden = true;
+      }
       var notice = document.querySelector("[data-quiz-start-gate]");
       if (notice) {
         notice.classList.add("d-none");

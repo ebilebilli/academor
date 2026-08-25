@@ -4,8 +4,8 @@
 {% block title %}{{ quiz.topic }}{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20260813b">
-<link rel="stylesheet" href="{% static 'portals/css/quiz-reading.css' %}?v=20260812a">
+<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20260825a">
+<link rel="stylesheet" href="{% static 'portals/css/quiz-reading.css' %}?v=20260825a">
 {% endblock %}
 
 {% block content %}
@@ -106,6 +106,10 @@
       {% endif %}
     </form>
 
+    {% if quiz.reading_sections %}
+    {% include "portals/includes/quiz_take_qnav.html" with reading_sections=quiz.reading_sections %}
+    {% endif %}
+
     <section class="portal-quiz-take-result panel d-none" data-quiz-result hidden>
       <div class="portal-quiz-take-result__head text-center mb-4">
         <p class="portal-quiz-take-result__eyebrow mb-2" data-quiz-result-eyebrow>{% trans 'Test complete' %}</p>
@@ -155,4 +159,5 @@
 <script src="{% static 'portals/js/quiz-leave-guard.js' %}?v=20260703b"></script>
 <script src="{% static 'portals/js/quiz-take-reading.js' %}?v=20260812a"></script>
 {% endif %}
+<script src="{% static 'portals/js/quiz-take-qnav.js' %}?v=20260825a"></script>
 {% endblock %}

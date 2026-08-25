@@ -1,9 +1,12 @@
 {% load i18n portal_tags %}
 <article
-  class="portal-reading-task{% if q.is_choice %} portal-reading-task--choice{% else %} portal-reading-task--text{% endif %}"
+  id="quiz-nav-q-{{ q.number }}"
+  class="portal-reading-task portal-quiz-q-target{% if q.is_choice %} portal-reading-task--choice{% else %} portal-reading-task--text{% endif %}"
   data-quiz-question-card
   data-reading-question-id="{{ q.id }}"
   data-question-type="{{ q.question_type }}"
+  data-quiz-nav-number="{{ q.number }}"
+  {% if section %}data-quiz-nav-section="{{ section.section_number }}"{% endif %}
 >
   <header class="portal-reading-task__head">
     <span class="portal-reading-task__index">

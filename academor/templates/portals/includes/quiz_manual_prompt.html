@@ -1,5 +1,5 @@
 {% load i18n portal_tags %}
-<article class="portal-quiz-writing-card" data-quiz-writing-card>
+<article id="quiz-nav-q-{{ number }}" class="portal-quiz-writing-card portal-quiz-q-target" data-quiz-writing-card data-quiz-question-card data-quiz-nav-number="{{ number }}">
   <header class="portal-quiz-writing-card__head">
     <span class="portal-quiz-writing-card__index">{% trans 'Question' %} {{ number }}</span>
     {% if q.prompt_type and q.prompt_type != 'text' %}
