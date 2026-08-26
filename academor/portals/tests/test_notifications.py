@@ -575,6 +575,39 @@ class PortalNotificationTests(TestCase):
         self.assertIn('7/2, 3.5', content)
         self.assertIn(spr_row['student_answer'], content)
 
+    def test_score_detail_highlights_wrong_selected_mcq_option(self):
+        """After answer-key changes, the student's wrong choice must stay marked."""
+        from portals.utils.notifications import get_score_detail_for_student
+
+        self.q1.correct_answer = 'B'
+        self.q1.correct_option_index = 1
+        self.q1.save(update_fields=['correct_answer', 'correct_option_index'])
+
+        result = QuizResult.objects.create(
+            student=self.student,
+            quiz=self.quiz,
+            given_answers={str(self.q1.pk): 0},
+            total_score=0,
+        )
+        detail = get_score_detail_for_student(self.student.pk, result.pk)
+        self.assertIsNotNone(detail)
+        row = detail['breakdown'][0]
+        self.assertFalse(row['is_correct'])
+        self.assertEqual(row['selected_index'], 0)
+        self.assertTrue(row['has_selected_option'])
+        self.assertEqual(row['correct_index'], 1)
+
+        client = Client()
+        _portal_client_login(client, self.student_user)
+        response = client.get(
+            reverse('portals:student-score-detail', kwargs={'result_pk': result.pk}),
+        )
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        self.assertIn('is-selected is-wrong', content)
+        self.assertIn('is-correct', content)
+        self.assertIn('Your answer', content)
+
     def test_score_detail_marks_notification_read(self):
         result = QuizResult.objects.create(
             student=self.student,

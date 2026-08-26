@@ -41,18 +41,29 @@
   </div>
   {% elif row.answer_options %}
   <div class="portal-quiz-play-options portal-quiz-teacher-options" role="list">
+    {% if not row.has_selected_option %}
+    <p class="text-muted small mb-2">{% trans 'No answer submitted.' %}</p>
+    {% endif %}
     {% for option in row.answer_options %}
     <div
-      class="portal-quiz-play-option portal-quiz-teacher-option{% if forloop.counter0 == row.correct_index %} is-correct{% endif %}{% if forloop.counter0 == row.selected_index and not row.is_correct %} is-selected is-wrong{% endif %}"
+      class="portal-quiz-play-option portal-quiz-teacher-option{% if row.correct_index is not None and forloop.counter0 == row.correct_index %} is-correct{% endif %}{% if row.has_selected_option and forloop.counter0 == row.selected_index %} is-selected{% if row.is_correct is False %} is-wrong{% endif %}{% endif %}"
       role="listitem"
     >
       <span class="portal-quiz-play-option__letter">{{ forloop.counter0|quiz_option_letter|upper }}</span>
       <span class="portal-quiz-play-option__text">{{ option|quiz_html }}</span>
-      {% if forloop.counter0 == row.correct_index %}
-      <span class="portal-quiz-teacher-correct-mark"><i class="bi bi-check-lg" aria-hidden="true"></i></span>
-      {% elif forloop.counter0 == row.selected_index %}
-      <span class="portal-quiz-teacher-correct-mark text-danger"><i class="bi bi-x-lg" aria-hidden="true"></i></span>
-      {% endif %}
+      <span class="portal-quiz-teacher-option-marks">
+        {% if row.correct_index is not None and forloop.counter0 == row.correct_index %}
+        <span class="portal-quiz-teacher-correct-mark" title="{% trans 'Correct answer' %}">
+          <i class="bi bi-check-lg" aria-hidden="true"></i>
+          <span class="visually-hidden">{% trans 'Correct answer' %}</span>
+        </span>
+        {% endif %}
+        {% if row.has_selected_option and forloop.counter0 == row.selected_index %}
+        <span class="badge rounded-pill {% if row.is_correct %}text-bg-success{% else %}text-bg-danger{% endif %}">
+          {% trans 'Your answer' %}
+        </span>
+        {% endif %}
+      </span>
     </div>
     {% endfor %}
   </div>

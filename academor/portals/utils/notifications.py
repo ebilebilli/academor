@@ -998,9 +998,22 @@ def _build_variant_breakdown(result: QuizResult) -> list[dict]:
             })
             continue
 
-        selected_raw = given.get(question.pk)
-        selected_index = selected_raw if isinstance(selected_raw, int) else None
         options = question.answer_options or []
+        selected_raw = given.get(question.pk)
+        selected_index = None
+        # Prefer stored MCQ index; also accept option text (legacy / edge submissions).
+        if isinstance(selected_raw, int) and not isinstance(selected_raw, bool):
+            selected_index = selected_raw
+        elif isinstance(selected_raw, str) and selected_raw:
+            if selected_raw in options:
+                selected_index = options.index(selected_raw)
+            else:
+                try:
+                    selected_index = int(selected_raw)
+                except (TypeError, ValueError):
+                    selected_index = None
+        if selected_index is not None and not (0 <= selected_index < len(options)):
+            selected_index = None
         correct_index = _question_correct_index(question)
         is_correct = (
             selected_index is not None
@@ -1008,8 +1021,13 @@ def _build_variant_breakdown(result: QuizResult) -> list[dict]:
             and selected_index == correct_index
         )
         selected_label = ''
-        if selected_index is not None and 0 <= selected_index < len(options):
+        if selected_index is not None:
             selected_label = options[selected_index]
+        correct_index_safe = (
+            correct_index
+            if correct_index is not None and 0 <= correct_index < len(options)
+            else None
+        )
         breakdown.append({
             'id': question.pk,
             'question': question.question,
@@ -1017,11 +1035,12 @@ def _build_variant_breakdown(result: QuizResult) -> list[dict]:
             'is_dropdown': bool(getattr(question, 'is_dropdown', False)),
             'answer_options': options,
             'selected_index': selected_index,
+            'has_selected_option': selected_index is not None,
             'selected_label': selected_label,
-            'correct_index': correct_index if correct_index is not None and 0 <= correct_index < len(options) else None,
+            'correct_index': correct_index_safe,
             'correct_label': (
-                options[correct_index]
-                if correct_index is not None and 0 <= correct_index < len(options)
+                options[correct_index_safe]
+                if correct_index_safe is not None
                 else question.correct_answer
             ),
             'student_answer': selected_label,

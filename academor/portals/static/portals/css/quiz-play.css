@@ -1370,12 +1370,14 @@ html[data-theme="dark"] .portal-quiz-start-modal__icon {
   box-shadow: 0 0 0 1px rgba(22, 163, 74, 0.12);
 }
 
+.portal-quiz-teacher-option.is-wrong,
 .portal-quiz-teacher-option.is-selected.is-wrong {
   border-color: #dc2626;
-  background: rgba(220, 38, 38, 0.06);
-  box-shadow: 0 0 0 1px rgba(220, 38, 38, 0.12);
+  background: rgba(220, 38, 38, 0.1);
+  box-shadow: 0 0 0 1px rgba(220, 38, 38, 0.18);
 }
 
+.portal-quiz-teacher-option.is-wrong .portal-quiz-play-option__letter,
 .portal-quiz-teacher-option.is-selected.is-wrong .portal-quiz-play-option__letter {
   background: #dc2626;
   border-color: #dc2626;
