@@ -1140,7 +1140,7 @@ def get_teacher_quizzes_for_category(teacher_id, category_id):
         .prefetch_related('category__services')
         .annotate(inline_question_count=Count('questions', distinct=True))
         .distinct()
-        .order_by('-created_at', 'id')
+        .order_by('order', 'topic', 'id')
     )
     visible = [row for row in qs if quiz_visible_to_teacher(row, teacher_id)]
     question_counts = _answerable_question_counts(visible)
@@ -1219,7 +1219,7 @@ def get_student_quizzes_for_category(student_id, category_id):
         .prefetch_related('category__services')
         .annotate(inline_question_count=Count('questions', distinct=True))
         .distinct()
-        .order_by('-created_at', 'id')
+        .order_by('order', 'topic', 'id')
     )
     enrolled = [row for row in qs if student_quiz_enrollment_ok(student_id, row)]
     program_quizzes = [row for row in enrolled if quiz_has_program_flag(row)]
@@ -1814,7 +1814,7 @@ def get_teacher_quizzes(teacher_id):
         .prefetch_related('category__services')
         .annotate(inline_question_count=Count('questions', distinct=True))
         .distinct()
-        .order_by('-created_at', 'id')
+        .order_by('category__order', 'order', 'topic', 'id')
     )
     visible = [row for row in qs if quiz_visible_to_teacher(row, teacher_id)]
     question_counts = _answerable_question_counts(visible)
@@ -2564,7 +2564,7 @@ def get_student_quizzes(student_id):
         .prefetch_related('category__services')
         .annotate(inline_question_count=Count('questions', distinct=True))
         .distinct()
-        .order_by('-created_at', 'id')
+        .order_by('category__order', 'order', 'topic', 'id')
     )
     visible = filter_quizzes_for_student(qs, student_id)
     return [serialize_quiz(row) for row in visible]

@@ -1,0 +1,43 @@
+/* Quiz admin drag-and-drop reorder */
+#result_list tr.quiz-sortable-row {
+  cursor: grab;
+}
+#result_list tr.quiz-sortable-row.is-dragging {
+  opacity: 0.55;
+  cursor: grabbing;
+  background: #fff7ed;
+}
+#result_list tr.quiz-sortable-row.drag-over {
+  box-shadow: inset 0 2px 0 #ff5414;
+}
+.quiz-drag-handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  color: #94a3b8;
+  font-size: 1.1rem;
+  letter-spacing: -0.15em;
+  user-select: none;
+}
+#quiz-reorder-status {
+  margin: 0 0 0.75rem;
+  font-size: 0.875rem;
+  color: #64748b;
+  min-height: 1.25rem;
+}
+#quiz-reorder-status.is-ok {
+  color: #15803d;
+}
+#quiz-reorder-status.is-error {
+  color: #b91c1c;
+}
+.quiz-reorder-hint {
+  margin: 0 0 0.75rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 0.5rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #475569;
+  font-size: 0.875rem;
+}

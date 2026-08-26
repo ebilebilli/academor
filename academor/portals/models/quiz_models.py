@@ -165,6 +165,11 @@ class Quiz(models.Model):
         verbose_name=_('Resource slug'),
         help_text=_('Stable key from the JSON resource file (e.g. a1_quiz_1). Set when loaded from resources.'),
     )
+    order = models.PositiveIntegerField(
+        default=0,
+        verbose_name=_('Order'),
+        help_text=_('Lower numbers appear first within the category on the portal quiz list.'),
+    )
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name=_('Created at'),
@@ -173,7 +178,7 @@ class Quiz(models.Model):
     class Meta:
         verbose_name = _('Quiz')
         verbose_name_plural = _('Quizzes')
-        ordering = ('-created_at', 'id')
+        ordering = ('order', 'topic', 'id')
         constraints = [
             models.CheckConstraint(
                 name='portals_quiz_format_at_most_one',

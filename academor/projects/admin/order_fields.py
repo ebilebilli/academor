@@ -33,15 +33,16 @@ def build_order_choices(queryset, instance=None, *, extra_last=False):
     return [(i, _position_label(i)) for i in range(upper + 1)]
 
 
-def apply_order_choice_field(form, *, model, instance=None, field_name='order'):
+def apply_order_choice_field(form, *, model, instance=None, field_name='order', queryset=None):
     """Replace a numeric order field with a position dropdown on admin forms."""
     if field_name not in form.fields:
         return
 
     field = form.fields[field_name]
     is_new = instance is None or not instance.pk
+    qs = queryset if queryset is not None else model.objects.all()
     choices = build_order_choices(
-        model.objects.all(),
+        qs,
         instance=instance,
         extra_last=is_new,
     )
@@ -49,7 +50,7 @@ def apply_order_choice_field(form, *, model, instance=None, field_name='order'):
     if instance is not None and instance.pk:
         initial = getattr(instance, field_name, 0) or 0
     elif is_new:
-        initial = model.objects.count()
+        initial = qs.count()
 
     form.fields[field_name] = forms.TypedChoiceField(
         choices=choices,

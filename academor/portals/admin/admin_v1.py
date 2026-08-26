@@ -2069,6 +2069,7 @@ class QuizAdminForm(forms.ModelForm):
         fields = (
             'category',
             'topic',
+            'order',
             'is_listening',
             'is_essay',
             'is_speaking',
@@ -2087,6 +2088,31 @@ class QuizAdminForm(forms.ModelForm):
         widgets = {
             'sat_section': forms.RadioSelect,
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        from projects.admin.order_fields import apply_order_choice_field
+
+        category_id = None
+        if self.instance and self.instance.pk:
+            category_id = self.instance.category_id
+        elif self.data.get('category'):
+            try:
+                category_id = int(self.data.get('category'))
+            except (TypeError, ValueError):
+                category_id = None
+
+        order_qs = Quiz.objects.all()
+        if category_id:
+            order_qs = order_qs.filter(category_id=category_id)
+
+        apply_order_choice_field(
+            self,
+            model=Quiz,
+            instance=self.instance,
+            field_name='order',
+            queryset=order_qs,
+        )
 
     def clean(self):
         cleaned = super().clean()
@@ -2177,12 +2203,23 @@ class QuizAdminForm(forms.ModelForm):
 @admin.register(Quiz)
 class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
     form = QuizAdminForm
+    change_list_template = 'admin/portals/quiz/change_list.html'
 
     class Media:
-        css = {'all': ('portals/css/quiz-question-admin.css',)}
-        js = ('portals/admin/js/quiz-question-admin.js',)
+        css = {
+            'all': (
+                'portals/css/quiz-question-admin.css',
+                'portals/admin/css/quiz-reorder.css',
+            ),
+        }
+        js = (
+            'portals/admin/js/quiz-question-admin.js',
+            'portals/admin/js/quiz-reorder.js',
+        )
 
     list_display = (
+        'drag_handle',
+        'order',
         'topic',
         'category_display',
         'grading_mode_display',
@@ -2195,17 +2232,18 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
     search_fields = ('topic', 'category__name', 'category__services__slug')
     autocomplete_fields = ('category',)
     readonly_fields = ('created_at',)
-    ordering = ('-created_at', 'id')
-    list_per_page = 25
+    ordering = ('order', 'topic', 'id')
+    list_per_page = 200
     inlines = (QuizQuestionInline,)
     fieldsets = (
         (None, {
             'description': (
                 'Pick a category — service comes from the category. '
                 'Teachers and students see quizzes when their assigned service '
-                'matches the category service.'
+                'matches the category service. '
+                'On the list page, filter by category then drag rows to set portal order.'
             ),
-            'fields': ('category', 'topic', 'created_at'),
+            'fields': ('category', 'topic', 'order', 'created_at'),
         }),
         (_('Grading mode'), {
             'description': _(
@@ -2274,6 +2312,11 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
         urls = super().get_urls()
         custom = [
             path(
+                'reorder/',
+                self.admin_site.admin_view(self.reorder_view),
+                name='portals_quiz_reorder',
+            ),
+            path(
                 'grading-mode-fields/',
                 self.admin_site.admin_view(self.grading_mode_fields_view),
                 name='portals_quiz_grading_mode_fields',
@@ -2285,6 +2328,53 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
             ),
         ]
         return custom + urls
+
+    def changelist_view(self, request, extra_context=None):
+        extra_context = extra_context or {}
+        extra_context['quiz_reorder_url'] = reverse('admin:portals_quiz_reorder')
+        return super().changelist_view(request, extra_context=extra_context)
+
+    def reorder_view(self, request):
+        import json
+
+        from django.db import transaction
+
+        if request.method != 'POST':
+            return JsonResponse({'error': _('POST required.')}, status=405)
+        try:
+            payload = json.loads(request.body.decode('utf-8') or '{}')
+        except json.JSONDecodeError:
+            return JsonResponse({'error': _('Invalid JSON.')}, status=400)
+        raw_ids = payload.get('ids') or []
+        try:
+            ordered_ids = [int(pk) for pk in raw_ids]
+        except (TypeError, ValueError):
+            return JsonResponse({'error': _('Invalid quiz ids.')}, status=400)
+        if not ordered_ids:
+            return JsonResponse({'error': _('No quizzes to reorder.')}, status=400)
+        if len(ordered_ids) != len(set(ordered_ids)):
+            return JsonResponse({'error': _('Duplicate quiz ids.')}, status=400)
+
+        allowed = set(
+            self.get_queryset(request).filter(pk__in=ordered_ids).values_list('pk', flat=True)
+        )
+        if set(ordered_ids) != allowed:
+            return JsonResponse({'error': _('One or more quizzes are not available.')}, status=400)
+
+        with transaction.atomic():
+            quizzes = {
+                row.pk: row
+                for row in Quiz.objects.filter(pk__in=ordered_ids)
+            }
+            for index, pk in enumerate(ordered_ids):
+                quiz = quizzes.get(pk)
+                if quiz is None:
+                    continue
+                if quiz.order != index:
+                    quiz.order = index
+                    quiz.save(update_fields=['order'])
+
+        return JsonResponse({'ok': True, 'count': len(ordered_ids)})
 
     def grading_mode_fields_view(self, request):
         if request.method != 'POST':
@@ -2414,6 +2504,13 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
             slugs = expand_course_types_to_service_slugs([course_type])
             qs = qs.filter(category__services__slug__in=slugs).distinct() if slugs else qs.none()
         return qs
+
+    @admin.display(description='')
+    def drag_handle(self, obj):
+        return format_html(
+            '<span class="quiz-drag-handle" title="{}">⠿</span>',
+            _('Drag to reorder'),
+        )
 
     @admin.display(description='Questions')
     def question_count(self, obj):
