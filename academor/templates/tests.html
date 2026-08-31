@@ -3,33 +3,80 @@
 <html lang="{{ LANG_CODE }}">
 <head>
     {% include "includes/site_layout_head.html" %}
+    <style>
+        .tests-page-body {
+            background-color: var(--site-surface, #f7f9fb);
+        }
+
+        .tests-page-main {
+            background-color: var(--site-surface, #f7f9fb);
+        }
+
+        .tests-card {
+            background-color: var(--primary, #00313D);
+            color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 8px 28px rgba(0, 49, 61, 0.18);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .tests-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 36px rgba(0, 49, 61, 0.26);
+        }
+
+        .tests-card__icon {
+            width: 64px;
+            height: 64px;
+            background-color: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+        }
+
+        .tests-card__title {
+            color: #ffffff;
+        }
+
+        .tests-card__desc,
+        .tests-card__meta {
+            color: rgba(255, 255, 255, 0.72);
+        }
+
+        .tests-card__meta .fa {
+            color: var(--accent, #FF5414);
+        }
+
+        .tests-page-heading {
+            color: var(--primary, #00313D);
+        }
+    </style>
 </head>
-<body>
+<body class="tests-page-body">
     {% include "includes/site_spinner.html" %}
 
     {% include "includes/site_navbar.html" %}
 
+    <main id="main-content" class="tests-page-main">
     {% include "includes/page_header_banner.html" %}
 
     <div class="container-xxl py-5">
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h1 class="mb-5">{% trans "Choose a suitable test" %}</h1>
+                <h1 class="mb-5 tests-page-heading">{% trans "Choose a suitable test" %}</h1>
             </div>
 
             <div class="row g-4 justify-content-center">
                 {% for test in tests %}
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="course-item bg-light h-100 shadow-sm border-0 rounded overflow-hidden">
+                    <div class="tests-card course-item h-100 border-0 overflow-hidden">
                         <div class="text-center p-4 p-lg-5">
-                            <div class="d-inline-flex align-items-center justify-content-center bg-primary text-white rounded-circle mb-4" style="width: 64px; height: 64px;">
+                            <div class="tests-card__icon d-inline-flex align-items-center justify-content-center rounded-circle mb-4">
                                 <i class="fa fa-clipboard-list fa-2x"></i>
                             </div>
-                            <h5 class="mb-3">{{ test.title }}</h5>
+                            <h5 class="mb-3 tests-card__title">{{ test.title }}</h5>
                             {% trans "This test is designed to measure your level." as default_test_desc %}
-                            <p class="mb-3 text-muted">{{ test.description|default:default_test_desc }}</p>
-                            <p class="small text-muted mb-4">
-                                <i class="fa fa-question-circle text-primary me-2"></i>{{ test.question_count }} {% trans "questions" %}
+                            <p class="mb-3 tests-card__desc">{{ test.description|default:default_test_desc }}</p>
+                            <p class="small tests-card__meta mb-4">
+                                <i class="fa fa-question-circle me-2"></i>{{ test.question_count }} {% trans "questions" %}
                             </p>
                             <a href="{% url 'projects:test-take' test.id %}" class="btn btn-primary px-4 py-2 rounded-pill">
                                 {% trans "Start test" %}
@@ -47,6 +94,7 @@
             </div>
         </div>
     </div>
+    </main>
 
     {% include "includes/site_footer.html" %}
     {% include "includes/site_scripts.html" %}

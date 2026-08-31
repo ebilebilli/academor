@@ -39,7 +39,7 @@ def resolve_og_image_url(*, lcp_image_url: str | None = None, og_image_url: str 
     return default_og_image_url()
 
 
-def merge_keywords(*parts: str | None, max_len: int = 500) -> str:
+def merge_keywords(*parts: str | None, max_len: int = 1200) -> str:
     seen: set[str] = set()
     tokens: list[str] = []
     for part in parts:
@@ -211,7 +211,7 @@ def build_detail_seo_context(
         'structured_data_json': structured_data_json,
     }
     if page_keywords:
-        ctx['page_keywords'] = page_keywords[:500]
+        ctx['page_keywords'] = page_keywords[:1200]
     if published_date:
         ctx['og_article_published_time'] = _iso_datetime(published_date)
     if lcp_image_url and not ctx.get('lcp_image_url'):

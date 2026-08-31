@@ -10,9 +10,49 @@ from django.conf import settings
 
 # Appended to Azerbaijani keywords on all AZ routes (core commercial / local phrases).
 _AZ_KW_CORE = (
-    "ingilis dili kursları, ingilis dili öyrənmək, ingilis dili Bakı, ingilis dili kurs, "
-    "xaricdə təhsil, bakıda ingilis dili, ingilis dilində dərslər, ingilis dili dərsləri, "
-    "ingilis kursu Bakı, ingilis dilində öyrənmək, ingilis dili hazırlığı, ingilis dili mərkəzi Bakı"
+    "ingilis dili kursu, ingilis dili kursları Bakı, Bakıda dil kursları, Bakıda təhsil mərkəzləri, "
+    "ingilis dili Bakı, ingilis dili dərsləri, ingilis dili mərkəzi Bakı, xaricdə təhsil, "
+    "bakıda ingilis dili, ingilis kursu Bakı, ingilis dili hazırlığı"
+)
+
+# Real Google search phrases (Baku) — English courses.
+_AZ_KW_ENGLISH = (
+    "ingilis dili kursları, Bakıda ingilis dili kursu qiymətləri, ən yaxşı ingilis dili kursu Bakıda, "
+    "sıfırdan ingilis dili kursu, uşaqlar üçün ingilis dili kursu, yetkinlər üçün ingilis dili kursu, "
+    "online ingilis dili kursu, necə ingilis dili öyrənə bilərəm, evdə ingilis dili necə öyrənilir, "
+    "ingilis dili neçə ayda öyrənilir, ingilis dili kursu neçə aya başa çatır, "
+    "ingilis dili qrammatika kursu, ingilis dili danışıq kursu, "
+    "ingilis dili kursu qiyməti nə qədərdir, pulsuz ingilis dili kursu, "
+    "ingilis dili kursu sertifikatlı, ingilis dili A1 kursu, ingilis dili başlanğıc səviyyə kursu"
+)
+
+# Real Google search phrases (Baku) — IELTS.
+_AZ_KW_IELTS = (
+    "ielts kursu, Bakıda ielts kursu, ielts nədir, ielts kursu qiyməti, ielts hazırlıq kursu, "
+    "ielts neçə aya hazırlaşmaq olar, ielts academic nədir, ielts general nədir, "
+    "ielts writing kursu, ielts speaking kursu, ielts reading listening kursu, "
+    "ielts test tarixləri, ielts imtahanı harada verilir, ielts qeydiyyat necə edilir, "
+    "ielts 6.5 bal necə alınır, ən yaxşı ielts kursu Bakıda, ielts kursu neçə həftədir, "
+    "ielts imtahanına necə hazırlaşmaq olar"
+)
+
+# Real Google search phrases (Baku) — SAT.
+_AZ_KW_SAT = (
+    "sat kursu, sat math kursu, Bakıda sat kursu, sat nədir, sat imtahanı nədir, "
+    "sat kursu qiyməti, sat imtahanına necə hazırlaşmaq olar, sat reading writing kursu, "
+    "sat neçə bal maksimumdur, sat kursu neçə aya hazırlaşdırır, "
+    "xaricdə oxumaq üçün sat kursu, sat imtahanı harada verilir, sat qeydiyyatı necə edilir, "
+    "ən yaxşı sat kursu Bakıda"
+)
+
+# Related / mixed commercial queries.
+_AZ_KW_RELATED = (
+    "xaricdə oxumaq üçün hansı kurslar lazımdır, ielts və ya sat hansı daha vacibdir, "
+    "universitetə hazırlıq kursları Bakı, ingilis dili biləndən sonra ielts nə qədər çəkər"
+)
+
+_AZ_KW_COURSES = (
+    _AZ_KW_ENGLISH + ", " + _AZ_KW_IELTS + ", " + _AZ_KW_SAT + ", " + _AZ_KW_RELATED + ", " + _AZ_KW_CORE
 )
 
 _EN_KW_CORE = (
@@ -159,20 +199,17 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
         "courses-page": {
             "title": "İngilis dili kursları və proqramlar | Academor — Bakı",
             "description": (
-                "Academor-da kursları kəşf edin: General English, Speaking, IELTS, GMAT, GRE, YÖS, ALES və s. "
-                "Səviyyənizə uyğun proqram seçin, Bakı."
+                "Bakıda ingilis dili kursu, IELTS və SAT hazırlığı — Academor. "
+                "Qiymətlər, səviyyələr və xaricdə oxumaq üçün proqramlar."
             ),
-            "keywords": (
-                "academor kurslar, ingilis dili bakı, IELTS hazırlıq, speaking dərsləri, "
-                "GMAT GRE, kurs səviyyələri, " + _AZ_KW_CORE
-            ),
+            "keywords": "academor kurslar, " + _AZ_KW_COURSES,
         },
         "course-detail": {
             "description": (
                 "Bu Academor proqramı haqqında məlumat: məzmun, format və qeydiyyat. Bakı, Azərbaycan."
             ),
             "keywords": (
-                "kurs təsviri, academor, ingilis proqramı bakı, qeydiyyat, IELTS speaking, " + _AZ_KW_CORE
+                "academor, " + _AZ_KW_ENGLISH + ", " + _AZ_KW_IELTS + ", " + _AZ_KW_SAT + ", " + _AZ_KW_CORE
             ),
         },
         "mock-tests-page": {
@@ -181,7 +218,8 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
                 "Academor-da IELTS və SAT mock test paketləri: portal girişi, praktika imtahanları və qiymətləndirmə."
             ),
             "keywords": (
-                "ielts mock test bakı, sat mock test, academor mock imtahan, praktika testi, " + _AZ_KW_CORE
+                "ielts mock test bakı, sat mock test, academor mock imtahan, "
+                + _AZ_KW_IELTS + ", " + _AZ_KW_SAT + ", " + _AZ_KW_CORE
             ),
         },
         "mock-test-detail": {
@@ -189,7 +227,8 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
                 "Bu mock test proqramı üçün paketlər, qiymətlər və ödəniş — Academor, Bakı."
             ),
             "keywords": (
-                "mock test paketi, ielts sat praktika bakı, academor, imtahan simulyasiyası, " + _AZ_KW_CORE
+                "mock test paketi, ielts sat praktika bakı, "
+                + _AZ_KW_IELTS + ", " + _AZ_KW_SAT + ", " + _AZ_KW_CORE
             ),
         },
         "about-page": {
@@ -197,40 +236,56 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
             "description": (
                 "Academor haqqında: tədris yanaşması, imtahan hazırlığı və xaricdə təhsil dəstəyi — Bakı və Azərbaycan."
             ),
-            "keywords": "academor haqqında, ingilis mərkəzi bakı, dil kursu, missiya, " + _AZ_KW_CORE,
+            "keywords": (
+                "academor haqqında, Bakıda təhsil mərkəzləri, Bakıda dil kursları, missiya, " + _AZ_KW_CORE
+            ),
         },
         "services-page": {
             "title": "Xidmətlər | Academor",
             "description": (
                 "Academor xidmətləri: dərs formatları, imtahan hazırlığı, danışıq praktikası və xaricdə təhsil məsləhəti."
             ),
-            "keywords": "academor xidmətlər, ingilis təlimi bakı, imtahan dəstəyi, " + _AZ_KW_CORE,
+            "keywords": (
+                "academor xidmətlər, universitetə hazırlıq kursları Bakı, "
+                + _AZ_KW_RELATED + ", " + _AZ_KW_CORE
+            ),
         },
         "abroad-page": {
             "title": "Xaricdə təhsil | Academor — Bakı",
             "description": (
                 "Academor ilə xaricdə təhsil: istiqamətlər, universitet profilləri və Azərbaycan tələbələri üçün addım-addım dəstək."
             ),
-            "keywords": "xaricdə təhsil bakı, academor, universitet seçimi, qəbul dəstəyi, " + _AZ_KW_CORE,
+            "keywords": (
+                "xaricdə təhsil bakı, xaricdə oxumaq üçün hansı kurslar lazımdır, "
+                "ielts və ya sat hansı daha vacibdir, " + _AZ_KW_SAT + ", " + _AZ_KW_IELTS + ", " + _AZ_KW_CORE
+            ),
         },
         "abroad-university-detail": {
             "description": (
                 "Universitet profili: proqramlar və Academor-un Bakıdan müraciət və qəbul dəstəyi."
             ),
-            "keywords": "universitet profili, xaricdə təhsil bakı, academor, " + _AZ_KW_CORE,
+            "keywords": (
+                "universitet profili, xaricdə təhsil bakı, universitetə hazırlıq kursları Bakı, "
+                + _AZ_KW_RELATED + ", " + _AZ_KW_CORE
+            ),
         },
         "abroad-detail": {
             "description": (
                 "Bu xaricdə təhsil istiqaməti üzrə təfərrüatlar, tələblər və Academor-un Bakıdan dəstəyi."
             ),
-            "keywords": "xaricdə təhsil proqramı, academor, universitet, bakı, " + _AZ_KW_CORE,
+            "keywords": (
+                "xaricdə təhsil proqramı, xaricdə oxumaq üçün sat kursu, academor, bakı, "
+                + _AZ_KW_RELATED + ", " + _AZ_KW_CORE
+            ),
         },
         "contact-page": {
             "title": "Əlaqə | Academor — Bakı",
             "description": (
                 "Academor ilə əlaqə: ünvan, telefon, iş saatları və kurs / imtahan sualları üçün online form."
             ),
-            "keywords": "academor əlaqə, ünvan bakı, telefon, yazın, " + _AZ_KW_CORE,
+            "keywords": (
+                "academor əlaqə, Bakıda dil kursları, ünvan bakı, telefon, " + _AZ_KW_CORE
+            ),
         },
         "team-page": {
             "title": "Komandamız | Academor — müəllimlər və məsləhətçilər",
@@ -250,7 +305,10 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
             "description": (
                 "Academor testləri ilə ingilis səviyyənizi yoxlayın; kurs seçiminə kömək edən praktika və yerləşdirmə testləri."
             ),
-            "keywords": "ingilis testi bakı, səviyyə testi, academor test, " + _AZ_KW_CORE,
+            "keywords": (
+                "ingilis testi bakı, səviyyə testi, academor test, "
+                "ingilis dili A1 kursu, " + _AZ_KW_CORE
+            ),
         },
         "test-take": {
             "description": (
@@ -264,10 +322,16 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
                 "Academor bloqu: ingilis dili məsləhətləri, IELTS və imtahan hazırlığı, xaricdə təhsil xəbərləri "
                 "— Bakı və Azərbaycan üçün."
             ),
-            "keywords": "academor bloq, ingilis məqalələri bakı, IELTS məsləhətləri, xaricdə təhsil bloq, " + _AZ_KW_CORE,
+            "keywords": (
+                "academor bloq, necə ingilis dili öyrənə bilərəm, ielts nədir, sat nədir, "
+                "IELTS məsləhətləri, xaricdə təhsil bloq, " + _AZ_KW_RELATED + ", " + _AZ_KW_CORE
+            ),
         },
         "blog-detail": {
-            "keywords": "academor bloq məqalə, ingilis dili bakı, təhsil məsləhətləri, " + _AZ_KW_CORE,
+            "keywords": (
+                "academor bloq məqalə, ingilis dili bakı, ielts imtahanına necə hazırlaşmaq olar, "
+                "sat imtahanına necə hazırlaşmaq olar, " + _AZ_KW_CORE
+            ),
         },
         "blog-tag-page": {
             "description": "Bu mövzuya aid Academor bloq məqalələri — Bakı.",

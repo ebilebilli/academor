@@ -67,8 +67,8 @@ SEO_HOME = {
             "İngilis dili dərsləri, IELTS, GMAT, SAT, GRE, YÖS, ALES, Xaricdə təhsil, Only Speaking | Academor"
         ),
         "description": (
-            "Academor Bakıda: ingilis dili dərsləri, IELTS, GMAT, SAT, GRE, YÖS və ALES hazırlığı, "
-            "xaricdə təhsil dəstəyi və Only Speaking. Sürətli və effektiv öyrənmə — Azərbaycan."
+            "Bakıda ingilis dili kursu, IELTS və SAT hazırlığı — Academor. "
+            "Qiymətlər, sıfırdan öyrənmə, uşaq və yetkinlər üçün kurslar, xaricdə təhsil dəstəyi."
         ),
         "og_title": "Biz kurs satmırıq, biz həyat dəyişirik",
         "og_description": (
@@ -76,13 +76,34 @@ SEO_HOME = {
             "insanların bilik və bacarıqlarını inkişaf etdirir, məqsədlərinə çatmalarına dəstək oluruq."
         ),
         "keywords": (
-            "ingilis dili dərsləri, IELTS, GMAT, SAT, GRE, YÖS, ALES, xaricdə təhsil, Only Speaking, "
-            "ingilis dili kursları, ingilis dili öyrənmək, ingilis dili Bakı, ingilis dili kurs, "
-            "bakıda ingilis dili, ingilis dilində dərslər, ingilis kursu Bakı, ingilis dili hazırlığı, "
-            "IELTS hazırlıq kursu, speaking dərsləri, general english dərsləri, GMAT hazırlıq, GRE kursu, "
-            "SAT hazırlıq, YÖS hazırlıq, ALES kursu, bakıda ən yaxşı ingilis dili kursu, "
-            "online ingilis dili dərsləri azərbaycan, xaricdə təhsil üçün hazırlıq kursu, "
-            "ingilis dili mərkəzi Bakı"
+            "ingilis dili kursu, ingilis dili kursları Bakı, Bakıda ingilis dili kursu qiymətləri, "
+            "ən yaxşı ingilis dili kursu Bakıda, sıfırdan ingilis dili kursu, "
+            "uşaqlar üçün ingilis dili kursu, yetkinlər üçün ingilis dili kursu, "
+            "online ingilis dili kursu, necə ingilis dili öyrənə bilərəm, "
+            "evdə ingilis dili necə öyrənilir, ingilis dili neçə ayda öyrənilir, "
+            "ingilis dili kursu neçə aya başa çatır, ingilis dili qrammatika kursu, "
+            "ingilis dili danışıq kursu, ingilis dili kursu qiyməti nə qədərdir, "
+            "pulsuz ingilis dili kursu, ingilis dili kursu sertifikatlı, "
+            "ingilis dili A1 kursu, ingilis dili başlanğıc səviyyə kursu, "
+            "ielts kursu, Bakıda ielts kursu, ielts nədir, ielts kursu qiyməti, "
+            "ielts hazırlıq kursu, ielts neçə aya hazırlaşmaq olar, ielts academic nədir, "
+            "ielts general nədir, ielts writing kursu, ielts speaking kursu, "
+            "ielts reading listening kursu, ielts test tarixləri, "
+            "ielts imtahanı harada verilir, ielts qeydiyyat necə edilir, "
+            "ielts 6.5 bal necə alınır, ən yaxşı ielts kursu Bakıda, "
+            "ielts kursu neçə həftədir, ielts imtahanına necə hazırlaşmaq olar, "
+            "sat kursu, sat math kursu, Bakıda sat kursu, sat nədir, sat imtahanı nədir, "
+            "sat kursu qiyməti, sat imtahanına necə hazırlaşmaq olar, "
+            "sat reading writing kursu, sat neçə bal maksimumdur, "
+            "sat kursu neçə aya hazırlaşdırır, xaricdə oxumaq üçün sat kursu, "
+            "sat imtahanı harada verilir, sat qeydiyyatı necə edilir, "
+            "ən yaxşı sat kursu Bakıda, Bakıda dil kursları, Bakıda təhsil mərkəzləri, "
+            "xaricdə oxumaq üçün hansı kurslar lazımdır, ielts və ya sat hansı daha vacibdir, "
+            "universitetə hazırlıq kursları Bakı, "
+            "ingilis dili biləndən sonra ielts nə qədər çəkər, "
+            "ingilis dili dərsləri, IELTS, GMAT, SAT, GRE, YÖS, ALES, xaricdə təhsil, "
+            "Only Speaking, GMAT hazırlıq, GRE kursu, YÖS hazırlıq, ALES kursu, "
+            "ingilis dili mərkəzi Bakı, Academor"
         ),
         "h1": (
             "İngilis dili dərsləri, IELTS, GMAT, SAT, GRE, YÖS, ALES, xaricdə təhsil və Only Speaking"
