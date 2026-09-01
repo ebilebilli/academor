@@ -27,6 +27,7 @@ from portals.admin.display import (
     portal_role_badge,
     portal_score_chip,
 )
+from portals.admin.attendance_views import attendance_hub_view, student_attendance_detail_view
 from portals.admin.mixins import CourseTypeTabFilterMixin, PortalModelAdmin
 from portals.admin.listening_inline_formsets import (
     ListeningQuestionGroupInlineFormSet,
@@ -1070,6 +1071,7 @@ class TeacherProfileAdmin(PortalModelAdmin):
 
 @admin.register(StudentProfile)
 class StudentProfileAdmin(PortalModelAdmin):
+    change_form_template = 'admin/portals/studentprofile/change_form.html'
     inlines = (StudentCourseSpecializationInline,)
     list_display = (
         'full_name_link',
@@ -1078,6 +1080,8 @@ class StudentProfileAdmin(PortalModelAdmin):
         'groups_display',
         'phone',
         'enrollment_date',
+        'program_month',
+        'lessons_per_month',
         'role_chip',
     )
     list_display_links = ('full_name_link',)
@@ -1117,6 +1121,14 @@ class StudentProfileAdmin(PortalModelAdmin):
                 'bio',
                 'enrollment_date',
             ),
+        }),
+        (_('Attendance plan'), {
+            'classes': ('portal-fieldset',),
+            'description': _(
+                'Monthly lesson plan used for expected totals in admin attendance reports. '
+                'Expected total lessons = lessons per month × program month.'
+            ),
+            'fields': ('lessons_per_month', 'program_month'),
         }),
         (_('Social media'), {
             'classes': ('portal-fieldset',),
@@ -1176,6 +1188,30 @@ class StudentProfileAdmin(PortalModelAdmin):
     @admin.display(description='Role')
     def role_chip(self, obj):
         return portal_role_badge('Student', 'student')
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom = [
+            path(
+                '<path:object_id>/attendance/',
+                self.admin_site.admin_view(
+                    lambda request, object_id: student_attendance_detail_view(
+                        self.admin_site, request, object_id,
+                    ),
+                ),
+                name='portals_studentprofile_attendance',
+            ),
+        ]
+        return custom + urls
+
+    def changeform_view(self, request, object_id=None, form_url='', extra_context=None):
+        extra_context = extra_context or {}
+        if object_id:
+            extra_context['attendance_detail_url'] = reverse(
+                'admin:portals_studentprofile_attendance',
+                args=[object_id],
+            )
+        return super().changeform_view(request, object_id, form_url, extra_context)
 
 
 @admin.register(ParentProfile)
@@ -1737,6 +1773,7 @@ class VideoRecordAdmin(PortalModelAdmin):
 
 @admin.register(Attendance)
 class AttendanceAdmin(PortalModelAdmin):
+    change_list_template = 'admin/portals/attendance/change_list.html'
     list_display = (
         'student_display',
         'schedule_display',
@@ -1745,7 +1782,7 @@ class AttendanceAdmin(PortalModelAdmin):
         'marked_at',
     )
     list_display_links = ('student_display',)
-    list_filter = ('status', 'session_date', 'schedule__group')
+    list_filter = ('status', 'session_date', 'schedule__group', 'schedule__group__teacher')
     search_fields = (
         'student__user__username',
         'schedule__group__name',
@@ -1769,6 +1806,19 @@ class AttendanceAdmin(PortalModelAdmin):
         }),
     )
     readonly_fields = ('marked_at',)
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom = [
+            path(
+                'hub/',
+                self.admin_site.admin_view(
+                    lambda request: attendance_hub_view(self.admin_site, request),
+                ),
+                name='portals_attendance_hub',
+            ),
+        ]
+        return custom + urls
 
     @admin.display(description=_('Student'))
     def student_display(self, obj):

@@ -59,3 +59,21 @@ class ScheduleEffectiveFromTests(TestCase):
         sessions = [session for day in calendar['days'] for session in day['sessions']]
         self.assertEqual(len(sessions), 1)
         self.assertEqual(sessions[0]['session_date'], self.effective_from)
+
+    def test_duplicate_schedule_slots_show_once_in_teacher_calendar(self):
+        Schedule.objects.create(
+            group=self.group,
+            weekday=1,
+            start_time=time(18, 0),
+            duration_min=90,
+            effective_from=date(2026, 4, 1),
+        )
+        week_start = self.effective_from - timedelta(days=self.effective_from.weekday())
+        calendar = build_teacher_week_calendar(self.teacher.pk, week_start=week_start)
+        tuesday_sessions = calendar['days'][1]['sessions']
+        same_group_time = [
+            session for session in tuesday_sessions
+            if session['group_id'] == self.group.pk and session['start_time'] == time(18, 0)
+        ]
+        self.assertEqual(len(same_group_time), 1)
+        self.assertEqual(same_group_time[0]['schedule_id'], self.schedule.pk)

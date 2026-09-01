@@ -163,7 +163,7 @@ def sync_group_schedules(group, schedule_items, *, effective_from=None):
     from datetime import time as dt_time
 
     effective_from = effective_from or timezone.localdate()
-    desired_keys = set()
+    parsed_slots = []
     for slot in schedule_items or []:
         start_raw = slot.get('start_time', '')
         parts = str(start_raw).split(':')
@@ -173,26 +173,45 @@ def sync_group_schedules(group, schedule_items, *, effective_from=None):
         weekday = int(slot['weekday'])
         duration = int(slot.get('duration_min') or 90)
         room = slot.get('room_or_link', '')
-        Schedule.objects.update_or_create(
-            group=group,
-            weekday=weekday,
-            start_time=start_time,
-            effective_from=effective_from,
-            defaults={
-                'duration_min': duration,
-                'room_or_link': room,
-            },
-        )
-        desired_keys.add((weekday, start_time, effective_from))
+        parsed_slots.append({
+            'weekday': weekday,
+            'start_time': start_time,
+            'duration_min': duration,
+            'room_or_link': room,
+        })
 
-    if not desired_keys:
+    if not parsed_slots:
         return
 
-    keep_ids = []
-    for row in group.schedules.filter(effective_from=effective_from):
-        if (row.weekday, row.start_time, row.effective_from) in desired_keys:
-            keep_ids.append(row.pk)
-    group.schedules.filter(effective_from=effective_from).exclude(pk__in=keep_ids).delete()
+    slot_keys = {(slot['weekday'], slot['start_time']) for slot in parsed_slots}
+    for slot in parsed_slots:
+        weekday = slot['weekday']
+        start_time = slot['start_time']
+        duplicates = list(
+            group.schedules.filter(weekday=weekday, start_time=start_time).order_by('-effective_from', '-id')
+        )
+        if duplicates:
+            keeper = duplicates[0]
+            keeper.duration_min = slot['duration_min']
+            keeper.room_or_link = slot['room_or_link']
+            keeper.effective_from = min([row.effective_from for row in duplicates] + [effective_from])
+            keeper.save(update_fields=['duration_min', 'room_or_link', 'effective_from'])
+            duplicate_ids = [row.pk for row in duplicates[1:]]
+            if duplicate_ids:
+                Schedule.objects.filter(pk__in=duplicate_ids).delete()
+        else:
+            Schedule.objects.create(
+                group=group,
+                weekday=weekday,
+                start_time=start_time,
+                duration_min=slot['duration_min'],
+                room_or_link=slot['room_or_link'],
+                effective_from=effective_from,
+            )
+
+    for row in list(group.schedules.all()):
+        if (row.weekday, row.start_time) not in slot_keys:
+            row.delete()
 
 
 class Command(BaseCommand):
@@ -382,6 +401,7 @@ class Command(BaseCommand):
                         update_fields.append('enrollment_date')
                 if update_fields:
                     profile.save(update_fields=update_fields)
+                self._sync_student_attendance_plan(profile, item)
 
             ensure_student_course_enrollments(
                 profile,
@@ -390,6 +410,7 @@ class Command(BaseCommand):
                 self.stdout,
                 self.style,
             )
+            self._sync_student_attendance_plan(profile, item)
 
             student_profiles[item['full_name']] = profile
 
@@ -515,6 +536,20 @@ class Command(BaseCommand):
             return date.fromisoformat(str(raw)[:10])
         except ValueError:
             return None
+
+    def _sync_student_attendance_plan(self, profile, item):
+        participation = item.get('participation') or {}
+        lessons_per_month = participation.get('lessons_per_month')
+        program_month = participation.get('month_number')
+        update_fields = []
+        if lessons_per_month:
+            profile.lessons_per_month = int(lessons_per_month)
+            update_fields.append('lessons_per_month')
+        if program_month:
+            profile.program_month = int(program_month)
+            update_fields.append('program_month')
+        if update_fields:
+            profile.save(update_fields=update_fields)
 
     def _import_participation(self, students, student_profiles, *, dry_run):
         with_participation = [s for s in students if s.get('participation')]

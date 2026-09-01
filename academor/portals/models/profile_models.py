@@ -38,6 +38,18 @@ class StudentProfile(SocialLinksMixin, models.Model):
         blank=True,
         verbose_name=_('Enrollment date'),
     )
+    lessons_per_month = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        verbose_name=_('Lessons per month'),
+        help_text=_('Expected number of lessons per month (e.g. 8 or 12).'),
+    )
+    program_month = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        verbose_name=_('Program month'),
+        help_text=_('Which month of the program the student is in (1, 2, 3…).'),
+    )
     phone = models.CharField(
         max_length=30,
         blank=True,

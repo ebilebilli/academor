@@ -31,7 +31,8 @@ ADMIN_HELP = {
         'summary': _(
             'Student accounts: username, optional phone, and login. '
             'Assign active service enrollments on this page — quizzes and classrooms '
-            'follow those services. Groups are for schedule and attendance only.'
+            'follow those services. Groups are for schedule and attendance only. '
+            'Set lessons per month and program month for attendance planning.'
         ),
         'where': _('Private student portal — not on the public website.'),
         'workflow': [
@@ -153,12 +154,15 @@ ADMIN_HELP = {
     'Attendance': {
         'icon': '✓',
         'title': _('Attendance'),
-        'summary': _('Mark present, absent, or late for a specific class date.'),
-        'where': _('Teachers mark; students and parents can view.'),
+        'summary': _(
+            'Mark present, absent, or late for a specific class date. '
+            'Use Attendance control for bulk marking by teacher and group.'
+        ),
+        'where': _('Teachers mark in portal; staff use Attendance control in admin.'),
         'workflow': [
-            {'title': _('Pick schedule slot'), 'text': _('The weekly time slot')},
-            {'title': _('Pick session date'), 'text': _('Real calendar date, e.g. 15.03.2026')},
-            {'title': _('Mark status'), 'text': _('Present / Absent / Late')},
+            {'title': _('Open hub'), 'text': _('Attendance → Attendance control')},
+            {'title': _('Filter'), 'text': _('Teacher, group, session date')},
+            {'title': _('Mark status'), 'text': _('Present / Absent / Late per student')},
         ],
         'tips': [
             _('Session date is required — it is not the weekday alone.'),

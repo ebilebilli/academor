@@ -1,0 +1,118 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'portals/css/portal-admin.css' %}">
+<style>
+  .att-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.75rem;
+    margin: 1rem 0 1.5rem;
+  }
+  .att-summary-card {
+    border: 1px solid #dbe4ef;
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    background: #f8fafc;
+  }
+  .att-summary-card__label { font-size: 0.78rem; color: #64748b; font-weight: 700; text-transform: uppercase; }
+  .att-summary-card__value { font-size: 1.35rem; font-weight: 800; color: #0f172a; margin-top: 0.2rem; }
+  .att-history-table { width: 100%; border-collapse: collapse; }
+  .att-history-table th, .att-history-table td {
+    border-bottom: 1px solid #e2e8f0;
+    padding: 0.55rem 0.45rem;
+    text-align: left;
+  }
+  .att-history-table th { color: #64748b; font-size: 0.82rem; }
+  .att-badge-present { color: #15803d; font-weight: 700; }
+  .att-badge-absent { color: #b91c1c; font-weight: 700; }
+  .att-badge-late { color: #b45309; font-weight: 700; }
+  .att-top-actions { margin-bottom: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+  &rsaquo; <a href="{% url 'admin:portals_studentprofile_changelist' %}">{% trans 'Student profiles' %}</a>
+  &rsaquo; <a href="{{ student_change_url }}">{{ student.full_name }}</a>
+  &rsaquo; {% trans 'Attendance history' %}
+</div>
+{% endblock %}
+
+{% block content %}
+<h1>{% trans 'Attendance history' %} — {{ student.full_name }}</h1>
+
+<div class="att-top-actions">
+  <a class="button" href="{{ mark_url }}">{% trans 'Mark attendance' %}</a>
+  <a class="button" href="{{ student_change_url }}">{% trans 'Edit student profile' %}</a>
+  <a class="button" href="{% url 'admin:portals_attendance_changelist' %}?student__id__exact={{ student.pk }}">{% trans 'All records in list' %}</a>
+</div>
+
+<div class="att-summary-grid">
+  <div class="att-summary-card">
+    <div class="att-summary-card__label">{% trans 'Program month' %}</div>
+    <div class="att-summary-card__value">{{ overview.program_month|default:"—" }}</div>
+  </div>
+  <div class="att-summary-card">
+    <div class="att-summary-card__label">{% trans 'Lessons per month' %}</div>
+    <div class="att-summary-card__value">{{ overview.lessons_per_month|default:"—" }}</div>
+  </div>
+  <div class="att-summary-card">
+    <div class="att-summary-card__label">{% trans 'Expected total' %}</div>
+    <div class="att-summary-card__value">{{ overview.expected_total|default:"—" }}</div>
+  </div>
+  <div class="att-summary-card">
+    <div class="att-summary-card__label">{% trans 'Attended' %}</div>
+    <div class="att-summary-card__value">{{ overview.attended_count }}</div>
+  </div>
+  <div class="att-summary-card">
+    <div class="att-summary-card__label">{% trans 'Absent' %}</div>
+    <div class="att-summary-card__value">{{ overview.absent_count }}</div>
+  </div>
+  <div class="att-summary-card">
+    <div class="att-summary-card__label">{% trans 'Marked sessions' %}</div>
+    <div class="att-summary-card__value">{{ overview.summary.total }}</div>
+  </div>
+</div>
+
+{% if overview.groups %}
+<p><strong>{% trans 'Groups' %}:</strong>
+  {% for g in overview.groups %}{{ g.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+</p>
+{% endif %}
+
+<h2>{% trans 'Session history' %}</h2>
+{% if overview.records %}
+<table class="att-history-table">
+  <thead>
+    <tr>
+      <th>{% trans 'Date' %}</th>
+      <th>{% trans 'Group' %}</th>
+      <th>{% trans 'Time' %}</th>
+      <th>{% trans 'Status' %}</th>
+      <th>{% trans 'Note' %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in overview.records %}
+    <tr>
+      <td>{{ row.session_date|date:"d.m.Y" }}</td>
+      <td>{{ row.group_name }}</td>
+      <td>{{ row.weekday_label }} {{ row.start_time|time:"H:i" }}</td>
+      <td>
+        {% if row.status == 'present' %}<span class="att-badge-present">{{ row.status_label }}</span>
+        {% elif row.status == 'absent' %}<span class="att-badge-absent">{{ row.status_label }}</span>
+        {% else %}<span class="att-badge-late">{{ row.status_label }}</span>{% endif %}
+      </td>
+      <td>{{ row.note|default:"—" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>{% trans 'No attendance records yet.' %}</p>
+{% endif %}
+{% endblock %}

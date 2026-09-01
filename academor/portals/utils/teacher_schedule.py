@@ -32,6 +32,24 @@ def schedule_visible_on_date(schedule, session_date):
     return session_date >= effective_from
 
 
+def active_schedules_for_day(schedules, weekday, day_date):
+    """Return one schedule per group/time — latest effective_from wins."""
+    best_by_slot = {}
+    for schedule in schedules:
+        if schedule.weekday != weekday:
+            continue
+        if not schedule_visible_on_date(schedule, day_date):
+            continue
+        key = (schedule.group_id, schedule.start_time)
+        current = best_by_slot.get(key)
+        if current is None or schedule.effective_from > current.effective_from:
+            best_by_slot[key] = schedule
+    return sorted(
+        best_by_slot.values(),
+        key=lambda row: (row.start_time, row.group_id, row.pk),
+    )
+
+
 def common_group_ids_for_students(student_ids, teacher_id):
     """Group IDs (teacher-owned) that contain all given students."""
     if not student_ids:
@@ -95,11 +113,7 @@ def build_teacher_week_calendar(
     for weekday in range(7):
         day_date = week_start + timedelta(days=weekday)
         sessions = []
-        for schedule in schedules:
-            if schedule.weekday != weekday:
-                continue
-            if not schedule_visible_on_date(schedule, day_date):
-                continue
+        for schedule in active_schedules_for_day(schedules, weekday, day_date):
             sessions.append(
                 {
                     'schedule_id': schedule.pk,
@@ -159,11 +173,7 @@ def build_student_week_calendar(student_id, week_start=None):
     for weekday in range(7):
         day_date = week_start + timedelta(days=weekday)
         sessions = []
-        for schedule in schedules:
-            if schedule.weekday != weekday:
-                continue
-            if not schedule_visible_on_date(schedule, day_date):
-                continue
+        for schedule in active_schedules_for_day(schedules, weekday, day_date):
             sessions.append(
                 {
                     'schedule_id': schedule.pk,

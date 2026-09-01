@@ -1,0 +1,9 @@
+{% extends "admin/portals/portals_change_list.html" %}
+{% load i18n %}
+
+{% block object-tools-items %}
+<li>
+  <a href="{% url 'admin:portals_attendance_hub' %}" class="addlink">{% trans 'Attendance control' %}</a>
+</li>
+{{ block.super }}
+{% endblock %}

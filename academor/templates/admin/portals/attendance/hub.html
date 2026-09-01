@@ -1,0 +1,150 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'portals/css/portal-admin.css' %}">
+<style>
+  .att-hub-filters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    padding: 1rem;
+    border: 1px solid #dbe4ef;
+    border-radius: 10px;
+    background: #f8fafc;
+  }
+  .att-hub-filters label { display: block; font-weight: 700; margin-bottom: 0.35rem; }
+  .att-hub-filters select,
+  .att-hub-filters input[type="date"] {
+    width: 100%;
+    padding: 0.45rem 0.6rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+  }
+  .att-hub-meta { margin-bottom: 1rem; color: #475569; }
+  .att-hub-table { width: 100%; border-collapse: collapse; }
+  .att-hub-table th, .att-hub-table td {
+    border-bottom: 1px solid #e2e8f0;
+    padding: 0.65rem 0.5rem;
+    text-align: left;
+    vertical-align: middle;
+  }
+  .att-hub-table th { font-size: 0.85rem; color: #64748b; }
+  .att-status-options label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-right: 0.75rem;
+    font-weight: 600;
+  }
+  .att-hub-actions { margin-top: 1rem; }
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+  &rsaquo; <a href="{% url 'admin:portals_attendance_changelist' %}">{% trans 'Attendance' %}</a>
+  &rsaquo; {% trans 'Attendance control' %}
+</div>
+{% endblock %}
+
+{% block content %}
+<h1>{% trans 'Attendance control' %}</h1>
+<p class="att-hub-meta">{% trans 'Filter by teacher and group, pick a date, then mark present, absent, or late for each student.' %}</p>
+
+<form method="get" class="att-hub-filters">
+  <div>
+    <label for="teacher">{% trans 'Teacher' %}</label>
+    <select name="teacher" id="teacher" onchange="this.form.submit()">
+      <option value="">{% trans 'Select teacher' %}</option>
+      {% for pk, name in teachers %}
+      <option value="{{ pk }}"{% if teacher_id == pk %} selected{% endif %}>{{ name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div>
+    <label for="group">{% trans 'Group' %}</label>
+    <select name="group" id="group" onchange="this.form.submit()">
+      <option value="">{% trans 'Select group' %}</option>
+      {% for g in groups %}
+      <option value="{{ g.pk }}"{% if group_id == g.pk %} selected{% endif %}>{{ g.name }} ({{ g.student_count }})</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div>
+    <label for="date">{% trans 'Session date' %}</label>
+    <input type="date" name="date" id="date" value="{{ session_date|date:'Y-m-d' }}" onchange="this.form.submit()">
+  </div>
+  {% if schedule_choices|length > 1 %}
+  <div>
+    <label for="schedule">{% trans 'Time slot' %}</label>
+    <select name="schedule" id="schedule" onchange="this.form.submit()">
+      {% for slot in schedule_choices %}
+      <option value="{{ slot.pk }}"{% if schedule_id == slot.pk %} selected{% endif %}>
+        {{ slot.get_weekday_display }} {{ slot.start_time|time:"H:i" }}
+      </option>
+      {% endfor %}
+    </select>
+  </div>
+  {% elif schedule %}
+  <input type="hidden" name="schedule" value="{{ schedule.pk }}">
+  {% endif %}
+</form>
+
+{% if group and not schedule_choices %}
+<p class="errornote">{% trans 'This group has no schedule slot for the selected weekday. Add schedule in Study groups first.' %}</p>
+{% elif group and schedule and form %}
+<form method="post">
+  {% csrf_token %}
+  <input type="hidden" name="action" value="mark">
+  <input type="hidden" name="teacher" value="{{ teacher_id }}">
+  <input type="hidden" name="group" value="{{ group_id }}">
+  <input type="hidden" name="schedule" value="{{ schedule.pk }}">
+  <input type="hidden" name="date" value="{{ session_date|date:'Y-m-d' }}">
+
+  <p class="att-hub-meta">
+    <strong>{{ group.name }}</strong> · {{ schedule.get_weekday_display }} {{ schedule.start_time|time:"H:i" }}
+    · {{ session_date|date:"d.m.Y" }}
+    · {% trans 'Teacher' %}: {{ group.teacher.full_name }}
+  </p>
+
+  <table class="att-hub-table">
+    <thead>
+      <tr>
+        <th>{% trans 'Student' %}</th>
+        <th>{% trans 'Status' %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for field in form %}
+      {% with student_pk=field.name|slice:"7:" %}
+      <tr>
+        <td>
+          <a href="{% url 'admin:portals_studentprofile_attendance' student_pk %}">{{ field.label }}</a>
+        </td>
+        <td class="att-status-options">
+          {% for radio in field %}
+          <label>{{ radio.tag }} {{ radio.choice_label }}</label>
+          {% endfor %}
+        </td>
+      </tr>
+      {% endwith %}
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="att-hub-actions">
+    <input type="submit" value="{% trans 'Save attendance' %}" class="default">
+  </div>
+</form>
+{% elif group and schedule_choices and not schedule %}
+<p class="att-hub-meta">{% trans 'Select a time slot above (multiple sessions on this day).' %}</p>
+{% elif group %}
+<p class="att-hub-meta">{% trans 'This group has no students yet.' %}</p>
+{% else %}
+<p class="att-hub-meta">{% trans 'Select a teacher and group to begin.' %}</p>
+{% endif %}
+{% endblock %}

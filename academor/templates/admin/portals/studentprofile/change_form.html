@@ -1,0 +1,12 @@
+{% extends "admin/portals/portals_change_form.html" %}
+{% load i18n %}
+
+{% block content %}
+{% if attendance_detail_url %}
+<p style="margin-bottom: 1rem;">
+  <a class="button" href="{{ attendance_detail_url }}">{% trans 'Full attendance history' %}</a>
+  <a class="button" href="{% url 'admin:portals_attendance_hub' %}">{% trans 'Mark attendance' %}</a>
+</p>
+{% endif %}
+{{ block.super }}
+{% endblock %}
