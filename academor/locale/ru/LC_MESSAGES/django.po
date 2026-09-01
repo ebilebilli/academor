@@ -3982,6 +3982,70 @@ msgstr "Изменить слот расписания"
 msgid "Schedule slot updated."
 msgstr "Слот расписания обновлен."
 
+# Teacher schedule portal
+msgid "24-hour format (HH:MM)"
+msgstr "24-часовой формат (ЧЧ:ММ)"
+
+msgid "Enter time in 24-hour HH:MM format (Baku)."
+msgstr "Введите время в 24-часовом формате ЧЧ:ММ (Баку)."
+
+msgid "Enter a valid time (HH:MM, 24-hour format)."
+msgstr "Введите корректное время (ЧЧ:ММ, 24-часовой формат)."
+
+msgid "Weekly slots"
+msgstr "Еженедельные слоты"
+
+msgid "Times are in Azerbaijan time (Baku, UTC+4)."
+msgstr "Время указано по азербайджанскому времени (Баку, UTC+4)."
+
+msgid "Select a group"
+msgstr "Выберите группу"
+
+msgid "Remove slot"
+msgstr "Удалить слот"
+
+msgid "Add another slot"
+msgstr "Добавить ещё один слот"
+
+msgid "Save schedule"
+msgstr "Сохранить расписание"
+
+msgid "Add schedule slots"
+msgstr "Добавить слоты расписания"
+
+msgid "Add slots"
+msgstr "Добавить слоты"
+
+msgid "Rename group"
+msgstr "Переименовать группу"
+
+msgid "Group name updated."
+msgstr "Название группы обновлено."
+
+msgid "Pick a group and add one or more weekly slots."
+msgstr "Выберите группу и добавьте один или несколько еженедельных слотов."
+
+msgid "%(count)s schedule slots added."
+msgstr "Добавлено слотов расписания: %(count)s."
+
+msgid "Select a weekday."
+msgstr "Выберите день недели."
+
+msgid "Duration must be at least %(min)s minutes."
+msgstr "Длительность должна быть не менее %(min)s минут."
+
+msgid "This day and time is duplicated in the form."
+msgstr "Этот день и время повторяются в форме."
+
+msgid "Add at least one schedule slot."
+msgstr "Добавьте хотя бы один слот расписания."
+
+msgid "One or more slots already exist for this group on the same day and time."
+msgstr "Для этой группы уже есть слот(ы) в тот же день и время."
+
+msgid "Delete this schedule slot?"
+msgstr "Удалить этот слот расписания?"
+
 #: academor/portals/views/teacher_manage_views.py:296
 #: academor/portals/views/teacher_manage_views.py:319
 #: academor/templates/portals/teacher/lesson_form.html:233
@@ -10904,9 +10968,6 @@ msgstr "%(days)s дней назад"
 
 #~ msgid "Create quiz header"
 #~ msgstr "Создать заголовок quiz"
-
-#~ msgid "Delete this schedule slot?"
-#~ msgstr "Удалить этот интервал расписания?"
 
 #~ msgid "Filter quizzes by course / service type"
 #~ msgstr "Фильтровать тесты по типу курса/услуги"

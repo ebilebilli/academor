@@ -11,7 +11,6 @@ from portals.models import (
     Lesson,
     LessonAttachment,
     LessonCategory,
-    Schedule,
     StudentProfile,
     StudyGroup,
 )
@@ -112,38 +111,20 @@ class TeacherGroupForm(forms.ModelForm):
         )
 
 
-class TeacherScheduleForm(forms.ModelForm):
+class TeacherGroupNameForm(forms.ModelForm):
     class Meta:
-        model = Schedule
-        fields = ('group', 'weekday', 'start_time', 'duration_min', 'room_or_link', 'effective_from')
+        model = StudyGroup
+        fields = ('name',)
         widgets = {
-            'group': forms.Select(attrs=_fc()),
-            'weekday': forms.Select(attrs=_fc()),
-            'start_time': forms.TimeInput(attrs=_fc({'type': 'time'})),
-            'duration_min': forms.NumberInput(attrs=_fc({'min': 15, 'step': 5})),
-            'room_or_link': forms.TextInput(attrs=_fc()),
-            'effective_from': forms.DateInput(attrs=_fc({'type': 'date'})),
+            'name': forms.TextInput(attrs=_fc()),
         }
 
-    def __init__(self, teacher_id, *args, group_fixed=False, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.teacher_id = teacher_id
-        groups = teacher_groups_queryset(teacher_id, active_only=True).order_by('name')
-        if group_fixed:
-            self.fields.pop('group', None)
-        else:
-            self.fields['group'].queryset = groups
-            self.fields['group'].label = _('Group')
-        if not self.initial.get('duration_min') and not self.data:
-            self.initial.setdefault('duration_min', 90)
-        if not self.initial.get('effective_from') and not self.data and not (self.instance and self.instance.pk):
-            self.initial.setdefault('effective_from', timezone.localdate())
+    def clean_name(self):
+        name = (self.cleaned_data.get('name') or '').strip()
+        if not name:
+            raise forms.ValidationError(_('Enter a group name.'))
+        return name
 
-    def clean_group(self):
-        group = self.cleaned_data.get('group')
-        if group and not teacher_groups_queryset(self.teacher_id, active_only=True).filter(pk=group.pk).exists():
-            raise forms.ValidationError(_('You can only schedule slots for your own groups.'))
-        return group
 
 
 class TeacherLessonForm(forms.ModelForm):

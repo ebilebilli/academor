@@ -3941,6 +3941,70 @@ msgstr "Edit schedule slot"
 msgid "Schedule slot updated."
 msgstr "Schedule slot updated."
 
+# Teacher schedule portal
+msgid "24-hour format (HH:MM)"
+msgstr "24-hour format (HH:MM)"
+
+msgid "Enter time in 24-hour HH:MM format (Baku)."
+msgstr "Enter time in 24-hour HH:MM format (Baku)."
+
+msgid "Enter a valid time (HH:MM, 24-hour format)."
+msgstr "Enter a valid time (HH:MM, 24-hour format)."
+
+msgid "Weekly slots"
+msgstr "Weekly slots"
+
+msgid "Times are in Azerbaijan time (Baku, UTC+4)."
+msgstr "Times are in Azerbaijan time (Baku, UTC+4)."
+
+msgid "Select a group"
+msgstr "Select a group"
+
+msgid "Remove slot"
+msgstr "Remove slot"
+
+msgid "Add another slot"
+msgstr "Add another slot"
+
+msgid "Save schedule"
+msgstr "Save schedule"
+
+msgid "Add schedule slots"
+msgstr "Add schedule slots"
+
+msgid "Add slots"
+msgstr "Add slots"
+
+msgid "Rename group"
+msgstr "Rename group"
+
+msgid "Group name updated."
+msgstr "Group name updated."
+
+msgid "Pick a group and add one or more weekly slots."
+msgstr "Pick a group and add one or more weekly slots."
+
+msgid "%(count)s schedule slots added."
+msgstr "%(count)s schedule slots added."
+
+msgid "Select a weekday."
+msgstr "Select a weekday."
+
+msgid "Duration must be at least %(min)s minutes."
+msgstr "Duration must be at least %(min)s minutes."
+
+msgid "This day and time is duplicated in the form."
+msgstr "This day and time is duplicated in the form."
+
+msgid "Add at least one schedule slot."
+msgstr "Add at least one schedule slot."
+
+msgid "One or more slots already exist for this group on the same day and time."
+msgstr "One or more slots already exist for this group on the same day and time."
+
+msgid "Delete this schedule slot?"
+msgstr "Delete this schedule slot?"
+
 #: academor/portals/views/teacher_manage_views.py:296
 #: academor/portals/views/teacher_manage_views.py:319
 #: academor/templates/portals/teacher/lesson_form.html:233
@@ -10649,9 +10713,6 @@ msgstr "Weak"
 
 #~ msgid "Create quiz header"
 #~ msgstr "Create quiz header"
-
-#~ msgid "Delete this schedule slot?"
-#~ msgstr "Delete this schedule slot?"
 
 #~ msgid "Filter quizzes by course / service type"
 #~ msgstr "Filter quizzes by course / service type"

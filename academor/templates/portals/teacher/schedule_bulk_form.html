@@ -1,0 +1,191 @@
+{% extends "portals/base.html" %}
+{% load i18n portal_tags static %}
+
+{% block title %}{{ form_title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'portals/css/portal-teacher-schedule-bulk.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'portals/js/portal-time-24h.js' %}"></script>
+<script src="{% static 'portals/js/portal-teacher-schedule-bulk.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+{% portal_page_heading icon="bi-calendar-week" eyebrow="Teacher" raw_title=form_title raw_subtitle=form_subtitle %}
+
+<div class="admin-card p-4">
+  <form method="post" class="portal-teacher-schedule-bulk-form" id="portal-teacher-schedule-bulk-form" novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="slot_count" id="schedule-slot-count" value="{{ slot_count }}">
+
+    {% if form_errors %}
+    <div class="alert alert-danger py-2 small">
+      {% for message in form_errors %}
+      <div>{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if not group_fixed %}
+    <div class="mb-4">
+      <label class="form-label" for="schedule-group">{% trans 'Group' %}</label>
+      <select class="form-select" name="group" id="schedule-group" required>
+        <option value="">{% trans 'Select a group' %}</option>
+        {% for item in groups %}
+        <option value="{{ item.pk }}"{% if selected_group_id == item.pk|stringformat:"s" %} selected{% endif %}>{{ item.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    {% endif %}
+
+    <div class="portal-schedule-bulk-head">
+      <h2 class="h6 mb-0">{% trans 'Weekly slots' %}</h2>
+      <p class="text-muted small mb-0">{% trans 'Times are in Azerbaijan time (Baku, UTC+4).' %}</p>
+    </div>
+
+    <div class="portal-schedule-slot-header" aria-hidden="true">
+      <div>
+        <span class="portal-schedule-slot-header__label">{% trans 'Weekday' %}</span>
+      </div>
+      <div>
+        <span class="portal-schedule-slot-header__label">{% trans 'Time' %}</span>
+        <span class="portal-schedule-slot-header__hint">{% trans '24-hour format (HH:MM)' %}</span>
+      </div>
+      <div>
+        <span class="portal-schedule-slot-header__label">{% trans 'Duration (minutes)' %}</span>
+      </div>
+      <div class="portal-schedule-slot-row__actions"></div>
+    </div>
+
+    <div id="schedule-slot-rows" data-default-duration="{{ default_duration_min }}">
+      {% for row in slot_rows %}
+      <div class="portal-schedule-slot-row" data-slot-index="{{ row.index }}">
+        <div class="portal-schedule-slot-row__grid">
+          <div class="portal-schedule-slot-field portal-schedule-slot-field--weekday" data-label="{% trans 'Weekday' %}">
+            <select class="form-select" name="{{ row.fields.weekday }}" id="{{ row.fields.weekday }}" aria-label="{% trans 'Weekday' %}">
+              <option value="">{% trans 'Select' %}</option>
+              {% for value, label in weekday_choices %}
+              <option value="{{ value }}"{% if row.weekday == value|stringformat:"s" %} selected{% endif %}>{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="portal-schedule-slot-field portal-schedule-slot-field--time" data-label="{% trans 'Time' %}">
+            <input
+              class="form-control portal-time-24h"
+              type="text"
+              name="{{ row.fields.start_time }}"
+              id="{{ row.fields.start_time }}"
+              value="{{ row.start_time }}"
+              inputmode="numeric"
+              pattern="([01][0-9]|2[0-3]):[0-5][0-9]"
+              placeholder="14:30"
+              maxlength="5"
+              autocomplete="off"
+              aria-label="{% trans 'Time' %}"
+              required
+            >
+          </div>
+          <div class="portal-schedule-slot-field portal-schedule-slot-field--duration" data-label="{% trans 'Duration (minutes)' %}">
+            <input
+              class="form-control"
+              type="number"
+              name="{{ row.fields.duration_min }}"
+              id="{{ row.fields.duration_min }}"
+              value="{{ row.duration_min }}"
+              min="15"
+              step="5"
+              aria-label="{% trans 'Duration (minutes)' %}"
+            >
+          </div>
+          <div class="portal-schedule-slot-row__actions">
+            <button
+              type="button"
+              class="btn btn-outline-danger btn-sm portal-schedule-slot-remove"
+              title="{% trans 'Remove slot' %}"
+              aria-label="{% trans 'Remove slot' %}"
+              {% if slot_rows|length <= 1 %}hidden{% endif %}
+            >
+              <i class="bi bi-trash" aria-hidden="true"></i>
+            </button>
+          </div>
+          {% if row.errors %}
+          <div class="invalid-feedback d-block portal-schedule-slot-row__error">
+            {% for error in row.errors %}{{ error }}{% if not forloop.last %}<br>{% endif %}{% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <template id="schedule-slot-row-template">
+      <div class="portal-schedule-slot-row" data-slot-index="__INDEX__">
+        <div class="portal-schedule-slot-row__grid">
+          <div class="portal-schedule-slot-field portal-schedule-slot-field--weekday" data-label="{% trans 'Weekday' %}">
+            <select class="form-select" data-slot-weekday aria-label="{% trans 'Weekday' %}">
+              <option value="">{% trans 'Select' %}</option>
+              {% for value, label in weekday_choices %}
+              <option value="{{ value }}">{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="portal-schedule-slot-field portal-schedule-slot-field--time" data-label="{% trans 'Time' %}">
+            <input
+              class="form-control portal-time-24h"
+              type="text"
+              data-slot-start-time
+              inputmode="numeric"
+              pattern="([01][0-9]|2[0-3]):[0-5][0-9]"
+              placeholder="14:30"
+              maxlength="5"
+              autocomplete="off"
+              aria-label="{% trans 'Time' %}"
+              required
+            >
+          </div>
+          <div class="portal-schedule-slot-field portal-schedule-slot-field--duration" data-label="{% trans 'Duration (minutes)' %}">
+            <input
+              class="form-control"
+              type="number"
+              data-slot-duration
+              min="15"
+              step="5"
+              value="{{ default_duration_min }}"
+              aria-label="{% trans 'Duration (minutes)' %}"
+            >
+          </div>
+          <div class="portal-schedule-slot-row__actions">
+            <button type="button" class="btn btn-outline-danger btn-sm portal-schedule-slot-remove" title="{% trans 'Remove slot' %}" aria-label="{% trans 'Remove slot' %}">
+              <i class="bi bi-trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <div class="mt-3">
+      <button type="button" class="btn btn-outline-primary btn-sm" id="schedule-slot-add">
+        <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>{% trans 'Add another slot' %}
+      </button>
+    </div>
+
+    {% if return_to %}
+      <input type="hidden" name="return_to" value="{{ return_to }}">
+    {% endif %}
+    {% if return_week %}
+      <input type="hidden" name="return_week" value="{{ return_week }}">
+    {% endif %}
+
+    <div class="d-flex flex-wrap gap-2 pt-4">
+      <button type="submit" class="btn btn-primary">
+        <i class="bi bi-check2 me-1" aria-hidden="true"></i>{% trans 'Save schedule' %}
+      </button>
+      {% if cancel_href %}
+        <a class="btn btn-light" href="{{ cancel_href }}">{% trans 'Cancel' %}</a>
+      {% endif %}
+    </div>
+  </form>
+</div>
+{% endblock %}

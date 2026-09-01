@@ -1,7 +1,11 @@
 {% extends "portals/base.html" %}
-{% load i18n portal_tags %}
+{% load i18n portal_tags static %}
 
 {% block title %}{{ form_title }}{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'portals/js/portal-time-24h.js' %}"></script>
+{% endblock %}
 
 {% block content %}
 {% portal_page_heading icon="bi-calendar-week" eyebrow="Teacher" raw_title=form_title raw_subtitle=form_subtitle %}

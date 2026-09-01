@@ -1,0 +1,134 @@
+.portal-schedule-bulk-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.portal-schedule-bulk-form {
+  --schedule-slot-grid: minmax(0, 1.6fr) minmax(0, 0.9fr) minmax(0, 0.9fr) 2.75rem;
+}
+
+.portal-schedule-slot-header,
+.portal-schedule-slot-row__grid {
+  display: grid;
+  grid-template-columns: var(--schedule-slot-grid);
+  gap: 0.75rem 1rem;
+  align-items: end;
+}
+
+.portal-schedule-slot-header {
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--admin-border);
+  margin-bottom: 0.35rem;
+}
+
+.portal-schedule-slot-header__label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--admin-text);
+  line-height: 1.2;
+}
+
+.portal-schedule-slot-header__hint {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.72rem;
+  color: var(--admin-muted);
+  line-height: 1.2;
+}
+
+.portal-schedule-slot-row {
+  padding: 0.55rem 0;
+}
+
+.portal-schedule-slot-row + .portal-schedule-slot-row {
+  border-top: 1px solid var(--admin-border);
+}
+
+.portal-schedule-slot-field {
+  min-width: 0;
+}
+
+.portal-schedule-slot-field .form-control,
+.portal-schedule-slot-field .form-select {
+  width: 100%;
+  height: 2.5rem;
+  min-height: 2.5rem;
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+}
+
+.portal-schedule-slot-row__actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;
+}
+
+.portal-schedule-slot-row__actions .btn {
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.portal-schedule-slot-row .invalid-feedback,
+.portal-schedule-slot-row__error {
+  grid-column: 1 / -1;
+  margin-top: 0.15rem;
+}
+
+@media (max-width: 767.98px) {
+  .portal-schedule-bulk-form {
+    --schedule-slot-grid: 1fr 2.75rem;
+  }
+
+  .portal-schedule-slot-header {
+    display: none;
+  }
+
+  .portal-schedule-slot-row__grid {
+    grid-template-columns: 1fr 2.75rem;
+    gap: 0.65rem;
+  }
+
+  .portal-schedule-slot-field {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    gap: 0.65rem;
+    align-items: center;
+  }
+
+  .portal-schedule-slot-field::before {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--admin-muted);
+  }
+
+  .portal-schedule-slot-field--weekday::before {
+    content: attr(data-label);
+  }
+
+  .portal-schedule-slot-field--time::before {
+    content: attr(data-label);
+  }
+
+  .portal-schedule-slot-field--duration::before {
+    content: attr(data-label);
+  }
+
+  .portal-schedule-slot-row__actions {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    align-self: start;
+    height: auto;
+    padding-top: 0.15rem;
+  }
+}

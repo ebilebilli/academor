@@ -1360,6 +1360,40 @@ class CustomerProfileAdmin(PortalModelAdmin):
 # Groups & schedule
 # ---------------------------------------------------------------------------
 
+def _parse_admin_int(value):
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def study_group_teacher_queryset_for_admin(request, *, obj_id=None):
+    """
+    Teachers selectable on StudyGroup admin.
+
+    Uses submitted course IDs on POST so validation matches the autocomplete
+    filter (group_courses) instead of stale courses still stored on the group.
+    """
+    codes = []
+    if request.method == 'POST':
+        codes = portal_codes_for_service_ids(request.POST.getlist('courses'))
+    elif obj_id:
+        group = StudyGroup.objects.filter(pk=obj_id).prefetch_related('courses').first()
+        if group:
+            codes = study_group_portal_codes(group)
+
+    if codes:
+        queryset = teachers_for_portal_course_codes(codes)
+    else:
+        queryset = TeacherProfile.objects.select_related('user')
+
+    submitted_teacher_id = _parse_admin_int(request.POST.get('teacher'))
+    if submitted_teacher_id:
+        queryset = queryset | TeacherProfile.objects.filter(pk=submitted_teacher_id)
+
+    return queryset.distinct().order_by('user__username', 'id')
+
+
 class StudyGroupAdminForm(forms.ModelForm):
     class Meta:
         model = StudyGroup
@@ -1438,13 +1472,10 @@ class StudyGroupAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'teacher':
             obj_id = request.resolver_match.kwargs.get('object_id')
-            codes = []
-            if obj_id:
-                group = StudyGroup.objects.filter(pk=obj_id).prefetch_related('courses').first()
-                if group:
-                    codes = study_group_portal_codes(group)
-            if codes:
-                kwargs['queryset'] = teachers_for_portal_course_codes(codes)
+            kwargs['queryset'] = study_group_teacher_queryset_for_admin(
+                request,
+                obj_id=obj_id,
+            )
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     def formfield_for_manytomany(self, db_field, request, **kwargs):

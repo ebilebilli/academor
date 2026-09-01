@@ -39,12 +39,21 @@
   </div>
 
   <div class="portal-toolbar-right">
+    <a class="btn btn-outline-primary btn-sm" href="{% url 'portals:teacher-group-rename' pk=group.id %}">
+      <i class="bi bi-pencil me-1"></i>{% trans 'Rename group' %}
+    </a>
     <!-- More Actions Dropdown -->
     <div class="dropdown">
       <button class="btn btn-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
         <i class="bi bi-three-dots me-1"></i>{% trans 'Actions' %}
       </button>
       <ul class="dropdown-menu dropdown-menu-end">
+        <li><a class="dropdown-item" href="{% url 'portals:teacher-group-rename' pk=group.id %}">
+          <i class="bi bi-pencil text-secondary me-2"></i>{% trans 'Rename group' %}
+        </a></li>
+        <li><a class="dropdown-item" href="{% url 'portals:teacher-schedule-create' group_pk=group.id %}">
+          <i class="bi bi-calendar-plus text-primary me-2"></i>{% trans 'Add schedule slots' %}
+        </a></li>
         <li><a class="dropdown-item" href="{% url 'portals:teacher-lesson-create' %}">
           <i class="bi bi-journal-plus text-info me-2"></i>{% trans 'Add Lesson' %}
         </a></li>
@@ -171,6 +180,9 @@
           <span class="portal-count">{{ group.schedules|length }}</span>
         </div>
         <div class="portal-header-actions">
+          <a class="btn btn-sm btn-outline-primary" href="{% url 'portals:teacher-schedule-create' group_pk=group.id %}">
+            <i class="bi bi-plus-lg"></i> {% trans 'Add slots' %}
+          </a>
         </div>
       </div>
 
@@ -192,6 +204,16 @@
             {% endif %}
           </div>
           <div class="portal-schedule-actions">
+            <a class="btn btn-icon btn-sm btn-outline-secondary" href="{% url 'portals:teacher-schedule-edit' schedule_pk=sch.id %}" title="{% trans 'Edit slot' %}">
+              <i class="bi bi-pencil"></i>
+            </a>
+            <form method="post" action="{% url 'portals:teacher-schedule-delete' schedule_pk=sch.id %}" class="d-inline" onsubmit="return confirm('{% trans "Delete this schedule slot?" %}');">
+              {% csrf_token %}
+              <input type="hidden" name="return_to" value="group">
+              <button type="submit" class="btn btn-icon btn-sm btn-outline-danger" title="{% trans 'Delete slot' %}">
+                <i class="bi bi-trash"></i>
+              </button>
+            </form>
             <a class="btn btn-icon btn-sm btn-success" href="{% url 'portals:teacher-attendance-session' %}?schedule={{ sch.id }}&date={{ sch.session_date_iso }}" title="{% trans 'Mark attendance' %}">
               <i class="bi bi-check2-circle"></i>
             </a>
@@ -201,7 +223,9 @@
         <div class="portal-empty-list">
           <i class="bi bi-calendar-x"></i>
           <p>{% trans 'No schedule set for this group.' %}</p>
-          <span class="text-muted small">{% trans 'Schedule is managed by Academor administration.' %}</span>
+          <a class="btn btn-sm btn-outline-primary mt-2" href="{% url 'portals:teacher-schedule-create' group_pk=group.id %}">
+            {% trans 'Add schedule slots' %}
+          </a>
         </div>
         {% endfor %}
       </div>

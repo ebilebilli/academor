@@ -2925,6 +2925,43 @@ a.portal-session-group-link:focus-visible {
   color: var(--admin-accent);
 }
 
+.portal-session-manage-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.7rem 0.55rem;
+  border-top: 1px solid var(--admin-border);
+}
+
+.portal-session-manage-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.85rem;
+  height: 1.85rem;
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  background: var(--admin-surface);
+  color: var(--admin-muted);
+  text-decoration: none;
+}
+
+.portal-session-manage-link:hover {
+  color: var(--admin-accent);
+  border-color: rgba(255, 84, 20, 0.35);
+}
+
+.portal-session-manage-link--danger:hover {
+  color: #dc3545;
+  border-color: rgba(220, 53, 69, 0.35);
+}
+
+.portal-session-manage-link[type="submit"],
+button.portal-session-manage-link {
+  cursor: pointer;
+}
+
 .portal-dropdown-menu form {
   margin: 0;
 }

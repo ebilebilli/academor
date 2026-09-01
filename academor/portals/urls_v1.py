@@ -4,6 +4,7 @@ from portals.views.auth_views import PortalLoginView, PortalLogoutView, PortalSe
 from portals.views.profile_views import PortalProfileView
 from portals.views.teacher_manage_views import (
     TeacherAttendanceCreateView,
+    TeacherGroupRenameView,
     TeacherLessonCreateView,
     TeacherLessonEditView,
     TeacherScheduleCreateView,
@@ -143,6 +144,7 @@ urlpatterns = [
     path('teacher/dashboard-stats/', TeacherDashboardStatsView.as_view(), name='teacher-dashboard-stats'),
     path('teacher/groups/', TeacherGroupsListView.as_view(), name='teacher-groups'),
     path('teacher/groups/<int:pk>/', TeacherGroupDetailView.as_view(), name='teacher-group-detail'),
+    path('teacher/groups/<int:pk>/rename/', TeacherGroupRenameView.as_view(), name='teacher-group-rename'),
     path('teacher/groups/<int:group_pk>/schedule/new/', TeacherScheduleCreateView.as_view(), name='teacher-schedule-create'),
     path('teacher/schedule/new/', TeacherScheduleSlotCreateView.as_view(), name='teacher-schedule-slot-create'),
     path('teacher/schedule/<int:schedule_pk>/edit/', TeacherScheduleEditView.as_view(), name='teacher-schedule-edit'),

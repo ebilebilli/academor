@@ -10,10 +10,17 @@ from django.views import View
 
 from portals.models import Attendance, Schedule
 from portals.teacher_forms import (
+    TeacherGroupNameForm,
     TeacherLessonForm,
-    TeacherScheduleForm,
     TeacherTextbookForm,
     build_session_attendance_form,
+)
+from portals.utils.teacher_schedule_form import (
+    TeacherScheduleEditForm,
+    build_schedule_bulk_form_context,
+    create_schedule_slots,
+    parse_schedule_slots_from_post,
+    validate_schedule_slots,
 )
 from portals.utils.queries import (
     get_teacher_attendance_students,
@@ -39,7 +46,7 @@ from portals.utils.weekly_scores import (
     rows_open_for_scoring,
     save_teacher_weekly_scores,
 )
-from portals.views.mixins import TeacherRequiredMixin, TeacherScheduleMutationForbiddenMixin
+from portals.views.mixins import TeacherRequiredMixin
 
 
 def _teacher_ctx(request, **extra):
@@ -93,6 +100,58 @@ def _schedule_form_extra(request):
     return extra
 
 
+def _schedule_bulk_response(request, *, title, subtitle, cancel_href, group=None, post=None, slot_errors=None, form_errors=None, extra=None):
+    extra = dict(extra or {})
+    initial_rows = extra.pop('initial_rows', None)
+    ctx = _teacher_ctx(
+        request,
+        form_title=title,
+        form_subtitle=subtitle,
+        cancel_href=cancel_href,
+        **build_schedule_bulk_form_context(
+            teacher_id=get_teacher_profile(request.portal_user).pk,
+            group=group,
+            post=post,
+            slot_errors=slot_errors,
+            initial_rows=initial_rows,
+        ),
+        form_errors=form_errors or [],
+        **extra,
+    )
+    return render(request, 'portals/teacher/schedule_bulk_form.html', ctx)
+
+
+def _save_bulk_schedule(request, *, group=None, group_pk=None):
+    from django.db import IntegrityError
+
+    teacher = get_teacher_profile(request.portal_user)
+    if group is None and group_pk is not None:
+        group = get_teacher_group(teacher.pk, group_pk)
+
+    if group is None:
+        group_id = request.POST.get('group')
+        try:
+            group = get_teacher_group(teacher.pk, int(group_id))
+        except (TypeError, ValueError):
+            group = None
+        if not group:
+            return None, [], [{'index': 0, 'message': str(_('Select a group.'))}]
+
+    slots = parse_schedule_slots_from_post(request.POST)
+    cleaned, errors = validate_schedule_slots(slots)
+    if errors:
+        return None, cleaned, errors
+
+    try:
+        create_schedule_slots(group, cleaned)
+    except IntegrityError:
+        return None, cleaned, [{
+            'index': 0,
+            'message': str(_('One or more slots already exist for this group on the same day and time.')),
+        }]
+    return group, cleaned, []
+
+
 def _attendance_picker_context(request, teacher, *, entry_mode='calendar'):
     week_start = parse_week_start(request.GET.get('week'))
     student_ids = parse_student_ids(request.GET.getlist('students') or request.GET.get('students'))
@@ -129,22 +188,56 @@ def _attendance_picker_url(entry_mode, week=None, student_ids=None):
     return f'{base}?{"&".join(params)}'
 
 
-class TeacherScheduleCreateView(TeacherScheduleMutationForbiddenMixin, TeacherRequiredMixin, View):
-    template_name = 'portals/teacher/schedule_form.html'
+class TeacherGroupRenameView(TeacherRequiredMixin, View):
+    template_name = 'portals/teacher/group_name_form.html'
 
-    def get(self, request, group_pk):
+    def get(self, request, pk):
         teacher = get_teacher_profile(request.portal_user)
-        group = get_teacher_group(teacher.pk, group_pk)
+        group = get_teacher_group(teacher.pk, pk)
         if not group:
             raise Http404
         return _form_response(
             request,
             self.template_name,
-            TeacherScheduleForm(teacher.pk, group_fixed=True),
-            title=_('Add schedule slot'),
+            TeacherGroupNameForm(instance=group),
+            title=_('Rename group'),
+            subtitle=group.name,
+            cancel_href=reverse('portals:teacher-group-detail', kwargs={'pk': group.pk}),
+        )
+
+    def post(self, request, pk):
+        teacher = get_teacher_profile(request.portal_user)
+        group = get_teacher_group(teacher.pk, pk)
+        if not group:
+            raise Http404
+        form = TeacherGroupNameForm(request.POST, instance=group)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _('Group name updated.'))
+            return redirect('portals:teacher-group-detail', pk=group.pk)
+        return _form_response(
+            request,
+            self.template_name,
+            form,
+            title=_('Rename group'),
+            subtitle=group.name,
+            cancel_href=reverse('portals:teacher-group-detail', kwargs={'pk': group.pk}),
+        )
+
+
+class TeacherScheduleCreateView(TeacherRequiredMixin, View):
+    def get(self, request, group_pk):
+        teacher = get_teacher_profile(request.portal_user)
+        group = get_teacher_group(teacher.pk, group_pk)
+        if not group:
+            raise Http404
+        return _schedule_bulk_response(
+            request,
+            title=_('Add schedule slots'),
             subtitle=group.name,
             cancel_href=_schedule_form_cancel_href(request, group_pk=group_pk),
-            extra={'group': group, **_schedule_form_extra(request)},
+            group=group,
+            extra=_schedule_form_extra(request),
         )
 
     def post(self, request, group_pk):
@@ -152,90 +245,107 @@ class TeacherScheduleCreateView(TeacherScheduleMutationForbiddenMixin, TeacherRe
         group = get_teacher_group(teacher.pk, group_pk)
         if not group:
             raise Http404
-        form = TeacherScheduleForm(teacher.pk, group_fixed=True, data=request.POST)
-        if form.is_valid():
-            schedule = form.save(commit=False)
-            schedule.group = group
-            schedule.save()
+        saved_group, _cleaned, errors = _save_bulk_schedule(request, group=group)
+        if errors:
+            return _schedule_bulk_response(
+                request,
+                title=_('Add schedule slots'),
+                subtitle=group.name,
+                cancel_href=_schedule_form_cancel_href(request, group_pk=group_pk),
+                group=group,
+                post=request.POST,
+                slot_errors=errors,
+                extra=_schedule_form_extra(request),
+            )
+        count = len(_cleaned)
+        if count == 1:
             messages.success(request, _('Schedule slot added.'))
-            return _schedule_form_redirect(request, group_pk=group_pk)
-        return _form_response(
-            request,
-            self.template_name,
-            form,
-            title=_('Add schedule slot'),
-            subtitle=group.name,
-            cancel_href=_schedule_form_cancel_href(request, group_pk=group_pk),
-            extra={'group': group, **_schedule_form_extra(request)},
-        )
+        else:
+            messages.success(
+                request,
+                _('%(count)s schedule slots added.') % {'count': count},
+            )
+        return _schedule_form_redirect(request, group_pk=group_pk)
 
 
-class TeacherScheduleSlotCreateView(TeacherScheduleMutationForbiddenMixin, TeacherRequiredMixin, View):
-    template_name = 'portals/teacher/schedule_form.html'
-
+class TeacherScheduleSlotCreateView(TeacherRequiredMixin, View):
     def get(self, request):
         teacher = get_teacher_profile(request.portal_user)
-        initial = {}
-        weekday = request.GET.get('weekday')
-        if weekday is not None:
-            try:
-                initial['weekday'] = int(weekday)
-            except (TypeError, ValueError):
-                pass
+        initial_group = None
         group_pk = request.GET.get('group')
         if group_pk:
             try:
-                initial['group'] = int(group_pk)
+                initial_group = get_teacher_group(teacher.pk, int(group_pk))
             except (TypeError, ValueError):
-                pass
-        form = TeacherScheduleForm(teacher.pk, initial=initial)
-        return _form_response(
+                initial_group = None
+        initial_rows = None
+        weekday = request.GET.get('weekday')
+        if weekday is not None:
+            from portals.utils.teacher_schedule_form import DEFAULT_DURATION_MIN
+            initial_rows = [{
+                'index': 0,
+                'weekday': str(weekday),
+                'start_time': '',
+                'duration_min': str(DEFAULT_DURATION_MIN),
+            }]
+        extra = {
+            'return_to': 'schedule',
+            'return_week': request.GET.get('week', ''),
+        }
+        if initial_rows:
+            extra['initial_rows'] = initial_rows
+        return _schedule_bulk_response(
             request,
-            self.template_name,
-            form,
-            title=_('Add schedule slot'),
-            subtitle=_('Pick a group, day, and time for this weekly slot.'),
+            title=_('Add schedule slots'),
+            subtitle=_('Pick a group and add one or more weekly slots.'),
             cancel_href=_schedule_form_cancel_href(request),
-            extra={
-                'return_to': 'schedule',
-                'return_week': request.GET.get('week', ''),
-            },
+            group=initial_group,
+            extra=extra,
         )
 
     def post(self, request):
         teacher = get_teacher_profile(request.portal_user)
-        form = TeacherScheduleForm(teacher.pk, data=request.POST)
-        if form.is_valid():
-            form.save()
+        saved_group, cleaned, errors = _save_bulk_schedule(request)
+        if errors:
+            return _schedule_bulk_response(
+                request,
+                title=_('Add schedule slots'),
+                subtitle=_('Pick a group and add one or more weekly slots.'),
+                cancel_href=_schedule_form_cancel_href(request),
+                post=request.POST,
+                slot_errors=errors,
+                extra={
+                    'return_to': request.POST.get('return_to', 'schedule'),
+                    'return_week': request.POST.get('return_week', ''),
+                },
+            )
+        count = len(cleaned)
+        if count == 1:
             messages.success(request, _('Schedule slot added.'))
-            return _schedule_form_redirect(request)
-        return _form_response(
-            request,
-            self.template_name,
-            form,
-            title=_('Add schedule slot'),
-            subtitle=_('Pick a group, day, and time for this weekly slot.'),
-            cancel_href=_schedule_form_cancel_href(request),
-            extra={
-                'return_to': request.POST.get('return_to', 'schedule'),
-                'return_week': request.POST.get('return_week', ''),
-            },
-        )
+        else:
+            messages.success(
+                request,
+                _('%(count)s schedule slots added.') % {'count': count},
+            )
+        return _schedule_form_redirect(request, group_pk=saved_group.pk if saved_group else None)
 
 
-class TeacherScheduleDeleteView(TeacherScheduleMutationForbiddenMixin, TeacherRequiredMixin, View):
+class TeacherScheduleDeleteView(TeacherRequiredMixin, View):
     def post(self, request, schedule_pk):
         teacher = get_teacher_profile(request.portal_user)
         schedule = get_teacher_schedule(teacher.pk, schedule_pk)
         if not schedule:
             raise Http404
+        group_pk = schedule.group_id
         week = request.POST.get('week', '').strip()
         schedule.delete()
         messages.success(request, _('Schedule slot deleted.'))
+        if request.POST.get('return_to') == 'group':
+            return redirect('portals:teacher-group-detail', pk=group_pk)
         return redirect(_schedule_calendar_url(week or None))
 
 
-class TeacherScheduleEditView(TeacherScheduleMutationForbiddenMixin, TeacherRequiredMixin, View):
+class TeacherScheduleEditView(TeacherRequiredMixin, View):
     template_name = 'portals/teacher/schedule_form.html'
 
     def get(self, request, schedule_pk):
@@ -251,7 +361,7 @@ class TeacherScheduleEditView(TeacherScheduleMutationForbiddenMixin, TeacherRequ
         return _form_response(
             request,
             self.template_name,
-            TeacherScheduleForm(teacher.pk, instance=schedule),
+            TeacherScheduleEditForm(teacher.pk, instance=schedule),
             title=_('Edit schedule slot'),
             subtitle=group.name,
             cancel_href=_schedule_form_cancel_href(request, group_pk=group.pk),
@@ -264,7 +374,7 @@ class TeacherScheduleEditView(TeacherScheduleMutationForbiddenMixin, TeacherRequ
         if not schedule:
             raise Http404
         group = schedule.group
-        form = TeacherScheduleForm(teacher.pk, request.POST, instance=schedule)
+        form = TeacherScheduleEditForm(teacher.pk, request.POST, instance=schedule)
         if form.is_valid():
             form.save()
             messages.success(request, _('Schedule slot updated.'))

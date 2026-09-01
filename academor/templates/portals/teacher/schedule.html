@@ -23,6 +23,9 @@
   </div>
 
   <div class="portal-control-right">
+    <a class="btn btn-primary" href="{% url 'portals:teacher-schedule-slot-create' %}?return_to=schedule&week={{ calendar.week_start|date:'Y-m-d' }}">
+      <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>{% trans 'Add slots' %}
+    </a>
     <a class="btn btn-outline-secondary" href="?week=">
       <i class="bi bi-calendar-check me-1" aria-hidden="true"></i>{% trans 'This week' %}
     </a>
@@ -77,6 +80,18 @@
             <i class="bi bi-check2-circle" aria-hidden="true"></i>
             <span>{% trans 'Mark attendance' %}</span>
           </a>
+          <div class="portal-session-manage-links">
+            <a class="portal-session-manage-link" href="{% url 'portals:teacher-schedule-edit' schedule_pk=session.schedule_id %}?return_to=schedule&week={{ calendar.week_start|date:'Y-m-d' }}" title="{% trans 'Edit slot' %}">
+              <i class="bi bi-pencil" aria-hidden="true"></i>
+            </a>
+            <form method="post" action="{% url 'portals:teacher-schedule-delete' schedule_pk=session.schedule_id %}" class="d-inline" onsubmit="return confirm('{% trans "Delete this schedule slot?" %}');">
+              {% csrf_token %}
+              <input type="hidden" name="week" value="{{ calendar.week_start|date:'Y-m-d' }}">
+              <button type="submit" class="portal-session-manage-link portal-session-manage-link--danger" title="{% trans 'Delete slot' %}">
+                <i class="bi bi-trash" aria-hidden="true"></i>
+              </button>
+            </form>
+          </div>
         </article>
         {% empty %}
         <div class="portal-empty-day">
@@ -95,9 +110,12 @@
     <i class="bi bi-calendar-week" aria-hidden="true"></i>
   </div>
   <h3>{% trans 'No schedule set' %}</h3>
-  <p class="text-muted">{% trans 'Groups and schedule are assigned by Academor administration.' %}</p>
+  <p class="text-muted">{% trans 'Add weekly slots for your groups to build the calendar.' %}</p>
   <div class="portal-empty-actions">
-    <a class="btn btn-primary" href="{% url 'portals:teacher-groups' %}">
+    <a class="btn btn-primary" href="{% url 'portals:teacher-schedule-slot-create' %}">
+      <i class="bi bi-plus-lg me-2" aria-hidden="true"></i>{% trans 'Add schedule slot' %}
+    </a>
+    <a class="btn btn-outline-secondary" href="{% url 'portals:teacher-groups' %}">
       <i class="bi bi-people me-2" aria-hidden="true"></i>{% trans 'Open Your Groups' %}
     </a>
   </div>

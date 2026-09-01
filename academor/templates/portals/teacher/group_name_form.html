@@ -1,0 +1,9 @@
+{% extends "portals/base.html" %}
+{% load i18n portal_tags %}
+
+{% block title %}{{ form_title }}{% endblock %}
+
+{% block content %}
+{% portal_page_heading icon="bi-people" eyebrow="Teacher" raw_title=form_title raw_subtitle=form_subtitle %}
+{% include "portals/includes/teacher_form_card.html" %}
+{% endblock %}

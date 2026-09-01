@@ -1276,7 +1276,7 @@ msgstr "məs. Bazar ertəsi 18:00, 90 dəq"
 #: academor/portals/models/schedule_models.py:39
 #| msgid "Active only"
 msgid "Active from"
-msgstr "Yalnız aktiv"
+msgstr "Aktiv tarix"
 
 #: academor/portals/admin/help_texts.py:96
 msgid "First date the slot appears on the calendar"
@@ -8179,7 +8179,7 @@ msgstr "Bütün qeydlər"
 
 #: academor/templates/portals/teacher/attendance_student.html:116
 msgid "Time"
-msgstr "Vaxt"
+msgstr "Saat"
 
 #: academor/templates/portals/teacher/attendance_student.html:137
 #| msgid "No attendance records yet."
@@ -10930,9 +10930,6 @@ msgstr "Mock test nəticəsi"
 #~ msgid "Create quiz header"
 #~ msgstr "Quiz başlığı yaradın"
 
-#~ msgid "Delete this schedule slot?"
-#~ msgstr "Bu cədvəl sahəsi silinsin?"
-
 #~ msgid "Filter quizzes by course / service type"
 #~ msgstr "Kurs/xidmət növü üzrə imtahanları süzün"
 
@@ -11156,3 +11153,67 @@ msgstr "Qeyd: Bu nəticələr təxmini qiymətləndirmə məqsədi daşıyır v�
 
 #~ msgid "Conceptual path"
 #~ msgstr "Konseptual yol"
+
+# Teacher schedule portal (2026-09)
+msgid "24-hour format (HH:MM)"
+msgstr "24 saat formatı (SS:DD)"
+
+msgid "Enter time in 24-hour HH:MM format (Baku)."
+msgstr "24 saatlıq SS:DD formatında vaxt daxil edin (Bakı)."
+
+msgid "Enter a valid time (HH:MM, 24-hour format)."
+msgstr "Düzgün vaxt daxil edin (SS:DD, 24 saat formatı)."
+
+msgid "Weekly slots"
+msgstr "Həftəlik slotlar"
+
+msgid "Times are in Azerbaijan time (Baku, UTC+4)."
+msgstr "Vaxtlar Azərbaycan vaxtı ilə göstərilir (Bakı, UTC+4)."
+
+msgid "Select a group"
+msgstr "Qrup seçin"
+
+msgid "Remove slot"
+msgstr "Slotu sil"
+
+msgid "Add another slot"
+msgstr "Başqa slot əlavə et"
+
+msgid "Save schedule"
+msgstr "Cədvəli saxla"
+
+msgid "Add schedule slots"
+msgstr "Cədvəl slotları əlavə et"
+
+msgid "Add slots"
+msgstr "Slot əlavə et"
+
+msgid "Rename group"
+msgstr "Qrupu adlandır"
+
+msgid "Group name updated."
+msgstr "Qrup adı yeniləndi."
+
+msgid "Pick a group and add one or more weekly slots."
+msgstr "Qrup seçin və bir və ya bir neçə həftəlik slot əlavə edin."
+
+msgid "%(count)s schedule slots added."
+msgstr "%(count)s cədvəl slotu əlavə edildi."
+
+msgid "Select a weekday."
+msgstr "Həftə günü seçin."
+
+msgid "Duration must be at least %(min)s minutes."
+msgstr "Müddət ən azı %(min)s dəqiqə olmalıdır."
+
+msgid "This day and time is duplicated in the form."
+msgstr "Bu gün və vaxt formada təkrarlanır."
+
+msgid "Add at least one schedule slot."
+msgstr "Ən azı bir cədvəl slotu əlavə edin."
+
+msgid "One or more slots already exist for this group on the same day and time."
+msgstr "Bu qrup üçün eyni gün və vaxtda artıq slot mövcuddur."
+
+msgid "Delete this schedule slot?"
+msgstr "Bu cədvəl slotu silinsin?"
