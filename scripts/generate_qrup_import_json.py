@@ -170,6 +170,109 @@ def strip_student_names_from_group(name, student_names=()):
     return re.sub(r'\s+', ' ', s).strip()
 
 
+DAY_NAMES = (
+    ('monday', 0),
+    ('tuesday', 1),
+    ('wednesday', 2),
+    ('thursday', 3),
+    ('friday', 4),
+    ('saturday', 5),
+    ('sunday', 6),
+)
+
+
+def is_ielts_subject(subject):
+    subject_l = clean(subject).lower()
+    return 'ielts' in subject_l
+
+
+def group_course_slugs(subject, course_slug):
+    slug = normalize_import_slug(course_slug)
+    if is_ielts_subject(subject) or slug == 'ielts':
+        return ['general-english', 'ielts']
+    if slug:
+        return [slug]
+    return []
+
+
+def weekday_from_text(text):
+    token = clean(text).lower()
+    for name, num in DAY_NAMES:
+        if name in token:
+            return num
+    return None
+
+
+def weekdays_from_text(text):
+    """All weekday numbers mentioned in text (e.g. 'Monday, Wednesday')."""
+    text = clean(text).lower().replace(' and ', ', ')
+    found = []
+    for part in re.split(r'[,;]', text):
+        wd = weekday_from_text(part)
+        if wd is not None:
+            found.append(wd)
+    return sorted(set(found))
+
+
+def parse_weekdays(days_str):
+    return weekdays_from_text(days_str)
+
+
+def parse_time_range(text):
+    times = re.findall(r'(\d{1,2})\s*:\s*(\d{2})', clean(text))
+    if len(times) >= 2:
+        sh, sm = int(times[0][0]), int(times[0][1])
+        eh, em = int(times[1][0]), int(times[1][1])
+        start_min = sh * 60 + sm
+        end_min = eh * 60 + em
+        duration = end_min - start_min if end_min > start_min else 90
+        return f'{sh:02d}:{sm:02d}', duration
+    if len(times) == 1:
+        sh, sm = int(times[0][0]), int(times[0][1])
+        return f'{sh:02d}:{sm:02d}', 90
+    return None, None
+
+
+DAY_PATTERN = r'(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)'
+SCHEDULE_ENTRY = re.compile(
+    rf'(({DAY_PATTERN}(?:\s*,\s*{DAY_PATTERN})*)\s*:?\s*'
+    rf'(\d{{1,2}}\s*:\s*\d{{2}}(?:\s*-\s*\d{{1,2}}\s*:\s*\d{{2}})?))',
+    re.I,
+)
+
+
+def parse_group_schedule(days_str, schedule_str):
+    days_str = clean(days_str)
+    schedule_str = clean(schedule_str)
+    if not days_str and not schedule_str:
+        return []
+
+    slots = []
+    if re.search(rf'{DAY_PATTERN}\b', schedule_str, re.I):
+        for match in SCHEDULE_ENTRY.finditer(schedule_str):
+            weekdays = weekdays_from_text(match.group(2))
+            start, duration = parse_time_range(match.group(3))
+            if start and weekdays:
+                for wd in weekdays:
+                    slots.append({'weekday': wd, 'start_time': start, 'duration_min': duration})
+    else:
+        start, duration = parse_time_range(schedule_str)
+        weekdays = parse_weekdays(days_str)
+        if start and weekdays:
+            for wd in weekdays:
+                slots.append({'weekday': wd, 'start_time': start, 'duration_min': duration})
+
+    deduped = []
+    seen = set()
+    for slot in slots:
+        key = (slot['weekday'], slot['start_time'])
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(slot)
+    return deduped
+
+
 def match_group(student, groups):
     gn = norm_group(student.get('group_name', ''))
     if not gn:
@@ -263,6 +366,9 @@ def main():
             'max_students': max_st,
             'student_names': [],
             '_explicit_labels': extract_paren_content(name),
+            '_days': clean(row['days']),
+            '_schedule': clean(row['schedule']),
+            '_room': clean(row['room']),
         })
 
     all_student_names = [s['full_name'] for s in students]
@@ -327,6 +433,12 @@ def main():
 
     for g in groups:
         g['course_slug'] = normalize_import_slug(g.get('course_slug', ''))
+        g['course_slugs'] = group_course_slugs(g.get('subject', ''), g['course_slug'])
+        g['schedule'] = parse_group_schedule(g.pop('_days', ''), g.pop('_schedule', ''))
+        room = g.pop('_room', '')
+        if room:
+            for slot in g['schedule']:
+                slot['room_or_link'] = room
 
     payload = {
         'source': str(EXCEL.name),

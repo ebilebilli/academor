@@ -6,6 +6,7 @@ from pathlib import Path
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
+from django.utils import timezone
 
 from portals.forms import (
     PORTAL_ROLE_STUDENT,
@@ -13,12 +14,13 @@ from portals.forms import (
     create_portal_profile,
     set_teacher_course_specializations,
 )
-from portals.models import StudentCourseSpecialization, StudentProfile, StudyGroup, TeacherProfile
+from portals.models import Schedule, StudentCourseSpecialization, StudentProfile, StudyGroup, TeacherProfile
 from portals.utils.qrup_import_helpers import (
     ENGLISH_LANGUAGE_COURSE_NAMES,
     ENGLISH_LANGUAGE_COURSE_SLUGS,
     IELTS_COURSE_NAMES,
     IELTS_COURSE_SLUGS,
+    group_course_slugs,
     is_ielts_track,
     normalize_course_slug,
     student_course_enrollment_slugs,
@@ -154,6 +156,42 @@ def ensure_student_course_enrollments(profile, item, cache, stdout, style):
             f'    IELTS bundle incomplete for {profile.user.username} '
             f'({len(services)}/2 courses resolved)',
         ))
+
+
+def sync_group_schedules(group, schedule_items, *, effective_from=None):
+    from datetime import time as dt_time
+
+    effective_from = effective_from or timezone.localdate()
+    desired_keys = set()
+    for slot in schedule_items or []:
+        start_raw = slot.get('start_time', '')
+        parts = str(start_raw).split(':')
+        if len(parts) < 2:
+            continue
+        start_time = dt_time(int(parts[0]), int(parts[1]))
+        weekday = int(slot['weekday'])
+        duration = int(slot.get('duration_min') or 90)
+        room = slot.get('room_or_link', '')
+        Schedule.objects.update_or_create(
+            group=group,
+            weekday=weekday,
+            start_time=start_time,
+            effective_from=effective_from,
+            defaults={
+                'duration_min': duration,
+                'room_or_link': room,
+            },
+        )
+        desired_keys.add((weekday, start_time, effective_from))
+
+    if not desired_keys:
+        return
+
+    keep_ids = []
+    for row in group.schedules.filter(effective_from=effective_from):
+        if (row.weekday, row.start_time, row.effective_from) in desired_keys:
+            keep_ids.append(row.pk)
+    group.schedules.filter(effective_from=effective_from).exclude(pk__in=keep_ids).delete()
 
 
 class Command(BaseCommand):
@@ -385,14 +423,21 @@ class Command(BaseCommand):
             group.is_active = True
             group.save(update_fields=['teacher', 'max_students', 'is_active'])
 
-            course_slug = normalize_course_slug(item.get('course_slug', ''))
-            service = resolve_service(course_slug, service_cache)
-            if service:
-                group.courses.set([service])
-            else:
-                self.stdout.write(self.style.WARNING(
-                    f'    Unknown course for group: {course_slug}',
-                ))
+            slugs = item.get('course_slugs') or group_course_slugs(
+                item.get('subject', ''),
+                normalize_course_slug(item.get('course_slug', '')),
+            )
+            services = []
+            for slug in slugs:
+                service = resolve_service(slug, service_cache)
+                if service and service not in services:
+                    services.append(service)
+                elif not service:
+                    self.stdout.write(self.style.WARNING(f'    Unknown course for group: {slug}'))
+            if services:
+                group.courses.set(services)
+
+            sync_group_schedules(group, item.get('schedule') or [])
 
             student_names = item.get('student_names') or []
             profiles = []

@@ -12,6 +12,8 @@ ENGLISH_LANGUAGE_COURSE_NAMES = ('english language course', 'english language')
 
 IELTS_DEFAULT_ENROLLMENT_SLUGS = IELTS_COURSE_SLUGS + ENGLISH_LANGUAGE_COURSE_SLUGS
 
+IELTS_GROUP_COURSE_SLUGS = ('ielts', 'general-english')
+
 
 def normalize_course_slug(slug):
     slug = (slug or '').strip().lower()
@@ -26,6 +28,15 @@ def is_ielts_track(subject='', course_slug=''):
     if slug == 'ielts' or 'ielts' in slug:
         return True
     return subject_l in ('ielts', 'foundation ielts') or 'ielts' in subject_l
+
+
+def group_course_slugs(subject='', course_slug=''):
+    slug = normalize_course_slug(course_slug)
+    if is_ielts_track(subject, slug):
+        return list(IELTS_GROUP_COURSE_SLUGS)
+    if slug:
+        return [slug]
+    return []
 
 
 def student_course_enrollment_slugs(subject='', course_slug=''):
