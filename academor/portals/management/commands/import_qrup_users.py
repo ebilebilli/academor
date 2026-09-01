@@ -13,7 +13,16 @@ from portals.forms import (
     create_portal_profile,
     set_teacher_course_specializations,
 )
-from portals.models import StudentProfile, StudyGroup, TeacherProfile
+from portals.models import StudentCourseSpecialization, StudentProfile, StudyGroup, TeacherProfile
+from portals.utils.qrup_import_helpers import (
+    ENGLISH_LANGUAGE_COURSE_NAMES,
+    ENGLISH_LANGUAGE_COURSE_SLUGS,
+    IELTS_COURSE_NAMES,
+    IELTS_COURSE_SLUGS,
+    is_ielts_track,
+    normalize_course_slug,
+    student_course_enrollment_slugs,
+)
 from portals.utils.student_courses import ensure_student_group_course_enrollments
 from projects.models.service_models import Service
 
@@ -22,13 +31,15 @@ User = get_user_model()
 DEFAULT_JSON = Path(__file__).resolve().parents[2] / 'data' / 'qrup_import.json'
 
 SUBJECT_FALLBACKS = {
-    'general-english': ['general english', 'general-english'],
-    'foundation-ielts': ['foundation ielts', 'foundation-ielts'],
+    'general-english': ['general english', 'general-english', 'english language course', 'english language'],
+    'foundation-ielts': ['foundation ielts', 'foundation-ielts', 'ielts'],
     'english-for-kids': ['english for kids', 'kids english', 'english-for-kids'],
     'ap-economics': ['ap economics', 'ap-economics'],
     'gre-math': ['gre math', 'gre-math'],
     'gre-verbal': ['gre verbal', 'gre-verbal'],
-    'ielts': ['ielts'],
+    'ielts': ['ielts', 'ielts course'],
+    'ielts-course': ['ielts course', 'ielts'],
+    'english-language-course': ['english language course', 'english language'],
     'sat-verbal': ['sat verbal', 'sat-verbal'],
     'cfa-1': ['cfa 1', 'cfa-1', 'cfa'],
 }
@@ -40,7 +51,7 @@ def load_payload(path):
 
 
 def resolve_service(slug, cache):
-    slug = (slug or '').strip().lower()
+    slug = normalize_course_slug(slug)
     if not slug:
         return None
     if slug in cache:
@@ -68,10 +79,38 @@ def resolve_service(slug, cache):
     return None
 
 
+def resolve_service_candidates(slugs, names, cache):
+    for slug in slugs:
+        service = resolve_service(slug, cache)
+        if service:
+            return service
+    for name in names:
+        for field in ('name_en', 'name_az', 'name_ru'):
+            service = Service.objects.filter(is_active=True, **{f'{field}__iexact': name}).first()
+            if not service:
+                service = Service.objects.filter(is_active=True, **{f'{field}__icontains': name}).first()
+            if service:
+                cache[service.slug] = service
+                return service
+    return None
+
+
+def resolve_ielts_bundle(cache):
+    services = []
+    for slugs, names in (
+        (IELTS_COURSE_SLUGS, IELTS_COURSE_NAMES),
+        (ENGLISH_LANGUAGE_COURSE_SLUGS, ENGLISH_LANGUAGE_COURSE_NAMES),
+    ):
+        service = resolve_service_candidates(slugs, names, cache)
+        if service and service not in services:
+            services.append(service)
+    return services
+
+
 def resolve_course_type(service, slug):
     if service and service.slug:
         return service.slug
-    return slug
+    return normalize_course_slug(slug)
 
 
 def get_or_create_user(username, password, *, update_password=False):
@@ -85,8 +124,40 @@ def get_or_create_user(username, password, *, update_password=False):
     return user, True
 
 
+def ensure_student_course_enrollments(profile, item, cache, stdout, style):
+    slugs = item.get('course_enrollments') or student_course_enrollment_slugs(
+        item.get('subject', ''),
+        item.get('course_slug', ''),
+    )
+    services = []
+    if is_ielts_track(item.get('subject', ''), item.get('course_slug', '')):
+        services = resolve_ielts_bundle(cache)
+    else:
+        for slug in slugs:
+            service = resolve_service(slug, cache)
+            if service and service not in services:
+                services.append(service)
+
+    seen = set()
+    for service in services:
+        code = service.slug
+        if code in seen:
+            continue
+        seen.add(code)
+        StudentCourseSpecialization.objects.update_or_create(
+            student=profile,
+            course_type=code,
+            defaults={'is_active': True},
+        )
+    if is_ielts_track(item.get('subject', ''), item.get('course_slug', '')) and len(services) < 2:
+        stdout.write(style.WARNING(
+            f'    IELTS bundle incomplete for {profile.user.username} '
+            f'({len(services)}/2 courses resolved)',
+        ))
+
+
 class Command(BaseCommand):
-    help = 'Import portal teachers, students, and study groups from qrup_import.json.'
+    help = 'Import or update portal teachers, students, and study groups from qrup_import.json.'
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -107,7 +178,7 @@ class Command(BaseCommand):
         parser.add_argument(
             '--skip-existing',
             action='store_true',
-            help='Skip users that already exist instead of updating.',
+            help='Skip users that already exist instead of updating profiles.',
         )
 
     def handle(self, *args, **options):
@@ -126,6 +197,9 @@ class Command(BaseCommand):
         service_cache = {}
         teacher_profiles = {}
         student_profiles = {}
+        student_payload_by_name = {
+            item['full_name']: item for item in payload.get('students', [])
+        }
 
         with transaction.atomic():
             self._import_teachers(
@@ -138,6 +212,7 @@ class Command(BaseCommand):
             )
             self._import_students(
                 payload.get('students', []),
+                service_cache,
                 student_profiles,
                 dry_run=dry_run,
                 update_passwords=update_passwords,
@@ -148,6 +223,7 @@ class Command(BaseCommand):
                 service_cache,
                 teacher_profiles,
                 student_profiles,
+                student_payload_by_name,
                 dry_run=dry_run,
             )
 
@@ -177,7 +253,8 @@ class Command(BaseCommand):
                 self.stdout.write(f'  SKIP teacher (exists): {username}')
                 continue
 
-            self.stdout.write(f'  {"[dry]" if dry_run else "+"} Teacher: {username}')
+            action = 'UPDATE' if existing else 'CREATE'
+            self.stdout.write(f'  {"[dry]" if dry_run else action} Teacher: {username}')
             if dry_run:
                 teacher_profiles[item['full_name']] = None
                 continue
@@ -191,6 +268,9 @@ class Command(BaseCommand):
             if not profile:
                 create_portal_profile(user, PORTAL_ROLE_TEACHER, phone=item.get('phone', ''))
                 profile = TeacherProfile.objects.get(user=user)
+            elif item.get('phone') and profile.phone != item['phone']:
+                profile.phone = item['phone']
+                profile.save(update_fields=['phone'])
 
             course_codes = []
             for slug in item.get('courses', []):
@@ -208,6 +288,7 @@ class Command(BaseCommand):
     def _import_students(
         self,
         students,
+        service_cache,
         student_profiles,
         *,
         dry_run,
@@ -225,7 +306,8 @@ class Command(BaseCommand):
                 self.stdout.write(f'  SKIP student (exists): {username}')
                 continue
 
-            self.stdout.write(f'  {"[dry]" if dry_run else "+"} Student: {username}')
+            action = 'UPDATE' if existing else 'CREATE'
+            self.stdout.write(f'  {"[dry]" if dry_run else action} Student: {username}')
             if dry_run:
                 student_profiles[item['full_name']] = None
                 continue
@@ -243,10 +325,25 @@ class Command(BaseCommand):
                     phone=item.get('phone', ''),
                 )
                 profile = StudentProfile.objects.get(user=user)
+            else:
+                update_fields = []
+                phone = item.get('phone', '')
+                if phone and profile.phone != phone:
+                    profile.phone = phone
+                    update_fields.append('phone')
+                if item.get('start_date'):
+                    profile.enrollment_date = item['start_date']
+                    update_fields.append('enrollment_date')
+                if update_fields:
+                    profile.save(update_fields=update_fields)
 
-            if item.get('start_date') and not profile.enrollment_date:
-                profile.enrollment_date = item['start_date']
-                profile.save(update_fields=['enrollment_date'])
+            ensure_student_course_enrollments(
+                profile,
+                item,
+                service_cache,
+                self.stdout,
+                self.style,
+            )
 
             student_profiles[item['full_name']] = profile
 
@@ -256,6 +353,7 @@ class Command(BaseCommand):
         service_cache,
         teacher_profiles,
         student_profiles,
+        student_payload_by_name,
         *,
         dry_run,
     ):
@@ -270,11 +368,11 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.ERROR(f'  SKIP group (no teacher): {item["name"]}'))
                 continue
 
-            self.stdout.write(f'  {"[dry]" if dry_run else "+"} Group: {item["name"]}')
+            self.stdout.write(f'  {"[dry]" if dry_run else "UPSERT"} Group: {item["name"]}')
             if dry_run:
                 continue
 
-            group, created = StudyGroup.objects.get_or_create(
+            group, _created = StudyGroup.objects.get_or_create(
                 name=item['name'],
                 defaults={
                     'teacher': teacher,
@@ -282,18 +380,18 @@ class Command(BaseCommand):
                     'is_active': True,
                 },
             )
-            if not created:
-                group.teacher = teacher
-                group.max_students = item.get('max_students') or group.max_students
-                group.is_active = True
-                group.save(update_fields=['teacher', 'max_students', 'is_active'])
+            group.teacher = teacher
+            group.max_students = item.get('max_students') or group.max_students
+            group.is_active = True
+            group.save(update_fields=['teacher', 'max_students', 'is_active'])
 
-            service = resolve_service(item.get('course_slug', ''), service_cache)
+            course_slug = normalize_course_slug(item.get('course_slug', ''))
+            service = resolve_service(course_slug, service_cache)
             if service:
                 group.courses.set([service])
             else:
                 self.stdout.write(self.style.WARNING(
-                    f'    Unknown course for group: {item.get("course_slug")}',
+                    f'    Unknown course for group: {course_slug}',
                 ))
 
             student_names = item.get('student_names') or []
@@ -307,7 +405,20 @@ class Command(BaseCommand):
                 else:
                     self.stdout.write(self.style.WARNING(f'    Student not found for group: {name}'))
 
-            if profiles:
-                group.students.add(*profiles)
-                for profile in profiles:
-                    ensure_student_group_course_enrollments(profile.pk, group)
+            group.students.set(profiles)
+            for name in student_names:
+                profile = student_profiles.get(name)
+                if not profile:
+                    profile = StudentProfile.objects.filter(user__username=name).first()
+                if not profile:
+                    continue
+                ensure_student_group_course_enrollments(profile.pk, group)
+                payload_item = student_payload_by_name.get(name)
+                if payload_item:
+                    ensure_student_course_enrollments(
+                        profile,
+                        payload_item,
+                        service_cache,
+                        self.stdout,
+                        self.style,
+                    )

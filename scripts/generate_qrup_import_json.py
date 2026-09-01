@@ -2,6 +2,8 @@
 
 import json
 import re
+import secrets
+import string
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -13,7 +15,7 @@ OUT_DIR = Path(__file__).resolve().parents[1] / 'academor' / 'portals' / 'data'
 
 SUBJECT_MAP = {
     'General English': 'general-english',
-    'Foundation IELTS': 'foundation-ielts',
+    'Foundation IELTS': 'ielts',
     'English for Kids': 'english-for-kids',
     'Kids English': 'english-for-kids',
     'AP Economics': 'ap-economics',
@@ -25,6 +27,30 @@ SUBJECT_MAP = {
     'CFA 1': 'cfa-1',
     'CFA-1': 'cfa-1',
 }
+
+
+def complex_password(role: str, index: int) -> str:
+    alphabet = string.ascii_letters + string.digits
+    suffix = ''.join(secrets.choice(alphabet) for _ in range(5))
+    return f'AcD3mor!{role}{index:02d}#{suffix}'
+
+
+def student_course_enrollment_slugs(subject='', course_slug=''):
+    subject = clean(subject)
+    slug = subject_to_slug(subject) if subject else normalize_import_slug(course_slug)
+    subject_l = subject.lower()
+    if slug == 'ielts' or 'ielts' in subject_l:
+        return ['ielts-course', 'english-language-course']
+    if slug:
+        return [slug]
+    return []
+
+
+def normalize_import_slug(slug):
+    slug = (slug or '').strip().lower()
+    if slug in ('foundation-ielts', 'foundation_ielts'):
+        return 'ielts'
+    return slug
 
 
 def clean(val):
@@ -253,13 +279,16 @@ def main():
 
     for s in students:
         s['username'] = s['full_name']
+        slug = subject_to_slug(s.get('subject', ''))
+        s['course_slug'] = slug
+        s['course_enrollments'] = student_course_enrollment_slugs(s.get('subject', ''), slug)
         if s['full_name'] in assigned:
             s['matched_group'] = assigned[s['full_name']]
         else:
             s['matched_group'] = match_group(s, groups)
 
     for i, s in enumerate(students, 1):
-        s['password'] = f'AcademorS{i:02d}!'
+        s['password'] = complex_password('S', i)
 
     for s in students:
         if s['full_name'] in assigned:
@@ -288,13 +317,16 @@ def main():
         sorted((n, c) for n, c in teachers_set.items() if n.lower() not in SKIP_TEACHERS),
         1,
     ):
-        courses = sorted(c for c in courses if c and c != 'fənn')
+        courses = sorted(normalize_import_slug(c) for c in courses if c and c != 'fənn')
         teachers.append({
             'full_name': name,
             'courses': courses,
             'username': name,
-            'password': f'AcademorT{i}!',
+            'password': complex_password('T', i),
         })
+
+    for g in groups:
+        g['course_slug'] = normalize_import_slug(g.get('course_slug', ''))
 
     payload = {
         'source': str(EXCEL.name),
@@ -322,6 +354,7 @@ def main():
         lines.append(f"  Parol: {s['password']}")
         lines.append(f"  Qrup: {s.get('matched_group') or s['group_name']}")
         lines.append(f"  Müəllim: {s['teacher']}")
+        lines.append(f"  Kurslar: {', '.join(s.get('course_enrollments') or [])}")
         lines.append('')
 
     cred_path = OUT_DIR / 'qrup_import_credentials.txt'

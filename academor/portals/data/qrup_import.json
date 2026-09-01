@@ -1,6 +1,6 @@
 {
   "source": "Qrup_detallari.xlsx",
-  "generated_at": "2026-09-01T13:16:33.258994",
+  "generated_at": "2026-09-01T14:12:30.468952",
   "teachers": [
     {
       "full_name": "Aytac İbadova",
@@ -9,7 +9,7 @@
         "general-english"
       ],
       "username": "Aytac İbadova",
-      "password": "AcademorT1!"
+      "password": "AcD3mor!T01#PsIsR"
     },
     {
       "full_name": "Fidan Məmmədli",
@@ -18,17 +18,16 @@
         "general-english"
       ],
       "username": "Fidan Məmmədli",
-      "password": "AcademorT2!"
+      "password": "AcD3mor!T02#HPCy2"
     },
     {
       "full_name": "Ramil Baxışlı",
       "courses": [
-        "foundation-ielts",
         "general-english",
         "ielts"
       ],
       "username": "Ramil Baxışlı",
-      "password": "AcademorT3!"
+      "password": "AcD3mor!T03#gCHhg"
     },
     {
       "full_name": "Tural Kişizadə",
@@ -36,7 +35,7 @@
         "ielts"
       ],
       "username": "Tural Kişizadə",
-      "password": "AcademorT4!"
+      "password": "AcD3mor!T04#5yIM1"
     },
     {
       "full_name": "Tural Məmmədov",
@@ -45,7 +44,7 @@
         "gre-math"
       ],
       "username": "Tural Məmmədov",
-      "password": "AcademorT5!"
+      "password": "AcD3mor!T05#gpz0d"
     }
   ],
   "students": [
@@ -58,8 +57,12 @@
       "start_date": "2026-05-22",
       "note": null,
       "username": "Cavid Abbaslı",
+      "course_slug": "general-english",
+      "course_enrollments": [
+        "general-english"
+      ],
       "matched_group": "General English Private 2/4/6",
-      "password": "AcademorS01!"
+      "password": "AcD3mor!S01#YFhKM"
     },
     {
       "full_name": "Banu Aslanlı",
@@ -70,8 +73,13 @@
       "start_date": "2026-06-03",
       "note": null,
       "username": "Banu Aslanlı",
+      "course_slug": "ielts",
+      "course_enrollments": [
+        "ielts-course",
+        "english-language-course"
+      ],
       "matched_group": "Günorta Foundation IELTS B1 1/3/6",
-      "password": "AcademorS02!"
+      "password": "AcD3mor!S02#dXeWM"
     },
     {
       "full_name": "Nihad Əliyev",
@@ -82,8 +90,13 @@
       "start_date": "2026-06-08",
       "note": null,
       "username": "Nihad Əliyev",
+      "course_slug": "ielts",
+      "course_enrollments": [
+        "ielts-course",
+        "english-language-course"
+      ],
       "matched_group": "Günorta Foundation IELTS B1 1/3/6",
-      "password": "AcademorS03!"
+      "password": "AcD3mor!S03#MGMca"
     },
     {
       "full_name": "Fəxriyyə Əsgərova (Asya)",
@@ -94,8 +107,12 @@
       "start_date": "2026-07-20",
       "note": null,
       "username": "Fəxriyyə Əsgərova (Asya)",
+      "course_slug": "english-for-kids",
+      "course_enrollments": [
+        "english-for-kids"
+      ],
       "matched_group": "Kids English Qrup Sabah 1/3",
-      "password": "AcademorS04!"
+      "password": "AcD3mor!S04#Stfvm"
     },
     {
       "full_name": "Əhməd Eyvazlı",
@@ -106,8 +123,12 @@
       "start_date": "2026-06-29",
       "note": null,
       "username": "Əhməd Eyvazlı",
+      "course_slug": "general-english",
+      "course_enrollments": [
+        "general-english"
+      ],
       "matched_group": "Kids English Qrup Günorta 1/3",
-      "password": "AcademorS05!"
+      "password": "AcD3mor!S05#r1W4z"
     },
     {
       "full_name": "Hüseyn Eyvazlı",
@@ -118,8 +139,12 @@
       "start_date": "2026-06-29",
       "note": null,
       "username": "Hüseyn Eyvazlı",
+      "course_slug": "general-english",
+      "course_enrollments": [
+        "general-english"
+      ],
       "matched_group": "Kids English Qrup Günorta 1/3",
-      "password": "AcademorS06!"
+      "password": "AcD3mor!S06#zKZ76"
     },
     {
       "full_name": "Cəfərov Soltan",
@@ -130,8 +155,12 @@
       "start_date": "2026-07-01",
       "note": null,
       "username": "Cəfərov Soltan",
+      "course_slug": "ap-economics",
+      "course_enrollments": [
+        "ap-economics"
+      ],
       "matched_group": "AP Qrupu 1/3/4",
-      "password": "AcademorS07!"
+      "password": "AcD3mor!S07#Rf6pI"
     },
     {
       "full_name": "Nemət Mürşüdov",
@@ -142,8 +171,12 @@
       "start_date": "2026-07-16",
       "note": null,
       "username": "Nemət Mürşüdov",
+      "course_slug": "gre-math",
+      "course_enrollments": [
+        "gre-math"
+      ],
       "matched_group": "GRE Math Fərdi Online 1/3/5",
-      "password": "AcademorS08!"
+      "password": "AcD3mor!S08#W36nm"
     },
     {
       "full_name": "Zərifə Mustafayeva (Selin)",
@@ -154,8 +187,12 @@
       "start_date": "2026-07-22",
       "note": null,
       "username": "Zərifə Mustafayeva (Selin)",
+      "course_slug": "english-for-kids",
+      "course_enrollments": [
+        "english-for-kids"
+      ],
       "matched_group": "Kids English Fərdi Sabah 1/3",
-      "password": "AcademorS09!"
+      "password": "AcD3mor!S09#loXfu"
     },
     {
       "full_name": "Fəridə Muradova",
@@ -166,8 +203,13 @@
       "start_date": "2026-07-23",
       "note": null,
       "username": "Fəridə Muradova",
+      "course_slug": "ielts",
+      "course_enrollments": [
+        "ielts-course",
+        "english-language-course"
+      ],
       "matched_group": "Foundation IELTS Qrup Günorta 2/4",
-      "password": "AcademorS10!"
+      "password": "AcD3mor!S10#C9vwB"
     },
     {
       "full_name": "Liliya Xəlilova",
@@ -178,8 +220,13 @@
       "start_date": "2026-07-23",
       "note": null,
       "username": "Liliya Xəlilova",
+      "course_slug": "ielts",
+      "course_enrollments": [
+        "ielts-course",
+        "english-language-course"
+      ],
       "matched_group": "Foundation IELTS Qrup Günorta 2/4",
-      "password": "AcademorS11!"
+      "password": "AcD3mor!S11#Ul5B8"
     },
     {
       "full_name": "Həcər Məmmədova",
@@ -190,8 +237,13 @@
       "start_date": "2026-07-25",
       "note": null,
       "username": "Həcər Məmmədova",
+      "course_slug": "ielts",
+      "course_enrollments": [
+        "ielts-course",
+        "english-language-course"
+      ],
       "matched_group": "Foundation IELTS Qrup Günorta 2/4",
-      "password": "AcademorS12!"
+      "password": "AcD3mor!S12#HSYOB"
     },
     {
       "full_name": "Rüstəmzadə Ayxan",
@@ -202,8 +254,12 @@
       "start_date": "2026-08-04",
       "note": "Yaş: 10",
       "username": "Rüstəmzadə Ayxan",
+      "course_slug": "english-for-kids",
+      "course_enrollments": [
+        "english-for-kids"
+      ],
       "matched_group": "Kids English Onlayn Qrup 2/6",
-      "password": "AcademorS13!"
+      "password": "AcD3mor!S13#KGD8E"
     },
     {
       "full_name": "İsmayılov Umid",
@@ -214,8 +270,12 @@
       "start_date": "2026-08-04",
       "note": "Yaş: 7",
       "username": "İsmayılov Umid",
+      "course_slug": "english-for-kids",
+      "course_enrollments": [
+        "english-for-kids"
+      ],
       "matched_group": "Kids English Onlayn Qrup 2/6",
-      "password": "AcademorS14!"
+      "password": "AcD3mor!S14#473qB"
     },
     {
       "full_name": "Rauf Əliyev",
@@ -226,8 +286,12 @@
       "start_date": "2026-08-04",
       "note": "Yaş: 5",
       "username": "Rauf Əliyev",
+      "course_slug": "english-for-kids",
+      "course_enrollments": [
+        "english-for-kids"
+      ],
       "matched_group": "Kids English Onlayn Qrup 2/6",
-      "password": "AcademorS15!"
+      "password": "AcD3mor!S15#Rx3Ot"
     },
     {
       "full_name": "Əsmər Rüstəmzadə",
@@ -238,8 +302,12 @@
       "start_date": "2026-08-04",
       "note": "Yaş: 14",
       "username": "Əsmər Rüstəmzadə",
+      "course_slug": "english-for-kids",
+      "course_enrollments": [
+        "english-for-kids"
+      ],
       "matched_group": "Kids English Qrup Online 2/6",
-      "password": "AcademorS16!"
+      "password": "AcD3mor!S16#Yz0T6"
     },
     {
       "full_name": "Duyğu Aslanova",
@@ -250,8 +318,12 @@
       "start_date": "2026-08-04",
       "note": "Yaş: 13",
       "username": "Duyğu Aslanova",
+      "course_slug": "english-for-kids",
+      "course_enrollments": [
+        "english-for-kids"
+      ],
       "matched_group": "Kids English Qrup Online 2/6",
-      "password": "AcademorS17!"
+      "password": "AcD3mor!S17#h7BYQ"
     },
     {
       "full_name": "Nihad Nacafli",
@@ -262,8 +334,12 @@
       "start_date": "2026-08-08",
       "note": "Yaş: 10",
       "username": "Nihad Nacafli",
+      "course_slug": "english-for-kids",
+      "course_enrollments": [
+        "english-for-kids"
+      ],
       "matched_group": "Kids English Qrup Online 1/3",
-      "password": "AcademorS18!"
+      "password": "AcD3mor!S18#b9kvh"
     },
     {
       "full_name": "Aysel Hacıyev",
@@ -274,8 +350,12 @@
       "start_date": "2026-08-11",
       "note": null,
       "username": "Aysel Hacıyev",
+      "course_slug": "english-for-kids",
+      "course_enrollments": [
+        "english-for-kids"
+      ],
       "matched_group": "Kids English Onlayn Qrup 2/6",
-      "password": "AcademorS19!"
+      "password": "AcD3mor!S19#Kl2Kt"
     },
     {
       "full_name": "Ravin İsrafilzadə",
@@ -286,8 +366,12 @@
       "start_date": null,
       "note": null,
       "username": "Ravin İsrafilzadə",
+      "course_slug": "general-english",
+      "course_enrollments": [
+        "general-english"
+      ],
       "matched_group": "",
-      "password": "AcademorS20!"
+      "password": "AcD3mor!S20#n8vPk"
     },
     {
       "full_name": "Loğman Şəmiyev",
@@ -298,8 +382,13 @@
       "start_date": "2026-08-13",
       "note": null,
       "username": "Loğman Şəmiyev",
+      "course_slug": "ielts",
+      "course_enrollments": [
+        "ielts-course",
+        "english-language-course"
+      ],
       "matched_group": "IELTS Günorta Qrupu 2/4",
-      "password": "AcademorS21!"
+      "password": "AcD3mor!S21#NVdF5"
     },
     {
       "full_name": "Kərimov Qalib",
@@ -310,8 +399,12 @@
       "start_date": "2026-08-17",
       "note": null,
       "username": "Kərimov Qalib",
+      "course_slug": "english-for-kids",
+      "course_enrollments": [
+        "english-for-kids"
+      ],
       "matched_group": "Kids English Qrup Sabah 1/3",
-      "password": "AcademorS22!"
+      "password": "AcD3mor!S22#gxlVh"
     },
     {
       "full_name": "Elçin Tağıyev",
@@ -322,8 +415,12 @@
       "start_date": "2026-08-17",
       "note": null,
       "username": "Elçin Tağıyev",
+      "course_slug": "english-for-kids",
+      "course_enrollments": [
+        "english-for-kids"
+      ],
       "matched_group": "Kids English Qrup Sabah 1/3",
-      "password": "AcademorS23!"
+      "password": "AcD3mor!S23#BE1By"
     },
     {
       "full_name": "Lalə Nağıyeva",
@@ -334,8 +431,13 @@
       "start_date": "2026-08-18",
       "note": null,
       "username": "Lalə Nağıyeva",
+      "course_slug": "ielts",
+      "course_enrollments": [
+        "ielts-course",
+        "english-language-course"
+      ],
       "matched_group": "IELTS Günorta Qrupu 2/4",
-      "password": "AcademorS24!"
+      "password": "AcD3mor!S24#cZtKA"
     },
     {
       "full_name": "Firuza Rzayeva",
@@ -346,8 +448,13 @@
       "start_date": "2026-08-20",
       "note": null,
       "username": "Firuza Rzayeva",
+      "course_slug": "ielts",
+      "course_enrollments": [
+        "ielts-course",
+        "english-language-course"
+      ],
       "matched_group": "IELTS Günorta Qrupu 2/4",
-      "password": "AcademorS25!"
+      "password": "AcD3mor!S25#C0hmd"
     },
     {
       "full_name": "Əli Məmmədova",
@@ -358,8 +465,13 @@
       "start_date": "2026-08-20",
       "note": null,
       "username": "Əli Məmmədova",
+      "course_slug": "ielts",
+      "course_enrollments": [
+        "ielts-course",
+        "english-language-course"
+      ],
       "matched_group": "Foundation IELTS Qrup 2/4/6",
-      "password": "AcademorS26!"
+      "password": "AcD3mor!S26#qurKb"
     },
     {
       "full_name": "Aysel",
@@ -370,8 +482,13 @@
       "start_date": "2026-08-20",
       "note": null,
       "username": "Aysel",
+      "course_slug": "ielts",
+      "course_enrollments": [
+        "ielts-course",
+        "english-language-course"
+      ],
       "matched_group": "IELTS Axşam Qrupu 2/4",
-      "password": "AcademorS27!"
+      "password": "AcD3mor!S27#Jy8qw"
     },
     {
       "full_name": "Ayşə Dəmirçiyeva",
@@ -382,8 +499,13 @@
       "start_date": "2026-08-20",
       "note": null,
       "username": "Ayşə Dəmirçiyeva",
+      "course_slug": "ielts",
+      "course_enrollments": [
+        "ielts-course",
+        "english-language-course"
+      ],
       "matched_group": "IELTS Axşam Qrupu 2/4",
-      "password": "AcademorS28!"
+      "password": "AcD3mor!S28#QzdHR"
     },
     {
       "full_name": "Duyğu Cavadova",
@@ -394,8 +516,12 @@
       "start_date": "2026-08-22",
       "note": null,
       "username": "Duyğu Cavadova",
+      "course_slug": "general-english",
+      "course_enrollments": [
+        "general-english"
+      ],
       "matched_group": "",
-      "password": "AcademorS29!"
+      "password": "AcD3mor!S29#ojR2N"
     },
     {
       "full_name": "Aişə Məmmədova",
@@ -406,8 +532,13 @@
       "start_date": "2026-08-22",
       "note": null,
       "username": "Aişə Məmmədova",
+      "course_slug": "ielts",
+      "course_enrollments": [
+        "ielts-course",
+        "english-language-course"
+      ],
       "matched_group": "IELTS Günorta Qrupu 2/4",
-      "password": "AcademorS30!"
+      "password": "AcD3mor!S30#H6Bif"
     },
     {
       "full_name": "Xatirə Mirzəliyeva",
@@ -418,8 +549,13 @@
       "start_date": null,
       "note": null,
       "username": "Xatirə Mirzəliyeva",
+      "course_slug": "ielts",
+      "course_enrollments": [
+        "ielts-course",
+        "english-language-course"
+      ],
       "matched_group": "IELTS Axşam Qrupu 2/4/6",
-      "password": "AcademorS31!"
+      "password": "AcD3mor!S31#JJcgX"
     },
     {
       "full_name": "Həsənli Simuzər",
@@ -430,8 +566,13 @@
       "start_date": "2026-08-25",
       "note": null,
       "username": "Həsənli Simuzər",
+      "course_slug": "ielts",
+      "course_enrollments": [
+        "ielts-course",
+        "english-language-course"
+      ],
       "matched_group": "IELTS Axşam Qrupu 2/4/6",
-      "password": "AcademorS32!"
+      "password": "AcD3mor!S32#gpjIy"
     },
     {
       "full_name": "Qərib Abdullayev",
@@ -442,8 +583,13 @@
       "start_date": "2026-08-25",
       "note": null,
       "username": "Qərib Abdullayev",
+      "course_slug": "ielts",
+      "course_enrollments": [
+        "ielts-course",
+        "english-language-course"
+      ],
       "matched_group": "IELTS Axşam Qrupu 2/4/6",
-      "password": "AcademorS33!"
+      "password": "AcD3mor!S33#k7qJs"
     },
     {
       "full_name": "Nəzakət Kərimova",
@@ -454,20 +600,30 @@
       "start_date": null,
       "note": null,
       "username": "Nəzakət Kərimova",
+      "course_slug": "ielts",
+      "course_enrollments": [
+        "ielts-course",
+        "english-language-course"
+      ],
       "matched_group": "IELTS Axşam Qrupu 1/5",
-      "password": "AcademorS34!"
+      "password": "AcD3mor!S34#Zejfv"
     },
     {
-      "full_name": "Sultanova Nurcan",
+      "full_name": "Nurcan Sultanova",
       "phone": "556393016",
-      "group_name": "",
+      "group_name": "IELTS Axşam Qrupu 2/4/6",
       "subject": "IELTS",
       "teacher": "Ramil Baxışlı",
       "start_date": null,
       "note": null,
-      "username": "Sultanova Nurcan",
-      "matched_group": "",
-      "password": "AcademorS35!"
+      "username": "Nurcan Sultanova",
+      "course_slug": "ielts",
+      "course_enrollments": [
+        "ielts-course",
+        "english-language-course"
+      ],
+      "matched_group": "IELTS Axşam Qrupu 2/4/6",
+      "password": "AcD3mor!S35#HyS9I"
     }
   ],
   "groups": [
@@ -484,7 +640,7 @@
     {
       "name": "Günorta Foundation IELTS B1 1/3/6",
       "subject": "Foundation IELTS",
-      "course_slug": "foundation-ielts",
+      "course_slug": "ielts",
       "teacher": "Ramil Baxışlı",
       "max_students": 4,
       "student_names": [
@@ -539,7 +695,7 @@
     {
       "name": "Foundation IELTS Qrup Günorta 2/4",
       "subject": "Foundation IELTS",
-      "course_slug": "foundation-ielts",
+      "course_slug": "ielts",
       "teacher": "Ramil Baxışlı",
       "max_students": 4,
       "student_names": [
@@ -616,7 +772,7 @@
     {
       "name": "Foundation IELTS Qrup 2/4/6",
       "subject": "Foundation IELTS",
-      "course_slug": "foundation-ielts",
+      "course_slug": "ielts",
       "teacher": "Ramil Baxışlı",
       "max_students": 4,
       "student_names": [
@@ -653,6 +809,7 @@
       "student_names": [
         "Həsənli Simuzər",
         "Qərib Abdullayev",
+        "Nurcan Sultanova",
         "Xatirə Mirzəliyeva"
       ]
     }
