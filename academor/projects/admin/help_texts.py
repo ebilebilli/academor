@@ -10,14 +10,15 @@ ADMIN_HELP = {
     'summary': (
       'Upload hero/banner images for individual site pages. Each image can be assigned to '
       'one page header (About, Contact, Courses, Tests, Mock tests, Services, Study abroad, '
-      'Portal, Portal login).'
+      'Portal, Portal login) or to the test-take advertising poster.'
     ),
-    'where': 'Shown as the large background at the top of the matching public page.',
+    'where': 'Shown as the large background at the top of the matching public page, or as the ad poster on /tests/<id>/.',
     'tips': [
       'Tick only ONE page per image when possible.',
       'Study abroad uses its own image; if none is set, the About page image is used as fallback.',
       'Mock tests page (/mock-tests/): dedicated banner; if unset, the Services page image is used.',
       'Portal login (/portal/login/): dedicated banner; if unset, the Portal page image is used.',
+      'Test take poster: responsive ad image on individual test pages (/tests/<id>/).',
       'Images assigned to a page header are not auto-compressed — use good quality originals.',
     ],
   },

@@ -15,6 +15,7 @@ from projects.utils.queries import (
     serialize_test_for_taking,
     serialize_test_for_list,
     get_background_image,
+    get_test_take_poster_image,
 )
 from projects.utils.seo_text import meta_plain_excerpt
 from projects.utils.test_scoring import calculate_level
@@ -39,6 +40,13 @@ def _take_meta(lang, serialized: dict):
 def _categories_ctx(lang):
     categories = get_project_categories(lang)
     return [serialize_project_category(c, lang) for c in categories]
+
+
+def _take_page_extras():
+    return {
+        'background_image': get_background_image('tests'),
+        'test_poster_image': get_test_take_poster_image(),
+    }
 
 
 class TestListPageView(View):
@@ -72,7 +80,7 @@ class TestTakePageView(View):
             'user_form': TestUserForm(),
             'categories': _categories_ctx(lang),
             'language': lang,
-            'background_image': get_background_image('tests'),
+            **_take_page_extras(),
             **_take_meta(lang, ser),
         }
         return render(request, self.template_name, context)
@@ -92,7 +100,7 @@ class TestTakePageView(View):
                 'user_form': user_form,
                 'categories': _categories_ctx(lang),
                 'language': lang,
-                'background_image': get_background_image('tests'),
+                **_take_page_extras(),
                 **_take_meta(lang, ser),
             })
         user_data = user_form.cleaned_data
@@ -132,7 +140,7 @@ class TestTakePageView(View):
             'percentage': percentage,
             'categories': _categories_ctx(lang),
             'language': lang,
-            'background_image': get_background_image('tests'),
+            **_take_page_extras(),
             **_take_meta(lang, ser),
         })
 

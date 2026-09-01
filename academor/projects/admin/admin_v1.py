@@ -38,6 +38,7 @@ class MediaAdmin(AdminImageCompressMixin, AcademorModelAdmin):
         'is_project_page_background_image',
         'is_courses_page_background_image',
         'is_tests_page_background_image',
+        'is_test_take_poster_image',
         'is_mock_tests_page_background_image',
         'is_service_page_background_image',
         'is_abroad_page_background_image',
@@ -52,7 +53,7 @@ class MediaAdmin(AdminImageCompressMixin, AcademorModelAdmin):
             'fields': ('image', 'media_preview_detailed'),
             'description': (
                 'Upload a wide banner image. Then assign it to exactly one page below. '
-                'This list only shows images already assigned to a page header.'
+                'This list only shows images already assigned to a page header or test ad poster.'
             ),
         }),
         ('Background assignments', {
@@ -61,7 +62,8 @@ class MediaAdmin(AdminImageCompressMixin, AcademorModelAdmin):
                 'Study abroad page background image: header on /abroad/ and abroad detail pages '
                 '(if unset, the About page background image is used). '
                 'Mock tests page: header on /mock-tests/ (if unset, the Services page image is used). '
-                'Portal login page: header on /portal/login/ (if unset, the Portal page image is used).'
+                'Portal login page: header on /portal/login/ (if unset, the Portal page image is used). '
+                'Test take page ad poster: responsive image on /tests/<id>/.'
             ),
             'fields': (
                 'is_about_page_background_image',
@@ -69,6 +71,7 @@ class MediaAdmin(AdminImageCompressMixin, AcademorModelAdmin):
                 'is_project_page_background_image',
                 'is_courses_page_background_image',
                 'is_tests_page_background_image',
+                'is_test_take_poster_image',
                 'is_mock_tests_page_background_image',
                 'is_service_page_background_image',
                 'is_abroad_page_background_image',
@@ -110,6 +113,7 @@ class MediaAdmin(AdminImageCompressMixin, AcademorModelAdmin):
             | Q(is_project_page_background_image=True)
             | Q(is_courses_page_background_image=True)
             | Q(is_tests_page_background_image=True)
+            | Q(is_test_take_poster_image=True)
             | Q(is_mock_tests_page_background_image=True)
             | Q(is_service_page_background_image=True)
             | Q(is_abroad_page_background_image=True)
@@ -142,6 +146,7 @@ class MediaAdmin(AdminImageCompressMixin, AcademorModelAdmin):
             ('is_project_page_background_image', 'Projects page'),
             ('is_courses_page_background_image', 'Courses page'),
             ('is_tests_page_background_image', 'Tests pages'),
+            ('is_test_take_poster_image', 'Test take poster'),
             ('is_mock_tests_page_background_image', 'Mock tests page'),
             ('is_service_page_background_image', 'Services page'),
             ('is_abroad_page_background_image', 'Study abroad page'),

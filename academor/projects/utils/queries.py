@@ -935,6 +935,18 @@ def get_background_image(page_type):
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
+def get_test_take_poster_image():
+    """Advertising poster for individual level-test pages (/tests/<id>/)."""
+    media = Media.objects.filter(
+        is_test_take_poster_image=True,
+        image__isnull=False,
+    ).exclude(image='').order_by('-created_at').first()
+    if media and media.image:
+        return media_url(media.image)
+    return None
+
+
+@cached_query(timeout='CACHE_TIMEOUT_LONG')
 def get_home_background_images(limit=6):
     """Ana səhifə hero karuseli üçün background image-ləri qaytarır (maksimum 6 ədəd)"""
     media_list = Media.objects.filter(

@@ -7913,7 +7913,104 @@ a.university-carousel-card:focus-visible .university-flag-card {
     }
 }
 
+/* Level test — şəffaf panel (sayt rəng palitrası) */
+.test-take-form {
+    background: rgba(255, 255, 255, 0.52);
+    border: 1px solid rgba(0, 49, 61, 0.12);
+    box-shadow:
+        0 8px 32px rgba(0, 49, 61, 0.07),
+        inset 0 1px 0 rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.test-take-form h4 {
+    color: var(--primary);
+    border-bottom-color: rgba(0, 49, 61, 0.14) !important;
+}
+
+.test-take-form .form-control {
+    background: rgba(255, 255, 255, 0.72);
+    border-color: rgba(0, 49, 61, 0.14);
+    color: var(--primary);
+}
+
+.test-take-form .form-control::placeholder {
+    color: rgba(0, 49, 61, 0.45);
+}
+
+.test-take-form .form-control:focus {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(0, 49, 61, 0.28);
+    box-shadow: 0 0 0 0.2rem rgba(0, 49, 61, 0.1);
+}
+
+.test-take-form .form-label {
+    color: rgba(0, 49, 61, 0.82);
+    font-weight: 600;
+}
+
+.test-take-result .border.rounded.p-3.bg-white {
+    background: rgba(255, 255, 255, 0.62) !important;
+    border-color: rgba(0, 49, 61, 0.1) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.test-question-step.is-active {
+    background: rgba(255, 255, 255, 0.48);
+    border: 1px solid rgba(0, 49, 61, 0.1);
+    box-shadow:
+        0 4px 20px rgba(0, 49, 61, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.test-question-step .form-check-label {
+    color: rgba(0, 49, 61, 0.88);
+}
+
+.test-question-step .form-check-input:checked {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+.test-question-step .form-check-input:focus {
+    border-color: rgba(255, 84, 20, 0.55);
+    box-shadow: 0 0 0 0.2rem rgba(255, 84, 20, 0.18);
+}
+
 /* Level test — tez bitirmə (stepper-dən ayrıca) */
+.test-take-layout {
+    align-items: flex-start;
+}
+
+.test-take-poster {
+    margin: 0;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.45);
+    border: 1px solid rgba(0, 49, 61, 0.1);
+    box-shadow: 0 4px 16px rgba(0, 49, 61, 0.06);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.test-take-poster__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+}
+
+@media (min-width: 992px) {
+    .test-take-poster {
+        position: sticky;
+        top: 5.75rem;
+    }
+}
+
 .test-questions-toolbar {
     padding-bottom: 0.75rem;
     border-bottom: 1px solid rgba(0, 49, 61, 0.08);
@@ -7941,7 +8038,7 @@ a.university-carousel-card:focus-visible .university-flag-card {
     font-size: 0.9rem;
     line-height: 1;
     font-family: inherit;
-    background: #e9ecef;
+    background: rgba(255, 255, 255, 0.55);
     color: var(--primary);
     border: 2px solid transparent;
     cursor: pointer;
@@ -7962,16 +8059,16 @@ a.university-carousel-card:focus-visible .university-flag-card {
 
 /* Cavab verilməyib (hazırda bu addımda deyilsiniz) — boş / gözləyir */
 .test-stepper-num:not(.is-active):not(.is-answered) {
-    background: #f1f3f5;
-    color: #868e96;
-    border: 2px dashed #adb5bd;
+    background: rgba(255, 255, 255, 0.45);
+    color: rgba(0, 49, 61, 0.55);
+    border: 2px dashed rgba(0, 49, 61, 0.22);
 }
 
 /* Cavab verilib, başqa addımdasınız */
 .test-stepper-num:not(.is-active).is-answered {
-    background: #d1e7dd;
-    color: #0f5132;
-    border: 2px solid #198754;
+    background: rgba(0, 49, 61, 0.08);
+    color: var(--primary);
+    border: 2px solid rgba(0, 49, 61, 0.28);
 }
 
 /* Hazırkı sual */

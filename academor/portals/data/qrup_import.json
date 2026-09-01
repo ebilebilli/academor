@@ -1,0 +1,660 @@
+{
+  "source": "Qrup_detallari.xlsx",
+  "generated_at": "2026-09-01T13:16:33.258994",
+  "teachers": [
+    {
+      "full_name": "Aytac İbadova",
+      "courses": [
+        "english-for-kids",
+        "general-english"
+      ],
+      "username": "Aytac İbadova",
+      "password": "AcademorT1!"
+    },
+    {
+      "full_name": "Fidan Məmmədli",
+      "courses": [
+        "english-for-kids",
+        "general-english"
+      ],
+      "username": "Fidan Məmmədli",
+      "password": "AcademorT2!"
+    },
+    {
+      "full_name": "Ramil Baxışlı",
+      "courses": [
+        "foundation-ielts",
+        "general-english",
+        "ielts"
+      ],
+      "username": "Ramil Baxışlı",
+      "password": "AcademorT3!"
+    },
+    {
+      "full_name": "Tural Kişizadə",
+      "courses": [
+        "ielts"
+      ],
+      "username": "Tural Kişizadə",
+      "password": "AcademorT4!"
+    },
+    {
+      "full_name": "Tural Məmmədov",
+      "courses": [
+        "ap-economics",
+        "gre-math"
+      ],
+      "username": "Tural Məmmədov",
+      "password": "AcademorT5!"
+    }
+  ],
+  "students": [
+    {
+      "full_name": "Cavid Abbaslı",
+      "phone": "775881121",
+      "group_name": "Private  2/4/6",
+      "subject": "General English",
+      "teacher": "Ramil Baxışlı",
+      "start_date": "2026-05-22",
+      "note": null,
+      "username": "Cavid Abbaslı",
+      "matched_group": "General English Private 2/4/6",
+      "password": "AcademorS01!"
+    },
+    {
+      "full_name": "Banu Aslanlı",
+      "phone": "503386898",
+      "group_name": "Sabah F-IELTS B1 1/3/6",
+      "subject": "Foundation IELTS",
+      "teacher": "Ramil Baxışlı",
+      "start_date": "2026-06-03",
+      "note": null,
+      "username": "Banu Aslanlı",
+      "matched_group": "Günorta Foundation IELTS B1 1/3/6",
+      "password": "AcademorS02!"
+    },
+    {
+      "full_name": "Nihad Əliyev",
+      "phone": "503066100",
+      "group_name": "Sabah F-IELTS B1 1/3/6",
+      "subject": "Foundation IELTS",
+      "teacher": "Ramil Baxışlı",
+      "start_date": "2026-06-08",
+      "note": null,
+      "username": "Nihad Əliyev",
+      "matched_group": "Günorta Foundation IELTS B1 1/3/6",
+      "password": "AcademorS03!"
+    },
+    {
+      "full_name": "Fəxriyyə Əsgərova (Asya)",
+      "phone": "507027160",
+      "group_name": "Kids English Qrup Sabah 1/3",
+      "subject": "English for Kids",
+      "teacher": "Fidan Məmmədli",
+      "start_date": "2026-07-20",
+      "note": null,
+      "username": "Fəxriyyə Əsgərova (Asya)",
+      "matched_group": "Kids English Qrup Sabah 1/3",
+      "password": "AcademorS04!"
+    },
+    {
+      "full_name": "Əhməd Eyvazlı",
+      "phone": "707206010",
+      "group_name": "English Qrup Günorta 1/3",
+      "subject": "General English",
+      "teacher": "Fidan Məmmədli",
+      "start_date": "2026-06-29",
+      "note": null,
+      "username": "Əhməd Eyvazlı",
+      "matched_group": "Kids English Qrup Günorta 1/3",
+      "password": "AcademorS05!"
+    },
+    {
+      "full_name": "Hüseyn Eyvazlı",
+      "phone": "704772033",
+      "group_name": "English Qrup Günorta 1/3",
+      "subject": "General English",
+      "teacher": "Fidan Məmmədli",
+      "start_date": "2026-06-29",
+      "note": null,
+      "username": "Hüseyn Eyvazlı",
+      "matched_group": "Kids English Qrup Günorta 1/3",
+      "password": "AcademorS06!"
+    },
+    {
+      "full_name": "Cəfərov Soltan",
+      "phone": "503600050",
+      "group_name": "AP Qrupu 1/3/4",
+      "subject": "AP Economics",
+      "teacher": "Tural Məmmədov",
+      "start_date": "2026-07-01",
+      "note": null,
+      "username": "Cəfərov Soltan",
+      "matched_group": "AP Qrupu 1/3/4",
+      "password": "AcademorS07!"
+    },
+    {
+      "full_name": "Nemət Mürşüdov",
+      "phone": "706609050",
+      "group_name": "GRE Math Fərdi Online 1/3/5",
+      "subject": "GRE Math",
+      "teacher": "Tural Məmmədov",
+      "start_date": "2026-07-16",
+      "note": null,
+      "username": "Nemət Mürşüdov",
+      "matched_group": "GRE Math Fərdi Online 1/3/5",
+      "password": "AcademorS08!"
+    },
+    {
+      "full_name": "Zərifə Mustafayeva (Selin)",
+      "phone": "552322006",
+      "group_name": "Kids English Fərdi Sabah 1/3",
+      "subject": "English for Kids",
+      "teacher": "Fidan Məmmədli",
+      "start_date": "2026-07-22",
+      "note": null,
+      "username": "Zərifə Mustafayeva (Selin)",
+      "matched_group": "Kids English Fərdi Sabah 1/3",
+      "password": "AcademorS09!"
+    },
+    {
+      "full_name": "Fəridə Muradova",
+      "phone": "515825874",
+      "group_name": "Foundation IELTS Qrup 2/4",
+      "subject": "Foundation IELTS",
+      "teacher": "Ramil Baxışlı",
+      "start_date": "2026-07-23",
+      "note": null,
+      "username": "Fəridə Muradova",
+      "matched_group": "Foundation IELTS Qrup Günorta 2/4",
+      "password": "AcademorS10!"
+    },
+    {
+      "full_name": "Liliya Xəlilova",
+      "phone": "508614181",
+      "group_name": "Foundation IELTS Qrup 2/4",
+      "subject": "Foundation IELTS",
+      "teacher": "Ramil Baxışlı",
+      "start_date": "2026-07-23",
+      "note": null,
+      "username": "Liliya Xəlilova",
+      "matched_group": "Foundation IELTS Qrup Günorta 2/4",
+      "password": "AcademorS11!"
+    },
+    {
+      "full_name": "Həcər Məmmədova",
+      "phone": "507661691",
+      "group_name": "Foundation IELTS Qrup 2/4",
+      "subject": "Foundation IELTS",
+      "teacher": "Ramil Baxışlı",
+      "start_date": "2026-07-25",
+      "note": null,
+      "username": "Həcər Məmmədova",
+      "matched_group": "Foundation IELTS Qrup Günorta 2/4",
+      "password": "AcademorS12!"
+    },
+    {
+      "full_name": "Rüstəmzadə Ayxan",
+      "phone": "702839472",
+      "group_name": "Kids English Onlayn Qrup 2/6 (Ayxan, Ümid, Rauf, Aysel)",
+      "subject": "English for Kids",
+      "teacher": "Fidan Məmmədli",
+      "start_date": "2026-08-04",
+      "note": "Yaş: 10",
+      "username": "Rüstəmzadə Ayxan",
+      "matched_group": "Kids English Onlayn Qrup 2/6",
+      "password": "AcademorS13!"
+    },
+    {
+      "full_name": "İsmayılov Umid",
+      "phone": "559821007",
+      "group_name": "Kids English Onlayn Qrup 2/6 (Ayxan, Ümid, Rauf, Aysel)",
+      "subject": "English for Kids",
+      "teacher": "Fidan Məmmədli",
+      "start_date": "2026-08-04",
+      "note": "Yaş: 7",
+      "username": "İsmayılov Umid",
+      "matched_group": "Kids English Onlayn Qrup 2/6",
+      "password": "AcademorS14!"
+    },
+    {
+      "full_name": "Rauf Əliyev",
+      "phone": "558298335",
+      "group_name": "Kids English Onlayn Qrup 2/6 (Ayxan, Ümid, Rauf, Aysel)",
+      "subject": "English for Kids",
+      "teacher": "Fidan Məmmədli",
+      "start_date": "2026-08-04",
+      "note": "Yaş: 5",
+      "username": "Rauf Əliyev",
+      "matched_group": "Kids English Onlayn Qrup 2/6",
+      "password": "AcademorS15!"
+    },
+    {
+      "full_name": "Əsmər Rüstəmzadə",
+      "phone": "702839472",
+      "group_name": "Kids English Qrup Online 2/6 (Əsləm, Duyğu)",
+      "subject": "English for Kids",
+      "teacher": "Fidan Məmmədli",
+      "start_date": "2026-08-04",
+      "note": "Yaş: 14",
+      "username": "Əsmər Rüstəmzadə",
+      "matched_group": "Kids English Qrup Online 2/6",
+      "password": "AcademorS16!"
+    },
+    {
+      "full_name": "Duyğu Aslanova",
+      "phone": "505339985",
+      "group_name": "Kids English Qrup Online 2/6 (Əsləm, Duyğu)",
+      "subject": "English for Kids",
+      "teacher": "Fidan Məmmədli",
+      "start_date": "2026-08-04",
+      "note": "Yaş: 13",
+      "username": "Duyğu Aslanova",
+      "matched_group": "Kids English Qrup Online 2/6",
+      "password": "AcademorS17!"
+    },
+    {
+      "full_name": "Nihad Nacafli",
+      "phone": "556884048",
+      "group_name": "Kids English Qrup Online 1/3",
+      "subject": "English for Kids",
+      "teacher": "Aytac İbadova",
+      "start_date": "2026-08-08",
+      "note": "Yaş: 10",
+      "username": "Nihad Nacafli",
+      "matched_group": "Kids English Qrup Online 1/3",
+      "password": "AcademorS18!"
+    },
+    {
+      "full_name": "Aysel Hacıyev",
+      "phone": "559341424",
+      "group_name": "Kids English Onlayn Qrup 2/6 (Ayxan, Ümid, Rauf, Aysel)",
+      "subject": "English for Kids",
+      "teacher": "Fidan Məmmədli",
+      "start_date": "2026-08-11",
+      "note": null,
+      "username": "Aysel Hacıyev",
+      "matched_group": "Kids English Onlayn Qrup 2/6",
+      "password": "AcademorS19!"
+    },
+    {
+      "full_name": "Ravin İsrafilzadə",
+      "phone": "553779930",
+      "group_name": "Online",
+      "subject": "General English",
+      "teacher": "Aytac İbadova",
+      "start_date": null,
+      "note": null,
+      "username": "Ravin İsrafilzadə",
+      "matched_group": "",
+      "password": "AcademorS20!"
+    },
+    {
+      "full_name": "Loğman Şəmiyev",
+      "phone": "502164816",
+      "group_name": "Foundation IELTS Qrup 2/4",
+      "subject": "IELTS",
+      "teacher": "Ramil Baxışlı",
+      "start_date": "2026-08-13",
+      "note": null,
+      "username": "Loğman Şəmiyev",
+      "matched_group": "IELTS Günorta Qrupu 2/4",
+      "password": "AcademorS21!"
+    },
+    {
+      "full_name": "Kərimov Qalib",
+      "phone": "702773494",
+      "group_name": "Kids English Qrup Sabah 1/3",
+      "subject": "English for Kids",
+      "teacher": "Fidan Məmmədli",
+      "start_date": "2026-08-17",
+      "note": null,
+      "username": "Kərimov Qalib",
+      "matched_group": "Kids English Qrup Sabah 1/3",
+      "password": "AcademorS22!"
+    },
+    {
+      "full_name": "Elçin Tağıyev",
+      "phone": "702773494",
+      "group_name": "Kids English Qrup Sabah 1/3",
+      "subject": "English for Kids",
+      "teacher": "Fidan Məmmədli",
+      "start_date": "2026-08-17",
+      "note": null,
+      "username": "Elçin Tağıyev",
+      "matched_group": "Kids English Qrup Sabah 1/3",
+      "password": "AcademorS23!"
+    },
+    {
+      "full_name": "Lalə Nağıyeva",
+      "phone": "517649669",
+      "group_name": "IELTS Günorta Qrupu 2/4",
+      "subject": "IELTS",
+      "teacher": "Ramil Baxışlı",
+      "start_date": "2026-08-18",
+      "note": null,
+      "username": "Lalə Nağıyeva",
+      "matched_group": "IELTS Günorta Qrupu 2/4",
+      "password": "AcademorS24!"
+    },
+    {
+      "full_name": "Firuza Rzayeva",
+      "phone": "506276729",
+      "group_name": "IELTS Günorta Qrupu 2/4",
+      "subject": "IELTS",
+      "teacher": "Ramil Baxışlı",
+      "start_date": "2026-08-20",
+      "note": null,
+      "username": "Firuza Rzayeva",
+      "matched_group": "IELTS Günorta Qrupu 2/4",
+      "password": "AcademorS25!"
+    },
+    {
+      "full_name": "Əli Məmmədova",
+      "phone": "704777731",
+      "group_name": "Foundation IELTS Qrup 2/4/6",
+      "subject": "Foundation IELTS",
+      "teacher": "Ramil Baxışlı",
+      "start_date": "2026-08-20",
+      "note": null,
+      "username": "Əli Məmmədova",
+      "matched_group": "Foundation IELTS Qrup 2/4/6",
+      "password": "AcademorS26!"
+    },
+    {
+      "full_name": "Aysel",
+      "phone": "776100760",
+      "group_name": "IELTS Axşam Online Qrupu 2/4",
+      "subject": "IELTS",
+      "teacher": "Ramil Baxışlı",
+      "start_date": "2026-08-20",
+      "note": null,
+      "username": "Aysel",
+      "matched_group": "IELTS Axşam Qrupu 2/4",
+      "password": "AcademorS27!"
+    },
+    {
+      "full_name": "Ayşə Dəmirçiyeva",
+      "phone": "509655579",
+      "group_name": "IELTS Axşam Online Qrupu 2/4",
+      "subject": "IELTS",
+      "teacher": "Ramil Baxışlı",
+      "start_date": "2026-08-20",
+      "note": null,
+      "username": "Ayşə Dəmirçiyeva",
+      "matched_group": "IELTS Axşam Qrupu 2/4",
+      "password": "AcademorS28!"
+    },
+    {
+      "full_name": "Duyğu Cavadova",
+      "phone": "709228832",
+      "group_name": "English Qrup Günorta 1/3",
+      "subject": "General English",
+      "teacher": "Fidan Məmmədli",
+      "start_date": "2026-08-22",
+      "note": null,
+      "username": "Duyğu Cavadova",
+      "matched_group": "",
+      "password": "AcademorS29!"
+    },
+    {
+      "full_name": "Aişə Məmmədova",
+      "phone": "771208596",
+      "group_name": "IELTS Günorta Qrupu 2/4/6",
+      "subject": "IELTS",
+      "teacher": "Ramil Baxışlı",
+      "start_date": "2026-08-22",
+      "note": null,
+      "username": "Aişə Məmmədova",
+      "matched_group": "IELTS Günorta Qrupu 2/4",
+      "password": "AcademorS30!"
+    },
+    {
+      "full_name": "Xatirə Mirzəliyeva",
+      "phone": "702692728",
+      "group_name": "IELTS Axşam Online Qrupu 2/4/6",
+      "subject": "IELTS",
+      "teacher": "Ramil Baxışlı",
+      "start_date": null,
+      "note": null,
+      "username": "Xatirə Mirzəliyeva",
+      "matched_group": "IELTS Axşam Qrupu 2/4/6",
+      "password": "AcademorS31!"
+    },
+    {
+      "full_name": "Həsənli Simuzər",
+      "phone": "605150014",
+      "group_name": "IELTS Axşam Qrupu 2/4/6",
+      "subject": "IELTS",
+      "teacher": "Ramil Baxışlı",
+      "start_date": "2026-08-25",
+      "note": null,
+      "username": "Həsənli Simuzər",
+      "matched_group": "IELTS Axşam Qrupu 2/4/6",
+      "password": "AcademorS32!"
+    },
+    {
+      "full_name": "Qərib Abdullayev",
+      "phone": "703842120",
+      "group_name": "IELTS Axşam Qrupu 2/4/6",
+      "subject": "IELTS",
+      "teacher": "Ramil Baxışlı",
+      "start_date": "2026-08-25",
+      "note": null,
+      "username": "Qərib Abdullayev",
+      "matched_group": "IELTS Axşam Qrupu 2/4/6",
+      "password": "AcademorS33!"
+    },
+    {
+      "full_name": "Nəzakət Kərimova",
+      "phone": "506367290",
+      "group_name": "IELTS Axşam Qrupu 1/5",
+      "subject": "IELTS",
+      "teacher": "Ramil Baxışlı",
+      "start_date": null,
+      "note": null,
+      "username": "Nəzakət Kərimova",
+      "matched_group": "IELTS Axşam Qrupu 1/5",
+      "password": "AcademorS34!"
+    },
+    {
+      "full_name": "Sultanova Nurcan",
+      "phone": "556393016",
+      "group_name": "",
+      "subject": "IELTS",
+      "teacher": "Ramil Baxışlı",
+      "start_date": null,
+      "note": null,
+      "username": "Sultanova Nurcan",
+      "matched_group": "",
+      "password": "AcademorS35!"
+    }
+  ],
+  "groups": [
+    {
+      "name": "General English Private 2/4/6",
+      "subject": "General English",
+      "course_slug": "general-english",
+      "teacher": "Ramil Baxışlı",
+      "max_students": 1,
+      "student_names": [
+        "Cavid Abbaslı"
+      ]
+    },
+    {
+      "name": "Günorta Foundation IELTS B1 1/3/6",
+      "subject": "Foundation IELTS",
+      "course_slug": "foundation-ielts",
+      "teacher": "Ramil Baxışlı",
+      "max_students": 4,
+      "student_names": [
+        "Nihad Əliyev",
+        "Banu Aslanlı"
+      ]
+    },
+    {
+      "name": "Kids English Qrup Sabah 1/3",
+      "subject": "English for Kids",
+      "course_slug": "english-for-kids",
+      "teacher": "Fidan Məmmədli",
+      "max_students": 5,
+      "student_names": [
+        "Fəxriyyə Əsgərova (Asya)",
+        "Kərimov Qalib",
+        "Elçin Tağıyev"
+      ]
+    },
+    {
+      "name": "Kids English Qrup Günorta 1/3",
+      "subject": "English for Kids",
+      "course_slug": "english-for-kids",
+      "teacher": "Fidan Məmmədli",
+      "max_students": 4,
+      "student_names": [
+        "Əhməd Eyvazlı",
+        "Hüseyn Eyvazlı",
+        "Duyğu Aslanova"
+      ]
+    },
+    {
+      "name": "AP Qrupu 1/3/4",
+      "subject": "AP Economics",
+      "course_slug": "ap-economics",
+      "teacher": "Tural Məmmədov",
+      "max_students": 4,
+      "student_names": [
+        "Cəfərov Soltan"
+      ]
+    },
+    {
+      "name": "GRE Math Fərdi Online 1/3/5",
+      "subject": "GRE Math",
+      "course_slug": "gre-math",
+      "teacher": "Tural Məmmədov",
+      "max_students": 1,
+      "student_names": [
+        "Nemət Mürşüdov"
+      ]
+    },
+    {
+      "name": "Foundation IELTS Qrup Günorta 2/4",
+      "subject": "Foundation IELTS",
+      "course_slug": "foundation-ielts",
+      "teacher": "Ramil Baxışlı",
+      "max_students": 4,
+      "student_names": [
+        "Liliya Xəlilova",
+        "Fəridə Muradova",
+        "Həcər Məmmədova"
+      ]
+    },
+    {
+      "name": "Foundation IELTS Qrup 4/6",
+      "subject": "IELTS",
+      "course_slug": "ielts",
+      "teacher": "Tural Kişizadə",
+      "max_students": 4,
+      "student_names": []
+    },
+    {
+      "name": "Kids English Fərdi Sabah 1/3",
+      "subject": "English for Kids",
+      "course_slug": "english-for-kids",
+      "teacher": "Fidan Məmmədli",
+      "max_students": 1,
+      "student_names": [
+        "Zərifə Mustafayeva (Selin)"
+      ]
+    },
+    {
+      "name": "Kids English Onlayn Qrup 2/6",
+      "subject": "English for Kids",
+      "course_slug": "english-for-kids",
+      "teacher": "Fidan Məmmədli",
+      "max_students": 4,
+      "student_names": [
+        "Rüstəmzadə Ayxan",
+        "Rauf Əliyev",
+        "İsmayılov Umid",
+        "Aysel Hacıyev"
+      ]
+    },
+    {
+      "name": "Kids English Qrup Online 2/6",
+      "subject": "English for Kids",
+      "course_slug": "english-for-kids",
+      "teacher": "Fidan Məmmədli",
+      "max_students": 4,
+      "student_names": [
+        "Duyğu Aslanova",
+        "Əsmər Rüstəmzadə"
+      ]
+    },
+    {
+      "name": "Kids English Qrup Online 1/3",
+      "subject": "English for Kids",
+      "course_slug": "english-for-kids",
+      "teacher": "Aytac İbadova",
+      "max_students": 4,
+      "student_names": [
+        "Nihad Nacafli"
+      ]
+    },
+    {
+      "name": "IELTS Günorta Qrupu 2/4",
+      "subject": "IELTS",
+      "course_slug": "ielts",
+      "teacher": "Ramil Baxışlı",
+      "max_students": 4,
+      "student_names": [
+        "Lalə Nağıyeva",
+        "Aişə Məmmədova",
+        "Loğman Şəmiyev",
+        "Firuza Rzayeva"
+      ]
+    },
+    {
+      "name": "Foundation IELTS Qrup 2/4/6",
+      "subject": "Foundation IELTS",
+      "course_slug": "foundation-ielts",
+      "teacher": "Ramil Baxışlı",
+      "max_students": 4,
+      "student_names": [
+        "Əli Məmmədova"
+      ]
+    },
+    {
+      "name": "IELTS Axşam Qrupu 2/4",
+      "subject": "IELTS",
+      "course_slug": "ielts",
+      "teacher": "Ramil Baxışlı",
+      "max_students": 4,
+      "student_names": [
+        "Aysel",
+        "Ayşə Dəmirçiyeva"
+      ]
+    },
+    {
+      "name": "IELTS Axşam Qrupu 1/5",
+      "subject": "IELTS",
+      "course_slug": "ielts",
+      "teacher": "Ramil Baxışlı",
+      "max_students": 4,
+      "student_names": [
+        "Nəzakət Kərimova"
+      ]
+    },
+    {
+      "name": "IELTS Axşam Qrupu 2/4/6",
+      "subject": "IELTS",
+      "course_slug": "ielts",
+      "teacher": "Ramil Baxışlı",
+      "max_students": 4,
+      "student_names": [
+        "Həsənli Simuzər",
+        "Qərib Abdullayev",
+        "Xatirə Mirzəliyeva"
+      ]
+    }
+  ]
+}

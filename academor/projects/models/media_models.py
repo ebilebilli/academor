@@ -71,6 +71,11 @@ class Media(models.Model):
         default=False,
         verbose_name='Tests pages background image'
     )
+    is_test_take_poster_image = models.BooleanField(
+        default=False,
+        verbose_name='Test take page ad poster',
+        help_text='Responsive advertising poster shown on individual test pages (/tests/<id>/).',
+    )
     is_mock_tests_page_background_image = models.BooleanField(
         default=False,
         verbose_name='Mock tests page background image'

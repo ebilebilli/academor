@@ -1,0 +1,27 @@
+﻿Students: 35
+Teachers: 5
+Groups: 17
+JSON: C:\Users\user\Desktop\Academor\academor\portals\data\qrup_import.json
+Credentials: C:\Users\user\Desktop\Academor\academor\portals\data\qrup_import_credentials.txt
+  [1] General English Private 2/4/6
+  [2] Gⁿnorta Foundation IELTS B1 1/3/6
+  [3] Kids English Qrup Sabah 1/3
+  [3] Kids English Qrup Gⁿnorta 1/3
+  [1] AP Qrupu 1/3/4
+python : Traceback (most recent call last):
+At C:\Users\user\AppData\Local\Temp\ps-script-b6204c11-7e52-4aff-a0c4-e6efcccd6adb.ps1:78 char:1
++ python "c:\Users\user\Desktop\Academor\scripts\generate_qrup_import_j ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "c:\Users\user\Desktop\Academor\scripts\generate_qrup_import_json.py", line 283, in <module>
+    main()
+    ~~~~^^
+  File "c:\Users\user\Desktop\Academor\scripts\generate_qrup_import_json.py", line 279, in main
+    print(f"  [{len(g['student_names'])}] {g['name'][:60]}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u0259' in position 16: character maps to <undefined>
