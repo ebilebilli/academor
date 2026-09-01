@@ -8575,10 +8575,9 @@ msgid "Həftəlik qiymətlərə baxın."
 msgstr "Həftəlik qiymətlərə baxın."
 
 #: academor/templates/portals/teacher/student_profile.html:4
-#: academor/templates/portals/teacher/student_profile.html:34
-#| msgid "Parent profile"
+#: academor/templates/portals/includes/teacher_student_profile_page.html:28
 msgid "Şagird profili"
-msgstr "Valideyn profili"
+msgstr "Şagird profili"
 
 #: academor/templates/portals/teacher/student_profile.html:15
 msgid "Şagirdlər"

@@ -8639,11 +8639,9 @@ msgid "Həftəlik qiymətlərə baxın."
 msgstr "View weekly scores."
 
 #: academor/templates/portals/teacher/student_profile.html:4
-#: academor/templates/portals/teacher/student_profile.html:34
-#, fuzzy
-#| msgid "Parent profile"
+#: academor/templates/portals/includes/teacher_student_profile_page.html:28
 msgid "Şagird profili"
-msgstr "Parent profile"
+msgstr "Student profile"
 
 #: academor/templates/portals/teacher/student_profile.html:15
 msgid "Şagirdlər"

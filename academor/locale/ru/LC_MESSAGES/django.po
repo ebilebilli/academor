@@ -8704,11 +8704,9 @@ msgid "Həftəlik qiymətlərə baxın."
 msgstr "Посмотреть еженедельные оценки."
 
 #: academor/templates/portals/teacher/student_profile.html:4
-#: academor/templates/portals/teacher/student_profile.html:34
-#, fuzzy
-#| msgid "Parent profile"
+#: academor/templates/portals/includes/teacher_student_profile_page.html:28
 msgid "Şagird profili"
-msgstr "Профиль родителя"
+msgstr "Профиль ученика"
 
 #: academor/templates/portals/teacher/student_profile.html:15
 msgid "Şagirdlər"
