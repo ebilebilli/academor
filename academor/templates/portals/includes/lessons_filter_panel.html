@@ -33,18 +33,35 @@
       <i class="ti ti-tag" aria-hidden="true"></i>
       {% trans 'Kateqoriya' %}
     </span>
-    <div class="s-lessons-filter-panel__tabs s-lessons-filter-panel__tabs--compact" role="group" aria-label="{% trans 'Kateqoriya filteri' %}">
+    <div class="s-lessons-filter-panel__tabs s-lessons-filter-panel__tabs--compact{% if category_tabs|length > 6 %} s-lessons-filter-panel__tabs--select{% endif %}" role="group" aria-label="{% trans 'Kateqoriya filteri' %}">
+      {% if category_tabs|length > 6 %}
+      <div class="s-lessons-filter-panel__select-wrap">
+        <select class="form-select s-lessons-filter-panel__select" data-category-select aria-label="{% trans 'Kateqoriya filteri' %}">
+          {% for tab in category_tabs %}
+          <option
+            value="{{ tab.code }}"
+            data-category="{{ tab.code }}"
+            {% if forloop.first %}selected{% endif %}
+          >
+            {{ tab.label }} ({{ tab.count }})
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+      {% else %}
       {% for tab in category_tabs %}
       <button
         class="s-pill{% if forloop.first %} is-active{% endif %}"
         type="button"
         data-category="{{ tab.code }}"
         aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+        title="{{ tab.label }}"
       >
-        {{ tab.label }}
+        <span class="s-pill__label">{{ tab.label }}</span>
         <span class="s-pill__count">{{ tab.count }}</span>
       </button>
       {% endfor %}
+      {% endif %}
     </div>
   </div>
   {% endif %}

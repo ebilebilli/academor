@@ -112,7 +112,9 @@
 
       root.querySelectorAll(".group-card-item").forEach(function (card) {
         var name = card.dataset.name || "";
-        card.style.display = name.indexOf(search) !== -1 ? "" : "none";
+        var studentNames = card.dataset.studentNames || "";
+        var matches = name.indexOf(search) !== -1 || studentNames.indexOf(search) !== -1;
+        card.style.display = matches ? "" : "none";
       });
       updateStats();
     }

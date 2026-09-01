@@ -3,6 +3,16 @@
   {% include "portals/includes/weekly_scores_history.html" with show_teacher_column=False %}
 {% elif active_tab == 'duration' %}
   <div class="portal-attendance-profile-panel" aria-label="{% trans 'Davamiyyət qeydləri' %}">
+    <div class="portal-attendance-profile-panel__toolbar">
+      <p class="portal-attendance-profile-panel__lead">{% trans 'Şagirdin dərs iştirakını qeyd edin və mövcud qeydləri yeniləyin.' %}</p>
+      <a
+        class="ds-btn ds-btn--primary btn-sm"
+        href="{% url 'portals:teacher-attendance-create' %}?students={{ student.id }}"
+      >
+        <i class="ti ti-calendar-check" aria-hidden="true"></i> {% trans 'Davamiyyət qeyd et' %}
+      </a>
+    </div>
+
     {% if attendance_records %}
     <div class="portal-duration-summary mb-3" aria-label="{% trans 'Davamiyyət xülasəsi' %}">
       <div class="portal-duration-summary__item">
@@ -32,6 +42,7 @@
             <th>{% trans 'Vaxt' %}</th>
             <th>{% trans 'Status' %}</th>
             <th>{% trans 'Qeyd' %}</th>
+            <th class="text-end">{% trans 'Əməliyyat' %}</th>
           </tr>
         </thead>
         <tbody>
@@ -44,6 +55,14 @@
               <span class="portal-attendance-status portal-attendance-status--{{ row.status }}">{{ row.status_label }}</span>
             </td>
             <td class="text-muted small">{{ row.note|default:"—" }}</td>
+            <td class="text-end">
+              <a
+                class="ds-btn ds-btn--secondary btn-sm"
+                href="{% url 'portals:teacher-attendance-session' %}?schedule={{ row.schedule_id }}&amp;date={{ row.session_date|date:'Y-m-d' }}&amp;students={{ student.id }}"
+              >
+                {% trans 'Düzəlt' %}
+              </a>
+            </td>
           </tr>
           {% endfor %}
         </tbody>
@@ -53,7 +72,7 @@
     <div class="portal-student-empty">
       <div class="portal-student-empty-icon"><i class="ti ti-calendar-off" aria-hidden="true"></i></div>
       <h3>{% trans 'Davamiyyət qeydi yoxdur' %}</h3>
-      <p>{% trans 'Dərs davamiyyəti burada görünəcək.' %}</p>
+      <p>{% trans 'İlk dərs davamiyyətini qeyd etmək üçün yuxarıdakı düymədən istifadə edin.' %}</p>
     </div>
     {% endif %}
   </div>

@@ -258,6 +258,38 @@
   color: var(--admin-muted);
 }
 
+.portal-card-students {
+  margin-top: 0.25rem;
+}
+
+.portal-card-students-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--admin-muted);
+}
+
+.portal-card-students-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.portal-card-students-list li {
+  font-size: 0.85rem;
+  color: var(--admin-text);
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .portal-card-footer {
   padding: 0.75rem 1rem;
   border-top: 1px solid var(--admin-border);

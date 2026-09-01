@@ -109,7 +109,8 @@
        data-course="{{ group.course_type_label }}"
        data-status="{% if group.is_active %}active{% else %}inactive{% endif %}"
        data-students="{{ group.student_count }}"
-       data-date="{{ group.start_date|default:'' }}">
+       data-date="{{ group.start_date|default:'' }}"
+       data-student-names="{% for s in group.students %}{{ s.full_name|lower }} {% endfor %}">
     <article class="portal-card">
       <div class="portal-card-header">
         <div class="portal-group-avatar-lg" style="background: {{ group.course_color|default:'#00313D' }}">
@@ -138,10 +139,19 @@
             <span>{{ group.start_date|default:"—" }}</span>
           </div>
         </div>
-        {% if group.start_date %}
+        {% if group.students %}
+        <div class="portal-card-students">
+          <span class="portal-card-students-label">{% trans 'Students' %}</span>
+          <ul class="portal-card-students-list">
+            {% for s in group.students %}
+            <li>{{ s.full_name }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% else %}
         <div class="portal-card-meta">
-          <i class="bi bi-calendar3" aria-hidden="true"></i>
-          <span>{% trans 'Started' %}: {{ group.start_date }}</span>
+          <i class="bi bi-person-x" aria-hidden="true"></i>
+          <span>{% trans 'No students in this group yet.' %}</span>
         </div>
         {% endif %}
       </div>

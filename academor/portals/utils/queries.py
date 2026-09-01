@@ -220,7 +220,7 @@ def serialize_group(group):
         student_count = group.students.count()
     else:
         student_count = 0
-    return {
+    data = {
         'id': group.pk,
         'name': group.name,
         'course_type': codes[0] if codes else '',
@@ -234,6 +234,11 @@ def serialize_group(group):
         'teacher_name': group.teacher.full_name if group.teacher_id else '',
         'student_count': student_count,
     }
+    if getattr(group, '_prefetched_objects_cache', None) and 'students' in group._prefetched_objects_cache:
+        data['students'] = [serialize_student(s) for s in group.students.all()]
+    else:
+        data['students'] = []
+    return data
 
 
 def serialize_schedule(schedule):

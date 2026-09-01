@@ -252,7 +252,7 @@
       if (!groupNav) {
         return null;
       }
-      return readActiveValue(groupNav, "data-score-group", null);
+      return readGroupFilterValue(groupNav);
     }
 
     function updateStatusBadges(activeGroup) {
@@ -373,6 +373,42 @@
     return active ? (active.getAttribute(attr) || fallback) : fallback;
   }
 
+  function readGroupFilterValue(groupNav) {
+    if (!groupNav) {
+      return null;
+    }
+    var select = groupNav.querySelector("[data-score-group-select]");
+    if (select) {
+      return select.value || null;
+    }
+    return readActiveValue(groupNav, "data-score-group", null);
+  }
+
+  function getGroupFilterElement(groupNav, groupId) {
+    if (!groupNav || !groupId) {
+      return null;
+    }
+    var select = groupNav.querySelector("[data-score-group-select]");
+    if (select) {
+      return select.querySelector('option[data-score-group="' + groupId + '"]')
+        || Array.prototype.find.call(select.options, function (option) {
+          return option.value === String(groupId);
+        });
+    }
+    return groupNav.querySelector('[data-score-group="' + groupId + '"]');
+  }
+
+  function readCategoryFilterValue(categoryTablist) {
+    if (!categoryTablist) {
+      return "all";
+    }
+    var select = categoryTablist.querySelector("[data-category-select]");
+    if (select) {
+      return select.value || "all";
+    }
+    return readActiveValue(categoryTablist, "data-category", "all");
+  }
+
   function setActiveTab(tablist, tab, attr) {
     var activeClass = activeClassFor(tablist);
     tabButtons(tablist, attr).forEach(function (item) {
@@ -425,7 +461,7 @@
 
     root.dataset.portalLessonsFilterBound = "true";
     var activeSubject = readActiveValue(subjectTablist, "data-subject", "all");
-    var activeCategory = readActiveValue(categoryTablist, "data-category", "all");
+    var activeCategory = readCategoryFilterValue(categoryTablist);
     var activePeriod = periodTablist
       ? readActiveValue(periodTablist, "data-period", "week")
       : "all";
@@ -435,7 +471,7 @@
       if (!groupNav) {
         return null;
       }
-      return readActiveValue(groupNav, "data-score-group", null);
+      return readGroupFilterValue(groupNav);
     }
 
     function itemMatchesGroup(item) {
@@ -562,7 +598,7 @@
       if (!activeGroup) {
         return;
       }
-      var groupBtn = groupNav.querySelector('[data-score-group="' + activeGroup + '"]');
+      var groupBtn = getGroupFilterElement(groupNav, activeGroup);
       if (!groupBtn) {
         return;
       }
@@ -687,6 +723,14 @@
       }
       applyFilters();
     });
+
+    var categorySelect = categoryTablist && categoryTablist.querySelector("[data-category-select]");
+    if (categorySelect) {
+      categorySelect.addEventListener("change", function () {
+        activeCategory = categorySelect.value || "all";
+        applyFilters();
+      });
+    }
 
     root.__lessonsFilterApply = applyFilters;
     applyFilters();
@@ -858,11 +902,10 @@
       return;
     }
     var items = collectGroupCountableItems(root);
-    groupNav.querySelectorAll("[data-score-group]").forEach(function (btn) {
-      var groupId = btn.getAttribute("data-score-group");
-      if (!groupId) {
-        return;
-      }
+    var select = groupNav.querySelector("[data-score-group-select]");
+    var activeGroup = readGroupFilterValue(groupNav);
+
+    function countForGroup(groupId) {
       var count = 0;
       items.forEach(function (item) {
         if (!itemMatchesPeriodForGroupCount(item, activePeriod)) {
@@ -872,9 +915,25 @@
           count += 1;
         }
       });
+      return count;
+    }
+
+    if (select) {
+      var selectBadge = groupNav.querySelector("[data-score-group-count]");
+      if (selectBadge && activeGroup) {
+        selectBadge.textContent = countForGroup(activeGroup);
+      }
+      return;
+    }
+
+    groupNav.querySelectorAll("button[data-score-group]").forEach(function (btn) {
+      var groupId = btn.getAttribute("data-score-group");
+      if (!groupId) {
+        return;
+      }
       var meta = btn.querySelector("[data-score-group-count]");
       if (meta) {
-        meta.textContent = count;
+        meta.textContent = countForGroup(groupId);
       }
     });
   }
@@ -1045,12 +1104,32 @@
       });
     }
 
+    var groupSelect = groupNav && groupNav.querySelector("[data-score-group-select]");
+    if (groupSelect && groupSelect.dataset.scoreGroupSelectBound !== "true") {
+      groupSelect.dataset.scoreGroupSelectBound = "true";
+      groupSelect.addEventListener("change", function () {
+        var group = groupSelect.value;
+        if (!group) {
+          return;
+        }
+        syncScoreGroupUrl(group);
+        controller.setGroup(group);
+      });
+    }
+
     window.requestAnimationFrame(applyFilters);
     return controller;
   }
 
   function setScoreGroupActive(groupNav, groupId) {
     if (!groupNav) {
+      return;
+    }
+    var select = groupNav.querySelector("[data-score-group-select]");
+    if (select) {
+      if (groupId) {
+        select.value = String(groupId);
+      }
       return;
     }
     var activeChip = groupNav.querySelector('[data-score-group="' + groupId + '"]')
@@ -1114,7 +1193,10 @@
   }
 
   function handleScoreGroupClick(event) {
-    var groupBtn = event.target.closest("[data-score-group]");
+    if (event.target.closest("[data-score-group-select]")) {
+      return;
+    }
+    var groupBtn = event.target.closest("button[data-score-group]");
     if (!groupBtn) {
       return;
     }

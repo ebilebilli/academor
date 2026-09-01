@@ -5,8 +5,34 @@
     <i class="ti ti-users-group" aria-hidden="true"></i>
     {% trans 'Qrup' %}
   </span>
+
+  {% if score_groups|length > 4 %}
+  <div class="s-lessons-filter-panel__control" data-score-group-filter>
+    <div class="s-lessons-filter-panel__select-wrap">
+      <select
+        class="form-select s-lessons-filter-panel__select"
+        data-score-group-select
+        aria-label="{% trans 'Qrup filteri' %}"
+      >
+        {% for group in score_groups %}
+        <option
+          value="{{ group.id }}"
+          data-score-group="{{ group.id }}"
+          {% if group.service_codes_csv %}data-group-services="{{ group.service_codes_csv }}"{% endif %}
+          {% if active_score_group == group.id|stringformat:'s' %}selected{% endif %}
+        >
+          {{ group.name }}{% if group.service_label %} · {{ group.service_label }}{% endif %}
+        </option>
+        {% endfor %}
+      </select>
+      {% if score_groups.0.total_count is not None %}
+      <span class="s-lessons-filter-panel__select-badge" data-score-group-count>0</span>
+      {% endif %}
+    </div>
+  </div>
+  {% else %}
   <div
-    class="s-lessons-filter-panel__tabs s-lessons-filter-panel__tabs--seg"
+    class="s-lessons-filter-panel__tabs s-lessons-filter-panel__tabs--chips"
     data-score-group-filter
     role="group"
     aria-label="{% trans 'Qrup filteri' %}"
@@ -14,12 +40,13 @@
     {% for group in score_groups %}
     <button
       type="button"
-      class="s-filter-tab{% if active_score_group == group.id|stringformat:'s' %} is-active{% endif %}"
+      class="s-filter-tab s-filter-tab--chip{% if active_score_group == group.id|stringformat:'s' %} is-active{% endif %}"
       data-score-group="{{ group.id }}"
       {% if group.service_codes_csv %}data-group-services="{{ group.service_codes_csv }}"{% endif %}
       aria-selected="{% if active_score_group == group.id|stringformat:'s' %}true{% else %}false{% endif %}"
+      title="{{ group.name }}{% if group.service_label %} — {{ group.service_label }}{% endif %}"
     >
-      {{ group.name }}
+      <span class="s-filter-tab__label">{{ group.name }}</span>
       {% if group.service_label %}
       <span class="s-filter-tab__service">{{ group.service_label }}</span>
       {% endif %}
@@ -29,5 +56,6 @@
     </button>
     {% endfor %}
   </div>
+  {% endif %}
 </div>
 {% endif %}

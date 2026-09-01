@@ -1,7 +1,7 @@
 import logging
 
 from django.contrib import messages
-from django.db.models import Count
+from django.db.models import Count, Prefetch
 from django.http import Http404, JsonResponse
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
@@ -10,6 +10,7 @@ from django.utils.translation import gettext as _
 from django.views import View
 
 from portals.homework_forms import StudentLessonHomeworkForm
+from portals.models import StudentProfile
 from portals.utils.quiz_stats import compute_quiz_average_stats, compute_weekly_average_stats
 from portals.utils.parent_access import parent_has_students, resolve_parent_student
 from portals.utils.student_courses import QUIZ_HISTORY_INITIAL_SIZE, QUIZ_HISTORY_PAGE_SIZE
@@ -184,7 +185,15 @@ class TeacherGroupsListView(TeacherRequiredMixin, View):
             for g in teacher_groups_qs(profile.pk)
             .select_related('teacher')
             .annotate(student_count=Count('students', distinct=True))
-            .prefetch_related('courses')
+            .prefetch_related(
+                'courses',
+                Prefetch(
+                    'students',
+                    queryset=StudentProfile.objects.select_related('user').order_by(
+                        'user__username', 'id'
+                    ),
+                ),
+            )
             .order_by('-is_active', 'name')
         ]
         return render(
