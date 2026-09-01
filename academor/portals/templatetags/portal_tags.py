@@ -146,10 +146,10 @@ def portal_datetime_relative(value):
 
 @register.filter
 def portal_date(value):
-    if not value:
+    day_value = _coerce_portal_date(value)
+    if not day_value:
         return '—'
-    dt = timezone.localtime(value) if timezone.is_aware(value) else value
-    return dt.strftime('%d.%m.%Y')
+    return day_value.strftime('%d.%m.%Y')
 
 
 @register.filter

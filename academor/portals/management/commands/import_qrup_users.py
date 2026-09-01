@@ -24,6 +24,7 @@ from portals.utils.qrup_import_helpers import (
     is_ielts_track,
     normalize_course_slug,
     student_course_enrollment_slugs,
+    sync_student_participation,
 )
 from portals.utils.student_courses import ensure_student_group_course_enrollments
 from projects.models.service_models import Service
@@ -264,6 +265,11 @@ class Command(BaseCommand):
                 student_payload_by_name,
                 dry_run=dry_run,
             )
+            self._import_participation(
+                payload.get('students', []),
+                student_profiles,
+                dry_run=dry_run,
+            )
 
             if dry_run:
                 transaction.set_rollback(True)
@@ -370,8 +376,10 @@ class Command(BaseCommand):
                     profile.phone = phone
                     update_fields.append('phone')
                 if item.get('start_date'):
-                    profile.enrollment_date = item['start_date']
-                    update_fields.append('enrollment_date')
+                    parsed_start = self._parse_start_date(item, profile)
+                    if parsed_start:
+                        profile.enrollment_date = parsed_start
+                        update_fields.append('enrollment_date')
                 if update_fields:
                     profile.save(update_fields=update_fields)
 
@@ -437,7 +445,14 @@ class Command(BaseCommand):
             if services:
                 group.courses.set(services)
 
-            sync_group_schedules(group, item.get('schedule') or [])
+            sync_group_schedules(
+                group,
+                item.get('schedule') or [],
+                effective_from=self._group_schedule_start(
+                    student_names,
+                    student_payload_by_name,
+                ),
+            )
 
             student_names = item.get('student_names') or []
             profiles = []
@@ -467,3 +482,87 @@ class Command(BaseCommand):
                         self.stdout,
                         self.style,
                     )
+
+    def _group_schedule_start(self, student_names, student_payload_by_name):
+        from datetime import date
+
+        candidates = []
+        for name in student_names:
+            payload = student_payload_by_name.get(name) or {}
+            raw = payload.get('start_date')
+            if not raw:
+                continue
+            if isinstance(raw, date):
+                candidates.append(raw)
+            else:
+                try:
+                    candidates.append(date.fromisoformat(str(raw)[:10]))
+                except ValueError:
+                    continue
+        if candidates:
+            return min(candidates)
+        return timezone.localdate()
+
+    def _parse_start_date(self, item, profile):
+        from datetime import date
+
+        raw = item.get('start_date') or getattr(profile, 'enrollment_date', None)
+        if not raw:
+            return None
+        if isinstance(raw, date):
+            return raw
+        try:
+            return date.fromisoformat(str(raw)[:10])
+        except ValueError:
+            return None
+
+    def _import_participation(self, students, student_profiles, *, dry_run):
+        with_participation = [s for s in students if s.get('participation')]
+        if not with_participation:
+            return
+        self.stdout.write(f'Syncing participation for {len(with_participation)} students...')
+        for item in with_participation:
+            group_name = item.get('matched_group') or item.get('group_name')
+            if not group_name:
+                self.stdout.write(self.style.WARNING(
+                    f'  SKIP participation (no group): {item.get("full_name")}',
+                ))
+                continue
+            participation = item['participation']
+            attended = participation.get('lessons_attended', 0)
+            if not attended:
+                continue
+            self.stdout.write(
+                f'  {"[dry]" if dry_run else "SYNC"} Participation: {item["full_name"]} '
+                f'({attended}/{participation.get("total_sessions")})',
+            )
+            if dry_run:
+                continue
+            profile = student_profiles.get(item['full_name'])
+            if not profile:
+                profile = StudentProfile.objects.filter(user__username=item['full_name']).first()
+            if not profile:
+                self.stdout.write(self.style.WARNING(
+                    f'    Student not found: {item["full_name"]}',
+                ))
+                continue
+            group = StudyGroup.objects.filter(name=group_name, is_active=True).first()
+            if not group:
+                self.stdout.write(self.style.WARNING(f'    Group not found: {group_name}'))
+                continue
+            start_date = self._parse_start_date(item, profile)
+            if not start_date:
+                self.stdout.write(self.style.WARNING(
+                    f'    No start date for: {item["full_name"]}',
+                ))
+                continue
+            saved = sync_student_participation(
+                profile,
+                group,
+                participation,
+                start_date=start_date,
+            )
+            if not saved:
+                self.stdout.write(self.style.WARNING(
+                    f'    No sessions generated for: {item["full_name"]}',
+                ))

@@ -304,6 +304,33 @@ def match_group(student, groups):
     return ''
 
 
+def parse_lessons_participation(lessons_str, month_val):
+    text = clean(lessons_str)
+    if not text:
+        return None
+    match = re.match(r'(\d+)\s*/\s*(\d+)', text)
+    if not match:
+        return None
+    attended = int(match.group(1))
+    per_month = int(match.group(2))
+    if per_month <= 0:
+        return None
+
+    month_number = 1
+    if month_val is not None and str(month_val).strip().lower() not in ('', 'nan', 'none'):
+        try:
+            month_number = max(1, int(float(month_val)))
+        except (TypeError, ValueError):
+            month_number = 1
+
+    return {
+        'lessons_attended': attended,
+        'lessons_per_month': per_month,
+        'month_number': month_number,
+        'total_sessions': per_month * month_number,
+    }
+
+
 def main():
     OUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -337,6 +364,9 @@ def main():
             'start_date': norm_date(row['start_date']),
             'note': clean(row['note']) or None,
         })
+        participation = parse_lessons_participation(row.get('lessons'), row.get('month'))
+        if participation:
+            students[-1]['participation'] = participation
 
     groups_df = pd.read_excel(EXCEL, sheet_name='Qruplar', header=0)
     groups_df.columns = [
