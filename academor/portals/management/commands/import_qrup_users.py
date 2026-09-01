@@ -445,6 +445,7 @@ class Command(BaseCommand):
             if services:
                 group.courses.set(services)
 
+            student_names = item.get('student_names') or []
             sync_group_schedules(
                 group,
                 item.get('schedule') or [],
@@ -454,7 +455,6 @@ class Command(BaseCommand):
                 ),
             )
 
-            student_names = item.get('student_names') or []
             profiles = []
             for name in student_names:
                 profile = student_profiles.get(name)
