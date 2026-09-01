@@ -1389,7 +1389,9 @@ def study_group_teacher_queryset_for_admin(request, *, obj_id=None):
 
     submitted_teacher_id = _parse_admin_int(request.POST.get('teacher'))
     if submitted_teacher_id:
-        queryset = queryset | TeacherProfile.objects.filter(pk=submitted_teacher_id)
+        teacher_pks = set(queryset.values_list('pk', flat=True))
+        teacher_pks.add(submitted_teacher_id)
+        queryset = TeacherProfile.objects.filter(pk__in=teacher_pks).select_related('user')
 
     return queryset.distinct().order_by('user__username', 'id')
 
