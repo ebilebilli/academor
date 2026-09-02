@@ -21,8 +21,45 @@ from projects.utils.seo_text import meta_plain_excerpt
 from projects.utils.test_scoring import calculate_level
 
 
-def _serialize_take_test(lang, test):
-    return serialize_test_for_taking(test, lang)
+def _selected_option_ids_from_post(post, test):
+    selected = {}
+    for question in test.questions.all():
+        raw = post.get(f'q_{question.id}')
+        if not raw:
+            continue
+        try:
+            selected[question.id] = int(raw)
+        except (TypeError, ValueError):
+            continue
+    return selected
+
+
+def _wizard_step_from_post(post, questions):
+    total = len(questions)
+    if not total:
+        return 0
+    raw = post.get('test_current_step')
+    if raw is not None and str(raw).strip() != '':
+        try:
+            step = int(raw)
+            if 0 <= step < total:
+                return step
+        except (TypeError, ValueError):
+            pass
+    last_answered = 0
+    for index, question in enumerate(questions):
+        if question.get('selected_option_id'):
+            last_answered = index
+    return last_answered
+
+
+def _serialize_take_test(lang, test, selected_option_ids=None):
+    serialized = serialize_test_for_taking(test, lang)
+    if not selected_option_ids:
+        return serialized
+    for question in serialized['questions']:
+        question['selected_option_id'] = selected_option_ids.get(question['id'])
+    return serialized
 
 
 def _take_meta(lang, serialized: dict):
@@ -94,10 +131,18 @@ class TestTakePageView(View):
         user_form = TestUserForm(request.POST)
         if not user_form.is_valid():
             messages.error(request, _('Formda xəta var. Zəhmət olmasa düzəldin.'))
-            ser = _serialize_take_test(lang, test)
+            ser = _serialize_take_test(
+                lang,
+                test,
+                _selected_option_ids_from_post(request.POST, test),
+            )
             return render(request, self.template_name, {
                 'test': ser,
                 'user_form': user_form,
+                'test_current_step': _wizard_step_from_post(
+                    request.POST,
+                    ser.get('questions') or [],
+                ),
                 'categories': _categories_ctx(lang),
                 'language': lang,
                 **_take_page_extras(),

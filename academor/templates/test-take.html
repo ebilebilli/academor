@@ -66,7 +66,9 @@
                         </div>
                     </div>
                     {% else %}
-                    <form method="post" id="test-take-form" class="test-take-form p-4 p-md-5 rounded wow fadeInUp" data-wow-delay="0.1s">
+                    <form method="post" id="test-take-form" class="test-take-form p-4 p-md-5 rounded wow fadeInUp" data-wow-delay="0.1s"
+                        data-error-name="{% trans 'Ad Soyad daxil edin' %}"
+                        data-error-number="{% trans 'Düzgün nömrə daxil edin' %}">
                         {% csrf_token %}
                         {{ user_form.website }}{{ user_form.fax }}{{ user_form.company }}
                         <h4 class="mb-4 pb-2 border-bottom">{% trans "Your information" %}</h4>
@@ -75,11 +77,13 @@
                                 <label class="form-label">{{ user_form.first_name.label }}</label>
                                 {{ user_form.first_name }}
                                 {{ user_form.first_name.errors }}
+                                <div class="invalid-feedback" data-js-error-for="first_name"></div>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">{{ user_form.number.label }}</label>
                                 {{ user_form.number }}
                                 {{ user_form.number.errors }}
+                                <div class="invalid-feedback" data-js-error-for="number"></div>
                             </div>
                             <div class="col-md-6 d-none">
                                 {{ user_form.last_name }}
@@ -92,7 +96,8 @@
                         <div class="test-questions-toolbar d-flex justify-content-end align-items-center flex-wrap gap-2 mb-3">
                             <button type="submit" class="btn btn-outline-accent rounded-pill px-4 py-2" id="test-finish-early">{% trans "Finish test" %}</button>
                         </div>
-                        <div class="test-questions-wizard" data-current-step="0"
+                        <input type="hidden" name="test_current_step" id="test-current-step" value="{{ test_current_step|default:0 }}">
+                        <div class="test-questions-wizard" data-current-step="{{ test_current_step|default:0 }}"
                             data-label-answered="{% trans 'Answered' %}"
                             data-label-unanswered="{% trans 'Not answered' %}">
                             <div class="test-stepper" role="tablist" aria-label="{% trans 'Question progress' %}">
@@ -105,7 +110,7 @@
                                 <p class="fw-bold mb-3 text-primary">{{ forloop.counter }}. {{ q.text }}</p>
                                 {% for opt in q.options %}
                                 <div class="form-check mb-2 ps-4">
-                                    <input class="form-check-input" type="radio" name="q_{{ q.id }}" id="q{{ q.id }}o{{ opt.id }}" value="{{ opt.id }}">
+                                    <input class="form-check-input" type="radio" name="q_{{ q.id }}" id="q{{ q.id }}o{{ opt.id }}" value="{{ opt.id }}"{% if q.selected_option_id == opt.id %} checked{% endif %}>
                                     <label class="form-check-label" for="q{{ q.id }}o{{ opt.id }}">{{ opt.text }}</label>
                                 </div>
                                 {% endfor %}
@@ -180,6 +185,10 @@
             });
             btnBack.disabled = i === 0;
             btnNext.hidden = i === total - 1;
+            var stepField = document.getElementById('test-current-step');
+            if (stepField) {
+                stepField.value = String(i);
+            }
         }
 
         btnBack.addEventListener('click', function () {
@@ -207,8 +216,65 @@
             }
         });
 
-        setStep(0);
+        var initialStep = parseInt(root.dataset.currentStep || '0', 10);
+        setStep(isNaN(initialStep) ? 0 : initialStep);
         syncAnsweredStates();
+
+        var form = document.getElementById('test-take-form');
+        if (!form) return;
+
+        function digitCount(value) {
+            return (String(value || '').match(/\d/g) || []).length;
+        }
+
+        function looksLikePhone(value) {
+            var raw = String(value || '').trim();
+            if (!raw || !/^[\d\s\-\+\(\)]+$/.test(raw)) return false;
+            return digitCount(raw) >= 9;
+        }
+
+        function showFieldError(name, message) {
+            var input = form.querySelector('[name="' + name + '"]');
+            var box = form.querySelector('[data-js-error-for="' + name + '"]');
+            if (input) {
+                input.classList.add('is-invalid');
+            }
+            if (box) {
+                box.textContent = message || '';
+            }
+        }
+
+        function clearFieldError(name) {
+            var input = form.querySelector('[name="' + name + '"]');
+            var box = form.querySelector('[data-js-error-for="' + name + '"]');
+            if (input) {
+                input.classList.remove('is-invalid');
+            }
+            if (box) {
+                box.textContent = '';
+            }
+        }
+
+        form.addEventListener('submit', function (e) {
+            var nameInput = form.querySelector('[name="first_name"]');
+            var numberInput = form.querySelector('[name="number"]');
+            var nameOk = !!(nameInput && nameInput.value.trim());
+            var numberOk = !!(numberInput && looksLikePhone(numberInput.value));
+            clearFieldError('first_name');
+            clearFieldError('number');
+            if (nameOk && numberOk) return;
+            e.preventDefault();
+            if (!nameOk) {
+                showFieldError('first_name', form.getAttribute('data-error-name') || '');
+            }
+            if (!numberOk) {
+                showFieldError('number', form.getAttribute('data-error-number') || '');
+            }
+            var info = form.querySelector('h4');
+            if (info && info.scrollIntoView) {
+                info.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
     })();
     </script>
     {% endif %}
