@@ -11,7 +11,73 @@
 {% trans "Track attendance across your groups and mark sessions in a few clicks." as attendance_hub_subtitle %}
 {% include "portals/includes/portal_page_hero.html" with title=_('Davamiyyət') subtitle=attendance_hub_subtitle icon="ti-clipboard-check" lottie="portals/animations/study.lottie" %}
 
-<section class="portal-attendance-hub-hero admin-card mb-4" aria-label="{% trans 'Attendance overview' %}">
+<nav class="portal-attendance-hub-tabs" aria-label="{% trans 'Davamiyyət bölmələri' %}">
+  <a
+    class="portal-attendance-hub-tab{% if hub_tab == 'mark' %} is-active{% endif %}"
+    href="{% url 'portals:teacher-attendance' %}?tab=mark"
+    {% if hub_tab == 'mark' %}aria-current="page"{% endif %}
+  >
+    <i class="bi bi-clipboard-check" aria-hidden="true"></i>
+    {% trans 'Qeyd et' %}
+  </a>
+  <a
+    class="portal-attendance-hub-tab{% if hub_tab == 'history' %} is-active{% endif %}"
+    href="{% url 'portals:teacher-attendance' %}?tab=history"
+    {% if hub_tab == 'history' %}aria-current="page"{% endif %}
+  >
+    <i class="bi bi-bar-chart" aria-hidden="true"></i>
+    {% trans 'Tarixçə' %}
+  </a>
+</nav>
+
+{% if hub_tab == 'mark' %}
+<section class="portal-attendance-today admin-card mb-4" aria-label="{% trans 'Bu günün dərsləri' %}">
+  <header class="portal-attendance-today__head">
+    <h2 class="portal-attendance-today__title">{% trans 'Bu günün dərsləri' %}</h2>
+    <span class="portal-attendance-today__count">{{ today_sessions|length }}</span>
+  </header>
+
+  {% if today_sessions %}
+  <div class="portal-attendance-today__list">
+    {% for session in today_sessions %}
+    <a
+      class="portal-attendance-today-card{% if session.is_complete %} is-complete{% elif session.is_partial %} is-partial{% endif %}"
+      href="{{ session.mark_url }}"
+    >
+      <span class="portal-attendance-today-card__time">{{ session.start_time|time:"H:i" }}</span>
+      <span class="portal-attendance-today-card__body">
+        <strong>{{ session.group_name }}</strong>
+        <span class="portal-attendance-today-card__meta">
+          {{ session.duration_min }} {% trans 'min' %}
+          {% if session.room_or_link %} · {{ session.room_or_link|truncatechars:28 }}{% endif %}
+        </span>
+      </span>
+      <span class="portal-attendance-today-card__status">
+        {% if session.is_complete %}
+          {% trans 'Tamamlanıb' %}
+        {% elif session.is_partial %}
+          {{ session.marked_count }}/{{ session.student_count }} {% trans 'qeyd' %}
+        {% else %}
+          {% trans 'Qeyd olunmayıb' %}
+        {% endif %}
+      </span>
+      <span class="portal-attendance-today-card__cta">
+        {% if session.marked_count %}{% trans 'Düzəlt' %}{% else %}{% trans 'Qeyd et' %}{% endif %}
+        <i class="bi bi-arrow-right" aria-hidden="true"></i>
+      </span>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="portal-attendance-today-empty">
+    <i class="bi bi-calendar-x" aria-hidden="true"></i>
+    <p>{% trans 'Bu gün dərs yoxdur.' %}</p>
+    <span>{% trans 'Başqa gün üçün həftəlik təqvimdən dərs seçin.' %}</span>
+  </div>
+  {% endif %}
+</section>
+
+<section class="portal-attendance-hub-hero admin-card mb-4" aria-label="{% trans 'Qeyd et' %}">
   <a class="portal-attendance-hub-action is-primary" href="{% url 'portals:teacher-attendance-session' %}">
     <span class="portal-attendance-hub-action__icon"><i class="bi bi-calendar-week" aria-hidden="true"></i></span>
     <span class="portal-attendance-hub-action__copy">
@@ -20,7 +86,9 @@
     </span>
     <i class="bi bi-arrow-right portal-attendance-hub-action__arrow" aria-hidden="true"></i>
   </a>
-
+</section>
+{% else %}
+<section class="portal-attendance-hub-hero admin-card mb-4" aria-label="{% trans 'Attendance overview' %}">
   <div class="portal-attendance-hub-hero__stats" id="attendance-hub-stats">
     <article class="portal-attendance-hub-mini-stat">
       <span class="portal-attendance-hub-mini-stat__value" data-stat="student_count">{{ hub_stats.student_count }}</span>
@@ -208,10 +276,11 @@
   </a>
 </div>
 {% endif %}
+{% endif %}
 {% endblock %}
 
 {% block page_data %}
-{% if students %}
+{% if hub_tab == 'history' and students %}
 <div id="attendance-hub-i18n" class="d-none" data-all-groups="{% trans 'All groups' %}"></div>
 {{ hub_stats_map|json_script:"attendance-hub-stats-data" }}
 {{ students|json_script:"attendance-hub-students-data" }}
@@ -219,7 +288,7 @@
 {% endblock %}
 
 {% block extra_js %}
-{% if students %}
+{% if hub_tab == 'history' and students %}
 <script src="{% static 'portals/js/portal-attendance-hub.js' %}"></script>
 {% endif %}
 {% endblock %}

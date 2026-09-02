@@ -87,7 +87,10 @@ from portals.utils.queries import (
     serialize_student,
     serialize_teacher,
 )
-from portals.utils.teacher_attendance_hub import build_teacher_attendance_hub
+from portals.utils.teacher_attendance_hub import (
+    build_teacher_attendance_hub,
+    build_today_attendance_sessions,
+)
 from portals.utils.weekly_scores import (
     get_student_weekly_scores,
     get_teacher_student_weekly_scores,
@@ -276,6 +279,12 @@ class TeacherAttendanceListView(TeacherRequiredMixin, View):
     def get(self, request):
         profile = get_teacher_profile(request.portal_user)
         hub = build_teacher_attendance_hub(profile.pk)
+        hub_tab = request.GET.get('tab', 'mark')
+        if hub_tab not in ('mark', 'history'):
+            hub_tab = 'mark'
+        today_sessions = []
+        if hub_tab == 'mark':
+            today_sessions = build_today_attendance_sessions(profile.pk)
         return render(
             request,
             self.template_name,
@@ -286,6 +295,8 @@ class TeacherAttendanceListView(TeacherRequiredMixin, View):
                 attendance_groups=hub['groups'],
                 hub_stats=hub['stats']['all'],
                 hub_stats_map=hub['stats'],
+                hub_tab=hub_tab,
+                today_sessions=today_sessions,
             ),
         )
 

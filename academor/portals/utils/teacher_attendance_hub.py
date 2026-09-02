@@ -177,3 +177,50 @@ def build_teacher_attendance_hub(teacher_id):
             **group_stats_map,
         },
     }
+
+
+def build_today_attendance_sessions(teacher_id):
+    """Today's class sessions with live mark progress. Not cached."""
+    from datetime import timedelta
+
+    from django.utils import timezone
+
+    from portals.utils.teacher_schedule import build_teacher_week_calendar
+
+    today = timezone.localdate()
+    week_start = today - timedelta(days=today.weekday())
+    calendar = build_teacher_week_calendar(teacher_id, week_start=week_start)
+    today_day = next((day for day in calendar['days'] if day['is_today']), None)
+    raw_sessions = list(today_day['sessions']) if today_day else []
+    if not raw_sessions:
+        return []
+
+    schedule_ids = [session['schedule_id'] for session in raw_sessions]
+    group_ids = [session['group_id'] for session in raw_sessions]
+    student_counts = dict(
+        StudyGroup.objects.filter(pk__in=group_ids)
+        .annotate(n=Count('students', distinct=True))
+        .values_list('pk', 'n')
+    )
+    marked_counts = {
+        row['schedule_id']: row['n']
+        for row in Attendance.objects.filter(
+            schedule_id__in=schedule_ids,
+            session_date=today,
+        )
+        .values('schedule_id')
+        .annotate(n=Count('id'))
+    }
+
+    sessions = []
+    for session in raw_sessions:
+        student_count = int(student_counts.get(session['group_id']) or 0)
+        marked_count = int(marked_counts.get(session['schedule_id']) or 0)
+        sessions.append({
+            **session,
+            'student_count': student_count,
+            'marked_count': marked_count,
+            'is_complete': student_count > 0 and marked_count >= student_count,
+            'is_partial': 0 < marked_count < student_count,
+        })
+    return sessions

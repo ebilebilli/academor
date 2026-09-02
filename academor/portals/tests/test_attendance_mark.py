@@ -142,6 +142,68 @@ class AttendanceMarkTests(TestCase):
         )
         self.assertFalse(calendar['has_sessions'])
 
+    def test_hub_defaults_to_mark_tab(self):
+        response = self.client.get(reverse('portals:teacher-attendance'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['hub_tab'], 'mark')
+        self.assertContains(response, 'portal-attendance-hub-tab is-active')
+        self.assertContains(response, 'portal-attendance-hub-action')
+        self.assertNotContains(response, 'attendance-hub-panel')
+        self.assertNotContains(response, 'id="attendance-hub-stats"')
+
+    def test_hub_history_tab_shows_students(self):
+        response = self.client.get(reverse('portals:teacher-attendance') + '?tab=history')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['hub_tab'], 'history')
+        self.assertContains(response, 'attendance-hub-panel')
+        self.assertContains(response, 'id="attendance-hub-stats"')
+        self.assertNotContains(response, 'portal-attendance-hub-action')
+
+    def test_hub_invalid_tab_falls_back_to_mark(self):
+        response = self.client.get(reverse('portals:teacher-attendance') + '?tab=unknown')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['hub_tab'], 'mark')
+        self.assertContains(response, 'portal-attendance-hub-action')
+
+    def test_hub_mark_tab_lists_todays_sessions(self):
+        response = self.client.get(reverse('portals:teacher-attendance'))
+        self.assertEqual(response.status_code, 200)
+        sessions = response.context['today_sessions']
+        self.assertEqual(len(sessions), 1)
+        self.assertEqual(sessions[0]['group_name'], self.group_one.name)
+        self.assertEqual(sessions[0]['marked_count'], 0)
+        self.assertFalse(sessions[0]['is_complete'])
+        self.assertContains(response, 'portal-attendance-today-card')
+        self.assertContains(response, self.group_one.name)
+
+    def test_hub_mark_tab_empty_when_no_class_today(self):
+        self.schedule.weekday = (date.today().weekday() + 1) % 7
+        self.schedule.save()
+        response = self.client.get(reverse('portals:teacher-attendance'))
+        self.assertEqual(response.context['today_sessions'], [])
+        self.assertContains(response, 'portal-attendance-today-empty')
+        self.assertNotContains(response, 'portal-attendance-today-card')
+
+    def test_hub_today_session_shows_marked_progress(self):
+        Attendance.objects.create(
+            schedule=self.schedule,
+            student=self.student_a,
+            session_date=self.session_date,
+            status=Attendance.Status.PRESENT,
+        )
+        response = self.client.get(reverse('portals:teacher-attendance'))
+        session = response.context['today_sessions'][0]
+        self.assertEqual(session['marked_count'], 1)
+        self.assertEqual(session['student_count'], 2)
+        self.assertTrue(session['is_partial'])
+        self.assertFalse(session['is_complete'])
+        self.assertContains(response, '1/2')
+
+    def test_hub_history_tab_skips_today_sessions(self):
+        response = self.client.get(reverse('portals:teacher-attendance') + '?tab=history')
+        self.assertEqual(response.context['today_sessions'], [])
+        self.assertNotContains(response, 'portal-attendance-today')
+
     def test_session_picker_renders_without_schedule(self):
         response = self.client.get(reverse('portals:teacher-attendance-session'))
         self.assertEqual(response.status_code, 200)
