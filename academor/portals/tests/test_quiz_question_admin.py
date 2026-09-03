@@ -2,9 +2,10 @@ from django.contrib.auth import get_user_model
 from django.test import RequestFactory, SimpleTestCase, TestCase
 
 from portals.admin.admin_v1 import QuizQuestionInline
+from portals.admin.quiz_forms import QuizQuestionAdminForm
 from portals.admin.quiz_option_debug import collect_field_snapshot, log_quiz_options_post
 from portals.admin.widgets import AnswerOptionsFormField, AnswerOptionsWidget, option_has_text
-from portals.models import Quiz, QuizCategory
+from portals.models import Quiz, QuizCategory, QuizQuestion
 from portals.tests.portal_helpers import ensure_active_portal_services
 
 User = get_user_model()
@@ -94,3 +95,64 @@ class QuizQuestionInlineAdminTests(TestCase):
         self.assertIn('question_type', fields)
         self.assertIn('spr_correct_answers', fields)
         self.assertIn('spr_max_length', fields)
+
+
+class QuizQuestionAdminFormSatReadingTests(TestCase):
+    def setUp(self):
+        ensure_active_portal_services('sat')
+        self.category = QuizCategory.objects.create(name='SAT')
+        self.quiz = Quiz.objects.create(
+            category=self.category,
+            topic='SAT Practice Test 4 Reading and Writing',
+            is_sat=True,
+            sat_section=Quiz.SatSection.READING,
+            is_reading=False,
+        )
+        self.question = QuizQuestion.objects.create(
+            quiz=self.quiz,
+            order=1,
+            question='<p>Which choice completes the text?</p>',
+            question_type=QuizQuestion.QuestionType.MCQ,
+            answer_options=['<p>A</p>', '<p>B</p>', '<p>C</p>', '<p>D</p>'],
+            correct_answer='<p>A</p>',
+            correct_option_index=0,
+        )
+
+    def test_parent_is_reading_flag_does_not_clear_mcq_options(self):
+        prefix = 'questions-40'
+        options = [
+            '<p>On average, participants perceived commentators as more knowledgeable</p>',
+            '<p>On average, participants perceived commentators as less biased</p>',
+            '<p>On average, participants who watched the panel discussion</p>',
+            '<p>On average, participants who watched the single commentator</p>',
+        ]
+        data = {
+            'is_sat': 'on',
+            'sat_section': Quiz.SatSection.READING,
+            'is_reading': 'on',
+            f'{prefix}-id': str(self.question.pk),
+            f'{prefix}-quiz': str(self.quiz.pk),
+            f'{prefix}-order': '1',
+            f'{prefix}-prompt_type': QuizQuestion.PromptType.TEXT,
+            f'{prefix}-question_type': QuizQuestion.QuestionType.MCQ,
+            f'{prefix}-question': self.question.question,
+            f'{prefix}-answer_options': '[]',
+            f'{prefix}-answer_options_item_0': options[0],
+            f'{prefix}-answer_options_item_1': options[1],
+            f'{prefix}-answer_options_item_2': options[2],
+            f'{prefix}-answer_options_item_3': options[3],
+            f'{prefix}-correct_option_number': '1',
+            f'{prefix}-correct_option_index': '0',
+            f'{prefix}-correct_answer': options[0],
+            f'{prefix}-spr_correct_answers': '[]',
+        }
+        form = QuizQuestionAdminForm(data, prefix=prefix, instance=self.question)
+        self.assertTrue(form.is_valid(), form.errors.as_json())
+        self.assertEqual(len(form.cleaned_data['answer_options']), 4)
+        self.assertNotIn('answer_options', form.errors)
+
+    def test_sat_reading_quiz_with_mcq_rows_stays_variant(self):
+        self.quiz.is_sat = True
+        self.quiz.sat_section = Quiz.SatSection.READING
+        self.quiz.apply_sat_section_format()
+        self.assertFalse(self.quiz.is_reading)

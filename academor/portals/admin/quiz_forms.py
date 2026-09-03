@@ -706,13 +706,11 @@ class QuizQuestionAdminForm(forms.ModelForm):
         return self.data.get(name) in ('on', 'true', 'True', '1')
 
     def _quiz_is_manual(self):
+        """Essay/speaking only. SAT Reading is auto-scored MCQ — do not wipe options."""
         quiz = getattr(self.instance, 'quiz', None)
         if quiz and quiz.is_manual_grading:
             return True
-        return any(
-            self._post_flag(flag)
-            for flag in ('is_listening', 'is_essay', 'is_speaking', 'is_reading')
-        )
+        return self._post_flag('is_essay') or self._post_flag('is_speaking')
 
     def _quiz_is_essay(self):
         quiz = getattr(self.instance, 'quiz', None)
@@ -724,7 +722,10 @@ class QuizQuestionAdminForm(forms.ModelForm):
         if self._quiz_is_manual():
             return []
 
-        question_type = self.cleaned_data.get('question_type') or self.data.get('question_type')
+        question_type = (
+            self.cleaned_data.get('question_type')
+            or self.data.get(self.add_prefix('question_type'))
+        )
         if question_type == QuizQuestion.QuestionType.SPR:
             return []
 
@@ -772,7 +773,10 @@ class QuizQuestionAdminForm(forms.ModelForm):
 
     def clean_spr_correct_answers(self):
         raw = self.cleaned_data.get('spr_correct_answers')
-        question_type = self.cleaned_data.get('question_type') or self.data.get('question_type')
+        question_type = (
+            self.cleaned_data.get('question_type')
+            or self.data.get(self.add_prefix('question_type'))
+        )
 
         if question_type != QuizQuestion.QuestionType.SPR:
             return None

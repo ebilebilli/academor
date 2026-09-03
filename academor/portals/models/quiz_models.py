@@ -341,7 +341,11 @@ class Quiz(models.Model):
         self.is_math = False
         self.is_reading = False
         if self.sat_section == self.SatSection.READING:
-            self.is_reading = True
+            # Practice RW tests store MCQ rows on QuizQuestion. Keep variant
+            # layout so admin save does not switch them to empty passage mode.
+            has_variant_questions = bool(self.pk) and self.questions.exists()
+            if not has_variant_questions:
+                self.is_reading = True
 
     @property
     def time_limit_seconds(self):

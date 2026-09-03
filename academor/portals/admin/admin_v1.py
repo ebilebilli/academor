@@ -2215,7 +2215,13 @@ class QuizAdminForm(forms.ModelForm):
                 cleaned['is_speaking'] = False
                 cleaned['is_essay'] = False
                 cleaned['is_math'] = False
-                cleaned['is_reading'] = sat_section == Quiz.SatSection.READING
+                want_reading = sat_section == Quiz.SatSection.READING
+                has_variant_questions = bool(
+                    self.instance
+                    and self.instance.pk
+                    and self.instance.questions.exists()
+                )
+                cleaned['is_reading'] = bool(want_reading and not has_variant_questions)
         else:
             cleaned['sat_section'] = ''
             cleaned['is_math'] = False
