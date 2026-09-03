@@ -1,10 +1,10 @@
-from html import unescape
-
 from ckeditor.fields import RichTextField
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.html import strip_tags
 from django.utils.translation import gettext_lazy as _
+
+from portals.utils.quiz_option_content import option_has_content
 
 
 class QuizCategory(models.Model):
@@ -611,7 +611,7 @@ class QuizQuestion(models.Model):
             options = [
                 str(item).strip()
                 for item in (self.answer_options or [])
-                if unescape(strip_tags(str(item or ''))).replace('\xa0', ' ').strip()
+                if option_has_content(item)
             ]
             if len(options) < 2:
                 raise ValidationError(

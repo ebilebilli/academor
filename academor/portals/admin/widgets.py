@@ -1,20 +1,12 @@
 import html as html_lib
 import json
-from html import unescape
 
 from django import forms
 from django.core.exceptions import ValidationError
-from django.utils.html import strip_tags
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
-
-def option_has_text(value):
-    """True when an MCQ/SPR option has visible text (empty CKEditor HTML does not count)."""
-    if value in (None, ''):
-        return False
-    text = unescape(strip_tags(str(value))).replace('\xa0', ' ').strip()
-    return bool(text)
+from portals.utils.quiz_option_content import option_has_content as option_has_text
 
 
 def nonempty_options(values):

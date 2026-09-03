@@ -45,6 +45,8 @@ class AnswerOptionsWidgetTests(SimpleTestCase):
         self.assertFalse(option_has_text('<p></p>'))
         self.assertFalse(option_has_text('<p>&nbsp;</p>'))
         self.assertTrue(option_has_text('<p>However</p>'))
+        self.assertTrue(option_has_text('<p><img src="/media/sat-math/eq.png" alt=""></p>'))
+        self.assertTrue(option_has_text('<figure class="image"><img src="https://cdn.example/a.png"></figure>'))
 
     def test_empty_payload_is_not_a_change(self):
         field = AnswerOptionsFormField()
@@ -156,3 +158,56 @@ class QuizQuestionAdminFormSatReadingTests(TestCase):
         self.quiz.sat_section = Quiz.SatSection.READING
         self.quiz.apply_sat_section_format()
         self.assertFalse(self.quiz.is_reading)
+
+
+class QuizQuestionAdminFormSatMathImageTests(TestCase):
+    def setUp(self):
+        ensure_active_portal_services('sat')
+        self.category = QuizCategory.objects.create(name='SAT Math')
+        self.quiz = Quiz.objects.create(
+            category=self.category,
+            topic='SAT Math',
+            is_sat=True,
+            sat_section=Quiz.SatSection.ALGEBRA,
+        )
+        self.question = QuizQuestion.objects.create(
+            quiz=self.quiz,
+            order=1,
+            question='<p>Which graph represents the equation?</p>',
+            question_type=QuizQuestion.QuestionType.MCQ,
+            answer_options=[
+                '<p><img src="/media/a.png" alt=""></p>',
+                '<p><img src="/media/b.png" alt=""></p>',
+                '<p><img src="/media/c.png" alt=""></p>',
+                '<p><img src="/media/d.png" alt=""></p>',
+            ],
+            correct_answer='<p><img src="/media/a.png" alt=""></p>',
+            correct_option_index=0,
+        )
+
+    def test_image_only_options_are_accepted(self):
+        prefix = 'questions-0'
+        options = self.question.answer_options
+        data = {
+            'is_sat': 'on',
+            'sat_section': Quiz.SatSection.ALGEBRA,
+            f'{prefix}-id': str(self.question.pk),
+            f'{prefix}-quiz': str(self.quiz.pk),
+            f'{prefix}-order': '1',
+            f'{prefix}-prompt_type': QuizQuestion.PromptType.TEXT,
+            f'{prefix}-question_type': QuizQuestion.QuestionType.MCQ,
+            f'{prefix}-question': self.question.question,
+            f'{prefix}-answer_options': '[]',
+            f'{prefix}-answer_options_item_0': options[0],
+            f'{prefix}-answer_options_item_1': options[1],
+            f'{prefix}-answer_options_item_2': options[2],
+            f'{prefix}-answer_options_item_3': options[3],
+            f'{prefix}-correct_option_number': '1',
+            f'{prefix}-correct_option_index': '0',
+            f'{prefix}-correct_answer': options[0],
+            f'{prefix}-spr_correct_answers': '[]',
+        }
+        form = QuizQuestionAdminForm(data, prefix=prefix, instance=self.question)
+        self.assertTrue(form.is_valid(), form.errors.as_json())
+        self.assertEqual(len(form.cleaned_data['answer_options']), 4)
+        self.question.full_clean()
