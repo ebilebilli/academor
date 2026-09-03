@@ -50,13 +50,14 @@
         var newIndex = itemCount;
         var itemLabel = itemLabelFor(container);
 
+        var fieldName = container.attr('data-field-name') || '';
         var optionHtml = `
             <div class="answer-option-item" data-index="${newIndex}">
                 <div class="answer-option-header">
                     <span class="answer-option-label">${itemLabel} ${newIndex + 1}</span>
                     <button type="button" class="answer-option-remove-btn" title="Remove">×</button>
                 </div>
-                <textarea class="answer-option-textarea ckeditor-enabled" rows="2" data-index="${newIndex}"></textarea>
+                <textarea class="answer-option-textarea ckeditor-enabled" name="${fieldName}_item_${newIndex}" rows="2" data-index="${newIndex}"></textarea>
             </div>
         `;
 
@@ -83,10 +84,13 @@
 
     function updateOptionLabels(container) {
         var itemLabel = itemLabelFor(container);
+        var fieldName = container.attr('data-field-name') || '';
         container.find('.answer-option-item').each(function(index) {
             $(this).attr('data-index', index);
             $(this).find('.answer-option-label').text(itemLabel + ' ' + (index + 1));
-            $(this).find('.answer-option-textarea').attr('data-index', index);
+            $(this).find('.answer-option-textarea')
+                .attr('data-index', index)
+                .attr('name', fieldName + '_item_' + index);
         });
     }
 

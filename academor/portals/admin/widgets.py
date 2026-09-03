@@ -1,10 +1,26 @@
 import html as html_lib
 import json
+from html import unescape
 
 from django import forms
 from django.core.exceptions import ValidationError
+from django.utils.html import strip_tags
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
+
+
+def option_has_text(value):
+    """True when an MCQ/SPR option has visible text (empty CKEditor HTML does not count)."""
+    if value in (None, ''):
+        return False
+    text = unescape(strip_tags(str(value))).replace('\xa0', ' ').strip()
+    return bool(text)
+
+
+def nonempty_options(values):
+    if not isinstance(values, list):
+        return []
+    return [item for item in values if option_has_text(item)]
 
 
 def _coerce_json_list(value, *, empty=None):
@@ -101,7 +117,7 @@ class AnswerOptionsWidget(forms.Widget):
                         <span class="answer-option-label">{html_lib.escape(item_label)} {i + 1}</span>
                         <button type="button" class="answer-option-remove-btn" title="{html_lib.escape(remove_title)}">×</button>
                     </div>
-                    <textarea class="answer-option-textarea ckeditor-enabled" rows="2" data-index="{i}">{option_html}</textarea>
+                    <textarea class="answer-option-textarea ckeditor-enabled" name="{html_lib.escape(name)}_item_{i}" rows="2" data-index="{i}">{option_html}</textarea>
                 </div>
             ''')
 
@@ -115,17 +131,43 @@ class AnswerOptionsWidget(forms.Widget):
 
         return ''.join(chunks)
 
-    def value_from_datadict(self, data, files, name):
-        hidden_value = data.get(name, '[]')
+    def _posted_item_options(self, data, name):
+        items = []
+        for index in range(50):
+            key = f'{name}_item_{index}'
+            if key not in data:
+                break
+            items.append(data.get(key) or '')
+        return items
+
+    def _parse_hidden_list(self, hidden_value):
         if isinstance(hidden_value, list):
             return hidden_value
+        if hidden_value in (None, ''):
+            return []
         try:
-            return json.loads(hidden_value or '[]')
+            parsed = json.loads(hidden_value)
         except (json.JSONDecodeError, TypeError):
             return []
+        return parsed if isinstance(parsed, list) else []
+
+    def value_from_datadict(self, data, files, name):
+        hidden = self._parse_hidden_list(data.get(name))
+        items = self._posted_item_options(data, name)
+        hidden_filled = nonempty_options(hidden)
+        item_filled = nonempty_options(items)
+        # CKEditor often updates the named item textareas even when the hidden
+        # JSON payload is still [] (submit race). Prefer the richer payload.
+        if len(item_filled) > len(hidden_filled):
+            return items
+        if hidden_filled:
+            return hidden
+        return items or hidden
 
     def value_omitted_from_data(self, data, files, name):
-        return name not in data
+        if name in data:
+            return False
+        return f'{name}_item_0' not in data
 
 
 class AnswerOptionsFormField(forms.JSONField):
@@ -158,3 +200,12 @@ class AnswerOptionsFormField(forms.JSONField):
         if data is not None:
             return data
         return initial
+
+    def has_changed(self, initial, data):
+        initial_list = nonempty_options(
+            initial if isinstance(initial, list) else self.to_python(initial),
+        )
+        data_list = nonempty_options(
+            data if isinstance(data, list) else self.to_python(data),
+        )
+        return initial_list != data_list

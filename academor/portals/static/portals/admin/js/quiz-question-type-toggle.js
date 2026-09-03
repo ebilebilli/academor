@@ -99,9 +99,11 @@
         });
 
         var summary = [];
+        var seen = {};
         $('.errorlist li').each(function() {
             var text = ($(this).text() || '').trim();
-            if (text) {
+            if (text && !seen[text]) {
+                seen[text] = true;
                 summary.push(text);
             }
         });

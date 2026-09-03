@@ -1,3 +1,5 @@
+from html import unescape
+
 from ckeditor.fields import RichTextField
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -602,7 +604,11 @@ class QuizQuestion(models.Model):
         else:
             self.spr_correct_answers = None
             self.spr_max_length = None
-            options = [str(item).strip() for item in (self.answer_options or []) if str(item).strip()]
+            options = [
+                str(item).strip()
+                for item in (self.answer_options or [])
+                if unescape(strip_tags(str(item or ''))).replace('\xa0', ' ').strip()
+            ]
             if len(options) < 2:
                 raise ValidationError(
                     {'answer_options': _('Add at least two answer options.')},

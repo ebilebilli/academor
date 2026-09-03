@@ -5,7 +5,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from portals.admin.widgets import AnswerOptionsFormField, AnswerOptionsWidget
+from portals.admin.widgets import AnswerOptionsFormField, AnswerOptionsWidget, nonempty_options, option_has_text
 from portals.models import ListeningQuestion, ListeningQuestionGroup, Quiz, QuizCategory, QuizQuestion
 from portals.models.listening_models import (
     LABEL_GROUP_QUESTION_TYPES,
@@ -743,21 +743,31 @@ class QuizQuestionAdminForm(forms.ModelForm):
         if not isinstance(parsed, list):
             raise ValidationError(_('Answer options must be a JSON list.'))
 
-        options = [item for item in parsed if item and str(item).strip()]
+        options = nonempty_options(parsed)
 
         # Safety net: if the widget posted empty options (CKEditor sync race),
         # keep the existing saved options instead of wiping the question.
         if len(options) < 2 and self.instance and self.instance.pk:
-            existing = [
-                item for item in (self.instance.answer_options or [])
-                if item and str(item).strip()
-            ]
+            existing = nonempty_options(self.instance.answer_options or [])
             if len(existing) >= 2:
                 return existing
 
         if len(options) < 2:
+            if self._should_skip_empty_extra_mcq():
+                return []
             raise ValidationError(_('Add at least two answer options.'))
         return options
+
+    def _should_skip_empty_extra_mcq(self):
+        """Empty extra inline rows should not fail save with 'add two options'."""
+        if not getattr(self, 'empty_permitted', False):
+            return False
+        if self.instance and self.instance.pk:
+            return False
+        question = self.cleaned_data.get('question')
+        if question is None and self.data is not None:
+            question = self.data.get(self.add_prefix('question'), '')
+        return not option_has_text(question)
 
     def clean_spr_correct_answers(self):
         raw = self.cleaned_data.get('spr_correct_answers')
@@ -831,9 +841,14 @@ class QuizQuestionAdminForm(forms.ModelForm):
             cleaned['spr_correct_answers'] = None
             cleaned['spr_max_length'] = None
 
-            answer_options = cleaned.get('answer_options')
-            if not answer_options or len(answer_options) < 2:
-                self.add_error('answer_options', _('MCQ questions must have at least two answer options.'))
+            answer_options = nonempty_options(cleaned.get('answer_options') or [])
+            cleaned['answer_options'] = answer_options
+            if len(answer_options) < 2:
+                if not self.has_error('answer_options') and not self._should_skip_empty_extra_mcq():
+                    self.add_error(
+                        'answer_options',
+                        _('Add at least two answer options.'),
+                    )
             else:
                 option_number = cleaned.get('correct_option_number')
                 if option_number in (None, ''):
@@ -901,7 +916,7 @@ class QuizQuestionAdminForm(forms.ModelForm):
         media_url = (cleaned.get('media_url') or '').strip()
 
         if prompt_type == QuizQuestion.PromptType.TEXT:
-            if not question:
+            if not question and not self._should_skip_empty_extra_mcq():
                 self.add_error('question', _('Enter the question text.'))
         elif not media_file and not media_url:
             self.add_error(
@@ -910,6 +925,35 @@ class QuizQuestionAdminForm(forms.ModelForm):
             )
 
         return cleaned
+
+    def _post_clean(self):
+        super()._post_clean()
+        if self._should_skip_empty_extra_mcq() and self._errors:
+            for field in (
+                'answer_options',
+                'correct_answer',
+                'correct_option_number',
+                'correct_option_index',
+                'question',
+            ):
+                self._errors.pop(field, None)
+        self._dedupe_field_errors()
+
+    def _dedupe_field_errors(self):
+        if not self._errors:
+            return
+        from django.forms.utils import ErrorList
+
+        for field, errors in list(self._errors.items()):
+            seen = []
+            unique = ErrorList()
+            for err in errors:
+                key = str(err)
+                if key in seen:
+                    continue
+                seen.append(key)
+                unique.append(err)
+            self._errors[field] = unique
 
 
 class ReadingQuestionGroupAdminForm(forms.ModelForm):
