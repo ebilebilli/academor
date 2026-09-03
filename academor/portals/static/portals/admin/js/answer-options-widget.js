@@ -20,6 +20,7 @@
 
         // Critical: sync CKEditor → hidden JSON before Django admin save.
         $(document).on('submit', 'form', function() {
+            var $form = $(this);
             if (window.CKEDITOR) {
                 Object.keys(window.CKEDITOR.instances || {}).forEach(function(id) {
                     try {
@@ -29,7 +30,8 @@
                     }
                 });
             }
-            syncAllAnswerOptionContainers($(this));
+            syncAllAnswerOptionContainers($form);
+            attachClientDebug($form);
         });
     }
 
@@ -38,6 +40,62 @@
         $scope.find('.answer-options-container').each(function() {
             updateHiddenField($(this), {force: true});
         });
+    }
+
+    function collectClientDebug($form) {
+        var rows = [];
+        $form.find('.answer-options-container').each(function() {
+            var container = $(this);
+            var hidden = container.find('.answer-options-hidden');
+            var editors = [];
+            container.find('.answer-option-textarea').each(function() {
+                var textarea = $(this);
+                var editorId = textarea.attr('id') || '';
+                var inst = editorId && window.CKEDITOR && window.CKEDITOR.instances[editorId];
+                var ckData = '';
+                var ckStatus = 'none';
+                if (inst) {
+                    ckStatus = inst.status || 'unknown';
+                    try {
+                        ckData = inst.getData() || '';
+                    } catch (err) {
+                        ckStatus = 'error';
+                    }
+                }
+                editors.push({
+                    name: textarea.attr('name') || '',
+                    id: editorId,
+                    textareaLen: String(textarea.val() || '').length,
+                    ckStatus: ckStatus,
+                    ckLen: String(ckData).length
+                });
+            });
+            rows.push({
+                field: container.attr('data-field-name') || '',
+                hiddenLen: String(hidden.val() || '').length,
+                hiddenPreview: String(hidden.val() || '').slice(0, 80),
+                editors: editors
+            });
+        });
+        return rows;
+    }
+
+    function attachClientDebug($form) {
+        if (!$form.find('.answer-options-container').length) {
+            return;
+        }
+        var payload = '[]';
+        try {
+            payload = JSON.stringify(collectClientDebug($form));
+        } catch (err) {
+            payload = JSON.stringify({error: String(err)});
+        }
+        var field = $form.find('[name="quiz_options_client_debug"]');
+        if (!field.length) {
+            field = $('<textarea name="quiz_options_client_debug" class="quiz-options-client-debug" style="display:none"></textarea>');
+            $form.append(field);
+        }
+        field.val(payload);
     }
 
     function itemLabelFor(container) {

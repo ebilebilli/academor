@@ -39,6 +39,7 @@ from portals.admin.reading_inline_formsets import (
     ReadingQuestionInlineFormSet,
     link_pending_reading_question_groups,
 )
+from portals.admin.quiz_option_debug import log_quiz_options_post
 from portals.admin.quiz_forms import (
     ListeningQuestionAdminForm,
     ListeningQuestionGroupAdminForm,
@@ -2417,6 +2418,11 @@ class QuizAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
         extra_context['quiz_reorder_url'] = reverse('admin:portals_quiz_reorder')
         return super().changelist_view(request, extra_context=extra_context)
 
+    def changeform_view(self, request, object_id=None, form_url='', extra_context=None):
+        if request.method == 'POST':
+            log_quiz_options_post(request, source='QuizAdmin', object_id=object_id)
+        return super().changeform_view(request, object_id, form_url, extra_context)
+
     def reorder_view(self, request):
         import json
 
@@ -2723,6 +2729,11 @@ class QuizQuestionAdmin(PortalModelAdmin):
         if len(text) > 60:
             return f'{text[:60]}…'
         return text
+
+    def changeform_view(self, request, object_id=None, form_url='', extra_context=None):
+        if request.method == 'POST':
+            log_quiz_options_post(request, source='QuizQuestionAdmin', object_id=object_id)
+        return super().changeform_view(request, object_id, form_url, extra_context)
 
     def render_change_form(self, request, context, add=False, change=False, form_url='', obj=None):
         adminform = context.get('adminform')

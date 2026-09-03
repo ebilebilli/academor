@@ -383,6 +383,11 @@ LOGGING = {
             'level': 'INFO',
             'propagate': False,
         },
+        'portals.admin.quiz_options': {
+            'handlers': ['console'],
+            'level': 'WARNING',
+            'propagate': False,
+        },
     },
 }
 

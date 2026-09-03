@@ -5,6 +5,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
+from portals.admin.quiz_option_debug import log_quiz_question_form_errors
 from portals.admin.widgets import AnswerOptionsFormField, AnswerOptionsWidget, nonempty_options, option_has_text
 from portals.models import ListeningQuestion, ListeningQuestionGroup, Quiz, QuizCategory, QuizQuestion
 from portals.models.listening_models import (
@@ -938,6 +939,8 @@ class QuizQuestionAdminForm(forms.ModelForm):
             ):
                 self._errors.pop(field, None)
         self._dedupe_field_errors()
+        if self._errors and not self._should_skip_empty_extra_mcq():
+            log_quiz_question_form_errors(self, source='QuizQuestionAdminForm')
 
     def _dedupe_field_errors(self):
         if not self._errors:
