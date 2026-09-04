@@ -489,8 +489,14 @@ msgid "Unacceptable formats"
 msgstr "Qəbul edilməyən formatlar"
 
 #: academor/templates/portals/includes/quiz_question_play.html
-msgid "Enter fractions as a/b (e.g., 7/2). Do not use mixed numbers or spaces. For decimals, include enough significant digits."
-msgstr "Kəsrləri a/b formatında daxil edin (məsələn, 7/2). Qarışıq rəqəmlər və ya boşluqlar istifadə etməyin. Ondalıklı sayılar üçün kifayət qədər əhəmiyyətli rəqəm əlavə edin."
+msgid ""
+"Enter fractions as a/b (e.g., 7/2). Do not use mixed numbers or spaces. For "
+"decimals, include enough significant digits."
+msgstr ""
+"Kəsrləri a/b formatında daxil edin (məsələn, 7/2). Qarışıq rəqəmlər və ya "
+"boşluqlar istifadə etməyin. Ondalıklı sayılar üçün kifayət qədər əhəmiyyətli"
+" rəqəm əlavə edin."
+
 msgid ""
 "Each part belongs to a speaking quiz. Select an existing speaking quiz, or "
 "leave Quiz empty and enter a new topic and category — a speaking quiz will "
@@ -3427,7 +3433,8 @@ msgstr "%(completed)s tamamlandı. Növbəti: %(next)s."
 #: academor/portals/utils/ielts_mock_test.py:459
 #, python-format
 msgid "%(completed)s is done. Take a short break before %(next)s."
-msgstr "%(completed)s tamamlandı. %(next)s bölməsindən əvvəl qısa fasilə edin."
+msgstr ""
+"%(completed)s tamamlandı. %(next)s bölməsindən əvvəl qısa fasilə edin."
 
 #: academor/portals/utils/ielts_mock_test.py:466
 #, python-format
@@ -4369,8 +4376,8 @@ msgid ""
 "If enabled, checkout shows the bron agreement instead of the standard "
 "training agreement."
 msgstr ""
-"Aktivdirsə, ödəniş zamanı standart tədris müqaviləsi əvəzinə bron "
-"müqaviləsi göstərilir."
+"Aktivdirsə, ödəniş zamanı standart tədris müqaviləsi əvəzinə bron müqaviləsi"
+" göstərilir."
 
 #: academor/projects/models/service_models.py:246
 msgid "Show on homepage"
@@ -6053,12 +6060,10 @@ msgid_plural ""
 "            "
 msgstr[0] ""
 "\n"
-"%(counter)s qiymətləndirilmiş quiz əsasında, müxtəlif miqyaslar "
-"normallaşdırılıb."
+"%(counter)s qiymətləndirilmiş quiz əsasında, müxtəlif miqyaslar normallaşdırılıb."
 msgstr[1] ""
 "\n"
-"%(counter)s qiymətləndirilmiş quiz əsasında, müxtəlif miqyaslar "
-"normallaşdırılıb."
+"%(counter)s qiymətləndirilmiş quiz əsasında, müxtəlif miqyaslar normallaşdırılıb."
 
 #: academor/templates/portals/includes/profile_performance_showcase.html:38
 msgid "Complete graded quizzes to see your average here."
@@ -6352,8 +6357,12 @@ msgid "Dropdown answers"
 msgstr "Dropdown cavablar"
 
 #: academor/portals/models/quiz_models.py
-msgid "Show answer choices in a dropdown menu instead of a list. Use this when there are too many options for radio buttons."
-msgstr "Cavab variantlarını siyahı əvəzinə dropdown menyuda göstər. Radio düymələri üçün çox variant olanda istifadə edin."
+msgid ""
+"Show answer choices in a dropdown menu instead of a list. Use this when "
+"there are too many options for radio buttons."
+msgstr ""
+"Cavab variantlarını siyahı əvəzinə dropdown menyuda göstər. Radio düymələri "
+"üçün çox variant olanda istifadə edin."
 
 #: academor/templates/portals/includes/quiz_question_teacher_view.html
 msgid "Dropdown"
@@ -9481,8 +9490,12 @@ msgid "Results"
 msgstr "Nəticələr"
 
 #: academor/templates/mock-results.html
-msgid "Enter your phone number or the unique code you were given to view your mock test result."
-msgstr "Mock test nəticənizi görmək üçün telefon nömrənizi və ya sizə verilmiş unikal kodu daxil edin."
+msgid ""
+"Enter your phone number or the unique code you were given to view your mock "
+"test result."
+msgstr ""
+"Mock test nəticənizi görmək üçün telefon nömrənizi və ya sizə verilmiş "
+"unikal kodu daxil edin."
 
 #: academor/templates/mock-results.html
 msgid "Code"
@@ -9551,6 +9564,520 @@ msgstr "Ən azı bir təlim proqramı sahəsini doldurun (AZ / EN / RU)."
 #: academor/projects/models/mock_result_models.py
 msgid "Mock test result"
 msgstr "Mock test nəticəsi"
+
+#: academor/portals/templatetags/portal_tags.py
+msgid "Just now"
+msgstr "İndi"
+
+#: academor/portals/templatetags/portal_tags.py
+#, python-format
+msgid "1 minute ago"
+msgstr "1 dəqiqə əvvəl"
+
+#: academor/portals/templatetags/portal_tags.py
+#, python-format
+msgid "%(minutes)s minutes ago"
+msgstr "%(minutes)s dəqiqə əvvəl"
+
+#: academor/portals/templatetags/portal_tags.py
+#, python-format
+msgid "1 hour ago"
+msgstr "1 saat əvvəl"
+
+#: academor/portals/templatetags/portal_tags.py
+#, python-format
+msgid "%(hours)s hours ago"
+msgstr "%(hours)s saat əvvəl"
+
+#: academor/portals/templatetags/portal_tags.py
+msgid "Yesterday"
+msgstr "Dünən"
+
+#: academor/portals/templatetags/portal_tags.py
+#, python-format
+msgid "%(days)s days ago"
+msgstr "%(days)s gün əvvəl"
+
+#: portals/includes/sat_scoring_guide.html
+msgid "How your practice score is calculated"
+msgstr "Təcrübə balınız necə hesablanır"
+
+#: portals/includes/sat_scoring_guide.html
+msgid ""
+"Each correct answer earns points; wrong answers do not subtract points."
+msgstr "Hər düzgün cavab bal qazandırır; yanlış cavablar üçün bal çıxılmır."
+
+#: portals/includes/sat_scoring_guide.html
+msgid ""
+"Each section score is converted to the 200–800 scale based on the number of "
+"correct answers."
+msgstr ""
+"Hər bölmə üzrə nəticə düzgün cavabların sayına əsasən 200–800 bal şkalasına "
+"çevrilir."
+
+#: portals/includes/sat_scoring_guide.html
+msgid ""
+"The total score is the sum of the Reading and Writing and Math section "
+"scores (400–1600)."
+msgstr ""
+"Ümumi nəticə Reading and Writing və Math bölmələrinin ballarının cəmi "
+"əsasında hesablanır (400–1600 bal)."
+
+#: portals/includes/sat_scoring_guide.html
+msgid ""
+"Note: These results are approximate practice estimates and do not reflect an"
+" official College Board SAT score."
+msgstr ""
+"Qeyd: Bu nəticələr təxmini qiymətləndirmə məqsədi daşıyır və rəsmi College "
+"Board SAT balını əks etdirmir."
+
+# Teacher schedule portal (2026-09)
+msgid "24-hour format (HH:MM)"
+msgstr "24 saat formatı (SS:DD)"
+
+msgid "Enter time in 24-hour HH:MM format (Baku)."
+msgstr "24 saatlıq SS:DD formatında vaxt daxil edin (Bakı)."
+
+msgid "Enter a valid time (HH:MM, 24-hour format)."
+msgstr "Düzgün vaxt daxil edin (SS:DD, 24 saat formatı)."
+
+msgid "Weekly slots"
+msgstr "Həftəlik slotlar"
+
+msgid "Times are in Azerbaijan time (Baku, UTC+4)."
+msgstr "Vaxtlar Azərbaycan vaxtı ilə göstərilir (Bakı, UTC+4)."
+
+msgid "Select a group"
+msgstr "Qrup seçin"
+
+msgid "Remove slot"
+msgstr "Slotu sil"
+
+msgid "Add another slot"
+msgstr "Başqa slot əlavə et"
+
+msgid "Save schedule"
+msgstr "Cədvəli saxla"
+
+msgid "Add schedule slots"
+msgstr "Cədvəl slotları əlavə et"
+
+msgid "Add slots"
+msgstr "Slot əlavə et"
+
+msgid "Rename group"
+msgstr "Qrupu adlandır"
+
+msgid "Group name updated."
+msgstr "Qrup adı yeniləndi."
+
+msgid "Pick a group and add one or more weekly slots."
+msgstr "Qrup seçin və bir və ya bir neçə həftəlik slot əlavə edin."
+
+msgid "%(count)s schedule slots added."
+msgstr "%(count)s cədvəl slotu əlavə edildi."
+
+msgid "Select a weekday."
+msgstr "Həftə günü seçin."
+
+msgid "Duration must be at least %(min)s minutes."
+msgstr "Müddət ən azı %(min)s dəqiqə olmalıdır."
+
+msgid "This day and time is duplicated in the form."
+msgstr "Bu gün və vaxt formada təkrarlanır."
+
+msgid "Add at least one schedule slot."
+msgstr "Ən azı bir cədvəl slotu əlavə edin."
+
+msgid ""
+"One or more slots already exist for this group on the same day and time."
+msgstr "Bu qrup üçün eyni gün və vaxtda artıq slot mövcuddur."
+
+msgid "Delete this schedule slot?"
+msgstr "Bu cədvəl slotu silinsin?"
+
+#: academor/templates/privacy-policy.html
+msgid "1. General provisions"
+msgstr "1. Ümumi müddəalar"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"This Privacy Policy applies to users (hereinafter the \"User\", \"you\") of "
+"the academor.az website operated by \"Academor Training and Development "
+"Center\" (hereinafter \"Academor\", \"we\") and explains how your personal "
+"data is collected, used, stored, and protected."
+msgstr ""
+"Bu Məxfilik Siyasəti \"Academor Training and Development Center\" (bundan "
+"sonra \"Academor\", \"biz\") tərəfindən idarə olunan academor.az veb "
+"saytının istifadəçilərinə (bundan sonra \"İstifadəçi\", \"siz\") aid edilir "
+"və şəxsi məlumatlarınızın necə toplandığını, istifadə olunduğunu, "
+"saxlanıldığını və qorunduğunu izah edir."
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"By using academor.az, you are deemed to have agreed to the terms of this "
+"Privacy Policy."
+msgstr ""
+"Academor.az saytından istifadə etməklə siz bu Məxfilik Siyasətinin şərtləri "
+"ilə razılaşmış sayılırsınız."
+
+#: academor/templates/privacy-policy.html
+msgid "Company information:"
+msgstr "Şirkət haqqında məlumat:"
+
+#: academor/templates/privacy-policy.html
+msgid "Name: Academor Training and Development Center"
+msgstr "Ad: Academor Training and Development Center"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Legal address: AZ1033, Baku city, Narimanov district, Aliyar Aliyev street, "
+"building 8, apartment 857"
+msgstr ""
+"Hüquqi ünvan: AZ1033, Bakı şəhəri, Nərimanov rayonu, Əliyar Əliyev küçəsi, "
+"ev 8, mənzil 857"
+
+#: academor/templates/privacy-policy.html
+msgid "Actual address: 44 Jafar Jabbarli street, Baku 1065"
+msgstr "Faktiki ünvan: 44 Cəfər Cabbarlı küçəsi, Bakı 1065"
+
+#: academor/templates/privacy-policy.html
+msgid "TIN (VÖEN): 1507376041"
+msgstr "VÖEN: 1507376041"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"This document has been prepared in accordance with the Law of the Republic "
+"of Azerbaijan \"On Personal Data\" and other applicable legislation."
+msgstr ""
+"Bu sənəd Azərbaycan Respublikasının \"Fərdi məlumatlar haqqında\" Qanununa "
+"və digər müvafiq qanunvericiliyə uyğun hazırlanmışdır."
+
+#: academor/templates/privacy-policy.html
+msgid "2. Information we collect"
+msgstr "2. Topladığımız məlumatlar"
+
+#: academor/templates/privacy-policy.html
+msgid "To provide our services, we may collect the following personal data:"
+msgstr ""
+"Sizə xidmət göstərmək məqsədilə aşağıdakı şəxsi məlumatları toplaya bilərik:"
+
+#: academor/templates/privacy-policy.html
+msgid "Personal identification data: first name, last name"
+msgstr "Şəxsi identifikasiya məlumatları: ad, soyad"
+
+#: academor/templates/privacy-policy.html
+msgid "Contact details: phone number, e-mail address"
+msgstr "Əlaqə məlumatları: telefon nömrəsi, e-mail ünvanı"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Payment data: information required to process payments (payments are "
+"processed via the United Payment system — card details are not stored "
+"directly by us; see section 5)"
+msgstr ""
+"Ödəniş məlumatları: ödənişlərin həyata keçirilməsi zamanı tələb olunan "
+"məlumatlar (ödəniş United Payment sistemi vasitəsilə emal olunur — kart "
+"məlumatları birbaşa bizim tərəfimizdən saxlanılmır, bax bölmə 5)"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Education history: courses you attend, assignments, results, attendance, and"
+" other information related to the learning process"
+msgstr ""
+"Təhsil tarixçəsi: iştirak etdiyiniz kurslar, tapşırıqlar, nəticələr, "
+"davamiyyət və digər təhsil prosesinə aid məlumatlar"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Technical data: usage statistics collected via Google Analytics (e.g. page "
+"views, session duration, and other aggregated analytics)"
+msgstr ""
+"Texniki məlumatlar: Google Analytics vasitəsilə toplanan istifadə "
+"statistikası (məs. səhifəyə baxışlar, sessiya müddəti və digər "
+"ümumiləşdirilmiş analitik məlumatlar)"
+
+#: academor/templates/privacy-policy.html
+msgid "3. How we collect information"
+msgstr "3. Məlumatların toplanma üsulu"
+
+#: academor/templates/privacy-policy.html
+msgid "Information is collected in the following ways:"
+msgstr "Məlumatlar aşağıdakı yollarla toplanır:"
+
+#: academor/templates/privacy-policy.html
+msgid "When you register on the site or fill out course application forms"
+msgstr "Saytda qeydiyyat və ya kurslara müraciət formalarını doldurarkən"
+
+#: academor/templates/privacy-policy.html
+msgid "When you make payment transactions"
+msgstr "Ödəniş əməliyyatlarını həyata keçirərkən"
+
+#: academor/templates/privacy-policy.html
+msgid "Automatically while using the site (via Google Analytics)"
+msgstr ""
+"Saytdan istifadə zamanı avtomatik olaraq (Google Analytics vasitəsilə)"
+
+#: academor/templates/privacy-policy.html
+msgid "When you contact us directly (e-mail, phone, etc.)"
+msgstr "Bizimlə birbaşa əlaqə saxladıqda (e-mail, telefon və s.)"
+
+#: academor/templates/privacy-policy.html
+msgid "4. Purposes of use"
+msgstr "4. Məlumatlardan istifadə məqsədləri"
+
+#: academor/templates/privacy-policy.html
+msgid "We use the information we collect for the following purposes:"
+msgstr "Topladığımız məlumatlardan aşağıdakı məqsədlər üçün istifadə edirik:"
+
+#: academor/templates/privacy-policy.html
+msgid "Creating and managing your registration and account"
+msgstr "Qeydiyyat və hesabınızın yaradılması və idarə olunması"
+
+#: academor/templates/privacy-policy.html
+msgid "Providing access to courses and educational services"
+msgstr "Kurslara giriş və təhsil xidmətlərinin göstərilməsi"
+
+#: academor/templates/privacy-policy.html
+msgid "Processing payments"
+msgstr "Ödənişlərin emal edilməsi"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Communicating with you (notifications, support, informational messages)"
+msgstr "Sizinlə əlaqə saxlanılması (bildirişlər, dəstək, məlumatlandırma)"
+
+#: academor/templates/privacy-policy.html
+msgid "Analyzing and improving how the site works (via Google Analytics)"
+msgstr ""
+"Saytın fəaliyyətinin təhlili və təkmilləşdirilməsi (Google Analytics "
+"vasitəsilə)"
+
+#: academor/templates/privacy-policy.html
+msgid "Complying with legal requirements"
+msgstr "Qanunvericiliyin tələblərinə əməl edilməsi"
+
+#: academor/templates/privacy-policy.html
+msgid "5. Sharing with third parties"
+msgstr "5. Üçüncü tərəflərlə paylaşım"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Your personal data is not shared with third parties except in the following "
+"cases:"
+msgstr ""
+"Şəxsi məlumatlarınız aşağıdakı hallar istisna olmaqla üçüncü tərəflərlə "
+"paylaşılmır:"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"United Payment — to process payment transactions. Card details you enter "
+"during payment are processed directly through United Payment's secure "
+"infrastructure; these details are not stored by Academor. In connection with"
+" payments, our admin panel stores only the following data permitted by law: "
+"name, phone number, e-mail, the date of the signed electronic contract, and "
+"the payment amount."
+msgstr ""
+"United Payment — ödəniş əməliyyatlarının həyata keçirilməsi üçün. Ödəniş "
+"zamanı daxil etdiyiniz kart məlumatları birbaşa United Payment-in təhlükəsiz"
+" infrastrukturu vasitəsilə emal olunur; bu məlumatlar Academor tərəfindən "
+"saxlanılmır. Ödəniş prosesi ilə əlaqədar admin panelimizdə yalnız qanunla "
+"icazə verilən aşağıdakı məlumatlar saxlanılır: ad, telefon nömrəsi, e-mail, "
+"imzalanmış elektron müqavilənin tarixi və ödəniş məbləği."
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Google Analytics — to analyze site usage statistics, in "
+"anonymized/aggregated form."
+msgstr ""
+"Google Analytics — saytın istifadə statistikasının təhlili üçün, "
+"anonimləşdirilmiş/ümumiləşdirilmiş formada."
+
+#: academor/templates/privacy-policy.html
+msgid "To relevant state authorities when required by law."
+msgstr "Qanunvericiliyin tələb etdiyi hallarda müvafiq dövlət orqanlarına."
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Your data is not sold or rented to third parties for marketing purposes."
+msgstr ""
+"Məlumatlarınız marketinq məqsədilə üçüncü tərəflərə satılmır və ya icarəyə "
+"verilmir."
+
+#: academor/templates/privacy-policy.html
+msgid "6. Cookie usage"
+msgstr "6. Cookie (kuki) istifadəsi"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Our site uses the following types of cookies to provide and analyze the user"
+" experience:"
+msgstr ""
+"Saytımız istifadəçi təcrübəsini təmin etmək və təhlil etmək məqsədilə "
+"aşağıdakı cookie növlərindən istifadə edir:"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Essential (session) cookies: Used for the site to function properly — for "
+"example, managing your session while you are logged in. Without these "
+"cookies, some site features (login, personal account, etc.) may not work."
+msgstr ""
+"Zəruri (sessiya) cookie-lər: Saytın düzgün işləməsi üçün istifadə olunur — "
+"məsələn, hesabınıza daxil olduğunuz müddətdə sessiyanızın idarə edilməsi. Bu"
+" cookie-lər olmadan saytın bəzi funksiyaları (giriş, şəxsi kabinet və s.) "
+"işləməyə bilər."
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Functional cookies: Used to remember choices you make, such as language "
+"preference, so you do not need to select them again each time."
+msgstr ""
+"Funksional cookie-lər: Dil seçimi kimi istifadəçi tərəfindən edilən "
+"seçimləri yadda saxlamaq üçün istifadə olunur ki, hər dəfə yenidən seçim "
+"etməyinizə ehtiyac qalmasın."
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Analytics cookies (Google Analytics): Used to collect aggregated usage "
+"statistics to analyze and improve how the site works."
+msgstr ""
+"Analitik cookie-lər (Google Analytics): Saytın fəaliyyətinin təhlili və "
+"təkmilləşdirilməsi məqsədilə ümumiləşdirilmiş istifadə statistikasının "
+"toplanması üçün istifadə olunur."
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"You can manage or disable cookies in your browser settings, but this may "
+"prevent some site features (for example, keeping your session or remembering"
+" language preference) from working correctly."
+msgstr ""
+"Brauzerinizin ayarlarından cookie-ləri idarə edə və ya söndürə bilərsiniz, "
+"lakin bu, saytın bəzi funksiyalarının (məsələn, sessiyanın saxlanması və ya "
+"dil seçiminin yadda qalması) düzgün işləməməsinə səbəb ola bilər."
+
+#: academor/templates/privacy-policy.html
+msgid "7. Data retention period"
+msgstr "7. Məlumatların saxlanma müddəti"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Your personal data is stored while your account is active. Student accounts "
+"that remain inactive for a long time may be deleted by an administrator. You"
+" also have the right to request deletion of your account (see section 8)."
+msgstr ""
+"Şəxsi məlumatlarınız hesabınız aktiv olduğu müddətdə saxlanılır. Uzun müddət"
+" aktiv olmayan tələbə hesabları admin tərəfindən silinə bilər. Hesabınızın "
+"silinməsini tələb etmək hüququnuza malik olduğunuzu da qeyd edirik (bax "
+"bölmə 8)."
+
+#: academor/templates/privacy-policy.html
+msgid "8. User rights"
+msgstr "8. İstifadəçi hüquqları"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Under the legislation of the Republic of Azerbaijan, you have the following "
+"rights:"
+msgstr ""
+"Azərbaycan Respublikasının qanunvericiliyinə əsasən aşağıdakı hüquqlara "
+"maliksiniz:"
+
+#: academor/templates/privacy-policy.html
+msgid "To access your personal data"
+msgstr "Şəxsi məlumatlarınıza giriş əldə etmək"
+
+#: academor/templates/privacy-policy.html
+msgid "To request correction of inaccurate or outdated data"
+msgstr "Səhv və ya köhnəlmiş məlumatların düzəldilməsini tələb etmək"
+
+#: academor/templates/privacy-policy.html
+msgid "To request deletion of your data"
+msgstr "Məlumatlarınızın silinməsini tələb etmək"
+
+#: academor/templates/privacy-policy.html
+msgid "To object to the processing of your data"
+msgstr "Məlumatlarınızın emalına etirazınızı bildirmək"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"To exercise these rights, you may contact us at <a "
+"href=\"mailto:corp@academor.az\">corp@academor.az</a>."
+msgstr ""
+"Bu hüquqlardan istifadə etmək üçün <a "
+"href=\"mailto:corp@academor.az\">corp@academor.az</a> ünvanına müraciət edə "
+"bilərsiniz."
+
+#: academor/templates/privacy-policy.html
+msgid "9. Data security"
+msgstr "9. Məlumatların təhlükəsizliyi"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"We take appropriate technical and organizational measures to protect your "
+"personal data from unauthorized access, alteration, disclosure, or "
+"destruction. However, no transmission of data over the internet can be "
+"guaranteed to be 100% secure."
+msgstr ""
+"Şəxsi məlumatlarınızın icazəsiz girişdən, dəyişdirilmədən, açıqlanmadan və "
+"ya məhv edilmədən qorunması üçün müvafiq texniki və təşkilati tədbirlər "
+"görürük. Bununla belə, internet vasitəsilə ötürülən heç bir məlumatın 100% "
+"təhlükəsiz olduğunu zəmanət vermək mümkün deyil."
+
+#: academor/templates/privacy-policy.html
+msgid "10. Children's privacy"
+msgstr "10. Uşaqların məxfiliyi"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"If users under 18 use our site without parental/guardian supervision, please"
+" contact us so that we can take appropriate steps."
+msgstr ""
+"Əgər 18 yaşdan kiçik istifadəçilər saytımızdan valideyn/qəyyum nəzarəti "
+"olmadan istifadə edirsə, xahiş edirik bizimlə əlaqə saxlayın ki, müvafiq "
+"tədbirləri görək."
+
+#: academor/templates/privacy-policy.html
+msgid "11. International users"
+msgstr "11. Beynəlxalq istifadəçilər"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Our services are currently intended primarily for users in the Republic of "
+"Azerbaijan. If we later provide services to users from other countries, this"
+" Privacy Policy will be updated accordingly."
+msgstr ""
+"Hazırda xidmətlərimiz əsasən Azərbaycan Respublikası ərazisindəki "
+"istifadəçilər üçün nəzərdə tutulub. Gələcəkdə xarici ölkələrdən "
+"istifadəçilər üçün xidmət göstərilməsi halında bu Məxfilik Siyasəti müvafiq "
+"qaydada yenilənəcək."
+
+#: academor/templates/privacy-policy.html
+msgid "12. Changes to this policy"
+msgstr "12. Siyasətdə dəyişikliklər"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"This Privacy Policy may be updated from time to time. Changes take effect "
+"when published on the site. By continuing to use the site regularly, you are"
+" deemed to have accepted the updated terms."
+msgstr ""
+"Bu Məxfilik Siyasəti zaman-zaman yenilənə bilər. Dəyişikliklər saytda dərc "
+"olunduğu andan qüvvəyə minir. Saytdan mütəmadi istifadə etməklə yenilənmiş "
+"şərtləri qəbul etmiş sayılırsınız."
+
+#: academor/templates/privacy-policy.html
+msgid "13. Contact"
+msgstr "13. Əlaqə"
+
+#: academor/templates/privacy-policy.html
+msgid "If you have questions about this Privacy Policy, you can contact us:"
+msgstr ""
+"Məxfilik Siyasəti ilə bağlı suallarınız olduqda bizimlə əlaqə saxlaya "
+"bilərsiniz:"
+
+#: academor/templates/privacy-policy.html
+msgid "Address: 44 Jafar Jabbarli street, Baku 1065"
+msgstr "Ünvan: 44 Cəfər Cabbarlı küçəsi, Bakı 1065"
 
 #~ msgid ""
 #~ "Shared classroom PDFs. Pick one or more active site services — only teachers"
@@ -10081,7 +10608,6 @@ msgstr "Mock test nəticəsi"
 
 #~ msgid "Graded"
 #~ msgstr "Qiymətləndirilib"
-
 
 #, python-format
 #~ msgid ""
@@ -11034,39 +11560,6 @@ msgstr "Mock test nəticəsi"
 #~ msgid "submitted work for review"
 #~ msgstr "yoxlama üçün iş göndərdi"
 
-#: academor/portals/templatetags/portal_tags.py
-msgid "Just now"
-msgstr "İndi"
-
-#: academor/portals/templatetags/portal_tags.py
-#, python-format
-msgid "1 minute ago"
-msgstr "1 dəqiqə əvvəl"
-
-#: academor/portals/templatetags/portal_tags.py
-#, python-format
-msgid "%(minutes)s minutes ago"
-msgstr "%(minutes)s dəqiqə əvvəl"
-
-#: academor/portals/templatetags/portal_tags.py
-#, python-format
-msgid "1 hour ago"
-msgstr "1 saat əvvəl"
-
-#: academor/portals/templatetags/portal_tags.py
-#, python-format
-msgid "%(hours)s hours ago"
-msgstr "%(hours)s saat əvvəl"
-
-#: academor/portals/templatetags/portal_tags.py
-msgid "Yesterday"
-msgstr "Dünən"
-
-#: academor/portals/templatetags/portal_tags.py
-#, python-format
-msgid "%(days)s days ago"
-msgstr "%(days)s gün əvvəl"
-
 #~ msgid "%(name)s submitted work for review"
 #~ msgstr "%(name)s yoxlama üçün iş göndərdi"
 
@@ -11110,26 +11603,6 @@ msgstr "%(days)s gün əvvəl"
 #~ msgid "View quizzes for your assigned services."
 #~ msgstr "Təyin edilmiş xidmətləriniz üçün quizlərə baxın."
 
-#: portals/includes/sat_scoring_guide.html
-msgid "How your practice score is calculated"
-msgstr "Təcrübə balınız necə hesablanır"
-
-#: portals/includes/sat_scoring_guide.html
-msgid "Each correct answer earns points; wrong answers do not subtract points."
-msgstr "Hər düzgün cavab bal qazandırır; yanlış cavablar üçün bal çıxılmır."
-
-#: portals/includes/sat_scoring_guide.html
-msgid "Each section score is converted to the 200–800 scale based on the number of correct answers."
-msgstr "Hər bölmə üzrə nəticə düzgün cavabların sayına əsasən 200–800 bal şkalasına çevrilir."
-
-#: portals/includes/sat_scoring_guide.html
-msgid "The total score is the sum of the Reading and Writing and Math section scores (400–1600)."
-msgstr "Ümumi nəticə Reading and Writing və Math bölmələrinin ballarının cəmi əsasında hesablanır (400–1600 bal)."
-
-#: portals/includes/sat_scoring_guide.html
-msgid "Note: These results are approximate practice estimates and do not reflect an official College Board SAT score."
-msgstr "Qeyd: Bu nəticələr təxmini qiymətləndirmə məqsədi daşıyır və rəsmi College Board SAT balını əks etdirmir."
-
 #~ msgid "Each correct answer counts; wrong answers do not subtract points."
 #~ msgstr "Hər düzgün cavab sayılır; yanlış cavablar üçün bal çıxılmır."
 
@@ -11139,20 +11612,33 @@ msgstr "Qeyd: Bu nəticələr təxmini qiymətləndirmə məqsədi daşıyır v�
 #~ msgid "Total score = Reading and Writing + Math (400–1600)."
 #~ msgstr "Ümumi bal = Reading and Writing + Math (400–1600)."
 
-#~ msgid "These are approximate practice estimates — not an official College Board score."
-#~ msgstr "Bunlar təxmini təcrübə qiymətləridir — rəsmi College Board balı deyil."
+#~ msgid ""
+#~ "These are approximate practice estimates — not an official College Board "
+#~ "score."
+#~ msgstr ""
+#~ "Bunlar təxmini təcrübə qiymətləridir — rəsmi College Board balı deyil."
 
 #~ msgid "How Digital SAT scores work"
 #~ msgstr "Digital SAT balları necə hesablanır"
 
-#~ msgid "Based on College Board Digital SAT scoring model. Exact official equating tables are not published."
-#~ msgstr "College Board Digital SAT bal modelinə əsaslanır. Rəsmi equating cədvəlləri açıqlanmır."
+#~ msgid ""
+#~ "Based on College Board Digital SAT scoring model. Exact official equating "
+#~ "tables are not published."
+#~ msgstr ""
+#~ "College Board Digital SAT bal modelinə əsaslanır. Rəsmi equating cədvəlləri "
+#~ "açıqlanmır."
 
 #~ msgid "Practice score on Academor"
 #~ msgstr "Academor-da təcrübə balı"
 
-#~ msgid "Your section scores here use a simplified conversion from raw correct answers to the 200-800 scale. They are approximate practice estimates - not an official College Board score report."
-#~ msgstr "Buradakı bölmə balları düzgün cavablardan 200-800 şkalasına sadələşdirilmiş çevirmə ilə hesablanır. Bunlar təxmini təcrübə qiymətləridir - rəsmi College Board hesabatı deyil."
+#~ msgid ""
+#~ "Your section scores here use a simplified conversion from raw correct "
+#~ "answers to the 200-800 scale. They are approximate practice estimates - not "
+#~ "an official College Board score report."
+#~ msgstr ""
+#~ "Buradakı bölmə balları düzgün cavablardan 200-800 şkalasına sadələşdirilmiş "
+#~ "çevirmə ilə hesablanır. Bunlar təxmini təcrübə qiymətləridir - rəsmi College"
+#~ " Board hesabatı deyil."
 
 #~ msgid "Adaptive modules"
 #~ msgstr "Adaptiv modullar"
@@ -11162,67 +11648,3 @@ msgstr "Qeyd: Bu nəticələr təxmini qiymətləndirmə məqsədi daşıyır v�
 
 #~ msgid "Conceptual path"
 #~ msgstr "Konseptual yol"
-
-# Teacher schedule portal (2026-09)
-msgid "24-hour format (HH:MM)"
-msgstr "24 saat formatı (SS:DD)"
-
-msgid "Enter time in 24-hour HH:MM format (Baku)."
-msgstr "24 saatlıq SS:DD formatında vaxt daxil edin (Bakı)."
-
-msgid "Enter a valid time (HH:MM, 24-hour format)."
-msgstr "Düzgün vaxt daxil edin (SS:DD, 24 saat formatı)."
-
-msgid "Weekly slots"
-msgstr "Həftəlik slotlar"
-
-msgid "Times are in Azerbaijan time (Baku, UTC+4)."
-msgstr "Vaxtlar Azərbaycan vaxtı ilə göstərilir (Bakı, UTC+4)."
-
-msgid "Select a group"
-msgstr "Qrup seçin"
-
-msgid "Remove slot"
-msgstr "Slotu sil"
-
-msgid "Add another slot"
-msgstr "Başqa slot əlavə et"
-
-msgid "Save schedule"
-msgstr "Cədvəli saxla"
-
-msgid "Add schedule slots"
-msgstr "Cədvəl slotları əlavə et"
-
-msgid "Add slots"
-msgstr "Slot əlavə et"
-
-msgid "Rename group"
-msgstr "Qrupu adlandır"
-
-msgid "Group name updated."
-msgstr "Qrup adı yeniləndi."
-
-msgid "Pick a group and add one or more weekly slots."
-msgstr "Qrup seçin və bir və ya bir neçə həftəlik slot əlavə edin."
-
-msgid "%(count)s schedule slots added."
-msgstr "%(count)s cədvəl slotu əlavə edildi."
-
-msgid "Select a weekday."
-msgstr "Həftə günü seçin."
-
-msgid "Duration must be at least %(min)s minutes."
-msgstr "Müddət ən azı %(min)s dəqiqə olmalıdır."
-
-msgid "This day and time is duplicated in the form."
-msgstr "Bu gün və vaxt formada təkrarlanır."
-
-msgid "Add at least one schedule slot."
-msgstr "Ən azı bir cədvəl slotu əlavə edin."
-
-msgid "One or more slots already exist for this group on the same day and time."
-msgstr "Bu qrup üçün eyni gün və vaxtda artıq slot mövcuddur."
-
-msgid "Delete this schedule slot?"
-msgstr "Bu cədvəl slotu silinsin?"

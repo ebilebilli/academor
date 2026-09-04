@@ -493,8 +493,13 @@ msgid "Unacceptable formats"
 msgstr "Недопустимые форматы"
 
 #: academor/templates/portals/includes/quiz_question_play.html
-msgid "Enter fractions as a/b (e.g., 7/2). Do not use mixed numbers or spaces. For decimals, include enough significant digits."
-msgstr "Вводите дроби в формате a/b (например, 7/2). Не используйте смешанные числа или пробелы. Для десятичных дробей включайте достаточное количество значащих цифр."
+msgid ""
+"Enter fractions as a/b (e.g., 7/2). Do not use mixed numbers or spaces. For "
+"decimals, include enough significant digits."
+msgstr ""
+"Вводите дроби в формате a/b (например, 7/2). Не используйте смешанные числа "
+"или пробелы. Для десятичных дробей включайте достаточное количество значащих"
+" цифр."
 
 #: academor/portals/admin/admin_v1.py:659
 msgid "Login account"
@@ -3492,7 +3497,8 @@ msgstr "%(completed)s завершён. Далее: %(next)s."
 #: academor/portals/utils/ielts_mock_test.py:459
 #, python-format
 msgid "%(completed)s is done. Take a short break before %(next)s."
-msgstr "%(completed)s завершён. Сделайте короткий перерыв перед разделом «%(next)s»."
+msgstr ""
+"%(completed)s завершён. Сделайте короткий перерыв перед разделом «%(next)s»."
 
 #: academor/portals/utils/ielts_mock_test.py:466
 #, python-format
@@ -4040,7 +4046,8 @@ msgstr "Этот день и время повторяются в форме."
 msgid "Add at least one schedule slot."
 msgstr "Добавьте хотя бы один слот расписания."
 
-msgid "One or more slots already exist for this group on the same day and time."
+msgid ""
+"One or more slots already exist for this group on the same day and time."
 msgstr "Для этой группы уже есть слот(ы) в тот же день и время."
 
 msgid "Delete this schedule slot?"
@@ -6464,8 +6471,12 @@ msgid "Dropdown answers"
 msgstr "Выпадающие ответы"
 
 #: academor/portals/models/quiz_models.py
-msgid "Show answer choices in a dropdown menu instead of a list. Use this when there are too many options for radio buttons."
-msgstr "Показывать варианты ответа в выпадающем меню, а не списком. Используйте, когда вариантов слишком много для радиокнопок."
+msgid ""
+"Show answer choices in a dropdown menu instead of a list. Use this when "
+"there are too many options for radio buttons."
+msgstr ""
+"Показывать варианты ответа в выпадающем меню, а не списком. Используйте, "
+"когда вариантов слишком много для радиокнопок."
 
 #: academor/templates/portals/includes/quiz_question_teacher_view.html
 msgid "Dropdown"
@@ -9588,6 +9599,618 @@ msgstr "Средне"
 msgid "Weak"
 msgstr "Слабо"
 
+#: academor/portals/templatetags/portal_tags.py
+msgid "Just now"
+msgstr "Только что"
+
+#: academor/portals/templatetags/portal_tags.py
+#, python-format
+msgid "1 minute ago"
+msgstr "1 минуту назад"
+
+#: academor/portals/templatetags/portal_tags.py
+#, python-format
+msgid "%(minutes)s minutes ago"
+msgstr "%(minutes)s минут назад"
+
+#: academor/portals/templatetags/portal_tags.py
+#, python-format
+msgid "1 hour ago"
+msgstr "1 час назад"
+
+#: academor/portals/templatetags/portal_tags.py
+#, python-format
+msgid "%(hours)s hours ago"
+msgstr "%(hours)s часов назад"
+
+#: academor/portals/templatetags/portal_tags.py
+msgid "Yesterday"
+msgstr "Вчера"
+
+#: academor/portals/templatetags/portal_tags.py
+#, python-format
+msgid "%(days)s days ago"
+msgstr "%(days)s дней назад"
+
+#: portals/homework lesson feature
+msgid "Homework text"
+msgstr "Текст домашнего задания"
+
+#: portals/homework lesson feature
+msgid "Homework file"
+msgstr "Файл домашнего задания"
+
+#: portals/homework lesson feature
+msgid "Write your homework here…"
+msgstr "Напишите домашнее задание здесь…"
+
+#: portals/homework lesson feature
+msgid "PDF, Word (.doc, .docx), or text (.txt). Max 10 MB."
+msgstr "PDF, Word (.doc, .docx) или текст (.txt). Макс. 10 МБ."
+
+#: portals/homework lesson feature
+msgid "Upload a PDF, Word, or text file (.pdf, .doc, .docx, .txt)."
+msgstr "Загрузите PDF, Word или текстовый файл (.pdf, .doc, .docx, .txt)."
+
+#: portals/homework lesson feature
+msgid "File must be 10 MB or smaller."
+msgstr "Файл должен быть не больше 10 МБ."
+
+#: portals/homework lesson feature
+msgid "Enter homework text or upload a PDF, Word, or text file."
+msgstr "Введите текст или загрузите PDF, Word или текстовый файл."
+
+#: portals/homework lesson feature
+msgid "Homework submitted successfully."
+msgstr "Домашнее задание успешно отправлено."
+
+#: portals/homework lesson feature
+msgid "Submit homework"
+msgstr "Отправить задание"
+
+#: portals/homework lesson feature
+msgid "Update homework"
+msgstr "Обновить задание"
+
+#: portals/homework lesson feature
+msgid "Download file"
+msgstr "Скачать файл"
+
+#: portals/homework lesson feature
+msgid "No homework submitted yet."
+msgstr "Домашнее задание ещё не отправлено."
+
+#: portals/homework lesson feature
+msgid "Student homework"
+msgstr "Домашние задания учеников"
+
+#: portals/homework lesson feature
+msgid "No homework submitted for this lesson yet."
+msgstr "По этому уроку ещё нет домашних заданий."
+
+#: portals/homework lesson feature
+msgid "Submitted %(when)s"
+msgstr "Отправлено: %(when)s"
+
+#: portals/homework lesson feature
+msgid "Lesson homework"
+msgstr "Домашнее задание к уроку"
+
+#: portals/homework lesson feature
+msgid "Lesson homeworks"
+msgstr "Домашние задания к урокам"
+
+#: portals/homework lesson feature
+msgid "Original filename"
+msgstr "Исходное имя файла"
+
+#: portals/homework lesson feature
+msgid "File type"
+msgstr "Тип файла"
+
+#: portals/homework lesson feature
+msgid "Submitted at"
+msgstr "Отправлено"
+
+#: academor/templates/portals/login.html
+msgid "Assessment"
+msgstr "Оценка"
+
+#: academor/templates/portals/login.html
+msgid "Results"
+msgstr "Результаты"
+
+#: academor/templates/mock-results.html
+msgid ""
+"Enter your phone number or the unique code you were given to view your mock "
+"test result."
+msgstr ""
+"Введите номер телефона или уникальный код, чтобы посмотреть результат mock-"
+"теста."
+
+#: academor/templates/mock-results.html
+msgid "Code"
+msgstr "Код"
+
+#: academor/templates/mock-results.html
+msgid "Training program"
+msgstr "Учебная программа"
+
+#: academor/templates/mock-results.html
+msgid "Phone number or unique code"
+msgstr "Номер телефона или уникальный код"
+
+#: academor/templates/mock-results.html
+msgid "Search"
+msgstr "Найти"
+
+#: academor/templates/mock-results.html
+msgid "Rank"
+msgstr "Место"
+
+#: academor/templates/mock-results.html
+msgid "No result found for this code."
+msgstr "Результат по этому коду не найден."
+
+#: academor/templates/mock-results.html
+msgid "Top 5"
+msgstr "Топ 5"
+
+#: academor/templates/mock-results.html
+msgid "No results yet."
+msgstr "Пока нет результатов."
+
+#: academor/projects/views/mock_results_views.py
+msgid "Training program not found."
+msgstr "Учебная программа не найдена."
+
+#: academor/projects/views/mock_results_views.py
+msgid "Look up your mock test result by phone number or unique code."
+msgstr ""
+"Проверьте результат mock-теста по номеру телефона или уникальному коду."
+
+#: academor/projects/models/mock_result_models.py
+msgid "Show in Top 5"
+msgstr "Показать в Топ 5"
+
+#: academor/projects/models/mock_result_models.py
+msgid "If enabled, this person can appear in the public Top 5 list."
+msgstr ""
+"Если включено, этот человек может отображаться в публичном списке Топ 5."
+
+#: academor/projects/models/mock_result_models.py
+msgid "Training program (AZ)"
+msgstr "Учебная программа (AZ)"
+
+#: academor/projects/models/mock_result_models.py
+msgid "Training program (EN)"
+msgstr "Учебная программа (EN)"
+
+#: academor/projects/models/mock_result_models.py
+msgid "Training program (RU)"
+msgstr "Учебная программа (RU)"
+
+#: academor/projects/models/mock_result_models.py
+msgid "Fill in at least one training program field (AZ / EN / RU)."
+msgstr "Заполните хотя бы одно поле учебной программы (AZ / EN / RU)."
+
+#: academor/projects/models/mock_result_models.py
+msgid "Mock test result"
+msgstr "Результат mock-теста"
+
+#: portals/includes/sat_scoring_guide.html
+msgid "How your practice score is calculated"
+msgstr "Как считается ваш практический балл"
+
+#: portals/includes/sat_scoring_guide.html
+msgid ""
+"Each correct answer earns points; wrong answers do not subtract points."
+msgstr ""
+"Каждый правильный ответ приносит баллы; за неправильные ответы баллы не "
+"снимаются."
+
+#: portals/includes/sat_scoring_guide.html
+msgid ""
+"Each section score is converted to the 200–800 scale based on the number of "
+"correct answers."
+msgstr ""
+"Результат по каждой секции переводится в шкалу 200–800 на основе числа "
+"правильных ответов."
+
+#: portals/includes/sat_scoring_guide.html
+msgid ""
+"The total score is the sum of the Reading and Writing and Math section "
+"scores (400–1600)."
+msgstr ""
+"Общий результат рассчитывается как сумма баллов секций Reading and Writing и"
+" Math (400–1600)."
+
+#: portals/includes/sat_scoring_guide.html
+msgid ""
+"Note: These results are approximate practice estimates and do not reflect an"
+" official College Board SAT score."
+msgstr ""
+"Примечание: Эти результаты носят приблизительный оценочный характер и не "
+"являются официальным баллом College Board SAT."
+
+#: academor/templates/privacy-policy.html
+msgid "1. General provisions"
+msgstr "1. Общие положения"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"This Privacy Policy applies to users (hereinafter the \"User\", \"you\") of "
+"the academor.az website operated by \"Academor Training and Development "
+"Center\" (hereinafter \"Academor\", \"we\") and explains how your personal "
+"data is collected, used, stored, and protected."
+msgstr ""
+"Настоящая Политика конфиденциальности применяется к пользователям (далее — "
+"«Пользователь», «вы») веб-сайта academor.az, которым управляет «Academor "
+"Training and Development Center» (далее — «Academor», «мы»), и объясняет, "
+"как собираются, используются, хранятся и защищаются ваши персональные "
+"данные."
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"By using academor.az, you are deemed to have agreed to the terms of this "
+"Privacy Policy."
+msgstr ""
+"Используя сайт academor.az, вы считаетесь согласившимися с условиями "
+"настоящей Политики конфиденциальности."
+
+#: academor/templates/privacy-policy.html
+msgid "Company information:"
+msgstr "Сведения о компании:"
+
+#: academor/templates/privacy-policy.html
+msgid "Name: Academor Training and Development Center"
+msgstr "Название: Academor Training and Development Center"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Legal address: AZ1033, Baku city, Narimanov district, Aliyar Aliyev street, "
+"building 8, apartment 857"
+msgstr ""
+"Юридический адрес: AZ1033, город Баку, Наримановский район, ул. Алияра "
+"Алиева, дом 8, кв. 857"
+
+#: academor/templates/privacy-policy.html
+msgid "Actual address: 44 Jafar Jabbarli street, Baku 1065"
+msgstr "Фактический адрес: ул. Джафара Джаббарлы, 44, Баку 1065"
+
+#: academor/templates/privacy-policy.html
+msgid "TIN (VÖEN): 1507376041"
+msgstr "ИНН (VÖEN): 1507376041"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"This document has been prepared in accordance with the Law of the Republic "
+"of Azerbaijan \"On Personal Data\" and other applicable legislation."
+msgstr ""
+"Настоящий документ подготовлен в соответствии с Законом Азербайджанской "
+"Республики «О персональных данных» и иным применимым законодательством."
+
+#: academor/templates/privacy-policy.html
+msgid "2. Information we collect"
+msgstr "2. Собираемые данные"
+
+#: academor/templates/privacy-policy.html
+msgid "To provide our services, we may collect the following personal data:"
+msgstr "Для оказания услуг мы можем собирать следующие персональные данные:"
+
+#: academor/templates/privacy-policy.html
+msgid "Personal identification data: first name, last name"
+msgstr "Идентификационные данные: имя, фамилия"
+
+#: academor/templates/privacy-policy.html
+msgid "Contact details: phone number, e-mail address"
+msgstr "Контактные данные: номер телефона, адрес электронной почты"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Payment data: information required to process payments (payments are "
+"processed via the United Payment system — card details are not stored "
+"directly by us; see section 5)"
+msgstr ""
+"Платёжные данные: сведения, необходимые для проведения платежей (платежи "
+"обрабатываются через систему United Payment — данные карт напрямую нами не "
+"хранятся; см. раздел 5)"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Education history: courses you attend, assignments, results, attendance, and"
+" other information related to the learning process"
+msgstr ""
+"Учебная история: курсы, в которых вы участвуете, задания, результаты, "
+"посещаемость и другие сведения, связанные с учебным процессом"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Technical data: usage statistics collected via Google Analytics (e.g. page "
+"views, session duration, and other aggregated analytics)"
+msgstr ""
+"Технические данные: статистика использования, собираемая через Google "
+"Analytics (например, просмотры страниц, длительность сессии и другие "
+"агрегированные аналитические данные)"
+
+#: academor/templates/privacy-policy.html
+msgid "3. How we collect information"
+msgstr "3. Способы сбора данных"
+
+#: academor/templates/privacy-policy.html
+msgid "Information is collected in the following ways:"
+msgstr "Данные собираются следующими способами:"
+
+#: academor/templates/privacy-policy.html
+msgid "When you register on the site or fill out course application forms"
+msgstr "При регистрации на сайте или заполнении форм заявки на курсы"
+
+#: academor/templates/privacy-policy.html
+msgid "When you make payment transactions"
+msgstr "При совершении платёжных операций"
+
+#: academor/templates/privacy-policy.html
+msgid "Automatically while using the site (via Google Analytics)"
+msgstr "Автоматически при использовании сайта (через Google Analytics)"
+
+#: academor/templates/privacy-policy.html
+msgid "When you contact us directly (e-mail, phone, etc.)"
+msgstr "При прямом обращении к нам (e-mail, телефон и т. д.)"
+
+#: academor/templates/privacy-policy.html
+msgid "4. Purposes of use"
+msgstr "4. Цели использования данных"
+
+#: academor/templates/privacy-policy.html
+msgid "We use the information we collect for the following purposes:"
+msgstr "Мы используем собранные данные для следующих целей:"
+
+#: academor/templates/privacy-policy.html
+msgid "Creating and managing your registration and account"
+msgstr "Создание и управление вашей регистрацией и аккаунтом"
+
+#: academor/templates/privacy-policy.html
+msgid "Providing access to courses and educational services"
+msgstr "Предоставление доступа к курсам и образовательным услугам"
+
+#: academor/templates/privacy-policy.html
+msgid "Processing payments"
+msgstr "Обработка платежей"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Communicating with you (notifications, support, informational messages)"
+msgstr "Связь с вами (уведомления, поддержка, информирование)"
+
+#: academor/templates/privacy-policy.html
+msgid "Analyzing and improving how the site works (via Google Analytics)"
+msgstr "Анализ и улучшение работы сайта (через Google Analytics)"
+
+#: academor/templates/privacy-policy.html
+msgid "Complying with legal requirements"
+msgstr "Соблюдение требований законодательства"
+
+#: academor/templates/privacy-policy.html
+msgid "5. Sharing with third parties"
+msgstr "5. Передача третьим лицам"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Your personal data is not shared with third parties except in the following "
+"cases:"
+msgstr ""
+"Ваши персональные данные не передаются третьим лицам, за исключением "
+"следующих случаев:"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"United Payment — to process payment transactions. Card details you enter "
+"during payment are processed directly through United Payment's secure "
+"infrastructure; these details are not stored by Academor. In connection with"
+" payments, our admin panel stores only the following data permitted by law: "
+"name, phone number, e-mail, the date of the signed electronic contract, and "
+"the payment amount."
+msgstr ""
+"United Payment — для проведения платёжных операций. Данные карт, которые вы "
+"вводите при оплате, обрабатываются напрямую через защищённую инфраструктуру "
+"United Payment; Academor эти данные не хранит. В связи с платежами в нашей "
+"админ-панели сохраняются только следующие данные, разрешённые законом: имя, "
+"номер телефона, e-mail, дата подписанного электронного договора и сумма "
+"платежа."
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Google Analytics — to analyze site usage statistics, in "
+"anonymized/aggregated form."
+msgstr ""
+"Google Analytics — для анализа статистики использования сайта в "
+"обезличенной/агрегированной форме."
+
+#: academor/templates/privacy-policy.html
+msgid "To relevant state authorities when required by law."
+msgstr ""
+"Соответствующим государственным органам в случаях, предусмотренных "
+"законодательством."
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Your data is not sold or rented to third parties for marketing purposes."
+msgstr ""
+"Ваши данные не продаются и не сдаются в аренду третьим лицам в маркетинговых"
+" целях."
+
+#: academor/templates/privacy-policy.html
+msgid "6. Cookie usage"
+msgstr "6. Использование cookie"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Our site uses the following types of cookies to provide and analyze the user"
+" experience:"
+msgstr ""
+"Наш сайт использует следующие типы cookie для обеспечения и анализа "
+"пользовательского опыта:"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Essential (session) cookies: Used for the site to function properly — for "
+"example, managing your session while you are logged in. Without these "
+"cookies, some site features (login, personal account, etc.) may not work."
+msgstr ""
+"Необходимые (сессионные) cookie: используются для корректной работы сайта — "
+"например, для управления сессией, пока вы авторизованы. Без этих cookie "
+"некоторые функции сайта (вход, личный кабинет и т. д.) могут не работать."
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Functional cookies: Used to remember choices you make, such as language "
+"preference, so you do not need to select them again each time."
+msgstr ""
+"Функциональные cookie: используются для запоминания сделанных вами выборов, "
+"например языка, чтобы не выбирать их заново каждый раз."
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Analytics cookies (Google Analytics): Used to collect aggregated usage "
+"statistics to analyze and improve how the site works."
+msgstr ""
+"Аналитические cookie (Google Analytics): используются для сбора "
+"агрегированной статистики использования с целью анализа и улучшения работы "
+"сайта."
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"You can manage or disable cookies in your browser settings, but this may "
+"prevent some site features (for example, keeping your session or remembering"
+" language preference) from working correctly."
+msgstr ""
+"Вы можете управлять cookie или отключить их в настройках браузера, однако "
+"это может привести к некорректной работе некоторых функций сайта (например, "
+"сохранения сессии или языка)."
+
+#: academor/templates/privacy-policy.html
+msgid "7. Data retention period"
+msgstr "7. Срок хранения данных"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Your personal data is stored while your account is active. Student accounts "
+"that remain inactive for a long time may be deleted by an administrator. You"
+" also have the right to request deletion of your account (see section 8)."
+msgstr ""
+"Ваши персональные данные хранятся, пока ваш аккаунт активен. Учёбные "
+"аккаунты, долгое время остающиеся неактивными, могут быть удалены "
+"администратором. Вы также имеете право запросить удаление аккаунта (см. "
+"раздел 8)."
+
+#: academor/templates/privacy-policy.html
+msgid "8. User rights"
+msgstr "8. Права пользователя"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Under the legislation of the Republic of Azerbaijan, you have the following "
+"rights:"
+msgstr ""
+"В соответствии с законодательством Азербайджанской Республики вы имеете "
+"следующие права:"
+
+#: academor/templates/privacy-policy.html
+msgid "To access your personal data"
+msgstr "Получать доступ к своим персональным данным"
+
+#: academor/templates/privacy-policy.html
+msgid "To request correction of inaccurate or outdated data"
+msgstr "Требовать исправления неточных или устаревших данных"
+
+#: academor/templates/privacy-policy.html
+msgid "To request deletion of your data"
+msgstr "Требовать удаления своих данных"
+
+#: academor/templates/privacy-policy.html
+msgid "To object to the processing of your data"
+msgstr "Возражать против обработки своих данных"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"To exercise these rights, you may contact us at <a "
+"href=\"mailto:corp@academor.az\">corp@academor.az</a>."
+msgstr ""
+"Чтобы воспользоваться этими правами, вы можете обратиться по адресу <a "
+"href=\"mailto:corp@academor.az\">corp@academor.az</a>."
+
+#: academor/templates/privacy-policy.html
+msgid "9. Data security"
+msgstr "9. Безопасность данных"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"We take appropriate technical and organizational measures to protect your "
+"personal data from unauthorized access, alteration, disclosure, or "
+"destruction. However, no transmission of data over the internet can be "
+"guaranteed to be 100% secure."
+msgstr ""
+"Мы принимаем соответствующие технические и организационные меры для защиты "
+"ваших персональных данных от несанкционированного доступа, изменения, "
+"раскрытия или уничтожения. Вместе с тем невозможно гарантировать 100% "
+"безопасность данных, передаваемых через интернет."
+
+#: academor/templates/privacy-policy.html
+msgid "10. Children's privacy"
+msgstr "10. Конфиденциальность детей"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"If users under 18 use our site without parental/guardian supervision, please"
+" contact us so that we can take appropriate steps."
+msgstr ""
+"Если пользователи младше 18 лет используют наш сайт без контроля "
+"родителей/опекунов, пожалуйста, свяжитесь с нами, чтобы мы могли принять "
+"соответствующие меры."
+
+#: academor/templates/privacy-policy.html
+msgid "11. International users"
+msgstr "11. Международные пользователи"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"Our services are currently intended primarily for users in the Republic of "
+"Azerbaijan. If we later provide services to users from other countries, this"
+" Privacy Policy will be updated accordingly."
+msgstr ""
+"В настоящее время наши услуги предназначены в основном для пользователей на "
+"территории Азербайджанской Республики. Если в будущем услуги будут "
+"оказываться пользователям из других стран, настоящая Политика "
+"конфиденциальности будет соответствующим образом обновлена."
+
+#: academor/templates/privacy-policy.html
+msgid "12. Changes to this policy"
+msgstr "12. Изменения политики"
+
+#: academor/templates/privacy-policy.html
+msgid ""
+"This Privacy Policy may be updated from time to time. Changes take effect "
+"when published on the site. By continuing to use the site regularly, you are"
+" deemed to have accepted the updated terms."
+msgstr ""
+"Настоящая Политика конфиденциальности может время от времени обновляться. "
+"Изменения вступают в силу с момента публикации на сайте. Регулярно используя"
+" сайт, вы считаетесь принявшими обновлённые условия."
+
+#: academor/templates/privacy-policy.html
+msgid "13. Contact"
+msgstr "13. Контакты"
+
+#: academor/templates/privacy-policy.html
+msgid "If you have questions about this Privacy Policy, you can contact us:"
+msgstr ""
+"Если у вас есть вопросы по Политике конфиденциальности, вы можете связаться "
+"с нами:"
+
+#: academor/templates/privacy-policy.html
+msgid "Address: 44 Jafar Jabbarli street, Baku 1065"
+msgstr "Адрес: ул. Джафара Джаббарлы, 44, Баку 1065"
+
 #~ msgid "Manual quizzes: fill teacher feedback, set score, and reviewed date."
 #~ msgstr "Manual quiz: заполните отзыв, балл и дату проверки."
 
@@ -10099,7 +10722,6 @@ msgstr "Слабо"
 
 #~ msgid "Graded"
 #~ msgstr "Оценено"
-
 
 #~ msgid "Once quizzes are graded, the average score will appear here."
 #~ msgstr "После оценки викторин средний балл появится здесь."
@@ -10749,39 +11371,6 @@ msgstr "Слабо"
 #~ msgid "Invalid JSON format."
 #~ msgstr "Неверный формат JSON."
 
-#: academor/portals/templatetags/portal_tags.py
-msgid "Just now"
-msgstr "Только что"
-
-#: academor/portals/templatetags/portal_tags.py
-#, python-format
-msgid "1 minute ago"
-msgstr "1 минуту назад"
-
-#: academor/portals/templatetags/portal_tags.py
-#, python-format
-msgid "%(minutes)s minutes ago"
-msgstr "%(minutes)s минут назад"
-
-#: academor/portals/templatetags/portal_tags.py
-#, python-format
-msgid "1 hour ago"
-msgstr "1 час назад"
-
-#: academor/portals/templatetags/portal_tags.py
-#, python-format
-msgid "%(hours)s hours ago"
-msgstr "%(hours)s часов назад"
-
-#: academor/portals/templatetags/portal_tags.py
-msgid "Yesterday"
-msgstr "Вчера"
-
-#: academor/portals/templatetags/portal_tags.py
-#, python-format
-msgid "%(days)s days ago"
-msgstr "%(days)s дней назад"
-
 #~ msgid "Answer options must be a non-empty JSON list."
 #~ msgstr "Варианты ответов должны быть непустым JSON-списком."
 
@@ -11117,188 +11706,9 @@ msgstr "%(days)s дней назад"
 #~ msgid "View quizzes for your assigned services."
 #~ msgstr "Просмотр quiz для назначенных вам услуг."
 
-#: portals/homework lesson feature
-msgid "Homework text"
-msgstr "Текст домашнего задания"
-
-#: portals/homework lesson feature
-msgid "Homework file"
-msgstr "Файл домашнего задания"
-
-#: portals/homework lesson feature
-msgid "Write your homework here…"
-msgstr "Напишите домашнее задание здесь…"
-
-#: portals/homework lesson feature
-msgid "PDF, Word (.doc, .docx), or text (.txt). Max 10 MB."
-msgstr "PDF, Word (.doc, .docx) или текст (.txt). Макс. 10 МБ."
-
-#: portals/homework lesson feature
-msgid "Upload a PDF, Word, or text file (.pdf, .doc, .docx, .txt)."
-msgstr "Загрузите PDF, Word или текстовый файл (.pdf, .doc, .docx, .txt)."
-
-#: portals/homework lesson feature
-msgid "File must be 10 MB or smaller."
-msgstr "Файл должен быть не больше 10 МБ."
-
-#: portals/homework lesson feature
-msgid "Enter homework text or upload a PDF, Word, or text file."
-msgstr "Введите текст или загрузите PDF, Word или текстовый файл."
-
-#: portals/homework lesson feature
-msgid "Homework submitted successfully."
-msgstr "Домашнее задание успешно отправлено."
-
-#: portals/homework lesson feature
-msgid "Submit homework"
-msgstr "Отправить задание"
-
-#: portals/homework lesson feature
-msgid "Update homework"
-msgstr "Обновить задание"
-
-#: portals/homework lesson feature
-msgid "Download file"
-msgstr "Скачать файл"
-
-#: portals/homework lesson feature
-msgid "No homework submitted yet."
-msgstr "Домашнее задание ещё не отправлено."
-
-#: portals/homework lesson feature
-msgid "Student homework"
-msgstr "Домашние задания учеников"
-
-#: portals/homework lesson feature
-msgid "No homework submitted for this lesson yet."
-msgstr "По этому уроку ещё нет домашних заданий."
-
-#: portals/homework lesson feature
-msgid "Submitted %(when)s"
-msgstr "Отправлено: %(when)s"
-
-#: portals/homework lesson feature
-msgid "Lesson homework"
-msgstr "Домашнее задание к уроку"
-
-#: portals/homework lesson feature
-msgid "Lesson homeworks"
-msgstr "Домашние задания к урокам"
-
-#: portals/homework lesson feature
-msgid "Original filename"
-msgstr "Исходное имя файла"
-
-#: portals/homework lesson feature
-msgid "File type"
-msgstr "Тип файла"
-
-#: portals/homework lesson feature
-msgid "Submitted at"
-msgstr "Отправлено"
-
-#: academor/templates/portals/login.html
-msgid "Assessment"
-msgstr "Оценка"
-
-#: academor/templates/portals/login.html
-msgid "Results"
-msgstr "Результаты"
-
-#: academor/templates/mock-results.html
-msgid "Enter your phone number or the unique code you were given to view your mock test result."
-msgstr "Введите номер телефона или уникальный код, чтобы посмотреть результат mock-теста."
-
-#: academor/templates/mock-results.html
-msgid "Code"
-msgstr "Код"
-
-#: academor/templates/mock-results.html
-msgid "Training program"
-msgstr "Учебная программа"
-
-#: academor/templates/mock-results.html
-msgid "Phone number or unique code"
-msgstr "Номер телефона или уникальный код"
-
-#: academor/templates/mock-results.html
-msgid "Search"
-msgstr "Найти"
-
-#: academor/templates/mock-results.html
-msgid "Rank"
-msgstr "Место"
-
-#: academor/templates/mock-results.html
-msgid "No result found for this code."
-msgstr "Результат по этому коду не найден."
-
-#: academor/templates/mock-results.html
-msgid "Top 5"
-msgstr "Топ 5"
-
-#: academor/templates/mock-results.html
-msgid "No results yet."
-msgstr "Пока нет результатов."
-
-#: academor/projects/views/mock_results_views.py
-msgid "Training program not found."
-msgstr "Учебная программа не найдена."
-
-#: academor/projects/views/mock_results_views.py
-msgid "Look up your mock test result by phone number or unique code."
-msgstr "Проверьте результат mock-теста по номеру телефона или уникальному коду."
-
-#: academor/projects/models/mock_result_models.py
-msgid "Show in Top 5"
-msgstr "Показать в Топ 5"
-
-#: academor/projects/models/mock_result_models.py
-msgid "If enabled, this person can appear in the public Top 5 list."
-msgstr "Если включено, этот человек может отображаться в публичном списке Топ 5."
-
-#: academor/projects/models/mock_result_models.py
-msgid "Training program (AZ)"
-msgstr "Учебная программа (AZ)"
-
-#: academor/projects/models/mock_result_models.py
-msgid "Training program (EN)"
-msgstr "Учебная программа (EN)"
-
-#: academor/projects/models/mock_result_models.py
-msgid "Training program (RU)"
-msgstr "Учебная программа (RU)"
-
-#: academor/projects/models/mock_result_models.py
-msgid "Fill in at least one training program field (AZ / EN / RU)."
-msgstr "Заполните хотя бы одно поле учебной программы (AZ / EN / RU)."
-
-#: academor/projects/models/mock_result_models.py
-msgid "Mock test result"
-msgstr "Результат mock-теста"
-
-#: portals/includes/sat_scoring_guide.html
-msgid "How your practice score is calculated"
-msgstr "Как считается ваш практический балл"
-
-#: portals/includes/sat_scoring_guide.html
-msgid "Each correct answer earns points; wrong answers do not subtract points."
-msgstr "Каждый правильный ответ приносит баллы; за неправильные ответы баллы не снимаются."
-
-#: portals/includes/sat_scoring_guide.html
-msgid "Each section score is converted to the 200–800 scale based on the number of correct answers."
-msgstr "Результат по каждой секции переводится в шкалу 200–800 на основе числа правильных ответов."
-
-#: portals/includes/sat_scoring_guide.html
-msgid "The total score is the sum of the Reading and Writing and Math section scores (400–1600)."
-msgstr "Общий результат рассчитывается как сумма баллов секций Reading and Writing и Math (400–1600)."
-
-#: portals/includes/sat_scoring_guide.html
-msgid "Note: These results are approximate practice estimates and do not reflect an official College Board SAT score."
-msgstr "Примечание: Эти результаты носят приблизительный оценочный характер и не являются официальным баллом College Board SAT."
-
 #~ msgid "Each correct answer counts; wrong answers do not subtract points."
-#~ msgstr "Каждый правильный ответ учитывается; за неправильные баллы не снимаются."
+#~ msgstr ""
+#~ "Каждый правильный ответ учитывается; за неправильные баллы не снимаются."
 
 #~ msgid "Section score = correct answers converted to the 200–800 scale."
 #~ msgstr "Балл секции = правильные ответы, переведённые в шкалу 200–800."
@@ -11306,20 +11716,33 @@ msgstr "Примечание: Эти результаты носят прибл�
 #~ msgid "Total score = Reading and Writing + Math (400–1600)."
 #~ msgstr "Общий балл = Reading and Writing + Math (400–1600)."
 
-#~ msgid "These are approximate practice estimates — not an official College Board score."
-#~ msgstr "Это приблизительные учебные оценки — не официальный балл College Board."
+#~ msgid ""
+#~ "These are approximate practice estimates — not an official College Board "
+#~ "score."
+#~ msgstr ""
+#~ "Это приблизительные учебные оценки — не официальный балл College Board."
 
 #~ msgid "How Digital SAT scores work"
 #~ msgstr "Как считаются баллы Digital SAT"
 
-#~ msgid "Based on College Board Digital SAT scoring model. Exact official equating tables are not published."
-#~ msgstr "Основано на модели подсчёта баллов Digital SAT от College Board. Точные официальные таблицы приведения (equating) не публикуются."
+#~ msgid ""
+#~ "Based on College Board Digital SAT scoring model. Exact official equating "
+#~ "tables are not published."
+#~ msgstr ""
+#~ "Основано на модели подсчёта баллов Digital SAT от College Board. Точные "
+#~ "официальные таблицы приведения (equating) не публикуются."
 
 #~ msgid "Practice score on Academor"
 #~ msgstr "Практический балл в Academor"
 
-#~ msgid "Your section scores here use a simplified conversion from raw correct answers to the 200-800 scale. They are approximate practice estimates - not an official College Board score report."
-#~ msgstr "Баллы секций здесь считаются упрощённым переводом сырых правильных ответов в шкалу 200-800. Это приблизительные учебные оценки, а не официальный отчёт College Board."
+#~ msgid ""
+#~ "Your section scores here use a simplified conversion from raw correct "
+#~ "answers to the 200-800 scale. They are approximate practice estimates - not "
+#~ "an official College Board score report."
+#~ msgstr ""
+#~ "Баллы секций здесь считаются упрощённым переводом сырых правильных ответов в"
+#~ " шкалу 200-800. Это приблизительные учебные оценки, а не официальный отчёт "
+#~ "College Board."
 
 #~ msgid "Adaptive modules"
 #~ msgstr "Адаптивные модули"
