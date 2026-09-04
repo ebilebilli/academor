@@ -152,6 +152,14 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
             ),
             "keywords": "contact academor, english school baku address, phone, visit us, " + _EN_KW_CORE,
         },
+        "privacy-policy": {
+            "title": "Privacy Policy | Academor",
+            "description": (
+                "How Academor collects, uses, stores, and protects personal data on academor.az, "
+                "in line with Azerbaijan’s personal data law."
+            ),
+            "keywords": "privacy policy, personal data, academor, azerbaijan, " + _EN_KW_CORE,
+        },
         "team-page": {
             "title": "Our Team | Academor — Teachers & Advisors",
             "description": (
@@ -287,6 +295,14 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
                 "academor əlaqə, Bakıda dil kursları, ünvan bakı, telefon, " + _AZ_KW_CORE
             ),
         },
+        "privacy-policy": {
+            "title": "Məxfilik Siyasəti | Academor",
+            "description": (
+                "Academor.az-da şəxsi məlumatların toplanması, istifadəsi, saxlanması və qorunması — "
+                "Azərbaycan Respublikasının fərdi məlumatlar qanunvericiliyinə uyğun."
+            ),
+            "keywords": "məxfilik siyasəti, fərdi məlumatlar, academor, " + _AZ_KW_CORE,
+        },
         "team-page": {
             "title": "Komandamız | Academor — müəllimlər və məsləhətçilər",
             "description": (
@@ -411,6 +427,14 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
                 "Связаться с Academor в Баку: адрес, телефон, часы работы и форма для вопросов по курсам и экзаменам."
             ),
             "keywords": "контакты academor, адрес баку, телефон, запись, " + _RU_KW_CORE,
+        },
+        "privacy-policy": {
+            "title": "Политика конфиденциальности | Academor",
+            "description": (
+                "Как Academor собирает, использует, хранит и защищает персональные данные на academor.az "
+                "в соответствии с законодательством Азербайджана."
+            ),
+            "keywords": "политика конфиденциальности, персональные данные, academor, " + _RU_KW_CORE,
         },
         "team-page": {
             "title": "Команда | Academor — преподаватели и консультанты",

@@ -405,7 +405,7 @@ class ContactPageView(View):
         }
 
         return render(request, self.template_name, context)
-    
+
     def post(self, request):
         lang = get_language_from_request(request)
         from projects.forms.forms_v1 import AppealContactForm
@@ -448,7 +448,27 @@ class ContactPageView(View):
             'background_image': get_background_image('contact'),
             'form': form,
         }
-        
+
+        return render(request, self.template_name, context)
+
+
+class PrivacyPolicyPageView(View):
+    template_name = 'privacy-policy.html'
+
+    def get(self, request):
+        lang = get_language_from_request(request)
+        contact = get_contact(lang)
+        categories = get_project_categories(lang)
+        serialized_categories = [
+            serialize_project_category(category, lang)
+            for category in categories
+        ]
+        context = {
+            'contact': serialize_contact(contact, lang) if contact else None,
+            'categories': serialized_categories,
+            'language': lang,
+            'background_image': get_background_image('about'),
+        }
         return render(request, self.template_name, context)
 
 

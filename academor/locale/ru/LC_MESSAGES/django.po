@@ -5704,7 +5704,16 @@ msgstr "Подписывайтесь"
 msgid "All rights reserved."
 msgstr "Все права защищены."
 
-#: academor/templates/includes/site_footer.html:99
+#: academor/templates/includes/site_footer.html:102
+#: academor/templates/privacy-policy.html
+msgid "Privacy Policy"
+msgstr "Политика конфиденциальности"
+
+#: academor/templates/privacy-policy.html
+msgid "Last updated:"
+msgstr "Последнее обновление:"
+
+#: academor/templates/includes/site_footer.html:105
 msgid "Back to top"
 msgstr "Наверх"
 

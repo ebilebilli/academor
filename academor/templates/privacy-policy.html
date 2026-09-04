@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+{% load static i18n %}{% get_current_language as LANG_CODE %}
+<html lang="{{ LANG_CODE }}">
+
+<head>
+    {% include "includes/site_layout_head.html" %}
+</head>
+
+<body>
+    {% include "includes/site_spinner.html" %}
+
+    {% include "includes/site_navbar.html" %}
+
+    <main id="main-content">
+    {% include "includes/page_header_banner.html" with header_mb="mb-3" %}
+
+    <section class="container-xxl py-5" aria-labelledby="privacy-policy-heading">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10 col-xl-9">
+                    <article class="privacy-policy-content">
+                        <h1 id="privacy-policy-heading" class="mb-2">{% trans "Privacy Policy" %}</h1>
+                        <p class="text-muted small mb-4"><strong>{% trans "Last updated:" %}</strong> 04.09.2026</p>
+
+                        <h2 class="h5 mt-4 mb-3">1. Ümumi müddəalar</h2>
+                        <p>Bu Məxfilik Siyasəti &quot;Academor Training and Development Center&quot; (bundan sonra &quot;Academor&quot;, &quot;biz&quot;) tərəfindən idarə olunan academor.az veb saytının istifadəçilərinə (bundan sonra &quot;İstifadəçi&quot;, &quot;siz&quot;) aid edilir və şəxsi məlumatlarınızın necə toplandığını, istifadə olunduğunu, saxlanıldığını və qorunduğunu izah edir.</p>
+                        <p>Academor.az saytından istifadə etməklə siz bu Məxfilik Siyasətinin şərtləri ilə razılaşmış sayılırsınız.</p>
+                        <p class="mb-2"><strong>Şirkət haqqında məlumat:</strong></p>
+                        <ul>
+                            <li>Ad: Academor Training and Development Center</li>
+                            <li>Hüquqi ünvan: AZ1033, Bakı şəhəri, Nərimanov rayonu, Əliyar Əliyev küçəsi, ev 8, mənzil 857</li>
+                            <li>Faktiki ünvan: 44 Cəfər Cabbarlı küçəsi, Bakı 1065</li>
+                            <li>VÖEN: 1507376041</li>
+                            <li>E-mail: <a href="mailto:corp@academor.az">corp@academor.az</a></li>
+                        </ul>
+                        <p>Bu sənəd Azərbaycan Respublikasının &quot;Fərdi məlumatlar haqqında&quot; Qanununa və digər müvafiq qanunvericiliyə uyğun hazırlanmışdır.</p>
+
+                        <h2 class="h5 mt-4 mb-3">2. Topladığımız məlumatlar</h2>
+                        <p>Sizə xidmət göstərmək məqsədilə aşağıdakı şəxsi məlumatları toplaya bilərik:</p>
+                        <ul>
+                            <li><strong>Şəxsi identifikasiya məlumatları:</strong> ad, soyad</li>
+                            <li><strong>Əlaqə məlumatları:</strong> telefon nömrəsi, e-mail ünvanı</li>
+                            <li><strong>Ödəniş məlumatları:</strong> ödənişlərin həyata keçirilməsi zamanı tələb olunan məlumatlar (ödəniş United Payment sistemi vasitəsilə emal olunur — kart məlumatları birbaşa bizim tərəfimizdən saxlanılmır, bax bölmə 5)</li>
+                            <li><strong>Təhsil tarixçəsi:</strong> iştirak etdiyiniz kurslar, tapşırıqlar, nəticələr, davamiyyət və digər təhsil prosesinə aid məlumatlar</li>
+                            <li><strong>Texniki məlumatlar:</strong> Google Analytics vasitəsilə toplanan istifadə statistikası (məs. səhifəyə baxışlar, sessiya müddəti və digər ümumiləşdirilmiş analitik məlumatlar)</li>
+                        </ul>
+
+                        <h2 class="h5 mt-4 mb-3">3. Məlumatların toplanma üsulu</h2>
+                        <p>Məlumatlar aşağıdakı yollarla toplanır:</p>
+                        <ul>
+                            <li>Saytda qeydiyyat və ya kurslara müraciət formalarını doldurarkən</li>
+                            <li>Ödəniş əməliyyatlarını həyata keçirərkən</li>
+                            <li>Saytdan istifadə zamanı avtomatik olaraq (Google Analytics vasitəsilə)</li>
+                            <li>Bizimlə birbaşa əlaqə saxladıqda (e-mail, telefon və s.)</li>
+                        </ul>
+
+                        <h2 class="h5 mt-4 mb-3">4. Məlumatlardan istifadə məqsədləri</h2>
+                        <p>Topladığımız məlumatlardan aşağıdakı məqsədlər üçün istifadə edirik:</p>
+                        <ul>
+                            <li>Qeydiyyat və hesabınızın yaradılması və idarə olunması</li>
+                            <li>Kurslara giriş və təhsil xidmətlərinin göstərilməsi</li>
+                            <li>Ödənişlərin emal edilməsi</li>
+                            <li>Sizinlə əlaqə saxlanılması (bildirişlər, dəstək, məlumatlandırma)</li>
+                            <li>Saytın fəaliyyətinin təhlili və təkmilləşdirilməsi (Google Analytics vasitəsilə)</li>
+                            <li>Qanunvericiliyin tələblərinə əməl edilməsi</li>
+                        </ul>
+
+                        <h2 class="h5 mt-4 mb-3">5. Üçüncü tərəflərlə paylaşım</h2>
+                        <p>Şəxsi məlumatlarınız aşağıdakı hallar istisna olmaqla üçüncü tərəflərlə paylaşılmır:</p>
+                        <ul>
+                            <li><strong>United Payment</strong> — ödəniş əməliyyatlarının həyata keçirilməsi üçün. Ödəniş zamanı daxil etdiyiniz kart məlumatları birbaşa United Payment-in təhlükəsiz infrastrukturu vasitəsilə emal olunur; bu məlumatlar Academor tərəfindən saxlanılmır. Ödəniş prosesi ilə əlaqədar admin panelimizdə yalnız qanunla icazə verilən aşağıdakı məlumatlar saxlanılır: ad, telefon nömrəsi, e-mail, imzalanmış elektron müqavilənin tarixi və ödəniş məbləği.</li>
+                            <li><strong>Google Analytics</strong> — saytın istifadə statistikasının təhlili üçün, anonimləşdirilmiş/ümumiləşdirilmiş formada.</li>
+                            <li>Qanunvericiliyin tələb etdiyi hallarda müvafiq dövlət orqanlarına.</li>
+                        </ul>
+                        <p>Məlumatlarınız marketinq məqsədilə üçüncü tərəflərə satılmır və ya icarəyə verilmir.</p>
+
+                        <h2 class="h5 mt-4 mb-3">6. Cookie (kuki) istifadəsi</h2>
+                        <p>Saytımız istifadəçi təcrübəsini təmin etmək və təhlil etmək məqsədilə aşağıdakı cookie növlərindən istifadə edir:</p>
+                        <ul>
+                            <li><strong>Zəruri (sessiya) cookie-lər:</strong> Saytın düzgün işləməsi üçün istifadə olunur — məsələn, hesabınıza daxil olduğunuz müddətdə sessiyanızın idarə edilməsi. Bu cookie-lər olmadan saytın bəzi funksiyaları (giriş, şəxsi kabinet və s.) işləməyə bilər.</li>
+                            <li><strong>Funksional cookie-lər:</strong> Dil seçimi kimi istifadəçi tərəfindən edilən seçimləri yadda saxlamaq üçün istifadə olunur ki, hər dəfə yenidən seçim etməyinizə ehtiyac qalmasın.</li>
+                            <li><strong>Analitik cookie-lər (Google Analytics):</strong> Saytın fəaliyyətinin təhlili və təkmilləşdirilməsi məqsədilə ümumiləşdirilmiş istifadə statistikasının toplanması üçün istifadə olunur.</li>
+                        </ul>
+                        <p>Brauzerinizin ayarlarından cookie-ləri idarə edə və ya söndürə bilərsiniz, lakin bu, saytın bəzi funksiyalarının (məsələn, sessiyanın saxlanması və ya dil seçiminin yadda qalması) düzgün işləməməsinə səbəb ola bilər.</p>
+
+                        <h2 class="h5 mt-4 mb-3">7. Məlumatların saxlanma müddəti</h2>
+                        <p>Şəxsi məlumatlarınız hesabınız aktiv olduğu müddətdə saxlanılır. Uzun müddət aktiv olmayan tələbə hesabları admin tərəfindən silinə bilər. Hesabınızın silinməsini tələb etmək hüququnuza malik olduğunuzu da qeyd edirik (bax bölmə 8).</p>
+
+                        <h2 class="h5 mt-4 mb-3">8. İstifadəçi hüquqları</h2>
+                        <p>Azərbaycan Respublikasının qanunvericiliyinə əsasən aşağıdakı hüquqlara maliksiniz:</p>
+                        <ul>
+                            <li>Şəxsi məlumatlarınıza giriş əldə etmək</li>
+                            <li>Səhv və ya köhnəlmiş məlumatların düzəldilməsini tələb etmək</li>
+                            <li>Məlumatlarınızın silinməsini tələb etmək</li>
+                            <li>Məlumatlarınızın emalına etirazınızı bildirmək</li>
+                        </ul>
+                        <p>Bu hüquqlardan istifadə etmək üçün <a href="mailto:corp@academor.az">corp@academor.az</a> ünvanına müraciət edə bilərsiniz.</p>
+
+                        <h2 class="h5 mt-4 mb-3">9. Məlumatların təhlükəsizliyi</h2>
+                        <p>Şəxsi məlumatlarınızın icazəsiz girişdən, dəyişdirilmədən, açıqlanmadan və ya məhv edilmədən qorunması üçün müvafiq texniki və təşkilati tədbirlər görürük. Bununla belə, internet vasitəsilə ötürülən heç bir məlumatın 100% təhlükəsiz olduğunu zəmanət vermək mümkün deyil.</p>
+
+                        <h2 class="h5 mt-4 mb-3">10. Uşaqların məxfiliyi</h2>
+                        <p>Əgər 18 yaşdan kiçik istifadəçilər saytımızdan valideyn/qəyyum nəzarəti olmadan istifadə edirsə, xahiş edirik bizimlə əlaqə saxlayın ki, müvafiq tədbirləri görək.</p>
+
+                        <h2 class="h5 mt-4 mb-3">11. Beynəlxalq istifadəçilər</h2>
+                        <p>Hazırda xidmətlərimiz əsasən Azərbaycan Respublikası ərazisindəki istifadəçilər üçün nəzərdə tutulub. Gələcəkdə xarici ölkələrdən istifadəçilər üçün xidmət göstərilməsi halında bu Məxfilik Siyasəti müvafiq qaydada yenilənəcək.</p>
+
+                        <h2 class="h5 mt-4 mb-3">12. Siyasətdə dəyişikliklər</h2>
+                        <p>Bu Məxfilik Siyasəti zaman-zaman yenilənə bilər. Dəyişikliklər saytda dərc olunduğu andan qüvvəyə minir. Saytdan mütəmadi istifadə etməklə yenilənmiş şərtləri qəbul etmiş sayılırsınız.</p>
+
+                        <h2 class="h5 mt-4 mb-3">13. Əlaqə</h2>
+                        <p>Məxfilik Siyasəti ilə bağlı suallarınız olduqda bizimlə əlaqə saxlaya bilərsiniz:</p>
+                        <p class="mb-0">
+                            <strong>Academor Training and Development Center</strong><br>
+                            E-mail: <a href="mailto:corp@academor.az">corp@academor.az</a><br>
+                            Ünvan: 44 Cəfər Cabbarlı küçəsi, Bakı 1065
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+    </main>
+
+    {% include "includes/site_footer.html" %}
+
+    {% include "includes/site_scripts.html" %}
+</body>
+
+</html>

@@ -22,6 +22,7 @@ from projects.views.views_v1 import (
     BlogTagPageView,
     BlogDetailLegacyPkRedirectView,
     BlogDetailPageView,
+    PrivacyPolicyPageView,
 )
 from projects.views.test_views import TestListPageView, TestTakePageView
 from projects.views.mock_results_views import MockResultsPageView, MockResultsTop5View
@@ -94,6 +95,11 @@ urlpatterns = [
         'contact/', 
         ContactPageView.as_view(), 
         name='contact-page'
+    ),
+    path(
+        'privacy-policy/',
+        PrivacyPolicyPageView.as_view(),
+        name='privacy-policy',
     ),
     path(
         'team/',

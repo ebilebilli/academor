@@ -94,9 +94,12 @@
     </div>
     <div class="container">
         <div class="copyright border-top border-secondary border-opacity-25">
-            <div class="d-flex align-items-center justify-content-center py-3 gap-2">
-                <img src="{% static 'assets/img/logo.webp' %}" alt="" class="footer-copy-logo" aria-hidden="true" width="120" height="40" loading="{% if footer_eager %}eager{% else %}lazy{% endif %}" decoding="async">
-                <p class="text-white-50 mb-0 small footer-copy">© 2026 Academor. {% trans "All rights reserved." %}</p>
+            <div class="d-flex flex-column align-items-center justify-content-center py-3 gap-1">
+                <div class="d-flex align-items-center justify-content-center gap-2 flex-wrap">
+                    <img src="{% static 'assets/img/logo.webp' %}" alt="" class="footer-copy-logo" aria-hidden="true" width="120" height="40" loading="{% if footer_eager %}eager{% else %}lazy{% endif %}" decoding="async">
+                    <p class="text-white-50 mb-0 small footer-copy">© 2026 Academor. {% trans "All rights reserved." %}</p>
+                </div>
+                <a class="footer-privacy-link text-white-50 small" href="{% url 'projects:privacy-policy' %}">{% trans "Privacy Policy" %}</a>
             </div>
         </div>
     </div>

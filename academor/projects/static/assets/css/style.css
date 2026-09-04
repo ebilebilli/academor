@@ -5089,8 +5089,31 @@ h1.animated, h2.animated, h3.animated,
     letter-spacing: 0.01em;
 }
 
+.footer .footer-privacy-link {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    transition: color 0.15s ease, text-decoration-color 0.15s ease;
+}
+
+.footer .footer-privacy-link:hover,
+.footer .footer-privacy-link:focus {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: underline;
+}
+
 .footer .copyright a {
     color: var(--light);
+}
+
+.footer .copyright a.footer-privacy-link {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.footer .copyright a.footer-privacy-link:hover,
+.footer .copyright a.footer-privacy-link:focus {
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .footer .footer-menu a {
