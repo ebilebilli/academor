@@ -1981,10 +1981,8 @@ msgid "Study group"
 msgstr "Study group"
 
 #: academor/portals/models/ielts_mock_models.py:9
-#, fuzzy
-#| msgid "Question progress"
 msgid "In progress"
-msgstr "Question progress"
+msgstr "In progress"
 
 #: academor/portals/models/ielts_mock_models.py:10
 #: academor/templates/portals/student/quiz_category_detail.html:43
@@ -1993,7 +1991,7 @@ msgstr "Completed"
 
 #: academor/portals/models/ielts_mock_models.py:11
 msgid "Abandoned"
-msgstr ""
+msgstr "Abandoned"
 
 #: academor/portals/models/ielts_mock_models.py:14
 #: academor/templates/portals/includes/quiz_mock_overall_summary.html:14
@@ -7670,10 +7668,9 @@ msgstr "Band"
 #: academor/templates/portals/student/ielts_mock_complete.html:44
 #: academor/templates/portals/student/ielts_mock_landing.html:70
 #: academor/templates/portals/teacher/ielts_mock_detail.html:42
-#, fuzzy
 #| msgid "Awaiting your review"
 msgid "Awaiting review"
-msgstr "Awaiting your review"
+msgstr "Awaiting review"
 
 #: academor/templates/portals/student/ielts_mock_complete.html:61
 #: academor/templates/portals/teacher/attendance.html:195
@@ -9405,6 +9402,42 @@ msgstr "Mock completed, awaiting grading."
 msgid "No mock tests completed yet."
 msgstr "No mock tests completed yet."
 
+msgid "No mock test results yet."
+msgstr "No mock test results yet."
+
+msgid "Incomplete"
+msgstr "Incomplete"
+
+msgid "Incomplete mock test"
+msgstr "Incomplete mock test"
+
+msgid ""
+"This mock test was left unfinished. Submitted sections are shown below."
+msgstr ""
+"This mock test was left unfinished. Submitted sections are shown below."
+
+msgid "Mock test in progress"
+msgstr "Mock test in progress"
+
+msgid ""
+"This mock test is still in progress. You can review submitted sections "
+"below."
+msgstr ""
+"This mock test is still in progress. You can review submitted sections "
+"below."
+
+msgid "Mock test result"
+msgstr "Mock test result"
+
+msgid "Mock tarixçəsi"
+msgstr "Mock history"
+
+msgid "Keçmiş mock test nəticələrinə baxın."
+msgstr "View your past mock test results."
+
+msgid "Tarixçə"
+msgstr "History"
+
 msgid "Excellent"
 msgstr "Excellent"
 
@@ -10015,6 +10048,67 @@ msgstr "If you have questions about this Privacy Policy, you can contact us:"
 #: academor/templates/privacy-policy.html
 msgid "Address: 44 Jafar Jabbarli street, Baku 1065"
 msgstr "Address: 44 Jafar Jabbarli street, Baku 1065"
+
+msgid "Program"
+msgstr "Program"
+
+msgid "Continue"
+msgstr "Continue"
+
+msgid "Choose a program"
+msgstr "Choose a program"
+
+msgid "Choose which exam program you want to practice."
+msgstr "Choose which exam program you want to practice."
+
+msgid "Open credits, history, and start options for each exam."
+msgstr "Open credits, history, and start options for each exam."
+
+msgid "Mock test programs are not available yet."
+msgstr "Mock test programs are not available yet."
+
+msgid "Listening and Reading are scored automatically."
+msgstr "Listening and Reading are scored automatically."
+
+msgid "Writing and Speaking are reviewed and scored by IELTS teachers."
+msgstr "Writing and Speaking are reviewed and scored by IELTS teachers."
+
+msgid "Sections follow the real IELTS exam order:"
+msgstr "Sections follow the real IELTS exam order:"
+
+msgid "Sections follow the Digital SAT order:"
+msgstr "Sections follow the Digital SAT order:"
+
+msgid ""
+"Both sections are scored automatically and converted to SAT section scores "
+"(200–800)."
+msgstr ""
+"Both sections are scored automatically and converted to SAT section scores "
+"(200–800)."
+
+msgid "One random SAT task is selected from each section."
+msgstr "One random SAT task is selected from each section."
+
+msgid ""
+"Each credit lets you start one full SAT mock test. One credit is used when "
+"you begin the first section."
+msgstr ""
+"Each credit lets you start one full SAT mock test. One credit is used when "
+"you begin the first section."
+
+msgid ""
+"Each credit lets you start one full IELTS mock test with all four sections. "
+"One credit is used when you begin the first section."
+msgstr ""
+"Each credit lets you start one full IELTS mock test with all four sections. "
+"One credit is used when you begin the first section."
+
+msgid "Complete the full mock in one session — like the Digital SAT."
+msgstr "Complete the full mock in one session — like the Digital SAT."
+
+msgid "Complete the full mock in one session — just like the real IELTS exam."
+msgstr ""
+"Complete the full mock in one session — just like the real IELTS exam."
 
 #~ msgid "Manual quizzes: fill teacher feedback, set score, and reviewed date."
 #~ msgstr "Manual quizzes: fill teacher feedback, set score, and reviewed date."

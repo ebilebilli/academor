@@ -2009,10 +2009,8 @@ msgid "Study group"
 msgstr "Учебная группа"
 
 #: academor/portals/models/ielts_mock_models.py:9
-#, fuzzy
-#| msgid "Question progress"
 msgid "In progress"
-msgstr "Прогресс по вопросам"
+msgstr "В процессе"
 
 #: academor/portals/models/ielts_mock_models.py:10
 #: academor/templates/portals/student/quiz_category_detail.html:43
@@ -2021,28 +2019,28 @@ msgstr "Завершено"
 
 #: academor/portals/models/ielts_mock_models.py:11
 msgid "Abandoned"
-msgstr ""
+msgstr "Не завершён"
 
 #: academor/portals/models/ielts_mock_models.py:14
 #: academor/templates/portals/includes/quiz_mock_overall_summary.html:14
 msgid "Listening"
-msgstr "Аудирование"
+msgstr "Listening"
 
 #: academor/portals/models/ielts_mock_models.py:15
 #: academor/templates/portals/includes/quiz_mock_overall_summary.html:14
 msgid "Reading"
-msgstr "Чтение"
+msgstr "Reading"
 
 #: academor/portals/models/ielts_mock_models.py:16
 #: academor/portals/models/quiz_models.py:221
 #: academor/templates/portals/includes/quiz_mock_overall_summary.html:28
 msgid "Writing"
-msgstr "Письмо"
+msgstr "Writing"
 
 #: academor/portals/models/ielts_mock_models.py:17
 #: academor/templates/portals/includes/quiz_mock_overall_summary.html:28
 msgid "Speaking"
-msgstr "Устная речь"
+msgstr "Speaking"
 
 #: academor/portals/models/ielts_mock_models.py:37
 #: academor/portals/models/schedule_models.py:81
@@ -7717,7 +7715,7 @@ msgstr "Тесты"
 #: academor/templates/portals/student/ielts_mock_complete.html:4
 #: academor/templates/portals/student/ielts_mock_complete.html:11
 msgid "Mock test complete"
-msgstr "Пробный тест завершён"
+msgstr "Mock-тест завершён"
 
 #: academor/templates/portals/student/ielts_mock_complete.html:14
 msgid "All four sections are submitted. Your teacher has been notified."
@@ -7725,7 +7723,7 @@ msgstr "Все четыре секции отправлены. Ваш препо
 
 #: academor/templates/portals/student/mock_complete.html:8
 msgid "All sections are submitted. Your teacher has been notified."
-msgstr "Все секции отправлены. Ваш преподаватель уведомлён."
+msgstr "Все секции сданы. Ваш преподаватель уведомлён."
 
 #: academor/templates/portals/student/ielts_mock_complete.html:30
 #: academor/templates/portals/teacher/ielts_mock_detail.html:28
@@ -7798,7 +7796,7 @@ msgstr ""
 
 #: academor/templates/portals/student/ielts_mock_landing.html:35
 msgid "Start mock test"
-msgstr "Начать пробный тест"
+msgstr "Начать mock-тест"
 
 #: academor/templates/portals/student/ielts_mock_landing.html:34
 msgid "Mock test is currently locked."
@@ -7822,7 +7820,7 @@ msgstr "Предыдущие пробные тесты"
 
 #: academor/templates/portals/student/ielts_mock_landing.html:77
 msgid "View results"
-msgstr "Посмотреть результат"
+msgstr "Смотреть результат"
 
 #: academor/templates/portals/student/lessons.html:25
 msgid "Dərs materialları və videolar."
@@ -9134,7 +9132,7 @@ msgstr[2] "Ваш баланс: <strong>%(counter)s</strong> кредитов"
 
 #: academor/templates/portals/customer/dashboard.html:27
 msgid "Continue mock test"
-msgstr "Продолжить пробный тест"
+msgstr "Продолжить mock-тест"
 
 #: academor/templates/portals/customer/dashboard.html:37
 msgid "Buy mock package"
@@ -9489,52 +9487,52 @@ msgid "Invalid payment agreement number."
 msgstr "Неверный номер договора об оплате."
 
 msgid "Complete the full mock in one session — like the Digital SAT."
-msgstr "Пройдите полный mock-тест за одну сессию — как Digital SAT."
+msgstr "Пройдите полный mock за одну сессию — как Digital SAT."
 
 msgid "Complete the full mock in one session — just like the real IELTS exam."
-msgstr "Пройдите полный mock-тест за одну сессию — как настоящий IELTS."
+msgstr "Пройдите полный mock за одну сессию — как реальный IELTS."
 
 msgid ""
 "Each credit lets you start one full SAT mock test. One credit is used when "
 "you begin the first section."
 msgstr ""
-"Каждый кредит позволяет начать один полный SAT mock-тест. Один кредит "
-"списывается при старте первого раздела."
+"Каждый кредит даёт один полный SAT mock-тест. Один кредит списывается при "
+"старте первой секции."
 
 msgid ""
 "Each credit lets you start one full IELTS mock test with all four sections. "
 "One credit is used when you begin the first section."
 msgstr ""
-"Каждый кредит позволяет начать один полный IELTS mock-тест из четырёх "
-"разделов. Один кредит списывается при старте первого раздела."
+"Каждый кредит даёт один полный IELTS mock-тест из четырёх секций. Один "
+"кредит списывается при старте первой секции."
 
 msgid "%(program)s mock credits"
 msgstr "Кредиты %(program)s mock"
 
 msgid "One random SAT task is selected from each section."
-msgstr "Из каждого раздела выбирается одно случайное задание SAT."
+msgstr "Из каждой секции выбирается случайное SAT-задание."
 
 msgid "Sections follow the Digital SAT order:"
-msgstr "Разделы идут в порядке Digital SAT:"
+msgstr "Секции идут в порядке Digital SAT:"
 
 msgid ""
 "Both sections are scored automatically and converted to SAT section scores "
 "(200–800)."
 msgstr ""
-"Оба раздела оцениваются автоматически и переводятся в баллы разделов SAT "
+"Обе секции оцениваются автоматически и переводятся в SAT section score "
 "(200–800)."
 
 msgid "Sections follow the real IELTS exam order:"
-msgstr "Разделы идут в порядке реального IELTS:"
+msgstr "Секции идут в порядке реального IELTS:"
 
 msgid "Listening and Reading are scored automatically."
 msgstr "Listening и Reading оцениваются автоматически."
 
 msgid "Writing and Speaking are reviewed and scored by IELTS teachers."
-msgstr "Writing и Speaking проверяются и оцениваются преподавателями IELTS."
+msgstr "Writing и Speaking проверяют и оценивают преподаватели IELTS."
 
 msgid "Choose which exam program you want to practice."
-msgstr "Выберите экзамен, который хотите потренировать."
+msgstr "Выберите экзамен, который хотите практиковать."
 
 msgid "Choose a program"
 msgstr "Выберите программу"
@@ -9586,6 +9584,39 @@ msgstr "Mock завершён, ожидается оценка."
 
 msgid "No mock tests completed yet."
 msgstr "Mock-тесты ещё не пройдены."
+
+msgid "No mock test results yet."
+msgstr "Пока нет результатов mock-тестов."
+
+msgid "Incomplete"
+msgstr "Не завершён"
+
+msgid "Incomplete mock test"
+msgstr "Незавершённый mock-тест"
+
+msgid ""
+"This mock test was left unfinished. Submitted sections are shown below."
+msgstr "Этот mock-тест был прерван. Сданные секции показаны ниже."
+
+msgid "Mock test in progress"
+msgstr "Mock-тест в процессе"
+
+msgid ""
+"This mock test is still in progress. You can review submitted sections "
+"below."
+msgstr "Этот mock-тест ещё не завершён. Сданные секции можно посмотреть ниже."
+
+msgid "Mock test result"
+msgstr "Результат mock-теста"
+
+msgid "Mock tarixçəsi"
+msgstr "История mock"
+
+msgid "Keçmiş mock test nəticələrinə baxın."
+msgstr "Просмотрите результаты прошлых mock-тестов."
+
+msgid "Tarixçə"
+msgstr "История"
 
 msgid "Excellent"
 msgstr "Отлично"
@@ -10210,6 +10241,12 @@ msgstr ""
 #: academor/templates/privacy-policy.html
 msgid "Address: 44 Jafar Jabbarli street, Baku 1065"
 msgstr "Адрес: ул. Джафара Джаббарлы, 44, Баку 1065"
+
+msgid "Program"
+msgstr "Программа"
+
+msgid "Mock test programs are not available yet."
+msgstr "Программы mock-тестов пока недоступны."
 
 #~ msgid "Manual quizzes: fill teacher feedback, set score, and reviewed date."
 #~ msgstr "Manual quiz: заполните отзыв, балл и дату проверки."

@@ -5,36 +5,64 @@
       <tr>
         <th>{% trans 'Program' %}</th>
         <th>{% trans 'Date' %}</th>
+        <th>{% trans 'Status' %}</th>
         <th>{% trans 'Overall result' %}</th>
         <th class="text-end">{% trans 'Action' %}</th>
       </tr>
     </thead>
     <tbody>
       {% for attempt in mock_attempts %}
-      <tr data-score-date="{{ attempt.completed_at|date:'Y-m-d' }}">
+      <tr data-score-date="{% if attempt.completed_at %}{{ attempt.completed_at|date:'Y-m-d' }}{% else %}{{ attempt.started_at|date:'Y-m-d' }}{% endif %}">
         <td class="fw-500" data-label="{% trans 'Program' %}">{{ attempt.exam_program_label }}</td>
-        <td class="fw-500" data-label="{% trans 'Date' %}">{{ attempt.completed_at|date:"d.m.Y H:i" }}</td>
+        <td class="fw-500" data-label="{% trans 'Date' %}">
+          {% if attempt.completed_at %}
+          {{ attempt.completed_at|date:"d.m.Y H:i" }}
+          {% else %}
+          {{ attempt.started_at|date:"d.m.Y H:i" }}
+          {% endif %}
+        </td>
+        <td data-label="{% trans 'Status' %}">
+          {% if attempt.status == 'completed' %}
+          <span class="ds-badge ds-badge--success">{% trans 'Completed' %}</span>
+          {% elif attempt.status == 'in_progress' %}
+          <span class="ds-badge ds-badge--warning">{% trans 'In progress' %}</span>
+          {% else %}
+          <span class="ds-badge ds-badge--danger">{% trans 'Incomplete' %}</span>
+          {% endif %}
+        </td>
         <td data-label="{% trans 'Overall result' %}">
           {% if attempt.is_fully_graded %}
           {{ attempt.overall_score|format_quiz_score }} / {{ attempt.overall_score_max|format_quiz_score }}
           {% elif attempt.pending_review_count %}
           <span class="ds-badge ds-badge--warning">{% trans 'Awaiting review' %}</span>
-          {% else %}
+          {% elif attempt.status == 'completed' %}
           —
+          {% else %}
+          <span class="text-muted">{% trans 'Incomplete' %}</span>
           {% endif %}
         </td>
         <td class="text-end" data-label="{% trans 'Action' %}">
+          {% if attempt.status == 'in_progress' and mock_detail_url_name == 'portals:customer-mock-complete' %}
+          <a class="ds-btn ds-btn--secondary btn-sm" href="{% url 'portals:customer-mock-landing' program=attempt.exam_program %}">
+            {% trans 'Continue' %}
+          </a>
+          {% elif attempt.status == 'in_progress' and mock_detail_url_name == 'portals:student-mock-complete' %}
+          <a class="ds-btn ds-btn--secondary btn-sm" href="{% url 'portals:student-mock-landing' program=attempt.exam_program %}">
+            {% trans 'Continue' %}
+          </a>
+          {% else %}
           <a
             class="ds-btn ds-btn--secondary btn-sm"
             href="{% if mock_detail_url_name == 'portals:student-mock-complete' or mock_detail_url_name == 'portals:customer-mock-complete' %}{% url mock_detail_url_name program=attempt.exam_program pk=attempt.id %}{% else %}{% url mock_detail_url_name pk=attempt.id %}{% endif %}{% if mock_detail_url_suffix %}{{ mock_detail_url_suffix }}{% endif %}"
           >
             {% trans 'View results' %}
           </a>
+          {% endif %}
         </td>
       </tr>
       {% empty %}
       <tr>
-        <td colspan="4">
+        <td colspan="5">
           <div class="s-empty-state">
             <i class="ti ti-clipboard-list" aria-hidden="true"></i>
             <p>{% trans 'No mock test results yet.' %}</p>

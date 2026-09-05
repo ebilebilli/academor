@@ -216,6 +216,40 @@ class CustomerMockRoleTests(QuizVisibilityTests):
             ),
         )
 
+    def test_customer_mock_history_includes_abandoned_attempts(self):
+        attempt, error = start_customer_mock_test_attempt(self.customer.pk, IELTS_SERVICE)
+        self.assertIsNone(error)
+        client = Client()
+        _portal_client_login(client, self.customer_user)
+        cancel_url = reverse('portals:customer-quiz-cancel', kwargs={'pk': attempt.listening_quiz_id})
+        response = client.post(f'{cancel_url}?mock={attempt.pk}')
+        self.assertEqual(response.status_code, 302)
+        attempt.refresh_from_db()
+        self.assertEqual(attempt.status, IeltsMockTestAttempt.Status.ABANDONED)
+        self.assertIsNotNone(attempt.completed_at)
+
+        history = client.get(reverse('portals:customer-mock-history'))
+        self.assertEqual(history.status_code, 200)
+        history_rows = history.context['completed_attempts']
+        self.assertTrue(
+            any(row['id'] == attempt.pk and row['status'] == 'abandoned' for row in history_rows)
+        )
+        self.assertContains(
+            history,
+            reverse(
+                'portals:customer-mock-complete',
+                kwargs={'program': IELTS_SERVICE, 'pk': attempt.pk},
+            ),
+        )
+        detail = client.get(
+            reverse(
+                'portals:customer-mock-complete',
+                kwargs={'program': IELTS_SERVICE, 'pk': attempt.pk},
+            )
+        )
+        self.assertEqual(detail.status_code, 200)
+        self.assertEqual(detail.context['mock_attempt']['status'], 'abandoned')
+
     def test_customer_dashboard_splits_mock_program_sections(self):
         self.customer.sat_mock_credits = 2
         self.customer.save(update_fields=['sat_mock_credits'])
@@ -633,12 +667,13 @@ class CustomerProfileIntegrationTests(CustomerMockRoleTests):
         response = client.get(reading_url)
         self.assertEqual(response.status_code, 404)
 
-    def test_mock_complete_page_requires_completed_attempt(self):
+    def test_mock_complete_page_allows_incomplete_attempt(self):
         client = self._login_client()
         attempt, _ = start_customer_mock_test_attempt(self.customer.pk, IELTS_SERVICE)
         complete_url = reverse('portals:customer-ielts-mock-complete', kwargs={'pk': attempt.pk})
         response = client.get(complete_url)
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['mock_attempt']['status'], 'in_progress')
 
     def test_reading_start_does_not_consume_credit_again(self):
         client = self._login_client()

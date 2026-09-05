@@ -7,13 +7,12 @@ from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.views import View
 
-from portals.models import IeltsMockTestAttempt
 from portals.utils.customer_mock import (
     build_customer_mock_picker_programs,
     customer_can_start_mock,
     customer_can_view_mock_program,
     customer_has_in_progress_mock,
-    get_customer_completed_mock_attempts,
+    get_customer_mock_history_attempts,
     get_customer_mock_take_url,
     get_customer_selectable_mock_programs,
     get_missing_customer_mock_sections,
@@ -60,9 +59,9 @@ class CustomerMockHistoryView(CustomerRequiredMixin, View):
 
     def get(self, request):
         profile = get_customer_profile(request.portal_user)
-        completed_attempts = [
+        history_attempts = [
             serialize_customer_mock_attempt_summary(attempt)
-            for attempt in get_customer_completed_mock_attempts(profile.pk, limit=50)
+            for attempt in get_customer_mock_history_attempts(profile.pk, limit=50)
         ]
         return render(
             request,
@@ -70,7 +69,7 @@ class CustomerMockHistoryView(CustomerRequiredMixin, View):
             _portal_context(
                 request,
                 customer=serialize_customer(profile),
-                completed_attempts=completed_attempts,
+                completed_attempts=history_attempts,
             ),
         )
 
@@ -103,7 +102,7 @@ class CustomerMockLandingView(CustomerRequiredMixin, View):
                 missing_sections=missing_labels,
                 completed_attempts=[
                     serialize_customer_mock_attempt_summary(attempt)
-                    for attempt in get_customer_completed_mock_attempts(
+                    for attempt in get_customer_mock_history_attempts(
                         profile.pk,
                         exam_program=program,
                     )
@@ -142,11 +141,7 @@ class CustomerMockCompleteView(CustomerRequiredMixin, View):
         profile = get_customer_profile(request.portal_user)
         _require_customer_program(profile, program)
         attempt = get_mock_attempt_for_customer(profile.pk, pk)
-        if (
-            not attempt
-            or attempt.exam_program != program
-            or attempt.status != IeltsMockTestAttempt.Status.COMPLETED
-        ):
+        if not attempt or attempt.exam_program != program:
             raise Http404
 
         return render(

@@ -196,13 +196,18 @@ def abandon_in_progress_customer_mock_attempts(
     *,
     exam_program: str | None = None,
 ) -> None:
+    from django.utils import timezone
+
     qs = IeltsMockTestAttempt.objects.filter(
         customer_id=customer_id,
         status=IeltsMockTestAttempt.Status.IN_PROGRESS,
     )
     if exam_program:
         qs = qs.filter(exam_program=exam_program)
-    qs.update(status=IeltsMockTestAttempt.Status.ABANDONED)
+    qs.update(
+        status=IeltsMockTestAttempt.Status.ABANDONED,
+        completed_at=timezone.now(),
+    )
 
 
 @transaction.atomic
@@ -311,11 +316,16 @@ def get_active_customer_mock_attempt(customer_id: int, attempt_id: int) -> Ielts
 
 
 def abandon_customer_mock_test_attempt(customer_id: int, attempt_id: int) -> None:
+    from django.utils import timezone
+
     IeltsMockTestAttempt.objects.filter(
         pk=attempt_id,
         customer_id=customer_id,
         status=IeltsMockTestAttempt.Status.IN_PROGRESS,
-    ).update(status=IeltsMockTestAttempt.Status.ABANDONED)
+    ).update(
+        status=IeltsMockTestAttempt.Status.ABANDONED,
+        completed_at=timezone.now(),
+    )
 
 
 def get_customer_completed_mock_attempts(
@@ -324,6 +334,7 @@ def get_customer_completed_mock_attempts(
     exam_program: str | None = None,
     limit: int = 20,
 ):
+    """Fully finished mocks only (dashboard averages / completed lists)."""
     qs = IeltsMockTestAttempt.objects.filter(
         customer_id=customer_id,
         status=IeltsMockTestAttempt.Status.COMPLETED,
@@ -345,6 +356,34 @@ def get_customer_completed_mock_attempts(
             'math_result',
         )
         .order_by('-completed_at', '-id')[:limit]
+    )
+
+
+def get_customer_mock_history_attempts(
+    customer_id: int,
+    *,
+    exam_program: str | None = None,
+    limit: int = 50,
+):
+    """Completed, abandoned, and still in-progress customer mock attempts."""
+    qs = IeltsMockTestAttempt.objects.filter(customer_id=customer_id)
+    if exam_program:
+        qs = qs.filter(exam_program=exam_program)
+    return (
+        qs.select_related(
+            'customer__user',
+            'listening_quiz__category',
+            'reading_quiz__category',
+            'writing_quiz__category',
+            'speaking_quiz__category',
+            'math_quiz__category',
+            'listening_result',
+            'reading_result',
+            'writing_result',
+            'speaking_result',
+            'math_result',
+        )
+        .order_by('-started_at', '-id')[:limit]
     )
 
 

@@ -1,11 +1,23 @@
 {% extends "portals/base.html" %}
 {% load i18n portal_tags %}
 
-{% block title %}{% trans 'Mock test complete' %}{% endblock %}
+{% block title %}
+{% if mock_attempt.status == 'completed' %}
+{% trans 'Mock test complete' %}
+{% else %}
+{% trans 'Mock test result' %}
+{% endif %}
+{% endblock %}
 
 {% block content %}
 {% url 'portals:student-mock-landing' program=exam_program as default_mock_back_url %}
+{% if mock_attempt.status == 'completed' %}
 {% include "portals/includes/portal_page_hero.html" with title=_('Mock test complete') subtitle=_('All sections are submitted. Your teacher has been notified.') icon="ti-circle-check" lottie="portals/animations/graduation-certificate.lottie" hero_class="portal-page-hero--centered" back_url=mock_back_url|default:default_mock_back_url %}
+{% elif mock_attempt.status == 'in_progress' %}
+{% include "portals/includes/portal_page_hero.html" with title=_('Mock test in progress') subtitle=_('This mock test is still in progress. You can review submitted sections below.') icon="ti-player-play" lottie="portals/animations/exam-preparation.lottie" hero_class="portal-page-hero--centered" back_url=mock_back_url|default:default_mock_back_url %}
+{% else %}
+{% include "portals/includes/portal_page_hero.html" with title=_('Incomplete mock test') subtitle=_('This mock test was left unfinished. Submitted sections are shown below.') icon="ti-alert-circle" lottie="portals/animations/exam-preparation.lottie" hero_class="portal-page-hero--centered" back_url=mock_back_url|default:default_mock_back_url %}
+{% endif %}
 
 {% include "portals/includes/quiz_mock_overall_summary.html" %}
 

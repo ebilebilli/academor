@@ -2030,9 +2030,8 @@ msgid "Study group"
 msgstr "Tədris qrupu"
 
 #: academor/portals/models/ielts_mock_models.py:9
-#| msgid "Question progress"
 msgid "In progress"
-msgstr "Sual irəliləyişi"
+msgstr "Davam edir"
 
 #: academor/portals/models/ielts_mock_models.py:10
 #: academor/templates/portals/student/quiz_category_detail.html:43
@@ -2041,28 +2040,28 @@ msgstr "Tamamlandı"
 
 #: academor/portals/models/ielts_mock_models.py:11
 msgid "Abandoned"
-msgstr ""
+msgstr "Yarımçıq"
 
 #: academor/portals/models/ielts_mock_models.py:14
 #: academor/templates/portals/includes/quiz_mock_overall_summary.html:14
 msgid "Listening"
-msgstr "Dinləmə"
+msgstr "Listening"
 
 #: academor/portals/models/ielts_mock_models.py:15
 #: academor/templates/portals/includes/quiz_mock_overall_summary.html:14
 msgid "Reading"
-msgstr "Oxu"
+msgstr "Reading"
 
 #: academor/portals/models/ielts_mock_models.py:16
 #: academor/portals/models/quiz_models.py:221
 #: academor/templates/portals/includes/quiz_mock_overall_summary.html:28
 msgid "Writing"
-msgstr "Yazı"
+msgstr "Writing"
 
 #: academor/portals/models/ielts_mock_models.py:17
 #: academor/templates/portals/includes/quiz_mock_overall_summary.html:28
 msgid "Speaking"
-msgstr "Danışıq"
+msgstr "Speaking"
 
 #: academor/portals/models/ielts_mock_models.py:37
 #: academor/portals/models/schedule_models.py:81
@@ -7555,7 +7554,7 @@ msgstr "Dörd bölmə də təqdim olundu. Müəlliminizə bildiriş göndərildi
 
 #: academor/templates/portals/student/mock_complete.html:8
 msgid "All sections are submitted. Your teacher has been notified."
-msgstr "Bütün bölmələr təqdim olundu. Müəlliminizə bildiriş göndərildi."
+msgstr "Bütün bölmələr təqdim olunub. Müəlliminizə bildiriş göndərilib."
 
 #: academor/templates/portals/student/ielts_mock_complete.html:30
 #: academor/templates/portals/teacher/ielts_mock_detail.html:28
@@ -7587,8 +7586,8 @@ msgid ""
 "Complete Listening, Reading, Writing, and Speaking in one session — just "
 "like the real IELTS exam."
 msgstr ""
-"Dinləmə, Oxu, Yazı və Danışıq bölmələrini real IELTS imtahanı kimi bir "
-"sessiyada tamamlayın."
+"Listening, Reading, Writing və Speaking bölmələrini real IELTS imtahanı kimi"
+" bir sessiyada tamamlayın."
 
 #: academor/templates/portals/student/ielts_mock_landing.html:20
 msgid "How it works"
@@ -7603,20 +7602,20 @@ msgid ""
 "Sections follow the real IELTS exam order: Listening → Reading → Writing → "
 "Speaking."
 msgstr ""
-"Bölmələr real IELTS imtahan sırası ilə keçirilir: Dinləmə → Oxu → Yazı → "
-"Danışıq."
+"Bölmələr real IELTS imtahan sırası ilə keçirilir: Listening → Reading → "
+"Writing → Speaking."
 
 #: academor/templates/portals/student/ielts_mock_landing.html:14
 msgid "Listening and Reading sections are scored automatically."
-msgstr "Dinləmə və Oxu bölmələri avtomatik qiymətləndirilir."
+msgstr "Listening və Reading bölmələri avtomatik qiymətləndirilir."
 
 #: academor/templates/portals/student/ielts_mock_landing.html:15
 msgid ""
 "Writing and Speaking sections are reviewed and scored by real IELTS "
 "teachers."
 msgstr ""
-"Yazı və Danışıq bölmələri real IELTS müəllimləri tərəfindən yoxlanılır və "
-"qiymətləndirilir."
+"Writing və Speaking bölmələri real IELTS müəllimləri tərəfindən yoxlanılır "
+"və qiymətləndirilir."
 
 #: academor/templates/portals/student/ielts_mock_landing.html:16
 msgid ""
@@ -7628,7 +7627,7 @@ msgstr ""
 
 #: academor/templates/portals/student/ielts_mock_landing.html:25
 msgid "Start mock test"
-msgstr "Sınaq testinə başla"
+msgstr "Mock testə başla"
 
 #: academor/templates/portals/student/ielts_mock_landing.html:34
 msgid "Mock test is currently locked."
@@ -8906,8 +8905,8 @@ msgid ""
 "Complete Listening, Reading, Writing, and Speaking in real exam order — all "
 "in one session."
 msgstr ""
-"Dinləmə, Oxu, Yazı və Danışıq bölmələrini real imtahan sırası ilə bir "
-"sessiyada tamamlayın."
+"Listening, Reading, Writing və Speaking bölmələrini real imtahan sırası ilə "
+"bir sessiyada tamamlayın."
 
 #: academor/templates/portals/customer/ielts_mock_landing.html:9
 msgid "Mock test credits"
@@ -8978,7 +8977,7 @@ msgstr "Hazırda paket yoxdur. Zəhmət olmasa Academor ilə əlaqə saxlayın."
 msgid ""
 "Writing and Speaking sections are reviewed and scored by IELTS teachers."
 msgstr ""
-"Yazı və Danışıq bölmələri IELTS müəllimləri tərəfindən yoxlanılır və "
+"Writing və Speaking bölmələri IELTS müəllimləri tərəfindən yoxlanılır və "
 "qiymətləndirilir."
 
 #: academor/templates/portals/customer/ielts_mock_landing.html:53
@@ -9300,14 +9299,14 @@ msgid ""
 "you begin the first section."
 msgstr ""
 "Hər kredit bir tam SAT mock testinə başlamağa imkan verir. Birinci bölməyə "
-"başladığınızda 1 kredit istifadə olunur."
+"başladıqda 1 kredit xərclənir."
 
 msgid ""
 "Each credit lets you start one full IELTS mock test with all four sections. "
 "One credit is used when you begin the first section."
 msgstr ""
 "Hər kredit dörd bölmədən ibarət bir tam IELTS mock testinə başlamağa imkan "
-"verir. Birinci bölməyə başladığınızda 1 kredit istifadə olunur."
+"verir. Birinci bölməyə başladıqda 1 kredit xərclənir."
 
 msgid "%(program)s mock credits"
 msgstr "%(program)s mock kreditləri"
@@ -9316,17 +9315,17 @@ msgid "One random SAT task is selected from each section."
 msgstr "Hər bölmədən təsadüfi bir SAT tapşırığı seçilir."
 
 msgid "Sections follow the Digital SAT order:"
-msgstr "Bölmələr Digital SAT sırasını izləyir:"
+msgstr "Bölmələr Digital SAT sırası ilə keçirilir:"
 
 msgid ""
 "Both sections are scored automatically and converted to SAT section scores "
 "(200–800)."
 msgstr ""
-"Hər iki bölmə avtomatik qiymətləndirilir və SAT bölmə ballarına (200–800) "
+"Hər iki bölmə avtomatik qiymətləndirilir və SAT section score-a (200–800) "
 "çevrilir."
 
 msgid "Sections follow the real IELTS exam order:"
-msgstr "Bölmələr real IELTS imtahan sırasını izləyir:"
+msgstr "Bölmələr real IELTS imtahan sırası ilə keçirilir:"
 
 msgid "Listening and Reading are scored automatically."
 msgstr "Listening və Reading avtomatik qiymətləndirilir."
@@ -9343,7 +9342,7 @@ msgid "Choose a program"
 msgstr "Proqram seçin"
 
 msgid "Open credits, history, and start options for each exam."
-msgstr "Hər imtahan üçün kreditlər, tarixçə və başlama seçimlərinə baxın."
+msgstr "Hər imtahan üçün kredit, tarixçə və başlama seçimlərinə baxın."
 
 msgid "%(program_label)s credits: <strong>%(counter)s</strong>"
 msgid_plural "%(program_label)s credits: <strong>%(counter)s</strong>"
@@ -9388,6 +9387,42 @@ msgstr "Mock tamamlanıb, qiymətləndirmə gözlənilir."
 
 msgid "No mock tests completed yet."
 msgstr "Hələ mock test tamamlanmayıb."
+
+msgid "No mock test results yet."
+msgstr "Hələ mock test nəticəsi yoxdur."
+
+msgid "Incomplete"
+msgstr "Yarımçıq"
+
+msgid "Incomplete mock test"
+msgstr "Yarımçıq mock test"
+
+msgid ""
+"This mock test was left unfinished. Submitted sections are shown below."
+msgstr ""
+"Bu mock test yarımçıq buraxılıb. Təqdim olunan bölmələr aşağıda göstərilir."
+
+msgid "Mock test in progress"
+msgstr "Mock test davam edir"
+
+msgid ""
+"This mock test is still in progress. You can review submitted sections "
+"below."
+msgstr ""
+"Bu mock test hələ davam edir. Təqdim olunan bölmələrə aşağıda baxa "
+"bilərsiniz."
+
+msgid "Mock test result"
+msgstr "Mock test nəticəsi"
+
+msgid "Mock tarixçəsi"
+msgstr "Mock tarixçəsi"
+
+msgid "Keçmiş mock test nəticələrinə baxın."
+msgstr "Keçmiş mock test nəticələrinə baxın."
+
+msgid "Tarixçə"
+msgstr "Tarixçə"
 
 msgid "Excellent"
 msgstr "Əla"
@@ -10078,6 +10113,12 @@ msgstr ""
 #: academor/templates/privacy-policy.html
 msgid "Address: 44 Jafar Jabbarli street, Baku 1065"
 msgstr "Ünvan: 44 Cəfər Cabbarlı küçəsi, Bakı 1065"
+
+msgid "Program"
+msgstr "Proqram"
+
+msgid "Mock test programs are not available yet."
+msgstr "Mock test proqramları hələ mövcud deyil."
 
 #~ msgid ""
 #~ "Shared classroom PDFs. Pick one or more active site services — only teachers"
