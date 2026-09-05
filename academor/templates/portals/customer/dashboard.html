@@ -39,7 +39,7 @@
       {% trans 'Start mock test' %}
     </a>
     {% else %}
-    <a class="ds-btn ds-btn--secondary" href="{{ section.landing_url }}">
+    <a class="ds-btn ds-btn--secondary" href="{% url 'portals:customer-mock-history' %}">
       <i class="ti ti-history" aria-hidden="true"></i>
       {% trans 'View history' %}
     </a>

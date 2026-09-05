@@ -42,8 +42,6 @@ class CustomerMockPickerView(CustomerRequiredMixin, View):
     def get(self, request):
         profile = get_customer_profile(request.portal_user)
         mock_programs = build_customer_mock_picker_programs(profile.pk)
-        if not mock_programs:
-            return redirect('portals:customer-mock-packages')
         if len(mock_programs) == 1:
             return redirect('portals:customer-mock-landing', program=mock_programs[0]['code'])
         return render(
@@ -53,6 +51,26 @@ class CustomerMockPickerView(CustomerRequiredMixin, View):
                 request,
                 customer=serialize_customer(profile),
                 mock_programs=mock_programs,
+            ),
+        )
+
+
+class CustomerMockHistoryView(CustomerRequiredMixin, View):
+    template_name = 'portals/customer/mock_history.html'
+
+    def get(self, request):
+        profile = get_customer_profile(request.portal_user)
+        completed_attempts = [
+            serialize_customer_mock_attempt_summary(attempt)
+            for attempt in get_customer_completed_mock_attempts(profile.pk, limit=50)
+        ]
+        return render(
+            request,
+            self.template_name,
+            _portal_context(
+                request,
+                customer=serialize_customer(profile),
+                completed_attempts=completed_attempts,
             ),
         )
 
@@ -139,7 +157,7 @@ class CustomerMockCompleteView(CustomerRequiredMixin, View):
                 exam_program=program,
                 exam_program_label=get_program_label(program),
                 mock_attempt=serialize_customer_mock_attempt_summary(attempt),
-                mock_back_url=reverse('portals:customer-mock-landing', kwargs={'program': program}),
+                mock_back_url=reverse('portals:customer-mock-history'),
                 score_detail_url_name='portals:customer-score-detail',
             ),
         )

@@ -56,6 +56,7 @@ CUSTOMER_PAGES = (
     'portals:customer-dashboard',
     'portals:customer-notifications',
     'portals:customer-mock-packages',
+    'portals:customer-mock-history',
 )
 
 

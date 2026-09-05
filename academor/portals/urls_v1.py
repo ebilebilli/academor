@@ -60,6 +60,7 @@ from portals.views.customer_mock_views import (
     CustomerIeltsMockLegacyRedirectView,
     CustomerIeltsMockStartLegacyView,
     CustomerMockCompleteView,
+    CustomerMockHistoryView,
     CustomerMockLandingView,
     CustomerMockPickerView,
     CustomerMockStartView,
@@ -264,6 +265,7 @@ urlpatterns = [
     path('customer/notifications/', CustomerNotificationsView.as_view(), name='customer-notifications'),
     path('customer/scores/<int:result_pk>/', CustomerScoreDetailView.as_view(), name='customer-score-detail'),
     path('customer/mock/', CustomerMockPickerView.as_view(), name='customer-mock-picker'),
+    path('customer/mock/history/', CustomerMockHistoryView.as_view(), name='customer-mock-history'),
     path('customer/mock/<slug:program>/', CustomerMockLandingView.as_view(), name='customer-mock-landing'),
     path('customer/mock/<slug:program>/start/', CustomerMockStartView.as_view(), name='customer-mock-start'),
     path(

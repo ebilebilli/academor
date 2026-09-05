@@ -116,6 +116,10 @@
         <span class="nav-icon"><i class="ti ti-clipboard-list" aria-hidden="true"></i></span>
         <span class="nav-text">{% trans 'Mock Test' %}</span>
       </a>
+      <a class="nav-link{% if u == 'customer-mock-history' %} active{% endif %}" href="{% url 'portals:customer-mock-history' %}">
+        <span class="nav-icon"><i class="ti ti-history" aria-hidden="true"></i></span>
+        <span class="nav-text">{% trans 'Tarixçə' %}</span>
+      </a>
       <a class="nav-link{% if u == 'customer-mock-packages' %} active{% endif %}" href="{% url 'portals:customer-mock-packages' %}">
         <span class="nav-icon"><i class="ti ti-shopping-cart" aria-hidden="true"></i></span>
         <span class="nav-text">{% trans 'Paket al' %}</span>

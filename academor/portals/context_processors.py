@@ -140,14 +140,12 @@ def portal_customer_service_context(request):
         return {'portal_customer_has_mock_exam': False, 'portal_customer_mock_url': None}
 
     programs = get_customer_selectable_mock_programs(profile.pk)
-    has_mock_exam = bool(programs)
+    # Always link Mock Test to the mock flow — never to Paket al.
     if len(programs) == 1:
         mock_url = reverse('portals:customer-mock-landing', kwargs={'program': programs[0]})
-    elif programs:
-        mock_url = reverse('portals:customer-mock-picker')
     else:
-        mock_url = reverse('portals:customer-mock-packages')
+        mock_url = reverse('portals:customer-mock-picker')
     return {
-        'portal_customer_has_mock_exam': has_mock_exam,
+        'portal_customer_has_mock_exam': True,
         'portal_customer_mock_url': mock_url,
     }

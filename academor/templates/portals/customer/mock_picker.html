@@ -59,6 +59,15 @@
         <i class="ti ti-arrow-right" aria-hidden="true"></i>
       </p>
     </a>
+    {% empty %}
+    <div class="s-empty-state">
+      <i class="ti ti-clipboard-list" aria-hidden="true"></i>
+      <p>{% trans 'Mock test programs are not available yet.' %}</p>
+      <a class="ds-btn ds-btn--primary" href="{% url 'portals:customer-mock-packages' %}">
+        <i class="ti ti-shopping-cart" aria-hidden="true"></i>
+        {% trans 'Paket al' %}
+      </a>
+    </div>
     {% endfor %}
   </div>
 </section>

@@ -174,6 +174,48 @@ class CustomerMockRoleTests(QuizVisibilityTests):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, reverse('portals:customer-mock-packages'))
 
+    def test_zero_credit_mock_nav_stays_on_mock_flow(self):
+        from portals.utils.customer_mock import get_customer_mock_home_url
+
+        self.customer.ielts_mock_credits = 0
+        self.customer.sat_mock_credits = 0
+        self.customer.save(update_fields=['ielts_mock_credits', 'sat_mock_credits'])
+
+        home_url = get_customer_mock_home_url(self.customer.pk)
+        self.assertNotEqual(home_url, reverse('portals:customer-mock-packages'))
+
+        client = Client()
+        _portal_client_login(client, self.customer_user)
+        response = client.get(reverse('portals:customer-mock-picker'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            reverse('portals:customer-mock-landing', kwargs={'program': IELTS_SERVICE}),
+        )
+        landing = client.get(reverse('portals:customer-mock-landing', kwargs={'program': IELTS_SERVICE}))
+        self.assertEqual(landing.status_code, 200)
+        packages = client.get(reverse('portals:customer-mock-packages'))
+        self.assertEqual(packages.status_code, 200)
+
+    def test_customer_mock_history_page_ok(self):
+        attempt, error = start_customer_mock_test_attempt(self.customer.pk, IELTS_SERVICE)
+        self.assertIsNone(error)
+        attempt.status = IeltsMockTestAttempt.Status.COMPLETED
+        attempt.completed_at = timezone.now()
+        attempt.save(update_fields=['status', 'completed_at'])
+
+        client = Client()
+        _portal_client_login(client, self.customer_user)
+        response = client.get(reverse('portals:customer-mock-history'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            reverse(
+                'portals:customer-mock-complete',
+                kwargs={'program': IELTS_SERVICE, 'pk': attempt.pk},
+            ),
+        )
+
     def test_customer_dashboard_splits_mock_program_sections(self):
         self.customer.sat_mock_credits = 2
         self.customer.save(update_fields=['sat_mock_credits'])

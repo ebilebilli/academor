@@ -54,15 +54,10 @@ def _customer_in_progress_program(customer_id: int) -> str | None:
 
 
 def customer_can_view_mock_program(customer_id: int, exam_program: str) -> bool:
-    if not is_valid_mock_program(exam_program):
+    """Customers may always open a program landing (start still requires credits)."""
+    if not customer_id:
         return False
-    if exam_program in get_customer_mock_exam_programs(customer_id):
-        return True
-    return IeltsMockTestAttempt.objects.filter(
-        customer_id=customer_id,
-        exam_program=exam_program,
-        status=IeltsMockTestAttempt.Status.COMPLETED,
-    ).exists()
+    return is_valid_mock_program(exam_program)
 
 
 def build_customer_mock_dashboard_sections(customer_id: int) -> list[dict]:
@@ -540,9 +535,8 @@ def get_active_mock_packages_services():
 
 
 def get_customer_mock_home_url(customer_id: int) -> str:
+    """Return mock picker/landing — never the packages shop."""
     programs = get_customer_selectable_mock_programs(customer_id)
     if len(programs) == 1:
         return reverse('portals:customer-mock-landing', kwargs={'program': programs[0]})
-    if programs:
-        return reverse('portals:customer-mock-picker')
-    return reverse('portals:customer-mock-packages')
+    return reverse('portals:customer-mock-picker')
