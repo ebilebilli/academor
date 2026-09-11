@@ -85,3 +85,22 @@
 .ti-users:before { content: "\ebf2"; }
 .ti-users-group:before { content: "\fa21"; }
 .ti-x:before { content: "\eb55"; }
+
+/* Referenced by templates but previously missing here, so they rendered blank. */
+.ti-alert-circle:before { content: "\ea05"; }
+.ti-camera:before { content: "\ea54"; }
+.ti-device-floppy:before { content: "\eb62"; }
+.ti-file-word:before { content: "\fef2"; }
+.ti-filter:before { content: "\eaa5"; }
+.ti-gift:before { content: "\eb68"; }
+.ti-info-circle:before { content: "\eac5"; }
+.ti-list:before { content: "\eb6b"; }
+.ti-list-numbers:before { content: "\ef11"; }
+.ti-notebook-off:before { content: "\f415"; }
+.ti-plus:before { content: "\eb0b"; }
+.ti-repeat:before { content: "\eb72"; }
+.ti-search:before { content: "\eb1c"; }
+.ti-sparkles:before { content: "\f6d7"; }
+.ti-trophy:before { content: "\eb45"; }
+.ti-upload:before { content: "\eb47"; }
+.ti-zoom-in:before { content: "\eb56"; }

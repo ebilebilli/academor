@@ -21,6 +21,7 @@ dependencies = [
     { name = "gunicorn" },
     { name = "pillow" },
     { name = "psycopg2-binary" },
+    { name = "redis" },
     { name = "requests" },
     { name = "unidecode" },
 ]
@@ -36,6 +37,7 @@ requires-dist = [
     { name = "gunicorn", specifier = ">=23.0.0" },
     { name = "pillow", specifier = ">=12.1.0" },
     { name = "psycopg2-binary", specifier = ">=2.9.11" },
+    { name = "redis", specifier = ">=5.0.0" },
     { name = "requests", specifier = ">=2.31.0" },
     { name = "unidecode", specifier = ">=1.4.0" },
 ]
@@ -47,6 +49,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/76/b9/4db2509eabd14b4a8c71d1b24c8d5734c52b8560a7b1e1a8b56c8d25568b/asgiref-3.11.0.tar.gz", hash = "sha256:13acff32519542a1736223fb79a715acdebe24286d98e8b164a73085f40da2c4", size = 37969, upload-time = "2025-11-19T15:32:20.106Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/91/be/317c2c55b8bbec407257d45f5c8d1b6867abc76d12043f2d3d58c538a4ea/asgiref-3.11.0-py3-none-any.whl", hash = "sha256:1db9021efadb0d9512ce8ffaf72fcef601c7b73a8807a1bb2ef143dc6b14846d", size = 24096, upload-time = "2025-11-19T15:32:19.004Z" },
+]
+
+[[package]]
+name = "async-timeout"
+version = "5.0.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/a5/ae/136395dfbfe00dfc94da3f3e136d0b13f394cba8f4841120e34226265780/async_timeout-5.0.1.tar.gz", hash = "sha256:d9321a7a3d5a6a5e187e824d2fa0793ce379a202935782d555d6e9d2735677d3", size = 9274, upload-time = "2024-11-06T16:41:39.6Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/fe/ba/e2081de779ca30d473f21f5b30e0e737c438205440784c7dfc81efc2b029/async_timeout-5.0.1-py3-none-any.whl", hash = "sha256:39e3809566ff85354557ec2398b55e096c8364bacac9405a7a1fa429e77fe76c", size = 6233, upload-time = "2024-11-06T16:41:37.9Z" },
 ]
 
 [[package]]
@@ -155,9 +166,9 @@ resolution-markers = [
     "python_full_version < '3.12'",
 ]
 dependencies = [
-    { name = "asgiref", marker = "python_full_version < '3.12'" },
-    { name = "sqlparse", marker = "python_full_version < '3.12'" },
-    { name = "tzdata", marker = "python_full_version < '3.12' and sys_platform == 'win32'" },
+    { name = "asgiref" },
+    { name = "sqlparse" },
+    { name = "tzdata", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/e6/e5/2671df24bf0ded831768ef79532e5a7922485411a5696f6d979568591a37/django-5.2.10.tar.gz", hash = "sha256:74df100784c288c50a2b5cad59631d71214f40f72051d5af3fdf220c20bdbbbe", size = 10880754, upload-time = "2026-01-06T18:55:26.817Z" }
 wheels = [
@@ -172,9 +183,9 @@ resolution-markers = [
     "python_full_version >= '3.12'",
 ]
 dependencies = [
-    { name = "asgiref", marker = "python_full_version >= '3.12'" },
-    { name = "sqlparse", marker = "python_full_version >= '3.12'" },
-    { name = "tzdata", marker = "python_full_version >= '3.12' and sys_platform == 'win32'" },
+    { name = "asgiref" },
+    { name = "sqlparse" },
+    { name = "tzdata", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/b5/9b/016f7e55e855ee738a352b05139d4f8b278d0b451bd01ebef07456ef3b0e/django-6.0.1.tar.gz", hash = "sha256:ed76a7af4da21551573b3d9dfc1f53e20dd2e6c7d70a3adc93eedb6338130a5f", size = 11069565, upload-time = "2026-01-06T18:55:53.069Z" }
 wheels = [
@@ -502,6 +513,18 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/c3/7b/9aae16756d3f33cbc512760ba3e69c3856a51aa293e463f2ca97760d1b1b/rcssmin-1.2.2-cp314-cp314t-musllinux_1_2_aarch64.whl", hash = "sha256:d0197fab78ebbe33f5df9caf2572ef2d44bbe243a9130881a0c5c53ba03641fa", size = 53066, upload-time = "2025-10-12T10:49:03.589Z" },
     { url = "https://files.pythonhosted.org/packages/4e/18/b06fadfa9b85e486bb1571050217cb539c062d1ae4cd32b1a31c36f67fd4/rcssmin-1.2.2-cp314-cp314t-musllinux_1_2_i686.whl", hash = "sha256:19e53c58768369366fdaef00da59f275f724f229994ea885309df6ca368ff3c8", size = 54271, upload-time = "2025-10-12T10:49:04.735Z" },
     { url = "https://files.pythonhosted.org/packages/79/55/f29ce21f8e5a1f3c19d43b67b907268d227b7edcda2ca200ca0028734a5e/rcssmin-1.2.2-cp314-cp314t-musllinux_1_2_x86_64.whl", hash = "sha256:8d3de1a870e00d157f3a7b1797498fdc09a3774629079572350f75783bb94b9a", size = 52423, upload-time = "2025-10-12T10:49:06.04Z" },
+]
+
+[[package]]
+name = "redis"
+version = "8.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "async-timeout", marker = "python_full_version < '3.11.3'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/a8/99/604f0b666d4c616d891cf77ebb9db6bb21601344c051aebf1b72b9ff915f/redis-8.1.0.tar.gz", hash = "sha256:6e1a19beef9225c83efd689c7e6b7da2d5215b1f42cd13b7fc3714d0a09c7b25", size = 5254356, upload-time = "2026-07-30T08:51:00.269Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/66/9d/c5731f6e3608663d4d3656fd8d3aecee8b509c3082818f5a13eae925baea/redis-8.1.0-py3-none-any.whl", hash = "sha256:a4fe1aac3d3b3cc791d4b3d5931c5a956045dc951ee74d1c913ee3ac4d2ee9fb", size = 560618, upload-time = "2026-07-30T08:50:58.497Z" },
 ]
 
 [[package]]

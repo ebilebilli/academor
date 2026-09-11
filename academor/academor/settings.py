@@ -1,6 +1,7 @@
 from datetime import date
 from pathlib import Path
 import os
+from academor.cache_config import build_caches
 from academor.env_load import load_project_dotenv
 
 
@@ -29,7 +30,22 @@ def _env_bool(name: str, default: bool) -> bool:
     return value.strip().lower() in ('true', '1', 'yes', 'on')
 
 
-DEBUG = _env_bool('DEBUG', True)
+# Defaults to False so a missing/misspelled env var fails closed rather than
+# exposing tracebacks and settings in production. Local dev sets DEBUG=true explicitly.
+DEBUG = _env_bool('DEBUG', False)
+
+# Django's own security.W009 only surfaces via `manage.py check --deploy`, which a
+# gunicorn boot never runs. Log it at startup instead so it is visible in the
+# container error log. Rotating the key signs out every active session, so this
+# deliberately warns rather than refusing to boot.
+if not DEBUG and (SECRET_KEY.startswith('django-insecure-') or len(set(SECRET_KEY)) < 5):
+    import logging
+
+    logging.getLogger('academor.security').warning(
+        'SECRET_KEY looks auto-generated or low-entropy while DEBUG is off. '
+        'It signs sessions, CSRF tokens and password-reset links — replace it with a '
+        'long random value and plan for all users being signed out on rotation.'
+    )
 
 # Cloudflare Turnstile (contact + review forms). Leave empty to disable widget/validation.
 TURNSTILE_SITE_KEY = (os.getenv('TURNSTILE_SITE_KEY') or '').strip()
@@ -50,6 +66,17 @@ if not DEBUG:
 
 # YouTube embeds require a Referer header; same-origin blocks cross-origin Referer (Error 153).
 SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# HSTS is emitted only on requests Django sees as secure, i.e. once
+# SECURE_PROXY_SSL_HEADER is active above. Nginx already forces HTTP -> HTTPS, so
+# SECURE_SSL_REDIRECT is intentionally left off: it would only duplicate that hop and
+# would turn the container healthcheck (plain HTTP to localhost:8000) into a redirect.
+# includeSubDomains/preload are deliberately not enabled — both are hard to walk back
+# and would require auditing every subdomain first.
+if not DEBUG:
+    SECURE_HSTS_SECONDS = 31536000
 
 CSRF_TRUSTED_ORIGINS = [
     "https://www.academor.az",
@@ -331,21 +358,14 @@ STORAGES = {
 
 # Cache configuration
 # https://docs.djangoproject.com/en/5.2/topics/cache/
+# REDIS_HOST/PORT/PASSWORD come from env (compose sets REDIS_HOST=redis).
+# All django.core.cache / @cached_query traffic goes to Redis. manage.py test
+# uses DummyCache so the suite neither shares keys with gunicorn nor leaks
+# between cases.
+CACHES = build_caches()
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'academor-cache',
-        'TIMEOUT': 7200,  # 2 hours default timeout
-        'OPTIONS': {
-            'MAX_ENTRIES': 3000,
-            'CULL_FREQUENCY': 4,
-        }
-    }
-}
-
-# DB only — cached_db + LocMemCache breaks language across gunicorn workers (each
-# worker keeps its own stale session copy; F5 alternates az/en/ru randomly).
+# DB only — never cached_db. Sessions stay in Postgres so a Redis blip cannot
+# log everyone out (and so language choice cannot diverge across workers).
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 # Cache timeout settings (in seconds)

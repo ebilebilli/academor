@@ -73,7 +73,7 @@ def fetch_active_sale_discounts_by_package_id() -> dict[int, int]:
 
 
 def get_active_sale_discounts_by_service_id() -> dict[int, int]:
-    """Fresh service discount map — not cached (time-bound sales + multi-worker LocMem safety)."""
+    """Fresh service discount map — not cached (time-bound sales)."""
     return fetch_active_sale_discounts_by_service_id()
 
 

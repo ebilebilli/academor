@@ -322,10 +322,10 @@ class Command(BaseCommand):
                 teacher_profiles[item['full_name']] = None
                 continue
 
-            user, created = get_or_create_user(
+            user, _created = get_or_create_user(
                 username,
                 item['password'],
-                update_password=update_passwords and not created,
+                update_password=update_passwords,
             )
             profile = TeacherProfile.objects.filter(user=user).first()
             if not profile:
@@ -375,10 +375,10 @@ class Command(BaseCommand):
                 student_profiles[item['full_name']] = None
                 continue
 
-            user, created = get_or_create_user(
+            user, _created = get_or_create_user(
                 username,
                 item['password'],
-                update_password=update_passwords and not created,
+                update_password=update_passwords,
             )
             profile = StudentProfile.objects.filter(user=user).first()
             if not profile:

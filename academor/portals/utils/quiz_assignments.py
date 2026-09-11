@@ -16,7 +16,6 @@ from portals.utils.student_courses import (
 )
 from portals.utils.teacher_access import get_teacher_student
 
-IELTS_SERVICE = 'ielts'
 logger = logging.getLogger(__name__)
 
 
@@ -302,11 +301,10 @@ def set_student_quiz_assignments(
     if quiz_ids is not None:
         wanted = set(quiz_ids)
         targets = [quiz for quiz in targets if quiz.pk in wanted]
-    # Only IELTS/SAT flagged quizzes are teacher-controlled.
+    # Only IELTS/SAT flagged quizzes are teacher-controlled. This is unconditional,
+    # so program_flagged_only is accepted but redundant — the bulk endpoint still
+    # sends it.
     targets = [quiz for quiz in targets if quiz_has_program_flag(quiz)]
-    if program_flagged_only:
-        # Already filtered; kept for API compatibility with the bulk endpoint.
-        pass
     targets = [quiz for quiz in targets if student_quiz_enrollment_ok(student_id, quiz)]
     if not targets:
         return []

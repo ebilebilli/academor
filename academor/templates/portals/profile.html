@@ -35,7 +35,7 @@
           {% endif %}
 
           <div class="portal-profile-card__info">
-            <span class="portal-profile-card__role">{{ portal_role|title }}</span>
+            <span class="portal-profile-card__role">{{ portal_role|portal_role_label }}</span>
             <h1 class="portal-profile-card__name">{{ profile.full_name }}</h1>
             {% if is_teacher and profile.course_type_labels %}
               <div class="portal-profile-card__tags">

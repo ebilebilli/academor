@@ -3753,6 +3753,32 @@ msgstr "Для этого теста вопросы не найдены."
 msgid "Quiz not found."
 msgstr "Quiz не найден."
 
+msgid "Invalid request."
+msgstr "Некорректный запрос."
+
+msgid "Your account is not linked to a teacher, student, or parent profile yet."
+msgstr "Ваш аккаунт ещё не привязан к профилю преподавателя, ученика или родителя."
+
+msgid "No valid correct answers provided"
+msgstr "Не указаны корректные ответы"
+
+msgid "Answer cannot be empty"
+msgstr "Ответ не может быть пустым"
+
+msgid "Answer does not match any correct answer"
+msgstr "Ответ не совпадает ни с одним правильным вариантом"
+
+#, python-format
+msgid "Answer too long. Maximum %(max)s characters for negative answers."
+msgstr "Ответ слишком длинный. Максимум %(max)s символов для отрицательных ответов."
+
+#, python-format
+msgid "Answer too long. Maximum %(max)s characters for positive answers."
+msgstr "Ответ слишком длинный. Максимум %(max)s символов для положительных ответов."
+
+msgid "Mixed numbers not allowed. Use improper fraction (e.g., 7/2) or decimal (e.g., 3.5)"
+msgstr "Смешанные числа не допускаются. Используйте неправильную дробь (например, 7/2) или десятичную запись (например, 3.5)."
+
 #: academor/portals/utils/quiz_submit.py:513
 msgid "This quiz cannot be submitted automatically."
 msgstr "Этот quiz нельзя отправить автоматически."
@@ -9606,9 +9632,6 @@ msgid ""
 "below."
 msgstr "Этот mock-тест ещё не завершён. Сданные секции можно посмотреть ниже."
 
-msgid "Mock test result"
-msgstr "Результат mock-теста"
-
 msgid "Mock tarixçəsi"
 msgstr "История mock"
 
@@ -11402,8 +11425,8 @@ msgstr "Программы mock-тестов пока недоступны."
 #~ msgid "JPG or PNG. Large images are resized automatically."
 #~ msgstr "JPG или PNG. Большие изображения автоматически уменьшаются."
 
-#~ msgid "Portal access"
-#~ msgstr "Доступ к порталу"
+msgid "Portal access"
+msgstr "Доступ к порталу"
 
 #~ msgid "Invalid JSON format."
 #~ msgstr "Неверный формат JSON."

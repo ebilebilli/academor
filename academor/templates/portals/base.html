@@ -14,8 +14,8 @@
   <!-- Match main site typography (Host Grotesk) — async, non-blocking (text font, not icons) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  {# Warm the connection only: portal-lottie.js imports the player on demand, so pages without an animation never fetch it. #}
   <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="modulepreload" href="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" crossorigin>
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <!-- Self-hosted fonts & icons -->
@@ -25,9 +25,9 @@
   <!-- Bootstrap -->
   <link rel="stylesheet" href="{% static 'portals/css/bootstrap.min.css' %}">
   <!-- Tabler Icons (portal subset — sidebar, dashboards) -->
-  <link rel="stylesheet" href="{% static 'portals/css/portal-tabler-icons.css' %}?v=20260709a">
-  <!-- Bootstrap Icons (used across empty states, search, etc. — loaded blocking so icons render on first paint instead of popping in late) -->
-  <link rel="stylesheet" href="{% static 'portals/vendors/bootstrap-icons/bootstrap-icons.css' %}">
+  <link rel="stylesheet" href="{% static 'portals/css/portal-tabler-icons.css' %}?v=20260911b">
+  <!-- Bootstrap Icons (portal subset — loaded blocking so icons render on first paint instead of popping in late) -->
+  <link rel="stylesheet" href="{% static 'portals/css/portal-bootstrap-icons.css' %}?v=20260911b">
   <!-- Base portal styles (full legacy sheet — overridden by layers below) -->
   <link rel="stylesheet" href="{% static 'portals/css/style.css' %}?v=20260712a">
   <!-- Role-specific redesign layer -->
@@ -115,13 +115,24 @@
   <script defer src="{% static 'portals/js/weekly-scores.js' %}?v=20260704c" data-portal-page-script="true"></script>
   {% endif %}
   <script>
-  window.addEventListener("load", function () {
-    var loader = document.getElementById("page-loader");
-    if (loader) {
+  (function () {
+    function hideLoader() {
+      var loader = document.getElementById("page-loader");
+      if (!loader) {
+        return;
+      }
       loader.classList.add("hidden");
       setTimeout(function () { loader.remove(); }, 300);
     }
-  });
+    // Stylesheets are render-blocking, so by DOMContentLoaded the page is already
+    // styled. Waiting for "load" would also wait on fonts, images and every
+    // deferred script, holding a blank overlay over an otherwise ready page.
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", hideLoader);
+    } else {
+      hideLoader();
+    }
+  })();
   </script>
 </body>
 </html>

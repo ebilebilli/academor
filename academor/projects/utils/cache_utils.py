@@ -9,7 +9,7 @@ projects.signals so content changes are visible (see module docstring there).
 
 Note: QuerySet.update() / bulk_create(..., ignore_conflicts) bypass model signals;
 prefer Model.save() in admin or call invalidate_page_cache manually after bulk ops.
-LocMemCache is per-process; use a shared backend if you run multiple workers.
+Default CACHES is Redis (shared across gunicorn workers). Tests use DummyCache.
 """
 from functools import wraps
 from django.core.cache import cache
@@ -200,7 +200,7 @@ def invalidate_page_cache(view_names=None):
     """
     Invalidate all page caches via version bump.
     
-    Note: locmem/Redis backends don't support key-pattern deletion, so this
+    Note: Redis (and the old LocMem backend) don't support key-pattern deletion, so this
     always does a full version-based invalidation regardless of view_names.
     Sessions and other non-versioned keys are NOT affected.
     """
@@ -211,7 +211,7 @@ def invalidate_query_cache(query_names=None):
     """
     Invalidate all query caches via version bump.
     
-    Note: locmem/Redis backends don't support key-pattern deletion, so this
+    Note: Redis (and the old LocMem backend) don't support key-pattern deletion, so this
     always does a full version-based invalidation regardless of query_names.
     """
     _bump_cache_version()

@@ -164,7 +164,12 @@ def _collect_unique_file_materials(lesson, kind, legacy_field):
     seen_labels = set()
     related = getattr(lesson, 'attachments', None)
     if related is not None:
-        for attachment in related.filter(kind=kind):
+        # Matched in Python rather than with .filter(kind=...) so a
+        # prefetch_related('attachments') actually gets used; the filtered
+        # queryset ignored it and cost a query per lesson per kind.
+        for attachment in related.all():
+            if attachment.kind != kind:
+                continue
             if not attachment.file:
                 continue
             label = _file_basename(attachment.file)

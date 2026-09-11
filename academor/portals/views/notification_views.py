@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.db.models import Count, Q
 from django.http import Http404, JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
@@ -79,7 +80,7 @@ def _notification_period_queryset(*, teacher_id=None, parent_id=None, student_id
 
 
 def _build_notification_period_tabs(*, teacher_id=None, parent_id=None, student_id=None, customer_id=None):
-    from portals.utils.notifications import _apply_period_filter
+    from portals.utils.notifications import period_start
 
     base_qs = _notification_period_queryset(
         teacher_id=teacher_id,
@@ -87,12 +88,24 @@ def _build_notification_period_tabs(*, teacher_id=None, parent_id=None, student_
         student_id=student_id,
         customer_id=customer_id,
     )
+    # The periods are nested ranges over the same rows, so one conditional
+    # aggregate replaces a COUNT round-trip per tab.
+    counts = base_qs.aggregate(
+        **{
+            code: (
+                Count('pk', filter=Q(created_at__gte=start))
+                if (start := period_start(code)) is not None
+                else Count('pk')
+            )
+            for code in PERIOD_CHOICES
+        }
+    )
     return [
         {
             'code': code,
             'label': PERIOD_TAB_LABELS[code],
             'short_label': PERIOD_TAB_SHORT_LABELS[code],
-            'count': _apply_period_filter(base_qs, code).count(),
+            'count': counts[code],
         }
         for code in PERIOD_CHOICES
     ]
@@ -431,6 +444,18 @@ class OfferNotificationDetailView(PortalLoginRequiredMixin, View):
     template_name = 'portals/offer_notification_detail.html'
 
     def get(self, request, pk):
+        role, profile, recipient_kwargs, back_url = _notification_recipient(request)
+        if not profile:
+            raise Http404
+        # This page is only ever linked from the recipient's own offer notification,
+        # so ownership is the existence of that notification. Roles that never receive
+        # offers (teacher, customer) match nothing here and get a 404.
+        delivered = PortalNotification.objects.filter(
+            offer_notification_id=pk,
+            **recipient_kwargs,
+        ).exists()
+        if not delivered:
+            raise Http404
         offer_notification = get_object_or_404(OfferNotification, pk=pk)
         return render(
             request,
@@ -438,5 +463,6 @@ class OfferNotificationDetailView(PortalLoginRequiredMixin, View):
             _portal_context(
                 request,
                 offer_notification=offer_notification,
+                back_url=back_url,
             ),
         )

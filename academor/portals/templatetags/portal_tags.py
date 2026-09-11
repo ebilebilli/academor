@@ -396,6 +396,14 @@ def youtube_embed_url(value):
     return f'https://www.youtube.com/embed/{match.group(1)}'
 
 
+@register.filter
+def portal_role_label(role):
+    """Translated portal role name. ``|title`` left Teacher/Student in English."""
+    from portals.forms import PORTAL_ROLE_CHOICES
+
+    return dict(PORTAL_ROLE_CHOICES).get(role, role or '')
+
+
 @register.inclusion_tag('portals/includes/page_heading.html', takes_context=False)
 def portal_page_heading(
     icon='bi-speedometer2',

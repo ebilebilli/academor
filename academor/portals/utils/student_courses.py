@@ -111,7 +111,26 @@ def quiz_visible_to_teacher(quiz, teacher_id):
 
 
 def filter_quizzes_for_student(quizzes, student_id):
-    return [quiz for quiz in quizzes if quiz_visible_to_student(quiz, student_id)]
+    from portals.utils.quiz_assignments import (
+        get_student_quiz_assignment_map,
+        quiz_has_program_flag,
+    )
+
+    enrolled = [quiz for quiz in quizzes if student_quiz_enrollment_ok(student_id, quiz)]
+    flagged = [quiz for quiz in enrolled if quiz_has_program_flag(quiz)]
+    if not flagged:
+        return enrolled
+    # Same rule as quiz_visible_to_student, resolved in one query instead of an
+    # exists() per IELTS/SAT quiz. A missing row means inactive in both paths.
+    assignment_map = get_student_quiz_assignment_map(
+        student_id,
+        [quiz.pk for quiz in flagged],
+    )
+    return [
+        quiz
+        for quiz in enrolled
+        if not quiz_has_program_flag(quiz) or assignment_map.get(quiz.pk, False)
+    ]
 
 
 def filter_quiz_results_for_student(results, student_id):

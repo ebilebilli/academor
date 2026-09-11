@@ -11,7 +11,8 @@ from portals.models import Quiz, SpeakingPart, SpeakingPartType, SpeakingQuestio
 
 def _plain_speaking_text(value: str) -> str:
     text = strip_tags(str(value or ''))
-    for _ in range(2):
+    # Not named `_`: that would shadow the gettext alias for the whole function.
+    for _pass in range(2):
         decoded = unescape(text)
         if decoded == text:
             break

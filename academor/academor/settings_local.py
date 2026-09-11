@@ -1,6 +1,7 @@
 from datetime import date
 from pathlib import Path
 import os
+from academor.cache_config import build_caches
 from academor.env_load import load_project_dotenv
 
 
@@ -196,19 +197,11 @@ DATABASES = {
 
 # Cache configuration
 # https://docs.djangoproject.com/en/5.2/topics/cache/
+# Same Redis rules as settings.py — host/port/password from env.
+# Runtime requires REDIS_HOST (compose sets redis); tests use DummyCache.
+CACHES = build_caches()
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'academor-cache',
-        'TIMEOUT': 7200,  # 2 hours default timeout
-        'OPTIONS': {
-            'MAX_ENTRIES': 3000,
-            'CULL_FREQUENCY': 4,
-        }
-    }
-}
-
+# DB only — see settings.py. Do not switch this to cached_db.
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 # Cache timeout settings (in seconds)

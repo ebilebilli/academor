@@ -3678,6 +3678,32 @@ msgstr "Bu test üçün sual tapılmadı."
 msgid "Quiz not found."
 msgstr "Quiz tapılmadı."
 
+msgid "Invalid request."
+msgstr "Yanlış sorğu."
+
+msgid "Your account is not linked to a teacher, student, or parent profile yet."
+msgstr "Hesabınız hələ müəllim, tələbə və ya valideyn profilinə bağlanmayıb."
+
+msgid "No valid correct answers provided"
+msgstr "Düzgün cavab verilməyib"
+
+msgid "Answer cannot be empty"
+msgstr "Cavab boş ola bilməz"
+
+msgid "Answer does not match any correct answer"
+msgstr "Cavab heç bir düzgün cavabla üst-üstə düşmür"
+
+#, python-format
+msgid "Answer too long. Maximum %(max)s characters for negative answers."
+msgstr "Cavab çox uzundur. Mənfi cavablar üçün maksimum %(max)s simvol."
+
+#, python-format
+msgid "Answer too long. Maximum %(max)s characters for positive answers."
+msgstr "Cavab çox uzundur. Müsbət cavablar üçün maksimum %(max)s simvol."
+
+msgid "Mixed numbers not allowed. Use improper fraction (e.g., 7/2) or decimal (e.g., 3.5)"
+msgstr "Qarışıq ədədlərə icazə yoxdur. Düzgün olmayan kəsr (məs. 7/2) və ya onluq (məs. 3.5) istifadə edin."
+
 #: academor/portals/utils/quiz_submit.py:513
 msgid "This quiz cannot be submitted automatically."
 msgstr "Bu quiz avtomatik göndərilə bilməz."
@@ -9412,9 +9438,6 @@ msgstr ""
 "Bu mock test hələ davam edir. Təqdim olunan bölmələrə aşağıda baxa "
 "bilərsiniz."
 
-msgid "Mock test result"
-msgstr "Mock test nəticəsi"
-
 msgid "Mock tarixçəsi"
 msgstr "Mock tarixçəsi"
 
@@ -11301,8 +11324,8 @@ msgstr "Mock test proqramları hələ mövcud deyil."
 #~ msgid "Your child's completed quizzes."
 #~ msgstr "Uşağınızın tamamladığı quizlər."
 
-#~ msgid "Portal access"
-#~ msgstr "Portal girişi"
+msgid "Portal access"
+msgstr "Portal girişi"
 
 #~ msgid "Invalid JSON format."
 #~ msgstr "Yanlış JSON formatı."

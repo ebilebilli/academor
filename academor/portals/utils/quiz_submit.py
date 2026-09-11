@@ -17,6 +17,19 @@ _COMPLETION_TRIGGERS = {
 from portals.utils.student_courses import quiz_visible_to_student
 from portals.utils.quiz_listening import get_listening_questions_for_quiz
 
+# Machine-stable codes. ``error`` is translated for the client; views must
+# branch on ``error_code``, not on the English msgid (that comparison already
+# failed for az/ru and returned HTTP 400 instead of 404).
+ERROR_QUIZ_NOT_FOUND = 'quiz_not_found'
+
+
+def quiz_not_found_result():
+    return {
+        'success': False,
+        'error': _('Quiz not found.'),
+        'error_code': ERROR_QUIZ_NOT_FOUND,
+    }
+
 
 def _standalone_results(**filters):
     return QuizResult.objects.filter(ielts_mock_attempt__isnull=True, **filters)
@@ -665,7 +678,7 @@ def submit_variant_quiz_attempt(
         customer_id=customer_id,
     )
     if not quiz:
-        return {'success': False, 'error': _('Quiz not found.')}
+        return quiz_not_found_result()
     if not quiz.is_variant_quiz:
         return {'success': False, 'error': _('This quiz cannot be submitted automatically.')}
 
@@ -764,7 +777,7 @@ def submit_reading_quiz_attempt(
         customer_id=customer_id,
     )
     if not quiz:
-        return {'success': False, 'error': _('Quiz not found.')}
+        return quiz_not_found_result()
     if not quiz.is_reading_quiz:
         return {'success': False, 'error': _('This quiz is not a reading task.')}
 
@@ -872,7 +885,7 @@ def submit_listening_quiz_attempt(
         customer_id=customer_id,
     )
     if not quiz:
-        return {'success': False, 'error': _('Quiz not found.')}
+        return quiz_not_found_result()
     if not quiz.is_listening:
         return {'success': False, 'error': _('This quiz is not a listening task.')}
 
@@ -1008,7 +1021,7 @@ def submit_speaking_quiz_attempt(
         customer_id=customer_id,
     )
     if not quiz:
-        return {'success': False, 'error': _('Quiz not found.')}
+        return quiz_not_found_result()
     if not quiz.is_speaking:
         return {'success': False, 'error': _('This quiz is not a speaking task.')}
 
@@ -1135,7 +1148,7 @@ def submit_manual_quiz_attempt(
         customer_id=customer_id,
     )
     if not quiz:
-        return {'success': False, 'error': _('Quiz not found.')}
+        return quiz_not_found_result()
     if not quiz.is_manual_grading:
         return {'success': False, 'error': _('This quiz is not a manual-review task.')}
 

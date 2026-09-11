@@ -13,7 +13,11 @@ from portals.homework_forms import StudentLessonHomeworkForm
 from portals.models import StudentProfile
 from portals.utils.quiz_stats import compute_quiz_average_stats, compute_weekly_average_stats
 from portals.utils.parent_access import parent_has_students, resolve_parent_student
-from portals.utils.student_courses import QUIZ_HISTORY_INITIAL_SIZE, QUIZ_HISTORY_PAGE_SIZE
+from portals.utils.student_courses import (
+    QUIZ_HISTORY_INITIAL_SIZE,
+    QUIZ_HISTORY_PAGE_SIZE,
+    SCORE_LIST_LIMIT,
+)
 from projects.utils.queries import get_background_image
 from portals.utils.queries import (
     build_lesson_category_tabs,
@@ -26,7 +30,6 @@ from portals.utils.queries import (
     resolve_score_group_param,
     resolve_mock_program_param,
     filter_mock_attempt_summaries,
-    get_parent_child_attendance,
     get_parent_child_attendance_detail,
     get_parent_child_quiz_results,
     get_parent_dashboard_data,
@@ -42,7 +45,6 @@ from portals.utils.queries import (
     get_student_homework,
     get_lesson_detail,
     get_lesson_homeworks_for_teacher,
-    get_student_schedules,
     get_student_scores,
     get_student_quiz_results,
     get_student_video_records,
@@ -73,9 +75,7 @@ from portals.utils.queries import (
     group_scores_by_day,
     quiz_result_row_as_score_row,
     resolve_scores_view_param,
-    split_score_rows_by_source,
     split_student_quiz_results,
-    split_teacher_score_rows,
     get_teacher_classrooms,
     get_student_classrooms,
     get_parent_classrooms,
@@ -658,8 +658,6 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
         )
 
     def get(self, request, student_pk):
-        from portals.utils.student_courses import student_has_course_access
-
         profile = get_teacher_profile(request.portal_user)
         student = get_teacher_student(profile.pk, student_pk)
         if not student:
@@ -1124,16 +1122,22 @@ def _parent_child_context(request, profile, *, student=None):
 
 
 def _student_scores_context(student_id, *, parent_id=None, request=None):
-    all_quiz_scores = get_student_scores(student_id)
-    weekly_scores = get_student_weekly_scores(student_id)
-    grouped = prepare_student_scores_with_groups(student_id, all_quiz_scores, weekly_scores)
-    score_groups = grouped['score_groups']
-    active_score_group = resolve_score_group_param(request, score_groups) if request else None
-
     if parent_id is not None:
         quiz_results = get_parent_child_quiz_results(student_id, parent_id=parent_id)
     else:
         quiz_results = get_student_quiz_results(student_id)
+
+    # The score list and the average were fetched separately from the same rows,
+    # which cost a second trip and let the two cache entries drift apart — the
+    # list could show results the average had already dropped. Derive one from
+    # the other instead, the way get_teacher_student_scores already does.
+    all_quiz_scores = [
+        quiz_result_row_as_score_row(row) for row in quiz_results[:SCORE_LIST_LIMIT]
+    ]
+    weekly_scores = get_student_weekly_scores(student_id)
+    grouped = prepare_student_scores_with_groups(student_id, all_quiz_scores, weekly_scores)
+    score_groups = grouped['score_groups']
+    active_score_group = resolve_score_group_param(request, score_groups) if request else None
 
     all_quiz = grouped['quiz_scores']
     all_weekly = grouped['weekly_scores']

@@ -50,6 +50,7 @@
   data-msg-start-now="{% trans 'Start recording now' %}"
   data-msg-finish-answer="{% trans 'Finish answer' %}"
   data-msg-finish-test="{% if mock_id and mock_attempt %}{{ mock_attempt.finish_button_label }}{% else %}{% trans 'Finish test' %}{% endif %}"
+  data-msg-finish-hint="{% if mock_id and mock_attempt and mock_attempt.is_final_section %}{% trans 'Complete every speaking task to finish the mock test.' %}{% else %}{% trans 'Complete every speaking task to finish the test.' %}{% endif %}"
 >
   <div class="portal-speaking-layout{% if quiz.view_only and quiz.is_pending_review %} portal-speaking-layout--with-aside{% endif %}">
     <div class="portal-speaking-layout__main">

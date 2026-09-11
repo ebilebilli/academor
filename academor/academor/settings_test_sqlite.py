@@ -15,8 +15,8 @@ DATABASES = {
 
 PASSWORD_HASHERS = ['django.contrib.auth.hashers.MD5PasswordHasher']
 
-# LocMemCache survives across test cases while the DB rolls back, which makes
-# @cached_query results stale and tests order-dependent.
+# DummyCache so @cached_query cannot leak across test cases (same as
+# build_caches() during manage.py test). Explicit here for this SQLite profile.
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',

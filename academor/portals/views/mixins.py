@@ -103,21 +103,6 @@ class TeacherRequiredMixin(PortalRoleRequiredMixin):
     required_role = 'teacher'
 
 
-class TeacherScheduleMutationForbiddenMixin:
-    """Schedule slots are managed in admin; teachers may view only."""
-
-    def dispatch(self, request, *args, **kwargs):
-        from django.contrib import messages
-        from django.shortcuts import redirect
-        from django.utils.translation import gettext as _
-
-        messages.info(
-            request,
-            _('Schedule slots are managed by Academor administration. Contact admin to add or change slots.'),
-        )
-        return redirect('portals:teacher-schedule')
-
-
 class StudentRequiredMixin(PortalRoleRequiredMixin):
     required_role = 'student'
 

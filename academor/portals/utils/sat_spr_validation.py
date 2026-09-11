@@ -6,6 +6,7 @@ from html import unescape
 from typing import Dict, List
 
 from django.utils.html import strip_tags
+from django.utils.translation import gettext as _
 
 
 def plain_spr_text(value: str) -> str:
@@ -95,7 +96,7 @@ def validate_spr_answer(
         return {
             'is_correct': False,
             'normalized_student_value': None,
-            'error': 'No valid correct answers provided',
+            'error': _('No valid correct answers provided'),
         }
 
     student_plain = plain_spr_text(student_answer)
@@ -103,7 +104,7 @@ def validate_spr_answer(
         return {
             'is_correct': False,
             'normalized_student_value': None,
-            'error': 'Answer cannot be empty',
+            'error': _('Answer cannot be empty'),
         }
 
     student_numeric = None
@@ -137,7 +138,7 @@ def validate_spr_answer(
     return {
         'is_correct': False,
         'normalized_student_value': student_numeric if student_numeric is not None else student_text,
-        'error': 'Answer does not match any correct answer',
+        'error': _('Answer does not match any correct answer'),
     }
 
 
@@ -150,8 +151,11 @@ def validate_spr_length(answer: str, is_negative: bool) -> Dict:
         return {
             'is_valid': False,
             'error': (
-                f'Answer too long. Maximum {max_length} characters for '
-                f'{"negative" if is_negative else "positive"} answers'
+                _('Answer too long. Maximum %(max)s characters for negative answers.')
+                % {'max': max_length}
+                if is_negative
+                else _('Answer too long. Maximum %(max)s characters for positive answers.')
+                % {'max': max_length}
             ),
         }
 
@@ -193,12 +197,14 @@ def validate_spr_format(answer: str) -> Dict:
     """
     plain = plain_spr_text(answer)
     if not plain:
-        return {'is_valid': False, 'error': 'Answer cannot be empty'}
+        return {'is_valid': False, 'error': _('Answer cannot be empty')}
 
     if contains_mixed_number(plain):
         return {
             'is_valid': False,
-            'error': 'Mixed numbers not allowed. Use improper fraction (e.g., 7/2) or decimal (e.g., 3.5)',
+            'error': _(
+                'Mixed numbers not allowed. Use improper fraction (e.g., 7/2) or decimal (e.g., 3.5)'
+            ),
         }
 
     if is_numeric_spr_answer(plain):

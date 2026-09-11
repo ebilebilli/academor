@@ -3710,6 +3710,32 @@ msgstr "No questions were found for this test."
 msgid "Quiz not found."
 msgstr "Quiz not found."
 
+msgid "Invalid request."
+msgstr "Invalid request."
+
+msgid "Your account is not linked to a teacher, student, or parent profile yet."
+msgstr "Your account is not linked to a teacher, student, or parent profile yet."
+
+msgid "No valid correct answers provided"
+msgstr "No valid correct answers provided"
+
+msgid "Answer cannot be empty"
+msgstr "Answer cannot be empty"
+
+msgid "Answer does not match any correct answer"
+msgstr "Answer does not match any correct answer"
+
+#, python-format
+msgid "Answer too long. Maximum %(max)s characters for negative answers."
+msgstr "Answer too long. Maximum %(max)s characters for negative answers."
+
+#, python-format
+msgid "Answer too long. Maximum %(max)s characters for positive answers."
+msgstr "Answer too long. Maximum %(max)s characters for positive answers."
+
+msgid "Mixed numbers not allowed. Use improper fraction (e.g., 7/2) or decimal (e.g., 3.5)"
+msgstr "Mixed numbers not allowed. Use improper fraction (e.g., 7/2) or decimal (e.g., 3.5)"
+
 #: academor/portals/utils/quiz_submit.py:513
 msgid "This quiz cannot be submitted automatically."
 msgstr "This quiz cannot be submitted automatically."
@@ -9426,9 +9452,6 @@ msgstr ""
 "This mock test is still in progress. You can review submitted sections "
 "below."
 
-msgid "Mock test result"
-msgstr "Mock test result"
-
 msgid "Mock tarixçəsi"
 msgstr "Mock history"
 
@@ -11224,8 +11247,8 @@ msgstr ""
 #~ msgid "JPG or PNG. Large images are resized automatically."
 #~ msgstr "JPG or PNG. Large images are resized automatically."
 
-#~ msgid "Portal access"
-#~ msgstr "Portal access"
+msgid "Portal access"
+msgstr "Portal access"
 
 #~ msgid "Invalid JSON format."
 #~ msgstr "Invalid JSON format."

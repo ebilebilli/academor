@@ -23,7 +23,6 @@ from portals.utils.queries import serialize_quiz_question
 from portals.utils.student_courses import (
     get_quiz_portal_course_codes,
     teacher_can_review_quiz_result,
-    teacher_can_see_quiz_result,
 )
 
 
@@ -565,22 +564,28 @@ def _notification_queryset(
     return qs.none()
 
 
-def _apply_period_filter(qs, period: str | None):
+def period_start(period: str | None):
+    """Inclusive lower bound for a period tab, or None when the period is unbounded."""
     if not period or period == 'all':
-        return qs
+        return None
     now = timezone.now()
     if period == 'day':
-        start = timezone.make_aware(
+        return timezone.make_aware(
             datetime.combine(timezone.localdate(), time.min),
             timezone.get_current_timezone(),
         )
-    elif period == 'week':
-        start = now - timedelta(days=7)
-    elif period == 'month':
-        start = now - timedelta(days=30)
-    elif period == 'year':
-        start = now - timedelta(days=365)
-    else:
+    if period == 'week':
+        return now - timedelta(days=7)
+    if period == 'month':
+        return now - timedelta(days=30)
+    if period == 'year':
+        return now - timedelta(days=365)
+    return None
+
+
+def _apply_period_filter(qs, period: str | None):
+    start = period_start(period)
+    if start is None:
         return qs
     return qs.filter(created_at__gte=start)
 

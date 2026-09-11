@@ -28,7 +28,7 @@
         {% elif item.is_homework_submitted %}
         <i class="ti ti-notebook" aria-hidden="true"></i>
         {% elif item.is_offer_notification %}
-        <img src="/static/portals/img/new_logo.webp" alt="Academor" class="notif-item__icon--academor-logo">
+        <img src="{% static 'portals/img/new_logo.webp' %}" alt="Academor" class="notif-item__icon--academor-logo" loading="lazy" decoding="async">
         {% else %}
         <i class="ti ti-star" aria-hidden="true"></i>
         {% endif %}

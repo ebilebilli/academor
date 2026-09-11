@@ -23,7 +23,6 @@ from portals.models import (
     TeacherProfile,
     VideoRecord,
 )
-from portals.utils.portal_services import expand_course_types_to_service_slugs
 from portals.utils.quiz_category_services import (
     category_has_portal_code,
     quiz_categories_for_portal_codes,
@@ -76,45 +75,71 @@ def get_portal_role(user):
     return role
 
 
-def get_teacher_profile(user):
+_PROFILE_CACHE_ATTR = '_portal_profile_cache'
+
+
+def _memoized_profile(user, key, build):
+    """Fetch a profile once per request.
+
+    Mixins, context processors and the view itself all resolve the same profile
+    while rendering one page, which meant the identical query ran several times.
+    Like get_portal_role above, the memo lives on the user instance, whose
+    lifetime is a single request. No portal view mutates the requesting user's
+    own profile, so a stale read is not reachable.
+    """
     if not user.is_authenticated:
         return None
-    return (
-        TeacherProfile.objects.select_related('user')
+    cache = getattr(user, _PROFILE_CACHE_ATTR, None)
+    if cache is None:
+        cache = {}
+        try:
+            setattr(user, _PROFILE_CACHE_ATTR, cache)
+        except AttributeError:
+            return build()
+    if key not in cache:
+        cache[key] = build()
+    return cache[key]
+
+
+def get_teacher_profile(user):
+    return _memoized_profile(
+        user,
+        'teacher',
+        lambda: TeacherProfile.objects.select_related('user')
         .filter(user_id=user.pk)
-        .first()
+        .first(),
     )
 
 
 def get_student_profile(user):
-    if not user.is_authenticated:
-        return None
-    return (
-        StudentProfile.objects.select_related('user')
+    return _memoized_profile(
+        user,
+        'student',
+        lambda: StudentProfile.objects.select_related('user')
         .prefetch_related('groups')
         .filter(user_id=user.pk)
-        .first()
+        .first(),
     )
 
 
 def get_parent_profile(user):
-    if not user.is_authenticated:
-        return None
-    return (
-        ParentProfile.objects.select_related('user')
+    return _memoized_profile(
+        user,
+        'parent',
+        lambda: ParentProfile.objects.select_related('user')
         .prefetch_related('students')
         .filter(user_id=user.pk)
-        .first()
+        .first(),
     )
 
 
 def get_customer_profile(user):
-    if not user.is_authenticated:
-        return None
-    return (
-        CustomerProfile.objects.select_related('user', 'teacher', 'teacher__user')
+    return _memoized_profile(
+        user,
+        'customer',
+        lambda: CustomerProfile.objects.select_related('user', 'teacher', 'teacher__user')
         .filter(user_id=user.pk)
-        .first()
+        .first(),
     )
 
 
@@ -449,7 +474,6 @@ def get_parent_classrooms(parent_id, student_id=None):
 
 
 def get_classroom_detail(pk, *, role, profile_id):
-    from portals.models import Classroom
     from portals.utils.student_courses import (
         classroom_visible_to_parent,
         classroom_visible_to_student,
@@ -1705,7 +1729,7 @@ def get_teacher_lessons(teacher_id):
             group__teacher_id=teacher_id,
         )
         .select_related('group', 'teacher', 'category')
-        .prefetch_related('group__courses')
+        .prefetch_related('group__courses', 'attachments')
         .order_by('-lesson_date', '-created_at', 'id')
     )
     return [serialize_lesson(row) for row in qs]
@@ -1760,8 +1784,6 @@ def get_teacher_weekly_score_students(teacher_id):
 @cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_teacher_attendance_students(teacher_id):
     """Students in teacher groups with attendance summary counts."""
-    from django.db.models import Count, Q
-
     if not get_teacher_course_type_codes(teacher_id):
         return []
 
@@ -1855,7 +1877,7 @@ def get_teacher_student_attendance_detail(teacher_id, student_id):
 
 
 def get_teacher_scores(teacher_id):
-    """Fresh scores list — not cached (LocMem + multi-worker stale after submit)."""
+    """Fresh scores list — not cached; must reflect the latest review/submit."""
     from portals.utils.student_courses import SCORE_LIST_LIMIT, filter_quiz_results_for_teacher
 
     course_codes = get_teacher_course_type_codes(teacher_id)
@@ -2561,8 +2583,6 @@ def serialize_quiz_result_pending_list(row):
 
 
 def _teacher_pending_quiz_results_queryset(teacher_id):
-    from django.db.models import Q
-
     course_codes = get_teacher_course_type_codes(teacher_id)
     if not course_codes:
         return None
@@ -2653,6 +2673,7 @@ def get_student_lessons(student_id):
             teacher_id=F('group__teacher_id'),
         )
         .select_related('group', 'category')
+        .prefetch_related('attachments')
         .order_by('-lesson_date', '-created_at', 'id')
     )
     return [serialize_lesson(row) for row in qs]
@@ -2706,7 +2727,10 @@ def get_student_quizzes(student_id):
         .order_by('category__order', 'order', 'topic', 'id')
     )
     visible = filter_quizzes_for_student(qs, student_id)
-    return [serialize_quiz(row) for row in visible]
+    # Without this, serialize_quiz resolves the typed question count one quiz at
+    # a time; get_student_quizzes_for_category already batches it the same way.
+    question_counts = _answerable_question_counts(visible)
+    return [serialize_quiz(row, question_counts=question_counts) for row in visible]
 
 
 @cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
@@ -2794,7 +2818,7 @@ def get_parent_child_quiz_results(student_id, *, parent_id=None):
 
 
 def get_teacher_student_quiz_results(teacher_id, student_id):
-    """Fresh history — includes mock section results; not LocMem-cached."""
+    """Fresh history — includes mock section results; not versioned-query-cached."""
     from portals.utils.student_courses import filter_quiz_results_for_teacher
     from portals.utils.teacher_access import get_teacher_student
 
@@ -3002,7 +3026,7 @@ def get_teacher_dashboard_stats(teacher_id):
     }
 
 
-def _student_performance_snapshot(student_id, *, parent_id=None, group_id=None):
+def _student_performance_snapshot(student_id, *, parent_id=None, group_id=None, quiz_results=None):
     from portals.utils.attendance_stats import compute_attendance_stats
     from portals.utils.group_services import study_group_portal_codes
     from portals.utils.ielts_mock_test import (
@@ -3037,10 +3061,13 @@ def _student_performance_snapshot(student_id, *, parent_id=None, group_id=None):
             if row.get('study_group_id') == group.pk
         ]
 
-    if parent_id is not None:
-        quiz_results = get_parent_child_quiz_results(student_id, parent_id=parent_id)
-    else:
-        quiz_results = get_student_quiz_results(student_id)
+    if quiz_results is None:
+        # Callers that already hold this student's results pass them in; the parent
+        # dashboard would otherwise refetch the same rows for every child.
+        if parent_id is not None:
+            quiz_results = get_parent_child_quiz_results(student_id, parent_id=parent_id)
+        else:
+            quiz_results = get_student_quiz_results(student_id)
 
     if group_service_codes is not None:
         quiz_results = [
@@ -3181,6 +3208,9 @@ def get_parent_dashboard_data(request, parent_id):
     children = []
     for student in profile.students.select_related('user').order_by('user__username', 'id'):
         group_ids = get_student_group_ids(student.pk)
+        # Resolved once per child: the count, the latest-five list and the
+        # performance snapshot all read the same rows.
+        quiz_results = get_parent_child_quiz_results(student.pk, parent_id=parent_id)
         children.append({
             'student': serialize_student(student),
             'group_ids': group_ids,
@@ -3189,13 +3219,12 @@ def get_parent_dashboard_data(request, parent_id):
             'score_count': len(get_student_weekly_scores(student.pk)),
             'quiz_count': len(get_student_quizzes(student.pk)),
             'attendance_count': len(get_parent_child_attendance(student.pk)),
-            'quiz_result_count': len(get_parent_child_quiz_results(student.pk, parent_id=parent_id)),
+            'quiz_result_count': len(quiz_results),
             'mock_count': _parent_child_mock_count(student.pk),
-            'quiz_results': latest_quiz_result_per_quiz(
-                get_parent_child_quiz_results(student.pk, parent_id=parent_id),
-                limit=5,
+            'quiz_results': latest_quiz_result_per_quiz(quiz_results, limit=5),
+            **_student_performance_snapshot(
+                student.pk, parent_id=parent_id, quiz_results=quiz_results
             ),
-            **_student_performance_snapshot(student.pk, parent_id=parent_id),
         })
     return {'children': children}
 

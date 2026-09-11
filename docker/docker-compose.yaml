@@ -18,6 +18,32 @@ services:
     networks:
       - academor_net
 
+  redis:
+    image: redis:7-alpine
+    container_name: academor_redis
+    env_file:
+      - .env
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+    command:
+      [
+        "sh",
+        "-c",
+        "if [ -n \"$$REDIS_PASSWORD\" ]; then exec redis-server --appendonly no --requirepass \"$$REDIS_PASSWORD\"; else exec redis-server --appendonly no; fi",
+      ]
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "if [ -n \"$$REDIS_PASSWORD\" ]; then redis-cli -a \"$$REDIS_PASSWORD\" ping; else redis-cli ping; fi",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - academor_net
+
   web:
     build:
       context: ..
@@ -55,6 +81,9 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_HOST: db
       POSTGRES_PORT: 5432
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
       DEBUG: ${DEBUG}
       SECRET_KEY: ${SECRET_KEY}
       ALLOWED_HOSTS: ${ALLOWED_HOSTS}
@@ -76,6 +105,8 @@ services:
       start_period: 180s
     depends_on:
       db:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     restart: unless-stopped
     networks:

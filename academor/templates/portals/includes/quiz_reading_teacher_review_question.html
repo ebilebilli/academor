@@ -10,7 +10,7 @@
     <div class="portal-reading-review-row__answers">
       <div class="portal-reading-review-row__answer">
         <span class="portal-reading-review-row__label">{% trans 'Student' %}</span>
-        <span class="portal-reading-review-row__value">{{ q.student_answer_display|default:q.student_answer|default:"—"|quiz_html }}</span>
+        <span class="portal-reading-review-row__value">{{ q.student_answer_display|default:q.student_answer|default:"—"|quiz_plain }}</span>
       </div>
       <div class="portal-reading-review-row__answer portal-reading-review-row__answer--correct">
         <span class="portal-reading-review-row__label">{% trans 'Correct' %}</span>
