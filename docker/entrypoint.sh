@@ -11,13 +11,15 @@ echo "PostgreSQL is ready!"
 echo "Running migrations..."
 python academor/manage.py migrate --noinput
 
-# Compressed JS/CSS bundles (django-compressor offline manifest + CACHE/*)
-echo "Compressing static assets..."
-python academor/manage.py compress --force
-
-# Collect static files
+# Hashed names (ManifestStaticFilesStorage) must exist before compress
+# resolves {% static %} in offline templates — otherwise compress looks for
+# academor-lazy-brand.<hash>.js that is not in staticfiles/ yet.
 echo "Collecting static files..."
 python academor/manage.py collectstatic --noinput
+
+# Offline compressor manifest + CACHE/* (needs collectstatic output above)
+echo "Compressing static assets..."
+python academor/manage.py compress --force
 
 # Execute the command passed to the container
 exec "$@"
