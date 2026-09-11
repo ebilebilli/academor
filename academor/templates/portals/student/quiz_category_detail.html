@@ -6,12 +6,23 @@
 {% block content %}
 {% include "portals/includes/parent_child_header.html" %}
 
-{% url categories_back_url as categories_list_url %}
-{% trans 'Kateqoriyalar' as categories_back_label %}
+{% if categories_back_kwargs %}
+  {% url categories_back_url category_pk=categories_back_kwargs.category_pk as categories_list_url %}
+{% else %}
+  {% url categories_back_url as categories_list_url %}
+{% endif %}
+{% if category.parent_id %}
+  {% trans 'Ana kateqoriya' as categories_back_label %}
+{% else %}
+  {% trans 'Kateqoriyalar' as categories_back_label %}
+{% endif %}
 {% include "portals/includes/portal_back_link.html" with back_url=categories_list_url back_suffix=category_url_suffix back_label=categories_back_label %}
 
 {% include "portals/includes/portal_page_hero.html" with title=category.name subtitle=category.service_label %}
 
+{% if child_categories %}
+{% include "portals/includes/quiz_categories_panel.html" with categories=child_categories category_detail_url_name=category_detail_url_name category_url_suffix=category_url_suffix empty_message=_('No nested categories yet.') %}
+{% else %}
 <div class="qdetail">
   {% for quiz in quizzes %}
   <div class="qdetail__card {% if quiz.is_locked %}qdetail__card--locked{% elif quiz.has_attempt %}qdetail__card--done{% endif %}">
@@ -111,4 +122,5 @@
   </div>
   {% endfor %}
 </div>
+{% endif %}
 {% endblock %}

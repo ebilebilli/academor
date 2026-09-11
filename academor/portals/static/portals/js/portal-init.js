@@ -1140,6 +1140,17 @@
     setActiveTab(groupNav, activeChip, "data-score-group");
   }
 
+  function quizHubMatchesService(el, activeService) {
+    if (!activeService || activeService === "all") {
+      return true;
+    }
+    var multi = (el.getAttribute("data-services") || "").trim();
+    if (multi) {
+      return multi.split(/\s+/).indexOf(activeService) !== -1;
+    }
+    return el.getAttribute("data-service") === activeService;
+  }
+
   function applyQuizHubService(hub, service) {
     var activeService = service || "all";
     hub.querySelectorAll("[data-portal-quiz-service-tablist] .qhub__service-btn").forEach(function (btn) {
@@ -1155,13 +1166,13 @@
         item.setAttribute("aria-selected", "true");
         return;
       }
-      var show = activeService === "all" || item.getAttribute("data-service") === activeService;
+      var show = quizHubMatchesService(item, activeService);
       item.style.display = show ? "" : "none";
       item.classList.remove("is-active");
     });
     var visible = 0;
     hub.querySelectorAll(".qhub__card").forEach(function (card) {
-      var show = activeService === "all" || card.getAttribute("data-service") === activeService;
+      var show = quizHubMatchesService(card, activeService);
       card.style.display = show ? "" : "none";
       if (show) {
         visible += 1;

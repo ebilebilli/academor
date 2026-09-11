@@ -2794,7 +2794,7 @@ tr.is-quiz-locked td {
 [data-portal-role="customer"] .dashboard-content {
   padding-bottom: 72px;
 }
-@media (min-width: 1024px) {
+@media (min-width: 992px) {
   [data-portal-role="student"] .dashboard-content,
   [data-portal-role="parent"] .dashboard-content,
   [data-portal-role="customer"] .dashboard-content {

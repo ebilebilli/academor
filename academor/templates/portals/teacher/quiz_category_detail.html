@@ -7,12 +7,21 @@
 {% portal_page_heading icon="bi-ui-checks" raw_title=category.name raw_subtitle=category.service_label eyebrow="Teacher" %}
 
 <div class="d-flex flex-wrap gap-2 mb-3">
+  {% if category.parent_id %}
+  <a class="btn btn-light btn-sm" href="{% url 'portals:teacher-quiz-category' category.parent_id %}">
+    <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'Parent category' %}
+  </a>
+  {% else %}
   <a class="btn btn-light btn-sm" href="{% url 'portals:teacher-quizzes' %}">
     <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{% trans 'All categories' %}
   </a>
+  {% endif %}
   <span class="badge rounded-pill text-bg-light border align-self-center px-3 py-2">{{ category.service_label }}</span>
 </div>
 
+{% if child_categories %}
+{% include "portals/includes/quiz_categories_panel.html" with categories=child_categories category_detail_url_name='portals:teacher-quiz-category' category_action_label=_('View') empty_message=_('No nested categories yet.') %}
+{% else %}
 <section class="panel">
   <div class="table-responsive">
     <table class="table align-middle mb-0">
@@ -55,4 +64,5 @@
     </table>
   </div>
 </section>
+{% endif %}
 {% endblock %}

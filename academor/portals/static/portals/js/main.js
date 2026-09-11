@@ -44,6 +44,7 @@
 
   onReady(function () {
     var body = document.body;
+    var sidebar = document.getElementById("adminSidebar");
     var sidebarToggle = document.querySelector("[data-sidebar-toggle]");
     var closeButtons = document.querySelectorAll("[data-sidebar-close]");
     var mediaQuery = window.matchMedia(desktopMedia);
@@ -240,6 +241,16 @@
         : body.classList.contains("sidebar-open");
 
       sidebarToggle.setAttribute("aria-expanded", String(expanded));
+
+      if (sidebar) {
+        var hideFromAssistive = !isDesktop() && !expanded;
+        sidebar.setAttribute("aria-hidden", hideFromAssistive ? "true" : "false");
+        if (hideFromAssistive) {
+          sidebar.setAttribute("inert", "");
+        } else {
+          sidebar.removeAttribute("inert");
+        }
+      }
     }
 
     function closeMobileSidebar() {

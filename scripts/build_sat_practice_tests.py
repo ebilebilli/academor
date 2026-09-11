@@ -654,7 +654,7 @@ def build_verbal(doc, pages, keys, test_num: int) -> dict:
     return {
         "title": f"SAT Practice Test {test_num} Reading and Writing",
         "category_name": "SAT Reading and Writing",
-        "service": "sat",
+        "service": "sat-verbal",
         "is_sat": True,
         "sat_section": "reading",
         "time_limit_minutes": 64,

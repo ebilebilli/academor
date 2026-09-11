@@ -1992,12 +1992,22 @@ class WeeklyStudentScoreAdmin(PortalModelAdmin):
 class QuizCategoryAdminForm(forms.ModelForm):
     class Meta:
         model = QuizCategory
-        fields = ('services', 'name', 'order')
+        fields = ('services', 'name', 'parent', 'order')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['services'].queryset = get_active_services_queryset()
         self.fields['services'].required = True
+        parent_qs = QuizCategory.objects.order_by('order', 'name', 'id')
+        if self.instance and self.instance.pk:
+            parent_qs = parent_qs.exclude(pk=self.instance.pk)
+        self.fields['parent'].queryset = parent_qs
+        self.fields['parent'].required = False
+        self.fields['name'].required = False
+        self.fields['name'].help_text = _(
+            'Leave empty to use the linked service name. The portal shows the service name '
+            'for top-level categories; nested categories keep this label.'
+        )
         from projects.admin.order_fields import apply_order_choice_field
 
         apply_order_choice_field(
@@ -2013,27 +2023,55 @@ class QuizCategoryAdminForm(forms.ModelForm):
             raise forms.ValidationError(_('Select at least one active site service.'))
         return services
 
+    def clean(self):
+        cleaned = super().clean()
+        parent = cleaned.get('parent')
+        if parent and self.instance and self.instance.pk:
+            ancestor = parent
+            seen = {self.instance.pk}
+            while ancestor is not None:
+                if ancestor.pk in seen:
+                    raise forms.ValidationError(
+                        {'parent': _('Circular parent category is not allowed.')}
+                    )
+                seen.add(ancestor.pk)
+                ancestor = ancestor.parent
+        name = (cleaned.get('name') or '').strip()
+        services = cleaned.get('services')
+        if not name and services:
+            from portals.utils.portal_services import localized_service_name
+
+            first = next(iter(services), None)
+            if first is not None:
+                name = localized_service_name(first) or first.name_az or first.name_en or ''
+        cleaned['name'] = name
+        if not cleaned.get('name'):
+            self.add_error('name', _('Enter a name or select a service.'))
+        return cleaned
+
 
 @admin.register(QuizCategory)
 class QuizCategoryAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
     form = QuizCategoryAdminForm
     change_list_template = 'admin/portals/quizcategory/change_list.html'
 
-    list_display = ('drag_handle', 'order', 'name', 'service_display', 'quiz_count_display')
+    list_display = ('drag_handle', 'order', 'name', 'parent', 'service_display', 'quiz_count_display')
     list_display_links = ('name',)
-    list_filter = ('services',)
+    list_filter = ('services', 'parent')
     search_fields = ('name', 'services__slug', 'services__name_az', 'services__name_en')
     filter_horizontal = ('services',)
+    autocomplete_fields = ('parent',)
     ordering = ('order', 'name', 'id')
     list_per_page = 200
     fieldsets = (
         (None, {
             'description': _(
                 'Quiz categories group quizzes under linked site services. '
-                'Teachers and students reach quizzes indirectly through category services. '
+                'Optional parent nests a category under another; the quizzes page '
+                'shows top-level categories first, then children inside the parent. '
                 'On the list page, drag rows to set portal tab order.'
             ),
-            'fields': ('services', 'name', 'order'),
+            'fields': ('services', 'name', 'parent', 'order'),
         }),
     )
     inlines = ()

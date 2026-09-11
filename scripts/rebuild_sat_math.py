@@ -1035,7 +1035,7 @@ def build_math(doc, pages, keys, test_num: int) -> dict:
     return {
         "title": f"SAT Practice Test {test_num} Math",
         "category_name": "SAT Math",
-        "service": "sat",
+        "service": "sat-math",
         "is_sat": True,
         "sat_section": "algebra",
         "time_limit_minutes": 70,

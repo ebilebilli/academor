@@ -27,6 +27,8 @@ from portals.utils.portal_services import expand_course_types_to_service_slugs
 from portals.utils.quiz_category_services import (
     category_has_portal_code,
     quiz_categories_for_portal_codes,
+    quiz_category_display_name,
+    quiz_category_portal_codes,
     quiz_category_primary_portal_code,
     quiz_category_slugs_for_portal_codes,
 )
@@ -984,7 +986,7 @@ def serialize_quiz(quiz, *, question_counts=None):
         'course_types': [code] if code else [],
         'course_type_label': label,
         'category_id': quiz.category_id,
-        'category_name': category.name if category else '',
+        'category_name': quiz_category_display_name(category) if category else '',
         'created_at': quiz.created_at,
         'question_count': question_count,
         'is_listening': quiz.is_listening,
@@ -1019,13 +1021,23 @@ def serialize_quiz_category(category):
     quiz_count = getattr(category, 'quiz_count', None)
     if quiz_count is None:
         quiz_count = category.quizzes.count()
-    service_code = quiz_category_primary_portal_code(category)
+    has_children = getattr(category, 'has_children', None)
+    if has_children is None:
+        has_children = category.children.exists()
+    service_codes = getattr(category, 'portal_service_codes', None)
+    if service_codes is None:
+        service_codes = quiz_category_portal_codes(category)
+    service_codes = [code for code in service_codes if code]
+    service_code = service_codes[0] if service_codes else quiz_category_primary_portal_code(category)
     return {
         'id': category.pk,
-        'name': category.name,
+        'name': quiz_category_display_name(category),
         'order': category.order,
+        'parent_id': category.parent_id,
+        'has_children': bool(has_children),
         'service': service_code,
-        'service_label': resolve_course_type_label(service_code, lang='en') if service_code else '',
+        'services': service_codes,
+        'service_label': resolve_course_type_label(service_code) if service_code else '',
         'quiz_count': quiz_count,
     }
 
@@ -1035,12 +1047,16 @@ def build_quiz_service_tabs(categories):
 
     from portals.utils.portal_services import get_course_type_label_map
 
-    labels = get_course_type_label_map(lang='en')
+    labels = get_course_type_label_map()
     counts = {}
     for category in categories:
-        code = category.get('service') or ''
-        if code:
-            counts[code] = counts.get(code, 0) + 1
+        codes = category.get('services') or []
+        if not codes and category.get('service'):
+            codes = [category['service']]
+        # Count a parent folder once per matching service tab.
+        for code in dict.fromkeys(codes):
+            if code:
+                counts[code] = counts.get(code, 0) + 1
     tabs = [{
         'code': 'all',
         'label': _('All services'),
@@ -1056,61 +1072,173 @@ def build_quiz_service_tabs(categories):
 
 
 def teacher_can_access_quiz_category(teacher_id, category_id):
+    course_codes = get_teacher_course_type_codes(teacher_id)
+    if not course_codes:
+        return False
     row = QuizCategory.objects.filter(pk=category_id).prefetch_related('services').first()
     if not row:
         return False
-    return category_has_portal_code(row, get_teacher_course_type_codes(teacher_id))
+    if category_has_portal_code(row, course_codes):
+        return True
+    # Parent folders may have no direct services — allow if nested content is visible.
+    _, _, _, visible_ids, _ = _quiz_category_tree_maps(course_codes)
+    return category_id in visible_ids
 
 
 def student_can_access_quiz_category(student_id, category_id):
+    course_codes = get_student_course_type_codes(student_id)
+    if not course_codes:
+        return False
     row = QuizCategory.objects.filter(pk=category_id).prefetch_related('services').first()
     if not row:
         return False
-    return category_has_portal_code(row, get_student_course_type_codes(student_id))
+    if category_has_portal_code(row, course_codes):
+        return True
+    _, _, _, visible_ids, _ = _quiz_category_tree_maps(course_codes)
+    return category_id in visible_ids
 
 
-def _quiz_categories_with_counts(course_codes):
-    """One aggregate query instead of loading every quiz per category.
+def _quiz_category_tree_maps(course_codes):
+    """Build parent/children maps and subtree quiz counts for portal categories.
 
-    Visibility inside a category only depends on the category's service being
-    in the caller's course codes, which the filter already guarantees.
+    Includes ancestor folders of portal-visible categories so nested children
+    stay hidden on the root quizzes page and only open under their parent.
     """
-    return (
-        quiz_categories_for_portal_codes(course_codes)
-        .annotate(quiz_count=Count('quizzes', distinct=True))
-        .filter(quiz_count__gt=0)
-        .order_by('order', 'name', 'id')
+    from collections import defaultdict
+
+    from portals.models import QuizCategory
+
+    portal_ids = set(
+        quiz_categories_for_portal_codes(course_codes).values_list('pk', flat=True)
     )
+    if not portal_ids:
+        return QuizCategory.objects.none(), {}, (lambda pk: 0), set(), {}
+
+    parent_by_id = dict(QuizCategory.objects.values_list('pk', 'parent_id'))
+    needed_ids = set(portal_ids)
+    for pk in list(portal_ids):
+        current = parent_by_id.get(pk)
+        while current is not None and current not in needed_ids:
+            needed_ids.add(current)
+            current = parent_by_id.get(current)
+
+    children_map = defaultdict(list)
+    for pk in needed_ids:
+        parent_id = parent_by_id.get(pk)
+        if parent_id is not None and parent_id in needed_ids:
+            children_map[parent_id].append(pk)
+
+    direct_counts = dict(
+        QuizCategory.objects.filter(pk__in=portal_ids)
+        .annotate(qc=Count('quizzes', distinct=True))
+        .values_list('pk', 'qc')
+    )
+    portal_service_codes = {}
+    for category in (
+        QuizCategory.objects.filter(pk__in=portal_ids).prefetch_related('services')
+    ):
+        portal_service_codes[category.pk] = quiz_category_portal_codes(category)
+
+    subtree_memo = {}
+    service_memo = {}
+
+    def subtree_quiz_count(pk):
+        if pk in subtree_memo:
+            return subtree_memo[pk]
+        total = direct_counts.get(pk, 0) or 0
+        for child_id in children_map.get(pk, ()):
+            total += subtree_quiz_count(child_id)
+        subtree_memo[pk] = total
+        return total
+
+    def subtree_service_codes(pk):
+        if pk in service_memo:
+            return service_memo[pk]
+        codes = []
+        seen = set()
+        for code in portal_service_codes.get(pk, ()):
+            if code and code not in seen:
+                seen.add(code)
+                codes.append(code)
+        for child_id in children_map.get(pk, ()):
+            for code in subtree_service_codes(child_id):
+                if code and code not in seen:
+                    seen.add(code)
+                    codes.append(code)
+        service_memo[pk] = codes
+        return codes
+
+    visible_ids = {pk for pk in needed_ids if subtree_quiz_count(pk) > 0}
+    base = QuizCategory.objects.filter(pk__in=needed_ids)
+    return base, children_map, subtree_quiz_count, visible_ids, subtree_service_codes
+
+
+def _quiz_categories_with_counts(course_codes, *, parent_id=None):
+    """Categories for the hub or a parent folder, with subtree quiz counts.
+
+    Top-level listing uses parent_id=None (only root / mother categories).
+    Nested children are never returned on the root quizzes page — only when
+    parent_id points at their mother category.
+    """
+    if not course_codes:
+        return []
+    base, children_map, subtree_quiz_count, visible_ids, subtree_service_codes = (
+        _quiz_category_tree_maps(course_codes)
+    )
+    qs = base.filter(pk__in=visible_ids).prefetch_related('services')
+    if parent_id is None:
+        qs = qs.filter(parent__isnull=True)
+    else:
+        qs = qs.filter(parent_id=parent_id)
+    result = []
+    for row in qs.order_by('order', 'name', 'id'):
+        row.quiz_count = subtree_quiz_count(row.pk)
+        row.has_children = any(child_id in visible_ids for child_id in children_map.get(row.pk, ()))
+        row.portal_service_codes = subtree_service_codes(row.pk)
+        result.append(row)
+    return result
 
 
 @cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
-def get_teacher_quiz_categories(teacher_id):
+def get_teacher_quiz_categories(teacher_id, parent_id=None):
     course_codes = get_teacher_course_type_codes(teacher_id)
     if not course_codes:
         return []
-    return [serialize_quiz_category(row) for row in _quiz_categories_with_counts(course_codes)]
+    return [
+        serialize_quiz_category(row)
+        for row in _quiz_categories_with_counts(course_codes, parent_id=parent_id)
+    ]
 
 
 @cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
-def get_student_quiz_categories(student_id):
+def get_student_quiz_categories(student_id, parent_id=None):
     course_codes = get_student_course_type_codes(student_id)
     if not course_codes:
         return []
-    return [serialize_quiz_category(row) for row in _quiz_categories_with_counts(course_codes)]
+    return [
+        serialize_quiz_category(row)
+        for row in _quiz_categories_with_counts(course_codes, parent_id=parent_id)
+    ]
 
 
 @cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_teacher_quiz_category(teacher_id, category_id):
     if not teacher_can_access_quiz_category(teacher_id, category_id):
         return None
-    row = QuizCategory.objects.filter(pk=category_id).first()
+    row = QuizCategory.objects.filter(pk=category_id).prefetch_related('services').first()
     if not row:
         return None
-    visible = get_teacher_quizzes_for_category(teacher_id, category_id)
-    if not visible:
+    children = get_teacher_quiz_categories(teacher_id, parent_id=category_id)
+    visible = get_teacher_quizzes_for_category(teacher_id, category_id) if not children else []
+    if not visible and not children:
         return None
     data = serialize_quiz_category(row)
-    data['quiz_count'] = len(visible)
+    data['has_children'] = bool(children)
+    data['quiz_count'] = (
+        sum(child['quiz_count'] for child in children)
+        if children
+        else len(visible)
+    )
     return data
 
 
@@ -1118,14 +1246,20 @@ def get_teacher_quiz_category(teacher_id, category_id):
 def get_student_quiz_category(student_id, category_id):
     if not student_can_access_quiz_category(student_id, category_id):
         return None
-    row = QuizCategory.objects.filter(pk=category_id).first()
+    row = QuizCategory.objects.filter(pk=category_id).prefetch_related('services').first()
     if not row:
         return None
-    visible = get_student_quizzes_for_category(student_id, category_id)
-    if not visible:
+    children = get_student_quiz_categories(student_id, parent_id=category_id)
+    visible = get_student_quizzes_for_category(student_id, category_id) if not children else []
+    if not visible and not children:
         return None
     data = serialize_quiz_category(row)
-    data['quiz_count'] = len(visible)
+    data['has_children'] = bool(children)
+    data['quiz_count'] = (
+        sum(child['quiz_count'] for child in children)
+        if children
+        else len(visible)
+    )
     return data
 
 

@@ -299,9 +299,15 @@ a:hover { color: var(--color-role-dark); }
 /* Mobile / tablet — off-canvas drawer */
 @media (max-width: 991.98px) {
   #adminSidebar.admin-sidebar {
-    width: min(var(--sidebar-width), calc(100vw - 48px));
+    top: var(--topbar-height);
+    width: min(var(--sidebar-width), calc(100% - 48px));
     transform: translateX(-100%);
     box-shadow: var(--shadow-lg);
+    pointer-events: none;
+  }
+
+  .sidebar-backdrop {
+    top: var(--topbar-height);
   }
 
   .admin-main {
@@ -315,6 +321,7 @@ a:hover { color: var(--color-role-dark); }
 
   body.sidebar-open #adminSidebar.admin-sidebar {
     transform: translateX(0) !important;
+    pointer-events: auto;
   }
 
   body.sidebar-open .sidebar-backdrop {
@@ -327,6 +334,24 @@ a:hover { color: var(--color-role-dark); }
     width: auto !important;
     overflow: visible !important;
     visibility: visible !important;
+  }
+
+  .admin-navbar .sidebar-toggle span {
+    width: 18px;
+    transform-origin: center;
+    transition: transform var(--transition-fast), opacity var(--transition-fast);
+  }
+
+  body.sidebar-open .admin-navbar .sidebar-toggle span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  body.sidebar-open .admin-navbar .sidebar-toggle span:nth-child(2) {
+    opacity: 0;
+  }
+
+  body.sidebar-open .admin-navbar .sidebar-toggle span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
   }
 }
 
@@ -362,11 +387,22 @@ a:hover { color: var(--color-role-dark); }
 
 /* ── Topbar (matches footer / main site header bar) ─────────────────── */
 .admin-navbar {
+  position: sticky;
+  top: 0;
   min-height: var(--topbar-height);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   background: #00313D !important;
   color: rgba(255, 255, 255, 0.88) !important;
   box-shadow: none;
+  z-index: var(--z-topbar);
+}
+
+@media (max-width: 991.98px) {
+  /* Must follow the base .admin-navbar z-index rule. Closed off-canvas sidebar
+     stays at --z-sidebar (1040); without this the toggle sits under it. */
+  .admin-navbar {
+    z-index: calc(var(--z-sidebar) + 1);
+  }
 }
 
 .admin-navbar.bg-white {

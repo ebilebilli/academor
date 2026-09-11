@@ -360,7 +360,10 @@ def get_teacher_student_quiz_access_rows(teacher_id, student_id):
     Regular (non-flagged) quizzes are always open for enrolled students and are
     not listed here — teachers have no close option for them.
     """
-    from portals.utils.quiz_category_services import quiz_category_primary_portal_code
+    from portals.utils.quiz_category_services import (
+        quiz_category_display_name,
+        quiz_category_primary_portal_code,
+    )
 
     visible_quizzes = [
         quiz
@@ -386,7 +389,7 @@ def get_teacher_student_quiz_access_rows(teacher_id, student_id):
             service_code = quiz_category_primary_portal_code(category)
             bucket = {
                 'id': category.pk,
-                'name': category.name,
+                'name': quiz_category_display_name(category),
                 'service': service_code,
                 'service_label': resolve_course_type_label(service_code) if service_code else '',
                 'category_access': None,

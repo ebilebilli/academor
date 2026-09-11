@@ -12,6 +12,18 @@ class QuizCategory(models.Model):
         max_length=255,
         verbose_name=_('Name'),
     )
+    parent = models.ForeignKey(
+        'self',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='children',
+        verbose_name=_('Parent category'),
+        help_text=_(
+            'Optional parent. Nested categories appear under the parent on the quizzes page; '
+            'top-level categories (no parent) keep the previous behaviour.'
+        ),
+    )
     order = models.PositiveIntegerField(
         default=0,
         verbose_name=_('Order'),
@@ -34,6 +46,20 @@ class QuizCategory(models.Model):
 
     def __str__(self):
         return self.name
+
+    def clean(self):
+        super().clean()
+        if not self.parent_id:
+            return
+        if self.pk and self.parent_id == self.pk:
+            raise ValidationError({'parent': _('A category cannot be its own parent.')})
+        ancestor = self.parent
+        seen = {self.pk} if self.pk else set()
+        while ancestor is not None:
+            if ancestor.pk in seen:
+                raise ValidationError({'parent': _('Circular parent category is not allowed.')})
+            seen.add(ancestor.pk)
+            ancestor = ancestor.parent
 
     def get_portal_course_codes(self):
         from portals.utils.quiz_category_services import quiz_category_portal_codes

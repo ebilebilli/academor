@@ -769,16 +769,21 @@ class TeacherQuizCategoryDetailView(TeacherRequiredMixin, View):
         category = get_teacher_quiz_category(profile.pk, category_pk)
         if not category:
             raise Http404
-        return render(
+        child_categories = get_teacher_quiz_categories(profile.pk, parent_id=category_pk)
+        context = _portal_context(
             request,
-            self.template_name,
-            _portal_context(
-                request,
-                teacher=serialize_teacher(profile),
-                category=category,
-                quizzes=get_teacher_quizzes_for_category(profile.pk, category_pk),
+            teacher=serialize_teacher(profile),
+            category=category,
+            child_categories=child_categories,
+            categories=child_categories,
+            service_tabs=build_quiz_service_tabs(child_categories) if child_categories else [],
+            quizzes=(
+                []
+                if child_categories
+                else get_teacher_quizzes_for_category(profile.pk, category_pk)
             ),
         )
+        return render(request, self.template_name, context)
 
 
 class TeacherQuizDetailView(TeacherRequiredMixin, View):
@@ -1066,6 +1071,12 @@ class StudentQuizCategoryDetailView(StudentRequiredMixin, View):
         category = get_student_quiz_category(profile.pk, category_pk)
         if not category:
             raise Http404
+        child_categories = get_student_quiz_categories(profile.pk, parent_id=category_pk)
+        back_url = 'portals:student-quizzes'
+        back_kwargs = {}
+        if category.get('parent_id'):
+            back_url = 'portals:student-quiz-category'
+            back_kwargs = {'category_pk': category['parent_id']}
         return render(
             request,
             self.template_name,
@@ -1073,10 +1084,19 @@ class StudentQuizCategoryDetailView(StudentRequiredMixin, View):
                 request,
                 student=serialize_student(profile),
                 category=category,
-                quizzes=get_student_quizzes_for_category(profile.pk, category_pk),
+                child_categories=child_categories,
+                categories=child_categories,
+                service_tabs=build_quiz_service_tabs(child_categories) if child_categories else [],
+                quizzes=(
+                    []
+                    if child_categories
+                    else get_student_quizzes_for_category(profile.pk, category_pk)
+                ),
                 can_take_quiz=True,
-                categories_back_url='portals:student-quizzes',
+                categories_back_url=back_url,
+                categories_back_kwargs=back_kwargs,
                 category_url_suffix='',
+                category_detail_url_name='portals:student-quiz-category',
             ),
         )
 

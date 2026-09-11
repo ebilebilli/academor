@@ -41,6 +41,7 @@
         href="{% url category_detail_url_name category.id %}{{ category_url_suffix|default:'' }}"
         data-category="{{ category.id }}"
         data-service="{{ category.service }}"
+        data-services="{% for code in category.services %}{{ code }}{% if not forloop.last %} {% endif %}{% endfor %}"
       >
         <span class="qhub__nav-item-label">{{ category.name }}</span>
         <span class="qhub__nav-item-count">{{ category.quiz_count }}</span>
@@ -64,6 +65,7 @@
       class="qhub__card"
       href="{% url category_detail_url_name category.id %}{{ category_url_suffix|default:'' }}"
       data-service="{{ category.service }}"
+      data-services="{% for code in category.services %}{{ code }}{% if not forloop.last %} {% endif %}{% endfor %}"
       data-category="{{ category.id }}"
     >
       <div class="qhub__card-body">

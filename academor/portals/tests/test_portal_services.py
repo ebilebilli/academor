@@ -32,6 +32,32 @@ class InferCourseTypeForServiceTests(SimpleTestCase):
         service = self._service(slug='sat-prep', name_en='SAT Prep')
         self.assertEqual(infer_course_type_for_service(service), 'sat')
 
+    def test_sat_verbal_and_math_are_distinct(self):
+        self.assertEqual(
+            infer_course_type_for_service(self._service(
+                slug='sat-verbal',
+                name_en='SAT Verbal Course',
+            )),
+            'sat-verbal',
+        )
+        self.assertEqual(
+            infer_course_type_for_service(self._service(
+                slug='sat-math',
+                name_en='SAT Math Course',
+            )),
+            'sat-math',
+        )
+
+    def test_gre_verbal_and_math_are_distinct(self):
+        self.assertEqual(
+            infer_course_type_for_service(self._service(slug='gre-verbal', name_en='GRE Verbal')),
+            'gre-verbal',
+        )
+        self.assertEqual(
+            infer_course_type_for_service(self._service(slug='gre-math', name_en='GRE Math')),
+            'gre-math',
+        )
+
     def test_ielts_and_general_english(self):
         self.assertEqual(
             infer_course_type_for_service(self._service(slug='ielts-course')),

@@ -193,18 +193,21 @@ ADMIN_HELP = {
         'icon': 'C',
         'title': _('Quiz categories'),
         'summary': _(
-            'Named categories under a service. Quizzes link here; '
-            'students and teachers reach services indirectly through category.'
+            'Quiz groups under a site service. The portal lists each category '
+            'under the linked service name (not a separate default label). '
+            'A category may nest under another parent category.'
         ),
         'where': _('Admin taxonomy for quiz organization.'),
         'workflow': [
             {'title': _('Pick service tab'), 'text': _('Filter categories by service')},
-            {'title': _('Create category'), 'text': _('Service + name, e.g. IELTS → Reading practice')},
+            {'title': _('Create category'), 'text': _('Link the matching site service; leave the name empty to use that service name')},
+            {'title': _('Optional parent'), 'text': _('Nest under another category for portal folders')},
             {'title': _('Assign to quiz'), 'text': _('Open Quiz and pick this category')},
         ],
         'tips': [
             _('Same service + name must be unique.'),
             _('Service must match an active site service.'),
+            _('Top-level categories (no parent) appear first on the quizzes page.'),
             _('Drag rows on the category list to set portal tab order (filter by service first).'),
         ],
     },

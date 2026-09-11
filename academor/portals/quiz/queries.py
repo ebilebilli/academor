@@ -5,6 +5,7 @@ from portals.models import Quiz, QuizCategory, QuizQuestion, QuizResult, Score
 from portals.utils.quiz_category_services import (
     category_has_portal_code,
     quiz_categories_for_portal_codes,
+    quiz_category_display_name,
     quiz_category_primary_portal_code,
     quiz_category_slugs_for_portal_codes,
 )
@@ -28,7 +29,7 @@ def serialize_quiz(quiz):
         'course_types': [code] if code else [],
         'course_type_label': label,
         'category_id': quiz.category_id,
-        'category_name': category.name if category else '',
+        'category_name': quiz_category_display_name(category) if category else '',
         'created_at': quiz.created_at,
         'question_count': question_count,
         'is_listening': quiz.is_listening,
@@ -63,10 +64,10 @@ def serialize_quiz_category(category):
     service_code = quiz_category_primary_portal_code(category)
     return {
         'id': category.pk,
-        'name': category.name,
+        'name': quiz_category_display_name(category),
         'order': category.order,
         'service': service_code,
-        'service_label': resolve_course_type_label(service_code, lang='en') if service_code else '',
+        'service_label': resolve_course_type_label(service_code) if service_code else '',
         'quiz_count': quiz_count,
     }
 
@@ -76,7 +77,7 @@ def build_quiz_service_tabs(categories):
 
     from portals.utils.portal_services import get_course_type_label_map
 
-    labels = get_course_type_label_map(lang='en')
+    labels = get_course_type_label_map()
     counts = {}
     for category in categories:
         code = category.get('service') or ''
