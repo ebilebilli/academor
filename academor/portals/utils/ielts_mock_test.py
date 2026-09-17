@@ -248,9 +248,19 @@ def pick_random_customer_section_quizzes(
     exam_program: str = IELTS_SERVICE,
 ) -> dict[str, Quiz | None]:
     picked: dict[str, Quiz | None] = {}
+    section_counts: dict[str, int] = {}
     for spec in get_program_sections(exam_program):
         candidates = _eligible_quizzes_for_customer_section(spec.key, exam_program)
+        section_counts[spec.key] = len(candidates)
         picked[spec.key] = random.choice(candidates) if candidates else None
+    missing = [section for section, quiz in picked.items() if quiz is None]
+    logger.info(
+        'Customer mock section pick program=%s candidate_counts=%s picked_quiz_ids=%s missing=%s',
+        exam_program,
+        section_counts,
+        {section: (quiz.pk if quiz else None) for section, quiz in picked.items()},
+        missing,
+    )
     return picked
 
 

@@ -3,6 +3,8 @@ Cached reads and serializers for the student / teacher / parent portal.
 
 Register new @cached_query consumers in portals.signals when models change.
 """
+import logging
+
 from django.db.models import Count, F, Prefetch, Q
 from django.urls import reverse
 
@@ -33,6 +35,8 @@ from portals.utils.quiz_category_services import (
 )
 from portals.utils.student_courses import get_student_course_type_codes
 from portals.utils.teacher_courses import get_teacher_course_type_codes, teacher_groups_queryset
+
+logger = logging.getLogger('portals.customer_mock')
 
 
 def teacher_attendance_queryset(teacher_id):
@@ -3235,31 +3239,89 @@ def get_customer_mock_quiz_take_data(customer_id: int, quiz_id: int, *, mock_att
         customer_mock_allows_active_section_take,
         get_active_customer_mock_attempt,
     )
+    from portals.utils.mock_programs import get_program_quiz_filters
 
     if not customer_mock_allows_active_section_take(customer_id, mock_attempt_id, quiz_id):
+        logger.warning(
+            'Customer mock take denied customer_id=%s mock_id=%s quiz_id=%s reason=section_not_active',
+            customer_id,
+            mock_attempt_id,
+            quiz_id,
+        )
         return None
 
     attempt = get_active_customer_mock_attempt(customer_id, mock_attempt_id)
     if not attempt:
+        logger.warning(
+            'Customer mock take denied customer_id=%s mock_id=%s quiz_id=%s reason=attempt_inactive',
+            customer_id,
+            mock_attempt_id,
+            quiz_id,
+        )
         return None
 
     exam_program = attempt.exam_program
+    # Attempt membership already authorizes the quiz. Do not require category→service
+    # slug match for exam_program (SAT quizzes are often on sat-verbal/sat-math only).
     quiz = (
-        Quiz.objects.filter(
-            pk=quiz_id,
-            category__services__slug__in=quiz_category_slugs_for_portal_codes([exam_program]),
-        )
-        .distinct()
+        Quiz.objects.filter(pk=quiz_id)
         .select_related('category')
-        .prefetch_related(Prefetch('questions', queryset=QuizQuestion.objects.order_by('order', 'id')))
+        .prefetch_related(
+            Prefetch('questions', queryset=QuizQuestion.objects.order_by('order', 'id')),
+            'category__services',
+        )
         .first()
     )
     if not quiz:
+        logger.warning(
+            'Customer mock take 404 customer_id=%s mock_id=%s quiz_id=%s program=%s reason=quiz_missing',
+            customer_id,
+            mock_attempt_id,
+            quiz_id,
+            exam_program,
+        )
         return None
+
+    program_filters = get_program_quiz_filters(exam_program)
+    if program_filters and not all(getattr(quiz, key) == value for key, value in program_filters.items()):
+        logger.warning(
+            'Customer mock take 404 customer_id=%s mock_id=%s quiz_id=%s program=%s '
+            'reason=program_flag_mismatch filters=%s',
+            customer_id,
+            mock_attempt_id,
+            quiz_id,
+            exam_program,
+            program_filters,
+        )
+        return None
+
+    service_slugs = quiz_category_slugs_for_portal_codes([exam_program])
+    category_slugs = set()
+    if quiz.category_id:
+        category_slugs = {slug for slug in quiz.category.services.values_list('slug', flat=True) if slug}
+    if service_slugs and category_slugs.isdisjoint(service_slugs):
+        logger.info(
+            'Customer mock take quiz service-slug mismatch ignored customer_id=%s mock_id=%s '
+            'quiz_id=%s program=%s program_slugs=%s category_slugs=%s',
+            customer_id,
+            mock_attempt_id,
+            quiz_id,
+            exam_program,
+            sorted(service_slugs),
+            sorted(category_slugs),
+        )
 
     if quiz.is_variant_quiz:
         questions = [q for q in quiz.questions.all() if q.is_answerable]
         if not questions:
+            logger.warning(
+                'Customer mock take 404 customer_id=%s mock_id=%s quiz_id=%s program=%s '
+                'reason=variant_empty',
+                customer_id,
+                mock_attempt_id,
+                quiz_id,
+                exam_program,
+            )
             return None
         return {
             **serialize_quiz(quiz),
@@ -3273,6 +3335,14 @@ def get_customer_mock_quiz_take_data(customer_id: int, quiz_id: int, *, mock_att
         from portals.utils.quiz_reading import build_reading_sections_for_quiz, get_reading_questions_for_quiz
 
         if not get_reading_questions_for_quiz(quiz):
+            logger.warning(
+                'Customer mock take 404 customer_id=%s mock_id=%s quiz_id=%s program=%s '
+                'reason=reading_empty',
+                customer_id,
+                mock_attempt_id,
+                quiz_id,
+                exam_program,
+            )
             return None
         sections = build_reading_sections_for_quiz(quiz.pk)
         flat_questions = [row for section in sections for row in section['questions']]
@@ -3339,6 +3409,14 @@ def get_customer_mock_quiz_take_data(customer_id: int, quiz_id: int, *, mock_att
     if quiz.is_manual_grading and not quiz.is_listening and not quiz.is_speaking:
         questions = [q for q in quiz.questions.all() if q.is_answerable]
         if not questions:
+            logger.warning(
+                'Customer mock take 404 customer_id=%s mock_id=%s quiz_id=%s program=%s '
+                'reason=manual_empty',
+                customer_id,
+                mock_attempt_id,
+                quiz_id,
+                exam_program,
+            )
             return None
         serialized_qs = [serialize_quiz_question_for_student(q) for q in questions]
         response_ids = [q['id'] for q in serialized_qs]
@@ -3352,4 +3430,19 @@ def get_customer_mock_quiz_take_data(customer_id: int, quiz_id: int, *, mock_att
             'is_mock_section': True,
         }
 
+    logger.warning(
+        'Customer mock take 404 customer_id=%s mock_id=%s quiz_id=%s program=%s '
+        'reason=unsupported_format is_variant=%s is_reading=%s is_listening=%s '
+        'is_speaking=%s is_manual=%s sat_section=%s',
+        customer_id,
+        mock_attempt_id,
+        quiz_id,
+        exam_program,
+        quiz.is_variant_quiz,
+        quiz.is_reading_quiz,
+        quiz.is_listening,
+        quiz.is_speaking,
+        quiz.is_manual_grading,
+        getattr(quiz, 'sat_section', '') or '',
+    )
     return None

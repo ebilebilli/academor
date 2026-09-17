@@ -31,7 +31,19 @@ logger = logging.getLogger('portals.customer_mock')
 
 
 def _require_customer_program(profile, program: str) -> None:
+    if not is_valid_mock_program(program):
+        logger.warning(
+            'Customer mock program 404 customer_id=%s program=%s reason=invalid_program',
+            getattr(profile, 'pk', None),
+            program,
+        )
+        raise Http404
     if not customer_can_view_mock_program(profile.pk, program):
+        logger.warning(
+            'Customer mock program 404 customer_id=%s program=%s reason=not_viewable',
+            getattr(profile, 'pk', None),
+            program,
+        )
         raise Http404
 
 
@@ -41,6 +53,11 @@ class CustomerMockPickerView(CustomerRequiredMixin, View):
     def get(self, request):
         profile = get_customer_profile(request.portal_user)
         mock_programs = build_customer_mock_picker_programs(profile.pk)
+        logger.info(
+            'Customer mock picker customer_id=%s programs=%s',
+            profile.pk,
+            [row['code'] for row in mock_programs],
+        )
         if len(mock_programs) == 1:
             return redirect('portals:customer-mock-landing', program=mock_programs[0]['code'])
         return render(
@@ -88,6 +105,15 @@ class CustomerMockLandingView(CustomerRequiredMixin, View):
             for section in missing_sections
         ]
         program_credits = profile.mock_credits_for_program(program)
+        logger.info(
+            'Customer mock landing customer_id=%s program=%s credits=%s can_start=%s '
+            'missing_sections=%s',
+            profile.pk,
+            program,
+            program_credits,
+            can_start and not missing_sections,
+            missing_sections,
+        )
         return render(
             request,
             self.template_name,
@@ -116,8 +142,26 @@ class CustomerMockStartView(CustomerRequiredMixin, View):
         profile = get_customer_profile(request.portal_user)
         _require_customer_program(profile, program)
         if not customer_can_start_mock(profile.pk, program):
+            logger.warning(
+                'Customer mock start blocked customer_id=%s program=%s reason=no_credits '
+                'ielts_credits=%s sat_credits=%s',
+                profile.pk,
+                program,
+                profile.ielts_mock_credits,
+                profile.sat_mock_credits,
+            )
             messages.error(request, _('You have no mock test credits. Purchase a package to continue.'))
             return redirect('portals:customer-mock-packages')
+
+        missing_sections = get_missing_customer_mock_sections(exam_program=program)
+        if missing_sections:
+            logger.warning(
+                'Customer mock start missing section quizzes customer_id=%s program=%s '
+                'missing_sections=%s',
+                profile.pk,
+                program,
+                missing_sections,
+            )
 
         attempt, error = start_customer_mock_test_attempt(profile.pk, program)
         if error:
@@ -131,7 +175,21 @@ class CustomerMockStartView(CustomerRequiredMixin, View):
             return redirect('portals:customer-mock-landing', program=program)
 
         first_section = get_program_first_section(program)
-        return redirect(get_customer_mock_take_url(attempt, first_section))
+        take_url = get_customer_mock_take_url(attempt, first_section)
+        logger.info(
+            'Customer mock start ok customer_id=%s program=%s attempt_id=%s '
+            'first_section=%s take_url=%s section_quizzes=%s',
+            profile.pk,
+            program,
+            attempt.pk,
+            first_section,
+            take_url,
+            {
+                section: getattr(attempt.quiz_for_section(section), 'pk', None)
+                for section in attempt.program_section_order()
+            },
+        )
+        return redirect(take_url)
 
 
 class CustomerMockCompleteView(CustomerRequiredMixin, View):

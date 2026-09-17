@@ -1377,6 +1377,41 @@ class CustomerSatMockTests(TestCase):
         self.assertIn('/take/', take_url)
         self.assertNotIn('/manual/', take_url)
 
+    def test_customer_sat_take_works_when_category_only_on_track_services(self):
+        """Deploy often links SAT quizzes to sat-verbal/sat-math, not generic sat."""
+        from portals.utils.portal_services import reset_active_service_snapshot
+        from portals.utils.queries import get_customer_mock_quiz_take_data
+
+        verbal = Service.objects.create(
+            slug='sat-verbal',
+            name_az='SAT Verbal',
+            name_en='SAT Verbal',
+            is_active=True,
+        )
+        math = Service.objects.create(
+            slug='sat-math',
+            name_az='SAT Math',
+            name_en='SAT Math',
+            is_active=True,
+        )
+        reset_active_service_snapshot()
+        self.sat_reading_quiz.category.services.set([verbal])
+        self.sat_math_quiz.category.services.set([math])
+
+        attempt, error = start_customer_mock_test_attempt(self.customer.pk, SAT_SERVICE)
+        self.assertIsNone(error)
+        payload = get_customer_mock_quiz_take_data(
+            self.customer.pk,
+            attempt.reading_quiz_id,
+            mock_attempt_id=attempt.pk,
+        )
+        self.assertIsNotNone(payload)
+
+        client = Client()
+        _portal_client_login(client, self.customer_user)
+        response = client.get(get_customer_mock_take_url(attempt, 'reading_writing'))
+        self.assertEqual(response.status_code, 200)
+
     def test_customer_sat_mock_submit_advances_sections(self):
         attempt, error = start_customer_mock_test_attempt(self.customer.pk, SAT_SERVICE)
         self.assertIsNone(error)

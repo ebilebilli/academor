@@ -13,6 +13,8 @@ class PortalProfileView(PortalLoginRequiredMixin, View):
             return redirect('portals:student-dashboard')
         if role == 'parent':
             return redirect('portals:parent-dashboard')
+        if role == 'customer':
+            return redirect('portals:customer-dashboard')
         return redirect('portals:dashboard')
 
     def get(self, request):

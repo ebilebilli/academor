@@ -1,3 +1,5 @@
+import logging
+
 from django.http import Http404, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -32,18 +34,39 @@ from portals.views.quiz_views import (
 )
 from portals.views.views_v1 import _portal_context
 
+logger = logging.getLogger('portals.customer_mock')
+
+
+def _customer_quiz_or_404(request, profile, pk, *, view_name: str):
+    mock_id = parse_mock_attempt_id(request.GET.get('mock'))
+    if not mock_id:
+        logger.warning(
+            'Customer quiz take 404 view=%s customer_id=%s quiz_id=%s reason=missing_mock_id',
+            view_name,
+            getattr(profile, 'pk', None),
+            pk,
+        )
+        raise Http404
+    quiz = get_customer_mock_quiz_take_data(profile.pk, pk, mock_attempt_id=mock_id)
+    if not quiz:
+        logger.warning(
+            'Customer quiz take 404 view=%s customer_id=%s quiz_id=%s mock_id=%s '
+            'reason=quiz_payload_none',
+            view_name,
+            getattr(profile, 'pk', None),
+            pk,
+            mock_id,
+        )
+        raise Http404
+    return mock_id, quiz
+
 
 class CustomerQuizTakeView(CustomerQuizTakeRequiredMixin, View):
     template_name = 'portals/student/quiz_take.html'
 
     def get(self, request, pk):
         profile = get_customer_profile(request.portal_user)
-        mock_id = parse_mock_attempt_id(request.GET.get('mock'))
-        if not mock_id:
-            raise Http404
-        quiz = get_customer_mock_quiz_take_data(profile.pk, pk, mock_attempt_id=mock_id)
-        if not quiz:
-            raise Http404
+        mock_id, quiz = _customer_quiz_or_404(request, profile, pk, view_name='variant')
 
         mock_ctx = resolve_customer_mock_take_request(profile.pk, mock_id, pk)
         if mock_ctx.get('mock_redirect'):
@@ -75,12 +98,7 @@ class CustomerReadingQuizTakeView(CustomerQuizTakeRequiredMixin, View):
 
     def get(self, request, pk):
         profile = get_customer_profile(request.portal_user)
-        mock_id = parse_mock_attempt_id(request.GET.get('mock'))
-        if not mock_id:
-            raise Http404
-        quiz = get_customer_mock_quiz_take_data(profile.pk, pk, mock_attempt_id=mock_id)
-        if not quiz:
-            raise Http404
+        mock_id, quiz = _customer_quiz_or_404(request, profile, pk, view_name='reading')
 
         mock_ctx = resolve_customer_mock_take_request(profile.pk, mock_id, pk)
         if mock_ctx.get('mock_redirect'):
@@ -112,12 +130,7 @@ class CustomerSpeakingQuizTakeView(CustomerQuizTakeRequiredMixin, View):
 
     def get(self, request, pk):
         profile = get_customer_profile(request.portal_user)
-        mock_id = parse_mock_attempt_id(request.GET.get('mock'))
-        if not mock_id:
-            raise Http404
-        quiz = get_customer_mock_quiz_take_data(profile.pk, pk, mock_attempt_id=mock_id)
-        if not quiz:
-            raise Http404
+        mock_id, quiz = _customer_quiz_or_404(request, profile, pk, view_name='speaking')
 
         mock_ctx = resolve_customer_mock_take_request(profile.pk, mock_id, pk)
         if mock_ctx.get('mock_redirect'):
@@ -149,12 +162,7 @@ class CustomerManualQuizTakeView(CustomerQuizTakeRequiredMixin, View):
 
     def get(self, request, pk):
         profile = get_customer_profile(request.portal_user)
-        mock_id = parse_mock_attempt_id(request.GET.get('mock'))
-        if not mock_id:
-            raise Http404
-        quiz = get_customer_mock_quiz_take_data(profile.pk, pk, mock_attempt_id=mock_id)
-        if not quiz:
-            raise Http404
+        mock_id, quiz = _customer_quiz_or_404(request, profile, pk, view_name='manual')
 
         mock_ctx = resolve_customer_mock_take_request(profile.pk, mock_id, pk)
         if mock_ctx.get('mock_redirect'):

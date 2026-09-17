@@ -895,46 +895,61 @@ h1.animated, h2.animated, h3.animated,
 }
 
 /*
- * Desktop navbar fluid type — grows on wide screens, shrinks when space is tight.
- * CSS vars can be tightened further by site-nav-fit.js when labels overflow.
+ * Desktop navbar: bar stays tall; --nav-scale tightens type/gaps/logo when needed.
+ * Items use flex-shrink:0 so overflow is real (scrollWidth grows) and JS can detect it.
+ *
+ * Bar: 1024≈80px · 1440≈90px · 1920+≈100px
  */
 @media (min-width: 992px) {
     .navbar.navbar-light {
-        /* Wide screens grow toward 17px when space allows; fit JS shrinks if needed */
-        --nav-fs: clamp(12.5px, 0.7vw + 0.35rem, 17px);
-        --nav-gap: clamp(6px, 0.95vw, 30px);
-        --nav-pad-y: clamp(11px, 1.05vw, 21px);
-        --nav-bar-h: clamp(56px, 4.2vw + 0.85rem, 92px);
-        --nav-btn-fs: clamp(12px, 0.55vw + 0.4rem, 16px);
-        --nav-btn-pad-x: clamp(0.65rem, 1.05vw, 2rem);
-        --nav-logo-max: clamp(150px, 16vw, 276px);
-        --nav-brand-pad-x: clamp(0.55rem, 1.1vw, 3rem);
+        --nav-scale: 1;
+        --nav-bar-h: clamp(78px, 2.2vw + 3.6rem, 100px);
+        --nav-fs: calc(clamp(15px, 0.38vw + 0.75rem, 18px) * var(--nav-scale));
+        --nav-gap: calc(clamp(8px, 0.9vw, 24px) * var(--nav-scale));
+        --nav-pad-y: calc(clamp(14px, 1.05vw, 24px) * var(--nav-scale));
+        --nav-btn-fs: calc(clamp(14px, 0.35vw + 0.7rem, 17px) * var(--nav-scale));
+        --nav-btn-pad-x: calc(clamp(0.9rem, 1.05vw, 2.1rem) * var(--nav-scale));
+        --nav-btn-gap: calc(clamp(0.35rem, 0.38vw, 0.55rem) * var(--nav-scale));
+        --nav-logo-max: calc(clamp(200px, 16vw, 276px) * var(--nav-scale));
+        --nav-brand-pad-x: calc(clamp(0.7rem, 1.15vw, 3rem) * var(--nav-scale));
+        flex-wrap: nowrap;
+        width: 100%;
+        max-width: 100%;
     }
 
-    /* Longer AZ/RU labels: slightly denser start; JS fit shrinks further if needed */
+    /* Longer AZ/RU labels: denser horizontal start */
     html[lang="az"] .navbar.navbar-light,
     html[lang="ru"] .navbar.navbar-light {
-        --nav-fs: clamp(11.5px, 0.58vw + 0.32rem, 16px);
-        --nav-gap: clamp(4px, 0.65vw, 18px);
-        --nav-pad-y: clamp(10px, 0.95vw, 18px);
-        --nav-bar-h: clamp(52px, 3.8vw + 0.7rem, 84px);
-        --nav-btn-fs: clamp(11.5px, 0.5vw + 0.35rem, 15px);
-        --nav-btn-pad-x: clamp(0.5rem, 0.85vw, 1.5rem);
-        --nav-logo-max: clamp(130px, 13.5vw, 220px);
-        --nav-brand-pad-x: clamp(0.45rem, 0.9vw, 1.75rem);
+        --nav-fs: calc(clamp(14.5px, 0.34vw + 0.72rem, 17.5px) * var(--nav-scale));
+        --nav-gap: calc(clamp(6px, 0.7vw, 18px) * var(--nav-scale));
+        --nav-btn-fs: calc(clamp(13.5px, 0.32vw + 0.66rem, 16.5px) * var(--nav-scale));
+        --nav-btn-pad-x: calc(clamp(0.75rem, 0.9vw, 1.75rem) * var(--nav-scale));
+        --nav-logo-max: calc(clamp(180px, 14vw, 240px) * var(--nav-scale));
+        --nav-brand-pad-x: calc(clamp(0.55rem, 0.95vw, 2rem) * var(--nav-scale));
+    }
+
+    /* Never silently shrink links/buttons — force real overflow so JS can scale */
+    .navbar.navbar-light .navbar-nav .nav-link,
+    .navbar.navbar-light .nav-login-btn,
+    .navbar.navbar-light .nav-portal-btn,
+    .navbar.navbar-light .nav-contact-btn,
+    .navbar.navbar-light .navbar-auth-actions,
+    .navbar.navbar-light .navbar-brand {
+        flex-shrink: 0;
+        white-space: nowrap;
     }
 
     .navbar-light .navbar-collapse {
         flex-wrap: nowrap;
         align-items: stretch;
         min-width: 0;
+        flex: 1 1 auto;
     }
 
     .navbar-light .navbar-nav {
         flex-wrap: nowrap;
         align-items: center;
-        /* Content-sized so ms-auto keeps links clustered next to auth buttons */
-        flex: 0 1 auto;
+        flex: 0 0 auto;
         margin-left: auto !important;
     }
 
@@ -947,7 +962,6 @@ h1.animated, h2.animated, h3.animated,
         height: var(--nav-bar-h);
         padding-left: var(--nav-brand-pad-x) !important;
         padding-right: var(--nav-brand-pad-x) !important;
-        flex-shrink: 0;
     }
 
     .navbar-light .navbar-nav .nav-link {
@@ -957,8 +971,6 @@ h1.animated, h2.animated, h3.animated,
         font-size: var(--nav-fs);
         line-height: 1.25;
         letter-spacing: 0.01em;
-        white-space: nowrap;
-        flex-shrink: 0;
     }
 
     .navbar-light .navbar-nav .nav-link:hover,
@@ -971,18 +983,21 @@ h1.animated, h2.animated, h3.animated,
     }
 
     .navbar .dropdown-toggle::after {
-        margin-left: 0.35rem;
-        font-size: 0.75em;
+        margin-left: 0.28em;
+        font-size: 0.72em;
     }
 
     .navbar-light .navbar-collapse > a.btn.btn-primary.nav-contact-btn,
-    .navbar-light .navbar-collapse > a.btn.btn-primary.d-none.d-lg-block {
+    .navbar-light .navbar-collapse > a.btn.btn-primary.d-none.d-lg-block,
+    .navbar-light .navbar-collapse > .navbar-auth-actions .nav-login-btn,
+    .navbar-light .navbar-collapse > .navbar-auth-actions .nav-portal-btn {
         display: inline-flex !important;
         align-items: center;
         justify-content: center;
-        gap: 0.55rem;
+        gap: var(--nav-btn-gap);
         height: var(--nav-bar-h) !important;
-        min-height: var(--nav-bar-h);
+        min-height: var(--nav-bar-h) !important;
+        max-height: var(--nav-bar-h);
         margin: 0 !important;
         border-radius: 0 !important;
         padding-left: var(--nav-btn-pad-x) !important;
@@ -992,32 +1007,77 @@ h1.animated, h2.animated, h3.animated,
         font-family: 'Host Grotesk', sans-serif;
         font-size: var(--nav-btn-fs);
         font-weight: 700;
-        line-height: 1.2;
-        letter-spacing: 0.05em;
+        line-height: 1.15;
+        letter-spacing: 0.04em;
         text-transform: uppercase;
-        flex-shrink: 0;
-        white-space: nowrap;
+        flex: 0 0 auto;
+        box-sizing: border-box;
     }
 
     .navbar-light .navbar-collapse > a.btn.btn-primary.nav-contact-btn .fa,
-    .navbar-light .navbar-collapse > a.btn.btn-primary.d-none.d-lg-block .fa {
-        margin-left: 0 !important;
-        font-size: 0.9em;
+    .navbar-light .navbar-collapse > a.btn.btn-primary.d-none.d-lg-block .fa,
+    .navbar-light .navbar-collapse > .navbar-auth-actions .nav-login-btn .fa,
+    .navbar-light .navbar-collapse > .navbar-auth-actions .nav-portal-btn .fa {
+        margin: 0 !important;
+        font-size: 0.88em;
+        flex-shrink: 0;
+        line-height: 1;
+    }
+
+    /* No ellipsis — that silently clips without raising scrollWidth */
+    .navbar-light .nav-login-btn__label,
+    .navbar-light .nav-portal-btn__label,
+    .navbar-light .nav-contact-btn__label {
+        display: inline-block;
+        max-width: none;
+        overflow: visible;
+        text-overflow: clip;
+        white-space: nowrap;
     }
 
     .navbar-light .navbar-nav .nav-lang-dropdown .nav-link .nav-lang-flag {
-        width: 17px;
-        height: 12px;
+        width: 16px;
+        height: 11px;
         margin-right: 5px;
     }
 
-    /* Dropdown panel inherits live --nav-fs (including JS fit shrink) */
     .navbar.navbar-light .dropdown-item {
         font-size: var(--nav-fs);
     }
 
     .navbar.navbar-light .nav-abroad-uni {
         font-size: calc(var(--nav-fs) * 0.92);
+    }
+}
+
+/* Laptop 992–1199 (≈1024): readable type, denser spacing so Contact still fits */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .navbar.navbar-light {
+        --nav-logo-max: calc(152px * var(--nav-scale));
+        --nav-gap: calc(5px * var(--nav-scale));
+        --nav-btn-pad-x: calc(0.65rem * var(--nav-scale));
+        --nav-brand-pad-x: calc(0.45rem * var(--nav-scale));
+        --nav-btn-gap: calc(0.25rem * var(--nav-scale));
+        --nav-fs: calc(15.5px * var(--nav-scale));
+        --nav-btn-fs: calc(14.5px * var(--nav-scale));
+        --nav-pad-y: calc(14px * var(--nav-scale));
+    }
+
+    html[lang="az"] .navbar.navbar-light,
+    html[lang="ru"] .navbar.navbar-light {
+        --nav-logo-max: calc(136px * var(--nav-scale));
+        --nav-gap: calc(4px * var(--nav-scale));
+        --nav-btn-pad-x: calc(0.55rem * var(--nav-scale));
+        --nav-brand-pad-x: calc(0.4rem * var(--nav-scale));
+        --nav-fs: calc(15px * var(--nav-scale));
+        --nav-btn-fs: calc(14px * var(--nav-scale));
+    }
+
+    /* Icons off on tight laptop — frees space for larger type + Contact */
+    .navbar-light .navbar-collapse > a.btn.nav-contact-btn > .fa,
+    .navbar-light .navbar-collapse > .navbar-auth-actions .nav-login-btn > .fa,
+    .navbar-light .navbar-collapse > .navbar-auth-actions .nav-portal-btn > .fa {
+        display: none !important;
     }
 }
 
@@ -4393,13 +4453,13 @@ h1.animated, h2.animated, h3.animated,
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.55rem;
+    gap: var(--nav-btn-gap, 0.5rem);
     border-radius: 0;
     font-family: 'Host Grotesk', sans-serif;
     font-weight: 700;
-    font-size: 14px;
+    font-size: var(--nav-btn-fs, 14px);
     line-height: 1.2;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     white-space: nowrap;
     text-decoration: none;
@@ -4414,7 +4474,7 @@ h1.animated, h2.animated, h3.animated,
 .navbar-light a.btn.nav-login-btn {
     align-self: stretch;
     margin: 0;
-    padding: 0 1.35rem;
+    padding: 0 var(--nav-btn-pad-x, 1.35rem);
     border: 0;
     border-radius: 0;
     border-left: 1px solid rgba(255, 255, 255, 0.14);
@@ -4454,7 +4514,7 @@ h1.animated, h2.animated, h3.animated,
     border: 0;
     border-left: 1px solid rgba(255, 255, 255, 0.14);
     color: #ffffff;
-    padding: 0 1.35rem;
+    padding: 0 var(--nav-btn-pad-x, 1.35rem);
     text-decoration: none;
 }
 
@@ -4662,17 +4722,15 @@ h1.animated, h2.animated, h3.animated,
         display: inline-flex;
         align-items: stretch;
         align-self: stretch;
-        flex-shrink: 0;
+        flex: 0 0 auto;
+        max-height: var(--nav-bar-h);
     }
 
-    .navbar-light .navbar-collapse > .navbar-auth-actions .nav-login-btn,
-    .navbar-light .navbar-collapse > .navbar-auth-actions .nav-portal-btn,
-    .navbar-light .navbar-collapse > a.btn.nav-contact-btn {
-        height: var(--nav-bar-h);
+    .navbar-light a.btn.nav-login-btn,
+    .navbar-light a.btn.nav-portal-btn,
+    .navbar-light a.btn.nav-contact-btn {
         min-height: var(--nav-bar-h);
-        padding-left: var(--nav-btn-pad-x);
-        padding-right: var(--nav-btn-pad-x);
-        font-size: var(--nav-btn-fs);
+        height: var(--nav-bar-h);
     }
 }
 

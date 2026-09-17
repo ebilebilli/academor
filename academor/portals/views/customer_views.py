@@ -24,11 +24,36 @@ class CustomerDashboardView(CustomerRequiredMixin, View):
 
     def get(self, request):
         profile = get_customer_profile(request.portal_user)
+        if not profile:
+            logger.warning(
+                'Customer dashboard 404-path user_id=%s reason=profile_missing',
+                getattr(request.portal_user, 'pk', None),
+            )
+            return redirect('portals:login')
+
         completed_attempts = get_customer_completed_mock_attempts(profile.pk)
         mock_attempts = [
             serialize_customer_mock_attempt_summary(attempt)
             for attempt in completed_attempts
         ]
+        mock_program_sections = build_customer_mock_dashboard_sections(profile.pk)
+        logger.info(
+            'Customer dashboard viewed customer_id=%s ielts_credits=%s sat_credits=%s '
+            'sections=%s completed_attempts=%s',
+            profile.pk,
+            profile.ielts_mock_credits,
+            profile.sat_mock_credits,
+            [
+                {
+                    'program': section['program'],
+                    'credits': section['credits'],
+                    'can_start': section['can_start'],
+                    'in_progress': section['in_progress'],
+                }
+                for section in mock_program_sections
+            ],
+            len(mock_attempts),
+        )
         return render(
             request,
             self.template_name,
@@ -36,7 +61,7 @@ class CustomerDashboardView(CustomerRequiredMixin, View):
                 request,
                 customer=serialize_customer(profile),
                 mock_stats_list=build_mock_stats_list(mock_attempts),
-                mock_program_sections=build_customer_mock_dashboard_sections(profile.pk),
+                mock_program_sections=mock_program_sections,
             ),
         )
 
