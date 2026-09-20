@@ -40,8 +40,8 @@
 .lucky-wheel-page *,.lucky-wheel-page *::before,.lucky-wheel-page *::after{box-sizing:border-box}
 .lucky-wheel-page [hidden]{display:none!important}
 .lucky-wheel-page .hero{
-  max-width:1400px;margin:0 auto;min-height:0;padding:24px 20px 32px;
-  display:grid;grid-template-columns:minmax(0,300px) minmax(0,1.8fr) minmax(160px,220px);gap:20px;align-items:center;
+  max-width:1280px;margin:0 auto;min-height:0;padding:32px 24px;
+  display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr) minmax(200px,260px);gap:28px;align-items:center;
 }
 .lucky-wheel-page h1{
   font-size:clamp(2.4rem,5.2vw,4.1rem);line-height:1.02;font-weight:800;letter-spacing:-.025em;margin:0 0 18px;
@@ -71,8 +71,8 @@
 .lucky-wheel-page:not([data-theme="dark"]) .err{color:#C23A00}
 @media (prefers-color-scheme:dark){.lucky-wheel-page:not([data-theme="light"]) .err{color:#FF8A5C}}
 .lucky-wheel-page .note{font-size:.9rem;color:var(--muted);margin:6px 0 0;max-width:40ch}
-.lucky-wheel-page .stage{position:relative;min-width:0;overflow:visible}
-.lucky-wheel-page .stage svg{display:block;width:100%;height:auto;max-height:min(94vh,900px);overflow:visible;transform:scale(1.12);transform-origin:center center}
+.lucky-wheel-page .stage{position:relative;min-width:0}
+.lucky-wheel-page .stage svg{display:block;width:100%;height:auto;max-height:min(92vh,720px)}
 .lucky-wheel-page .shirt{fill:var(--shirt)}
 .lucky-wheel-page .sleeve{stroke:var(--shirt)}
 .lucky-wheel-page .skin{fill:var(--skin)}
@@ -425,11 +425,16 @@ PRIZES.forEach(function(p, i){
   var a0 = i * STEP, a1 = (i + 1) * STEP, P0 = pt(160, a0), P1 = pt(160, a1);
   el('path', {d:'M0 0 L'+P0[0]+' '+P0[1]+' A160 160 0 0 1 '+P1[0]+' '+P1[1]+' Z', 'class': i % 2 ? 'seg-b' : 'seg-a'}, segsG);
   var g = el('g', {transform:'rotate('+(a0 + STEP / 2)+')'}, segsG);
-  var pct = /%$/.test((p.l && p.l[0]) || '');
-  var t1 = el('text', {transform:'rotate(-90)', x:150, y:-1, 'text-anchor':'end', 'class':'lbl', 'font-size': pct ? 24 : 17}, g);
-  t1.textContent = (p.l && p.l[0]) || '';
-  var t2 = el('text', {transform:'rotate(-90)', x:150, y:pct ? 15 : 16, 'text-anchor':'end', 'class':'lbl', 'font-size': pct ? 14 : 15, 'font-weight':700}, g);
-  t2.textContent = (p.l && p.l[1]) || '';
+  var line1 = (p.l && p.l[0]) || '';
+  var line2 = (p.l && p.l[1]) || '';
+  var pct = /%$/.test(line1);
+  var giftWord = /hədiyyə|hediyye|^free$|^бесплатно$/i.test(line2.trim());
+  var f1 = pct ? 20 : 14;
+  var f2 = pct ? 12 : (giftWord ? 10 : 12);
+  var t1 = el('text', {transform:'rotate(-90)', x:150, y:-1, 'text-anchor':'end', 'class':'lbl', 'font-size': f1}, g);
+  t1.textContent = line1;
+  var t2 = el('text', {transform:'rotate(-90)', x:150, y:pct ? 13 : 14, 'text-anchor':'end', 'class':'lbl', 'font-size': f2, 'font-weight':700}, g);
+  t2.textContent = line2;
   var pp = pt(166, a0);
   el('circle', {cx:pp[0], cy:pp[1], r:4.6, fill:'#FFF3EB'}, pegsG);
 });
