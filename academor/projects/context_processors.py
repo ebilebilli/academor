@@ -28,6 +28,7 @@ URL_NAME_TO_TAGLINE_PAGE = {
     'english-conversation-topics': TaglinePage.TESTS,
     'english-conversation-topic-detail': TaglinePage.TESTS,
     'english-conversation-topic-two-legacy': TaglinePage.TESTS,
+    'lucky-wheel-page': TaglinePage.TESTS,
     'abroad-page': TaglinePage.ABROAD,
     'abroad-detail': TaglinePage.ABROAD,
     'abroad-university-detail': TaglinePage.ABROAD,

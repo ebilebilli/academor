@@ -18,3 +18,4 @@ from .faq_models import SiteFaqEntry
 from .blog_models import BlogPost, BlogPostImage
 from .tag_models import ContentTag
 from .sale_models import Sale
+from .lucky_wheel_models import LuckyWheelPrize, LuckyWheelSpin

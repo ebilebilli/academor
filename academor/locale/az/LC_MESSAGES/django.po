@@ -132,7 +132,7 @@ msgstr "Telefon nömrəsi mütləqdir."
 #: academor/portals/utils/normalize_phone_number.py:60
 #: academor/projects/forms/forms_v1.py:108
 msgid "Please enter a valid phone number."
-msgstr "Zəhmət olmasa düzgün telefon nömrəsi daxil edin."
+msgstr "Düzgün mobil nömrə daxil edin."
 
 #: academor/payments/forms.py:100
 msgid "Training agreement number is missing."
@@ -3681,7 +3681,8 @@ msgstr "Quiz tapılmadı."
 msgid "Invalid request."
 msgstr "Yanlış sorğu."
 
-msgid "Your account is not linked to a teacher, student, or parent profile yet."
+msgid ""
+"Your account is not linked to a teacher, student, or parent profile yet."
 msgstr "Hesabınız hələ müəllim, tələbə və ya valideyn profilinə bağlanmayıb."
 
 msgid "No valid correct answers provided"
@@ -3701,8 +3702,12 @@ msgstr "Cavab çox uzundur. Mənfi cavablar üçün maksimum %(max)s simvol."
 msgid "Answer too long. Maximum %(max)s characters for positive answers."
 msgstr "Cavab çox uzundur. Müsbət cavablar üçün maksimum %(max)s simvol."
 
-msgid "Mixed numbers not allowed. Use improper fraction (e.g., 7/2) or decimal (e.g., 3.5)"
-msgstr "Qarışıq ədədlərə icazə yoxdur. Düzgün olmayan kəsr (məs. 7/2) və ya onluq (məs. 3.5) istifadə edin."
+msgid ""
+"Mixed numbers not allowed. Use improper fraction (e.g., 7/2) or decimal "
+"(e.g., 3.5)"
+msgstr ""
+"Qarışıq ədədlərə icazə yoxdur. Düzgün olmayan kəsr (məs. 7/2) və ya onluq "
+"(məs. 3.5) istifadə edin."
 
 #: academor/portals/utils/quiz_submit.py:513
 msgid "This quiz cannot be submitted automatically."
@@ -10143,6 +10148,202 @@ msgstr "Proqram"
 msgid "Mock test programs are not available yet."
 msgstr "Mock test proqramları hələ mövcud deyil."
 
+msgid "Portal access"
+msgstr "Portal girişi"
+
+msgid "Lucky Wheel"
+msgstr "Hədiyyə çarxı"
+
+msgid "Spin the wheel"
+msgstr "Çarxı fırlat"
+
+msgid "Spinning…"
+msgstr "Çarxı fırlanır…"
+
+msgid "Spin again"
+msgstr "Yenidən fırlat"
+
+msgid "Sound on"
+msgstr "Səs açıqdır"
+
+msgid "Sound off"
+msgstr "Səs bağlıdır"
+
+msgid "Copy code"
+msgstr "Kodu kopyala"
+
+msgid "Copied"
+msgstr "Kopyalandı"
+
+msgid "The lucky wheel is not available right now."
+msgstr "Hədiyyə çarxı hazırda əlçatan deyil."
+
+msgid "Congratulations!"
+msgstr "Təbriklər!"
+
+msgid "Use the coupon at checkout. We also sent the code to your contacts."
+msgstr ""
+"Kuponu ödəniş zamanı istifadə et. Kodu əlaqə vasitələrinizə də göndərdik."
+
+msgid "You can spin the wheel one more time."
+msgstr "Çarxı bir dəfə də fırlada bilərsən."
+
+msgid "Lucky wheel prize"
+msgstr "Şans çarxı uduşu"
+
+msgid "Lucky wheel prizes"
+msgstr "Şans çarxı uduşları"
+
+msgid "Lucky wheel spin"
+msgstr "Şans çarxı fırlatması"
+
+msgid "Lucky wheel spins"
+msgstr "Şans çarxı fırlatmaları"
+
+msgid "OK"
+msgstr "Oldu"
+
+msgid "Label line 1 (AZ)"
+msgstr "Etiket sətir 1 (AZ)"
+
+msgid "Label line 1 (EN)"
+msgstr "Etiket sətir 1 (EN)"
+
+msgid "Label line 1 (RU)"
+msgstr "Etiket sətir 1 (RU)"
+
+msgid "Label line 2 (AZ)"
+msgstr "Etiket sətir 2 (AZ)"
+
+msgid "Label line 2 (EN)"
+msgstr "Etiket sətir 2 (EN)"
+
+msgid "Label line 2 (RU)"
+msgstr "Etiket sətir 2 (RU)"
+
+msgid "Result title (AZ)"
+msgstr "Nəticə başlığı (AZ)"
+
+msgid "Result title (EN)"
+msgstr "Nəticə başlığı (EN)"
+
+msgid "Result title (RU)"
+msgstr "Nəticə başlığı (RU)"
+
+msgid "Shown in the result dialog, e.g. “You won 10% off”."
+msgstr "Nəticə pəncərəsində göstərilir, məs. “10% endirim qazandın”."
+
+msgid "Coupon code"
+msgstr "Kupon kodu"
+
+msgid "Optional coupon code shown when the user wins."
+msgstr "İstifadəçi qazananda göstərilən istəyə bağlı kupon kodu."
+
+msgid "Weight"
+msgstr "Çəki"
+
+msgid "Higher weight = more likely to land on this prize."
+msgstr "Daha yüksək çəki = bu uduşa düşmə ehtimalı daha çox."
+
+msgid "Winning prize"
+msgstr "Uduş"
+
+msgid "If enabled, this outcome is treated as a win (confetti, coupon)."
+msgstr "Aktivdirsə, bu nəticə uduş sayılır (konfeti, kupon)."
+
+msgid "Allow another spin"
+msgstr "Yenidən fırlatmağa icazə ver"
+
+msgid "If enabled, the user may spin again after this result."
+msgstr "Aktivdirsə, istifadəçi bu nəticədən sonra yenidən fırlada bilər."
+
+msgid "A respin outcome cannot also be marked as a winning prize."
+msgstr "Yenidən fırlatma nəticəsi eyni zamanda uduş kimi işarələnə bilməz."
+
+msgid "Normalized phone"
+msgstr "Normallaşdırılmış nömrə"
+
+msgid "Digits only, used to prevent duplicate spins."
+msgstr "Yalnız rəqəmlər; təkrar fırlatmanın qarşısını almaq üçün."
+
+msgid "Prize"
+msgstr "Uduş"
+
+msgid "Prize title (snapshot)"
+msgstr "Uduş başlığı (anlıq)"
+
+msgid "Stored at spin time so admin prize edits do not rewrite history."
+msgstr ""
+"Fırlatma anında saxlanılır ki, admin dəyişiklikləri tarixçəni dəyişməsin."
+
+msgid "Coupon code (snapshot)"
+msgstr "Kupon kodu (anlıq)"
+
+msgid "Wheel labels"
+msgstr "Çarx etiketləri"
+
+msgid "Result dialog"
+msgstr "Nəticə pəncərəsi"
+
+msgid "Odds & flags"
+msgstr "Ehtimal və bayraqlar"
+
+msgid "Spin Academor's wheel, win a gift!"
+msgstr "Academorun çarxını fırlat, hədiyyəni qazan!"
+
+msgid ""
+"Enter your mobile number and spin the wheel. Our character will spin the "
+"wheel for you. Whatever gift your luck brings, our team will contact you to "
+"present it!"
+msgstr ""
+"Mobil nömrəni daxil et və çarxı fırlat. Karakterimiz sənin üçün çarxı "
+"fırladacaq. Bəxtinə hansı hədiyyə düşsə, komandamız səninlə əlaqə saxlayaraq"
+" hədiyyəni sənə təqdim edəcək!"
+
+msgid "You won a gift!"
+msgstr "Hədiyyəni qazandın"
+
+msgid "You can contact our team."
+msgstr "Komandamız ilə əlaqə saxlaya bilərsiniz"
+
+msgid ""
+"With each mobile number you can spin the wheel only once within 24 hours."
+msgstr ""
+"Hər mobil nömrə ilə 24 saat ərzində yalnız 1 dəfə çarxı fırlatmaq mümkündür."
+
+msgid ""
+"This mobile number has already spun within the last 24 hours. Please try "
+"again later."
+msgstr ""
+"Bu mobil nömrə ilə 24 saat ərzində artıq fırlatmısınız. Zəhmət olmasa sonra "
+"yenidən cəhd edin."
+
+msgid "Next time :("
+msgstr "Növbəti dəfə :("
+
+msgid "Please try again in 24 hours."
+msgstr "24 saat sonra yenidən yoxlayın"
+
+#~ msgid "Try again in the next campaign — we will let you know."
+#~ msgstr "Növbəti kampaniyada yenə cəhd et — xəbərdar edəcəyik."
+
+#~ msgid "One spin per mobile number. You can unsubscribe at any time."
+#~ msgstr ""
+#~ "Hər mobil nömrə üçün bir fırlatma. İstənilən vaxt abunəlikdən çıxa bilərsən."
+
+#~ msgid "This mobile number has already been used."
+#~ msgstr "Bu mobil nömrə artıq istifadə olunub."
+
+#~ msgid "Spin the wheel, win a gift"
+#~ msgstr "Çarxı fırlat, hədiyyəni qazan"
+
+#~ msgid ""
+#~ "Enter your mobile number and press the button. The character will spin the "
+#~ "wheel for you — your prize is yours right away."
+#~ msgstr ""
+#~ "Mobil nömrəni yaz və düyməyə bas. Karakter çarxı sənin üçün fırladacaq, "
+#~ "düşən mükafat dərhal sənindir."
+
 #~ msgid ""
 #~ "Shared classroom PDFs. Pick one or more active site services — only teachers"
 #~ " and students on matching groups see the room in the portal."
@@ -11323,9 +11524,6 @@ msgstr "Mock test proqramları hələ mövcud deyil."
 
 #~ msgid "Your child's completed quizzes."
 #~ msgstr "Uşağınızın tamamladığı quizlər."
-
-msgid "Portal access"
-msgstr "Portal girişi"
 
 #~ msgid "Invalid JSON format."
 #~ msgstr "Yanlış JSON formatı."

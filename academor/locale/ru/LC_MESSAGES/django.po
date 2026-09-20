@@ -130,7 +130,7 @@ msgstr "Номер телефона обязателен."
 #: academor/portals/utils/normalize_phone_number.py:60
 #: academor/projects/forms/forms_v1.py:108
 msgid "Please enter a valid phone number."
-msgstr "Введите корректный номер телефона."
+msgstr "Пожалуйста, введите корректный номер телефона."
 
 #: academor/payments/forms.py:100
 msgid "Training agreement number is missing."
@@ -3756,8 +3756,10 @@ msgstr "Quiz не найден."
 msgid "Invalid request."
 msgstr "Некорректный запрос."
 
-msgid "Your account is not linked to a teacher, student, or parent profile yet."
-msgstr "Ваш аккаунт ещё не привязан к профилю преподавателя, ученика или родителя."
+msgid ""
+"Your account is not linked to a teacher, student, or parent profile yet."
+msgstr ""
+"Ваш аккаунт ещё не привязан к профилю преподавателя, ученика или родителя."
 
 msgid "No valid correct answers provided"
 msgstr "Не указаны корректные ответы"
@@ -3770,14 +3772,20 @@ msgstr "Ответ не совпадает ни с одним правильны
 
 #, python-format
 msgid "Answer too long. Maximum %(max)s characters for negative answers."
-msgstr "Ответ слишком длинный. Максимум %(max)s символов для отрицательных ответов."
+msgstr ""
+"Ответ слишком длинный. Максимум %(max)s символов для отрицательных ответов."
 
 #, python-format
 msgid "Answer too long. Maximum %(max)s characters for positive answers."
-msgstr "Ответ слишком длинный. Максимум %(max)s символов для положительных ответов."
+msgstr ""
+"Ответ слишком длинный. Максимум %(max)s символов для положительных ответов."
 
-msgid "Mixed numbers not allowed. Use improper fraction (e.g., 7/2) or decimal (e.g., 3.5)"
-msgstr "Смешанные числа не допускаются. Используйте неправильную дробь (например, 7/2) или десятичную запись (например, 3.5)."
+msgid ""
+"Mixed numbers not allowed. Use improper fraction (e.g., 7/2) or decimal "
+"(e.g., 3.5)"
+msgstr ""
+"Смешанные числа не допускаются. Используйте неправильную дробь (например, "
+"7/2) или десятичную запись (например, 3.5)."
 
 #: academor/portals/utils/quiz_submit.py:513
 msgid "This quiz cannot be submitted automatically."
@@ -4215,7 +4223,7 @@ msgstr "История викторин и средний балл связан�
 #: academor/projects/forms/forms_v1.py:149
 #: academor/projects/forms/forms_v1.py:155
 msgid "Mobile number"
-msgstr "Мобильный номер"
+msgstr "Номер телефона"
 
 #: academor/projects/forms/forms_v1.py:56
 #: academor/projects/forms/forms_v1.py:59
@@ -4237,7 +4245,7 @@ msgstr "Ваше сообщение"
 #: academor/projects/views/views_v1.py:104
 #: academor/projects/views/views_v1.py:360
 msgid "Something went wrong. Please try again."
-msgstr "Что-то пошло не так. Пожалуйста, попробуйте снова."
+msgstr "Что-то пошло не так. Пожалуйста, попробуйте ещё раз."
 
 #: academor/projects/forms/forms_v1.py:137
 #: academor/projects/forms/forms_v1.py:142
@@ -10271,6 +10279,205 @@ msgstr "Программа"
 msgid "Mock test programs are not available yet."
 msgstr "Программы mock-тестов пока недоступны."
 
+msgid "Portal access"
+msgstr "Доступ к порталу"
+
+msgid "Lucky Wheel"
+msgstr "Колесо подарков"
+
+msgid "Spin the wheel"
+msgstr "Крутить колесо"
+
+msgid "Spinning…"
+msgstr "Крутится…"
+
+msgid "Spin again"
+msgstr "Крутить ещё раз"
+
+msgid "Sound on"
+msgstr "Звук включён"
+
+msgid "Sound off"
+msgstr "Звук выключен"
+
+msgid "Copy code"
+msgstr "Скопировать код"
+
+msgid "Copied"
+msgstr "Скопировано"
+
+msgid "The lucky wheel is not available right now."
+msgstr "Колесо подарков сейчас недоступно."
+
+msgid "Congratulations!"
+msgstr "Поздравляем!"
+
+msgid "Use the coupon at checkout. We also sent the code to your contacts."
+msgstr ""
+"Используйте купон при оплате. Мы также отправили код на ваши контакты."
+
+msgid "You can spin the wheel one more time."
+msgstr "Вы можете крутить колесо ещё один раз."
+
+msgid "Lucky wheel prize"
+msgstr "Приз колеса удачи"
+
+msgid "Lucky wheel prizes"
+msgstr "Призы колеса удачи"
+
+msgid "Lucky wheel spin"
+msgstr "Вращение колеса удачи"
+
+msgid "Lucky wheel spins"
+msgstr "Вращения колеса удачи"
+
+msgid "OK"
+msgstr "Хорошо"
+
+msgid "Label line 1 (AZ)"
+msgstr "Подпись строка 1 (AZ)"
+
+msgid "Label line 1 (EN)"
+msgstr "Подпись строка 1 (EN)"
+
+msgid "Label line 1 (RU)"
+msgstr "Подпись строка 1 (RU)"
+
+msgid "Label line 2 (AZ)"
+msgstr "Подпись строка 2 (AZ)"
+
+msgid "Label line 2 (EN)"
+msgstr "Подпись строка 2 (EN)"
+
+msgid "Label line 2 (RU)"
+msgstr "Подпись строка 2 (RU)"
+
+msgid "Result title (AZ)"
+msgstr "Заголовок результата (AZ)"
+
+msgid "Result title (EN)"
+msgstr "Заголовок результата (EN)"
+
+msgid "Result title (RU)"
+msgstr "Заголовок результата (RU)"
+
+msgid "Shown in the result dialog, e.g. “You won 10% off”."
+msgstr "Показывается в окне результата, напр. «Вы выиграли скидку 10%»."
+
+msgid "Coupon code"
+msgstr "Код купона"
+
+msgid "Optional coupon code shown when the user wins."
+msgstr "Необязательный код купона, показываемый при выигрыше."
+
+msgid "Weight"
+msgstr "Вес"
+
+msgid "Higher weight = more likely to land on this prize."
+msgstr "Чем выше вес, тем выше шанс выпасть на этот приз."
+
+msgid "Winning prize"
+msgstr "Выигрышный приз"
+
+msgid "If enabled, this outcome is treated as a win (confetti, coupon)."
+msgstr "Если включено, исход считается выигрышем (конфетти, купон)."
+
+msgid "Allow another spin"
+msgstr "Разрешить ещё одно вращение"
+
+msgid "If enabled, the user may spin again after this result."
+msgstr ""
+"Если включено, пользователь может крутить колесо ещё раз после этого "
+"результата."
+
+msgid "A respin outcome cannot also be marked as a winning prize."
+msgstr "Исход «ещё раз» нельзя одновременно отметить как выигрыш."
+
+msgid "Normalized phone"
+msgstr "Нормализованный телефон"
+
+msgid "Digits only, used to prevent duplicate spins."
+msgstr "Только цифры; для предотвращения повторных вращений."
+
+msgid "Prize"
+msgstr "Приз"
+
+msgid "Prize title (snapshot)"
+msgstr "Название приза (снимок)"
+
+msgid "Stored at spin time so admin prize edits do not rewrite history."
+msgstr ""
+"Сохраняется в момент вращения, чтобы правки призов в админке не меняли "
+"историю."
+
+msgid "Coupon code (snapshot)"
+msgstr "Код купона (снимок)"
+
+msgid "Wheel labels"
+msgstr "Подписи на колесе"
+
+msgid "Result dialog"
+msgstr "Окно результата"
+
+msgid "Odds & flags"
+msgstr "Шансы и флаги"
+
+msgid "Spin Academor's wheel, win a gift!"
+msgstr "Крутите колесо Academor — выиграйте подарок!"
+
+msgid ""
+"Enter your mobile number and spin the wheel. Our character will spin the "
+"wheel for you. Whatever gift your luck brings, our team will contact you to "
+"present it!"
+msgstr ""
+"Введите номер телефона и крутите колесо. Наш персонаж прокрутит колесо за "
+"вас. Какой бы подарок ни выпал, наша команда свяжется с вами и вручит его!"
+
+msgid "You won a gift!"
+msgstr "Вы выиграли подарок!"
+
+msgid "You can contact our team."
+msgstr "Вы можете связаться с нашей командой"
+
+msgid ""
+"With each mobile number you can spin the wheel only once within 24 hours."
+msgstr ""
+"С каждым номером телефона колесо можно крутить только 1 раз в течение 24 "
+"часов."
+
+msgid ""
+"This mobile number has already spun within the last 24 hours. Please try "
+"again later."
+msgstr ""
+"С этим номером телефона колесо уже крутили за последние 24 часа. Пожалуйста,"
+" попробуйте позже."
+
+msgid "Next time :("
+msgstr "В следующий раз :("
+
+msgid "Please try again in 24 hours."
+msgstr "Попробуйте снова через 24 часа"
+
+#~ msgid "Try again in the next campaign — we will let you know."
+#~ msgstr "Попробуйте в следующей акции — мы сообщим."
+
+#~ msgid "One spin per mobile number. You can unsubscribe at any time."
+#~ msgstr ""
+#~ "Одна попытка на один номер телефона. Вы можете отписаться в любое время."
+
+#~ msgid "This mobile number has already been used."
+#~ msgstr "Этот номер телефона уже использован."
+
+#~ msgid "Spin the wheel, win a gift"
+#~ msgstr "Крутите колесо — выиграйте подарок"
+
+#~ msgid ""
+#~ "Enter your mobile number and press the button. The character will spin the "
+#~ "wheel for you — your prize is yours right away."
+#~ msgstr ""
+#~ "Введите номер телефона и нажмите кнопку. Персонаж прокрутит колесо за вас — "
+#~ "приз сразу ваш."
+
 #~ msgid "Manual quizzes: fill teacher feedback, set score, and reviewed date."
 #~ msgstr "Manual quiz: заполните отзыв, балл и дату проверки."
 
@@ -11424,9 +11631,6 @@ msgstr "Программы mock-тестов пока недоступны."
 
 #~ msgid "JPG or PNG. Large images are resized automatically."
 #~ msgstr "JPG или PNG. Большие изображения автоматически уменьшаются."
-
-msgid "Portal access"
-msgstr "Доступ к порталу"
 
 #~ msgid "Invalid JSON format."
 #~ msgstr "Неверный формат JSON."

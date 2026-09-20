@@ -1,7 +1,10 @@
 /**
  * Fit desktop navbar horizontally without shrinking bar height.
- * Items must be flex-shrink:0 (CSS) so overflow raises scrollWidth / right edge
+ * Items must be flex-shrink:0 (CSS) so overflow raises scrollWidth
  * and --nav-scale binary search can actually run.
+ *
+ * Wide / 4K viewports keep scale 1: Contact is flush-right, so comparing
+ * its edge to innerWidth falsely looks like overflow and crushed type/logo.
  */
 (function () {
   "use strict";
@@ -11,6 +14,8 @@
   var fitting = false;
   var MIN_SCALE = 0.78;
   var MAX_SCALE = 1;
+  var WIDE_NO_SHRINK = 2000;
+  var OVERFLOW_SLACK = 4;
 
   function qs(sel, root) {
     return (root || document).querySelector(sel);
@@ -37,22 +42,21 @@
   }
 
   function isOverflowing(nav) {
-    if (nav.scrollWidth > nav.clientWidth + 1) return true;
+    if (nav.scrollWidth > nav.clientWidth + OVERFLOW_SLACK) return true;
 
     var collapse = qs(".navbar-collapse", nav);
-    if (collapse && collapse.scrollWidth > collapse.clientWidth + 1) return true;
+    if (collapse && collapse.scrollWidth > collapse.clientWidth + OVERFLOW_SLACK) {
+      return true;
+    }
 
-    /* Contact is a direct child; keep fallbacks if markup wraps it later */
+    var navRight = nav.getBoundingClientRect().right;
     var login = qs(".nav-login-btn, .nav-portal-btn", nav);
-    var contact = qs(
-      ".nav-contact-btn, .navbar-auth-actions a.btn.btn-primary, .navbar-collapse > a.btn.btn-primary",
-      nav
-    );
+    var contact = qs(".nav-contact-btn", nav);
     var edge = Math.max(
       login ? login.getBoundingClientRect().right : 0,
       contact ? contact.getBoundingClientRect().right : 0
     );
-    return edge > window.innerWidth - 1;
+    return edge > navRight + OVERFLOW_SLACK;
   }
 
   function fitSiteNavbar() {
@@ -67,6 +71,8 @@
     try {
       clearNavVars(nav);
       if (!qs(".navbar-nav .nav-link", nav)) return;
+      /* 4K / 2560 CSS px: plenty of width — do not shrink logo/type/buttons */
+      if (window.innerWidth >= WIDE_NO_SHRINK) return;
       if (!isOverflowing(nav)) return;
 
       var lo = MIN_SCALE;

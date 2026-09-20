@@ -898,20 +898,20 @@ h1.animated, h2.animated, h3.animated,
  * Desktop navbar: bar stays tall; --nav-scale tightens type/gaps/logo when needed.
  * Items use flex-shrink:0 so overflow is real (scrollWidth grows) and JS can detect it.
  *
- * Bar: 1024≈80px · 1440≈90px · 1920+≈100px
+ * Bar/type grow via clamp, then 1920 and 2400+ (4K/2560 CSS px) floors.
  */
 @media (min-width: 992px) {
     .navbar.navbar-light {
         --nav-scale: 1;
-        --nav-bar-h: clamp(78px, 2.2vw + 3.6rem, 100px);
-        --nav-fs: calc(clamp(15px, 0.38vw + 0.75rem, 18px) * var(--nav-scale));
-        --nav-gap: calc(clamp(8px, 0.9vw, 24px) * var(--nav-scale));
-        --nav-pad-y: calc(clamp(14px, 1.05vw, 24px) * var(--nav-scale));
-        --nav-btn-fs: calc(clamp(14px, 0.35vw + 0.7rem, 17px) * var(--nav-scale));
-        --nav-btn-pad-x: calc(clamp(0.9rem, 1.05vw, 2.1rem) * var(--nav-scale));
-        --nav-btn-gap: calc(clamp(0.35rem, 0.38vw, 0.55rem) * var(--nav-scale));
-        --nav-logo-max: calc(clamp(200px, 16vw, 276px) * var(--nav-scale));
-        --nav-brand-pad-x: calc(clamp(0.7rem, 1.15vw, 3rem) * var(--nav-scale));
+        --nav-bar-h: clamp(78px, 2.4vw + 3.4rem, 108px);
+        --nav-fs: calc(clamp(15px, 0.48vw + 0.7rem, 20px) * var(--nav-scale));
+        --nav-gap: calc(clamp(8px, 1vw, 28px) * var(--nav-scale));
+        --nav-pad-y: calc(clamp(14px, 1.1vw, 26px) * var(--nav-scale));
+        --nav-btn-fs: calc(clamp(14px, 0.42vw + 0.68rem, 18.5px) * var(--nav-scale));
+        --nav-btn-pad-x: calc(clamp(0.9rem, 1.1vw, 2.35rem) * var(--nav-scale));
+        --nav-btn-gap: calc(clamp(0.35rem, 0.4vw, 0.6rem) * var(--nav-scale));
+        --nav-logo-max: calc(clamp(200px, 15vw, 300px) * var(--nav-scale));
+        --nav-brand-pad-x: calc(clamp(0.7rem, 1.2vw, 3.25rem) * var(--nav-scale));
         flex-wrap: nowrap;
         width: 100%;
         max-width: 100%;
@@ -920,12 +920,12 @@ h1.animated, h2.animated, h3.animated,
     /* Longer AZ/RU labels: denser horizontal start */
     html[lang="az"] .navbar.navbar-light,
     html[lang="ru"] .navbar.navbar-light {
-        --nav-fs: calc(clamp(14.5px, 0.34vw + 0.72rem, 17.5px) * var(--nav-scale));
-        --nav-gap: calc(clamp(6px, 0.7vw, 18px) * var(--nav-scale));
-        --nav-btn-fs: calc(clamp(13.5px, 0.32vw + 0.66rem, 16.5px) * var(--nav-scale));
-        --nav-btn-pad-x: calc(clamp(0.75rem, 0.9vw, 1.75rem) * var(--nav-scale));
-        --nav-logo-max: calc(clamp(180px, 14vw, 240px) * var(--nav-scale));
-        --nav-brand-pad-x: calc(clamp(0.55rem, 0.95vw, 2rem) * var(--nav-scale));
+        --nav-fs: calc(clamp(14.5px, 0.44vw + 0.68rem, 19.5px) * var(--nav-scale));
+        --nav-gap: calc(clamp(6px, 0.8vw, 22px) * var(--nav-scale));
+        --nav-btn-fs: calc(clamp(13.5px, 0.4vw + 0.64rem, 18px) * var(--nav-scale));
+        --nav-btn-pad-x: calc(clamp(0.75rem, 0.95vw, 2rem) * var(--nav-scale));
+        --nav-logo-max: calc(clamp(180px, 13.5vw, 280px) * var(--nav-scale));
+        --nav-brand-pad-x: calc(clamp(0.55rem, 1vw, 2.25rem) * var(--nav-scale));
     }
 
     /* Never silently shrink links/buttons — force real overflow so JS can scale */
@@ -1078,6 +1078,65 @@ h1.animated, h2.animated, h3.animated,
     .navbar-light .navbar-collapse > .navbar-auth-actions .nav-login-btn > .fa,
     .navbar-light .navbar-collapse > .navbar-auth-actions .nav-portal-btn > .fa {
         display: none !important;
+    }
+}
+
+/* Full HD+ — step up type/bar before 4K */
+@media (min-width: 1920px) {
+    .navbar.navbar-light {
+        --nav-bar-h: 104px;
+        --nav-fs: calc(19px * var(--nav-scale));
+        --nav-btn-fs: calc(17.5px * var(--nav-scale));
+        --nav-gap: calc(22px * var(--nav-scale));
+        --nav-pad-y: calc(22px * var(--nav-scale));
+        --nav-btn-pad-x: calc(1.6rem * var(--nav-scale));
+        --nav-btn-gap: calc(0.5rem * var(--nav-scale));
+        --nav-logo-max: calc(280px * var(--nav-scale));
+        --nav-brand-pad-x: calc(1.75rem * var(--nav-scale));
+    }
+
+    html[lang="az"] .navbar.navbar-light,
+    html[lang="ru"] .navbar.navbar-light {
+        --nav-fs: calc(18.5px * var(--nav-scale));
+        --nav-btn-fs: calc(17px * var(--nav-scale));
+        --nav-gap: calc(16px * var(--nav-scale));
+        --nav-btn-pad-x: calc(1.35rem * var(--nav-scale));
+        --nav-logo-max: calc(250px * var(--nav-scale));
+    }
+}
+
+/*
+ * 4K / QHD (~2560 CSS px, including 3840@150% DPI).
+ * Starts at 2400 so a scrollbar does not miss the bump.
+ * Logo max ≥ bar height × 3 so object-fit does not shrink the mark.
+ */
+@media (min-width: 2400px) {
+    .navbar.navbar-light {
+        --nav-bar-h: 132px;
+        --nav-fs: calc(24px * var(--nav-scale));
+        --nav-btn-fs: calc(22px * var(--nav-scale));
+        --nav-gap: calc(32px * var(--nav-scale));
+        --nav-pad-y: calc(28px * var(--nav-scale));
+        --nav-btn-pad-x: calc(2.4rem * var(--nav-scale));
+        --nav-btn-gap: calc(0.65rem * var(--nav-scale));
+        --nav-logo-max: calc(420px * var(--nav-scale));
+        --nav-brand-pad-x: calc(2.75rem * var(--nav-scale));
+    }
+
+    html[lang="az"] .navbar.navbar-light,
+    html[lang="ru"] .navbar.navbar-light {
+        --nav-fs: calc(23px * var(--nav-scale));
+        --nav-btn-fs: calc(21px * var(--nav-scale));
+        --nav-gap: calc(24px * var(--nav-scale));
+        --nav-btn-pad-x: calc(2.1rem * var(--nav-scale));
+        --nav-logo-max: calc(400px * var(--nav-scale));
+        --nav-brand-pad-x: calc(2.35rem * var(--nav-scale));
+    }
+
+    .navbar-light .navbar-nav .nav-lang-dropdown .nav-link .nav-lang-flag {
+        width: 22px;
+        height: 15px;
+        margin-right: 8px;
     }
 }
 

@@ -3713,8 +3713,10 @@ msgstr "Quiz not found."
 msgid "Invalid request."
 msgstr "Invalid request."
 
-msgid "Your account is not linked to a teacher, student, or parent profile yet."
-msgstr "Your account is not linked to a teacher, student, or parent profile yet."
+msgid ""
+"Your account is not linked to a teacher, student, or parent profile yet."
+msgstr ""
+"Your account is not linked to a teacher, student, or parent profile yet."
 
 msgid "No valid correct answers provided"
 msgstr "No valid correct answers provided"
@@ -3733,8 +3735,12 @@ msgstr "Answer too long. Maximum %(max)s characters for negative answers."
 msgid "Answer too long. Maximum %(max)s characters for positive answers."
 msgstr "Answer too long. Maximum %(max)s characters for positive answers."
 
-msgid "Mixed numbers not allowed. Use improper fraction (e.g., 7/2) or decimal (e.g., 3.5)"
-msgstr "Mixed numbers not allowed. Use improper fraction (e.g., 7/2) or decimal (e.g., 3.5)"
+msgid ""
+"Mixed numbers not allowed. Use improper fraction (e.g., 7/2) or decimal "
+"(e.g., 3.5)"
+msgstr ""
+"Mixed numbers not allowed. Use improper fraction (e.g., 7/2) or decimal "
+"(e.g., 3.5)"
 
 #: academor/portals/utils/quiz_submit.py:513
 msgid "This quiz cannot be submitted automatically."
@@ -10133,6 +10139,199 @@ msgid "Complete the full mock in one session — just like the real IELTS exam."
 msgstr ""
 "Complete the full mock in one session — just like the real IELTS exam."
 
+msgid "Portal access"
+msgstr "Portal access"
+
+msgid "Lucky Wheel"
+msgstr "Gift Wheel"
+
+msgid "Spin the wheel"
+msgstr "Spin the wheel"
+
+msgid "Spinning…"
+msgstr "Spinning…"
+
+msgid "Spin again"
+msgstr "Spin again"
+
+msgid "Sound on"
+msgstr "Sound on"
+
+msgid "Sound off"
+msgstr "Sound off"
+
+msgid "Copy code"
+msgstr "Copy code"
+
+msgid "Copied"
+msgstr "Copied"
+
+msgid "The lucky wheel is not available right now."
+msgstr "The lucky wheel is not available right now."
+
+msgid "Congratulations!"
+msgstr "Congratulations!"
+
+msgid "Use the coupon at checkout. We also sent the code to your contacts."
+msgstr "Use the coupon at checkout. We also sent the code to your contacts."
+
+msgid "You can spin the wheel one more time."
+msgstr "You can spin the wheel one more time."
+
+msgid "Lucky wheel prize"
+msgstr "Lucky wheel prize"
+
+msgid "Lucky wheel prizes"
+msgstr "Lucky wheel prizes"
+
+msgid "Lucky wheel spin"
+msgstr "Lucky wheel spin"
+
+msgid "Lucky wheel spins"
+msgstr "Lucky wheel spins"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Label line 1 (AZ)"
+msgstr "Label line 1 (AZ)"
+
+msgid "Label line 1 (EN)"
+msgstr "Label line 1 (EN)"
+
+msgid "Label line 1 (RU)"
+msgstr "Label line 1 (RU)"
+
+msgid "Label line 2 (AZ)"
+msgstr "Label line 2 (AZ)"
+
+msgid "Label line 2 (EN)"
+msgstr "Label line 2 (EN)"
+
+msgid "Label line 2 (RU)"
+msgstr "Label line 2 (RU)"
+
+msgid "Result title (AZ)"
+msgstr "Result title (AZ)"
+
+msgid "Result title (EN)"
+msgstr "Result title (EN)"
+
+msgid "Result title (RU)"
+msgstr "Result title (RU)"
+
+msgid "Shown in the result dialog, e.g. “You won 10% off”."
+msgstr "Shown in the result dialog, e.g. “You won 10% off”."
+
+msgid "Coupon code"
+msgstr "Coupon code"
+
+msgid "Optional coupon code shown when the user wins."
+msgstr "Optional coupon code shown when the user wins."
+
+msgid "Weight"
+msgstr "Weight"
+
+msgid "Higher weight = more likely to land on this prize."
+msgstr "Higher weight = more likely to land on this prize."
+
+msgid "Winning prize"
+msgstr "Winning prize"
+
+msgid "If enabled, this outcome is treated as a win (confetti, coupon)."
+msgstr "If enabled, this outcome is treated as a win (confetti, coupon)."
+
+msgid "Allow another spin"
+msgstr "Allow another spin"
+
+msgid "If enabled, the user may spin again after this result."
+msgstr "If enabled, the user may spin again after this result."
+
+msgid "A respin outcome cannot also be marked as a winning prize."
+msgstr "A respin outcome cannot also be marked as a winning prize."
+
+msgid "Normalized phone"
+msgstr "Normalized phone"
+
+msgid "Digits only, used to prevent duplicate spins."
+msgstr "Digits only, used to prevent duplicate spins."
+
+msgid "Prize"
+msgstr "Prize"
+
+msgid "Prize title (snapshot)"
+msgstr "Prize title (snapshot)"
+
+msgid "Stored at spin time so admin prize edits do not rewrite history."
+msgstr "Stored at spin time so admin prize edits do not rewrite history."
+
+msgid "Coupon code (snapshot)"
+msgstr "Coupon code (snapshot)"
+
+msgid "Wheel labels"
+msgstr "Wheel labels"
+
+msgid "Result dialog"
+msgstr "Result dialog"
+
+msgid "Odds & flags"
+msgstr "Odds & flags"
+
+msgid "Spin Academor's wheel, win a gift!"
+msgstr "Spin Academor's wheel, win a gift!"
+
+msgid ""
+"Enter your mobile number and spin the wheel. Our character will spin the "
+"wheel for you. Whatever gift your luck brings, our team will contact you to "
+"present it!"
+msgstr ""
+"Enter your mobile number and spin the wheel. Our character will spin the "
+"wheel for you. Whatever gift your luck brings, our team will contact you to "
+"present it!"
+
+msgid "You won a gift!"
+msgstr "You won a gift!"
+
+msgid "You can contact our team."
+msgstr "You can contact our team."
+
+msgid ""
+"With each mobile number you can spin the wheel only once within 24 hours."
+msgstr ""
+"With each mobile number you can spin the wheel only once within 24 hours."
+
+msgid ""
+"This mobile number has already spun within the last 24 hours. Please try "
+"again later."
+msgstr ""
+"This mobile number has already spun within the last 24 hours. Please try "
+"again later."
+
+msgid "Next time :("
+msgstr "Next time :("
+
+msgid "Please try again in 24 hours."
+msgstr "Please try again in 24 hours."
+
+#~ msgid "Try again in the next campaign — we will let you know."
+#~ msgstr "Try again in the next campaign — we will let you know."
+
+#~ msgid "One spin per mobile number. You can unsubscribe at any time."
+#~ msgstr "One spin per mobile number. You can unsubscribe at any time."
+
+#~ msgid "This mobile number has already been used."
+#~ msgstr "This mobile number has already been used."
+
+#~ msgid "Spin the wheel, win a gift"
+#~ msgstr "Spin the wheel, win a gift"
+
+#~ msgid ""
+#~ "Enter your mobile number and press the button. The character will spin the "
+#~ "wheel for you — your prize is yours right away."
+#~ msgstr ""
+#~ "Enter your mobile number and press the button. The character will spin the "
+#~ "wheel for you — your prize is yours right away."
+
 #~ msgid "Manual quizzes: fill teacher feedback, set score, and reviewed date."
 #~ msgstr "Manual quizzes: fill teacher feedback, set score, and reviewed date."
 
@@ -11246,9 +11445,6 @@ msgstr ""
 
 #~ msgid "JPG or PNG. Large images are resized automatically."
 #~ msgstr "JPG or PNG. Large images are resized automatically."
-
-msgid "Portal access"
-msgstr "Portal access"
 
 #~ msgid "Invalid JSON format."
 #~ msgstr "Invalid JSON format."

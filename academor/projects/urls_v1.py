@@ -32,6 +32,7 @@ from projects.views.conversation_topics_views import (
     LegacyLearnEnglishConversationTopicRedirectView,
     LegacyTopicTwoRedirectView,
 )
+from projects.views.lucky_wheel_views import LuckyWheelPageView, LuckyWheelSpinView
 
 
 app_name = 'projects'
@@ -157,6 +158,16 @@ urlpatterns = [
         'results/',
         MockResultsPageView.as_view(),
         name='results-page',
+    ),
+    path(
+        'lucky-wheel/',
+        LuckyWheelPageView.as_view(),
+        name='lucky-wheel-page',
+    ),
+    path(
+        'lucky-wheel/spin/',
+        LuckyWheelSpinView.as_view(),
+        name='lucky-wheel-spin',
     ),
     path(
         'results/top5/',

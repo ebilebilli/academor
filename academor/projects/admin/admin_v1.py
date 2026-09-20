@@ -1537,6 +1537,79 @@ class MockTestResultAdmin(AcademorModelAdmin):
             obj.refresh_from_db(fields=['rank'])
 
 
+@admin.register(LuckyWheelPrize)
+class LuckyWheelPrizeAdmin(AcademorModelAdmin):
+    list_display = (
+        'id',
+        'label_line1_az',
+        'label_line2_az',
+        'code',
+        'weight',
+        'is_win',
+        'is_respin',
+        'is_active',
+        'order',
+    )
+    list_display_links = ('label_line1_az',)
+    list_editable = ('weight', 'is_active', 'order')
+    list_filter = ('is_active', 'is_win', 'is_respin')
+    search_fields = (
+        'label_line1_az',
+        'label_line1_en',
+        'label_line1_ru',
+        'title_az',
+        'title_en',
+        'title_ru',
+        'code',
+    )
+    ordering = ('order', 'id')
+    list_per_page = 50
+    fieldsets = (
+        (_('Wheel labels'), {
+            'fields': (
+                ('label_line1_az', 'label_line2_az'),
+                ('label_line1_en', 'label_line2_en'),
+                ('label_line1_ru', 'label_line2_ru'),
+            ),
+        }),
+        (_('Result dialog'), {
+            'fields': ('title_az', 'title_en', 'title_ru', 'code'),
+        }),
+        (_('Odds & flags'), {
+            'fields': ('weight', 'is_win', 'is_respin', 'is_active', 'order'),
+        }),
+    )
+
+
+@admin.register(LuckyWheelSpin)
+class LuckyWheelSpinAdmin(AcademorModelAdmin):
+    list_display = (
+        'id',
+        'phone',
+        'prize_title',
+        'prize_code',
+        'prize',
+        'created_at',
+    )
+    list_display_links = ('phone',)
+    list_filter = ('prize', 'created_at')
+    search_fields = ('phone', 'phone_normalized', 'prize_title', 'prize_code')
+    ordering = ('-created_at',)
+    list_per_page = 50
+    readonly_fields = (
+        'phone',
+        'phone_normalized',
+        'prize',
+        'prize_title',
+        'prize_code',
+        'created_at',
+    )
+    date_hierarchy = 'created_at'
+
+    def has_add_permission(self, request):
+        return False
+
+
 @admin.register(ContactInquiry)
 class ContactInquiryAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     list_display = (
@@ -1682,6 +1755,8 @@ def _sorted_get_app_list(request, app_label=None):
 
         # Inbound
         "ContactInquiry": 320,
+        "LuckyWheelPrize": 330,
+        "LuckyWheelSpin": 331,
 
         # Tests
         "Test": 400,

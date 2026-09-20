@@ -270,3 +270,27 @@ class TestUserForm(forms.Form):
         if not validate_phone_number(value):
             raise ValidationError(_('Düzgün nömrə daxil edin'))
         return value
+
+
+class LuckyWheelPhoneForm(forms.Form):
+    phone = forms.CharField(
+        max_length=30,
+        required=True,
+        label=_('Mobile number'),
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': _('Mobile number'),
+                'autocomplete': 'tel',
+                'inputmode': 'tel',
+            }
+        ),
+    )
+
+    def clean_phone(self):
+        value = (self.cleaned_data.get('phone') or '').strip()
+        if not value:
+            raise ValidationError(_('Phone number is required.'))
+        if not validate_phone_number(value):
+            raise ValidationError(_('Please enter a valid phone number.'))
+        return value
