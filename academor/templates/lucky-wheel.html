@@ -72,7 +72,7 @@
 @media (prefers-color-scheme:dark){.lucky-wheel-page:not([data-theme="light"]) .err{color:#FF8A5C}}
 .lucky-wheel-page .note{font-size:.9rem;color:var(--muted);margin:6px 0 0;max-width:40ch}
 .lucky-wheel-page .stage{position:relative;min-width:0}
-.lucky-wheel-page .stage svg{display:block;width:100%;height:auto;max-height:min(92vh,800px)}
+.lucky-wheel-page .stage svg{display:block;width:100%;height:auto;max-height:min(92vh,860px)}
 .lucky-wheel-page .shirt{fill:var(--shirt)}
 .lucky-wheel-page .sleeve{stroke:var(--shirt)}
 .lucky-wheel-page .skin{fill:var(--skin)}
@@ -83,13 +83,22 @@
 .lucky-wheel-page .bulb{fill:#FF5414;transition:fill .05s}
 .lucky-wheel-page .bulb.on{fill:#FFF6F0}
 .lucky-wheel-page .prize-rail{
-  align-self:stretch;max-height:min(78vh,560px);overflow:auto;
-  padding:18px 16px;border-radius:18px;background:rgba(255,255,255,.72);
-  border:1px solid rgba(0,49,61,.1);box-shadow:0 8px 24px rgba(0,49,61,.06);
+  align-self:start;padding:0;border-radius:18px;background:rgba(255,255,255,.72);
+  border:1px solid rgba(0,49,61,.1);box-shadow:0 8px 24px rgba(0,49,61,.06);overflow:hidden;
 }
-.lucky-wheel-page .prize-rail h2{
-  font-size:.95rem;font-weight:800;letter-spacing:.02em;text-transform:uppercase;
-  margin:0 0 12px;color:var(--tiber);
+.lucky-wheel-page .prize-rail summary{
+  list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:14px 16px;font-size:.95rem;font-weight:800;letter-spacing:.02em;text-transform:uppercase;
+  color:var(--tiber);user-select:none;
+}
+.lucky-wheel-page .prize-rail summary::-webkit-details-marker{display:none}
+.lucky-wheel-page .prize-rail summary::after{
+  content:'';width:.55em;height:.55em;flex-shrink:0;border-right:2.5px solid currentColor;border-bottom:2.5px solid currentColor;
+  transform:rotate(45deg);margin-top:-.2em;transition:transform .2s ease;
+}
+.lucky-wheel-page .prize-rail[open] summary::after{transform:rotate(225deg);margin-top:.15em}
+.lucky-wheel-page .prize-rail .prize-rail-body{
+  max-height:min(60vh,420px);overflow:auto;padding:0 12px 14px;
 }
 .lucky-wheel-page .prize-rail ol{
   list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;
@@ -99,29 +108,20 @@
   padding:8px 10px;border-radius:10px;background:rgba(255,243,235,.85);
   border-left:3px solid var(--orange);
 }
-.lucky-wheel-page .prize-rail li.is-respin{
-  border-left-color:var(--tiber);background:rgba(0,49,61,.06);font-weight:500;color:var(--muted);
-}
 .lucky-wheel-page[data-theme="dark"] .prize-rail{
   background:rgba(5,54,66,.85);border-color:rgba(255,241,233,.12);
 }
-.lucky-wheel-page[data-theme="dark"] .prize-rail h2{color:var(--fg)}
+.lucky-wheel-page[data-theme="dark"] .prize-rail summary{color:var(--fg)}
 .lucky-wheel-page[data-theme="dark"] .prize-rail li{
   background:rgba(255,255,255,.06);color:var(--fg);
-}
-.lucky-wheel-page[data-theme="dark"] .prize-rail li.is-respin{
-  background:rgba(255,255,255,.04);color:var(--muted);
 }
 @media (prefers-color-scheme:dark){
   .lucky-wheel-page:not([data-theme="light"]) .prize-rail{
     background:rgba(5,54,66,.85);border-color:rgba(255,241,233,.12);
   }
-  .lucky-wheel-page:not([data-theme="light"]) .prize-rail h2{color:var(--fg)}
+  .lucky-wheel-page:not([data-theme="light"]) .prize-rail summary{color:var(--fg)}
   .lucky-wheel-page:not([data-theme="light"]) .prize-rail li{
     background:rgba(255,255,255,.06);color:var(--fg);
-  }
-  .lucky-wheel-page:not([data-theme="light"]) .prize-rail li.is-respin{
-    background:rgba(255,255,255,.04);color:var(--muted);
   }
 }
 /* result */
@@ -157,7 +157,7 @@
 @media (max-width:900px){
   .lucky-wheel-page .hero{grid-template-columns:1fr;gap:16px;padding:20px 18px 32px;min-height:0}
   .lucky-wheel-page .stage{order:-1}
-  .lucky-wheel-page .prize-rail{order:0;max-height:none}
+  .lucky-wheel-page .prize-rail{order:0}
   .lucky-wheel-page .copy{order:1}
   .lucky-wheel-page .lead{max-width:none}
 }
@@ -342,14 +342,16 @@
   </section>
 
   {% if prize_list %}
-  <aside class="prize-rail" aria-labelledby="lwPrizesHeading">
-    <h2 id="lwPrizesHeading"></h2>
-    <ol>
-      {% for item in prize_list %}
-      <li>{{ item.title }}</li>
-      {% endfor %}
-    </ol>
-  </aside>
+  <details class="prize-rail">
+    <summary id="lwPrizesHeading"></summary>
+    <div class="prize-rail-body">
+      <ol>
+        {% for item in prize_list %}
+        <li>{{ item.title }}</li>
+        {% endfor %}
+      </ol>
+    </div>
+  </details>
   {% endif %}
 </div>
 
