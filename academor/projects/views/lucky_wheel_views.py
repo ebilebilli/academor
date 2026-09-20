@@ -66,9 +66,9 @@ class LuckyWheelPageView(View):
         prize_list = [
             {
                 'title': p.result_title(lang),
-                'respin': bool(p.is_respin),
             }
             for p in prizes
+            if not p.is_respin
         ]
         ui = {
             'headline': _("Spin Academor's wheel, win a gift!"),
