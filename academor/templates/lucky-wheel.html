@@ -4,6 +4,8 @@
 <head>
     {% include "includes/site_layout_head.html" with page_title=page_title %}
     <style>
+html{color-scheme:light}
+body{background:#FFE9DF!important}
 .lucky-wheel-page{
   --orange:#FF5414;
   --tiber:#00313D;
@@ -21,21 +23,12 @@
   --shadow:rgba(0,49,61,.16);
   --field:#FFFFFF;
   --line:rgba(0,49,61,.35);
+  color-scheme:light;
   background:var(--bg);
   color:var(--fg);
   font-family:'Host Grotesk',sans-serif;
   -webkit-font-smoothing:antialiased;
   box-sizing:border-box;
-}
-@media (prefers-color-scheme:dark){
-  .lucky-wheel-page:not([data-theme="light"]){
-    --bg:#00232B;--fg:#FFF1E9;--muted:#A9C4CB;--blob:#0B4553;--card:#053642;
-    --stand:#3F7A88;--pants:#2B2624;--shirt:#12677B;--shadow:rgba(0,0,0,.4);--field:#03303B;--line:rgba(255,241,233,.4);
-  }
-}
-.lucky-wheel-page[data-theme="dark"]{
-  --bg:#00232B;--fg:#FFF1E9;--muted:#A9C4CB;--blob:#0B4553;--card:#053642;
-  --stand:#3F7A88;--pants:#2B2624;--shirt:#12677B;--shadow:rgba(0,0,0,.4);--field:#03303B;--line:rgba(255,241,233,.4);
 }
 .lucky-wheel-page *,.lucky-wheel-page *::before,.lucky-wheel-page *::after{box-sizing:border-box}
 .lucky-wheel-page [hidden]{display:none!important}
@@ -44,9 +37,11 @@
   display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr) minmax(200px,260px);gap:28px;align-items:center;
 }
 .lucky-wheel-page h1{
-  font-size:clamp(2.4rem,5.2vw,4.1rem);line-height:1.02;font-weight:800;letter-spacing:-.025em;margin:0 0 18px;
+  font-size:clamp(1.85rem,3.2vw,2.75rem);line-height:1.12;font-weight:800;letter-spacing:-.02em;
+  margin:0 0 18px;color:var(--tiber);
 }
-.lucky-wheel-page .lead{font-size:1.1rem;line-height:1.55;color:var(--muted);margin:0 0 28px;max-width:34ch}
+.lucky-wheel-page h1 .headline-accent{color:var(--orange)}
+.lucky-wheel-page .lead{font-size:1.07rem;line-height:1.65;color:var(--muted);margin:0 0 28px;max-width:34ch}
 .lucky-wheel-page label{display:block;font-weight:600;margin-bottom:8px}
 .lucky-wheel-page .row{display:flex;gap:10px;flex-wrap:wrap}
 .lucky-wheel-page input[type=tel]{
@@ -63,13 +58,49 @@
 .lucky-wheel-page .btn:hover{filter:brightness(1.06)}
 .lucky-wheel-page .btn:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,49,61,.9)}
 .lucky-wheel-page .btn[disabled]{cursor:progress;filter:saturate(.7) brightness(.95);transform:translateY(4px);box-shadow:0 1px 0 rgba(0,49,61,.9)}
+.lucky-wheel-page .spin-btn{
+  position:relative;overflow:hidden;isolation:isolate;
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  flex:0 0 auto;min-height:52px;padding:14px 22px 14px 18px;
+  border-radius:999px;border:0;cursor:pointer;
+  font:inherit;font-weight:800;font-size:1.05rem;letter-spacing:-.01em;line-height:1.1;
+  color:#fff;background:linear-gradient(135deg,#FF6A2E 0%,#FF5414 48%,#E8480E 100%);
+  box-shadow:0 1px 0 rgba(255,255,255,.35) inset,0 10px 24px rgba(255,84,20,.35),0 2px 0 rgba(0,49,61,.18);
+  transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s ease,filter .2s ease;
+}
+.lucky-wheel-page .spin-btn::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.28) 48%,transparent 62%);
+  transform:translateX(-120%);transition:transform .55s ease;
+}
+.lucky-wheel-page .spin-btn:hover{
+  filter:brightness(1.04);transform:translateY(-2px);
+  box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 14px 28px rgba(255,84,20,.42),0 3px 0 rgba(0,49,61,.16);
+}
+.lucky-wheel-page .spin-btn:hover::before{transform:translateX(120%)}
+.lucky-wheel-page .spin-btn:active{
+  transform:translateY(1px);filter:brightness(.98);
+  box-shadow:0 1px 0 rgba(255,255,255,.2) inset,0 4px 12px rgba(255,84,20,.28);
+}
+.lucky-wheel-page .spin-btn[disabled]{
+  cursor:progress;filter:saturate(.75) brightness(.92);transform:none;
+  box-shadow:0 1px 0 rgba(255,255,255,.2) inset,0 4px 12px rgba(255,84,20,.2);
+}
+.lucky-wheel-page .spin-btn[disabled]::before{display:none}
+.lucky-wheel-page .spin-btn[disabled] .spin-btn-icon{animation:lucky-spin-icon .9s linear infinite}
+.lucky-wheel-page .spin-btn-icon{width:1.15em;height:1.15em;flex-shrink:0;display:block}
+.lucky-wheel-page .spin-btn-label{position:relative;z-index:1}
+@keyframes lucky-spin-icon{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){
+  .lucky-wheel-page .spin-btn::before{display:none}
+  .lucky-wheel-page .spin-btn[disabled] .spin-btn-icon{animation:none}
+  .lucky-wheel-page .spin-btn{transition:none}
+}
 .lucky-wheel-page .btn.ghost{background:transparent;color:var(--fg);box-shadow:none;border:2px solid var(--line);font-weight:600;font-size:1rem;transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease,box-shadow .18s ease}
 .lucky-wheel-page .btn.ghost:hover{background:rgba(0,49,61,.06);border-color:var(--tiber);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,49,61,.1)}
 .lucky-wheel-page .btn.ghost:active{transform:none;box-shadow:none}
 .lucky-wheel-page :focus-visible{outline:3px solid var(--orange);outline-offset:3px}
-.lucky-wheel-page .err{min-height:1.4em;margin:8px 0 0;color:var(--orange);font-weight:600;font-size:.95rem}
-.lucky-wheel-page:not([data-theme="dark"]) .err{color:#C23A00}
-@media (prefers-color-scheme:dark){.lucky-wheel-page:not([data-theme="light"]) .err{color:#FF8A5C}}
+.lucky-wheel-page .err{min-height:1.4em;margin:8px 0 0;color:#C23A00;font-weight:600;font-size:.95rem}
 .lucky-wheel-page .note{font-size:.9rem;color:var(--muted);margin:6px 0 0;max-width:40ch}
 .lucky-wheel-page .stage{position:relative;min-width:0}
 .lucky-wheel-page .stage svg{display:block;width:100%;height:auto;max-height:min(92vh,860px)}
@@ -107,22 +138,6 @@
   font-size:.82rem;line-height:1.3;font-weight:600;color:var(--fg);
   padding:8px 10px;border-radius:10px;background:rgba(255,243,235,.85);
   border-left:3px solid var(--orange);
-}
-.lucky-wheel-page[data-theme="dark"] .prize-rail{
-  background:rgba(5,54,66,.85);border-color:rgba(255,241,233,.12);
-}
-.lucky-wheel-page[data-theme="dark"] .prize-rail summary{color:var(--fg)}
-.lucky-wheel-page[data-theme="dark"] .prize-rail li{
-  background:rgba(255,255,255,.06);color:var(--fg);
-}
-@media (prefers-color-scheme:dark){
-  .lucky-wheel-page:not([data-theme="light"]) .prize-rail{
-    background:rgba(5,54,66,.85);border-color:rgba(255,241,233,.12);
-  }
-  .lucky-wheel-page:not([data-theme="light"]) .prize-rail summary{color:var(--fg)}
-  .lucky-wheel-page:not([data-theme="light"]) .prize-rail li{
-    background:rgba(255,255,255,.06);color:var(--fg);
-  }
 }
 /* result */
 .lucky-wheel-page .overlay{position:fixed;inset:0;display:grid;place-items:center;padding:20px;background:rgba(0,35,43,.6);z-index:1080}
@@ -179,7 +194,14 @@
       <label for="phone" id="lwPhoneLabel"></label>
       <div class="row">
         <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" aria-describedby="phoneErr">
-        <button class="btn" id="spinBtn" type="submit"></button>
+        <button class="spin-btn" id="spinBtn" type="submit">
+          <svg class="spin-btn-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="8.25" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 3.75v3.1M12 17.15v3.1M3.75 12h3.1M17.15 12h3.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="12" cy="12" r="2.35" fill="currentColor"/>
+          </svg>
+          <span class="spin-btn-label" id="spinBtnLabel"></span>
+        </button>
       </div>
       <p class="err" id="phoneErr" role="alert"></p>
       <p class="note" id="lwNote"></p>
@@ -342,7 +364,7 @@
   </section>
 
   {% if prize_list %}
-  <details class="prize-rail">
+  <details class="prize-rail" id="prizeRail">
     <summary id="lwPrizesHeading"></summary>
     <div class="prize-rail-body">
       <ol>
@@ -352,6 +374,17 @@
       </ol>
     </div>
   </details>
+  <script>
+  (function () {
+    var el = document.getElementById('prizeRail');
+    if (!el || !window.matchMedia) return;
+    var mq = window.matchMedia('(min-width: 901px)');
+    function sync() { el.open = mq.matches; }
+    sync();
+    if (mq.addEventListener) mq.addEventListener('change', sync);
+    else if (mq.addListener) mq.addListener(sync);
+  })();
+  </script>
   {% endif %}
 </div>
 
@@ -395,9 +428,26 @@ try { UI = JSON.parse(document.getElementById('lucky-wheel-ui').textContent || '
 var PRIZES = [];
 try { PRIZES = JSON.parse(document.getElementById('lucky-wheel-prizes').textContent || '[]'); } catch (e) { PRIZES = []; }
 var SPIN_URL = window.LUCKY_WHEEL_SPIN_URL || '';
+function setHeadline(text){
+  var hl = document.getElementById('lwHeadline');
+  if (!hl || text == null) return;
+  var raw = String(text);
+  var parts = raw.split(/,\s*/);
+  if (parts.length > 1){
+    var last = parts.pop();
+    hl.textContent = '';
+    hl.appendChild(document.createTextNode(parts.join(', ') + ', '));
+    var accent = document.createElement('span');
+    accent.className = 'headline-accent';
+    accent.textContent = last;
+    hl.appendChild(accent);
+  } else {
+    hl.textContent = raw;
+  }
+}
 (function hydrateUi(){
   var set = function(id, val){ var el = document.getElementById(id); if (el && val != null) el.textContent = val; };
-  set('lwHeadline', UI.headline);
+  setHeadline(UI.headline);
   set('lwLead', UI.lead);
   set('lwPhoneLabel', UI.phone_label);
   set('lwNote', UI.note);
@@ -407,8 +457,13 @@ var SPIN_URL = window.LUCKY_WHEEL_SPIN_URL || '';
   var phone = document.getElementById('phone');
   if (phone && UI.phone_placeholder) phone.setAttribute('placeholder', UI.phone_placeholder);
   var btn = document.getElementById('spinBtn');
-  if (btn && UI.spin_btn) btn.textContent = UI.spin_btn;
+  var btnLabel = document.getElementById('spinBtnLabel');
+  if (btnLabel && UI.spin_btn) btnLabel.textContent = UI.spin_btn;
 })();
+function setSpinLabel(text){
+  var label = document.getElementById('spinBtnLabel');
+  if (label) label.textContent = text || '';
+}
 var N = PRIZES.length, STEP = N ? 360 / N : 360;
 var C = {x:480, y:255}, HAND_R = 201, L1 = 78, L2 = 74;
 var HIP = {x:150, y:338}, SH_R = {x:172, y:268}, SH_L = {x:128, y:268};
@@ -551,7 +606,7 @@ function ik(S, T){
 function startSpin(now, idx){
   busy = true;
   var btn = $('#spinBtn');
-  if (btn){ btn.disabled = true; btn.textContent = UI.spinning_btn || '…'; }
+  if (btn){ btn.disabled = true; setSpinLabel(UI.spinning_btn || '…'); }
   ac();
   idx = Math.max(0, Math.min(N - 1, idx | 0));
   var center = idx * STEP + STEP / 2 + (Math.random() - 0.5) * (STEP * 0.6);
@@ -573,7 +628,7 @@ function requestSpin(){
   lead = v;
   busy = true;
   var btn = $('#spinBtn');
-  if (btn){ btn.disabled = true; btn.textContent = UI.spinning_btn || '…'; }
+  if (btn){ btn.disabled = true; setSpinLabel(UI.spinning_btn || '…'); }
   var tokenEl = document.querySelector('#spinForm [name=csrfmiddlewaretoken]');
   var token = tokenEl ? tokenEl.value : '';
   fetch(SPIN_URL, {
@@ -591,7 +646,7 @@ function requestSpin(){
     var data = pack.data || {};
     if (!data.ok || !data.prize){
       busy = false;
-      if (btn){ btn.disabled = false; btn.textContent = UI.spin_btn || ''; }
+      if (btn){ btn.disabled = false; setSpinLabel(UI.spin_btn || ''); }
       if (err) err.textContent = data.error || UI.network_error || '';
       return;
     }
@@ -606,7 +661,7 @@ function requestSpin(){
     startSpin(performance.now(), idx);
   }).catch(function(){
     busy = false;
-    if (btn){ btn.disabled = false; btn.textContent = UI.spin_btn || ''; }
+    if (btn){ btn.disabled = false; setSpinLabel(UI.spin_btn || ''); }
     if (err) err.textContent = UI.network_error || '';
   });
 }
@@ -666,7 +721,7 @@ function showResult(p){
   if (!p.respin){
     busy = false;
     var b = $('#spinBtn');
-    if (b){ b.disabled = false; b.textContent = UI.spin_again_btn || UI.spin_btn || ''; }
+    if (b){ b.disabled = false; setSpinLabel(UI.spin_again_btn || UI.spin_btn || ''); }
   }
 }
 function closeResult(){
@@ -675,7 +730,7 @@ function closeResult(){
 }
 $('#resClose').addEventListener('click', function(){
   closeResult();
-  if (pending && pending.respin && !spin && mode !== 'seq'){ busy = false; var b = $('#spinBtn'); if (b){ b.disabled = false; b.textContent = UI.spin_btn || ''; } }
+  if (pending && pending.respin && !spin && mode !== 'seq'){ busy = false; var b = $('#spinBtn'); if (b){ b.disabled = false; setSpinLabel(UI.spin_btn || ''); } }
 });
 document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && !overlay.hidden) $('#resClose').click(); });
 
