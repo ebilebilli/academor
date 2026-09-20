@@ -601,6 +601,7 @@ function requestSpin(){
   busy = true;
   var btn = $('#spinBtn');
   if (btn){ btn.disabled = true; setSpinLabel(UI.spinning_btn || '…'); }
+  scrollToWheel();
   var tokenEl = document.querySelector('#spinForm [name=csrfmiddlewaretoken]');
   var token = tokenEl ? tokenEl.value : '';
   fetch(SPIN_URL, {
@@ -661,10 +662,10 @@ function showResult(p){
   if (resPrimary){ resPrimary.hidden = false; resPrimary.onclick = null; }
 
   if (p.win){
-    $('#resTitle').textContent = UI.win_prefix || '';
+    $('#resTitle').textContent = p.title || UI.win_gift || UI.win_prefix || '';
     if (winGift){
-      winGift.hidden = false;
-      winGift.textContent = UI.win_gift || '';
+      winGift.hidden = true;
+      winGift.textContent = '';
     }
     $('#resText').textContent = UI.win_contact || '';
     if (code){ code.hidden = true; code.textContent = ''; }
@@ -707,6 +708,16 @@ $('#resClose').addEventListener('click', function(){
 document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && !overlay.hidden) $('#resClose').click(); });
 
 /* ---------- form ---------- */
+function scrollToWheel(){
+  if (!window.matchMedia || !window.matchMedia('(max-width: 900px)').matches) return;
+  var stage = document.querySelector('.lucky-wheel-page .stage');
+  if (!stage) return;
+  try {
+    stage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } catch (e) {
+    stage.scrollIntoView(true);
+  }
+}
 var spinForm = $('#spinForm');
 if (spinForm){
   spinForm.addEventListener('submit', function(e){
