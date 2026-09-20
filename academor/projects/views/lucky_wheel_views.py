@@ -63,6 +63,13 @@ class LuckyWheelPageView(View):
         lang = get_language_from_request(request)
         prizes = _active_prizes()
         prizes_payload = [p.to_wheel_dict(lang) for p in prizes]
+        prize_list = [
+            {
+                'title': p.result_title(lang),
+                'respin': bool(p.is_respin),
+            }
+            for p in prizes
+        ]
         ui = {
             'headline': _("Spin Academor's wheel, win a gift!"),
             'lead': _(
@@ -86,6 +93,7 @@ class LuckyWheelPageView(View):
                 'Please try again later.'
             ),
             'no_prizes': _('The lucky wheel is not available right now.'),
+            'prizes_heading': _('Possible prizes'),
             'win_prefix': _('Congratulations!'),
             'win_gift': _('You won a gift!'),
             'win_contact': _('You can contact our team.'),
@@ -109,6 +117,7 @@ class LuckyWheelPageView(View):
             'ui_json': json.dumps(ui, ensure_ascii=False),
             'spin_url': reverse('projects:lucky-wheel-spin'),
             'has_prizes': bool(prizes),
+            'prize_list': prize_list,
             'phone_form': LuckyWheelPhoneForm(),
             'whatsapp_url': whatsapp_url,
         }
