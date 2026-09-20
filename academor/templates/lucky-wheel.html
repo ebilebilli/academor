@@ -60,8 +60,8 @@ body{background:#FFE9DF!important}
 .lucky-wheel-page .btn[disabled]{cursor:progress;filter:saturate(.7) brightness(.95);transform:translateY(4px);box-shadow:0 1px 0 rgba(0,49,61,.9)}
 .lucky-wheel-page .spin-btn{
   position:relative;overflow:hidden;isolation:isolate;
-  display:inline-flex;align-items:center;justify-content:center;gap:10px;
-  flex:0 0 auto;min-height:52px;padding:14px 22px 14px 18px;
+  display:inline-flex;align-items:center;justify-content:center;
+  flex:0 0 auto;min-height:52px;padding:14px 26px;
   border-radius:999px;border:0;cursor:pointer;
   font:inherit;font-weight:800;font-size:1.05rem;letter-spacing:-.01em;line-height:1.1;
   color:#fff;background:linear-gradient(135deg,#FF6A2E 0%,#FF5414 48%,#E8480E 100%);
@@ -87,13 +87,9 @@ body{background:#FFE9DF!important}
   box-shadow:0 1px 0 rgba(255,255,255,.2) inset,0 4px 12px rgba(255,84,20,.2);
 }
 .lucky-wheel-page .spin-btn[disabled]::before{display:none}
-.lucky-wheel-page .spin-btn[disabled] .spin-btn-icon{animation:lucky-spin-icon .9s linear infinite}
-.lucky-wheel-page .spin-btn-icon{width:1.15em;height:1.15em;flex-shrink:0;display:block}
 .lucky-wheel-page .spin-btn-label{position:relative;z-index:1}
-@keyframes lucky-spin-icon{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){
   .lucky-wheel-page .spin-btn::before{display:none}
-  .lucky-wheel-page .spin-btn[disabled] .spin-btn-icon{animation:none}
   .lucky-wheel-page .spin-btn{transition:none}
 }
 .lucky-wheel-page .btn.ghost{background:transparent;color:var(--fg);box-shadow:none;border:2px solid var(--line);font-weight:600;font-size:1rem;transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease,box-shadow .18s ease}
@@ -195,11 +191,6 @@ body{background:#FFE9DF!important}
       <div class="row">
         <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" aria-describedby="phoneErr">
         <button class="spin-btn" id="spinBtn" type="submit">
-          <svg class="spin-btn-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <circle cx="12" cy="12" r="8.25" stroke="currentColor" stroke-width="2"/>
-            <path d="M12 3.75v3.1M12 17.15v3.1M3.75 12h3.1M17.15 12h3.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <circle cx="12" cy="12" r="2.35" fill="currentColor"/>
-          </svg>
           <span class="spin-btn-label" id="spinBtnLabel"></span>
         </button>
       </div>
@@ -275,11 +266,11 @@ body{background:#FFE9DF!important}
       <g id="char">
         <!-- far arm -->
         <g id="armLu">
-          <line x1="0" y1="0" x2="0" y2="78" class="sleeve" stroke-width="22" stroke-linecap="round"/>
-          <g id="armLf" transform="translate(0 78)">
-            <line x1="0" y1="0" x2="0" y2="38" class="sleeve" stroke-width="20" stroke-linecap="round"/>
-            <line x1="0" y1="36" x2="0" y2="72" class="skin-s" stroke-width="16" stroke-linecap="round"/>
-            <circle cx="0" cy="76" r="10.5" class="skin"/>
+          <line x1="0" y1="0" x2="0" y2="66" class="sleeve" stroke-width="22" stroke-linecap="round"/>
+          <g id="armLf" transform="translate(0 66)">
+            <line x1="0" y1="0" x2="0" y2="32" class="sleeve" stroke-width="20" stroke-linecap="round"/>
+            <line x1="0" y1="30" x2="0" y2="60" class="skin-s" stroke-width="16" stroke-linecap="round"/>
+            <circle cx="0" cy="64" r="10.5" class="skin"/>
           </g>
         </g>
         <!-- legs -->
@@ -352,11 +343,11 @@ body{background:#FFE9DF!important}
         </g>
         <!-- near arm -->
         <g id="armRu">
-          <line x1="0" y1="0" x2="0" y2="78" class="sleeve" stroke-width="22" stroke-linecap="round"/>
-          <g id="armRf" transform="translate(0 78)">
-            <line x1="0" y1="0" x2="0" y2="38" class="sleeve" stroke-width="20" stroke-linecap="round"/>
-            <line x1="0" y1="36" x2="0" y2="72" class="skin-s" stroke-width="16" stroke-linecap="round"/>
-            <circle cx="0" cy="76" r="10.5" class="skin"/>
+          <line x1="0" y1="0" x2="0" y2="66" class="sleeve" stroke-width="22" stroke-linecap="round"/>
+          <g id="armRf" transform="translate(0 66)">
+            <line x1="0" y1="0" x2="0" y2="32" class="sleeve" stroke-width="20" stroke-linecap="round"/>
+            <line x1="0" y1="30" x2="0" y2="60" class="skin-s" stroke-width="16" stroke-linecap="round"/>
+            <circle cx="0" cy="64" r="10.5" class="skin"/>
           </g>
         </g>
       </g>
@@ -465,7 +456,7 @@ function setSpinLabel(text){
   if (label) label.textContent = text || '';
 }
 var N = PRIZES.length, STEP = N ? 360 / N : 360;
-var C = {x:480, y:255}, HAND_R = 201, L1 = 78, L2 = 74;
+var C = {x:480, y:255}, HAND_R = 201, L1 = 66, L2 = 62;
 var HIP = {x:150, y:338}, SH_R = {x:172, y:268}, SH_L = {x:128, y:268};
 
 /* ---------- build wheel ---------- */
