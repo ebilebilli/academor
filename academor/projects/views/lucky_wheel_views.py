@@ -22,7 +22,7 @@ from projects.utils.queries import (
     serialize_contact,
 )
 
-SPIN_COOLDOWN = timedelta(hours=24)
+SPIN_COOLDOWN = timedelta(days=7)
 
 
 def _normalize_phone_key(phone: str) -> str:
@@ -45,8 +45,8 @@ def _pick_weighted_prize(prizes):
 
 def _phone_on_cooldown(phone_normalized: str) -> bool:
     """
-    True if this phone already has a final (non-respin) spin within the last 24 hours.
-    After 24 hours they may spin again. Respin outcomes do not start the cooldown.
+    True if this phone already has a final (non-respin) spin within the last 7 days.
+    After 7 days they may spin again. Respin outcomes do not start the cooldown.
     """
     cutoff = timezone.now() - SPIN_COOLDOWN
     return LuckyWheelSpin.objects.filter(
@@ -83,13 +83,13 @@ class LuckyWheelPageView(View):
             'spinning_btn': _('Spinning…'),
             'spin_again_btn': _('Spin again'),
             'note': _(
-                'With each mobile number you can spin the wheel only once within 24 hours.'
+                'With each mobile number you can spin the wheel only once within 7 days.'
             ),
             'close': _('Close'),
             'ok': _('OK'),
             'phone_invalid': _('Please enter a valid phone number.'),
             'already_spun': _(
-                'This mobile number has already spun within the last 24 hours. '
+                'This mobile number has already spun within the last 7 days. '
                 'Please try again later.'
             ),
             'no_prizes': _('The lucky wheel is not available right now.'),
@@ -100,7 +100,7 @@ class LuckyWheelPageView(View):
             'whatsapp_btn': _('WhatsApp'),
             'respin_help': _('You can spin the wheel one more time.'),
             'lose_title': _('Next time :('),
-            'lose_help': _('Please try again in 24 hours.'),
+            'lose_help': _('Please try again in 7 days.'),
             'network_error': _('Something went wrong. Please try again.'),
         }
         contact = serialize_contact(get_contact(lang), lang)
@@ -159,7 +159,7 @@ class LuckyWheelSpinView(View):
                 {
                     'ok': False,
                     'error': _(
-                        'This mobile number has already spun within the last 24 hours. '
+                        'This mobile number has already spun within the last 7 days. '
                         'Please try again later.'
                     ),
                 },

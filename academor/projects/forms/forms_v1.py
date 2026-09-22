@@ -3,7 +3,10 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from projects.forms.turnstile_mixin import TurnstileFormMixin
 from projects.models import ContactInquiry, Review
-from projects.utils.normalize_phone_number import validate_phone_number
+from projects.utils.normalize_phone_number import (
+    validate_az_mobile_phone,
+    validate_phone_number,
+)
 
 # Bot honeypots: must stay empty (hidden inputs; tabindex -1).
 _HP = {'autocomplete': 'off', 'tabindex': '-1', 'aria-hidden': 'true'}
@@ -291,6 +294,7 @@ class LuckyWheelPhoneForm(forms.Form):
         value = (self.cleaned_data.get('phone') or '').strip()
         if not value:
             raise ValidationError(_('Phone number is required.'))
-        if not validate_phone_number(value):
+        result = validate_az_mobile_phone(value)
+        if not result['valid']:
             raise ValidationError(_('Please enter a valid phone number.'))
-        return value
+        return result['normalized']

@@ -14,6 +14,29 @@ _PHONE_RULES = {
     'AU': {'country_codes': ('61',), 'min_length': 9, 'max_length': 9},
 }
 
+# Operator prefix (without leading 0) → brand name
+AZ_MOBILE_OPERATORS = {
+    '10': 'Azercell',
+    '50': 'Azercell',
+    '51': 'Azercell',
+    '55': 'Bakcell',
+    '99': 'Bakcell',
+    '70': 'Nar',
+    '77': 'Nar',
+    '60': 'Naxtel',
+}
+
+AZ_MOBILE_PREFIXES_WITH_ZERO = {
+    f'0{prefix}' for prefix in AZ_MOBILE_OPERATORS
+}
+
+_AZ_MOBILE_INVALID = {
+    'valid': False,
+    'normalized': None,
+    'operator': None,
+    'error': 'Invalid Azerbaijan mobile phone number',
+}
+
 
 def validate_phone_number(value: str) -> bool:
     if not value:
@@ -52,27 +75,61 @@ def validate_phone_number(value: str) -> bool:
     return False
 
 
-def normalize_az_phone(phone: str) -> str:
+def validate_az_mobile_phone(phone: str) -> dict:
+    """
+    Validate an Azerbaijan mobile number and return a structured result.
+
+    normalized is always +994XXXXXXXXX (9 national digits) when valid.
+    """
+    if not phone or not str(phone).strip():
+        return dict(_AZ_MOBILE_INVALID)
+
+    raw = str(phone).strip()
+    if not _PHONE_ALLOWED_CHARS_RE.fullmatch(raw):
+        return dict(_AZ_MOBILE_INVALID)
+
+    digits = _PHONE_SEPARATORS_RE.sub('', raw)
+    if digits.startswith('+'):
+        digits = digits[1:]
+    if not digits.isdigit():
+        return dict(_AZ_MOBILE_INVALID)
+
+    # Accept +994, 994, or 00994 country-code forms
+    if digits.startswith('00994'):
+        digits = digits[5:]
+    elif digits.startswith('994'):
+        digits = digits[3:]
+
+    if digits.startswith('0'):
+        if len(digits) != 10:
+            return dict(_AZ_MOBILE_INVALID)
+        op_code = digits[:3]
+        if op_code not in AZ_MOBILE_PREFIXES_WITH_ZERO:
+            return dict(_AZ_MOBILE_INVALID)
+        national = digits[1:]  # drop trunk 0 → 9 digits
+    else:
+        if len(digits) != 9:
+            return dict(_AZ_MOBILE_INVALID)
+        op_code = digits[:2]
+        if op_code not in AZ_MOBILE_OPERATORS:
+            return dict(_AZ_MOBILE_INVALID)
+        national = digits
+
+    operator = AZ_MOBILE_OPERATORS[national[:2]]
+    return {
+        'valid': True,
+        'normalized': f'+994{national}',
+        'operator': operator,
+        'error': None,
+    }
+
+
+def normalize_az_phone(phone: str):
     """
     Azərbaycan mobil nömrəsini 9 rəqəmli formata salır: 501234567
     """
-    if not phone:
+    result = validate_az_mobile_phone(phone)
+    if not result['valid']:
         return None
-    digits = re.sub(r'\D', '', phone.strip())
-    if digits.startswith('994'):
-        digits = digits[3:]
-        
-    if digits.startswith('0'):
-        digits = digits[1:]
-
-    if len(digits) > 9:
-        digits = digits[-9:]
-
-    if len(digits) != 9:
-        return None
-
-    prefix = digits[:2]
-    if prefix in {'50', '51', '55', '70', '77', '99'}:
-        return digits
-
-    return None
+    # +994XXXXXXXXX → XXXXXXXXX
+    return result['normalized'][4:]
