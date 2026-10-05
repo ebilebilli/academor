@@ -292,7 +292,11 @@ class TeacherAttendanceListView(TeacherRequiredMixin, View):
             group_raw = request.GET.get('group')
             if group_raw:
                 try:
-            group = get_teacher_group(profile.pk, int(group_raw), include_register_only=True)
+                    group = get_teacher_group(
+                        profile.pk,
+                        int(group_raw),
+                        include_register_only=True,
+                    )
                 except (TypeError, ValueError):
                     group = None
             register = build_teacher_attendance_register(
