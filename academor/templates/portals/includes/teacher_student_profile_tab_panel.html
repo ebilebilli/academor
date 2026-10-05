@@ -7,7 +7,7 @@
       <p class="portal-attendance-profile-panel__lead">{% trans 'Şagirdin dərs iştirakını qeyd edin və mövcud qeydləri yeniləyin.' %}</p>
       <a
         class="ds-btn ds-btn--primary btn-sm"
-        href="{% url 'portals:teacher-attendance-create' %}?students={{ student.id }}"
+        href="{% url 'portals:teacher-attendance' %}?tab=mark"
       >
         <i class="ti ti-calendar-check" aria-hidden="true"></i> {% trans 'Davamiyyət qeyd et' %}
       </a>
@@ -50,18 +50,27 @@
           <tr>
             <td class="fw-500">{{ row.session_date|portal_date_long }}</td>
             <td>{{ row.group_name|default:"—" }}</td>
-            <td>{{ row.weekday_label }}, {{ row.start_time|time:"H:i" }}</td>
+            <td>{% if row.start_time %}{{ row.weekday_label }}, {{ row.start_time|time:"H:i" }}{% else %}—{% endif %}</td>
             <td>
               <span class="portal-attendance-status portal-attendance-status--{{ row.status }}">{{ row.status_label }}</span>
             </td>
             <td class="text-muted small">{{ row.note|default:"—" }}</td>
             <td class="text-end">
+              {% if row.schedule_id %}
               <a
                 class="ds-btn ds-btn--secondary btn-sm"
                 href="{% url 'portals:teacher-attendance-session' %}?schedule={{ row.schedule_id }}&amp;date={{ row.session_date|date:'Y-m-d' }}&amp;students={{ student.id }}"
               >
                 {% trans 'Düzəlt' %}
               </a>
+              {% else %}
+              <a
+                class="ds-btn ds-btn--secondary btn-sm"
+                href="{% url 'portals:teacher-attendance' %}?tab=mark&amp;month={{ row.session_date|date:'Y-m' }}{% if row.group_id %}&amp;group={{ row.group_id }}{% endif %}"
+              >
+                {% trans 'Düzəlt' %}
+              </a>
+              {% endif %}
             </td>
           </tr>
           {% endfor %}

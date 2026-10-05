@@ -74,11 +74,13 @@ def teachers_for_portal_course_codes(course_codes):
     return qs.distinct().order_by('user__username', 'id')
 
 
-def teacher_groups_queryset(teacher_id, *, active_only=True):
+def teacher_groups_queryset(teacher_id, *, active_only=True, include_register_only=False):
     """Groups owned by the teacher (course access is derived from each group)."""
     qs = StudyGroup.objects.filter(teacher_id=teacher_id)
     if active_only:
         qs = qs.filter(is_active=True)
+    if not include_register_only:
+        qs = qs.filter(is_register_only=False)
     return qs
 
 

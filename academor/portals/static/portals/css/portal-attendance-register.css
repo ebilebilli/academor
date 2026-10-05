@@ -1,0 +1,595 @@
+/* Monthly attendance register — paper-book grid */
+
+.portal-register {
+  padding: 1rem 1.1rem 1.15rem;
+  border: 1px solid var(--admin-border);
+  box-shadow: var(--admin-shadow-sm);
+}
+
+.portal-register__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+.portal-register__month-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.portal-register__nav-btn {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 10px;
+  border: 1px solid var(--admin-border);
+  background: var(--admin-surface);
+  color: var(--admin-text);
+  text-decoration: none;
+}
+
+.portal-register__nav-btn:hover,
+.portal-register__nav-btn:focus-visible {
+  border-color: var(--admin-accent, #ff5414);
+  color: var(--admin-accent, #ff5414);
+}
+
+.portal-register__month {
+  margin: 0;
+  min-width: 9.5rem;
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--admin-text);
+  text-transform: capitalize;
+}
+
+.portal-register__export {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2.25rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid var(--admin-border);
+  background: var(--admin-surface);
+  color: var(--admin-text);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.portal-register__export:hover,
+.portal-register__export:focus-visible {
+  border-color: var(--admin-accent, #ff5414);
+  color: var(--admin-accent, #ff5414);
+}
+
+.portal-register__mode {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0 0.45rem;
+}
+
+.portal-register__mode-label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--admin-muted);
+  margin-right: 0.2rem;
+}
+
+.portal-register__mode-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 2.15rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--admin-border);
+  background: var(--admin-surface);
+  color: var(--admin-text);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.portal-register__mode-btn em {
+  display: inline-grid;
+  place-items: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 5px;
+  font-style: normal;
+  font-weight: 800;
+  border: 1px solid var(--admin-border);
+}
+
+.portal-register__mode-btn.is-present em {
+  color: #15803d;
+  background: #dcfce7;
+  border-color: #86efac;
+}
+
+.portal-register__mode-btn.is-absent em {
+  color: #b91c1c;
+  background: #fee2e2;
+  border-color: #fca5a5;
+}
+
+.portal-register__mode-btn.is-late em {
+  color: #a16207;
+  background: #fef3c7;
+  border-color: #fcd34d;
+}
+
+.portal-register__mode-btn.is-clear em {
+  color: var(--admin-muted);
+  background: #f1f5f9;
+}
+
+.portal-register__mode-btn.is-active {
+  border-color: var(--admin-accent, #ff5414);
+  box-shadow: 0 0 0 2px rgba(255, 84, 20, 0.15);
+}
+
+.portal-register__hint-line {
+  margin: 0 0 0.75rem;
+  font-size: 0.78rem;
+  color: var(--admin-muted);
+}
+
+.portal-register__add {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 0.75rem;
+}
+
+.portal-register__add .form-control {
+  flex: 1 1 14rem;
+  min-width: 12rem;
+}
+
+.portal-register__add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 2.15rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid var(--admin-accent, #ff5414);
+  background: var(--admin-accent, #ff5414);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.portal-register__add-btn:hover,
+.portal-register__add-btn:focus-visible {
+  filter: brightness(0.95);
+}
+
+.portal-register__meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem 1rem;
+  margin: 0 0 0.85rem;
+}
+
+@media (min-width: 768px) {
+  .portal-register__meta {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.portal-register__meta div {
+  min-width: 0;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--admin-border);
+  border-radius: 10px;
+  background: var(--admin-surface-soft, #f8fafc);
+}
+
+.portal-register__meta dt {
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--admin-muted);
+}
+
+.portal-register__meta dd {
+  margin: 0.15rem 0 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--admin-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.portal-register__groups-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-bottom: 0.85rem;
+}
+
+.portal-register__groups {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  padding-bottom: 0.15rem;
+}
+
+.portal-register__group-chip-wrap {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  border: 1px solid var(--admin-border);
+  border-radius: 999px;
+  background: var(--admin-surface);
+  overflow: hidden;
+}
+
+.portal-register__group-chip-wrap.is-active {
+  border-color: var(--admin-accent, #ff5414);
+  box-shadow: var(--admin-shadow-sm);
+}
+
+.portal-register__group-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2rem;
+  padding: 0.25rem 0.7rem;
+  border: 0;
+  border-radius: 0;
+  color: var(--admin-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  background: transparent;
+}
+
+.portal-register__group-chip span {
+  font-size: 0.72rem;
+  color: var(--admin-muted);
+}
+
+.portal-register__group-chip.is-active {
+  color: var(--admin-accent, #ff5414);
+  box-shadow: none;
+}
+
+.portal-register__group-tag {
+  font-style: normal;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--admin-muted);
+}
+
+.portal-register__group-remove {
+  display: inline-grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  margin-right: 0.15rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--admin-muted);
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.portal-register__group-remove:hover,
+.portal-register__group-remove:focus-visible {
+  color: #b91c1c;
+  background: #fee2e2;
+}
+
+.portal-register__add--group {
+  margin: 0;
+}
+
+.portal-register__legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem 1rem;
+  margin: 0 0 0.45rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--admin-muted);
+}
+
+.portal-register__legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.portal-register__legend em {
+  display: inline-grid;
+  place-items: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 6px;
+  font-style: normal;
+  font-weight: 800;
+  border: 1px solid var(--admin-border);
+}
+
+.portal-register__legend em.is-present {
+  color: #15803d;
+  background: #dcfce7;
+  border-color: #86efac;
+}
+
+.portal-register__legend em.is-absent {
+  color: #b91c1c;
+  background: #fee2e2;
+  border-color: #fca5a5;
+}
+
+.portal-register__legend em.is-late {
+  color: #a16207;
+  background: #fef3c7;
+  border-color: #fcd34d;
+}
+
+.portal-register__hint {
+  margin-left: auto;
+  font-weight: 500;
+}
+
+.portal-register__status {
+  min-height: 1.1rem;
+  margin: 0 0 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #15803d;
+}
+
+.portal-register__status.is-error {
+  color: #b91c1c;
+}
+
+.portal-register__scroll {
+  overflow: auto;
+  max-height: min(70vh, 44rem);
+  border: 1px solid var(--admin-border);
+  border-radius: 12px;
+  background: var(--admin-surface);
+}
+
+.portal-register-table {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.75rem;
+}
+
+.portal-register-table th,
+.portal-register-table td {
+  border-right: 1px solid var(--admin-border);
+  border-bottom: 1px solid var(--admin-border);
+  text-align: center;
+  vertical-align: middle;
+}
+
+.portal-register-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: var(--admin-surface-soft, #f8fafc);
+  font-weight: 800;
+  padding: 0.35rem 0.15rem;
+}
+
+.portal-register-table__num {
+  position: sticky;
+  left: 0;
+  z-index: 4;
+  width: 2.4rem;
+  min-width: 2.4rem;
+  background: var(--admin-surface);
+  font-weight: 700;
+}
+
+.portal-register-table thead .portal-register-table__num {
+  z-index: 6;
+  background: var(--admin-surface-soft, #f8fafc);
+}
+
+.portal-register-table__name {
+  position: sticky;
+  left: 2.4rem;
+  z-index: 4;
+  width: 12.5rem;
+  min-width: 12.5rem;
+  max-width: 12.5rem;
+  padding: 0.4rem 0.55rem;
+  text-align: left;
+  background: var(--admin-surface);
+  font-weight: 700;
+}
+
+.portal-register-table__name-text {
+  display: inline-block;
+  max-width: calc(100% - 1.4rem);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.portal-register-table__remove {
+  display: inline-grid;
+  place-items: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-left: 0.2rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--admin-muted);
+  font-size: 0.95rem;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.portal-register-table__remove:hover,
+.portal-register-table__remove:focus-visible {
+  color: #b91c1c;
+  background: #fee2e2;
+}
+
+.portal-register-table__empty td {
+  padding: 1rem;
+  text-align: center;
+  color: var(--admin-muted);
+  font-weight: 600;
+}
+
+.portal-register-table thead .portal-register-table__name {
+  z-index: 6;
+  background: var(--admin-surface-soft, #f8fafc);
+}
+
+.portal-register-table__day {
+  width: 2rem;
+  min-width: 2rem;
+  line-height: 1.1;
+}
+
+.portal-register-table__day span {
+  display: block;
+  font-size: 0.78rem;
+}
+
+.portal-register-table__day small {
+  display: block;
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: var(--admin-muted);
+}
+
+.portal-register-table__day.is-today {
+  background: rgba(255, 84, 20, 0.12);
+  color: var(--admin-accent, #ff5414);
+}
+
+.portal-register-table__day.is-weekend {
+  background: #f1f5f9;
+}
+
+.portal-register-table__day.is-invalid {
+  background: #f8fafc;
+  color: #cbd5e1;
+}
+
+.portal-register-table__total {
+  position: sticky;
+  z-index: 4;
+  min-width: 4.4rem;
+  width: 4.4rem;
+  padding: 0.35rem 0.4rem;
+  background: var(--admin-surface);
+  font-weight: 800;
+}
+
+.portal-register-table thead .portal-register-table__total {
+  z-index: 6;
+  background: var(--admin-surface-soft, #f8fafc);
+  font-size: 0.68rem;
+  line-height: 1.2;
+}
+
+.portal-register-table__total.is-absent {
+  right: 4.4rem;
+  color: #b91c1c;
+}
+
+.portal-register-table__total.is-present {
+  right: 0;
+  color: #15803d;
+}
+
+.portal-register-table tbody tr:hover .portal-register-table__name,
+.portal-register-table tbody tr:hover .portal-register-table__num,
+.portal-register-table tbody tr:hover .portal-register-table__total {
+  background: #fff7ed;
+}
+
+.portal-register-table__cell {
+  padding: 0;
+  width: 2rem;
+  height: 2rem;
+}
+
+.portal-register-table__cell.is-disabled {
+  background: #f8fafc;
+}
+
+.portal-register-table__cell.is-present {
+  background: #dcfce7;
+}
+
+.portal-register-table__cell.is-absent {
+  background: #fee2e2;
+}
+
+.portal-register-table__cell.is-late {
+  background: #fef3c7;
+}
+
+.portal-register-mark {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 2rem;
+  border: 0;
+  background: transparent;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: inherit;
+  line-height: 1;
+}
+
+.portal-register-mark.is-present {
+  color: #15803d;
+}
+
+.portal-register-mark.is-absent {
+  color: #b91c1c;
+}
+
+.portal-register-mark.is-late {
+  color: #a16207;
+}
+
+.portal-register-mark:not(.is-disabled):hover,
+.portal-register-mark:not(.is-disabled):focus-visible {
+  outline: 2px solid var(--admin-accent, #ff5414);
+  outline-offset: -2px;
+}
+
+.portal-register-mark.is-pending {
+  opacity: 0.55;
+}
+
+.portal-register-mark.is-disabled {
+  cursor: default;
+}

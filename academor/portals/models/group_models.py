@@ -37,6 +37,11 @@ class StudyGroup(models.Model):
         default=True,
         verbose_name=_('Active'),
     )
+    is_register_only = models.BooleanField(
+        default=False,
+        verbose_name=_('Attendance register only'),
+        help_text=_('Manual register group — not shown in schedule/lessons lists.'),
+    )
     students = models.ManyToManyField(
         'StudentProfile',
         related_name='groups',

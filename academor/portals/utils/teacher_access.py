@@ -5,12 +5,19 @@ from portals.utils.student_courses import quiz_visible_to_teacher
 from portals.utils.teacher_courses import teacher_groups_queryset
 
 
-def teacher_groups_qs(teacher_id):
-    return teacher_groups_queryset(teacher_id, active_only=False)
+def teacher_groups_qs(teacher_id, *, include_register_only=False):
+    return teacher_groups_queryset(
+        teacher_id,
+        active_only=False,
+        include_register_only=include_register_only,
+    )
 
 
-def get_teacher_group(teacher_id, group_id):
-    return teacher_groups_qs(teacher_id).filter(pk=group_id).first()
+def get_teacher_group(teacher_id, group_id, *, include_register_only=False):
+    return teacher_groups_qs(
+        teacher_id,
+        include_register_only=include_register_only,
+    ).filter(pk=group_id).first()
 
 
 def get_teacher_schedule(teacher_id, schedule_id):

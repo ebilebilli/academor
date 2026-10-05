@@ -44,7 +44,10 @@ def teacher_attendance_queryset(teacher_id):
     groups = teacher_groups_queryset(teacher_id)
     if not groups.exists():
         return Attendance.objects.none()
-    return Attendance.objects.filter(schedule__group__in=groups)
+    return Attendance.objects.filter(
+        Q(schedule__group__in=groups) | Q(group__in=groups),
+        student__isnull=False,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -897,15 +900,25 @@ def serialize_video_record(record):
 
 def serialize_attendance(row):
     schedule = row.schedule
+    group = row.group if getattr(row, 'group_id', None) else None
+    if group is None and schedule is not None:
+        group = schedule.group
+    if row.student_id:
+        student_name = row.student.full_name
+    elif getattr(row, 'guest_id', None):
+        student_name = row.guest.name
+    else:
+        student_name = ''
     return {
         'id': row.pk,
         'student_id': row.student_id,
-        'student_name': row.student.full_name,
+        'guest_id': getattr(row, 'guest_id', None),
+        'student_name': student_name,
         'schedule_id': row.schedule_id,
-        'group_id': schedule.group_id,
-        'group_name': schedule.group.name,
-        'weekday_label': schedule.get_weekday_display(),
-        'start_time': schedule.start_time,
+        'group_id': group.pk if group is not None else None,
+        'group_name': group.name if group is not None else '',
+        'weekday_label': schedule.get_weekday_display() if schedule is not None else '',
+        'start_time': schedule.start_time if schedule is not None else None,
         'session_date': row.session_date,
         'status': row.status,
         'status_label': row.get_status_display(),
@@ -1745,7 +1758,7 @@ def get_teacher_attendance(teacher_id):
         return []
     qs = (
         teacher_attendance_queryset(teacher_id)
-        .select_related('student', 'schedule', 'schedule__group')
+        .select_related('student', 'schedule', 'schedule__group', 'group', 'guest')
         .order_by('-session_date', '-marked_at')[:200]
     )
     return [serialize_attendance(row) for row in qs]
@@ -1857,7 +1870,7 @@ def get_teacher_student_attendance_detail(teacher_id, student_id):
     records_qs = (
         teacher_attendance_queryset(teacher_id)
         .filter(student_id=student_id)
-        .select_related('schedule', 'schedule__group', 'student')
+        .select_related('schedule', 'schedule__group', 'group', 'guest', 'student')
         .order_by('-session_date', '-marked_at')
     )
     records = [serialize_attendance(row) for row in records_qs]
@@ -2756,7 +2769,7 @@ def get_parent_child_attendance_detail(student_id):
 
     records_qs = (
         Attendance.objects.filter(student_id=student_id)
-        .select_related('schedule', 'schedule__group', 'student')
+        .select_related('schedule', 'schedule__group', 'group', 'guest', 'student')
         .order_by('-session_date', '-marked_at')[:200]
     )
     records = [serialize_attendance(row) for row in records_qs]
@@ -2783,7 +2796,7 @@ def get_parent_child_attendance_detail(student_id):
 def get_parent_child_attendance(student_id):
     qs = (
         Attendance.objects.filter(student_id=student_id)
-        .select_related('student', 'schedule', 'schedule__group')
+        .select_related('student', 'schedule', 'schedule__group', 'group', 'guest')
         .order_by('-session_date', '-marked_at')[:200]
     )
     return [serialize_attendance(row) for row in qs]

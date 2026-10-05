@@ -5,10 +5,11 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'portals/css/portal-attendance-hub.css' %}">
+<link rel="stylesheet" href="{% static 'portals/css/portal-attendance-register.css' %}">
 {% endblock %}
 
 {% block content %}
-{% trans "Track attendance across your groups and mark sessions in a few clicks." as attendance_hub_subtitle %}
+{% trans "Qrupun aylıq davamiyyət dəftəri — günlərə klik edin, avtomatik saxlanır." as attendance_hub_subtitle %}
 {% include "portals/includes/portal_page_hero.html" with title=_('Davamiyyət') subtitle=attendance_hub_subtitle icon="ti-clipboard-check" lottie="portals/animations/study.lottie" %}
 
 <nav class="portal-attendance-hub-tabs" aria-label="{% trans 'Davamiyyət bölmələri' %}">
@@ -31,62 +32,9 @@
 </nav>
 
 {% if hub_tab == 'mark' %}
-<section class="portal-attendance-today admin-card mb-4" aria-label="{% trans 'Bu günün dərsləri' %}">
-  <header class="portal-attendance-today__head">
-    <h2 class="portal-attendance-today__title">{% trans 'Bu günün dərsləri' %}</h2>
-    <span class="portal-attendance-today__count">{{ today_sessions|length }}</span>
-  </header>
-
-  {% if today_sessions %}
-  <div class="portal-attendance-today__list">
-    {% for session in today_sessions %}
-    <a
-      class="portal-attendance-today-card{% if session.is_complete %} is-complete{% elif session.is_partial %} is-partial{% endif %}"
-      href="{{ session.mark_url }}"
-    >
-      <span class="portal-attendance-today-card__time">{{ session.start_time|time:"H:i" }}</span>
-      <span class="portal-attendance-today-card__body">
-        <strong>{{ session.group_name }}</strong>
-        <span class="portal-attendance-today-card__meta">
-          {{ session.duration_min }} {% trans 'min' %}
-          {% if session.room_or_link %} · {{ session.room_or_link|truncatechars:28 }}{% endif %}
-        </span>
-      </span>
-      <span class="portal-attendance-today-card__status">
-        {% if session.is_complete %}
-          {% trans 'Tamamlanıb' %}
-        {% elif session.is_partial %}
-          {{ session.marked_count }}/{{ session.student_count }} {% trans 'qeyd' %}
-        {% else %}
-          {% trans 'Qeyd olunmayıb' %}
-        {% endif %}
-      </span>
-      <span class="portal-attendance-today-card__cta">
-        {% if session.marked_count %}{% trans 'Düzəlt' %}{% else %}{% trans 'Qeyd et' %}{% endif %}
-        <i class="bi bi-arrow-right" aria-hidden="true"></i>
-      </span>
-    </a>
-    {% endfor %}
-  </div>
-  {% else %}
-  <div class="portal-attendance-today-empty">
-    <i class="bi bi-calendar-x" aria-hidden="true"></i>
-    <p>{% trans 'Bu gün dərs yoxdur.' %}</p>
-    <span>{% trans 'Başqa gün üçün həftəlik təqvimdən dərs seçin.' %}</span>
-  </div>
-  {% endif %}
-</section>
-
-<section class="portal-attendance-hub-hero admin-card mb-4" aria-label="{% trans 'Qeyd et' %}">
-  <a class="portal-attendance-hub-action is-primary" href="{% url 'portals:teacher-attendance-session' %}">
-    <span class="portal-attendance-hub-action__icon"><i class="bi bi-calendar-week" aria-hidden="true"></i></span>
-    <span class="portal-attendance-hub-action__copy">
-      <strong>{% trans 'Mark by class session' %}</strong>
-      <span>{% trans 'Pick a session from your weekly calendar' %}</span>
-    </span>
-    <i class="bi bi-arrow-right portal-attendance-hub-action__arrow" aria-hidden="true"></i>
-  </a>
-</section>
+{% if register %}
+  {% include "portals/includes/attendance_register.html" %}
+{% endif %}
 {% else %}
 <section class="portal-attendance-hub-hero admin-card mb-4" aria-label="{% trans 'Attendance overview' %}">
   <div class="portal-attendance-hub-hero__stats" id="attendance-hub-stats">
@@ -288,6 +236,9 @@
 {% endblock %}
 
 {% block extra_js %}
+{% if hub_tab == 'mark' %}
+<script src="{% static 'portals/js/portal-attendance-register.js' %}"></script>
+{% endif %}
 {% if hub_tab == 'history' and students %}
 <script src="{% static 'portals/js/portal-attendance-hub.js' %}"></script>
 {% endif %}

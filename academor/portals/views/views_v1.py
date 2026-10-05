@@ -89,14 +89,17 @@ from portals.utils.queries import (
 )
 from portals.utils.teacher_attendance_hub import (
     build_teacher_attendance_hub,
-    build_today_attendance_sessions,
+)
+from portals.utils.teacher_attendance_register import (
+    build_teacher_attendance_register,
+    parse_register_month,
 )
 from portals.utils.weekly_scores import (
     get_student_weekly_scores,
     get_teacher_student_weekly_scores,
     get_teacher_weekly_scores_list,
 )
-from portals.utils.teacher_access import get_teacher_lesson, get_teacher_student, teacher_groups_qs
+from portals.utils.teacher_access import get_teacher_group, get_teacher_lesson, get_teacher_student, teacher_groups_qs
 from portals.utils.teacher_schedule import (
     build_student_week_calendar,
     build_teacher_week_calendar,
@@ -282,9 +285,22 @@ class TeacherAttendanceListView(TeacherRequiredMixin, View):
         hub_tab = request.GET.get('tab', 'mark')
         if hub_tab not in ('mark', 'history'):
             hub_tab = 'mark'
-        today_sessions = []
+        register = None
         if hub_tab == 'mark':
-            today_sessions = build_today_attendance_sessions(profile.pk)
+            year, month = parse_register_month(request.GET.get('month'))
+            group = None
+            group_raw = request.GET.get('group')
+            if group_raw:
+                try:
+            group = get_teacher_group(profile.pk, int(group_raw), include_register_only=True)
+                except (TypeError, ValueError):
+                    group = None
+            register = build_teacher_attendance_register(
+                profile,
+                year=year,
+                month=month,
+                group=group,
+            )
         return render(
             request,
             self.template_name,
@@ -296,7 +312,7 @@ class TeacherAttendanceListView(TeacherRequiredMixin, View):
                 hub_stats=hub['stats']['all'],
                 hub_stats_map=hub['stats'],
                 hub_tab=hub_tab,
-                today_sessions=today_sessions,
+                register=register,
             ),
         )
 

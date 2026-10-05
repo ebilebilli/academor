@@ -1,5 +1,6 @@
 from django.contrib import messages
-from datetime import timedelta
+from datetime import date, timedelta
+import json
 
 from django.http import Http404, JsonResponse
 from django.template.loader import render_to_string
@@ -8,7 +9,7 @@ from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.views import View
 
-from portals.models import Attendance, Schedule
+from portals.models import Attendance, AttendanceRegisterGuest, Schedule
 from portals.teacher_forms import (
     TeacherGroupNameForm,
     TeacherLessonForm,
@@ -31,12 +32,21 @@ from portals.utils.teacher_access import (
     get_teacher_group,
     get_teacher_lesson,
     get_teacher_schedule,
+    get_teacher_student,
     get_teacher_textbook,
 )
 from portals.utils.teacher_attendance import (
     parse_student_ids,
     save_session_attendance,
     selected_student_ids_from_post,
+)
+from portals.utils.teacher_attendance_register import (
+    REGISTER_STATUSES,
+    add_register_group,
+    add_register_guest,
+    remove_register_group,
+    remove_register_guest,
+    save_register_mark,
 )
 from portals.utils.teacher_courses import course_type_choices_for_teacher
 from portals.utils.teacher_schedule import build_teacher_week_calendar, parse_week_start
@@ -467,6 +477,171 @@ class TeacherLessonEditView(TeacherRequiredMixin, View):
             subtitle=lesson.display_name,
             cancel_href=reverse('portals:teacher-lessons'),
         )
+
+
+class TeacherAttendanceRegisterMarkView(TeacherRequiredMixin, View):
+    """Autosave one student/day cell on the monthly register grid."""
+
+    def post(self, request):
+        teacher = get_teacher_profile(request.portal_user)
+        try:
+            payload = json.loads(request.body.decode('utf-8') or '{}')
+        except (UnicodeDecodeError, json.JSONDecodeError, TypeError):
+            return JsonResponse({'ok': False, 'error': str(_('Invalid request.'))}, status=400)
+
+        group_id = payload.get('group_id')
+        student_id = payload.get('student_id')
+        guest_id = payload.get('guest_id')
+        status = payload.get('status')
+        date_raw = payload.get('date')
+        try:
+            group = get_teacher_group(teacher.pk, int(group_id), include_register_only=True)
+            session_date = date.fromisoformat(str(date_raw).strip())
+        except (TypeError, ValueError):
+            return JsonResponse({'ok': False, 'error': str(_('Invalid request.'))}, status=400)
+
+        if not group:
+            raise Http404
+
+        student = None
+        guest = None
+        if student_id not in (None, ''):
+            try:
+                student = get_teacher_student(teacher.pk, int(student_id))
+            except (TypeError, ValueError):
+                return JsonResponse({'ok': False, 'error': str(_('Invalid request.'))}, status=400)
+            if not student:
+                raise Http404
+        elif guest_id not in (None, ''):
+            try:
+                guest = AttendanceRegisterGuest.objects.filter(
+                    pk=int(guest_id),
+                    group=group,
+                    is_active=True,
+                ).first()
+            except (TypeError, ValueError):
+                return JsonResponse({'ok': False, 'error': str(_('Invalid request.'))}, status=400)
+            if not guest:
+                raise Http404
+        else:
+            return JsonResponse({'ok': False, 'error': str(_('Invalid request.'))}, status=400)
+
+        if status not in ('', None) and status not in REGISTER_STATUSES:
+            return JsonResponse({'ok': False, 'error': str(_('Invalid request.'))}, status=400)
+
+        result = save_register_mark(
+            group=group,
+            student=student,
+            guest=guest,
+            session_date=session_date,
+            status=status or '',
+        )
+        if not result.get('ok'):
+            return JsonResponse(
+                {'ok': False, 'error': str(_('Could not save attendance.'))},
+                status=400,
+            )
+        return JsonResponse(result)
+
+
+class TeacherAttendanceRegisterGuestView(TeacherRequiredMixin, View):
+    """Add or hide a manual (non-portal) name on the monthly register."""
+
+    def post(self, request):
+        teacher = get_teacher_profile(request.portal_user)
+        try:
+            payload = json.loads(request.body.decode('utf-8') or '{}')
+        except (UnicodeDecodeError, json.JSONDecodeError, TypeError):
+            return JsonResponse({'ok': False, 'error': str(_('Invalid request.'))}, status=400)
+
+        try:
+            group = get_teacher_group(
+                teacher.pk,
+                int(payload.get('group_id')),
+                include_register_only=True,
+            )
+        except (TypeError, ValueError):
+            return JsonResponse({'ok': False, 'error': str(_('Invalid request.'))}, status=400)
+        if not group:
+            raise Http404
+
+        result = add_register_guest(group=group, name=payload.get('name'))
+        if not result.get('ok'):
+            return JsonResponse(
+                {'ok': False, 'error': str(_('Enter a student name.'))},
+                status=400,
+            )
+        return JsonResponse(result)
+
+    def delete(self, request):
+        teacher = get_teacher_profile(request.portal_user)
+        try:
+            payload = json.loads(request.body.decode('utf-8') or '{}')
+        except (UnicodeDecodeError, json.JSONDecodeError, TypeError):
+            return JsonResponse({'ok': False, 'error': str(_('Invalid request.'))}, status=400)
+
+        try:
+            group = get_teacher_group(
+                teacher.pk,
+                int(payload.get('group_id')),
+                include_register_only=True,
+            )
+            guest_id = int(payload.get('guest_id'))
+        except (TypeError, ValueError):
+            return JsonResponse({'ok': False, 'error': str(_('Invalid request.'))}, status=400)
+        if not group:
+            raise Http404
+
+        guest = AttendanceRegisterGuest.objects.filter(pk=guest_id, group=group).first()
+        if not guest:
+            raise Http404
+
+        return JsonResponse(remove_register_guest(group=group, guest=guest))
+
+
+class TeacherAttendanceRegisterGroupView(TeacherRequiredMixin, View):
+    """Add or hide a manual (non-portal) group on the monthly register."""
+
+    def post(self, request):
+        teacher = get_teacher_profile(request.portal_user)
+        try:
+            payload = json.loads(request.body.decode('utf-8') or '{}')
+        except (UnicodeDecodeError, json.JSONDecodeError, TypeError):
+            return JsonResponse({'ok': False, 'error': str(_('Invalid request.'))}, status=400)
+
+        result = add_register_group(teacher=teacher, name=payload.get('name'))
+        if not result.get('ok'):
+            return JsonResponse(
+                {'ok': False, 'error': str(_('Enter a group name.'))},
+                status=400,
+            )
+        return JsonResponse(result)
+
+    def delete(self, request):
+        teacher = get_teacher_profile(request.portal_user)
+        try:
+            payload = json.loads(request.body.decode('utf-8') or '{}')
+        except (UnicodeDecodeError, json.JSONDecodeError, TypeError):
+            return JsonResponse({'ok': False, 'error': str(_('Invalid request.'))}, status=400)
+
+        try:
+            group = get_teacher_group(
+                teacher.pk,
+                int(payload.get('group_id')),
+                include_register_only=True,
+            )
+        except (TypeError, ValueError):
+            return JsonResponse({'ok': False, 'error': str(_('Invalid request.'))}, status=400)
+        if not group:
+            raise Http404
+
+        result = remove_register_group(teacher=teacher, group=group)
+        if not result.get('ok'):
+            return JsonResponse(
+                {'ok': False, 'error': str(_('Only manual register groups can be removed.'))},
+                status=400,
+            )
+        return JsonResponse(result)
 
 
 class TeacherAttendanceCreateView(TeacherRequiredMixin, View):

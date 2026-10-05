@@ -1424,9 +1424,10 @@ class StudyGroupAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
         'courses_display',
         'capacity_display',
         'is_active',
+        'is_register_only',
     )
     list_display_links = ('name',)
-    list_filter = ('is_active', 'courses', 'teacher')
+    list_filter = ('is_active', 'is_register_only', 'courses', 'teacher')
     search_fields = ('name', 'teacher__user__username', 'courses__slug')
     autocomplete_fields = ('teacher',)
     filter_horizontal = ('courses', 'students')
@@ -1438,7 +1439,7 @@ class StudyGroupAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
         ('Group basics', {
             'classes': ('portal-fieldset',),
             'description': _('Name, linked courses, teacher, and active status.'),
-            'fields': ('name', 'courses', 'teacher', 'is_active'),
+            'fields': ('name', 'courses', 'teacher', 'is_active', 'is_register_only'),
         }),
         ('Course details', {
             'classes': ('portal-fieldset',),
@@ -1816,13 +1817,15 @@ class AttendanceAdmin(PortalModelAdmin):
         'marked_at',
     )
     list_display_links = ('student_display',)
-    list_filter = ('status', 'session_date', 'schedule__group', 'schedule__group__teacher')
+    list_filter = ('status', 'session_date', 'group', 'schedule__group', 'schedule__group__teacher')
     search_fields = (
         'student__user__username',
         'schedule__group__name',
+        'group__name',
         'note',
     )
-    autocomplete_fields = ('schedule', 'student')
+    autocomplete_fields = ('schedule', 'group', 'student')
+    raw_id_fields = ('guest',)
     date_hierarchy = 'session_date'
     ordering = ('-session_date', '-marked_at', 'id')
     list_per_page = 25
@@ -1832,7 +1835,7 @@ class AttendanceAdmin(PortalModelAdmin):
             'description': (
                 'Pick schedule slot, student, real session date, and status.'
             ),
-            'fields': ('schedule', 'student', 'session_date', 'status'),
+            'fields': ('schedule', 'group', 'student', 'guest', 'session_date', 'status'),
         }),
         ('Notes', {
             'classes': ('portal-fieldset',),

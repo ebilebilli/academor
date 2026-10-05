@@ -4,6 +4,9 @@ from portals.views.auth_views import PortalLoginView, PortalLogoutView, PortalSe
 from portals.views.profile_views import PortalProfileView
 from portals.views.teacher_manage_views import (
     TeacherAttendanceCreateView,
+    TeacherAttendanceRegisterGroupView,
+    TeacherAttendanceRegisterGuestView,
+    TeacherAttendanceRegisterMarkView,
     TeacherGroupRenameView,
     TeacherLessonCreateView,
     TeacherLessonEditView,
@@ -158,6 +161,21 @@ urlpatterns = [
     path('teacher/classrooms/<int:pk>/edit/', TeacherTextbookEditView.as_view(), name='teacher-classroom-edit'),
     path('teacher/schedule/', TeacherScheduleView.as_view(), name='teacher-schedule'),
     path('teacher/attendance/', TeacherAttendanceListView.as_view(), name='teacher-attendance'),
+    path(
+        'teacher/attendance/register/mark/',
+        TeacherAttendanceRegisterMarkView.as_view(),
+        name='teacher-attendance-register-mark',
+    ),
+    path(
+        'teacher/attendance/register/guest/',
+        TeacherAttendanceRegisterGuestView.as_view(),
+        name='teacher-attendance-register-guest',
+    ),
+    path(
+        'teacher/attendance/register/group/',
+        TeacherAttendanceRegisterGroupView.as_view(),
+        name='teacher-attendance-register-group',
+    ),
     path(
         'teacher/attendance/students/<int:student_pk>/',
         TeacherStudentAttendanceDetailView.as_view(),

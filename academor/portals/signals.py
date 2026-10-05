@@ -10,6 +10,7 @@ from django.dispatch import receiver
 
 from portals.models import (
     Attendance,
+    AttendanceRegisterGuest,
     Classroom,
     IeltsMockTestAttempt,
     Lesson,
@@ -107,6 +108,7 @@ for _model in (
     Classroom,
     VideoRecord,
     Attendance,
+    AttendanceRegisterGuest,
     Score,
     WeeklyStudentScore,
     QuizCategory,

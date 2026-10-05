@@ -34,7 +34,7 @@ def save_session_attendance(schedule, session_date, student_status_map):
             schedule=schedule,
             student_id=student_id,
             session_date=session_date,
-            defaults={'status': status},
+            defaults={'status': status, 'group_id': schedule.group_id},
         )
         saved += 1
     return saved

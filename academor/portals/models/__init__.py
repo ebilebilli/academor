@@ -15,7 +15,7 @@ from .lesson_models import (
     LessonHomework,
     VideoRecord,
 )
-from .schedule_models import Schedule, Attendance
+from .schedule_models import Schedule, Attendance, AttendanceRegisterGuest
 from .score_models import Score, WeeklyStudentScore
 from .quiz_models import (
     Quiz,
@@ -58,6 +58,7 @@ __all__ = [
     'VideoRecord',
     'Schedule',
     'Attendance',
+    'AttendanceRegisterGuest',
     'Score',
     'WeeklyStudentScore',
     'Quiz',

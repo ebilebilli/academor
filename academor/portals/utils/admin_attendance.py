@@ -94,7 +94,7 @@ def build_admin_attendance_hub_context(*, teacher_id=None, group_id=None, sessio
 def get_student_attendance_overview(student: StudentProfile):
     records_qs = (
         Attendance.objects.filter(student=student)
-        .select_related('schedule', 'schedule__group', 'schedule__group__teacher__user', 'student__user')
+        .select_related('schedule', 'schedule__group', 'schedule__group__teacher__user', 'group', 'guest', 'student__user')
         .order_by('-session_date', '-marked_at', 'id')
     )
     records = [serialize_attendance(row) for row in records_qs]

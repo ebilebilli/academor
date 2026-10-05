@@ -1,0 +1,264 @@
+{% load i18n %}
+<section
+  class="portal-register admin-card"
+  data-attendance-register
+  data-mark-url="{% url 'portals:teacher-attendance-register-mark' %}"
+  data-guest-url="{% url 'portals:teacher-attendance-register-guest' %}"
+  data-group-url="{% url 'portals:teacher-attendance-register-group' %}"
+  data-group-id="{{ register.group.id|default:'' }}"
+  data-month="{{ register.month_key }}"
+  data-teacher="{{ register.teacher_name }}"
+  data-group-name="{{ register.group.name|default:'' }}"
+  data-page-url="{% url 'portals:teacher-attendance' %}"
+  data-saved-msg="{% trans 'Saxlanıldı' %}"
+  data-error-msg="{% trans 'Saxlanmadı. Yenidən cəhd edin.' %}"
+  data-guest-added-msg="{% trans 'Tələbə əlavə olundu' %}"
+  data-guest-removed-msg="{% trans 'Tələbə silindi' %}"
+  data-guest-empty-msg="{% trans 'Ad daxil edin' %}"
+  data-group-added-msg="{% trans 'Qrup əlavə olundu' %}"
+  data-group-removed-msg="{% trans 'Qrup silindi' %}"
+  data-group-empty-msg="{% trans 'Qrup adı daxil edin' %}"
+  aria-label="{% trans 'Aylıq davamiyyət dəftəri' %}"
+>
+  {% csrf_token %}
+
+  <header class="portal-register__toolbar">
+    <div class="portal-register__month-nav">
+      <a
+        class="portal-register__nav-btn"
+        href="{% url 'portals:teacher-attendance' %}?tab=mark&amp;month={{ register.prev_month }}{% if register.group %}&amp;group={{ register.group.id }}{% endif %}"
+        aria-label="{% trans 'Əvvəlki ay' %}"
+      >
+        <i class="bi bi-chevron-left" aria-hidden="true"></i>
+      </a>
+      <h2 class="portal-register__month">{{ register.month_date|date:"F Y" }}</h2>
+      <a
+        class="portal-register__nav-btn"
+        href="{% url 'portals:teacher-attendance' %}?tab=mark&amp;month={{ register.next_month }}{% if register.group %}&amp;group={{ register.group.id }}{% endif %}"
+        aria-label="{% trans 'Növbəti ay' %}"
+      >
+        <i class="bi bi-chevron-right" aria-hidden="true"></i>
+      </a>
+    </div>
+    <button type="button" class="portal-register__export" data-register-export>
+      <i class="bi bi-download" aria-hidden="true"></i>
+      {% trans 'Excel yüklə' %}
+    </button>
+  </header>
+
+  <dl class="portal-register__meta">
+    <div>
+      <dt>{% trans 'Qrup' %}</dt>
+      <dd>{{ register.group.name|default:"—" }}</dd>
+    </div>
+    <div>
+      <dt>{% trans 'Müəllim' %}</dt>
+      <dd>{{ register.teacher_name|default:"—" }}</dd>
+    </div>
+    <div>
+      <dt>{% trans 'Fənn' %}</dt>
+      <dd>{{ register.group.course_label|default:"—" }}</dd>
+    </div>
+    <div>
+      <dt>{% trans 'Ay' %}</dt>
+      <dd>{{ register.month_date|date:"F Y" }}</dd>
+    </div>
+  </dl>
+
+  <div class="portal-register__groups-wrap">
+    {% if register.groups %}
+    <nav class="portal-register__groups" aria-label="{% trans 'Qrup seçimi' %}">
+      {% for group in register.groups %}
+      <span class="portal-register__group-chip-wrap{% if register.group.id == group.id %} is-active{% endif %}">
+        <a
+          class="portal-register__group-chip{% if register.group.id == group.id %} is-active{% endif %}"
+          href="{% url 'portals:teacher-attendance' %}?tab=mark&amp;month={{ register.month_key }}&amp;group={{ group.id }}"
+          {% if register.group.id == group.id %}aria-current="page"{% endif %}
+        >
+          {{ group.name }}
+          <span>{{ group.student_count }}</span>
+          {% if group.is_register_only %}<em class="portal-register__group-tag">{% trans 'əl ilə' %}</em>{% endif %}
+        </a>
+        {% if group.is_register_only %}
+        <button
+          type="button"
+          class="portal-register__group-remove"
+          data-register-remove-group
+          data-group-id="{{ group.id }}"
+          title="{% trans 'Qrupu sil' %}"
+          aria-label="{% trans 'Qrupu sil' %}"
+        >×</button>
+        {% endif %}
+      </span>
+      {% endfor %}
+    </nav>
+    {% endif %}
+    <form class="portal-register__add portal-register__add--group" data-register-add-group-form>
+      <label class="visually-hidden" for="register-group-name">{% trans 'Qrup adı' %}</label>
+      <input
+        id="register-group-name"
+        type="text"
+        class="form-control form-control-sm"
+        name="group_name"
+        maxlength="200"
+        placeholder="{% trans 'Databazadan kənar qrup adı…' %}"
+        autocomplete="off"
+      >
+      <button type="submit" class="portal-register__add-btn">
+        <i class="bi bi-folder-plus" aria-hidden="true"></i>
+        {% trans 'Qrup əlavə et' %}
+      </button>
+    </form>
+  </div>
+
+  {% if register.group %}
+  <div class="portal-register__mode" role="group" aria-label="{% trans 'Qeyd növü' %}">
+    <span class="portal-register__mode-label">{% trans 'Qeyd et:' %}</span>
+    <button type="button" class="portal-register__mode-btn is-present is-active" data-register-mode="present" aria-pressed="true">
+      <em>+</em> {% trans 'Gəlib' %}
+    </button>
+    <button type="button" class="portal-register__mode-btn is-absent" data-register-mode="absent" aria-pressed="false">
+      <em>–</em> {% trans 'Gəlməyib' %}
+    </button>
+    <button type="button" class="portal-register__mode-btn is-late" data-register-mode="late" aria-pressed="false">
+      <em>G</em> {% trans 'Gecikib' %}
+    </button>
+    <button type="button" class="portal-register__mode-btn is-clear" data-register-mode="" aria-pressed="false">
+      <em>×</em> {% trans 'Sil' %}
+    </button>
+  </div>
+  <p class="portal-register__hint-line">{% trans 'Əvvəl + və ya – seçin, sonra gün xanasına klik edin. Yenidən eyni nişan = silinir.' %}</p>
+
+  <form class="portal-register__add" data-register-add-form>
+    <label class="visually-hidden" for="register-guest-name">{% trans 'Tələbə adı' %}</label>
+    <input
+      id="register-guest-name"
+      type="text"
+      class="form-control form-control-sm"
+      name="guest_name"
+      maxlength="200"
+      placeholder="{% trans 'Databazadan kənar tələbə adı…' %}"
+      autocomplete="off"
+    >
+    <button type="submit" class="portal-register__add-btn">
+      <i class="bi bi-person-plus" aria-hidden="true"></i>
+      {% trans 'Əlavə et' %}
+    </button>
+  </form>
+  {% endif %}
+
+  <p class="portal-register__status" data-register-status aria-live="polite"></p>
+
+  {% if register.group %}
+  <div class="portal-register__scroll{% if not register.students %} is-empty{% endif %}">
+    <table class="portal-register-table" data-register-table>
+      <thead>
+        <tr>
+          <th class="portal-register-table__num" scope="col">{% trans '№' %}</th>
+          <th class="portal-register-table__name" scope="col">{% trans 'Tələbənin adı, soyadı' %}</th>
+          {% for day in register.days %}
+          <th
+            class="portal-register-table__day{% if not day.in_month %} is-invalid{% endif %}{% if day.is_today %} is-today{% endif %}{% if day.is_weekend %} is-weekend{% endif %}"
+            scope="col"
+          >
+            <span>{{ day.n }}</span>
+            {% if day.in_month %}<small>{{ day.weekday_short }}</small>{% endif %}
+          </th>
+          {% endfor %}
+          <th class="portal-register-table__total is-absent" scope="col">{% trans 'Buraxıb' %}</th>
+          <th class="portal-register-table__total is-present" scope="col">{% trans 'İştirak cəmi' %}</th>
+        </tr>
+      </thead>
+      <tbody data-register-body>
+        {% for student in register.students %}
+        <tr
+          data-student-id="{{ student.id|default:'' }}"
+          data-guest-id="{{ student.guest_id|default:'' }}"
+          data-student-name="{{ student.name }}"
+          {% if student.is_guest %}data-is-guest="true"{% endif %}
+        >
+          <th class="portal-register-table__num" scope="row" data-row-num>{{ forloop.counter }}</th>
+          <th class="portal-register-table__name" scope="row">
+            <span class="portal-register-table__name-text">{{ student.name }}</span>
+            {% if student.is_guest %}
+            <button
+              type="button"
+              class="portal-register-table__remove"
+              data-register-remove-guest
+              title="{% trans 'Siyahıdan çıxar' %}"
+              aria-label="{% trans 'Siyahıdan çıxar' %}"
+            >×</button>
+            {% endif %}
+          </th>
+          {% for cell in student.cells %}
+          <td
+            class="portal-register-table__cell{% if cell.disabled %} is-disabled{% endif %}{% if cell.status %} is-{{ cell.status }}{% endif %}"
+          >
+            {% if cell.disabled %}
+            <span class="portal-register-mark is-disabled" aria-hidden="true"></span>
+            {% else %}
+            <button
+              type="button"
+              class="portal-register-mark{% if cell.status %} is-{{ cell.status }}{% endif %}"
+              data-register-cell
+              data-date="{{ cell.iso }}"
+              data-status="{{ cell.status }}"
+              aria-label="{{ student.name }}, {{ cell.iso }}"
+            >{% if cell.status == 'present' %}+{% elif cell.status == 'absent' %}–{% elif cell.status == 'late' %}G{% endif %}</button>
+            {% endif %}
+          </td>
+          {% endfor %}
+          <td class="portal-register-table__total is-absent" data-count-absent>{{ student.absent_count }}</td>
+          <td class="portal-register-table__total is-present" data-count-attended>{{ student.attended_count }}</td>
+        </tr>
+        {% empty %}
+        <tr class="portal-register-table__empty" data-register-empty-row>
+          <td colspan="{{ register.days|length|add:4 }}">
+            {% trans 'Hələ tələbə yoxdur. Aşağıdan və ya yuxarıdakı sahədən ad əlavə edin.' %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <template data-register-row-template>
+    <tr data-is-guest="true">
+      <th class="portal-register-table__num" scope="row" data-row-num></th>
+      <th class="portal-register-table__name" scope="row">
+        <span class="portal-register-table__name-text"></span>
+        <button
+          type="button"
+          class="portal-register-table__remove"
+          data-register-remove-guest
+          title="{% trans 'Siyahıdan çıxar' %}"
+          aria-label="{% trans 'Siyahıdan çıxar' %}"
+        >×</button>
+      </th>
+      {% for day in register.days %}
+      <td class="portal-register-table__cell{% if not day.in_month %} is-disabled{% endif %}">
+        {% if day.in_month %}
+        <button
+          type="button"
+          class="portal-register-mark"
+          data-register-cell
+          data-date="{{ day.iso }}"
+          data-status=""
+          aria-label=""
+        ></button>
+        {% else %}
+        <span class="portal-register-mark is-disabled" aria-hidden="true"></span>
+        {% endif %}
+      </td>
+      {% endfor %}
+      <td class="portal-register-table__total is-absent" data-count-absent>0</td>
+      <td class="portal-register-table__total is-present" data-count-attended>0</td>
+    </tr>
+  </template>
+  {% else %}
+  <div class="portal-student-empty">
+    <div class="portal-student-empty-icon"><i class="bi bi-inbox" aria-hidden="true"></i></div>
+    <h3>{% trans 'Qrup seçin və ya əlavə edin' %}</h3>
+    <p>{% trans 'Portal qrupunuz yoxdursa, yuxarıdan dəftər üçün qrup adı yazıb əlavə edin.' %}</p>
+  </div>
+  {% endif %}
+</section>

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from django.db.models import Count, Prefetch, Q
+from django.db.models.functions import Coalesce
 
 from portals.models import Attendance, Schedule, StudentProfile, StudyGroup
 from portals.utils.cache_utils import cached_query
@@ -67,7 +68,8 @@ def build_teacher_attendance_hub(teacher_id):
 
     stats_rows = (
         teacher_attendance_queryset(teacher_id)
-        .values('student_id', 'schedule__group_id')
+        .annotate(scope_group_id=Coalesce('group_id', 'schedule__group_id'))
+        .values('student_id', 'scope_group_id')
         .annotate(
             present=Count('id', filter=Q(status=Attendance.Status.PRESENT)),
             absent=Count('id', filter=Q(status=Attendance.Status.ABSENT)),
@@ -78,7 +80,9 @@ def build_teacher_attendance_hub(teacher_id):
     stats_by_student_group = {}
     for row in stats_rows:
         student_id = row['student_id']
-        group_id = row['schedule__group_id']
+        group_id = row['scope_group_id']
+        if not group_id:
+            continue
         stats_by_student_group.setdefault(student_id, {})[group_id] = _summary_from_counts(row)
 
     teacher_group_ids = list(teacher_groups.values_list('pk', flat=True))
