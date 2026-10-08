@@ -16,15 +16,40 @@
     var desktopMQ = window.matchMedia("(min-width: 1200px)");
     var reduceMQ = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-    /* Stops are pinned to the start of real sections, alternating gutters. The route
-       crosses the page only inside the empty band just above each stop's section. */
-    var STOPS = [
-        { code: "BAK", section: ".about-intro-section", side: "left" },
-        { code: "LHR", section: ".home-sales-section", side: "right" },
-        { code: "CDG", section: ".hsvc-section", side: "left" },
-        /* full-width marquee sits right above Study Abroad: cross before it, fly under it */
-        { code: "JFK", section: ".abroad-section", side: "right", crossBefore: ".home-marquee" }
+    /* Stops are pinned to the start of real sections. Several homepage sections are
+       conditional (About only when shown on the homepage, Sales only when a sale is live),
+       so stops are picked from whichever candidates exist, in page order. The last stop is
+       always Study Abroad (JFK); sides alternate backwards from it so JFK lands on the right. */
+    var CANDIDATES = [
+        ".about-intro-section",
+        ".home-sales-section",
+        ".hsvc-section",
+        ".home-prices-section",
+        ".home-mock-prices-section"
     ];
+    var FINAL = { section: ".abroad-section", crossBefore: ".home-marquee" };
+    var CODES = ["BAK", "LHR", "CDG"];   /* departures, in order; final is JFK */
+
+    function pickStops() {
+        var finalEl = main.querySelector(FINAL.section);
+        if (!finalEl) return null;
+        var finalTop = finalEl.getBoundingClientRect().top;
+        var found = [];
+        CANDIDATES.forEach(function (sel) {
+            var node = main.querySelector(sel);
+            if (node && node.getBoundingClientRect().top < finalTop - 200) found.push({ node: node, sel: sel });
+        });
+        found.sort(function (a, b) { return a.node.getBoundingClientRect().top - b.node.getBoundingClientRect().top; });
+        found = found.slice(0, CODES.length);
+        if (!found.length) return null;
+        var stops = found.map(function (f, i) { return { code: CODES[i], section: f.sel }; });
+        stops.push({ code: "JFK", section: FINAL.section, crossBefore: FINAL.crossBefore });
+        for (var i = stops.length - 1, side = "right"; i >= 0; i--, side = side === "right" ? "left" : "right") {
+            stops[i].side = side;
+        }
+        return stops;
+    }
+
     var CROSS_BAND = 44;   /* half-height of the S-curve that crosses between gutters */
     var PIN_OFFSET = 28;   /* stop sits this far below its section's top edge */
     var TRAIL = 5;         /* comet-trail dots behind the plane */
@@ -50,6 +75,8 @@
         var inner = container ? container.getBoundingClientRect().width : 1296;
         var gutter = Math.max((width - inner) / 2, 24);
         var xs = { left: gutter / 2, right: width - gutter / 2 };
+        var STOPS = pickStops();
+        if (!STOPS) return null;
         var points = [];
         for (var i = 0; i < STOPS.length; i++) {
             var s = main.querySelector(STOPS[i].section);
@@ -117,7 +144,7 @@
 
     function build() {
         var m = measure();
-        if (!m) return teardown();
+        if (!m) { teardown(); root.setAttribute("data-journey", "off: anchor sections not found"); return; }
         root.textContent = "";
         stopEls = []; trailDots = [];
         svg = el("svg", { width: m.width, height: m.height, viewBox: "0 0 " + m.width + " " + m.height, focusable: "false" }, root);
@@ -155,6 +182,7 @@
         built = true;
         lastLen = -1;
         root.classList.add("is-ready");
+        root.setAttribute("data-journey", (reduceMQ.matches ? "static (prefers-reduced-motion)" : "on") + ": " + m.points.map(function (p) { return p.code; }).join(" → "));
         if (reduceMQ.matches) {
             root.classList.add("is-static");
             stopEls.forEach(function (g) { g.classList.add("is-reached"); });
@@ -163,6 +191,11 @@
         }
         root.classList.remove("is-static");
         update();
+    }
+
+    function offNarrow() {
+        teardown();
+        root.setAttribute("data-journey", "off: viewport narrower than 1200px");
     }
 
     function teardown() {
@@ -208,12 +241,12 @@
     function scheduleRebuild() {
         clearTimeout(rebuildTimer);
         rebuildTimer = setTimeout(function () {
-            if (desktopMQ.matches) build(); else teardown();
+            if (desktopMQ.matches) build(); else offNarrow();
         }, 150);
     }
 
     function start() {
-        if (desktopMQ.matches) build();
+        if (desktopMQ.matches) build(); else offNarrow();
         window.addEventListener("scroll", requestUpdate, { passive: true });
         window.addEventListener("resize", scheduleRebuild, { passive: true });
         window.addEventListener("load", scheduleRebuild);
