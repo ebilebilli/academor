@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-{% load static i18n %}{% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
-<head>
-    {% include "includes/site_layout_head.html" with page_title=page_title page_description=page_description page_keywords=page_keywords %}
-</head>
-<body>
-    {% include "includes/site_spinner.html" %}
-    {% include "includes/site_navbar.html" %}
+{% extends "base.html" %}
+{% load static i18n %}
 
+{% block layout_head %}{% include "includes/site_layout_head.html" with page_title=page_title page_description=page_description page_keywords=page_keywords %}{% endblock %}
+
+{% block content %}
     {% include "includes/page_header_banner.html" %}
 
     <div class="container-xxl py-5 pb-5">
@@ -36,7 +32,7 @@
                         <div class="topic-card card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
                             <div class="card-body p-4 d-flex align-items-center gap-3">
                                 <span class="topic-card-icon flex-shrink-0 rounded-circle bg-primary bg-opacity-10 text-primary d-inline-flex align-items-center justify-content-center" style="width: 2.5rem; height: 2.5rem;" aria-hidden="true">
-                                    <i class="fa fa-angle-right"></i>
+                                    <i class="bi bi-chevron-right"></i>
                                 </span>
                                 <span class="fw-semibold text-dark topic-card-title">{{ item.title }}</span>
                             </div>
@@ -70,7 +66,7 @@
         }
         .topic-card-link:hover .topic-card {
             transform: translateY(-4px);
-            box-shadow: 0 0.75rem 2rem rgba(6, 120, 236, 0.12) !important;
+            box-shadow: 0 0.75rem 2rem rgb(var(--info-rgb) / 0.12) !important;
         }
         .topic-card {
             transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -79,8 +75,4 @@
             color: var(--bs-primary) !important;
         }
     </style>
-
-    {% include "includes/site_footer.html" %}
-    {% include "includes/site_scripts.html" %}
-</body>
-</html>
+{% endblock %}

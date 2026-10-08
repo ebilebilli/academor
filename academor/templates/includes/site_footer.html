@@ -32,28 +32,28 @@
                 <h4 class="text-white mb-3 footer-title">{% trans "Contact" %}</h4>
                 {% if footer_contact %}
                 {% if footer_contact.address %}
-                <p class="mb-2 footer-contact-item"><i class="fa fa-map-marker-alt" aria-hidden="true"></i><span>{{ footer_contact.address|linebreaksbr }}</span></p>
+                <p class="mb-2 footer-contact-item"><i class="bi bi-geo-alt" aria-hidden="true"></i><span>{{ footer_contact.address|linebreaksbr }}</span></p>
                 {% endif %}
                 {% if footer_contact.phone %}
-                <p class="mb-2 footer-contact-item"><i class="fa fa-phone-alt" aria-hidden="true"></i><a class="text-light text-decoration-none footer-contact-link" href="tel:{{ footer_contact.phone }}">{{ footer_contact.phone }}</a></p>
+                <p class="mb-2 footer-contact-item"><i class="bi bi-telephone" aria-hidden="true"></i><a class="text-light text-decoration-none footer-contact-link" href="tel:{{ footer_contact.phone }}">{{ footer_contact.phone }}</a></p>
                 {% endif %}
                 {% if footer_contact.phone_three %}
-                <p class="mb-2 footer-contact-item"><i class="fa fa-phone-alt" aria-hidden="true"></i><a class="text-light text-decoration-none footer-contact-link" href="tel:{{ footer_contact.phone_three }}">{{ footer_contact.phone_three }}</a></p>
+                <p class="mb-2 footer-contact-item"><i class="bi bi-telephone" aria-hidden="true"></i><a class="text-light text-decoration-none footer-contact-link" href="tel:{{ footer_contact.phone_three }}">{{ footer_contact.phone_three }}</a></p>
                 {% endif %}
                 {% if footer_contact.whatsapp_number and footer_contact.whatsapp_number_me %}
-                <p class="mb-2 footer-contact-item"><i class="fab fa-whatsapp" aria-hidden="true"></i><a class="text-light text-decoration-none footer-contact-link" href="https://wa.me/{{ footer_contact.whatsapp_number_me }}" target="_blank" rel="noopener noreferrer">{{ footer_contact.whatsapp_number }}</a></p>
+                <p class="mb-2 footer-contact-item"><i class="bi bi-whatsapp" aria-hidden="true"></i><a class="text-light text-decoration-none footer-contact-link" href="https://wa.me/{{ footer_contact.whatsapp_number_me }}" target="_blank" rel="noopener noreferrer">{{ footer_contact.whatsapp_number }}</a></p>
                 {% endif %}
                 {% if footer_contact.whatsapp_number_2 and footer_contact.whatsapp_number_2_me %}
-                <p class="mb-2 footer-contact-item"><i class="fab fa-whatsapp" aria-hidden="true"></i><a class="text-light text-decoration-none footer-contact-link" href="https://wa.me/{{ footer_contact.whatsapp_number_2_me }}" target="_blank" rel="noopener noreferrer">{{ footer_contact.whatsapp_number_2 }}</a></p>
+                <p class="mb-2 footer-contact-item"><i class="bi bi-whatsapp" aria-hidden="true"></i><a class="text-light text-decoration-none footer-contact-link" href="https://wa.me/{{ footer_contact.whatsapp_number_2_me }}" target="_blank" rel="noopener noreferrer">{{ footer_contact.whatsapp_number_2 }}</a></p>
                 {% endif %}
                 {% if footer_contact.email %}
-                <p class="mb-2 footer-contact-item"><i class="fa fa-envelope" aria-hidden="true"></i><a class="text-light text-decoration-none footer-contact-link" href="mailto:{{ footer_contact.email }}">{{ footer_contact.email }}</a></p>
+                <p class="mb-2 footer-contact-item"><i class="bi bi-envelope" aria-hidden="true"></i><a class="text-light text-decoration-none footer-contact-link" href="mailto:{{ footer_contact.email }}">{{ footer_contact.email }}</a></p>
                 {% endif %}
                 {% if footer_contact.email_2 %}
-                <p class="mb-2 footer-contact-item"><i class="fa fa-envelope" aria-hidden="true"></i><a class="text-light text-decoration-none footer-contact-link" href="mailto:{{ footer_contact.email_2 }}">{{ footer_contact.email_2 }}</a></p>
+                <p class="mb-2 footer-contact-item"><i class="bi bi-envelope" aria-hidden="true"></i><a class="text-light text-decoration-none footer-contact-link" href="mailto:{{ footer_contact.email_2 }}">{{ footer_contact.email_2 }}</a></p>
                 {% endif %}
                 {% if footer_contact.email_3 %}
-                <p class="mb-2 footer-contact-item"><i class="fa fa-envelope" aria-hidden="true"></i><a class="text-light text-decoration-none footer-contact-link" href="mailto:{{ footer_contact.email_3 }}">{{ footer_contact.email_3 }}</a></p>
+                <p class="mb-2 footer-contact-item"><i class="bi bi-envelope" aria-hidden="true"></i><a class="text-light text-decoration-none footer-contact-link" href="mailto:{{ footer_contact.email_3 }}">{{ footer_contact.email_3 }}</a></p>
                 {% endif %}
                 {% else %}
                 <p class="mb-2 text-white-50">{% trans "Contact details will be available soon." %}</p>
@@ -65,25 +65,25 @@
                 <a href="{% url 'projects:home-page' %}" class="footer-logo-link d-inline-block mb-3">
                     <img src="{% static 'assets/img/logo.webp' %}" alt="Academor" class="footer-logo" width="320" height="107" loading="{% if footer_eager %}eager{% else %}lazy{% endif %}" decoding="async">
                 </a>
-                <p class="footer-tagline mb-3" lang="en">Learn<span class="footer-dot" style="color:#FF6B35;">.</span> Speak<span class="footer-dot" style="color:#FFE500;">.</span> Achieve<span class="footer-dot" style="color:#3DFF7A;">.</span></p>
+                <p class="footer-tagline mb-3" lang="en">Learn<span class="footer-dot" style="color:var(--tagline-orange);">.</span> Speak<span class="footer-dot" style="color:var(--tagline-yellow);">.</span> Achieve<span class="footer-dot" style="color:var(--tagline-green);">.</span></p>
                 {% if footer_contact %}
                 {% if footer_contact.instagram or footer_contact.facebook or footer_contact.youtube or footer_contact.linkedn or footer_contact.tiktok %}
                 <h6 class="text-white mb-2 footer-social-title">{% trans "Follow us" %}</h6>
                 <div class="d-flex flex-wrap gap-2">
                     {% if footer_contact.instagram %}
-                    <a class="btn btn-outline-light btn-social" href="{{ footer_contact.instagram }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'Instagram' %}"><i class="fab fa-instagram"></i></a>
+                    <a class="btn btn-outline-light btn-social" href="{{ footer_contact.instagram }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'Instagram' %}"><i class="bi bi-instagram"></i></a>
                     {% endif %}
                     {% if footer_contact.linkedn %}
-                    <a class="btn btn-outline-light btn-social" href="{{ footer_contact.linkedn }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'LinkedIn' %}"><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-outline-light btn-social" href="{{ footer_contact.linkedn }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'LinkedIn' %}"><i class="bi bi-linkedin"></i></a>
                     {% endif %}
                     {% if footer_contact.facebook %}
-                    <a class="btn btn-outline-light btn-social" href="{{ footer_contact.facebook }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'Facebook' %}"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-outline-light btn-social" href="{{ footer_contact.facebook }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'Facebook' %}"><i class="bi bi-facebook"></i></a>
                     {% endif %}
                     {% if footer_contact.youtube %}
-                    <a class="btn btn-outline-light btn-social" href="{{ footer_contact.youtube }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'YouTube' %}"><i class="fab fa-youtube"></i></a>
+                    <a class="btn btn-outline-light btn-social" href="{{ footer_contact.youtube }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'YouTube' %}"><i class="bi bi-youtube"></i></a>
                     {% endif %}
                     {% if footer_contact.tiktok %}
-                    <a class="btn btn-outline-light btn-social" href="{{ footer_contact.tiktok }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'TikTok' %}"><i class="fab fa-tiktok"></i></a>
+                    <a class="btn btn-outline-light btn-social" href="{{ footer_contact.tiktok }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'TikTok' %}"><i class="bi bi-tiktok"></i></a>
                     {% endif %}
                 </div>
                 {% endif %}
@@ -107,8 +107,8 @@
 
 <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top" role="button" tabindex="-1" aria-hidden="true" aria-label="{% trans 'Back to top' %}"><i class="bi bi-arrow-up" aria-hidden="true"></i></a>
 {% if footer_contact and footer_contact.whatsapp_number_me %}
-<a href="https://wa.me/{{ footer_contact.whatsapp_number_me }}" class="btn btn-lg btn-lg-square fab-whatsapp" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'WhatsApp' %}"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
+<a href="https://wa.me/{{ footer_contact.whatsapp_number_me }}" class="btn btn-lg btn-lg-square fab-whatsapp" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'WhatsApp' %}"><i class="bi bi-whatsapp" aria-hidden="true"></i></a>
 {% endif %}
 {% if footer_contact and footer_contact.instagram %}
-<a href="{{ footer_contact.instagram }}" class="btn btn-lg btn-lg-square fab-instagram" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'Instagram' %}"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+<a href="{{ footer_contact.instagram }}" class="btn btn-lg btn-lg-square fab-instagram" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'Instagram' %}"><i class="bi bi-instagram" aria-hidden="true"></i></a>
 {% endif %}

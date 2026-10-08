@@ -10330,6 +10330,10 @@ msgstr "Mümkün uduşlar"
 msgid "Gift Wheel"
 msgstr "Hədiyyə çarxı"
 
+#: templates/base.html:12
+msgid "Skip to content"
+msgstr "Məzmuna keç"
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Növbəti kampaniyada yenə cəhd et — xəbərdar edəcəyik."
 

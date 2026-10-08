@@ -10319,6 +10319,10 @@ msgstr "Possible prizes"
 msgid "Gift Wheel"
 msgstr "Gift Wheel"
 
+#: templates/base.html:12
+msgid "Skip to content"
+msgstr "Skip to content"
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Try again in the next campaign — we will let you know."
 

@@ -1,16 +1,9 @@
-<!DOCTYPE html>
-{% load static i18n academor_lazy_tags %}{% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
+{% extends "base.html" %}
+{% load static i18n academor_lazy_tags %}
 
-<head>
-    {% include "includes/site_layout_head.html" with page_title=seo_home_title page_description=seo_home_description page_keywords=site_seo_keywords lcp_image_url=lcp_image_url og_image_url=og_image_url structured_data_json=structured_data_json %}
-</head>
+{% block layout_head %}{% include "includes/site_layout_head.html" with page_title=seo_home_title page_description=seo_home_description page_keywords=site_seo_keywords lcp_image_url=lcp_image_url og_image_url=og_image_url structured_data_json=structured_data_json %}{% endblock %}
 
-<body>
-    {% include "includes/site_spinner.html" %}
-
-    {% include "includes/site_navbar.html" %}
-
+{% block content %}
     <main id="main-content" class="home-page-main">
     <h1 class="visually-hidden">{% if seo_home_title %}{{ seo_home_title }}{% else %}{% trans "Academor" %}{% endif %}</h1>
 
@@ -78,7 +71,7 @@
             <div class="text-center mt-4 pt-2 wow fadeInUp index-team-see-all-wrap" data-wow-delay="0.25s">
                 <a href="{% url 'projects:team-page' %}" class="btn btn-outline-accent rounded-pill px-4 px-md-5 fw-semibold">
                     {% trans "Meet our full team" %}
-                    <i class="fas fa-arrow-right ms-2 small" aria-hidden="true"></i>
+                    <i class="bi bi-arrow-right ms-2 small" aria-hidden="true"></i>
                 </a>
             </div>
         </div>
@@ -104,16 +97,12 @@
     {% include "includes/site_faq_section.html" %}
 
     </main>
+{% endblock %}
 
-    {% include "includes/site_footer.html" %}
-
-
-    {% include "includes/site_scripts.html" %}
+{% block extra_js %}
     <script defer src="{% static 'assets/js/hbh-tagline-reveal.js' %}"></script>
     {% include "includes/turnstile_script.html" %}
     {% if open_review_modal %}
     <script defer src="{% static 'assets/js/review-modal-open.js' %}"></script>
     {% endif %}
-</body>
-
-</html>
+{% endblock %}

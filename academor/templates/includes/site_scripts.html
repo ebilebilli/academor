@@ -2,8 +2,11 @@
 {% compress js file academor_lazy %}
 <script defer src="{% static 'assets/js/academor-lazy-brand.js' %}"></script>
 {% endcompress %}
-<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+{# Vendor libs are self-hosted at pinned versions (Bootstrap CSS + JS both 5.3.3). #}
+{% compress js file academor_vendor_libs %}
+<script defer src="{% static 'assets/vendor/bootstrap-5.3.3/bootstrap.bundle.min.js' %}"></script>
+<script defer src="{% static 'assets/vendor/swiper-11.2.10/swiper-bundle.min.js' %}"></script>
+{% endcompress %}
 {% compress js file academor_vendor %}
 <script defer src="{% static 'assets/js/scroll-reveal.js' %}"></script>
 <script defer src="{% static 'assets/js/detail-back.js' %}"></script>

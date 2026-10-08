@@ -28,7 +28,7 @@
                             <div class="abroad-hero__actions">
                                 <a href="{% url 'projects:abroad-page' %}" class="btn btn-outline-accent rounded-pill px-4 px-md-5 fw-semibold">
                                     {% trans "All study abroad information" %}
-                                    <i class="fas fa-arrow-right ms-2 small" aria-hidden="true"></i>
+                                    <i class="bi bi-arrow-right ms-2 small" aria-hidden="true"></i>
                                 </a>
                             </div>
                             {% endif %}
@@ -255,7 +255,7 @@
                         {% if item.img %}
                         {% academor_branded_lazy_img item.img item.name img_class='abroad-card__thumb' layout='circle' width='90' height='90' loading='lazy' %}
                         {% else %}
-                        <i class="fa fa-angle-left abroad-card__icon" aria-hidden="true"></i>
+                        <i class="bi bi-chevron-left abroad-card__icon" aria-hidden="true"></i>
                         {% endif %}
                     </div>
                     {% if item.name %}
@@ -263,7 +263,7 @@
                     {% else %}
                     <span class="visually-hidden">{% trans "Study abroad" %}</span>
                     {% endif %}
-                    <span class="abroad-card__cta" aria-hidden="true"><i class="fa fa-arrow-right"></i></span>
+                    <span class="abroad-card__cta" aria-hidden="true"><i class="bi bi-arrow-right"></i></span>
                 </a>
             </div>
             {% endfor %}

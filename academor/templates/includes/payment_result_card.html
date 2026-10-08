@@ -3,11 +3,11 @@
 <div class="payment-result-card payment-result-card--{{ variant }} text-center">
     <div class="payment-result-card__icon payment-result-card__icon--{{ variant }}" aria-hidden="true">
         {% if variant == 'success' %}
-        <i class="fas fa-check"></i>
+        <i class="bi bi-check-lg"></i>
         {% elif variant == 'error' %}
-        <i class="fas fa-exclamation"></i>
+        <i class="bi bi-exclamation-lg"></i>
         {% else %}
-        <i class="fas fa-times"></i>
+        <i class="bi bi-x-lg"></i>
         {% endif %}
     </div>
     <p class="payment-result-card__eyebrow payment-result-card__eyebrow--{{ variant }} mb-0">{{ eyebrow }}</p>

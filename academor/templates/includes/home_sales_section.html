@@ -4,12 +4,12 @@
 <style>
 .home-sales-section {
     position: relative;
-    background-color: var(--site-surface, #f7f9fb);
+    background-color: var(--site-surface, var(--surface));
     overflow: hidden;
 }
 .home-sales-section__inner {
     position: relative;
-    z-index: 1;
+    z-index: var(--z-raised);
     padding: clamp(2.25rem, 5vw, 3.25rem) 0 clamp(2.5rem, 6vw, 3.5rem);
 }
 .home-sales-section__header {
@@ -24,7 +24,7 @@
     font-weight: 800;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--accent, #ff5414);
+    color: var(--accent, var(--accent));
 }
 .home-sales-section__eyebrow::before {
     content: '';
@@ -38,7 +38,7 @@
     margin: 0;
     font-size: clamp(1.45rem, 3vw, 2rem);
     font-weight: 800;
-    color: var(--bs-primary, #00313d);
+    color: var(--bs-primary, var(--foreground));
     letter-spacing: -0.03em;
     line-height: 1.15;
 }
@@ -54,9 +54,9 @@
     max-height: clamp(220px, 28vw, 280px);
     border-radius: 12px;
     overflow: hidden;
-    border: 1px solid rgba(0, 49, 61, 0.14);
-    background-color: var(--primary, #00313d);
-    box-shadow: 0 8px 24px rgba(0, 49, 61, 0.1);
+    border: 1px solid rgb(var(--primary-rgb) / 0.14);
+    background-color: var(--primary, var(--primary));
+    box-shadow: 0 8px 24px rgb(var(--primary-rgb) / 0.1);
     transition:
         transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
         box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
@@ -75,31 +75,31 @@
 .discount-banner__overlay {
     position: absolute;
     inset: 0;
-    z-index: 1;
-    background-color: rgba(0, 49, 61, 0.78);
+    z-index: var(--z-raised);
+    background-color: rgb(var(--primary-rgb) / 0.78);
     transition: background-color 0.35s ease;
     pointer-events: none;
 }
 .discount-banner:hover {
-    border-color: rgba(0, 49, 61, 0.42);
+    border-color: rgb(var(--primary-rgb) / 0.42);
     transform: translateY(-6px);
-    box-shadow: 0 22px 44px rgba(0, 49, 61, 0.22);
+    box-shadow: 0 22px 44px rgb(var(--primary-rgb) / 0.22);
 }
 .discount-banner:hover .discount-banner__overlay {
-    background-color: rgba(0, 49, 61, 0.88);
+    background-color: rgb(var(--primary-rgb) / 0.88);
 }
 .discount-banner:hover .discount-banner__img {
     transform: scale(1.05);
 }
 .discount-banner--no-image .discount-banner__overlay {
-    background-color: rgba(0, 49, 61, 0.28);
+    background-color: rgb(var(--primary-rgb) / 0.28);
 }
 .discount-banner--no-image:hover .discount-banner__overlay {
-    background-color: rgba(0, 49, 61, 0.38);
+    background-color: rgb(var(--primary-rgb) / 0.38);
 }
 .discount-banner__body {
     position: relative;
-    z-index: 2;
+    z-index: var(--z-raised-2);
     display: flex;
     flex-direction: row;
     align-items: stretch;
@@ -124,8 +124,8 @@
     font-size: clamp(1.05rem, 2.2vw, 1.35rem);
     font-weight: 800;
     line-height: 1.22;
-    color: #ffffff;
-    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
+    color: var(--on-dark);
+    text-shadow: 0 2px 14px rgb(var(--overlay-rgb) / 0.35);
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
@@ -136,8 +136,8 @@
     max-width: none;
     font-size: clamp(0.84rem, 1.6vw, 0.92rem);
     line-height: 1.45;
-    color: rgba(255, 255, 255, 0.94);
-    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.28);
+    color: rgb(var(--on-dark-rgb) / 0.94);
+    text-shadow: 0 1px 10px rgb(var(--overlay-rgb) / 0.28);
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
@@ -169,12 +169,12 @@
     min-height: 1.15rem;
     font-size: 0.78rem;
     line-height: 1;
-    color: rgba(255, 255, 255, 0.78);
+    color: rgb(var(--on-dark-rgb) / 0.78);
     white-space: nowrap;
 }
 .discount-banner__deadline-icon {
     font-size: 0.68rem;
-    color: var(--accent, #ff5414);
+    color: var(--accent, var(--accent));
     opacity: 0.95;
 }
 .discount-banner__deadline-label {
@@ -182,21 +182,21 @@
     letter-spacing: 0.04em;
     text-transform: uppercase;
     font-size: 0.68rem;
-    color: rgba(255, 255, 255, 0.72);
+    color: rgb(var(--on-dark-rgb) / 0.72);
 }
 .discount-banner__deadline-sep {
-    color: rgba(255, 255, 255, 0.35);
+    color: rgb(var(--on-dark-rgb) / 0.35);
     font-weight: 700;
 }
 .discount-banner__deadline-date {
     font-size: 0.8rem;
     font-weight: 700;
-    color: #ffffff;
+    color: var(--on-dark);
     letter-spacing: 0.01em;
 }
 .discount-banner__badge {
     position: relative;
-    z-index: 3;
+    z-index: var(--z-raised-3);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -206,8 +206,8 @@
     width: clamp(96px, 14vw, 118px);
     min-width: 96px;
     padding: 0.65rem 0.55rem;
-    background-color: var(--accent, #ff5414);
-    border-left: 1px solid rgba(255, 255, 255, 0.22);
+    background-color: var(--accent, var(--accent));
+    border-left: 1px solid rgb(var(--card-rgb) / 0.22);
     box-shadow: none;
     text-align: center;
     transition: filter 0.35s ease;
@@ -220,29 +220,29 @@
 .discount-banner .hbh-see-all:focus,
 .discount-banner .hbh-see-all:active,
 .discount-banner .hbh-see-all:visited {
-    background: var(--accent, #ff5414) !important;
-    border-color: var(--accent, #ff5414) !important;
-    color: #fff !important;
-    box-shadow: 0 4px 18px rgba(255, 84, 20, 0.35);
+    background: var(--accent, var(--accent)) !important;
+    border-color: var(--accent, var(--accent)) !important;
+    color: var(--on-dark) !important;
+    box-shadow: 0 4px 18px rgb(var(--accent-rgb) / 0.35);
 }
 .discount-banner .hbh-see-all:hover,
 .discount-banner .hbh-see-all:focus {
     transform: translateY(-2px);
-    box-shadow: 0 8px 26px rgba(255, 84, 20, 0.45);
+    box-shadow: 0 8px 26px rgb(var(--accent-rgb) / 0.45);
 }
-.discount-banner .hbh-see-all:hover .fa,
-.discount-banner .hbh-see-all:focus .fa {
+.discount-banner .hbh-see-all:hover .bi,
+.discount-banner .hbh-see-all:focus .bi {
     transform: translateX(3px);
 }
 .discount-banner .hbh-see-all:focus-visible {
-    outline-color: rgba(255, 84, 20, 0.55);
+    outline-color: rgb(var(--accent-rgb) / 0.55);
 }
 .discount-banner__percent {
     display: block;
     font-size: clamp(1.45rem, 3.2vw, 1.85rem);
     font-weight: 900;
     line-height: 1;
-    color: #ffffff;
+    color: var(--on-dark);
     letter-spacing: -0.03em;
 }
 .discount-banner__percent-label {
@@ -252,7 +252,7 @@
     font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #ffffff;
+    color: var(--on-dark);
     white-space: nowrap;
     opacity: 1;
 }
@@ -262,7 +262,7 @@
     .discount-banner__img,
     .discount-banner__badge,
     .discount-banner .hbh-see-all,
-    .discount-banner .hbh-see-all .fa {
+    .discount-banner .hbh-see-all .bi {
         transition: none;
     }
     .discount-banner:hover {
@@ -275,8 +275,8 @@
     .discount-banner .hbh-see-all:focus {
         transform: none;
     }
-    .discount-banner .hbh-see-all:hover .fa,
-    .discount-banner .hbh-see-all:focus .fa {
+    .discount-banner .hbh-see-all:hover .bi,
+    .discount-banner .hbh-see-all:focus .bi {
         transform: none;
     }
 }
@@ -301,7 +301,7 @@
         gap: 0.35rem;
         padding: 0.55rem 0.85rem;
         border-left: 0;
-        border-top: 1px solid rgba(255, 255, 255, 0.22);
+        border-top: 1px solid rgb(var(--card-rgb) / 0.22);
     }
     .discount-banner__percent-label {
         margin-top: 0;

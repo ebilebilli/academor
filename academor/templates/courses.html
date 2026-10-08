@@ -1,16 +1,9 @@
-<!DOCTYPE html>
-{% load static i18n %}{% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
+{% extends "base.html" %}
+{% load static i18n %}
 
-<head>
-    {% include "includes/site_layout_head.html" with lcp_image_url=lcp_image_url %}
-</head>
+{% block layout_head %}{% include "includes/site_layout_head.html" with lcp_image_url=lcp_image_url %}{% endblock %}
 
-<body>
-    {% include "includes/site_spinner.html" %}
-
-    {% include "includes/site_navbar.html" %}
-
+{% block content %}
     <main id="main-content">
     {% include "includes/page_header_banner.html" %}
 
@@ -37,10 +30,4 @@
     </div>
     {% endif %}
     </main>
-
-    {% include "includes/site_footer.html" %}
-
-    {% include "includes/site_scripts.html" %}
-</body>
-
-</html>
+{% endblock %}

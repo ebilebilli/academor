@@ -1,14 +1,13 @@
-<!DOCTYPE html>
-{% load static i18n %}{% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
-<head>
-    {% include "includes/site_layout_head.html" %}
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block extra_head %}
     <style>
         .mock-results-page {
-            --mr-primary: var(--bs-primary, #00313d);
-            --mr-border: rgba(0, 49, 61, 0.1);
-            --mr-muted: #64748b;
-            --mr-surface: #f4f7f8;
+            --mr-primary: var(--bs-primary, var(--primary));
+            --mr-border: rgb(var(--primary-rgb) / 0.1);
+            --mr-muted: var(--muted-foreground);
+            --mr-surface: var(--surface);
             --mr-radius: 16px;
         }
         .mock-results-page__intro {
@@ -42,10 +41,10 @@
         .mock-results-panel {
             display: flex;
             flex-direction: column;
-            background: #fff;
+            background: var(--card);
             border: 1px solid var(--mr-border);
             border-radius: var(--mr-radius);
-            box-shadow: 0 10px 28px rgba(0, 49, 61, 0.06);
+            box-shadow: 0 10px 28px rgb(var(--primary-rgb) / 0.06);
             padding: 1.75rem;
             min-height: 100%;
         }
@@ -81,7 +80,7 @@
         }
         .mock-results-form .form-control:focus {
             border-color: var(--mr-primary);
-            box-shadow: 0 0 0 0.2rem rgba(0, 49, 61, 0.12);
+            box-shadow: 0 0 0 0.2rem rgb(var(--primary-rgb) / 0.12);
         }
         .mock-results-form__submit {
             min-height: 48px;
@@ -137,7 +136,7 @@
             display: block;
             font-size: 1.05rem;
             font-weight: 700;
-            color: #0f172a;
+            color: var(--primary-deep);
             word-break: break-word;
         }
         .mock-results-alert {
@@ -162,7 +161,7 @@
         .mock-results-top5__tab {
             border: 1px solid var(--mr-border);
             background: var(--mr-surface);
-            color: #0f172a;
+            color: var(--primary-deep);
             border-radius: 999px;
             padding: 0.4rem 0.9rem;
             font-size: 0.8rem;
@@ -172,12 +171,12 @@
             transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
         }
         .mock-results-top5__tab:hover {
-            border-color: rgba(0, 49, 61, 0.35);
+            border-color: rgb(var(--primary-rgb) / 0.35);
         }
         .mock-results-top5__tab.is-active {
             background: var(--mr-primary);
             border-color: var(--mr-primary);
-            color: #fff;
+            color: var(--on-dark);
         }
         .mock-results-top5__tab:disabled {
             opacity: 0.65;
@@ -211,7 +210,7 @@
             width: 2rem;
             height: 2rem;
             border-radius: 999px;
-            background: rgba(0, 49, 61, 0.08);
+            background: rgb(var(--primary-rgb) / 0.08);
             color: var(--mr-primary);
             font-size: 0.85rem;
             font-weight: 700;
@@ -222,7 +221,7 @@
         .mock-results-top5__name {
             min-width: 0;
             font-weight: 600;
-            color: #0f172a;
+            color: var(--primary-deep);
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -252,11 +251,9 @@
             font-size: 0.95rem;
         }
     </style>
-</head>
-<body>
-    {% include "includes/site_spinner.html" %}
-    {% include "includes/site_navbar.html" %}
+{% endblock %}
 
+{% block content %}
     <div class="container-xxl py-5 mock-results-page">
         <div class="container">
             <div class="mock-results-page__intro wow fadeInUp" data-wow-delay="0.1s">
@@ -361,9 +358,9 @@
             </div>
         </div>
     </div>
+{% endblock %}
 
-    {% include "includes/site_footer.html" %}
-    {% include "includes/site_scripts.html" %}
+{% block extra_js %}
     <script>
     (function () {
         function escapeHtml(value) {
@@ -589,5 +586,4 @@
         });
     })();
     </script>
-</body>
-</html>
+{% endblock %}

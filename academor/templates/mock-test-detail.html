@@ -1,15 +1,16 @@
-<!DOCTYPE html>
-{% load i18n static %}{% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
-<head>
-    {% include "includes/site_layout_head.html" with page_title=page_title page_description=page_description page_keywords=page_keywords og_image_url=og_image_url og_type=og_type structured_data_json=structured_data_json %}
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block layout_head %}{% include "includes/site_layout_head.html" with page_title=page_title page_description=page_description page_keywords=page_keywords og_image_url=og_image_url og_type=og_type structured_data_json=structured_data_json %}{% endblock %}
+
+{% block extra_head %}
     {% include "includes/payment_ui_head.html" %}
     <link href="{% static 'assets/css/mock-test-detail.css' %}" rel="stylesheet">
-</head>
-<body class="mock-detail-body">
-    {% include "includes/site_spinner.html" %}
-    {% include "includes/site_navbar.html" %}
+{% endblock %}
 
+{% block body_attrs %} class="mock-detail-body"{% endblock %}
+
+{% block content %}
     <main id="main-content" class="mock-detail-page">
         <section class="mock-detail-hero" aria-labelledby="mock-detail-title">
             <div class="mock-detail-hero__bg" aria-hidden="true"></div>
@@ -31,7 +32,7 @@
                             <ul class="mock-detail-hero__highlights list-unstyled mb-0">
                                 {% for item in course.bullet_items %}
                                 <li>
-                                    <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                    <i class="bi bi-check-circle" aria-hidden="true"></i>
                                     <span>{{ item }}</span>
                                 </li>
                                 {% endfor %}
@@ -57,11 +58,11 @@
                         <div class="mock-detail-hero__contact mock-detail-hero__contact--inline wow fadeInUp" data-wow-delay="0.15s">
                             <a href="{% url 'projects:contact-page' %}" class="mock-detail-hero__action-btn">
                                 {% trans "Contact us" %}
-                                <i class="fas fa-arrow-right ms-2 small" aria-hidden="true"></i>
+                                <i class="bi bi-arrow-right ms-2 small" aria-hidden="true"></i>
                             </a>
                             {% if footer_contact.whatsapp_number_me %}
                             <a href="https://wa.me/{{ footer_contact.whatsapp_number_me }}" class="mock-detail-hero__contact-btn mock-detail-hero__contact-btn--whatsapp" target="_blank" rel="noopener noreferrer">
-                                <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                                <i class="bi bi-whatsapp" aria-hidden="true"></i>
                                 {% trans "WhatsApp" %}
                             </a>
                             {% endif %}
@@ -104,7 +105,7 @@
                                         <img src="{{ trainer.image }}" alt="{{ trainer.name }}" loading="lazy" decoding="async" width="400" height="400">
                                         {% else %}
                                         <div class="mock-detail-trainer-card__placeholder">
-                                            <i class="fa fa-user" aria-hidden="true"></i>
+                                            <i class="bi bi-person" aria-hidden="true"></i>
                                         </div>
                                         {% endif %}
                                     </div>
@@ -126,11 +127,10 @@
         {% include "includes/course_detail_payment_modal.html" %}
         {% endif %}
     </main>
+{% endblock %}
 
-    {% include "includes/site_footer.html" %}
-    {% include "includes/site_scripts.html" %}
+{% block extra_js %}
     {% if course.has_payment and payment_form %}
     {% include "includes/payment_ui_scripts.html" %}
     {% endif %}
-</body>
-</html>
+{% endblock %}

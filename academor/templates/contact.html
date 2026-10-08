@@ -1,17 +1,7 @@
-<!DOCTYPE html>
-{% load static i18n %}{% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
+{% extends "base.html" %}
+{% load static i18n %}
 
-<head>
-    {% include "includes/site_layout_head.html" %}
-</head>
-
-<body>
-    {% include "includes/site_spinner.html" %}
-
-
-    <!-- Navbar Start -->
-    {% include "includes/site_navbar.html" %}
+{% block content %}
     <!-- Navbar End -->
 
 
@@ -58,7 +48,7 @@
                         <ul class="contact-info-list list-unstyled mb-0">
                             <li class="contact-info-item">
                                 <span class="contact-info-item__icon" aria-hidden="true">
-                                    <i class="fa fa-map-marker-alt"></i>
+                                    <i class="bi bi-geo-alt"></i>
                                 </span>
                                 <div class="contact-info-item__body">
                                     <span class="contact-info-item__label">{% trans "Office" %}</span>
@@ -68,7 +58,7 @@
                             {% if contact.phone %}
                             <li class="contact-info-item">
                                 <span class="contact-info-item__icon" aria-hidden="true">
-                                    <i class="fa fa-phone-alt"></i>
+                                    <i class="bi bi-telephone"></i>
                                 </span>
                                 <div class="contact-info-item__body">
                                     <span class="contact-info-item__label">{% trans "Phone" %}</span>
@@ -82,7 +72,7 @@
                             {% if contact.whatsapp_number or contact.whatsapp_number_2 %}
                             <li class="contact-info-item contact-info-item--whatsapp">
                                 <span class="contact-info-item__icon" aria-hidden="true">
-                                    <i class="fab fa-whatsapp"></i>
+                                    <i class="bi bi-whatsapp"></i>
                                 </span>
                                 <div class="contact-info-item__body">
                                     <span class="contact-info-item__label">{% trans "WhatsApp" %}</span>
@@ -100,7 +90,7 @@
                             {% if contact.email or contact.email_2 or contact.email_3 %}
                             <li class="contact-info-item">
                                 <span class="contact-info-item__icon" aria-hidden="true">
-                                    <i class="fa fa-envelope-open"></i>
+                                    <i class="bi bi-envelope-open"></i>
                                 </span>
                                 <div class="contact-info-item__body">
                                     <span class="contact-info-item__label">{% trans "Email" %}</span>
@@ -116,11 +106,11 @@
                         {% if contact.instagram or contact.linkedn or contact.facebook or contact.youtube or contact.tiktok %}
                         <div class="contact-info-social">
                             <div class="contact-info-social__links">
-                                {% if contact.instagram %}<a class="contact-info-social__link" href="{{ contact.instagram }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'Instagram' %}"><i class="fab fa-instagram" aria-hidden="true"></i></a>{% endif %}
-                                {% if contact.linkedn %}<a class="contact-info-social__link" href="{{ contact.linkedn }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'LinkedIn' %}"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>{% endif %}
-                                {% if contact.facebook %}<a class="contact-info-social__link" href="{{ contact.facebook }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'Facebook' %}"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>{% endif %}
-                                {% if contact.youtube %}<a class="contact-info-social__link" href="{{ contact.youtube }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'YouTube' %}"><i class="fab fa-youtube" aria-hidden="true"></i></a>{% endif %}
-                                {% if contact.tiktok %}<a class="contact-info-social__link" href="{{ contact.tiktok }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'TikTok' %}"><i class="fab fa-tiktok" aria-hidden="true"></i></a>{% endif %}
+                                {% if contact.instagram %}<a class="contact-info-social__link" href="{{ contact.instagram }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'Instagram' %}"><i class="bi bi-instagram" aria-hidden="true"></i></a>{% endif %}
+                                {% if contact.linkedn %}<a class="contact-info-social__link" href="{{ contact.linkedn }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'LinkedIn' %}"><i class="bi bi-linkedin" aria-hidden="true"></i></a>{% endif %}
+                                {% if contact.facebook %}<a class="contact-info-social__link" href="{{ contact.facebook }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'Facebook' %}"><i class="bi bi-facebook" aria-hidden="true"></i></a>{% endif %}
+                                {% if contact.youtube %}<a class="contact-info-social__link" href="{{ contact.youtube }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'YouTube' %}"><i class="bi bi-youtube" aria-hidden="true"></i></a>{% endif %}
+                                {% if contact.tiktok %}<a class="contact-info-social__link" href="{{ contact.tiktok }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'TikTok' %}"><i class="bi bi-tiktok" aria-hidden="true"></i></a>{% endif %}
                             </div>
                         </div>
                         {% endif %}
@@ -157,7 +147,7 @@
                                     {{ form.full_name }}
                                     <label for="{{ form.full_name.id_for_label }}">
                                         {{ form.full_name.label }}
-                                        <i class="fas fa-star form-field-required" aria-hidden="true"></i>
+                                        <i class="bi bi-star-fill form-field-required" aria-hidden="true"></i>
                                         <span class="visually-hidden">{% trans "Required field" %}</span>
                                     </label>
                                 </div>
@@ -175,7 +165,7 @@
                                     {{ form.mobile_number }}
                                     <label for="{{ form.mobile_number.id_for_label }}">
                                         {{ form.mobile_number.label }}
-                                        <i class="fas fa-star form-field-required" aria-hidden="true"></i>
+                                        <i class="bi bi-star-fill form-field-required" aria-hidden="true"></i>
                                         <span class="visually-hidden">{% trans "Required field" %}</span>
                                     </label>
                                 </div>
@@ -186,7 +176,7 @@
                                     {{ form.subject }}
                                     <label for="{{ form.subject.id_for_label }}">
                                         {{ form.subject.label }}
-                                        <i class="fas fa-star form-field-required" aria-hidden="true"></i>
+                                        <i class="bi bi-star-fill form-field-required" aria-hidden="true"></i>
                                         <span class="visually-hidden">{% trans "Required field" %}</span>
                                     </label>
                                 </div>
@@ -197,7 +187,7 @@
                                     {{ form.info }}
                                     <label for="{{ form.info.id_for_label }}">
                                         {{ form.info.label }}
-                                        <i class="fas fa-star form-field-required" aria-hidden="true"></i>
+                                        <i class="bi bi-star-fill form-field-required" aria-hidden="true"></i>
                                         <span class="visually-hidden">{% trans "Required field" %}</span>
                                     </label>
                                 </div>
@@ -212,7 +202,7 @@
                             <div class="col-12">
                                 <button class="btn btn-primary contact-form-submit w-100" type="submit" id="contact-form-submit">
                                     {% trans "Send Message" %}
-                                    <i class="fa fa-paper-plane ms-2" aria-hidden="true"></i>
+                                    <i class="bi bi-send ms-2" aria-hidden="true"></i>
                                 </button>
                             </div>
                         </div>
@@ -223,12 +213,9 @@
         </div>
     </section>
     <!-- Contact End -->
+{% endblock %}
 
-
-    {% include "includes/site_footer.html" %}
-
-
-    {% include "includes/site_scripts.html" %}
+{% block extra_js %}
     {% include "includes/turnstile_script.html" %}
     <script>
     (function () {
@@ -331,6 +318,4 @@
         });
     })();
     </script>
-</body>
-
-</html>
+{% endblock %}

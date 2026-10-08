@@ -1,28 +1,29 @@
-<!DOCTYPE html>
-{% load static i18n %}{% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
-<head>
-    {% include "includes/site_layout_head.html" with page_title=page_title %}
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block layout_head %}{% include "includes/site_layout_head.html" with page_title=page_title %}{% endblock %}
+
+{% block extra_head %}
     <style>
 html{color-scheme:light}
-body{background:#FFE9DF!important}
+body{background:var(--accent-subtle)!important}
 .lucky-wheel-page{
-  --orange:#FF5414;
-  --tiber:#00313D;
-  --cream:#FFF3EB;
-  --bg:#FFE9DF;
-  --fg:#00313D;
-  --muted:#3A5B64;
-  --blob:#FFD3C0;
-  --card:#FFFFFF;
-  --stand:#00313D;
+  --orange:var(--accent);
+  --tiber:var(--primary);
+  --cream:var(--accent-soft);
+  --bg:var(--accent-subtle);
+  --fg:var(--primary);
+  --muted:var(--soft-foreground);
+  --blob:var(--accent-muted);
+  --card:var(--card);
+  --stand:var(--primary);
   --pants:#15100E;
-  --shirt:#00313D;
+  --shirt:var(--primary);
   --skin:#FCDFCE;
   --ear:#F3CAB6;
-  --shadow:rgba(0,49,61,.16);
-  --field:#FFFFFF;
-  --line:rgba(0,49,61,.35);
+  --shadow:rgb(var(--primary-rgb) / 0.16);
+  --field:var(--card);
+  --line:rgb(var(--primary-rgb) / 0.35);
   color-scheme:light;
   background:var(--bg);
   color:var(--fg);
@@ -53,18 +54,18 @@ body{background:#FFE9DF!important}
 .lucky-wheel-page .btn{
   font:inherit;font-weight:800;font-size:1.15rem;padding:15px 26px;border:0;border-radius:14px;cursor:pointer;
   background:var(--orange);color:var(--tiber);
-  box-shadow:0 5px 0 rgba(0,49,61,.9);transition:transform .08s ease,box-shadow .08s ease,filter .15s;
+  box-shadow:0 5px 0 rgb(var(--primary-rgb) / 0.9);transition:transform .08s ease,box-shadow .08s ease,filter .15s;
 }
 .lucky-wheel-page .btn:hover{filter:brightness(1.06)}
-.lucky-wheel-page .btn:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,49,61,.9)}
-.lucky-wheel-page .btn[disabled]{cursor:progress;filter:saturate(.7) brightness(.95);transform:translateY(4px);box-shadow:0 1px 0 rgba(0,49,61,.9)}
+.lucky-wheel-page .btn:active{transform:translateY(4px);box-shadow:0 1px 0 rgb(var(--primary-rgb) / 0.9)}
+.lucky-wheel-page .btn[disabled]{cursor:progress;filter:saturate(.7) brightness(.95);transform:translateY(4px);box-shadow:0 1px 0 rgb(var(--primary-rgb) / 0.9)}
 .lucky-wheel-page .spin-btn{
   display:inline-flex;align-items:center;justify-content:center;
   flex:0 0 auto;min-height:52px;padding:14px 26px;
   border-radius:999px;border:0;cursor:pointer;
   font:inherit;font-weight:800;font-size:1.05rem;letter-spacing:-.01em;line-height:1.1;
-  color:#fff;background:linear-gradient(135deg,#FF6A2E 0%,#FF5414 48%,#E8480E 100%);
-  box-shadow:0 1px 0 rgba(255,255,255,.35) inset,0 8px 18px rgba(255,84,20,.28);
+  color:var(--on-dark);background:linear-gradient(135deg,var(--tagline-orange) 0%,var(--accent) 48%,var(--accent-hover) 100%);
+  box-shadow:0 1px 0 rgb(var(--card-rgb) / 0.35) inset,0 8px 18px rgb(var(--accent-rgb) / 0.28);
   transition:filter .15s ease,opacity .15s ease;
 }
 .lucky-wheel-page .spin-btn:hover{filter:brightness(1.06)}
@@ -74,10 +75,10 @@ body{background:#FFE9DF!important}
 }
 .lucky-wheel-page .spin-btn-label{position:relative}
 .lucky-wheel-page .btn.ghost{background:transparent;color:var(--fg);box-shadow:none;border:2px solid var(--line);font-weight:600;font-size:1rem;transition:background .15s ease,border-color .15s ease}
-.lucky-wheel-page .btn.ghost:hover{background:rgba(0,49,61,.06);border-color:var(--tiber)}
-.lucky-wheel-page .btn.ghost:active{background:rgba(0,49,61,.1)}
+.lucky-wheel-page .btn.ghost:hover{background:rgb(var(--primary-rgb) / 0.06);border-color:var(--tiber)}
+.lucky-wheel-page .btn.ghost:active{background:rgb(var(--primary-rgb) / 0.1)}
 .lucky-wheel-page :focus-visible{outline:3px solid var(--orange);outline-offset:3px}
-.lucky-wheel-page .err{min-height:1.4em;margin:8px 0 0;color:#C23A00;font-weight:600;font-size:.95rem}
+.lucky-wheel-page .err{min-height:1.4em;margin:8px 0 0;color:var(--accent-strong);font-weight:600;font-size:.95rem}
 .lucky-wheel-page .note{font-size:.9rem;color:var(--muted);margin:6px 0 0;max-width:40ch}
 .lucky-wheel-page .stage{position:relative;min-width:0}
 .lucky-wheel-page .stage svg{display:block;width:100%;height:auto;max-height:min(92vh,860px)}
@@ -85,14 +86,14 @@ body{background:#FFE9DF!important}
 .lucky-wheel-page .sleeve{stroke:var(--shirt)}
 .lucky-wheel-page .skin{fill:var(--skin)}
 .lucky-wheel-page .skin-s{stroke:var(--skin)}
-.lucky-wheel-page .seg-a{fill:#FF5414}
-.lucky-wheel-page .seg-b{fill:#FFF3EB}
-.lucky-wheel-page .lbl{fill:#00313D;font-family:'Host Grotesk',sans-serif;font-weight:800}
-.lucky-wheel-page .bulb{fill:#FF5414;transition:fill .05s}
-.lucky-wheel-page .bulb.on{fill:#FFF6F0}
+.lucky-wheel-page .seg-a{fill:var(--accent)}
+.lucky-wheel-page .seg-b{fill:var(--accent-soft)}
+.lucky-wheel-page .lbl{fill:var(--foreground);font-family:'Host Grotesk',sans-serif;font-weight:800}
+.lucky-wheel-page .bulb{fill:var(--accent);transition:fill .05s}
+.lucky-wheel-page .bulb.on{fill:var(--accent-soft)}
 .lucky-wheel-page .prize-rail{
-  align-self:start;padding:0;border-radius:18px;background:rgba(255,255,255,.72);
-  border:1px solid rgba(0,49,61,.1);box-shadow:0 8px 24px rgba(0,49,61,.06);overflow:hidden;
+  align-self:start;padding:0;border-radius:18px;background:rgb(var(--card-rgb) / 0.72);
+  border:1px solid rgb(var(--primary-rgb) / 0.1);box-shadow:0 8px 24px rgb(var(--primary-rgb) / 0.06);overflow:hidden;
 }
 .lucky-wheel-page .prize-rail summary{
   list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;
@@ -113,14 +114,14 @@ body{background:#FFE9DF!important}
 }
 .lucky-wheel-page .prize-rail li{
   font-size:.82rem;line-height:1.3;font-weight:600;color:var(--fg);
-  padding:8px 10px;border-radius:10px;background:rgba(255,243,235,.85);
+  padding:8px 10px;border-radius:10px;background:rgb(var(--accent-soft-rgb) / 0.85);
   border-left:3px solid var(--orange);
 }
 /* result */
-.lucky-wheel-page .overlay{position:fixed;inset:0;display:grid;place-items:center;padding:20px;background:rgba(0,35,43,.6);z-index:1080}
+.lucky-wheel-page .overlay{position:fixed;inset:0;display:grid;place-items:center;padding:20px;background:rgb(var(--primary-deep-rgb) / 0.6);z-index:var(--z-modal)}
 .lucky-wheel-page .card{
   background:var(--card);color:var(--fg);border-radius:26px;padding:30px 28px 26px;max-width:410px;width:100%;
-  text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.35);
+  text-align:center;box-shadow:0 24px 60px rgb(var(--overlay-rgb) / 0.35);
   animation:lucky-wheel-pop .35s cubic-bezier(.2,1.3,.4,1);
 }
 @keyframes lucky-wheel-pop{from{transform:scale(.85);opacity:0}to{transform:none;opacity:1}}
@@ -134,13 +135,13 @@ body{background:#FFE9DF!important}
 .lucky-wheel-page .actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 .lucky-wheel-page .btn.whatsapp{
   display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;
-  background:#25D366;color:#fff;box-shadow:0 5px 0 #128C7E;
+  background:var(--whatsapp);color:var(--on-dark);box-shadow:0 5px 0 var(--whatsapp-deep);
   transition:filter .15s ease;
 }
-.lucky-wheel-page .btn.whatsapp:hover{filter:brightness(1.06);color:#fff}
+.lucky-wheel-page .btn.whatsapp:hover{filter:brightness(1.06);color:var(--on-dark)}
 .lucky-wheel-page .btn.whatsapp:active{filter:brightness(.96)}
 .lucky-wheel-page .btn.whatsapp svg{width:1.25em;height:1.25em;flex-shrink:0}
-.lucky-wheel-page #confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:1090}
+.lucky-wheel-page #confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:var(--z-toast)}
 .lucky-wheel-page .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (max-width:1100px){
   .lucky-wheel-page .hero{grid-template-columns:minmax(0,1fr) minmax(200px,240px);gap:20px}
@@ -155,11 +156,9 @@ body{background:#FFE9DF!important}
 }
 @media (prefers-reduced-motion:reduce){.lucky-wheel-page .card{animation:none}}
 </style>
-</head>
-<body>
-    {% include "includes/site_spinner.html" %}
-    {% include "includes/site_navbar.html" %}
+{% endblock %}
 
+{% block content %}
     <main id="main-content" class="lucky-wheel-page">
 <div class="hero">
   <section class="copy">
@@ -379,9 +378,9 @@ body{background:#FFE9DF!important}
 <canvas id="confetti" aria-hidden="true"></canvas>
 
     </main>
+{% endblock %}
 
-    {% include "includes/site_footer.html" %}
-    {% include "includes/site_scripts.html" %}
+{% block extra_js %}
 <script type="application/json" id="lucky-wheel-prizes">{{ prizes_json|safe }}</script>
 <script type="application/json" id="lucky-wheel-ui">{{ ui_json|safe }}</script>
 <script>
@@ -873,5 +872,4 @@ function frame(ts){
 requestAnimationFrame(frame);
 })();
 </script>
-</body>
-</html>
+{% endblock %}

@@ -2,7 +2,7 @@
 <article class="home-price-card course-pay-card{% if pkg.is_premium %} course-pay-card--premium{% endif %}">
     <a href="{{ pkg.course.detail_url }}" class="home-price-card__course mb-0">
         <span class="home-price-card__course-name">{{ pkg.course.name }}</span>
-        <i class="fas fa-arrow-right home-price-card__course-arrow" aria-hidden="true"></i>
+        <i class="bi bi-arrow-right home-price-card__course-arrow" aria-hidden="true"></i>
     </a>
 
     <div class="course-pay-card__header">
@@ -31,7 +31,7 @@
     <ul class="course-pay-card__features list-unstyled mb-0">
         {% if pkg.months_display %}
         <li>
-            <i class="fas fa-check-circle" aria-hidden="true"></i>
+            <i class="bi bi-check-circle" aria-hidden="true"></i>
             <span>
                 <span class="course-pay-card__feature-label">{% trans "Months" %}:</span>
                 {{ pkg.months_display }}
@@ -40,7 +40,7 @@
         {% endif %}
         {% if pkg.lesson_count %}
         <li>
-            <i class="fas fa-check-circle" aria-hidden="true"></i>
+            <i class="bi bi-check-circle" aria-hidden="true"></i>
             <span>
                 <span class="course-pay-card__feature-label">{% trans "Number of lessons" %}:</span>
                 {{ pkg.lesson_count }}
@@ -49,7 +49,7 @@
         {% endif %}
         {% if pkg.lesson_minutes_display %}
         <li>
-            <i class="fas fa-check-circle" aria-hidden="true"></i>
+            <i class="bi bi-check-circle" aria-hidden="true"></i>
             <span>{{ pkg.lesson_minutes_display }}</span>
         </li>
         {% endif %}

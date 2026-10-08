@@ -12,24 +12,17 @@
     var prefersReducedMotion =
         window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    /* Spinner */
-    var sp = qs("#spinner");
-    var spinnerHidden = false;
-    function hideSpinner() {
-        if (spinnerHidden || !sp) return;
-        spinnerHidden = true;
-        setTimeout(function () {
-            sp.classList.add("hide");
-            document.dispatchEvent(new CustomEvent("academor:page-ready"));
-        }, 50);
+    /* Page ready: public pages have no loader overlay, so reveals start once the DOM is parsed
+       (deferred scripts run before DOMContentLoaded). The portal login still renders the hidden
+       #spinner include, which needs no JS. */
+    function announcePageReady() {
+        document.dispatchEvent(new CustomEvent("academor:page-ready"));
     }
-    function hideSpinnerAfterLayout() {
-        requestAnimationFrame(function () {
-            requestAnimationFrame(hideSpinner);
-        });
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", announcePageReady);
+    } else {
+        announcePageReady();
     }
-    window.addEventListener("load", hideSpinnerAfterLayout);
-    setTimeout(hideSpinner, 4000);
 
     /* Pause marquee / globe / orbit / uni ticker when off-screen */
     function initPausableMotion() {

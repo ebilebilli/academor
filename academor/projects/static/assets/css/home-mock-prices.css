@@ -3,7 +3,7 @@
 .home-mock-prices-section {
     position: relative;
     overflow: hidden;
-    background: linear-gradient(180deg, #f3f7f8 0%, #fff 100%);
+    background: linear-gradient(180deg, var(--surface) 0%, var(--card) 100%);
 }
 
 .home-mock-prices-section__layout {
@@ -44,14 +44,14 @@
     font-weight: 800;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--accent, #ff5414);
+    color: var(--accent, var(--accent));
 }
 
 .home-mock-prices-section__title {
     margin: 0;
     font-size: clamp(1.45rem, 3vw, 2rem);
     font-weight: 800;
-    color: var(--bs-primary, #00313d);
+    color: var(--bs-primary, var(--foreground));
     letter-spacing: -0.03em;
     line-height: 1.15;
 }

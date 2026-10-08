@@ -8,38 +8,38 @@
     <style>
         /* ── Section bg ── */
         .home-blog-section {
-            background: var(--site-surface, #f7f9fb);
+            background: var(--site-surface, var(--surface));
             padding: 5rem 0 5.5rem;
         }
         .home-blog-section__bg {
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(ellipse 60% 50% at 0% 0%, rgba(255,84,20,.07) 0%, transparent 70%),
-                radial-gradient(ellipse 50% 60% at 100% 100%, rgba(0,49,61,.06) 0%, transparent 70%);
+                radial-gradient(ellipse 60% 50% at 0% 0%, rgb(var(--accent-rgb) / 0.07) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 60% at 100% 100%, rgb(var(--primary-rgb) / 0.06) 0%, transparent 70%);
             pointer-events: none;
         }
 
         /* ── Section header ── */
         .home-blog__eyebrow {
             display: inline-flex; align-items: center; gap: .45rem;
-            background: rgba(255,84,20,.1);
-            color: var(--accent, #FF5414);
+            background: rgb(var(--accent-rgb) / 0.1);
+            color: var(--accent, var(--accent));
             font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
             padding: .35rem .9rem;
             border-radius: 30px;
-            border: 1px solid rgba(255,84,20,.2);
+            border: 1px solid rgb(var(--accent-rgb) / 0.2);
             margin-bottom: 1rem;
         }
         .home-blog__title {
             font-size: clamp(1.7rem, 3.5vw, 2.5rem);
             font-weight: 800;
-            color: var(--bs-primary, #00313D);
+            color: var(--bs-primary, var(--foreground));
             line-height: 1.2;
             margin-bottom: .6rem;
         }
         .home-blog__sub {
-            color: #6b7a99;
+            color: var(--muted-foreground);
             font-size: 1rem;
             max-width: 500px;
             margin: 0 auto;
@@ -53,10 +53,10 @@
             overflow: hidden;
             height: 412px;
             text-decoration: none;
-            box-shadow: 0 8px 32px rgba(0,0,0,.13);
+            box-shadow: 0 8px 32px rgb(var(--overlay-rgb) / 0.13);
             transition: transform .35s ease, box-shadow .35s ease;
         }
-        .hb-hero:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(0,0,0,.2); }
+        .hb-hero:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgb(var(--overlay-rgb) / 0.2); }
         .hb-hero__img {
             position: absolute; inset: 0;
             width: 100%; height: 100%;
@@ -66,21 +66,21 @@
         .hb-hero:hover .hb-hero__img { transform: scale(1.05); }
         .hb-hero__no-img {
             position: absolute; inset: 0;
-            background: linear-gradient(135deg, var(--bs-primary,#00313D) 0%, #0e5060 100%);
+            background: linear-gradient(135deg, var(--bs-primary,var(--primary)) 0%, var(--primary-raised) 100%);
             display: flex; align-items: center; justify-content: center;
         }
         .hb-hero__overlay {
             position: absolute; bottom: 0; left: 0; right: 0;
             padding: 1.75rem 1.5rem 1.5rem;
-            background: linear-gradient(to top, rgba(0,0,0,.88) 0%, rgba(0,0,0,.3) 60%, transparent 100%);
+            background: linear-gradient(to top, rgb(var(--overlay-rgb) / 0.88) 0%, rgb(var(--overlay-rgb) / 0.3) 60%, transparent 100%);
         }
         /* Featured chip: translucent white pill; accent icon contrasts */
         .hb-hero__badge {
             display: inline-flex;
             align-items: center;
             gap: .3rem;
-            background: rgba(255, 255, 255, 0.94);
-            color: var(--bs-primary, #00313d);
+            background: rgb(var(--card-rgb) / 0.94);
+            color: var(--bs-primary, var(--foreground));
             font-size: .68rem;
             font-weight: 700;
             letter-spacing: .06em;
@@ -88,8 +88,8 @@
             padding: .24rem .65rem .22rem .58rem;
             border-radius: 6px;
             margin-bottom: .65rem;
-            border: 1px solid rgba(0, 49, 61, 0.12);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+            border: 1px solid rgb(var(--primary-rgb) / 0.12);
+            box-shadow: 0 2px 10px rgb(var(--overlay-rgb) / 0.18);
             backdrop-filter: blur(6px);
         }
         .hb-hero__badge .featured-badge-icon {
@@ -101,8 +101,8 @@
         }
         .hb-hero__date {
             display: inline-flex; align-items: center; gap: .3rem;
-            background: rgba(255,255,255,.18);
-            color: rgba(255,255,255,.9);
+            background: rgb(var(--card-rgb) / 0.18);
+            color: rgb(var(--on-dark-rgb) / 0.9);
             font-size: .7rem; font-weight: 600;
             padding: .2rem .6rem;
             border-radius: 4px;
@@ -113,15 +113,15 @@
         .hb-hero__title {
             font-size: 1.18rem;
             font-weight: 700;
-            color: #fff;
+            color: var(--on-dark);
             line-height: 1.4;
             margin-bottom: .5rem;
-            text-shadow: 0 1px 6px rgba(0,0,0,.4);
+            text-shadow: 0 1px 6px rgb(var(--overlay-rgb) / 0.4);
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
         }
         .hb-hero__excerpt {
             font-size: .82rem;
-            color: rgba(255,255,255,.72);
+            color: rgb(var(--on-dark-rgb) / 0.72);
             line-height: 1.55;
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
             margin-bottom: 0;
@@ -130,13 +130,13 @@
             position: absolute; top: 1.1rem; right: 1.1rem;
             width: 38px; height: 38px;
             border-radius: 50%;
-            background: rgba(255,255,255,.15);
+            background: rgb(var(--card-rgb) / 0.15);
             display: flex; align-items: center; justify-content: center;
-            color: #fff; font-size: .85rem;
+            color: var(--on-dark); font-size: .85rem;
             backdrop-filter: blur(4px);
             transition: background .25s, transform .25s;
         }
-        .hb-hero:hover .hb-hero__arrow { background: var(--accent,#FF5414); transform: rotate(-45deg); }
+        .hb-hero:hover .hb-hero__arrow { background: var(--accent,var(--accent)); transform: rotate(-45deg); }
 
         /* ── Regular post cards ── */
         .hb-card {
@@ -144,20 +144,20 @@
             align-items: stretch;
             border-radius: 14px;
             overflow: hidden;
-            background: #fff;
-            border: 1px solid rgba(0, 49, 61, 0.14);
+            background: var(--card);
+            border: 1px solid rgb(var(--primary-rgb) / 0.14);
             box-shadow:
-                0 4px 16px rgba(0, 49, 61, 0.06),
-                0 10px 28px rgba(0, 49, 61, 0.08);
+                0 4px 16px rgb(var(--primary-rgb) / 0.06),
+                0 10px 28px rgb(var(--primary-rgb) / 0.08);
             text-decoration: none;
             transition: transform .3s ease, box-shadow .3s ease, border-color .25s ease;
         }
         .hb-card:hover {
             transform: translateY(-4px);
-            border-color: rgba(255, 84, 20, 0.22);
+            border-color: rgb(var(--accent-rgb) / 0.22);
             box-shadow:
-                0 8px 24px rgba(0, 49, 61, 0.08),
-                0 16px 40px rgba(0, 49, 61, 0.11);
+                0 8px 24px rgb(var(--primary-rgb) / 0.08),
+                0 16px 40px rgb(var(--primary-rgb) / 0.11);
         }
         .hb-card__thumb {
             flex-shrink: 0;
@@ -173,7 +173,7 @@
         .hb-card:hover .hb-card__thumb img { transform: scale(1.07); }
         .hb-card__thumb-placeholder {
             width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(0,49,61,.08), rgba(0,49,61,.16));
+            background: linear-gradient(135deg, rgb(var(--primary-rgb) / 0.08), rgb(var(--primary-rgb) / 0.16));
             display: flex; align-items: center; justify-content: center;
         }
         .hb-card__body {
@@ -184,8 +184,8 @@
         }
         .hb-card__date {
             display: inline-flex; align-items: center; gap: .28rem;
-            color: #fff;
-            background: var(--accent,#FF5414);
+            color: var(--on-dark);
+            background: var(--accent,var(--accent));
             font-size: .71rem; font-weight: 600;
             padding: .18rem .55rem; border-radius: 4px;
             margin-bottom: .5rem;
@@ -193,19 +193,19 @@
         }
         .hb-card__title {
             font-size: .96rem; font-weight: 700;
-            color: var(--bs-primary,#00313D);
+            color: var(--bs-primary,var(--foreground));
             line-height: 1.4; margin-bottom: .35rem;
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
         }
         .hb-card__excerpt {
-            font-size: .81rem; color: #8a9ab5; line-height: 1.55;
+            font-size: .81rem; color: var(--subtle-foreground); line-height: 1.55;
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
             margin-bottom: 0;
         }
         .hb-card__cta-arrow {
             align-self: flex-end;
             margin-top: .5rem;
-            color: var(--accent,#FF5414);
+            color: var(--accent,var(--accent));
             font-size: .8rem;
             transition: transform .2s;
         }
@@ -216,32 +216,32 @@
             display: inline-flex; align-items: center; gap: .55rem;
             padding: .75rem 2rem;
             border-radius: 50px;
-            background: var(--bs-primary,#00313D);
-            color: #fff;
+            background: var(--bs-primary,var(--primary));
+            color: var(--on-dark);
             font-size: .9rem; font-weight: 700; letter-spacing: .02em;
             text-decoration: none;
-            border: 2px solid var(--bs-primary,#00313D);
+            border: 2px solid var(--bs-primary,var(--primary));
             transition: background .25s, color .25s, transform .25s, box-shadow .25s;
         }
         .hb-cta:hover {
-            background: var(--accent,#FF5414);
-            border-color: var(--accent,#FF5414);
-            color: #fff;
+            background: var(--accent,var(--accent));
+            border-color: var(--accent,var(--accent));
+            color: var(--on-dark);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255,84,20,.3);
+            box-shadow: 0 6px 20px rgb(var(--accent-rgb) / 0.3);
         }
         .hb-cta .hb-cta__dot {
             width: 8px; height: 8px;
             border-radius: 50%;
-            background: var(--accent,#FF5414);
+            background: var(--accent,var(--accent));
             transition: background .25s;
         }
-        .hb-cta:hover .hb-cta__dot { background: #fff; }
+        .hb-cta:hover .hb-cta__dot { background: var(--card); }
 
         /* ── Divider line between featured & grid ── */
         .hb-divider {
             height: 1px;
-            background: linear-gradient(to right, transparent, rgba(0,49,61,.12), transparent);
+            background: linear-gradient(to right, transparent, rgb(var(--primary-rgb) / 0.12), transparent);
             margin: 2.5rem 0;
         }
 
@@ -269,7 +269,7 @@
             <!-- ── Section header ── -->
             <div class="text-center wow fadeInUp mb-5" data-wow-delay="0.05s">
                 <span class="home-blog__eyebrow">
-                    <i class="fa fa-newspaper" style="font-size:.7rem;"></i>
+                    <i class="bi bi-newspaper" style="font-size:.7rem;"></i>
                     {% trans "Blog" %}
                 </span>
                 <h2 id="home-blog-heading" class="home-blog__title">{% trans "Latest from Academor" %}</h2>
@@ -285,15 +285,15 @@
                         {% if post.cover %}
                         <img src="{{ post.cover }}" alt="{{ post.name }}" class="hb-hero__img" loading="lazy" decoding="async">
                         {% else %}
-                        <div class="hb-hero__no-img"><i class="fa fa-newspaper fa-3x text-white opacity-15"></i></div>
+                        <div class="hb-hero__no-img"><i class="bi bi-newspaper bi-3x text-white opacity-15"></i></div>
                         {% endif %}
-                        <div class="hb-hero__arrow"><i class="fa fa-arrow-right"></i></div>
+                        <div class="hb-hero__arrow"><i class="bi bi-arrow-right"></i></div>
                         <div class="hb-hero__overlay">
                             <div class="d-flex align-items-center flex-wrap gap-1 mb-1">
                                 <span class="hb-hero__badge"><img src="{% static 'assets/img/banner.webp' %}" alt="" class="featured-badge-icon" width="14" height="14" decoding="async">{% trans "Featured" %}</span>
                                 {% if post.date %}
                                 <span class="hb-hero__date">
-                                    <i class="fa fa-calendar-alt" style="font-size:.62rem;"></i>
+                                    <i class="bi bi-calendar3" style="font-size:.62rem;"></i>
                                     <time datetime="{{ post.date|date:'Y-m-d' }}">{{ post.date|date:"d M Y" }}</time>
                                 </span>
                                 {% endif %}
@@ -320,16 +320,16 @@
                             {% if post.cover %}
                             <img src="{{ post.cover }}" alt="{{ post.name }}" loading="lazy" decoding="async">
                             {% else %}
-                            <div class="hb-card__thumb-placeholder"><i class="fa fa-newspaper text-muted opacity-25"></i></div>
+                            <div class="hb-card__thumb-placeholder"><i class="bi bi-newspaper text-muted opacity-25"></i></div>
                             {% endif %}
                         </div>
                         <div class="hb-card__body">
                             {% if post.date %}
-                            <time class="hb-card__date"><i class="fa fa-calendar-alt" style="font-size:.62rem;"></i>{{ post.date|date:"d M Y" }}</time>
+                            <time class="hb-card__date"><i class="bi bi-calendar3" style="font-size:.62rem;"></i>{{ post.date|date:"d M Y" }}</time>
                             {% endif %}
                             <p class="hb-card__title">{{ post.name }}</p>
                             {% if post.description_plain %}<p class="hb-card__excerpt">{{ post.description_plain|truncatewords:14 }}</p>{% endif %}
-                            <span class="hb-card__cta-arrow"><i class="fa fa-arrow-right"></i></span>
+                            <span class="hb-card__cta-arrow"><i class="bi bi-arrow-right"></i></span>
                         </div>
                     </a>
                 </div>
@@ -342,7 +342,7 @@
                 <a href="{% url 'projects:blog-page' %}" class="hb-cta">
                     <span class="hb-cta__dot"></span>
                     {% trans "View all posts" %}
-                    <i class="fa fa-arrow-right" style="font-size:.8rem;"></i>
+                    <i class="bi bi-arrow-right" style="font-size:.8rem;"></i>
                 </a>
             </div>
 
