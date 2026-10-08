@@ -1,0 +1,247 @@
+/* ==========================================================================
+   Homepage refresh (scoped to body.page-home until the system is approved for
+   the rest of the site). Uses tokens.css only; animates transform-family
+   properties and opacity only.
+
+   Motion map (frequency tier → purpose):
+   - Section heading + card group reveal, once      (occasional → guide attention)
+   - Card lift on hover, 4px                        (tens/day → affordance, near-imperceptible)
+   - Arrow nudge on CTA hover                       (tens/day → shows direction)
+   - Press scale .97 on buttons / .985 on cards     (tens/day → feedback)
+   - Dropdown fade + 6px drop from its trigger      (occasional → spatial origin)
+   - Marquee pauses on hover / focus                (accessibility, WCAG 2.2.2)
+   Hover motion is gated to real pointers; reduced motion keeps opacity only.
+   ========================================================================== */
+
+body.page-home {
+    /* reveal engine tuning (read by scroll-reveal.js + style.css reveal block) */
+    --reveal-distance: 16px;
+    --reveal-duration: var(--dur-reveal);
+    --reveal-ease: var(--ease-out);
+    --reveal-stagger: var(--stagger);
+    --reveal-stagger-max: 6;
+}
+
+@media (max-width: 767.98px) {
+    body.page-home {
+        --reveal-distance: 10px;
+        --reveal-stagger: 40ms;
+        --reveal-stagger-max: 3;
+    }
+}
+
+/* ---------------------------------------------------------------- Type */
+.page-home :is(
+    .about-intro-section h2.h1,
+    .about-intro-section h1,
+    .home-sales-section__title,
+    .hsvc-title,
+    .home-prices-section__title,
+    .home-mock-prices-section__title,
+    .abroad-hero__title,
+    .home-team-section__title,
+    .reviews-home__heading h2,
+    .home-faq__title
+) {
+    font-family: var(--font-display);
+    font-size: var(--fs-3xl);
+    font-weight: 700;
+    line-height: var(--lh-tight);
+    letter-spacing: var(--tracking-tight);
+    text-wrap: balance;
+}
+
+/* Eyebrow labels: readable size, AA contrast on light surfaces (accent-strong = 5.1:1). */
+.page-home :is(
+    .home-sales-section__eyebrow,
+    .hsvc-eyebrow,
+    .home-mock-prices-section__eyebrow,
+    .reviews-home__eyebrow
+) {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--accent-strong);
+}
+
+/* The abroad badge sits on the dark band — keep its light colour, only fix the size. */
+.page-home .abroad-hero__badge {
+    font-size: var(--fs-xs);
+    letter-spacing: var(--tracking-caps);
+}
+
+.page-home .about-page-description--teaser,
+.page-home .about-intro-section p {
+    max-width: 62ch;
+    line-height: var(--lh-body);
+}
+
+.page-home .hsvc-card__title,
+.page-home .abroad-card__title,
+.page-home .course-pay-card__name {
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+}
+
+/* ---------------------------------------------------------------- Rhythm */
+.page-home :is(
+    .home-sales-section,
+    .hsvc-section,
+    .home-prices-section,
+    .home-mock-prices-section,
+    .home-team-section,
+    .reviews-testimonials-section--home
+) {
+    /* half on each side: two neighbouring sections add up to one --section-y gap */
+    padding-top: calc(var(--section-y) / 2);
+    padding-bottom: calc(var(--section-y) / 2);
+}
+
+/* ---------------------------------------------------------------- Cards */
+.page-home :is(
+    .hsvc-card,
+    .abroad-card,
+    .course-alt-card,
+    .home-price-card.course-pay-card,
+    .review-card--home,
+    .discount-banner,
+    .hbh-card--featured,
+    .hbh-card--regular
+) {
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    /* `translate` / `scale` are separate from `transform`, so the hover lift never fights
+       the reveal transition (which owns `transform` + `opacity`, with its stagger delay). */
+    transition-property: opacity, transform, translate, scale, border-color;
+    transition-duration: var(--reveal-duration), var(--reveal-duration), var(--dur-base), var(--dur-press), var(--dur-base);
+    transition-timing-function: var(--reveal-ease), var(--reveal-ease), var(--ease-out), var(--ease-out), ease;
+    transition-delay: var(--reveal-delay, 0ms), var(--reveal-delay, 0ms), 0ms, 0ms, 0ms;
+}
+
+/* Legacy hovers moved cards with `transform` (team: -8px + rotate, abroad: -3px).
+   Neutralise them so only the shared 4px lift remains. */
+.page-home .course-alt-card:is(.is-revealed, .is-visible, :not(.scroll-reveal)):is(:hover, :focus-within),
+.page-home .abroad-card:hover {
+    transform: none;
+    box-shadow: var(--shadow-md);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .page-home :is(
+        .hsvc-card,
+        .abroad-card,
+        .course-alt-card,
+        .home-price-card.course-pay-card,
+        .discount-banner,
+        .hbh-card--featured,
+        .hbh-card--regular
+    ):is(:hover, :focus-within) {
+        translate: 0 -4px;
+        border-color: rgb(var(--accent-rgb) / 0.35);
+    }
+
+    /* Media inside cards drifts 3% closer: the card's picture responds, not the layout. */
+    .page-home :is(.hbh-card__img, .course-alt-card__media img, .discount-banner__img) {
+        transition: scale var(--dur-reveal) var(--ease-out);
+    }
+
+    .page-home :is(.hbh-card--featured, .hbh-card--regular, .course-alt-card, .discount-banner):hover
+        :is(.hbh-card__img, .course-alt-card__media img, .discount-banner__img) {
+        scale: 1.03;
+    }
+}
+
+.page-home :is(.hsvc-card, .abroad-card, .course-alt-card__link, .hbh-card--featured, .hbh-card--regular):active {
+    scale: 0.985;
+}
+
+/* ---------------------------------------------------------------- Buttons */
+.page-home :is(.btn, .hbh-cta-btn, .hbh-see-all, .discount-banner__cta, .course-pay-card__cta) {
+    transition:
+        background-color var(--dur-fast) ease,
+        border-color var(--dur-fast) ease,
+        color var(--dur-fast) ease,
+        scale var(--dur-press) var(--ease-out);
+}
+
+.page-home :is(.btn, .hbh-cta-btn, .hbh-see-all, .discount-banner__cta, .course-pay-card__cta):active {
+    scale: 0.97;
+}
+
+/* Arrow nudges toward where the link goes. */
+.page-home :is(.btn, .hbh-cta-btn, .hbh-see-all, .discount-banner__cta, .hsvc-card__arrow, .abroad-card__cta, .course-alt-card__cta) .bi-arrow-right,
+.page-home .hsvc-card__arrow .bi {
+    transition: translate var(--dur-fast) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .page-home :is(.btn, .hbh-cta-btn, .hbh-see-all, .discount-banner__cta):hover .bi-arrow-right,
+    .page-home :is(.hsvc-card, .abroad-card, .course-alt-card):hover :is(.bi-arrow-right, .hsvc-card__arrow .bi) {
+        translate: 3px 0;
+    }
+}
+
+/* ---------------------------------------------------------------- Navbar dropdowns (desktop) */
+@media (min-width: 992px) {
+    /* Replaces the 500ms rotateX flip: a short fade + 6px drop from the trigger. */
+    .page-home .navbar .nav-item .dropdown-menu {
+        transform-origin: top left;
+        transform: translateY(-6px) scale(0.98);
+        transition:
+            opacity var(--dur-fast) var(--ease-out),
+            transform var(--dur-fast) var(--ease-out),
+            visibility 0s linear var(--dur-fast);
+    }
+
+    .page-home .navbar .dropdown-menu.fade-down {
+        transform: translateY(-6px) scale(0.98);
+    }
+
+    .page-home .navbar .nav-item:hover .dropdown-menu,
+    .page-home .navbar .nav-item .dropdown-menu.show {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        transition:
+            opacity var(--dur-fast) var(--ease-out),
+            transform var(--dur-fast) var(--ease-out),
+            visibility 0s;
+    }
+}
+
+/* ---------------------------------------------------------------- Marquee */
+/* Already pauses on hover; keyboard focus inside it pauses it too. */
+.page-home .home-marquee:focus-within .home-marquee__track {
+    animation-play-state: paused;
+}
+
+/* ---------------------------------------------------------------- Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .page-home :is(
+        .hsvc-card,
+        .abroad-card,
+        .course-alt-card,
+        .home-price-card.course-pay-card,
+        .discount-banner,
+        .hbh-card--featured,
+        .hbh-card--regular,
+        .btn,
+        .hbh-cta-btn,
+        .hbh-see-all,
+        .discount-banner__cta,
+        .course-pay-card__cta,
+        .hbh-card__img,
+        .course-alt-card__media img,
+        .discount-banner__img,
+        .bi-arrow-right
+    ) {
+        translate: none !important;
+        scale: none !important;
+    }
+
+    .page-home .navbar .nav-item .dropdown-menu,
+    .page-home .navbar .dropdown-menu.fade-down {
+        transform: none;
+    }
+}

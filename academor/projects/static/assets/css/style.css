@@ -2204,8 +2204,8 @@ h1.animated, h2.animated, h3.animated,
     background: var(--accent);
 }
 
-/* WOW.js əvəzi — main.js IntersectionObserver .animated əlavə edir */
-.wow {
+/* WOW.js əvəzi — scroll-reveal.js IntersectionObserver ilə açır. Yalnız JS işləyəndə gizlədilir. */
+:where(html.js) .wow {
     opacity: 0;
 }
 
@@ -8630,17 +8630,16 @@ a.university-carousel-card:focus-visible .university-flag-card {
     bottom: -0.35rem;
 }
 /********** Premium scroll reveal (scroll-reveal.js + IntersectionObserver) **********/
-html.reveal-pending .scroll-reveal,
-html.reveal-pending .reveal,
-html.reveal-pending [data-scroll-reveal],
-.scroll-reveal,
-.reveal,
-[data-scroll-reveal] {
+/* Timing comes from custom properties so a page can tune it (see home.css); the defaults
+   are the original values. Hidden state applies only under html.js (set in <head>). */
+:where(html.js) .scroll-reveal,
+:where(html.js) .reveal,
+:where(html.js) [data-scroll-reveal] {
     opacity: 0;
-    transform: translateY(48px);
+    transform: translateY(var(--reveal-distance, 48px));
     transition:
-        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+        opacity var(--reveal-duration, 0.85s) var(--reveal-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+        transform var(--reveal-duration, 0.85s) var(--reveal-ease, cubic-bezier(0.22, 1, 0.36, 1));
     transition-delay: var(--reveal-delay, 0ms);
     will-change: opacity, transform;
 }
@@ -8648,41 +8647,50 @@ html.reveal-pending [data-scroll-reveal],
 .reveal-group > .scroll-reveal:nth-child(1),
 .reveal-group > .reveal:nth-child(1) { transition-delay: 0ms; }
 .reveal-group > .scroll-reveal:nth-child(2),
-.reveal-group > .reveal:nth-child(2) { transition-delay: 80ms; }
+.reveal-group > .reveal:nth-child(2) { transition-delay: calc(var(--reveal-stagger, 80ms) * 1); }
 .reveal-group > .scroll-reveal:nth-child(3),
-.reveal-group > .reveal:nth-child(3) { transition-delay: 160ms; }
+.reveal-group > .reveal:nth-child(3) { transition-delay: calc(var(--reveal-stagger, 80ms) * 2); }
 .reveal-group > .scroll-reveal:nth-child(4),
-.reveal-group > .reveal:nth-child(4) { transition-delay: 240ms; }
+.reveal-group > .reveal:nth-child(4) { transition-delay: calc(var(--reveal-stagger, 80ms) * 3); }
 .reveal-group > .scroll-reveal:nth-child(5),
-.reveal-group > .reveal:nth-child(5) { transition-delay: 320ms; }
+.reveal-group > .reveal:nth-child(5) { transition-delay: calc(var(--reveal-stagger, 80ms) * 4); }
 .reveal-group > .scroll-reveal:nth-child(6),
-.reveal-group > .reveal:nth-child(6) { transition-delay: 400ms; }
+.reveal-group > .reveal:nth-child(6) { transition-delay: calc(var(--reveal-stagger, 80ms) * 5); }
 .reveal-group > .scroll-reveal:nth-child(7),
-.reveal-group > .reveal:nth-child(7) { transition-delay: 480ms; }
+.reveal-group > .reveal:nth-child(7) { transition-delay: calc(var(--reveal-stagger, 80ms) * 6); }
 .reveal-group > .scroll-reveal:nth-child(8),
-.reveal-group > .reveal:nth-child(8) { transition-delay: 560ms; }
+.reveal-group > .reveal:nth-child(8) { transition-delay: calc(var(--reveal-stagger, 80ms) * 7); }
 
-.scroll-reveal.reveal--up,
-.reveal.reveal--up { transform: translateY(48px); }
-.scroll-reveal.reveal--down,
-.reveal.reveal--down { transform: translateY(-48px); }
-.scroll-reveal.reveal--left,
-.reveal.reveal--left { transform: translateX(-48px); }
-.scroll-reveal.reveal--right,
-.reveal.reveal--right { transform: translateX(48px); }
-.scroll-reveal.reveal--scale,
-.reveal.reveal--scale { transform: scale(0.9); opacity: 0; }
-.scroll-reveal.reveal--fade,
-.reveal.reveal--fade { transform: none; }
+:where(html.js) .scroll-reveal.reveal--up,
+:where(html.js) .reveal.reveal--up { transform: translateY(var(--reveal-distance, 48px)); }
+:where(html.js) .scroll-reveal.reveal--down,
+:where(html.js) .reveal.reveal--down { transform: translateY(calc(var(--reveal-distance, 48px) * -1)); }
+:where(html.js) .scroll-reveal.reveal--left,
+:where(html.js) .reveal.reveal--left { transform: translateX(calc(var(--reveal-distance, 48px) * -1)); }
+:where(html.js) .scroll-reveal.reveal--right,
+:where(html.js) .reveal.reveal--right { transform: translateX(var(--reveal-distance, 48px)); }
+:where(html.js) .scroll-reveal.reveal--scale,
+:where(html.js) .reveal.reveal--scale { transform: scale(0.9); opacity: 0; }
+:where(html.js) .scroll-reveal.reveal--fade,
+:where(html.js) .reveal.reveal--fade { transform: none; }
 
-.scroll-reveal.is-revealed,
-.scroll-reveal.is-visible,
-.reveal.is-visible,
-[data-scroll-reveal].is-revealed,
-[data-scroll-reveal].is-visible {
+:where(html.js) .scroll-reveal.is-revealed,
+:where(html.js) .scroll-reveal.is-visible,
+:where(html.js) .reveal.is-visible,
+:where(html.js) [data-scroll-reveal].is-revealed,
+:where(html.js) [data-scroll-reveal].is-visible {
     opacity: 1;
     transform: translateY(0) translateX(0) scale(1);
     will-change: auto;
+}
+
+/* Safety net: reveal engine never started → show everything, no motion. */
+:where(html.reveal-fallback) .wow,
+:where(html.reveal-fallback) .scroll-reveal,
+:where(html.reveal-fallback) .reveal,
+:where(html.reveal-fallback) [data-scroll-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
 }
 
 .navbar-light .navbar-nav .nav-link.is-active {
