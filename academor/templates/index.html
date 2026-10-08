@@ -11,6 +11,7 @@
 
 {% block content %}
     <main id="main-content" class="home-page-main">
+    <div class="home-journey" data-home-journey aria-hidden="true"></div>
     <h1 class="visually-hidden">{% if seo_home_title %}{{ seo_home_title }}{% else %}{% trans "Academor" %}{% endif %}</h1>
 
     <!-- Blog Hero (first visible section) -->
@@ -106,6 +107,7 @@
 {% endblock %}
 
 {% block extra_js %}
+    <script defer src="{% static 'assets/js/home-journey.js' %}"></script>
     <script defer src="{% static 'assets/js/hbh-tagline-reveal.js' %}"></script>
     {% include "includes/turnstile_script.html" %}
     {% if open_review_modal %}

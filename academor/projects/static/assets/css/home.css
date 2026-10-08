@@ -257,3 +257,114 @@ body.page-home {
         transform: none;
     }
 }
+
+/* ---------------------------------------------------------------- Journey layer (home-journey.js)
+   Flight route BAK → LHR → CDG → JFK in the page gutters; the plane follows the reading
+   line as you scroll and lands at Study Abroad. Purpose: ties the page into one story and
+   leads the eye to the abroad offer. Desktop ≥1200px only (gutters exist there). */
+.page-home .home-page-main {
+    position: relative;
+    isolation: isolate;
+}
+
+.home-journey {
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-raised);
+    pointer-events: none;
+    display: none;
+    overflow: hidden;
+}
+
+@media (min-width: 1200px) {
+    .home-journey { display: block; }
+}
+
+/* the route flies under the full-width marquee band */
+.page-home .home-marquee { z-index: var(--z-raised-2); }
+
+.home-journey svg {
+    display: block;
+    overflow: visible;
+    opacity: 0;
+    transition: opacity var(--dur-reveal) var(--ease-out);
+}
+
+.home-journey.is-ready svg { opacity: 1; }
+
+.home-journey__route {
+    fill: none;
+    stroke: rgb(var(--primary-rgb) / 0.22);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-dasharray: 0.5 9;
+}
+
+.home-journey__travelled {
+    fill: none;
+    stroke: rgb(var(--accent-rgb) / 0.75);
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+.home-journey__pin {
+    fill: var(--card);
+    stroke: rgb(var(--accent-rgb) / 0.6);
+    stroke-width: 2;
+    transition: fill var(--dur-base) ease, stroke var(--dur-base) ease;
+}
+
+.home-journey__code {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    fill: var(--muted-foreground);
+    transition: fill var(--dur-base) ease;
+}
+
+.home-journey__ping {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1.5;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+.home-journey__stop.is-reached .home-journey__pin { fill: var(--accent); stroke: var(--accent); }
+.home-journey__stop.is-reached .home-journey__code { fill: var(--accent-strong); }
+
+/* one ping when the plane arrives (feedback that a stop was reached) */
+.home-journey:not(.is-static) .home-journey__stop.is-reached .home-journey__ping {
+    animation: journey-ping 700ms var(--ease-out) 1 both;
+}
+
+.home-journey__stop--final.is-reached .home-journey__pin { stroke-width: 3; }
+
+@keyframes journey-ping {
+    from { opacity: 0.7; transform: scale(0.6); }
+    to { opacity: 0; transform: scale(2.4); }
+}
+
+.home-journey__trail { fill: var(--accent); }
+.home-journey__plane-body { fill: var(--accent); }
+.home-journey__halo { fill: rgb(var(--accent-rgb) / 0.12); }
+
+/* plane & trail fade out once landed at JFK; fade back if you scroll up */
+.home-journey__plane,
+.home-journey__trail {
+    transition: opacity var(--dur-base) var(--ease-out);
+}
+
+.home-journey.is-landed .home-journey__plane,
+.home-journey.is-landed .home-journey__trail,
+.home-journey.is-departing .home-journey__trail {
+    opacity: 0 !important;
+}
+
+/* reduced motion: static map, every stop shown, no plane */
+.home-journey.is-static .home-journey__plane,
+.home-journey.is-static .home-journey__trail {
+    display: none;
+}
