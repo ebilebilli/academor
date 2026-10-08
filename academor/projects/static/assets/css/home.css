@@ -169,6 +169,18 @@ body.page-home {
     scale: 0.97;
 }
 
+/* Text-bearing orange buttons use --cta (#C23A00): white labels at 5.4:1, hover 7.1:1.
+   Their existing rules (many with !important) all read var(--accent)/var(--accent-hover),
+   so re-pointing those variables on just these elements recolours rest, hover and glow
+   without another !important. Brand orange stays on dots, icons and icon-only buttons
+   (graphics need 3:1; brand orange is 3.2:1). */
+.page-home :is(.btn-primary:not(.back-to-top), .about-intro-section .hbh-see-all, .discount-banner__cta) {
+    --accent-rgb: var(--cta-rgb);
+    --accent: var(--cta);
+    --accent-hover-rgb: var(--cta-hover-rgb);
+    --accent-hover: var(--cta-hover);
+}
+
 /* Arrow nudges toward where the link goes. */
 .page-home :is(.btn, .hbh-cta-btn, .hbh-see-all, .discount-banner__cta, .hsvc-card__arrow, .abroad-card__cta, .course-alt-card__cta) .bi-arrow-right,
 .page-home .hsvc-card__arrow .bi {

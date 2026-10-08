@@ -30,6 +30,7 @@
     --orange-500-rgb: 255 84 20;      /* #FF5414 brand */
     --orange-600-rgb: 224 74 16;      /* #E04A10 */
     --orange-700-rgb: 194 58 0;       /* #C23A00 — orange text on light, 5.4:1 */
+    --orange-800-rgb: 163 48 0;       /* #A33000 */
 
     /* ---- Primitives: neutral ramp — one cool hue (teal-tinted slate), 10 steps ---- */
     --white-rgb: 255 255 255;
@@ -101,6 +102,9 @@
     --accent-subtle-rgb: var(--orange-100-rgb);
     --accent-soft-rgb: var(--orange-50-rgb);
     --accent-foreground-rgb: var(--white-rgb);
+    /* Text-bearing orange buttons: darker than the brand orange so white labels pass AA. */
+    --cta-rgb: var(--orange-700-rgb);           /* white on it 5.4:1 */
+    --cta-hover-rgb: var(--orange-800-rgb);     /* white on it 7.1:1 */
 
     --secondary-rgb: var(--indigo-500-rgb);
     --secondary-strong-rgb: var(--indigo-700-rgb);
@@ -145,6 +149,8 @@
     --accent-subtle: rgb(var(--accent-subtle-rgb));
     --accent-soft: rgb(var(--accent-soft-rgb));
     --accent-foreground: rgb(var(--accent-foreground-rgb));
+    --cta: rgb(var(--cta-rgb));
+    --cta-hover: rgb(var(--cta-hover-rgb));
     --secondary: rgb(var(--secondary-rgb));
     --secondary-strong: rgb(var(--secondary-strong-rgb));
     --secondary-soft: rgb(var(--secondary-soft-rgb));
