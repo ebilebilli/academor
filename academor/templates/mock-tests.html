@@ -1,14 +1,13 @@
-<!DOCTYPE html>
-{% load static i18n %}{% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
-<head>
-    {% include "includes/site_layout_head.html" %}
-    <link href="{% static 'assets/css/mock-tests-page.css' %}" rel="stylesheet">
-</head>
-<body class="mock-tests-body">
-    {% include "includes/site_spinner.html" %}
-    {% include "includes/site_navbar.html" %}
+{% extends "base.html" %}
+{% load static i18n %}
 
+{% block extra_head %}
+    <link href="{% static 'assets/css/mock-tests-page.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block body_attrs %} class="mock-tests-body"{% endblock %}
+
+{% block content %}
     <main id="main-content" class="mock-tests-page">
         {% include "includes/page_header_banner.html" %}
 
@@ -38,9 +37,8 @@
             </div>
         </section>
     </main>
+{% endblock %}
 
-    {% include "includes/site_footer.html" %}
-    {% include "includes/site_scripts.html" %}
+{% block extra_js %}
     <script defer src="{% static 'assets/js/mock-tests-page.js' %}"></script>
-</body>
-</html>
+{% endblock %}

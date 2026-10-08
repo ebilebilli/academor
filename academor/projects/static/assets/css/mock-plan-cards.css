@@ -14,17 +14,17 @@
     gap: 0;
     min-height: 7.5rem;
     border-radius: 1rem;
-    background: #fff;
-    border: 1px solid rgba(0, 49, 61, 0.1);
-    box-shadow: 0 8px 24px rgba(0, 49, 61, 0.07);
+    background: var(--card);
+    border: 1px solid rgb(var(--primary-rgb) / 0.1);
+    box-shadow: 0 8px 24px rgb(var(--primary-rgb) / 0.07);
     overflow: hidden;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 @media (hover: hover) {
     .mock-plan:hover {
-        border-color: rgba(255, 84, 20, 0.35);
-        box-shadow: 0 12px 32px rgba(0, 49, 61, 0.1);
+        border-color: rgb(var(--accent-rgb) / 0.35);
+        box-shadow: 0 12px 32px rgb(var(--primary-rgb) / 0.1);
     }
 }
 
@@ -36,8 +36,8 @@
     gap: 0.45rem;
     width: 4.5rem;
     padding: 0.85rem 0.55rem;
-    background: var(--bs-primary, #00313d);
-    color: #fff;
+    background: var(--bs-primary, var(--primary));
+    color: var(--on-dark);
 }
 
 .mock-plan__tag {
@@ -45,7 +45,7 @@
     font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: lowercase;
-    color: rgba(255, 255, 255, 0.72);
+    color: rgb(var(--on-dark-rgb) / 0.72);
 }
 
 .mock-plan__count {
@@ -60,14 +60,14 @@
     font-size: 2rem;
     font-weight: 800;
     letter-spacing: -0.04em;
-    color: #fff;
+    color: var(--on-dark);
 }
 
 .mock-plan__count-label {
     margin-top: 0.15rem;
     font-size: 0.62rem;
     font-weight: 700;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgb(var(--on-dark-rgb) / 0.6);
 }
 
 .mock-plan__sections {
@@ -80,10 +80,10 @@
     font-size: 0.76rem;
     font-weight: 600;
     line-height: 1.2;
-    color: rgba(0, 49, 61, 0.72);
+    color: rgb(var(--foreground-rgb) / 0.72);
     padding: 0.22rem 0.55rem;
     border-radius: 0.35rem;
-    background: rgba(0, 49, 61, 0.05);
+    background: rgb(var(--primary-rgb) / 0.05);
     white-space: nowrap;
 }
 
@@ -108,14 +108,14 @@
     margin: 0;
     font-size: 1rem;
     font-weight: 800;
-    color: var(--bs-primary, #00313d);
+    color: var(--bs-primary, var(--foreground));
     line-height: 1.25;
 }
 
 .mock-plan__credits {
     font-size: 0.75rem;
     font-weight: 700;
-    color: rgba(0, 49, 61, 0.5);
+    color: rgb(var(--foreground-rgb) / 0.5);
     white-space: nowrap;
 }
 
@@ -128,10 +128,10 @@
 .mock-plan__features li {
     font-size: 0.78rem;
     line-height: 1.35;
-    color: rgba(0, 49, 61, 0.72);
+    color: rgb(var(--foreground-rgb) / 0.72);
     padding: 0.2rem 0.55rem;
     border-radius: 999px;
-    background: rgba(0, 49, 61, 0.05);
+    background: rgb(var(--primary-rgb) / 0.05);
 }
 
 .mock-plan__action {
@@ -142,8 +142,8 @@
     gap: 0.55rem;
     min-width: 7.5rem;
     padding: 0.85rem 1rem;
-    border-left: 1px dashed rgba(0, 49, 61, 0.14);
-    background: rgba(0, 49, 61, 0.02);
+    border-left: 1px dashed rgb(var(--primary-rgb) / 0.14);
+    background: rgb(var(--primary-rgb) / 0.02);
 }
 
 .mock-plan__price {
@@ -157,13 +157,13 @@
     font-size: 1.45rem;
     font-weight: 800;
     letter-spacing: -0.03em;
-    color: var(--bs-primary, #00313d);
+    color: var(--bs-primary, var(--foreground));
 }
 
 .mock-plan__currency {
     font-size: 0.75rem;
     font-weight: 700;
-    color: rgba(0, 49, 61, 0.5);
+    color: rgb(var(--foreground-rgb) / 0.5);
 }
 
 .mock-plan__checkout {
@@ -179,8 +179,8 @@
     padding: 0.5rem 0.85rem;
     border: none;
     border-radius: 0.45rem;
-    background: var(--accent, #ff5414);
-    color: #fff;
+    background: var(--accent, var(--accent));
+    color: var(--on-dark);
     font-size: 0.82rem;
     font-weight: 800;
     white-space: nowrap;
@@ -189,13 +189,13 @@
 
 .mock-plan__cta:hover,
 .mock-plan__cta:focus-visible {
-    background: var(--accent-hover, #e04a10);
-    color: #fff;
+    background: var(--accent-hover, var(--accent-hover));
+    color: var(--on-dark);
     outline: none;
 }
 
 .mock-plan__cta:focus-visible {
-    box-shadow: 0 0 0 3px rgba(255, 84, 20, 0.35);
+    box-shadow: 0 0 0 3px rgb(var(--accent-rgb) / 0.35);
 }
 
 @media (max-width: 767.98px) {
@@ -235,7 +235,7 @@
         justify-content: space-between;
         min-width: 0;
         border-left: none;
-        border-top: 1px dashed rgba(0, 49, 61, 0.14);
+        border-top: 1px dashed rgb(var(--primary-rgb) / 0.14);
     }
 
     .mock-plan__cta {

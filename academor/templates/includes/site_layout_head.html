@@ -64,21 +64,23 @@
 {% endif %}
 {% endif %}
 
+<!-- Reveal animations hide content only once JS is known to run (html.js); if the reveal
+     engine has not started within 4s, everything is shown (html.reveal-fallback). -->
+<script>(function(d){d.classList.add("js");setTimeout(function(){if(!d.classList.contains("reveal-ready"))d.classList.add("reveal-fallback");},4000);})(document.documentElement);</script>
 <link href="{% static 'assets/img/banner.webp' %}" rel="icon" type="image/webp">
 
 <!-- DNS + connection hints — must come before any request to these origins -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+{% if not public_shell %}
 <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link rel="dns-prefetch" href="https://fonts.googleapis.com">
-<link rel="dns-prefetch" href="https://fonts.gstatic.com">
-<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
-<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+{% endif %}
 
 <!-- Bootstrap + site CSS — synchronous; async bootstrap caused broken layout on first paint (deploy/cold cache). -->
-<link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'assets/vendor/bootstrap-5.3.3/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'assets/css/tokens.css' %}" rel="stylesheet">
 <link href="{% static 'assets/css/style.css' %}?v=20260920nav4k1" rel="stylesheet">
+{% if public_shell %}<link href="{% static 'assets/css/motion.css' %}" rel="stylesheet">{% endif %}
 
 {% firstof lcp_image_url as lcp_preload %}
 {% if lcp_preload %}
@@ -88,16 +90,22 @@
      navbar/body mətn ölçüsü və eni dəyişirdi (FOUT). -->
 <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-<!-- Non-critical CSS — async (icons / animations; mətn şrifti yuxarıda sinxron) -->
+<!-- Non-critical CSS — async (icons / animations; mətn şrifti yuxarıda sinxron).
+     Vendor CSS self-hosted at pinned versions. Public pages (base.html → public_shell) use
+     Bootstrap Icons only; Font Awesome stays solely for portals/login.html, which reuses this head. -->
+{% if not public_shell %}
 <link rel="preload" as="style"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
       onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"></noscript>
+{% endif %}
 
+<link rel="preload" as="font" type="font/woff2" crossorigin
+      href="{% static 'assets/vendor/bootstrap-icons-1.11.3/fonts/bootstrap-icons.woff2' %}">
 <link rel="preload" as="style"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
+      href="{% static 'assets/vendor/bootstrap-icons-1.11.3/bootstrap-icons.min.css' %}"
       onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"></noscript>
+<noscript><link rel="stylesheet" href="{% static 'assets/vendor/bootstrap-icons-1.11.3/bootstrap-icons.min.css' %}"></noscript>
 
 <link rel="preload" as="style"
       href="{% static 'assets/css/academor-animate-lite.css' %}"
@@ -105,6 +113,6 @@
 <noscript><link rel="stylesheet" href="{% static 'assets/css/academor-animate-lite.css' %}"></noscript>
 
 <link rel="preload" as="style"
-      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+      href="{% static 'assets/vendor/swiper-11.2.10/swiper-bundle.min.css' %}"
       onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"></noscript>
+<noscript><link rel="stylesheet" href="{% static 'assets/vendor/swiper-11.2.10/swiper-bundle.min.css' %}"></noscript>

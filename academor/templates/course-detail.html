@@ -1,14 +1,13 @@
-<!DOCTYPE html>
-{% load i18n static %}{% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
-<head>
-    {% include "includes/site_layout_head.html" with page_title=page_title page_description=page_description page_keywords=page_keywords lcp_image_url=course.image og_image_url=og_image_url og_type=og_type structured_data_json=structured_data_json %}
-    {% include "includes/payment_ui_head.html" %}
-</head>
-<body>
-    {% include "includes/site_spinner.html" %}
-    {% include "includes/site_navbar.html" %}
+{% extends "base.html" %}
+{% load i18n static %}
 
+{% block layout_head %}{% include "includes/site_layout_head.html" with page_title=page_title page_description=page_description page_keywords=page_keywords lcp_image_url=course.image og_image_url=og_image_url og_type=og_type structured_data_json=structured_data_json %}{% endblock %}
+
+{% block extra_head %}
+    {% include "includes/payment_ui_head.html" %}
+{% endblock %}
+
+{% block content %}
     {% include "includes/page_header_banner.html" %}
 
     <div class="course-detail-page">
@@ -26,7 +25,7 @@
                             <div class="col-6">
                                 <div class="course-detail-badge course-detail-badge--feature">
                                     <div class="course-detail-badge__icon">
-                                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                                        <i class="bi bi-calendar3" aria-hidden="true"></i>
                                     </div>
                                     <div class="course-detail-badge__text">
                                         <span class="course-detail-badge__label">{% trans "Duration" %}</span>
@@ -39,7 +38,7 @@
                             <div class="col-6">
                                 <div class="course-detail-badge course-detail-badge--feature">
                                     <div class="course-detail-badge__icon">
-                                        <i class="fa fa-book" aria-hidden="true"></i>
+                                        <i class="bi bi-book" aria-hidden="true"></i>
                                     </div>
                                     <div class="course-detail-badge__text">
                                         <span class="course-detail-badge__label">{% trans "Lessons" %}</span>
@@ -52,7 +51,7 @@
                             <div class="col-6">
                                 <div class="course-detail-badge course-detail-badge--feature">
                                     <div class="course-detail-badge__icon">
-                                        <i class="fa fa-certificate" aria-hidden="true"></i>
+                                        <i class="bi bi-patch-check" aria-hidden="true"></i>
                                     </div>
                                     <div class="course-detail-badge__text">
                                         <span class="course-detail-badge__label">{% trans "Certificate" %}</span>
@@ -66,11 +65,11 @@
                                 <div class="course-detail-badge course-detail-badge--feature">
                                     <div class="course-detail-badge__icon">
                                         {% if course.is_online and course.is_offline %}
-                                        <i class="fa fa-globe" aria-hidden="true"></i>
+                                        <i class="bi bi-globe" aria-hidden="true"></i>
                                         {% elif course.is_online %}
-                                        <i class="fa fa-globe" aria-hidden="true"></i>
+                                        <i class="bi bi-globe" aria-hidden="true"></i>
                                         {% else %}
-                                        <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                        <i class="bi bi-geo-alt" aria-hidden="true"></i>
                                         {% endif %}
                                     </div>
                                     <div class="course-detail-badge__text">
@@ -89,12 +88,12 @@
                             <ul class="nav nav-tabs course-detail-tabs" id="courseDetailTabs" role="tablist">
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link active" id="course-tab-overview" data-bs-toggle="tab" data-bs-target="#course-panel-overview" type="button" role="tab" aria-controls="course-panel-overview" aria-selected="true">
-                                        <i class="fa fa-file-text-o me-2" aria-hidden="true"></i>{% trans "Overview" %}
+                                        <i class="bi bi-file-text me-2" aria-hidden="true"></i>{% trans "Overview" %}
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="course-tab-instructor" data-bs-toggle="tab" data-bs-target="#course-panel-instructor" type="button" role="tab" aria-controls="course-panel-instructor" aria-selected="false">
-                                        <i class="fa fa-user me-2" aria-hidden="true"></i>{% trans "Trainer" %}
+                                        <i class="bi bi-person me-2" aria-hidden="true"></i>{% trans "Trainer" %}
                                     </button>
                                 </li>
                             </ul>
@@ -120,7 +119,7 @@
                                                         <img src="{{ trainer.image }}" alt="{{ trainer.name }}" class="w-100 h-100 course-detail-trainer-photo" loading="lazy" decoding="async" width="400" height="400">
                                                         {% else %}
                                                         <div class="w-100 h-100 bg-light d-flex align-items-center justify-content-center text-muted">
-                                                            <i class="fa fa-user fa-3x opacity-25" aria-hidden="true"></i>
+                                                            <i class="bi bi-person bi-3x opacity-25" aria-hidden="true"></i>
                                                         </div>
                                                         {% endif %}
                                                     </div>
@@ -131,7 +130,7 @@
                                                 </a>
                                                 <a href="{% url 'projects:team-detail' slug=trainer.slug %}" class="btn btn-outline-accent rounded-pill px-4 fw-semibold w-100 mt-2">
                                                     {% trans "View profile" %}
-                                                    <i class="fas fa-arrow-right ms-2 small" aria-hidden="true"></i>
+                                                    <i class="bi bi-arrow-right ms-2 small" aria-hidden="true"></i>
                                                 </a>
                                             </article>
                                         </div>
@@ -141,7 +140,7 @@
                                     <p class="course-detail-tab__text">{% trans "Our experienced teachers guide this programme. Meet the Academor team and find the right specialist for you." %}</p>
                                     <a href="{% url 'projects:team-page' %}" class="btn btn-outline-accent rounded-pill px-4 px-md-5 fw-semibold">
                                         {% trans "Meet our team" %}
-                                        <i class="fas fa-arrow-right ms-2 small" aria-hidden="true"></i>
+                                        <i class="bi bi-arrow-right ms-2 small" aria-hidden="true"></i>
                                     </a>
                                     {% endif %}
                                 </div>
@@ -182,9 +181,8 @@
     {% include "includes/course_detail_payment_modal.html" %}
     {% include "includes/course_detail_payment_sticky_bar.html" %}
     {% endif %}
+{% endblock %}
 
-    {% include "includes/site_footer.html" %}
-    {% include "includes/site_scripts.html" %}
+{% block extra_js %}
     {% include "includes/course_detail_page_scripts.html" %}
-</body>
-</html>
+{% endblock %}

@@ -5,9 +5,9 @@
      aria-label="{{ rating }} {% trans 'out of five stars' %}">
     {% for star in stars %}
         {% if star.filled %}
-            <i class="fas fa-star review-card__star review-card__star--on" aria-hidden="true"></i>
+            <i class="bi bi-star-fill review-card__star review-card__star--on" aria-hidden="true"></i>
         {% else %}
-            <i class="far fa-star review-card__star review-card__star--off" aria-hidden="true"></i>
+            <i class="bi bi-star review-card__star review-card__star--off" aria-hidden="true"></i>
         {% endif %}
     {% endfor %}
 </div>

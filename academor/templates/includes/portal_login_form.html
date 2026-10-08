@@ -34,13 +34,13 @@
                 aria-controls="{{ pid }}portalLoginPassword"
                 aria-pressed="false"
             >
-                <i class="fa fa-eye" aria-hidden="true" data-eye-icon></i>
+                <i class="bi bi-eye" aria-hidden="true" data-eye-icon></i>
             </button>
         </div>
     </div>
     <button type="submit" class="btn btn-primary w-100 btn-lg rounded-pill portal-login-form__submit">
         {% trans "Log in" %}
-        <i class="fa fa-arrow-right ms-2" aria-hidden="true"></i>
+        <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i>
     </button>
 </form>
 {% endwith %}
@@ -64,8 +64,8 @@
       btn.setAttribute('aria-label', hidden ? hideLabel : showLabel);
       var icon = btn.querySelector('[data-eye-icon]');
       if (icon) {
-        icon.classList.remove(hidden ? 'fa-eye' : 'fa-eye-slash');
-        icon.classList.add(hidden ? 'fa-eye-slash' : 'fa-eye');
+        icon.classList.remove(hidden ? 'bi-eye' : 'bi-eye-slash');
+        icon.classList.add(hidden ? 'bi-eye-slash' : 'bi-eye');
       }
     });
   }

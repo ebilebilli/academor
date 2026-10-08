@@ -1,16 +1,9 @@
-<!DOCTYPE html>
-{% load i18n static %}{% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
+{% extends "base.html" %}
+{% load i18n static %}
 
-<head>
-    {% include "includes/site_layout_head.html" with page_title=page_title %}
-</head>
+{% block layout_head %}{% include "includes/site_layout_head.html" with page_title=page_title %}{% endblock %}
 
-<body>
-    {% include "includes/site_spinner.html" %}
-
-    {% include "includes/site_navbar.html" %}
-
+{% block content %}
     {% include "includes/page_header_banner.html" %}
 
     <div class="container-xxl py-5 university-detail-page">
@@ -23,7 +16,7 @@
                     {% if university.flag %}
                     <img src="{{ university.flag }}" alt="{{ university.name }}" class="uni-profile-hero__logo" width="192" height="192" decoding="async">
                     {% else %}
-                    <span class="uni-profile-hero__logo-placeholder"><i class="fa fa-graduation-cap"></i></span>
+                    <span class="uni-profile-hero__logo-placeholder"><i class="bi bi-mortarboard"></i></span>
                     {% endif %}
                 </div>
                 <div class="uni-profile-hero__info">
@@ -31,13 +24,13 @@
                     <div class="uni-profile-hero__badges">
                         {% if university.study_abroad %}
                         <a href="{% url 'projects:abroad-detail' slug=university.study_abroad.slug %}" class="uni-profile-hero__country-link">
-                            <i class="fa fa-map-marker-alt" aria-hidden="true"></i>
+                            <i class="bi bi-geo-alt" aria-hidden="true"></i>
                             <span>{{ university.study_abroad.name }}</span>
                         </a>
                         {% endif %}
                         {% if university.website %}
                         <a href="{{ university.website }}" target="_blank" rel="noopener noreferrer" class="uni-profile-hero__website-link">
-                            <i class="fa fa-external-link-alt" aria-hidden="true"></i>
+                            <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>
                             <span>{% trans "Visit website" %}</span>
                         </a>
                         {% endif %}
@@ -67,7 +60,7 @@
                         {% include "includes/detail_back_button.html" with fallback_url=abroad_list_url %}
                         {% endif %}
                         <a href="{% url 'projects:contact-page' %}" class="btn btn-primary px-4 py-2 rounded-pill">
-                            <i class="fa fa-envelope me-2" aria-hidden="true"></i>{% trans "Contact us" %}
+                            <i class="bi bi-envelope me-2" aria-hidden="true"></i>{% trans "Contact us" %}
                         </a>
                     </div>
                 </div>
@@ -75,9 +68,4 @@
 
         </div>
     </div>
-
-    {% include "includes/site_footer.html" %}
-    {% include "includes/site_scripts.html" %}
-</body>
-
-</html>
+{% endblock %}

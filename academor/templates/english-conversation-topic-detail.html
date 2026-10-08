@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-{% load static i18n %}{% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
-<head>
-    {% include "includes/site_layout_head.html" with page_title=page_title page_description=page_description page_keywords=page_keywords %}
-</head>
-<body>
-    {% include "includes/site_spinner.html" %}
-    {% include "includes/site_navbar.html" %}
+{% extends "base.html" %}
+{% load static i18n %}
 
+{% block layout_head %}{% include "includes/site_layout_head.html" with page_title=page_title page_description=page_description page_keywords=page_keywords %}{% endblock %}
+
+{% block content %}
     {% include "includes/page_header_banner.html" %}
 
     <article class="container-xxl py-5">
@@ -30,7 +26,7 @@
             <section class="mb-4" aria-labelledby="overview-heading">
                 <div class="section-card bg-white shadow-sm rounded-4 border border-light p-4 p-md-5">
                     <h2 id="overview-heading" class="h5 text-primary mb-3 d-flex align-items-center gap-2">
-                        <i class="fa fa-lightbulb-o text-primary" aria-hidden="true"></i>
+                        <i class="bi bi-lightbulb text-primary" aria-hidden="true"></i>
                         {% trans "How to use this topic" %}
                     </h2>
                     {% for p in topic.overview_paragraphs %}
@@ -42,7 +38,7 @@
             <section class="mb-4" aria-labelledby="vocab-heading">
                 <div class="section-card bg-white shadow-sm rounded-4 border border-light p-4 p-md-5">
                     <h2 id="vocab-heading" class="h5 text-primary mb-3 d-flex align-items-center gap-2">
-                        <i class="fa fa-book text-primary" aria-hidden="true"></i>
+                        <i class="bi bi-book text-primary" aria-hidden="true"></i>
                         {% trans "Vocabulary" %}
                     </h2>
                     <p class="small text-muted mb-4">{% trans "Headwords stay in English; the short explanations follow your language." %}</p>
@@ -62,7 +58,7 @@
             <section class="mb-4" aria-labelledby="phrases-heading">
                 <div class="section-card bg-white shadow-sm rounded-4 border border-light p-4 p-md-5">
                     <h2 id="phrases-heading" class="h5 text-primary mb-3 d-flex align-items-center gap-2">
-                        <i class="fa fa-quote-left text-primary" aria-hidden="true"></i>
+                        <i class="bi bi-quote text-primary" aria-hidden="true"></i>
                         {% trans "Useful phrases" %}
                     </h2>
                     <p class="small text-muted border-start border-3 border-primary ps-3 mb-4">{% trans "These lines are in English so you can use them directly in class." %}</p>
@@ -77,7 +73,7 @@
             <section class="mb-4" aria-labelledby="sentences-heading">
                 <div class="section-card bg-white shadow-sm rounded-4 border border-light p-4 p-md-5">
                     <h2 id="sentences-heading" class="h5 text-primary mb-3 d-flex align-items-center gap-2">
-                        <i class="fa fa-list-ol text-primary" aria-hidden="true"></i>
+                        <i class="bi bi-list-ol text-primary" aria-hidden="true"></i>
                         {% trans "Example sentences" %}
                     </h2>
                     <p class="small text-muted border-start border-3 border-primary ps-3 mb-4">{% trans "Model sentences in English; try adapting them with your own details." %}</p>
@@ -92,7 +88,7 @@
             <section class="mb-4" aria-labelledby="questions-heading">
                 <div class="section-card bg-white shadow-sm rounded-4 border border-light p-4 p-md-5">
                     <h2 id="questions-heading" class="h5 text-primary mb-3 d-flex align-items-center gap-2">
-                        <i class="fa fa-question-circle text-primary" aria-hidden="true"></i>
+                        <i class="bi bi-question-circle text-primary" aria-hidden="true"></i>
                         {% trans "Discussion questions" %}
                     </h2>
                     <p class="small text-muted border-start border-3 border-primary ps-3 mb-4">{% trans "Questions are in English to match oral practice." %}</p>
@@ -107,7 +103,7 @@
             <section class="mb-4" aria-labelledby="writing-heading">
                 <div class="section-card bg-white shadow-sm rounded-4 border border-light p-4 p-md-5">
                     <h2 id="writing-heading" class="h5 text-primary mb-3 d-flex align-items-center gap-2">
-                        <i class="fa fa-pencil text-primary" aria-hidden="true"></i>
+                        <i class="bi bi-pencil text-primary" aria-hidden="true"></i>
                         {% trans "Writing prompts" %}
                     </h2>
                     <p class="small text-muted border-start border-3 border-primary ps-3 mb-4">{% trans "Prompts are in English for written practice." %}</p>
@@ -129,8 +125,4 @@
     <style>
         .last-mb-0:last-child { margin-bottom: 0 !important; }
     </style>
-
-    {% include "includes/site_footer.html" %}
-    {% include "includes/site_scripts.html" %}
-</body>
-</html>
+{% endblock %}

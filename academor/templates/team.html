@@ -1,17 +1,9 @@
-<!DOCTYPE html>
-{% load static i18n academor_lazy_tags %}{% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
+{% extends "base.html" %}
+{% load static i18n academor_lazy_tags %}
 
-<head>
-    {% include "includes/site_layout_head.html" %}
-</head>
+{% block body_attrs %} class="page-team"{% endblock %}
 
-<body class="page-team">
-    {% include "includes/site_spinner.html" %}
-
-
-    <!-- Navbar Start -->
-    {% include "includes/site_navbar.html" %}
+{% block content %}
     <!-- Navbar End -->
 
 
@@ -42,14 +34,14 @@
                                 {% endif %}
                                 {% else %}
                                 <div class="w-100 h-100 bg-light d-flex align-items-center justify-content-center text-muted">
-                                    <i class="fa fa-user fa-3x opacity-25"></i>
+                                    <i class="bi bi-person bi-3x opacity-25"></i>
                                 </div>
                                 {% endif %}
                             </div>
                             <div class="course-alt-card__body">
                                 <h5 class="mb-1 text-truncate" title="{{ member.name }}">{{ member.name }}</h5>
                                 {% if member.role %}<small class="course-alt-card__role d-block mb-2 text-truncate">{{ member.role }}</small>{% endif %}
-                                <span class="course-alt-card__cta"><i class="fa fa-arrow-right" aria-hidden="true"></i></span>
+                                <span class="course-alt-card__cta"><i class="bi bi-arrow-right" aria-hidden="true"></i></span>
                             </div>
                         </a>
                     </article>
@@ -63,11 +55,4 @@
     </div>
     <!-- Team End -->
         
-
-    {% include "includes/site_footer.html" %}
-
-
-    {% include "includes/site_scripts.html" %}
-</body>
-
-</html>
+{% endblock %}

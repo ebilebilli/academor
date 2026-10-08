@@ -1,7 +1,18 @@
 (function () {
     "use strict";
 
-    var STAGGER_MS = 100;
+    /* Timing can be tuned per page through CSS custom properties on <body> (see home.css):
+       --reveal-stagger (step between cards), --reveal-stagger-max (cap on the step count),
+       --reveal-duration (used to know when the hero has settled). Defaults = original values. */
+    function cssMs(name, fallback) {
+        var raw = window.getComputedStyle(document.body || document.documentElement).getPropertyValue(name).trim();
+        if (!raw) return fallback;
+        var n = parseFloat(raw);
+        if (isNaN(n)) return fallback;
+        return raw.slice(-2) === "ms" ? n : raw.slice(-1) === "s" ? n * 1000 : n;
+    }
+    var STAGGER_MS = cssMs("--reveal-stagger", 100);
+    var STAGGER_MAX = cssMs("--reveal-stagger-max", 99);
     var CARD_SELECTORS =
         ".hsvc-card, .course-alt-card, .abroad-card, .hb-card, .hb-hero, " +
         ".blog-card, .blog-featured-card, .testimonial-item, a.svc-card-link";
@@ -22,7 +33,7 @@
     var revealStarted = false;
     var revealSettledFired = false;
     var heroSettlePending = null;
-    var REVEAL_TRANSITION_MS = 850;
+    var REVEAL_TRANSITION_MS = cssMs("--reveal-duration", 850);
 
     function qsa(sel, root) {
         return Array.prototype.slice.call((root || document).querySelectorAll(sel));
@@ -129,7 +140,7 @@
             return !shouldSkip(node);
         });
         var idx = cards.indexOf(el);
-        return idx >= 0 ? idx : 0;
+        return idx >= 0 ? Math.min(idx, STAGGER_MAX) : 0;
     }
 
     function prepareElement(el, opts) {

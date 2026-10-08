@@ -1,0 +1,260 @@
+/* ==========================================================================
+   Academor design tokens — the one place raw color / z-index / scale values live.
+
+   Two tiers:
+     1. Primitives  (--teal-900, --neutral-200 …)  — never used by components.
+     2. Semantic    (--primary, --border, --muted-foreground …) — what CSS uses.
+
+   Every color exists as a pair, Bootstrap-style:
+     --x-rgb: R G B;          → alpha use:  rgb(var(--x-rgb) / 0.12)
+     --x:     rgb(var(--x-rgb)) → opaque use: var(--x)
+
+   The site has no dark mode yet. When it gets one, only the semantic block flips
+   (inside a [data-theme="dark"] / prefers-color-scheme block); primitives never do.
+   Motion tokens (--ease-*, --dur-*) follow the motion guidelines and live at the end.
+   ========================================================================== */
+
+:root {
+    /* ---- Primitives: brand teal (Academor tiber) ---- */
+    --teal-950-rgb: 0 24 32;          /* #001820 */
+    --teal-900-rgb: 0 49 61;          /* #00313D brand */
+    --teal-800-rgb: 0 69 87;          /* #004557 */
+    --teal-700-rgb: 14 80 96;         /* #0E5060 */
+    --teal-100-rgb: 220 238 244;      /* #DCEEF4 */
+
+    /* ---- Primitives: brand orange ---- */
+    --orange-50-rgb: 255 243 235;     /* #FFF3EB */
+    --orange-100-rgb: 255 233 223;    /* #FFE9DF */
+    --orange-200-rgb: 255 211 192;    /* #FFD3C0 */
+    --orange-300-rgb: 255 138 93;     /* #FF8A5D */
+    --orange-500-rgb: 255 84 20;      /* #FF5414 brand */
+    --orange-600-rgb: 224 74 16;      /* #E04A10 */
+    --orange-700-rgb: 194 58 0;       /* #C23A00 — orange text on light, 5.4:1 */
+    --orange-800-rgb: 163 48 0;       /* #A33000 */
+
+    /* ---- Primitives: neutral ramp — one cool hue (teal-tinted slate), 10 steps ---- */
+    --white-rgb: 255 255 255;
+    --neutral-50-rgb: 247 249 251;    /* #F7F9FB */
+    --neutral-100-rgb: 238 243 245;   /* #EEF3F5 */
+    --neutral-200-rgb: 226 233 237;   /* #E2E9ED */
+    --neutral-300-rgb: 208 216 221;   /* #D0D8DD */
+    --neutral-400-rgb: 154 168 176;   /* #9AA8B0 — decorative only, 2.4:1 */
+    --neutral-500-rgb: 95 113 122;    /* #5F717A — 4.8:1 on neutral-50 */
+    --neutral-600-rgb: 74 93 99;      /* #4A5D63 */
+    --neutral-700-rgb: 52 71 78;      /* #34474E */
+    --neutral-800-rgb: 31 48 55;      /* #1F3037 */
+    --neutral-900-rgb: 15 29 35;      /* #0F1D23 */
+    --black-rgb: 0 0 0;
+
+    /* ---- Primitives: secondary + status + third-party brand ---- */
+    --indigo-50-rgb: 244 243 255;     /* #F4F3FF */
+    --indigo-100-rgb: 235 230 255;    /* #EBE6FF */
+    --indigo-500-rgb: 75 60 255;      /* #4B3CFF */
+    --indigo-700-rgb: 53 40 217;      /* #3528D9 */
+    --green-600-rgb: 22 163 74;       /* #16A34A */
+    --red-600-rgb: 220 53 69;         /* #DC3545 */
+    --amber-500-rgb: 245 158 11;      /* #F59E0B */
+    --amber-100-rgb: 255 243 205;     /* #FFF3CD */
+    --amber-800-rgb: 138 109 59;      /* #8A6D3B */
+    --blue-600-rgb: 42 120 196;       /* #2A78C4 */
+    --whatsapp-rgb: 37 211 102;       /* #25D366 */
+    --whatsapp-hover-rgb: 32 189 90;  /* #20BD5A */
+    --whatsapp-deep-rgb: 18 140 126;  /* #128C7E */
+    --instagram-yellow-rgb: 253 244 151;
+    --instagram-coral-rgb: 253 89 73;
+    --instagram-magenta-rgb: 214 36 159;
+    --instagram-blue-rgb: 40 90 235;
+    --tagline-orange-rgb: 255 107 53; /* footer "Learn. Speak. Achieve." dots */
+    --tagline-yellow-rgb: 255 229 0;
+    --tagline-green-rgb: 61 255 122;
+
+    /* ======================================================================
+       Semantic aliases — the only color names components use.
+       Names follow the shadcn/ui vocabulary, except --primary / --accent which keep
+       this project's existing meaning (teal brand / orange call-to-action).
+       ====================================================================== */
+    --background-rgb: var(--neutral-50-rgb);
+    --foreground-rgb: var(--teal-900-rgb);         /* body text is brand teal */
+    --card-rgb: var(--white-rgb);
+    --surface-rgb: var(--neutral-50-rgb);
+    --surface-2-rgb: var(--neutral-100-rgb);
+    --border-rgb: var(--neutral-200-rgb);
+    --border-strong-rgb: var(--neutral-300-rgb);
+    --muted-foreground-rgb: var(--neutral-500-rgb);
+    --subtle-foreground-rgb: var(--neutral-400-rgb);
+    --soft-foreground-rgb: var(--neutral-600-rgb);
+    --strong-foreground-rgb: var(--neutral-700-rgb);
+    --ink-rgb: var(--neutral-900-rgb);
+    --ink-2-rgb: var(--neutral-800-rgb);
+
+    --primary-rgb: var(--teal-900-rgb);
+    --primary-hover-rgb: var(--teal-800-rgb);
+    --primary-raised-rgb: var(--teal-700-rgb);
+    --primary-deep-rgb: var(--teal-950-rgb);
+    --primary-soft-rgb: var(--teal-100-rgb);
+    --primary-foreground-rgb: var(--white-rgb);
+
+    --accent-rgb: var(--orange-500-rgb);
+    --accent-hover-rgb: var(--orange-600-rgb);
+    --accent-strong-rgb: var(--orange-700-rgb);
+    --accent-light-rgb: var(--orange-300-rgb);
+    --accent-muted-rgb: var(--orange-200-rgb);
+    --accent-subtle-rgb: var(--orange-100-rgb);
+    --accent-soft-rgb: var(--orange-50-rgb);
+    --accent-foreground-rgb: var(--white-rgb);
+    /* Text-bearing orange buttons: darker than the brand orange so white labels pass AA. */
+    --cta-rgb: var(--orange-700-rgb);           /* white on it 5.4:1 */
+    --cta-hover-rgb: var(--orange-800-rgb);     /* white on it 7.1:1 */
+
+    --secondary-rgb: var(--indigo-500-rgb);
+    --secondary-strong-rgb: var(--indigo-700-rgb);
+    --secondary-soft-rgb: var(--indigo-50-rgb);
+    --secondary-subtle-rgb: var(--indigo-100-rgb);
+    --ring-rgb: var(--indigo-500-rgb);
+
+    --success-rgb: var(--green-600-rgb);
+    --destructive-rgb: var(--red-600-rgb);
+    --warning-rgb: var(--amber-500-rgb);
+    --warning-soft-rgb: var(--amber-100-rgb);
+    --warning-foreground-rgb: var(--amber-800-rgb);
+    --info-rgb: var(--blue-600-rgb);
+    --overlay-rgb: var(--black-rgb);
+    --on-dark-rgb: var(--white-rgb);
+
+    /* Opaque forms */
+    --background: rgb(var(--background-rgb));
+    --foreground: rgb(var(--foreground-rgb));
+    --card: rgb(var(--card-rgb));
+    --surface: rgb(var(--surface-rgb));
+    --surface-2: rgb(var(--surface-2-rgb));
+    --border: rgb(var(--border-rgb));
+    --border-strong: rgb(var(--border-strong-rgb));
+    --muted-foreground: rgb(var(--muted-foreground-rgb));
+    --subtle-foreground: rgb(var(--subtle-foreground-rgb));
+    --soft-foreground: rgb(var(--soft-foreground-rgb));
+    --strong-foreground: rgb(var(--strong-foreground-rgb));
+    --ink: rgb(var(--ink-rgb));
+    --ink-2: rgb(var(--ink-2-rgb));
+    --primary: rgb(var(--primary-rgb));
+    --primary-hover: rgb(var(--primary-hover-rgb));
+    --primary-raised: rgb(var(--primary-raised-rgb));
+    --primary-deep: rgb(var(--primary-deep-rgb));
+    --primary-soft: rgb(var(--primary-soft-rgb));
+    --primary-foreground: rgb(var(--primary-foreground-rgb));
+    --accent: rgb(var(--accent-rgb));
+    --accent-hover: rgb(var(--accent-hover-rgb));
+    --accent-strong: rgb(var(--accent-strong-rgb));
+    --accent-light: rgb(var(--accent-light-rgb));
+    --accent-muted: rgb(var(--accent-muted-rgb));
+    --accent-subtle: rgb(var(--accent-subtle-rgb));
+    --accent-soft: rgb(var(--accent-soft-rgb));
+    --accent-foreground: rgb(var(--accent-foreground-rgb));
+    --cta: rgb(var(--cta-rgb));
+    --cta-hover: rgb(var(--cta-hover-rgb));
+    --secondary: rgb(var(--secondary-rgb));
+    --secondary-strong: rgb(var(--secondary-strong-rgb));
+    --secondary-soft: rgb(var(--secondary-soft-rgb));
+    --secondary-subtle: rgb(var(--secondary-subtle-rgb));
+    --ring: rgb(var(--ring-rgb));
+    --success: rgb(var(--success-rgb));
+    --destructive: rgb(var(--destructive-rgb));
+    --warning: rgb(var(--warning-rgb));
+    --warning-soft: rgb(var(--warning-soft-rgb));
+    --warning-foreground: rgb(var(--warning-foreground-rgb));
+    --info: rgb(var(--info-rgb));
+    --on-dark: rgb(var(--on-dark-rgb));
+    --whatsapp: rgb(var(--whatsapp-rgb));
+    --whatsapp-hover: rgb(var(--whatsapp-hover-rgb));
+    --whatsapp-deep: rgb(var(--whatsapp-deep-rgb));
+    --instagram-yellow: rgb(var(--instagram-yellow-rgb));
+    --instagram-coral: rgb(var(--instagram-coral-rgb));
+    --instagram-magenta: rgb(var(--instagram-magenta-rgb));
+    --instagram-blue: rgb(var(--instagram-blue-rgb));
+    --tagline-orange: rgb(var(--tagline-orange-rgb));
+    --tagline-yellow: rgb(var(--tagline-yellow-rgb));
+    --tagline-green: rgb(var(--tagline-green-rgb));
+
+    /* Legacy names still used across style.css — aliases, not new colors */
+    --dark: var(--primary);
+    --light: var(--secondary-soft);
+    --neon-blue: var(--secondary);
+    --site-surface: var(--surface);
+    --bs-primary: var(--primary);
+    --bs-primary-rgb: 0, 49, 61;      /* Bootstrap utilities need comma form */
+    --bs-light: var(--secondary-soft);
+    --bs-light-rgb: 244, 243, 255;
+
+    /* ---- Typography ---- */
+    --font-sans: "Host Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-display: var(--font-sans);
+    /* fluid scale, ratio ≈1.25, 16px base */
+    --fs-xs: 0.8125rem;                                   /* 13 */
+    --fs-sm: 0.875rem;                                    /* 14 */
+    --fs-base: 1rem;                                      /* 16 */
+    --fs-lg: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);     /* 17–20 */
+    --fs-xl: clamp(1.25rem, 1.1rem + 0.6vw, 1.5625rem);   /* 20–25 */
+    --fs-2xl: clamp(1.5rem, 1.25rem + 1.1vw, 1.953rem);   /* 24–31 */
+    --fs-3xl: clamp(1.875rem, 1.45rem + 1.9vw, 2.441rem); /* 30–39 */
+    --fs-4xl: clamp(2.25rem, 1.6rem + 2.9vw, 3.052rem);   /* 36–49 */
+    --lh-tight: 1.12;
+    --lh-snug: 1.3;
+    --lh-body: 1.6;
+    --tracking-tight: -0.02em;
+    --tracking-caps: 0.08em;
+
+    /* ---- Spacing: base-4 ---- */
+    --space-1: 0.25rem;   /* 4 */
+    --space-2: 0.5rem;    /* 8 */
+    --space-3: 0.75rem;   /* 12 */
+    --space-4: 1rem;      /* 16 */
+    --space-5: 1.5rem;    /* 24 */
+    --space-6: 2rem;      /* 32 */
+    --space-7: 3rem;      /* 48 */
+    --space-8: 4rem;      /* 64 */
+    --space-9: 6rem;      /* 96 */
+    --section-y: clamp(3.5rem, 2.5rem + 4vw, 6rem);
+
+    /* ---- Radius (pill / circle are patterns, not scale values) ---- */
+    --radius-sm: 0.5rem;   /* 8  — inputs, chips */
+    --radius-md: 0.75rem;  /* 12 — buttons-in-cards, small cards */
+    --radius-lg: 1.25rem;  /* 20 — cards, media */
+    --radius-pill: 999px;
+    --radius-circle: 50%;
+
+    /* ---- Shadows: three layered, teal-tinted levels ---- */
+    --shadow-sm: 0 1px 2px rgb(var(--primary-rgb) / 0.06), 0 1px 3px rgb(var(--primary-rgb) / 0.05);
+    --shadow-md: 0 2px 4px rgb(var(--primary-rgb) / 0.05), 0 8px 20px rgb(var(--primary-rgb) / 0.08);
+    --shadow-lg: 0 4px 8px rgb(var(--primary-rgb) / 0.06), 0 20px 44px rgb(var(--primary-rgb) / 0.14);
+
+    /* ---- Z-index layers (aligned with Bootstrap 5.3's own scale) ---- */
+    --z-below: -1;
+    --z-base: 0;
+    --z-raised: 1;
+    --z-raised-2: 2;
+    --z-raised-3: 3;
+    --z-overlay-local: 10;     /* overlays inside a component (carousel nav, video cover) */
+    --z-overlay-local-2: 20;
+    --z-subnav: 40;            /* sticky filter bars that pass under the navbar */
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;           /* navbar */
+    --z-fab: 1040;             /* floating WhatsApp / Instagram / back-to-top — below modals */
+    --z-sticky-cta: 1045;      /* course payment sticky bar */
+    --z-modal-backdrop: 1050;
+    --z-modal: 1055;           /* Bootstrap modals, lightbox, lucky-wheel result overlay */
+    --z-popover: 1070;
+    --z-toast: 1090;           /* lucky-wheel confetti */
+    --z-loader: 2000;          /* full-screen loader (portal login only) */
+    --z-skip-link: 2100;
+    --z-fullscreen: 2147483647; /* video fullscreen fallback */
+
+    /* ---- Motion (values from the motion guidelines; do not fork) ---- */
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+    --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+    --dur-press: 160ms;
+    --dur-fast: 200ms;
+    --dur-base: 250ms;
+    --dur-reveal: 480ms;       /* marketing scroll reveals only */
+    --stagger: 50ms;
+}

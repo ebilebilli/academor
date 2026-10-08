@@ -6,7 +6,7 @@
         <div class="hsvc-card-wrap{% if active_slug == cat.slug %} hsvc-card-wrap--active{% endif %}">
             <a href="{% url detail_url_name|default:'projects:course-detail' slug=cat.slug %}" class="hsvc-card">
                 <span class="hsvc-card__icon" aria-hidden="true">
-                    <i class="fa {{ cat.icon }}" aria-hidden="true"></i>
+                    <i class="bi bi-question {{ cat.icon }}" aria-hidden="true"></i>
                 </span>
                 <span class="hsvc-card__main">
                     <h3 class="hsvc-card__title">{{ cat.name }}</h3>
@@ -17,7 +17,7 @@
                     </span>
                     {% endif %}
                 </span>
-                <span class="hsvc-card__arrow" aria-hidden="true"><i class="fa fa-arrow-right"></i></span>
+                <span class="hsvc-card__arrow" aria-hidden="true"><i class="bi bi-arrow-right"></i></span>
             </a>
         </div>
     </li>

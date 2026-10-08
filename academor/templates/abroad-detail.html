@@ -1,16 +1,9 @@
-<!DOCTYPE html>
-{% load static i18n %}{% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
+{% extends "base.html" %}
+{% load static i18n %}
 
-<head>
-    {% include "includes/site_layout_head.html" with lcp_image_url=abroad_item.detail_page_img %}
-</head>
+{% block layout_head %}{% include "includes/site_layout_head.html" with lcp_image_url=abroad_item.detail_page_img %}{% endblock %}
 
-<body>
-    {% include "includes/site_spinner.html" %}
-
-    {% include "includes/site_navbar.html" %}
-
+{% block content %}
     {% include "includes/page_header_banner.html" %}
 
     <div class="container-xxl py-5 abroad-detail-page">
@@ -25,7 +18,7 @@
                 <div class="abroad-detail-hero__overlay">
                     <div class="abroad-detail-hero__content">
                         <span class="abroad-detail-hero__badge">
-                            <i class="fa fa-globe" aria-hidden="true"></i>
+                            <i class="bi bi-globe" aria-hidden="true"></i>
                             {% trans "Study Abroad" %}
                         </span>
                         <h1 class="abroad-detail-hero__title">{{ abroad_item.name }}</h1>
@@ -42,7 +35,7 @@
                         {% url 'projects:abroad-page' as abroad_list_url %}
                         {% include "includes/detail_back_button.html" with fallback_url=abroad_list_url %}
                         <a href="{% url 'projects:contact-page' %}" class="btn btn-primary px-4 py-2 rounded-pill">
-                            <i class="fa fa-envelope me-2" aria-hidden="true"></i>{% trans "Contact us" %}
+                            <i class="bi bi-envelope me-2" aria-hidden="true"></i>{% trans "Contact us" %}
                         </a>
                     </div>
                 </div>
@@ -57,10 +50,4 @@
 
         </div>
     </div>
-
-    {% include "includes/site_footer.html" %}
-
-    {% include "includes/site_scripts.html" %}
-</body>
-
-</html>
+{% endblock %}

@@ -48,7 +48,7 @@
                         <a href="{% url 'projects:abroad-detail' slug=item.slug %}" class="dropdown-item nav-abroad-country__link text-wrap{% if u == 'abroad-detail' and nav_abroad_slug == item.slug %} active{% endif %}">{{ item.name }}</a>
                         {% if item.universities %}
                         <button type="button" class="nav-abroad-country__toggle collapsed" data-bs-toggle="collapse" data-bs-target="#nav-abroad-unis-{{ item.id }}" aria-expanded="false" aria-controls="nav-abroad-unis-{{ item.id }}" aria-label="{% trans 'Show universities' %}">
-                            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                            <i class="bi bi-chevron-down" aria-hidden="true"></i>
                         </button>
                         {% endif %}
                     </div>
@@ -114,24 +114,24 @@
             {% if portal_is_authenticated %}
                 <a href="{% url 'portals:dashboard' %}" class="btn nav-portal-btn">
                     <span class="nav-portal-btn__label">{% trans "Portal" %}</span>
-                    <i class="fa fa-user-circle ms-lg-2" aria-hidden="true"></i>
+                    <i class="bi bi-person-circle ms-lg-2" aria-hidden="true"></i>
                 </a>
             {% else %}
                 <a href="{% url 'portals:login' %}" class="btn nav-login-btn">
                     <span class="nav-login-btn__label">{% trans "Log in" %}</span>
-                    <i class="fa fa-sign-in-alt ms-lg-2" aria-hidden="true"></i>
+                    <i class="bi bi-box-arrow-in-right ms-lg-2" aria-hidden="true"></i>
                 </a>
             {% endif %}
         </div>
         <div class="nav-contact-mobile-wrap d-lg-none">
             <a href="{% url 'projects:contact-page' %}" class="btn btn-primary nav-contact-mobile{% if u == 'contact-page' %} active{% endif %}">
                 <span class="nav-contact-mobile__label">{% trans "Contact" %}</span>
-                <span class="nav-contact-mobile__icon" aria-hidden="true"><i class="fa fa-arrow-right"></i></span>
+                <span class="nav-contact-mobile__icon" aria-hidden="true"><i class="bi bi-arrow-right"></i></span>
             </a>
         </div>
         <a href="{% url 'projects:contact-page' %}" class="btn btn-primary nav-contact-btn d-none d-lg-block{% if u == 'contact-page' %} active{% endif %}">
             <span class="nav-contact-btn__label">{% trans "Contact" %}</span>
-            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+            <i class="bi bi-arrow-right" aria-hidden="true"></i>
         </a>
     </div>
     <div class="scroll-progress" aria-hidden="true">
