@@ -275,57 +275,10 @@ body.page-home {
 
 .home-journey__route {
     fill: none;
-    stroke: rgb(var(--primary-rgb) / 0.22);
+    stroke: rgb(var(--primary-rgb) / 0.2);
     stroke-width: 2;
     stroke-linecap: round;
     stroke-dasharray: 0.5 9;
-}
-
-.home-journey__travelled {
-    fill: none;
-    stroke: rgb(var(--accent-rgb) / 0.75);
-    stroke-width: 2;
-    stroke-linecap: round;
-}
-
-.home-journey__pin {
-    fill: var(--card);
-    stroke: rgb(var(--accent-rgb) / 0.6);
-    stroke-width: 2;
-    transition: fill var(--dur-base) ease, stroke var(--dur-base) ease;
-}
-
-.home-journey__code {
-    font-family: var(--font-sans);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    fill: var(--muted-foreground);
-    transition: fill var(--dur-base) ease;
-}
-
-.home-journey__ping {
-    fill: none;
-    stroke: var(--accent);
-    stroke-width: 1.5;
-    opacity: 0;
-    transform-box: fill-box;
-    transform-origin: center;
-}
-
-.home-journey__stop.is-reached .home-journey__pin { fill: var(--accent); stroke: var(--accent); }
-.home-journey__stop.is-reached .home-journey__code { fill: var(--accent); }
-
-/* one ping when the plane arrives (feedback that a stop was reached) */
-.home-journey:not(.is-static) .home-journey__stop.is-reached .home-journey__ping {
-    animation: journey-ping 700ms var(--ease-out) 1 both;
-}
-
-.home-journey__stop--final.is-reached .home-journey__pin { stroke-width: 3; }
-
-@keyframes journey-ping {
-    from { opacity: 0.7; transform: scale(0.6); }
-    to { opacity: 0; transform: scale(2.4); }
 }
 
 .home-journey__fx {
@@ -333,19 +286,71 @@ body.page-home {
     inset: 0;
 }
 
-/* Plane + its ground shadow: positioned only through transform (set per frame in JS). */
+/* Everything below is positioned only through transform (set in JS). */
+.home-journey__stop,
 .home-journey__plane,
 .home-journey__shadow,
 .home-journey__puff {
     position: absolute;
     top: 0;
     left: 0;
-    will-change: transform;
-    transform-origin: 50% 50%;
 }
 
-.home-journey__plane { z-index: 2; }
-.home-journey__shadow { z-index: 0; opacity: 0.5; }
+/* ---- Stops: die-cut landmark stickers (real photos, Adobe Stock + Photoshop API cutouts) */
+.home-journey__stop { z-index: 1; width: 0; height: 0; }
+
+.home-journey__sticker {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: auto;
+    height: auto;
+    translate: -50% -50%;
+    transform-origin: 50% 85%;
+    opacity: 0.55;
+    scale: 0.82;
+    transition: opacity var(--dur-reveal) var(--ease-out), scale var(--dur-reveal) var(--ease-out);
+}
+
+/* arrival: the sticker pops like it was just slapped on (one overshoot, then settles) */
+.home-journey__stop.is-reached .home-journey__sticker {
+    opacity: 1;
+    scale: 1;
+}
+
+.home-journey:not(.is-static) .home-journey__stop.is-reached .home-journey__sticker {
+    animation: journey-sticker-pop 620ms var(--ease-out) 1 both;
+}
+
+@keyframes journey-sticker-pop {
+    0% { scale: 0.82; rotate: -8deg; opacity: 0.55; }
+    55% { scale: 1.12; rotate: 3deg; opacity: 1; }
+    100% { scale: 1; rotate: 0deg; opacity: 1; }
+}
+
+.home-journey__code {
+    position: absolute;
+    left: 0;
+    translate: -50% 0;
+    padding: 1px 6px;
+    border-radius: 999px;
+    background: var(--card);
+    box-shadow: 0 1px 3px rgb(var(--primary-rgb) / 0.12);
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.5;
+    letter-spacing: 0.14em;
+    color: var(--muted-foreground);
+    white-space: nowrap;
+    transition: color var(--dur-base) ease;
+}
+
+.home-journey__stop.is-reached .home-journey__code { color: var(--accent); }
+
+/* ---- Plane, its ground shadow and contrails */
+.home-journey__plane { z-index: 3; will-change: transform; }
+.home-journey__shadow { z-index: 2; opacity: 0.45; will-change: transform; }
 
 .home-journey__plane-art {
     display: block;
@@ -363,7 +368,7 @@ body.page-home {
 
 /* contrail puffs: soft teal-grey vapour that swells and dissolves where it was left */
 .home-journey__puff {
-    z-index: 1;
+    z-index: 2;
     width: 12px;
     height: 12px;
     margin: -6px 0 0 -6px;
@@ -372,19 +377,23 @@ body.page-home {
     opacity: 0;
 }
 
-/* plane fades out once landed at JFK; fades back if you scroll up */
+/* landed at JFK, or jumping a long way: plane and shadow fade */
 .home-journey__plane,
 .home-journey__shadow {
-    transition: opacity var(--dur-base) var(--ease-out);
+    transition: opacity 180ms var(--ease-out);
 }
 
 .home-journey.is-landed .home-journey__plane,
-.home-journey.is-landed .home-journey__shadow {
+.home-journey.is-landed .home-journey__shadow,
+.home-journey.is-jumping .home-journey__plane,
+.home-journey.is-jumping .home-journey__shadow {
     opacity: 0 !important;
 }
 
-/* reduced motion: static map, every stop shown, no plane */
-.home-journey.is-static .home-journey__fx {
+/* reduced motion: static route and stickers, no plane */
+.home-journey.is-static .home-journey__plane,
+.home-journey.is-static .home-journey__shadow,
+.home-journey.is-static .home-journey__puff {
     display: none;
 }
 
