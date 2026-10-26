@@ -112,8 +112,8 @@
         cx = width - gutter / 2;
         amp = clamp(gutter * 0.12, 3, 12);
         planeLen = clamp(Math.round(gutter * 0.95), 64, 104);
-        var stickerH = clamp(Math.round(gutter * 1.3), 76, 124);
-        var stickerW = Math.max(Math.round(gutter * 1.5), 80);   /* wide skylines (Baku) */
+        var stickerH = clamp(Math.round(gutter * 1.6), 96, 150);
+        var stickerW = Math.max(Math.round(gutter * 1.9), 104);   /* wide skylines (Baku) */
 
         stops = list.map(function (s) {
             return { code: s.code, y: s.node.getBoundingClientRect().top + window.scrollY - mainTop + PIN_OFFSET };
