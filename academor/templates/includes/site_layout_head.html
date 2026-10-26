@@ -91,14 +91,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <!-- Non-critical CSS — async (icons / animations; mətn şrifti yuxarıda sinxron).
-     Vendor CSS self-hosted at pinned versions. Public pages (base.html → public_shell) use
-     Bootstrap Icons only; Font Awesome stays solely for portals/login.html, which reuses this head. -->
-{% if not public_shell %}
+     Font Awesome 5.15.4 is the main icon set; Bootstrap Icons covers the few bi-* icons. -->
 <link rel="preload" as="style"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
       onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"></noscript>
-{% endif %}
 
 <link rel="preload" as="font" type="font/woff2" crossorigin
       href="{% static 'assets/vendor/bootstrap-icons-1.11.3/fonts/bootstrap-icons.woff2' %}">

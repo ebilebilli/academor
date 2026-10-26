@@ -32,7 +32,7 @@
                             <ul class="mock-detail-hero__highlights list-unstyled mb-0">
                                 {% for item in course.bullet_items %}
                                 <li>
-                                    <i class="bi bi-check-circle" aria-hidden="true"></i>
+                                    <i class="fa fa-check-circle" aria-hidden="true"></i>
                                     <span>{{ item }}</span>
                                 </li>
                                 {% endfor %}
@@ -58,11 +58,11 @@
                         <div class="mock-detail-hero__contact mock-detail-hero__contact--inline wow fadeInUp" data-wow-delay="0.15s">
                             <a href="{% url 'projects:contact-page' %}" class="mock-detail-hero__action-btn">
                                 {% trans "Contact us" %}
-                                <i class="bi bi-arrow-right ms-2 small" aria-hidden="true"></i>
+                                <i class="fas fa-arrow-right ms-2 small" aria-hidden="true"></i>
                             </a>
                             {% if footer_contact.whatsapp_number_me %}
                             <a href="https://wa.me/{{ footer_contact.whatsapp_number_me }}" class="mock-detail-hero__contact-btn mock-detail-hero__contact-btn--whatsapp" target="_blank" rel="noopener noreferrer">
-                                <i class="bi bi-whatsapp" aria-hidden="true"></i>
+                                <i class="fab fa-whatsapp" aria-hidden="true"></i>
                                 {% trans "WhatsApp" %}
                             </a>
                             {% endif %}
@@ -105,7 +105,7 @@
                                         <img src="{{ trainer.image }}" alt="{{ trainer.name }}" loading="lazy" decoding="async" width="400" height="400">
                                         {% else %}
                                         <div class="mock-detail-trainer-card__placeholder">
-                                            <i class="bi bi-person" aria-hidden="true"></i>
+                                            <i class="fa fa-user" aria-hidden="true"></i>
                                         </div>
                                         {% endif %}
                                     </div>

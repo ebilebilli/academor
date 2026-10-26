@@ -1,12 +1,14 @@
 """Fill the site with throwaway demo content so pages look full during local testing.
 
-    python manage.py seed_fake_content            # 8 services, 8 countries, 20 universities, 8 team members
+    python manage.py seed_fake_content            # 8 services, 8 countries, 20 universities, 8 team members,
+                                                  # 8 blog posts, 12 reviews
     python manage.py seed_fake_content --clear    # remove only what this command created
 
 Everything it creates has a slug starting with "demo-" (Team and University slugs are
-built from the name, so their names start with "Demo"), so --clear never touches real
-data. Images are generated locally with Pillow (no network). Not for production.
+built from the name, so their names start with "Demo"; reviews have no slug, so their
+author name starts with "Demo"), so --clear never touches real data. Images are generated locally with Pillow (no network). Not for production.
 """
+import datetime
 import io
 import random
 
@@ -15,7 +17,7 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 from PIL import Image, ImageDraw
 
-from projects.models import AbroadModel, Service, Team, University
+from projects.models import AbroadModel, BlogPost, Review, Service, Team, University
 from projects.service_category_icons import SERVICE_CATEGORY_ICON_CHOICES
 
 PREFIX = 'demo-'
@@ -35,6 +37,15 @@ TEAM = [
     ('Nigar Həsənova', 'General English müəllimi'), ('Elvin Quliyev', 'Speaking koçu'),
     ('Leyla İsmayılova', 'Xaricdə təhsil məsləhətçisi'), ('Murad Kərimov', 'GMAT müəllimi'),
     ('Günay Abbasova', 'Kids English müəllimi'), ('Tural Səfərov', 'Akademik koordinator'),
+]
+BLOG_POSTS = [
+    'IELTS-də 7.5 necə alınır', 'Almaniyada təhsil: ilk addımlar', 'Speaking qorxusunu necə yenməli',
+    'SAT üçün 3 aylıq plan', 'Xaricdə təqaüd qazanmağın yolları', 'Hər gün 20 dəqiqə ingilis dili',
+    'Motivasiya məktubu necə yazılır', 'Kanadada tələbə həyatı',
+]
+REVIEWERS = [
+    'Demo Kamran', 'Demo Səbinə', 'Demo Orxan', 'Demo Fidan', 'Demo Nihad', 'Demo Aytən',
+    'Demo Fərid', 'Demo Lalə', 'Demo Ruslan', 'Demo Nərmin', 'Demo Emin', 'Demo Zəhra',
 ]
 LOREM = (
     'Asfansfa nsfnasn lorem ipsum dolor sit amet, consectetur adipiscing elit. '
@@ -58,6 +69,12 @@ def _image(name, size=(1200, 800), seed=0, label=''):
     return ContentFile(buf.getvalue(), name=name)
 
 
+def _wipe(qs):
+    count = qs.count()
+    qs.delete()
+    return count
+
+
 def _html(title):
     return f'<p><strong>{title}</strong></p><p>{LOREM}</p><p>{LOREM}</p>'
 
@@ -72,10 +89,12 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         if options['clear']:
             counts = {
-                'universities': University.objects.filter(slug__startswith=PREFIX).delete()[0],
-                'countries': AbroadModel.objects.filter(slug__startswith=PREFIX).delete()[0],
-                'services': Service.objects.filter(slug__startswith=PREFIX).delete()[0],
-                'team': Team.objects.filter(slug__startswith=PREFIX).delete()[0],
+                'blog posts': _wipe(BlogPost.objects.filter(slug__startswith=PREFIX)),
+                'reviews': _wipe(Review.objects.filter(name__startswith='Demo ')),
+                'universities': _wipe(University.objects.filter(slug__startswith=PREFIX)),
+                'countries': _wipe(AbroadModel.objects.filter(slug__startswith=PREFIX)),
+                'services': _wipe(Service.objects.filter(slug__startswith=PREFIX)),
+                'team': _wipe(Team.objects.filter(slug__startswith=PREFIX)),
             }
             self.stdout.write(self.style.SUCCESS(f'Removed demo records: {counts}'))
             return
@@ -143,10 +162,37 @@ class Command(BaseCommand):
                 },
             )
 
+        today = datetime.date.today()
+        for i, title in enumerate(BLOG_POSTS, 1):
+            post, created = BlogPost.objects.get_or_create(
+                slug=f'{PREFIX}blog-{i}',
+                defaults={
+                    'name_az': title, 'name_en': title, 'name_ru': title,
+                    'description_az': _html(title), 'description_en': _html(title), 'description_ru': _html(title),
+                    'date': today - datetime.timedelta(days=i * 3),
+                    'is_active': True, 'on_main_page': i <= 4,
+                },
+            )
+            if created:
+                post.cover.save(f'demo-blog-{i}.webp', _image('b.webp', (1200, 800), seed=80 + i, label=title), save=True)
+
+        for i, name in enumerate(REVIEWERS, 1):
+            Review.objects.get_or_create(
+                name=name,
+                defaults={
+                    'phone': f'+99450000{i:04d}',
+                    'message': f'Asfansfa nsfnasn! Academor-da dərslər çox faydalı oldu, müəllimlər əladır. Lorem ipsum {i}.',
+                    'rating': 5 if i % 3 else 4,
+                    'is_active': True,
+                },
+            )
+
         self.stdout.write(self.style.SUCCESS(
             'Demo content ready: '
             f'{Service.objects.filter(slug__startswith=PREFIX).count()} services, '
             f'{AbroadModel.objects.filter(slug__startswith=PREFIX).count()} countries, '
             f'{University.objects.filter(slug__startswith=PREFIX).count()} universities, '
-            f'{Team.objects.filter(slug__startswith=PREFIX).count()} team members.'
+            f'{Team.objects.filter(slug__startswith=PREFIX).count()} team members, '
+            f'{BlogPost.objects.filter(slug__startswith=PREFIX).count()} blog posts, '
+            f'{Review.objects.filter(name__startswith="Demo ").count()} reviews.'
         ))

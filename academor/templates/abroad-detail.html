@@ -18,7 +18,7 @@
                 <div class="abroad-detail-hero__overlay">
                     <div class="abroad-detail-hero__content">
                         <span class="abroad-detail-hero__badge">
-                            <i class="bi bi-globe" aria-hidden="true"></i>
+                            <i class="fa fa-globe" aria-hidden="true"></i>
                             {% trans "Study Abroad" %}
                         </span>
                         <h1 class="abroad-detail-hero__title">{{ abroad_item.name }}</h1>
@@ -35,7 +35,7 @@
                         {% url 'projects:abroad-page' as abroad_list_url %}
                         {% include "includes/detail_back_button.html" with fallback_url=abroad_list_url %}
                         <a href="{% url 'projects:contact-page' %}" class="btn btn-primary px-4 py-2 rounded-pill">
-                            <i class="bi bi-envelope me-2" aria-hidden="true"></i>{% trans "Contact us" %}
+                            <i class="fa fa-envelope me-2" aria-hidden="true"></i>{% trans "Contact us" %}
                         </a>
                     </div>
                 </div>

@@ -51,7 +51,7 @@ body.page-home {
     text-wrap: balance;
 }
 
-/* Eyebrow labels: readable size, AA contrast on light surfaces (accent-strong = 5.1:1). */
+/* Eyebrow labels: readable size; colour stays the original brand colour. */
 .page-home :is(
     .home-sales-section__eyebrow,
     .hsvc-eyebrow,
@@ -62,7 +62,6 @@ body.page-home {
     font-weight: 700;
     letter-spacing: var(--tracking-caps);
     text-transform: uppercase;
-    color: var(--accent-strong);
 }
 
 /* The abroad badge sits on the dark band — keep its light colour, only fix the size. */
@@ -102,7 +101,6 @@ body.page-home {
 .page-home :is(
     .hsvc-card,
     .abroad-card,
-    .course-alt-card,
     .home-price-card.course-pay-card,
     .review-card--home,
     .discount-banner,
@@ -110,49 +108,44 @@ body.page-home {
     .hbh-card--regular
 ) {
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
     /* `translate` / `scale` are separate from `transform`, so the hover lift never fights
        the reveal transition (which owns `transform` + `opacity`, with its stagger delay). */
-    transition-property: opacity, transform, translate, scale, border-color;
-    transition-duration: var(--reveal-duration), var(--reveal-duration), var(--dur-base), var(--dur-press), var(--dur-base);
-    transition-timing-function: var(--reveal-ease), var(--reveal-ease), var(--ease-out), var(--ease-out), ease;
-    transition-delay: var(--reveal-delay, 0ms), var(--reveal-delay, 0ms), 0ms, 0ms, 0ms;
+    transition-property: opacity, transform, translate, scale;
+    transition-duration: var(--reveal-duration), var(--reveal-duration), var(--dur-base), var(--dur-press);
+    transition-timing-function: var(--reveal-ease), var(--reveal-ease), var(--ease-out), var(--ease-out);
+    transition-delay: var(--reveal-delay, 0ms), var(--reveal-delay, 0ms), 0ms, 0ms;
 }
 
-/* Legacy hovers moved cards with `transform` (team: -8px + rotate, abroad: -3px).
-   Neutralise them so only the shared 4px lift remains. */
-.page-home .course-alt-card:is(.is-revealed, .is-visible, :not(.scroll-reveal)):is(:hover, :focus-within),
+/* The abroad card's legacy hover moved it with `transform` (-3px); neutralise it so only
+   the shared 4px lift remains. Team cards keep their original hover. */
 .page-home .abroad-card:hover {
     transform: none;
-    box-shadow: var(--shadow-md);
 }
 
 @media (hover: hover) and (pointer: fine) {
     .page-home :is(
         .hsvc-card,
         .abroad-card,
-        .course-alt-card,
         .home-price-card.course-pay-card,
         .discount-banner,
         .hbh-card--featured,
         .hbh-card--regular
     ):is(:hover, :focus-within) {
         translate: 0 -4px;
-        border-color: rgb(var(--accent-rgb) / 0.35);
     }
 
     /* Media inside cards drifts 3% closer: the card's picture responds, not the layout. */
-    .page-home :is(.hbh-card__img, .course-alt-card__media img, .discount-banner__img) {
+    .page-home :is(.hbh-card__img, .discount-banner__img) {
         transition: scale var(--dur-reveal) var(--ease-out);
     }
 
-    .page-home :is(.hbh-card--featured, .hbh-card--regular, .course-alt-card, .discount-banner):hover
-        :is(.hbh-card__img, .course-alt-card__media img, .discount-banner__img) {
+    .page-home :is(.hbh-card--featured, .hbh-card--regular, .discount-banner):hover
+        :is(.hbh-card__img, .discount-banner__img) {
         scale: 1.03;
     }
 }
 
-.page-home :is(.hsvc-card, .abroad-card, .course-alt-card__link, .hbh-card--featured, .hbh-card--regular):active {
+.page-home :is(.hsvc-card, .abroad-card, .hbh-card--featured, .hbh-card--regular):active {
     scale: 0.985;
 }
 
@@ -169,27 +162,15 @@ body.page-home {
     scale: 0.97;
 }
 
-/* Text-bearing orange buttons use --cta (#C23A00): white labels at 5.4:1, hover 7.1:1.
-   Their existing rules (many with !important) all read var(--accent)/var(--accent-hover),
-   so re-pointing those variables on just these elements recolours rest, hover and glow
-   without another !important. Brand orange stays on dots, icons and icon-only buttons
-   (graphics need 3:1; brand orange is 3.2:1). */
-.page-home :is(.btn-primary:not(.back-to-top), .about-intro-section .hbh-see-all, .discount-banner__cta) {
-    --accent-rgb: var(--cta-rgb);
-    --accent: var(--cta);
-    --accent-hover-rgb: var(--cta-hover-rgb);
-    --accent-hover: var(--cta-hover);
-}
-
 /* Arrow nudges toward where the link goes. */
-.page-home :is(.btn, .hbh-cta-btn, .hbh-see-all, .discount-banner__cta, .hsvc-card__arrow, .abroad-card__cta, .course-alt-card__cta) .bi-arrow-right,
-.page-home .hsvc-card__arrow .bi {
+.page-home :is(.btn, .hbh-cta-btn, .hbh-see-all, .discount-banner__cta, .hsvc-card__arrow, .abroad-card__cta) .fa-arrow-right,
+.page-home .hsvc-card__arrow .fa {
     transition: translate var(--dur-fast) var(--ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
-    .page-home :is(.btn, .hbh-cta-btn, .hbh-see-all, .discount-banner__cta):hover .bi-arrow-right,
-    .page-home :is(.hsvc-card, .abroad-card, .course-alt-card):hover :is(.bi-arrow-right, .hsvc-card__arrow .bi) {
+    .page-home :is(.btn, .hbh-cta-btn, .hbh-see-all, .discount-banner__cta):hover .fa-arrow-right,
+    .page-home :is(.hsvc-card, .abroad-card):hover :is(.fa-arrow-right, .hsvc-card__arrow .fa) {
         translate: 3px 0;
     }
 }
@@ -246,7 +227,7 @@ body.page-home {
         .hbh-card__img,
         .course-alt-card__media img,
         .discount-banner__img,
-        .bi-arrow-right
+        .fa-arrow-right
     ) {
         translate: none !important;
         scale: none !important;
@@ -333,7 +314,7 @@ body.page-home {
 }
 
 .home-journey__stop.is-reached .home-journey__pin { fill: var(--accent); stroke: var(--accent); }
-.home-journey__stop.is-reached .home-journey__code { fill: var(--accent-strong); }
+.home-journey__stop.is-reached .home-journey__code { fill: var(--accent); }
 
 /* one ping when the plane arrives (feedback that a stop was reached) */
 .home-journey:not(.is-static) .home-journey__stop.is-reached .home-journey__ping {

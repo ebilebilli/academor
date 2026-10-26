@@ -1,4 +1,4 @@
-{% load icon_tags i18n %}
+{% load i18n %}
 <div
     class="course-pay-block"
     data-default-index="{{ default_package_index|default:0 }}"
@@ -29,7 +29,7 @@
                 aria-controls="course-pay-panel-{{ panel.key }}"
                 aria-selected="{% if panel.is_active %}true{% else %}false{% endif %}"
             >
-                <i class="{{ panel.icon|bi_icon }} course-pay-tab__icon" aria-hidden="true"></i>
+                <i class="{{ panel.icon }} course-pay-tab__icon" aria-hidden="true"></i>
                 <span class="course-pay-tab__label">{{ panel.label }}</span>
                 <span class="course-pay-tab__count">{{ panel.count }}</span>
             </button>
