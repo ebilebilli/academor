@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load icon_tags i18n %}
 {% if categories %}
 <ul class="mock-tests-grid" role="list">
     {% for cat in categories %}
@@ -16,7 +16,7 @@
                     >
                     {% else %}
                     <div class="mock-tests-card__icon-wrap" aria-hidden="true">
-                        <i class="bi bi-question {{ cat.icon }}"></i>
+                        <i class="{{ cat.icon|bi_icon }}"></i>
                     </div>
                     {% endif %}
                     <span class="mock-tests-card__media-glow" aria-hidden="true"></span>

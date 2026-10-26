@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load icon_tags i18n %}
 {% if categories %}
 <ul class="hsvc-grid wow fadeInUp" data-wow-delay="0.1s" role="list">
     {% for cat in categories %}
@@ -6,7 +6,7 @@
         <div class="hsvc-card-wrap{% if active_slug == cat.slug %} hsvc-card-wrap--active{% endif %}">
             <a href="{% url detail_url_name|default:'projects:course-detail' slug=cat.slug %}" class="hsvc-card">
                 <span class="hsvc-card__icon" aria-hidden="true">
-                    <i class="bi bi-question {{ cat.icon }}" aria-hidden="true"></i>
+                    <i class="{{ cat.icon|bi_icon }}" aria-hidden="true"></i>
                 </span>
                 <span class="hsvc-card__main">
                     <h3 class="hsvc-card__title">{{ cat.name }}</h3>
