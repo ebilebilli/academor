@@ -1,4 +1,4 @@
-/* Homepage "journey" layer: a flight down the right-hand page gutter, BAK → LHR → CDG → JFK.
+/* Homepage "journey" layer: a flight down the right-hand page gutter, Baku → Paris → London → New York.
    A real airliner (Adobe Stock photo, background removed with the Adobe Photoshop API)
    follows the reading line as you scroll. Each stop is a die-cut sticker of the city's
    landmark (Flame Towers, Big Ben, Eiffel Tower, Statue of Liberty — Adobe Stock photos,
@@ -26,10 +26,10 @@
     var PLANE_SRC = root.getAttribute("data-plane-src");
     var SHADOW_SRC = root.getAttribute("data-shadow-src");
     var STICKER_SRC = {
-        BAK: root.getAttribute("data-stop-bak"),
-        LHR: root.getAttribute("data-stop-lhr"),
-        CDG: root.getAttribute("data-stop-cdg"),
-        JFK: root.getAttribute("data-stop-jfk")
+        "Baku": root.getAttribute("data-stop-bak"),
+        "Paris": root.getAttribute("data-stop-cdg"),
+        "London": root.getAttribute("data-stop-lhr"),
+        "New York": root.getAttribute("data-stop-jfk")
     };
 
     /* Stops are pinned to the start of real sections. Several homepage sections are
@@ -44,7 +44,7 @@
         ".home-mock-prices-section"
     ];
     var FINAL = ".abroad-section";
-    var CODES = ["BAK", "LHR", "CDG"];   /* departures, in order; final is JFK */
+    var CODES = ["Baku", "Paris", "London"];   /* departures, in order; final is New York */
 
     var PIN_OFFSET = 56;         /* sticker centre sits this far below its section's top edge */
     var WEAVE_WAVE = 1100;       /* px of page per full left-right-left drift */
@@ -56,7 +56,7 @@
     var MAX_SPEED = 1700;        /* px/s */
     var FAR_JUMP = 1.5;          /* screens; further than this fades across instead of flying */
     var TURN_RATE = 6;           /* heading smoothing (1/s) */
-    var CLIMB = 220;             /* px over which the plane climbs after BAK / descends to JFK */
+    var CLIMB = 220;             /* px over which the plane climbs after Baku / descends to New York */
     var PUFF_EVERY = 16;         /* px of travel between contrail puffs */
     var PUFF_POOL = 28;
 
@@ -69,7 +69,7 @@
     function smoothstep(t) { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); }
     function angleDiff(a, b) { var d = (b - a) % 360; if (d > 180) d -= 360; if (d < -180) d += 360; return d; }
 
-    /* the route: x as a function of y, easing the weave in after BAK and out before JFK */
+    /* the route: x as a function of y, easing the weave in after Baku and out before New York */
     function weaveEnv(y) { return Math.min(smoothstep((y - y0) / 300), smoothstep((y1 - y) / 300)); }
     function xAt(y) { return cx + amp * weaveEnv(y) * Math.sin((y - y0) / WEAVE_WAVE * Math.PI * 2); }
     function headingAt(y) { return Math.atan2(2, xAt(y + 1) - xAt(y - 1)) * 180 / Math.PI; }   /* 90 = straight down */
@@ -88,7 +88,7 @@
         found = found.slice(0, CODES.length);
         if (!found.length) return null;
         var list = found.map(function (node, i) { return { code: CODES[i], node: node }; });
-        list.push({ code: "JFK", node: finalEl });
+        list.push({ code: "New York", node: finalEl });
         return list;
     }
 
@@ -112,8 +112,8 @@
         cx = width - gutter / 2;
         amp = clamp(gutter * 0.12, 3, 12);
         planeLen = clamp(Math.round(gutter * 0.95), 64, 104);
-        var stickerH = clamp(Math.round(gutter * 0.95), 56, 92);
-        var stickerW = Math.max(gutter - 8, 48);   /* wide skylines must stay inside the gutter */
+        var stickerH = clamp(Math.round(gutter * 1.3), 76, 124);
+        var stickerW = Math.max(Math.round(gutter * 1.5), 80);   /* wide skylines (Baku) */
 
         stops = list.map(function (s) {
             return { code: s.code, y: s.node.getBoundingClientRect().top + window.scrollY - mainTop + PIN_OFFSET };
@@ -153,6 +153,13 @@
             var label = make("span", "home-journey__code", wrap);
             label.textContent = s.code;
             label.style.top = (stickerH / 2 + 2) + "px";
+            /* keep the sticker and the full city name on screen: nudge left past the edge */
+            var keepOnScreen = function (node) {
+                var over = cx + node.offsetWidth / 2 - (width - 6);
+                node.style.marginLeft = over > 0 ? (-over) + "px" : "";
+            };
+            keepOnScreen(label);
+            if (img.complete) keepOnScreen(img); else img.addEventListener("load", function () { keepOnScreen(img); });
             s.el = wrap;
             s.reached = false;
         });
