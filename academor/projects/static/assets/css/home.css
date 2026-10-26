@@ -328,24 +328,66 @@ body.page-home {
     to { opacity: 0; transform: scale(2.4); }
 }
 
-.home-journey__trail { fill: var(--accent); }
-.home-journey__plane-body { fill: var(--accent); }
-.home-journey__halo { fill: rgb(var(--accent-rgb) / 0.12); }
+.home-journey__fx {
+    position: absolute;
+    inset: 0;
+}
 
-/* plane & trail fade out once landed at JFK; fade back if you scroll up */
+/* Plane + its ground shadow: positioned only through transform (set per frame in JS). */
 .home-journey__plane,
-.home-journey__trail {
+.home-journey__shadow,
+.home-journey__puff {
+    position: absolute;
+    top: 0;
+    left: 0;
+    will-change: transform;
+    transform-origin: 50% 50%;
+}
+
+.home-journey__plane { z-index: 2; }
+.home-journey__shadow { z-index: 0; opacity: 0.5; }
+
+.home-journey__plane-art {
+    display: block;
+    width: 100%;
+    height: 100%;
+    /* a slow idle drift so the plane never looks pasted on, even when scrolling stops */
+    animation: journey-float 5.6s ease-in-out infinite;
+}
+
+@keyframes journey-float {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    35% { transform: translate(1.5px, -1px) rotate(0.8deg); }
+    70% { transform: translate(-1px, 1px) rotate(-0.6deg); }
+}
+
+/* contrail puffs: soft teal-grey vapour that swells and dissolves where it was left */
+.home-journey__puff {
+    z-index: 1;
+    width: 12px;
+    height: 12px;
+    margin: -6px 0 0 -6px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(var(--primary-rgb) / 0.3) 0%, rgb(var(--primary-rgb) / 0.12) 45%, transparent 72%);
+    opacity: 0;
+}
+
+/* plane fades out once landed at JFK; fades back if you scroll up */
+.home-journey__plane,
+.home-journey__shadow {
     transition: opacity var(--dur-base) var(--ease-out);
 }
 
 .home-journey.is-landed .home-journey__plane,
-.home-journey.is-landed .home-journey__trail,
-.home-journey.is-departing .home-journey__trail {
+.home-journey.is-landed .home-journey__shadow {
     opacity: 0 !important;
 }
 
 /* reduced motion: static map, every stop shown, no plane */
-.home-journey.is-static .home-journey__plane,
-.home-journey.is-static .home-journey__trail {
+.home-journey.is-static .home-journey__fx {
     display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-journey__plane-art { animation: none; }
 }
