@@ -10770,116 +10770,79 @@ msgstr ""
 msgid "Understands virtually everything and expresses ideas precisely."
 msgstr "Понимает практически всё и точно выражает свои мысли."
 
-#, python-format
-msgid "%(name)s, your level is"
-msgstr "%(name)s, твой уровень"
-
-#, python-format
-msgid "%(score)s/%(total)s correct"
-msgstr "%(score)s/%(total)s верных"
-
-msgid "Where you are on the CEFR scale"
-msgstr "Где ты на шкале CEFR"
-
-msgid "Your level sticker"
-msgstr "Твой стикер уровня"
-
-msgid ""
-"Save it and post it to your story — let your friends check their level too."
-msgstr "Сохрани и выложи в сторис — пусть друзья тоже проверят свой уровень."
-
-msgid "Download sticker"
-msgstr "Скачать стикер"
-
 msgid "Share"
 msgstr "Поделиться"
-
-#, python-format
-msgid "Academor level sticker: %(level)s"
-msgstr "Стикер уровня Academor: %(level)s"
-
-msgid "Your next step is free"
-msgstr "Следующий шаг — бесплатно"
-
-msgid ""
-"Try a lesson at your level and get a plan from our team — no payment, no "
-"commitment."
-msgstr ""
-"Попробуй урок своего уровня и получи план от нашей команды — без оплаты и "
-"обязательств."
 
 msgid "Free trial lesson"
 msgstr "Бесплатный пробный урок"
 
-msgid ""
-"Join a group at your level for one lesson with a teacher and see how we "
-"teach."
-msgstr ""
-"Пройди один урок с преподавателем в группе своего уровня и посмотри, как мы "
-"учим."
-
-msgid "Book a trial lesson"
-msgstr "Записаться на пробный урок"
-
 msgid "Free consultation"
 msgstr "Бесплатная консультация"
-
-msgid ""
-"Tell us your goal — IELTS, study abroad, speaking — and we will map the "
-"route from your level."
-msgstr ""
-"Расскажи о цели — IELTS, учёба за рубежом, разговорная практика — и мы "
-"построим маршрут от твоего уровня."
-
-msgid "Result guarantee"
-msgstr "Гарантия результата"
-
-msgid ""
-"We guarantee the result of our programs — we explain the terms during the "
-"consultation."
-msgstr ""
-"Мы гарантируем результат наших программ — условия объясним на консультации."
-
-msgid "Only for people who took the test"
-msgstr "Только для прошедших тест"
-
-msgid "20%% off the course payment when you enrol — mention your test result."
-msgstr ""
-"Скидка 20%% на оплату курса при записи — просто назови результат теста."
-
-msgid "You are here"
-msgstr "Ты здесь"
-
-msgid "20%% off for everyone who finishes"
-msgstr "Скидка 20%% всем, кто пройдёт"
-
-#, python-format
-msgid ""
-"Hello! I got %(level)s on the Academor level test. I would like to book the "
-"free trial lesson and use my 20%% discount."
-msgstr ""
-"Здравствуйте! В тесте Academor у меня уровень %(level)s. Хочу записаться на "
-"бесплатный пробный урок и получить скидку 20%%."
 
 #, python-format
 msgid "Your level is %(level)s — recommended for you"
 msgstr "Ваш уровень %(level)s — рекомендуем вам"
 
-#, python-format
-msgid "from %(price)s AZN"
-msgstr "от %(price)s AZN"
-
-msgid "Not sure which course fits? We'll pick one for your level."
-msgstr "Не знаете, какой курс подходит? Подберём его по вашему уровню."
-
-msgid "View course"
-msgstr "Смотреть курс"
-
-msgid "Write on WhatsApp"
-msgstr "Написать в WhatsApp"
-
 msgid "Your level"
 msgstr "Ваш уровень"
+
+msgid ""
+"Your English is ready for IELTS preparation — come and see the exam from the"
+" inside."
+msgstr ""
+"Ваш английский готов к подготовке к IELTS — приходите посмотреть на экзамен "
+"изнутри."
+
+msgid "Free IELTS trial lesson"
+msgstr "Бесплатный пробный урок IELTS"
+
+msgid ""
+"A real lesson in the IELTS format: task types, band criteria and how to "
+"score higher."
+msgstr ""
+"Настоящий урок в формате IELTS: типы заданий, критерии оценки и как получить"
+" более высокий балл."
+
+msgid "We set your target band and the time you need to get there."
+msgstr "Определим ваш целевой балл и время, нужное, чтобы его достичь."
+
+msgid "Let's strengthen your base first — the first steps are free."
+msgstr "Сначала укрепим базу — первые шаги бесплатны."
+
+msgid "Join a group at your level for one lesson with a teacher."
+msgstr "Пройдите один урок с преподавателем в группе вашего уровня."
+
+msgid "We build a learning plan around your goal."
+msgstr "Составим план обучения под вашу цель."
+
+#, python-format
+msgid "A special %(percent)s%% discount for you"
+msgstr "Специальная скидка %(percent)s%% для вас"
+
+msgid "Valid when you enrol with your level test result."
+msgstr "Действует при записи на курс с результатом теста."
+
+msgid "Book a free IELTS trial lesson"
+msgstr "Записаться на бесплатный пробный урок IELTS"
+
+msgid "Book a free trial lesson"
+msgstr "Записаться на бесплатный пробный урок"
+
+#, python-format
+msgid ""
+"Hello! I got %(level)s on the Academor level test. I would like to book the "
+"free IELTS trial lesson and a consultation."
+msgstr ""
+"Здравствуйте! В тесте Academor у меня уровень %(level)s. Хочу записаться на "
+"бесплатный пробный урок IELTS и консультацию."
+
+#, python-format
+msgid ""
+"Hello! I got %(level)s on the Academor level test. I would like to book the "
+"free trial lesson and a consultation, and use my %(percent)s%% discount."
+msgstr ""
+"Здравствуйте! В тесте Academor у меня уровень %(level)s. Хочу записаться на "
+"бесплатный пробный урок и консультацию и получить скидку %(percent)s%%."
 
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Попробуйте в следующей акции — мы сообщим."

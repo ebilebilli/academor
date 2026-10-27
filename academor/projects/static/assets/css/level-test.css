@@ -156,73 +156,81 @@
 .lt-result-scale { margin: 0 0 28px; text-align: left; }
 .lt-result-scale__desc { margin: 14px 0 0; color: rgba(0, 49, 61, 0.78); }
 
+/* halftone cut-out stickers (assets/img/level-test/stickers/, white die-cut border baked in) */
+.lt-sticker {
+    position: absolute;
+    z-index: 2;
+    height: auto;
+    rotate: var(--r, 0deg);
+    filter: drop-shadow(0 8px 12px rgba(0, 49, 61, 0.22));
+    pointer-events: none;
+    user-select: none;
+    animation: ltStickerPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) var(--d, 0s) both;
+}
+@keyframes ltStickerPop { 0% { scale: 0.4; opacity: 0; } 70% { scale: 1.08; opacity: 1; } 100% { scale: 1; opacity: 1; } }
+
+.test-take-result { position: relative; overflow: visible; }
+.lt-result-stk--a { width: 84px; left: -26px; top: -30px; }
+.lt-result-stk--b { width: 56px; right: -14px; top: -38px; }
+.lt-result-stk--c { width: 170px; right: -46px; bottom: 30px; }
+
 .lt-offer {
     position: relative;
-    margin-top: 24px;
-    padding: 32px;
+    margin-top: 48px;
+    padding: 34px 32px 30px;
     border-radius: 24px;
     background: #00313d;
     color: #fff;
-    overflow: hidden;
 }
-.lt-offer__art {
-    position: absolute;
-    right: -24px;
-    bottom: -18px;
-    width: 300px;
-    height: auto;
-    opacity: 0.22;
-    pointer-events: none;
-}
-.lt-offer > :not(.lt-offer__art) { position: relative; }
-.lt-offer__title { margin: 0 0 20px; color: #fff; font-size: 1.5rem; }
-.lt-offer__courses { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; margin-bottom: 20px; }
-.lt-course {
-    display: flex;
-    gap: 14px;
-    padding: 12px;
-    border-radius: 16px;
-    background: #fff;
-    color: #00313d;
-    text-decoration: none;
-    transition: translate 0.2s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.2s ease;
-}
-.lt-course__media {
-    position: relative;
-    flex: 0 0 76px;
-    height: 96px;
+.lt-offer__stk--talk { width: 190px; right: 24px; top: -52px; }
+.lt-offer__stk--hand { width: 70px; right: -18px; bottom: -26px; }
+.lt-offer__title { margin: 0 0 8px; padding-right: 200px; color: #fff; font-size: 1.5rem; }
+.lt-offer__lead { margin: 0 0 22px; color: rgba(255, 255, 255, 0.82); }
+.lt-offer__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 0 0 18px; padding: 0; list-style: none; }
+.lt-perk { display: flex; gap: 14px; align-items: flex-start; padding: 16px; border-radius: 16px; background: #fff; color: #00313d; }
+.lt-perk strong { display: block; margin-bottom: 4px; font-size: 1.05rem; }
+.lt-perk span { font-size: 0.92rem; line-height: 1.45; }
+.lt-perk__icon {
+    flex: 0 0 44px;
     display: grid;
     place-items: center;
-    border-radius: 10px;
-    background: #f2f6f7;
-    overflow: hidden;
-    font-size: 1.6rem;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #fff3eb;
     color: var(--accent, #ff5414);
+    font-size: 1.15rem;
 }
-.lt-course__media img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
-.lt-course__sale {
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    padding: 2px 6px;
-    border-radius: 6px;
+.lt-offer--ielts .lt-perk:first-child { box-shadow: 0 0 0 3px var(--accent, #ff5414); }
+
+/* the test-takers' discount, ticket style */
+.lt-discount {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin: 0 0 20px;
+    padding: 14px 18px;
+    border-radius: 16px;
     background: var(--accent, #ff5414);
     color: #fff;
-    font-size: 0.7rem;
-    font-weight: 800;
 }
-.lt-course__body { display: flex; flex-direction: column; justify-content: center; gap: 4px; min-width: 0; }
-.lt-course__name { font-weight: 800; line-height: 1.25; }
-.lt-course__price { font-weight: 800; color: var(--accent, #ff5414); }
-.lt-course__price s { margin-right: 6px; font-weight: 600; color: rgba(0, 49, 61, 0.45); }
-.lt-course__more { font-size: 0.85rem; font-weight: 700; color: rgba(0, 49, 61, 0.7); }
-.lt-course__more i { margin-left: 4px; font-size: 0.7rem; }
-.lt-course:focus-visible { outline: 3px solid var(--accent, #ff5414); outline-offset: 2px; }
-@media (hover: hover) and (pointer: fine) {
-    .lt-course:hover { translate: 0 -3px; box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25); color: #00313d; }
+.lt-discount strong { display: block; font-size: 1.15rem; }
+.lt-discount__burst {
+    flex: 0 0 78px;
+    display: grid;
+    place-items: center;
+    width: 78px;
+    height: 78px;
+    background: #fff;
+    color: var(--accent, #ff5414);
+    font-weight: 900;
+    font-size: 1.25rem;
+    clip-path: polygon(50% 0, 61% 12%, 75% 6%, 79% 21%, 94% 25%, 88% 39%, 100% 50%, 88% 61%, 94% 75%, 79% 79%, 75% 94%, 61% 88%, 50% 100%, 39% 88%, 25% 94%, 21% 79%, 6% 75%, 12% 61%, 0 50%, 12% 39%, 6% 25%, 21% 21%, 25% 6%, 39% 12%);
+    animation: ltBurstSpin 16s linear infinite;
 }
+.lt-discount__burst span { animation: ltBurstSpin 16s linear infinite reverse; }
+@keyframes ltBurstSpin { to { rotate: 360deg; } }
 
-.lt-offer__help { margin: 0 0 14px; color: rgba(255, 255, 255, 0.82); }
 .lt-offer__actions { display: flex; flex-wrap: wrap; gap: 10px; }
 .lt-offer__wa { background: #25d366; border-color: #25d366; color: #06301a; font-weight: 700; }
 .lt-offer__wa:hover, .lt-offer__wa:focus-visible { background: #1ebe5a; border-color: #1ebe5a; color: #06301a; }
@@ -240,9 +248,18 @@
     .lt-cefr--compact .lt-cefr__name,
     .lt-cefr--compact .lt-cefr__you { display: none; }
     .lt-cefr--compact .lt-cefr__code { font-size: 0.95rem; }
-    .lt-offer { padding: 22px 18px; }
-    .lt-offer__title { font-size: 1.25rem; }
+    .lt-offer { padding: 26px 18px 22px; }
+    .lt-offer__title { font-size: 1.25rem; padding-right: 0; }
+    .lt-offer__list { grid-template-columns: 1fr; }
+    .lt-offer__stk--talk { width: 130px; right: 10px; top: -44px; }
+    .lt-result-stk--a { width: 60px; left: -8px; top: -24px; }
+    .lt-result-stk--b { width: 42px; right: -4px; }
+    .lt-result-stk--c { display: none; }
+    .lt-discount { gap: 12px; }
+}
+@media (max-width: 991.98px) {
+    .lt-offer__list { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) {
-    .lt-course { transition: none; }
+    .lt-sticker, .lt-discount__burst, .lt-discount__burst span { animation: none; }
 }

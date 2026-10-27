@@ -18,7 +18,12 @@ from projects.utils.queries import (
     get_test_take_poster_image,
     get_level_test_taker_count,
 )
-from projects.utils.cefr import cefr_scale, level_test_takers_label
+from projects.utils.cefr import (
+    LEVEL_TEST_DISCOUNT_PERCENT,
+    cefr_scale,
+    level_test_offer_track,
+    level_test_takers_label,
+)
 from projects.utils.seo_text import meta_plain_excerpt
 from projects.utils.test_scoring import calculate_level
 
@@ -181,6 +186,17 @@ class TestTakePageView(View):
         total_questions = total
         percentage = int((result.score / total_questions) * 100) if total_questions else 0
         ser = _serialize_take_test(lang, test)
+        offer_track = level_test_offer_track(level)
+        if offer_track == 'ielts':
+            whatsapp_text = _(
+                'Hello! I got %(level)s on the Academor level test. I would like to book the free '
+                'IELTS trial lesson and a consultation.'
+            ) % {'level': level}
+        else:
+            whatsapp_text = _(
+                'Hello! I got %(level)s on the Academor level test. I would like to book the free '
+                'trial lesson and a consultation, and use my %(percent)s%% discount.'
+            ) % {'level': level, 'percent': LEVEL_TEST_DISCOUNT_PERCENT}
         return render(request, self.template_name, {
             'test': ser,
             'user_form': TestUserForm(),
@@ -189,10 +205,9 @@ class TestTakePageView(View):
             'percentage': percentage,
             'cefr_levels': cefr_scale(level),
             'current_cefr': next((row for row in cefr_scale(level) if row['is_current']), None),
-            'whatsapp_text': _(
-                'Hello! I got %(level)s on the Academor level test. I would like to book the free '
-                'trial lesson and use my 20%% discount.'
-            ) % {'level': level},
+            'offer_track': offer_track,
+            'offer_discount': LEVEL_TEST_DISCOUNT_PERCENT,
+            'whatsapp_text': whatsapp_text,
             'categories': _categories_ctx(lang),
             'language': lang,
             **_take_page_extras(),

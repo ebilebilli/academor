@@ -4,6 +4,11 @@ from django.utils.translation import gettext as _
 
 CEFR_LEVELS = ('A1', 'A2', 'B1', 'B2', 'C1', 'C2')
 
+# Results at or above this level are invited to IELTS prep; below it to a general
+# trial lesson with the test-takers' discount.
+IELTS_READY_LEVEL = 'B2'
+LEVEL_TEST_DISCOUNT_PERCENT = 25
+
 # Shown as "1000+" on the tests page until the real count passes it.
 LEVEL_TEST_TAKERS_FLOOR = 1000
 
@@ -52,3 +57,10 @@ def cefr_scale(current=None):
 def level_test_takers_label(count):
     """Rounded-down taker count for the trust line, never below the floor."""
     return max(LEVEL_TEST_TAKERS_FLOOR, (count // 100) * 100)
+
+
+def level_test_offer_track(level):
+    """'ielts' when the result reaches IELTS_READY_LEVEL, 'foundation' below it, None for no level."""
+    if level not in CEFR_LEVELS:
+        return None
+    return 'ielts' if CEFR_LEVELS.index(level) >= CEFR_LEVELS.index(IELTS_READY_LEVEL) else 'foundation'

@@ -10635,116 +10635,82 @@ msgstr ""
 msgid "Understands virtually everything and expresses ideas precisely."
 msgstr "Demək olar ki, hər şeyi anlayır və fikrini dəqiq ifadə edir."
 
-#, python-format
-msgid "%(name)s, your level is"
-msgstr "%(name)s, sənin səviyyən"
-
-#, python-format
-msgid "%(score)s/%(total)s correct"
-msgstr "%(score)s/%(total)s düz cavab"
-
-msgid "Where you are on the CEFR scale"
-msgstr "CEFR şkalasında haradasan"
-
-msgid "Your level sticker"
-msgstr "Sənin səviyyə stikerin"
-
-msgid ""
-"Save it and post it to your story — let your friends check their level too."
-msgstr "Yüklə və story-də paylaş — qoy dostların da səviyyəsini yoxlasın."
-
-msgid "Download sticker"
-msgstr "Stikeri yüklə"
-
 msgid "Share"
 msgstr "Paylaş"
-
-#, python-format
-msgid "Academor level sticker: %(level)s"
-msgstr "Academor səviyyə stikeri: %(level)s"
-
-msgid "Your next step is free"
-msgstr "Növbəti addımın ödənişsizdir"
-
-msgid ""
-"Try a lesson at your level and get a plan from our team — no payment, no "
-"commitment."
-msgstr ""
-"Səviyyənə uyğun dərsdə iştirak et və komandamızdan plan al — ödəniş yox, "
-"öhdəlik yox."
 
 msgid "Free trial lesson"
 msgstr "Ödənişsiz sınaq dərsi"
 
-msgid ""
-"Join a group at your level for one lesson with a teacher and see how we "
-"teach."
-msgstr ""
-"Səviyyənə uyğun qrupda müəllimlə bir dərs keç və necə öyrətdiyimizi gör."
-
-msgid "Book a trial lesson"
-msgstr "Sınaq dərsinə yazıl"
-
 msgid "Free consultation"
 msgstr "Ödənişsiz konsultasiya"
-
-msgid ""
-"Tell us your goal — IELTS, study abroad, speaking — and we will map the "
-"route from your level."
-msgstr ""
-"Məqsədini de — IELTS, xaricdə təhsil, danışıq — səviyyəndən başlayaraq yol "
-"xəritəni quraq."
-
-msgid "Result guarantee"
-msgstr "Nəticə zəmanəti"
-
-msgid ""
-"We guarantee the result of our programs — we explain the terms during the "
-"consultation."
-msgstr ""
-"Proqramlarımızın nəticəsinə zəmanət veririk — şərtləri konsultasiyada izah "
-"edirik."
-
-msgid "Only for people who took the test"
-msgstr "Yalnız testi keçənlərə özəl"
-
-msgid "20%% off the course payment when you enrol — mention your test result."
-msgstr "Kursa yazılanda ödənişə 20%% endirim — sadəcə test nəticəni de."
-
-msgid "You are here"
-msgstr "Sən buradasan"
-
-msgid "20%% off for everyone who finishes"
-msgstr "Bitirənlərə 20%% endirim"
-
-#, python-format
-msgid ""
-"Hello! I got %(level)s on the Academor level test. I would like to book the "
-"free trial lesson and use my 20%% discount."
-msgstr ""
-"Salam! Academor səviyyə testində %(level)s nəticəsi aldım. Ödənişsiz sınaq "
-"dərsinə yazılmaq və 20%% endirimdən yararlanmaq istəyirəm."
 
 #, python-format
 msgid "Your level is %(level)s — recommended for you"
 msgstr "Səviyyəniz %(level)s — sizin üçün tövsiyə edirik"
 
-#, python-format
-msgid "from %(price)s AZN"
-msgstr "%(price)s AZN-dən"
-
-msgid "Not sure which course fits? We'll pick one for your level."
-msgstr ""
-"Hansı kursun uyğun olduğunu bilmirsiniz? Səviyyənizə görə birlikdə seçək."
-
-msgid "View course"
-msgstr "Kursa bax"
-
-msgid "Write on WhatsApp"
-msgstr "WhatsApp-da yaz"
-
 msgid "Your level"
 msgstr "Sizin səviyyəniz"
+
+msgid ""
+"Your English is ready for IELTS preparation — come and see the exam from the"
+" inside."
+msgstr ""
+"İngilis diliniz IELTS hazırlığı üçün hazırdır — gəlin imtahanı içəridən "
+"görün."
+
+msgid "Free IELTS trial lesson"
+msgstr "Ödənişsiz IELTS sınaq dərsi"
+
+msgid ""
+"A real lesson in the IELTS format: task types, band criteria and how to "
+"score higher."
+msgstr ""
+"IELTS formatında real dərs: tapşırıq növləri, bal meyarları və daha yüksək "
+"bal almağın yolları."
+
+msgid "We set your target band and the time you need to get there."
+msgstr ""
+"Hədəf balınızı və ona çatmaq üçün lazım olan müddəti birlikdə müəyyən "
+"edirik."
+
+msgid "Let's strengthen your base first — the first steps are free."
+msgstr "Əvvəlcə bazanızı gücləndirək — ilk addımlar ödənişsizdir."
+
+msgid "Join a group at your level for one lesson with a teacher."
+msgstr "Səviyyənizə uyğun qrupda müəllimlə bir dərs keçin."
+
+msgid "We build a learning plan around your goal."
+msgstr "Məqsədinizə uyğun öyrənmə planı qururuq."
+
+#, python-format
+msgid "A special %(percent)s%% discount for you"
+msgstr "Sizə xüsusi %(percent)s%% endirim"
+
+msgid "Valid when you enrol with your level test result."
+msgstr "Səviyyə testinin nəticəsi ilə kursa yazılanda keçərlidir."
+
+msgid "Book a free IELTS trial lesson"
+msgstr "Ödənişsiz IELTS sınaq dərsinə yazıl"
+
+msgid "Book a free trial lesson"
+msgstr "Ödənişsiz sınaq dərsinə yazıl"
+
+#, python-format
+msgid ""
+"Hello! I got %(level)s on the Academor level test. I would like to book the "
+"free IELTS trial lesson and a consultation."
+msgstr ""
+"Salam! Academor səviyyə testində %(level)s nəticəsi aldım. Ödənişsiz IELTS "
+"sınaq dərsinə və konsultasiyaya yazılmaq istəyirəm."
+
+#, python-format
+msgid ""
+"Hello! I got %(level)s on the Academor level test. I would like to book the "
+"free trial lesson and a consultation, and use my %(percent)s%% discount."
+msgstr ""
+"Salam! Academor səviyyə testində %(level)s nəticəsi aldım. Ödənişsiz sınaq "
+"dərsinə və konsultasiyaya yazılmaq, %(percent)s%% endirimdən yararlanmaq "
+"istəyirəm."
 
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Növbəti kampaniyada yenə cəhd et — xəbərdar edəcəyik."
