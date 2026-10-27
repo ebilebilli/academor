@@ -16,7 +16,10 @@ from projects.utils.queries import (
     serialize_test_for_list,
     get_background_image,
     get_test_take_poster_image,
+    get_level_course_suggestions,
+    get_level_test_taker_count,
 )
+from projects.utils.cefr import cefr_scale, level_test_takers_label
 from projects.utils.seo_text import meta_plain_excerpt
 from projects.utils.test_scoring import calculate_level
 
@@ -96,6 +99,8 @@ class TestListPageView(View):
         categories = get_project_categories(lang)
         context = {
             'tests': tests,
+            'cefr_levels': cefr_scale(),
+            'test_takers': level_test_takers_label(get_level_test_taker_count()),
             'categories': [serialize_project_category(c, lang) for c in categories],
             'language': lang,
             'background_image': get_background_image('tests'),
@@ -183,6 +188,12 @@ class TestTakePageView(View):
             'result': result,
             'total_questions': total_questions,
             'percentage': percentage,
+            'cefr_levels': cefr_scale(level),
+            'current_cefr': next((row for row in cefr_scale(level) if row['is_current']), None),
+            'level_courses': get_level_course_suggestions(level, lang),
+            'whatsapp_text': _(
+                'Hello! I got %(level)s on the Academor level test and would like to know about courses.'
+            ) % {'level': level},
             'categories': _categories_ctx(lang),
             'language': lang,
             **_take_page_extras(),

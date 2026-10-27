@@ -10552,6 +10552,112 @@ msgstr "Academor books"
 msgid "%(name)s kitabı"
 msgstr "%(name)s book"
 
+msgid "Free"
+msgstr "Free"
+
+#, python-format
+msgid "%(count)s+ people have taken it"
+msgstr "%(count)s+ people have taken it"
+
+msgid "About the test"
+msgstr "About the test"
+
+msgid ""
+"Find out your English level in a few minutes and see which course fits it."
+msgstr ""
+"Find out your English level in a few minutes and see which course fits it."
+
+msgid "What do the levels mean?"
+msgstr "What do the levels mean?"
+
+msgid ""
+"The test places you on the CEFR scale — the international standard for "
+"language levels, from A1 to C2."
+msgstr ""
+"The test places you on the CEFR scale — the international standard for "
+"language levels, from A1 to C2."
+
+msgid "Your level"
+msgstr "Your level"
+
+#, python-format
+msgid "Your level is %(level)s — recommended for you"
+msgstr "Your level is %(level)s — recommended for you"
+
+#, python-format
+msgid "from %(price)s AZN"
+msgstr "from %(price)s AZN"
+
+msgid "View course"
+msgstr "View course"
+
+msgid "Not sure which course fits? We'll pick one for your level."
+msgstr "Not sure which course fits? We'll pick one for your level."
+
+msgid "Get free consultation"
+msgstr "Get free consultation"
+
+msgid "Write on WhatsApp"
+msgstr "Write on WhatsApp"
+
+#, python-format
+msgid ""
+"Hello! I got %(level)s on the Academor level test and would like to know "
+"about courses."
+msgstr ""
+"Hello! I got %(level)s on the Academor level test and would like to know "
+"about courses."
+
+msgid "Beginner"
+msgstr "Beginner"
+
+msgid "Elementary"
+msgstr "Elementary"
+
+msgid "Intermediate"
+msgstr "Intermediate"
+
+msgid "Upper-Intermediate"
+msgstr "Upper-Intermediate"
+
+msgid "Advanced"
+msgstr "Advanced"
+
+msgid "Proficiency"
+msgstr "Proficiency"
+
+msgid "Understands and uses everyday expressions and very basic phrases."
+msgstr "Understands and uses everyday expressions and very basic phrases."
+
+msgid ""
+"Talks about familiar topics such as shopping, family and work in simple "
+"terms."
+msgstr ""
+"Talks about familiar topics such as shopping, family and work in simple "
+"terms."
+
+msgid "Handles most travel situations and describes experiences and plans."
+msgstr "Handles most travel situations and describes experiences and plans."
+
+msgid "Speaks fluently with native speakers and follows complex texts."
+msgstr "Speaks fluently with native speakers and follows complex texts."
+
+msgid ""
+"Uses English flexibly for study and work; understands long, demanding texts."
+msgstr ""
+"Uses English flexibly for study and work; understands long, demanding texts."
+
+msgid "Understands virtually everything and expresses ideas precisely."
+msgstr "Understands virtually everything and expresses ideas precisely."
+
+msgid "Recommended for levels"
+msgstr "Recommended for levels"
+
+msgid ""
+"Level test results at these CEFR levels get this course as a suggestion."
+msgstr ""
+"Level test results at these CEFR levels get this course as a suggestion."
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Try again in the next campaign — we will let you know."
 

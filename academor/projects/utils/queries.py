@@ -1901,3 +1901,52 @@ def get_nav_mock_tests(lang='az'):
     cats = get_project_categories(lang, is_mock_test=True)
     return [serialize_project_category(c, lang) for c in cats]
 
+
+
+# Level test → course suggestion. Courses opt in per CEFR level in admin
+# (Service.recommended_levels); without any, fall back to a name match so the result
+# page still points somewhere sensible.
+_LEVEL_FALLBACK_KEYWORDS = {
+    'A1': ('general english', 'general'),
+    'A2': ('general english', 'general'),
+    'B1': ('general english', 'speaking', 'general'),
+    'B2': ('ielts', 'speaking'),
+    'C1': ('ielts', 'sat', 'gre', 'gmat'),
+    'C2': ('ielts', 'sat', 'gre', 'gmat'),
+}
+
+
+def get_level_course_suggestions(level, lang='az', limit=2):
+    """Up to ``limit`` serialized courses for a CEFR level (A1–C2) from the level test."""
+    if not level:
+        return []
+    services = list(get_project_categories(lang))
+    picked = [s for s in services if level in s.recommended_level_list]
+    if not picked:
+        for keyword in _LEVEL_FALLBACK_KEYWORDS.get(level, ()):
+            for service in services:
+                names = ' '.join(filter(None, (service.name_az, service.name_en, service.name_ru))).lower()
+                if keyword in names and service not in picked:
+                    picked.append(service)
+            if len(picked) >= limit:
+                break
+    discounts_map = fetch_active_sale_discounts_by_service_id()
+    package_discounts_map = fetch_active_sale_discounts_by_package_id()
+    out = []
+    for service in picked[:limit]:
+        data = serialize_project_category(
+            service, lang,
+            discounts_map=discounts_map,
+            package_discounts_map=package_discounts_map,
+        )
+        if data.get('price') is not None:
+            data['price_display'] = format_decimal_price(data['price'])
+        if data.get('has_discount') and data.get('original_price') is not None:
+            data['original_price_display'] = format_decimal_price(data['original_price'])
+        out.append(data)
+    return out
+
+
+def get_level_test_taker_count():
+    """Total level-test submissions, for the trust line on the tests page."""
+    return UserResult.objects.count()
