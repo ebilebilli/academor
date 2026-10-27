@@ -3,6 +3,12 @@
 
 {% block layout_head %}{% include "includes/site_layout_head.html" with lcp_image_url=lcp_image_url %}{% endblock %}
 
+{% block extra_head %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'assets/css/courses-books.css' %}">
+{% endblock %}
+
 {% block content %}
     <main id="main-content">
     {% include "includes/page_header_banner.html" %}
@@ -13,6 +19,7 @@
             <div class="container-xxl">
                 <div class="container">
                     <h1 id="courses-heading" class="hsvc-title hsvc-title--centered wow fadeInUp" data-wow-delay="0.05s">{% trans "Courses" %}</h1>
+                    {% include "includes/academor_books.html" %}
                     {% include "includes/hsvc_cards_grid.html" with active_slug=filters.slug|default:"" %}
                 </div>
             </div>

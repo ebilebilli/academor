@@ -136,6 +136,23 @@ class HomePageView(View):
         )
 
 
+# 3D book row on the courses page (templates/includes/academor_books.html)
+ACADEMOR_BOOKS = [
+    {'label': 'IELTS', 'title': 'IELTS', 'sub': '', 'cover': '#E5553F', 'delay': '0s',
+     'tags': ['Listening', 'Reading', 'Writing', 'Speaking']},
+    {'label': 'SAT Verbal', 'title': 'SAT', 'sub': 'Verbal', 'cover': '#1E3A6E', 'delay': '-1.1s',
+     'tags': ['Reading', 'Writing', 'Grammar', 'Vocabulary']},
+    {'label': 'SAT Math', 'title': 'SAT', 'sub': 'Math', 'cover': '#0F6B5C', 'delay': '-2.2s',
+     'tags': ['Algebra', 'Advanced Math', 'Data Analysis', 'Geometry']},
+    {'label': 'General English', 'title': 'General', 'sub': 'English', 'long': True, 'cover': '#5B3E96', 'delay': '-3.3s',
+     'tags': ['Grammar', 'Vocabulary', 'Speaking', 'Listening']},
+    {'label': 'GRE', 'title': 'GRE', 'sub': '', 'cover': '#A33A5E', 'delay': '-4.4s',
+     'tags': ['Verbal', 'Quantitative', 'Analytical Writing']},
+    {'label': 'GMAT', 'title': 'GMAT', 'sub': '', 'cover': '#23282F', 'delay': '-5.5s',
+     'tags': ['Quantitative', 'Verbal', 'Data Insights']},
+]
+
+
 class CoursesPageView(View):
     template_name = 'courses.html'
     
@@ -145,6 +162,7 @@ class CoursesPageView(View):
             request.GET = request.GET.copy()
             request.GET['slug'] = category_slug
         context = get_courses_list_data(request, lang)
+        context['academor_books'] = ACADEMOR_BOOKS
         context['background_image'] = get_background_image('courses')
         context['language'] = lang
         return render(request, self.template_name, context)

@@ -1,0 +1,20 @@
+{% load i18n %}
+{# Six animated 3D ACADEMOR books (styles: assets/css/courses-books.css). Decorative row. #}
+<div class="ac-books" role="list" aria-label="{% trans 'Academor kitabları' %}">
+    {% for book in academor_books %}
+    <div class="ac-scene" role="listitem" style="--cover:{{ book.cover }}; --delay:{{ book.delay }}">
+        <div class="ac-shadow"></div>
+        <div class="ac-persp"><div class="ac-float"><div class="ac-tilt">
+            <div class="ac-book" role="img" aria-label="{% blocktrans with name=book.label %}{{ name }} kitabı{% endblocktrans %}">
+                <div class="ac-front">
+                    <div class="ac-brand">ACADEMOR</div>
+                    <div class="ac-title{% if book.long %} ac-long{% endif %}">{{ book.title }}{% if book.sub %}<small>{{ book.sub }}</small>{% endif %}</div>
+                    <div class="ac-tags">{% for tag in book.tags %}<span>{{ tag }}</span>{% endfor %}</div>
+                </div>
+                <div class="ac-back"></div><div class="ac-spine"></div>
+                <div class="ac-pages-r"></div><div class="ac-pages-t"></div><div class="ac-pages-b"></div>
+            </div>
+        </div></div></div>
+    </div>
+    {% endfor %}
+</div>

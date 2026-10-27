@@ -32,10 +32,8 @@
         "New York": root.getAttribute("data-stop-jfk")
     };
 
-    /* Stops are pinned to the start of real sections. Several homepage sections are
-       conditional (About only when shown on the homepage, Sales only when a sale is live),
-       so stops are picked from whichever candidates exist, in page order. The last stop is
-       always Study Abroad (JFK). */
+    /* Preferred stop sections, in page order; see pickStops() for what happens when some of
+       them are not on the page. The last stop is always Study Abroad (New York). */
     var CANDIDATES = [
         ".about-intro-section",
         ".home-sales-section",
@@ -75,20 +73,44 @@
     function headingAt(y) { return Math.atan2(2, xAt(y + 1) - xAt(y - 1)) * 180 / Math.PI; }   /* 90 = straight down */
     function altitudeAt(y) { return Math.min(smoothstep((y - y0) / CLIMB), smoothstep((y1 - y) / CLIMB)); }
 
+    /* Always four stops. Preferred sections first; when some are missing (no sale, no price
+       packages, About hidden…) the gaps are filled from the other homepage sections, keeping
+       stops at least MIN_GAP apart, and as a last resort spaced evenly before New York.
+       Returns [{code, top}] with top in document coordinates. */
+    var MIN_GAP = 320;
     function pickStops() {
         var finalEl = main.querySelector(FINAL);
         if (!finalEl) return null;
-        var finalTop = finalEl.getBoundingClientRect().top;
-        var found = [];
+        var sy = window.scrollY;
+        var topOf = function (el) { return el.getBoundingClientRect().top + sy; };
+        var finalTop = topOf(finalEl);
+        var limit = finalTop - 200;
+        var tops = [];
+        function tryAdd(top) {
+            if (top >= limit || tops.length >= CODES.length) return;
+            for (var i = 0; i < tops.length; i++) if (Math.abs(tops[i] - top) < MIN_GAP) return;
+            tops.push(top);
+        }
         CANDIDATES.forEach(function (sel) {
             var node = main.querySelector(sel);
-            if (node && node.getBoundingClientRect().top < finalTop - 200) found.push(node);
+            if (node && node.offsetHeight > 0) tryAdd(topOf(node));
         });
-        found.sort(function (a, b) { return a.getBoundingClientRect().top - b.getBoundingClientRect().top; });
-        found = found.slice(0, CODES.length);
-        if (!found.length) return null;
-        var list = found.map(function (node, i) { return { code: CODES[i], node: node }; });
-        list.push({ code: "New York", node: finalEl });
+        if (tops.length < CODES.length) {
+            Array.prototype.forEach.call(main.children, function (el) {
+                if (el === root || el.offsetHeight < 150 || el.matches("script, style")) return;
+                tryAdd(topOf(el));
+            });
+        }
+        tops.sort(function (a, b) { return a - b; });
+        if (tops.length < CODES.length) {
+            /* even spacing between the first stop (or the top of main) and New York */
+            var start = tops.length ? tops[0] : topOf(main) + 120;
+            var n = CODES.length;
+            tops = [];
+            for (var k = 0; k < n; k++) tops.push(start + (finalTop - start) * k / n);
+        }
+        var list = tops.map(function (top, i) { return { code: CODES[i], top: top }; });
+        list.push({ code: "New York", top: finalTop });
         return list;
     }
 
@@ -120,7 +142,7 @@
         var pinOffset = Math.max(PIN_OFFSET, Math.round(stickerH * 0.56) + 24);
         stops = list.map(function (s, i) {
             var extra = i === list.length - 1 ? 24 : 0;
-            return { code: s.code, y: s.node.getBoundingClientRect().top + window.scrollY - mainTop + pinOffset + extra };
+            return { code: s.code, y: s.top - mainTop + pinOffset + extra };
         });
         y0 = stops[0].y;
         y1 = stops[stops.length - 1].y;
