@@ -310,7 +310,7 @@ _LINK_RE = re.compile(r'(https?://|www\.)', re.IGNORECASE)
 
 
 class StudyAbroadApplicationForm(TurnstileFormMixin, forms.ModelForm):
-    """Study-abroad consultation request (abroad page + compact homepage form)."""
+    """Study-abroad consultation request (abroad page)."""
 
     website = forms.CharField(
         required=False,
@@ -379,31 +379,14 @@ class StudyAbroadApplicationForm(TurnstileFormMixin, forms.ModelForm):
         }
 
     SELECT_PLACEHOLDER = _('Seçin')
-    # compact (homepage) form: labels are hidden, so short names go in the placeholders
-    COMPACT_LABELS = {
-        'full_name': _('Ad və soyad'),
-        'phone_number': _('Əlaqə nömrəsi'),
-        'desired_country': _('Ölkə'),
-        'desired_major': _('İxtisas'),
-        'study_level': _('Təhsil səviyyəsi'),
-        'consultation_format': _('Format'),
-        'scholarship_importance': _('Təqaüd'),
-        'tuition_budget': _('Büdcə'),
-    }
 
-    def __init__(self, *args, compact=False, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.compact = compact
         self.fields['international_certificates'].required = False
         for name in ('consultation_format', 'study_level', 'scholarship_importance', 'tuition_budget'):
             field = self.fields[name]
             field.required = True
-            # compact (homepage) form hides labels, so the empty option names the field
-            empty = self.COMPACT_LABELS[name] if compact else self.SELECT_PLACEHOLDER
-            field.choices = [('', empty)] + [c for c in field.choices if c[0] != '']
-        if compact:
-            for name in ('full_name', 'phone_number', 'desired_country', 'desired_major'):
-                self.fields[name].widget.attrs['placeholder'] = self.COMPACT_LABELS[name]
+            field.choices = [('', self.SELECT_PLACEHOLDER)] + [c for c in field.choices if c[0] != '']
         for name in self.Meta.fields:
             if name == 'international_certificates':
                 continue

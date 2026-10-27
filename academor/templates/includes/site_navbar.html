@@ -40,6 +40,11 @@
             <div class="nav-item dropdown">
                 <a href="{% url 'projects:abroad-page' %}" class="nav-link dropdown-toggle{% if u == 'abroad-page' or u == 'abroad-detail' or u == 'abroad-university-detail' %} active{% endif %}" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">{% trans "Study Abroad" %}</a>
                 <div class="dropdown-menu fade-down m-0 nav-abroad-dropdown shadow-sm">
+                    <a href="{% url 'projects:abroad-page' %}#abroad-application" class="dropdown-item nav-abroad-apply" data-abroad-apply-link>
+                        <span class="nav-abroad-apply__icon" aria-hidden="true"><i class="fa fa-paper-plane"></i></span>
+                        <span class="nav-abroad-apply__text">{% trans "Xaricdə təhsil müraciəti" %}</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
                     <a href="{% url 'projects:abroad-page' %}" class="dropdown-item fw-semibold">{% trans "All study abroad" %}</a>
                     {% if nav_abroad_items %}
                     <div class="dropdown-divider"></div>

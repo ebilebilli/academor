@@ -1295,6 +1295,45 @@ h1.animated, h2.animated, h3.animated,
     background: rgba(255, 84, 20, 0.8);
 }
 
+/* "Xaricdə təhsil müraciəti": highlighted first item in the study-abroad dropdown */
+.navbar .nav-abroad-dropdown .dropdown-item.nav-abroad-apply {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 4px 8px;
+    width: auto;
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
+    background: rgb(var(--accent-rgb) / 0.08);
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.navbar .nav-abroad-dropdown .dropdown-item.nav-abroad-apply:hover,
+.navbar .nav-abroad-dropdown .dropdown-item.nav-abroad-apply:focus-visible {
+    background: var(--accent);
+    color: #fff;
+}
+
+.nav-abroad-apply__icon {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.8rem;
+    transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease;
+}
+
+.navbar .nav-abroad-apply:hover .nav-abroad-apply__icon,
+.navbar .nav-abroad-apply:focus-visible .nav-abroad-apply__icon {
+    background: #fff;
+    color: var(--accent);
+}
+
 .navbar .dropdown-item {
     color: #00313D;
     font-weight: 500;

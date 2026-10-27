@@ -52,7 +52,6 @@ class HomePageView(View):
         context = get_home_page_data(request, lang)
         context['language'] = lang
         context['review_form'] = review_form if review_form is not None else ReviewForm(request=request)
-        context['abroad_application_form'] = StudyAbroadApplicationForm(request=request, compact=True, auto_id='home_abroad_%s')
         context['open_review_modal'] = open_review_modal
         context.update(self._home_course_payment_context(request, context))
         context.update(self._home_mock_payment_context(request, context))
@@ -336,7 +335,7 @@ class AbroadPageView(View):
 
 
 class StudyAbroadApplicationView(View):
-    """POST target for the study-abroad application form (abroad page and homepage).
+    """POST target for the study-abroad application form on the abroad page.
 
     AJAX (X-Requested-With) gets JSON; a plain form post redirects back on success
     or re-renders the abroad page with the errors.

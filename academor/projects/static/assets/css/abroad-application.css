@@ -1,7 +1,6 @@
-/* Study-abroad application form: full version on the abroad page (.abroad-apply) and the
-   compact band above the footer on the homepage (.abroad-apply-band).
-   Illustrations: Adobe Stock vector (AdobeStock_509279879), converted to SVG and
-   recoloured to the brand palette (assets/img/abroad/*.svg). */
+/* Study-abroad application form on the abroad page (.abroad-apply).
+   Illustration: Adobe Stock vector (AdobeStock_509279879), converted to SVG and
+   recoloured to the brand palette (assets/img/abroad/abroad-journey.svg). */
 
 /* ---------------------------------------------------------------- Fields (shared) */
 .abroad-apply__field {
@@ -255,6 +254,7 @@
 
 .abroad-apply__card {
     position: relative;
+    scroll-margin-top: 96px;
     padding: clamp(1.25rem, 0.8rem + 2vw, 2.5rem);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
@@ -308,101 +308,164 @@
     font-weight: 700;
 }
 
-/* ---------------------------------------------------------------- Compact band (homepage) */
-.abroad-apply-band {
-    padding: var(--space-7) 0 0;
-    scroll-margin-top: 96px;
-}
-
-.abroad-apply-band__card {
-    position: relative;
+/* ---------------------------------------------------------------- Custom dropdown
+   abroad-application.js turns each <select> into a button + listbox; the native select
+   stays in the form (hidden) so submit, reset and the no-JS fallback keep working. */
+.abroad-select__native {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
     overflow: hidden;
-    padding: clamp(1.5rem, 1rem + 2vw, 2.75rem);
-    border-radius: var(--radius-lg);
-    background:
-        radial-gradient(90% 120% at 100% 0%, rgb(var(--accent-rgb) / 0.24) 0%, transparent 55%),
-        radial-gradient(70% 90% at 0% 100%, rgb(var(--primary-raised-rgb) / 0.9) 0%, transparent 60%),
-        var(--primary);
-    color: var(--on-dark);
-    box-shadow: var(--shadow-lg);
+    clip-path: inset(50%);
+    opacity: 0;
+    pointer-events: none;
 }
 
-.abroad-apply-band__head {
+.abroad-select { position: relative; }
+
+.abroad-select__button {
     display: flex;
     align-items: center;
-    gap: var(--space-4);
-    margin-bottom: var(--space-3);
-}
-
-.abroad-apply-band__art {
-    flex: none;
-    width: 104px;
-    height: 104px;
-    padding: 6px;
-    border-radius: 50%;
-    background: var(--card);
-    box-shadow: 0 10px 30px -12px rgb(var(--black-rgb) / 0.5);
-}
-
-.abroad-apply-band__eyebrow {
-    margin-bottom: var(--space-1);
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent-light);
-}
-
-.abroad-apply-band__title {
-    margin: 0;
-    font-size: clamp(1.4rem, 1.15rem + 0.9vw, 1.9rem);
-    font-weight: 700;
-    line-height: 1.2;
-    color: var(--on-dark);
-}
-
-.abroad-apply-band__lead {
-    margin: 0;
-    color: rgb(var(--on-dark-rgb) / 0.78);
-}
-
-.abroad-apply-band .abroad-apply__form .form-control,
-.abroad-apply-band .abroad-apply__form .form-select {
-    min-height: 48px;
-    border-color: transparent;
-    background-color: var(--card);
-}
-
-.abroad-apply-band .abroad-apply__form .form-control:focus,
-.abroad-apply-band .abroad-apply__form .form-select:focus {
-    box-shadow: 0 0 0 4px rgb(var(--accent-rgb) / 0.35);
-}
-
-.abroad-apply-band .abroad-apply__error { color: var(--accent-light); }
-
-/* id selector: beats the global a:not(.btn)… link colour rule in style.css */
-#home-abroad-application .abroad-apply-band__more {
-    font-weight: 600;
-    color: rgb(var(--on-dark-rgb) / 0.85);
-    text-decoration: none;
-}
-
-#home-abroad-application .abroad-apply-band__more:hover,
-#home-abroad-application .abroad-apply-band__more:focus-visible {
-    color: var(--on-dark);
-    text-decoration: underline;
-}
-
-.abroad-apply-band .alert { margin-bottom: var(--space-3); }
-
-.abroad-apply__success--band {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    padding: var(--space-4) 0;
+    gap: var(--space-3);
+    width: 100%;
+    min-height: 52px;
+    padding: 0 var(--space-4);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    color: var(--foreground);
+    font: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
     text-align: left;
+    cursor: pointer;
+    transition: border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease, background-color var(--dur-fast) ease;
 }
 
-.abroad-apply__success--band .abroad-apply__success-title { color: var(--on-dark); }
-.abroad-apply__success--band .abroad-apply__success-text { color: rgb(var(--on-dark-rgb) / 0.8); }
-.abroad-apply__success--band .abroad-apply__success-icon { background: rgb(var(--on-dark-rgb) / 0.12); color: var(--on-dark); }
+.abroad-apply__control.has-icon .abroad-select__button { padding-left: 44px; }
+
+.abroad-select__button:hover { border-color: var(--border-strong); }
+
+.abroad-select__button:focus-visible,
+.abroad-select.is-open .abroad-select__button {
+    border-color: var(--accent);
+    background: var(--card);
+    box-shadow: 0 0 0 4px rgb(var(--accent-rgb) / 0.14);
+    outline: none;
+}
+
+.abroad-select__value {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.abroad-select.is-empty .abroad-select__value {
+    color: var(--subtle-foreground);
+    font-weight: 400;
+}
+
+/* chevron drawn with borders, turns over when open */
+.abroad-select__chevron {
+    flex: none;
+    width: 8px;
+    height: 8px;
+    margin-top: -4px;
+    border-right: 2px solid var(--muted-foreground);
+    border-bottom: 2px solid var(--muted-foreground);
+    rotate: 45deg;
+    transition: rotate var(--dur-fast) var(--ease-out), translate var(--dur-fast) var(--ease-out), border-color var(--dur-fast) ease;
+}
+
+.abroad-select.is-open .abroad-select__chevron {
+    rotate: 225deg;
+    translate: 0 4px;
+    border-color: var(--accent);
+}
+
+.abroad-apply__field.has-error .abroad-select__button {
+    border-color: var(--destructive);
+    background: var(--card);
+}
+
+.abroad-select__list {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    z-index: 30;
+    max-height: 280px;
+    margin: 0;
+    padding: 6px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    list-style: none;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--card);
+    box-shadow: var(--shadow-lg);
+    outline: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px) scale(0.98);
+    transform-origin: top center;
+    transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out), visibility 0s linear var(--dur-fast);
+}
+
+.abroad-select.is-up .abroad-select__list {
+    top: auto;
+    bottom: calc(100% + 8px);
+    transform: translateY(6px) scale(0.98);
+    transform-origin: bottom center;
+}
+
+.abroad-select.is-open .abroad-select__list {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0s;
+}
+
+.abroad-select__option {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 42px;
+    padding: 8px 36px 8px 12px;
+    border-radius: var(--radius-sm);
+    color: var(--foreground);
+    font-size: 0.95rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.abroad-select__option.is-active { background: var(--surface-2); }
+
+.abroad-select__option.is-selected {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+/* check mark on the chosen option */
+.abroad-select__option.is-selected::after {
+    content: "";
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    width: 6px;
+    height: 11px;
+    margin-top: -7px;
+    border-right: 2px solid var(--accent);
+    border-bottom: 2px solid var(--accent);
+    rotate: 45deg;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .abroad-select__list,
+    .abroad-select__chevron { transition: none; }
+}
