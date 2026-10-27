@@ -3,10 +3,11 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import Http404, HttpResponsePermanentRedirect, JsonResponse
 from django.urls import reverse
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.utils.translation import gettext as _
 
 from projects.models import AbroadModel, Team, BlogPost
-from projects.forms.forms_v1 import ReviewForm
+from projects.forms.forms_v1 import ReviewForm, StudyAbroadApplicationForm
 from projects.utils.seo_text import meta_plain_excerpt
 from projects.utils.canonical import canonical_url_for_request
 from projects.utils.seo_meta import (
@@ -51,6 +52,7 @@ class HomePageView(View):
         context = get_home_page_data(request, lang)
         context['language'] = lang
         context['review_form'] = review_form if review_form is not None else ReviewForm(request=request)
+        context['abroad_application_form'] = StudyAbroadApplicationForm(request=request, compact=True, auto_id='home_abroad_%s')
         context['open_review_modal'] = open_review_modal
         context.update(self._home_course_payment_context(request, context))
         context.update(self._home_mock_payment_context(request, context))
@@ -324,12 +326,47 @@ class ServicesPageView(View):
 class AbroadPageView(View):
     template_name = 'abroad.html'
 
-    def get(self, request):
+    def get(self, request, application_form=None):
         lang = get_language_from_request(request)
         context = get_abroad_page_data(request, lang)
         context.update(_fresh_abroad_advantages_context(lang))
         context['language'] = lang
+        context['abroad_application_form'] = application_form or StudyAbroadApplicationForm(request=request)
         return render(request, self.template_name, context)
+
+
+class StudyAbroadApplicationView(View):
+    """POST target for the study-abroad application form (abroad page and homepage).
+
+    AJAX (X-Requested-With) gets JSON; a plain form post redirects back on success
+    or re-renders the abroad page with the errors.
+    """
+
+    http_method_names = ['post']
+
+    def post(self, request):
+        form = StudyAbroadApplicationForm(request.POST, request=request)
+        is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+
+        if form.is_valid():
+            form.save()
+            msg = _('Müraciətiniz qəbul olundu. Komandamız tezliklə sizinlə əlaqə saxlayacaq.')
+            if is_ajax:
+                return JsonResponse({'success': True, 'message': msg})
+            messages.success(request, msg)
+            next_url = request.POST.get('next') or ''
+            if not url_has_allowed_host_and_scheme(
+                next_url, allowed_hosts={request.get_host()}, require_https=request.is_secure()
+            ):
+                next_url = reverse('projects:abroad-page')
+            return redirect(next_url)
+
+        err_msg = _('Please correct the errors in the form.')
+        if is_ajax:
+            errors = {k: [str(e) for e in v] for k, v in form.errors.items()}
+            return JsonResponse({'success': False, 'message': err_msg, 'errors': errors}, status=400)
+        messages.error(request, err_msg)
+        return AbroadPageView().get(request, application_form=form)
 
 
 class AbroadDetailLegacyPkRedirectView(View):

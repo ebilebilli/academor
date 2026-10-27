@@ -1,0 +1,204 @@
+/* Study-abroad application form: full version on the abroad page (.abroad-apply) and the
+   compact band above the footer on the homepage (.abroad-apply-band). */
+
+/* ---- Fields (shared) */
+.abroad-apply__field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.abroad-apply__label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--foreground);
+}
+
+.abroad-apply__req {
+    margin-left: 3px;
+    color: var(--accent);
+}
+
+.abroad-apply__form .form-control,
+.abroad-apply__form .form-select {
+    min-height: 48px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    background-color: var(--card);
+    color: var(--foreground);
+    font-size: 0.95rem;
+    box-shadow: none;
+    transition: border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+}
+
+.abroad-apply__form textarea.form-control {
+    min-height: 96px;
+    resize: vertical;
+}
+
+.abroad-apply__form .form-control::placeholder {
+    color: var(--muted-foreground);
+    opacity: 1;
+}
+
+/* the empty "Seçin" option reads as a placeholder until something is picked */
+.abroad-apply__form .form-select:invalid,
+.abroad-apply__form .form-select.is-empty {
+    color: var(--muted-foreground);
+}
+
+.abroad-apply__form .form-control:focus,
+.abroad-apply__form .form-select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgb(var(--accent-rgb) / 0.18);
+    outline: none;
+}
+
+.abroad-apply__field.has-error .form-control,
+.abroad-apply__field.has-error .form-select {
+    border-color: var(--destructive);
+}
+
+.abroad-apply__error {
+    min-height: 0;
+    font-size: 0.8rem;
+    line-height: 1.35;
+    color: var(--destructive);
+}
+
+.abroad-apply__error:empty { display: none; }
+
+.abroad-apply__submit {
+    min-height: 50px;
+    padding-inline: var(--space-6);
+    border-radius: var(--radius-pill);
+    font-weight: 700;
+}
+
+.abroad-apply__submit[disabled] { opacity: 0.7; }
+
+.abroad-apply__note {
+    margin: var(--space-2) 0 0;
+    font-size: 0.8rem;
+    color: var(--muted-foreground);
+}
+
+/* ---- Full form on the abroad page */
+.abroad-apply { scroll-margin-top: 96px; }
+
+.abroad-apply__intro { padding-top: var(--space-4); }
+
+@media (min-width: 992px) {
+    .abroad-apply__intro { position: sticky; top: 120px; }
+}
+
+.abroad-apply__eyebrow {
+    margin-bottom: var(--space-2);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+.abroad-apply__title {
+    margin-bottom: var(--space-4);
+    font-size: clamp(1.75rem, 1.3rem + 1.4vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--primary);
+}
+
+.abroad-apply__lead {
+    margin-bottom: var(--space-5);
+    color: var(--muted-foreground);
+}
+
+.abroad-apply__points {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.abroad-apply__points li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-weight: 600;
+    color: var(--foreground);
+}
+
+.abroad-apply__points i { color: var(--accent); font-size: 1.1rem; }
+
+.abroad-apply__card {
+    padding: clamp(1.25rem, 0.8rem + 2vw, 2.5rem);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--card);
+    box-shadow: var(--shadow-md);
+}
+
+/* ---- Compact band above the footer (homepage) */
+.abroad-apply-band {
+    padding: var(--space-7) 0 0;
+    scroll-margin-top: 96px;
+}
+
+.abroad-apply-band__card {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(1.5rem, 1rem + 2vw, 2.75rem);
+    border-radius: var(--radius-lg);
+    background:
+        radial-gradient(120% 140% at 100% 0%, rgb(var(--accent-rgb) / 0.22) 0%, transparent 55%),
+        var(--primary);
+    color: var(--on-dark);
+    box-shadow: var(--shadow-lg);
+}
+
+.abroad-apply-band__eyebrow {
+    margin-bottom: var(--space-2);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-light);
+}
+
+.abroad-apply-band__title {
+    margin-bottom: var(--space-3);
+    font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--on-dark);
+}
+
+.abroad-apply-band__lead {
+    margin: 0;
+    color: rgb(var(--on-dark-rgb) / 0.78);
+}
+
+.abroad-apply-band .abroad-apply__form .form-control,
+.abroad-apply-band .abroad-apply__form .form-select {
+    min-height: 46px;
+    border-color: transparent;
+}
+
+.abroad-apply-band .abroad-apply__error { color: var(--accent-light); }
+
+/* id selector: beats the global a:not(.btn)… link colour rule in style.css */
+#home-abroad-application .abroad-apply-band__more {
+    font-weight: 600;
+    color: rgb(var(--on-dark-rgb) / 0.85);
+    text-decoration: none;
+}
+
+#home-abroad-application .abroad-apply-band__more:hover,
+#home-abroad-application .abroad-apply-band__more:focus-visible {
+    color: var(--on-dark);
+    text-decoration: underline;
+}
+
+.abroad-apply-band .alert { margin-bottom: var(--space-3); }

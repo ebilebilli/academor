@@ -10312,8 +10312,8 @@ msgstr ""
 "Hər mobil nömrə ilə 7 gün ərzində yalnız 1 dəfə çarxı fırlatmaq mümkündür."
 
 msgid ""
-"This mobile number has already spun within the last 7 days. Please try "
-"again later."
+"This mobile number has already spun within the last 7 days. Please try again"
+" later."
 msgstr ""
 "Bu mobil nömrə ilə 7 gün ərzində artıq fırlatmısınız. Zəhmət olmasa sonra "
 "yenidən cəhd edin."
@@ -10333,6 +10333,182 @@ msgstr "Hədiyyə çarxı"
 #: templates/base.html:12
 msgid "Skip to content"
 msgstr "Məzmuna keç"
+
+msgid "Əyani"
+msgstr "Əyani"
+
+msgid "Fərq etmir"
+msgstr "Fərq etmir"
+
+msgid "Bakalavr"
+msgstr "Bakalavr"
+
+msgid "Magistratura"
+msgstr "Magistratura"
+
+msgid "Doktorantura"
+msgstr "Doktorantura"
+
+msgid "Dil kursları"
+msgstr "Dil kursları"
+
+msgid "Digər"
+msgstr "Digər"
+
+msgid "Çox önəmlidir"
+msgstr "Çox önəmlidir"
+
+msgid "Önəmlidir"
+msgstr "Önəmlidir"
+
+msgid "Təqaüd istəmir"
+msgstr "Təqaüd istəmir"
+
+msgid "$1,000-dən az"
+msgstr "$1,000-dən az"
+
+msgid "$1,000–$3,000"
+msgstr "$1,000–$3,000"
+
+msgid "$3,000–$5,000"
+msgstr "$3,000–$5,000"
+
+msgid "$5,000–$10,000"
+msgstr "$5,000–$10,000"
+
+msgid "$10,000-dan çox"
+msgstr "$10,000-dan çox"
+
+msgid "Ad və soyad"
+msgstr "Ad və soyad"
+
+msgid "Əlaqə nömrəsi"
+msgstr "Əlaqə nömrəsi"
+
+msgid "İlkin konsultasiyanın formatı"
+msgstr "İlkin konsultasiyanın formatı"
+
+msgid "Təhsil səviyyəsi"
+msgstr "Təhsil səviyyəsi"
+
+msgid "Təhsil almaq istədiyiniz ölkə"
+msgstr "Təhsil almaq istədiyiniz ölkə"
+
+msgid "Təhsil almaq istədiyiniz ixtisas"
+msgstr "Təhsil almaq istədiyiniz ixtisas"
+
+msgid "Təqaüdün əhəmiyyəti"
+msgstr "Təqaüdün əhəmiyyəti"
+
+msgid "Təhsil haqqı üçün büdcə"
+msgstr "Təhsil haqqı üçün büdcə"
+
+msgid "Beynəlxalq sertifikatlar"
+msgstr "Beynəlxalq sertifikatlar"
+
+msgid "Müraciət tarixi"
+msgstr "Müraciət tarixi"
+
+msgid "Xaricdə təhsil müraciəti"
+msgstr "Xaricdə təhsil müraciəti"
+
+msgid "Xaricdə təhsil müraciətləri"
+msgstr "Xaricdə təhsil müraciətləri"
+
+msgid "Məs.: Aysel Məmmədova"
+msgstr "Məs.: Aysel Məmmədova"
+
+msgid "+994 50 123 45 67"
+msgstr "+994 50 123 45 67"
+
+msgid "Məs.: Almaniya, Kanada"
+msgstr "Məs.: Almaniya, Kanada"
+
+msgid "Məs.: Kompüter elmləri"
+msgstr "Məs.: Kompüter elmləri"
+
+msgid "Məs.: IELTS 7.0, SAT 1400 (yoxdursa boş saxlayın)"
+msgstr "Məs.: IELTS 7.0, SAT 1400 (yoxdursa boş saxlayın)"
+
+msgid "Seçin"
+msgstr "Seçin"
+
+msgid "Ad və soyadınızı tam daxil edin."
+msgstr "Ad və soyadınızı tam daxil edin."
+
+msgid "Ad və soyad yalnız hərflərdən ibarət olmalıdır."
+msgstr "Ad və soyad yalnız hərflərdən ibarət olmalıdır."
+
+msgid "Bu sahəni düzgün doldurun."
+msgstr "Bu sahəni düzgün doldurun."
+
+msgid "Yalnız hərf, rəqəm və sadə durğu işarələrindən istifadə edin."
+msgstr "Yalnız hərf, rəqəm və sadə durğu işarələrindən istifadə edin."
+
+msgid "Linklər qəbul edilmir."
+msgstr "Linklər qəbul edilmir."
+
+msgid ""
+"Müraciətiniz qəbul olundu. Komandamız tezliklə sizinlə əlaqə saxlayacaq."
+msgstr ""
+"Müraciətiniz qəbul olundu. Komandamız tezliklə sizinlə əlaqə saxlayacaq."
+
+msgid "Pulsuz ilkin konsultasiya"
+msgstr "Pulsuz ilkin konsultasiya"
+
+msgid "Xaricdə təhsil üçün müraciət edin"
+msgstr "Xaricdə təhsil üçün müraciət edin"
+
+msgid ""
+"Formu doldurun, məsləhətçimiz sizin üçün uyğun ölkə, universitet və təqaüd "
+"imkanlarını araşdırıb sizinlə əlaqə saxlasın."
+msgstr ""
+"Formu doldurun, məsləhətçimiz sizin üçün uyğun ölkə, universitet və təqaüd "
+"imkanlarını araşdırıb sizinlə əlaqə saxlasın."
+
+msgid "Ölkə və universitet seçimi"
+msgstr "Ölkə və universitet seçimi"
+
+msgid "Təqaüd və büdcəyə uyğun planlama"
+msgstr "Təqaüd və büdcəyə uyğun planlama"
+
+msgid "Sənədlər və viza üzrə dəstək"
+msgstr "Sənədlər və viza üzrə dəstək"
+
+msgid "Müraciət göndər"
+msgstr "Müraciət göndər"
+
+msgid "* ilə işarələnmiş sahələr məcburidir."
+msgstr "* ilə işarələnmiş sahələr məcburidir."
+
+msgid "Xaricdə təhsil"
+msgstr "Xaricdə təhsil"
+
+msgid "Pulsuz konsultasiyaya yazılın"
+msgstr "Pulsuz konsultasiyaya yazılın"
+
+msgid ""
+"Bir neçə sual — məsləhətçimiz sizə uyğun ölkə və proqramlarla geri dönəcək."
+msgstr ""
+"Bir neçə sual — məsləhətçimiz sizə uyğun ölkə və proqramlarla geri dönəcək."
+
+msgid "Ətraflı forma"
+msgstr "Ətraflı forma"
+
+msgid "Ölkə"
+msgstr "Ölkə"
+
+msgid "İxtisas"
+msgstr "İxtisas"
+
+msgid "Konsultasiya formatı"
+msgstr "Konsultasiya formatı"
+
+msgid "Təqaüd"
+msgstr "Təqaüd"
+
+msgid "Büdcə"
+msgstr "Büdcə"
 
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Növbəti kampaniyada yenə cəhd et — xəbərdar edəcəyik."

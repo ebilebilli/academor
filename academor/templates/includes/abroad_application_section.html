@@ -1,0 +1,61 @@
+{% load i18n %}
+{# Study-abroad application form — abroad page. Posts to projects:abroad-application. #}
+{% with form=abroad_application_form %}
+<section class="abroad-apply py-5" id="abroad-application" aria-labelledby="abroad-apply-title">
+    <div class="container">
+        <div class="row g-4 g-xl-5 align-items-start">
+            <div class="col-lg-5">
+                <div class="abroad-apply__intro">
+                    <p class="abroad-apply__eyebrow">{% trans "Pulsuz ilkin konsultasiya" %}</p>
+                    <h2 class="abroad-apply__title" id="abroad-apply-title">{% trans "Xaricdə təhsil üçün müraciət edin" %}</h2>
+                    <p class="abroad-apply__lead">{% trans "Formu doldurun, məsləhətçimiz sizin üçün uyğun ölkə, universitet və təqaüd imkanlarını araşdırıb sizinlə əlaqə saxlasın." %}</p>
+                    <ul class="abroad-apply__points">
+                        <li><i class="fa fa-check-circle" aria-hidden="true"></i>{% trans "Ölkə və universitet seçimi" %}</li>
+                        <li><i class="fa fa-check-circle" aria-hidden="true"></i>{% trans "Təqaüd və büdcəyə uyğun planlama" %}</li>
+                        <li><i class="fa fa-check-circle" aria-hidden="true"></i>{% trans "Sənədlər və viza üzrə dəstək" %}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="abroad-apply__card">
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags|default:'info' }} mb-3" role="alert">{{ message }}</div>
+                    {% endfor %}
+                    {% endif %}
+                    <div class="alert d-none" role="status" aria-live="polite" data-form-alert></div>
+                    <form method="post" action="{% url 'projects:abroad-application' %}" class="abroad-apply__form" data-abroad-application data-network-error="{% trans 'Network error. Please try again.' %}" novalidate>
+                        {% csrf_token %}
+                        {{ form.website }}
+                        <input type="hidden" name="next" value="{{ request.get_full_path }}#abroad-application">
+                        <div class="row g-3">
+                            {% include "includes/abroad_application_field.html" with field=form.full_name %}
+                            {% include "includes/abroad_application_field.html" with field=form.phone_number %}
+                            {% include "includes/abroad_application_field.html" with field=form.desired_country %}
+                            {% include "includes/abroad_application_field.html" with field=form.desired_major %}
+                            {% include "includes/abroad_application_field.html" with field=form.study_level %}
+                            {% include "includes/abroad_application_field.html" with field=form.consultation_format %}
+                            {% include "includes/abroad_application_field.html" with field=form.scholarship_importance %}
+                            {% include "includes/abroad_application_field.html" with field=form.tuition_budget %}
+                            {% include "includes/abroad_application_field.html" with field=form.international_certificates col="col-12" %}
+                            {% if form.non_field_errors %}
+                            <div class="col-12"><div class="abroad-apply__error">{{ form.non_field_errors.0 }}</div></div>
+                            {% endif %}
+                            <div class="col-12">
+                                {% include "includes/turnstile_widget.html" %}
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-primary abroad-apply__submit w-100" type="submit">
+                                    {% trans "Müraciət göndər" %}
+                                    <i class="fa fa-paper-plane ms-2" aria-hidden="true"></i>
+                                </button>
+                                <p class="abroad-apply__note">{% trans "* ilə işarələnmiş sahələr məcburidir." %}</p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endwith %}

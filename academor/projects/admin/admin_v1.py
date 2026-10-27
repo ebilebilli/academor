@@ -1610,6 +1610,35 @@ class LuckyWheelSpinAdmin(AcademorModelAdmin):
         return False
 
 
+@admin.register(StudyAbroadApplication)
+class StudyAbroadApplicationAdmin(AcademorModelAdmin):
+    list_display = (
+        'full_name',
+        'phone_number',
+        'desired_country',
+        'desired_major',
+        'study_level',
+        'consultation_format',
+        'tuition_budget',
+        'created_at',
+    )
+    list_filter = (
+        'study_level',
+        'consultation_format',
+        'scholarship_importance',
+        'tuition_budget',
+        'created_at',
+    )
+    search_fields = ('full_name', 'phone_number', 'desired_country', 'desired_major')
+    readonly_fields = ('created_at',)
+    ordering = ('-created_at',)
+    list_per_page = 25
+    date_hierarchy = 'created_at'
+
+    def has_add_permission(self, request):
+        return False
+
+
 @admin.register(ContactInquiry)
 class ContactInquiryAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     list_display = (
@@ -1755,6 +1784,7 @@ def _sorted_get_app_list(request, app_label=None):
 
         # Inbound
         "ContactInquiry": 320,
+        "StudyAbroadApplication": 321,
         "LuckyWheelPrize": 330,
         "LuckyWheelSpin": 331,
 
