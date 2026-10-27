@@ -62,9 +62,10 @@
     margin-bottom: clamp(1.75rem, 4vw, 2.5rem);
 }
 
-/* Service cards: image cards. The service photo (first Media image) fills the card, a
-   dark gradient at the bottom carries the icon, name and arrow. Without a photo the card
-   gets a brand gradient with a large faded icon. */
+/* Service cards: poster cards. Services are illustrated with mobile posters (portrait,
+   usually 9:16 or 4:5, with their own text), so the poster is shown whole (contain) on a
+   blurred copy of itself that fills the 4:5 frame, and the service name sits below it on
+   white instead of on top of the artwork. No poster: brand gradient with a large icon. */
 .hsvc-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -74,8 +75,12 @@
     list-style: none;
 }
 
-@media (min-width: 992px) {
-    .hsvc-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+@media (min-width: 768px) {
+    .hsvc-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+}
+
+@media (min-width: 1200px) {
+    .hsvc-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
 }
 
 .hsvc-grid__item { min-width: 0; }
@@ -83,123 +88,72 @@
 .hsvc-card-wrap {
     position: relative;
     height: 100%;
-    border-radius: 18px;
+    border-radius: 20px;
     overflow: hidden;
-    background: #00313D;
-    box-shadow: 0 2px 4px rgba(0, 49, 61, 0.06), 0 10px 26px rgba(0, 49, 61, 0.10);
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0, 49, 61, 0.06), 0 10px 26px rgba(0, 49, 61, 0.10);
     transition: box-shadow 0.25s ease, translate 0.25s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .hsvc-card {
-    position: relative;
-    display: block;
-    aspect-ratio: 16 / 11;
-    color: #fff;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: inherit;
     text-decoration: none;
-    isolation: isolate;
 }
-
-.hsvc-card:hover,
-.hsvc-card:focus-visible { color: #fff; }
 
 .hsvc-card:focus-visible {
     outline: 3px solid var(--accent, #ff5414);
     outline-offset: -3px;
 }
 
-/* picture or brand gradient */
+/* the poster frame */
 .hsvc-card__media {
-    position: absolute;
-    inset: 0;
-    z-index: -2;
+    position: relative;
     display: block;
+    aspect-ratio: 4 / 5;
     overflow: hidden;
+    background: #0f1d23;
 }
 
-.hsvc-card__media img {
+.hsvc-card__backdrop {
+    position: absolute;
+    inset: -8%;
+    width: 116%;
+    height: 116%;
+    object-fit: cover;
+    filter: blur(18px) saturate(1.1);
+    opacity: 0.85;
+}
+
+.hsvc-card__poster {
+    position: relative;
+    display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     transition: scale 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.hsvc-card__media--teal { background: linear-gradient(135deg, #0E5060 0%, #00313D 100%); }
-.hsvc-card__media--indigo { background: linear-gradient(135deg, #4B3CFF 0%, #2B1F9E 100%); }
-.hsvc-card__media--orange { background: linear-gradient(135deg, #FF8A5D 0%, #E04A10 100%); }
+.hsvc-card__media--teal { background: linear-gradient(160deg, #0E5060 0%, #00313D 100%); }
+.hsvc-card__media--indigo { background: linear-gradient(160deg, #4B3CFF 0%, #2B1F9E 100%); }
+.hsvc-card__media--orange { background: linear-gradient(160deg, #FF8A5D 0%, #E04A10 100%); }
 
 .hsvc-card__glyph {
     position: absolute;
     top: 50%;
-    right: -6%;
-    translate: 0 -62%;
-    font-size: clamp(5rem, 9vw, 8.5rem);
-    color: rgba(255, 255, 255, 0.16);
+    left: 50%;
+    translate: -50% -50%;
+    font-size: clamp(4rem, 8vw, 6.5rem);
+    color: rgba(255, 255, 255, 0.22);
     transition: rotate 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* bottom shade so the white title always reads */
-.hsvc-card::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: linear-gradient(180deg, rgba(0, 24, 32, 0) 35%, rgba(0, 24, 32, 0.55) 70%, rgba(0, 24, 32, 0.85) 100%);
-}
-
-.hsvc-card__body {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 16px 18px;
-}
-
-.hsvc-card__icon {
-    display: grid;
-    flex: none;
-    place-items: center;
-    width: 38px;
-    height: 38px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.16);
-    color: #fff;
-    font-size: 0.95rem;
-    backdrop-filter: blur(6px);
-}
-
-.hsvc-card__title {
-    flex: 1;
-    min-width: 0;
-    margin: 0;
-    color: #fff;
-    font-size: 1.12rem;
-    font-weight: 700;
-    line-height: 1.25;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
-}
-
-.hsvc-card__arrow {
-    display: grid;
-    flex: none;
-    place-items: center;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background: #fff;
-    color: #00313D;
-    font-size: 0.85rem;
-    transition: background-color 0.25s ease, color 0.25s ease;
-}
-
-.hsvc-card__arrow i { transition: translate 0.25s cubic-bezier(0.23, 1, 0.32, 1); }
-
 .hsvc-card__sale-badge {
     position: absolute;
-    top: 12px;
-    left: 12px;
+    top: 10px;
+    left: 10px;
     display: inline-flex;
     align-items: baseline;
     gap: 4px;
@@ -216,16 +170,51 @@
 .hsvc-card__sale-percent::after { content: "%"; }
 .hsvc-card__sale-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; }
 
+/* name + arrow under the poster */
+.hsvc-card__body {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 14px 14px 16px;
+}
+
+.hsvc-card__title {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    color: #00313D;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.hsvc-card__arrow {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #F4F3FF;
+    color: #00313D;
+    font-size: 0.8rem;
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.hsvc-card__arrow i { transition: translate 0.25s cubic-bezier(0.23, 1, 0.32, 1); }
+
 /* hover / focus */
 @media (hover: hover) {
     .hsvc-card-wrap:hover { translate: 0 -4px; box-shadow: 0 4px 10px rgba(0, 49, 61, 0.08), 0 18px 40px rgba(0, 49, 61, 0.18); }
-    .hsvc-card-wrap:hover .hsvc-card__media img { scale: 1.06; }
+    .hsvc-card-wrap:hover .hsvc-card__poster { scale: 1.03; }
     .hsvc-card-wrap:hover .hsvc-card__glyph { rotate: -8deg; }
     .hsvc-card-wrap:hover .hsvc-card__arrow { background: var(--accent, #ff5414); color: #fff; }
     .hsvc-card-wrap:hover .hsvc-card__arrow i { translate: 3px 0; }
 }
 
 .hsvc-card-wrap--active { box-shadow: 0 0 0 3px var(--accent, #ff5414), 0 10px 26px rgba(0, 49, 61, 0.14); }
+.hsvc-card-wrap--active .hsvc-card__title { color: var(--accent, #ff5414); }
 .hsvc-card-wrap--active .hsvc-card__arrow { background: var(--accent, #ff5414); color: #fff; }
 
 .hsvc-empty {
@@ -245,17 +234,16 @@
         align-items: flex-start;
         gap: 12px;
     }
-    .hsvc-card { aspect-ratio: 1 / 1; }
-    .hsvc-card__body { flex-wrap: wrap; gap: 8px; padding: 12px; }
-    .hsvc-card__icon { display: none; }
-    .hsvc-card__title { flex-basis: 100%; font-size: 0.95rem; }
-    .hsvc-card__arrow { width: 30px; height: 30px; font-size: 0.75rem; }
+    .hsvc-card-wrap { border-radius: 16px; }
+    .hsvc-card__body { padding: 10px 10px 10px 12px; gap: 8px; }
+    .hsvc-card__title { font-size: 0.88rem; }
+    .hsvc-card__arrow { width: 28px; height: 28px; font-size: 0.7rem; }
     .hsvc-card__sale-label { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
     .hsvc-card-wrap,
-    .hsvc-card__media img,
+    .hsvc-card__poster,
     .hsvc-card__glyph,
     .hsvc-card__arrow i { transition: none; }
 }
