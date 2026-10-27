@@ -1,8 +1,8 @@
 /* ACADEMOR 3D books — small animated row on the courses page (templates/includes/academor_books.html).
    Pure CSS 3D; only transforms/opacity animate. Colour per book via --cover, size via --scale. */
-/* Books sit behind the service cards (.ac-behind__front) and peek out past the grid's
-   edges. Each book's spot comes from the view: --x (% across the grid; <0 or >100 =
-   outside it), --y (% down it), --rot (extra tilt). Desktop only: no room on phones. */
+/* Books float beside the service-card grid, fully outside it (left or right of the
+   cards, from the x in ACADEMOR_BOOKS: < 50 = left side), at --y % down the grid with an
+   extra --rot tilt. Only where the side space can hold a whole book. */
 .ac-behind { position: relative; }
 .ac-behind__front { position: relative; z-index: 1; }
 
@@ -14,15 +14,18 @@
 }
 
 .ac-books .ac-scene {
+    --scale: 0.3;
     position: absolute;
-    left: var(--x);
     top: var(--y);
-    width: calc(420px * var(--scale));
-    translate: -50% -50%;
+    width: calc(400px * var(--scale));
+    translate: 0 -50%;
     rotate: var(--rot);
 }
 
-@media (max-width: 991.98px) {
+.ac-books .ac-scene--l { right: calc(100% + 18px); }
+.ac-books .ac-scene--r { left: calc(100% + 18px); }
+
+@media (max-width: 1559.98px) {
     .ac-books { display: none; }
 }
 
