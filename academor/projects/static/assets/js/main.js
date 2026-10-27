@@ -12,13 +12,31 @@
     var prefersReducedMotion =
         window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    /* Page ready: public pages have no loader overlay, so reveals start once the DOM is parsed
-       (deferred scripts run before DOMContentLoaded). The portal login still renders the hidden
-       #spinner include, which needs no JS. */
+    /* Spinner: hide the full-screen loader once the page has laid out, then start the reveals.
+       Pages without a visible #spinner (portal login renders it hidden) start on DOMContentLoaded. */
+    var sp = qs("#spinner");
+    var pageReady = false;
     function announcePageReady() {
+        if (pageReady) return;
+        pageReady = true;
         document.dispatchEvent(new CustomEvent("academor:page-ready"));
     }
-    if (document.readyState === "loading") {
+    if (sp && !sp.classList.contains("hide")) {
+        var hideSpinner = function () {
+            if (pageReady) return;
+            setTimeout(function () {
+                sp.classList.add("hide");
+                sp.setAttribute("aria-busy", "false");
+                announcePageReady();
+            }, 50);
+        };
+        window.addEventListener("load", function () {
+            requestAnimationFrame(function () {
+                requestAnimationFrame(hideSpinner);
+            });
+        });
+        setTimeout(hideSpinner, 4000);
+    } else if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", announcePageReady);
     } else {
         announcePageReady();
