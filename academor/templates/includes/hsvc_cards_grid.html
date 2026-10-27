@@ -7,8 +7,6 @@
             <a href="{% url detail_url_name|default:'projects:course-detail' slug=cat.slug %}" class="hsvc-card">
                 <span class="hsvc-card__media{% if not cat.image %} hsvc-card__media--{% cycle 'teal' 'indigo' 'orange' %}{% endif %}" aria-hidden="true">
                     {% if cat.image %}
-                    {# the poster blurred to fill the frame, the poster itself whole on top #}
-                    <img class="hsvc-card__backdrop" src="{{ cat.image }}" alt="" loading="lazy" decoding="async">
                     <img class="hsvc-card__poster" src="{{ cat.image }}" alt="" loading="lazy" decoding="async">
                     {% else %}
                     <i class="fa {{ cat.icon }} hsvc-card__glyph"></i>

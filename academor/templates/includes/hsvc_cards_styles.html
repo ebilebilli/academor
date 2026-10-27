@@ -62,10 +62,11 @@
     margin-bottom: clamp(1.75rem, 4vw, 2.5rem);
 }
 
-/* Service cards: poster cards. Services are illustrated with mobile posters (portrait,
-   usually 9:16 or 4:5, with their own text), so the poster is shown whole (contain) on a
-   blurred copy of itself that fills the 4:5 frame, and the service name sits below it on
-   white instead of on top of the artwork. No poster: brand gradient with a large icon. */
+/* Service cards: poster cards. Services are illustrated with A4-proportioned posters
+   (1:1.414, with their own text), so the frame has that ratio and the poster fills it
+   (anchored at the top, so any small ratio difference only trims the bottom edge). The
+   service name sits below it on white, not over the artwork. No poster: brand gradient
+   with a large icon. */
 .hsvc-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -112,19 +113,9 @@
 .hsvc-card__media {
     position: relative;
     display: block;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 210 / 297;
     overflow: hidden;
-    background: #0f1d23;
-}
-
-.hsvc-card__backdrop {
-    position: absolute;
-    inset: -8%;
-    width: 116%;
-    height: 116%;
-    object-fit: cover;
-    filter: blur(18px) saturate(1.1);
-    opacity: 0.85;
+    background: #f4f3ff;
 }
 
 .hsvc-card__poster {
@@ -132,7 +123,8 @@
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
+    object-position: top center;
     transition: scale 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
