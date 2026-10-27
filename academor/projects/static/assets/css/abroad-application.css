@@ -6,11 +6,11 @@
 .abroad-apply__field {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 5px;
 }
 
 .abroad-apply__label {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 600;
     color: var(--foreground);
 }
@@ -25,19 +25,19 @@
 .abroad-apply__icon {
     position: absolute;
     top: 50%;
-    left: 16px;
+    left: 14px;
     z-index: 1;
     translate: 0 -50%;
     width: 16px;
     text-align: center;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--subtle-foreground);
     pointer-events: none;
     transition: color var(--dur-fast) ease;
 }
 
 .abroad-apply__control:has(textarea) .abroad-apply__icon {
-    top: 17px;
+    top: 14px;
     translate: 0 0;
 }
 
@@ -45,12 +45,12 @@
 
 .abroad-apply__form .form-control,
 .abroad-apply__form .form-select {
-    min-height: 52px;
+    min-height: 44px;
     border: 1.5px solid var(--border);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-sm);
     background-color: var(--surface);
     color: var(--foreground);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 500;
     box-shadow: none;
     transition: border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease, background-color var(--dur-fast) ease;
@@ -58,12 +58,12 @@
 
 .abroad-apply__control.has-icon .form-control,
 .abroad-apply__control.has-icon .form-select {
-    padding-left: 44px;
+    padding-left: 40px;
 }
 
 .abroad-apply__form textarea.form-control {
-    min-height: 104px;
-    padding-top: 14px;
+    min-height: 72px;
+    padding-top: 10px;
     resize: vertical;
 }
 
@@ -114,8 +114,8 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-    min-height: 54px;
-    padding-inline: var(--space-6);
+    min-height: 46px;
+    padding-inline: var(--space-5);
     border-radius: var(--radius-pill);
     font-weight: 700;
     letter-spacing: 0.01em;
@@ -135,8 +135,8 @@
     flex-wrap: wrap;
     align-items: center;
     gap: 4px 8px;
-    margin: var(--space-3) 0 0;
-    font-size: 0.8rem;
+    margin: var(--space-2) 0 0;
+    font-size: 0.75rem;
     color: var(--muted-foreground);
 }
 
@@ -206,28 +206,29 @@
 }
 
 .abroad-apply__title {
-    margin-bottom: var(--space-4);
-    font-size: clamp(1.75rem, 1.3rem + 1.4vw, 2.5rem);
+    margin-bottom: var(--space-3);
+    font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
     font-weight: 700;
     line-height: 1.15;
     color: var(--primary);
 }
 
 .abroad-apply__lead {
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-3);
+    font-size: 0.95rem;
     color: var(--muted-foreground);
 }
 
 .abroad-apply__art {
     display: block;
-    width: min(100%, 380px);
+    width: min(100%, 240px);
     height: auto;
-    margin: 0 auto var(--space-4);
+    margin: 0 auto var(--space-3);
 }
 
 .abroad-apply__points {
     display: grid;
-    gap: var(--space-3);
+    gap: var(--space-2);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -237,6 +238,7 @@
     display: flex;
     align-items: center;
     gap: var(--space-3);
+    font-size: 0.9rem;
     font-weight: 600;
     color: var(--foreground);
 }
@@ -245,9 +247,9 @@
     display: grid;
     flex: none;
     place-items: center;
-    width: 40px;
-    height: 40px;
-    border-radius: var(--radius-md);
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
     background: var(--accent-soft);
     color: var(--accent);
 }
@@ -255,7 +257,7 @@
 .abroad-apply__card {
     position: relative;
     scroll-margin-top: 96px;
-    padding: clamp(1.25rem, 0.8rem + 2vw, 2.5rem);
+    padding: clamp(1rem, 0.7rem + 1.2vw, 1.75rem);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     background: var(--card);
@@ -267,16 +269,16 @@
     content: "";
     position: absolute;
     top: 0;
-    left: clamp(1.25rem, 0.8rem + 2vw, 2.5rem);
-    right: clamp(1.25rem, 0.8rem + 2vw, 2.5rem);
+    left: clamp(1rem, 0.7rem + 1.2vw, 1.75rem);
+    right: clamp(1rem, 0.7rem + 1.2vw, 1.75rem);
     height: 3px;
     border-radius: 0 0 3px 3px;
     background: linear-gradient(90deg, var(--accent), var(--accent-light));
 }
 
 .abroad-apply__group {
-    margin: 0 0 var(--space-5);
-    padding: 0 0 var(--space-5);
+    margin: 0 0 var(--space-4);
+    padding: 0 0 var(--space-4);
     border: 0;
     border-bottom: 1px dashed var(--border);
 }
@@ -289,9 +291,9 @@
     gap: var(--space-2);
     float: none;
     width: auto;
-    margin-bottom: var(--space-3);
+    margin-bottom: var(--space-2);
     padding: 0;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 700;
     color: var(--primary);
 }
@@ -299,12 +301,12 @@
 .abroad-apply__step {
     display: grid;
     place-items: center;
-    width: 26px;
-    height: 26px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     background: var(--primary);
     color: var(--on-dark);
-    font-size: 0.8rem;
+    font-size: 0.72rem;
     font-weight: 700;
 }
 
@@ -331,21 +333,21 @@
     align-items: center;
     gap: var(--space-3);
     width: 100%;
-    min-height: 52px;
-    padding: 0 var(--space-4);
+    min-height: 44px;
+    padding: 0 var(--space-3);
     border: 1.5px solid var(--border);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-sm);
     background: var(--surface);
     color: var(--foreground);
     font: inherit;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 500;
     text-align: left;
     cursor: pointer;
     transition: border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease, background-color var(--dur-fast) ease;
 }
 
-.abroad-apply__control.has-icon .abroad-select__button { padding-left: 44px; }
+.abroad-apply__control.has-icon .abroad-select__button { padding-left: 40px; }
 
 .abroad-select__button:hover { border-color: var(--border-strong); }
 
@@ -435,11 +437,11 @@
     position: relative;
     display: flex;
     align-items: center;
-    min-height: 42px;
-    padding: 8px 36px 8px 12px;
+    min-height: 38px;
+    padding: 7px 34px 7px 12px;
     border-radius: var(--radius-sm);
     color: var(--foreground);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     cursor: pointer;
     user-select: none;
 }

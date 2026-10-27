@@ -372,7 +372,7 @@ class StudyAbroadApplicationForm(TurnstileFormMixin, forms.ModelForm):
             'tuition_budget': forms.Select(attrs={'class': 'form-select'}),
             'international_certificates': forms.Textarea(attrs={
                 'class': 'form-control',
-                'rows': 3,
+                'rows': 2,
                 'placeholder': _('Məs.: IELTS 7.0, SAT 1400 (yoxdursa boş saxlayın)'),
                 'maxlength': '1000',
             }),

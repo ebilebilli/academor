@@ -32,17 +32,17 @@
 
                         <fieldset class="abroad-apply__group">
                             <legend class="abroad-apply__legend"><span class="abroad-apply__step">1</span>{% trans "Əlaqə məlumatları" %}</legend>
-                            <div class="row g-3">
+                            <div class="row g-2 g-md-3">
                                 {% include "includes/abroad_application_field.html" with field=form.full_name icon="fa-user" %}
                                 {% include "includes/abroad_application_field.html" with field=form.phone_number icon="fa-phone-alt" %}
-                                {% include "includes/abroad_application_field.html" with field=form.consultation_format icon="fa-comments" col="col-12" %}
                             </div>
                         </fieldset>
 
                         <fieldset class="abroad-apply__group">
                             <legend class="abroad-apply__legend"><span class="abroad-apply__step">2</span>{% trans "Təhsil planı" %}</legend>
-                            <div class="row g-3">
-                                {% include "includes/abroad_application_field.html" with field=form.study_level icon="fa-graduation-cap" col="col-12" %}
+                            <div class="row g-2 g-md-3">
+                                {% include "includes/abroad_application_field.html" with field=form.study_level icon="fa-graduation-cap" %}
+                                {% include "includes/abroad_application_field.html" with field=form.consultation_format icon="fa-comments" %}
                                 {% include "includes/abroad_application_field.html" with field=form.desired_country icon="fa-globe-europe" %}
                                 {% include "includes/abroad_application_field.html" with field=form.desired_major icon="fa-book-open" %}
                             </div>
@@ -50,7 +50,7 @@
 
                         <fieldset class="abroad-apply__group">
                             <legend class="abroad-apply__legend"><span class="abroad-apply__step">3</span>{% trans "Büdcə və təqaüd" %}</legend>
-                            <div class="row g-3">
+                            <div class="row g-2 g-md-3">
                                 {% include "includes/abroad_application_field.html" with field=form.tuition_budget icon="fa-wallet" %}
                                 {% include "includes/abroad_application_field.html" with field=form.scholarship_importance icon="fa-award" %}
                             </div>
@@ -58,7 +58,7 @@
 
                         <fieldset class="abroad-apply__group">
                             <legend class="abroad-apply__legend"><span class="abroad-apply__step">4</span>{% trans "Əlavə məlumat" %}</legend>
-                            <div class="row g-3">
+                            <div class="row g-2 g-md-3">
                                 {% include "includes/abroad_application_field.html" with field=form.international_certificates icon="fa-certificate" col="col-12" %}
                             </div>
                         </fieldset>
