@@ -115,8 +115,12 @@
         var stickerH = clamp(Math.round(gutter * 1.6), 96, 150);
         var stickerW = Math.max(Math.round(gutter * 1.9), 104);   /* wide skylines (Baku) */
 
-        stops = list.map(function (s) {
-            return { code: s.code, y: s.node.getBoundingClientRect().top + window.scrollY - mainTop + PIN_OFFSET };
+        /* the sticker's top edge, even at the 1.12× arrival pop, stays inside its own section
+           (the final one sits right under the marquee band, which is drawn above this layer) */
+        var pinOffset = Math.max(PIN_OFFSET, Math.round(stickerH * 0.56) + 24);
+        stops = list.map(function (s, i) {
+            var extra = i === list.length - 1 ? 24 : 0;
+            return { code: s.code, y: s.node.getBoundingClientRect().top + window.scrollY - mainTop + pinOffset + extra };
         });
         y0 = stops[0].y;
         y1 = stops[stops.length - 1].y;

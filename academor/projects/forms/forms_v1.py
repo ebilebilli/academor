@@ -386,7 +386,7 @@ class StudyAbroadApplicationForm(TurnstileFormMixin, forms.ModelForm):
         'desired_country': _('Ölkə'),
         'desired_major': _('İxtisas'),
         'study_level': _('Təhsil səviyyəsi'),
-        'consultation_format': _('Konsultasiya formatı'),
+        'consultation_format': _('Format'),
         'scholarship_importance': _('Təqaüd'),
         'tuition_budget': _('Büdcə'),
     }

@@ -10,7 +10,9 @@
     }
 
     function init(form) {
-        var alertEl = form.parentElement.querySelector("[data-form-alert]");
+        var card = form.closest("[data-abroad-application-card]") || form.parentElement;
+        var alertEl = card.querySelector("[data-form-alert]");
+        var success = card.querySelector("[data-form-success]");
         var submit = form.querySelector("[type=submit]");
         var networkError = form.getAttribute("data-network-error") || "Network error. Please try again.";
 
@@ -35,6 +37,16 @@
             if (input) input.removeAttribute("aria-invalid");
         }
 
+        var again = success && success.querySelector("[data-form-again]");
+        if (again) {
+            again.addEventListener("click", function () {
+                success.hidden = true;
+                form.hidden = false;
+                var first = form.querySelector("input:not([type=hidden]), select, textarea");
+                if (first) first.focus();
+            });
+        }
+
         form.addEventListener("submit", function (e) {
             e.preventDefault();
             form.querySelectorAll(".abroad-apply__field").forEach(clearError);
@@ -50,11 +62,19 @@
                 return r.json().catch(function () { return null; });
             }).then(function (data) {
                 if (data && data.success) {
-                    showAlert("success", data.message || "");
                     form.reset();
                     markEmptySelects(form);
                     var ts = form.querySelector(".cf-turnstile");
                     if (window.turnstile && ts) { try { window.turnstile.reset(ts); } catch (err) { /* ignore */ } }
+                    if (success) {
+                        /* swap the form for a thank-you panel; "new application" brings it back */
+                        success.querySelector("[data-form-success-text]").textContent = data.message || "";
+                        form.hidden = true;
+                        success.hidden = false;
+                        success.focus({ preventScroll: true });
+                    } else {
+                        showAlert("success", data.message || "");
+                    }
                     return;
                 }
                 var msg = (data && data.message) || networkError;
