@@ -10577,36 +10577,8 @@ msgstr ""
 "The test places you on the CEFR scale — the international standard for "
 "language levels, from A1 to C2."
 
-msgid "Your level"
-msgstr "Your level"
-
-#, python-format
-msgid "Your level is %(level)s — recommended for you"
-msgstr "Your level is %(level)s — recommended for you"
-
-#, python-format
-msgid "from %(price)s AZN"
-msgstr "from %(price)s AZN"
-
-msgid "View course"
-msgstr "View course"
-
-msgid "Not sure which course fits? We'll pick one for your level."
-msgstr "Not sure which course fits? We'll pick one for your level."
-
 msgid "Get free consultation"
 msgstr "Get free consultation"
-
-msgid "Write on WhatsApp"
-msgstr "Write on WhatsApp"
-
-#, python-format
-msgid ""
-"Hello! I got %(level)s on the Academor level test and would like to know "
-"about courses."
-msgstr ""
-"Hello! I got %(level)s on the Academor level test and would like to know "
-"about courses."
 
 msgid "Beginner"
 msgstr "Beginner"
@@ -10650,13 +10622,98 @@ msgstr ""
 msgid "Understands virtually everything and expresses ideas precisely."
 msgstr "Understands virtually everything and expresses ideas precisely."
 
-msgid "Recommended for levels"
-msgstr "Recommended for levels"
+#, python-format
+msgid "%(name)s, your level is"
+msgstr "%(name)s, your level is"
+
+#, python-format
+msgid "%(score)s/%(total)s correct"
+msgstr "%(score)s/%(total)s correct"
+
+msgid "Where you are on the CEFR scale"
+msgstr "Where you are on the CEFR scale"
+
+msgid "Your level sticker"
+msgstr "Your level sticker"
 
 msgid ""
-"Level test results at these CEFR levels get this course as a suggestion."
+"Save it and post it to your story — let your friends check their level too."
 msgstr ""
-"Level test results at these CEFR levels get this course as a suggestion."
+"Save it and post it to your story — let your friends check their level too."
+
+msgid "Download sticker"
+msgstr "Download sticker"
+
+msgid "Share"
+msgstr "Share"
+
+#, python-format
+msgid "Academor level sticker: %(level)s"
+msgstr "Academor level sticker: %(level)s"
+
+msgid "Your next step is free"
+msgstr "Your next step is free"
+
+msgid ""
+"Try a lesson at your level and get a plan from our team — no payment, no "
+"commitment."
+msgstr ""
+"Try a lesson at your level and get a plan from our team — no payment, no "
+"commitment."
+
+msgid "Free trial lesson"
+msgstr "Free trial lesson"
+
+msgid ""
+"Join a group at your level for one lesson with a teacher and see how we "
+"teach."
+msgstr ""
+"Join a group at your level for one lesson with a teacher and see how we "
+"teach."
+
+msgid "Book a trial lesson"
+msgstr "Book a trial lesson"
+
+msgid "Free consultation"
+msgstr "Free consultation"
+
+msgid ""
+"Tell us your goal — IELTS, study abroad, speaking — and we will map the "
+"route from your level."
+msgstr ""
+"Tell us your goal — IELTS, study abroad, speaking — and we will map the "
+"route from your level."
+
+msgid "Result guarantee"
+msgstr "Result guarantee"
+
+msgid ""
+"We guarantee the result of our programs — we explain the terms during the "
+"consultation."
+msgstr ""
+"We guarantee the result of our programs — we explain the terms during the "
+"consultation."
+
+msgid "Only for people who took the test"
+msgstr "Only for people who took the test"
+
+msgid "20%% off the course payment when you enrol — mention your test result."
+msgstr ""
+"20%% off the course payment when you enrol — mention your test result."
+
+msgid "You are here"
+msgstr "You are here"
+
+msgid "20%% off for everyone who finishes"
+msgstr "20%% off for everyone who finishes"
+
+#, python-format
+msgid ""
+"Hello! I got %(level)s on the Academor level test. I would like to book the "
+"free trial lesson and use my 20%% discount."
+msgstr ""
+"Hello! I got %(level)s on the Academor level test. I would like to book the "
+"free trial lesson and use my 20%% discount."
 
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Try again in the next campaign — we will let you know."

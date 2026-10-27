@@ -13,6 +13,12 @@
     pointer-events: none;
 }
 
+/* courses / services pages: no band of their own, the cards sit on the page background */
+.hsvc-section--courses-page,
+.hsvc-section--standalone { background: transparent; }
+.hsvc-section--courses-page::before,
+.hsvc-section--standalone::before { content: none; }
+
 .hsvc-inner {
     position: relative;
     z-index: var(--z-raised);

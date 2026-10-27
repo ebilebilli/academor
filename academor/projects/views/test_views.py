@@ -16,7 +16,6 @@ from projects.utils.queries import (
     serialize_test_for_list,
     get_background_image,
     get_test_take_poster_image,
-    get_level_course_suggestions,
     get_level_test_taker_count,
 )
 from projects.utils.cefr import cefr_scale, level_test_takers_label
@@ -190,9 +189,9 @@ class TestTakePageView(View):
             'percentage': percentage,
             'cefr_levels': cefr_scale(level),
             'current_cefr': next((row for row in cefr_scale(level) if row['is_current']), None),
-            'level_courses': get_level_course_suggestions(level, lang),
             'whatsapp_text': _(
-                'Hello! I got %(level)s on the Academor level test and would like to know about courses.'
+                'Hello! I got %(level)s on the Academor level test. I would like to book the free '
+                'trial lesson and use my 20%% discount.'
             ) % {'level': level},
             'categories': _categories_ctx(lang),
             'language': lang,

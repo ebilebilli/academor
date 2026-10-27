@@ -10,8 +10,6 @@ from projects.service_category_icons import SERVICE_CATEGORY_ICON_CHOICES
 from projects.utils import SluggedModel
 
 MOCK_TEST_SERVICE_Q = Q(ielts_mock_test=True) | Q(sat_mock_test=True)
-CEFR_LEVELS = ('A1', 'A2', 'B1', 'B2', 'C1', 'C2')
-
 MOCK_TEST_SERVICE_VIA_COURSE_Q = (
     Q(course__ielts_mock_test=True) | Q(course__sat_mock_test=True)
 )
@@ -170,15 +168,6 @@ class Service(SluggedModel):
         verbose_name=_('Price (AZN)'),
         help_text=_('Course fee in AZN. Leave empty to hide the pay button.'),
     )
-    recommended_levels = models.CharField(
-        max_length=40,
-        blank=True,
-        default='',
-        verbose_name=_('Recommended for levels'),
-        help_text=_(
-            'Level test results at these CEFR levels get this course as a suggestion.'
-        ),
-    )
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name='Created at'
@@ -217,10 +206,6 @@ class Service(SluggedModel):
             raise ValidationError(
                 _('Select only one mock test type: IELTS or SAT.'),
             )
-
-    @property
-    def recommended_level_list(self):
-        return [lvl for lvl in (self.recommended_levels or '').split(',') if lvl in CEFR_LEVELS]
 
     @property
     def has_active_price_packages(self):
