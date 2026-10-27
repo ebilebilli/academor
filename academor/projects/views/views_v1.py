@@ -139,18 +139,24 @@ class HomePageView(View):
 # 3D books peeking out from behind the courses-page service cards (templates/includes/academor_books.html):
 # x = % across the card grid (below 0 / above 100 = past its edges), y = % down it, rot = extra tilt
 ACADEMOR_BOOKS = [
-    {'label': 'IELTS', 'x': -4, 'y': 4, 'rot': -6, 'title': 'IELTS', 'sub': '', 'cover': '#E5553F', 'delay': '0s',
-     'tags': ['Listening', 'Reading', 'Writing', 'Speaking']},
-    {'label': 'SAT Verbal', 'x': -2, 'y': 40, 'rot': 5, 'title': 'SAT', 'sub': 'Verbal', 'cover': '#1E3A6E', 'delay': '-1.1s',
-     'tags': ['Reading', 'Writing', 'Grammar', 'Vocabulary']},
-    {'label': 'SAT Math', 'x': -5, 'y': 76, 'rot': -3, 'title': 'SAT', 'sub': 'Math', 'cover': '#0F6B5C', 'delay': '-2.2s',
-     'tags': ['Algebra', 'Advanced Math', 'Data Analysis', 'Geometry']},
-    {'label': 'General English', 'x': 104, 'y': 14, 'rot': 6, 'title': 'General', 'sub': 'English', 'long': True, 'cover': '#5B3E96', 'delay': '-3.3s',
-     'tags': ['Grammar', 'Vocabulary', 'Speaking', 'Listening']},
-    {'label': 'GRE', 'x': 102, 'y': 50, 'rot': -5, 'title': 'GRE', 'sub': '', 'cover': '#A33A5E', 'delay': '-4.4s',
-     'tags': ['Verbal', 'Quantitative', 'Analytical Writing']},
-    {'label': 'GMAT', 'x': 105, 'y': 84, 'rot': 4, 'title': 'GMAT', 'sub': '', 'cover': '#23282F', 'delay': '-5.5s',
-     'tags': ['Quantitative', 'Verbal', 'Data Insights']},
+    {'label': 'IELTS', 'title': 'IELTS', 'sub': '', 'cover': '#E5553F', 'delay': '0s',
+     'x': 0, 'y': 4, 'rot': -3, 'tags': ['Reading', 'Speaking']},
+    {'label': 'General English', 'title': 'General', 'sub': 'English', 'long': True, 'cover': '#5B3E96', 'delay': '-3.3s',
+     'x': 100, 'y': 12, 'rot': 3, 'tags': ['Grammar', 'Speaking']},
+    {'label': 'SAT Verbal', 'title': 'SAT', 'sub': 'Verbal', 'cover': '#1E3A6E', 'delay': '-1.1s',
+     'x': 0, 'y': 25, 'rot': 3, 'tags': ['Reading', 'Writing']},
+    {'label': 'GRE', 'title': 'GRE', 'sub': '', 'cover': '#A33A5E', 'delay': '-4.4s',
+     'x': 100, 'y': 36, 'rot': -3, 'tags': ['Verbal', 'Quant']},
+    {'label': 'SAT Math', 'title': 'SAT', 'sub': 'Math', 'cover': '#0F6B5C', 'delay': '-2.2s',
+     'x': 0, 'y': 46, 'rot': -3, 'tags': ['Algebra', 'Data']},
+    {'label': 'GMAT', 'title': 'GMAT', 'sub': '', 'cover': '#23282F', 'delay': '-5.5s',
+     'x': 100, 'y': 60, 'rot': 3, 'tags': ['Quant', 'Verbal']},
+    {'label': 'Duolingo English Test', 'title': 'Duolingo', 'sub': 'English Test', 'long': True, 'cover': '#46A302', 'delay': '-0.6s',
+     'x': 0, 'y': 67, 'rot': 3, 'tags': ['Literacy', 'Speaking']},
+    {'label': 'AP', 'title': 'AP', 'sub': '', 'cover': '#0A6EBD', 'delay': '-2.8s',
+     'x': 100, 'y': 84, 'rot': -3, 'tags': ['Calculus', 'Physics']},
+    {'label': 'FMVA', 'title': 'FMVA', 'sub': '', 'cover': '#C47A00', 'delay': '-4.9s',
+     'x': 0, 'y': 88, 'rot': -3, 'tags': ['Modeling', 'Valuation']},
 ]
 
 

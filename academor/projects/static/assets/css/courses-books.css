@@ -25,6 +25,16 @@
 .ac-books .ac-scene--l { right: calc(100% + 18px); }
 .ac-books .ac-scene--r { left: calc(100% + 18px); }
 
+/* readable at small size: face the viewer more (a shallow turn, no extra Z tilt) */
+.ac-books .ac-tilt { transform: rotateX(6deg); }
+.ac-books .ac-book { animation-name: acSpinSoft; }
+
+@media (min-width: 1800px) {
+    .ac-books .ac-scene { --scale: 0.38; }
+    .ac-books .ac-scene--l { right: calc(100% + 28px); }
+    .ac-books .ac-scene--r { left: calc(100% + 28px); }
+}
+
 @media (max-width: 1559.98px) {
     .ac-books { display: none; }
 }
@@ -91,29 +101,32 @@
     pointer-events: none;
     background: linear-gradient(115deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0) 45%, rgba(0, 0, 0, 0.08) 100%);
 }
-.ac-brand { position: relative; font-size: 22px; font-weight: 800; letter-spacing: 4px; opacity: 0.95; }
+.ac-brand { position: relative; font-size: 32px; font-weight: 800; letter-spacing: 4px; }
 .ac-title {
     position: relative;
     margin-top: 44px;
     font-family: 'Archivo Black', Impact, sans-serif;
-    font-size: 92px;
+    font-size: 78px;
     line-height: 0.95;
     letter-spacing: -1px;
 }
 .ac-title small { display: block; margin-top: 6px; font-size: 46px; }
-.ac-title.ac-long { font-size: 48px; }
-.ac-title.ac-long small { font-size: 48px; }
-.ac-tags { position: relative; margin-top: auto; display: flex; flex-wrap: wrap; gap: 12px; }
+.ac-title.ac-long { margin-top: 32px; font-size: 54px; }
+.ac-title.ac-long small { font-size: 40px; }
+/* one short label per line, large type: the books render at ~30% size, so 42px here ≈ 13px on screen */
+.ac-tags { position: relative; margin-top: auto; display: flex; flex-direction: column; gap: 12px; }
 .ac-tags span {
-    flex: 1 1 40%;
     box-sizing: border-box;
     background: #FFF8EE;
     color: #2A1F1A;
     border-radius: 10px;
-    padding: 12px 14px;
-    font-size: 22px;
+    padding: 10px 18px;
+    font-size: 42px;
     font-weight: 800;
-    line-height: 1.15;
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* back cover, spine, page edges */
@@ -142,6 +155,7 @@
 
 /* loop: float + gentle turn */
 @keyframes acFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-22px); } }
+@keyframes acSpinSoft { 0%, 100% { transform: rotateY(-26deg); } 50% { transform: rotateY(-8deg); } }
 @keyframes acSpin { 0%, 100% { transform: rotateY(-44deg); } 50% { transform: rotateY(-16deg); } }
 @keyframes acShadow {
     0%, 100% { transform: translateX(-50%) scale(1); opacity: 1; }
@@ -149,6 +163,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .ac-float, .ac-book, .ac-shadow { animation: none; }
+    .ac-float, .ac-book, .ac-books .ac-book, .ac-shadow { animation: none; }
     .ac-book { transform: rotateY(-30deg); }
+    .ac-books .ac-book { transform: rotateY(-16deg); }
 }
