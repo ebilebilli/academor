@@ -2,30 +2,37 @@
 {% load static i18n %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'assets/css/level-test.css' %}">
+{% include "includes/level_test_head.html" %}
 {% endblock %}
 
 {% block content %}
     {% include "includes/page_header_banner.html" %}
 
-    <div class="container-xxl py-5">
+    {% with s='assets/img/level-test/stickers/' %}
+    <div class="container-xxl py-5 lt-page">
         <div class="container">
-            <div class="lt-intro wow fadeInUp" data-wow-delay="0.1s">
-                <div class="lt-intro__text">
+            <div class="lt-intro">
+                <div class="lt-intro__text" data-lt-pop>
                     <h1 class="lt-intro__title">{% trans "Choose a suitable test" %}</h1>
                     <p class="lt-intro__lead">{% trans "Find out your English level in a few minutes and see which course fits it." %}</p>
                     <ul class="lt-trust" aria-label="{% trans 'About the test' %}">
-                        <li class="lt-trust__item lt-trust__item--free"><i class="fa fa-gift" aria-hidden="true"></i>{% trans "Free" %}</li>
-                        <li class="lt-trust__item"><i class="fa fa-users" aria-hidden="true"></i>{% blocktrans with count=test_takers %}{{ count }}+ people have taken it{% endblocktrans %}</li>
+                        <li class="lt-chip lt-chip--green" style="--r:-4deg; --d:.15s"><i class="fa fa-gift" aria-hidden="true"></i>{% trans "Free" %}</li>
+                        <li class="lt-chip lt-chip--cream" style="--r:2deg; --d:.3s"><i class="fa fa-users" aria-hidden="true"></i>{% blocktrans with count=test_takers %}{{ count }}+ people have taken it{% endblocktrans %}</li>
+                        <li class="lt-chip lt-chip--orange" style="--r:-2deg; --d:.45s"><i class="fa fa-tag" aria-hidden="true"></i>{% trans "20% off for everyone who finishes" %}</li>
                     </ul>
                 </div>
-                <img class="lt-intro__art" src="{% static 'assets/img/level-test/exam.webp' %}" alt="" width="880" height="725" decoding="async">
+                <div class="lt-intro__art" aria-hidden="true">
+                    <img class="lt-intro__img" src="{% static 'assets/img/level-test/exam.webp' %}" alt="" width="880" height="725" decoding="async">
+                    <img class="lt-stk lt-intro__stk lt-intro__stk--a" style="--r:-12deg; --d:.4s" src="{% static s|add:'peace.webp' %}" alt="" width="169" height="360" decoding="async">
+                    <img class="lt-stk lt-intro__stk lt-intro__stk--b" style="--r:10deg; --d:.6s" src="{% static s|add:'thumbs.webp' %}" alt="" width="360" height="344" decoding="async">
+                </div>
             </div>
 
             <div class="row g-4 justify-content-center">
                 {% for test in tests %}
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="lt-card h-100">
+                <div class="col-lg-4 col-md-6">
+                    <div class="lt-card h-100" data-lt-pop data-lt-tilt style="--d:{{ forloop.counter0 }}00ms">
+                        <span class="lt-card__range" aria-hidden="true">A1 → C2</span>
                         <div class="lt-card__icon" aria-hidden="true"><i class="fa fa-clipboard-list"></i></div>
                         <h2 class="lt-card__title">{{ test.title }}</h2>
                         {% trans "This test is designed to measure your level." as default_test_desc %}
@@ -33,15 +40,14 @@
                         <ul class="lt-card__meta">
                             <li><i class="fa fa-question-circle" aria-hidden="true"></i>{{ test.question_count }} {% trans "questions" %}</li>
                             <li class="lt-card__free">{% trans "Free" %}</li>
-                            <li>{% blocktrans with count=test_takers %}{{ count }}+ people have taken it{% endblocktrans %}</li>
                         </ul>
-                        <a href="{% url 'projects:test-take' test.id %}" class="btn btn-primary px-4 py-2 rounded-pill lt-card__cta">
-                            {% trans "Start test" %}
+                        <a href="{% url 'projects:test-take' test.id %}" class="lt-btn lt-btn--orange lt-card__cta">
+                            {% trans "Start test" %} <i class="fa fa-arrow-right" aria-hidden="true"></i>
                         </a>
                     </div>
                 </div>
                 {% empty %}
-                <div class="col-12 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="col-12">
                     <div class="alert alert-info text-center mb-0 py-4">
                         <i class="fa fa-info-circle me-2"></i>{% trans "There is no active test at the moment." %}
                     </div>
@@ -52,8 +58,10 @@
     </div>
 
     <section class="lt-cefr-section py-5" aria-labelledby="lt-cefr-heading">
+        <img class="lt-stk lt-cefr-section__stk lt-cefr-section__stk--a" style="--r:-16deg" src="{% static s|add:'heart.webp' %}" alt="" width="360" height="165" loading="lazy" decoding="async">
+        <img class="lt-stk lt-cefr-section__stk lt-cefr-section__stk--b" style="--r:14deg" src="{% static s|add:'ok.webp' %}" alt="" width="277" height="360" loading="lazy" decoding="async">
         <div class="container">
-            <div class="lt-cefr-head wow fadeInUp" data-wow-delay="0.1s">
+            <div class="lt-cefr-head" data-lt-pop>
                 <div>
                     <p class="lt-eyebrow">CEFR</p>
                     <h2 id="lt-cefr-heading" class="lt-cefr-head__title">{% trans "What do the levels mean?" %}</h2>
@@ -61,7 +69,14 @@
                 </div>
                 <img class="lt-cefr-head__art" src="{% static 'assets/img/level-test/stairs.webp' %}" alt="" width="880" height="615" loading="lazy" decoding="async">
             </div>
-            {% include "includes/level_test_cefr.html" with levels=cefr_levels %}
+            <div data-lt-pop>
+                {% include "includes/level_test_cefr.html" with levels=cefr_levels %}
+            </div>
         </div>
     </section>
+    {% endwith %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'assets/js/level-test.js' %}" defer></script>
 {% endblock %}

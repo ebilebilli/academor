@@ -12,7 +12,6 @@ from django.utils.translation import gettext_lazy as _
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 from projects.models import *
-from projects.models.service_models import CEFR_LEVELS
 from projects.admin.mixins import AcademorModelAdmin, install_admin_help
 from projects.admin.order_fields import apply_order_choice_field
 from projects.utils.cache_utils import invalidate_sale_cache, invalidate_model_cache
@@ -505,16 +504,6 @@ class CoursePricePackageAdmin(AcademorModelAdmin):
 
 
 class ServiceAdminForm(forms.ModelForm):
-    recommended_levels = forms.MultipleChoiceField(
-        choices=[(lvl, lvl) for lvl in CEFR_LEVELS],
-        required=False,
-        widget=forms.CheckboxSelectMultiple,
-        label=_('Recommended for levels'),
-        help_text=_(
-            'Level test results at these CEFR levels get this course as a suggestion.'
-        ),
-    )
-
     class Meta:
         model = Service
         fields = '__all__'
@@ -527,12 +516,6 @@ class ServiceAdminForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         apply_order_choice_field(self, model=Service, instance=self.instance)
-        if self.instance and self.instance.pk:
-            self.initial['recommended_levels'] = self.instance.recommended_level_list
-
-    def clean_recommended_levels(self):
-        picked = self.cleaned_data.get('recommended_levels') or []
-        return ','.join(lvl for lvl in CEFR_LEVELS if lvl in picked)
 
     def clean(self):
         cleaned = super().clean()
@@ -610,13 +593,6 @@ class ServiceAdmin(AdminImageCompressMixin, AcademorModelAdmin):
                 'Enable IELTS or SAT (only one). The service then appears under Mock tests '
                 'in the navbar and on /mock-tests/. Price packages require mock test credits. '
                 'Bullet list items (one per line) appear on the mock test detail page hero.'
-            ),
-        }),
-        ('Level test suggestion', {
-            'fields': ('recommended_levels',),
-            'description': (
-                'After the free level test, people at the ticked levels see this course '
-                'with its price as the next step.'
             ),
         }),
         ('Service card (home & courses list)', {

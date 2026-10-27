@@ -10589,37 +10589,8 @@ msgstr ""
 "Test sizi CEFR şkalasında yerləşdirir — A1-dən C2-yə qədər dil "
 "səviyyələrinin beynəlxalq standartı."
 
-msgid "Your level"
-msgstr "Sizin səviyyəniz"
-
-#, python-format
-msgid "Your level is %(level)s — recommended for you"
-msgstr "Səviyyəniz %(level)s — sizin üçün tövsiyə edirik"
-
-#, python-format
-msgid "from %(price)s AZN"
-msgstr "%(price)s AZN-dən"
-
-msgid "View course"
-msgstr "Kursa bax"
-
-msgid "Not sure which course fits? We'll pick one for your level."
-msgstr ""
-"Hansı kursun uyğun olduğunu bilmirsiniz? Səviyyənizə görə birlikdə seçək."
-
 msgid "Get free consultation"
 msgstr "Pulsuz konsultasiya al"
-
-msgid "Write on WhatsApp"
-msgstr "WhatsApp-da yaz"
-
-#, python-format
-msgid ""
-"Hello! I got %(level)s on the Academor level test and would like to know "
-"about courses."
-msgstr ""
-"Salam! Academor səviyyə testində %(level)s nəticəsi aldım, kurslar barədə "
-"məlumat istəyirəm."
 
 msgid "Beginner"
 msgstr "Başlanğıc"
@@ -10664,13 +10635,95 @@ msgstr ""
 msgid "Understands virtually everything and expresses ideas precisely."
 msgstr "Demək olar ki, hər şeyi anlayır və fikrini dəqiq ifadə edir."
 
-msgid "Recommended for levels"
-msgstr "Tövsiyə olunan səviyyələr"
+#, python-format
+msgid "%(name)s, your level is"
+msgstr "%(name)s, sənin səviyyən"
+
+#, python-format
+msgid "%(score)s/%(total)s correct"
+msgstr "%(score)s/%(total)s düz cavab"
+
+msgid "Where you are on the CEFR scale"
+msgstr "CEFR şkalasında haradasan"
+
+msgid "Your level sticker"
+msgstr "Sənin səviyyə stikerin"
 
 msgid ""
-"Level test results at these CEFR levels get this course as a suggestion."
+"Save it and post it to your story — let your friends check their level too."
+msgstr "Yüklə və story-də paylaş — qoy dostların da səviyyəsini yoxlasın."
+
+msgid "Download sticker"
+msgstr "Stikeri yüklə"
+
+msgid "Share"
+msgstr "Paylaş"
+
+#, python-format
+msgid "Academor level sticker: %(level)s"
+msgstr "Academor səviyyə stikeri: %(level)s"
+
+msgid "Your next step is free"
+msgstr "Növbəti addımın ödənişsizdir"
+
+msgid ""
+"Try a lesson at your level and get a plan from our team — no payment, no "
+"commitment."
 msgstr ""
-"Səviyyə testində bu CEFR səviyyələrini alanlara bu kurs tövsiyə olunur."
+"Səviyyənə uyğun dərsdə iştirak et və komandamızdan plan al — ödəniş yox, "
+"öhdəlik yox."
+
+msgid "Free trial lesson"
+msgstr "Ödənişsiz sınaq dərsi"
+
+msgid ""
+"Join a group at your level for one lesson with a teacher and see how we "
+"teach."
+msgstr ""
+"Səviyyənə uyğun qrupda müəllimlə bir dərs keç və necə öyrətdiyimizi gör."
+
+msgid "Book a trial lesson"
+msgstr "Sınaq dərsinə yazıl"
+
+msgid "Free consultation"
+msgstr "Ödənişsiz konsultasiya"
+
+msgid ""
+"Tell us your goal — IELTS, study abroad, speaking — and we will map the "
+"route from your level."
+msgstr ""
+"Məqsədini de — IELTS, xaricdə təhsil, danışıq — səviyyəndən başlayaraq yol "
+"xəritəni quraq."
+
+msgid "Result guarantee"
+msgstr "Nəticə zəmanəti"
+
+msgid ""
+"We guarantee the result of our programs — we explain the terms during the "
+"consultation."
+msgstr ""
+"Proqramlarımızın nəticəsinə zəmanət veririk — şərtləri konsultasiyada izah "
+"edirik."
+
+msgid "Only for people who took the test"
+msgstr "Yalnız testi keçənlərə özəl"
+
+msgid "20%% off the course payment when you enrol — mention your test result."
+msgstr "Kursa yazılanda ödənişə 20%% endirim — sadəcə test nəticəni de."
+
+msgid "You are here"
+msgstr "Sən buradasan"
+
+msgid "20%% off for everyone who finishes"
+msgstr "Bitirənlərə 20%% endirim"
+
+#, python-format
+msgid ""
+"Hello! I got %(level)s on the Academor level test. I would like to book the "
+"free trial lesson and use my 20%% discount."
+msgstr ""
+"Salam! Academor səviyyə testində %(level)s nəticəsi aldım. Ödənişsiz sınaq "
+"dərsinə yazılmaq və 20%% endirimdən yararlanmaq istəyirəm."
 
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Növbəti kampaniyada yenə cəhd et — xəbərdar edəcəyik."

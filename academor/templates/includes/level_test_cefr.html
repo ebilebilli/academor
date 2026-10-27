@@ -1,13 +1,15 @@
-{% load i18n %}
-{# CEFR A1–C2 as rising steps (styles: assets/css/level-test.css). levels = projects.utils.cefr.cefr_scale(); the current one is highlighted. #}
+{% load static i18n %}
+{# CEFR A1–C2 as a wall of stickers (styles: assets/css/level-test.css). levels = projects.utils.cefr.cefr_scale(); the current one is highlighted. compact = result page (no descriptions). #}
 <ol class="lt-cefr{% if compact %} lt-cefr--compact{% endif %}">
     {% for lvl in levels %}
-    <li class="lt-cefr__step lt-cefr__step--{{ lvl.step }}{% if lvl.is_current %} is-current{% endif %}"{% if lvl.is_current %} aria-current="step"{% endif %}>
-        <span class="lt-cefr__bar" aria-hidden="true"></span>
+    <li class="lt-cefr__step lt-cefr__step--{{ lvl.sticker.tone }}{% if lvl.is_current %} is-current{% endif %}" style="--i:{{ forloop.counter0 }}"{% if lvl.is_current %} aria-current="step"{% endif %}>
+        {% if lvl.is_current %}
+        <img class="lt-cefr__hand" src="{% static 'assets/img/level-test/stickers/point.webp' %}" alt="" width="360" height="155" decoding="async">
+        <span class="lt-cefr__you">{% trans "You are here" %}</span>
+        {% endif %}
         <span class="lt-cefr__code">{{ lvl.code }}</span>
         <span class="lt-cefr__name">{{ lvl.name }}</span>
         {% if not compact %}<span class="lt-cefr__desc">{{ lvl.description }}</span>{% endif %}
-        {% if lvl.is_current %}<span class="lt-cefr__you">{% trans "Your level" %}</span>{% endif %}
     </li>
     {% endfor %}
 </ol>

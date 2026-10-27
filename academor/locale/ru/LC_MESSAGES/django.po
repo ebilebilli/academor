@@ -10724,36 +10724,8 @@ msgstr ""
 "Тест определяет ваш уровень по шкале CEFR — международному стандарту "
 "языковых уровней от A1 до C2."
 
-msgid "Your level"
-msgstr "Ваш уровень"
-
-#, python-format
-msgid "Your level is %(level)s — recommended for you"
-msgstr "Ваш уровень %(level)s — рекомендуем вам"
-
-#, python-format
-msgid "from %(price)s AZN"
-msgstr "от %(price)s AZN"
-
-msgid "View course"
-msgstr "Смотреть курс"
-
-msgid "Not sure which course fits? We'll pick one for your level."
-msgstr "Не знаете, какой курс подходит? Подберём его по вашему уровню."
-
 msgid "Get free consultation"
 msgstr "Получить бесплатную консультацию"
-
-msgid "Write on WhatsApp"
-msgstr "Написать в WhatsApp"
-
-#, python-format
-msgid ""
-"Hello! I got %(level)s on the Academor level test and would like to know "
-"about courses."
-msgstr ""
-"Здравствуйте! В тесте Academor у меня уровень %(level)s, хочу узнать о "
-"курсах."
 
 msgid "Beginner"
 msgstr "Начальный"
@@ -10798,12 +10770,96 @@ msgstr ""
 msgid "Understands virtually everything and expresses ideas precisely."
 msgstr "Понимает практически всё и точно выражает свои мысли."
 
-msgid "Recommended for levels"
-msgstr "Рекомендуемые уровни"
+#, python-format
+msgid "%(name)s, your level is"
+msgstr "%(name)s, твой уровень"
+
+#, python-format
+msgid "%(score)s/%(total)s correct"
+msgstr "%(score)s/%(total)s верных"
+
+msgid "Where you are on the CEFR scale"
+msgstr "Где ты на шкале CEFR"
+
+msgid "Your level sticker"
+msgstr "Твой стикер уровня"
 
 msgid ""
-"Level test results at these CEFR levels get this course as a suggestion."
-msgstr "Этот курс предлагается тем, кто получил в тесте эти уровни CEFR."
+"Save it and post it to your story — let your friends check their level too."
+msgstr "Сохрани и выложи в сторис — пусть друзья тоже проверят свой уровень."
+
+msgid "Download sticker"
+msgstr "Скачать стикер"
+
+msgid "Share"
+msgstr "Поделиться"
+
+#, python-format
+msgid "Academor level sticker: %(level)s"
+msgstr "Стикер уровня Academor: %(level)s"
+
+msgid "Your next step is free"
+msgstr "Следующий шаг — бесплатно"
+
+msgid ""
+"Try a lesson at your level and get a plan from our team — no payment, no "
+"commitment."
+msgstr ""
+"Попробуй урок своего уровня и получи план от нашей команды — без оплаты и "
+"обязательств."
+
+msgid "Free trial lesson"
+msgstr "Бесплатный пробный урок"
+
+msgid ""
+"Join a group at your level for one lesson with a teacher and see how we "
+"teach."
+msgstr ""
+"Пройди один урок с преподавателем в группе своего уровня и посмотри, как мы "
+"учим."
+
+msgid "Book a trial lesson"
+msgstr "Записаться на пробный урок"
+
+msgid "Free consultation"
+msgstr "Бесплатная консультация"
+
+msgid ""
+"Tell us your goal — IELTS, study abroad, speaking — and we will map the "
+"route from your level."
+msgstr ""
+"Расскажи о цели — IELTS, учёба за рубежом, разговорная практика — и мы "
+"построим маршрут от твоего уровня."
+
+msgid "Result guarantee"
+msgstr "Гарантия результата"
+
+msgid ""
+"We guarantee the result of our programs — we explain the terms during the "
+"consultation."
+msgstr ""
+"Мы гарантируем результат наших программ — условия объясним на консультации."
+
+msgid "Only for people who took the test"
+msgstr "Только для прошедших тест"
+
+msgid "20%% off the course payment when you enrol — mention your test result."
+msgstr ""
+"Скидка 20%% на оплату курса при записи — просто назови результат теста."
+
+msgid "You are here"
+msgstr "Ты здесь"
+
+msgid "20%% off for everyone who finishes"
+msgstr "Скидка 20%% всем, кто пройдёт"
+
+#, python-format
+msgid ""
+"Hello! I got %(level)s on the Academor level test. I would like to book the "
+"free trial lesson and use my 20%% discount."
+msgstr ""
+"Здравствуйте! В тесте Academor у меня уровень %(level)s. Хочу записаться на "
+"бесплатный пробный урок и получить скидку 20%%."
 
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Попробуйте в следующей акции — мы сообщим."
