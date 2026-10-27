@@ -10725,6 +10725,27 @@ msgstr ""
 "Salam! Academor səviyyə testində %(level)s nəticəsi aldım. Ödənişsiz sınaq "
 "dərsinə yazılmaq və 20%% endirimdən yararlanmaq istəyirəm."
 
+#, python-format
+msgid "Your level is %(level)s — recommended for you"
+msgstr "Səviyyəniz %(level)s — sizin üçün tövsiyə edirik"
+
+#, python-format
+msgid "from %(price)s AZN"
+msgstr "%(price)s AZN-dən"
+
+msgid "Not sure which course fits? We'll pick one for your level."
+msgstr ""
+"Hansı kursun uyğun olduğunu bilmirsiniz? Səviyyənizə görə birlikdə seçək."
+
+msgid "View course"
+msgstr "Kursa bax"
+
+msgid "Write on WhatsApp"
+msgstr "WhatsApp-da yaz"
+
+msgid "Your level"
+msgstr "Sizin səviyyəniz"
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Növbəti kampaniyada yenə cəhd et — xəbərdar edəcəyik."
 

@@ -10715,6 +10715,26 @@ msgstr ""
 "Hello! I got %(level)s on the Academor level test. I would like to book the "
 "free trial lesson and use my 20%% discount."
 
+#, python-format
+msgid "Your level is %(level)s — recommended for you"
+msgstr "Your level is %(level)s — recommended for you"
+
+#, python-format
+msgid "from %(price)s AZN"
+msgstr "from %(price)s AZN"
+
+msgid "Not sure which course fits? We'll pick one for your level."
+msgstr "Not sure which course fits? We'll pick one for your level."
+
+msgid "View course"
+msgstr "View course"
+
+msgid "Write on WhatsApp"
+msgstr "Write on WhatsApp"
+
+msgid "Your level"
+msgstr "Your level"
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Try again in the next campaign — we will let you know."
 
