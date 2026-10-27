@@ -1,8 +1,5 @@
 {% load i18n %}
-{# Text labels for the team flags; renders nothing while neither flag is set. #}
+{# Quiet text labels for the team flags; renders nothing while neither flag is set. #}
 {% if member.is_teacher or member.is_team_member %}
-<span class="team-flags{% if extra_class %} {{ extra_class }}{% endif %}">
-    {% if member.is_teacher %}<span class="team-flag team-flag--teacher"><i class="fa fa-chalkboard-teacher" aria-hidden="true"></i>{% trans "Müəllim" %}</span>{% endif %}
-    {% if member.is_team_member %}<span class="team-flag team-flag--member"><i class="fa fa-users" aria-hidden="true"></i>{% trans "Komanda üzvü" %}</span>{% endif %}
-</span>
+<span class="team-flags{% if extra_class %} {{ extra_class }}{% endif %}">{% if member.is_team_member %}<span class="team-flag">{% trans "Komanda üzvü" %}</span>{% endif %}{% if member.is_teacher %}<span class="team-flag">{% trans "Müəllim" %}</span>{% endif %}</span>
 {% endif %}
