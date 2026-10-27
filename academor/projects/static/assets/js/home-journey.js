@@ -73,44 +73,60 @@
     function headingAt(y) { return Math.atan2(2, xAt(y + 1) - xAt(y - 1)) * 180 / Math.PI; }   /* 90 = straight down */
     function altitudeAt(y) { return Math.min(smoothstep((y - y0) / CLIMB), smoothstep((y1 - y) / CLIMB)); }
 
-    /* Always four stops. Preferred sections first; when some are missing (no sale, no price
-       packages, About hidden…) the gaps are filled from the other homepage sections, keeping
-       stops at least MIN_GAP apart, and as a last resort spaced evenly before New York.
+    /* Always four stops, spread down the page. Preferred sections first; when some are
+       missing (no price packages, no sale, About hidden…) the route does not squeeze up —
+       it carries on downwards through the following homepage sections (team, reviews, FAQ…),
+       keeping stops at least MIN_GAP apart. New York is Study Abroad when that section is
+       still below the last departure, otherwise the next section further down.
        Returns [{code, top}] with top in document coordinates. */
     var MIN_GAP = 320;
     function pickStops() {
-        var finalEl = main.querySelector(FINAL);
-        if (!finalEl) return null;
         var sy = window.scrollY;
         var topOf = function (el) { return el.getBoundingClientRect().top + sy; };
-        var finalTop = topOf(finalEl);
-        var limit = finalTop - 200;
+        var finalEl = main.querySelector(FINAL);
+        var finalTop = finalEl ? topOf(finalEl) : Infinity;
+
+        /* every sizeable homepage block, in page order */
+        var anchors = [];
+        Array.prototype.forEach.call(main.children, function (el) {
+            if (el === root || el.offsetHeight < 150 || el.matches("script, style")) return;
+            anchors.push(topOf(el));
+        });
+        anchors.sort(function (a, b) { return a - b; });
+
         var tops = [];
-        function tryAdd(top) {
-            if (top >= limit || tops.length >= CODES.length) return;
-            for (var i = 0; i < tops.length; i++) if (Math.abs(tops[i] - top) < MIN_GAP) return;
-            tops.push(top);
+        function farEnough(top) {
+            return !tops.length || top - tops[tops.length - 1] >= MIN_GAP;
         }
+        /* 1. preferred sections above Study Abroad */
+        var preferred = [];
         CANDIDATES.forEach(function (sel) {
             var node = main.querySelector(sel);
-            if (node && node.offsetHeight > 0) tryAdd(topOf(node));
+            if (node && node.offsetHeight > 0 && topOf(node) < finalTop - 200) preferred.push(topOf(node));
         });
-        if (tops.length < CODES.length) {
-            Array.prototype.forEach.call(main.children, function (el) {
-                if (el === root || el.offsetHeight < 150 || el.matches("script, style")) return;
-                tryAdd(topOf(el));
-            });
-        }
-        tops.sort(function (a, b) { return a - b; });
-        if (tops.length < CODES.length) {
-            /* even spacing between the first stop (or the top of main) and New York */
-            var start = tops.length ? tops[0] : topOf(main) + 120;
-            var n = CODES.length;
+        preferred.sort(function (a, b) { return a - b; }).forEach(function (top) {
+            if (tops.length < CODES.length && farEnough(top)) tops.push(top);
+        });
+        /* 2. still short: keep going down the page from the last stop */
+        anchors.forEach(function (top) {
+            if (tops.length < CODES.length && (!tops.length || top > tops[tops.length - 1]) && farEnough(top)) tops.push(top);
+        });
+        /* 3. the final stop: Study Abroad if it is still below, else the next block down */
+        var last = tops.length ? tops[tops.length - 1] : -Infinity;
+        var landing = null;
+        if (finalTop !== Infinity && finalTop - last >= MIN_GAP) landing = finalTop;
+        else anchors.forEach(function (top) { if (landing === null && top - last >= MIN_GAP) landing = top; });
+
+        if (tops.length < CODES.length || landing === null) {
+            /* very short page: spread evenly over what there is */
+            if (anchors.length < 2) return null;
+            var start = anchors[0], end = anchors[anchors.length - 1];
             tops = [];
-            for (var k = 0; k < n; k++) tops.push(start + (finalTop - start) * k / n);
+            for (var k = 0; k < CODES.length; k++) tops.push(start + (end - start) * k / CODES.length);
+            landing = end;
         }
         var list = tops.map(function (top, i) { return { code: CODES[i], top: top }; });
-        list.push({ code: "New York", top: finalTop });
+        list.push({ code: "New York", top: landing });
         return list;
     }
 
