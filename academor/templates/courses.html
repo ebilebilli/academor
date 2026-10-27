@@ -18,8 +18,12 @@
         <div class="hsvc-inner">
             <div class="container-xxl">
                 <div class="container">
-                    <h1 id="courses-heading" class="hsvc-title hsvc-title--centered wow fadeInUp" data-wow-delay="0.05s">{% trans "Courses" %}</h1>
-                    {% include "includes/academor_books.html" %}
+                    <div class="ac-collage">
+                        <div class="ac-collage__center">
+                            <h1 id="courses-heading" class="hsvc-title hsvc-title--centered wow fadeInUp" data-wow-delay="0.05s">{% trans "Courses" %}</h1>
+                        </div>
+                        {% include "includes/academor_books.html" %}
+                    </div>
                     {% include "includes/hsvc_cards_grid.html" with active_slug=filters.slug|default:"" %}
                 </div>
             </div>

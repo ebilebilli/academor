@@ -42,6 +42,7 @@
         ".home-mock-prices-section"
     ];
     var FINAL = ".abroad-section";
+    var START_AFTER = ".hbh-section";   /* blog hero: the route always starts below it */
     var CODES = ["Baku", "Paris", "London"];   /* departures, in order; final is New York */
 
     var PIN_OFFSET = 56;         /* sticker centre sits this far below its section's top edge */
@@ -85,12 +86,15 @@
         var topOf = function (el) { return el.getBoundingClientRect().top + sy; };
         var finalEl = main.querySelector(FINAL);
         var finalTop = finalEl ? topOf(finalEl) : Infinity;
+        /* the route (plane start and every sticker) always begins below the blog hero */
+        var blog = main.querySelector(START_AFTER);
+        var floor = blog ? topOf(blog) + blog.offsetHeight : -Infinity;
 
         /* every sizeable homepage block, in page order */
         var anchors = [];
         Array.prototype.forEach.call(main.children, function (el) {
             if (el === root || el.offsetHeight < 150 || el.matches("script, style")) return;
-            anchors.push(topOf(el));
+            if (topOf(el) >= floor) anchors.push(topOf(el));
         });
         anchors.sort(function (a, b) { return a - b; });
 
@@ -102,7 +106,7 @@
         var preferred = [];
         CANDIDATES.forEach(function (sel) {
             var node = main.querySelector(sel);
-            if (node && node.offsetHeight > 0 && topOf(node) < finalTop - 200) preferred.push(topOf(node));
+            if (node && node.offsetHeight > 0 && topOf(node) >= floor && topOf(node) < finalTop - 200) preferred.push(topOf(node));
         });
         preferred.sort(function (a, b) { return a - b; }).forEach(function (top) {
             if (tops.length < CODES.length && farEnough(top)) tops.push(top);
