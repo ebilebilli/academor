@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load static i18n %}{% get_current_language as LANG_CODE %}
+{% load static i18n deco_tags %}{% get_current_language as LANG_CODE %}
 {# public_shell: lets shared includes tell base.html pages apart from portals/login.html, which reuses them. #}
 {% with public_shell=True %}
 <html lang="{{ LANG_CODE }}">
@@ -9,6 +9,7 @@
 </head>
 
 <body{% block body_attrs %}{% endblock %}>
+    {% page_shapes %}
     <a class="skip-to-content" href="#site-content">{% trans "Skip to content" %}</a>
     {% include "includes/site_navbar.html" %}
 
