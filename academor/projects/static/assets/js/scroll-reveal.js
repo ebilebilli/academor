@@ -14,7 +14,7 @@
     var STAGGER_MS = cssMs("--reveal-stagger", 100);
     var STAGGER_MAX = cssMs("--reveal-stagger-max", 99);
     var CARD_SELECTORS =
-        ".hsvc-card, .course-alt-card, .abroad-card, .hb-card, .hb-hero, " +
+        ".hsvc-card-wrap, .course-alt-card, .abroad-card, .hb-card, .hb-hero, " +
         ".blog-card, .blog-featured-card, .testimonial-item, a.svc-card-link";
     var BLOCK_SELECTORS =
         ".hsvc-header, .hsvc-empty, .courses-alt__heading, .courses-alt__carousel-shell, " +
@@ -140,7 +140,14 @@
             return !shouldSkip(node);
         });
         var idx = cards.indexOf(el);
-        return idx >= 0 ? Math.min(idx, STAGGER_MAX) : 0;
+        if (idx < 0) return 0;
+        /* Grids reveal row by row as they scroll in, so stagger across a row only;
+           counting the whole grid made the last cards wait about a second. */
+        if (root.matches(".hsvc-grid")) {
+            var cols = window.getComputedStyle(root).gridTemplateColumns.split(" ").length || 1;
+            idx = idx % cols;
+        }
+        return Math.min(idx, STAGGER_MAX);
     }
 
     function prepareElement(el, opts) {

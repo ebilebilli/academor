@@ -1,22 +1,16 @@
-"""CEFR scale copy and per-level stickers for the level test pages (tests list and result)."""
+"""CEFR scale copy and the result offer rules for the level test pages (tests list and result)."""
 
 from django.utils.translation import gettext as _
 
 CEFR_LEVELS = ('A1', 'A2', 'B1', 'B2', 'C1', 'C2')
 
+# Results at or above this level are invited to IELTS prep; below it to a general
+# trial lesson with the test-takers' discount.
+IELTS_READY_LEVEL = 'B2'
+LEVEL_TEST_DISCOUNT_PERCENT = 25
+
 # Shown as "1000+" on the tests page until the real count passes it.
 LEVEL_TEST_TAKERS_FLOOR = 1000
-
-# Result sticker per level: English slang on purpose (it is an English school), the hand is a
-# halftone cut-out from assets/img/level-test/stickers/, tone picks the sticker colour.
-LEVEL_STICKERS = {
-    'A1': {'title': 'NEW ERA', 'tag': 'english unlocked', 'hand': 'point', 'tone': 'orange'},
-    'A2': {'title': 'LOADING...', 'tag': 'level up in progress', 'hand': 'one', 'tone': 'orange'},
-    'B1': {'title': 'MAIN CHARACTER', 'tag': 'B1 energy', 'hand': 'peace', 'tone': 'teal'},
-    'B2': {'title': 'FLUENT-ISH', 'tag': 'no cap', 'hand': 'thumbs', 'tone': 'teal'},
-    'C1': {'title': 'BIG BRAIN', 'tag': 'basically fluent', 'hand': 'ok', 'tone': 'dark'},
-    'C2': {'title': 'FINAL BOSS', 'tag': 'english: mastered', 'hand': 'fist', 'tone': 'dark'},
-}
 
 
 def cefr_scale(current=None):
@@ -43,7 +37,6 @@ def cefr_scale(current=None):
             'description': descriptions[code],
             'step': index + 1,
             'is_current': code == current,
-            'sticker': LEVEL_STICKERS[code],
         }
         for index, code in enumerate(CEFR_LEVELS)
     ]
@@ -52,3 +45,10 @@ def cefr_scale(current=None):
 def level_test_takers_label(count):
     """Rounded-down taker count for the trust line, never below the floor."""
     return max(LEVEL_TEST_TAKERS_FLOOR, (count // 100) * 100)
+
+
+def level_test_offer_track(level):
+    """'ielts' when the result reaches IELTS_READY_LEVEL, 'foundation' below it, None for no level."""
+    if level not in CEFR_LEVELS:
+        return None
+    return 'ielts' if CEFR_LEVELS.index(level) >= CEFR_LEVELS.index(IELTS_READY_LEVEL) else 'foundation'

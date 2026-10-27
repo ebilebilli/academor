@@ -10622,118 +10622,79 @@ msgstr ""
 msgid "Understands virtually everything and expresses ideas precisely."
 msgstr "Understands virtually everything and expresses ideas precisely."
 
-#, python-format
-msgid "%(name)s, your level is"
-msgstr "%(name)s, your level is"
-
-#, python-format
-msgid "%(score)s/%(total)s correct"
-msgstr "%(score)s/%(total)s correct"
-
-msgid "Where you are on the CEFR scale"
-msgstr "Where you are on the CEFR scale"
-
-msgid "Your level sticker"
-msgstr "Your level sticker"
-
-msgid ""
-"Save it and post it to your story — let your friends check their level too."
-msgstr ""
-"Save it and post it to your story — let your friends check their level too."
-
-msgid "Download sticker"
-msgstr "Download sticker"
-
 msgid "Share"
 msgstr "Share"
-
-#, python-format
-msgid "Academor level sticker: %(level)s"
-msgstr "Academor level sticker: %(level)s"
-
-msgid "Your next step is free"
-msgstr "Your next step is free"
-
-msgid ""
-"Try a lesson at your level and get a plan from our team — no payment, no "
-"commitment."
-msgstr ""
-"Try a lesson at your level and get a plan from our team — no payment, no "
-"commitment."
 
 msgid "Free trial lesson"
 msgstr "Free trial lesson"
 
-msgid ""
-"Join a group at your level for one lesson with a teacher and see how we "
-"teach."
-msgstr ""
-"Join a group at your level for one lesson with a teacher and see how we "
-"teach."
-
-msgid "Book a trial lesson"
-msgstr "Book a trial lesson"
-
 msgid "Free consultation"
 msgstr "Free consultation"
-
-msgid ""
-"Tell us your goal — IELTS, study abroad, speaking — and we will map the "
-"route from your level."
-msgstr ""
-"Tell us your goal — IELTS, study abroad, speaking — and we will map the "
-"route from your level."
-
-msgid "Result guarantee"
-msgstr "Result guarantee"
-
-msgid ""
-"We guarantee the result of our programs — we explain the terms during the "
-"consultation."
-msgstr ""
-"We guarantee the result of our programs — we explain the terms during the "
-"consultation."
-
-msgid "Only for people who took the test"
-msgstr "Only for people who took the test"
-
-msgid "20%% off the course payment when you enrol — mention your test result."
-msgstr ""
-"20%% off the course payment when you enrol — mention your test result."
-
-msgid "You are here"
-msgstr "You are here"
-
-msgid "20%% off for everyone who finishes"
-msgstr "20%% off for everyone who finishes"
-
-#, python-format
-msgid ""
-"Hello! I got %(level)s on the Academor level test. I would like to book the "
-"free trial lesson and use my 20%% discount."
-msgstr ""
-"Hello! I got %(level)s on the Academor level test. I would like to book the "
-"free trial lesson and use my 20%% discount."
 
 #, python-format
 msgid "Your level is %(level)s — recommended for you"
 msgstr "Your level is %(level)s — recommended for you"
 
-#, python-format
-msgid "from %(price)s AZN"
-msgstr "from %(price)s AZN"
-
-msgid "Not sure which course fits? We'll pick one for your level."
-msgstr "Not sure which course fits? We'll pick one for your level."
-
-msgid "View course"
-msgstr "View course"
-
-msgid "Write on WhatsApp"
-msgstr "Write on WhatsApp"
-
 msgid "Your level"
 msgstr "Your level"
+
+msgid ""
+"Your English is ready for IELTS preparation — come and see the exam from the"
+" inside."
+msgstr ""
+"Your English is ready for IELTS preparation — come and see the exam from the"
+" inside."
+
+msgid "Free IELTS trial lesson"
+msgstr "Free IELTS trial lesson"
+
+msgid ""
+"A real lesson in the IELTS format: task types, band criteria and how to "
+"score higher."
+msgstr ""
+"A real lesson in the IELTS format: task types, band criteria and how to "
+"score higher."
+
+msgid "We set your target band and the time you need to get there."
+msgstr "We set your target band and the time you need to get there."
+
+msgid "Let's strengthen your base first — the first steps are free."
+msgstr "Let's strengthen your base first — the first steps are free."
+
+msgid "Join a group at your level for one lesson with a teacher."
+msgstr "Join a group at your level for one lesson with a teacher."
+
+msgid "We build a learning plan around your goal."
+msgstr "We build a learning plan around your goal."
+
+#, python-format
+msgid "A special %(percent)s%% discount for you"
+msgstr "A special %(percent)s%% discount for you"
+
+msgid "Valid when you enrol with your level test result."
+msgstr "Valid when you enrol with your level test result."
+
+msgid "Book a free IELTS trial lesson"
+msgstr "Book a free IELTS trial lesson"
+
+msgid "Book a free trial lesson"
+msgstr "Book a free trial lesson"
+
+#, python-format
+msgid ""
+"Hello! I got %(level)s on the Academor level test. I would like to book the "
+"free IELTS trial lesson and a consultation."
+msgstr ""
+"Hello! I got %(level)s on the Academor level test. I would like to book the "
+"free IELTS trial lesson and a consultation."
+
+#, python-format
+msgid ""
+"Hello! I got %(level)s on the Academor level test. I would like to book the "
+"free trial lesson and a consultation, and use my %(percent)s%% discount."
+msgstr ""
+"Hello! I got %(level)s on the Academor level test. I would like to book the "
+"free trial lesson and a consultation, and use my %(percent)s%% discount."
 
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Try again in the next campaign — we will let you know."
