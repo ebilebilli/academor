@@ -1,16 +1,15 @@
-<!DOCTYPE html>
-{% load static i18n %}{% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
+{% extends "base.html" %}
+{% load static i18n %}
 
-<head>
-    {% include "includes/site_layout_head.html" with lcp_image_url=lcp_image_url %}
-</head>
+{% block layout_head %}{% include "includes/site_layout_head.html" with lcp_image_url=lcp_image_url %}{% endblock %}
 
-<body>
-    {% include "includes/site_spinner.html" %}
+{% block extra_head %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'assets/css/courses-books.css' %}">
+{% endblock %}
 
-    {% include "includes/site_navbar.html" %}
-
+{% block content %}
     <main id="main-content">
     {% include "includes/page_header_banner.html" %}
 
@@ -20,7 +19,12 @@
             <div class="container-xxl">
                 <div class="container">
                     <h1 id="courses-heading" class="hsvc-title hsvc-title--centered wow fadeInUp" data-wow-delay="0.05s">{% trans "Courses" %}</h1>
-                    {% include "includes/hsvc_cards_grid.html" with active_slug=filters.slug|default:"" %}
+                    <div class="ac-behind">
+                        {% include "includes/academor_books.html" %}
+                        <div class="ac-behind__front">
+                            {% include "includes/hsvc_cards_grid.html" with active_slug=filters.slug|default:"" %}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -37,10 +41,4 @@
     </div>
     {% endif %}
     </main>
-
-    {% include "includes/site_footer.html" %}
-
-    {% include "includes/site_scripts.html" %}
-</body>
-
-</html>
+{% endblock %}

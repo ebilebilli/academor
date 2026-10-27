@@ -1,17 +1,9 @@
-<!DOCTYPE html>
-{% load static i18n academor_lazy_tags %}{% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
+{% extends "base.html" %}
+{% load static i18n academor_lazy_tags %}
 
-<head>
-    {% include "includes/site_layout_head.html" %}
-</head>
+{% block body_attrs %} class="page-team"{% endblock %}
 
-<body class="page-team">
-    {% include "includes/site_spinner.html" %}
-
-
-    <!-- Navbar Start -->
-    {% include "includes/site_navbar.html" %}
+{% block content %}
     <!-- Navbar End -->
 
 
@@ -21,53 +13,53 @@
 
 
     <!-- Team Start -->
-    <div class="container-xxl py-5">
+    <div class="container-xxl pt-5{% if not team_groups %} pb-5{% endif %}">
         <div class="container">
             <div class="text-center wow fadeInUp mb-5" data-wow-delay="0.1s">
                 <h1 class="mb-0">{% trans "Our Team" %}</h1>
             </div>
 
+            {% if not team_groups %}
             {% if team %}
             <div class="row g-4">
                 {% for member in team %}
                 <div class="col-6 col-md-4 col-lg-3 wow fadeInUp" data-wow-delay="{% cycle '0.05s' '0.1s' '0.15s' '0.2s' %}">
-                    <article class="course-alt-card h-100">
-                        <a href="{% url 'projects:team-detail' member.slug %}" class="category-square-card course-alt-card__link d-flex flex-column text-decoration-none h-100">
-                            <div class="ratio ratio-1x1 overflow-hidden course-alt-card__media">
-                                {% if member.image %}
-                                {% if forloop.first %}
-                                <img src="{{ member.image_card|default:member.image }}" {% if member.image_srcset %}srcset="{{ member.image_srcset }}" sizes="(max-width: 600px) 96px, 253px"{% endif %} alt="{{ member.name }}" class="w-100 h-100" style="object-fit: cover;" loading="eager" fetchpriority="high" decoding="async" width="400" height="400">
-                                {% else %}
-                                {% academor_branded_lazy_img member.image_card|default:member.image member.name img_class='w-100 h-100' layout='cover' width='400' height='400' srcset=member.image_srcset sizes='(max-width: 600px) 96px, 253px' loading='lazy' %}
-                                {% endif %}
-                                {% else %}
-                                <div class="w-100 h-100 bg-light d-flex align-items-center justify-content-center text-muted">
-                                    <i class="fa fa-user fa-3x opacity-25"></i>
-                                </div>
-                                {% endif %}
-                            </div>
-                            <div class="course-alt-card__body">
-                                <h5 class="mb-1 text-truncate" title="{{ member.name }}">{{ member.name }}</h5>
-                                {% if member.role %}<small class="course-alt-card__role d-block mb-2 text-truncate">{{ member.role }}</small>{% endif %}
-                                <span class="course-alt-card__cta"><i class="fa fa-arrow-right" aria-hidden="true"></i></span>
-                            </div>
-                        </a>
-                    </article>
+                    {% include "includes/team_page_card.html" with eager_image=forloop.first %}
                 </div>
                 {% endfor %}
             </div>
             {% else %}
             <p class="text-center text-muted mb-0">{% trans "No team members have been added yet." %}</p>
             {% endif %}
+            {% endif %}
         </div>
     </div>
+
+    {% if team_groups %}
+    {# Flags in use: one full-width band per group (team members first, then teachers). #}
+    {% for group in team_groups %}
+    <section class="team-band team-band--{{ group.key }}" id="team-{{ group.key }}" aria-labelledby="team-{{ group.key }}-title">
+        <div class="container">
+            <div class="team-band__head wow fadeInUp" data-wow-delay="0.05s">
+                <h2 class="team-band__title" id="team-{{ group.key }}-title">{{ group.title }}</h2>
+                <span class="team-band__count">{{ group.members|length }}</span>
+                <span class="team-band__rule" aria-hidden="true"></span>
+            </div>
+            <div class="row g-4">
+                {% for member in group.members %}
+                <div class="col-6 col-md-4 col-lg-3 wow fadeInUp" data-wow-delay="{% cycle '0.05s' '0.1s' '0.15s' '0.2s' %}">
+                    {% if forloop.parentloop.first and forloop.first %}
+                    {% include "includes/team_page_card.html" with eager_image=True %}
+                    {% else %}
+                    {% include "includes/team_page_card.html" %}
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endfor %}
+    {% endif %}
     <!-- Team End -->
         
-
-    {% include "includes/site_footer.html" %}
-
-
-    {% include "includes/site_scripts.html" %}
-</body>
-
-</html>
+{% endblock %}

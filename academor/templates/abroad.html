@@ -1,25 +1,21 @@
-<!DOCTYPE html>
-{% load static i18n %}{% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
+{% extends "base.html" %}
+{% load static i18n %}
 
-<head>
-    {% include "includes/site_layout_head.html" %}
-</head>
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'assets/css/abroad-application.css' %}">
+{% endblock %}
 
-<body>
-    {% include "includes/site_spinner.html" %}
-
-    {% include "includes/site_navbar.html" %}
-
+{% block content %}
     <main id="main-content">
     {% include "includes/page_header_banner.html" %}
 
     {% include "includes/abroad_grid_section.html" %}
+
+    {% include "includes/abroad_application_section.html" %}
     </main>
+{% endblock %}
 
-    {% include "includes/site_footer.html" %}
-
-    {% include "includes/site_scripts.html" %}
-</body>
-
-</html>
+{% block extra_js %}
+    {% include "includes/turnstile_script.html" %}
+    <script defer src="{% static 'assets/js/abroad-application.js' %}"></script>
+{% endblock %}

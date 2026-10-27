@@ -1,14 +1,13 @@
-<!DOCTYPE html>
-{% load i18n static %}{% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
-<head>
-    {% include "includes/site_layout_head.html" with page_title=page_title page_description=page_description page_keywords=page_keywords lcp_image_url=course.image og_image_url=og_image_url og_type=og_type structured_data_json=structured_data_json %}
-    {% include "includes/payment_ui_head.html" %}
-</head>
-<body>
-    {% include "includes/site_spinner.html" %}
-    {% include "includes/site_navbar.html" %}
+{% extends "base.html" %}
+{% load i18n static %}
 
+{% block layout_head %}{% include "includes/site_layout_head.html" with page_title=page_title page_description=page_description page_keywords=page_keywords lcp_image_url=course.image og_image_url=og_image_url og_type=og_type structured_data_json=structured_data_json %}{% endblock %}
+
+{% block extra_head %}
+    {% include "includes/payment_ui_head.html" %}
+{% endblock %}
+
+{% block content %}
     {% include "includes/page_header_banner.html" %}
 
     <div class="course-detail-page">
@@ -182,9 +181,8 @@
     {% include "includes/course_detail_payment_modal.html" %}
     {% include "includes/course_detail_payment_sticky_bar.html" %}
     {% endif %}
+{% endblock %}
 
-    {% include "includes/site_footer.html" %}
-    {% include "includes/site_scripts.html" %}
+{% block extra_js %}
     {% include "includes/course_detail_page_scripts.html" %}
-</body>
-</html>
+{% endblock %}

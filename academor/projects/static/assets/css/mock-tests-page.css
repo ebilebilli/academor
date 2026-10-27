@@ -63,7 +63,7 @@
 
 .mock-tests-list__head {
     position: relative;
-    z-index: 1;
+    z-index: var(--z-raised);
     margin-bottom: clamp(1.5rem, 3.5vw, 2.25rem);
 }
 
@@ -155,7 +155,7 @@
 
 .mock-tests-grid {
     position: relative;
-    z-index: 1;
+    z-index: var(--z-raised);
     display: grid;
     gap: clamp(1.1rem, 2.8vw, 1.5rem);
     margin: 0;
@@ -276,7 +276,7 @@
     position: absolute;
     top: 0.7rem;
     right: 0.7rem;
-    z-index: 1;
+    z-index: var(--z-raised);
     padding: 0.3rem 0.6rem;
     border-radius: 999px;
     background: var(--accent, #ff5414);
@@ -463,7 +463,7 @@
 
 .mock-tests-empty {
     position: relative;
-    z-index: 1;
+    z-index: var(--z-raised);
     margin: 0;
     padding: 2.25rem 1.35rem;
     border-radius: 1.15rem;

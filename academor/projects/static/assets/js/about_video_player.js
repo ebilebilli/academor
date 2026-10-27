@@ -67,7 +67,7 @@
             if (typeof Plyr !== 'undefined') {
                 try {
                     player = new Plyr(video, {
-                        iconUrl: getIconUrl() || 'https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.svg',
+                        iconUrl: getIconUrl() || '/static/assets/vendor/plyr.svg',
                         loadSprite: true,
                         clickToPlay: true,
                         playsinline: true,

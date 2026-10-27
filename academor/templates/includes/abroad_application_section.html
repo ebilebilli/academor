@@ -1,0 +1,87 @@
+{% load i18n static %}
+{# Study-abroad application form — abroad page. Posts to projects:abroad-application. #}
+{% with form=abroad_application_form %}
+<section class="abroad-apply py-5" id="abroad-application" aria-labelledby="abroad-apply-title">
+    <div class="container">
+        <div class="row g-4 g-xl-5 align-items-start">
+            <div class="col-lg-5">
+                <div class="abroad-apply__intro">
+                    <p class="abroad-apply__eyebrow">{% trans "Pulsuz ilkin konsultasiya" %}</p>
+                    <h2 class="abroad-apply__title" id="abroad-apply-title">{% trans "Xaricdə təhsil üçün müraciət edin" %}</h2>
+                    <p class="abroad-apply__lead">{% trans "Formu doldurun, məsləhətçimiz sizin üçün uyğun ölkə, universitet və təqaüd imkanlarını araşdırıb sizinlə əlaqə saxlasın." %}</p>
+                    <img class="abroad-apply__art" src="{% static 'assets/img/abroad/abroad-journey.svg' %}" alt="" width="860" height="860" loading="lazy" decoding="async">
+                    <ul class="abroad-apply__points">
+                        <li><span class="abroad-apply__point-icon"><i class="fa fa-university" aria-hidden="true"></i></span>{% trans "Ölkə və universitet seçimi" %}</li>
+                        <li><span class="abroad-apply__point-icon"><i class="fa fa-award" aria-hidden="true"></i></span>{% trans "Təqaüd və büdcəyə uyğun planlama" %}</li>
+                        <li><span class="abroad-apply__point-icon"><i class="fa fa-passport" aria-hidden="true"></i></span>{% trans "Sənədlər və viza üzrə dəstək" %}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="abroad-apply__card" data-abroad-application-card>
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags|default:'info' }} mb-3" role="alert">{{ message }}</div>
+                    {% endfor %}
+                    {% endif %}
+                    <div class="alert d-none" role="status" aria-live="polite" data-form-alert></div>
+                    <form method="post" action="{% url 'projects:abroad-application' %}" class="abroad-apply__form" data-abroad-application data-network-error="{% trans 'Network error. Please try again.' %}" novalidate>
+                        {% csrf_token %}
+                        {{ form.website }}
+                        <input type="hidden" name="next" value="{{ request.get_full_path }}#abroad-application">
+
+                        <fieldset class="abroad-apply__group">
+                            <legend class="abroad-apply__legend"><span class="abroad-apply__step">1</span>{% trans "Əlaqə məlumatları" %}</legend>
+                            <div class="row g-2 g-md-3">
+                                {% include "includes/abroad_application_field.html" with field=form.full_name icon="fa-user" %}
+                                {% include "includes/abroad_application_field.html" with field=form.phone_number icon="fa-phone-alt" %}
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="abroad-apply__group">
+                            <legend class="abroad-apply__legend"><span class="abroad-apply__step">2</span>{% trans "Təhsil planı" %}</legend>
+                            <div class="row g-2 g-md-3">
+                                {% include "includes/abroad_application_field.html" with field=form.study_level icon="fa-graduation-cap" %}
+                                {% include "includes/abroad_application_field.html" with field=form.consultation_format icon="fa-comments" %}
+                                {% include "includes/abroad_application_field.html" with field=form.desired_country icon="fa-globe-europe" %}
+                                {% include "includes/abroad_application_field.html" with field=form.desired_major icon="fa-book-open" %}
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="abroad-apply__group">
+                            <legend class="abroad-apply__legend"><span class="abroad-apply__step">3</span>{% trans "Büdcə və təqaüd" %}</legend>
+                            <div class="row g-2 g-md-3">
+                                {% include "includes/abroad_application_field.html" with field=form.tuition_budget icon="fa-wallet" %}
+                                {% include "includes/abroad_application_field.html" with field=form.scholarship_importance icon="fa-award" %}
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="abroad-apply__group">
+                            <legend class="abroad-apply__legend"><span class="abroad-apply__step">4</span>{% trans "Əlavə məlumat" %}</legend>
+                            <div class="row g-2 g-md-3">
+                                {% include "includes/abroad_application_field.html" with field=form.international_certificates icon="fa-certificate" col="col-12" %}
+                            </div>
+                        </fieldset>
+
+                        {% if form.non_field_errors %}
+                        <div class="abroad-apply__error mb-3">{{ form.non_field_errors.0 }}</div>
+                        {% endif %}
+                        {% include "includes/turnstile_widget.html" %}
+                        <button class="btn btn-primary abroad-apply__submit w-100" type="submit">
+                            <span>{% trans "Müraciət göndər" %}</span>
+                            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                        </button>
+                        <p class="abroad-apply__note"><i class="fa fa-lock" aria-hidden="true"></i>{% trans "Məlumatlarınız yalnız konsultasiya üçün istifadə olunur." %} {% trans "* ilə işarələnmiş sahələr məcburidir." %}</p>
+                    </form>
+                    <div class="abroad-apply__success" data-form-success hidden tabindex="-1">
+                        <span class="abroad-apply__success-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
+                        <h3 class="abroad-apply__success-title">{% trans "Təşəkkür edirik!" %}</h3>
+                        <p class="abroad-apply__success-text" data-form-success-text></p>
+                        <button type="button" class="btn btn-outline-accent rounded-pill px-4" data-form-again>{% trans "Yeni müraciət" %}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endwith %}

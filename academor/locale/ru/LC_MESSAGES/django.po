@@ -10446,11 +10446,11 @@ msgstr ""
 "дней."
 
 msgid ""
-"This mobile number has already spun within the last 7 days. Please try "
-"again later."
+"This mobile number has already spun within the last 7 days. Please try again"
+" later."
 msgstr ""
-"С этим номером телефона колесо уже крутили за последние 7 дней. Пожалуйста,"
-" попробуйте позже."
+"С этим номером телефона колесо уже крутили за последние 7 дней. Пожалуйста, "
+"попробуйте позже."
 
 msgid "Next time :("
 msgstr "В следующий раз :("
@@ -10463,6 +10463,240 @@ msgstr "Возможные призы"
 
 msgid "Gift Wheel"
 msgstr "Колесо подарков"
+
+#: templates/base.html:12
+msgid "Skip to content"
+msgstr "Перейти к содержимому"
+
+msgid "Əyani"
+msgstr "Очно"
+
+msgid "Fərq etmir"
+msgstr "Не важно"
+
+msgid "Bakalavr"
+msgstr "Бакалавриат"
+
+msgid "Magistratura"
+msgstr "Магистратура"
+
+msgid "Doktorantura"
+msgstr "Докторантура"
+
+msgid "Dil kursları"
+msgstr "Языковые курсы"
+
+msgid "Digər"
+msgstr "Другое"
+
+msgid "Çox önəmlidir"
+msgstr "Очень важна"
+
+msgid "Önəmlidir"
+msgstr "Важна"
+
+msgid "Təqaüd istəmir"
+msgstr "Стипендия не нужна"
+
+msgid "$1,000-dən az"
+msgstr "Меньше $1,000"
+
+msgid "$1,000–$3,000"
+msgstr "$1,000–$3,000"
+
+msgid "$3,000–$5,000"
+msgstr "$3,000–$5,000"
+
+msgid "$5,000–$10,000"
+msgstr "$5,000–$10,000"
+
+msgid "$10,000-dan çox"
+msgstr "Больше $10,000"
+
+msgid "Ad və soyad"
+msgstr "Имя и фамилия"
+
+msgid "Əlaqə nömrəsi"
+msgstr "Контактный номер"
+
+msgid "İlkin konsultasiyanın formatı"
+msgstr "Формат первичной консультации"
+
+msgid "Təhsil səviyyəsi"
+msgstr "Уровень образования"
+
+msgid "Təhsil almaq istədiyiniz ölkə"
+msgstr "Страна, в которой хотите учиться"
+
+msgid "Təhsil almaq istədiyiniz ixtisas"
+msgstr "Специальность, которую хотите изучать"
+
+msgid "Təqaüdün əhəmiyyəti"
+msgstr "Важность стипендии"
+
+msgid "Təhsil haqqı üçün büdcə"
+msgstr "Бюджет на обучение"
+
+msgid "Beynəlxalq sertifikatlar"
+msgstr "Международные сертификаты"
+
+msgid "Müraciət tarixi"
+msgstr "Дата заявки"
+
+msgid "Xaricdə təhsil müraciəti"
+msgstr "Заявка на обучение за рубежом"
+
+msgid "Xaricdə təhsil müraciətləri"
+msgstr "Заявки на обучение за рубежом"
+
+msgid "Məs.: Aysel Məmmədova"
+msgstr "Напр.: Айсель Мамедова"
+
+msgid "+994 50 123 45 67"
+msgstr "+994 50 123 45 67"
+
+msgid "Məs.: Almaniya, Kanada"
+msgstr "Напр.: Германия, Канада"
+
+msgid "Məs.: Kompüter elmləri"
+msgstr "Напр.: Компьютерные науки"
+
+msgid "Məs.: IELTS 7.0, SAT 1400 (yoxdursa boş saxlayın)"
+msgstr "Напр.: IELTS 7.0, SAT 1400 (если нет — оставьте пустым)"
+
+msgid "Seçin"
+msgstr "Выберите"
+
+msgid "Ad və soyadınızı tam daxil edin."
+msgstr "Введите имя и фамилию полностью."
+
+msgid "Ad və soyad yalnız hərflərdən ibarət olmalıdır."
+msgstr "Имя и фамилия должны содержать только буквы."
+
+msgid "Bu sahəni düzgün doldurun."
+msgstr "Заполните это поле правильно."
+
+msgid "Yalnız hərf, rəqəm və sadə durğu işarələrindən istifadə edin."
+msgstr "Используйте только буквы, цифры и простые знаки препинания."
+
+msgid "Linklər qəbul edilmir."
+msgstr "Ссылки не допускаются."
+
+msgid ""
+"Müraciətiniz qəbul olundu. Komandamız tezliklə sizinlə əlaqə saxlayacaq."
+msgstr "Ваша заявка принята. Наша команда скоро свяжется с вами."
+
+msgid "Pulsuz ilkin konsultasiya"
+msgstr "Бесплатная первичная консультация"
+
+msgid "Xaricdə təhsil üçün müraciət edin"
+msgstr "Подайте заявку на обучение за рубежом"
+
+msgid ""
+"Formu doldurun, məsləhətçimiz sizin üçün uyğun ölkə, universitet və təqaüd "
+"imkanlarını araşdırıb sizinlə əlaqə saxlasın."
+msgstr ""
+"Заполните форму — наш консультант подберёт подходящие страны, университеты и"
+" стипендии и свяжется с вами."
+
+msgid "Ölkə və universitet seçimi"
+msgstr "Выбор страны и университета"
+
+msgid "Təqaüd və büdcəyə uyğun planlama"
+msgstr "Планирование под стипендию и бюджет"
+
+msgid "Sənədlər və viza üzrə dəstək"
+msgstr "Помощь с документами и визой"
+
+msgid "Müraciət göndər"
+msgstr "Отправить заявку"
+
+msgid "* ilə işarələnmiş sahələr məcburidir."
+msgstr "Поля, отмеченные *, обязательны."
+
+msgid "Xaricdə təhsil"
+msgstr "Обучение за рубежом"
+
+msgid "Pulsuz konsultasiyaya yazılın"
+msgstr "Запишитесь на бесплатную консультацию"
+
+msgid ""
+"Bir neçə sual — məsləhətçimiz sizə uyğun ölkə və proqramlarla geri dönəcək."
+msgstr ""
+"Несколько вопросов — и наш консультант вернётся с подходящими странами и "
+"программами."
+
+msgid "Ətraflı forma"
+msgstr "Подробная форма"
+
+msgid "Ölkə"
+msgstr "Страна"
+
+msgid "İxtisas"
+msgstr "Специальность"
+
+msgid "Konsultasiya formatı"
+msgstr "Формат консультации"
+
+msgid "Təqaüd"
+msgstr "Стипендия"
+
+msgid "Büdcə"
+msgstr "Бюджет"
+
+msgid "Əlaqə məlumatları"
+msgstr "Контактные данные"
+
+msgid "Təhsil planı"
+msgstr "План обучения"
+
+msgid "Büdcə və təqaüd"
+msgstr "Бюджет и стипендия"
+
+msgid "Əlavə məlumat"
+msgstr "Дополнительная информация"
+
+msgid "Məlumatlarınız yalnız konsultasiya üçün istifadə olunur."
+msgstr "Ваши данные используются только для консультации."
+
+msgid "Təşəkkür edirik!"
+msgstr "Спасибо!"
+
+msgid "Yeni müraciət"
+msgstr "Новая заявка"
+
+msgid "Müəllimlər"
+msgstr "Преподаватели"
+
+msgid "Dərslərinizi aparan, imtahanlara hazırlayan peşəkar müəllimlərimiz."
+msgstr "Наши преподаватели, которые ведут занятия и готовят к экзаменам."
+
+msgid "Komanda üzvləri"
+msgstr "Команда"
+
+msgid "Qəbuldan məsləhətə qədər hər addımda yanınızda olan komandamız."
+msgstr "Наша команда рядом на каждом шаге — от консультации до поступления."
+
+msgid "Digər əməkdaşlar"
+msgstr "Другие сотрудники"
+
+msgid "Komanda üzvü"
+msgstr "Член команды"
+
+msgid "Komanda bölmələri"
+msgstr "Разделы команды"
+
+msgid "%(counter)s nəfər"
+msgid_plural "%(counter)s nəfər"
+msgstr[0] "%(counter)s человек"
+msgstr[1] "%(counter)s человека"
+msgstr[2] "%(counter)s человек"
+
+msgid "Academor kitabları"
+msgstr "Книги Academor"
+
+msgid "%(name)s kitabı"
+msgstr "Книга %(name)s"
 
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Попробуйте в следующей акции — мы сообщим."

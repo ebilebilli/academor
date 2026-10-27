@@ -1,5 +1,6 @@
 {% load static i18n %}
-{# Tam ekran yüklənmə: dairəvi kadrda banner + fırlanan halqa. main.js #spinner-ə .hide əlavə edir. #}
+{% comment %}Tam ekran yüklənmə: dairəvi kadrda banner + fırlanan halqa. Public səhifələr (base.html) bunu artıq
+   render etmir; yalnız portals/login.html spinner_hidden=True ilə istifadə edir.{% endcomment %}
 <div
     id="spinner"
     class="site-page-loader{% if spinner_hidden %} hide{% else %} show{% endif %} position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"

@@ -3,10 +3,11 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import Http404, HttpResponsePermanentRedirect, JsonResponse
 from django.urls import reverse
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.utils.translation import gettext as _
 
 from projects.models import AbroadModel, Team, BlogPost
-from projects.forms.forms_v1 import ReviewForm
+from projects.forms.forms_v1 import ReviewForm, StudyAbroadApplicationForm
 from projects.utils.seo_text import meta_plain_excerpt
 from projects.utils.canonical import canonical_url_for_request
 from projects.utils.seo_meta import (
@@ -135,6 +136,30 @@ class HomePageView(View):
         )
 
 
+# 3D books peeking out from behind the courses-page service cards (templates/includes/academor_books.html):
+# x = % across the card grid (below 0 / above 100 = past its edges), y = % down it, rot = extra tilt
+ACADEMOR_BOOKS = [
+    {'label': 'IELTS', 'title': 'IELTS', 'sub': '', 'cover': '#E5553F', 'delay': '0s',
+     'x': 0, 'y': 4, 'rot': -3, 'tags': ['Reading', 'Speaking']},
+    {'label': 'General English', 'title': 'General', 'sub': 'English', 'long': True, 'cover': '#5B3E96', 'delay': '-3.3s',
+     'x': 100, 'y': 12, 'rot': 3, 'tags': ['Grammar', 'Speaking']},
+    {'label': 'SAT Verbal', 'title': 'SAT', 'sub': 'Verbal', 'cover': '#1E3A6E', 'delay': '-1.1s',
+     'x': 0, 'y': 25, 'rot': 3, 'tags': ['Reading', 'Writing']},
+    {'label': 'GRE', 'title': 'GRE', 'sub': '', 'cover': '#A33A5E', 'delay': '-4.4s',
+     'x': 100, 'y': 36, 'rot': -3, 'tags': ['Verbal', 'Quant']},
+    {'label': 'SAT Math', 'title': 'SAT', 'sub': 'Math', 'cover': '#0F6B5C', 'delay': '-2.2s',
+     'x': 0, 'y': 46, 'rot': -3, 'tags': ['Algebra', 'Data']},
+    {'label': 'GMAT', 'title': 'GMAT', 'sub': '', 'cover': '#23282F', 'delay': '-5.5s',
+     'x': 100, 'y': 60, 'rot': 3, 'tags': ['Quant', 'Verbal']},
+    {'label': 'Duolingo English Test', 'title': 'Duolingo', 'sub': 'English Test', 'long': True, 'cover': '#46A302', 'delay': '-0.6s',
+     'x': 0, 'y': 67, 'rot': 3, 'tags': ['Literacy', 'Speaking']},
+    {'label': 'AP', 'title': 'AP', 'sub': '', 'cover': '#0A6EBD', 'delay': '-2.8s',
+     'x': 100, 'y': 84, 'rot': -3, 'tags': ['Calculus', 'Physics']},
+    {'label': 'FMVA', 'title': 'FMVA', 'sub': '', 'cover': '#C47A00', 'delay': '-4.9s',
+     'x': 0, 'y': 88, 'rot': -3, 'tags': ['Modeling', 'Valuation']},
+]
+
+
 class CoursesPageView(View):
     template_name = 'courses.html'
     
@@ -144,6 +169,7 @@ class CoursesPageView(View):
             request.GET = request.GET.copy()
             request.GET['slug'] = category_slug
         context = get_courses_list_data(request, lang)
+        context['academor_books'] = ACADEMOR_BOOKS
         context['background_image'] = get_background_image('courses')
         context['language'] = lang
         return render(request, self.template_name, context)
@@ -324,12 +350,47 @@ class ServicesPageView(View):
 class AbroadPageView(View):
     template_name = 'abroad.html'
 
-    def get(self, request):
+    def get(self, request, application_form=None):
         lang = get_language_from_request(request)
         context = get_abroad_page_data(request, lang)
         context.update(_fresh_abroad_advantages_context(lang))
         context['language'] = lang
+        context['abroad_application_form'] = application_form or StudyAbroadApplicationForm(request=request)
         return render(request, self.template_name, context)
+
+
+class StudyAbroadApplicationView(View):
+    """POST target for the study-abroad application form on the abroad page.
+
+    AJAX (X-Requested-With) gets JSON; a plain form post redirects back on success
+    or re-renders the abroad page with the errors.
+    """
+
+    http_method_names = ['post']
+
+    def post(self, request):
+        form = StudyAbroadApplicationForm(request.POST, request=request)
+        is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+
+        if form.is_valid():
+            form.save()
+            msg = _('Müraciətiniz qəbul olundu. Komandamız tezliklə sizinlə əlaqə saxlayacaq.')
+            if is_ajax:
+                return JsonResponse({'success': True, 'message': msg})
+            messages.success(request, msg)
+            next_url = request.POST.get('next') or ''
+            if not url_has_allowed_host_and_scheme(
+                next_url, allowed_hosts={request.get_host()}, require_https=request.is_secure()
+            ):
+                next_url = reverse('projects:abroad-page')
+            return redirect(next_url)
+
+        err_msg = _('Please correct the errors in the form.')
+        if is_ajax:
+            errors = {k: [str(e) for e in v] for k, v in form.errors.items()}
+            return JsonResponse({'success': False, 'message': err_msg, 'errors': errors}, status=400)
+        messages.error(request, err_msg)
+        return AbroadPageView().get(request, application_form=form)
 
 
 class AbroadDetailLegacyPkRedirectView(View):
@@ -472,6 +533,23 @@ class PrivacyPolicyPageView(View):
         return render(request, self.template_name, context)
 
 
+def _team_groups(team):
+    """Team members / teachers bands, or None while no member has a flag set.
+
+    Team members always come first. A member flagged as both appears in both bands;
+    members with neither flag are listed last so nobody disappears once the split is on.
+    """
+    if not any(m['is_teacher'] or m['is_team_member'] for m in team):
+        return None
+    groups = [
+        {'key': 'members', 'title': _('Komanda üzvləri'), 'members': [m for m in team if m['is_team_member']]},
+        {'key': 'teachers', 'title': _('Müəllimlər'), 'members': [m for m in team if m['is_teacher']]},
+        {'key': 'others', 'title': _('Digər əməkdaşlar'),
+         'members': [m for m in team if not m['is_teacher'] and not m['is_team_member']]},
+    ]
+    return [g for g in groups if g['members']]
+
+
 class TeamPageView(View):
     template_name = 'team.html'
 
@@ -479,8 +557,10 @@ class TeamPageView(View):
         lang = get_language_from_request(request)
         members = get_team_members()
         categories = get_project_categories(lang)
+        team = [serialize_team_member(m, lang=lang) for m in members]
         context = {
-            'team': [serialize_team_member(m, lang=lang) for m in members],
+            'team': team,
+            'team_groups': _team_groups(team),
             'categories': [serialize_project_category(c, lang) for c in categories],
             'language': lang,
             'background_image': get_background_image('about'),

@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-{% load static i18n academor_lazy_tags %}{% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
+{% extends "base.html" %}
+{% load static i18n academor_lazy_tags %}
 
-<head>
-    {% include "includes/site_layout_head.html" with lcp_image_url=lcp_image_url %}
+{% block layout_head %}{% include "includes/site_layout_head.html" with lcp_image_url=lcp_image_url %}{% endblock %}
+
+{% block extra_head %}
     <link href="{% static 'assets/css/blog-tags.css' %}" rel="stylesheet">
     <style>
         /* Featured top strip — sizing / grid match homepage `hbh-card--featured` */
@@ -60,7 +60,7 @@
             right: 0;
             padding: 1.35rem 1.25rem 1.25rem;
             background: linear-gradient(to top, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.38) 50%, transparent 100%);
-            z-index: 1;
+            z-index: var(--z-raised);
         }
         .blog-featured-card__no-img {
             position: absolute;
@@ -105,7 +105,7 @@
             font-size: 0.85rem;
             backdrop-filter: blur(6px);
             transition: background 0.25s, transform 0.25s;
-            z-index: 3;
+            z-index: var(--z-raised-3);
             pointer-events: none;
         }
         .blog-featured-card:hover .blog-featured-arrow {
@@ -118,7 +118,7 @@
             top: 1rem;
             left: 1rem;
             right: calc(40px + 2rem + 10px);
-            z-index: 2;
+            z-index: var(--z-raised-2);
             display: flex;
             flex-wrap: wrap;
             align-items: center;
@@ -337,12 +337,11 @@
             backdrop-filter: blur(6px);
         }
     </style>
-</head>
+{% endblock %}
 
-<body class="page-blog">
-    {% include "includes/site_spinner.html" %}
-    {% include "includes/site_navbar.html" %}
+{% block body_attrs %} class="page-blog"{% endblock %}
 
+{% block content %}
     <main id="main-content">
     {% include "includes/page_header_banner.html" %}
 
@@ -373,9 +372,8 @@
         </div>
     </div>
     </main>
+{% endblock %}
 
-    {% include "includes/site_footer.html" %}
-    {% include "includes/site_scripts.html" %}
+{% block extra_js %}
     <script src="{% static 'assets/js/blog-topic-filter.js' %}"></script>
-</body>
-</html>
+{% endblock %}

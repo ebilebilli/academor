@@ -1,0 +1,473 @@
+/* Study-abroad application form on the abroad page (.abroad-apply).
+   Illustration: Adobe Stock vector (AdobeStock_509279879), converted to SVG and
+   recoloured to the brand palette (assets/img/abroad/abroad-journey.svg). */
+
+/* ---------------------------------------------------------------- Fields (shared) */
+.abroad-apply__field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.abroad-apply__label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--foreground);
+}
+
+.abroad-apply__req {
+    margin-left: 3px;
+    color: var(--accent);
+}
+
+.abroad-apply__control { position: relative; }
+
+.abroad-apply__icon {
+    position: absolute;
+    top: 50%;
+    left: 14px;
+    z-index: 1;
+    translate: 0 -50%;
+    width: 16px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--subtle-foreground);
+    pointer-events: none;
+    transition: color var(--dur-fast) ease;
+}
+
+.abroad-apply__control:has(textarea) .abroad-apply__icon {
+    top: 14px;
+    translate: 0 0;
+}
+
+.abroad-apply__control:focus-within .abroad-apply__icon { color: var(--accent); }
+
+.abroad-apply__form .form-control,
+.abroad-apply__form .form-select {
+    min-height: 44px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    background-color: var(--surface);
+    color: var(--foreground);
+    font-size: 0.9rem;
+    font-weight: 500;
+    box-shadow: none;
+    transition: border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease, background-color var(--dur-fast) ease;
+}
+
+.abroad-apply__control.has-icon .form-control,
+.abroad-apply__control.has-icon .form-select {
+    padding-left: 40px;
+}
+
+.abroad-apply__form textarea.form-control {
+    min-height: 72px;
+    padding-top: 10px;
+    resize: vertical;
+}
+
+.abroad-apply__form .form-control::placeholder {
+    color: var(--subtle-foreground);
+    font-weight: 400;
+    opacity: 1;
+}
+
+/* the empty "Seçin" option reads as a placeholder until something is picked */
+.abroad-apply__form .form-select.is-empty {
+    color: var(--subtle-foreground);
+    font-weight: 400;
+}
+
+.abroad-apply__form .form-control:hover,
+.abroad-apply__form .form-select:hover {
+    border-color: var(--border-strong);
+}
+
+.abroad-apply__form .form-control:focus,
+.abroad-apply__form .form-select:focus {
+    border-color: var(--accent);
+    background-color: var(--card);
+    box-shadow: 0 0 0 4px rgb(var(--accent-rgb) / 0.14);
+    outline: none;
+}
+
+.abroad-apply__field.has-error .form-control,
+.abroad-apply__field.has-error .form-select {
+    border-color: var(--destructive);
+    background-color: var(--card);
+}
+
+.abroad-apply__field.has-error .abroad-apply__icon { color: var(--destructive); }
+
+.abroad-apply__error {
+    font-size: 0.8rem;
+    font-weight: 500;
+    line-height: 1.35;
+    color: var(--destructive);
+}
+
+.abroad-apply__error:empty { display: none; }
+
+.abroad-apply__submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 46px;
+    padding-inline: var(--space-5);
+    border-radius: var(--radius-pill);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    box-shadow: 0 10px 24px -10px rgb(var(--accent-rgb) / 0.7);
+}
+
+.abroad-apply__submit i { transition: translate var(--dur-fast) var(--ease-out); }
+
+@media (hover: hover) {
+    .abroad-apply__submit:hover i { translate: 3px 0; }
+}
+
+.abroad-apply__submit[disabled] { opacity: 0.7; }
+
+.abroad-apply__note {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 8px;
+    margin: var(--space-2) 0 0;
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+}
+
+.abroad-apply__note i { color: var(--success); }
+
+/* ---------------------------------------------------------------- Success panel */
+.abroad-apply__success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-7) var(--space-4);
+    text-align: center;
+    outline: none;
+}
+
+.abroad-apply__success[hidden] { display: none; }
+
+.abroad-apply__success-icon {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgb(var(--success-rgb) / 0.12);
+    color: var(--success);
+    font-size: 1.6rem;
+    animation: abroad-apply-pop 520ms var(--ease-out) both;
+}
+
+@keyframes abroad-apply-pop {
+    from { scale: 0.6; opacity: 0; }
+    to { scale: 1; opacity: 1; }
+}
+
+.abroad-apply__success-title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.abroad-apply__success-text {
+    max-width: 36ch;
+    margin: 0;
+    color: var(--muted-foreground);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .abroad-apply__success-icon { animation: none; }
+}
+
+/* ---------------------------------------------------------------- Full form (abroad page) */
+.abroad-apply { scroll-margin-top: 96px; }
+
+@media (min-width: 992px) {
+    .abroad-apply__intro { position: sticky; top: 110px; }
+}
+
+.abroad-apply__eyebrow {
+    margin-bottom: var(--space-2);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+.abroad-apply__title {
+    margin-bottom: var(--space-3);
+    font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--primary);
+}
+
+.abroad-apply__lead {
+    margin-bottom: var(--space-3);
+    font-size: 0.95rem;
+    color: var(--muted-foreground);
+}
+
+.abroad-apply__art {
+    display: block;
+    width: min(100%, 240px);
+    height: auto;
+    margin: 0 auto var(--space-3);
+}
+
+.abroad-apply__points {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.abroad-apply__points li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--foreground);
+}
+
+.abroad-apply__point-icon {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    background: var(--accent-soft);
+    color: var(--accent);
+}
+
+.abroad-apply__card {
+    position: relative;
+    scroll-margin-top: 96px;
+    padding: clamp(1rem, 0.7rem + 1.2vw, 1.75rem);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--card);
+    box-shadow: var(--shadow-lg);
+}
+
+/* a thin brand stripe on top of the card */
+.abroad-apply__card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: clamp(1rem, 0.7rem + 1.2vw, 1.75rem);
+    right: clamp(1rem, 0.7rem + 1.2vw, 1.75rem);
+    height: 3px;
+    border-radius: 0 0 3px 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-light));
+}
+
+.abroad-apply__group {
+    margin: 0 0 var(--space-4);
+    padding: 0 0 var(--space-4);
+    border: 0;
+    border-bottom: 1px dashed var(--border);
+}
+
+.abroad-apply__group:last-of-type { border-bottom: 0; padding-bottom: 0; }
+
+.abroad-apply__legend {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    float: none;
+    width: auto;
+    margin-bottom: var(--space-2);
+    padding: 0;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.abroad-apply__step {
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: var(--on-dark);
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+/* ---------------------------------------------------------------- Custom dropdown
+   abroad-application.js turns each <select> into a button + listbox; the native select
+   stays in the form (hidden) so submit, reset and the no-JS fallback keep working. */
+.abroad-select__native {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    overflow: hidden;
+    clip-path: inset(50%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.abroad-select { position: relative; }
+
+.abroad-select__button {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    width: 100%;
+    min-height: 44px;
+    padding: 0 var(--space-3);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--foreground);
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease, background-color var(--dur-fast) ease;
+}
+
+.abroad-apply__control.has-icon .abroad-select__button { padding-left: 40px; }
+
+.abroad-select__button:hover { border-color: var(--border-strong); }
+
+.abroad-select__button:focus-visible,
+.abroad-select.is-open .abroad-select__button {
+    border-color: var(--accent);
+    background: var(--card);
+    box-shadow: 0 0 0 4px rgb(var(--accent-rgb) / 0.14);
+    outline: none;
+}
+
+.abroad-select__value {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.abroad-select.is-empty .abroad-select__value {
+    color: var(--subtle-foreground);
+    font-weight: 400;
+}
+
+/* chevron drawn with borders, turns over when open */
+.abroad-select__chevron {
+    flex: none;
+    width: 8px;
+    height: 8px;
+    margin-top: -4px;
+    border-right: 2px solid var(--muted-foreground);
+    border-bottom: 2px solid var(--muted-foreground);
+    rotate: 45deg;
+    transition: rotate var(--dur-fast) var(--ease-out), translate var(--dur-fast) var(--ease-out), border-color var(--dur-fast) ease;
+}
+
+.abroad-select.is-open .abroad-select__chevron {
+    rotate: 225deg;
+    translate: 0 4px;
+    border-color: var(--accent);
+}
+
+.abroad-apply__field.has-error .abroad-select__button {
+    border-color: var(--destructive);
+    background: var(--card);
+}
+
+.abroad-select__list {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    z-index: 30;
+    max-height: 280px;
+    margin: 0;
+    padding: 6px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    list-style: none;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--card);
+    box-shadow: var(--shadow-lg);
+    outline: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px) scale(0.98);
+    transform-origin: top center;
+    transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out), visibility 0s linear var(--dur-fast);
+}
+
+.abroad-select.is-up .abroad-select__list {
+    top: auto;
+    bottom: calc(100% + 8px);
+    transform: translateY(6px) scale(0.98);
+    transform-origin: bottom center;
+}
+
+.abroad-select.is-open .abroad-select__list {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0s;
+}
+
+.abroad-select__option {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 38px;
+    padding: 7px 34px 7px 12px;
+    border-radius: var(--radius-sm);
+    color: var(--foreground);
+    font-size: 0.9rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.abroad-select__option.is-active { background: var(--surface-2); }
+
+.abroad-select__option.is-selected {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+/* check mark on the chosen option */
+.abroad-select__option.is-selected::after {
+    content: "";
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    width: 6px;
+    height: 11px;
+    margin-top: -7px;
+    border-right: 2px solid var(--accent);
+    border-bottom: 2px solid var(--accent);
+    rotate: 45deg;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .abroad-select__list,
+    .abroad-select__chevron { transition: none; }
+}

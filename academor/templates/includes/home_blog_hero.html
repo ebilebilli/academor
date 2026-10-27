@@ -20,7 +20,7 @@
         radial-gradient(ellipse 55% 70% at 100% 0%, rgba(255,84,20,.18) 0%, transparent 65%),
         radial-gradient(ellipse 45% 55% at 0% 100%, rgba(255,84,20,.08) 0%, transparent 70%);
     pointer-events: none;
-    z-index: 0;
+    z-index: var(--z-base);
 }
 .hbh-section::after {
     content: '';
@@ -29,7 +29,7 @@
     width: 480px; height: 480px;
     border-radius: 50%;
     border: 1px solid rgba(255,255,255,.05);
-    z-index: 0;
+    z-index: var(--z-base);
     pointer-events: none;
 }
 
@@ -44,11 +44,11 @@
     opacity: 0.32;
     filter: brightness(0) invert(1);
     pointer-events: none;
-    z-index: 0;
+    z-index: var(--z-base);
 }
 .hbh-inner {
     position: relative;
-    z-index: 1;
+    z-index: var(--z-raised);
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -141,7 +141,7 @@
     position: absolute; bottom: 0; left: 0; right: 0;
     padding: 2.5rem 1.8rem 1.8rem;
     background: linear-gradient(to top, rgba(0,0,0,.92) 0%, rgba(0,0,0,.45) 50%, transparent 100%);
-    z-index: 1;
+    z-index: var(--z-raised);
 }
 
 /* Featured — badge + date pinned to card top (left), clear of arrow button */
@@ -150,7 +150,7 @@
     top: 1rem;
     left: 1rem;
     right: calc(40px + 2rem + 10px); /* hbh-arrow width + gutters */
-    z-index: 2;
+    z-index: var(--z-raised-2);
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -242,7 +242,7 @@
     align-items: center; justify-content: center;
     backdrop-filter: blur(6px);
     transition: background .2s;
-    z-index: 2;
+    z-index: var(--z-raised-2);
 }
 .hbh-scroll-btn:hover { background: var(--accent,#FF5414); border-color: var(--accent,#FF5414); }
 .hbh-scroll-btn--prev { left: 0; }
@@ -342,7 +342,7 @@
     color: #fff; font-size: .85rem;
     backdrop-filter: blur(6px);
     transition: background .25s, transform .25s;
-    z-index: 3;
+    z-index: var(--z-raised-3);
 }
 
 .hbh-title--sm {

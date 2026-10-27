@@ -1,0 +1,13 @@
+{% load i18n %}
+<div class="{{ col|default:'col-md-6' }}">
+    <div class="abroad-apply__field{% if field.errors %} has-error{% endif %}">
+        <label class="abroad-apply__label{% if hide_label %} visually-hidden{% endif %}" for="{{ field.id_for_label }}">
+            {{ field.label }}{% if field.field.required %}<span class="abroad-apply__req" aria-hidden="true">*</span>{% endif %}
+        </label>
+        <div class="abroad-apply__control{% if icon %} has-icon{% endif %}">
+            {% if icon %}<i class="fa {{ icon }} abroad-apply__icon" aria-hidden="true"></i>{% endif %}
+            {{ field }}
+        </div>
+        <div class="abroad-apply__error" data-field-error="{{ field.name }}">{% if field.errors %}{{ field.errors.0 }}{% endif %}</div>
+    </div>
+</div>

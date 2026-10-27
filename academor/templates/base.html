@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% load static i18n %}{% get_current_language as LANG_CODE %}
+{# public_shell: lets shared includes tell base.html pages apart from portals/login.html, which reuses them. #}
+{% with public_shell=True %}
+<html lang="{{ LANG_CODE }}">
+<head>
+    {% block layout_head %}{% include "includes/site_layout_head.html" %}{% endblock %}
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body{% block body_attrs %}{% endblock %}>
+    <a class="skip-to-content" href="#site-content">{% trans "Skip to content" %}</a>
+    {% include "includes/site_navbar.html" %}
+
+    <span id="site-content" class="skip-to-content-target" tabindex="-1"></span>
+    {% block content %}{% endblock %}
+
+    {% include "includes/site_footer.html" %}
+
+    {% include "includes/site_scripts.html" %}
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>
+{% endwith %}

@@ -1,0 +1,45 @@
+/* ==========================================================================
+   Site-wide motion: page transitions.
+   Values come from tokens.css (--ease-out, --dur-*). Only opacity/transform animate.
+   ========================================================================== */
+
+/* Cross-document View Transitions (Chrome/Edge 126+, Safari 18.2+). Browsers without
+   support simply navigate as before. Purpose: avoid a hard white flash between pages and
+   keep the header visually anchored, so a click reads as "same site, new content". */
+@view-transition {
+    navigation: auto;
+}
+
+/* Header and floating buttons are identical on every page: give them their own groups so
+   they stay put instead of cross-fading with the page body. */
+.navbar.sticky-top { view-transition-name: site-header; }
+.fab-whatsapp { view-transition-name: fab-whatsapp; }
+.fab-instagram { view-transition-name: fab-instagram; }
+
+/* Old page fades out quickly; new page fades in with a short rise (entering → ease-out). */
+::view-transition-old(root) {
+    animation: vt-fade-out var(--dur-press) var(--ease-out) both;
+}
+
+::view-transition-new(root) {
+    animation: vt-rise-in var(--dur-base) var(--ease-out) both;
+}
+
+@keyframes vt-fade-out {
+    to { opacity: 0; }
+}
+
+@keyframes vt-rise-in {
+    from { opacity: 0; transform: translateY(8px); }
+}
+
+/* Reduced motion: keep a plain cross-fade (helps comprehension), drop the movement. */
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-new(root) {
+        animation-name: vt-fade-in;
+    }
+
+    @keyframes vt-fade-in {
+        from { opacity: 0; }
+    }
+}

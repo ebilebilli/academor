@@ -1,6 +1,6 @@
 {% load static i18n %}
-<link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css"></noscript>
+<link rel="preload" as="style" href="{% static 'assets/vendor/plyr-3.7.8/plyr.css' %}" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{% static 'assets/vendor/plyr-3.7.8/plyr.css' %}"></noscript>
 <div class="about-vp about-intro-image-card" data-about-vp>
     <div class="about-vp__cover" aria-hidden="false">
         {% if about.video_cover %}
@@ -29,5 +29,5 @@
         <source src="{{ about.video }}" type="video/mp4">
     </video>
 </div>
-<script defer src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.min.js"></script>
+<script defer src="{% static 'assets/vendor/plyr-3.7.8/plyr.min.js' %}"></script>
 <script defer src="{% static 'assets/js/about_video_player.js' %}" data-plyr-icon="{% static 'assets/vendor/plyr.svg' %}"></script>

@@ -1,8 +1,9 @@
-<!DOCTYPE html>
-{% load i18n static %}{% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
-<head>
-    {% include "includes/site_layout_head.html" with page_title=page_title page_description=page_description page_keywords=page_keywords lcp_image_url=lcp_image_url og_image_url=og_image_url og_type=og_type og_article_published_time=og_article_published_time structured_data_json=structured_data_json %}
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block layout_head %}{% include "includes/site_layout_head.html" with page_title=page_title page_description=page_description page_keywords=page_keywords lcp_image_url=lcp_image_url og_image_url=og_image_url og_type=og_type og_article_published_time=og_article_published_time structured_data_json=structured_data_json %}{% endblock %}
+
+{% block extra_head %}
     <link href="{% static 'assets/css/blog-tags.css' %}" rel="stylesheet">
     <style>
         /* ── Sidebar ── */
@@ -149,7 +150,7 @@
         /* ── Lightbox ── */
         #blog-lightbox {
             display: none;
-            position: fixed; inset: 0; z-index: 9999;
+            position: fixed; inset: 0; z-index: var(--z-modal);
             background: rgba(0,0,0,.94);
             align-items: center; justify-content: center;
             animation: lbFadeIn .28s ease;
@@ -313,11 +314,11 @@
             }
         }
     </style>
-</head>
-<body class="page-blog-detail">
-    {% include "includes/site_spinner.html" %}
-    {% include "includes/site_navbar.html" %}
+{% endblock %}
 
+{% block body_attrs %} class="page-blog-detail"{% endblock %}
+
+{% block content %}
     {% include "includes/page_header_banner.html" %}
 
     <div class="container-xxl py-5">
@@ -476,10 +477,9 @@
         </button>
         <span id="lb-counter"></span>
     </div>
+{% endblock %}
 
-    {% include "includes/site_footer.html" %}
-    {% include "includes/site_scripts.html" %}
-
+{% block extra_js %}
     <script>
     (function () {
         /* Collect all lightbox images in order: cover first, then gallery */
@@ -556,5 +556,4 @@
         });
     })();
     </script>
-</body>
-</html>
+{% endblock %}

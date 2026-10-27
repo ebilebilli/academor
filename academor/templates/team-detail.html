@@ -1,14 +1,9 @@
-<!DOCTYPE html>
-{% load i18n %}{% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
-<head>
-    {% include "includes/site_layout_head.html" with page_title=page_title lcp_image_url=member.image %}
-</head>
-<body>
-    {% include "includes/site_spinner.html" %}
+{% extends "base.html" %}
+{% load i18n %}
 
-    {% include "includes/site_navbar.html" %}
+{% block layout_head %}{% include "includes/site_layout_head.html" with page_title=page_title lcp_image_url=member.image %}{% endblock %}
 
+{% block content %}
     <!-- Header Start -->
     {% include "includes/page_header_banner.html" %}
     <!-- Header End -->
@@ -21,6 +16,7 @@
                     <div class="team-detail-member-heading w-100 text-center text-md-start">
                         <h1 class="team-detail-member-name mb-0">{{ member.name }}</h1>
                         {% if member.role %}<p class="team-detail-member-role mb-0">{{ member.role }}</p>{% endif %}
+                        {% include "includes/team_flag_badges.html" with extra_class="team-flags--detail" %}
                     </div>
                 </div>
 
@@ -84,8 +80,4 @@
             </div>
         </div>
     </div>
-
-    {% include "includes/site_footer.html" %}
-    {% include "includes/site_scripts.html" %}
-</body>
-</html>
+{% endblock %}

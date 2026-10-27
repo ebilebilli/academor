@@ -1,17 +1,23 @@
-<!DOCTYPE html>
-{% load static i18n academor_lazy_tags %}{% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
+{% extends "base.html" %}
+{% load static i18n academor_lazy_tags %}
 
-<head>
-    {% include "includes/site_layout_head.html" with page_title=seo_home_title page_description=seo_home_description page_keywords=site_seo_keywords lcp_image_url=lcp_image_url og_image_url=og_image_url structured_data_json=structured_data_json %}
-</head>
+{% block layout_head %}{% include "includes/site_layout_head.html" with page_title=seo_home_title page_description=seo_home_description page_keywords=site_seo_keywords lcp_image_url=lcp_image_url og_image_url=og_image_url structured_data_json=structured_data_json %}{% endblock %}
 
-<body>
-    {% include "includes/site_spinner.html" %}
+{% block extra_head %}
+    <link href="{% static 'assets/css/home.css' %}" rel="stylesheet">
+{% endblock %}
 
-    {% include "includes/site_navbar.html" %}
+{% block body_attrs %} class="page-home"{% endblock %}
 
+{% block content %}
     <main id="main-content" class="home-page-main">
+    <div class="home-journey" data-home-journey aria-hidden="true"
+         data-plane-src="{% static 'assets/img/journey/plane-747.webp' %}"
+         data-shadow-src="{% static 'assets/img/journey/plane-747-shadow.webp' %}"
+         data-stop-bak="{% static 'assets/img/journey/stop-bak.webp' %}"
+         data-stop-lhr="{% static 'assets/img/journey/stop-lhr.webp' %}"
+         data-stop-cdg="{% static 'assets/img/journey/stop-cdg.webp' %}"
+         data-stop-jfk="{% static 'assets/img/journey/stop-jfk.webp' %}"></div>
     <h1 class="visually-hidden">{% if seo_home_title %}{{ seo_home_title }}{% else %}{% trans "Academor" %}{% endif %}</h1>
 
     <!-- Blog Hero (first visible section) -->
@@ -104,16 +110,13 @@
     {% include "includes/site_faq_section.html" %}
 
     </main>
+{% endblock %}
 
-    {% include "includes/site_footer.html" %}
-
-
-    {% include "includes/site_scripts.html" %}
+{% block extra_js %}
+    <script defer src="{% static 'assets/js/home-journey.js' %}"></script>
     <script defer src="{% static 'assets/js/hbh-tagline-reveal.js' %}"></script>
     {% include "includes/turnstile_script.html" %}
     {% if open_review_modal %}
     <script defer src="{% static 'assets/js/review-modal-open.js' %}"></script>
     {% endif %}
-</body>
-
-</html>
+{% endblock %}

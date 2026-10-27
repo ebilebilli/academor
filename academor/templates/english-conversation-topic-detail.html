@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-{% load static i18n %}{% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
-<head>
-    {% include "includes/site_layout_head.html" with page_title=page_title page_description=page_description page_keywords=page_keywords %}
-</head>
-<body>
-    {% include "includes/site_spinner.html" %}
-    {% include "includes/site_navbar.html" %}
+{% extends "base.html" %}
+{% load static i18n %}
 
+{% block layout_head %}{% include "includes/site_layout_head.html" with page_title=page_title page_description=page_description page_keywords=page_keywords %}{% endblock %}
+
+{% block content %}
     {% include "includes/page_header_banner.html" %}
 
     <article class="container-xxl py-5">
@@ -129,8 +125,4 @@
     <style>
         .last-mb-0:last-child { margin-bottom: 0 !important; }
     </style>
-
-    {% include "includes/site_footer.html" %}
-    {% include "includes/site_scripts.html" %}
-</body>
-</html>
+{% endblock %}

@@ -1,4 +1,6 @@
 /********** Template CSS **********/
+/* Colors, scale, z-index and motion tokens: tokens.css (loaded first). */
+/* Original brand colours (unchanged). */
 :root {
     --primary: #00313D;
     --light: #F4F3FF;
@@ -12,6 +14,44 @@
     --bs-light-rgb: 244, 243, 255;
     --site-surface: #f7f9fb;
 }
+
+/* Bootstrap 5.3.3 defaults that differ from the old template Bootstrap: keep the site's
+   original colours exactly as they were. */
+:root {
+    --bs-heading-color: #181d38;
+}
+.navbar {
+    --bs-navbar-brand-color: rgba(0, 0, 0, 0.9);
+    --bs-navbar-brand-hover-color: rgba(0, 0, 0, 0.9);
+}
+.dropdown-menu {
+    --bs-dropdown-color: #52565b;
+    --bs-dropdown-divider-bg: rgba(0, 0, 0, 0.15);
+}
+.accordion {
+    --bs-accordion-color: currentColor;
+}
+.text-muted {
+    color: #6c757d !important;
+}
+.text-light {
+    color: #F0FBFC !important;
+}
+.bg-light {
+    background-color: #F0FBFC !important;
+}
+.card {
+    --bs-card-border-color: rgba(0, 0, 0, 0.125);
+}
+.form-control,
+.form-select {
+    color: #52565b;
+    border-color: #ced4da;
+}
+.copyright.border-secondary {
+    --bs-border-opacity: 1;
+}
+
 
 /* Bootstrap primary palette override */
 .text-primary {
@@ -133,6 +173,8 @@ h1.animated, h2.animated, h3.animated,
 
 
 /*** Spinner — dairəvi banner + fırlanan accent halqa ***/
+/* Public səhifələr (base.html) artıq spinner render etmir (LCP). Bu qaydalar yalnız
+   templates/portals/login.html üçün qalır: orada include gizli (.hide) vəziyyətdə gəlir. */
 #spinner.site-page-loader {
     /* Bootstrap utilities may load after first paint — keep overlay full-screen without them */
     position: fixed;
@@ -145,7 +187,7 @@ h1.animated, h2.animated, h3.animated,
     opacity: 1;
     visibility: visible;
     transition: opacity 0.45s ease-out, visibility 0s linear 0.45s;
-    z-index: 99999;
+    z-index: var(--z-loader);
     pointer-events: none;
     background: radial-gradient(
             ellipse 85% 55% at 50% 42%,
@@ -221,7 +263,7 @@ h1.animated, h2.animated, h3.animated,
     inset: clamp(8px, 2.6vw, 13px);
     border-radius: 50%;
     overflow: hidden;
-    z-index: 1;
+    z-index: var(--z-raised);
     background: rgba(0, 49, 61, 0.06);
     box-shadow:
         0 0 0 2px rgba(255, 255, 255, 0.92),
@@ -271,7 +313,7 @@ h1.animated, h2.animated, h3.animated,
     opacity: 1;
     visibility: visible;
     transition: opacity 0.4s ease-out, visibility 0s linear 0.4s;
-    z-index: 99999;
+    z-index: var(--z-loader);
     pointer-events: none;
 }
 
@@ -423,7 +465,7 @@ h1.animated, h2.animated, h3.animated,
     position: fixed;
     right: 28px;
     bottom: 28px;
-    z-index: 1080;
+    z-index: var(--z-fab);
     display: flex !important;
     align-items: center;
     justify-content: center;
@@ -450,7 +492,7 @@ h1.animated, h2.animated, h3.animated,
 .fab-instagram {
     position: fixed;
     right: 28px;
-    z-index: 1080;
+    z-index: var(--z-fab);
     display: flex !important;
     align-items: center;
     justify-content: center;
@@ -1272,7 +1314,7 @@ h1.animated, h2.animated, h3.animated,
 
 .navbar-light.sticky-top {
     top: 0;
-    z-index: 1030;
+    z-index: var(--z-fixed);
     transition: box-shadow 0.25s ease, background-color 0.25s ease;
 }
 
@@ -1285,7 +1327,7 @@ h1.animated, h2.animated, h3.animated,
     top: 0;
     left: 0;
     right: 0;
-    z-index: 9999;
+    z-index: var(--z-overlay-local);
     height: 4px;
     background: transparent;
     pointer-events: none;
@@ -1383,11 +1425,11 @@ h1.animated, h2.animated, h3.animated,
 /* Home hero: copy above full-bleed media; disable Animate.css on hero (slide 2+ stayed transformed / clipped). */
 .header-carousel .swiper-slide > .img-fluid,
 .header-carousel .swiper-slide > .academor-branded-lazy--cover {
-    z-index: 0;
+    z-index: var(--z-base);
 }
 
 .header-carousel .swiper-slide .carousel-hero-overlay {
-    z-index: 2;
+    z-index: var(--z-raised-2);
 }
 
 .header-carousel .carousel-hero-overlay .animated {
@@ -1876,7 +1918,7 @@ h1.animated, h2.animated, h3.animated,
 
 .contact-page-section__bg {
     position: absolute;
-    z-index: 0;
+    z-index: var(--z-base);
     right: max(-12vw, -6rem);
     bottom: 0;
     width: min(88vw, 1080px);
@@ -1892,7 +1934,7 @@ h1.animated, h2.animated, h3.animated,
 .contact-page-section__veil {
     position: absolute;
     inset: 0;
-    z-index: 1;
+    z-index: var(--z-raised);
     pointer-events: none;
     background: linear-gradient(
         100deg,
@@ -1906,7 +1948,7 @@ h1.animated, h2.animated, h3.animated,
 
 .contact-page-section__inner {
     position: relative;
-    z-index: 2;
+    z-index: var(--z-raised-2);
 }
 
 .turnstile-widget {
@@ -2109,7 +2151,7 @@ h1.animated, h2.animated, h3.animated,
     display: flex;
     flex-direction: column;
     align-items: center;
-    z-index: 10;
+    z-index: var(--z-overlay-local);
     pointer-events: none;
 }
 
@@ -2174,7 +2216,7 @@ h1.animated, h2.animated, h3.animated,
 
 .header-swiper .swiper-pagination {
     bottom: 0.72rem;
-    z-index: 10;
+    z-index: var(--z-overlay-local);
     /* Let taps reach hero CTAs on narrow screens (overlay is flex-end); bullets stay clickable below. */
     pointer-events: none;
 }
@@ -2189,8 +2231,8 @@ h1.animated, h2.animated, h3.animated,
     background: var(--accent);
 }
 
-/* WOW.js əvəzi — main.js IntersectionObserver .animated əlavə edir */
-.wow {
+/* WOW.js əvəzi — scroll-reveal.js IntersectionObserver ilə açır. Yalnız JS işləyəndə gizlədilir. */
+:where(html.js) .wow {
     opacity: 0;
 }
 
@@ -2227,7 +2269,7 @@ h1.animated, h2.animated, h3.animated,
     content: "";
     position: absolute;
     inset: 0;
-    z-index: 0;
+    z-index: var(--z-base);
     pointer-events: none;
     background: linear-gradient(
         180deg,
@@ -2240,7 +2282,7 @@ h1.animated, h2.animated, h3.animated,
 .page-header--tagline .page-header__overlay {
     position: absolute;
     inset: 0;
-    z-index: 1;
+    z-index: var(--z-raised);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2547,7 +2589,7 @@ h1.animated, h2.animated, h3.animated,
     bottom: auto;
     margin-top: 0;
     transform: translateY(-50%);
-    z-index: 5;
+    z-index: var(--z-overlay-local);
     width: 44px;
     height: 44px;
     display: inline-flex !important;
@@ -2802,7 +2844,7 @@ h1.animated, h2.animated, h3.animated,
     align-items: center;
     justify-content: center;
     padding: 1rem;
-    z-index: 2;
+    z-index: var(--z-raised-2);
 }
 
 .svc-card__title {
@@ -2835,7 +2877,7 @@ h1.animated, h2.animated, h3.animated,
     position: absolute;
     top: 12px;
     right: 12px;
-    z-index: 3;
+    z-index: var(--z-raised-3);
     background: var(--primary);
     color: #fff;
     font-size: .75rem;
@@ -2858,7 +2900,7 @@ h1.animated, h2.animated, h3.animated,
     position: absolute;
     bottom: 12px;
     right: 12px;
-    z-index: 3;
+    z-index: var(--z-raised-3);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -2934,12 +2976,12 @@ h1.animated, h2.animated, h3.animated,
 .courses-alt__heading {
     margin-bottom: 2rem;
     position: relative;
-    z-index: 1;
+    z-index: var(--z-raised);
 }
 
 .courses-alt__carousel-shell {
     position: relative;
-    z-index: 1;
+    z-index: var(--z-raised);
     border-radius: 20px;
     padding: clamp(10px, 2vw, 18px);
     background: transparent;
@@ -3006,7 +3048,7 @@ h1.animated, h2.animated, h3.animated,
     position: absolute;
     top: 12px;
     left: 12px;
-    z-index: 2;
+    z-index: var(--z-raised-2);
     padding: 0.36rem 0.62rem;
     border-radius: 999px;
     font-size: 0.72rem;
@@ -3130,7 +3172,7 @@ h1.animated, h2.animated, h3.animated,
 }
 
 .team-item:not(.team-item--no-photo) .team-item-social-wrap {
-    z-index: 2;
+    z-index: var(--z-raised-2);
 }
 
 /*** Team carousel (Swiper) ***/
@@ -3164,7 +3206,7 @@ h1.animated, h2.animated, h3.animated,
     bottom: auto;
     margin-top: 0;
     transform: translateY(-50%);
-    z-index: 3;
+    z-index: var(--z-raised-3);
     width: 44px;
     height: 44px;
     /* Strong display so theme wins over Swiper; .swiper-button-lock overrides when overflow is off */
@@ -3266,7 +3308,7 @@ h1.animated, h2.animated, h3.animated,
     gap: 4px;
     margin-top: clamp(1rem, 2.75vw, 1.85rem);
     padding-bottom: 0.35rem;
-    z-index: 2;
+    z-index: var(--z-raised-2);
 }
 
 .team-swiper-pagination-outer .swiper-pagination-bullet {
@@ -3634,7 +3676,7 @@ h1.animated, h2.animated, h3.animated,
 .about-vp > video.about-vp__video {
     position: absolute;
     inset: 0;
-    z-index: 1;
+    z-index: var(--z-raised);
     width: 100%;
     height: 100%;
 }
@@ -3663,7 +3705,7 @@ h1.animated, h2.animated, h3.animated,
 }
 
 .about-vp.is-playing > .plyr {
-    z-index: 11;
+    z-index: calc(var(--z-overlay-local) + 1);
 }
 
 /* Fullscreen — release parent clipping and reset custom layout (iOS + mobile) */
@@ -3684,7 +3726,7 @@ h1.animated, h2.animated, h3.animated,
 .about-vp .plyr:-webkit-full-screen {
     position: fixed !important;
     inset: 0 !important;
-    z-index: 10000000 !important;
+    z-index: var(--z-fullscreen) !important;
     width: 100% !important;
     height: 100% !important;
     max-width: none !important;
@@ -3703,7 +3745,7 @@ h1.animated, h2.animated, h3.animated,
 
 .about-vp__cover {
     position: relative;
-    z-index: 10;
+    z-index: var(--z-overlay-local);
     display: block;
     width: 100%;
     border-radius: 0.6rem;
@@ -3732,7 +3774,7 @@ h1.animated, h2.animated, h3.animated,
     position: absolute;
     top: 50%;
     left: 50%;
-    z-index: 2;
+    z-index: var(--z-raised-2);
     transform: translate(-50%, -50%);
     width: 72px;
     height: 72px;
@@ -4052,7 +4094,7 @@ h1.animated, h2.animated, h3.animated,
 .reviews-testimonials-section--home .review-card__quote--home.review-card__quote--surface .review-card__message {
     padding-left: 0.75rem;
     position: relative;
-    z-index: 1;
+    z-index: var(--z-raised);
 }
 
 .reviews-testimonials-section--home .testimonial-swiper--home .swiper-slide-active .review-card__quote--home.review-card__quote--surface.testimonial-text {
@@ -4180,7 +4222,7 @@ h1.animated, h2.animated, h3.animated,
 
 .testimonial-swiper.testimonial-carousel .swiper-wrapper {
     position: relative;
-    z-index: 2;
+    z-index: var(--z-raised-2);
 }
 
 .review-card__header--stars {
@@ -4225,7 +4267,7 @@ h1.animated, h2.animated, h3.animated,
     height: 100%;
     width: 0;
     background: linear-gradient(to right, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
-    z-index: 1;
+    z-index: var(--z-raised);
     pointer-events: none;
 }
 
@@ -4237,7 +4279,7 @@ h1.animated, h2.animated, h3.animated,
     height: 100%;
     width: 0;
     background: linear-gradient(to left, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
-    z-index: 1;
+    z-index: var(--z-raised);
     pointer-events: none;
 }
 
@@ -4367,7 +4409,7 @@ h1.animated, h2.animated, h3.animated,
     bottom: auto;
     margin-top: 0;
     transform: translateY(-50%);
-    z-index: 3;
+    z-index: var(--z-raised-3);
     width: 44px;
     height: 44px;
     display: inline-flex;
@@ -4696,7 +4738,7 @@ h1.animated, h2.animated, h3.animated,
     position: absolute;
     top: 50%;
     right: 0.45rem;
-    z-index: 2;
+    z-index: var(--z-raised-2);
     transform: translateY(-50%);
     display: inline-flex;
     align-items: center;
@@ -4875,7 +4917,7 @@ h1.animated, h2.animated, h3.animated,
 
 .home-messages-wrap {
     position: relative;
-    z-index: 20;
+    z-index: var(--z-overlay-local-2);
 }
 
 .review-form-section {
@@ -4999,7 +5041,7 @@ h1.animated, h2.animated, h3.animated,
 
 .footer .container {
     position: relative;
-    z-index: 1;
+    z-index: var(--z-raised);
 }
 
 .footer::before,
@@ -5125,6 +5167,7 @@ h1.animated, h2.animated, h3.animated,
     color: #FFFFFF;
     font-size: 15px;
     font-weight: normal;
+    text-decoration: none; /* Bootstrap 5.3 .btn-link underlines by default */
     text-transform: capitalize;
     transition: .3s;
 }
@@ -5158,6 +5201,7 @@ h1.animated, h2.animated, h3.animated,
     font-weight: 900;
     margin-right: 10px;
     width: 0.7rem;
+    font-size: 0.75em;
     flex-shrink: 0;
 }
 
@@ -5318,7 +5362,7 @@ h1.animated, h2.animated, h3.animated,
     opacity: 0.82;
     pointer-events: none;
     user-select: none;
-    z-index: 1;
+    z-index: var(--z-raised);
     display: block;
     transform-origin: top right;
     filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.30));
@@ -5776,7 +5820,7 @@ h1.animated, h2.animated, h3.animated,
     height: 100%;
     object-fit: cover;
     transition: opacity 0.2s ease;
-    z-index: 1;
+    z-index: var(--z-raised);
 }
 
 .course-detail-page .course-detail-gallery__img.is-fading {
@@ -5784,14 +5828,14 @@ h1.animated, h2.animated, h3.animated,
 }
 
 .course-detail-page .course-detail-gallery__empty {
-    z-index: 0;
+    z-index: var(--z-base);
 }
 
 .course-detail-page .course-detail-gallery__arrow {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 2;
+    z-index: var(--z-raised-2);
     width: 44px;
     height: 44px;
     border: none;
@@ -6008,7 +6052,7 @@ h1.animated, h2.animated, h3.animated,
     border-radius: 50%;
     filter: blur(52px);
     pointer-events: none;
-    z-index: 0;
+    z-index: var(--z-base);
 }
 
 .abroad-hero__glow--one {
@@ -6031,7 +6075,7 @@ h1.animated, h2.animated, h3.animated,
 
 .abroad-hero__content {
     position: relative;
-    z-index: 1;
+    z-index: var(--z-raised);
 }
 
 .abroad-hero__badge {
@@ -6096,7 +6140,7 @@ h1.animated, h2.animated, h3.animated,
 /* Study abroad — icon advantages row (home + /abroad/) */
 .abroad-advantages {
     position: relative;
-    z-index: 1;
+    z-index: var(--z-raised);
     margin-top: clamp(1.35rem, 3vw, 2rem);
     margin-bottom: clamp(2rem, 4vw, 3rem);
     padding-top: clamp(1.35rem, 3vw, 2rem);
@@ -6336,7 +6380,7 @@ h1.animated, h2.animated, h3.animated,
 
 .abroad-hero__visual {
     position: relative;
-    z-index: 1;
+    z-index: var(--z-raised);
 }
 
 @keyframes abroadHeroGlobeSpinSlow {
@@ -6512,13 +6556,13 @@ h1.animated, h2.animated, h3.animated,
 .abroad-hero__orb--stack > .abroad-hero__globe-svg {
     grid-area: 1 / 1;
     position: relative;
-    z-index: 1;
+    z-index: var(--z-raised);
     filter: drop-shadow(0 16px 36px rgba(42, 120, 196, 0.32));
 }
 
 .abroad-hero__orb--stack > .abroad-hero__orbit {
     grid-area: 1 / 1;
-    z-index: 2;
+    z-index: var(--z-raised-2);
     width: min(318px, 115%);
     aspect-ratio: 1;
     pointer-events: none;
@@ -6876,7 +6920,7 @@ a.university-carousel-card:focus-visible .university-flag-card {
 .abroad-detail-hero__img {
     position: absolute;
     inset: 0;
-    z-index: 0;
+    z-index: var(--z-base);
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -6886,7 +6930,7 @@ a.university-carousel-card:focus-visible .university-flag-card {
 .abroad-detail-hero__overlay {
     position: absolute;
     inset: 0;
-    z-index: 1;
+    z-index: var(--z-raised);
     pointer-events: none;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, transparent 60%);
 }
@@ -6897,7 +6941,7 @@ a.university-carousel-card:focus-visible .university-flag-card {
 
 .abroad-detail-hero__content {
     position: absolute;
-    z-index: 2;
+    z-index: var(--z-raised-2);
     left: clamp(1rem, 3vw, 1.75rem);
     bottom: clamp(1rem, 3vw, 1.75rem);
     right: clamp(1rem, 4vw, 2.5rem);
@@ -7524,7 +7568,7 @@ a.university-carousel-card:focus-visible .university-flag-card {
         0 0 0 6px rgba(255, 255, 255, 0.05),
         0 8px 24px rgba(0, 0, 0, 0.25);
     position: relative;
-    z-index: 1;
+    z-index: var(--z-raised);
 }
 
 .uni-profile-hero__logo {
@@ -7543,7 +7587,7 @@ a.university-carousel-card:focus-visible .university-flag-card {
     flex: 1;
     min-width: 0;
     position: relative;
-    z-index: 1;
+    z-index: var(--z-raised);
 }
 
 .uni-profile-hero__name {
@@ -7882,7 +7926,7 @@ a.university-carousel-card:focus-visible .university-flag-card {
 
 .abroad-card__subtitle {
     position: relative;
-    z-index: 1;
+    z-index: var(--z-raised);
     margin-bottom: 0;
     color: #6a6f78;
     font-size: 1rem;
@@ -8362,7 +8406,7 @@ a.university-carousel-card:focus-visible .university-flag-card {
     content: '';
     position: absolute;
     inset: 0;
-    z-index: 0;
+    z-index: var(--z-base);
     background: var(--academor-brand-ph) center / min(38%, 200px) no-repeat;
     opacity: 0.11;
     pointer-events: none;
@@ -8383,7 +8427,7 @@ a.university-carousel-card:focus-visible .university-flag-card {
 
 .academor-branded-lazy__img {
     position: relative;
-    z-index: 1;
+    z-index: var(--z-raised);
     display: block;
     opacity: 0;
     transition: opacity 0.45s ease;
@@ -8509,7 +8553,7 @@ a.university-carousel-card:focus-visible .university-flag-card {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    z-index: 0;
+    z-index: var(--z-base);
     background:
         radial-gradient(ellipse 85% 140% at 50% -40%, rgba(255, 84, 20, 0.22) 0%, transparent 58%),
         radial-gradient(ellipse 55% 90% at 0% 50%, rgba(255, 255, 255, 0.06) 0%, transparent 45%);
@@ -8517,7 +8561,7 @@ a.university-carousel-card:focus-visible .university-flag-card {
 
 .home-page-main .home-marquee.home-marquee--band .home-marquee__viewport {
     position: relative;
-    z-index: 1;
+    z-index: var(--z-raised);
 }
 
 .home-page-main .abroad-section.home-abroad-band {
@@ -8613,17 +8657,16 @@ a.university-carousel-card:focus-visible .university-flag-card {
     bottom: -0.35rem;
 }
 /********** Premium scroll reveal (scroll-reveal.js + IntersectionObserver) **********/
-html.reveal-pending .scroll-reveal,
-html.reveal-pending .reveal,
-html.reveal-pending [data-scroll-reveal],
-.scroll-reveal,
-.reveal,
-[data-scroll-reveal] {
+/* Timing comes from custom properties so a page can tune it (see home.css); the defaults
+   are the original values. Hidden state applies only under html.js (set in <head>). */
+:where(html.js) .scroll-reveal,
+:where(html.js) .reveal,
+:where(html.js) [data-scroll-reveal] {
     opacity: 0;
-    transform: translateY(48px);
+    transform: translateY(var(--reveal-distance, 48px));
     transition:
-        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+        opacity var(--reveal-duration, 0.85s) var(--reveal-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+        transform var(--reveal-duration, 0.85s) var(--reveal-ease, cubic-bezier(0.22, 1, 0.36, 1));
     transition-delay: var(--reveal-delay, 0ms);
     will-change: opacity, transform;
 }
@@ -8631,41 +8674,50 @@ html.reveal-pending [data-scroll-reveal],
 .reveal-group > .scroll-reveal:nth-child(1),
 .reveal-group > .reveal:nth-child(1) { transition-delay: 0ms; }
 .reveal-group > .scroll-reveal:nth-child(2),
-.reveal-group > .reveal:nth-child(2) { transition-delay: 80ms; }
+.reveal-group > .reveal:nth-child(2) { transition-delay: calc(var(--reveal-stagger, 80ms) * 1); }
 .reveal-group > .scroll-reveal:nth-child(3),
-.reveal-group > .reveal:nth-child(3) { transition-delay: 160ms; }
+.reveal-group > .reveal:nth-child(3) { transition-delay: calc(var(--reveal-stagger, 80ms) * 2); }
 .reveal-group > .scroll-reveal:nth-child(4),
-.reveal-group > .reveal:nth-child(4) { transition-delay: 240ms; }
+.reveal-group > .reveal:nth-child(4) { transition-delay: calc(var(--reveal-stagger, 80ms) * 3); }
 .reveal-group > .scroll-reveal:nth-child(5),
-.reveal-group > .reveal:nth-child(5) { transition-delay: 320ms; }
+.reveal-group > .reveal:nth-child(5) { transition-delay: calc(var(--reveal-stagger, 80ms) * 4); }
 .reveal-group > .scroll-reveal:nth-child(6),
-.reveal-group > .reveal:nth-child(6) { transition-delay: 400ms; }
+.reveal-group > .reveal:nth-child(6) { transition-delay: calc(var(--reveal-stagger, 80ms) * 5); }
 .reveal-group > .scroll-reveal:nth-child(7),
-.reveal-group > .reveal:nth-child(7) { transition-delay: 480ms; }
+.reveal-group > .reveal:nth-child(7) { transition-delay: calc(var(--reveal-stagger, 80ms) * 6); }
 .reveal-group > .scroll-reveal:nth-child(8),
-.reveal-group > .reveal:nth-child(8) { transition-delay: 560ms; }
+.reveal-group > .reveal:nth-child(8) { transition-delay: calc(var(--reveal-stagger, 80ms) * 7); }
 
-.scroll-reveal.reveal--up,
-.reveal.reveal--up { transform: translateY(48px); }
-.scroll-reveal.reveal--down,
-.reveal.reveal--down { transform: translateY(-48px); }
-.scroll-reveal.reveal--left,
-.reveal.reveal--left { transform: translateX(-48px); }
-.scroll-reveal.reveal--right,
-.reveal.reveal--right { transform: translateX(48px); }
-.scroll-reveal.reveal--scale,
-.reveal.reveal--scale { transform: scale(0.9); opacity: 0; }
-.scroll-reveal.reveal--fade,
-.reveal.reveal--fade { transform: none; }
+:where(html.js) .scroll-reveal.reveal--up,
+:where(html.js) .reveal.reveal--up { transform: translateY(var(--reveal-distance, 48px)); }
+:where(html.js) .scroll-reveal.reveal--down,
+:where(html.js) .reveal.reveal--down { transform: translateY(calc(var(--reveal-distance, 48px) * -1)); }
+:where(html.js) .scroll-reveal.reveal--left,
+:where(html.js) .reveal.reveal--left { transform: translateX(calc(var(--reveal-distance, 48px) * -1)); }
+:where(html.js) .scroll-reveal.reveal--right,
+:where(html.js) .reveal.reveal--right { transform: translateX(var(--reveal-distance, 48px)); }
+:where(html.js) .scroll-reveal.reveal--scale,
+:where(html.js) .reveal.reveal--scale { transform: scale(0.9); opacity: 0; }
+:where(html.js) .scroll-reveal.reveal--fade,
+:where(html.js) .reveal.reveal--fade { transform: none; }
 
-.scroll-reveal.is-revealed,
-.scroll-reveal.is-visible,
-.reveal.is-visible,
-[data-scroll-reveal].is-revealed,
-[data-scroll-reveal].is-visible {
+:where(html.js) .scroll-reveal.is-revealed,
+:where(html.js) .scroll-reveal.is-visible,
+:where(html.js) .reveal.is-visible,
+:where(html.js) [data-scroll-reveal].is-revealed,
+:where(html.js) [data-scroll-reveal].is-visible {
     opacity: 1;
     transform: translateY(0) translateX(0) scale(1);
     will-change: auto;
+}
+
+/* Safety net: reveal engine never started → show everything, no motion. */
+:where(html.reveal-fallback) .wow,
+:where(html.reveal-fallback) .scroll-reveal,
+:where(html.reveal-fallback) .reveal,
+:where(html.reveal-fallback) [data-scroll-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
 }
 
 .navbar-light .navbar-nav .nav-link.is-active {
@@ -8729,18 +8781,46 @@ html.reveal-pending [data-scroll-reveal],
     }
 }
 
-/* Skip link — keyboard users jump to #main-content */
+/* Skip link (base.html) — off-screen until keyboard focus, then slides into view */
 .skip-to-content {
-    position: absolute;
-    top: 0.75rem;
-    left: 0.75rem;
-    z-index: 2000;
-    padding: 0.5rem 1rem;
-    border-radius: 0.375rem;
-    background: var(--bs-primary, #00313d);
+    position: fixed;
+    top: var(--space-3);
+    left: var(--space-3);
+    z-index: var(--z-skip-link);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-sm);
+    background: var(--primary);
     color: #fff;
+    font-weight: 600;
     text-decoration: none;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+    box-shadow: var(--shadow-md);
+    transform: translateY(calc(-100% - var(--space-4)));
+    opacity: 0;
+    transition: transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast) var(--ease-out);
+}
+
+.skip-to-content:focus,
+.skip-to-content:focus-visible {
+    transform: translateY(0);
+    opacity: 1;
+    color: var(--on-dark);
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+}
+
+/* Empty anchor: a block box keeps it from opening an anonymous line box (≈23px gap). */
+.skip-to-content-target {
+    display: block;
+}
+
+.skip-to-content-target:focus {
+    outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .skip-to-content {
+        transition: opacity var(--dur-fast) var(--ease-out);
+    }
 }
 
 /* About page strip gallery */
@@ -8815,7 +8895,7 @@ html.reveal-pending [data-scroll-reveal],
 
 .ag-card__body {
     position: relative;
-    z-index: 1;
+    z-index: var(--z-raised);
     display: flex;
     align-items: flex-end;
     min-height: 320px;
@@ -8864,4 +8944,55 @@ html.reveal-pending [data-scroll-reveal],
 
 .ag-dot--active {
     background: var(--accent, #ff5414);
+}
+
+/*** Team flags (Team.is_teacher / Team.is_team_member) ***/
+/* Quiet text label on cards; nothing renders while no flag is set, so the default look stays. */
+.team-flags {
+    display: block;
+    margin: -4px 0 8px;
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+}
+
+.team-flag + .team-flag::before {
+    content: "·";
+    margin: 0 6px;
+}
+
+.team-flags--detail { margin: 8px 0 0; font-size: 0.85rem; }
+
+/* Team page split into two plain bands when any flag is in use */
+.team-band {
+    padding: 48px 0 56px;
+    scroll-margin-top: 96px;
+}
+
+.team-band--teachers { background: var(--surface-2); }
+
+.team-band__head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 28px;
+}
+
+.team-band__title {
+    margin: 0;
+    font-size: clamp(1.35rem, 1.2rem + 0.6vw, 1.75rem);
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.team-band__count {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--muted-foreground);
+}
+
+.team-band__rule {
+    flex: 1;
+    height: 1px;
+    align-self: center;
+    background: var(--border);
 }

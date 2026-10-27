@@ -21,7 +21,7 @@
 .blog-page-filter-bar {
     position: sticky;
     top: 5.5rem;
-    z-index: 40;
+    z-index: var(--z-subnav);
     display: flex;
     width: 100%;
     margin-bottom: 1.75rem;
@@ -275,7 +275,7 @@
     top: calc(100% + 0.45rem);
     left: 0;
     right: 0;
-    z-index: 40;
+    z-index: var(--z-subnav);
     width: 100%;
     margin: 0;
     padding: 0.45rem;

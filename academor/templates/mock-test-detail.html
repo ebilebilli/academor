@@ -1,15 +1,16 @@
-<!DOCTYPE html>
-{% load i18n static %}{% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
-<head>
-    {% include "includes/site_layout_head.html" with page_title=page_title page_description=page_description page_keywords=page_keywords og_image_url=og_image_url og_type=og_type structured_data_json=structured_data_json %}
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block layout_head %}{% include "includes/site_layout_head.html" with page_title=page_title page_description=page_description page_keywords=page_keywords og_image_url=og_image_url og_type=og_type structured_data_json=structured_data_json %}{% endblock %}
+
+{% block extra_head %}
     {% include "includes/payment_ui_head.html" %}
     <link href="{% static 'assets/css/mock-test-detail.css' %}" rel="stylesheet">
-</head>
-<body class="mock-detail-body">
-    {% include "includes/site_spinner.html" %}
-    {% include "includes/site_navbar.html" %}
+{% endblock %}
 
+{% block body_attrs %} class="mock-detail-body"{% endblock %}
+
+{% block content %}
     <main id="main-content" class="mock-detail-page">
         <section class="mock-detail-hero" aria-labelledby="mock-detail-title">
             <div class="mock-detail-hero__bg" aria-hidden="true"></div>
@@ -126,11 +127,10 @@
         {% include "includes/course_detail_payment_modal.html" %}
         {% endif %}
     </main>
+{% endblock %}
 
-    {% include "includes/site_footer.html" %}
-    {% include "includes/site_scripts.html" %}
+{% block extra_js %}
     {% if course.has_payment and payment_form %}
     {% include "includes/payment_ui_scripts.html" %}
     {% endif %}
-</body>
-</html>
+{% endblock %}

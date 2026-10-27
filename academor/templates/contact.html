@@ -1,17 +1,7 @@
-<!DOCTYPE html>
-{% load static i18n %}{% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
+{% extends "base.html" %}
+{% load static i18n %}
 
-<head>
-    {% include "includes/site_layout_head.html" %}
-</head>
-
-<body>
-    {% include "includes/site_spinner.html" %}
-
-
-    <!-- Navbar Start -->
-    {% include "includes/site_navbar.html" %}
+{% block content %}
     <!-- Navbar End -->
 
 
@@ -223,12 +213,9 @@
         </div>
     </section>
     <!-- Contact End -->
+{% endblock %}
 
-
-    {% include "includes/site_footer.html" %}
-
-
-    {% include "includes/site_scripts.html" %}
+{% block extra_js %}
     {% include "includes/turnstile_script.html" %}
     <script>
     (function () {
@@ -331,6 +318,4 @@
         });
     })();
     </script>
-</body>
-
-</html>
+{% endblock %}

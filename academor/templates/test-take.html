@@ -1,14 +1,7 @@
-<!DOCTYPE html>
-{% load static i18n %}{% get_current_language as LANG_CODE %}
-<html lang="{{ LANG_CODE }}">
-<head>
-    {% include "includes/site_layout_head.html" %}
-</head>
-<body>
-    {% include "includes/site_spinner.html" %}
+{% extends "base.html" %}
+{% load static i18n %}
 
-    {% include "includes/site_navbar.html" %}
-
+{% block content %}
     {% include "includes/page_header_banner.html" %}
 
     <div class="container-xxl py-5">
@@ -145,9 +138,9 @@
             </div>
         </div>
     </div>
+{% endblock %}
 
-    {% include "includes/site_footer.html" %}
-    {% include "includes/site_scripts.html" %}
+{% block extra_js %}
     {% if not result and test and test.questions %}
     <script>
     (function () {
@@ -278,5 +271,4 @@
     })();
     </script>
     {% endif %}
-</body>
-</html>
+{% endblock %}

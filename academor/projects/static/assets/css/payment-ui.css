@@ -22,7 +22,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 1045;
+    z-index: var(--z-sticky-cta);
     display: flex;
     justify-content: center;
     padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom, 0px));
@@ -116,7 +116,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 0;
+    z-index: var(--z-base);
     border-radius: 999px;
     background: linear-gradient(
         135deg,
@@ -141,7 +141,7 @@
 
 .course-pay-tab {
     position: relative;
-    z-index: 1;
+    z-index: var(--z-raised);
     display: inline-flex;
     align-items: center;
     gap: 0.42rem;
@@ -431,7 +431,7 @@
 
 /* is-active: seçim üçün JS */
 .course-pay-card.is-active {
-    z-index: 1;
+    z-index: var(--z-raised);
 }
 
 .course-pay-card__name {
