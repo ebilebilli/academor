@@ -1,6 +1,5 @@
-{% load i18n deco_tags %}
+{% load i18n %}
 <div class="container-fluid bg-primary page-header page-header-hero-band page-header--tagline {{ header_mb|default:'mb-5' }}"{% include "includes/page_header_dynamic_bg.html" %}>
-    {% banner_shapes %}
     {% if page_tagline and page_tagline.text %}
     <div class="page-header__overlay" aria-hidden="false">
         <div class="container-xxl h-100">

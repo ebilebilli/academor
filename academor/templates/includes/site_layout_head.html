@@ -80,8 +80,7 @@
 <link href="{% static 'assets/vendor/bootstrap-5.3.3/bootstrap.min.css' %}" rel="stylesheet">
 <link href="{% static 'assets/css/tokens.css' %}" rel="stylesheet">
 <link href="{% static 'assets/css/style.css' %}?v=20260920nav4k1" rel="stylesheet">
-{% if public_shell %}<link href="{% static 'assets/css/motion.css' %}" rel="stylesheet">
-<link href="{% static 'assets/css/shapes.css' %}" rel="stylesheet">{% endif %}
+{% if public_shell %}<link href="{% static 'assets/css/motion.css' %}" rel="stylesheet">{% endif %}
 
 {% firstof lcp_image_url as lcp_preload %}
 {% if lcp_preload %}
