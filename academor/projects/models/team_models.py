@@ -88,6 +88,18 @@ class Team(models.Model):
         default=0,
         verbose_name='Order',
     )
+    # When any member has one of these flags, the team page is split into
+    # "Teachers" / "Team members" sections; a member with both shows in both.
+    is_teacher = models.BooleanField(
+        default=False,
+        verbose_name='Teacher',
+        help_text='Show under "Teachers" on the team page.',
+    )
+    is_team_member = models.BooleanField(
+        default=False,
+        verbose_name='Team member',
+        help_text='Show under "Team members" on the team page.',
+    )
 
     class Meta:
         verbose_name = 'Team member'

@@ -220,6 +220,8 @@ def serialize_team_member(member, lang='az'):
         'youtube': getattr(member, 'youtube', None),
         'descriptor': media_url(member.descriptor) if member.descriptor else None,
         'social_count': social_count,
+        'is_teacher': bool(getattr(member, 'is_teacher', False)),
+        'is_team_member': bool(getattr(member, 'is_team_member', False)),
     }
 
 

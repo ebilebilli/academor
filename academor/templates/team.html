@@ -19,32 +19,43 @@
                 <h1 class="mb-0">{% trans "Our Team" %}</h1>
             </div>
 
-            {% if team %}
+            {% if team_groups %}
+            {# Flags are in use: one section per group, with quick links between them. #}
+            <nav class="team-groups-nav wow fadeInUp" data-wow-delay="0.1s" aria-label="{% trans 'Komanda bölmələri' %}">
+                {% for group in team_groups %}
+                <a class="team-groups-nav__link team-groups-nav__link--{{ group.key }}" href="#team-{{ group.key }}">
+                    <i class="fa {{ group.icon }}" aria-hidden="true"></i>{{ group.title }}<span class="team-groups-nav__count">{{ group.members|length }}</span>
+                </a>
+                {% endfor %}
+            </nav>
+            {% for group in team_groups %}
+            <section class="team-group team-group--{{ group.key }}" id="team-{{ group.key }}" aria-labelledby="team-{{ group.key }}-title">
+                <header class="team-group__head wow fadeInUp" data-wow-delay="0.05s">
+                    <span class="team-group__icon" aria-hidden="true"><i class="fa {{ group.icon }}"></i></span>
+                    <div class="team-group__text">
+                        <h2 class="team-group__title" id="team-{{ group.key }}-title">{{ group.title }}</h2>
+                        {% if group.lead %}<p class="team-group__lead">{{ group.lead }}</p>{% endif %}
+                    </div>
+                    <span class="team-group__count">{% blocktrans count counter=group.members|length %}{{ counter }} nəfər{% plural %}{{ counter }} nəfər{% endblocktrans %}</span>
+                </header>
+                <div class="row g-4">
+                    {% for member in group.members %}
+                    <div class="col-6 col-md-4 col-lg-3 wow fadeInUp" data-wow-delay="{% cycle '0.05s' '0.1s' '0.15s' '0.2s' %}">
+                        {% if forloop.parentloop.first and forloop.first %}
+                        {% include "includes/team_page_card.html" with eager_image=True %}
+                        {% else %}
+                        {% include "includes/team_page_card.html" %}
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endfor %}
+            {% elif team %}
             <div class="row g-4">
                 {% for member in team %}
                 <div class="col-6 col-md-4 col-lg-3 wow fadeInUp" data-wow-delay="{% cycle '0.05s' '0.1s' '0.15s' '0.2s' %}">
-                    <article class="course-alt-card h-100">
-                        <a href="{% url 'projects:team-detail' member.slug %}" class="category-square-card course-alt-card__link d-flex flex-column text-decoration-none h-100">
-                            <div class="ratio ratio-1x1 overflow-hidden course-alt-card__media">
-                                {% if member.image %}
-                                {% if forloop.first %}
-                                <img src="{{ member.image_card|default:member.image }}" {% if member.image_srcset %}srcset="{{ member.image_srcset }}" sizes="(max-width: 600px) 96px, 253px"{% endif %} alt="{{ member.name }}" class="w-100 h-100" style="object-fit: cover;" loading="eager" fetchpriority="high" decoding="async" width="400" height="400">
-                                {% else %}
-                                {% academor_branded_lazy_img member.image_card|default:member.image member.name img_class='w-100 h-100' layout='cover' width='400' height='400' srcset=member.image_srcset sizes='(max-width: 600px) 96px, 253px' loading='lazy' %}
-                                {% endif %}
-                                {% else %}
-                                <div class="w-100 h-100 bg-light d-flex align-items-center justify-content-center text-muted">
-                                    <i class="fa fa-user fa-3x opacity-25"></i>
-                                </div>
-                                {% endif %}
-                            </div>
-                            <div class="course-alt-card__body">
-                                <h5 class="mb-1 text-truncate" title="{{ member.name }}">{{ member.name }}</h5>
-                                {% if member.role %}<small class="course-alt-card__role d-block mb-2 text-truncate">{{ member.role }}</small>{% endif %}
-                                <span class="course-alt-card__cta"><i class="fa fa-arrow-right" aria-hidden="true"></i></span>
-                            </div>
-                        </a>
-                    </article>
+                    {% include "includes/team_page_card.html" with eager_image=forloop.first %}
                 </div>
                 {% endfor %}
             </div>

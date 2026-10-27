@@ -508,6 +508,40 @@ class PrivacyPolicyPageView(View):
         return render(request, self.template_name, context)
 
 
+def _team_groups(team):
+    """Teachers / team members sections, or None while no member has a flag set.
+
+    A member flagged as both appears in both sections; members with neither flag are
+    listed last so nobody disappears from the page once the split is switched on.
+    """
+    if not any(m['is_teacher'] or m['is_team_member'] for m in team):
+        return None
+    groups = [
+        {
+            'key': 'teachers',
+            'icon': 'fa-chalkboard-teacher',
+            'title': _('Müəllimlər'),
+            'lead': _('Dərslərinizi aparan, imtahanlara hazırlayan peşəkar müəllimlərimiz.'),
+            'members': [m for m in team if m['is_teacher']],
+        },
+        {
+            'key': 'members',
+            'icon': 'fa-users',
+            'title': _('Komanda üzvləri'),
+            'lead': _('Qəbuldan məsləhətə qədər hər addımda yanınızda olan komandamız.'),
+            'members': [m for m in team if m['is_team_member']],
+        },
+        {
+            'key': 'others',
+            'icon': 'fa-user-friends',
+            'title': _('Digər əməkdaşlar'),
+            'lead': '',
+            'members': [m for m in team if not m['is_teacher'] and not m['is_team_member']],
+        },
+    ]
+    return [g for g in groups if g['members']]
+
+
 class TeamPageView(View):
     template_name = 'team.html'
 
@@ -515,8 +549,10 @@ class TeamPageView(View):
         lang = get_language_from_request(request)
         members = get_team_members()
         categories = get_project_categories(lang)
+        team = [serialize_team_member(m, lang=lang) for m in members]
         context = {
-            'team': [serialize_team_member(m, lang=lang) for m in members],
+            'team': team,
+            'team_groups': _team_groups(team),
             'categories': [serialize_project_category(c, lang) for c in categories],
             'language': lang,
             'background_image': get_background_image('about'),

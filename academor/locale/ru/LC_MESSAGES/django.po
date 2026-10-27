@@ -10665,6 +10665,33 @@ msgstr "Спасибо!"
 msgid "Yeni müraciət"
 msgstr "Новая заявка"
 
+msgid "Müəllimlər"
+msgstr "Преподаватели"
+
+msgid "Dərslərinizi aparan, imtahanlara hazırlayan peşəkar müəllimlərimiz."
+msgstr "Наши преподаватели, которые ведут занятия и готовят к экзаменам."
+
+msgid "Komanda üzvləri"
+msgstr "Команда"
+
+msgid "Qəbuldan məsləhətə qədər hər addımda yanınızda olan komandamız."
+msgstr "Наша команда рядом на каждом шаге — от консультации до поступления."
+
+msgid "Digər əməkdaşlar"
+msgstr "Другие сотрудники"
+
+msgid "Komanda üzvü"
+msgstr "Член команды"
+
+msgid "Komanda bölmələri"
+msgstr "Разделы команды"
+
+msgid "%(counter)s nəfər"
+msgid_plural "%(counter)s nəfər"
+msgstr[0] "%(counter)s человек"
+msgstr[1] "%(counter)s человека"
+msgstr[2] "%(counter)s человек"
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Попробуйте в следующей акции — мы сообщим."
 

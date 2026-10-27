@@ -8984,3 +8984,156 @@ a.university-carousel-card:focus-visible .university-flag-card {
 .ag-dot--active {
     background: var(--accent, #ff5414);
 }
+
+/*** Team flags (Team.is_teacher / Team.is_team_member) ***/
+/* Text badges on cards; nothing renders while no flag is set, so the default look stays. */
+.team-flags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
+.team-flag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 9px;
+    border-radius: var(--radius-pill);
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1.6;
+    white-space: nowrap;
+}
+
+.team-flag i { font-size: 0.7em; }
+
+.team-flag--teacher {
+    background: rgb(var(--accent-rgb) / 0.12);
+    color: var(--accent-strong);
+}
+
+.team-flag--member {
+    background: rgb(var(--primary-rgb) / 0.08);
+    color: var(--primary);
+}
+
+.team-flags--detail { margin: 10px 0 0; }
+
+/* Team page split into sections when any flag is in use */
+.team-groups-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: -16px 0 40px;
+}
+
+.page-team a.team-groups-nav__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    background: var(--card);
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: var(--shadow-sm);
+    transition: border-color var(--dur-fast) ease, color var(--dur-fast) ease, translate var(--dur-fast) var(--ease-out);
+}
+
+.page-team a.team-groups-nav__link:hover,
+.page-team a.team-groups-nav__link:focus-visible {
+    border-color: var(--accent);
+    color: var(--accent);
+    translate: 0 -2px;
+}
+
+.team-groups-nav__link i { color: var(--accent); }
+
+.team-groups-nav__count {
+    min-width: 22px;
+    padding: 0 6px;
+    border-radius: var(--radius-pill);
+    background: var(--surface-2);
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+    text-align: center;
+}
+
+.team-group {
+    scroll-margin-top: 110px;
+    padding: 32px;
+    border-radius: var(--radius-lg);
+}
+
+.team-group + .team-group { margin-top: 40px; }
+
+.team-group--teachers {
+    background: linear-gradient(180deg, rgb(var(--accent-rgb) / 0.07), rgb(var(--accent-rgb) / 0.02));
+    border: 1px solid rgb(var(--accent-rgb) / 0.14);
+}
+
+.team-group--members {
+    background: linear-gradient(180deg, rgb(var(--primary-rgb) / 0.06), rgb(var(--primary-rgb) / 0.015));
+    border: 1px solid rgb(var(--primary-rgb) / 0.1);
+}
+
+.team-group--others { padding-inline: 0; }
+
+.team-group__head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.team-group__icon {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-md);
+    background: var(--accent);
+    color: #fff;
+    font-size: 1.3rem;
+}
+
+.team-group--members .team-group__icon { background: var(--primary); }
+.team-group--others .team-group__icon { background: var(--surface-2); color: var(--primary); }
+
+.team-group__text { flex: 1; min-width: 0; }
+
+.team-group__title {
+    margin: 0;
+    font-size: clamp(1.4rem, 1.2rem + 0.8vw, 1.9rem);
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.team-group__lead {
+    margin: 4px 0 0;
+    color: var(--muted-foreground);
+}
+
+.team-group__count {
+    flex: none;
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    background: var(--card);
+    color: var(--primary);
+    font-size: 0.85rem;
+    font-weight: 700;
+    box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 575.98px) {
+    .team-group { padding: 20px 14px; }
+    .team-group--others { padding-inline: 0; }
+    .team-group__head { flex-wrap: wrap; gap: 12px; }
+    .team-group__icon { width: 44px; height: 44px; font-size: 1.1rem; }
+    .team-group__count { order: 3; }
+}
