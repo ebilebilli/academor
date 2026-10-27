@@ -92,7 +92,8 @@
     border-radius: 20px;
     overflow: hidden;
     background: #fff;
-    box-shadow: 0 1px 2px rgba(0, 49, 61, 0.06), 0 10px 26px rgba(0, 49, 61, 0.10);
+    /* hairline ring + layered shadow so the card edge reads against the near-white page */
+    box-shadow: 0 0 0 1px rgba(0, 49, 61, 0.12), 0 2px 4px rgba(0, 49, 61, 0.08), 0 14px 32px rgba(0, 49, 61, 0.14);
     transition: box-shadow 0.25s ease, translate 0.25s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
@@ -169,6 +170,7 @@
     align-items: center;
     gap: 10px;
     padding: 14px 14px 14px 16px;
+    border-top: 1px solid rgba(0, 49, 61, 0.08);
 }
 
 .hsvc-card__title {
@@ -198,7 +200,7 @@
 
 /* hover / focus */
 @media (hover: hover) {
-    .hsvc-card-wrap:hover { translate: 0 -4px; box-shadow: 0 4px 10px rgba(0, 49, 61, 0.08), 0 18px 40px rgba(0, 49, 61, 0.18); }
+    .hsvc-card-wrap:hover { translate: 0 -4px; box-shadow: 0 0 0 1px rgba(0, 49, 61, 0.16), 0 4px 10px rgba(0, 49, 61, 0.10), 0 22px 44px rgba(0, 49, 61, 0.22); }
     .hsvc-card-wrap:hover .hsvc-card__poster { scale: 1.03; }
     .hsvc-card-wrap:hover .hsvc-card__glyph { rotate: -8deg; }
     .hsvc-card-wrap:hover .hsvc-card__arrow { background: var(--accent, #ff5414); color: #fff; }
