@@ -10698,6 +10698,113 @@ msgstr "Книги Academor"
 msgid "%(name)s kitabı"
 msgstr "Книга %(name)s"
 
+msgid "Free"
+msgstr "Бесплатно"
+
+#, python-format
+msgid "%(count)s+ people have taken it"
+msgstr "Прошли %(count)s+ человек"
+
+msgid "About the test"
+msgstr "О тесте"
+
+msgid ""
+"Find out your English level in a few minutes and see which course fits it."
+msgstr ""
+"Узнайте свой уровень английского за несколько минут и посмотрите, какой курс"
+" вам подходит."
+
+msgid "What do the levels mean?"
+msgstr "Что означают уровни?"
+
+msgid ""
+"The test places you on the CEFR scale — the international standard for "
+"language levels, from A1 to C2."
+msgstr ""
+"Тест определяет ваш уровень по шкале CEFR — международному стандарту "
+"языковых уровней от A1 до C2."
+
+msgid "Your level"
+msgstr "Ваш уровень"
+
+#, python-format
+msgid "Your level is %(level)s — recommended for you"
+msgstr "Ваш уровень %(level)s — рекомендуем вам"
+
+#, python-format
+msgid "from %(price)s AZN"
+msgstr "от %(price)s AZN"
+
+msgid "View course"
+msgstr "Смотреть курс"
+
+msgid "Not sure which course fits? We'll pick one for your level."
+msgstr "Не знаете, какой курс подходит? Подберём его по вашему уровню."
+
+msgid "Get free consultation"
+msgstr "Получить бесплатную консультацию"
+
+msgid "Write on WhatsApp"
+msgstr "Написать в WhatsApp"
+
+#, python-format
+msgid ""
+"Hello! I got %(level)s on the Academor level test and would like to know "
+"about courses."
+msgstr ""
+"Здравствуйте! В тесте Academor у меня уровень %(level)s, хочу узнать о "
+"курсах."
+
+msgid "Beginner"
+msgstr "Начальный"
+
+msgid "Elementary"
+msgstr "Элементарный"
+
+msgid "Intermediate"
+msgstr "Средний"
+
+msgid "Upper-Intermediate"
+msgstr "Выше среднего"
+
+msgid "Advanced"
+msgstr "Продвинутый"
+
+msgid "Proficiency"
+msgstr "Профессиональный"
+
+msgid "Understands and uses everyday expressions and very basic phrases."
+msgstr "Понимает и использует повседневные выражения и простейшие фразы."
+
+msgid ""
+"Talks about familiar topics such as shopping, family and work in simple "
+"terms."
+msgstr "Простыми словами говорит на знакомые темы: покупки, семья, работа."
+
+msgid "Handles most travel situations and describes experiences and plans."
+msgstr ""
+"Справляется с большинством ситуаций в поездке, рассказывает об опыте и "
+"планах."
+
+msgid "Speaks fluently with native speakers and follows complex texts."
+msgstr "Свободно общается с носителями языка и понимает сложные тексты."
+
+msgid ""
+"Uses English flexibly for study and work; understands long, demanding texts."
+msgstr ""
+"Гибко использует английский в учёбе и работе, понимает длинные сложные "
+"тексты."
+
+msgid "Understands virtually everything and expresses ideas precisely."
+msgstr "Понимает практически всё и точно выражает свои мысли."
+
+msgid "Recommended for levels"
+msgstr "Рекомендуемые уровни"
+
+msgid ""
+"Level test results at these CEFR levels get this course as a suggestion."
+msgstr "Этот курс предлагается тем, кто получил в тесте эти уровни CEFR."
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Попробуйте в следующей акции — мы сообщим."
 

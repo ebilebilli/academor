@@ -9,6 +9,7 @@
 </head>
 
 <body{% block body_attrs %}{% endblock %}>
+    {% include "includes/site_spinner.html" %}
     <a class="skip-to-content" href="#site-content">{% trans "Skip to content" %}</a>
     {% include "includes/site_navbar.html" %}
 

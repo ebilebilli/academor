@@ -10563,6 +10563,115 @@ msgstr "Academor kitabları"
 msgid "%(name)s kitabı"
 msgstr "%(name)s kitabı"
 
+msgid "Free"
+msgstr "Ödənişsiz"
+
+#, python-format
+msgid "%(count)s+ people have taken it"
+msgstr "%(count)s+ nəfər keçib"
+
+msgid "About the test"
+msgstr "Test haqqında"
+
+msgid ""
+"Find out your English level in a few minutes and see which course fits it."
+msgstr ""
+"Bir neçə dəqiqəyə ingilis dili səviyyənizi öyrənin və sizə uyğun kursu "
+"görün."
+
+msgid "What do the levels mean?"
+msgstr "Səviyyələr nə deməkdir?"
+
+msgid ""
+"The test places you on the CEFR scale — the international standard for "
+"language levels, from A1 to C2."
+msgstr ""
+"Test sizi CEFR şkalasında yerləşdirir — A1-dən C2-yə qədər dil "
+"səviyyələrinin beynəlxalq standartı."
+
+msgid "Your level"
+msgstr "Sizin səviyyəniz"
+
+#, python-format
+msgid "Your level is %(level)s — recommended for you"
+msgstr "Səviyyəniz %(level)s — sizin üçün tövsiyə edirik"
+
+#, python-format
+msgid "from %(price)s AZN"
+msgstr "%(price)s AZN-dən"
+
+msgid "View course"
+msgstr "Kursa bax"
+
+msgid "Not sure which course fits? We'll pick one for your level."
+msgstr ""
+"Hansı kursun uyğun olduğunu bilmirsiniz? Səviyyənizə görə birlikdə seçək."
+
+msgid "Get free consultation"
+msgstr "Pulsuz konsultasiya al"
+
+msgid "Write on WhatsApp"
+msgstr "WhatsApp-da yaz"
+
+#, python-format
+msgid ""
+"Hello! I got %(level)s on the Academor level test and would like to know "
+"about courses."
+msgstr ""
+"Salam! Academor səviyyə testində %(level)s nəticəsi aldım, kurslar barədə "
+"məlumat istəyirəm."
+
+msgid "Beginner"
+msgstr "Başlanğıc"
+
+msgid "Elementary"
+msgstr "Elementar"
+
+msgid "Intermediate"
+msgstr "Orta"
+
+msgid "Upper-Intermediate"
+msgstr "Ortadan yuxarı"
+
+msgid "Advanced"
+msgstr "İrəli"
+
+msgid "Proficiency"
+msgstr "Peşəkar"
+
+msgid "Understands and uses everyday expressions and very basic phrases."
+msgstr "Gündəlik ifadələri və ən sadə cümlələri başa düşür və işlədir."
+
+msgid ""
+"Talks about familiar topics such as shopping, family and work in simple "
+"terms."
+msgstr "Alış-veriş, ailə, iş kimi tanış mövzularda sadə dildə danışır."
+
+msgid "Handles most travel situations and describes experiences and plans."
+msgstr ""
+"Səyahətdə əksər vəziyyətlərin öhdəsindən gəlir, təcrübə və planlarını "
+"danışır."
+
+msgid "Speaks fluently with native speakers and follows complex texts."
+msgstr "Dil daşıyıcıları ilə sərbəst danışır, mürəkkəb mətnləri anlayır."
+
+msgid ""
+"Uses English flexibly for study and work; understands long, demanding texts."
+msgstr ""
+"İngilis dilini təhsildə və işdə rahat işlədir, uzun və çətin mətnləri "
+"anlayır."
+
+msgid "Understands virtually everything and expresses ideas precisely."
+msgstr "Demək olar ki, hər şeyi anlayır və fikrini dəqiq ifadə edir."
+
+msgid "Recommended for levels"
+msgstr "Tövsiyə olunan səviyyələr"
+
+msgid ""
+"Level test results at these CEFR levels get this course as a suggestion."
+msgstr ""
+"Səviyyə testində bu CEFR səviyyələrini alanlara bu kurs tövsiyə olunur."
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Növbəti kampaniyada yenə cəhd et — xəbərdar edəcəyik."
 
