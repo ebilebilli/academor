@@ -1,8 +1,8 @@
 {% load i18n %}
-{# ACADEMOR 3D books scattered around the courses heading (styles: assets/css/courses-books.css). #}
+{# ACADEMOR 3D books behind the courses-page service cards (styles: assets/css/courses-books.css). #}
 <div class="ac-books" role="list" aria-label="{% trans 'Academor kitabları' %}">
         {% for book in academor_books %}
-        <div class="ac-scene" role="listitem" style="--cover:{{ book.cover }}; --delay:{{ book.delay }}; --x:{{ book.x }}%; --y:{{ book.y }}px; --rot:{{ book.rot }}deg">
+        <div class="ac-scene" role="listitem" style="--cover:{{ book.cover }}; --delay:{{ book.delay }}; --x:{{ book.x }}%; --y:{{ book.y }}%; --rot:{{ book.rot }}deg">
             <div class="ac-shadow"></div>
             <div class="ac-persp"><div class="ac-float"><div class="ac-tilt">
                 <div class="ac-book" role="img" aria-label="{% blocktrans with name=book.label %}{{ name }} kitabı{% endblocktrans %}">

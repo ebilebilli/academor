@@ -136,20 +136,20 @@ class HomePageView(View):
         )
 
 
-# 3D books scattered around the courses-page heading (templates/includes/academor_books.html):
-# x = % across the collage, y = px from its top, rot = extra tilt in degrees
+# 3D books peeking out from behind the courses-page service cards (templates/includes/academor_books.html):
+# x = % across the card grid (below 0 / above 100 = past its edges), y = % down it, rot = extra tilt
 ACADEMOR_BOOKS = [
-    {'label': 'IELTS', 'x': 7, 'y': 0, 'rot': -6, 'title': 'IELTS', 'sub': '', 'cover': '#E5553F', 'delay': '0s',
+    {'label': 'IELTS', 'x': -4, 'y': 4, 'rot': -6, 'title': 'IELTS', 'sub': '', 'cover': '#E5553F', 'delay': '0s',
      'tags': ['Listening', 'Reading', 'Writing', 'Speaking']},
-    {'label': 'SAT Verbal', 'x': 22, 'y': 215, 'rot': 5, 'title': 'SAT', 'sub': 'Verbal', 'cover': '#1E3A6E', 'delay': '-1.1s',
+    {'label': 'SAT Verbal', 'x': -2, 'y': 40, 'rot': 5, 'title': 'SAT', 'sub': 'Verbal', 'cover': '#1E3A6E', 'delay': '-1.1s',
      'tags': ['Reading', 'Writing', 'Grammar', 'Vocabulary']},
-    {'label': 'SAT Math', 'x': 6, 'y': 420, 'rot': -3, 'title': 'SAT', 'sub': 'Math', 'cover': '#0F6B5C', 'delay': '-2.2s',
+    {'label': 'SAT Math', 'x': -5, 'y': 76, 'rot': -3, 'title': 'SAT', 'sub': 'Math', 'cover': '#0F6B5C', 'delay': '-2.2s',
      'tags': ['Algebra', 'Advanced Math', 'Data Analysis', 'Geometry']},
-    {'label': 'General English', 'x': 93, 'y': 15, 'rot': 6, 'title': 'General', 'sub': 'English', 'long': True, 'cover': '#5B3E96', 'delay': '-3.3s',
+    {'label': 'General English', 'x': 104, 'y': 14, 'rot': 6, 'title': 'General', 'sub': 'English', 'long': True, 'cover': '#5B3E96', 'delay': '-3.3s',
      'tags': ['Grammar', 'Vocabulary', 'Speaking', 'Listening']},
-    {'label': 'GRE', 'x': 78, 'y': 230, 'rot': -5, 'title': 'GRE', 'sub': '', 'cover': '#A33A5E', 'delay': '-4.4s',
+    {'label': 'GRE', 'x': 102, 'y': 50, 'rot': -5, 'title': 'GRE', 'sub': '', 'cover': '#A33A5E', 'delay': '-4.4s',
      'tags': ['Verbal', 'Quantitative', 'Analytical Writing']},
-    {'label': 'GMAT', 'x': 94, 'y': 430, 'rot': 4, 'title': 'GMAT', 'sub': '', 'cover': '#23282F', 'delay': '-5.5s',
+    {'label': 'GMAT', 'x': 105, 'y': 84, 'rot': 4, 'title': 'GMAT', 'sub': '', 'cover': '#23282F', 'delay': '-5.5s',
      'tags': ['Quantitative', 'Verbal', 'Data Insights']},
 ]
 

@@ -1,30 +1,29 @@
 /* ACADEMOR 3D books — small animated row on the courses page (templates/includes/academor_books.html).
    Pure CSS 3D; only transforms/opacity animate. Colour per book via --cover, size via --scale. */
-/* Collage: the page heading in the middle, books scattered around it (desktop).
-   Each book's spot comes from the view: --x (% across), --y (px down), --rot (extra tilt). */
-.ac-collage { position: relative; }
+/* Books sit behind the service cards (.ac-behind__front) and peek out past the grid's
+   edges. Each book's spot comes from the view: --x (% across the grid; <0 or >100 =
+   outside it), --y (% down it), --rot (extra tilt). Desktop only: no room on phones. */
+.ac-behind { position: relative; }
+.ac-behind__front { position: relative; z-index: 1; }
 
-@media (min-width: 992px) {
-    .ac-collage { min-height: 720px; margin-bottom: 24px; }
-    .ac-collage__center {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        z-index: 1;
-        width: 44%;
-        translate: -50% -60%;
-        text-align: center;
-    }
-    .ac-collage__center .hsvc-title { margin: 0; }
-    .ac-books { position: absolute; inset: 0; }
-    .ac-books .ac-scene {
-        position: absolute;
-        left: var(--x);
-        top: var(--y);
-        width: calc(420px * var(--scale));
-        translate: -50% 0;
-        rotate: var(--rot);
-    }
+.ac-books {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.ac-books .ac-scene {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: calc(420px * var(--scale));
+    translate: -50% -50%;
+    rotate: var(--rot);
+}
+
+@media (max-width: 991.98px) {
+    .ac-books { display: none; }
 }
 
 /* one book scene */
@@ -149,25 +148,4 @@
 @media (prefers-reduced-motion: reduce) {
     .ac-float, .ac-book, .ac-shadow { animation: none; }
     .ac-book { transform: rotateY(-30deg); }
-}
-
-/* tablets and phones: heading on top, books in a swipeable row */
-@media (max-width: 991.98px) {
-    .ac-collage__center { margin-bottom: 8px; }
-    .ac-books {
-        display: flex;
-        gap: 4px;
-        margin: 0 -12px 24px;
-        padding: 0 12px;
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        scrollbar-width: none;
-    }
-    .ac-books::-webkit-scrollbar { display: none; }
-    .ac-books .ac-scene {
-        --scale: 0.4;
-        flex: 0 0 auto;
-        width: calc(400px * var(--scale));
-        scroll-snap-align: center;
-    }
 }
