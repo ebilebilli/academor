@@ -1,13 +1,13 @@
 {% load i18n %}
 {% if categories %}
-<ul class="hsvc-grid wow fadeInUp" data-wow-delay="0.1s" role="list">
+<ul class="hsvc-grid" role="list">
     {% for cat in categories %}
     <li class="hsvc-grid__item">
         <div class="hsvc-card-wrap{% if active_slug == cat.slug %} hsvc-card-wrap--active{% endif %}">
             <a href="{% url detail_url_name|default:'projects:course-detail' slug=cat.slug %}" class="hsvc-card">
                 <span class="hsvc-card__media{% if not cat.image %} hsvc-card__media--{% cycle 'teal' 'indigo' 'orange' %}{% endif %}" aria-hidden="true">
                     {% if cat.image %}
-                    <img class="hsvc-card__poster" src="{{ cat.image }}" alt="" loading="lazy" decoding="async">
+                    <img class="hsvc-card__poster" src="{{ cat.image }}" alt=""{% if forloop.counter <= 4 %} loading="eager" fetchpriority="high"{% else %} loading="lazy"{% endif %} decoding="async">
                     {% else %}
                     <i class="fa {{ cat.icon }} hsvc-card__glyph"></i>
                     {% endif %}

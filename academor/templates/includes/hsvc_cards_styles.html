@@ -116,13 +116,26 @@
     outline-offset: -3px;
 }
 
-/* the poster frame */
+/* the poster frame; the shimmer shows until the poster image paints over it */
 .hsvc-card__media {
     position: relative;
     display: block;
     aspect-ratio: 210 / 297;
     overflow: hidden;
-    background: #f4f3ff;
+    background: linear-gradient(100deg, #eef1f4 30%, #f8fafb 50%, #eef1f4 70%) 0 0 / 250% 100%;
+    animation: hsvcShimmer 1.4s linear infinite;
+}
+.hsvc-card__media--teal, .hsvc-card__media--indigo, .hsvc-card__media--orange { animation: none; }
+@keyframes hsvcShimmer { to { background-position: -150% 0; } }
+
+/* card reveal (scroll-reveal.js marks the wrapper): short fade + lift, keeps the hover transitions */
+:where(html.js) .hsvc-card-wrap.scroll-reveal {
+    --reveal-distance: 18px;
+    transition:
+        opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+        transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+        box-shadow 0.25s ease,
+        translate 0.25s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .hsvc-card__poster {
@@ -243,8 +256,10 @@
 
 @media (prefers-reduced-motion: reduce) {
     .hsvc-card-wrap,
+    :where(html.js) .hsvc-card-wrap.scroll-reveal,
     .hsvc-card__poster,
     .hsvc-card__glyph,
     .hsvc-card__arrow i { transition: none; }
+    .hsvc-card__media { animation: none; }
 }
 </style>
