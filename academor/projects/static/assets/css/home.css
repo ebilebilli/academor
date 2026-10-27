@@ -99,7 +99,6 @@ body.page-home {
 
 /* ---------------------------------------------------------------- Cards */
 .page-home :is(
-    .hsvc-card,
     .abroad-card,
     .home-price-card.course-pay-card,
     .review-card--home,
@@ -124,7 +123,6 @@ body.page-home {
 
 @media (hover: hover) and (pointer: fine) {
     .page-home :is(
-        .hsvc-card,
         .abroad-card,
         .home-price-card.course-pay-card,
         .discount-banner,
