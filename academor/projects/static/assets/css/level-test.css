@@ -181,7 +181,6 @@
     color: var(--accent, #ff5414);
     font-size: 1.15rem;
 }
-.lt-offer--ielts .lt-perk:first-child { box-shadow: 0 0 0 3px var(--accent, #ff5414); }
 
 /* the test-takers' discount, ticket style */
 .lt-discount {

@@ -10628,15 +10628,8 @@ msgstr "Free trial lesson"
 msgid "Free consultation"
 msgstr "Free consultation"
 
-#, python-format
-msgid "Your level is %(level)s — recommended for you"
-msgstr "Your level is %(level)s — recommended for you"
-
 msgid "Your level"
 msgstr "Your level"
-
-msgid "Free IELTS trial lesson"
-msgstr "Free IELTS trial lesson"
 
 #, python-format
 msgid "A special %(percent)s%% discount for you"
@@ -10645,32 +10638,10 @@ msgstr "A special %(percent)s%% discount for you"
 #, python-format
 msgid ""
 "Hello! I got %(level)s on the Academor level test. I would like to book the "
-"free IELTS trial lesson and a consultation."
-msgstr ""
-"Hello! I got %(level)s on the Academor level test. I would like to book the "
-"free IELTS trial lesson and a consultation."
-
-#, python-format
-msgid ""
-"Hello! I got %(level)s on the Academor level test. I would like to book the "
 "free trial lesson and a consultation, and use my %(percent)s%% discount."
 msgstr ""
 "Hello! I got %(level)s on the Academor level test. I would like to book the "
 "free trial lesson and a consultation, and use my %(percent)s%% discount."
-
-msgid ""
-"Your level is enough to start IELTS preparation — take the first step with "
-"us for free."
-msgstr ""
-"Your level is enough to start IELTS preparation — take the first step with "
-"us for free."
-
-msgid ""
-"Meet an IELTS teacher and get a close look at the exam format, task types "
-"and teaching method."
-msgstr ""
-"Meet an IELTS teacher and get a close look at the exam format, task types "
-"and teaching method."
 
 msgid ""
 "Pin down your level more precisely together with a teacher and get detailed "
@@ -10678,13 +10649,6 @@ msgid ""
 msgstr ""
 "Pin down your level more precisely together with a teacher and get detailed "
 "answers to all your questions straight from them."
-
-msgid ""
-"A strong foundation makes every next step easier — take the first ones with "
-"us for free."
-msgstr ""
-"A strong foundation makes every next step easier — take the first ones with "
-"us for free."
 
 msgid ""
 "Meet the teacher and get a close look at their teaching method and course "
@@ -10698,6 +10662,108 @@ msgstr "Just mention that you took the level test on our website."
 
 msgid "Take the offer"
 msgstr "Take the offer"
+
+msgid "About this level:"
+msgstr "About this level:"
+
+#, python-format
+msgid "Your result is %(level)s. Here is our advice:"
+msgstr "Your result is %(level)s. Here is our advice:"
+
+msgid ""
+"You are just starting to learn English. You understand simple words, "
+"everyday expressions and short sentences."
+msgstr ""
+"You are just starting to learn English. You understand simple words, "
+"everyday expressions and short sentences."
+
+msgid ""
+"You can talk in simple sentences about familiar topics such as your family, "
+"work, daily life and shopping."
+msgstr ""
+"You can talk in simple sentences about familiar topics such as your family, "
+"work, daily life and shopping."
+
+msgid ""
+"You can express yourself in everyday conversation, handle most situations "
+"while travelling and talk about your experiences and future plans."
+msgstr ""
+"You can express yourself in everyday conversation, handle most situations "
+"while travelling and talk about your experiences and future plans."
+
+msgid ""
+"You speak English fairly freely, understand complex texts and can express "
+"your ideas in detail."
+msgstr ""
+"You speak English fairly freely, understand complex texts and can express "
+"your ideas in detail."
+
+msgid ""
+"You use English comfortably in study and work, understand long and complex "
+"texts and express your ideas clearly and in detail."
+msgstr ""
+"You use English comfortably in study and work, understand long and complex "
+"texts and express your ideas clearly and in detail."
+
+msgid ""
+"You understand almost everything in English with ease, notice fine shades of"
+" meaning and express your ideas precisely."
+msgstr ""
+"You understand almost everything in English with ease, notice fine shades of"
+" meaning and express your ideas precisely."
+
+msgid ""
+"Start learning English from scratch, build a solid foundation and take your "
+"first steps with us!"
+msgstr ""
+"Start learning English from scratch, build a solid foundation and take your "
+"first steps with us!"
+
+msgid ""
+"Grow your vocabulary, develop your speaking skills and start communicating "
+"in English more comfortably!"
+msgstr ""
+"Grow your vocabulary, develop your speaking skills and start communicating "
+"in English more comfortably!"
+
+msgid ""
+"Make your speaking more fluent, broaden your vocabulary and express yourself"
+" in English with more confidence!"
+msgstr ""
+"Make your speaking more fluent, broaden your vocabulary and express yourself"
+" in English with more confidence!"
+
+msgid ""
+"Your English is a good base to start IELTS preparation. Now it is time to "
+"move towards your target band!"
+msgstr ""
+"Your English is a good base to start IELTS preparation. Now it is time to "
+"move towards your target band!"
+
+msgid ""
+"Your English is at a high level. Prepare for your IELTS target and "
+"strengthen your knowledge with exam strategies!"
+msgstr ""
+"Your English is at a high level. Prepare for your IELTS target and "
+"strengthen your knowledge with exam strategies!"
+
+msgid ""
+"Your English is at a very high level. To reach your IELTS target, focus on "
+"exam techniques and your academic language skills!"
+msgstr ""
+"Your English is at a very high level. To reach your IELTS target, focus on "
+"exam techniques and your academic language skills!"
+
+msgid "Take your first step"
+msgstr "Take your first step"
+
+#, python-format
+msgid ""
+"Hello! I got %(level)s on the Academor English level test. I would like to "
+"find out about IELTS preparation."
+msgstr ""
+"Hello! I got %(level)s on the Academor English level test. I would like to "
+"find out about IELTS preparation."
 
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Try again in the next campaign — we will let you know."
