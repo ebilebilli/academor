@@ -33,11 +33,9 @@
                     <div class="wow fadeInUp" data-wow-delay="0.1s">
                         <section class="ltr-card" aria-labelledby="ltr-heading">
                             <div class="ltr-card__top">
-                                {% if current_cefr %}
-                                <div class="ltr-card__sticker">
-                                    <img src="{% static 'assets/img/level-test/levels/'|add:current_cefr.code|lower|add:'.webp' %}" alt="{{ current_cefr.code }} · {{ current_cefr.name }}" width="440" height="400" decoding="async">
+                                <div class="ltr-card__sticker" aria-hidden="true">
+                                    <img src="{% static 'assets/img/level-test/result-bulb.webp' %}" alt="" width="420" height="391" decoding="async">
                                 </div>
-                                {% endif %}
                                 <div class="ltr-card__main">
                                     <p class="ltr-card__eyebrow">{% trans "Level test result" %} · {{ result.created_at|date:"d.m.Y" }}</p>
                                     <h2 id="ltr-heading" class="ltr-card__title">
