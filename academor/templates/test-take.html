@@ -31,43 +31,49 @@
                 <div class="col-lg-{% if test_poster_image %}8{% else %}10{% endif %} order-2 order-lg-1">
                     {% if result %}
                     <div class="wow fadeInUp" data-wow-delay="0.1s">
-                        <div class="test-take-form test-take-result rounded p-4 p-md-5 text-center">
-                            <h3 class="mb-3">{{ result.first_name }} {{ result.last_name }}</h3>
-                            <p class="mb-1"><strong>{% trans "Number:" %}</strong> {{ result.number }}</p>
-                            <p class="mb-4 text-muted"><strong>{% trans "Date:" %}</strong> {{ result.created_at|date:"d.m.Y H:i" }}</p>
-
-                            <div class="row g-3 mb-4">
-                                <div class="col-md-4">
-                                    <div class="border rounded p-3 bg-white h-100 shadow-sm">
-                                        <h6 class="text-muted mb-2">{% trans "Correct answers" %}</h6>
-                                        <h2 class="text-primary mb-0">{{ result.score }}/{{ total_questions }}</h2>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="border rounded p-3 bg-white h-100 shadow-sm">
-                                        <h6 class="text-muted mb-2">{% trans "Percentage" %}</h6>
-                                        <h2 class="text-primary mb-0">{{ percentage }}%</h2>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="border rounded p-3 bg-white h-100 shadow-sm">
-                                        <h6 class="text-muted mb-2">{% trans "Level" %}</h6>
-                                        <h2 class="text-primary mb-0">{{ result.level }}</h2>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="lt-result-scale">
-                                {% include "includes/level_test_cefr.html" with levels=cefr_levels compact=True %}
+                        <section class="ltr-card" aria-labelledby="ltr-heading">
+                            <div class="ltr-card__top">
                                 {% if current_cefr %}
-                                <p class="lt-result-scale__desc"><strong>{{ current_cefr.code }} · {{ current_cefr.name }}</strong><br><strong>{% trans "About this level:" %}</strong> {{ current_cefr.about }}</p>
+                                <div class="ltr-card__sticker">
+                                    <img src="{% static 'assets/img/level-test/levels/'|add:current_cefr.code|lower|add:'.webp' %}" alt="{{ current_cefr.code }} · {{ current_cefr.name }}" width="440" height="400" decoding="async">
+                                </div>
                                 {% endif %}
+                                <div class="ltr-card__main">
+                                    <p class="ltr-card__eyebrow">{% trans "Level test result" %} · {{ result.created_at|date:"d.m.Y" }}</p>
+                                    <h2 id="ltr-heading" class="ltr-card__title">
+                                        <span class="ltr-card__name">{% blocktrans with name=result.first_name %}{{ name }}, your level is{% endblocktrans %}</span>
+                                        <span class="ltr-card__level">{{ result.level }}{% if current_cefr %} <small>· {{ current_cefr.name }}</small>{% endif %}</span>
+                                    </h2>
+                                    {% if current_cefr %}
+                                    <p class="ltr-card__about"><strong>{% trans "About this level:" %}</strong> {{ current_cefr.about }}</p>
+                                    {% endif %}
+                                    <dl class="ltr-stats">
+                                        <div class="ltr-stat">
+                                            <dt>{% trans "Correct answers" %}</dt>
+                                            <dd>{{ result.score }}<span>/{{ total_questions }}</span></dd>
+                                        </div>
+                                        <div class="ltr-stat ltr-stat--wide">
+                                            <dt>{% trans "Percentage" %}</dt>
+                                            <dd>{{ percentage }}%</dd>
+                                            <span class="ltr-stat__bar" aria-hidden="true"><span style="--pct:{{ percentage }}%"></span></span>
+                                        </div>
+                                    </dl>
+                                </div>
                             </div>
 
-                            {% url 'projects:tests-page' as tests_list_url %}
-                            {% include "includes/detail_back_button.html" with fallback_url=tests_list_url extra_classes="me-2" %}
-                            <a href="{% url 'projects:test-take' test.id %}" class="btn btn-outline-primary px-4 py-2 rounded-pill">{% trans "Retake this test" %}</a>
-                        </div>
+                            {% if current_cefr %}
+                            <div class="ltr-card__scale">
+                                <p class="ltr-card__label">{% trans "CEFR scale" %}</p>
+                                {% include "includes/level_test_cefr.html" with levels=cefr_levels compact=True %}
+                            </div>
+                            {% endif %}
+
+                            <div class="ltr-card__nav">
+                                {% url 'projects:tests-page' as tests_list_url %}
+                                {% include "includes/detail_back_button.html" with fallback_url=tests_list_url extra_classes="me-2" %}
+                                <a href="{% url 'projects:test-take' test.id %}" class="btn btn-outline-primary px-4 py-2 rounded-pill">{% trans "Retake this test" %}</a>
+                            </div>
+                        </section>
 
                         {% if offer_track and current_cefr %}
                         <section class="lt-offer lt-offer--{{ offer_track }}" aria-labelledby="lt-offer-heading">

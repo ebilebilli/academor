@@ -10781,6 +10781,16 @@ msgstr ""
 "Salam! Academorun ingilis dili səviyyə testində %(level)s nəticəsi aldım. "
 "IELTS hazırlığı haqqında məlumat almaq istəyirəm."
 
+msgid "Level test result"
+msgstr "Səviyyə testinin nəticəsi"
+
+#, python-format
+msgid "%(name)s, your level is"
+msgstr "%(name)s, sizin səviyyəniz"
+
+msgid "CEFR scale"
+msgstr "CEFR şkalası"
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Növbəti kampaniyada yenə cəhd et — xəbərdar edəcəyik."
 
