@@ -10589,9 +10589,6 @@ msgstr ""
 "Test sizi CEFR şkalasında yerləşdirir — A1-dən C2-yə qədər dil "
 "səviyyələrinin beynəlxalq standartı."
 
-msgid "Get free consultation"
-msgstr "Pulsuz konsultasiya al"
-
 msgid "Beginner"
 msgstr "Başlanğıc"
 
@@ -10651,49 +10648,12 @@ msgstr "Səviyyəniz %(level)s — sizin üçün tövsiyə edirik"
 msgid "Your level"
 msgstr "Sizin səviyyəniz"
 
-msgid ""
-"Your English is ready for IELTS preparation — come and see the exam from the"
-" inside."
-msgstr ""
-"İngilis diliniz IELTS hazırlığı üçün hazırdır — gəlin imtahanı içəridən "
-"görün."
-
 msgid "Free IELTS trial lesson"
 msgstr "Ödənişsiz IELTS sınaq dərsi"
-
-msgid ""
-"A real lesson in the IELTS format: task types, band criteria and how to "
-"score higher."
-msgstr ""
-"IELTS formatında real dərs: tapşırıq növləri, bal meyarları və daha yüksək "
-"bal almağın yolları."
-
-msgid "We set your target band and the time you need to get there."
-msgstr ""
-"Hədəf balınızı və ona çatmaq üçün lazım olan müddəti birlikdə müəyyən "
-"edirik."
-
-msgid "Let's strengthen your base first — the first steps are free."
-msgstr "Əvvəlcə bazanızı gücləndirək — ilk addımlar ödənişsizdir."
-
-msgid "Join a group at your level for one lesson with a teacher."
-msgstr "Səviyyənizə uyğun qrupda müəllimlə bir dərs keçin."
-
-msgid "We build a learning plan around your goal."
-msgstr "Məqsədinizə uyğun öyrənmə planı qururuq."
 
 #, python-format
 msgid "A special %(percent)s%% discount for you"
 msgstr "Sizə xüsusi %(percent)s%% endirim"
-
-msgid "Valid when you enrol with your level test result."
-msgstr "Səviyyə testinin nəticəsi ilə kursa yazılanda keçərlidir."
-
-msgid "Book a free IELTS trial lesson"
-msgstr "Ödənişsiz IELTS sınaq dərsinə yazıl"
-
-msgid "Book a free trial lesson"
-msgstr "Ödənişsiz sınaq dərsinə yazıl"
 
 #, python-format
 msgid ""
@@ -10711,6 +10671,47 @@ msgstr ""
 "Salam! Academor səviyyə testində %(level)s nəticəsi aldım. Ödənişsiz sınaq "
 "dərsinə və konsultasiyaya yazılmaq, %(percent)s%% endirimdən yararlanmaq "
 "istəyirəm."
+
+msgid ""
+"Your level is enough to start IELTS preparation — take the first step with "
+"us for free."
+msgstr ""
+"Səviyyəniz IELTS hazırlığına başlamaq üçün kifayətdir — ilk addımı bizimlə "
+"ödənişsiz atın."
+
+msgid ""
+"Meet an IELTS teacher and get a close look at the exam format, task types "
+"and teaching method."
+msgstr ""
+"IELTS müəllimi ilə tanış olun, imtahanın formatını, tapşırıq növlərini və "
+"tədris metodikasını yaxından öyrənin."
+
+msgid ""
+"Pin down your level more precisely together with a teacher and get detailed "
+"answers to all your questions straight from them."
+msgstr ""
+"Səviyyənizi müəllimlə birlikdə daha dəqiq müəyyənləşdirin və sizi "
+"maraqlandıran bütün suallara birbaşa müəllimdən ətraflı cavab alın."
+
+msgid ""
+"A strong foundation makes every next step easier — take the first ones with "
+"us for free."
+msgstr ""
+"Möhkəm baza ilə hər növbəti addım daha asan olur — ilk addımları bizimlə "
+"ödənişsiz atın."
+
+msgid ""
+"Meet the teacher and get a close look at their teaching method and course "
+"programme. Get to know our groups at your level."
+msgstr ""
+"Müəllimlə tanış olun, onun tədris metodikasını və dərs proqramını yaxından "
+"öyrənin. Səviyyənizə uyğun qruplarımızla tanış olun."
+
+msgid "Just mention that you took the level test on our website."
+msgstr "Sayt üzərindən səviyyə testini keçdiyinizi qeyd etməyiniz kifayətdir."
+
+msgid "Take the offer"
+msgstr "Fürsətdən yararlanın"
 
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Növbəti kampaniyada yenə cəhd et — xəbərdar edəcəyik."

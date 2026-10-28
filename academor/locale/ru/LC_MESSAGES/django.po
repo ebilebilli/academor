@@ -10724,9 +10724,6 @@ msgstr ""
 "Тест определяет ваш уровень по шкале CEFR — международному стандарту "
 "языковых уровней от A1 до C2."
 
-msgid "Get free consultation"
-msgstr "Получить бесплатную консультацию"
-
 msgid "Beginner"
 msgstr "Начальный"
 
@@ -10786,47 +10783,12 @@ msgstr "Ваш уровень %(level)s — рекомендуем вам"
 msgid "Your level"
 msgstr "Ваш уровень"
 
-msgid ""
-"Your English is ready for IELTS preparation — come and see the exam from the"
-" inside."
-msgstr ""
-"Ваш английский готов к подготовке к IELTS — приходите посмотреть на экзамен "
-"изнутри."
-
 msgid "Free IELTS trial lesson"
 msgstr "Бесплатный пробный урок IELTS"
-
-msgid ""
-"A real lesson in the IELTS format: task types, band criteria and how to "
-"score higher."
-msgstr ""
-"Настоящий урок в формате IELTS: типы заданий, критерии оценки и как получить"
-" более высокий балл."
-
-msgid "We set your target band and the time you need to get there."
-msgstr "Определим ваш целевой балл и время, нужное, чтобы его достичь."
-
-msgid "Let's strengthen your base first — the first steps are free."
-msgstr "Сначала укрепим базу — первые шаги бесплатны."
-
-msgid "Join a group at your level for one lesson with a teacher."
-msgstr "Пройдите один урок с преподавателем в группе вашего уровня."
-
-msgid "We build a learning plan around your goal."
-msgstr "Составим план обучения под вашу цель."
 
 #, python-format
 msgid "A special %(percent)s%% discount for you"
 msgstr "Специальная скидка %(percent)s%% для вас"
-
-msgid "Valid when you enrol with your level test result."
-msgstr "Действует при записи на курс с результатом теста."
-
-msgid "Book a free IELTS trial lesson"
-msgstr "Записаться на бесплатный пробный урок IELTS"
-
-msgid "Book a free trial lesson"
-msgstr "Записаться на бесплатный пробный урок"
 
 #, python-format
 msgid ""
@@ -10843,6 +10805,47 @@ msgid ""
 msgstr ""
 "Здравствуйте! В тесте Academor у меня уровень %(level)s. Хочу записаться на "
 "бесплатный пробный урок и консультацию и получить скидку %(percent)s%%."
+
+msgid ""
+"Your level is enough to start IELTS preparation — take the first step with "
+"us for free."
+msgstr ""
+"Вашего уровня достаточно, чтобы начать подготовку к IELTS — сделайте первый "
+"шаг с нами бесплатно."
+
+msgid ""
+"Meet an IELTS teacher and get a close look at the exam format, task types "
+"and teaching method."
+msgstr ""
+"Познакомьтесь с преподавателем IELTS и узнайте поближе формат экзамена, типы"
+" заданий и методику преподавания."
+
+msgid ""
+"Pin down your level more precisely together with a teacher and get detailed "
+"answers to all your questions straight from them."
+msgstr ""
+"Вместе с преподавателем точнее определите свой уровень и получите подробные "
+"ответы на все интересующие вас вопросы напрямую от него."
+
+msgid ""
+"A strong foundation makes every next step easier — take the first ones with "
+"us for free."
+msgstr ""
+"С прочной базой каждый следующий шаг даётся легче — сделайте первые шаги с "
+"нами бесплатно."
+
+msgid ""
+"Meet the teacher and get a close look at their teaching method and course "
+"programme. Get to know our groups at your level."
+msgstr ""
+"Познакомьтесь с преподавателем, узнайте поближе его методику и программу "
+"занятий. Познакомьтесь с нашими группами вашего уровня."
+
+msgid "Just mention that you took the level test on our website."
+msgstr "Достаточно упомянуть, что вы прошли тест уровня на нашем сайте."
+
+msgid "Take the offer"
+msgstr "Воспользуйтесь предложением"
 
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Попробуйте в следующей акции — мы сообщим."

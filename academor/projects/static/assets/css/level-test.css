@@ -185,16 +185,29 @@
 
 /* the test-takers' discount, ticket style */
 .lt-discount {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 18px;
     margin: 0 0 20px;
-    padding: 14px 18px;
+    padding: 14px 150px 14px 18px;
     border-radius: 16px;
     background: var(--accent, #ff5414);
     color: #fff;
 }
 .lt-discount strong { display: block; font-size: 1.15rem; }
+/* megaphone cut-out sticking out of the banner's right edge */
+.lt-discount__sticker {
+    position: absolute;
+    right: -18px;
+    top: 50%;
+    width: 150px;
+    height: auto;
+    translate: 0 -50%;
+    rotate: 8deg;
+    filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.25));
+    pointer-events: none;
+}
 .lt-discount__burst {
     flex: 0 0 78px;
     display: grid;
@@ -231,7 +244,9 @@
     .lt-offer { padding: 26px 18px 22px; }
     .lt-offer__title { font-size: 1.25rem; }
     .lt-offer__list { grid-template-columns: 1fr; }
-    .lt-discount { gap: 12px; }
+    .lt-discount { gap: 12px; margin-top: 44px; padding: 18px 16px 16px; }
+    .lt-discount__sticker { width: 92px; right: -8px; top: -58px; translate: none; }
+    .lt-discount__burst { flex-basis: 64px; width: 64px; height: 64px; font-size: 1rem; }
 }
 @media (max-width: 991.98px) {
     .lt-offer__list { grid-template-columns: 1fr; }
