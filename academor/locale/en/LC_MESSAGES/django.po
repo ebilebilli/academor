@@ -10765,6 +10765,16 @@ msgstr ""
 "Hello! I got %(level)s on the Academor English level test. I would like to "
 "find out about IELTS preparation."
 
+msgid "Level test result"
+msgstr "Level test result"
+
+#, python-format
+msgid "%(name)s, your level is"
+msgstr "%(name)s, your level is"
+
+msgid "CEFR scale"
+msgstr "CEFR scale"
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Try again in the next campaign — we will let you know."
 
