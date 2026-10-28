@@ -189,8 +189,8 @@ class TestTakePageView(View):
         offer_track = level_test_offer_track(level)
         if offer_track == 'ielts':
             whatsapp_text = _(
-                'Hello! I got %(level)s on the Academor level test. I would like to book the free '
-                'IELTS trial lesson and a consultation.'
+                'Hello! I got %(level)s on the Academor English level test. '
+                'I would like to find out about IELTS preparation.'
             ) % {'level': level}
         else:
             whatsapp_text = _(

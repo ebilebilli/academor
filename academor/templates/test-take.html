@@ -60,7 +60,7 @@
                             <div class="lt-result-scale">
                                 {% include "includes/level_test_cefr.html" with levels=cefr_levels compact=True %}
                                 {% if current_cefr %}
-                                <p class="lt-result-scale__desc"><strong>{{ current_cefr.code }} · {{ current_cefr.name }}.</strong> {{ current_cefr.description }}</p>
+                                <p class="lt-result-scale__desc"><strong>{{ current_cefr.code }} · {{ current_cefr.name }}</strong><br><strong>{% trans "About this level:" %}</strong> {{ current_cefr.about }}</p>
                                 {% endif %}
                             </div>
 
@@ -69,49 +69,35 @@
                             <a href="{% url 'projects:test-take' test.id %}" class="btn btn-outline-primary px-4 py-2 rounded-pill">{% trans "Retake this test" %}</a>
                         </div>
 
-                        {% if offer_track %}
+                        {% if offer_track and current_cefr %}
                         <section class="lt-offer lt-offer--{{ offer_track }}" aria-labelledby="lt-offer-heading">
-                            <h2 id="lt-offer-heading" class="lt-offer__title">{% blocktrans with level=result.level %}Your level is {{ level }} — recommended for you{% endblocktrans %}</h2>
-                            {% if offer_track == 'ielts' %}
-                            <p class="lt-offer__lead">{% trans "Your English is ready for IELTS preparation — come and see the exam from the inside." %}</p>
-                            <ul class="lt-offer__list">
-                                <li class="lt-perk">
-                                    <span class="lt-perk__icon" aria-hidden="true"><i class="fa fa-graduation-cap"></i></span>
-                                    <span><strong>{% trans "Free IELTS trial lesson" %}</strong>{% trans "A real lesson in the IELTS format: task types, band criteria and how to score higher." %}</span>
-                                </li>
-                                <li class="lt-perk">
-                                    <span class="lt-perk__icon" aria-hidden="true"><i class="fa fa-comments"></i></span>
-                                    <span><strong>{% trans "Free consultation" %}</strong>{% trans "We set your target band and the time you need to get there." %}</span>
-                                </li>
-                            </ul>
-                            {% else %}
-                            <p class="lt-offer__lead">{% trans "Let's strengthen your base first — the first steps are free." %}</p>
+                            <h2 id="lt-offer-heading" class="lt-offer__title">{% blocktrans with level=result.level %}Your result is {{ level }}. Here is our advice:{% endblocktrans %}</h2>
+                            <p class="lt-offer__lead">{{ current_cefr.advice }}</p>
                             <ul class="lt-offer__list">
                                 <li class="lt-perk">
                                     <span class="lt-perk__icon" aria-hidden="true"><i class="fa fa-chalkboard-teacher"></i></span>
-                                    <span><strong>{% trans "Free trial lesson" %}</strong>{% trans "Join a group at your level for one lesson with a teacher." %}</span>
+                                    <span><strong>{% trans "Free trial lesson" %}</strong>{% trans "Meet the teacher and get a close look at their teaching method and course programme. Get to know our groups at your level." %}</span>
                                 </li>
                                 <li class="lt-perk">
                                     <span class="lt-perk__icon" aria-hidden="true"><i class="fa fa-comments"></i></span>
-                                    <span><strong>{% trans "Free consultation" %}</strong>{% trans "We build a learning plan around your goal." %}</span>
+                                    <span><strong>{% trans "Free consultation" %}</strong>{% trans "Pin down your level more precisely together with a teacher and get detailed answers to all your questions straight from them." %}</span>
                                 </li>
                             </ul>
                             <div class="lt-discount">
+                                <img class="lt-discount__sticker" src="{% static 'assets/img/level-test/discount-megaphone.webp' %}" alt="" width="360" height="339" loading="lazy" decoding="async">
                                 <span class="lt-discount__burst" aria-hidden="true"><span>-{{ offer_discount }}%</span></span>
                                 <span>
                                     <strong>{% blocktrans with percent=offer_discount %}A special {{ percent }}% discount for you{% endblocktrans %}</strong>
-                                    {% trans "Valid when you enrol with your level test result." %}
+                                    {% trans "Just mention that you took the level test on our website." %}
                                 </span>
                             </div>
-                            {% endif %}
                             <div class="lt-offer__actions">
-                                {% if offer_track == 'ielts' %}{% trans "Book a free IELTS trial lesson" as trial_cta %}{% else %}{% trans "Book a free trial lesson" as trial_cta %}{% endif %}
+                                {% if offer_track == 'ielts' %}{% trans "Take your first step" as trial_cta %}{% else %}{% trans "Take the offer" as trial_cta %}{% endif %}
                                 {% if footer_contact.whatsapp_number_me %}
                                 <a href="https://wa.me/{{ footer_contact.whatsapp_number_me }}?text={{ whatsapp_text|urlencode }}" class="btn lt-offer__wa px-4 py-2 rounded-pill" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp me-2" aria-hidden="true"></i>{{ trial_cta }}</a>
                                 {% else %}
                                 <a href="{% url 'projects:contact-page' %}" class="btn lt-offer__wa px-4 py-2 rounded-pill">{{ trial_cta }}</a>
                                 {% endif %}
-                                <a href="{% url 'projects:contact-page' %}" class="btn btn-primary px-4 py-2 rounded-pill">{% trans "Get free consultation" %}</a>
                             </div>
                         </section>
                         {% endif %}

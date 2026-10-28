@@ -10589,9 +10589,6 @@ msgstr ""
 "Test sizi CEFR şkalasında yerləşdirir — A1-dən C2-yə qədər dil "
 "səviyyələrinin beynəlxalq standartı."
 
-msgid "Get free consultation"
-msgstr "Pulsuz konsultasiya al"
-
 msgid "Beginner"
 msgstr "Başlanğıc"
 
@@ -10644,64 +10641,12 @@ msgstr "Ödənişsiz sınaq dərsi"
 msgid "Free consultation"
 msgstr "Ödənişsiz konsultasiya"
 
-#, python-format
-msgid "Your level is %(level)s — recommended for you"
-msgstr "Səviyyəniz %(level)s — sizin üçün tövsiyə edirik"
-
 msgid "Your level"
 msgstr "Sizin səviyyəniz"
-
-msgid ""
-"Your English is ready for IELTS preparation — come and see the exam from the"
-" inside."
-msgstr ""
-"İngilis diliniz IELTS hazırlığı üçün hazırdır — gəlin imtahanı içəridən "
-"görün."
-
-msgid "Free IELTS trial lesson"
-msgstr "Ödənişsiz IELTS sınaq dərsi"
-
-msgid ""
-"A real lesson in the IELTS format: task types, band criteria and how to "
-"score higher."
-msgstr ""
-"IELTS formatında real dərs: tapşırıq növləri, bal meyarları və daha yüksək "
-"bal almağın yolları."
-
-msgid "We set your target band and the time you need to get there."
-msgstr ""
-"Hədəf balınızı və ona çatmaq üçün lazım olan müddəti birlikdə müəyyən "
-"edirik."
-
-msgid "Let's strengthen your base first — the first steps are free."
-msgstr "Əvvəlcə bazanızı gücləndirək — ilk addımlar ödənişsizdir."
-
-msgid "Join a group at your level for one lesson with a teacher."
-msgstr "Səviyyənizə uyğun qrupda müəllimlə bir dərs keçin."
-
-msgid "We build a learning plan around your goal."
-msgstr "Məqsədinizə uyğun öyrənmə planı qururuq."
 
 #, python-format
 msgid "A special %(percent)s%% discount for you"
 msgstr "Sizə xüsusi %(percent)s%% endirim"
-
-msgid "Valid when you enrol with your level test result."
-msgstr "Səviyyə testinin nəticəsi ilə kursa yazılanda keçərlidir."
-
-msgid "Book a free IELTS trial lesson"
-msgstr "Ödənişsiz IELTS sınaq dərsinə yazıl"
-
-msgid "Book a free trial lesson"
-msgstr "Ödənişsiz sınaq dərsinə yazıl"
-
-#, python-format
-msgid ""
-"Hello! I got %(level)s on the Academor level test. I would like to book the "
-"free IELTS trial lesson and a consultation."
-msgstr ""
-"Salam! Academor səviyyə testində %(level)s nəticəsi aldım. Ödənişsiz IELTS "
-"sınaq dərsinə və konsultasiyaya yazılmaq istəyirəm."
 
 #, python-format
 msgid ""
@@ -10711,6 +10656,130 @@ msgstr ""
 "Salam! Academor səviyyə testində %(level)s nəticəsi aldım. Ödənişsiz sınaq "
 "dərsinə və konsultasiyaya yazılmaq, %(percent)s%% endirimdən yararlanmaq "
 "istəyirəm."
+
+msgid ""
+"Pin down your level more precisely together with a teacher and get detailed "
+"answers to all your questions straight from them."
+msgstr ""
+"Səviyyənizi müəllimlə birlikdə daha dəqiq müəyyənləşdirin və sizi "
+"maraqlandıran bütün suallara birbaşa müəllimdən ətraflı cavab alın."
+
+msgid ""
+"Meet the teacher and get a close look at their teaching method and course "
+"programme. Get to know our groups at your level."
+msgstr ""
+"Müəllimlə tanış olun, onun tədris metodikasını və dərs proqramını yaxından "
+"öyrənin. Səviyyənizə uyğun qruplarımızla tanış olun."
+
+msgid "Just mention that you took the level test on our website."
+msgstr "Sayt üzərindən səviyyə testini keçdiyinizi qeyd etməyiniz kifayətdir."
+
+msgid "Take the offer"
+msgstr "Fürsətdən yararlanın"
+
+msgid "About this level:"
+msgstr "Səviyyə haqqında:"
+
+#, python-format
+msgid "Your result is %(level)s. Here is our advice:"
+msgstr "Sizin nəticəniz %(level)s-dir. Sizə tövsiyəmiz budur:"
+
+msgid ""
+"You are just starting to learn English. You understand simple words, "
+"everyday expressions and short sentences."
+msgstr ""
+"İngilis dilini yeni öyrənməyə başlayırsınız. Sadə sözləri, gündəlik "
+"ifadələri və qısa cümlələri başa düşürsünüz."
+
+msgid ""
+"You can talk in simple sentences about familiar topics such as your family, "
+"work, daily life and shopping."
+msgstr ""
+"Ailəniz, işiniz, gündəlik həyatınız və alış-veriş kimi tanış mövzularda sadə"
+" cümlələrlə danışa bilirsiniz."
+
+msgid ""
+"You can express yourself in everyday conversation, handle most situations "
+"while travelling and talk about your experiences and future plans."
+msgstr ""
+"Gündəlik ünsiyyətdə özünüzü ifadə edə, səyahət zamanı əksər vəziyyətlərin "
+"öhdəsindən gələ, təcrübələriniz və gələcək planlarınız haqqında danışa "
+"bilirsiniz."
+
+msgid ""
+"You speak English fairly freely, understand complex texts and can express "
+"your ideas in detail."
+msgstr ""
+"İngilis dilində kifayət qədər sərbəst danışır, mürəkkəb mətnləri anlayır və "
+"fikirlərinizi ətraflı ifadə edə bilirsiniz."
+
+msgid ""
+"You use English comfortably in study and work, understand long and complex "
+"texts and express your ideas clearly and in detail."
+msgstr ""
+"İngilis dilindən təhsil və iş həyatında rahat istifadə edir, uzun və "
+"mürəkkəb mətnləri anlayır, fikirlərinizi aydın və ətraflı ifadə edə "
+"bilirsiniz."
+
+msgid ""
+"You understand almost everything in English with ease, notice fine shades of"
+" meaning and express your ideas precisely."
+msgstr ""
+"İngilis dilində demək olar ki, hər şeyi asanlıqla anlayır, incə məna "
+"fərqlərini seçir və fikirlərinizi dəqiq ifadə edə bilirsiniz."
+
+msgid ""
+"Start learning English from scratch, build a solid foundation and take your "
+"first steps with us!"
+msgstr ""
+"İngilis dilini sıfırdan öyrənməyə başlayın, möhkəm təməl qurun və ilk "
+"addımlarınızı bizimlə atın!"
+
+msgid ""
+"Grow your vocabulary, develop your speaking skills and start communicating "
+"in English more comfortably!"
+msgstr ""
+"Söz ehtiyatınızı artırın, danışıq bacarıqlarınızı inkişaf etdirin və ingilis"
+" dilində daha rahat ünsiyyət qurmağa başlayın!"
+
+msgid ""
+"Make your speaking more fluent, broaden your vocabulary and express yourself"
+" in English with more confidence!"
+msgstr ""
+"Danışığınızı daha axıcı edin, söz ehtiyatınızı genişləndirin və ingilis "
+"dilində özünüzü daha inamlı ifadə edin!"
+
+msgid ""
+"Your English is a good base to start IELTS preparation. Now it is time to "
+"move towards your target band!"
+msgstr ""
+"İngilis dili bilikləriniz IELTS hazırlığına başlamaq üçün yaxşı bazadır. "
+"İndi hədəf balınıza doğru irəliləməyin vaxtıdır!"
+
+msgid ""
+"Your English is at a high level. Prepare for your IELTS target and "
+"strengthen your knowledge with exam strategies!"
+msgstr ""
+"İngilis dili bilikləriniz yüksək səviyyədədir. IELTS hədəfinizə uyğun "
+"hazırlaşın və biliklərinizi imtahan strategiyaları ilə daha da gücləndirin!"
+
+msgid ""
+"Your English is at a very high level. To reach your IELTS target, focus on "
+"exam techniques and your academic language skills!"
+msgstr ""
+"İngilis dili bilikləriniz çox yüksək səviyyədədir. IELTS hədəfinizə çatmaq "
+"üçün imtahan texnikalarına və akademik dil bacarıqlarınıza fokuslanın!"
+
+msgid "Take your first step"
+msgstr "İlk addımınızı atın"
+
+#, python-format
+msgid ""
+"Hello! I got %(level)s on the Academor English level test. I would like to "
+"find out about IELTS preparation."
+msgstr ""
+"Salam! Academorun ingilis dili səviyyə testində %(level)s nəticəsi aldım. "
+"IELTS hazırlığı haqqında məlumat almaq istəyirəm."
 
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Növbəti kampaniyada yenə cəhd et — xəbərdar edəcəyik."

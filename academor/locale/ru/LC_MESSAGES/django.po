@@ -10724,9 +10724,6 @@ msgstr ""
 "Тест определяет ваш уровень по шкале CEFR — международному стандарту "
 "языковых уровней от A1 до C2."
 
-msgid "Get free consultation"
-msgstr "Получить бесплатную консультацию"
-
 msgid "Beginner"
 msgstr "Начальный"
 
@@ -10779,62 +10776,12 @@ msgstr "Бесплатный пробный урок"
 msgid "Free consultation"
 msgstr "Бесплатная консультация"
 
-#, python-format
-msgid "Your level is %(level)s — recommended for you"
-msgstr "Ваш уровень %(level)s — рекомендуем вам"
-
 msgid "Your level"
 msgstr "Ваш уровень"
-
-msgid ""
-"Your English is ready for IELTS preparation — come and see the exam from the"
-" inside."
-msgstr ""
-"Ваш английский готов к подготовке к IELTS — приходите посмотреть на экзамен "
-"изнутри."
-
-msgid "Free IELTS trial lesson"
-msgstr "Бесплатный пробный урок IELTS"
-
-msgid ""
-"A real lesson in the IELTS format: task types, band criteria and how to "
-"score higher."
-msgstr ""
-"Настоящий урок в формате IELTS: типы заданий, критерии оценки и как получить"
-" более высокий балл."
-
-msgid "We set your target band and the time you need to get there."
-msgstr "Определим ваш целевой балл и время, нужное, чтобы его достичь."
-
-msgid "Let's strengthen your base first — the first steps are free."
-msgstr "Сначала укрепим базу — первые шаги бесплатны."
-
-msgid "Join a group at your level for one lesson with a teacher."
-msgstr "Пройдите один урок с преподавателем в группе вашего уровня."
-
-msgid "We build a learning plan around your goal."
-msgstr "Составим план обучения под вашу цель."
 
 #, python-format
 msgid "A special %(percent)s%% discount for you"
 msgstr "Специальная скидка %(percent)s%% для вас"
-
-msgid "Valid when you enrol with your level test result."
-msgstr "Действует при записи на курс с результатом теста."
-
-msgid "Book a free IELTS trial lesson"
-msgstr "Записаться на бесплатный пробный урок IELTS"
-
-msgid "Book a free trial lesson"
-msgstr "Записаться на бесплатный пробный урок"
-
-#, python-format
-msgid ""
-"Hello! I got %(level)s on the Academor level test. I would like to book the "
-"free IELTS trial lesson and a consultation."
-msgstr ""
-"Здравствуйте! В тесте Academor у меня уровень %(level)s. Хочу записаться на "
-"бесплатный пробный урок IELTS и консультацию."
 
 #, python-format
 msgid ""
@@ -10843,6 +10790,129 @@ msgid ""
 msgstr ""
 "Здравствуйте! В тесте Academor у меня уровень %(level)s. Хочу записаться на "
 "бесплатный пробный урок и консультацию и получить скидку %(percent)s%%."
+
+msgid ""
+"Pin down your level more precisely together with a teacher and get detailed "
+"answers to all your questions straight from them."
+msgstr ""
+"Вместе с преподавателем точнее определите свой уровень и получите подробные "
+"ответы на все интересующие вас вопросы напрямую от него."
+
+msgid ""
+"Meet the teacher and get a close look at their teaching method and course "
+"programme. Get to know our groups at your level."
+msgstr ""
+"Познакомьтесь с преподавателем, узнайте поближе его методику и программу "
+"занятий. Познакомьтесь с нашими группами вашего уровня."
+
+msgid "Just mention that you took the level test on our website."
+msgstr "Достаточно упомянуть, что вы прошли тест уровня на нашем сайте."
+
+msgid "Take the offer"
+msgstr "Воспользуйтесь предложением"
+
+msgid "About this level:"
+msgstr "Об уровне:"
+
+#, python-format
+msgid "Your result is %(level)s. Here is our advice:"
+msgstr "Ваш результат — %(level)s. Вот наша рекомендация:"
+
+msgid ""
+"You are just starting to learn English. You understand simple words, "
+"everyday expressions and short sentences."
+msgstr ""
+"Вы только начинаете изучать английский. Вы понимаете простые слова, "
+"повседневные выражения и короткие предложения."
+
+msgid ""
+"You can talk in simple sentences about familiar topics such as your family, "
+"work, daily life and shopping."
+msgstr ""
+"Вы можете простыми предложениями говорить на знакомые темы: семья, работа, "
+"повседневная жизнь и покупки."
+
+msgid ""
+"You can express yourself in everyday conversation, handle most situations "
+"while travelling and talk about your experiences and future plans."
+msgstr ""
+"Вы можете выразить себя в повседневном общении, справиться с большинством "
+"ситуаций в поездке и рассказать о своём опыте и планах на будущее."
+
+msgid ""
+"You speak English fairly freely, understand complex texts and can express "
+"your ideas in detail."
+msgstr ""
+"Вы достаточно свободно говорите по-английски, понимаете сложные тексты и "
+"можете подробно излагать свои мысли."
+
+msgid ""
+"You use English comfortably in study and work, understand long and complex "
+"texts and express your ideas clearly and in detail."
+msgstr ""
+"Вы уверенно используете английский в учёбе и работе, понимаете длинные и "
+"сложные тексты и ясно и подробно выражаете свои мысли."
+
+msgid ""
+"You understand almost everything in English with ease, notice fine shades of"
+" meaning and express your ideas precisely."
+msgstr ""
+"Вы с лёгкостью понимаете по-английски почти всё, различаете тонкие оттенки "
+"смысла и точно выражаете свои мысли."
+
+msgid ""
+"Start learning English from scratch, build a solid foundation and take your "
+"first steps with us!"
+msgstr ""
+"Начните изучать английский с нуля, заложите прочную основу и сделайте первые"
+" шаги вместе с нами!"
+
+msgid ""
+"Grow your vocabulary, develop your speaking skills and start communicating "
+"in English more comfortably!"
+msgstr ""
+"Расширьте словарный запас, развивайте разговорные навыки и начните общаться "
+"на английском свободнее!"
+
+msgid ""
+"Make your speaking more fluent, broaden your vocabulary and express yourself"
+" in English with more confidence!"
+msgstr ""
+"Сделайте речь более беглой, расширьте словарный запас и выражайте себя на "
+"английском увереннее!"
+
+msgid ""
+"Your English is a good base to start IELTS preparation. Now it is time to "
+"move towards your target band!"
+msgstr ""
+"Ваш английский — хорошая база для начала подготовки к IELTS. Пора двигаться "
+"к целевому баллу!"
+
+msgid ""
+"Your English is at a high level. Prepare for your IELTS target and "
+"strengthen your knowledge with exam strategies!"
+msgstr ""
+"Ваш английский на высоком уровне. Готовьтесь к своей цели в IELTS и "
+"усиливайте знания экзаменационными стратегиями!"
+
+msgid ""
+"Your English is at a very high level. To reach your IELTS target, focus on "
+"exam techniques and your academic language skills!"
+msgstr ""
+"Ваш английский на очень высоком уровне. Чтобы достичь цели в IELTS, "
+"сосредоточьтесь на экзаменационных техниках и академических языковых "
+"навыках!"
+
+msgid "Take your first step"
+msgstr "Сделайте первый шаг"
+
+#, python-format
+msgid ""
+"Hello! I got %(level)s on the Academor English level test. I would like to "
+"find out about IELTS preparation."
+msgstr ""
+"Здравствуйте! В тесте Academor на уровень английского у меня %(level)s. Хочу"
+" узнать о подготовке к IELTS."
 
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Попробуйте в следующей акции — мы сообщим."
