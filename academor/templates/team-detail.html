@@ -15,7 +15,7 @@
                 <div class="col-12 wow fadeInUp" data-wow-delay="0.05s">
                     <div class="team-detail-member-heading w-100 text-center text-md-start">
                         <h1 class="team-detail-member-name mb-0">{{ member.name }}</h1>
-                        {% if member.role %}<p class="team-detail-member-role mb-0">{{ member.role }}</p>{% endif %}
+                        {% if member.role %}<p class="team-detail-member-role mb-0">{{ member.role_line|default:member.role }}</p>{% endif %}
                         {% include "includes/team_flag_badges.html" with extra_class="team-flags--detail" %}
                     </div>
                 </div>

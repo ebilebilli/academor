@@ -212,6 +212,9 @@ def serialize_team_member(member, lang='az'):
         ) if member.image else None,
         'name': member.name,
         'role': member.role,
+        'second_role': member.second_role,
+        # position and the optional second role on one line: "Teacher · Director"
+        'role_line': ' · '.join(r for r in (member.role, member.second_role) if r),
         'description': desc_html or None,
         'instagram': getattr(member, 'instagram', None),
         'facebook': getattr(member, 'facebook', None),

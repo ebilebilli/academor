@@ -1,0 +1,245 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+{# Teachers' attendance: monthly overview per teacher (portals/admin/attendance_views.teacher_attendance_overview_view). #}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'portals/css/portal-admin.css' %}">
+<style>
+  .ta { --ta-present: #16a34a; --ta-late: #f59e0b; --ta-absent: #dc2626; --ta-none: #cbd5e1;
+        --ta-brand: #00313d; --ta-accent: #ff5414; --ta-card: var(--body-bg, #fff);
+        --ta-line: var(--hairline-color, #e2e8f0); --ta-soft: var(--darkened-bg, #f8fafc);
+        --ta-muted: var(--body-quiet-color, #64748b); color: var(--body-fg, #0f172a); }
+  .ta-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin: 4px 0 18px; }
+  .ta-month { display: inline-flex; align-items: center; gap: 6px; padding: 4px; border: 1px solid var(--ta-line); border-radius: 999px; background: var(--ta-card); }
+  .ta-month a { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; font-size: 18px; text-decoration: none; color: var(--ta-brand); }
+  .ta-month a:hover { background: var(--ta-soft); }
+  .ta-month strong { min-width: 150px; text-align: center; font-size: 15px; text-transform: capitalize; }
+  .ta-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  /* teacher cards */
+  .ta-search { width: 100%; max-width: 320px; padding: 8px 12px; margin-bottom: 10px; border: 1px solid var(--ta-line); border-radius: 10px; background: var(--ta-card); color: inherit; }
+  .ta-teachers { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; margin-bottom: 22px; }
+  .ta-tcard { display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; border: 1px solid var(--ta-line); border-radius: 14px; background: var(--ta-card); color: inherit !important; text-decoration: none !important; transition: border-color .15s, box-shadow .15s, transform .15s; }
+  .ta-tcard:hover { border-color: var(--ta-brand); transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0, 49, 61, .10); }
+  .ta-tcard.is-active { border-color: var(--ta-accent); box-shadow: 0 0 0 2px var(--ta-accent) inset; }
+  .ta-tcard__top { display: flex; align-items: center; gap: 10px; }
+  .ta-avatar { flex: 0 0 34px; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: var(--ta-brand); color: #fff; font-weight: 800; font-size: 13px; }
+  .ta-tcard__name { font-weight: 700; font-size: 14px; line-height: 1.2; word-break: break-word; }
+  .ta-tcard__meta { font-size: 12px; color: var(--ta-muted); }
+  .ta-meter { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; }
+  .ta-meter__bar { flex: 1; height: 6px; border-radius: 999px; background: var(--ta-soft); overflow: hidden; }
+  .ta-meter__bar span { display: block; height: 100%; border-radius: inherit; }
+
+  .tone-good { --tone: var(--ta-present); } .tone-warn { --tone: var(--ta-late); } .tone-bad { --tone: var(--ta-absent); } .tone-none { --tone: var(--ta-none); }
+  .ta-meter__bar span, .ta-pill { background: var(--tone); }
+
+  /* selected teacher */
+  .ta-panel { padding: 18px; border: 1px solid var(--ta-line); border-radius: 18px; background: var(--ta-card); }
+  .ta-panel__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
+  .ta-panel__head h2 { margin: 0; padding: 0; font-size: 20px; background: none; color: inherit; }
+  .ta-kpis { display: grid; grid-template-columns: 150px repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 18px; }
+  .ta-kpi { padding: 12px 14px; border: 1px solid var(--ta-line); border-radius: 14px; background: var(--ta-soft); }
+  .ta-kpi__label { font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ta-muted); }
+  .ta-kpi__value { margin-top: 4px; font-size: 24px; font-weight: 800; line-height: 1.1; }
+  .ta-kpi--present .ta-kpi__value { color: var(--ta-present); } .ta-kpi--late .ta-kpi__value { color: var(--ta-late); } .ta-kpi--absent .ta-kpi__value { color: var(--ta-absent); }
+  .ta-ring { grid-row: span 2; display: grid; place-items: center; gap: 6px; padding: 12px; border: 1px solid var(--ta-line); border-radius: 14px; background: var(--ta-soft); text-align: center; }
+  .ta-ring__dial { --p: 0; display: grid; place-items: center; width: 96px; height: 96px; border-radius: 50%; background: conic-gradient(var(--tone) calc(var(--p) * 1%), var(--ta-line) 0); }
+  .ta-ring__dial span { display: grid; place-items: center; width: 74px; height: 74px; border-radius: 50%; background: var(--ta-card); font-size: 20px; font-weight: 800; }
+
+  /* daily chart */
+  .ta-chart { margin-bottom: 20px; }
+  .ta-chart__title, .ta-group__title { margin: 0 0 8px; font-size: 13px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--ta-muted); }
+  .ta-bars { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 3px; align-items: end; height: 120px; padding: 8px 6px 0; border: 1px solid var(--ta-line); border-radius: 12px; background: var(--ta-soft); }
+  .ta-bar { position: relative; display: flex; flex-direction: column-reverse; height: 100%; border-radius: 4px 4px 0 0; }
+  .ta-bar i { display: block; width: 100%; }
+  .ta-bar i:last-child { border-radius: 4px 4px 0 0; }
+  .ta-bar .p { background: var(--ta-present); } .ta-bar .l { background: var(--ta-late); } .ta-bar .a { background: var(--ta-absent); }
+  .ta-bar.is-weekend::before { content: ""; position: absolute; inset: 0; background: rgba(0, 49, 61, .05); border-radius: 4px 4px 0 0; }
+  .ta-days { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 3px; padding: 4px 6px 0; font-size: 10px; text-align: center; color: var(--ta-muted); }
+  .ta-days .is-today { color: var(--ta-accent); font-weight: 800; }
+
+  /* group grids */
+  .ta-group { margin-top: 18px; }
+  .ta-group__head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-bottom: 8px; }
+  .ta-group__head h3 { margin: 0; font-size: 16px; }
+  .ta-chip { padding: 2px 10px; border-radius: 999px; background: var(--ta-soft); border: 1px solid var(--ta-line); font-size: 12px; color: var(--ta-muted); }
+  .ta-pill { display: inline-block; min-width: 40px; padding: 2px 6px; border-radius: 999px; color: #fff; font-size: 12px; font-weight: 800; text-align: center; }
+  .tone-none.ta-pill { color: var(--body-fg, #0f172a); }
+  .ta-scroll { overflow-x: auto; border: 1px solid var(--ta-line); border-radius: 12px; }
+  .ta-grid { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 12px; }
+  .ta-grid th, .ta-grid td { padding: 3px 1px; border-bottom: 1px solid var(--ta-line); text-align: center; background: var(--ta-card); white-space: nowrap; }
+  .ta-grid thead th { position: sticky; top: 0; z-index: 1; font-size: 10px; font-weight: 700; color: var(--ta-muted); background: var(--ta-soft); }
+  .ta-grid thead th b { display: block; font-size: 12px; color: var(--body-fg, #0f172a); }
+  .ta-grid .is-weekend { background: var(--ta-soft); }
+  .ta-grid .is-today b { color: var(--ta-accent); }
+  .ta-grid .ta-name { position: sticky; left: 0; z-index: 2; min-width: 140px; max-width: 190px; padding: 5px 8px; text-align: left; overflow: hidden; text-overflow: ellipsis; font-weight: 600; box-shadow: 1px 0 0 var(--ta-line); }
+  .ta-grid thead .ta-name { z-index: 3; }
+  .ta-grid .ta-sum { padding: 3px 5px; font-weight: 700; }
+  .ta-cell { display: inline-grid; place-items: center; width: 19px; height: 19px; border-radius: 5px; background: var(--ta-soft); color: #fff; font-size: 11px; font-weight: 800; }
+  .ta-cell--present { background: var(--ta-present); } .ta-cell--late { background: var(--ta-late); } .ta-cell--absent { background: var(--ta-absent); }
+  .ta-cell--off { background: repeating-linear-gradient(45deg, var(--ta-soft) 0 3px, var(--ta-line) 3px 5px); }
+  .ta-guest { margin-left: 4px; font-size: 10px; font-weight: 700; color: var(--ta-muted); }
+  .ta-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 14px; font-size: 12px; color: var(--ta-muted); }
+  .ta-legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .ta-legend .ta-cell { width: 16px; height: 16px; font-size: 9px; }
+  .ta-empty { padding: 28px; text-align: center; color: var(--ta-muted); border: 1px dashed var(--ta-line); border-radius: 14px; }
+  @media (max-width: 767px) { .ta-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ta-ring { grid-column: span 2; grid-row: auto; } }
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+  &rsaquo; <a href="{% url 'admin:portals_attendance_changelist' %}">{% trans 'Attendance records' %}</a>
+  &rsaquo; {% trans "Teachers' attendance" %}
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="ta">
+  <div class="ta-toolbar">
+    <div class="ta-month" aria-label="{% trans 'Month' %}">
+      <a href="?month={{ prev_month }}{% if teacher %}&teacher={{ teacher.pk }}{% endif %}" aria-label="{% trans 'Previous month' %}">&lsaquo;</a>
+      <strong>{{ month_date|date:"F Y" }}</strong>
+      <a href="?month={{ next_month }}{% if teacher %}&teacher={{ teacher.pk }}{% endif %}" aria-label="{% trans 'Next month' %}">&rsaquo;</a>
+    </div>
+    <div class="ta-actions">
+      <a class="button" href="{{ hub_url }}{% if teacher %}?teacher={{ teacher.pk }}{% endif %}">{% trans 'Mark attendance' %}</a>
+      <a class="button" href="{% url 'admin:portals_attendance_changelist' %}">{% trans 'All records in list' %}</a>
+    </div>
+  </div>
+
+  {% if teachers %}
+  <input type="search" class="ta-search" placeholder="{% trans 'Search teacher…' %}" aria-label="{% trans 'Search teacher…' %}" data-ta-search>
+  <div class="ta-teachers" data-ta-teachers>
+    {% for t in teachers %}
+    <a class="ta-tcard tone-{{ t.tone }}{% if teacher and teacher.pk == t.id %} is-active{% endif %}" href="?month={{ month_key }}&teacher={{ t.id }}" data-name="{{ t.name|lower }}">
+      <span class="ta-tcard__top">
+        <span class="ta-avatar" aria-hidden="true">{{ t.initials }}</span>
+        <span>
+          <span class="ta-tcard__name">{{ t.name }}</span><br>
+          <span class="ta-tcard__meta">{% blocktrans with g=t.groups s=t.students %}{{ g }} groups · {{ s }} students{% endblocktrans %}</span>
+        </span>
+      </span>
+      <span class="ta-meter">
+        <span class="ta-meter__bar"><span style="width: {{ t.rate|default:0 }}%"></span></span>
+        {% if t.rate is not None %}{{ t.rate }}%{% else %}—{% endif %}
+      </span>
+    </a>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if teacher and detail %}
+  <section class="ta-panel" aria-labelledby="ta-teacher-title">
+    <div class="ta-panel__head">
+      <h2 id="ta-teacher-title">{{ teacher.full_name }}</h2>
+      <a class="button" href="{% url 'admin:portals_teacherprofile_change' teacher.pk %}">{% trans 'Teacher profile' %}</a>
+    </div>
+
+    <div class="ta-kpis">
+      <div class="ta-ring tone-{{ detail.tone }}">
+        <span class="ta-ring__dial" style="--p: {{ detail.rate|default:0 }}"><span>{% if detail.rate is not None %}{{ detail.rate }}%{% else %}—{% endif %}</span></span>
+        <span class="ta-kpi__label">{% trans 'Attendance rate' %}</span>
+      </div>
+      <div class="ta-kpi ta-kpi--present"><div class="ta-kpi__label">{% trans 'Present' %}</div><div class="ta-kpi__value">{{ detail.present }}</div></div>
+      <div class="ta-kpi ta-kpi--late"><div class="ta-kpi__label">{% trans 'Late' %}</div><div class="ta-kpi__value">{{ detail.late }}</div></div>
+      <div class="ta-kpi ta-kpi--absent"><div class="ta-kpi__label">{% trans 'Absent' %}</div><div class="ta-kpi__value">{{ detail.absent }}</div></div>
+      <div class="ta-kpi"><div class="ta-kpi__label">{% trans 'Lesson days' %}</div><div class="ta-kpi__value">{{ detail.lesson_days }}</div></div>
+      <div class="ta-kpi"><div class="ta-kpi__label">{% trans 'Groups' %}</div><div class="ta-kpi__value">{{ detail.groups|length }}</div></div>
+      <div class="ta-kpi"><div class="ta-kpi__label">{% trans 'Students' %}</div><div class="ta-kpi__value">{{ detail.people }}</div></div>
+    </div>
+
+    <div class="ta-chart">
+      <p class="ta-chart__title">{% trans 'Marks per day' %}</p>
+      <div class="ta-bars" role="img" aria-label="{% trans 'Present, late and absent marks for each day of the month' %}">
+        {% for d in detail.chart %}
+        <span class="ta-bar{% if d.is_weekend %} is-weekend{% endif %}" title="{{ d.n }}: ✓ {{ d.present }} · L {{ d.late }} · ✗ {{ d.absent }}">
+          {% if d.present %}<i class="p" style="height: {{ d.h_present }}%"></i>{% endif %}{% if d.late %}<i class="l" style="height: {{ d.h_late }}%"></i>{% endif %}{% if d.absent %}<i class="a" style="height: {{ d.h_absent }}%"></i>{% endif %}
+        </span>
+        {% endfor %}
+      </div>
+      <div class="ta-days" aria-hidden="true">
+        {% for d in detail.chart %}<span{% if d.is_today %} class="is-today"{% endif %}>{{ d.n }}</span>{% endfor %}
+      </div>
+    </div>
+
+    {% for g in detail.groups %}
+    <div class="ta-group">
+      <div class="ta-group__head">
+        <h3>{{ g.name }}</h3>
+        {% if g.course_label %}<span class="ta-chip">{{ g.course_label }}</span>{% endif %}
+        <span class="ta-chip">{% blocktrans count n=g.rows|length %}{{ n }} student{% plural %}{{ n }} students{% endblocktrans %}</span>
+        <span class="ta-pill tone-{{ g.tone }}">{% if g.rate is not None %}{{ g.rate }}%{% else %}—{% endif %}</span>
+      </div>
+      {% if g.rows %}
+      <div class="ta-scroll">
+        <table class="ta-grid">
+          <thead>
+            <tr>
+              <th class="ta-name" scope="col">{% trans 'Student' %}</th>
+              {% for d in detail.days %}<th scope="col" class="{% if d.is_weekend %}is-weekend{% endif %}{% if d.is_today %} is-today{% endif %}">{{ d.weekday_short }}<b>{{ d.n }}</b></th>{% endfor %}
+              <th scope="col" class="ta-sum">✓</th><th scope="col" class="ta-sum">L</th><th scope="col" class="ta-sum">✗</th><th scope="col" class="ta-sum">%</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in g.rows %}
+            <tr>
+              <th class="ta-name" scope="row" title="{{ row.name }}">
+                {% if row.id %}<a href="{% url 'admin:portals_studentprofile_attendance' row.id %}">{{ row.name }}</a>{% else %}{{ row.name }}<span class="ta-guest">{% trans 'guest' %}</span>{% endif %}
+              </th>
+              {% for c in row.cells %}
+              <td class="{% if c.is_weekend %}is-weekend{% endif %}">
+                {% if c.disabled %}<span class="ta-cell ta-cell--off" title="{% trans 'Before the start date' %}"></span>
+                {% elif c.status == 'present' %}<span class="ta-cell ta-cell--present" title="{{ c.iso }} · {% trans 'Present' %}">✓</span>
+                {% elif c.status == 'late' %}<span class="ta-cell ta-cell--late" title="{{ c.iso }} · {% trans 'Late' %}">L</span>
+                {% elif c.status == 'absent' %}<span class="ta-cell ta-cell--absent" title="{{ c.iso }} · {% trans 'Absent' %}">✗</span>
+                {% else %}<span class="ta-cell" title="{{ c.iso }}"></span>{% endif %}
+              </td>
+              {% endfor %}
+              <td class="ta-sum" style="color: var(--ta-present)">{{ row.present_count }}</td>
+              <td class="ta-sum" style="color: var(--ta-late)">{{ row.late_count }}</td>
+              <td class="ta-sum" style="color: var(--ta-absent)">{{ row.absent_count }}</td>
+              <td class="ta-sum"><span class="ta-pill tone-{{ row.tone }}">{% if row.rate is not None %}{{ row.rate }}%{% else %}—{% endif %}</span></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p class="ta-empty">{% trans 'No students in this group yet.' %}</p>
+      {% endif %}
+    </div>
+    {% empty %}
+    <p class="ta-empty">{% trans 'This teacher has no active groups.' %}</p>
+    {% endfor %}
+
+    <div class="ta-legend">
+      <span><i class="ta-cell ta-cell--present">✓</i>{% trans 'Present' %}</span>
+      <span><i class="ta-cell ta-cell--late">L</i>{% trans 'Late' %}</span>
+      <span><i class="ta-cell ta-cell--absent">✗</i>{% trans 'Absent' %}</span>
+      <span><i class="ta-cell"></i>{% trans 'Not marked' %}</span>
+      <span><i class="ta-cell ta-cell--off"></i>{% trans 'Before the start date' %}</span>
+    </div>
+  </section>
+  {% elif not teachers %}
+  <p class="ta-empty">{% trans 'No teachers yet.' %}</p>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block footer %}
+{{ block.super }}
+<script>
+  (function () {
+    var input = document.querySelector('[data-ta-search]');
+    if (!input) return;
+    var cards = document.querySelectorAll('[data-ta-teachers] .ta-tcard');
+    input.addEventListener('input', function () {
+      var q = input.value.trim().toLowerCase();
+      cards.forEach(function (card) { card.hidden = q && card.dataset.name.indexOf(q) === -1; });
+    });
+  })();
+</script>
+{% endblock %}

@@ -10791,6 +10791,55 @@ msgstr "%(name)s, sizin səviyyəniz"
 msgid "CEFR scale"
 msgstr "CEFR şkalası"
 
+msgid "Teachers' attendance"
+msgstr "Müəllimlərin davamiyyəti"
+
+msgid "Month"
+msgstr "Ay"
+
+msgid "Previous month"
+msgstr "Əvvəlki ay"
+
+msgid "Next month"
+msgstr "Növbəti ay"
+
+msgid "All records in list"
+msgstr "Bütün qeydlər siyahıda"
+
+msgid "Search teacher…"
+msgstr "Müəllim axtar…"
+
+#, python-format
+msgid "%(g)s groups · %(s)s students"
+msgstr "%(g)s qrup · %(s)s şagird"
+
+msgid "Lesson days"
+msgstr "Dərs günləri"
+
+msgid "Marks per day"
+msgstr "Günlər üzrə qeydlər"
+
+msgid "Present, late and absent marks for each day of the month"
+msgstr "Ayın hər günü üçün gəlib, gecikib və gəlməyib qeydləri"
+
+msgid "guest"
+msgstr "qonaq"
+
+msgid "Before the start date"
+msgstr "Başlama tarixindən əvvəl"
+
+msgid "This teacher has no active groups."
+msgstr "Bu müəllimin aktiv qrupu yoxdur."
+
+msgid "Not marked"
+msgstr "Qeyd olunmayıb"
+
+#, python-format
+msgid "%(n)s student"
+msgid_plural "%(n)s students"
+msgstr[0] "%(n)s şagird"
+msgstr[1] "%(n)s şagird"
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Növbəti kampaniyada yenə cəhd et — xəbərdar edəcəyik."
 

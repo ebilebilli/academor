@@ -10775,6 +10775,55 @@ msgstr "%(name)s, your level is"
 msgid "CEFR scale"
 msgstr "CEFR scale"
 
+msgid "Teachers' attendance"
+msgstr "Teachers' attendance"
+
+msgid "Month"
+msgstr "Month"
+
+msgid "Previous month"
+msgstr "Previous month"
+
+msgid "Next month"
+msgstr "Next month"
+
+msgid "All records in list"
+msgstr "All records in list"
+
+msgid "Search teacher…"
+msgstr "Search teacher…"
+
+#, python-format
+msgid "%(g)s groups · %(s)s students"
+msgstr "%(g)s groups · %(s)s students"
+
+msgid "Lesson days"
+msgstr "Lesson days"
+
+msgid "Marks per day"
+msgstr "Marks per day"
+
+msgid "Present, late and absent marks for each day of the month"
+msgstr "Present, late and absent marks for each day of the month"
+
+msgid "guest"
+msgstr "guest"
+
+msgid "Before the start date"
+msgstr "Before the start date"
+
+msgid "This teacher has no active groups."
+msgstr "This teacher has no active groups."
+
+msgid "Not marked"
+msgstr "Not marked"
+
+#, python-format
+msgid "%(n)s student"
+msgid_plural "%(n)s students"
+msgstr[0] "%(n)s student"
+msgstr[1] "%(n)s students"
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Try again in the next campaign — we will let you know."
 

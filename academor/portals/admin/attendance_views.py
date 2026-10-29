@@ -10,6 +10,8 @@ from django.utils.translation import gettext as _
 
 from portals.models import Attendance, Schedule, StudentProfile, StudyGroup
 from portals.teacher_forms import build_session_attendance_form
+from portals.utils.admin_teacher_attendance import build_teacher_attendance_overview
+from portals.utils.teacher_attendance_register import parse_register_month
 from portals.utils.admin_attendance import (
     build_admin_attendance_hub_context,
     get_student_attendance_overview,
@@ -116,3 +118,22 @@ def student_attendance_detail_view(admin_site, request, student_id):
         'has_view_permission': True,
     }
     return render(request, 'admin/portals/attendance/student_detail.html', context)
+
+
+def teacher_attendance_overview_view(admin_site, request):
+    """Visual monthly attendance per teacher: teacher cards, KPIs, a daily chart, group grids."""
+    year, month = parse_register_month(request.GET.get('month'))
+    overview = build_teacher_attendance_overview(
+        teacher_id=_parse_int(request.GET.get('teacher')),
+        year=year,
+        month=month,
+    )
+    context = {
+        **admin_site.each_context(request),
+        'title': _("Teachers' attendance"),
+        'opts': Attendance._meta,
+        'has_view_permission': True,
+        'hub_url': reverse('admin:portals_attendance_hub'),
+        **overview,
+    }
+    return render(request, 'admin/portals/attendance/teachers.html', context)

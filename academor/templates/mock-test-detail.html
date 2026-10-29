@@ -111,7 +111,7 @@
                                     </div>
                                     <div class="mock-detail-trainer-card__body">
                                         <h3 class="mock-detail-trainer-card__name">{{ trainer.name }}</h3>
-                                        {% if trainer.role %}<p class="mock-detail-trainer-card__role mb-0">{{ trainer.role }}</p>{% endif %}
+                                        {% if trainer.role %}<p class="mock-detail-trainer-card__role mb-0">{{ trainer.role_line|default:trainer.role }}</p>{% endif %}
                                     </div>
                                 </a>
                             </article>
