@@ -28,12 +28,14 @@ class TeacherAttendanceOverviewTests(TestCase):
         self.assertEqual((row['present'], row['late'], row['absent']), (2, 1, 1))
         self.assertEqual(row['rate'], 75)  # late counts as attended
         detail = data['detail']
+        # totals come from the teacher's general register, which shows the group's marks
+        self.assertTrue(detail['main']['is_main_register'])
         self.assertEqual(detail['rate'], 75)
         self.assertEqual(detail['lesson_days'], 4)
-        grid = detail['groups'][0]
-        self.assertEqual(grid['name'], 'IELTS 1')
-        cells = {c['iso']: c['status'] for c in grid['rows'][0]['cells']}
+        cells = {c['iso']: c['status'] for c in detail['main']['rows'][0]['cells']}
         self.assertEqual(cells['2026-10-09'], 'absent')
+        self.assertEqual([g['name'] for g in detail['groups']], ['IELTS 1'])
+        self.assertEqual(detail['group_count'], 1)
         self.assertEqual(len(detail['chart']), 31)
 
     def test_month_without_marks(self):
@@ -49,4 +51,5 @@ class TeacherAttendanceOverviewTests(TestCase):
         response = self.client.get(url, {'teacher': self.teacher.pk, 'month': '2026-10'})
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'IELTS 1')
+        self.assertContains(response, 'Ümumi davamiyyət cədvəli')
         self.assertContains(response, 'ta-cell--absent')

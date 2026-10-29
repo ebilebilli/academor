@@ -16,6 +16,7 @@ from portals.utils.teacher_attendance_register import (
     build_teacher_attendance_register,
     month_key,
     shift_month,
+    teacher_main_register,
 )
 from portals.utils.teacher_courses import teacher_groups_queryset
 
@@ -61,7 +62,9 @@ def teacher_month_summaries(year, month):
     teachers = (
         TeacherProfile.objects.select_related('user')
         .annotate(
-            group_count=Count('groups', filter=Q(groups__is_active=True), distinct=True),
+            group_count=Count(
+                'groups', filter=Q(groups__is_active=True, groups__is_main_register=False), distinct=True,
+            ),
             student_count=Count('groups__students', filter=Q(groups__is_active=True), distinct=True),
         )
         .order_by('user__username', 'id')
@@ -85,16 +88,20 @@ def teacher_month_summaries(year, month):
 
 
 def teacher_month_detail(teacher, year, month):
-    """KPIs, a per-day chart and one register grid per active group for the teacher."""
+    """KPIs and a per-day chart from the teacher's general register, plus its grid.
+
+    The general register already shows every student's marks from all of the teacher's
+    groups, so the totals come from it alone; the other groups are listed separately
+    (collapsed on the page) with their own counts and are not added again.
+    """
+    main = teacher_main_register(teacher)
     groups = list(
         teacher_groups_queryset(teacher.pk, active_only=True, include_register_only=True)
-        .order_by('is_register_only', 'name', 'id')
+        .order_by('-is_main_register', 'is_register_only', 'name', 'id')
     )
-    totals = dict.fromkeys(STATUSES, 0)
     per_day = {}
     grids = []
     days = []
-    people = 0
     for group in groups:
         register = build_teacher_attendance_register(teacher, year=year, month=month, group=group)
         days = [d for d in register['days'] if d['in_month']]
@@ -105,29 +112,33 @@ def teacher_month_detail(teacher, year, month):
                 {**c, 'is_weekend': date.fromisoformat(c['iso']).weekday() >= 5}
                 for c in person['cells'] if c['iso']
             ]
-            for cell in cells:
-                if cell['status'] in totals:
-                    per_day.setdefault(cell['iso'], dict.fromkeys(STATUSES, 0))[cell['status']] += 1
+            if group.pk == main.pk:
+                for cell in cells:
+                    if cell['status'] in STATUSES:
+                        per_day.setdefault(cell['iso'], dict.fromkeys(STATUSES, 0))[cell['status']] += 1
             p, l, a = person['present_count'], person['late_count'], person['absent_count']
             g_totals['present'] += p
             g_totals['late'] += l
             g_totals['absent'] += a
             rate = _rate(p, l, a)
             rows.append({**person, 'cells': cells, 'rate': rate, 'tone': _tone(rate)})
-        for key in STATUSES:
-            totals[key] += g_totals[key]
-        people += len(rows)
         g_rate = _rate(g_totals['present'], g_totals['late'], g_totals['absent'])
         grids.append({
             'id': group.pk,
             'name': group.name,
             'course_label': register['group']['course_label'] if register['group'] else '',
             'is_register_only': group.is_register_only,
+            'is_main_register': group.pk == main.pk,
+            'marks': sum(g_totals.values()),
             'rows': rows,
             'rate': g_rate,
             'tone': _tone(g_rate),
             **g_totals,
         })
+    main_grid = next((g for g in grids if g['is_main_register']), None)
+    other_groups = [g for g in grids if not g['is_main_register']]
+    totals = {key: main_grid[key] if main_grid else 0 for key in STATUSES}
+    people = len(main_grid['rows']) if main_grid else 0
 
     if not days:
         start, end = _month_bounds(year, month)
@@ -151,7 +162,9 @@ def teacher_month_detail(teacher, year, month):
 
     rate = _rate(totals['present'], totals['late'], totals['absent'])
     return {
-        'groups': grids,
+        'main': main_grid,
+        'groups': other_groups,
+        'group_count': len(other_groups),
         'days': days,
         'chart': chart,
         'rate': rate,

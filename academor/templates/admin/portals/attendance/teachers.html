@@ -83,6 +83,12 @@
   .ta-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 14px; font-size: 12px; color: var(--ta-muted); }
   .ta-legend span { display: inline-flex; align-items: center; gap: 6px; }
   .ta-legend .ta-cell { width: 16px; height: 16px; font-size: 9px; }
+  .ta-pill--main { background: var(--ta-accent); }
+  .ta-others { margin-top: 22px; border: 1px solid var(--ta-line); border-radius: 14px; background: var(--ta-soft); }
+  .ta-others summary { padding: 12px 16px; font-weight: 800; cursor: pointer; }
+  .ta-others summary span { margin-left: 8px; font-weight: 500; font-size: 12px; color: var(--ta-muted); }
+  .ta-others[open] { padding-bottom: 14px; }
+  .ta-others .ta-group { margin: 14px 16px 0; }
   .ta-empty { padding: 28px; text-align: center; color: var(--ta-muted); border: 1px dashed var(--ta-line); border-radius: 14px; }
   @media (max-width: 767px) { .ta-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ta-ring { grid-column: span 2; grid-row: auto; } }
 </style>
@@ -147,7 +153,7 @@
       <div class="ta-kpi ta-kpi--late"><div class="ta-kpi__label">{% trans 'Late' %}</div><div class="ta-kpi__value">{{ detail.late }}</div></div>
       <div class="ta-kpi ta-kpi--absent"><div class="ta-kpi__label">{% trans 'Absent' %}</div><div class="ta-kpi__value">{{ detail.absent }}</div></div>
       <div class="ta-kpi"><div class="ta-kpi__label">{% trans 'Lesson days' %}</div><div class="ta-kpi__value">{{ detail.lesson_days }}</div></div>
-      <div class="ta-kpi"><div class="ta-kpi__label">{% trans 'Groups' %}</div><div class="ta-kpi__value">{{ detail.groups|length }}</div></div>
+      <div class="ta-kpi"><div class="ta-kpi__label">{% trans 'Groups' %}</div><div class="ta-kpi__value">{{ detail.group_count }}</div></div>
       <div class="ta-kpi"><div class="ta-kpi__label">{% trans 'Students' %}</div><div class="ta-kpi__value">{{ detail.people }}</div></div>
     </div>
 
@@ -165,55 +171,20 @@
       </div>
     </div>
 
-    {% for g in detail.groups %}
-    <div class="ta-group">
-      <div class="ta-group__head">
-        <h3>{{ g.name }}</h3>
-        {% if g.course_label %}<span class="ta-chip">{{ g.course_label }}</span>{% endif %}
-        <span class="ta-chip">{% blocktrans count n=g.rows|length %}{{ n }} student{% plural %}{{ n }} students{% endblocktrans %}</span>
-        <span class="ta-pill tone-{{ g.tone }}">{% if g.rate is not None %}{{ g.rate }}%{% else %}—{% endif %}</span>
-      </div>
-      {% if g.rows %}
-      <div class="ta-scroll">
-        <table class="ta-grid">
-          <thead>
-            <tr>
-              <th class="ta-name" scope="col">{% trans 'Student' %}</th>
-              {% for d in detail.days %}<th scope="col" class="{% if d.is_weekend %}is-weekend{% endif %}{% if d.is_today %} is-today{% endif %}">{{ d.weekday_short }}<b>{{ d.n }}</b></th>{% endfor %}
-              <th scope="col" class="ta-sum">✓</th><th scope="col" class="ta-sum">L</th><th scope="col" class="ta-sum">✗</th><th scope="col" class="ta-sum">%</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for row in g.rows %}
-            <tr>
-              <th class="ta-name" scope="row" title="{{ row.name }}">
-                {% if row.id %}<a href="{% url 'admin:portals_studentprofile_attendance' row.id %}">{{ row.name }}</a>{% else %}{{ row.name }}<span class="ta-guest">{% trans 'guest' %}</span>{% endif %}
-              </th>
-              {% for c in row.cells %}
-              <td class="{% if c.is_weekend %}is-weekend{% endif %}">
-                {% if c.disabled %}<span class="ta-cell ta-cell--off" title="{% trans 'Before the start date' %}"></span>
-                {% elif c.status == 'present' %}<span class="ta-cell ta-cell--present" title="{{ c.iso }} · {% trans 'Present' %}">✓</span>
-                {% elif c.status == 'late' %}<span class="ta-cell ta-cell--late" title="{{ c.iso }} · {% trans 'Late' %}">L</span>
-                {% elif c.status == 'absent' %}<span class="ta-cell ta-cell--absent" title="{{ c.iso }} · {% trans 'Absent' %}">✗</span>
-                {% else %}<span class="ta-cell" title="{{ c.iso }}"></span>{% endif %}
-              </td>
-              {% endfor %}
-              <td class="ta-sum" style="color: var(--ta-present)">{{ row.present_count }}</td>
-              <td class="ta-sum" style="color: var(--ta-late)">{{ row.late_count }}</td>
-              <td class="ta-sum" style="color: var(--ta-absent)">{{ row.absent_count }}</td>
-              <td class="ta-sum"><span class="ta-pill tone-{{ row.tone }}">{% if row.rate is not None %}{{ row.rate }}%{% else %}—{% endif %}</span></td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-      {% else %}
-      <p class="ta-empty">{% trans 'No students in this group yet.' %}</p>
-      {% endif %}
-    </div>
-    {% empty %}
+    {% if detail.main %}
+    {% include "admin/portals/attendance/_teacher_grid.html" with g=detail.main days=detail.days %}
+    {% endif %}
+
+    {% if detail.groups %}
+    <details class="ta-others">
+      <summary>{% blocktrans with n=detail.group_count %}Other groups ({{ n }}){% endblocktrans %} <span>{% trans "students' marks from these groups are already on the general register" %}</span></summary>
+      {% for g in detail.groups %}
+      {% include "admin/portals/attendance/_teacher_grid.html" with g=g days=detail.days %}
+      {% endfor %}
+    </details>
+    {% elif not detail.main %}
     <p class="ta-empty">{% trans 'This teacher has no active groups.' %}</p>
-    {% endfor %}
+    {% endif %}
 
     <div class="ta-legend">
       <span><i class="ta-cell ta-cell--present">✓</i>{% trans 'Present' %}</span>
