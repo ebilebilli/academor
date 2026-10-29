@@ -37,6 +37,13 @@ class Team(models.Model):
         max_length=120,
         verbose_name='Role',
     )
+    second_role = models.CharField(
+        max_length=120,
+        blank=True,
+        default='',
+        verbose_name='Additional role',
+        help_text='Optional second role shown next to the position, e.g. "Director" for a teacher.',
+    )
     description_az = RichTextField(
         null=True,
         blank=True,

@@ -536,14 +536,15 @@ class PrivacyPolicyPageView(View):
 def _team_groups(team):
     """Team members / teachers bands, or None while no member has a flag set.
 
-    Team members always come first. A member flagged as both appears in both bands;
-    members with neither flag are listed last so nobody disappears once the split is on.
+    Teachers always come first, team members second. A member flagged as both appears in
+    both bands; members with neither flag are listed last so nobody disappears once the
+    split is on.
     """
     if not any(m['is_teacher'] or m['is_team_member'] for m in team):
         return None
     groups = [
-        {'key': 'members', 'title': _('Komanda üzvləri'), 'members': [m for m in team if m['is_team_member']]},
         {'key': 'teachers', 'title': _('Müəllimlər'), 'members': [m for m in team if m['is_teacher']]},
+        {'key': 'members', 'title': _('Komanda üzvləri'), 'members': [m for m in team if m['is_team_member']]},
         {'key': 'others', 'title': _('Digər əməkdaşlar'),
          'members': [m for m in team if not m['is_teacher'] and not m['is_team_member']]},
     ]
@@ -593,7 +594,7 @@ class TeamDetailPageView(View):
         member_data = serialize_team_member(member, lang=lang)
         excerpt = meta_plain_excerpt(member_data.get('description') or '')
         if not excerpt.strip():
-            role = (member_data.get('role') or '').strip()
+            role = (member_data.get('role_line') or '').strip()
             excerpt = _('%(name)s%(role_suffix)s — team profile at Academor, Baku.') % {
                 'name': member_data['name'],
                 'role_suffix': (f', {role}' if role else ''),

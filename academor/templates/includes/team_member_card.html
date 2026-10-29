@@ -36,6 +36,6 @@
                 {{ member.name }}
             </a>
         </h5>
-        {% if member.role %}<small class="course-alt-card__role d-block mt-1">{{ member.role }}</small>{% endif %}
+        {% if member.role %}<small class="course-alt-card__role d-block mt-1">{{ member.role_line|default:member.role }}</small>{% endif %}
     </div>
 </div>

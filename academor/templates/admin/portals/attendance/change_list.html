@@ -3,6 +3,9 @@
 
 {% block object-tools-items %}
 <li>
+  <a href="{% url 'admin:portals_attendance_teachers' %}" class="viewlink">{% trans "Teachers' attendance" %}</a>
+</li>
+<li>
   <a href="{% url 'admin:portals_attendance_hub' %}" class="addlink">{% trans 'Attendance control' %}</a>
 </li>
 {{ block.super }}

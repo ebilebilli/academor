@@ -27,7 +27,11 @@ from portals.admin.display import (
     portal_role_badge,
     portal_score_chip,
 )
-from portals.admin.attendance_views import attendance_hub_view, student_attendance_detail_view
+from portals.admin.attendance_views import (
+    attendance_hub_view,
+    student_attendance_detail_view,
+    teacher_attendance_overview_view,
+)
 from portals.admin.mixins import CourseTypeTabFilterMixin, PortalModelAdmin
 from portals.admin.listening_inline_formsets import (
     ListeningQuestionGroupInlineFormSet,
@@ -963,6 +967,7 @@ class TeacherProfileAdmin(PortalModelAdmin):
         'user_link',
         'course_specializations_display',
         'group_count_display',
+        'attendance_link',
     )
     list_display_links = ('full_name_link',)
     list_filter = ('course_specializations__course_type',)
@@ -999,6 +1004,11 @@ class TeacherProfileAdmin(PortalModelAdmin):
             'fields': ('instagram', 'facebook', 'linkedin', 'youtube'),
         }),
     )
+
+    @admin.display(description=_('Attendance'))
+    def attendance_link(self, obj):
+        url = reverse('admin:portals_attendance_teachers')
+        return format_html('<a class="button" href="{}?teacher={}">{}</a>', url, obj.pk, _('View'))
 
     def get_portal_stats(self, request):
         total = TeacherProfile.objects.count()
@@ -1853,6 +1863,13 @@ class AttendanceAdmin(PortalModelAdmin):
                     lambda request: attendance_hub_view(self.admin_site, request),
                 ),
                 name='portals_attendance_hub',
+            ),
+            path(
+                'teachers/',
+                self.admin_site.admin_view(
+                    lambda request: teacher_attendance_overview_view(self.admin_site, request),
+                ),
+                name='portals_attendance_teachers',
             ),
         ]
         return custom + urls

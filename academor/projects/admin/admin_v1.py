@@ -1218,7 +1218,7 @@ class TeamAdminForm(forms.ModelForm):
 @admin.register(Team)
 class TeamAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     form = TeamAdminForm
-    list_display = ('id', 'name', 'slug', 'role', 'is_teacher', 'is_team_member', 'order')
+    list_display = ('id', 'name', 'slug', 'role', 'second_role', 'is_teacher', 'is_team_member', 'order')
     list_editable = ('is_teacher', 'is_team_member', 'order')
     list_filter = ('is_teacher', 'is_team_member')
     readonly_fields = ('slug',)
@@ -1230,7 +1230,7 @@ class TeamAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     )
     fieldsets = (
         (None, {
-            'fields': ('image', 'name', 'slug', 'role', 'order', 'is_teacher', 'is_team_member'),
+            'fields': ('image', 'name', 'slug', 'role', 'second_role', 'order', 'is_teacher', 'is_team_member'),
         }),
         ('Azerbaijani', {
             'fields': ('description_az',),

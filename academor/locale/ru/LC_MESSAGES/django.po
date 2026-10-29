@@ -10924,6 +10924,56 @@ msgstr "%(name)s, ваш уровень"
 msgid "CEFR scale"
 msgstr "Шкала CEFR"
 
+msgid "Teachers' attendance"
+msgstr "Посещаемость по преподавателям"
+
+msgid "Month"
+msgstr "Месяц"
+
+msgid "Previous month"
+msgstr "Предыдущий месяц"
+
+msgid "Next month"
+msgstr "Следующий месяц"
+
+msgid "All records in list"
+msgstr "Все записи списком"
+
+msgid "Search teacher…"
+msgstr "Поиск преподавателя…"
+
+#, python-format
+msgid "%(g)s groups · %(s)s students"
+msgstr "Групп: %(g)s · учеников: %(s)s"
+
+msgid "Lesson days"
+msgstr "Учебные дни"
+
+msgid "Marks per day"
+msgstr "Отметки по дням"
+
+msgid "Present, late and absent marks for each day of the month"
+msgstr "Отметки «присутствовал», «опоздал» и «отсутствовал» по дням месяца"
+
+msgid "guest"
+msgstr "гость"
+
+msgid "Before the start date"
+msgstr "До даты начала"
+
+msgid "This teacher has no active groups."
+msgstr "У этого преподавателя нет активных групп."
+
+msgid "Not marked"
+msgstr "Не отмечено"
+
+#, python-format
+msgid "%(n)s student"
+msgid_plural "%(n)s students"
+msgstr[0] "%(n)s ученик"
+msgstr[1] "%(n)s ученика"
+msgstr[2] "%(n)s учеников"
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Попробуйте в следующей акции — мы сообщим."
 
