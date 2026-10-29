@@ -15,6 +15,49 @@ from portals.utils.teacher_courses import teacher_groups_queryset
 REGISTER_STATUSES = frozenset(Attendance.Status.values)
 MAX_GUEST_NAME_LEN = 200
 MAX_GROUP_NAME_LEN = 200
+MAIN_REGISTER_NAME = 'Ümumi davamiyyət cədvəli'
+
+
+def teacher_main_register(teacher):
+    """The teacher's general attendance register (one per teacher), created on first use."""
+    from portals.models import StudyGroup
+
+    main = (
+        StudyGroup.objects.filter(teacher_id=teacher.pk, is_main_register=True)
+        .order_by('id')
+        .first()
+    )
+    if main is None:
+        main = StudyGroup.objects.create(
+            teacher_id=teacher.pk,
+            name=MAIN_REGISTER_NAME,
+            is_register_only=True,
+            is_main_register=True,
+            is_active=True,
+            max_students=500,
+        )
+    elif not main.is_active:
+        StudyGroup.objects.filter(pk=main.pk).update(is_active=True)
+        main.is_active = True
+    return main
+
+
+def _teacher_group_ids(teacher_id):
+    """All of the teacher's active groups — the general register reads marks from each."""
+    return list(
+        teacher_groups_queryset(teacher_id, active_only=True, include_register_only=True)
+        .values_list('pk', flat=True)
+    )
+
+
+def _register_students_qs(group):
+    """Real students on a register: the group's own, or every student of the teacher for the general one."""
+    if group.is_main_register:
+        return StudentProfile.objects.filter(
+            groups__teacher_id=group.teacher_id,
+            groups__is_active=True,
+        ).distinct()
+    return StudentProfile.objects.filter(groups=group)
 
 
 def weekday_shorts():
@@ -69,6 +112,7 @@ def _group_payload(group):
         'course_label': ', '.join(labels) if not group.is_register_only else '',
         'start_date': group.start_date,
         'is_register_only': bool(group.is_register_only),
+        'is_main_register': bool(group.is_main_register),
     }
 
 
@@ -80,16 +124,21 @@ def _person_filter(*, student=None, guest=None):
     return Q(pk__in=[])
 
 
+def _register_group_q(group, *, for_student=True):
+    """Marks that belong to a register; the general one also shows students' marks from their groups."""
+    if group.is_main_register and for_student:
+        ids = _teacher_group_ids(group.teacher_id)
+        return Q(group_id__in=ids) | Q(schedule__group_id__in=ids)
+    return Q(group_id=group.pk) | Q(schedule__group_id=group.pk)
+
+
 def _register_attendance_qs(group, month_start, month_end, *, student_ids=None, guest_ids=None):
-    qs = Attendance.objects.filter(
-        Q(group_id=group.pk) | Q(schedule__group_id=group.pk),
-        session_date__range=(month_start, month_end),
-    )
     person_q = Q()
     if student_ids:
-        person_q |= Q(student_id__in=student_ids)
+        person_q |= Q(student_id__in=student_ids) & _register_group_q(group)
     if guest_ids:
-        person_q |= Q(guest_id__in=guest_ids)
+        person_q |= Q(guest_id__in=guest_ids) & _register_group_q(group, for_student=False)
+    qs = Attendance.objects.filter(session_date__range=(month_start, month_end))
     if not student_ids and not guest_ids:
         return qs.none()
     return qs.filter(person_q).order_by('marked_at', 'id')
@@ -100,7 +149,7 @@ def month_status_counts(*, group, year, month, student=None, guest=None):
     month_start = date(year, month, 1)
     month_end = date(year, month, days_in_month)
     qs = Attendance.objects.filter(
-        Q(group_id=group.pk) | Q(schedule__group_id=group.pk),
+        _register_group_q(group, for_student=student is not None),
         session_date__range=(month_start, month_end),
     ).filter(_person_filter(student=student, guest=guest))
     marks = {}
@@ -149,6 +198,7 @@ def _build_cells(days, marks, start=None):
 
 def build_teacher_attendance_register(teacher, *, year, month, group=None, today=None):
     today = today or timezone.localdate()
+    main = teacher_main_register(teacher)
     groups = list(
         teacher_groups_queryset(teacher.pk, active_only=True, include_register_only=True)
         .prefetch_related('courses')
@@ -160,8 +210,12 @@ def build_teacher_attendance_register(teacher, *, year, month, group=None, today
                 distinct=True,
             ),
         )
-        .order_by('is_register_only', 'name', 'id')
+        # the general register first, so it is what the teacher lands on
+        .order_by('-is_main_register', 'is_register_only', 'name', 'id')
     )
+    for item in groups:
+        if item.pk == main.pk:
+            item.student_count = _register_students_qs(main).count()
     selected = group
     group_ids = {item.pk for item in groups}
     if selected is None or selected.pk not in group_ids:
@@ -193,13 +247,13 @@ def build_teacher_attendance_register(teacher, *, year, month, group=None, today
     students = []
     if selected:
         students_qs = (
-            StudentProfile.objects.filter(groups=selected)
+            _register_students_qs(selected)
             .select_related('user')
             .order_by('user__username', 'id')
         )
         student_rows = []
         for student in students_qs:
-            start = student_start_date(student, selected)
+            start = student_start_date(student, None if selected.is_main_register else selected)
             if start and start > month_end:
                 continue
             student_rows.append((student, start))
@@ -279,6 +333,7 @@ def build_teacher_attendance_register(teacher, *, year, month, group=None, today
                 'id': item.pk,
                 'name': item.name,
                 'is_register_only': bool(item.is_register_only),
+                'is_main_register': bool(item.is_main_register),
                 'student_count': (
                     int(getattr(item, 'student_count', 0) or 0)
                     + int(getattr(item, 'guest_count', 0) or 0)
@@ -299,9 +354,9 @@ def save_register_mark(*, group, session_date, status, student=None, guest=None)
         return {'ok': False, 'error': 'invalid_person'}
 
     if student is not None:
-        if not group.students.filter(pk=student.pk).exists():
+        if not _register_students_qs(group).filter(pk=student.pk).exists():
             return {'ok': False, 'error': 'not_in_group'}
-        start = student_start_date(student, group)
+        start = student_start_date(student, None if group.is_main_register else group)
         if start and session_date < start:
             return {'ok': False, 'error': 'before_start'}
         person_q = Q(student_id=student.pk)
@@ -310,9 +365,10 @@ def save_register_mark(*, group, session_date, status, student=None, guest=None)
             return {'ok': False, 'error': 'not_in_group'}
         person_q = Q(guest_id=guest.pk)
 
+    # on the general register a day's student mark may live in any of the teacher's groups
     qs = Attendance.objects.filter(
         session_date=session_date,
-    ).filter(Q(group_id=group.pk) | Q(schedule__group_id=group.pk)).filter(person_q)
+    ).filter(_register_group_q(group, for_student=student is not None)).filter(person_q)
 
     if not status:
         qs.delete()
@@ -441,6 +497,8 @@ def add_register_group(*, teacher, name):
 
 
 def remove_register_group(*, teacher, group):
+    if group.is_main_register:
+        return {'ok': False, 'error': 'main_register'}
     if group.teacher_id != teacher.pk or not group.is_register_only:
         return {'ok': False, 'error': 'not_register_group'}
     if group.is_active:

@@ -1,0 +1,48 @@
+{% load i18n %}
+{# One register grid (students x days) on the teachers' attendance page; needs g and days. #}
+<div class="ta-group">
+  <div class="ta-group__head">
+    <h3>{{ g.name }}</h3>
+    {% if g.is_main_register %}<span class="ta-pill ta-pill--main">{% trans "General register" %}</span>{% endif %}
+    {% if g.course_label %}<span class="ta-chip">{{ g.course_label }}</span>{% endif %}
+    <span class="ta-chip">{% blocktrans count n=g.rows|length %}{{ n }} student{% plural %}{{ n }} students{% endblocktrans %}</span>
+    <span class="ta-pill tone-{{ g.tone }}">{% if g.rate is not None %}{{ g.rate }}%{% else %}—{% endif %}</span>
+  </div>
+  {% if g.rows %}
+  <div class="ta-scroll">
+    <table class="ta-grid">
+      <thead>
+        <tr>
+          <th class="ta-name" scope="col">{% trans 'Student' %}</th>
+          {% for d in days %}<th scope="col" class="{% if d.is_weekend %}is-weekend{% endif %}{% if d.is_today %} is-today{% endif %}">{{ d.weekday_short }}<b>{{ d.n }}</b></th>{% endfor %}
+          <th scope="col" class="ta-sum">✓</th><th scope="col" class="ta-sum">L</th><th scope="col" class="ta-sum">✗</th><th scope="col" class="ta-sum">%</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in g.rows %}
+        <tr>
+          <th class="ta-name" scope="row" title="{{ row.name }}">
+            {% if row.id %}<a href="{% url 'admin:portals_studentprofile_attendance' row.id %}">{{ row.name }}</a>{% else %}{{ row.name }} <span class="ta-guest">{% trans 'guest' %}</span>{% endif %}
+          </th>
+          {% for c in row.cells %}
+          <td class="{% if c.is_weekend %}is-weekend{% endif %}">
+            {% if c.disabled %}<span class="ta-cell ta-cell--off" title="{% trans 'Before the start date' %}"></span>
+            {% elif c.status == 'present' %}<span class="ta-cell ta-cell--present" title="{{ c.iso }} · {% trans 'Present' %}">✓</span>
+            {% elif c.status == 'late' %}<span class="ta-cell ta-cell--late" title="{{ c.iso }} · {% trans 'Late' %}">L</span>
+            {% elif c.status == 'absent' %}<span class="ta-cell ta-cell--absent" title="{{ c.iso }} · {% trans 'Absent' %}">✗</span>
+            {% else %}<span class="ta-cell" title="{{ c.iso }}"></span>{% endif %}
+          </td>
+          {% endfor %}
+          <td class="ta-sum" style="color: var(--ta-present)">{{ row.present_count }}</td>
+          <td class="ta-sum" style="color: var(--ta-late)">{{ row.late_count }}</td>
+          <td class="ta-sum" style="color: var(--ta-absent)">{{ row.absent_count }}</td>
+          <td class="ta-sum"><span class="ta-pill tone-{{ row.tone }}">{% if row.rate is not None %}{{ row.rate }}%{% else %}—{% endif %}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="ta-empty">{% trans 'No students in this group yet.' %}</p>
+  {% endif %}
+</div>

@@ -77,9 +77,9 @@
         >
           {{ group.name }}
           <span>{{ group.student_count }}</span>
-          {% if group.is_register_only %}<em class="portal-register__group-tag">{% trans 'əl ilə' %}</em>{% endif %}
+          {% if group.is_main_register %}<em class="portal-register__group-tag portal-register__group-tag--main">{% trans 'ümumi' %}</em>{% elif group.is_register_only %}<em class="portal-register__group-tag">{% trans 'əl ilə' %}</em>{% endif %}
         </a>
-        {% if group.is_register_only %}
+        {% if group.is_register_only and not group.is_main_register %}
         <button
           type="button"
           class="portal-register__group-remove"

@@ -42,6 +42,13 @@ class StudyGroup(models.Model):
         verbose_name=_('Attendance register only'),
         help_text=_('Manual register group — not shown in schedule/lessons lists.'),
     )
+    # One per teacher: the "general attendance register" every student is marked on
+    # (all real students of the teacher's groups plus manual names).
+    is_main_register = models.BooleanField(
+        default=False,
+        verbose_name=_('General attendance register'),
+        help_text=_("The teacher's single attendance table listing all of their students."),
+    )
     students = models.ManyToManyField(
         'StudentProfile',
         related_name='groups',

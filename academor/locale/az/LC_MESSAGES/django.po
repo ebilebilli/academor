@@ -10840,6 +10840,25 @@ msgid_plural "%(n)s students"
 msgstr[0] "%(n)s şagird"
 msgstr[1] "%(n)s şagird"
 
+msgid "General register"
+msgstr "Ümumi cədvəl"
+
+#, python-format
+msgid "Other groups (%(n)s)"
+msgstr "Digər qruplar (%(n)s)"
+
+msgid "students' marks from these groups are already on the general register"
+msgstr "bu qruplardakı tələbələrin qeydləri artıq ümumi cədvəldə var"
+
+msgid "ümumi"
+msgstr "ümumi"
+
+msgid "General attendance register"
+msgstr "Ümumi davamiyyət cədvəli"
+
+msgid "The teacher's single attendance table listing all of their students."
+msgstr "Müəllimin bütün tələbələrinin yazıldığı vahid davamiyyət cədvəli."
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Növbəti kampaniyada yenə cəhd et — xəbərdar edəcəyik."
 
