@@ -93,22 +93,29 @@
       {% endfor %}
     </nav>
     {% endif %}
-    <form class="portal-register__add portal-register__add--group" data-register-add-group-form>
-      <label class="visually-hidden" for="register-group-name">{% trans 'Qrup adı' %}</label>
-      <input
-        id="register-group-name"
-        type="text"
-        class="form-control form-control-sm"
-        name="group_name"
-        maxlength="200"
-        placeholder="{% trans 'Databazadan kənar qrup adı…' %}"
-        autocomplete="off"
-      >
-      <button type="submit" class="portal-register__add-btn">
-        <i class="bi bi-folder-plus" aria-hidden="true"></i>
-        {% trans 'Qrup əlavə et' %}
-      </button>
-    </form>
+    {# most teachers only use the general register, so adding another one stays tucked away #}
+    <details class="portal-register__more">
+      <summary class="portal-register__more-toggle">
+        <i class="bi bi-plus-lg" aria-hidden="true"></i>
+        {% trans 'Yeni qrup' %}
+      </summary>
+      <form class="portal-register__add portal-register__add--group" data-register-add-group-form>
+        <label class="visually-hidden" for="register-group-name">{% trans 'Qrup adı' %}</label>
+        <input
+          id="register-group-name"
+          type="text"
+          class="form-control form-control-sm"
+          name="group_name"
+          maxlength="200"
+          placeholder="{% trans 'Yeni qrup adı…' %}"
+          autocomplete="off"
+        >
+        <button type="submit" class="portal-register__add-btn">
+          <i class="bi bi-folder-plus" aria-hidden="true"></i>
+          {% trans 'Qrup əlavə et' %}
+        </button>
+      </form>
+    </details>
   </div>
 
   {% if register.group %}
@@ -137,7 +144,7 @@
       class="form-control form-control-sm"
       name="guest_name"
       maxlength="200"
-      placeholder="{% trans 'Databazadan kənar tələbə adı…' %}"
+      placeholder="{% trans 'Siyahıya yeni tələbə adı…' %}"
       autocomplete="off"
     >
     <button type="submit" class="portal-register__add-btn">

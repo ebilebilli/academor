@@ -4,7 +4,7 @@
 {% block title %}{% trans 'Dashboard' %}{% endblock %}
 
 {% block content %}
-{% include "portals/includes/portal_portal_banner.html" with greeting_name=teacher.full_name subtitle=_('Dərslərini, tapşırıqlarını və nəticələri bir yerdən izlə') %}
+{% include "portals/includes/portal_portal_banner.html" with greeting_name=teacher.full_name subtitle=_('Qruplarını, dərslərini və şagirdlərinin nəticələrini bir yerdən idarə et') %}
 
 {# ── Stats row ────────────────────────────────────────────────── #}
 <section class="t-stats mb-4 is-loading" aria-label="{% trans 'Statistika' %}" data-portal-dashboard-stats="{% url 'portals:teacher-dashboard-stats' %}">

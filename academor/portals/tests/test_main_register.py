@@ -78,7 +78,11 @@ class MainRegisterTests(TestCase):
         self.assertTrue(result['ok'])
         self.assertEqual(Attendance.objects.filter(student=self.student, session_date=date(2026, 10, 6)).count(), 1)
         save_register_mark(group=main, student=self.student, session_date=date(2026, 10, 8), status='absent')
-        self.assertEqual(Attendance.objects.get(student=self.student, session_date=date(2026, 10, 8)).group, main)
+        # a new mark is filed under the student's own group, so their portal shows it there
+        self.assertEqual(Attendance.objects.get(student=self.student, session_date=date(2026, 10, 8)).group, self.other)
+        register = build_teacher_attendance_register(self.teacher, year=2026, month=10, group=main)
+        row = next(r for r in register['students'] if r['id'] == self.student.pk)
+        self.assertEqual((row['present_count'], row['absent_count']), (1, 1))
 
     def test_general_register_cannot_be_removed(self):
         main = teacher_main_register(self.teacher)

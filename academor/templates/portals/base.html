@@ -14,8 +14,6 @@
   <!-- Match main site typography (Host Grotesk) — async, non-blocking (text font, not icons) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  {# Warm the connection only: portal-lottie.js imports the player on demand, so pages without an animation never fetch it. #}
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <!-- Self-hosted fonts & icons -->
@@ -31,10 +29,10 @@
   <!-- Base portal styles (full legacy sheet — overridden by layers below) -->
   <link rel="stylesheet" href="{% static 'portals/css/style.css' %}?v=20260712a">
   <!-- Role-specific redesign layer -->
-  <link rel="stylesheet" href="{% static 'portals/css/portal-redesign.css' %}?v=20260911a">
+  <link rel="stylesheet" href="{% static 'portals/css/portal-redesign.css' %}?v=20261029a">
   <!-- Shell overrides (loads last) -->
   <link rel="stylesheet" href="{% static 'portals/css/portal-shell.css' %}?v=20260911a">
-  <link rel="stylesheet" href="{% static 'portals/css/portal-lottie.css' %}?v=20260707c">
+  <link rel="stylesheet" href="{% static 'portals/css/portal-hero.css' %}?v=20261029a">
   {% if portal_role == 'teacher' or portal_role == 'student' or portal_role == 'parent' %}
   <link rel="stylesheet" href="{% static 'portals/css/weekly-scores.css' %}">
   {% endif %}
@@ -54,7 +52,7 @@
       width: 46px;
       height: 46px;
       border: 4px solid #e5e7eb;
-      border-top: 4px solid #007bff;
+      border-top: 4px solid #ff5414;
       border-radius: 50%;
       animation: page-loader-spin 0.7s linear infinite;
     }
@@ -109,7 +107,6 @@
   {% if portal_is_authenticated %}
   <script defer src="{% static 'portals/js/portal-badges.js' %}?v=20260723a"></script>
   {% endif %}
-  <script defer src="{% static 'portals/js/portal-lottie.js' %}?v=20260707b"></script>
   {% block extra_js %}{% endblock %}
   {% if portal_role == 'teacher' %}
   <script defer src="{% static 'portals/js/weekly-scores.js' %}?v=20260704c" data-portal-page-script="true"></script>

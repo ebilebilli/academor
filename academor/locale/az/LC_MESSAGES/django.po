@@ -2469,7 +2469,7 @@ msgstr "Həftəlik cədvəl"
 
 #: academor/portals/models/notification_models.py:86
 msgid "IELTS mock test"
-msgstr ""
+msgstr "IELTS mock test"
 
 #: academor/portals/models/notification_models.py:94
 #: academor/portals/models/score_models.py:100
@@ -3797,7 +3797,7 @@ msgstr "Düzgün bal daxil edin."
 
 #: academor/portals/utils/weekly_scores.py:77
 msgid "Score must be between 0 and 10."
-msgstr ""
+msgstr "Bal 0 ilə 10 arasında olmalıdır."
 
 #: academor/portals/utils/weekly_scores.py:266
 #| msgid "You can only schedule slots for your own groups."
@@ -10858,6 +10858,157 @@ msgstr "Ümumi davamiyyət cədvəli"
 
 msgid "The teacher's single attendance table listing all of their students."
 msgstr "Müəllimin bütün tələbələrinin yazıldığı vahid davamiyyət cədvəli."
+
+msgid "Nəticələr"
+msgstr "Nəticələr"
+
+msgid ""
+"Qruplarını, dərslərini və şagirdlərinin nəticələrini bir yerdən idarə et"
+msgstr ""
+"Qruplarını, dərslərini və şagirdlərinin nəticələrini bir yerdən idarə et"
+
+msgid "Yeni qrup"
+msgstr "Yeni qrup"
+
+msgid "Yeni qrup adı…"
+msgstr "Yeni qrup adı…"
+
+msgid "Siyahıya yeni tələbə adı…"
+msgstr "Siyahıya yeni tələbə adı…"
+
+msgid "Portal banner"
+msgstr "Portal banneri"
+
+msgid "Answer"
+msgstr "Cavab"
+
+msgid "Keep the passage visible while answering questions"
+msgstr "Suallara cavab verərkən mətni görünən saxla"
+
+msgid "Pin passage"
+msgstr "Mətni sabitlə"
+
+msgid "Unpin passage"
+msgstr "Sabitləməni ləğv et"
+
+msgid "Download Word"
+msgstr "Word yüklə"
+
+msgid "Your browser does not support audio playback."
+msgstr "Brauzeriniz audio oxutmanı dəstəkləmir."
+
+msgid "Passage video"
+msgstr "Mətnin videosu"
+
+msgid "Your session has expired. Please log in again."
+msgstr "Sessiyanın vaxtı bitib. Zəhmət olmasa yenidən daxil olun."
+
+msgid "Jump to question"
+msgstr "Suala keç"
+
+msgid "Unanswered"
+msgstr "Cavabsız"
+
+msgid "IELTS / SAT quiz"
+msgstr "IELTS / SAT quiz"
+
+msgid "Account menu"
+msgstr "Hesab menyusu"
+
+msgid "Sent by"
+msgstr "Göndərən"
+
+msgid "Question results"
+msgstr "Sual nəticələri"
+
+msgid "Section score"
+msgstr "Bölmə balı"
+
+msgid "Sections follow the Digital SAT order: Reading and Writing → Math."
+msgstr ""
+"Bölmələr Digital SAT ardıcıllığı ilə gedir: Reading and Writing → Math."
+
+msgid "One random task is selected from each section."
+msgstr "Hər bölmədən təsadüfi bir tapşırıq seçilir."
+
+msgid "Writing and Speaking sections are reviewed and scored by your teacher."
+msgstr ""
+"Writing və Speaking bölmələrini müəlliminiz yoxlayır və qiymətləndirir."
+
+msgid ""
+"After all sections are completed, your answers are sent to your teacher for "
+"scoring."
+msgstr ""
+"Bütün bölmələr tamamlandıqdan sonra cavablarınız qiymətləndirmə üçün "
+"müəllimə göndərilir."
+
+msgid "Edit slot"
+msgstr "Dərs vaxtını redaktə et"
+
+msgid "Delete slot"
+msgstr "Dərs vaxtını sil"
+
+msgid ""
+"This group has no course linked in admin. Link SAT (or the correct course) "
+"on the study group first."
+msgstr ""
+"Bu qrupa admində kurs bağlanmayıb. Əvvəlcə tədris qrupuna SAT-ı (və ya "
+"düzgün kursu) bağlayın."
+
+msgid "Lesson list"
+msgstr "Dərs siyahısı"
+
+msgid "Parent category"
+msgstr "Ana kateqoriya"
+
+msgid "Add weekly slots for your groups to build the calendar."
+msgstr ""
+"Cədvəlin qurulması üçün qruplarınıza həftəlik dərs vaxtları əlavə edin."
+
+msgid "Load failed."
+msgstr "Yükləmək alınmadı."
+
+msgid "An error occurred."
+msgstr "Xəta baş verdi."
+
+msgid "Could not save."
+msgstr "Yadda saxlamaq alınmadı."
+
+msgid "Ad daxil edin"
+msgstr "Ad daxil edin"
+
+msgid "Qrup silindi"
+msgstr "Qrup silindi"
+
+msgid "Ay"
+msgstr "Ay"
+
+msgid "Qrupu sil"
+msgstr "Qrupu sil"
+
+msgid "Qeyd et:"
+msgstr "Qeyd et:"
+
+msgid "Qeyd et"
+msgstr "Qeyd et"
+
+msgid "Gecikib"
+msgstr "Gecikib"
+
+msgid "Zaman"
+msgstr "Zaman"
+
+msgid "Orta bal"
+msgstr "Orta bal"
+
+msgid "Mock aktiv"
+msgstr "Mock aktiv"
+
+msgid "Fayl"
+msgstr "Fayl"
+
+msgid "Ana kateqoriya"
+msgstr "Ana kateqoriya"
 
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Növbəti kampaniyada yenə cəhd et — xəbərdar edəcəyik."

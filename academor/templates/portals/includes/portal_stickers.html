@@ -1,0 +1,19 @@
+{% load static portal_tags %}
+{% comment %}
+Watercolor sticker cluster for heroes and banners. Picked by `role` (banners) or the hero `icon`.
+{% endcomment %}
+{% portal_stickers icon=icon role=sticker_role as sticker_set %}
+<div class="portal-stickers portal-stickers--{{ sticker_set|length }}" aria-hidden="true">
+  {% for st in sticker_set %}
+  {% with "portals/img/stickers/"|add:st.name|add:".webp" as sticker_path %}
+  <img
+    class="portal-stickers__item portal-stickers__item--{{ forloop.counter }}"
+    src="{% static sticker_path %}"
+    width="{{ st.width }}"
+    height="{{ st.height }}"
+    alt=""
+    decoding="async"
+  >
+  {% endwith %}
+  {% endfor %}
+</div>

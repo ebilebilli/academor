@@ -4,7 +4,7 @@
 {% block title %}{% trans 'Mock tarixçəsi' %}{% endblock %}
 
 {% block content %}
-{% include "portals/includes/portal_page_hero.html" with title=_('Mock tarixçəsi') subtitle=_('Keçmiş mock test nəticələrinə baxın.') icon="ti-history" lottie="portals/animations/exam-preparation.lottie" %}
+{% include "portals/includes/portal_page_hero.html" with title=_('Mock tarixçəsi') subtitle=_('Keçmiş mock test nəticələrinə baxın.') icon="ti-history" stickers=True %}
 
 <section class="ds-card" aria-label="{% trans 'Mock tarixçəsi' %}">
   {% include "portals/includes/mock_attempts_table.html" with mock_attempts=completed_attempts mock_detail_url_name="portals:customer-mock-complete" %}

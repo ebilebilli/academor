@@ -2483,7 +2483,7 @@ msgstr "Недельное расписание"
 
 #: academor/portals/models/notification_models.py:86
 msgid "IELTS mock test"
-msgstr ""
+msgstr "Пробный тест IELTS"
 
 #: academor/portals/models/notification_models.py:94
 #: academor/portals/models/score_models.py:100
@@ -3878,7 +3878,7 @@ msgstr "Введите корректный балл."
 
 #: academor/portals/utils/weekly_scores.py:77
 msgid "Score must be between 0 and 10."
-msgstr ""
+msgstr "Балл должен быть от 0 до 10."
 
 #: academor/portals/utils/weekly_scores.py:266
 #, fuzzy
@@ -10992,6 +10992,152 @@ msgstr "Общий журнал посещаемости"
 
 msgid "The teacher's single attendance table listing all of their students."
 msgstr "Единый журнал посещаемости преподавателя со всеми его учениками."
+
+msgid "Nəticələr"
+msgstr "Результаты"
+
+msgid ""
+"Qruplarını, dərslərini və şagirdlərinin nəticələrini bir yerdən idarə et"
+msgstr "Управляйте группами, уроками и результатами учеников в одном месте"
+
+msgid "Yeni qrup"
+msgstr "Новая группа"
+
+msgid "Yeni qrup adı…"
+msgstr "Название новой группы…"
+
+msgid "Siyahıya yeni tələbə adı…"
+msgstr "Имя нового ученика для списка…"
+
+msgid "Portal banner"
+msgstr "Баннер портала"
+
+msgid "Answer"
+msgstr "Ответ"
+
+msgid "Keep the passage visible while answering questions"
+msgstr "Держать текст на экране во время ответов"
+
+msgid "Pin passage"
+msgstr "Закрепить текст"
+
+msgid "Unpin passage"
+msgstr "Открепить текст"
+
+msgid "Download Word"
+msgstr "Скачать Word"
+
+msgid "Your browser does not support audio playback."
+msgstr "Ваш браузер не поддерживает воспроизведение аудио."
+
+msgid "Passage video"
+msgstr "Видео к тексту"
+
+msgid "Your session has expired. Please log in again."
+msgstr "Сессия истекла. Пожалуйста, войдите снова."
+
+msgid "Jump to question"
+msgstr "Перейти к вопросу"
+
+msgid "Unanswered"
+msgstr "Без ответа"
+
+msgid "IELTS / SAT quiz"
+msgstr "Квиз IELTS / SAT"
+
+msgid "Account menu"
+msgstr "Меню аккаунта"
+
+msgid "Sent by"
+msgstr "Отправитель"
+
+msgid "Question results"
+msgstr "Результаты по вопросам"
+
+msgid "Section score"
+msgstr "Балл за раздел"
+
+msgid "Sections follow the Digital SAT order: Reading and Writing → Math."
+msgstr "Разделы идут в порядке Digital SAT: Reading and Writing → Math."
+
+msgid "One random task is selected from each section."
+msgstr "Из каждого раздела выбирается одно случайное задание."
+
+msgid "Writing and Speaking sections are reviewed and scored by your teacher."
+msgstr "Разделы Writing и Speaking проверяет и оценивает ваш преподаватель."
+
+msgid ""
+"After all sections are completed, your answers are sent to your teacher for "
+"scoring."
+msgstr ""
+"После завершения всех разделов ответы отправляются преподавателю на оценку."
+
+msgid "Edit slot"
+msgstr "Изменить слот"
+
+msgid "Delete slot"
+msgstr "Удалить слот"
+
+msgid ""
+"This group has no course linked in admin. Link SAT (or the correct course) "
+"on the study group first."
+msgstr ""
+"К этой группе в админке не привязан курс. Сначала привяжите SAT (или нужный "
+"курс) к учебной группе."
+
+msgid "Lesson list"
+msgstr "Список уроков"
+
+msgid "Parent category"
+msgstr "Родительская категория"
+
+msgid "Add weekly slots for your groups to build the calendar."
+msgstr "Добавьте еженедельные слоты для групп, чтобы составить календарь."
+
+msgid "Load failed."
+msgstr "Не удалось загрузить."
+
+msgid "An error occurred."
+msgstr "Произошла ошибка."
+
+msgid "Could not save."
+msgstr "Не удалось сохранить."
+
+msgid "Ad daxil edin"
+msgstr "Введите имя"
+
+msgid "Qrup silindi"
+msgstr "Группа удалена"
+
+msgid "Ay"
+msgstr "Месяц"
+
+msgid "Qrupu sil"
+msgstr "Удалить группу"
+
+msgid "Qeyd et:"
+msgstr "Отметить:"
+
+msgid "Qeyd et"
+msgstr "Отметить"
+
+msgid "Gecikib"
+msgstr "Опоздал"
+
+msgid "Zaman"
+msgstr "Время"
+
+msgid "Orta bal"
+msgstr "Средний балл"
+
+msgid "Mock aktiv"
+msgstr "Mock открыт"
+
+msgid "Fayl"
+msgstr "Файл"
+
+msgid "Ana kateqoriya"
+msgstr "Родительская категория"
 
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Попробуйте в следующей акции — мы сообщим."

@@ -60,6 +60,22 @@ def _register_students_qs(group):
     return StudentProfile.objects.filter(groups=group)
 
 
+def _mark_group_for(group, student):
+    """Group a new student mark is saved under.
+
+    Marks made on the general register go to the student's own group with this teacher, so the
+    student's portal (group tabs, per-group rates) keeps showing them under the right group.
+    """
+    if not group.is_main_register or student is None:
+        return group
+    home = (
+        student.groups.filter(teacher_id=group.teacher_id, is_active=True, is_main_register=False)
+        .order_by('is_register_only', 'id')
+        .first()
+    )
+    return home or group
+
+
 def weekday_shorts():
     return (
         _('Be'),
@@ -385,7 +401,7 @@ def save_register_mark(*, group, session_date, status, student=None, guest=None)
     if not updated:
         Attendance.objects.create(
             schedule=None,
-            group=group,
+            group=_mark_group_for(group, student),
             student=student,
             guest=guest,
             session_date=session_date,

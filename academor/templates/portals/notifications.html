@@ -6,7 +6,7 @@
 {% block content %}
 {% url 'portals:notification-mark-all-read' as notifications_mark_all_url %}
 {% trans 'Quiz nəticələri və qiymətlər.' as default_notifications_subtitle %}
-{% include "portals/includes/portal_page_hero.html" with title=_('Bildirişlər') subtitle=notifications_subtitle|default:default_notifications_subtitle icon="ti-bell" title_badge=portal_unread_notifications lottie="portals/animations/graduation-certificate.lottie" show_mark_all=True unread_count=unread_count mark_all_url=notifications_mark_all_url %}
+{% include "portals/includes/portal_page_hero.html" with title=_('Bildirişlər') subtitle=notifications_subtitle|default:default_notifications_subtitle icon="ti-bell" title_badge=portal_unread_notifications stickers=True show_mark_all=True unread_count=unread_count mark_all_url=notifications_mark_all_url %}
 
 {% csrf_token %}
 

@@ -20,7 +20,7 @@
   data-portal-lessons-hide="class"
 >
 
-{% include "portals/includes/portal_page_hero.html" with title=_('Dərslər') subtitle=page_subtitle|default:_('Dərs materialları və videolar.') icon="ti-book" badge=lessons|length lottie="portals/animations/girl-studying-on-laptop.lottie" %}
+{% include "portals/includes/portal_page_hero.html" with title=_('Dərslər') subtitle=page_subtitle|default:_('Dərs materialları və videolar.') icon="ti-book" badge=lessons|length stickers=True %}
 
 {% include "portals/includes/lessons_filter_panel.html" %}
 

@@ -5,9 +5,9 @@
 
 {% block content %}
 {% if exam_program == 'sat' %}
-{% include "portals/includes/portal_page_hero.html" with title=exam_program_label|add:" Mock Test" subtitle=_('Complete Reading and Writing, then Math in one session — like the Digital SAT.') icon="ti-clipboard-list" lottie="portals/animations/student.lottie" %}
+{% include "portals/includes/portal_page_hero.html" with title=exam_program_label|add:" Mock Test" subtitle=_('Complete Reading and Writing, then Math in one session — like the Digital SAT.') icon="ti-clipboard-list" stickers=True %}
 {% else %}
-{% include "portals/includes/portal_page_hero.html" with title=exam_program_label|add:" Mock Test" subtitle=_('Complete Listening, Reading, Writing, and Speaking in one session — just like the real IELTS exam.') icon="ti-clipboard-list" lottie="portals/animations/student.lottie" %}
+{% include "portals/includes/portal_page_hero.html" with title=exam_program_label|add:" Mock Test" subtitle=_('Complete Listening, Reading, Writing, and Speaking in one session — just like the real IELTS exam.') icon="ti-clipboard-list" stickers=True %}
 {% endif %}
 
 <section class="ds-card mb-4">

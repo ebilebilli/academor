@@ -16,7 +16,7 @@
 >
 
 {% url 'portals:teacher-lesson-create' as teacher_lesson_create_url %}
-{% include "portals/includes/portal_page_hero.html" with title=_('Dərslər') subtitle=_('Qruplarınız üçün yüklənmiş materiallar.') icon="ti-book" badge=lessons|length lottie="portals/animations/girl-studying-on-laptop.lottie" %}
+{% include "portals/includes/portal_page_hero.html" with title=_('Dərslər') subtitle=_('Qruplarınız üçün yüklənmiş materiallar.') icon="ti-book" badge=lessons|length stickers=True %}
 
 {% include "portals/includes/lessons_filter_panel.html" %}
 

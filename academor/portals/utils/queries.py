@@ -917,7 +917,11 @@ def serialize_attendance(row):
         'schedule_id': row.schedule_id,
         'group_id': group.pk if group is not None else None,
         'group_name': group.name if group is not None else '',
-        'weekday_label': schedule.get_weekday_display() if schedule is not None else '',
+        # register marks have no schedule: fall back to the session's own weekday
+        'weekday_label': (
+            schedule.get_weekday_display() if schedule is not None
+            else Schedule.Weekday(row.session_date.weekday()).label
+        ),
         'start_time': schedule.start_time if schedule is not None else None,
         'session_date': row.session_date,
         'status': row.status,

@@ -2452,7 +2452,7 @@ msgstr "Weekly schedule"
 
 #: academor/portals/models/notification_models.py:86
 msgid "IELTS mock test"
-msgstr ""
+msgstr "IELTS mock test"
 
 #: academor/portals/models/notification_models.py:94
 #: academor/portals/models/score_models.py:100
@@ -3833,7 +3833,7 @@ msgstr "Enter a valid score."
 
 #: academor/portals/utils/weekly_scores.py:77
 msgid "Score must be between 0 and 10."
-msgstr ""
+msgstr "Score must be between 0 and 10."
 
 #: academor/portals/utils/weekly_scores.py:266
 #, fuzzy
@@ -10842,6 +10842,154 @@ msgstr "General attendance register"
 
 msgid "The teacher's single attendance table listing all of their students."
 msgstr "The teacher's single attendance table listing all of their students."
+
+msgid "Nəticələr"
+msgstr "Results"
+
+msgid ""
+"Qruplarını, dərslərini və şagirdlərinin nəticələrini bir yerdən idarə et"
+msgstr "Manage your groups, lessons and students' results in one place"
+
+msgid "Yeni qrup"
+msgstr "New group"
+
+msgid "Yeni qrup adı…"
+msgstr "New group name…"
+
+msgid "Siyahıya yeni tələbə adı…"
+msgstr "New student name for the list…"
+
+msgid "Portal banner"
+msgstr "Portal banner"
+
+msgid "Answer"
+msgstr "Answer"
+
+msgid "Keep the passage visible while answering questions"
+msgstr "Keep the passage visible while answering questions"
+
+msgid "Pin passage"
+msgstr "Pin passage"
+
+msgid "Unpin passage"
+msgstr "Unpin passage"
+
+msgid "Download Word"
+msgstr "Download Word"
+
+msgid "Your browser does not support audio playback."
+msgstr "Your browser does not support audio playback."
+
+msgid "Passage video"
+msgstr "Passage video"
+
+msgid "Your session has expired. Please log in again."
+msgstr "Your session has expired. Please log in again."
+
+msgid "Jump to question"
+msgstr "Jump to question"
+
+msgid "Unanswered"
+msgstr "Unanswered"
+
+msgid "IELTS / SAT quiz"
+msgstr "IELTS / SAT quiz"
+
+msgid "Account menu"
+msgstr "Account menu"
+
+msgid "Sent by"
+msgstr "Sent by"
+
+msgid "Question results"
+msgstr "Question results"
+
+msgid "Section score"
+msgstr "Section score"
+
+msgid "Sections follow the Digital SAT order: Reading and Writing → Math."
+msgstr "Sections follow the Digital SAT order: Reading and Writing → Math."
+
+msgid "One random task is selected from each section."
+msgstr "One random task is selected from each section."
+
+msgid "Writing and Speaking sections are reviewed and scored by your teacher."
+msgstr ""
+"Writing and Speaking sections are reviewed and scored by your teacher."
+
+msgid ""
+"After all sections are completed, your answers are sent to your teacher for "
+"scoring."
+msgstr ""
+"After all sections are completed, your answers are sent to your teacher for "
+"scoring."
+
+msgid "Edit slot"
+msgstr "Edit slot"
+
+msgid "Delete slot"
+msgstr "Delete slot"
+
+msgid ""
+"This group has no course linked in admin. Link SAT (or the correct course) "
+"on the study group first."
+msgstr ""
+"This group has no course linked in admin. Link SAT (or the correct course) "
+"on the study group first."
+
+msgid "Lesson list"
+msgstr "Lesson list"
+
+msgid "Parent category"
+msgstr "Parent category"
+
+msgid "Add weekly slots for your groups to build the calendar."
+msgstr "Add weekly slots for your groups to build the calendar."
+
+msgid "Load failed."
+msgstr "Load failed."
+
+msgid "An error occurred."
+msgstr "An error occurred."
+
+msgid "Could not save."
+msgstr "Could not save."
+
+msgid "Ad daxil edin"
+msgstr "Enter a name"
+
+msgid "Qrup silindi"
+msgstr "Group removed"
+
+msgid "Ay"
+msgstr "Month"
+
+msgid "Qrupu sil"
+msgstr "Remove group"
+
+msgid "Qeyd et:"
+msgstr "Mark:"
+
+msgid "Qeyd et"
+msgstr "Mark"
+
+msgid "Gecikib"
+msgstr "Late"
+
+msgid "Zaman"
+msgstr "Time"
+
+msgid "Orta bal"
+msgstr "Average score"
+
+msgid "Mock aktiv"
+msgstr "Mock enabled"
+
+msgid "Fayl"
+msgstr "File"
+
+msgid "Ana kateqoriya"
+msgstr "Parent category"
 
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Try again in the next campaign — we will let you know."

@@ -6,7 +6,7 @@
 {% block content %}
 {% include "portals/includes/parent_child_header.html" %}
 
-{% include "portals/includes/portal_page_hero.html" with title=_('Davamiyyət') subtitle=page_subtitle|default:_('Şagirdin iştirakı və seans tarixçəsi.') icon="ti-calendar-check" lottie="portals/animations/get-things-done.lottie" %}
+{% include "portals/includes/portal_page_hero.html" with title=_('Davamiyyət') subtitle=page_subtitle|default:_('Şagirdin iştirakı və seans tarixçəsi.') icon="ti-calendar-check" stickers=True %}
 
 <div data-portal-attendance-filter data-portal-scores-filter data-portal-status-tabs>
 <section class="s-lessons-filter-panel mb-4" aria-label="{% trans 'Davamiyyət filterləri' %}">
@@ -53,7 +53,7 @@
         <tr data-status="{{ row.status }}"{% if row.group_id %} data-group-ids="{{ row.group_id }}"{% endif %}>
           <td class="fw-500" data-label="{% trans 'Tarix' %}">{{ row.session_date|portal_date_long }}</td>
           <td data-label="{% trans 'Qrup' %}">{{ row.group_name }}</td>
-          <td data-label="{% trans 'Vaxt' %}">{{ row.weekday_label }}, {{ row.start_time|time:"H:i" }}</td>
+          <td data-label="{% trans 'Vaxt' %}">{{ row.weekday_label|default:"—" }}{% if row.start_time %}, {{ row.start_time|time:"H:i" }}{% endif %}</td>
           <td data-label="{% trans 'Status' %}">
             <span class="ds-badge{% if row.status == 'present' %} ds-badge--success{% elif row.status == 'absent' %} ds-badge--danger{% else %} ds-badge--warning{% endif %}">
               {{ row.status_label }}
