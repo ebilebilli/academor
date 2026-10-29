@@ -606,7 +606,7 @@ class PortalNotificationTests(TestCase):
         content = response.content.decode()
         self.assertIn('is-selected is-wrong', content)
         self.assertIn('is-correct', content)
-        self.assertIn('Your answer', content)
+        self.assertIn('Cavabınız', content)  # 'Your answer' in az
 
     def test_score_detail_marks_notification_read(self):
         result = QuizResult.objects.create(

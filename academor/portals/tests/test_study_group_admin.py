@@ -1,10 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
+from django.utils.datastructures import MultiValueDict
 
 from portals.admin.admin_v1 import study_group_teacher_queryset_for_admin
 from portals.models import StudyGroup, TeacherCourseSpecialization, TeacherProfile
 from portals.tests.group_helpers import link_study_group_courses
+from portals.tests.portal_helpers import ensure_active_portal_services
 from portals.tests.test_quiz_visibility import _ensure_active_portal_services
 from portals.utils.portal_services import services_for_portal_codes
 
@@ -14,6 +16,7 @@ User = get_user_model()
 class StudyGroupAdminTeacherQuerysetTests(TestCase):
     def setUp(self):
         _ensure_active_portal_services()
+        ensure_active_portal_services('sat')
         self.admin_user = User.objects.create_superuser(
             username='study_group_admin',
             password='pass',
@@ -48,10 +51,10 @@ class StudyGroupAdminTeacherQuerysetTests(TestCase):
     def test_teacher_queryset_uses_posted_courses_not_stale_group_courses(self):
         class Request:
             method = 'POST'
-            POST = {
+            POST = MultiValueDict({
                 'courses': [str(self.sat_service.pk)],
-                'teacher': str(self.sat_teacher.pk),
-            }
+                'teacher': [str(self.sat_teacher.pk)],
+            })
 
         queryset = study_group_teacher_queryset_for_admin(
             Request(),
@@ -74,6 +77,9 @@ class StudyGroupAdminTeacherQuerysetTests(TestCase):
                 'start_date': '',
                 'max_students': '10',
                 'students': [],
+                # the change page also carries the weekly schedule inline
+                'schedules-TOTAL_FORMS': '0',
+                'schedules-INITIAL_FORMS': '0',
             },
             follow=True,
         )

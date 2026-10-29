@@ -198,16 +198,29 @@ class PortalRoleMultiGroupTests(PortalRoleFixtureMixin, TestCase):
     def setUp(self):
         self.setUp_portal_roles()
 
-    def test_student_schedule_shows_group_filter_tabs(self):
+    def _add_weekly_slots(self):
+        from datetime import time
+
+        from portals.models import Schedule
+
+        for weekday, group in ((Schedule.Weekday.MONDAY, self.group_a), (Schedule.Weekday.TUESDAY, self.group_b)):
+            Schedule.objects.create(
+                group=group, weekday=weekday, start_time=time(10, 0), duration_min=90,
+                effective_from=date(2020, 1, 6),
+            )
+
+    def test_student_schedule_shows_every_group(self):
+        self._add_weekly_slots()
         client = Client()
         portal_client_login(client, self.student_user)
         response = client.get(reverse('portals:student-schedule'))
         self.assertEqual(response.status_code, 200)
+        # the schedule has no group filter; every group's lessons share one calendar
         self.assertContains(response, 'IELTS group A')
         self.assertContains(response, 'SAT group B')
-        self.assertContains(response, 'data-score-group')
 
-    def test_parent_schedule_shows_group_filter_tabs(self):
+    def test_parent_schedule_shows_every_group(self):
+        self._add_weekly_slots()
         client = Client()
         portal_client_login(client, self.parent_user)
         response = client.get(
@@ -217,7 +230,6 @@ class PortalRoleMultiGroupTests(PortalRoleFixtureMixin, TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'IELTS group A')
         self.assertContains(response, 'SAT group B')
-        self.assertContains(response, 'data-score-group')
 
     def test_teacher_student_profile_shows_only_own_group_card(self):
         client = Client()
@@ -311,8 +323,14 @@ class PortalRoleMultiGroupTests(PortalRoleFixtureMixin, TestCase):
         ctx = _student_scores_context(self.student.pk, request=request)
         self.assertEqual(ctx['quiz_average']['graded_count'], 1)
         self.assertEqual(ctx['weekly_average']['graded_count'], 1)
-        self.assertEqual(len(ctx['weekly_scores']), 1)
-        self.assertEqual(ctx['weekly_scores'][0]['score'], 8)
+        # rows stay unfiltered (the group switch is client-side); each row knows its groups
+        group_a_weekly = [row for row in ctx['weekly_scores'] if self.group_a.pk in row['group_ids']]
+        self.assertEqual(len(group_a_weekly), 1)
+        self.assertEqual(group_a_weekly[0]['score'], 8)
+        self.assertEqual(
+            [(ga['id'], ga['is_active']) for ga in ctx['group_averages']],
+            [(g['id'], g['id'] == self.group_a.pk) for g in ctx['score_groups']],
+        )
 
         request_b = RequestFactory().get(
             f'/portal/student/scores/?group={self.group_b.pk}'
@@ -320,4 +338,5 @@ class PortalRoleMultiGroupTests(PortalRoleFixtureMixin, TestCase):
         ctx_b = _student_scores_context(self.student.pk, request=request_b)
         self.assertEqual(ctx_b['quiz_average']['graded_count'], 1)
         self.assertEqual(ctx_b['weekly_average']['graded_count'], 1)
-        self.assertEqual(ctx_b['weekly_scores'][0]['score'], 4)
+        group_b_weekly = [row for row in ctx_b['weekly_scores'] if self.group_b.pk in row['group_ids']]
+        self.assertEqual(group_b_weekly[0]['score'], 4)

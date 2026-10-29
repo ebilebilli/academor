@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.test import RequestFactory, SimpleTestCase, TestCase
 
@@ -86,7 +87,7 @@ class QuizQuestionInlineAdminTests(TestCase):
     def setUp(self):
         ensure_active_portal_services('ielts')
         self.factory = RequestFactory()
-        self.inline = QuizQuestionInline(Quiz, admin_site=None)
+        self.inline = QuizQuestionInline(Quiz, admin_site=admin.site)
         self.category = QuizCategory.objects.create(name='Grammar')
         self.quiz = Quiz.objects.create(category=self.category, topic='Variant quiz')
 

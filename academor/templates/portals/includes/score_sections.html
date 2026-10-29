@@ -56,7 +56,14 @@
     aria-labelledby="score-tab-quiz"
     {% if active_view != 'quiz' %}hidden{% endif %}
   >
-    {% if quiz_average %}
+    {% if group_averages %}
+    {# one card per group; the group filter shows the selected group's card #}
+    {% for ga in group_averages %}
+    <div class="mb-4" data-score-group-block="{{ ga.id }}"{% if not ga.is_active %} hidden{% endif %}>
+      {% include "portals/includes/score_average_showcase.html" with score_stats=ga.quiz_average variant="quiz" %}
+    </div>
+    {% endfor %}
+    {% elif quiz_average %}
     <div class="mb-4">
       {% include "portals/includes/score_average_showcase.html" with score_stats=quiz_average variant="quiz" %}
     </div>
@@ -107,7 +114,13 @@
     aria-labelledby="score-tab-weekly"
     {% if active_view != 'weekly' %}hidden{% endif %}
   >
-    {% if weekly_average %}
+    {% if group_averages %}
+    {% for ga in group_averages %}
+    <div data-score-group-block="{{ ga.id }}"{% if not ga.is_active %} hidden{% endif %}>
+      {% include "portals/includes/scores_weekly_performance.html" with weekly_average=ga.weekly_average %}
+    </div>
+    {% endfor %}
+    {% elif weekly_average %}
     {% include "portals/includes/scores_weekly_performance.html" %}
     {% endif %}
     <div class="table-responsive">

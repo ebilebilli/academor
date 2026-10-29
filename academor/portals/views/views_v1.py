@@ -1162,6 +1162,31 @@ def _student_scores_context(student_id, *, parent_id=None, request=None):
     all_quiz = grouped['quiz_scores']
     all_weekly = grouped['weekly_scores']
     quiz_scores = all_quiz[:QUIZ_HISTORY_INITIAL_SIZE]
+
+    # Rows stay unfiltered (the page switches groups client-side), but the average cards
+    # must follow the selected group, so build one pair per group and start on the active one.
+    quiz_average = compute_quiz_average_stats(quiz_results)
+    weekly_average = compute_weekly_average_stats(all_weekly)
+    group_averages = []
+    by_service = grouped.get('groups_by_service') or {}
+    for group in score_groups:
+        group_id = group['id']
+        group_quiz = [
+            row for row in quiz_results
+            if group_id in by_service.get(row.get('course_type') or '', [])
+        ]
+        group_weekly = [row for row in all_weekly if group_id in row['group_ids']]
+        entry = {
+            'id': group_id,
+            'is_active': str(group_id) == str(active_score_group),
+            'quiz_average': compute_quiz_average_stats(group_quiz),
+            'weekly_average': compute_weekly_average_stats(group_weekly),
+        }
+        group_averages.append(entry)
+        if entry['is_active']:
+            quiz_average = entry['quiz_average']
+            weekly_average = entry['weekly_average']
+
     return {
         'quiz_scores': quiz_scores,
         'quiz_scores_total_count': len(all_quiz),
@@ -1169,8 +1194,9 @@ def _student_scores_context(student_id, *, parent_id=None, request=None):
         'weekly_scores': all_weekly,
         'score_groups': score_groups,
         'active_score_group': active_score_group,
-        'quiz_average': compute_quiz_average_stats(quiz_results),
-        'weekly_average': compute_weekly_average_stats(all_weekly),
+        'quiz_average': quiz_average,
+        'weekly_average': weekly_average,
+        'group_averages': group_averages,
         'period_tabs': build_score_period_tabs(all_quiz, all_weekly),
     }
 

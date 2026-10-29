@@ -799,6 +799,7 @@ def prepare_student_scores_with_groups(student_id, quiz_scores, weekly_scores):
         'quiz_scores': quiz_enriched,
         'weekly_scores': weekly_enriched,
         'score_groups': score_groups if len(score_groups) > 1 else [],
+        'groups_by_service': by_service,
     }
 
 
@@ -1866,10 +1867,7 @@ def get_teacher_student_attendance_detail(teacher_id, student_id):
     if not student:
         return None
 
-    course_codes = get_teacher_course_type_codes(teacher_id)
-    if not course_codes:
-        return None
-
+    # attendance is scoped by the teacher's own groups, not by course specializations
     teacher_groups = teacher_groups_queryset(teacher_id)
     records_qs = (
         teacher_attendance_queryset(teacher_id)

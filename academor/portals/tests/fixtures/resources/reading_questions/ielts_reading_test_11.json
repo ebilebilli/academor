@@ -1,0 +1,389 @@
+{
+  "title": "Sample IELTS Reading Test (loader fixture)",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–13</strong></p>",
+      "body": "<p>Sample passage text used only by the resource loader tests.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 7–13",
+          "instructions": "<p>Sample instructions.</p>",
+          "question_type": "note_completion",
+          "questions": [
+            {
+              "order": 1,
+              "question": "<p>Sample statement 1.</p>",
+              "correct_answer": "bulbs",
+              "question_config": {
+                "word_limit": 2,
+                "word_limit_label": "ONE WORD AND/OR NUMBER ONLY",
+                "case_insensitive": true
+              }
+            },
+            {
+              "order": 2,
+              "question": "<p>Sample statement 2.</p>",
+              "correct_answer": "soil",
+              "question_config": {
+                "word_limit": 2,
+                "word_limit_label": "ONE WORD AND/OR NUMBER ONLY",
+                "case_insensitive": true
+              }
+            },
+            {
+              "order": 3,
+              "question": "<p>Sample statement 3.</p>",
+              "correct_answer": "feathers",
+              "question_config": {
+                "word_limit": 2,
+                "word_limit_label": "ONE WORD AND/OR NUMBER ONLY",
+                "case_insensitive": true
+              }
+            },
+            {
+              "order": 4,
+              "question": "<p>Sample statement 4.</p>",
+              "correct_answer": "deer",
+              "question_config": {
+                "word_limit": 2,
+                "word_limit_label": "ONE WORD AND/OR NUMBER ONLY",
+                "case_insensitive": true
+              }
+            },
+            {
+              "order": 5,
+              "question": "<p>Sample statement 5.</p>",
+              "correct_answer": "1980",
+              "question_config": {
+                "word_limit": 2,
+                "word_limit_label": "ONE WORD AND/OR NUMBER ONLY",
+                "case_insensitive": true
+              }
+            },
+            {
+              "order": 6,
+              "question": "<p>Sample statement 6.</p>",
+              "correct_answer": "funding",
+              "question_config": {
+                "word_limit": 2,
+                "word_limit_label": "ONE WORD AND/OR NUMBER ONLY",
+                "case_insensitive": true
+              }
+            },
+            {
+              "order": 7,
+              "question": "<p>Sample statement 7.</p>",
+              "correct_answer": "stakeholders",
+              "question_config": {
+                "word_limit": 2,
+                "word_limit_label": "ONE WORD AND/OR NUMBER ONLY",
+                "case_insensitive": true
+              }
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "tfng",
+          "question": "<p>Sample statement 1.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 2,
+          "question_type": "tfng",
+          "question": "<p>Sample statement 2.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 3,
+          "question_type": "tfng",
+          "question": "<p>Sample statement 3.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 4,
+          "question_type": "tfng",
+          "question": "<p>Sample statement 4.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 5,
+          "question_type": "tfng",
+          "question": "<p>Sample statement 5.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 6,
+          "question_type": "tfng",
+          "question": "<p>Sample statement 6.</p>",
+          "correct_answer": "True"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Passage 2",
+      "instructions": "<p><strong>Questions 14–26</strong></p>",
+      "body": "<p>Sample passage text used only by the resource loader tests.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 14–18",
+          "instructions": "<p>Sample instructions.</p>",
+          "question_type": "matching_paragraph_information",
+          "option_pool": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G"
+          ],
+          "questions": [
+            {
+              "order": 1,
+              "question": "<p>Sample statement 1.</p>",
+              "correct_answer": "C"
+            },
+            {
+              "order": 2,
+              "question": "<p>Sample statement 2.</p>",
+              "correct_answer": "G"
+            },
+            {
+              "order": 3,
+              "question": "<p>Sample statement 3.</p>",
+              "correct_answer": "B"
+            },
+            {
+              "order": 4,
+              "question": "<p>Sample statement 4.</p>",
+              "correct_answer": "E"
+            },
+            {
+              "order": 5,
+              "question": "<p>Sample statement 5.</p>",
+              "correct_answer": "C"
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "title": "Questions 19–23",
+          "instructions": "<p>Sample instructions.</p>",
+          "question_type": "matching_features",
+          "option_pool": [
+            "A. Sample option",
+            "B. Sample option",
+            "C. Sample option"
+          ],
+          "questions": [
+            {
+              "order": 1,
+              "question": "<p>Sample statement 1.</p>",
+              "correct_answer": "B. Sample option"
+            },
+            {
+              "order": 2,
+              "question": "<p>Sample statement 2.</p>",
+              "correct_answer": "A. Sample option"
+            },
+            {
+              "order": 3,
+              "question": "<p>Sample statement 3.</p>",
+              "correct_answer": "B. Sample option"
+            },
+            {
+              "order": 4,
+              "question": "<p>Sample statement 4.</p>",
+              "correct_answer": "C. Sample option"
+            },
+            {
+              "order": 5,
+              "question": "<p>Sample statement 5.</p>",
+              "correct_answer": "A. Sample option"
+            }
+          ]
+        },
+        {
+          "order": 3,
+          "title": "Questions 24–26",
+          "instructions": "<p>Sample instructions.</p>",
+          "question_type": "summary_completion",
+          "questions": [
+            {
+              "order": 1,
+              "question": "<p>Sample statement 1.</p>",
+              "correct_answer": "oak",
+              "question_config": {
+                "word_limit": 1,
+                "word_limit_label": "ONE WORD ONLY",
+                "case_insensitive": true
+              }
+            },
+            {
+              "order": 2,
+              "question": "<p>Sample statement 2.</p>",
+              "correct_answer": "flooring",
+              "question_config": {
+                "word_limit": 1,
+                "word_limit_label": "ONE WORD ONLY",
+                "case_insensitive": true
+              }
+            },
+            {
+              "order": 3,
+              "question": "<p>Sample statement 3.</p>",
+              "correct_answer": "keel",
+              "question_config": {
+                "word_limit": 1,
+                "word_limit_label": "ONE WORD ONLY",
+                "case_insensitive": true
+              }
+            }
+          ]
+        }
+      ],
+      "questions": []
+    },
+    {
+      "order": 3,
+      "title": "Passage 3",
+      "instructions": "<p><strong>Questions 27–40</strong></p>",
+      "body": "<p>Sample passage text used only by the resource loader tests.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 31–35",
+          "instructions": "<p>Sample instructions.</p>",
+          "question_type": "matching_sentence_endings",
+          "option_pool": [
+            "A. Sample option",
+            "B. Sample option",
+            "C. Sample option",
+            "D. Sample option",
+            "E. Sample option",
+            "F. Sample option",
+            "G. Sample option"
+          ],
+          "questions": [
+            {
+              "order": 1,
+              "question": "<p>Sample statement 1.</p>",
+              "correct_answer": "B"
+            },
+            {
+              "order": 2,
+              "question": "<p>Sample statement 2.</p>",
+              "correct_answer": "G"
+            },
+            {
+              "order": 3,
+              "question": "<p>Sample statement 3.</p>",
+              "correct_answer": "F"
+            },
+            {
+              "order": 4,
+              "question": "<p>Sample statement 4.</p>",
+              "correct_answer": "E"
+            },
+            {
+              "order": 5,
+              "question": "<p>Sample statement 5.</p>",
+              "correct_answer": "D"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "mcq",
+          "question": "<p>Sample statement 1.</p>",
+          "answer_options": [
+            "Option A",
+            "Option B",
+            "Option C",
+            "Option D"
+          ],
+          "correct_answer": "Option C"
+        },
+        {
+          "order": 2,
+          "question_type": "mcq",
+          "question": "<p>Sample statement 2.</p>",
+          "answer_options": [
+            "Option A",
+            "Option B",
+            "Option C",
+            "Option D"
+          ],
+          "correct_answer": "Option A"
+        },
+        {
+          "order": 3,
+          "question_type": "mcq",
+          "question": "<p>Sample statement 3.</p>",
+          "answer_options": [
+            "Option A",
+            "Option B",
+            "Option C",
+            "Option D"
+          ],
+          "correct_answer": "Option D"
+        },
+        {
+          "order": 4,
+          "question_type": "mcq",
+          "question": "<p>Sample statement 4.</p>",
+          "answer_options": [
+            "Option A",
+            "Option B",
+            "Option C",
+            "Option D"
+          ],
+          "correct_answer": "Option C"
+        },
+        {
+          "order": 5,
+          "question_type": "ynng",
+          "question": "<p>Sample statement 5.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 6,
+          "question_type": "ynng",
+          "question": "<p>Sample statement 6.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 7,
+          "question_type": "ynng",
+          "question": "<p>Sample statement 7.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 8,
+          "question_type": "ynng",
+          "question": "<p>Sample statement 8.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 9,
+          "question_type": "ynng",
+          "question": "<p>Sample statement 9.</p>",
+          "correct_answer": "Yes"
+        }
+      ]
+    }
+  ]
+}
