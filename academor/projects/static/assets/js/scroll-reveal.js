@@ -46,11 +46,24 @@
     /* ---- Scroll progress bar ---- */
     var progressBar = qs("#scrollProgressBar");
     var lastProgress = -1;
+    /* reading scrollHeight on every scroll frame forced a layout each time; measure it on
+       resize / content changes instead */
+    var docHeight = -1;
+
+    function measureDocHeight() {
+        docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    }
+
+    if (progressBar && "ResizeObserver" in window) {
+        new ResizeObserver(function () {
+            docHeight = -1;
+        }).observe(document.body);
+    }
 
     function updateProgress() {
         if (!progressBar) return;
         var scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
-        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        if (docHeight < 0) measureDocHeight();
         var progress = docHeight > 0 ? Math.min(Math.max(scrollTop / docHeight, 0), 1) : 0;
         if (Math.abs(progress - lastProgress) < 0.001) return;
         lastProgress = progress;
@@ -358,6 +371,7 @@
     window.addEventListener(
         "resize",
         function () {
+            docHeight = -1;
             refreshSections();
             onScroll();
         },

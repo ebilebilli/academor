@@ -203,6 +203,16 @@ h1.animated, h2.animated, h3.animated,
     visibility: hidden;
 }
 
+/* the loader's loops kept running (and compositing a full-screen layer) after it faded out */
+#spinner.site-page-loader.hide,
+#spinner.site-page-loader.hide * {
+    animation-play-state: paused !important;
+}
+
+#spinner.site-page-loader.is-gone {
+    display: none;
+}
+
 .site-page-loader__inner {
     max-width: min(92vw, 420px);
 }
@@ -8415,7 +8425,9 @@ a.university-carousel-card:focus-visible .university-flag-card {
 
 @media (prefers-reduced-motion: no-preference) {
     .academor-branded-lazy:not(.academor-branded-lazy--loaded)::after {
-        animation: academor-brand-ph-pulse 1.75s ease-in-out infinite;
+        /* a few pulses, then rest: an endless loop on every waiting placeholder kept the
+           compositor re-layerizing each frame, even far below the fold */
+        animation: academor-brand-ph-pulse 1.75s ease-in-out 4;
     }
 }
 
@@ -8754,6 +8766,12 @@ a.university-carousel-card:focus-visible .university-flag-card {
 
 .motion-paused .universities-carousel--home .universities-list__track,
 .universities-carousel--home.motion-paused .universities-list__track {
+    animation-play-state: paused;
+}
+
+/* about video play button ripple */
+.about-vp.motion-paused .about-vp__ripple,
+.about-vp.motion-paused .about-vp__ripple::after {
     animation-play-state: paused;
 }
 

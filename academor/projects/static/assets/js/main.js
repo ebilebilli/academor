@@ -28,6 +28,8 @@
                 sp.classList.add("hide");
                 sp.setAttribute("aria-busy", "false");
                 announcePageReady();
+                /* after the fade: drop the overlay from rendering altogether */
+                setTimeout(function () { sp.classList.add("is-gone"); }, 600);
             }, 50);
         };
         window.addEventListener("load", function () {
@@ -42,6 +44,19 @@
         announcePageReady();
     }
 
+    /* Service cards: the shimmer behind a poster repaints every frame, so stop it once the
+       poster has loaded (or failed — the card's colour background takes over then) */
+    qsa(".hsvc-card__poster").forEach(function (img) {
+        var media = img.closest(".hsvc-card__media");
+        if (!media) return;
+        var stop = function () { media.classList.add("is-loaded"); };
+        if (img.complete) stop();
+        else {
+            img.addEventListener("load", stop, { once: true });
+            img.addEventListener("error", stop, { once: true });
+        }
+    });
+
     /* Pause marquee / globe / orbit / uni ticker when off-screen */
     function initPausableMotion() {
         if (prefersReducedMotion || !("IntersectionObserver" in window)) return;
@@ -54,6 +69,9 @@
             roots.push(el);
         });
         qsa(".universities-carousel--home").forEach(function (el) {
+            roots.push(el);
+        });
+        qsa(".about-vp").forEach(function (el) {
             roots.push(el);
         });
         if (!roots.length) return;
