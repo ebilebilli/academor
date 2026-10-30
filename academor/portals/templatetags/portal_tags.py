@@ -421,3 +421,49 @@ def portal_page_heading(
         'subtitle': raw_subtitle or (gettext(subtitle) if subtitle else ''),
         'actions': actions,
     }
+
+
+# Watercolor stickers (portals/img/stickers/) shown in page heroes instead of Lottie players.
+# Dashboard banners pick them by portal role, page heroes by their icon.
+PORTAL_STICKERS = {
+    'backpack': (204, 240), 'book': (240, 206), 'bulb': (124, 240), 'cap': (240, 162),
+    'clock': (240, 217), 'flask': (148, 240), 'magnifier': (140, 240), 'pencil': (75, 240),
+    'protractor': (172, 240),
+}
+_STICKERS_BY_ICON = {
+    'ti-calendar-week': ('clock', 'pencil'),
+    'ti-calendar-check': ('clock', 'protractor'),
+    'ti-clipboard-check': ('pencil', 'clock'),
+    'ti-calendar-stats': ('protractor', 'cap'),
+    'ti-book': ('book', 'pencil'),
+    'ti-books': ('book', 'bulb'),
+    'ti-star': ('cap', 'bulb'),
+    'ti-circle-check': ('cap', 'book'),
+    'ti-clipboard-list': ('flask', 'pencil'),
+    'ti-player-play': ('clock', 'pencil'),
+    'ti-alert-circle': ('magnifier', 'clock'),
+    'ti-history': ('clock', 'magnifier'),
+    'ti-bell': ('bulb', 'clock'),
+    'ti-users': ('backpack', 'book'),
+    'ti-pencil': ('pencil', 'magnifier'),
+    'ti-forms': ('bulb', 'pencil'),
+    'ti-shopping-cart': ('backpack', 'flask'),
+}
+_STICKERS_BY_ROLE = {
+    'student': ('backpack', 'bulb', 'book'),
+    'teacher': ('book', 'pencil', 'clock'),
+    'parent': ('cap', 'book', 'bulb'),
+    'customer': ('flask', 'pencil', 'bulb'),
+}
+
+
+def _sticker(name):
+    width, height = PORTAL_STICKERS[name]
+    return {'name': name, 'width': width, 'height': height}
+
+
+@register.simple_tag
+def portal_stickers(icon='', role=''):
+    """Sticker cluster for a hero: by role for dashboard banners, else by the hero icon."""
+    names = _STICKERS_BY_ROLE.get(role or '') or _STICKERS_BY_ICON.get(icon or '') or ('book', 'bulb')
+    return [_sticker(n) for n in names]

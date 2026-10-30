@@ -4,7 +4,7 @@
 {% block title %}{% trans 'IELTS Mock Test' %}{% endblock %}
 
 {% block content %}
-{% include "portals/includes/portal_page_hero.html" with title=_('IELTS Mock Test') subtitle=_('Complete Listening, Reading, Writing, and Speaking in one session — just like the real IELTS exam.') icon="ti-clipboard-list" lottie="portals/animations/student.lottie" %}
+{% include "portals/includes/portal_page_hero.html" with title=_('IELTS Mock Test') subtitle=_('Complete Listening, Reading, Writing, and Speaking in one session — just like the real IELTS exam.') icon="ti-clipboard-list" stickers=True %}
 
 <section class="ds-card mb-4">
   <h2 class="h5 mb-3">{% trans 'How it works' %}</h2>
@@ -29,15 +29,9 @@
 </section>
 {% elif not mock_unlocked %}
 <section class="ds-card mb-4">
-  <div class="alert alert-danger mb-0 d-flex align-items-start gap-2">
-    <i class="bi bi-lock-fill mt-1" aria-hidden="true"></i>
-    <div>
-      <strong>{% trans 'Mock test is currently locked.' %}</strong>
-      <p class="mb-0 mt-1">
-        {% trans 'Talk to your teacher to unlock it. Once your teacher enables Mock access on your profile, you can start from here.' %}
-      </p>
-    </div>
-  </div>
+  {% trans 'Mock test is currently locked.' as locked_title %}
+  {% trans 'Talk to your teacher to unlock it. Once your teacher enables Mock access on your profile, you can start from here.' as locked_text %}
+  {% include "portals/includes/portal_locked_card.html" with title=locked_title text=locked_text sticker="flask" %}
 </section>
 {% else %}
 <section class="ds-card mb-4">

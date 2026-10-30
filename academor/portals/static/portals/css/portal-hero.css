@@ -1,0 +1,348 @@
+/* Portal page heroes — title card with watercolor stickers (portals/img/stickers/) */
+.portal-page-hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4, 1rem);
+}
+
+.portal-page-hero__copy {
+  flex: 1 1 16rem;
+  min-width: 0;
+}
+
+.portal-page-hero .s-page-head__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+}
+
+.portal-page-hero__icon {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-md, 12px);
+  background: var(--color-role-subtle);
+  border: 1px solid color-mix(in srgb, var(--color-role) 16%, transparent);
+}
+
+.portal-page-hero .portal-page-hero__icon .ti {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.portal-page-hero__media {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.portal-page-hero__aside {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-3, 0.75rem);
+}
+
+.portal-page-hero__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2, 0.5rem);
+  justify-content: flex-end;
+}
+
+/* Hero card: soft role tint on the right where the stickers sit */
+.portal-page-hero--stickers {
+  position: relative;
+  padding: var(--space-4, 1rem) var(--space-5, 1.25rem);
+  background:
+    radial-gradient(120% 140% at 100% 0%, color-mix(in srgb, var(--color-role) 9%, transparent) 0%, transparent 55%),
+    var(--card-bg);
+  border: var(--card-border);
+  border-radius: var(--radius-lg, 16px);
+  box-shadow: var(--shadow-xs);
+}
+
+.portal-page-hero--stickers .s-page-head__title {
+  font-size: clamp(1.15rem, 1.6vw, 1.35rem);
+  font-weight: 700;
+}
+
+/* ── Sticker cluster ─────────────────────────────────────────────────── */
+.portal-stickers {
+  position: relative;
+  flex-shrink: 0;
+  width: 7.5rem;
+  height: 5.5rem;
+  pointer-events: none;
+}
+
+.portal-stickers__item {
+  position: absolute;
+  height: auto;
+  filter: drop-shadow(0 6px 10px rgba(0, 49, 61, 0.14));
+  animation: portal-sticker-float 6s ease-in-out infinite;
+}
+
+/* main sticker on the right, accent tucked in front at the lower left */
+.portal-stickers__item--1 {
+  right: 0;
+  top: 50%;
+  max-width: 5rem;
+  max-height: 5.25rem;
+  --sticker-tilt: 6deg;
+  transform: translateY(-50%) rotate(var(--sticker-tilt));
+  animation-name: portal-sticker-float-centered;
+}
+
+.portal-stickers__item--2 {
+  left: 0;
+  bottom: 0;
+  max-width: 3rem;
+  max-height: 3.25rem;
+  --sticker-tilt: -10deg;
+  transform: rotate(var(--sticker-tilt));
+  animation-delay: -2s;
+}
+
+.portal-stickers__item--3 {
+  left: 18%;
+  top: 0;
+  max-width: 2.5rem;
+  max-height: 2.75rem;
+  --sticker-tilt: -4deg;
+  transform: rotate(var(--sticker-tilt));
+  animation-delay: -4s;
+}
+
+@keyframes portal-sticker-float {
+  0%, 100% { transform: translateY(0) rotate(var(--sticker-tilt)); }
+  50% { transform: translateY(-4px) rotate(calc(var(--sticker-tilt) * -0.4)); }
+}
+
+@keyframes portal-sticker-float-centered {
+  0%, 100% { transform: translateY(-50%) rotate(var(--sticker-tilt)); }
+  50% { transform: translateY(calc(-50% - 4px)) rotate(calc(var(--sticker-tilt) * 0.5)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portal-stickers__item {
+    animation: none;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .portal-page-hero--stickers {
+    padding: var(--space-4, 1rem);
+    padding-right: 6rem;
+  }
+
+  .portal-page-hero--stickers .portal-page-hero__media {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+
+  .portal-page-hero--stickers .portal-stickers {
+    width: 5rem;
+    height: 4rem;
+  }
+
+  .portal-page-hero--stickers .portal-stickers__item--1 {
+    max-width: 3.5rem;
+    max-height: 3.5rem;
+  }
+
+  .portal-page-hero--stickers .portal-stickers__item--2 {
+    max-width: 2.25rem;
+    max-height: 2.25rem;
+  }
+
+  .portal-page-hero__aside {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .portal-page-hero__toolbar {
+    justify-content: flex-start;
+  }
+}
+
+/* Mock / scores celebration hero */
+.portal-page-hero--centered {
+  flex-direction: column;
+  text-align: center;
+}
+
+.portal-page-hero--centered .portal-page-hero__copy {
+  flex-basis: auto;
+}
+
+.portal-page-hero--centered .s-page-head__title {
+  justify-content: center;
+}
+
+.portal-page-hero--centered .portal-page-hero__media {
+  order: -1;
+}
+
+.portal-page-hero--centered.portal-page-hero--stickers {
+  padding: var(--space-6, 1.5rem) var(--space-5, 1.25rem);
+}
+
+.portal-page-hero--centered .portal-stickers {
+  width: 9rem;
+  height: 6.5rem;
+}
+
+.portal-page-hero--centered .portal-stickers__item--1 {
+  right: 0.75rem;
+  max-width: 6rem;
+  max-height: 6.25rem;
+}
+
+@media (max-width: 767.98px) {
+  .portal-page-hero--centered.portal-page-hero--stickers {
+    padding-right: var(--space-4, 1rem);
+  }
+
+  .portal-page-hero--centered.portal-page-hero--stickers .portal-page-hero__media {
+    position: static;
+  }
+}
+
+/* ── Empty states: a watercolor sticker in place of the grey glyph ───────── */
+/* default sticker; :where() keeps it at zero specificity so the per-icon picks below win */
+:where(.s-empty-state > i.ti:first-child, .portal-student-empty-icon, .qhub__empty-icon, .qdetail__empty-icon, .portal-empty-icon) {
+  --empty-sticker: url("../img/stickers/magnifier.webp");
+}
+
+.s-empty-state > i.ti:first-child,
+.portal-student-empty-icon,
+.qhub__empty-icon,
+.qdetail__empty-icon,
+.portal-empty-icon {
+  display: block;
+  flex: 0 0 auto;
+  width: 4.5rem;
+  height: 4.5rem;
+  margin-inline: auto;
+  padding: 0;
+  background: var(--empty-sticker) center / contain no-repeat !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-size: 0 !important;
+  color: transparent !important;
+  filter: drop-shadow(0 6px 10px rgba(0, 49, 61, 0.12));
+  transform: rotate(-6deg);
+}
+
+.s-empty-state > i.ti:first-child::before {
+  content: none;
+}
+
+.portal-student-empty-icon > i,
+.qhub__empty-icon > i,
+.qdetail__empty-icon > i,
+.portal-empty-icon > i {
+  display: none;
+}
+
+.s-empty-state--compact > i.ti:first-child {
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+.s-empty-state > .ti-calendar-off:first-child,
+.portal-student-empty-icon:has(.ti-calendar-off),
+.portal-empty-icon:has(.bi-calendar-week) {
+  --empty-sticker: url("../img/stickers/clock.webp");
+}
+
+.s-empty-state > .ti-bell-off:first-child,
+.s-empty-state > .ti-forms:first-child,
+.qhub__empty-icon:has(.ti-forms),
+.qdetail__empty-icon:has(.ti-forms),
+.portal-student-empty-icon:has(.ti-forms),
+.portal-student-empty-icon:has(.bi-ui-checks) {
+  --empty-sticker: url("../img/stickers/bulb.webp");
+}
+
+.s-empty-state > .ti-clipboard-list:first-child {
+  --empty-sticker: url("../img/stickers/flask.webp");
+}
+
+.s-empty-state > .ti-notebook-off:first-child,
+.s-empty-state > .ti-book-off:first-child,
+.s-empty-state > .ti-file-off:first-child {
+  --empty-sticker: url("../img/stickers/book.webp");
+}
+
+.s-empty-state > .ti-user-off:first-child,
+.s-empty-state > .ti-users:first-child,
+.s-empty-state > .ti-users-group:first-child,
+.portal-student-empty-icon:has(.bi-inbox),
+.portal-empty-icon:has(.bi-people) {
+  --empty-sticker: url("../img/stickers/backpack.webp");
+}
+
+.s-empty-state > .ti-circle-check:first-child,
+.portal-student-empty-icon:has(.bi-star) {
+  --empty-sticker: url("../img/stickers/cap.webp");
+}
+
+/* ── "Not open yet" card (locked mock / quiz) ─────────────────────────── */
+.portal-locked-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4, 1rem);
+  padding: var(--space-4, 1rem) var(--space-5, 1.25rem);
+  border-radius: var(--radius-lg, 16px);
+  background:
+    radial-gradient(90% 140% at 0% 50%, color-mix(in srgb, var(--color-role) 8%, transparent) 0%, transparent 60%),
+    var(--color-surface-soft);
+  border: 1px dashed color-mix(in srgb, var(--color-role) 28%, var(--color-border));
+}
+
+.portal-locked-card__sticker {
+  flex: 0 0 auto;
+  width: auto;
+  height: 4.75rem;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 10px rgba(0, 49, 61, 0.14));
+  transform: rotate(-6deg);
+}
+
+.portal-locked-card__title {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0 0.25rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.portal-locked-card__title .bi {
+  color: var(--color-role);
+}
+
+.portal-locked-card__text {
+  margin: 0;
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--color-muted);
+  max-width: 62ch;
+}
+
+@media (max-width: 575.98px) {
+  .portal-locked-card {
+    flex-direction: column;
+    text-align: center;
+  }
+}

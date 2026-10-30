@@ -20,7 +20,7 @@ from portals.models import (
     WeeklyStudentScore,
 )
 from portals.tests.group_helpers import link_study_group_services
-from portals.tests.portal_helpers import portal_client_login
+from portals.tests.portal_helpers import ensure_active_portal_services, portal_client_login
 from portals.tests.test_quiz_visibility import _ensure_active_portal_services
 from portals.utils.group_services import students_matching_group_courses
 from portals.utils.queries import (
@@ -47,6 +47,7 @@ User = get_user_model()
 class StudentMultiGroupPortalTests(TestCase):
     def setUp(self):
         _ensure_active_portal_services()
+        ensure_active_portal_services('sat')
         self.teacher_a = TeacherProfile.objects.create(
             user=User.objects.create_user(username='multi_teacher_a', password='pass'),
         )
@@ -284,8 +285,9 @@ class StudentMultiGroupPortalTests(TestCase):
         self.assertContains(response, 'IELTS group A')
         self.assertContains(response, 'IELTS group A2')
         self.assertNotContains(response, 'data-profile-duration-group-filter')
-        self.assertContains(response, 'Gəlmədi')
-        self.assertNotContains(response, 'İştirak etdi')
+        # the summary always lists every status, so check the record rows of the picked group
+        self.assertContains(response, 'portal-attendance-status--absent')
+        self.assertNotContains(response, 'portal-attendance-status--present')
 
         ajax = client.get(
             reverse('portals:teacher-student-profile', kwargs={'student_pk': self.student.pk}),
@@ -293,8 +295,8 @@ class StudentMultiGroupPortalTests(TestCase):
             HTTP_X_REQUESTED_WITH='XMLHttpRequest',
         )
         self.assertEqual(ajax.status_code, 200)
-        self.assertContains(ajax, 'İştirak etdi')
-        self.assertNotContains(ajax, 'Gəlmədi')
+        self.assertContains(ajax, 'portal-attendance-status--present')
+        self.assertNotContains(ajax, 'portal-attendance-status--absent')
 
     def test_teacher_profile_duration_group_helpers(self):
         self.group_a.students.add(self.student)

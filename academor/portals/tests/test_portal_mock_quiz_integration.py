@@ -177,7 +177,8 @@ class PortalMockQuizIntegrationTests(TestCase):
         from portals.tests.group_helpers import create_quiz_category
 
         category = create_quiz_category('Locked pool', 'ielts')
-        quiz = Quiz.objects.create(category=category, topic='Locked quiz')
+        # only IELTS/SAT-flagged quizzes are locked; regular ones are open once enrolled
+        quiz = Quiz.objects.create(category=category, topic='Locked quiz', is_ielts=True)
         QuizQuestion.objects.create(
             quiz=quiz,
             order=1,

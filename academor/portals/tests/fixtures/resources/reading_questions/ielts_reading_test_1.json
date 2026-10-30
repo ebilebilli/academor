@@ -1,0 +1,377 @@
+{
+  "title": "Sample IELTS Reading Test (loader fixture)",
+  "service": "ielts",
+  "category_name": "Reading practice",
+  "time_limit_minutes": 60,
+  "passages": [
+    {
+      "order": 1,
+      "title": "Passage 1",
+      "instructions": "<p><strong>Questions 1–13</strong></p>",
+      "body": "<p>Sample passage text used only by the resource loader tests.</p>",
+      "question_groups": [],
+      "questions": [
+        {
+          "order": 1,
+          "question_type": "tfng",
+          "question": "<p>Sample statement 1.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 2,
+          "question_type": "tfng",
+          "question": "<p>Sample statement 2.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 3,
+          "question_type": "tfng",
+          "question": "<p>Sample statement 3.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 4,
+          "question_type": "tfng",
+          "question": "<p>Sample statement 4.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 5,
+          "question_type": "tfng",
+          "question": "<p>Sample statement 5.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 6,
+          "question_type": "tfng",
+          "question": "<p>Sample statement 6.</p>",
+          "correct_answer": "False"
+        },
+        {
+          "order": 7,
+          "question_type": "tfng",
+          "question": "<p>Sample statement 7.</p>",
+          "correct_answer": "True"
+        },
+        {
+          "order": 8,
+          "question_type": "summary_completion",
+          "question": "<p>Sample statement 8.</p>",
+          "correct_answer": "cow dung",
+          "question_config": {
+            "word_limit": 2,
+            "word_limit_label": "NO MORE THAN TWO WORDS",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 9,
+          "question_type": "summary_completion",
+          "question": "<p>Sample statement 9.</p>",
+          "correct_answer": "fermentation process",
+          "question_config": {
+            "word_limit": 2,
+            "word_limit_label": "NO MORE THAN TWO WORDS",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 10,
+          "question_type": "summary_completion",
+          "question": "<p>Sample statement 10.</p>",
+          "correct_answer": "pipes",
+          "question_config": {
+            "word_limit": 2,
+            "word_limit_label": "NO MORE THAN TWO WORDS",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 11,
+          "question_type": "summary_completion",
+          "question": "<p>Sample statement 11.</p>",
+          "correct_answer": "time",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 12,
+          "question_type": "summary_completion",
+          "question": "<p>Sample statement 12.</p>",
+          "correct_answer": "money",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        },
+        {
+          "order": 13,
+          "question_type": "summary_completion",
+          "question": "<p>Sample statement 13.</p>",
+          "correct_answer": "price",
+          "question_config": {
+            "word_limit": 1,
+            "word_limit_label": "ONE WORD ONLY",
+            "case_insensitive": true
+          }
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Passage 2",
+      "instructions": "<p><strong>Questions 14–26</strong></p>",
+      "body": "<p>Sample passage text used only by the resource loader tests.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 14–19",
+          "instructions": "<p>Sample instructions.</p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "A. Sample option",
+            "B. Sample option",
+            "C. Sample option",
+            "D. Sample option",
+            "E. Sample option",
+            "F. Sample option",
+            "G. Sample option",
+            "H. Sample option",
+            "I. Sample option",
+            "J. Sample option"
+          ],
+          "questions": [
+            {
+              "order": 1,
+              "question": "<p>Sample statement 1.</p>",
+              "correct_answer": "I. Sample option"
+            },
+            {
+              "order": 2,
+              "question": "<p>Sample statement 2.</p>",
+              "correct_answer": "J. Sample option"
+            },
+            {
+              "order": 3,
+              "question": "<p>Sample statement 3.</p>",
+              "correct_answer": "H. Sample option"
+            },
+            {
+              "order": 4,
+              "question": "<p>Sample statement 4.</p>",
+              "correct_answer": "B. Sample option"
+            },
+            {
+              "order": 5,
+              "question": "<p>Sample statement 5.</p>",
+              "correct_answer": "E. Sample option"
+            },
+            {
+              "order": 6,
+              "question": "<p>Sample statement 6.</p>",
+              "correct_answer": "F. Sample option"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 7,
+          "question_type": "ynng",
+          "question": "<p>Sample statement 7.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 8,
+          "question_type": "ynng",
+          "question": "<p>Sample statement 8.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 9,
+          "question_type": "ynng",
+          "question": "<p>Sample statement 9.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 10,
+          "question_type": "ynng",
+          "question": "<p>Sample statement 10.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 11,
+          "question_type": "mcq",
+          "question": "<p>Sample statement 11.</p>",
+          "answer_options": [
+            "Option A",
+            "Option B",
+            "Option C",
+            "Option D"
+          ],
+          "correct_answer": "Option C"
+        },
+        {
+          "order": 12,
+          "question_type": "mcq",
+          "question": "<p>Sample statement 12.</p>",
+          "answer_options": [
+            "Option A",
+            "Option B",
+            "Option C",
+            "Option D"
+          ],
+          "correct_answer": "Option D"
+        },
+        {
+          "order": 13,
+          "question_type": "mcq",
+          "question": "<p>Sample statement 13.</p>",
+          "answer_options": [
+            "Option A",
+            "Option B",
+            "Option C",
+            "Option D"
+          ],
+          "correct_answer": "Option D"
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "title": "Passage 3",
+      "instructions": "<p><strong>Questions 27–40</strong></p>",
+      "body": "<p>Sample passage text used only by the resource loader tests.</p>",
+      "question_groups": [
+        {
+          "order": 1,
+          "title": "Questions 27–32",
+          "instructions": "<p>Sample instructions.</p>",
+          "question_type": "matching_headings",
+          "option_pool": [
+            "A. Sample option",
+            "B. Sample option",
+            "C. Sample option",
+            "D. Sample option",
+            "E. Sample option",
+            "F. Sample option",
+            "G. Sample option",
+            "H. Sample option",
+            "I. Sample option",
+            "J. Sample option"
+          ],
+          "questions": [
+            {
+              "order": 1,
+              "question": "<p>Sample statement 1.</p>",
+              "correct_answer": "G. Sample option"
+            },
+            {
+              "order": 2,
+              "question": "<p>Sample statement 2.</p>",
+              "correct_answer": "J. Sample option"
+            },
+            {
+              "order": 3,
+              "question": "<p>Sample statement 3.</p>",
+              "correct_answer": "I. Sample option"
+            },
+            {
+              "order": 4,
+              "question": "<p>Sample statement 4.</p>",
+              "correct_answer": "C. Sample option"
+            },
+            {
+              "order": 5,
+              "question": "<p>Sample statement 5.</p>",
+              "correct_answer": "A. Sample option"
+            },
+            {
+              "order": 6,
+              "question": "<p>Sample statement 6.</p>",
+              "correct_answer": "E. Sample option"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "order": 7,
+          "question_type": "ynng",
+          "question": "<p>Sample statement 7.</p>",
+          "correct_answer": "No"
+        },
+        {
+          "order": 8,
+          "question_type": "ynng",
+          "question": "<p>Sample statement 8.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 9,
+          "question_type": "ynng",
+          "question": "<p>Sample statement 9.</p>",
+          "correct_answer": "Not Given"
+        },
+        {
+          "order": 10,
+          "question_type": "ynng",
+          "question": "<p>Sample statement 10.</p>",
+          "correct_answer": "Yes"
+        },
+        {
+          "order": 11,
+          "question_type": "mcq",
+          "question": "<p>Sample statement 11.</p>",
+          "answer_options": [
+            "Option A",
+            "Option B",
+            "Option C",
+            "Option D"
+          ],
+          "correct_answer": "Option B"
+        },
+        {
+          "order": 12,
+          "question_type": "mcq",
+          "question": "<p>Sample statement 12.</p>",
+          "answer_options": [
+            "Option A",
+            "Option B",
+            "Option C",
+            "Option D"
+          ],
+          "correct_answer": "Option C"
+        },
+        {
+          "order": 13,
+          "question_type": "mcq",
+          "question": "<p>Sample statement 13.</p>",
+          "answer_options": [
+            "Option A",
+            "Option B",
+            "Option C",
+            "Option D"
+          ],
+          "correct_answer": "Option D"
+        },
+        {
+          "order": 14,
+          "question_type": "mcq",
+          "question": "<p>Sample statement 14.</p>",
+          "answer_options": [
+            "Option A",
+            "Option B",
+            "Option C",
+            "Option D"
+          ],
+          "correct_answer": "Option A"
+        }
+      ]
+    }
+  ]
+}

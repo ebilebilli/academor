@@ -334,6 +334,9 @@ class QuizReadingTests(QuizVisibilityTests):
             'accept_alternatives': ['scent'],
         }
         question.correct_answer = 'smell'
+        # legacy gap-fill path: answers seed from correct_answer + accept_alternatives only
+        # while spr_correct_answers is empty (it wins once set)
+        question.spr_correct_answers = None
         question.save()
 
         take_sections = build_reading_sections_for_quiz(
@@ -456,7 +459,7 @@ class ReadingQuestionAdminFieldConfigTests(QuizReadingTests):
 
     def test_listening_map_group_ref_accepts_dynamic_choice(self):
         from portals.admin.quiz_forms import ListeningQuestionAdminForm
-        from portals.models import ListeningAudio, ListeningQuestionGroup, Quiz
+        from portals.models import ListeningAudio, ListeningQuestion, ListeningQuestionGroup, Quiz
         from portals.models.listening_models import ListeningQuestionType
 
         quiz = Quiz.objects.create(
@@ -472,7 +475,9 @@ class ReadingQuestionAdminFieldConfigTests(QuizReadingTests):
             question_type=ListeningQuestionType.MAP_LABELLING,
             option_pool=['A', 'B', 'C', 'D', 'E', 'F', 'G'],
         )
+        # the form runs inline under its audio clip, where the formset sets instance.audio
         form = ListeningQuestionAdminForm(
+            instance=ListeningQuestion(audio=audio),
             data={
                 'audio': audio.pk,
                 'order': 17,
@@ -575,7 +580,7 @@ class ReadingQuestionAdminFieldConfigTests(QuizReadingTests):
 
         from portals.utils.quiz_reading_resource_loader import parse_reading_resource_file
 
-        path = Path(__file__).resolve().parent.parent / 'resources' / 'reading_questions' / 'ielts_reading_test_11.json'
+        path = Path(__file__).resolve().parent / 'fixtures' / 'resources' / 'reading_questions' / 'ielts_reading_test_11.json'
         parsed = parse_reading_resource_file(path)
         self.assertIn('passages', parsed)
         group = next(
@@ -590,7 +595,7 @@ class ReadingQuestionAdminFieldConfigTests(QuizReadingTests):
 
         from portals.utils.quiz_reading_resource_loader import parse_reading_resource_file
 
-        path = Path(__file__).resolve().parent.parent / 'resources' / 'reading_questions' / 'ielts_reading_test_11.json'
+        path = Path(__file__).resolve().parent / 'fixtures' / 'resources' / 'reading_questions' / 'ielts_reading_test_11.json'
         parsed = parse_reading_resource_file(path)
         passage3 = parsed['passages'][2]
         group_orders = [q['order'] for q in passage3['question_groups'][0]['questions']]
@@ -598,13 +603,57 @@ class ReadingQuestionAdminFieldConfigTests(QuizReadingTests):
         self.assertEqual(group_orders, [31, 32, 33, 34, 35])
         self.assertEqual(standalone_orders, [27, 28, 29, 30, 36, 37, 38, 39, 40])
 
+    def test_resource_loader_keeps_choice_answers(self):
+        """Loaded rows carry correct_option_index=0 by default; the answer text must still win."""
+        from pathlib import Path
+
+        from portals.models.reading_models import CHOICE_QUESTION_TYPES, matching_option_index
+        from portals.utils.quiz_reading_resource_loader import load_reading_resource_file, parse_reading_resource_file
+
+        path = Path(__file__).resolve().parent / 'fixtures' / 'resources' / 'reading_questions' / 'ielts_reading_test_11.json'
+        parsed = parse_reading_resource_file(path)
+        expected = {}
+        for passage in parsed['passages']:
+            for item in passage['questions']:
+                expected[(passage['order'], item['order'])] = item['correct_answer']
+            for group in passage['question_groups']:
+                for item in group['questions']:
+                    expected[(passage['order'], item['order'])] = item['correct_answer']
+
+        result = load_reading_resource_file(path)
+        questions = ReadingQuestion.objects.filter(
+            passage__quiz_id=result['quiz_id'],
+            question_type__in=CHOICE_QUESTION_TYPES,
+        ).select_related('passage', 'group')
+        self.assertTrue(questions.exists())
+        for question in questions:
+            answer = expected[(question.passage.order, question.order)]
+            with self.subTest(order=question.order):
+                self.assertEqual(
+                    question.correct_option_index,
+                    matching_option_index(question.variant_options, answer),
+                )
+        self.assertTrue(any(q.correct_option_index for q in questions))
+
+    def test_correct_option_sync_prefers_answer_text_over_default_index(self):
+        from portals.models.reading_models import matching_option_index
+        from portals.utils.quiz_correct_option import sync_correct_option_fields
+
+        options = ['Weather', 'Climate', 'Travel']
+        sync = lambda **kw: sync_correct_option_fields(options, match_answer=matching_option_index, **kw)  # noqa: E731
+        self.assertEqual(sync(existing_index=0, existing_answer='Climate'), (1, 'Climate'))
+        # the admin's option number still wins over both
+        self.assertEqual(sync(option_number=3, existing_index=0, existing_answer='Climate'), (2, 'Travel'))
+        # text that no longer matches an option falls back to the stored index
+        self.assertEqual(sync(existing_index=2, existing_answer='Old text'), (2, 'Travel'))
+
     def test_resource_loader_maps_continuation_standalone_orders(self):
         """Standalone blocks authored as 7..n after a 1..6 group must map to passage range."""
         from pathlib import Path
 
         from portals.utils.quiz_reading_resource_loader import parse_reading_resource_file
 
-        path = Path(__file__).resolve().parent.parent / 'resources' / 'reading_questions' / 'ielts_reading_test_1.json'
+        path = Path(__file__).resolve().parent / 'fixtures' / 'resources' / 'reading_questions' / 'ielts_reading_test_1.json'
         parsed = parse_reading_resource_file(path)
         passage2 = parsed['passages'][1]
         group_orders = [q['order'] for q in passage2['question_groups'][0]['questions']]

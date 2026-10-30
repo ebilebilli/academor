@@ -1053,6 +1053,11 @@
         }
       });
 
+      // per-group average cards: only the selected group's card is shown
+      root.querySelectorAll("[data-score-group-block]").forEach(function (block) {
+        block.hidden = !!activeGroup && block.getAttribute("data-score-group-block") !== String(activeGroup);
+      });
+
       root.querySelectorAll("[data-score-panel]").forEach(function (panel) {
         var dataRows = panel.querySelectorAll("tr[data-score-date]");
         var anyData = dataRows.length > 0;

@@ -306,7 +306,58 @@
 }
 
 .portal-register__add--group {
-  margin: 0;
+  margin: 0.5rem 0 0;
+}
+
+/* "+ Yeni qrup" sits after the chips; the form opens underneath */
+.portal-register__groups-wrap:has(.portal-register__more) {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.portal-register__groups-wrap:has(.portal-register__more) .portal-register__groups {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.portal-register__more {
+  flex: 0 0 auto;
+}
+
+.portal-register__more[open] {
+  flex: 1 1 100%;
+}
+
+.portal-register__more-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.8rem;
+  border: 1px dashed var(--color-border-strong, rgba(15, 23, 42, 0.14));
+  border-radius: 999px;
+  color: var(--color-muted, #64748b);
+  font-size: 0.82rem;
+  font-weight: 600;
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.portal-register__more-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.portal-register__more-toggle:hover,
+.portal-register__more[open] .portal-register__more-toggle {
+  color: var(--color-role, #ff5414);
+  border-color: var(--color-role, #ff5414);
+}
+
+.portal-register__more-toggle:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
 }
 
 .portal-register__legend {

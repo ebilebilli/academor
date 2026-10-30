@@ -1,7 +1,7 @@
 {% load i18n portal_tags %}
 
 <section
-  class="mb-4 portal-banner{% if banner_centered %} portal-banner--centered{% endif %}"
+  class="mb-4 portal-banner{% if banner_centered %} portal-banner--centered{% endif %}{% if portal_page_background_image %} portal-banner--photo{% endif %}"
   aria-label="{% trans 'Portal banner' %}"
   {% if portal_page_background_image %}style="--portal-banner-image: url('{{ portal_page_background_image }}');"{% endif %}
 >
@@ -26,11 +26,10 @@
       </div>
     </div>
 
-    {% if lottie %}
-    <div class="portal-banner__media" aria-hidden="true">
-      {% include "portals/includes/portal_lottie.html" with src=lottie %}
+    {% if not banner_centered %}
+    <div class="portal-banner__media">
+      {% include "portals/includes/portal_stickers.html" with sticker_role=portal_role|default:"student" %}
     </div>
     {% endif %}
   </div>
 </section>
-

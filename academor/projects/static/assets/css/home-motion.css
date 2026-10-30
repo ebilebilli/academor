@@ -1,0 +1,293 @@
+/* ==========================================================================
+   Homepage scroll choreography (home-motion.js). Each section has a signature:
+
+   hero      scroll-linked exit (content sinks and dims as it leaves) + regular cards cascade
+   about     the video card wipes open, its cover drifts with scroll, text slides in
+   offers    discount banners flip up from a tilted plane, one after another
+   services  cards bloom out of a soft blur, row by row
+   prices    the carousel glides in from the right, visible cards rise in turn
+   marquee   strip speeds up with scroll velocity (and runs back when you scroll up)
+   abroad    the hero card opens as a circle from the globe, perks pop, cards fan in
+   team      cards rise in turn, the "meet the team" button follows
+   reviews   the testimonial strip slides in from the side, cards settle
+   faq       questions cascade
+
+   Hidden states exist only under html.hm-ready (set by JS when motion is allowed), so no
+   JS / reduced motion = everything simply visible. Animates opacity, transform, filter
+   and clip-path; the separate translate / scale properties stay free for hover lifts.
+   ========================================================================== */
+
+body.page-home {
+    --hm-duration: 900ms;
+    --hm-ease: cubic-bezier(0.16, 1, 0.3, 1);          /* expo-out: quick start, long soft settle */
+    --hm-ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);  /* small overshoot for chips */
+    --hm-stagger: 80ms;
+    --hm-rise: 36px;
+    --hm-blur: 8px;
+    --hm-tilt: 16deg;
+}
+
+@media (max-width: 767.98px) {
+    body.page-home {
+        /* phones: shorter, closer, no blur (cheaper and calmer on small screens) */
+        --hm-duration: 640ms;
+        --hm-stagger: 55ms;
+        --hm-rise: 20px;
+        --hm-blur: 0px;
+        --hm-tilt: 9deg;
+    }
+}
+
+/* ---------------------------------------------------------------- engine */
+html.hm-ready .page-home .hm-part,
+html.hm-ready .page-home .hm-sub {
+    transition-property: opacity, transform, filter, clip-path, translate, scale;
+    transition-duration:
+        var(--hm-duration), var(--hm-duration), var(--hm-duration), var(--hm-duration),
+        var(--dur-base, 200ms), var(--dur-press, 120ms);
+    transition-timing-function:
+        var(--hm-ease), var(--hm-ease), var(--hm-ease), var(--hm-ease),
+        var(--ease-out, ease-out), var(--ease-out, ease-out);
+    transition-delay:
+        var(--hm-delay, 0ms), var(--hm-delay, 0ms), var(--hm-delay, 0ms), var(--hm-delay, 0ms),
+        0ms, 0ms;
+}
+
+html.hm-ready .page-home .hm-part:not(.hm-in),
+html.hm-ready .page-home .hm-sub:not(.hm-in) {
+    opacity: 0;
+    will-change: opacity, transform;
+}
+
+html.hm-ready .page-home .hm-part.hm-in,
+html.hm-ready .page-home .hm-sub.hm-in {
+    opacity: 1;
+    transform: none;
+    filter: none;
+}
+
+/* ---------------------------------------------------------------- shared roles */
+html.hm-ready .page-home [data-hm-role="eyebrow"]:not(.hm-in) {
+    transform: translateY(12px);
+}
+
+/* titles rise out of an invisible slot (mask reveal) */
+html.hm-ready .page-home [data-hm-role="title"] {
+    clip-path: inset(-0.3em -0.3em -0.3em -0.3em);
+}
+html.hm-ready .page-home [data-hm-role="title"]:not(.hm-in) {
+    clip-path: inset(-0.3em -0.3em 100% -0.3em);
+    transform: translateY(0.55em);
+}
+
+html.hm-ready .page-home [data-hm-role="text"]:not(.hm-in) {
+    transform: translateY(calc(var(--hm-rise) * 0.6));
+    filter: blur(calc(var(--hm-blur) / 2));
+}
+
+html.hm-ready .page-home [data-hm-role="cta"]:not(.hm-in) {
+    transform: translateY(16px) scale(0.96);
+}
+
+html.hm-ready .page-home [data-hm-role="item"]:not(.hm-in) {
+    transform: translateY(var(--hm-rise));
+    filter: blur(calc(var(--hm-blur) / 2));
+}
+
+html.hm-ready .page-home [data-hm-role="pop"] {
+    transition-timing-function:
+        var(--hm-ease-pop), var(--hm-ease-pop), var(--hm-ease), var(--hm-ease),
+        var(--ease-out, ease-out), var(--ease-out, ease-out);
+}
+html.hm-ready .page-home [data-hm-role="pop"]:not(.hm-in) {
+    transform: scale(0.7) rotate(-5deg);
+}
+
+/* carousels: the shell glides in, the slides on screen rise in turn */
+html.hm-ready .page-home [data-hm-role="carousel"]:not(.hm-in) {
+    transform: translateX(calc(var(--hm-rise) * 1.6));
+    filter: blur(calc(var(--hm-blur) / 2));
+}
+html.hm-ready .page-home .hm-sub:not(.hm-in) {
+    transform: translateY(calc(var(--hm-rise) * 0.8)) scale(0.97);
+}
+
+/* ---------------------------------------------------------------- hero (scroll-reveal.js) */
+/* the regular cards under the featured pair cascade in from the right */
+html.js .page-home .hbh-reg-wrap.scroll-reveal:not(.is-revealed) .hbh-card--regular {
+    opacity: 0;
+    transform: translateX(40px);
+}
+.page-home .hbh-reg-track > .hbh-card--regular:nth-child(2) { --reveal-delay: 250ms; }
+.page-home .hbh-reg-track > .hbh-card--regular:nth-child(3) { --reveal-delay: 320ms; }
+.page-home .hbh-reg-track > .hbh-card--regular:nth-child(4) { --reveal-delay: 390ms; }
+.page-home .hbh-reg-track > .hbh-card--regular:nth-child(5) { --reveal-delay: 460ms; }
+.page-home .hbh-reg-track > .hbh-card--regular:nth-child(n+6) { --reveal-delay: 530ms; }
+
+/* ---------------------------------------------------------------- about */
+html.hm-ready .page-home [data-hm="about"] [data-hm-role="media"]:not(.hm-in) {
+    transform: scale(0.94);
+}
+/* the card's contents wipe open left → right (the card itself clips them, so shadows stay) */
+html.hm-ready .page-home [data-hm="about"] [data-hm-role="media"] > * {
+    clip-path: inset(0 0 0 0);
+    transition: clip-path calc(var(--hm-duration) * 1.2) var(--hm-ease) var(--hm-delay, 0ms);
+}
+html.hm-ready .page-home [data-hm="about"] [data-hm-role="media"]:not(.hm-in) > * {
+    clip-path: inset(0 100% 0 0);
+}
+html.hm-ready .page-home [data-hm="about"] [data-hm-role="text"]:not(.hm-in) {
+    transform: translateX(calc(var(--hm-rise) * 0.9));
+}
+
+/* ---------------------------------------------------------------- offers */
+html.hm-ready .page-home [data-hm="offers"] [data-hm-role="item"] {
+    transform-origin: 50% 0%;
+}
+html.hm-ready .page-home [data-hm="offers"] [data-hm-role="item"]:not(.hm-in) {
+    transform: perspective(1100px) rotateX(var(--hm-tilt)) translateY(calc(var(--hm-rise) * 1.3));
+    filter: none;
+}
+
+/* ---------------------------------------------------------------- services */
+html.hm-ready .page-home [data-hm="services"] [data-hm-role="item"]:not(.hm-in) {
+    transform: translateY(var(--hm-rise)) scale(0.92);
+    filter: blur(var(--hm-blur));
+}
+
+/* ---------------------------------------------------------------- abroad */
+/* the hero card opens as a circle from the globe side */
+html.hm-ready .page-home [data-hm="abroad"] [data-hm-role="media"] {
+    clip-path: circle(150% at 82% 50%);
+    transition-duration:
+        var(--hm-duration), var(--hm-duration), var(--hm-duration), calc(var(--hm-duration) * 1.4),
+        var(--dur-base, 200ms), var(--dur-press, 120ms);
+}
+html.hm-ready .page-home [data-hm="abroad"] [data-hm-role="media"]:not(.hm-in) {
+    clip-path: circle(0% at 82% 50%);
+    opacity: 1;
+}
+/* destination cards fan in, tilting alternately */
+html.hm-ready .page-home [data-hm="abroad"] [data-hm-role="item"]:not(.hm-in) {
+    transform: translateY(calc(var(--hm-rise) * 0.9)) rotate(-4deg);
+    filter: none;
+}
+html.hm-ready .page-home [data-hm="abroad"] .row > :nth-child(even) [data-hm-role="item"]:not(.hm-in) {
+    transform: translateY(calc(var(--hm-rise) * 0.9)) rotate(4deg);
+}
+
+/* ---------------------------------------------------------------- team */
+html.hm-ready .page-home [data-hm="team"] [data-hm-role="carousel"]:not(.hm-in) {
+    transform: none;
+    filter: none;
+}
+html.hm-ready .page-home [data-hm="team"] .hm-sub:not(.hm-in),
+html.hm-ready .page-home [data-hm="team"] [data-hm-role="item"]:not(.hm-in) {
+    transform: translateY(calc(var(--hm-rise) * 1.2)) rotate(1.5deg);
+}
+
+/* ---------------------------------------------------------------- reviews */
+html.hm-ready .page-home [data-hm="reviews"] [data-hm-role="carousel"]:not(.hm-in) {
+    transform: translateX(calc(var(--hm-rise) * 2.4));
+}
+html.hm-ready .page-home [data-hm="reviews"] .hm-sub:not(.hm-in) {
+    transform: translateY(calc(var(--hm-rise) * 0.6)) scale(0.94);
+}
+
+/* ---------------------------------------------------------------- faq */
+html.hm-ready .page-home [data-hm="faq"] [data-hm-role="item"]:not(.hm-in) {
+    transform: translateY(calc(var(--hm-rise) * 0.6));
+    filter: none;
+}
+
+/* ---------------------------------------------------------------- marquee */
+/* home-motion.js writes --hm-skew on the moving track; the segments lean with the scroll */
+.page-home .home-marquee__segment {
+    transform: skewX(var(--hm-skew, 0deg));
+}
+
+/* ---------------------------------------------------------------- scroll-linked depth */
+/* The moving parts sit inside overflow:hidden boxes, which would become their (never
+   scrolling) scroll container; so the box itself names a view timeline (its own position
+   in the page) and the part inside animates on that. */
+@supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+        .page-home .hbh-section { view-timeline-name: --hm-hero; }
+        .page-home .about-intro-image-card { view-timeline-name: --hm-about-card; }
+        .page-home .abroad-hero__card { view-timeline-name: --hm-abroad-card; }
+
+        /* hero: as it scrolls away, its content sinks a little and dims */
+        .page-home .hbh-inner {
+            animation: hm-hero-exit linear both;
+            animation-timeline: --hm-hero;
+            animation-range: exit 15% exit 100%;
+        }
+
+        /* about: the video cover drifts inside its frame */
+        .page-home .about-intro-image-card .about-vp__cover {
+            animation: hm-drift linear both;
+            animation-timeline: --hm-about-card;
+            animation-range: cover;
+        }
+
+        /* abroad: glows and globe float at different depths */
+        .page-home .abroad-hero__glow--one {
+            animation: hm-float-a linear both;
+            animation-timeline: --hm-abroad-card;
+            animation-range: cover;
+        }
+        .page-home .abroad-hero__glow--two {
+            animation: hm-float-b linear both;
+            animation-timeline: --hm-abroad-card;
+            animation-range: cover;
+        }
+        .page-home .abroad-hero__visual {
+            animation: hm-float-up linear both;
+            animation-timeline: --hm-abroad-card;
+            animation-range: cover;
+        }
+    }
+}
+
+@keyframes hm-hero-exit {
+    from { opacity: 1; scale: 1; translate: 0 0; }
+    to { opacity: 0.4; scale: 0.95; translate: 0 5%; }
+}
+
+@keyframes hm-drift {
+    from { scale: 1.12; translate: 0 -5%; }
+    to { scale: 1.12; translate: 0 5%; }
+}
+
+@keyframes hm-float-a {
+    from { translate: -36px 30px; }
+    to { translate: 36px -30px; }
+}
+
+@keyframes hm-float-b {
+    from { translate: 30px -24px; }
+    to { translate: -30px 24px; }
+}
+
+@keyframes hm-float-up {
+    from { translate: 0 28px; }
+    to { translate: 0 -28px; }
+}
+
+@media (max-width: 767.98px) {
+    @keyframes hm-hero-exit {
+        from { opacity: 1; scale: 1; translate: 0 0; }
+        to { opacity: 0.55; scale: 0.97; translate: 0 3%; }
+    }
+    @keyframes hm-float-up {
+        from { translate: 0 14px; }
+        to { translate: 0 -14px; }
+    }
+    /* about card: wipe from the bottom on phones (the card spans the full width) */
+    html.hm-ready .page-home [data-hm="about"] [data-hm-role="media"]:not(.hm-in) > * {
+        clip-path: inset(100% 0 0 0);
+    }
+    html.hm-ready .page-home [data-hm="about"] [data-hm-role="text"]:not(.hm-in) {
+        transform: translateY(var(--hm-rise));
+    }
+}

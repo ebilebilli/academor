@@ -20,7 +20,7 @@
   {% trans 'Həftəlik qiymətlər' as weekly_scores_page_title %}
   {% trans 'Hər şagird üçün həftəlik 10 bal üzrə qiymət verin.' as weekly_scores_page_subtitle %}
   {% trans 'Digər qiymətlər' as weekly_scores_action_label %}
-  {% include "portals/includes/portal_page_hero.html" with title=weekly_scores_page_title subtitle=weekly_scores_page_subtitle icon="ti-calendar-stats" lottie="portals/animations/graduation-certificate.lottie" action_url=teacher_scores_url action_label=weekly_scores_action_label action_icon="ti-star" %}
+  {% include "portals/includes/portal_page_hero.html" with title=weekly_scores_page_title subtitle=weekly_scores_page_subtitle icon="ti-calendar-stats" stickers=True action_url=teacher_scores_url action_label=weekly_scores_action_label action_icon="ti-star" %}
 
   <div data-weekly-scores-mount aria-live="polite" aria-busy="false">
     {% include "portals/includes/teacher_weekly_scores_panel.html" %}

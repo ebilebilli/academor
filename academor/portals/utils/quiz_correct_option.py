@@ -44,17 +44,32 @@ def sync_correct_option_fields(
     existing_answer: str = '',
     match_answer=None,
 ) -> tuple[int, str] | None:
-    """Return (correct_option_index, correct_answer) or None if unresolved."""
+    """Return (correct_option_index, correct_answer) or None if unresolved.
+
+    Priority: the admin's option number, then the stored answer text, then the stored index.
+    The index column defaults to 0, so rows created in code (resource loaders, scripts) carry
+    index 0 next to the real answer text; trusting the index there would silently turn the
+    first option into the correct one.
+    """
     if len(options) < 2:
         return None
 
-    idx = option_index_from_number(
-        option_number,
-        len(options),
-        existing_index=existing_index,
-    )
-    if idx is None and match_answer is not None and existing_answer:
-        idx = match_answer(options, existing_answer)
+    idx = option_index_from_number(option_number, len(options))
+    if idx is None:
+        stored_idx = option_index_from_number(None, len(options), existing_index=existing_index)
+        text_idx = (
+            match_answer(options, existing_answer)
+            if match_answer is not None and existing_answer
+            else None
+        )
+        if stored_idx is not None and (
+            text_idx is None
+            # duplicate option texts: keep the stored index when it points at the same text
+            or match_answer([options[stored_idx]], existing_answer) == 0
+        ):
+            idx = stored_idx
+        else:
+            idx = text_idx
 
     if idx is None:
         return None

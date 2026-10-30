@@ -1,0 +1,399 @@
+{
+  "level": "A1",
+  "quiz": 1,
+  "title": "A1 Grammar Quiz 1 (loader fixture)",
+  "service": "general_english",
+  "category_name": "A1",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "To be",
+      "question": "I ___ a student. (1)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 0,
+      "explanation": "'I' takes 'am'."
+    },
+    {
+      "id": 2,
+      "topic": "To be",
+      "question": "She ___ a student. (2)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 1,
+      "explanation": "'She' takes 'is'."
+    },
+    {
+      "id": 3,
+      "topic": "To be",
+      "question": "They ___ a student. (3)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 2,
+      "explanation": "'They' takes 'are'."
+    },
+    {
+      "id": 4,
+      "topic": "To be",
+      "question": "We ___ a student. (4)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 2,
+      "explanation": "'We' takes 'are'."
+    },
+    {
+      "id": 5,
+      "topic": "To be",
+      "question": "He ___ a student. (5)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 1,
+      "explanation": "'He' takes 'is'."
+    },
+    {
+      "id": 6,
+      "topic": "To be",
+      "question": "I ___ a student. (6)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 0,
+      "explanation": "'I' takes 'am'."
+    },
+    {
+      "id": 7,
+      "topic": "To be",
+      "question": "She ___ a student. (7)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 1,
+      "explanation": "'She' takes 'is'."
+    },
+    {
+      "id": 8,
+      "topic": "To be",
+      "question": "They ___ a student. (8)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 2,
+      "explanation": "'They' takes 'are'."
+    },
+    {
+      "id": 9,
+      "topic": "To be",
+      "question": "We ___ a student. (9)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 2,
+      "explanation": "'We' takes 'are'."
+    },
+    {
+      "id": 10,
+      "topic": "To be",
+      "question": "He ___ a student. (10)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 1,
+      "explanation": "'He' takes 'is'."
+    },
+    {
+      "id": 11,
+      "topic": "To be",
+      "question": "I ___ a student. (11)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 0,
+      "explanation": "'I' takes 'am'."
+    },
+    {
+      "id": 12,
+      "topic": "To be",
+      "question": "She ___ a student. (12)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 1,
+      "explanation": "'She' takes 'is'."
+    },
+    {
+      "id": 13,
+      "topic": "To be",
+      "question": "They ___ a student. (13)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 2,
+      "explanation": "'They' takes 'are'."
+    },
+    {
+      "id": 14,
+      "topic": "To be",
+      "question": "We ___ a student. (14)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 2,
+      "explanation": "'We' takes 'are'."
+    },
+    {
+      "id": 15,
+      "topic": "To be",
+      "question": "He ___ a student. (15)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 1,
+      "explanation": "'He' takes 'is'."
+    },
+    {
+      "id": 16,
+      "topic": "To be",
+      "question": "I ___ a student. (16)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 0,
+      "explanation": "'I' takes 'am'."
+    },
+    {
+      "id": 17,
+      "topic": "To be",
+      "question": "She ___ a student. (17)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 1,
+      "explanation": "'She' takes 'is'."
+    },
+    {
+      "id": 18,
+      "topic": "To be",
+      "question": "They ___ a student. (18)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 2,
+      "explanation": "'They' takes 'are'."
+    },
+    {
+      "id": 19,
+      "topic": "To be",
+      "question": "We ___ a student. (19)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 2,
+      "explanation": "'We' takes 'are'."
+    },
+    {
+      "id": 20,
+      "topic": "To be",
+      "question": "He ___ a student. (20)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 1,
+      "explanation": "'He' takes 'is'."
+    },
+    {
+      "id": 21,
+      "topic": "To be",
+      "question": "I ___ a student. (21)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 0,
+      "explanation": "'I' takes 'am'."
+    },
+    {
+      "id": 22,
+      "topic": "To be",
+      "question": "She ___ a student. (22)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 1,
+      "explanation": "'She' takes 'is'."
+    },
+    {
+      "id": 23,
+      "topic": "To be",
+      "question": "They ___ a student. (23)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 2,
+      "explanation": "'They' takes 'are'."
+    },
+    {
+      "id": 24,
+      "topic": "To be",
+      "question": "We ___ a student. (24)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 2,
+      "explanation": "'We' takes 'are'."
+    },
+    {
+      "id": 25,
+      "topic": "To be",
+      "question": "He ___ a student. (25)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 1,
+      "explanation": "'He' takes 'is'."
+    },
+    {
+      "id": 26,
+      "topic": "To be",
+      "question": "I ___ a student. (26)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 0,
+      "explanation": "'I' takes 'am'."
+    },
+    {
+      "id": 27,
+      "topic": "To be",
+      "question": "She ___ a student. (27)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 1,
+      "explanation": "'She' takes 'is'."
+    },
+    {
+      "id": 28,
+      "topic": "To be",
+      "question": "They ___ a student. (28)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 2,
+      "explanation": "'They' takes 'are'."
+    },
+    {
+      "id": 29,
+      "topic": "To be",
+      "question": "We ___ a student. (29)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 2,
+      "explanation": "'We' takes 'are'."
+    },
+    {
+      "id": 30,
+      "topic": "To be",
+      "question": "He ___ a student. (30)",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": 1,
+      "explanation": "'He' takes 'is'."
+    }
+  ]
+}

@@ -87,7 +87,6 @@ def _extract_body_scripts(html: str) -> str:
                 'portal-nav-ajax.js',
                 'portal-init.js',
                 'portal-badges.js',
-                'portal-lottie.js',
             )
         ):
             continue

@@ -13,7 +13,7 @@
 {% endif %}
 {% trans 'Textbooks' as textbooks_page_title %}
 {% trans 'Dərs kitabları və materiallar.' as textbooks_page_subtitle %}
-{% include "portals/includes/portal_page_hero.html" with title=textbooks_page_title subtitle=textbooks_page_subtitle icon="ti-books" lottie="portals/animations/study.lottie" %}
+{% include "portals/includes/portal_page_hero.html" with title=textbooks_page_title subtitle=textbooks_page_subtitle icon="ti-books" stickers=True %}
 
 <div{% if score_groups|length > 1 %} data-portal-scores-filter{% endif %}>
 {% if score_groups|length > 1 %}

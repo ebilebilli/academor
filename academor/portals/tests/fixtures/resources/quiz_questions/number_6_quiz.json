@@ -1,0 +1,183 @@
+{
+  "level": "A2",
+  "quiz": 6,
+  "title": "A Day Out (loader fixture)",
+  "service": "general_english",
+  "category_name": "Elementary Listening Tests",
+  "has_shared_passage": false,
+  "shared_passage": "",
+  "is_dropdown": true,
+  "questions": [
+    {
+      "id": 1,
+      "question": "First, she...",
+      "options": [
+        "went to the park.",
+        "bought a book.",
+        "visited a museum.",
+        "ate lunch.",
+        "took a bus.",
+        "met a friend.",
+        "went shopping.",
+        "watched a film.",
+        "had coffee.",
+        "came home by train.",
+        "drove home.",
+        "cooked dinner."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 2,
+      "question": "Then, she...",
+      "options": [
+        "went to the park.",
+        "bought a book.",
+        "visited a museum.",
+        "ate lunch.",
+        "took a bus.",
+        "met a friend.",
+        "went shopping.",
+        "watched a film.",
+        "had coffee.",
+        "came home by train.",
+        "drove home.",
+        "cooked dinner."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "question": "Later, she...",
+      "options": [
+        "went to the park.",
+        "bought a book.",
+        "visited a museum.",
+        "ate lunch.",
+        "took a bus.",
+        "met a friend.",
+        "went shopping.",
+        "watched a film.",
+        "had coffee.",
+        "came home by train.",
+        "drove home.",
+        "cooked dinner."
+      ],
+      "answer": 2
+    },
+    {
+      "id": 4,
+      "question": "After that, she...",
+      "options": [
+        "went to the park.",
+        "bought a book.",
+        "visited a museum.",
+        "ate lunch.",
+        "took a bus.",
+        "met a friend.",
+        "went shopping.",
+        "watched a film.",
+        "had coffee.",
+        "came home by train.",
+        "drove home.",
+        "cooked dinner."
+      ],
+      "answer": 3
+    },
+    {
+      "id": 5,
+      "question": "Next, she...",
+      "options": [
+        "went to the park.",
+        "bought a book.",
+        "visited a museum.",
+        "ate lunch.",
+        "took a bus.",
+        "met a friend.",
+        "went shopping.",
+        "watched a film.",
+        "had coffee.",
+        "came home by train.",
+        "drove home.",
+        "cooked dinner."
+      ],
+      "answer": 4
+    },
+    {
+      "id": 6,
+      "question": "In the afternoon, she...",
+      "options": [
+        "went to the park.",
+        "bought a book.",
+        "visited a museum.",
+        "ate lunch.",
+        "took a bus.",
+        "met a friend.",
+        "went shopping.",
+        "watched a film.",
+        "had coffee.",
+        "came home by train.",
+        "drove home.",
+        "cooked dinner."
+      ],
+      "answer": 5
+    },
+    {
+      "id": 7,
+      "question": "In the evening, she...",
+      "options": [
+        "went to the park.",
+        "bought a book.",
+        "visited a museum.",
+        "ate lunch.",
+        "took a bus.",
+        "met a friend.",
+        "went shopping.",
+        "watched a film.",
+        "had coffee.",
+        "came home by train.",
+        "drove home.",
+        "cooked dinner."
+      ],
+      "answer": 6
+    },
+    {
+      "id": 8,
+      "question": "At night, she...",
+      "options": [
+        "went to the park.",
+        "bought a book.",
+        "visited a museum.",
+        "ate lunch.",
+        "took a bus.",
+        "met a friend.",
+        "went shopping.",
+        "watched a film.",
+        "had coffee.",
+        "came home by train.",
+        "drove home.",
+        "cooked dinner."
+      ],
+      "answer": 7
+    },
+    {
+      "id": 9,
+      "question": "Finally, she...",
+      "options": [
+        "went to the park.",
+        "bought a book.",
+        "visited a museum.",
+        "ate lunch.",
+        "took a bus.",
+        "met a friend.",
+        "went shopping.",
+        "watched a film.",
+        "had coffee.",
+        "came home by train.",
+        "drove home.",
+        "cooked dinner."
+      ],
+      "answer": 8
+    }
+  ]
+}

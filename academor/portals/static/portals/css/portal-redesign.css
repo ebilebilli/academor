@@ -17,9 +17,13 @@ body {
 /* Weekly schedule header typography/alignment (fix day-name baseline issues) */
 .portal-calendar-day-header {
   align-items: flex-start;
+  flex-wrap: wrap;
+  row-gap: 6px;
 }
+/* in narrow day columns the count + "today" badges drop under the day name instead of covering it */
 .portal-day-info {
-  min-width: 0;
+  flex: 1 1 auto;
+  min-width: min-content;
 }
 .portal-day-name {
   line-height: 1.15;
@@ -29,35 +33,49 @@ body {
 
 /* ── Shared design-system components ──────────────────────────────────── */
 
-/* Portal banner (dashboard top card) */
+/* Portal banner (dashboard top card): brand teal, or the admin's photo under a teal veil */
 .portal-banner {
   position: relative;
   overflow: hidden;
-  padding: clamp(16px, 2.2vw, 24px);
-  min-height: 480px;
+  padding: clamp(20px, 2.4vw, 32px);
+  min-height: 220px;
   display: flex;
   align-items: stretch;
-  justify-content: stretch;
-  gap: var(--space-4);
   isolation: isolate;
-  background: var(--card-bg);
-  border: var(--card-border);
+  color: #fff;
+  background:
+    radial-gradient(60% 120% at 100% 0%, rgba(255, 84, 20, .28) 0%, transparent 60%),
+    radial-gradient(50% 90% at 0% 100%, rgba(45, 212, 191, .16) 0%, transparent 70%),
+    linear-gradient(120deg, #00313d 0%, #024b5c 100%);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-xs);
+  box-shadow: 0 10px 30px rgba(0, 49, 61, .18);
 }
-.portal-banner::after {
+/* faint dot grid so the plain gradient does not read flat */
+.portal-banner::before {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: var(--portal-banner-image);
+  z-index: -1;
+  background-image: radial-gradient(rgba(255, 255, 255, .09) 1px, transparent 1.4px);
+  background-size: 18px 18px;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 60%);
+  pointer-events: none;
+}
+.portal-banner--photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image:
+    linear-gradient(100deg, rgba(0, 49, 61, .94) 0%, rgba(0, 49, 61, .78) 45%, rgba(0, 49, 61, .25) 100%),
+    var(--portal-banner-image);
   background-size: cover;
   background-position: center;
-  z-index: -1;
   pointer-events: none;
 }
 .portal-banner__main {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   gap: var(--space-6);
   width: 100%;
@@ -67,35 +85,37 @@ body {
   max-width: 780px;
 }
 .portal-banner__title {
-  margin: 0 0 10px 0;
-  font-size: clamp(22px, 2.8vw, 40px);
+  margin: 0 0 8px 0;
+  font-size: clamp(24px, 2.6vw, 36px);
   line-height: 1.1;
   letter-spacing: -0.03em;
-  font-weight: 850;
-  color: rgba(255, 255, 255, .95);
+  font-weight: 800;
+  color: #fff;
 }
 .portal-banner__name {
-  color: var(--color-role, #ff5414);
+  color: #ff7a45;
 }
 .portal-banner__sub {
   margin: 0;
-  font-size: clamp(14px, 1.35vw, 18px);
-  color: rgba(255, 255, 255, .86);
-  max-width: 62ch;
+  font-size: clamp(14px, 1.2vw, 16px);
+  color: rgba(255, 255, 255, .82);
+  max-width: 56ch;
 }
 .portal-banner__date {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-top: 14px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(255, 255, 255, .18);
-  font-size: 14px;
-  color: rgba(255, 255, 255, .72);
+  margin-top: 16px;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, .1);
+  border: 1px solid rgba(255, 255, 255, .16);
+  font-size: 13px;
+  color: rgba(255, 255, 255, .86);
 }
 .portal-banner__date .ti {
   font-size: 1rem;
-  color: rgba(255, 255, 255, .5);
+  color: #ff7a45;
 }
 .portal-banner__date-sep {
   opacity: 0.4;
@@ -105,15 +125,28 @@ body {
 }
 .portal-banner__media {
   flex: 0 0 auto;
-  width: min(160px, 22vw);
-  max-width: 180px;
-  aspect-ratio: 1000 / 563;
   display: grid;
   place-items: center;
 }
-.portal-banner__media .portal-lottie {
-  width: 100%;
-  height: 100%;
+.portal-banner__media .portal-stickers {
+  width: 15rem;
+  height: 10rem;
+}
+.portal-banner__media .portal-stickers__item {
+  filter: drop-shadow(0 10px 16px rgba(0, 0, 0, .28));
+}
+.portal-banner__media .portal-stickers__item--1 {
+  max-width: 8.5rem;
+  max-height: 9rem;
+}
+.portal-banner__media .portal-stickers__item--2 {
+  max-width: 4.25rem;
+  max-height: 5rem;
+}
+.portal-banner__media .portal-stickers__item--3 {
+  left: 12%;
+  max-width: 4.5rem;
+  max-height: 4.5rem;
 }
 .portal-banner--centered .portal-banner__main {
   flex-direction: column;
@@ -121,83 +154,63 @@ body {
   justify-content: center;
   text-align: center;
 }
-.portal-banner--centered .portal-banner__date {
-  justify-content: center;
-}
 @media (max-width: 576px) {
   .portal-banner {
-    min-height: clamp(200px, 52vw, 240px);
-    padding: clamp(12px, 3.2vw, 16px);
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: stretch;
-  }
-  .portal-banner::after {
-    background-position: center 30%;
+    min-height: 0;
+    padding: 20px 16px;
   }
   .portal-banner__main {
-    flex: 1;
-    flex-direction: column;
     align-items: flex-start;
-    justify-content: flex-end;
     gap: var(--space-3);
     position: relative;
-    z-index: 1;
-    width: 100%;
   }
   .portal-banner__copy {
     width: 100%;
     max-width: none;
-    margin-top: auto;
+    padding-right: 5.5rem;
   }
-  .portal-banner__main:has(.portal-banner__media) .portal-banner__copy {
-    padding-right: min(88px, 26vw);
+  .portal-banner--centered .portal-banner__copy {
+    padding-right: 0;
   }
   .portal-banner__title {
     margin: 0 0 6px;
-    font-size: clamp(18px, 5.2vw, 24px);
+    font-size: clamp(20px, 6vw, 26px);
     line-height: 1.15;
   }
   .portal-banner__sub {
-    font-size: clamp(12px, 3.4vw, 14px);
-    line-height: 1.35;
-    max-width: none;
+    font-size: 13px;
+    line-height: 1.4;
   }
   .portal-banner__date {
-    margin-top: 10px;
-    padding-top: 10px;
-    font-size: clamp(11px, 3vw, 13px);
+    margin-top: 12px;
+    font-size: 12px;
     gap: 6px;
     flex-wrap: wrap;
     row-gap: 4px;
   }
+  .portal-banner__date-year,
+  .portal-banner__date-month + .portal-banner__date-sep {
+    display: none;
+  }
   .portal-banner__media {
     position: absolute;
-    top: 0;
-    right: 0;
-    width: min(80px, 22vw);
-    max-width: 88px;
-    align-self: auto;
-    pointer-events: none;
+    top: -6px;
+    right: -6px;
   }
-  .portal-banner--centered {
-    min-height: clamp(180px, 48vw, 220px);
-    justify-content: center;
+  .portal-banner__media .portal-stickers {
+    width: 6rem;
+    height: 5.5rem;
   }
-  .portal-banner--centered .portal-banner__main {
-    align-items: center;
-    justify-content: flex-end;
-    text-align: center;
+  .portal-banner__media .portal-stickers__item--1 {
+    max-width: 4rem;
+    max-height: 4.5rem;
   }
-  .portal-banner--centered .portal-banner__copy {
-    padding-right: 0;
-    margin-top: auto;
+  .portal-banner__media .portal-stickers__item--2 {
+    max-width: 2.25rem;
+    max-height: 2.5rem;
   }
-  .portal-banner--centered .portal-banner__media {
-    position: static;
-    width: min(96px, 28vw);
-    max-width: 104px;
-    margin-bottom: var(--space-2);
+  .portal-banner__media .portal-stickers__item--3 {
+    display: none;
   }
 }
 
@@ -1922,9 +1935,9 @@ a.t-stat:hover { color: var(--color-text); }
 
 .portal-student-segment__label {
   line-height: 1.2;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  /* wrap long names ("Həftəlik qiymətləndirmə") onto two lines instead of cutting them off */
+  white-space: normal;
+  overflow-wrap: break-word;
   max-width: 100%;
 }
 
@@ -2854,7 +2867,8 @@ tr.is-quiz-locked td {
   .dashboard-perf-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (min-width: 1200px) {
-  .dashboard-perf-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  /* 3 or 4 cards (the mock card is optional) always fill the row */
+  .dashboard-perf-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
 }
 
 .dashboard-perf-card {
@@ -3119,22 +3133,23 @@ a.dashboard-perf-card:hover .dashboard-perf-card__arrow {
 }
 
 @media (max-width: 479px) {
+  /* stay side by side on phones: a smaller ring keeps each card one short row */
   .dashboard-perf-card {
-    flex-direction: column;
-    align-items: stretch;
-    text-align: center;
     min-height: 0;
-    padding-top: var(--space-4);
+    gap: var(--space-3);
+    padding: var(--space-3);
   }
-  .dashboard-perf-card__visual {
-    display: flex;
-    justify-content: center;
+  .dashboard-perf-card__ring {
+    width: 60px;
+    height: 60px;
   }
-  .dashboard-perf-card__head {
-    justify-content: center;
+  .dashboard-perf-card__ring-inner {
+    width: 46px;
+    height: 46px;
   }
-  .dashboard-perf-card__titles { align-items: center; }
-  .dashboard-perf-card__tier { align-self: center; }
+  .dashboard-perf-card__value {
+    font-size: var(--text-sm);
+  }
   .dashboard-perf-card__arrow { display: none; }
   .dashboard-perf-card__hint { padding-left: 0; }
 }
@@ -3372,6 +3387,29 @@ a.qhub__nav-item:focus {
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: var(--space-4);
   align-content: start;
+}
+
+/* no side list (one service, few categories): the cards take the full width */
+.qhub--flat {
+  grid-template-columns: 1fr;
+}
+
+.qhub__card-icon {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-md);
+  background: var(--color-role-subtle);
+  border: 1px solid color-mix(in srgb, var(--color-role) 16%, transparent);
+  color: var(--color-role);
+  font-size: 1.3rem;
+  transition: transform var(--transition-fast);
+}
+
+.qhub__card:hover .qhub__card-icon {
+  transform: rotate(-6deg) scale(1.05);
 }
 
 .qhub__card {

@@ -1,11 +1,15 @@
 {% load i18n %}
 
-<div class="qhub" id="quiz-hub" data-quiz-hub>
+{# The side list only earns its place with several services or a long list; otherwise it repeats the cards. #}
+{% if service_tabs|length > 2 or categories|length > 6 %}{% firstof "1" as show_nav %}{% endif %}
+<div class="qhub{% if not show_nav %} qhub--flat{% endif %}" id="quiz-hub" data-quiz-hub>
 
+  {% if show_nav %}
   {# ── Left sidebar: category nav ─────────────────────────── #}
   <aside class="qhub__nav" id="quizCategoryNav" aria-label="{% trans 'Kateqoriyalar' %}">
 
-    {% if service_tabs|length > 1 %}
+    {# "All services" plus a single service is the same list twice #}
+    {% if service_tabs|length > 2 %}
     <div class="qhub__nav-service-group" data-portal-quiz-service-tablist>
       {% for tab in service_tabs %}
       <button
@@ -49,6 +53,7 @@
       {% endfor %}
     </nav>
   </aside>
+  {% endif %}
 
   {# ── Right panel: category cards ────────────────────────── #}
   <main class="qhub__body" id="quizCategoryBody">
@@ -68,6 +73,7 @@
       data-services="{% for code in category.services %}{{ code }}{% if not forloop.last %} {% endif %}{% endfor %}"
       data-category="{{ category.id }}"
     >
+      <span class="qhub__card-icon" aria-hidden="true"><i class="ti ti-forms"></i></span>
       <div class="qhub__card-body">
         <h3 class="qhub__card-title">{{ category.name }}</h3>
         <div class="qhub__card-meta">

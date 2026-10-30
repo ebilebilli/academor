@@ -1,0 +1,13 @@
+{% load static %}
+{% comment %}
+Friendly "not open yet" card (instead of a red error alert). Pass title, text and optional sticker.
+{% endcomment %}
+{% with sticker_name=sticker|default:"clock" %}{% with "portals/img/stickers/"|add:sticker_name|add:".webp" as sticker_path %}
+<div class="portal-locked-card" role="status">
+  <img class="portal-locked-card__sticker" src="{% static sticker_path %}" width="96" height="96" alt="" aria-hidden="true" decoding="async">
+  <div class="portal-locked-card__copy">
+    <p class="portal-locked-card__title"><i class="bi bi-lock-fill" aria-hidden="true"></i> {{ title }}</p>
+    <p class="portal-locked-card__text">{{ text }}</p>
+  </div>
+</div>
+{% endwith %}{% endwith %}

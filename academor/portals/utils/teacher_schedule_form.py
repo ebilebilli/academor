@@ -263,3 +263,11 @@ class TeacherScheduleEditForm(forms.ModelForm):
         if group and not teacher_groups_queryset(self.teacher_id, active_only=True).filter(pk=group.pk).exists():
             raise forms.ValidationError(_('You can only schedule slots for your own groups.'))
         return group
+
+    def clean(self):
+        cleaned = super().clean()
+        # start_time is a custom HH:MM field outside Meta.fields, so the ModelForm never copies it
+        # to the instance; set it here so model validation and save() see the new time
+        if cleaned.get('start_time'):
+            self.instance.start_time = cleaned['start_time']
+        return cleaned

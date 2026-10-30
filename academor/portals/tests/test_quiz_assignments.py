@@ -288,7 +288,9 @@ class QuizAssignmentTests(QuizVisibilityTests):
             kwargs={'category_pk': self.ielts_category.pk},
         )
         self.assertContains(response, 'data-quiz-hub')
-        self.assertContains(response, 'data-portal-quiz-category-tablist')
+        # one service and a short list: the side list would repeat the cards, so only cards show
+        self.assertNotContains(response, 'data-portal-quiz-category-tablist')
+        self.assertContains(response, 'qhub--flat')
         self.assertContains(response, f'href="{category_url}"')
 
 class MockAccessPerProgramTests(TestCase):

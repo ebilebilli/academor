@@ -799,6 +799,7 @@ def prepare_student_scores_with_groups(student_id, quiz_scores, weekly_scores):
         'quiz_scores': quiz_enriched,
         'weekly_scores': weekly_enriched,
         'score_groups': score_groups if len(score_groups) > 1 else [],
+        'groups_by_service': by_service,
     }
 
 
@@ -917,7 +918,11 @@ def serialize_attendance(row):
         'schedule_id': row.schedule_id,
         'group_id': group.pk if group is not None else None,
         'group_name': group.name if group is not None else '',
-        'weekday_label': schedule.get_weekday_display() if schedule is not None else '',
+        # register marks have no schedule: fall back to the session's own weekday
+        'weekday_label': (
+            schedule.get_weekday_display() if schedule is not None
+            else Schedule.Weekday(row.session_date.weekday()).label
+        ),
         'start_time': schedule.start_time if schedule is not None else None,
         'session_date': row.session_date,
         'status': row.status,
@@ -1862,10 +1867,7 @@ def get_teacher_student_attendance_detail(teacher_id, student_id):
     if not student:
         return None
 
-    course_codes = get_teacher_course_type_codes(teacher_id)
-    if not course_codes:
-        return None
-
+    # attendance is scoped by the teacher's own groups, not by course specializations
     teacher_groups = teacher_groups_queryset(teacher_id)
     records_qs = (
         teacher_attendance_queryset(teacher_id)

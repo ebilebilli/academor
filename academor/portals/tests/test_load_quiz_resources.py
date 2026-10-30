@@ -1,12 +1,17 @@
+from pathlib import Path
+
 from django.contrib.auth import get_user_model
 
 from django.test import TestCase
 
 from portals.models import Quiz, QuizQuestion
-from portals.utils.quiz_resource_loader import RESOURCES_DIR, load_resource_file
+from portals.utils.quiz_resource_loader import load_resource_file
 from projects.models.service_models import Service
 
 User = get_user_model()
+
+# small synthetic copies of the quiz resource format (the real resource files are not kept in the repo)
+RESOURCES_DIR = Path(__file__).resolve().parent / 'fixtures' / 'resources' / 'quiz_questions'
 
 
 class LoadQuizResourcesTests(TestCase):

@@ -161,7 +161,7 @@ class QuizSpeakingTests(QuizVisibilityTests):
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'IELTS Speaking Test')
-        self.assertContains(response, 'Speaking tasks')
+        self.assertContains(response, 'Danışıq tapşırıqları')  # 'Speaking tasks' in az
 
     def test_speaking_take_view_renders(self):
         quiz = self._create_speaking_quiz()
@@ -200,12 +200,9 @@ class QuizSpeakingResourceLoaderTests(QuizVisibilityTests):
     def test_parse_speaking_resource_file(self):
         from pathlib import Path
 
-        from portals.utils.quiz_speaking_resource_loader import (
-            RESOURCES_DIR,
-            parse_speaking_resource_file,
-        )
+        from portals.utils.quiz_speaking_resource_loader import parse_speaking_resource_file
 
-        path = RESOURCES_DIR / 'ielts_speaking_test_1.json'
+        path = Path(__file__).resolve().parent / 'fixtures' / 'resources' / 'speaking_questions' / 'ielts_speaking_test_1.json'
         parsed = parse_speaking_resource_file(path)
         self.assertEqual(parsed['resource_slug'], 'ielts_speaking_test_1')
         self.assertEqual(parsed['category_name'], 'Speaking')
@@ -216,12 +213,9 @@ class QuizSpeakingResourceLoaderTests(QuizVisibilityTests):
     def test_load_speaking_resource_file(self):
         from pathlib import Path
 
-        from portals.utils.quiz_speaking_resource_loader import (
-            RESOURCES_DIR,
-            load_speaking_resource_file,
-        )
+        from portals.utils.quiz_speaking_resource_loader import load_speaking_resource_file
 
-        path = RESOURCES_DIR / 'ielts_speaking_test_1.json'
+        path = Path(__file__).resolve().parent / 'fixtures' / 'resources' / 'speaking_questions' / 'ielts_speaking_test_1.json'
         result = load_speaking_resource_file(path)
         self.assertTrue(result['quiz_id'])
         self.assertEqual(result['parts'], 3)

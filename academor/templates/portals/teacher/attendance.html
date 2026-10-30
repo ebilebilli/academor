@@ -5,12 +5,12 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'portals/css/portal-attendance-hub.css' %}">
-<link rel="stylesheet" href="{% static 'portals/css/portal-attendance-register.css' %}">
+<link rel="stylesheet" href="{% static 'portals/css/portal-attendance-register.css' %}?v=20261029a">
 {% endblock %}
 
 {% block content %}
 {% trans "Qrupun aylıq davamiyyət dəftəri — günlərə klik edin, avtomatik saxlanır." as attendance_hub_subtitle %}
-{% include "portals/includes/portal_page_hero.html" with title=_('Davamiyyət') subtitle=attendance_hub_subtitle icon="ti-clipboard-check" lottie="portals/animations/study.lottie" %}
+{% include "portals/includes/portal_page_hero.html" with title=_('Davamiyyət') subtitle=attendance_hub_subtitle icon="ti-clipboard-check" stickers=True %}
 
 <nav class="portal-attendance-hub-tabs" aria-label="{% trans 'Davamiyyət bölmələri' %}">
   <a

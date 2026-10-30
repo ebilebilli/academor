@@ -50,7 +50,7 @@
           <tr>
             <td class="fw-500">{{ row.session_date|portal_date_long }}</td>
             <td>{{ row.group_name|default:"—" }}</td>
-            <td>{% if row.start_time %}{{ row.weekday_label }}, {{ row.start_time|time:"H:i" }}{% else %}—{% endif %}</td>
+            <td>{{ row.weekday_label|default:"—" }}{% if row.start_time %}, {{ row.start_time|time:"H:i" }}{% endif %}</td>
             <td>
               <span class="portal-attendance-status portal-attendance-status--{{ row.status }}">{{ row.status_label }}</span>
             </td>
