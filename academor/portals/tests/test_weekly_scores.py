@@ -129,7 +129,7 @@ class WeeklyStudentScoreTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Nəticələr və qiymətləndirmələr')
         self.assertContains(response, 'Quiz tarixçəsi')
-        self.assertContains(response, 'Qiymətləndirmələr')
+        self.assertContains(response, 'Həftəlik qiymətləndirmələr')
         self.assertContains(response, '9')
 
     def test_weekly_score_notifies_student_and_parent(self):
@@ -302,7 +302,7 @@ class WeeklyStudentScoreTests(TestCase):
             {'week': past_week},
         )
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Bu həftə')  # 'Cari həftə' in az
+        self.assertContains(response, 'Cari həftə')
         self.assertNotContains(response, 'data-weekly-week-nav')
 
     def test_student_in_two_teacher_groups_gets_two_weekly_cards(self):

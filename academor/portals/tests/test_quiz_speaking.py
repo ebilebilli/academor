@@ -161,7 +161,7 @@ class QuizSpeakingTests(QuizVisibilityTests):
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'IELTS Speaking Test')
-        self.assertContains(response, 'Danışıq bölməsi')  # 'Speaking tasks' in az
+        self.assertContains(response, 'Danışıq tapşırıqları')  # 'Speaking tasks' in az
 
     def test_speaking_take_view_renders(self):
         quiz = self._create_speaking_quiz()

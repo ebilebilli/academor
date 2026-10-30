@@ -1935,9 +1935,9 @@ a.t-stat:hover { color: var(--color-text); }
 
 .portal-student-segment__label {
   line-height: 1.2;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  /* wrap long names ("Həftəlik qiymətləndirmə") onto two lines instead of cutting them off */
+  white-space: normal;
+  overflow-wrap: break-word;
   max-width: 100%;
 }
 
@@ -3387,6 +3387,29 @@ a.qhub__nav-item:focus {
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: var(--space-4);
   align-content: start;
+}
+
+/* no side list (one service, few categories): the cards take the full width */
+.qhub--flat {
+  grid-template-columns: 1fr;
+}
+
+.qhub__card-icon {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-md);
+  background: var(--color-role-subtle);
+  border: 1px solid color-mix(in srgb, var(--color-role) 16%, transparent);
+  color: var(--color-role);
+  font-size: 1.3rem;
+  transition: transform var(--transition-fast);
+}
+
+.qhub__card:hover .qhub__card-icon {
+  transform: rotate(-6deg) scale(1.05);
 }
 
 .qhub__card {

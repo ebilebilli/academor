@@ -446,6 +446,7 @@ _STICKERS_BY_ICON = {
     'ti-bell': ('bulb', 'clock'),
     'ti-users': ('backpack', 'book'),
     'ti-pencil': ('pencil', 'magnifier'),
+    'ti-forms': ('bulb', 'pencil'),
     'ti-shopping-cart': ('backpack', 'flask'),
 }
 _STICKERS_BY_ROLE = {
