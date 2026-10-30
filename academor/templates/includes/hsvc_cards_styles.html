@@ -125,7 +125,8 @@
     background: linear-gradient(100deg, #eef1f4 30%, #f8fafb 50%, #eef1f4 70%) 0 0 / 250% 100%;
     animation: hsvcShimmer 1.4s linear infinite;
 }
-.hsvc-card__media--teal, .hsvc-card__media--indigo, .hsvc-card__media--orange { animation: none; }
+.hsvc-card__media--teal, .hsvc-card__media--indigo, .hsvc-card__media--orange,
+.hsvc-card__media.is-loaded { animation: none; }
 @keyframes hsvcShimmer { to { background-position: -150% 0; } }
 
 /* card reveal (scroll-reveal.js marks the wrapper): short fade + lift, keeps the hover transitions */

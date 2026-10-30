@@ -143,6 +143,7 @@
         if (!list) { teardown(); root.setAttribute("data-journey", "off: anchor sections not found"); return; }
 
         var mainTop = main.getBoundingClientRect().top + window.scrollY;
+        state.mainTop = mainTop;
         var width = main.clientWidth;
         var container = main.querySelector(".container");
         var inner = container ? container.getBoundingClientRect().width : 1296;
@@ -259,7 +260,9 @@
     }
 
     function targetY() {
-        return clamp(window.innerHeight * 0.55 - main.getBoundingClientRect().top, y0, y1);
+        /* main's page offset comes from build() (rebuilt on resize / content changes); a
+           getBoundingClientRect here forced a layout on every scroll event */
+        return clamp(window.innerHeight * 0.55 - (state.mainTop - window.pageYOffset), y0, y1);
     }
 
     function emitPuffs(x, y, headingRad, alt) {

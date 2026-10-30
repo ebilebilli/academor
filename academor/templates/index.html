@@ -5,7 +5,7 @@
 
 {% block extra_head %}
     <link href="{% static 'assets/css/home.css' %}" rel="stylesheet">
-    <link href="{% static 'assets/css/home-motion.css' %}?v=20261030a" rel="stylesheet">
+    <link href="{% static 'assets/css/home-motion.css' %}?v=20261031a" rel="stylesheet">
 {% endblock %}
 
 {% block body_attrs %} class="page-home"{% endblock %}
@@ -114,8 +114,8 @@
 {% endblock %}
 
 {% block extra_js %}
-    <script defer src="{% static 'assets/js/home-motion.js' %}?v=20261030a"></script>
-    <script defer src="{% static 'assets/js/home-journey.js' %}"></script>
+    <script defer src="{% static 'assets/js/home-motion.js' %}?v=20261031a"></script>
+    <script defer src="{% static 'assets/js/home-journey.js' %}?v=20261031perf"></script>
     <script defer src="{% static 'assets/js/hbh-tagline-reveal.js' %}"></script>
     {% include "includes/turnstile_script.html" %}
     {% if open_review_modal %}
