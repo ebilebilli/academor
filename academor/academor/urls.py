@@ -8,9 +8,13 @@ from projects.sitemaps import SITEMAPS
 from projects.views.i18n_views import set_language
 from projects.views.robots_txt import robots_txt
 from projects.views.errors import handler404
+from portals.views.crm_views import admin_login
 
 
 urlpatterns = [
+    # CRM for the office team (staff only), under the same secret prefix as the admin
+    path(f'{settings.ADMIN_URL}crm/', include('portals.crm_urls')),
+    path(f'{settings.ADMIN_URL}login/', admin_login, name='admin_login_to_crm'),
     path(f'{settings.ADMIN_URL}', admin.site.urls),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('i18n/setlang/', set_language, name='set_language'),

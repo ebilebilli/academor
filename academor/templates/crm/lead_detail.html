@@ -1,0 +1,105 @@
+{% extends "crm/base.html" %}
+{% load crm_tags %}
+{% block title %}{{ lead.full_name }}{% endblock %}
+{% block content %}
+<div class="crm-head">
+  <div><p class="crm-eyebrow">Müraciət · {{ lead.get_source_display }}</p><h1>{{ lead.full_name }}</h1><p>{{ lead.created_at|date:"d.m.Y H:i" }} · {{ lead.created_at|timesince }} əvvəl</p></div>
+  <div class="crm-head__tools">
+    <a class="crm-btn crm-btn--ghost" href="{% url 'crm:leads' %}"><i class="bi bi-arrow-left"></i>Lövhə</a>
+    {% if lead.phone %}<a class="crm-btn crm-btn--ghost" href="tel:{{ lead.phone }}"><i class="bi bi-telephone-fill"></i>Zəng</a>{% endif %}
+    {% if wa %}<a class="crm-btn crm-btn--wa" href="{{ wa }}" target="_blank" rel="noopener"><i class="bi bi-whatsapp"></i>WhatsApp</a>{% endif %}
+  </div>
+</div>
+
+<div class="crm-card" style="margin-bottom:18px">
+  <div class="crm-card__body">
+    <form method="post" class="crm-steps">{% csrf_token %}
+      <input type="hidden" name="save_lead" value="1">
+      {% for f in form.hidden_fields %}{{ f }}{% endfor %}
+      {% for v, l in statuses %}
+      <button type="button" class="st-{{ v }}{% if lead.status == v %} is-active{% endif %}" data-set-status="{{ v }}"><i class="bi {% if v == 'new' %}bi-stars{% elif v == 'contacted' %}bi-telephone{% elif v == 'trial' %}bi-easel{% elif v == 'enrolled' %}bi-mortarboard{% else %}bi-x-circle{% endif %}"></i>{{ l }}</button>
+      {% endfor %}
+    </form>
+  </div>
+</div>
+
+<div class="crm-grid crm-grid--2">
+  <div class="crm-stack">
+    <div class="crm-card">
+      <div class="crm-card__head"><h2><i class="bi bi-person-lines-fill"></i> Məlumat</h2></div>
+      <div class="crm-card__body">
+        <form method="post" class="crm-form" id="leadForm">{% csrf_token %}
+          <input type="hidden" name="save_lead" value="1">
+          {% include "crm/_form_fields.html" with full_fields="message lost_reason" %}
+          <div class="crm-form__actions"><button class="crm-btn crm-btn--teal" type="submit"><i class="bi bi-check2"></i>Yadda saxla</button></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="crm-stack">
+    <div class="crm-card">
+      <div class="crm-card__head"><h2><i class="bi bi-chat-left-text-fill"></i> Qeyd əlavə et</h2></div>
+      <div class="crm-card__body">
+        <form method="post" class="crm-form">{% csrf_token %}
+          <input type="hidden" name="add_note" value="1">
+          <div class="crm-field">{{ note_form.kind }}</div>
+          <div class="crm-field crm-field--full">{{ note_form.text }}{{ note_form.text.errors }}</div>
+          <div class="crm-form__actions"><button class="crm-btn crm-btn--primary crm-btn--sm" type="submit"><i class="bi bi-plus-lg"></i>Əlavə et</button></div>
+        </form>
+      </div>
+    </div>
+
+    <div class="crm-card">
+      <div class="crm-card__head"><h2><i class="bi bi-mortarboard-fill"></i> Tələbə</h2></div>
+      <div class="crm-card__body">
+        {% if lead.student %}
+          <a class="crm-person" href="{% url 'crm:student' lead.student.pk %}"><span class="crm-avatar">{{ lead.student.full_name|initials }}</span><span><strong>{{ lead.student.full_name }}</strong><small>Tələbə profilinə keç →</small></span></a>
+        {% else %}
+          <p class="muted" style="margin-bottom:10px">Qeydiyyatdan keçibsə, tələbə hesabına bağlayın — status "Qeydiyyatdan keçdi" olacaq.</p>
+          <form method="post">{% csrf_token %}
+            <input type="hidden" name="link_student" value="1">
+            <select class="crm-input crm-select" name="student" data-crm-search required>
+              <option value="">Tələbə seçin…</option>
+              {% for s in students %}<option value="{{ s.pk }}">{{ s.full_name }}{% if s.phone %} · {{ s.phone }}{% endif %}</option>{% endfor %}
+            </select>
+            <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+              <button class="crm-btn crm-btn--teal crm-btn--sm" type="submit"><i class="bi bi-link-45deg"></i>Bağla</button>
+              <a class="crm-btn crm-btn--ghost crm-btn--sm" href="{% url 'admin:portals_studentprofile_add' %}" target="_blank" rel="noopener"><i class="bi bi-person-plus"></i>Yeni tələbə hesabı</a>
+            </div>
+          </form>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="crm-card">
+      <div class="crm-card__head"><h2><i class="bi bi-clock-history"></i> Tarixçə</h2></div>
+      <div class="crm-card__body">
+        {% if lead.message %}<div class="crm-alert" style="background:var(--teal-50);color:var(--teal-800);border-color:var(--teal-100);margin-bottom:12px;white-space:pre-line"><i class="bi bi-quote"></i><span>{{ lead.message }}</span></div>{% endif %}
+        <ul class="crm-timeline">
+          {% for a in activities %}
+          <li>
+            <span class="crm-timeline__icon crm-timeline__icon--{{ a.kind }}"><i class="bi {% if a.kind == 'call' %}bi-telephone-fill{% elif a.kind == 'status' %}bi-arrow-left-right{% elif a.kind == 'created' %}bi-stars{% elif a.kind == 'message' %}bi-chat-dots-fill{% else %}bi-pencil-fill{% endif %}"></i></span>
+            <div class="crm-timeline__body"><p>{{ a.text }}</p><small>{{ a.get_kind_display }} · {% if a.author %}{{ a.author.get_full_name|default:a.author.username }} · {% endif %}{{ a.created_at|date:"d.m.Y H:i" }}</small></div>
+          </li>
+          {% empty %}
+          <li class="muted">Hələ qeyd yoxdur.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+  /* status step buttons set the status field of the main form and save it */
+  document.querySelectorAll("[data-set-status]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var form = document.getElementById("leadForm");
+      form.querySelector("[name=status]").value = b.getAttribute("data-set-status");
+      form.submit();
+    });
+  });
+</script>
+{% endblock %}

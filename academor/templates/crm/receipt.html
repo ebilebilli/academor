@@ -1,0 +1,62 @@
+{% load static crm_tags %}<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Qəbz {{ pay.receipt_number }} · Academor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'assets/vendor/bootstrap-icons-1.11.3/bootstrap-icons.min.css' %}">
+  <link rel="stylesheet" href="{% static 'crm/crm.css' %}?v=20261103b">
+  <style>
+    body.crm { display: grid; place-items: start center; padding: 32px 16px; }
+    .rc { width: min(560px, 100%); }
+    .rc-paper { background: #fff; border-radius: 22px; overflow: hidden; box-shadow: var(--shadow-lg); }
+    .rc-top { padding: 26px 28px; color: #fff; background: linear-gradient(125deg, var(--teal-900), var(--teal-700)); display: flex; justify-content: space-between; align-items: center; }
+    .rc-top h1 { font-size: 20px; }
+    .rc-top small { opacity: .75; }
+    .rc-amount { padding: 26px 28px 8px; text-align: center; }
+    .rc-amount strong { display: block; font-size: 44px; font-weight: 800; letter-spacing: -.03em; color: var(--teal-900); }
+    .rc-amount span { color: var(--green); font-weight: 700; }
+    .rc-rows { padding: 12px 28px 24px; }
+    .rc-row { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px dashed var(--border); }
+    .rc-row:last-child { border-bottom: 0; }
+    .rc-row small { color: var(--muted); }
+    .rc-row b { text-align: right; }
+    .rc-foot { padding: 16px 28px 26px; display: flex; justify-content: space-between; color: var(--muted); font-size: 12.5px; border-top: 1px solid var(--border); }
+    .rc-actions { display: flex; gap: 8px; justify-content: center; margin-top: 18px; }
+    @media print { body.crm { padding: 0; } .rc-paper { box-shadow: none; border: 1px solid #ddd; } }
+  </style>
+</head>
+<body class="crm">
+  <div class="rc">
+    <div class="rc-paper">
+      <div class="rc-top">
+        <div><h1>Academor</h1><small>Training and Development Center</small></div>
+        <div style="text-align:right"><small>Ödəniş qəbzi</small><h1 class="tnum">№ {{ pay.receipt_number }}</h1></div>
+      </div>
+      <div class="rc-amount">
+        <strong class="tnum">{{ pay.amount|azn:2 }}</strong>
+        <span><i class="bi bi-check-circle-fill"></i> Qəbul edildi</span>
+      </div>
+      <div class="rc-rows">
+        <div class="rc-row"><small>Tələbə</small><b>{{ pay.student.full_name }}</b></div>
+        {% if pay.payer %}<div class="rc-row"><small>Ödəyən</small><b>{{ pay.payer }}</b></div>{% endif %}
+        <div class="rc-row"><small>Tarix</small><b class="tnum">{{ pay.paid_at|date:"d.m.Y" }}</b></div>
+        <div class="rc-row"><small>Ödəniş üsulu</small><b>{{ pay.get_method_display }}</b></div>
+        {% if pay.note %}<div class="rc-row"><small>Təyinat</small><b>{{ pay.note }}</b></div>{% endif %}
+        <div class="rc-row"><small>Qalıq borc</small><b class="tnum">{% if balance > 0 %}{{ balance|azn:2 }}{% else %}Borc yoxdur{% endif %}</b></div>
+      </div>
+      <div class="rc-foot">
+        <span>Qəbul edən: {% if pay.received_by %}{{ pay.received_by.get_full_name|default:pay.received_by.username }}{% else %}—{% endif %}</span>
+        <span>____________ imza</span>
+      </div>
+    </div>
+    <div class="rc-actions no-print">
+      <button class="crm-btn crm-btn--primary" onclick="window.print()"><i class="bi bi-printer"></i>Çap et</button>
+      <a class="crm-btn crm-btn--ghost" href="{% url 'crm:student' pay.student.pk %}"><i class="bi bi-person"></i>Tələbə</a>
+      <a class="crm-btn crm-btn--ghost" href="{% url 'crm:payments' %}"><i class="bi bi-wallet2"></i>Ödənişlər</a>
+    </div>
+  </div>
+</body>
+</html>

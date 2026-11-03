@@ -1,0 +1,7 @@
+{% for field in form %}
+<div class="crm-field{% if field.field.widget.input_type == 'textarea' or field.name in full_fields %} crm-field--full{% endif %}">
+  <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} <span style="color:var(--orange)">*</span>{% endif %}</label>
+  {{ field }}
+  {{ field.errors }}
+</div>
+{% endfor %}

@@ -1,0 +1,110 @@
+{% extends "crm/base.html" %}
+{% load crm_tags l10n %}
+{% block title %}Ödənişlər{% endblock %}
+{% block content %}{% localize off %}
+<div class="crm-head">
+  <div><p class="crm-eyebrow">Maliyyə</p><h1>Ödənişlər</h1><p>Ofisdə qəbul edilən ödənişlər, aylıq hesablar və gəlir.</p></div>
+  <div class="crm-head__tools">
+    <div class="crm-seg">
+      <a href="?month={{ prev|date:'Y-m' }}"><i class="bi bi-chevron-left"></i></a>
+      <a class="is-active">{{ period_label }}</a>
+      <a href="?month={{ next|date:'Y-m' }}"><i class="bi bi-chevron-right"></i></a>
+    </div>
+    <a class="crm-btn crm-btn--ghost" href="{% url 'crm:charge_new' %}"><i class="bi bi-receipt"></i>Hesab yaz</a>
+    <a class="crm-btn crm-btn--primary" href="{% url 'crm:payment_new' %}"><i class="bi bi-plus-lg"></i>Ödəniş qəbul et</a>
+  </div>
+</div>
+
+<section class="crm-grid crm-grid--kpi" style="margin-bottom:18px">
+  <div class="crm-card crm-kpi crm-kpi--orange">
+    <div class="crm-kpi__top"><span class="crm-kpi__label">Ofisdə yığılan</span><span class="crm-kpi__icon"><i class="bi bi-cash-stack"></i></span></div>
+    <div class="crm-kpi__value tnum">{{ total|azn }}</div>
+    <div class="crm-kpi__foot">{{ payments|length }} ödəniş</div>
+  </div>
+  <div class="crm-card crm-kpi crm-kpi--teal">
+    <div class="crm-kpi__top"><span class="crm-kpi__label">Online (saytdan)</span><span class="crm-kpi__icon"><i class="bi bi-credit-card-2-front-fill"></i></span></div>
+    <div class="crm-kpi__value tnum">{{ online|azn }}</div>
+    <div class="crm-kpi__foot">kartla ödənişlər</div>
+  </div>
+  <div class="crm-card crm-kpi crm-kpi--violet">
+    <div class="crm-kpi__top"><span class="crm-kpi__label">Yazılan hesablar</span><span class="crm-kpi__icon"><i class="bi bi-receipt-cutoff"></i></span></div>
+    <div class="crm-kpi__value tnum">{{ billed|azn }}</div>
+    <div class="crm-kpi__foot">aylıq haqlar</div>
+  </div>
+  <div class="crm-card crm-kpi crm-kpi--green">
+    <div class="crm-kpi__top"><span class="crm-kpi__label">Ödəniş üsulları</span><span class="crm-kpi__icon"><i class="bi bi-pie-chart-fill"></i></span></div>
+    <div style="display:flex;height:10px;border-radius:999px;overflow:hidden;margin-top:16px;background:var(--surface-2)">
+      {% for m in methods %}{% if m.pct %}<span title="{{ m.label }}" style="width:{{ m.pct }}%;background:{% cycle '#ff5414' '#0b5664' '#6c5ce7' '#16a34a' %}"></span>{% endif %}{% endfor %}
+    </div>
+    <div class="crm-legend" style="margin-top:10px">{% for m in methods %}{% if m.sum %}<span><i style="background:{% cycle '#ff5414' '#0b5664' '#6c5ce7' '#16a34a' %}"></i>{{ m.label }} {{ m.sum|azn }}</span>{% endif %}{% endfor %}</div>
+  </div>
+</section>
+
+<section class="crm-grid crm-grid--2" style="margin-bottom:18px">
+  <div class="crm-card">
+    <div class="crm-card__head"><h2><i class="bi bi-bar-chart-fill"></i> Gəlir dinamikası</h2>
+      <div class="crm-legend"><span><i style="background:var(--orange)"></i>Ofis</span><span><i style="background:var(--teal-700)"></i>Online</span><span><i style="background:var(--teal-100);border:1px dashed #a9cfd4"></i>Hesab</span></div>
+    </div>
+    <div class="crm-card__body">
+      <div class="crm-bars">
+        {% for r in revenue %}
+        <div class="crm-bars__col{% if forloop.last %} is-current{% endif %}">
+          <div class="crm-bars__plot">
+            <div class="crm-bars__bar" style="height:{{ r.h_total }}%;animation-delay:{{ forloop.counter0 }}00ms">
+              <span class="crm-bars__seg--office" style="flex:{{ r.office|default:0 }}"></span>
+              <span class="crm-bars__seg--online" style="flex:{{ r.online|default:0 }}"></span>
+            </div>
+            <div class="crm-bars__bar crm-bars__bar--billed" style="height:{{ r.h_billed }}%;animation-delay:{{ forloop.counter0 }}50ms"></div>
+            {% if r.total %}<span class="crm-bars__val">{{ r.total|azn }}</span>{% endif %}
+          </div>
+          <span class="crm-bars__label">{{ r.label }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div class="crm-card">
+    <div class="crm-card__head"><h2><i class="bi bi-magic"></i> Aylıq hesabları yarat</h2></div>
+    <div class="crm-card__body">
+      <p class="muted" style="margin-bottom:12px">Aylıq haqqı olan hər qrupun hər tələbəsinə seçilmiş ay üçün hesab yazılır (son tarix ayın 10-u). Artıq yazılmış hesablar təkrarlanmır.</p>
+      <form method="post" action="{% url 'crm:charges_generate' %}" style="display:flex;gap:8px;flex-wrap:wrap">{% csrf_token %}
+        <input class="crm-input" type="month" name="month" value="{{ period|date:'Y-m' }}" style="flex:1;min-width:150px">
+        <button class="crm-btn crm-btn--teal" type="submit"><i class="bi bi-lightning-charge-fill"></i>Hesabları yaz</button>
+      </form>
+      {% if groups_no_fee %}
+      <div class="crm-alert" style="margin-top:14px"><i class="bi bi-exclamation-triangle-fill"></i><span>Aylıq haqqı yazılmayan qruplar: {% for g in groups_no_fee %}<strong>{{ g.name }}</strong>{% if not forloop.last %}, {% endif %}{% endfor %}. <a href="{% url 'crm:groups' %}" style="text-decoration:underline">Qruplarda təyin edin →</a></span></div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<div class="crm-card">
+  <div class="crm-card__head"><h2><i class="bi bi-list-check"></i> {{ period_label }} ödənişləri</h2>
+    <div class="crm-seg">
+      <a href="?month={{ period|date:'Y-m' }}" class="{% if not method %}is-active{% endif %}">Hamısı</a>
+      {% for v, l in method_choices %}<a href="?month={{ period|date:'Y-m' }}&method={{ v }}" class="{% if method == v %}is-active{% endif %}">{{ l }}</a>{% endfor %}
+    </div>
+  </div>
+  <div class="crm-table-wrap" style="margin-top:14px">
+    <table class="crm-table">
+      <thead><tr><th>Qəbz</th><th>Tələbə</th><th>Tarix</th><th>Üsul</th><th>Ödəyən / qeyd</th><th>Qəbul edən</th><th class="num">Məbləğ</th><th></th></tr></thead>
+      <tbody>
+        {% for p in payments %}
+        <tr>
+          <td class="tnum muted">{{ p.receipt_number }}</td>
+          <td><a class="crm-person" href="{% url 'crm:student' p.student.pk %}"><span class="crm-avatar crm-avatar--sm">{{ p.student.full_name|initials }}</span><strong>{{ p.student.full_name }}</strong></a></td>
+          <td class="tnum">{{ p.paid_at|date:"d.m.Y" }}</td>
+          <td><span class="crm-chip">{{ p.get_method_display }}</span></td>
+          <td class="muted">{{ p.payer|default:"" }}{% if p.payer and p.note %} · {% endif %}{{ p.note|default:"" }}{% if not p.payer and not p.note %}—{% endif %}</td>
+          <td class="muted">{% if p.received_by %}{{ p.received_by.get_full_name|default:p.received_by.username }}{% else %}—{% endif %}</td>
+          <td class="num money-ok">{{ p.amount|azn }}</td>
+          <td class="num"><a class="crm-icon-btn" href="{% url 'crm:payment_receipt' p.pk %}" title="Qəbz" aria-label="Qəbz"><i class="bi bi-printer"></i></a></td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="8"><div class="crm-empty"><i class="bi bi-wallet2"></i>Bu ay ödəniş qeydə alınmayıb.</div></td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endlocalize %}{% endblock %}

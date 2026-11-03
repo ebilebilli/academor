@@ -1,0 +1,189 @@
+{% extends "crm/base.html" %}
+{% load crm_tags l10n %}
+{% block title %}Panel{% endblock %}
+{% block content %}{% localize off %}
+<section class="crm-hero">
+  <div style="position:relative;z-index:1">
+    <p class="crm-eyebrow" style="color:#ffb293">{{ d.month_label }}</p>
+    <h1>Salam, {{ request.user.first_name|default:request.user.username }}</h1>
+    <p>Bu ay mərkəzdə nə baş verir — bir baxışda.</p>
+  </div>
+  <div class="crm-hero__stats">
+    <div class="crm-hero__stat">
+      <small>Bu ay yığılan</small>
+      <strong class="tnum">{{ d.collected|azn }}</strong>
+      {% if d.billed %}<em>{{ d.billed|azn }} hesabdan · {{ d.collect_pct }}%</em>{% else %}<em>bu ay hesab yazılmayıb</em>{% endif %}
+    </div>
+    <div class="crm-hero__stat">
+      <small>Yeni müraciət</small>
+      <strong class="tnum">{{ d.leads_this }}</strong>
+      <em>{% if d.leads_delta > 0 %}+{{ d.leads_delta }}{% else %}{{ d.leads_delta }}{% endif %} keçən aya görə</em>
+    </div>
+    <div class="crm-hero__stat">
+      <small>Davamiyyət</small>
+      <strong class="tnum">{% if d.attendance.rate is not None %}{{ d.attendance.rate }}%{% else %}—{% endif %}</strong>
+      <em>{{ d.attendance.marks }} qeyd</em>
+    </div>
+  </div>
+</section>
+
+<section class="crm-grid crm-grid--kpi" style="margin-bottom:18px">
+  <a class="crm-card crm-kpi crm-kpi--teal" href="{% url 'crm:students' %}">
+    <div class="crm-kpi__top"><span class="crm-kpi__label">Aktiv tələbələr</span><span class="crm-kpi__icon"><i class="bi bi-people-fill"></i></span></div>
+    <div class="crm-kpi__value tnum">{{ d.active_students }}</div>
+    <div class="crm-kpi__foot">aktiv qruplarda</div>
+  </a>
+  <a class="crm-card crm-kpi crm-kpi--orange" href="{% url 'crm:leads' %}">
+    <div class="crm-kpi__top"><span class="crm-kpi__label">Çevrilmə (bu ay)</span><span class="crm-kpi__icon"><i class="bi bi-funnel-fill"></i></span></div>
+    <div class="crm-kpi__value tnum">{% if d.conversion is not None %}{{ d.conversion }}%{% else %}—{% endif %}</div>
+    <div class="crm-meter"><span style="width:{{ d.conversion|default:0 }}%"></span></div>
+  </a>
+  <a class="crm-card crm-kpi crm-kpi--red" href="{% url 'crm:debts' %}">
+    <div class="crm-kpi__top"><span class="crm-kpi__label">Ümumi borc</span><span class="crm-kpi__icon"><i class="bi bi-exclamation-diamond-fill"></i></span></div>
+    <div class="crm-kpi__value tnum">{{ d.debt_total|azn }}</div>
+    <div class="crm-kpi__foot">{{ d.debtors_count }} tələbə</div>
+  </a>
+  <a class="crm-card crm-kpi crm-kpi--green" href="{% url 'crm:payments' %}">
+    <div class="crm-kpi__top"><span class="crm-kpi__label">Yığım faizi</span><span class="crm-kpi__icon"><i class="bi bi-graph-up-arrow"></i></span></div>
+    <div class="crm-kpi__value tnum">{% if d.collect_pct is not None %}{{ d.collect_pct }}%{% else %}—{% endif %}</div>
+    <div class="crm-meter crm-meter--good"><span style="width:{{ d.collect_pct|default:0 }}%"></span></div>
+  </a>
+</section>
+
+<section class="crm-grid crm-grid--2" style="margin-bottom:18px">
+  <div class="crm-card">
+    <div class="crm-card__head">
+      <h2><i class="bi bi-bar-chart-fill"></i> Gəlir — son 6 ay</h2>
+      <div class="crm-legend">
+        <span><i style="background:var(--orange)"></i>Ofis</span>
+        <span><i style="background:var(--teal-700)"></i>Online</span>
+        <span><i style="background:var(--teal-100);border:1px dashed #a9cfd4"></i>Hesab yazılıb</span>
+      </div>
+    </div>
+    <div class="crm-card__body">
+      <div class="crm-bars">
+        {% for r in d.revenue %}
+        <div class="crm-bars__col{% if forloop.last %} is-current{% endif %}">
+          <div class="crm-bars__plot">
+            <div class="crm-bars__bar" style="height:{{ r.h_total }}%;animation-delay:{{ forloop.counter0 }}00ms">
+              <span class="crm-bars__seg--office" style="flex:{{ r.office|default:0 }}"></span>
+              <span class="crm-bars__seg--online" style="flex:{{ r.online|default:0 }}"></span>
+            </div>
+            <div class="crm-bars__bar crm-bars__bar--billed" style="height:{{ r.h_billed }}%;animation-delay:{{ forloop.counter0 }}50ms"></div>
+            {% if r.total %}<span class="crm-bars__val">{{ r.total|azn }}</span>{% endif %}
+          </div>
+          <span class="crm-bars__label">{{ r.label }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="crm-card">
+    <div class="crm-card__head"><h2><i class="bi bi-pie-chart-fill"></i> Müraciət mənbələri</h2><small class="muted">son 3 ay</small></div>
+    <div class="crm-card__body">
+      {% if d.sources %}
+      <div class="crm-donut">
+        <div class="crm-donut__center">
+          <svg viewBox="0 0 42 42" aria-hidden="true">
+            <circle cx="21" cy="21" r="15.915" stroke="#eef2f6"></circle>
+            {% for s in d.sources %}<circle cx="21" cy="21" r="15.915" stroke="{{ s.color }}" stroke-dasharray="{{ s.dash }}" stroke-dashoffset="{{ s.offset }}"></circle>{% endfor %}
+          </svg>
+          <strong class="tnum">{{ d.funnel.total }}<small>müraciət</small></strong>
+        </div>
+        <ul>
+          {% for s in d.sources|slice:":6" %}<li><i style="background:{{ s.color }}"></i>{{ s.label }}<b>{{ s.n }}</b></li>{% endfor %}
+        </ul>
+      </div>
+      {% else %}
+      <div class="crm-empty"><i class="bi bi-inbox"></i>Hələ müraciət yoxdur.</div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<section class="crm-grid crm-grid--3" style="margin-bottom:18px">
+  <div class="crm-card">
+    <div class="crm-card__head"><h2><i class="bi bi-funnel-fill"></i> Satış hunisi</h2><a href="{% url 'crm:leads' %}">Lövhə →</a></div>
+    <div class="crm-card__body">
+      <div class="crm-funnel">
+        {% for s in d.funnel.steps %}
+        <div class="crm-funnel__row st-{{ s.value }}">
+          <span class="crm-status">{{ s.label }}</span>
+          <div class="crm-funnel__track"><div class="crm-funnel__fill" style="width:{{ s.bar }}%;background:var(--st);animation-delay:{{ forloop.counter0 }}00ms"></div></div>
+          <b>{{ s.n }}</b>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="crm-card">
+    <div class="crm-card__head"><h2><i class="bi bi-telephone-forward-fill"></i> Bu gün zəng edilməli</h2><a href="{% url 'crm:leads' %}?view=list&status=new">Hamısı →</a></div>
+    <div class="crm-card__body">
+      <ul class="crm-list">
+        {% for l in d.follow_ups %}
+        <li>
+          <span class="crm-avatar crm-avatar--sm crm-avatar--teal">{{ l.full_name|initials }}</span>
+          <a class="crm-list__main" href="{% url 'crm:lead' l.pk %}"><strong>{{ l.full_name }}</strong><small>{{ l.phone|default:"telefon yoxdur" }} · {{ l.get_source_display }}</small></a>
+          <span class="crm-list__side"><span class="crm-status st-{{ l.status }}">{{ l.get_status_display }}</span></span>
+        </li>
+        {% empty %}
+        <li class="crm-empty" style="display:block;border:0"><i class="bi bi-check2-circle"></i>Gözləyən zəng yoxdur.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="crm-card">
+    <div class="crm-card__head"><h2><i class="bi bi-exclamation-diamond-fill"></i> Borclular</h2><a href="{% url 'crm:debts' %}">Hamısı →</a></div>
+    <div class="crm-card__body">
+      <ul class="crm-list">
+        {% for r in d.debtors %}
+        <li>
+          <span class="crm-avatar crm-avatar--sm">{{ r.student.full_name|initials }}</span>
+          <a class="crm-list__main" href="{% url 'crm:student' r.student.pk %}"><strong>{{ r.student.full_name }}</strong><small>{% if r.days_overdue %}{{ r.days_overdue }} gün gecikir{% else %}vaxtı çatmayıb{% endif %}</small></a>
+          <span class="crm-list__side money-debt tnum">{{ r.balance|azn }}</span>
+        </li>
+        {% empty %}
+        <li class="crm-empty" style="display:block;border:0"><i class="bi bi-emoji-smile"></i>Borc yoxdur.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="crm-grid crm-grid--halves">
+  <div class="crm-card">
+    <div class="crm-card__head"><h2><i class="bi bi-inbox-fill"></i> Son müraciətlər</h2><a href="{% url 'crm:leads' %}?view=list">Siyahı →</a></div>
+    <div class="crm-card__body">
+      <ul class="crm-list">
+        {% for l in d.recent_leads %}
+        <li>
+          <span class="crm-avatar crm-avatar--sm crm-avatar--teal">{{ l.full_name|initials }}</span>
+          <a class="crm-list__main" href="{% url 'crm:lead' l.pk %}"><strong>{{ l.full_name }}</strong><small>{{ l.interest|default:l.get_source_display }}</small></a>
+          <span class="crm-list__side"><span class="crm-status st-{{ l.status }}">{{ l.get_status_display }}</span><br><small class="muted">{{ l.created_at|timesince }} əvvəl</small></span>
+        </li>
+        {% empty %}
+        <li class="crm-empty" style="display:block;border:0"><i class="bi bi-inbox"></i>Müraciət yoxdur.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="crm-card">
+    <div class="crm-card__head"><h2><i class="bi bi-clock-fill"></i> Bu günün dərsləri</h2><a href="{% url 'crm:attendance' %}">Davamiyyət →</a></div>
+    <div class="crm-card__body">
+      <ul class="crm-list">
+        {% for s in d.lessons_today %}
+        <li>
+          <span class="crm-chip crm-chip--orange tnum">{{ s.start_time|time:"H:i" }}</span>
+          <div class="crm-list__main"><strong>{{ s.group.name }}</strong><small>{{ s.group.teacher.full_name }} · {{ s.duration_min }} dəq{% if s.room_or_link %} · {{ s.room_or_link|truncatechars:24 }}{% endif %}</small></div>
+        </li>
+        {% empty %}
+        <li class="crm-empty" style="display:block;border:0"><i class="bi bi-cup-hot"></i>Bu gün dərs yoxdur.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+{% endlocalize %}{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "crm/base.html" %}
+{% load crm_tags l10n %}
+{% block title %}Davamiyyət{% endblock %}
+{% block content %}{% localize off %}
+<div class="crm-head">
+  <div><p class="crm-eyebrow">Tədris</p><h1>Davamiyyət</h1><p>Bütün qruplar üzrə ayın mənzərəsi və diqqət tələb edən tələbələr.</p></div>
+  <div class="crm-head__tools">
+    <div class="crm-seg">
+      <a href="?month={{ prev|date:'Y-m' }}"><i class="bi bi-chevron-left"></i></a>
+      <a class="is-active">{{ period_label }}</a>
+      <a href="?month={{ next|date:'Y-m' }}"><i class="bi bi-chevron-right"></i></a>
+    </div>
+    {% if teacher_url %}<a class="crm-btn crm-btn--ghost" href="{{ teacher_url }}?month={{ period|date:'Y-m' }}"><i class="bi bi-table"></i>Müəllim cədvəlləri</a>{% endif %}
+  </div>
+</div>
+
+<section class="crm-grid crm-grid--kpi" style="margin-bottom:18px">
+  <div class="crm-card crm-kpi crm-kpi--teal"><div class="crm-kpi__top"><span class="crm-kpi__label">Davamiyyət faizi</span><span class="crm-kpi__icon"><i class="bi bi-activity"></i></span></div><div class="crm-kpi__value rate rate--{{ ov.rate|tone }}">{% if ov.rate is not None %}{{ ov.rate }}%{% else %}—{% endif %}</div><div class="crm-meter crm-meter--{{ ov.rate|tone }}"><span style="width:{{ ov.rate|default:0 }}%"></span></div></div>
+  <div class="crm-card crm-kpi crm-kpi--green"><div class="crm-kpi__top"><span class="crm-kpi__label">Gəlib</span><span class="crm-kpi__icon"><i class="bi bi-check2-circle"></i></span></div><div class="crm-kpi__value tnum">{{ ov.present }}</div><div class="crm-kpi__foot">{{ ov.late }} gecikmə ilə</div></div>
+  <div class="crm-card crm-kpi crm-kpi--red"><div class="crm-kpi__top"><span class="crm-kpi__label">Gəlməyib</span><span class="crm-kpi__icon"><i class="bi bi-x-circle"></i></span></div><div class="crm-kpi__value tnum">{{ ov.absent }}</div><div class="crm-kpi__foot">{{ ov.marks }} qeyddən</div></div>
+  <div class="crm-card crm-kpi crm-kpi--amber"><div class="crm-kpi__top"><span class="crm-kpi__label">Risk qrupunda</span><span class="crm-kpi__icon"><i class="bi bi-exclamation-triangle-fill"></i></span></div><div class="crm-kpi__value tnum">{{ ov.at_risk|length }}</div><div class="crm-kpi__foot">davamiyyəti 75%-dən aşağı</div></div>
+</section>
+
+<div class="crm-card" style="margin-bottom:18px">
+  <div class="crm-card__head"><h2><i class="bi bi-calendar3"></i> Günlər üzrə</h2>
+    <div class="crm-legend"><span><i class="s-present"></i>Gəlib</span><span><i class="s-late"></i>Gecikib</span><span><i class="s-absent"></i>Gəlməyib</span></div>
+  </div>
+  <div class="crm-card__body">
+    <div class="crm-days">
+      {% for d in ov.days %}
+      <div class="crm-days__col{% if d.weekend %} is-weekend{% endif %}" title="{{ d.date|date:'d.m' }}: {{ d.present }} gəlib, {{ d.late }} gecikib, {{ d.absent }} gəlməyib">
+        <div class="crm-days__plot">
+          {% if d.present %}<span class="s-present" style="height:{{ d.h_present }}%"></span>{% endif %}
+          {% if d.late %}<span class="s-late" style="height:{{ d.h_late }}%"></span>{% endif %}
+          {% if d.absent %}<span class="s-absent" style="height:{{ d.h_absent }}%"></span>{% endif %}
+        </div>
+        <span class="crm-days__n">{{ d.n }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div class="crm-grid crm-grid--halves">
+  <div class="crm-card">
+    <div class="crm-card__head"><h2><i class="bi bi-exclamation-triangle-fill"></i> Diqqət tələb edən tələbələr</h2></div>
+    <div class="crm-card__body">
+      <ul class="crm-list">
+        {% for r in ov.at_risk %}
+        <li>
+          <span class="crm-avatar crm-avatar--sm">{{ r.student.full_name|initials }}</span>
+          <a class="crm-list__main" href="{% url 'crm:student' r.student.pk %}"><strong>{{ r.student.full_name }}</strong><small>{{ r.absent }} dəfə gəlməyib · {{ r.marks }} dərs</small></a>
+          <span class="crm-list__side rate rate--{{ r.rate|tone }}">{{ r.rate }}%</span>
+        </li>
+        {% empty %}
+        <li class="crm-empty" style="display:block;border:0"><i class="bi bi-emoji-smile"></i>Risk qrupunda tələbə yoxdur.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="crm-card">
+    <div class="crm-card__head"><h2><i class="bi bi-person-badge-fill"></i> Müəllimlər</h2></div>
+    <div class="crm-table-wrap" style="margin-top:12px">
+      <table class="crm-table">
+        <thead><tr><th>Müəllim</th><th class="num">Qrup</th><th class="num">Qeyd</th><th>Faiz</th></tr></thead>
+        <tbody>
+          {% for t in teachers %}
+          <tr>
+            <td><span class="crm-person"><span class="crm-avatar crm-avatar--sm crm-avatar--teal">{{ t.initials }}</span><strong>{{ t.name }}</strong></span></td>
+            <td class="num">{{ t.groups }}</td>
+            <td class="num">{{ t.marks }}</td>
+            <td style="min-width:130px">{% if t.rate is not None %}<div style="display:flex;align-items:center;gap:8px"><span class="rate rate--{{ t.rate|tone }}" style="width:38px">{{ t.rate }}%</span><div class="crm-meter crm-meter--{{ t.rate|tone }}" style="margin:0;flex:1"><span style="width:{{ t.rate }}%"></span></div></div>{% else %}<span class="muted">—</span>{% endif %}</td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="4"><div class="crm-empty">Müəllim yoxdur.</div></td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endlocalize %}{% endblock %}

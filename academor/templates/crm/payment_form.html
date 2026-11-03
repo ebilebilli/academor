@@ -1,0 +1,27 @@
+{% extends "crm/base.html" %}
+{% load l10n %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="crm-head">
+  <div><p class="crm-eyebrow">Maliyyə</p><h1>{{ title }}</h1><p>{% if form.fields.method %}Ödənişdən sonra çap üçün qəbz açılacaq.{% else %}Paket, imtahan və ya digər birdəfəlik hesab.{% endif %}</p></div>
+  <div class="crm-head__tools"><a class="crm-btn crm-btn--ghost" href="{% url 'crm:payments' %}"><i class="bi bi-arrow-left"></i>Geri</a></div>
+</div>
+<div class="crm-card" style="max-width:760px">
+  <div class="crm-card__body">
+    <form method="post" class="crm-form">{% csrf_token %}{% localize off %}
+      {% for field in form %}
+      <div class="crm-field{% if field.name == 'student' or field.name == 'note' or field.name == 'description' %} crm-field--full{% endif %}">
+        <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} <span style="color:var(--orange)">*</span>{% endif %}</label>
+        {% if field.name == 'student' %}{{ field.as_widget|safe }}{% else %}{{ field }}{% endif %}
+        {{ field.errors }}
+      </div>
+      {% endfor %}{% endlocalize %}
+      <div class="crm-form__actions">
+        <a class="crm-btn crm-btn--ghost" href="{% url 'crm:payments' %}">Ləğv et</a>
+        <button class="crm-btn crm-btn--primary" type="submit"><i class="bi bi-check2-circle"></i>Yadda saxla</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+{% block extra_js %}<script>document.querySelectorAll('select[name=student]').forEach(function (s) { s.setAttribute('data-crm-search', ''); });</script>{% endblock %}

@@ -40,9 +40,14 @@ from .speaking_models import (
     SpeakingRecording,
 )
 from .ielts_mock_models import IeltsMockTestAttempt, MockTestAttempt, StudentMockAccess
+from .crm_models import Lead, LeadActivity, StudentCharge, StudentPayment
 from .notification_models import PortalNotification, QuizResultReview, OfferNotification, OfferNotificationDelivery
 
 __all__ = [
+    'Lead',
+    'LeadActivity',
+    'StudentCharge',
+    'StudentPayment',
     'CustomerProfile',
     'StudentProfile',
     'StudentCourseSpecialization',
