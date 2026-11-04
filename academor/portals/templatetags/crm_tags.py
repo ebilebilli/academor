@@ -6,15 +6,35 @@ register = template.Library()
 
 
 @register.filter
-def azn(value, decimals=0):
-    """1250.5 → '1 251 AZN' (thin-space thousands); decimals=2 keeps qəpik."""
+def azn(value, decimals=None):
+    """1250 -> '1 250 AZN', 41.86 -> '41.86 AZN' (qəpik only when there are any); decimals=2 forces them."""
     try:
         amount = Decimal(value or 0)
     except (InvalidOperation, TypeError, ValueError):
         return value
-    places = int(decimals or 0)
-    text = f'{amount:,.{places}f}'.replace(',', ' ')
+    if decimals in (None, ''):
+        places = 0 if amount == amount.to_integral_value() else 2
+    else:
+        places = int(decimals)
+    text = f'{amount:,.{places}f}'.replace(',', ' ')
     return f'{text} AZN'
+
+
+def _dec(v):
+    try:
+        return Decimal(v or 0)
+    except (InvalidOperation, TypeError, ValueError):
+        return Decimal('0')
+
+
+@register.filter
+def sub(a, b):
+    return _dec(a) - _dec(b)
+
+
+@register.filter
+def add_money(a, b):
+    return _dec(a) + _dec(b)
 
 
 @register.filter

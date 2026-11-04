@@ -1,6 +1,27 @@
 {% extends "crm/base.html" %}
 {% load crm_tags %}
-{% block title %}Borclar{% endblock %}
+{% block title %}Borclar{% if upcoming %}
+<div class="crm-card" style="margin-top:18px">
+  <div class="crm-card__head"><h2><i class="bi bi-calendar-event-fill"></i> Yaxın 7 gündə ödəniş günü çatanlar</h2></div>
+  <div class="crm-table-wrap">
+    <table class="crm-table">
+      <thead><tr><th>Tələbə</th><th>Kurs</th><th>Tarix</th><th class="num">Məbləğ</th><th></th></tr></thead>
+      <tbody>
+        {% for r in upcoming %}
+        <tr>
+          <td><a class="crm-person" href="{% url 'crm:student' r.student.pk %}"><span class="crm-avatar crm-avatar--sm crm-avatar--teal">{{ r.student.full_name|initials }}</span><span><strong>{{ r.student.full_name }}</strong><small>{{ r.student.phone|default:"" }}</small></span></a></td>
+          <td>{{ r.enrollment.course }}</td>
+          <td class="tnum">{{ r.due|date:"d.m.Y" }} <small class="muted">({% if r.days == 1 %}sabah{% else %}{{ r.days }} gün{% endif %})</small></td>
+          <td class="num">{{ r.enrollment.monthly_fee|azn }}</td>
+          <td class="num"><a class="crm-btn crm-btn--ghost crm-btn--sm" href="{% url 'crm:payment_new' %}?student={{ r.student.pk }}"><i class="bi bi-plus-lg"></i>Ödəniş</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
 {% block content %}
 <div class="crm-head">
   <div><p class="crm-eyebrow">Maliyyə</p><h1>Borclar</h1><p>Ən çox gecikəndən başlayaraq. Bir kliklə WhatsApp xatırlatması göndərin.</p></div>
@@ -13,13 +34,13 @@
 <div class="crm-card">
   <div class="crm-table-wrap">
     <table class="crm-table">
-      <thead><tr><th>Tələbə</th><th>Qruplar</th><th>Gecikmə</th><th class="num">Vaxtı keçən</th><th class="num">Ümumi borc</th><th></th></tr></thead>
+      <thead><tr><th>Tələbə</th><th>Kurs</th><th>Gecikmə</th><th class="num">Vaxtı keçən</th><th class="num">Ümumi borc</th><th></th></tr></thead>
       <tbody>
         {% for r in rows %}
         <tr>
           <td><a class="crm-person" href="{% url 'crm:student' r.student.pk %}"><span class="crm-avatar crm-avatar--sm">{{ r.student.full_name|initials }}</span><span><strong>{{ r.student.full_name }}</strong><small>{{ r.student.phone|default:"telefon yoxdur" }}</small></span></a></td>
-          <td>{% for g in r.student.groups.all|slice:":2" %}{% if not g.is_main_register %}<span class="crm-chip crm-chip--teal" style="margin:2px">{{ g.name|truncatechars:20 }}</span>{% endif %}{% endfor %}</td>
-          <td>{% if r.days_overdue %}<span class="crm-chip {% if r.days_overdue > 30 %}crm-chip--red{% else %}crm-chip--amber{% endif %}"><i class="bi bi-clock-history"></i>{{ r.days_overdue }} gün</span>{% else %}<span class="crm-chip crm-chip--teal">vaxtı çatmayıb</span>{% endif %}</td>
+          <td>{% for c in r.courses|slice:":2" %}<span class="crm-chip crm-chip--teal" style="margin:2px">{{ c|truncatechars:22 }}</span>{% empty %}<span class="muted">—</span>{% endfor %}</td>
+          <td>{% if r.days_overdue %}<span class="crm-chip {% if r.days_overdue > 30 %}crm-chip--red{% else %}crm-chip--amber{% endif %}"><i class="bi bi-clock-history"></i>{{ r.days_overdue }} gün</span>{% else %}<span class="crm-chip crm-chip--teal">bu gün</span>{% endif %}</td>
           <td class="num">{% if r.overdue_amount %}<span class="money-debt">{{ r.overdue_amount|azn }}</span>{% else %}—{% endif %}</td>
           <td class="num"><strong class="tnum">{{ r.balance|azn }}</strong></td>
           <td class="num" style="white-space:nowrap">

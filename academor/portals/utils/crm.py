@@ -7,19 +7,20 @@ from collections import defaultdict
 from datetime import date, timedelta
 from decimal import Decimal
 
-from django.db import IntegrityError, transaction
 from django.db.models import Count, Q, Sum
 from django.db.models.functions import TruncMonth
 from django.utils import timezone
 
 from portals.models import (
     Attendance,
+    Enrollment,
     Lead,
     Schedule,
     StudentCharge,
     StudentPayment,
     StudentProfile,
     StudyGroup,
+    TeacherProfile,
 )
 
 ZERO = Decimal('0')
@@ -28,7 +29,6 @@ MONTHS_AZ = (
     'İyul', 'Avqust', 'Sentyabr', 'Oktyabr', 'Noyabr', 'Dekabr',
 )
 MONTHS_AZ_SHORT = ('Yan', 'Fev', 'Mar', 'Apr', 'May', 'İyn', 'İyl', 'Avq', 'Sen', 'Okt', 'Noy', 'Dek')
-DUE_DAY = 10  # monthly fees are due by the 10th of the month
 
 
 def month_start(d: date) -> date:
@@ -63,52 +63,93 @@ def billable_groups():
 
 
 # ---------------------------------------------------------------- billing
-@transaction.atomic
-def generate_monthly_charges(period: date, user=None):
-    """One monthly charge per student per group with a fee; existing ones are left alone."""
-    period = month_start(period)
-    due = period.replace(day=min(DUE_DAY, calendar.monthrange(period.year, period.month)[1]))
-    created = skipped = 0
-    no_fee = []
-    for group in billable_groups().prefetch_related('students'):
-        if not group.monthly_fee:
-            if group.students.exists():
-                no_fee.append(group)
-            continue
-        for student in group.students.all():
-            exists = StudentCharge.objects.filter(
-                student=student, group=group, period=period,
-                kind=StudentCharge.Kind.MONTHLY, is_cancelled=False,
-            ).exists()
-            if exists:
-                skipped += 1
+def sync_charges(user=None, today=None):
+    """Write the monthly charge of every active enrollment whose due day has come.
+
+    Idempotent: a month that already has a charge (even a cancelled one) is never billed again.
+    """
+    today = today or timezone.localdate()
+    enrollments = list(
+        Enrollment.objects.filter(status=Enrollment.Status.ACTIVE, monthly_fee__gt=0)
+        .filter(Q(first_due_date__lte=today) | Q(first_due_date__isnull=True, start_date__lte=today))
+    )
+    if not enrollments:
+        return 0
+    existing = set(
+        StudentCharge.objects.filter(kind=StudentCharge.Kind.MONTHLY, enrollment__in=enrollments)
+        .values_list('enrollment_id', 'period')
+    )
+    new = []
+    for e in enrollments:
+        for due in e.due_dates(today):
+            period = month_start(due)
+            if (e.pk, period) in existing:
                 continue
-            try:
-                with transaction.atomic():
-                    StudentCharge.objects.create(
-                        student=student, group=group, period=period, kind=StudentCharge.Kind.MONTHLY,
-                        description=f'{group.name} — {month_label(period)}',
-                        amount=group.monthly_fee, due_date=due, created_by=user,
-                    )
-                created += 1
-            except IntegrityError:
-                skipped += 1
-    return {'created': created, 'skipped': skipped, 'no_fee_groups': no_fee}
+            existing.add((e.pk, period))
+            new.append(StudentCharge(
+                student_id=e.student_id, enrollment=e, group_id=e.group_id, kind=StudentCharge.Kind.MONTHLY,
+                period=period, description=f'{e.course} — {month_label(period)}', amount=e.monthly_fee,
+                due_date=due, created_by=user,
+            ))
+    if new:
+        StudentCharge.objects.bulk_create(new, ignore_conflicts=True)
+    return len(new)
 
 
-def _sums_by_student(qs, field='amount'):
-    return {row['student_id']: row['s'] or ZERO for row in qs.values('student_id').annotate(s=Sum(field))}
+def close_enrollment_billing(enrollment):
+    """After someone leaves, unpaid monthly charges due after the leaving date are cancelled."""
+    if not enrollment.ended_at:
+        return 0
+    return StudentCharge.objects.filter(
+        enrollment=enrollment, kind=StudentCharge.Kind.MONTHLY, is_cancelled=False,
+        due_date__gt=enrollment.ended_at,
+    ).update(is_cancelled=True)
 
 
-def balances():
-    """{student_id: (charged, paid, balance)} for everyone with any billing record."""
-    charged = _sums_by_student(StudentCharge.objects.filter(is_cancelled=False))
-    paid = _sums_by_student(StudentPayment.objects.all())
-    out = {}
-    for sid in set(charged) | set(paid):
-        c, p = charged.get(sid, ZERO), paid.get(sid, ZERO)
-        out[sid] = (c, p, c - p)
-    return out
+def _bucket_sums(qs):
+    return {
+        (row['student_id'], row['enrollment_id']): row['s'] or ZERO
+        for row in qs.values('student_id', 'enrollment_id').annotate(s=Sum('amount'))
+    }
+
+
+class Balance(tuple):
+    """(charged, paid, debt, credit). Each course is settled on its own: money paid for one
+    course never hides a debt on another, and one-off payments (mock test...) are not credit."""
+
+    __slots__ = ()
+
+    def __new__(cls, charged=ZERO, paid=ZERO, debt=ZERO, credit=ZERO):
+        return super().__new__(cls, (charged, paid, debt, credit))
+
+    charged = property(lambda self: self[0])
+    paid = property(lambda self: self[1])
+    debt = property(lambda self: self[2])
+    credit = property(lambda self: self[3])
+
+
+EMPTY_BALANCE = Balance()
+
+
+def balances(student_ids=None):
+    """{student_id: Balance} for everyone with any billing record."""
+    charges = StudentCharge.objects.filter(is_cancelled=False)
+    pays = StudentPayment.objects.all()
+    if student_ids is not None:
+        charges, pays = charges.filter(student_id__in=student_ids), pays.filter(student_id__in=student_ids)
+    charged, paid = _bucket_sums(charges), _bucket_sums(pays)
+    acc = defaultdict(lambda: [ZERO, ZERO, ZERO, ZERO])
+    for key in set(charged) | set(paid):
+        c, p = charged.get(key, ZERO), paid.get(key, ZERO)
+        row = acc[key[0]]
+        row[0] += c
+        row[1] += p
+        if key[1] is not None:  # course buckets; unlinked payments are one-offs
+            row[2] += max(c - p, ZERO)
+            row[3] += max(p - c, ZERO)
+        else:
+            row[2] += max(c - p, ZERO)
+    return {sid: Balance(*v) for sid, v in acc.items()}
 
 
 def allocate(charges, paid_total):
@@ -132,26 +173,47 @@ def allocate(charges, paid_total):
     return rows
 
 
+def _allocate_buckets(charges, payments):
+    """Allocate per course (enrollment); returns (rows, {enrollment_id: debt})."""
+    by_c, by_p = defaultdict(list), defaultdict(lambda: ZERO)
+    for ch in charges:
+        by_c[ch.enrollment_id].append(ch)
+    for p in payments:
+        by_p[p.enrollment_id] += p.amount
+    rows, debt = [], {}
+    for key in set(by_c) | set(by_p):
+        part = allocate(by_c.get(key, []), by_p[key])
+        rows.extend(part)
+        debt[key] = sum((r['left'] for r in part), ZERO)
+    return rows, debt
+
+
 def debtors():
     """Students who owe money, most overdue first."""
     today = timezone.localdate()
-    owing = {sid: b for sid, b in balances().items() if b[2] > 0}
+    owing = {sid: b for sid, b in balances().items() if b.debt > 0}
     if not owing:
         return []
-    students = StudentProfile.objects.filter(pk__in=owing).select_related('user').prefetch_related('groups')
-    charges = defaultdict(list)
+    students = StudentProfile.objects.filter(pk__in=owing).select_related('user')
+    charges, payments = defaultdict(list), defaultdict(list)
     for ch in StudentCharge.objects.filter(student_id__in=owing, is_cancelled=False):
         charges[ch.student_id].append(ch)
+    for p in StudentPayment.objects.filter(student_id__in=owing).only('student_id', 'enrollment_id', 'amount'):
+        payments[p.student_id].append(p)
+    courses = defaultdict(list)
+    for e in Enrollment.objects.filter(student_id__in=owing).exclude(status=Enrollment.Status.WAITING):
+        courses[e.student_id].append(e.course)
     rows = []
     for st in students:
-        charged, paid, balance = owing[st.pk]
-        alloc = allocate(charges[st.pk], paid)
+        b = owing[st.pk]
+        alloc, _ = _allocate_buckets(charges[st.pk], payments[st.pk])
         unpaid = [r for r in alloc if r['left'] > 0]
         overdue = [r for r in unpaid if r['state'] == 'overdue']
         oldest = min((r['charge'].due_date for r in overdue), default=None)
         rows.append({
             'student': st,
-            'balance': balance,
+            'balance': b.debt,
+            'courses': sorted(set(courses[st.pk])),
             'overdue_amount': sum((r['left'] for r in overdue), ZERO),
             'oldest_due': oldest,
             'days_overdue': (today - oldest).days if oldest else 0,
@@ -162,13 +224,34 @@ def debtors():
 
 
 def student_ledger(student):
-    charges = list(StudentCharge.objects.filter(student=student, is_cancelled=False).select_related('group'))
-    payments = list(StudentPayment.objects.filter(student=student).select_related('received_by'))
-    paid = sum((p.amount for p in payments), ZERO)
-    charged = sum((c.amount for c in charges), ZERO)
-    rows = allocate(charges, paid)
+    charges = list(
+        StudentCharge.objects.filter(student=student, is_cancelled=False).select_related('group', 'enrollment')
+    )
+    payments = list(
+        StudentPayment.objects.filter(student=student).select_related('received_by', 'teacher__user', 'enrollment')
+    )
+    rows, debt_by_enrollment = _allocate_buckets(charges, payments)
     rows.sort(key=lambda r: (r['charge'].due_date, r['charge'].id), reverse=True)
-    return {'charges': rows, 'payments': payments, 'charged': charged, 'paid': paid, 'balance': charged - paid}
+    b = balances([student.pk]).get(student.pk, EMPTY_BALANCE)
+    return {
+        'charges': rows, 'payments': payments, 'charged': b.charged, 'paid': b.paid,
+        'balance': b.debt, 'credit': b.credit, 'debt_by_enrollment': debt_by_enrollment,
+    }
+
+
+def upcoming_dues(days=7):
+    """Active enrollments whose next monthly payment falls within the next `days` days."""
+    today = timezone.localdate()
+    horizon = today + timedelta(days=days)
+    rows = []
+    for e in Enrollment.objects.filter(status=Enrollment.Status.ACTIVE, monthly_fee__gt=0).select_related(
+        'student__user', 'teacher__user',
+    ):
+        nxt = e.next_due_date
+        if nxt and nxt <= horizon:
+            rows.append({'enrollment': e, 'student': e.student, 'due': nxt, 'days': (nxt - today).days})
+    rows.sort(key=lambda r: r['due'])
+    return rows
 
 
 def online_payments_by_month(start: date):
@@ -181,7 +264,11 @@ def online_payments_by_month(start: date):
         Payment.objects.filter(status=Payment.Status.SUCCESS, created_at__date__gte=start)
         .annotate(m=TruncMonth('created_at')).values('m').annotate(s=Sum('amount'))
     )
-    return {row['m'].date() if hasattr(row['m'], 'date') else row['m']: row['s'] or ZERO for row in qs}
+    return {_as_date(row['m']): row['s'] or ZERO for row in qs}
+
+
+def _as_date(v):
+    return v.date() if hasattr(v, 'date') else v
 
 
 def revenue_series(months=6):
@@ -189,7 +276,7 @@ def revenue_series(months=6):
     this = month_start(timezone.localdate())
     start = add_months(this, -(months - 1))
     office = {
-        (row['m'].date() if hasattr(row['m'], 'date') else row['m']): row['s'] or ZERO
+        _as_date(row['m']): row['s'] or ZERO
         for row in StudentPayment.objects.filter(paid_at__gte=start)
         .annotate(m=TruncMonth('paid_at')).values('m').annotate(s=Sum('amount'))
     }
@@ -214,6 +301,92 @@ def revenue_series(months=6):
         r['h_billed'] = float(r['billed'] / peak * 100)
         r['h_total'] = r['h_office'] + r['h_online']
     return series
+
+
+# ---------------------------------------------------------------- teachers & reports
+TEACHER_COST = Q(teacher_status__in=(StudentPayment.TeacherStatus.PENDING, StudentPayment.TeacherStatus.PAID))
+
+
+def _money_totals(qs):
+    agg = qs.aggregate(
+        revenue=Sum('amount'), n=Count('id'), new=Count('id', filter=Q(is_new_customer=True)),
+        tcost=Sum('teacher_amount', filter=TEACHER_COST),
+        paid=Sum('teacher_amount', filter=Q(teacher_status=StudentPayment.TeacherStatus.PAID)),
+        pending=Sum('teacher_amount', filter=Q(teacher_status=StudentPayment.TeacherStatus.PENDING)),
+    )
+    out = {k: (v if v is not None else ZERO) if k not in ('n', 'new') else v for k, v in agg.items()}
+    out['net'] = out['revenue'] - out['tcost']
+    out['avg'] = (out['revenue'] / out['n']).quantize(Decimal('0.01')) if out['n'] else ZERO
+    out['margin'] = round(out['net'] * 100 / out['revenue']) if out['revenue'] else None
+    return out
+
+
+def teacher_payouts(period: date):
+    """Per teacher for the month: what their students paid, their share, paid and still owed."""
+    start, end = month_range(period)
+    month = StudentPayment.objects.filter(paid_at__range=(start, end), teacher__isnull=False)
+    rows = []
+    teacher_ids = set(month.order_by().values_list('teacher_id', flat=True))
+    older = {
+        r['teacher_id']: r['s'] for r in StudentPayment.objects.filter(
+            paid_at__lt=start, teacher_status=StudentPayment.TeacherStatus.PENDING, teacher__isnull=False,
+        ).values('teacher_id').annotate(s=Sum('teacher_amount'))
+    }
+    teacher_ids |= set(older)
+    teachers = {t.pk: t for t in TeacherProfile.objects.filter(pk__in=teacher_ids).select_related('user')}
+    for tid in teacher_ids:
+        t = teachers.get(tid)
+        if not t:
+            continue
+        qs = month.filter(teacher_id=tid)
+        tot = _money_totals(qs)
+        tot['students'] = qs.order_by().values('student_id').distinct().count()
+        rows.append({'teacher': t, 'older_pending': older.get(tid) or ZERO, **tot})
+    rows.sort(key=lambda r: (-(r['pending'] + r['older_pending']), -r['revenue']))
+    return rows
+
+
+def monthly_report(months=12):
+    this = month_start(timezone.localdate())
+    out = []
+    for i in range(months - 1, -1, -1):
+        m = add_months(this, -i)
+        start, end = month_range(m)
+        tot = _money_totals(StudentPayment.objects.filter(paid_at__range=(start, end)))
+        tot['billed'] = (
+            StudentCharge.objects.filter(is_cancelled=False, period=m).aggregate(s=Sum('amount'))['s'] or ZERO
+        )
+        out.append({'month': m, 'label': month_label(m), **tot})
+    return [r for r in out if r['n'] or r['billed']] or out[-1:]
+
+
+def breakdown(start: date, end: date, field: str):
+    """Revenue split by course (field='course') or teacher (field='teacher')."""
+    qs = StudentPayment.objects.filter(paid_at__range=(start, end))
+    total = qs.aggregate(s=Sum('amount'))['s'] or ZERO
+    key = 'course' if field == 'course' else 'teacher_id'
+    rows = []
+    for value in qs.order_by().values_list(key, flat=True).distinct():
+        tot = _money_totals(qs.filter(**{key: value}))
+        tot['share'] = float(tot['revenue'] * 100 / total) if total else 0
+        tot['students'] = qs.filter(**{key: value}).order_by().values('student_id').distinct().count()
+        rows.append({'key': value, **tot})
+    if field == 'teacher':
+        names = {t.pk: t for t in TeacherProfile.objects.filter(pk__in=[r['key'] for r in rows if r['key']]).select_related('user')}
+        for r in rows:
+            r['teacher'] = names.get(r['key'])
+    rows.sort(key=lambda r: -r['revenue'])
+    peak = max([r['revenue'] for r in rows] + [Decimal('1')])
+    for r in rows:
+        r['bar'] = float(r['revenue'] * 100 / peak)
+    return rows
+
+
+def course_names():
+    """Every course name already used, for the course field's suggestions."""
+    names = set(Enrollment.objects.values_list('course', flat=True))
+    names |= set(StudentPayment.objects.exclude(course='').values_list('course', flat=True))
+    return sorted(n for n in names if n)
 
 
 # ---------------------------------------------------------------- attendance
@@ -335,12 +508,18 @@ def dashboard(period: date | None = None):
     leads_prev = Lead.objects.filter(created_at__date__gte=prev, created_at__date__lt=this).count()
     enrolled_this = Lead.objects.filter(created_at__date__gte=this, status=Lead.Status.ENROLLED).count()
     start, end = month_range(this)
-    collected = StudentPayment.objects.filter(paid_at__range=(start, end)).aggregate(s=Sum('amount'))['s'] or ZERO
+    money = _money_totals(StudentPayment.objects.filter(paid_at__range=(start, end)))
     online = online_payments_by_month(this).get(this, ZERO)
     billed = StudentCharge.objects.filter(is_cancelled=False, period=this).aggregate(s=Sum('amount'))['s'] or ZERO
     debt_rows = debtors()
     att = attendance_overview(this)
-    active_students = StudentProfile.objects.filter(groups__is_active=True).distinct().count()
+    by_status = dict(
+        Enrollment.objects.values_list('status').annotate(n=Count('student_id', distinct=True))
+    )
+    teacher_owed = (
+        StudentPayment.objects.filter(teacher_status=StudentPayment.TeacherStatus.PENDING)
+        .aggregate(s=Sum('teacher_amount'))['s'] or ZERO
+    )
     follow_ups = list(
         Lead.objects.filter(status__in=(Lead.Status.NEW, Lead.Status.CONTACTED, Lead.Status.TRIAL))
         .filter(Q(next_action_at__lte=today) | Q(next_action_at__isnull=True, status=Lead.Status.NEW))
@@ -352,14 +531,18 @@ def dashboard(period: date | None = None):
         'leads_this': leads_this,
         'leads_delta': leads_this - leads_prev,
         'conversion': round(enrolled_this * 100 / leads_this) if leads_this else None,
-        'active_students': active_students,
-        'collected': collected + online,
+        'active_students': by_status.get(Enrollment.Status.ACTIVE, 0),
+        'waiting_students': by_status.get(Enrollment.Status.WAITING, 0),
+        'money': money,
+        'collected': money['revenue'] + online,
         'collected_online': online,
         'billed': billed,
-        'collect_pct': min(100, round((collected + online) * 100 / billed)) if billed else None,
+        'collect_pct': min(100, round(money['revenue'] * 100 / billed)) if billed else None,
+        'teacher_owed': teacher_owed,
         'debt_total': sum((r['balance'] for r in debt_rows), ZERO),
         'debtors_count': len(debt_rows),
         'debtors': debt_rows[:6],
+        'upcoming': upcoming_dues(7)[:8],
         'attendance': att,
         'revenue': revenue_series(6),
         'funnel': lead_funnel(add_months(this, -2)),

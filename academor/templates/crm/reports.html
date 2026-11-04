@@ -1,0 +1,107 @@
+{% extends "crm/base.html" %}
+{% load crm_tags l10n %}
+{% block title %}Hesabat{% endblock %}
+{% block content %}{% localize off %}
+<div class="crm-head">
+  <div><p class="crm-eyebrow">Maliyyə</p><h1>Hesabat</h1><p>Gəlir, müəllim xərci və xalis qazanc — aylar, kurslar və müəllimlər üzrə.</p></div>
+  <div class="crm-head__tools">
+    <form method="get">
+      <select class="crm-input crm-select" name="month" onchange="this.form.submit()" aria-label="Dövr">
+        <option value="all"{% if not period %} selected{% endif %}>Bütün dövr</option>
+        {% for m in month_options %}<option value="{{ m|date:'Y-m' }}"{% if period == m %} selected{% endif %}>{{ m|date:"m.Y" }}</option>{% endfor %}
+      </select>
+    </form>
+  </div>
+</div>
+
+<section class="crm-grid crm-grid--kpi" style="margin-bottom:18px">
+  <div class="crm-card crm-kpi crm-kpi--orange">
+    <div class="crm-kpi__top"><span class="crm-kpi__label">Gəlir · {{ label }}</span><span class="crm-kpi__icon"><i class="bi bi-cash-stack"></i></span></div>
+    <div class="crm-kpi__value tnum">{{ totals.revenue|azn }}</div>
+    <div class="crm-kpi__foot">{{ totals.n }} ödəniş · orta {{ totals.avg|azn }}</div>
+  </div>
+  <div class="crm-card crm-kpi crm-kpi--violet">
+    <div class="crm-kpi__top"><span class="crm-kpi__label">Müəllim xərci</span><span class="crm-kpi__icon"><i class="bi bi-person-workspace"></i></span></div>
+    <div class="crm-kpi__value tnum">{{ totals.tcost|azn }}</div>
+    <div class="crm-kpi__foot">{{ totals.pending|azn }} hələ ödənilməyib</div>
+  </div>
+  <div class="crm-card crm-kpi crm-kpi--teal">
+    <div class="crm-kpi__top"><span class="crm-kpi__label">Xalis qazanc</span><span class="crm-kpi__icon"><i class="bi bi-piggy-bank-fill"></i></span></div>
+    <div class="crm-kpi__value tnum">{{ totals.net|azn }}</div>
+    <div class="crm-meter crm-meter--teal"><span style="width:{{ totals.margin|default:0 }}%"></span></div>
+  </div>
+  <div class="crm-card crm-kpi crm-kpi--green">
+    <div class="crm-kpi__top"><span class="crm-kpi__label">Yeni müştəri</span><span class="crm-kpi__icon"><i class="bi bi-person-plus-fill"></i></span></div>
+    <div class="crm-kpi__value tnum">{{ totals.new }}</div>
+    <div class="crm-kpi__foot">marja {% if totals.margin is not None %}{{ totals.margin }}%{% else %}—{% endif %}</div>
+  </div>
+</section>
+
+<div class="crm-card" style="margin-bottom:18px">
+  <div class="crm-card__head"><h2><i class="bi bi-calendar3"></i> Aylıq hesabat</h2></div>
+  <div class="crm-table-wrap">
+    <table class="crm-table">
+      <thead><tr><th>Ay</th><th class="num">Gəlir</th><th class="num">Ödəniş</th><th class="num">Yeni müştəri</th><th class="num">Orta ödəniş</th><th class="num">Müəllim xərci</th><th class="num">Xalis</th><th class="num">Müəllimə ödənilməli</th></tr></thead>
+      <tbody>
+        {% for m in months %}
+        <tr>
+          <td><a href="?month={{ m.month|date:'Y-m' }}"><strong>{{ m.label }}</strong></a></td>
+          <td class="num"><b>{{ m.revenue|azn }}</b></td>
+          <td class="num">{{ m.n }}</td>
+          <td class="num">{{ m.new }}</td>
+          <td class="num">{{ m.avg|azn }}</td>
+          <td class="num">{{ m.tcost|azn }}</td>
+          <td class="num money-ok"><b>{{ m.net|azn }}</b></td>
+          <td class="num">{% if m.pending %}<span class="money-debt">{{ m.pending|azn }}</span>{% else %}—{% endif %}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="crm-stack">
+  <div class="crm-card">
+    <div class="crm-card__head"><h2><i class="bi bi-journal-bookmark-fill"></i> Kurslar üzrə</h2><small class="muted">{{ label }}</small></div>
+    <div class="crm-table-wrap">
+      <table class="crm-table">
+        <thead><tr><th>Kurs</th><th>Gəlir</th><th class="num">Say</th><th class="num">Müəllimə</th><th class="num">Kursa qalan</th></tr></thead>
+        <tbody>
+          {% for r in courses %}
+          <tr>
+            <td><strong>{{ r.key|default:"Kurs yazılmayıb" }}</strong><br><small class="muted">{{ r.students }} tələbə · {{ r.new }} yeni</small></td>
+            <td style="min-width:150px"><div class="crm-hbar"><b class="tnum" style="min-width:76px">{{ r.revenue|azn }}</b><div class="crm-hbar__track"><span style="width:{{ r.bar }}%"></span></div></div><small class="muted">{{ r.share|floatformat:0 }}% gəlirin</small></td>
+            <td class="num">{{ r.n }}</td>
+            <td class="num">{{ r.tcost|azn }}</td>
+            <td class="num money-ok">{{ r.net|azn }}{% if r.margin is not None %}<br><small class="muted">{{ r.margin }}%</small>{% endif %}</td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="5"><div class="crm-empty"><i class="bi bi-journal"></i>Ödəniş yoxdur.</div></td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="crm-card">
+    <div class="crm-card__head"><h2><i class="bi bi-person-workspace"></i> Müəllimlər üzrə</h2><small class="muted">{{ label }}</small></div>
+    <div class="crm-table-wrap">
+      <table class="crm-table">
+        <thead><tr><th>Müəllim</th><th>Gətirdiyi gəlir</th><th class="num">Qazandığı</th><th class="num">Ödənilməli</th><th class="num">Kursa qalan</th></tr></thead>
+        <tbody>
+          {% for r in teachers_rows %}
+          <tr>
+            <td><strong>{% if r.teacher %}{{ r.teacher.full_name }}{% else %}Müəllimsiz{% endif %}</strong><br><small class="muted">{{ r.students }} tələbə · {{ r.n }} ödəniş</small></td>
+            <td style="min-width:150px"><div class="crm-hbar"><b class="tnum" style="min-width:76px">{{ r.revenue|azn }}</b><div class="crm-hbar__track"><span style="width:{{ r.bar }}%"></span></div></div></td>
+            <td class="num">{{ r.tcost|azn }}</td>
+            <td class="num">{% if r.pending %}<span class="money-debt">{{ r.pending|azn }}</span>{% else %}—{% endif %}</td>
+            <td class="num money-ok">{{ r.net|azn }}{% if r.margin is not None %}<br><small class="muted">{{ r.margin }}%</small>{% endif %}</td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="5"><div class="crm-empty"><i class="bi bi-person"></i>Ödəniş yoxdur.</div></td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endlocalize %}{% endblock %}

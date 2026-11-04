@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'assets/vendor/bootstrap-icons-1.11.3/bootstrap-icons.min.css' %}">
-  <link rel="stylesheet" href="{% static 'crm/crm.css' %}?v=20261103b">
+  <link rel="stylesheet" href="{% static 'crm/crm.css' %}?v=20261104a">
   {% block extra_head %}{% endblock %}
 </head>
 <body class="crm">
@@ -26,8 +26,11 @@
       <a class="crm-nav__link{% if crm_section == 'students' %} is-active{% endif %}" href="{% url 'crm:students' %}"><i class="bi bi-people-fill"></i><span>Tələbələr</span></a>
       <a class="crm-nav__link{% if crm_section == 'payments' %} is-active{% endif %}" href="{% url 'crm:payments' %}"><i class="bi bi-wallet2"></i><span>Ödənişlər</span></a>
       <a class="crm-nav__link{% if crm_section == 'debts' %} is-active{% endif %}" href="{% url 'crm:debts' %}"><i class="bi bi-exclamation-diamond-fill"></i><span>Borclar</span></a>
-      <a class="crm-nav__link{% if crm_section == 'attendance' %} is-active{% endif %}" href="{% url 'crm:attendance' %}"><i class="bi bi-calendar2-check-fill"></i><span>Davamiyyət</span></a>
+      <a class="crm-nav__link{% if crm_section == 'teachers' %} is-active{% endif %}" href="{% url 'crm:teachers' %}"><i class="bi bi-person-workspace"></i><span>Müəllimlər</span></a>
+      <a class="crm-nav__link{% if crm_section == 'reports' %} is-active{% endif %}" href="{% url 'crm:reports' %}"><i class="bi bi-bar-chart-line-fill"></i><span>Hesabat</span></a>
+      <p class="crm-nav__label">Tədris</p>
       <a class="crm-nav__link{% if crm_section == 'groups' %} is-active{% endif %}" href="{% url 'crm:groups' %}"><i class="bi bi-collection-fill"></i><span>Qruplar</span></a>
+      <a class="crm-nav__link{% if crm_section == 'attendance' %} is-active{% endif %}" href="{% url 'crm:attendance' %}"><i class="bi bi-calendar2-check-fill"></i><span>Davamiyyət</span></a>
       <p class="crm-nav__label">Sayt</p>
       <a class="crm-nav__link" href="{% url 'admin:index' %}"><i class="bi bi-sliders"></i><span>Sayt məzmunu</span></a>
       <a class="crm-nav__link" href="/" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right"></i><span>Sayta bax</span></a>
@@ -48,7 +51,8 @@
         <input type="search" name="q" value="{{ q|default:'' }}" placeholder="Tələbə və ya müraciət axtar — ad, telefon…" aria-label="Axtarış">
       </form>
       <div class="crm-top__actions">
-        <a class="crm-btn crm-btn--ghost" href="{% url 'crm:lead_new' %}"><i class="bi bi-person-plus"></i><span>Müraciət</span></a>
+        <a class="crm-btn crm-btn--ghost" href="{% url 'crm:lead_new' %}"><i class="bi bi-inbox"></i><span>Müraciət</span></a>
+        <a class="crm-btn crm-btn--ghost" href="{% url 'crm:student_new' %}"><i class="bi bi-person-plus"></i><span>Tələbə</span></a>
         <a class="crm-btn crm-btn--primary" href="{% url 'crm:payment_new' %}"><i class="bi bi-plus-lg"></i><span>Ödəniş</span></a>
       </div>
     </header>
@@ -65,7 +69,8 @@
       {% block content %}{% endblock %}
     </main>
   </div>
-  <script src="{% static 'crm/crm.js' %}?v=20261103a" defer></script>
+  <datalist id="crm-courses">{% for c in crm_courses %}<option value="{{ c }}">{% endfor %}</datalist>
+  <script src="{% static 'crm/crm.js' %}?v=20261104a" defer></script>
   {% block extra_js %}{% endblock %}
 </body>
 </html>

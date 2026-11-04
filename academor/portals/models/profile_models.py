@@ -56,6 +56,11 @@ class StudentProfile(SocialLinksMixin, models.Model):
         validators=[phone_number_validator],
         verbose_name=_('Phone'),
     )
+    birth_date = models.DateField(
+        null=True,
+        blank=True,
+        verbose_name=_('Birth date'),
+    )
 
     class Meta:
         verbose_name = _('Student profile')

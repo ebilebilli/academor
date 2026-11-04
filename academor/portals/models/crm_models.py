@@ -1,16 +1,17 @@
 """CRM: leads (müraciətlər) and tuition billing (hesablar / ödənişlər).
 
 Leads gather every way someone reaches Academor (contact form, study-abroad form, level
-test, phone, Instagram...) into one pipeline. Billing is a simple ledger per student:
-charges (what they owe — monthly fee, package, exam fee) and payments (what they paid);
-the balance is charges minus payments.
+test, phone, Instagram...) into one pipeline.
+
+Billing follows how the office works: the fee belongs to the student's course registration
+(Enrollment), not to the group. Every enrollment is billed monthly on its own day (counted
+from its first payment date); payments record the course, the teacher and the teacher's share.
 """
 
 from decimal import Decimal
 
 from django.conf import settings
 from django.db import models
-from django.db.models import Sum
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
@@ -112,6 +113,100 @@ class LeadActivity(models.Model):
         ordering = ('-created_at', '-id')
 
 
+class Enrollment(models.Model):
+    """A student's registration on a course: the fee, the teacher's share and the billing day."""
+
+    class Status(models.TextChoices):
+        ACTIVE = 'active', _('Aktiv')
+        WAITING = 'waiting', _('Gözləyir')
+        LEFT = 'left', _('Ayrıldı')
+        FINISHED = 'finished', _('Bitirdi')
+
+    student = models.ForeignKey(
+        'StudentProfile', on_delete=models.CASCADE, related_name='crm_enrollments', verbose_name=_('Tələbə'),
+    )
+    course = models.CharField(max_length=120, verbose_name=_('Kurs'))
+    group = models.ForeignKey(
+        'StudyGroup', null=True, blank=True, on_delete=models.SET_NULL,
+        related_name='crm_enrollments', verbose_name=_('Qrup'),
+    )
+    teacher = models.ForeignKey(
+        'TeacherProfile', null=True, blank=True, on_delete=models.SET_NULL,
+        related_name='crm_enrollments', verbose_name=_('Müəllim'),
+    )
+    monthly_fee = models.DecimalField(
+        max_digits=10, decimal_places=2, default=Decimal('0'), verbose_name=_('Aylıq haqq (AZN)'),
+    )
+    teacher_percent = models.DecimalField(
+        max_digits=6, decimal_places=3, default=Decimal('0'), verbose_name=_('Müəllim faizi (%)'),
+    )
+    start_date = models.DateField(default=timezone.localdate, verbose_name=_('Başlama tarixi'))
+    # monthly charges fall on this day of every month, starting with this date
+    first_due_date = models.DateField(
+        null=True, blank=True, verbose_name=_('İlk ödəniş tarixi'),
+        help_text=_('Hər ay bu günə hesab yazılır. Boş qalsa, başlama tarixi götürülür.'),
+    )
+    status = models.CharField(
+        max_length=20, choices=Status.choices, default=Status.ACTIVE, db_index=True, verbose_name=_('Status'),
+    )
+    ended_at = models.DateField(null=True, blank=True, verbose_name=_('Ayrılma / bitmə tarixi'))
+    leave_reason = models.CharField(max_length=255, blank=True, verbose_name=_('Ayrılma səbəbi'))
+    note = models.CharField(max_length=255, blank=True, verbose_name=_('Qeyd'))
+    lead = models.ForeignKey(
+        Lead, null=True, blank=True, on_delete=models.SET_NULL, related_name='enrollments',
+    )
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name='+',
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ('status', '-start_date', '-id')
+        verbose_name = _('Kurs qeydiyyatı')
+        verbose_name_plural = _('Kurs qeydiyyatları')
+
+    def __str__(self):
+        return f'{self.course} — {self.monthly_fee.normalize():f} AZN'
+
+    @property
+    def billing_anchor(self):
+        return self.first_due_date or self.start_date
+
+    @property
+    def is_billable(self):
+        return self.status == self.Status.ACTIVE and self.monthly_fee > 0 and self.billing_anchor is not None
+
+    def due_date_for(self, n):
+        """The n-th monthly due date (0 = the first one)."""
+        import calendar
+
+        anchor = self.billing_anchor
+        y, m = divmod(anchor.month - 1 + n, 12)
+        year, month = anchor.year + y, m + 1
+        return anchor.replace(year=year, month=month, day=min(anchor.day, calendar.monthrange(year, month)[1]))
+
+    def due_dates(self, until):
+        n = 0
+        while True:
+            d = self.due_date_for(n)
+            if d > until or (self.ended_at and d > self.ended_at):
+                return
+            yield d
+            n += 1
+
+    @property
+    def next_due_date(self):
+        if not self.is_billable:
+            return None
+        today = timezone.localdate()
+        n = 0
+        while True:
+            d = self.due_date_for(n)
+            if d > today:
+                return d
+            n += 1
+
+
 class StudentCharge(models.Model):
     """What a student owes: a monthly fee, a package, an exam fee..."""
 
@@ -123,6 +218,10 @@ class StudentCharge(models.Model):
 
     student = models.ForeignKey(
         'StudentProfile', on_delete=models.CASCADE, related_name='crm_charges', verbose_name=_('Tələbə'),
+    )
+    enrollment = models.ForeignKey(
+        Enrollment, null=True, blank=True, on_delete=models.CASCADE,
+        related_name='charges', verbose_name=_('Kurs'),
     )
     group = models.ForeignKey(
         'StudyGroup', null=True, blank=True, on_delete=models.SET_NULL,
@@ -146,9 +245,9 @@ class StudentCharge(models.Model):
         verbose_name_plural = _('Hesablar')
         constraints = [
             models.UniqueConstraint(
-                fields=('student', 'group', 'period'),
-                condition=models.Q(kind='monthly', is_cancelled=False),
-                name='crm_one_monthly_charge_per_group_month',
+                fields=('enrollment', 'period'),
+                condition=models.Q(kind='monthly', is_cancelled=False, enrollment__isnull=False),
+                name='crm_one_monthly_charge_per_enrollment_month',
             ),
         ]
 
@@ -161,15 +260,42 @@ class StudentPayment(models.Model):
 
     class Method(models.TextChoices):
         CASH = 'cash', _('Nağd')
-        CARD = 'card', _('Kart (terminal)')
-        TRANSFER = 'transfer', _('Bank köçürməsi')
+        CARD = 'card', _('Kart')
+        CARD_UP = 'card_up', _('Kart - up')
+        TRANSFER = 'transfer', _('Köçürmə')
         ONLINE = 'online', _('Online')
+
+    class TeacherStatus(models.TextChoices):
+        PENDING = 'pending', _('Ödənilməyib')
+        PAID = 'paid', _('Ödənilib')
+        NONE = 'none', _('Verilməyəcək')
 
     student = models.ForeignKey(
         'StudentProfile', on_delete=models.CASCADE, related_name='crm_payments', verbose_name=_('Tələbə'),
     )
+    enrollment = models.ForeignKey(
+        Enrollment, null=True, blank=True, on_delete=models.SET_NULL,
+        related_name='payments', verbose_name=_('Kurs qeydiyyatı'),
+    )
+    course = models.CharField(max_length=120, blank=True, verbose_name=_('Kurs'))
     amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_('Məbləğ (AZN)'))
     method = models.CharField(max_length=20, choices=Method.choices, default=Method.CASH, verbose_name=_('Üsul'))
+    is_new_customer = models.BooleanField(default=False, verbose_name=_('Yeni müştəri'))
+    teacher = models.ForeignKey(
+        'TeacherProfile', null=True, blank=True, on_delete=models.SET_NULL,
+        related_name='crm_payments', verbose_name=_('Müəllim'),
+    )
+    teacher_percent = models.DecimalField(
+        max_digits=6, decimal_places=3, default=Decimal('0'), verbose_name=_('Müəllim faizi (%)'),
+    )
+    teacher_amount = models.DecimalField(
+        max_digits=10, decimal_places=2, default=Decimal('0'), verbose_name=_('Müəllimə düşən (AZN)'),
+    )
+    teacher_status = models.CharField(
+        max_length=20, choices=TeacherStatus.choices, default=TeacherStatus.PENDING, db_index=True,
+        verbose_name=_('Müəllimə ödəniş'),
+    )
+    teacher_paid_at = models.DateField(null=True, blank=True, verbose_name=_('Müəllimə ödənildi'))
     paid_at = models.DateField(default=timezone.localdate, verbose_name=_('Ödəniş tarixi'))
     # corporate / parent payer, e.g. "LANDAU School" paying for an employee
     payer = models.CharField(max_length=200, blank=True, verbose_name=_('Ödəyən (şirkət / valideyn)'))
@@ -189,18 +315,25 @@ class StudentPayment(models.Model):
     def __str__(self):
         return f'{self.student} — {self.amount} AZN'
 
+    @property
+    def school_amount(self):
+        return self.amount - self.teacher_amount
+
+    def apply_teacher_share(self):
+        """Teacher's money from the percent; nothing to pay without a teacher or a percent."""
+        if self.teacher_id and self.teacher_percent and self.teacher_percent > 0:
+            self.teacher_amount = (self.amount * self.teacher_percent / 100).quantize(Decimal('0.01'))
+            if self.teacher_status == self.TeacherStatus.NONE:
+                self.teacher_status = self.TeacherStatus.PENDING
+        else:
+            self.teacher_amount = Decimal('0')
+            self.teacher_status = self.TeacherStatus.NONE
+
     def save(self, *args, **kwargs):
+        if self.enrollment_id and not self.course:
+            self.course = self.enrollment.course
         super().save(*args, **kwargs)
         if not self.receipt_number:
             self.receipt_number = f'Q-{self.paid_at:%y%m}-{self.pk:05d}'
             super().save(update_fields=['receipt_number'])
 
-
-def student_balance(student_id):
-    """(charged, paid, balance) in AZN; a positive balance is debt."""
-    charged = (
-        StudentCharge.objects.filter(student_id=student_id, is_cancelled=False)
-        .aggregate(s=Sum('amount'))['s'] or Decimal('0')
-    )
-    paid = StudentPayment.objects.filter(student_id=student_id).aggregate(s=Sum('amount'))['s'] or Decimal('0')
-    return charged, paid, charged - paid

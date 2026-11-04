@@ -1,0 +1,120 @@
+{% extends "crm/base.html" %}
+{% load crm_tags l10n %}
+{% block title %}Müəllimlər{% endblock %}
+{% block content %}{% localize off %}
+<div class="crm-head">
+  <div><p class="crm-eyebrow">Maliyyə</p><h1>Müəllim ödənişləri</h1><p>Hər ödənişdən müəllimə düşən pay. Müəllimə pul verəndə "Ödənildi" düyməsini basın.</p></div>
+  <div class="crm-head__tools">
+    <div class="crm-seg">
+      <a href="?month={{ prev|date:'Y-m' }}" aria-label="Əvvəlki ay"><i class="bi bi-chevron-left"></i></a>
+      <a class="is-active">{{ period_label }}</a>
+      <a href="?month={{ next|date:'Y-m' }}" aria-label="Növbəti ay"><i class="bi bi-chevron-right"></i></a>
+    </div>
+    <details class="crm-details" style="position:relative">
+      <summary class="crm-btn crm-btn--primary"><i class="bi bi-person-plus-fill"></i>Yeni müəllim</summary>
+      <div class="crm-card" style="position:absolute;right:0;top:48px;z-index:20;width:min(360px,90vw);box-shadow:var(--shadow-lg)">
+        <form method="post" action="{% url 'crm:teacher_new' %}" class="crm-card__body crm-form" style="grid-template-columns:1fr">{% csrf_token %}
+          {% for field in form %}<div class="crm-field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}</div>{% endfor %}
+          <button class="crm-btn crm-btn--primary crm-btn--block" type="submit"><i class="bi bi-check2-circle"></i>Əlavə et</button>
+        </form>
+      </div>
+    </details>
+  </div>
+</div>
+
+<section class="crm-grid crm-grid--kpi" style="margin-bottom:18px">
+  <div class="crm-card crm-kpi crm-kpi--orange">
+    <div class="crm-kpi__top"><span class="crm-kpi__label">Tələbələrdən gəlir</span><span class="crm-kpi__icon"><i class="bi bi-cash-stack"></i></span></div>
+    <div class="crm-kpi__value tnum">{{ totals.revenue|azn }}</div>
+    <div class="crm-kpi__foot">müəllimi olan ödənişlər</div>
+  </div>
+  <div class="crm-card crm-kpi crm-kpi--violet">
+    <div class="crm-kpi__top"><span class="crm-kpi__label">Müəllimlərə düşən</span><span class="crm-kpi__icon"><i class="bi bi-person-workspace"></i></span></div>
+    <div class="crm-kpi__value tnum">{{ totals.tcost|azn }}</div>
+    <div class="crm-kpi__foot">kursa qalır {{ totals.revenue|sub:totals.tcost|azn }}</div>
+  </div>
+  <div class="crm-card crm-kpi crm-kpi--green">
+    <div class="crm-kpi__top"><span class="crm-kpi__label">Ödənilib</span><span class="crm-kpi__icon"><i class="bi bi-check2-circle"></i></span></div>
+    <div class="crm-kpi__value tnum">{{ totals.paid|azn }}</div>
+    <div class="crm-kpi__foot">{{ period_label }}</div>
+  </div>
+  <div class="crm-card crm-kpi crm-kpi--red">
+    <div class="crm-kpi__top"><span class="crm-kpi__label">Ödənilməli</span><span class="crm-kpi__icon"><i class="bi bi-hourglass-split"></i></span></div>
+    <div class="crm-kpi__value tnum">{{ totals.pending|azn }}</div>
+    <div class="crm-kpi__foot">{% if totals.older_pending %}+ əvvəlki aylardan {{ totals.older_pending|azn }}{% else %}əvvəlki aylardan borc yoxdur{% endif %}</div>
+  </div>
+</section>
+
+<div class="crm-stack">
+  {% for r in rows %}
+  <div class="crm-card">
+    <details class="crm-details"{% if open_id == r.teacher.pk|stringformat:"s" %} open{% endif %}>
+      <summary class="crm-card__body" style="display:grid;grid-template-columns:minmax(180px,1.4fr) repeat(4,minmax(90px,1fr)) auto;gap:14px;align-items:center">
+        <span class="crm-person"><span class="crm-avatar">{{ r.teacher.full_name|initials }}</span><span><strong>{{ r.teacher.full_name }}</strong><small>{{ r.n }} ödəniş · {{ r.students }} tələbə</small></span></span>
+        <span><small class="muted">Gəlir</small><br><b class="tnum">{{ r.revenue|azn }}</b></span>
+        <span><small class="muted">Müəllimə</small><br><b class="tnum">{{ r.tcost|azn }}</b></span>
+        <span><small class="muted">Ödənilib</small><br><b class="tnum money-ok">{{ r.paid|azn }}</b></span>
+        <span><small class="muted">Ödənilməli</small><br><b class="tnum {% if r.pending or r.older_pending %}money-debt{% endif %}">{{ r.pending|azn }}</b>{% if r.older_pending %}<br><small class="money-debt">+{{ r.older_pending|azn }} əvvəlki</small>{% endif %}</span>
+        <i class="bi bi-chevron-down muted" style="transition:transform .2s"></i>
+      </summary>
+      <div style="border-top:1px solid var(--border)">
+        {% if r.pending or r.older_pending %}
+        <div class="crm-card__body crm-teacher-pay" style="padding-bottom:0">
+          {% if r.pending %}
+          <form method="post" onsubmit="return confirm('{{ r.teacher.full_name }}: {{ period_label }} üzrə {{ r.pending }} AZN ödənildi kimi qeyd edilsin?')">{% csrf_token %}
+            <input type="hidden" name="teacher" value="{{ r.teacher.pk }}"><input type="hidden" name="month" value="{{ period|date:'Y-m' }}">
+            <button class="crm-btn crm-btn--teal crm-btn--sm" type="submit"><i class="bi bi-check2-all"></i>{{ period_label }} ödənildi — {{ r.pending|azn }}</button>
+          </form>
+          {% endif %}
+          {% if r.older_pending %}
+          <form method="post" onsubmit="return confirm('{{ r.teacher.full_name }}: bütün ödənilməmiş paylar ödənildi kimi qeyd edilsin?')">{% csrf_token %}
+            <input type="hidden" name="teacher" value="{{ r.teacher.pk }}"><input type="hidden" name="month" value="{{ period|date:'Y-m' }}"><input type="hidden" name="scope" value="all">
+            <button class="crm-btn crm-btn--ghost crm-btn--sm" type="submit"><i class="bi bi-check2-all"></i>Hamısı ödənildi — {{ r.pending|add_money:r.older_pending|azn }}</button>
+          </form>
+          {% endif %}
+        </div>
+        {% endif %}
+        <div class="crm-table-wrap">
+          <table class="crm-table">
+            <thead><tr><th>Tarix</th><th>Tələbə</th><th>Kurs</th><th class="num">Ödəniş</th><th class="num">Faiz</th><th class="num">Müəllimə</th><th>Status</th></tr></thead>
+            <tbody>
+              {% for p in r.payments %}
+              <tr>
+                <td class="tnum">{{ p.paid_at|date:"d.m.Y" }}</td>
+                <td><a href="{% url 'crm:student' p.student_id %}"><strong>{{ p.student.full_name }}</strong></a></td>
+                <td>{{ p.course|default:"—" }}</td>
+                <td class="num">{{ p.amount|azn }}</td>
+                <td class="num">{{ p.teacher_percent|floatformat:"-1" }}%</td>
+                <td class="num"><b>{{ p.teacher_amount|azn }}</b></td>
+                <td>
+                  <form method="post" action="{% url 'crm:payment_teacher_status' p.pk %}" class="crm-mini-form">{% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.path }}?month={{ period|date:'Y-m' }}&t={{ r.teacher.pk }}">
+                    <select class="crm-input crm-select" name="status" onchange="this.form.submit()" style="height:32px;padding:0 28px 0 10px;font-size:12.5px;width:auto" aria-label="Müəllimə ödəniş statusu">
+                      {% for v, l in p.TeacherStatus.choices %}<option value="{{ v }}"{% if p.teacher_status == v %} selected{% endif %}>{{ l }}</option>{% endfor %}
+                    </select>
+                  </form>
+                </td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="7"><div class="crm-empty"><i class="bi bi-wallet2"></i>Bu ay ödəniş yoxdur — yalnız əvvəlki aylardan qalan borc var.</div></td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+  </div>
+  {% empty %}
+  <div class="crm-card"><div class="crm-empty"><i class="bi bi-person-workspace"></i>{{ period_label }} üçün müəllimi olan ödəniş yoxdur.</div></div>
+  {% endfor %}
+</div>
+
+{% if idle %}
+<div class="crm-card" style="margin-top:18px">
+  <div class="crm-card__head"><h2><i class="bi bi-people"></i> Digər müəllimlər</h2><small class="muted">bu ay ödənişi olmayanlar</small></div>
+  <div class="crm-card__body" style="display:flex;flex-wrap:wrap;gap:8px">
+    {% for t in idle %}<a class="crm-chip" href="{% url 'crm:students' %}?tab=all&teacher={{ t.pk }}"><i class="bi bi-person-badge"></i>{{ t.full_name }}{% if t.n %} · {{ t.n }} aktiv{% endif %}</a>{% endfor %}
+  </div>
+</div>
+{% endif %}
+{% endlocalize %}{% endblock %}

@@ -49,14 +49,6 @@ class StudyGroup(models.Model):
         verbose_name=_('General attendance register'),
         help_text=_("The teacher's single attendance table listing all of their students."),
     )
-    monthly_fee = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        null=True,
-        blank=True,
-        verbose_name=_('Monthly fee (AZN)'),
-        help_text=_('Used by the CRM to bill each student of the group every month.'),
-    )
     students = models.ManyToManyField(
         'StudentProfile',
         related_name='groups',

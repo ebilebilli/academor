@@ -1,0 +1,9 @@
+<p class="crm-section-title"><i class="bi bi-journal-bookmark"></i> Kurs və ödəniş</p>
+{% for field in form %}
+<div class="crm-field{% if field.name == 'note' or field.name == 'leave_reason' %} crm-field--full{% endif %}{% if field.name == 'ended_at' or field.name == 'leave_reason' %} js-leave{% endif %}" data-field="{{ field.name }}">
+  <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} <span style="color:var(--orange)">*</span>{% endif %}</label>
+  {{ field }}
+  {% if field.help_text %}<small class="help">{{ field.help_text }}</small>{% endif %}
+  {{ field.errors }}
+</div>
+{% endfor %}

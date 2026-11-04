@@ -1,0 +1,32 @@
+{% extends "crm/base.html" %}
+{% load l10n crm_tags %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="crm-head">
+  <div>
+    <p class="crm-eyebrow">{{ student.full_name }}</p>
+    <h1>{{ title }}</h1>
+    <p>{% if enrollment %}Haqqı dəyişsəniz, növbəti aylar yeni məbləğlə yazılır. "Ayrıldı" seçəndə ayrılma tarixindən sonrakı ödənilməmiş hesablar ləğv olunur.{% else %}Tələbəyə yeni kurs. Aylıq hesab hər ay ilk ödəniş tarixinin gününə yazılır.{% endif %}</p>
+  </div>
+  <div class="crm-head__tools"><a class="crm-btn crm-btn--ghost" href="{% url 'crm:student' student.pk %}"><i class="bi bi-arrow-left"></i>Geri</a></div>
+</div>
+<form method="post" class="crm-card" style="max-width:880px">{% csrf_token %}{% localize off %}
+  <div class="crm-card__body">
+    {% if form.non_field_errors %}<div class="crm-alert" style="margin-bottom:14px"><i class="bi bi-exclamation-triangle-fill"></i><span>{{ form.non_field_errors }}</span></div>{% endif %}
+    <div class="crm-form">{% include "crm/_enrollment_fields.html" %}</div>
+    {% if enrollment %}
+    <div class="crm-facts" style="margin-top:16px;border-radius:14px">
+      <div><small>Növbəti ödəniş</small><strong class="tnum">{{ enrollment.next_due_date|date:"d.m.Y"|default:"—" }}</strong></div>
+      <div><small>Yazılan hesablar</small><strong class="tnum">{{ enrollment.charges.count }}</strong></div>
+      <div><small>Ödənişlər</small><strong class="tnum">{{ enrollment.payments.count }}</strong></div>
+      <div><small>Əlavə edilib</small><strong class="tnum">{{ enrollment.created_at|date:"d.m.Y" }}</strong></div>
+    </div>
+    {% endif %}
+    <div class="crm-form__actions" style="margin-top:18px">
+      <a class="crm-btn crm-btn--ghost" href="{% url 'crm:student' student.pk %}">Ləğv et</a>
+      <button class="crm-btn crm-btn--primary" type="submit"><i class="bi bi-check2-circle"></i>Yadda saxla</button>
+    </div>
+  </div>
+{% endlocalize %}</form>
+{% endblock %}
+{% block extra_js %}{% include "crm/_enrollment_js.html" with prefix="e" group_teachers=form.group_teachers_json %}{% endblock %}

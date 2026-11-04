@@ -1,0 +1,28 @@
+<script>
+(function () {
+  var p = '{{ prefix }}-';
+  var status = document.getElementById('id_' + p + 'status');
+  var group = document.getElementById('id_' + p + 'group');
+  var teacher = document.getElementById('id_' + p + 'teacher');
+  var start = document.getElementById('id_' + p + 'start_date');
+  var due = document.getElementById('id_' + p + 'first_due_date');
+  // leaving date / reason only matter for "Ayrıldı" / "Bitirdi"
+  function toggleLeave() {
+    var leaving = status && (status.value === 'left' || status.value === 'finished');
+    document.querySelectorAll('.js-leave').forEach(function (el) { el.hidden = !leaving; });
+  }
+  if (status) { status.addEventListener('change', toggleLeave); toggleLeave(); }
+  // picking a group fills in its teacher
+  var groupTeacher = {{ group_teachers|default:"{}"|safe }};
+  if (group && teacher) group.addEventListener('change', function () {
+    var t = groupTeacher[group.value];
+    if (t && !teacher.value) teacher.value = t;
+  });
+  // the first payment day follows the start date until it is set by hand
+  if (start && due) {
+    var touched = !!due.value;
+    due.addEventListener('input', function () { touched = true; });
+    start.addEventListener('change', function () { if (!touched) due.placeholder = start.value; });
+  }
+})();
+</script>

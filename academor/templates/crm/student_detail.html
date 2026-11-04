@@ -8,17 +8,16 @@
     <div>
       <p class="crm-eyebrow" style="margin:0">Tələbə</p>
       <h1>{{ student.full_name }}</h1>
-      <p>{{ student.phone|default:"telefon yoxdur" }}{% if student.user.email %} · {{ student.user.email }}{% endif %}{% if student.enrollment_date %} · qeydiyyat {{ student.enrollment_date|date:"d.m.Y" }}{% endif %}</p>
-      <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">{% for g in groups %}<span class="crm-chip crm-chip--teal"><i class="bi bi-collection"></i>{{ g.name }}{% if g.monthly_fee %} · {{ g.monthly_fee|azn }}/ay{% endif %}</span>{% empty %}<span class="crm-chip">Qrup yoxdur</span>{% endfor %}</div>
+      <p>{{ student.phone|default:"telefon yoxdur" }}{% if student.birth_date %} · {{ student.birth_date|date:"d.m.Y" }} ({{ student.birth_date|timesince|cut:"," }}){% endif %}{% if student.user.email %} · {{ student.user.email }}{% endif %}</p>
     </div>
     <div class="crm-profile__actions">
       {% if student.phone %}<a class="crm-btn crm-btn--ghost" href="tel:{{ student.phone }}"><i class="bi bi-telephone-fill"></i>Zəng</a>{% endif %}
       {% if wa %}<a class="crm-btn crm-btn--wa" href="{{ wa }}" target="_blank" rel="noopener"><i class="bi bi-whatsapp"></i>{% if ledger.balance > 0 %}Borcu xatırlat{% else %}WhatsApp{% endif %}</a>{% endif %}
-      <a class="crm-btn crm-btn--ghost" href="{% url 'admin:portals_studentprofile_change' student.pk %}"><i class="bi bi-pencil"></i>Profil</a>
+      <a class="crm-btn crm-btn--ghost" href="{% url 'crm:student_edit' student.pk %}"><i class="bi bi-pencil"></i>Düzəliş</a>
     </div>
   </div>
   <div class="crm-facts">
-    <div><small>Balans</small><strong class="tnum {% if ledger.balance > 0 %}money-debt{% else %}money-ok{% endif %}">{% if ledger.balance > 0 %}{{ ledger.balance|azn }} borc{% elif ledger.balance < 0 %}{{ ledger.balance|stringformat:".0f"|cut:"-" }} AZN avans{% else %}0 AZN{% endif %}</strong></div>
+    <div><small>Borc</small><strong class="tnum {% if ledger.balance > 0 %}money-debt{% else %}money-ok{% endif %}">{% if ledger.balance > 0 %}{{ ledger.balance|azn }}{% else %}Borc yoxdur{% endif %}</strong>{% if ledger.credit > 0 %}<small class="money-ok">+{{ ledger.credit|azn }} avans</small>{% endif %}</div>
     <div><small>Ümumi ödənib</small><strong class="tnum">{{ ledger.paid|azn }}</strong></div>
     <div><small>Ümumi hesab</small><strong class="tnum">{{ ledger.charged|azn }}</strong></div>
     <div><small>Davamiyyət (3 ay)</small><strong class="rate rate--{{ rate|tone }}">{% if rate is not None %}{{ rate }}%{% else %}—{% endif %}</strong></div>
@@ -26,51 +25,82 @@
 </div>
 
 <div class="crm-grid crm-grid--2">
-  <div class="crm-card" data-crm-tabs>
-    <div class="crm-card__head"><h2><i class="bi bi-receipt"></i> Ödənişlər və hesablar</h2></div>
-    <div class="crm-tabs">
-      <button type="button" class="is-active" data-tab="charges">Hesablar ({{ ledger.charges|length }})</button>
-      <button type="button" data-tab="payments">Ödənişlər ({{ ledger.payments|length }})</button>
-    </div>
-    <div data-tabpanel="charges">
-      <div class="crm-table-wrap">
-        <table class="crm-table">
-          <thead><tr><th>Hesab</th><th>Son tarix</th><th class="num">Məbləğ</th><th class="num">Qalıq</th><th>Status</th><th></th></tr></thead>
-          <tbody>
-            {% for r in ledger.charges %}
-            <tr>
-              <td><strong>{{ r.charge.description|default:r.charge.get_kind_display }}</strong><br><small class="muted">{{ r.charge.get_kind_display }}{% if r.charge.group %} · {{ r.charge.group.name }}{% endif %}</small></td>
-              <td class="tnum">{{ r.charge.due_date|date:"d.m.Y" }}</td>
-              <td class="num">{{ r.charge.amount|azn }}</td>
-              <td class="num">{% if r.left > 0 %}{{ r.left|azn }}{% else %}—{% endif %}</td>
-              <td><span class="crm-ledger-state crm-ledger-state--{{ r.state }}">{% if r.state == 'paid' %}Ödənib{% elif r.state == 'partial' %}Qismən{% elif r.state == 'overdue' %}Gecikir{% else %}Gözlənilir{% endif %}</span></td>
-              <td class="num"><form method="post" action="{% url 'crm:charge_cancel' r.charge.pk %}" onsubmit="return confirm('Bu hesab ləğv edilsin?')">{% csrf_token %}<button class="crm-icon-btn" title="Ləğv et" aria-label="Ləğv et"><i class="bi bi-x-lg"></i></button></form></td>
-            </tr>
-            {% empty %}
-            <tr><td colspan="6"><div class="crm-empty"><i class="bi bi-receipt"></i>Hesab yazılmayıb.</div></td></tr>
-            {% endfor %}
-          </tbody>
-        </table>
+  <div class="crm-stack">
+    <div class="crm-card">
+      <div class="crm-card__head"><h2><i class="bi bi-journal-bookmark-fill"></i> Kurslar</h2><a class="crm-btn crm-btn--ghost crm-btn--sm" href="{% url 'crm:enrollment_new' student.pk %}"><i class="bi bi-plus-lg"></i>Kurs əlavə et</a></div>
+      <div class="crm-card__body">
+        {% for e in enrollments %}
+        <div class="crm-enroll">
+          <div class="crm-enroll__top">
+            <div>
+              <h3>{{ e.course }}</h3>
+              <small>{% if e.teacher %}<i class="bi bi-person-badge"></i> {{ e.teacher.full_name }}{% else %}müəllim yoxdur{% endif %}{% if e.group %} · <i class="bi bi-collection"></i> {{ e.group.name }}{% else %} · fərdi{% endif %}</small>
+            </div>
+            <div style="display:flex;gap:6px;align-items:center">
+              <span class="crm-status st-e-{{ e.status }}">{{ e.get_status_display }}</span>
+              <a class="crm-icon-btn" href="{% url 'crm:enrollment_edit' e.pk %}" title="Düzəliş" aria-label="Kursa düzəliş"><i class="bi bi-pencil"></i></a>
+            </div>
+          </div>
+          <div class="crm-enroll__facts">
+            <div><small>Aylıq haqq</small><b class="tnum">{% if e.monthly_fee %}{{ e.monthly_fee|azn }}{% else %}<span class="money-debt">yazılmayıb</span>{% endif %}</b></div>
+            <div><small>Müəllim faizi</small><b class="tnum">{{ e.teacher_percent|floatformat:"-1" }}%</b></div>
+            <div><small>{% if e.status == 'left' or e.status == 'finished' %}Ayrılıb{% else %}Növbəti ödəniş{% endif %}</small><b class="tnum">{% if e.status == 'left' or e.status == 'finished' %}{{ e.ended_at|date:"d.m.Y"|default:"—" }}{% else %}{{ e.next_due_date|date:"d.m.Y"|default:"—" }}{% endif %}</b></div>
+            <div><small>Borc</small><b class="tnum {% if e.debt > 0 %}money-debt{% endif %}">{% if e.debt > 0 %}{{ e.debt|azn }}{% else %}0{% endif %}</b></div>
+          </div>
+          <small class="muted">Başlayıb {{ e.start_date|date:"d.m.Y" }} · hər ay {{ e.billing_anchor|date:"j" }}-də ödəniş{% if e.leave_reason %} · Səbəb: {{ e.leave_reason }}{% endif %}{% if e.note %} · {{ e.note }}{% endif %}</small>
+        </div>
+        {% empty %}
+        <div class="crm-empty"><i class="bi bi-journal-plus"></i>Kurs qeydiyyatı yoxdur. Aylıq hesab yazılması üçün <a href="{% url 'crm:enrollment_new' student.pk %}" style="text-decoration:underline">kurs əlavə edin</a>.</div>
+        {% endfor %}
       </div>
     </div>
-    <div data-tabpanel="payments" hidden>
-      <div class="crm-table-wrap">
-        <table class="crm-table">
-          <thead><tr><th>Tarix</th><th>Üsul</th><th>Ödəyən / qeyd</th><th class="num">Məbləğ</th><th></th></tr></thead>
-          <tbody>
-            {% for p in ledger.payments %}
-            <tr>
-              <td class="tnum">{{ p.paid_at|date:"d.m.Y" }}</td>
-              <td><span class="crm-chip">{{ p.get_method_display }}</span></td>
-              <td class="muted">{{ p.payer|default:"" }}{% if p.payer and p.note %} · {% endif %}{{ p.note|default:"" }}{% if not p.payer and not p.note %}—{% endif %}</td>
-              <td class="num money-ok">{{ p.amount|azn }}</td>
-              <td class="num"><a class="crm-icon-btn" href="{% url 'crm:payment_receipt' p.pk %}" title="Qəbz" aria-label="Qəbz"><i class="bi bi-printer"></i></a></td>
-            </tr>
-            {% empty %}
-            <tr><td colspan="5"><div class="crm-empty"><i class="bi bi-wallet2"></i>Ödəniş yoxdur.</div></td></tr>
-            {% endfor %}
-          </tbody>
-        </table>
+
+    <div class="crm-card" data-crm-tabs>
+      <div class="crm-card__head"><h2><i class="bi bi-receipt"></i> Ödənişlər və hesablar</h2></div>
+      <div class="crm-tabs">
+        <button type="button" class="is-active" data-tab="payments">Ödənişlər ({{ ledger.payments|length }})</button>
+        <button type="button" data-tab="charges">Hesablar ({{ ledger.charges|length }})</button>
+      </div>
+      <div data-tabpanel="payments">
+        <div class="crm-table-wrap">
+          <table class="crm-table">
+            <thead><tr><th>Tarix</th><th>Kurs · üsul</th><th>Müəllim</th><th class="num">Məbləğ</th><th></th></tr></thead>
+            <tbody>
+              {% for p in ledger.payments %}
+              <tr>
+                <td class="tnum">{{ p.paid_at|date:"d.m.Y" }}{% if p.is_new_customer %}<br><span class="crm-chip crm-chip--violet" style="margin-top:2px">yeni</span>{% endif %}</td>
+                <td><strong>{{ p.course|default:"—" }}</strong><br><small class="muted">{{ p.get_method_display }}{% if p.note %} · {{ p.note|truncatechars:40 }}{% endif %}</small></td>
+                <td>{% if p.teacher %}<small>{{ p.teacher.full_name }}</small><br><small class="muted">{{ p.teacher_amount|azn }} · {{ p.get_teacher_status_display }}</small>{% else %}<span class="muted">—</span>{% endif %}</td>
+                <td class="num money-ok">{{ p.amount|azn }}</td>
+                <td class="num" style="white-space:nowrap"><a class="crm-icon-btn" href="{% url 'crm:payment_edit' p.pk %}" title="Düzəliş" aria-label="Düzəliş"><i class="bi bi-pencil"></i></a> <a class="crm-icon-btn" href="{% url 'crm:payment_receipt' p.pk %}" title="Qəbz" aria-label="Qəbz"><i class="bi bi-printer"></i></a></td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="5"><div class="crm-empty"><i class="bi bi-wallet2"></i>Ödəniş yoxdur.</div></td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div data-tabpanel="charges" hidden>
+        <div class="crm-table-wrap">
+          <table class="crm-table">
+            <thead><tr><th>Hesab</th><th>Tarix</th><th class="num">Məbləğ</th><th class="num">Qalıq</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+              {% for r in ledger.charges %}
+              <tr>
+                <td><strong>{{ r.charge.description|default:r.charge.get_kind_display }}</strong><br><small class="muted">{{ r.charge.get_kind_display }}</small></td>
+                <td class="tnum">{{ r.charge.due_date|date:"d.m.Y" }}</td>
+                <td class="num">{{ r.charge.amount|azn }}</td>
+                <td class="num">{% if r.left > 0 %}{{ r.left|azn }}{% else %}—{% endif %}</td>
+                <td><span class="crm-ledger-state crm-ledger-state--{{ r.state }}">{% if r.state == 'paid' %}Ödənib{% elif r.state == 'partial' %}Qismən{% elif r.state == 'overdue' %}Gecikir{% else %}Bu gün{% endif %}</span></td>
+                <td class="num"><form method="post" action="{% url 'crm:charge_cancel' r.charge.pk %}" onsubmit="return confirm('Bu hesab ləğv edilsin? Həmin ay üçün yenidən yazılmayacaq.')">{% csrf_token %}<button class="crm-icon-btn" title="Ləğv et" aria-label="Ləğv et"><i class="bi bi-x-lg"></i></button></form></td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="6"><div class="crm-empty"><i class="bi bi-receipt"></i>Hesab yoxdur.</div></td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -79,23 +109,43 @@
     <div class="crm-card" data-crm-tabs>
       <div class="crm-tabs" style="margin-top:4px">
         <button type="button" class="is-active" data-tab="pay"><i class="bi bi-cash-coin"></i> Ödəniş qəbul et</button>
-        <button type="button" data-tab="charge"><i class="bi bi-receipt"></i> Hesab yaz</button>
+        <button type="button" data-tab="charge"><i class="bi bi-receipt"></i> Əlavə hesab</button>
       </div>
       <div class="crm-card__body" data-tabpanel="pay">
-        <form method="post" action="{% url 'crm:payment_new' %}" class="crm-form">{% csrf_token %}
+        <form method="post" action="{% url 'crm:payment_new' %}" class="crm-form" id="payForm">{% csrf_token %}{% localize off %}
           <input type="hidden" name="next" value="{{ request.path }}">
           <input type="hidden" name="student" value="{{ student.pk }}">
-          {% for field in pay_form %}{% if field.name != 'student' %}<div class="crm-field{% if field.name == 'note' or field.name == 'payer' %} crm-field--full{% endif %}"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{% localize off %}{{ field }}{% endlocalize %}</div>{% endif %}{% endfor %}
+          {% for field in pay_form %}{% if field.name != 'student' %}
+          <div class="crm-field{% if field.name in 'enrollment note payer' %} crm-field--full{% endif %}{% if field.name == 'course' %} js-oneoff{% endif %}">
+            {% if field.name == 'is_new_customer' %}<label class="crm-check">{{ field }} {{ field.label }}</label>{% else %}<label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% endif %}
+          </div>{% endif %}{% endfor %}
+          <div class="crm-field crm-field--full"><small class="help" id="payShare"></small></div>
           <div class="crm-form__actions"><button class="crm-btn crm-btn--primary crm-btn--block" type="submit"><i class="bi bi-check2-circle"></i>Ödənişi qeyd et</button></div>
-        </form>
+        {% endlocalize %}</form>
       </div>
       <div class="crm-card__body" data-tabpanel="charge" hidden>
-        <form method="post" action="{% url 'crm:charge_new' %}" class="crm-form">{% csrf_token %}
+        <p class="muted" style="margin-bottom:12px">Aylıq haqq özü yazılır. Bura paket, imtahan və ya digər birdəfəlik hesab üçündür.</p>
+        <form method="post" action="{% url 'crm:charge_new' %}" class="crm-form">{% csrf_token %}{% localize off %}
           <input type="hidden" name="next" value="{{ request.path }}">
           <input type="hidden" name="student" value="{{ student.pk }}">
           {% for field in charge_form %}{% if field.name != 'student' %}<div class="crm-field{% if field.name == 'description' %} crm-field--full{% endif %}"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}</div>{% endif %}{% endfor %}
           <div class="crm-form__actions"><button class="crm-btn crm-btn--teal crm-btn--block" type="submit"><i class="bi bi-plus-lg"></i>Hesab yaz</button></div>
+        {% endlocalize %}</form>
+      </div>
+    </div>
+
+    <div class="crm-card">
+      <div class="crm-card__head"><h2><i class="bi bi-key-fill"></i> Portal girişi</h2></div>
+      <div class="crm-card__body">
+        {% if new_password %}
+        <div class="crm-password"><span>Login: <code>{{ student.user.username }}</code></span><span>Şifrə: <code>{{ new_password }}</code></span></div>
+        <p class="muted" style="margin-top:8px">Şifrə yalnız indi göstərilir — tələbəyə göndərin.</p>
+        {% else %}
+        <p class="muted" style="margin-bottom:10px">Login: <strong>{{ student.user.username }}</strong>{% if not student.user.has_usable_password %} · şifrə hələ yoxdur{% endif %}</p>
+        <form method="post" action="{% url 'crm:student_password' student.pk %}" onsubmit="return confirm('Yeni şifrə yaradılsın? Köhnə şifrə işləməyəcək.')">{% csrf_token %}
+          <button class="crm-btn crm-btn--ghost" type="submit"><i class="bi bi-arrow-repeat"></i>{% if student.user.has_usable_password %}Yeni şifrə yarat{% else %}Şifrə yarat{% endif %}</button>
         </form>
+        {% endif %}
       </div>
     </div>
 
@@ -122,3 +172,4 @@
   </div>
 </div>
 {% endblock %}
+{% block extra_js %}{% include "crm/_payment_js.html" with form_id="payForm" options=pay_form.enrollment_options %}{% endblock %}

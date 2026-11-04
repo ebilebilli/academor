@@ -56,7 +56,9 @@
         {% if lead.student %}
           <a class="crm-person" href="{% url 'crm:student' lead.student.pk %}"><span class="crm-avatar">{{ lead.student.full_name|initials }}</span><span><strong>{{ lead.student.full_name }}</strong><small>Tələbə profilinə keç →</small></span></a>
         {% else %}
-          <p class="muted" style="margin-bottom:10px">Qeydiyyatdan keçibsə, tələbə hesabına bağlayın — status "Qeydiyyatdan keçdi" olacaq.</p>
+          <p class="muted" style="margin-bottom:10px">Kursa yazılırsa, tələbəyə çevirin: kurs, müəllim, aylıq haqq və ödəniş günü bir formada.</p>
+          <a class="crm-btn crm-btn--primary crm-btn--block" href="{% url 'crm:lead_convert' lead.pk %}"><i class="bi bi-mortarboard-fill"></i>Tələbəyə çevir</a>
+          <p class="muted" style="margin:14px 0 8px;font-size:12.5px">və ya mövcud tələbəyə bağlayın:</p>
           <form method="post">{% csrf_token %}
             <input type="hidden" name="link_student" value="1">
             <select class="crm-input crm-select" name="student" data-crm-search required>
@@ -65,7 +67,6 @@
             </select>
             <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
               <button class="crm-btn crm-btn--teal crm-btn--sm" type="submit"><i class="bi bi-link-45deg"></i>Bağla</button>
-              <a class="crm-btn crm-btn--ghost crm-btn--sm" href="{% url 'admin:portals_studentprofile_add' %}" target="_blank" rel="noopener"><i class="bi bi-person-plus"></i>Yeni tələbə hesabı</a>
             </div>
           </form>
         {% endif %}
