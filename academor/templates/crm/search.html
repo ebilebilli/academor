@@ -1,0 +1,22 @@
+{% extends "crm/base.html" %}
+{% load crm_tags %}
+{% block title %}Axtarış{% endblock %}
+{% block content %}
+<div class="crm-head"><div><p class="crm-eyebrow">Axtarış</p><h1>{% if q %}“{{ q }}”{% else %}Axtarış{% endif %}</h1><p>{{ students|length }} tələbə · {{ leads|length }} müraciət</p></div></div>
+<div class="crm-grid crm-grid--halves">
+  <div class="crm-card">
+    <div class="crm-card__head"><h2><i class="bi bi-people-fill"></i> Tələbələr</h2></div>
+    <div class="crm-card__body"><ul class="crm-list">
+      {% for s in students %}<li><span class="crm-avatar crm-avatar--sm">{{ s.full_name|initials }}</span><a class="crm-list__main" href="{% url 'crm:student' s.pk %}"><strong>{{ s.full_name }}</strong><small>{{ s.phone|default:"telefon yoxdur" }}</small></a></li>
+      {% empty %}<li class="crm-empty" style="display:block;border:0">Tapılmadı.</li>{% endfor %}
+    </ul></div>
+  </div>
+  <div class="crm-card">
+    <div class="crm-card__head"><h2><i class="bi bi-inbox-fill"></i> Müraciətlər</h2></div>
+    <div class="crm-card__body"><ul class="crm-list">
+      {% for l in leads %}<li><span class="crm-avatar crm-avatar--sm crm-avatar--teal">{{ l.full_name|initials }}</span><a class="crm-list__main" href="{% url 'crm:lead' l.pk %}"><strong>{{ l.full_name }}</strong><small>{{ l.phone|default:l.email }} · {{ l.get_source_display }}</small></a><span class="crm-status st-{{ l.status }}">{{ l.get_status_display }}</span></li>
+      {% empty %}<li class="crm-empty" style="display:block;border:0">Tapılmadı.</li>{% endfor %}
+    </ul></div>
+  </div>
+</div>
+{% endblock %}

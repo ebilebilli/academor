@@ -1,0 +1,37 @@
+{% extends "crm/base.html" %}
+{% load crm_tags %}
+{% block title %}Borclar{% endblock %}
+{% block content %}
+<div class="crm-head">
+  <div><p class="crm-eyebrow">Maliyyə</p><h1>Borclar</h1><p>Ən çox gecikəndən başlayaraq. Bir kliklə WhatsApp xatırlatması göndərin.</p></div>
+</div>
+<section class="crm-grid crm-grid--3" style="margin-bottom:18px">
+  <div class="crm-card crm-kpi crm-kpi--red"><div class="crm-kpi__top"><span class="crm-kpi__label">Ümumi borc</span><span class="crm-kpi__icon"><i class="bi bi-exclamation-diamond-fill"></i></span></div><div class="crm-kpi__value tnum">{{ total|azn }}</div></div>
+  <div class="crm-card crm-kpi crm-kpi--amber"><div class="crm-kpi__top"><span class="crm-kpi__label">Vaxtı keçmiş</span><span class="crm-kpi__icon"><i class="bi bi-hourglass-bottom"></i></span></div><div class="crm-kpi__value tnum">{{ overdue|azn }}</div></div>
+  <div class="crm-card crm-kpi crm-kpi--teal"><div class="crm-kpi__top"><span class="crm-kpi__label">Borclu tələbə</span><span class="crm-kpi__icon"><i class="bi bi-people-fill"></i></span></div><div class="crm-kpi__value tnum">{{ rows|length }}</div></div>
+</section>
+<div class="crm-card">
+  <div class="crm-table-wrap">
+    <table class="crm-table">
+      <thead><tr><th>Tələbə</th><th>Qruplar</th><th>Gecikmə</th><th class="num">Vaxtı keçən</th><th class="num">Ümumi borc</th><th></th></tr></thead>
+      <tbody>
+        {% for r in rows %}
+        <tr>
+          <td><a class="crm-person" href="{% url 'crm:student' r.student.pk %}"><span class="crm-avatar crm-avatar--sm">{{ r.student.full_name|initials }}</span><span><strong>{{ r.student.full_name }}</strong><small>{{ r.student.phone|default:"telefon yoxdur" }}</small></span></a></td>
+          <td>{% for g in r.student.groups.all|slice:":2" %}{% if not g.is_main_register %}<span class="crm-chip crm-chip--teal" style="margin:2px">{{ g.name|truncatechars:20 }}</span>{% endif %}{% endfor %}</td>
+          <td>{% if r.days_overdue %}<span class="crm-chip {% if r.days_overdue > 30 %}crm-chip--red{% else %}crm-chip--amber{% endif %}"><i class="bi bi-clock-history"></i>{{ r.days_overdue }} gün</span>{% else %}<span class="crm-chip crm-chip--teal">vaxtı çatmayıb</span>{% endif %}</td>
+          <td class="num">{% if r.overdue_amount %}<span class="money-debt">{{ r.overdue_amount|azn }}</span>{% else %}—{% endif %}</td>
+          <td class="num"><strong class="tnum">{{ r.balance|azn }}</strong></td>
+          <td class="num" style="white-space:nowrap">
+            {% if r.wa %}<a class="crm-btn crm-btn--wa crm-btn--sm" href="{{ r.wa }}" target="_blank" rel="noopener"><i class="bi bi-whatsapp"></i>Xatırlat</a>{% endif %}
+            <a class="crm-btn crm-btn--primary crm-btn--sm" href="{% url 'crm:payment_new' %}?student={{ r.student.pk }}"><i class="bi bi-plus-lg"></i>Ödəniş</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6"><div class="crm-empty"><i class="bi bi-emoji-smile"></i>Borclu tələbə yoxdur.</div></td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

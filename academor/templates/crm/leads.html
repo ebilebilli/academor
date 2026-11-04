@@ -1,0 +1,99 @@
+{% extends "crm/base.html" %}
+{% load crm_tags %}
+{% block title %}Müraciətlər{% endblock %}
+{% block content %}
+<div class="crm-head">
+  <div>
+    <p class="crm-eyebrow">Satış</p>
+    <h1>Müraciətlər</h1>
+    <p>Saytdan, testdən, zəngdən gələn hər kəs bir yerdə. Kartı sürüşdürüb statusunu dəyişin.</p>
+  </div>
+  <div class="crm-head__tools">
+    <div class="crm-seg">
+      <a href="?view=board&q={{ f.q|urlencode }}&source={{ f.source }}&assigned={{ f.assigned }}" class="{% if view == 'board' %}is-active{% endif %}"><i class="bi bi-kanban"></i>Lövhə</a>
+      <a href="?view=list&q={{ f.q|urlencode }}&source={{ f.source }}&assigned={{ f.assigned }}" class="{% if view == 'list' %}is-active{% endif %}"><i class="bi bi-list-ul"></i>Siyahı</a>
+    </div>
+    <a class="crm-btn crm-btn--primary" href="{% url 'crm:lead_new' %}"><i class="bi bi-plus-lg"></i>Yeni müraciət</a>
+  </div>
+</div>
+
+<form class="crm-toolbar" method="get">
+  <input type="hidden" name="view" value="{{ view }}">
+  <input class="crm-input crm-input--grow" type="search" name="q" value="{{ f.q }}" placeholder="Ad, telefon və ya kurs…">
+  <select class="crm-input crm-select" name="source" onchange="this.form.submit()">
+    <option value="">Bütün mənbələr</option>
+    {% for v, l in sources %}<option value="{{ v }}"{% if f.source == v %} selected{% endif %}>{{ l }}</option>{% endfor %}
+  </select>
+  {% if view == 'list' %}
+  <select class="crm-input crm-select" name="status" onchange="this.form.submit()">
+    <option value="">Bütün statuslar</option>
+    {% for v, l in statuses %}<option value="{{ v }}"{% if f.status == v %} selected{% endif %}>{{ l }}</option>{% endfor %}
+  </select>
+  {% endif %}
+  <select class="crm-input crm-select" name="assigned" onchange="this.form.submit()">
+    <option value="">Hamı</option>
+    <option value="me"{% if f.assigned == 'me' %} selected{% endif %}>Mənim müraciətlərim</option>
+    <option value="none"{% if f.assigned == 'none' %} selected{% endif %}>Məsul şəxs yoxdur</option>
+  </select>
+  <button class="crm-btn crm-btn--ghost" type="submit"><i class="bi bi-search"></i>Axtar</button>
+</form>
+
+{% if view == 'list' %}
+<div class="crm-card">
+  <div class="crm-table-wrap">
+    <table class="crm-table">
+      <thead><tr><th>Ad</th><th>Mənbə</th><th>Maraq</th><th>Status</th><th>Məsul</th><th>Növbəti addım</th><th>Tarix</th></tr></thead>
+      <tbody>
+        {% for l in page %}
+        <tr>
+          <td><a class="crm-person" href="{% url 'crm:lead' l.pk %}"><span class="crm-avatar crm-avatar--sm crm-avatar--teal">{{ l.full_name|initials }}</span><span><strong>{{ l.full_name }}</strong><small>{{ l.phone|default:l.email }}</small></span></a></td>
+          <td><span class="crm-chip">{{ l.get_source_display }}</span></td>
+          <td class="muted">{{ l.interest|default:"—"|truncatechars:40 }}</td>
+          <td><span class="crm-status st-{{ l.status }}">{{ l.get_status_display }}</span></td>
+          <td>{% if l.assigned_to %}<span class="crm-avatar crm-avatar--sm" title="{{ l.assigned_to }}">{{ l.assigned_to.get_full_name|default:l.assigned_to.username|initials }}</span>{% else %}<span class="muted">—</span>{% endif %}</td>
+          <td>{% if l.next_action_at %}<span class="crm-lead__due{% if l.next_action_at < today and l.is_open %} is-late{% endif %}"><i class="bi bi-calendar-event"></i>{{ l.next_action_at|date:"d.m.Y" }}</span>{% else %}<span class="muted">—</span>{% endif %}</td>
+          <td class="muted tnum">{{ l.created_at|date:"d.m.Y" }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="7"><div class="crm-empty"><i class="bi bi-inbox"></i>Bu filtrə uyğun müraciət yoxdur.</div></td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% if page.has_other_pages %}
+  <div class="crm-pagination">
+    {% if page.has_previous %}<a href="?view=list&page={{ page.previous_page_number }}&q={{ f.q|urlencode }}&source={{ f.source }}&status={{ f.status }}&assigned={{ f.assigned }}">←</a>{% endif %}
+    <span>{{ page.number }} / {{ page.paginator.num_pages }}</span>
+    {% if page.has_next %}<a href="?view=list&page={{ page.next_page_number }}&q={{ f.q|urlencode }}&source={{ f.source }}&status={{ f.status }}&assigned={{ f.assigned }}">→</a>{% endif %}
+  </div>
+  {% endif %}
+</div>
+{% else %}
+<div class="crm-board" data-crm-board>
+  {% for col in columns %}
+  <section class="crm-col st-{{ col.value }}" data-status-col="{{ col.value }}">
+    <header class="crm-col__head"><span class="crm-dot"></span>{{ col.label }}<span class="crm-col__count">{{ col.count }}</span></header>
+    <div class="crm-col__cards">
+      {% for l in col.leads %}
+      <a class="crm-lead" href="{% url 'crm:lead' l.pk %}" draggable="true" data-id="{{ l.pk }}" data-move-url="{% url 'crm:lead_move' l.pk %}">
+        <div class="crm-lead__top">
+          <span class="crm-avatar crm-avatar--sm crm-avatar--teal">{{ l.full_name|initials }}</span>
+          <div><div class="crm-lead__name">{{ l.full_name }}</div><small class="muted">{{ l.phone|default:l.email|default:"əlaqə yoxdur" }}</small></div>
+        </div>
+        {% if l.interest %}<div class="crm-lead__interest">{{ l.interest }}</div>{% endif %}
+        <div class="crm-lead__meta">
+          <span class="crm-chip">{{ l.get_source_display }}</span>
+          {% if l.level %}<span class="crm-chip crm-chip--violet">{{ l.level }}</span>{% endif %}
+        </div>
+        <div class="crm-lead__foot">
+          {% if l.next_action_at %}<span class="crm-lead__due{% if l.next_action_at < today and l.is_open %} is-late{% endif %}"><i class="bi bi-calendar-event"></i>{{ l.next_action_at|date:"d.m" }}</span>{% else %}<span>{{ l.created_at|timesince }} əvvəl</span>{% endif %}
+          {% if l.assigned_to %}<span class="crm-avatar crm-avatar--sm" title="{{ l.assigned_to }}">{{ l.assigned_to.get_full_name|default:l.assigned_to.username|initials }}</span>{% endif %}
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+  {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

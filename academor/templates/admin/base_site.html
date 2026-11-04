@@ -9,5 +9,14 @@
 {% endblock %}
 
 {% block branding %}
-<h1 id="site-name"><a href="{% url 'admin:index' %}">Academor Admin Panel</a></h1>
+<h1 id="site-name"><a href="{% url 'admin:index' %}">Academor · Sayt məzmunu</a></h1>
+{% endblock %}
+
+{% block usertools %}
+{% if has_permission %}
+<div id="crm-switch" style="float:right;margin:0 0 0 16px">
+  <a href="{% url 'crm:dashboard' %}" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;background:#ff5414;color:#fff;font-weight:700;text-decoration:none">← CRM panelə qayıt</a>
+</div>
+{% endif %}
+{{ block.super }}
 {% endblock %}

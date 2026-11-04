@@ -3,6 +3,7 @@ Portal ORM signals: profile image resize + cache invalidation.
 
 Keep in sync with portals.utils.queries @cached_query / @cached_page_data readers.
 """
+import logging
 from django.core.signals import request_finished, request_started
 from django.db import transaction
 from django.db.models.signals import m2m_changed, post_delete, post_save, pre_save
@@ -314,3 +315,34 @@ request_finished.connect(reset_active_service_snapshot, dispatch_uid='portals_se
 def reset_service_snapshot_on_change(sender, instance, **kwargs):
     reset_active_service_snapshot()
     _invalidate_on_commit('Service')
+
+
+# ---------------------------------------------------------------- CRM: site forms become leads
+def _crm_capture(builder, instance):
+    def run():
+        try:
+            builder(instance)
+        except Exception:  # a CRM hiccup must never break the public form
+            logging.getLogger('portals.crm').exception(
+                'CRM lead capture failed for %s pk=%s', type(instance).__name__, instance.pk,
+            )
+    transaction.on_commit(run)
+
+
+def _connect_crm_lead_capture():
+    from projects.models import ContactInquiry, StudyAbroadApplication, UserResult
+    from portals.utils import crm_leads
+
+    pairs = (
+        (ContactInquiry, crm_leads.lead_from_contact_inquiry),
+        (StudyAbroadApplication, crm_leads.lead_from_study_abroad),
+        (UserResult, crm_leads.lead_from_level_test),
+    )
+    for model, builder in pairs:
+        def handler(sender, instance, created, raw=False, _builder=builder, **kwargs):
+            if created and not raw:
+                _crm_capture(_builder, instance)
+        post_save.connect(handler, sender=model, weak=False, dispatch_uid=f'crm_lead_{model.__name__}')
+
+
+_connect_crm_lead_capture()

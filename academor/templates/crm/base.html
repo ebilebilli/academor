@@ -1,0 +1,71 @@
+{% load static i18n crm_tags %}<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>{% block title %}CRM{% endblock %} · Academor CRM</title>
+  <link rel="icon" type="image/webp" href="{% static 'portals/img/favicon.webp' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'assets/vendor/bootstrap-icons-1.11.3/bootstrap-icons.min.css' %}">
+  <link rel="stylesheet" href="{% static 'crm/crm.css' %}?v=20261103b">
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="crm">
+  <aside class="crm-side" id="crmSide" aria-label="CRM menyusu">
+    <a class="crm-brand" href="{% url 'crm:dashboard' %}">
+      <span class="crm-brand__mark">A</span>
+      <span class="crm-brand__name">Academor<small>CRM</small></span>
+    </a>
+    <nav class="crm-nav">
+      <p class="crm-nav__label">İdarəetmə</p>
+      <a class="crm-nav__link{% if crm_section == 'dashboard' %} is-active{% endif %}" href="{% url 'crm:dashboard' %}"><i class="bi bi-grid-1x2-fill"></i><span>Panel</span></a>
+      <a class="crm-nav__link{% if crm_section == 'leads' %} is-active{% endif %}" href="{% url 'crm:leads' %}"><i class="bi bi-inbox-fill"></i><span>Müraciətlər</span>{% if crm_new_leads %}<em class="crm-nav__badge">{{ crm_new_leads }}</em>{% endif %}</a>
+      <a class="crm-nav__link{% if crm_section == 'students' %} is-active{% endif %}" href="{% url 'crm:students' %}"><i class="bi bi-people-fill"></i><span>Tələbələr</span></a>
+      <a class="crm-nav__link{% if crm_section == 'payments' %} is-active{% endif %}" href="{% url 'crm:payments' %}"><i class="bi bi-wallet2"></i><span>Ödənişlər</span></a>
+      <a class="crm-nav__link{% if crm_section == 'debts' %} is-active{% endif %}" href="{% url 'crm:debts' %}"><i class="bi bi-exclamation-diamond-fill"></i><span>Borclar</span></a>
+      <a class="crm-nav__link{% if crm_section == 'attendance' %} is-active{% endif %}" href="{% url 'crm:attendance' %}"><i class="bi bi-calendar2-check-fill"></i><span>Davamiyyət</span></a>
+      <a class="crm-nav__link{% if crm_section == 'groups' %} is-active{% endif %}" href="{% url 'crm:groups' %}"><i class="bi bi-collection-fill"></i><span>Qruplar</span></a>
+      <p class="crm-nav__label">Sayt</p>
+      <a class="crm-nav__link" href="{% url 'admin:index' %}"><i class="bi bi-sliders"></i><span>Sayt məzmunu</span></a>
+      <a class="crm-nav__link" href="/" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right"></i><span>Sayta bax</span></a>
+    </nav>
+    <div class="crm-side__user">
+      <span class="crm-avatar">{{ request.user.get_full_name|default:request.user.username|initials }}</span>
+      <span class="crm-side__who"><strong>{{ request.user.get_full_name|default:request.user.username }}</strong><small>{% if request.user.is_superuser %}Admin{% else %}Menecer{% endif %}</small></span>
+      <form method="post" action="{% url 'admin:logout' %}">{% csrf_token %}<button class="crm-icon-btn" title="Çıxış" aria-label="Çıxış"><i class="bi bi-box-arrow-right"></i></button></form>
+    </div>
+  </aside>
+  <div class="crm-backdrop" data-crm-close></div>
+
+  <div class="crm-main">
+    <header class="crm-top">
+      <button class="crm-icon-btn crm-top__menu" type="button" data-crm-open aria-label="Menyu"><i class="bi bi-list"></i></button>
+      <form class="crm-search" action="{% url 'crm:search' %}" role="search">
+        <i class="bi bi-search"></i>
+        <input type="search" name="q" value="{{ q|default:'' }}" placeholder="Tələbə və ya müraciət axtar — ad, telefon…" aria-label="Axtarış">
+      </form>
+      <div class="crm-top__actions">
+        <a class="crm-btn crm-btn--ghost" href="{% url 'crm:lead_new' %}"><i class="bi bi-person-plus"></i><span>Müraciət</span></a>
+        <a class="crm-btn crm-btn--primary" href="{% url 'crm:payment_new' %}"><i class="bi bi-plus-lg"></i><span>Ödəniş</span></a>
+      </div>
+    </header>
+
+    {% if messages %}
+    <div class="crm-toasts" aria-live="polite">
+      {% for message in messages %}
+      <div class="crm-toast crm-toast--{{ message.tags|default:'info' }}"><i class="bi {% if message.tags == 'success' %}bi-check-circle-fill{% elif message.tags == 'warning' %}bi-exclamation-triangle-fill{% elif message.tags == 'error' %}bi-x-circle-fill{% else %}bi-info-circle-fill{% endif %}"></i><span>{{ message }}</span><button type="button" data-crm-dismiss aria-label="Bağla">×</button></div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <main class="crm-content">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+  <script src="{% static 'crm/crm.js' %}?v=20261103a" defer></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

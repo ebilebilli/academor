@@ -1,0 +1,19 @@
+{% extends "crm/base.html" %}
+{% block title %}Yeni müraciət{% endblock %}
+{% block content %}
+<div class="crm-head">
+  <div><p class="crm-eyebrow">Satış</p><h1>Yeni müraciət</h1><p>Zəng, WhatsApp, Instagram və ya ofisə gələn biri — qeyd edin, izləyək.</p></div>
+  <div class="crm-head__tools"><a class="crm-btn crm-btn--ghost" href="{% url 'crm:leads' %}"><i class="bi bi-arrow-left"></i>Geri</a></div>
+</div>
+<div class="crm-card" style="max-width:860px">
+  <div class="crm-card__body">
+    <form method="post" class="crm-form">{% csrf_token %}
+      {% include "crm/_form_fields.html" with full_fields="message" %}
+      <div class="crm-form__actions">
+        <a class="crm-btn crm-btn--ghost" href="{% url 'crm:leads' %}">Ləğv et</a>
+        <button class="crm-btn crm-btn--primary" type="submit"><i class="bi bi-check2"></i>Yadda saxla</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
