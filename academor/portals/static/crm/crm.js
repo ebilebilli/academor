@@ -48,7 +48,10 @@
         x.o.hidden = !show;
         if (show && x.o.value && !first) first = x.o;
       });
-      if (q && first) sel.value = first.value;
+      if (q && first && sel.value !== first.value) {
+        sel.value = first.value;
+        sel.dispatchEvent(new Event("change", { bubbles: true }));
+      }
     });
   });
 
@@ -83,7 +86,11 @@
           headers: { "Content-Type": "application/json", "X-CSRFToken": csrf() },
           body: JSON.stringify({ status: col.getAttribute("data-status-col") }),
           credentials: "same-origin"
-        }).then(function (r) { if (!r.ok) throw new Error("move failed"); })
+        }).then(function (r) { if (!r.ok) throw new Error("move failed"); return r.json(); })
+          .then(function (data) {
+            // "Qeydiyyatdan keçdi": open the form that turns the lead into a student
+            if (data && data.redirect) window.location.href = data.redirect;
+          })
           .catch(function () {
             from.querySelector(".crm-col__cards").insertBefore(card, from.querySelector(".crm-col__cards").firstChild);
             recount();

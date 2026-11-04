@@ -347,6 +347,10 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .st-trial { --st: var(--amber); }
 .st-enrolled { --st: var(--green); }
 .st-lost { --st: #94a3b8; }
+.st-e-active { --st: var(--green); }
+.st-e-waiting { --st: var(--amber, #d97706); }
+.st-e-left { --st: var(--red); }
+.st-e-finished { --st: #64748b; }
 .crm-status { display: inline-flex; align-items: center; gap: 6px; font-weight: 650; font-size: 12.5px; color: var(--st); }
 .crm-status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--st); box-shadow: 0 0 0 3px color-mix(in srgb, var(--st) 18%, transparent); }
 .rate { font-weight: 700; font-variant-numeric: tabular-nums; }
@@ -363,6 +367,45 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .crm-seg { display: inline-flex; padding: 4px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
 .crm-seg a { padding: 6px 12px; border-radius: 9px; font-weight: 600; font-size: 13px; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
 .crm-seg a.is-active { background: var(--teal-900); color: #fff; }
+.crm-seg--tabs { display: flex; flex-wrap: wrap; width: fit-content; max-width: 100%; }
+.crm-seg a em { font-style: normal; font-size: 11.5px; padding: 1px 7px; border-radius: 999px; background: var(--surface-2); color: var(--text-2); }
+.crm-seg a.is-active em { background: rgba(255,255,255,.18); color: #fff; }
+
+/* ---------------------------------------------------------------- CRM v2 bits */
+.crm [hidden] { display: none !important; }
+.crm-course { display: flex; flex-direction: column; gap: 1px; margin: 2px 0; }
+.crm-course small { color: var(--muted); font-size: 12px; padding-left: 14px; }
+.crm-section-title { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; margin: 8px 0 -2px; font-size: 13px; font-weight: 750; letter-spacing: .04em; text-transform: uppercase; color: var(--teal-700); }
+.crm-section-title::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+.crm-field .helptext, .crm-field small.help { color: var(--muted); font-size: 12px; }
+.crm-check { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 13.5px; cursor: pointer; }
+.crm-check input { width: 18px; height: 18px; accent-color: var(--orange); }
+.crm-days-pick { display: flex; flex-wrap: wrap; gap: 6px; }
+.crm-days-pick label { display: inline-flex; }
+.crm-days-pick input { position: absolute; opacity: 0; pointer-events: none; }
+.crm-days-pick span { padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); font-weight: 650; font-size: 13px; cursor: pointer; transition: background .15s, color .15s, border-color .15s; }
+.crm-days-pick input:checked + span { background: var(--teal-900); border-color: var(--teal-900); color: #fff; }
+.crm-days-pick input:focus-visible + span { outline: 2px solid var(--orange); outline-offset: 2px; }
+.crm-enroll { border: 1px solid var(--border); border-radius: 16px; padding: 14px 16px; display: grid; gap: 10px; background: var(--surface); }
+.crm-enroll + .crm-enroll { margin-top: 10px; }
+.crm-enroll__top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.crm-enroll__top h3 { font-size: 15.5px; font-weight: 750; }
+.crm-enroll__top small { color: var(--muted); }
+.crm-enroll__facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.crm-enroll__facts div { background: var(--surface-2); border-radius: 10px; padding: 8px 10px; }
+.crm-enroll__facts small { display: block; color: var(--muted); font-size: 11.5px; }
+.crm-enroll__facts b { font-size: 14px; }
+.crm-password { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 12px 14px; border-radius: 12px; background: #fff7ed; border: 1px dashed var(--orange); }
+.crm-password code { font-size: 16px; font-weight: 800; letter-spacing: .04em; background: #fff; padding: 4px 10px; border-radius: 8px; }
+.crm-hbar { display: flex; align-items: center; gap: 10px; }
+.crm-hbar__track { flex: 1; height: 8px; border-radius: 999px; background: var(--surface-2); overflow: hidden; min-width: 60px; }
+.crm-hbar__track span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--orange), #ff8a5c); }
+.crm-teacher-pay { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+details.crm-details > summary { cursor: pointer; list-style: none; }
+details.crm-details > summary::-webkit-details-marker { display: none; }
+details.crm-details[open] .bi-chevron-down { transform: rotate(180deg); }
+.crm-mini-form { display: inline; }
+.crm-mini-form button { border: 0; background: none; padding: 0; cursor: pointer; }
 .crm-input {
   height: 40px; padding: 0 12px; border-radius: 11px; border: 1px solid var(--border); background: var(--surface);
   outline: none; min-width: 0; width: 100%; transition: border-color .2s, box-shadow .2s;
@@ -506,6 +549,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
   .crm-profile__actions { margin-left: 0; width: 100%; }
   .crm-bars { gap: 8px; }
   .crm-bars__val { display: none; }
+  .crm-enroll__facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .crm-toolbar .crm-input { min-width: 0; flex: 1 1 140px; }
 
   /* tables become stacked cards: the first cell is the title row, the rest flow under it */

@@ -1,0 +1,77 @@
+{% extends "crm/base.html" %}
+{% load crm_tags l10n %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="crm-head">
+  <div><p class="crm-eyebrow">Qruplar</p><h1>{{ title }}</h1><p>{% if group %}{{ group.students.count }} / {{ group.max_students }} tələbə · müəllim {{ group.teacher.full_name }}{% else %}Ad, müəllim, tutum və dərs saatları. Tələbələr kurs qeydiyyatında qrupa yazılır.{% endif %}</p></div>
+  <div class="crm-head__tools">
+    {% if group %}<a class="crm-btn crm-btn--teal" href="{% url 'crm:student_new' %}?group={{ group.pk }}"><i class="bi bi-person-plus"></i>Bu qrupa tələbə</a>{% endif %}
+    <a class="crm-btn crm-btn--ghost" href="{% url 'crm:groups' %}"><i class="bi bi-arrow-left"></i>Qruplar</a>
+  </div>
+</div>
+<div class="crm-grid crm-grid--2">
+  <form method="post" class="crm-card">{% csrf_token %}{% localize off %}
+    <div class="crm-card__body">
+      <div class="crm-form">
+        {% for field in form %}{% if field.name not in 'days start_time duration_min room_or_link' %}
+        <div class="crm-field{% if field.name == 'name' %} crm-field--full{% endif %}">
+          {% if field.name == 'is_active' %}<label class="crm-check" style="margin-top:28px">{{ field }} {{ field.label }}</label>{% else %}
+          <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} <span style="color:var(--orange)">*</span>{% endif %}</label>{{ field }}{% endif %}
+          {{ field.errors }}
+        </div>{% endif %}{% endfor %}
+        <p class="crm-section-title"><i class="bi bi-clock"></i> {% if slots %}Dərs saatı əlavə et{% else %}Dərs saatları{% endif %}</p>
+        <div class="crm-field crm-field--full">
+          <label>{{ form.days.label }}</label>
+          <div class="crm-days-pick">{% for cb in form.days %}<label>{{ cb.tag }}<span>{{ cb.choice_label }}</span></label>{% endfor %}</div>
+        </div>
+        <div class="crm-field"><label for="{{ form.start_time.id_for_label }}">{{ form.start_time.label }}</label>{{ form.start_time }}{{ form.start_time.errors }}</div>
+        <div class="crm-field"><label for="{{ form.duration_min.id_for_label }}">{{ form.duration_min.label }}</label>{{ form.duration_min }}{{ form.duration_min.errors }}</div>
+        <div class="crm-field crm-field--full"><label for="{{ form.room_or_link.id_for_label }}">{{ form.room_or_link.label }}</label>{{ form.room_or_link }}</div>
+      </div>
+      <div class="crm-form__actions" style="margin-top:18px">
+        <a class="crm-btn crm-btn--ghost" href="{% url 'crm:groups' %}">Ləğv et</a>
+        <button class="crm-btn crm-btn--primary" type="submit"><i class="bi bi-check2-circle"></i>Yadda saxla</button>
+      </div>
+    </div>
+  {% endlocalize %}</form>
+
+  <div class="crm-stack">
+    {% if group %}
+    <div class="crm-card">
+      <div class="crm-card__head"><h2><i class="bi bi-calendar-week"></i> Dərs saatları</h2></div>
+      <div class="crm-card__body">
+        <ul class="crm-list">
+          {% for sl in slots %}
+          <li>
+            <span class="crm-chip crm-chip--teal tnum">{{ sl.start_time|time:"H:i" }}</span>
+            <div class="crm-list__main"><strong>{{ sl.get_weekday_display }}</strong><small>{{ sl.duration_min }} dəq{% if sl.room_or_link %} · {{ sl.room_or_link|truncatechars:30 }}{% endif %}</small></div>
+            <form method="post" onsubmit="return confirm('Bu dərs saatı silinsin?')">{% csrf_token %}<input type="hidden" name="drop_slot" value="{{ sl.pk }}"><button class="crm-icon-btn" title="Sil" aria-label="Dərs saatını sil"><i class="bi bi-x-lg"></i></button></form>
+          </li>
+          {% empty %}
+          <li class="crm-empty" style="display:block;border:0"><i class="bi bi-clock"></i>Dərs saatı yoxdur.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="crm-card">
+      <div class="crm-card__head"><h2><i class="bi bi-people-fill"></i> Tələbələr</h2></div>
+      <div class="crm-card__body">
+        <ul class="crm-list">
+          {% for m in members %}
+          <li>
+            <span class="crm-avatar crm-avatar--sm">{{ m.student.full_name|initials }}</span>
+            <a class="crm-list__main" href="{% url 'crm:student' m.student.pk %}"><strong>{{ m.student.full_name }}</strong><small>{% if m.enrollment %}{{ m.enrollment.course }} · {{ m.enrollment.monthly_fee|azn }}/ay{% else %}kurs qeydiyyatı yoxdur{% endif %}</small></a>
+            {% if not m.enrollment %}<a class="crm-btn crm-btn--ghost crm-btn--sm" href="{% url 'crm:enrollment_new' m.student.pk %}">Kurs yaz</a>{% endif %}
+          </li>
+          {% empty %}
+          <li class="crm-empty" style="display:block;border:0"><i class="bi bi-people"></i>Qrupda tələbə yoxdur.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% else %}
+    <div class="crm-card"><div class="crm-card__body"><p class="muted">Qrupu yaratdıqdan sonra tələbələri "Yeni tələbə" və ya tələbənin səhifəsində "Kurs əlavə et" ilə bu qrupa yazın — müəllim portalında da görünəcəklər.</p></div></div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

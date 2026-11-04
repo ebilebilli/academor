@@ -3,22 +3,31 @@
 {% block title %}Tələbələr{% endblock %}
 {% block content %}
 <div class="crm-head">
-  <div><p class="crm-eyebrow">Tədris</p><h1>Tələbələr</h1><p>{{ total }} tələbə · balans və bu ayın davamiyyəti ilə.</p></div>
+  <div><p class="crm-eyebrow">Tədris</p><h1>Tələbələr</h1><p>Kurs, müəllim, aylıq haqq, növbəti ödəniş və balans.</p></div>
   <div class="crm-head__tools">
-    <div class="crm-seg">
-      <a href="?q={{ q|urlencode }}&group={{ group_id }}" class="{% if not only %}is-active{% endif %}">Hamısı</a>
-      <a href="?only=debt&q={{ q|urlencode }}&group={{ group_id }}" class="{% if only == 'debt' %}is-active{% endif %}"><i class="bi bi-exclamation-diamond"></i>Borclu</a>
-      <a href="?only=risk&q={{ q|urlencode }}&group={{ group_id }}" class="{% if only == 'risk' %}is-active{% endif %}"><i class="bi bi-activity"></i>Davamiyyəti zəif</a>
-    </div>
+    <a class="crm-btn crm-btn--primary" href="{% url 'crm:student_new' %}"><i class="bi bi-person-plus-fill"></i>Yeni tələbə</a>
   </div>
 </div>
 
+<div class="crm-seg crm-seg--tabs" style="margin-bottom:12px">
+  {% for t in tabs %}<a href="?tab={{ t.value }}&q={{ q|urlencode }}&group={{ group_id }}&teacher={{ teacher_id }}&only={{ only }}" class="{% if tab == t.value %}is-active{% endif %}">{{ t.label }} <em>{{ t.n }}</em></a>{% endfor %}
+</div>
+
 <form class="crm-toolbar" method="get">
-  <input type="hidden" name="only" value="{{ only }}">
+  <input type="hidden" name="tab" value="{{ tab }}">
   <input class="crm-input crm-input--grow" type="search" name="q" value="{{ q }}" placeholder="Ad və ya telefon…">
+  <select class="crm-input crm-select" name="teacher" onchange="this.form.submit()">
+    <option value="">Bütün müəllimlər</option>
+    {% for t in teachers %}<option value="{{ t.pk }}"{% if teacher_id == t.pk|stringformat:"s" %} selected{% endif %}>{{ t.full_name }}</option>{% endfor %}
+  </select>
   <select class="crm-input crm-select" name="group" onchange="this.form.submit()">
     <option value="">Bütün qruplar</option>
     {% for g in groups %}<option value="{{ g.pk }}"{% if group_id == g.pk|stringformat:"s" %} selected{% endif %}>{{ g.name }}</option>{% endfor %}
+  </select>
+  <select class="crm-input crm-select" name="only" onchange="this.form.submit()">
+    <option value="">Hamısı</option>
+    <option value="debt"{% if only == 'debt' %} selected{% endif %}>Yalnız borclular</option>
+    <option value="risk"{% if only == 'risk' %} selected{% endif %}>Davamiyyəti zəif</option>
   </select>
   <button class="crm-btn crm-btn--ghost" type="submit"><i class="bi bi-search"></i>Axtar</button>
 </form>
@@ -26,31 +35,31 @@
 <div class="crm-card">
   <div class="crm-table-wrap">
     <table class="crm-table">
-      <thead><tr><th>Tələbə</th><th>Qruplar</th><th>Davamiyyət (bu ay)</th><th class="num">Ödənib</th><th class="num">Balans</th><th></th></tr></thead>
+      <thead><tr><th>Tələbə</th><th>Kurs · müəllim</th><th class="num">Aylıq</th><th>Növbəti ödəniş</th><th>Davamiyyət</th><th class="num">Balans</th><th></th></tr></thead>
       <tbody>
         {% for r in rows %}
         <tr>
           <td><a class="crm-person" href="{% url 'crm:student' r.student.pk %}"><span class="crm-avatar crm-avatar--sm">{{ r.student.full_name|initials }}</span><span><strong>{{ r.student.full_name }}</strong><small>{{ r.student.phone|default:"telefon yoxdur" }}</small></span></a></td>
-          <td>{% for g in r.groups|slice:":2" %}<span class="crm-chip crm-chip--teal" style="margin:2px">{{ g.name|truncatechars:22 }}</span>{% empty %}<span class="muted">—</span>{% endfor %}{% if r.groups|length > 2 %}<span class="crm-chip">+{{ r.groups|length|add:"-2" }}</span>{% endif %}</td>
-          <td style="min-width:160px">{% if r.att and r.att.rate is not None %}
-            <div style="display:flex;align-items:center;gap:10px"><span class="rate rate--{{ r.att.rate|tone }}" style="width:42px">{{ r.att.rate }}%</span><div class="crm-meter crm-meter--{{ r.att.rate|tone }}" style="margin:0;flex:1"><span style="width:{{ r.att.rate }}%"></span></div></div>
-            <small class="muted">{{ r.att.marks }} dərs · {{ r.att.absent }} buraxıb</small>
-          {% else %}<span class="muted">qeyd yoxdur</span>{% endif %}</td>
-          <td class="num">{{ r.paid|azn }}</td>
-          <td class="num">{% if r.balance > 0 %}<span class="money-debt">{{ r.balance|azn }}</span>{% elif r.balance < 0 %}<span class="money-ok">+{{ r.balance|stringformat:".0f"|cut:"-" }} AZN</span>{% else %}<span class="muted">0 AZN</span>{% endif %}</td>
+          <td>{% for e in r.enrollments|slice:":2" %}<div class="crm-course"><span class="crm-status st-e-{{ e.status }}">{{ e.course|truncatechars:24 }}</span><small>{% if e.teacher %}{{ e.teacher.full_name }}{% endif %}{% if e.group %} · {{ e.group.name|truncatechars:22 }}{% endif %}</small></div>{% empty %}<a class="crm-chip crm-chip--orange" href="{% url 'crm:enrollment_new' r.student.pk %}"><i class="bi bi-plus"></i>Kurs əlavə et</a>{% endfor %}{% if r.enrollments|length > 2 %}<span class="crm-chip">+{{ r.enrollments|length|add:"-2" }}</span>{% endif %}</td>
+          <td class="num">{% if r.fee %}{{ r.fee|azn }}{% else %}<span class="muted">—</span>{% endif %}</td>
+          <td class="tnum">{% if r.next_due %}{{ r.next_due|date:"d.m.Y" }}{% else %}<span class="muted">—</span>{% endif %}</td>
+          <td style="min-width:130px">{% if r.att and r.att.rate is not None %}
+            <div style="display:flex;align-items:center;gap:8px"><span class="rate rate--{{ r.att.rate|tone }}" style="width:40px">{{ r.att.rate }}%</span><div class="crm-meter crm-meter--{{ r.att.rate|tone }}" style="margin:0;flex:1"><span style="width:{{ r.att.rate }}%"></span></div></div>
+          {% else %}<span class="muted">—</span>{% endif %}</td>
+          <td class="num">{% if r.balance.debt > 0 %}<span class="money-debt">{{ r.balance.debt|azn }}</span>{% elif r.balance.credit > 0 %}<span class="money-ok">+{{ r.balance.credit|azn }}</span>{% else %}<span class="muted">0 AZN</span>{% endif %}</td>
           <td class="num"><a class="crm-btn crm-btn--ghost crm-btn--sm" href="{% url 'crm:payment_new' %}?student={{ r.student.pk }}"><i class="bi bi-plus-lg"></i>Ödəniş</a></td>
         </tr>
         {% empty %}
-        <tr><td colspan="6"><div class="crm-empty"><i class="bi bi-people"></i>Tələbə tapılmadı.</div></td></tr>
+        <tr><td colspan="7"><div class="crm-empty"><i class="bi bi-people"></i>Tələbə tapılmadı. <a href="{% url 'crm:student_new' %}" style="text-decoration:underline">Yeni tələbə əlavə edin →</a></div></td></tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
   {% if page.has_other_pages %}
   <div class="crm-pagination">
-    {% if page.has_previous %}<a href="?page={{ page.previous_page_number }}&q={{ q|urlencode }}&group={{ group_id }}&only={{ only }}">←</a>{% endif %}
+    {% if page.has_previous %}<a href="?page={{ page.previous_page_number }}&tab={{ tab }}&q={{ q|urlencode }}&group={{ group_id }}&teacher={{ teacher_id }}&only={{ only }}">←</a>{% endif %}
     <span>{{ page.number }} / {{ page.paginator.num_pages }}</span>
-    {% if page.has_next %}<a href="?page={{ page.next_page_number }}&q={{ q|urlencode }}&group={{ group_id }}&only={{ only }}">→</a>{% endif %}
+    {% if page.has_next %}<a href="?page={{ page.next_page_number }}&tab={{ tab }}&q={{ q|urlencode }}&group={{ group_id }}&teacher={{ teacher_id }}&only={{ only }}">→</a>{% endif %}
   </div>
   {% endif %}
 </div>

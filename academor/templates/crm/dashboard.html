@@ -10,9 +10,9 @@
   </div>
   <div class="crm-hero__stats">
     <div class="crm-hero__stat">
-      <small>Bu ay yığılan</small>
+      <small>Bu ay gəlir</small>
       <strong class="tnum">{{ d.collected|azn }}</strong>
-      {% if d.billed %}<em>{{ d.billed|azn }} hesabdan · {{ d.collect_pct }}%</em>{% else %}<em>bu ay hesab yazılmayıb</em>{% endif %}
+      <em>xalis {{ d.money.net|azn }} · müəllimlərə {{ d.money.tcost|azn }}</em>
     </div>
     <div class="crm-hero__stat">
       <small>Yeni müraciət</small>
@@ -31,7 +31,7 @@
   <a class="crm-card crm-kpi crm-kpi--teal" href="{% url 'crm:students' %}">
     <div class="crm-kpi__top"><span class="crm-kpi__label">Aktiv tələbələr</span><span class="crm-kpi__icon"><i class="bi bi-people-fill"></i></span></div>
     <div class="crm-kpi__value tnum">{{ d.active_students }}</div>
-    <div class="crm-kpi__foot">aktiv qruplarda</div>
+    <div class="crm-kpi__foot">{% if d.waiting_students %}{{ d.waiting_students }} nəfər başlamağı gözləyir{% else %}kursda oxuyur{% endif %}</div>
   </a>
   <a class="crm-card crm-kpi crm-kpi--orange" href="{% url 'crm:leads' %}">
     <div class="crm-kpi__top"><span class="crm-kpi__label">Çevrilmə (bu ay)</span><span class="crm-kpi__icon"><i class="bi bi-funnel-fill"></i></span></div>
@@ -43,10 +43,10 @@
     <div class="crm-kpi__value tnum">{{ d.debt_total|azn }}</div>
     <div class="crm-kpi__foot">{{ d.debtors_count }} tələbə</div>
   </a>
-  <a class="crm-card crm-kpi crm-kpi--green" href="{% url 'crm:payments' %}">
-    <div class="crm-kpi__top"><span class="crm-kpi__label">Yığım faizi</span><span class="crm-kpi__icon"><i class="bi bi-graph-up-arrow"></i></span></div>
-    <div class="crm-kpi__value tnum">{% if d.collect_pct is not None %}{{ d.collect_pct }}%{% else %}—{% endif %}</div>
-    <div class="crm-meter crm-meter--good"><span style="width:{{ d.collect_pct|default:0 }}%"></span></div>
+  <a class="crm-card crm-kpi crm-kpi--violet" href="{% url 'crm:teachers' %}">
+    <div class="crm-kpi__top"><span class="crm-kpi__label">Müəllimlərə ödənilməli</span><span class="crm-kpi__icon"><i class="bi bi-person-workspace"></i></span></div>
+    <div class="crm-kpi__value tnum">{{ d.teacher_owed|azn }}</div>
+    <div class="crm-kpi__foot">{{ d.money.n }} ödəniş bu ay · orta {{ d.money.avg|azn }}</div>
   </a>
 </section>
 
@@ -142,7 +142,7 @@
         {% for r in d.debtors %}
         <li>
           <span class="crm-avatar crm-avatar--sm">{{ r.student.full_name|initials }}</span>
-          <a class="crm-list__main" href="{% url 'crm:student' r.student.pk %}"><strong>{{ r.student.full_name }}</strong><small>{% if r.days_overdue %}{{ r.days_overdue }} gün gecikir{% else %}vaxtı çatmayıb{% endif %}</small></a>
+          <a class="crm-list__main" href="{% url 'crm:student' r.student.pk %}"><strong>{{ r.student.full_name }}</strong><small>{{ r.courses|join:", "|default:"" }}{% if r.days_overdue %} · {{ r.days_overdue }} gün gecikir{% endif %}</small></a>
           <span class="crm-list__side money-debt tnum">{{ r.balance|azn }}</span>
         </li>
         {% empty %}
@@ -153,7 +153,23 @@
   </div>
 </section>
 
-<section class="crm-grid crm-grid--halves">
+<section class="crm-grid crm-grid--3">
+  <div class="crm-card">
+    <div class="crm-card__head"><h2><i class="bi bi-calendar-event-fill"></i> Yaxın ödənişlər</h2><small class="muted">7 gün</small></div>
+    <div class="crm-card__body">
+      <ul class="crm-list">
+        {% for r in d.upcoming %}
+        <li>
+          <span class="crm-chip {% if r.days <= 1 %}crm-chip--orange{% else %}crm-chip--teal{% endif %} tnum">{{ r.due|date:"d.m" }}</span>
+          <a class="crm-list__main" href="{% url 'crm:student' r.student.pk %}"><strong>{{ r.student.full_name }}</strong><small>{{ r.enrollment.course }}{% if r.days == 1 %} · sabah{% else %} · {{ r.days }} gün sonra{% endif %}</small></a>
+          <span class="crm-list__side tnum">{{ r.enrollment.monthly_fee|azn }}</span>
+        </li>
+        {% empty %}
+        <li class="crm-empty" style="display:block;border:0"><i class="bi bi-calendar-check"></i>Yaxın günlərdə ödəniş yoxdur.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
   <div class="crm-card">
     <div class="crm-card__head"><h2><i class="bi bi-inbox-fill"></i> Son müraciətlər</h2><a href="{% url 'crm:leads' %}?view=list">Siyahı →</a></div>
     <div class="crm-card__body">

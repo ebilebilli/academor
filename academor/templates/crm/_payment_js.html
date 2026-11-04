@@ -1,0 +1,58 @@
+{{ options|json_script:"crmPayOptions" }}
+<script>
+(function () {
+  var form = document.getElementById('{{ form_id }}');
+  if (!form) return;
+  var opts = JSON.parse(document.getElementById('crmPayOptions').textContent || '[]');
+  var byPk = {};
+  opts.forEach(function (o) { byPk[o.pk] = o; });
+  var $ = function (n) { return form.querySelector('[name="' + n + '"]'); };
+  var student = $('student'), enr = $('enrollment'), amount = $('amount'), teacher = $('teacher'),
+      pct = $('teacher_percent'), share = form.querySelector('#payShare');
+  var lastFee = null;
+
+  // on the generic payment page the course list follows the chosen student
+  function filterCourses(autoPick) {
+    if (!student || !enr || student.type === 'hidden') return;
+    var sid = String(student.value || '');
+    var keep = enr.value;
+    Array.prototype.forEach.call(enr.options, function (op) {
+      if (!op.value) return;
+      var o = byPk[op.value];
+      var show = o && String(o.student) === sid;
+      op.hidden = !show; op.disabled = !show;
+    });
+    if (keep && enr.selectedOptions[0] && enr.selectedOptions[0].disabled) enr.value = '';
+    if (autoPick && !enr.value) {
+      var first = opts.filter(function (o) { return String(o.student) === sid && !o.inactive; })[0];
+      if (first) { enr.value = first.pk; fill(true); }
+    }
+    toggleOneOff();
+  }
+  function fill(force) {
+    var o = enr && byPk[enr.value];
+    if (!o) return;
+    if (amount && (force || !amount.value || amount.value === lastFee)) amount.value = Number(o.fee) ? Number(o.fee) : '';
+    lastFee = amount ? amount.value : null;
+    if (teacher) teacher.value = o.teacher || '';
+    if (pct) pct.value = Number(o.pct);
+    preview();
+  }
+  function toggleOneOff() {
+    var oneOff = enr && !enr.value;
+    form.querySelectorAll('.js-oneoff').forEach(function (el) { el.hidden = !oneOff; });
+  }
+  function preview() {
+    if (!share) return;
+    var a = parseFloat(amount && amount.value) || 0, p = parseFloat(pct && pct.value) || 0;
+    if (!a || !teacher || !teacher.value || !p) { share.textContent = teacher && teacher.value ? 'Müəllimə pay düşmür (faiz 0).' : ''; return; }
+    var t = Math.round(a * p) / 100;
+    share.textContent = 'Müəllimə: ' + t.toFixed(2) + ' AZN · Kursa qalır: ' + (a - t).toFixed(2) + ' AZN';
+  }
+  if (enr) enr.addEventListener('change', function () { fill(true); toggleOneOff(); });
+  if (student) student.addEventListener('change', function () { filterCourses(true); });
+  [amount, pct, teacher].forEach(function (el) { if (el) el.addEventListener('input', preview); if (el) el.addEventListener('change', preview); });
+  if (amount) lastFee = amount.value;
+  filterCourses(false); toggleOneOff(); preview();
+})();
+</script>
