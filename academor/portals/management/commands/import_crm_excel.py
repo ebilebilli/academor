@@ -90,6 +90,9 @@ class Command(BaseCommand):
     def handle(self, *args, **opts):
         if not opts['students'] and not opts['payments']:
             raise CommandError('Give --students and/or --payments.')
+        for key in ('students', 'payments'):
+            if opts[key]:
+                self._check_file(opts[key])
         self.stats = defaultdict(int)
         self.warnings = []
         self._load_people()
@@ -105,6 +108,20 @@ class Command(BaseCommand):
             self._report(opts['commit'])
             if not opts['commit']:
                 transaction.set_rollback(True)
+
+    @staticmethod
+    def _check_file(path):
+        import os
+
+        if os.path.isfile(path):
+            return
+        folder = os.path.dirname(os.path.abspath(path)) or '.'
+        try:
+            found = sorted(f for f in os.listdir(folder) if f.lower().endswith('.xlsx'))
+        except OSError:
+            found = []
+        hint = ('Bu qovluqdakı .xlsx fayllar: ' + ', '.join(found)) if found else f'{folder} qovluğunda .xlsx fayl yoxdur.'
+        raise CommandError(f'Fayl tapılmadı: {path}\n{hint}')
 
     # ------------------------------------------------------------ people
     def _load_people(self):
