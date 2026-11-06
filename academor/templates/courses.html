@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static i18n %}
+{% load static i18n rich_text %}
 
 {% block layout_head %}{% include "includes/site_layout_head.html" with lcp_image_url=lcp_image_url %}{% endblock %}
 
@@ -35,7 +35,7 @@
         <div class="container">
             <div class="bg-light rounded-3 p-4 p-lg-5 wow fadeInUp course-category-rich courses-alt__rich" data-wow-delay="0.05s">
                 <h2 class="h4 mb-3 text-primary">{{ selected_category.name }}</h2>
-                <div class="course-category-rich__body text-secondary">{{ selected_category.description_html|safe }}</div>
+                <div class="course-category-rich__body text-secondary">{{ selected_category.description_html|tidy_rich_text }}</div>
             </div>
         </div>
     </div>
