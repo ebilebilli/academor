@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n static %}
+{% load i18n static rich_text %}
 
 {% block layout_head %}{% include "includes/site_layout_head.html" with page_title=page_title page_description=page_description page_keywords=page_keywords og_image_url=og_image_url og_type=og_type structured_data_json=structured_data_json %}{% endblock %}
 
@@ -80,7 +80,7 @@
                         <span class="mock-detail-section__eyebrow">{% trans "Overview" %}</span>
                     </header>
                     <div class="mock-detail-about__prose wow fadeInUp" data-wow-delay="0.1s">
-                        <div class="mock-detail-about__prose-inner">{{ course.description_html|safe }}</div>
+                        <div class="mock-detail-about__prose-inner">{{ course.description_html|tidy_rich_text }}</div>
                     </div>
                 </div>
             </div>
