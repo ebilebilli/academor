@@ -19,11 +19,12 @@
     var BLOCK_SELECTORS =
         ".hsvc-header, .hsvc-empty, .courses-alt__heading, .courses-alt__carousel-shell, " +
         ".index-team-see-all-wrap, .testimonial-carousel-shell, .reviews-home-cta, " +
-        ".home-faq, .abroad-hero__card, .abroad-advantages__item, .abroad-advantages__title, " +
-        ".hbh-top-bar, .hbh-grid, .hbh-reg-wrap";
+        ".home-faq, .abroad-hero__card, .abroad-advantages__item, .abroad-advantages__title";
     var STAGGER_PARENTS =
         ".hsvc-grid, .row, .swiper-wrapper, #abroad-destinations, .hbh-inner .container, .abroad-advantages__grid";
-    var SKIP_ANCESTOR = "";
+    /* the first screen is never hidden: it is on screen from the first frame, animating it in
+       read as a flash ("glitch") when the page opens */
+    var SKIP_ANCESTOR = ".hbh-section, .page-header";
 
     var prefersReducedMotion =
         window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -33,7 +34,7 @@
     var revealStarted = false;
     var revealSettledFired = false;
     var heroSettlePending = null;
-    var REVEAL_TRANSITION_MS = cssMs("--reveal-duration", 850);
+    var REVEAL_TRANSITION_MS = cssMs("--reveal-duration", 550);
 
     function qsa(sel, root) {
         return Array.prototype.slice.call((root || document).querySelectorAll(sel));

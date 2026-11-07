@@ -8740,10 +8740,10 @@ a.university-carousel-card:focus-visible .university-flag-card {
 :where(html.js) .reveal,
 :where(html.js) [data-scroll-reveal] {
     opacity: 0;
-    transform: translateY(var(--reveal-distance, 48px));
+    transform: translateY(var(--reveal-distance, 18px));
     transition:
-        opacity var(--reveal-duration, 0.85s) var(--reveal-ease, cubic-bezier(0.22, 1, 0.36, 1)),
-        transform var(--reveal-duration, 0.85s) var(--reveal-ease, cubic-bezier(0.22, 1, 0.36, 1));
+        opacity var(--reveal-duration, 0.55s) var(--reveal-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+        transform var(--reveal-duration, 0.55s) var(--reveal-ease, cubic-bezier(0.22, 1, 0.36, 1));
     transition-delay: var(--reveal-delay, 0ms);
     will-change: opacity, transform;
 }
@@ -8766,13 +8766,13 @@ a.university-carousel-card:focus-visible .university-flag-card {
 .reveal-group > .reveal:nth-child(8) { transition-delay: calc(var(--reveal-stagger, 80ms) * 7); }
 
 :where(html.js) .scroll-reveal.reveal--up,
-:where(html.js) .reveal.reveal--up { transform: translateY(var(--reveal-distance, 48px)); }
+:where(html.js) .reveal.reveal--up { transform: translateY(var(--reveal-distance, 18px)); }
 :where(html.js) .scroll-reveal.reveal--down,
-:where(html.js) .reveal.reveal--down { transform: translateY(calc(var(--reveal-distance, 48px) * -1)); }
+:where(html.js) .reveal.reveal--down { transform: translateY(calc(var(--reveal-distance, 18px) * -1)); }
 :where(html.js) .scroll-reveal.reveal--left,
-:where(html.js) .reveal.reveal--left { transform: translateX(calc(var(--reveal-distance, 48px) * -1)); }
+:where(html.js) .reveal.reveal--left { transform: translateX(calc(var(--reveal-distance, 18px) * -1)); }
 :where(html.js) .scroll-reveal.reveal--right,
-:where(html.js) .reveal.reveal--right { transform: translateX(var(--reveal-distance, 48px)); }
+:where(html.js) .reveal.reveal--right { transform: translateX(var(--reveal-distance, 18px)); }
 :where(html.js) .scroll-reveal.reveal--scale,
 :where(html.js) .reveal.reveal--scale { transform: scale(0.9); opacity: 0; }
 :where(html.js) .scroll-reveal.reveal--fade,

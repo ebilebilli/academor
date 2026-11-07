@@ -568,7 +568,7 @@
         <div class="container reveal-group">
 
             <!-- Top bar -->
-            <div class="hbh-top-bar wow fadeInDown" data-wow-delay="0.05s">
+            <div class="hbh-top-bar">
                 <div></div>
                 <a href="{% url 'projects:blog-page' %}" class="hbh-see-all">
                     {% trans "View all posts" %} <i class="fa fa-arrow-right" style="font-size:.7rem;"></i>
@@ -579,7 +579,7 @@
 
             <!-- Featured posts grid (on_top) -->
             {% if blog_featured %}
-            <div class="hbh-grid {% if blog_featured|length == 1 %}hbh-grid--one{% else %}hbh-grid--two{% endif %} wow fadeInUp" data-wow-delay="0.1s">
+            <div class="hbh-grid {% if blog_featured|length == 1 %}hbh-grid--one{% else %}hbh-grid--two{% endif %}">
                 {% for post in blog_featured %}
                 <a href="{% url 'projects:blog-detail' post.slug %}" class="hbh-card--featured">
                     {% if post.cover %}
@@ -616,7 +616,7 @@
 
             <!-- Regular posts — horizontal scroll track -->
             {% if blog_posts %}
-            <div class="hbh-reg-wrap wow fadeInUp" data-wow-delay="0.18s" style="{% if blog_featured %}margin-top:1.25rem;{% endif %}">
+            <div class="hbh-reg-wrap" style="{% if blog_featured %}margin-top:1.25rem;{% endif %}">
                 <button class="hbh-scroll-btn hbh-scroll-btn--prev" onclick="hbhScroll(-1)" aria-label="{% trans 'Previous' %}">
                     <i class="fa fa-chevron-left"></i>
                 </button>
