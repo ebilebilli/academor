@@ -12,8 +12,9 @@
     var prefersReducedMotion =
         window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    /* Spinner: hide the full-screen loader once the page has laid out, then start the reveals.
-       Pages without a visible #spinner (portal login renders it hidden) start on DOMContentLoaded. */
+    /* Spinner: the full-screen loader stays until the first screen is ready (page built,
+       fonts in, images on screen loaded; at most 1.2s after the DOM is ready), then fades.
+       It used to wait for every image on the page (window load), which kept it ~2s. */
     var sp = qs("#spinner");
     var pageReady = false;
     function announcePageReady() {
@@ -22,22 +23,52 @@
         document.dispatchEvent(new CustomEvent("academor:page-ready"));
     }
     if (sp && !sp.classList.contains("hide")) {
+        var spinnerHidden = false;
         var hideSpinner = function () {
-            if (pageReady) return;
-            setTimeout(function () {
-                sp.classList.add("hide");
-                sp.setAttribute("aria-busy", "false");
-                announcePageReady();
-                /* after the fade: drop the overlay from rendering altogether */
-                setTimeout(function () { sp.classList.add("is-gone"); }, 600);
-            }, 50);
-        };
-        window.addEventListener("load", function () {
+            if (spinnerHidden) return;
+            spinnerHidden = true;
+            /* two frames: the page underneath is painted before the loader starts to fade */
             requestAnimationFrame(function () {
-                requestAnimationFrame(hideSpinner);
+                requestAnimationFrame(function () {
+                    sp.classList.add("hide");
+                    sp.setAttribute("aria-busy", "false");
+                    announcePageReady();
+                    /* after the fade: drop the overlay from rendering altogether */
+                    setTimeout(function () { sp.classList.add("is-gone"); }, 700);
+                });
             });
+        };
+        var whenFirstScreenReady = function () {
+            var waits = [];
+            if (document.fonts && document.fonts.ready) waits.push(document.fonts.ready);
+            var vh = window.innerHeight || document.documentElement.clientHeight;
+            var vw = window.innerWidth || document.documentElement.clientWidth;
+            qsa("img").forEach(function (img) {
+                if (img.complete || !img.currentSrc && !img.getAttribute("src")) return;
+                var r = img.getBoundingClientRect();
+                /* on screen both ways: lazy images further along a side-scroller never load */
+                if (r.width === 0 || r.top >= vh || r.bottom <= 0 || r.left >= vw || r.right <= 0) return;
+                waits.push(new Promise(function (resolve) {
+                    img.addEventListener("load", resolve, { once: true });
+                    img.addEventListener("error", resolve, { once: true });
+                }));
+            });
+            var cap = new Promise(function (resolve) { setTimeout(resolve, 1200); });
+            Promise.race([Promise.all(waits), cap]).then(hideSpinner, hideSpinner);
+        };
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", whenFirstScreenReady);
+        } else {
+            whenFirstScreenReady();
+        }
+        setTimeout(hideSpinner, 3500); /* safety net */
+        /* back/forward cache: the page comes back as it was left, never behind the loader */
+        window.addEventListener("pageshow", function (e) {
+            if (e.persisted) {
+                sp.classList.add("hide", "is-gone");
+                announcePageReady();
+            }
         });
-        setTimeout(hideSpinner, 4000);
     } else if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", announcePageReady);
     } else {
