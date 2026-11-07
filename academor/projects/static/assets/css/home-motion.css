@@ -1,7 +1,7 @@
 /* ==========================================================================
    Homepage scroll reveals (home-motion.js). One light signature per section:
 
-   hero      regular blog cards cascade in from the right (scroll-reveal.js)
+   hero      not animated: visible from the first frame
    about     picture and text simply fade up, the text a beat later
    offers    discount banners rise one after another
    services  cards rise with a slight grow, row by row
@@ -107,13 +107,12 @@ html.hm-ready .page-home [data-hm="faq"] [data-hm-role="item"]:not(.hm-in) {
     }
 }
 
-/* ---------------------------------------------------------------- hero (scroll-reveal.js) */
-/* the regular cards under the featured pair cascade in from the right */
-html.js .page-home .hbh-reg-wrap.scroll-reveal:not(.is-revealed) .hbh-card--regular {
-    opacity: 0;
-    transform: translate3d(32px, 0, 0);
+/* ---------------------------------------------------------------- hero */
+/* while the page is still painting, the top of the page is already the hero's dark colour,
+   so there is no light frame between the navbar and the hero (read as a flicker) */
+body.page-home,
+.page-home .home-page-main {
+    background-image: linear-gradient(to bottom, var(--bs-primary, #00313D) 0, var(--bs-primary, #00313D) 70vh, transparent 70vh);
+    background-repeat: no-repeat;
 }
-.page-home .hbh-reg-track > .hbh-card--regular:nth-child(2) { --reveal-delay: 240ms; }
-.page-home .hbh-reg-track > .hbh-card--regular:nth-child(3) { --reveal-delay: 300ms; }
-.page-home .hbh-reg-track > .hbh-card--regular:nth-child(4) { --reveal-delay: 360ms; }
-.page-home .hbh-reg-track > .hbh-card--regular:nth-child(n+5) { --reveal-delay: 420ms; }
+/* the first screen (blog hero) is not animated: it is visible from the first frame */
