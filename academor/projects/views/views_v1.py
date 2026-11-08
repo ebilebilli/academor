@@ -328,12 +328,15 @@ class AboutPageView(View):
 
 
 class ServicesPageView(View):
+    """/services/ — regular services; trainings are listed on /trainings/."""
+
     template_name = 'services.html'
+    is_training = False
 
     def get(self, request):
         lang = get_language_from_request(request)
         contact = get_contact(lang)
-        categories = get_project_categories(lang)
+        categories = get_project_categories(lang, is_training=self.is_training)
         serialized_categories = [
             serialize_project_category(category, lang)
             for category in categories
@@ -343,8 +346,15 @@ class ServicesPageView(View):
             'categories': serialized_categories,
             'language': lang,
             'background_image': get_background_image('service'),
+            'is_trainings_page': self.is_training,
         }
         return render(request, self.template_name, context)
+
+
+class TrainingsPageView(ServicesPageView):
+    """/trainings/ — services marked as trainings, same layout as /services/."""
+
+    is_training = True
 
 
 class AbroadPageView(View):

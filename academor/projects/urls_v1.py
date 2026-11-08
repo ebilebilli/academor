@@ -9,6 +9,7 @@ from projects.views.views_v1 import (
     MockTestDetailPageView,
     AboutPageView,
     ServicesPageView,
+    TrainingsPageView,
     AbroadPageView,
     StudyAbroadApplicationView,
     AbroadUniversityDetailPageView,
@@ -73,6 +74,11 @@ urlpatterns = [
         'services/',
         ServicesPageView.as_view(),
         name='services-page'
+    ),
+    path(
+        'trainings/',
+        TrainingsPageView.as_view(),
+        name='trainings-page'
     ),
     path(
         'abroad/',

@@ -28,5 +28,5 @@
     {% endfor %}
 </ul>
 {% else %}
-<p class="hsvc-empty wow fadeInUp" data-wow-delay="0.1s">{% trans "No categories yet." %}</p>
+<p class="hsvc-empty wow fadeInUp" data-wow-delay="0.1s">{% if empty_text %}{{ empty_text }}{% else %}{% trans "No categories yet." %}{% endif %}</p>
 {% endif %}

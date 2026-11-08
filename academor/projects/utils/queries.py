@@ -117,11 +117,12 @@ _category_media_prefetch = Prefetch(
 
 
 @cached_query(timeout='CACHE_TIMEOUT_LONG')
-def get_project_categories(lang='az', show_on_main_page=None, tag_slug=None, is_mock_test=False):
+def get_project_categories(lang='az', show_on_main_page=None, tag_slug=None, is_mock_test=False, is_training=None):
     """
     Active services (courses). By default excludes IELTS/SAT mock test services.
 
     ``is_mock_test=True`` returns only services with ``ielts_mock_test`` or ``sat_mock_test``.
+    ``is_training`` — True: only trainings, False: only regular services, None: both.
     Invalidated via ``invalidate_service_cache`` (Service save/delete/M2M).
     """
     qs = Service.objects.filter(is_active=True).order_by('order', 'id').prefetch_related(
@@ -135,6 +136,8 @@ def get_project_categories(lang='az', show_on_main_page=None, tag_slug=None, is_
         qs = qs.exclude(MOCK_TEST_SERVICE_Q)
     if show_on_main_page is not None:
         qs = qs.filter(show_on_main_page=show_on_main_page)
+    if is_training is not None:
+        qs = qs.filter(is_training=is_training)
     if tag_slug:
         qs = qs.filter(tags__slug=tag_slug, tags__is_active=True).distinct()
     return qs
@@ -506,12 +509,13 @@ def _fresh_home_team_context(lang='az'):
     }
 
 
-def _serialized_categories_with_fresh_sales(lang, show_on_main_page=None, is_mock_test=False):
+def _serialized_categories_with_fresh_sales(lang, show_on_main_page=None, is_mock_test=False, is_training=None):
     """Service cards with current sale prices — always a fresh discount lookup."""
     categories = get_project_categories(
         lang,
         show_on_main_page=show_on_main_page,
         is_mock_test=is_mock_test,
+        is_training=is_training,
     )
     discounts_map = fetch_active_sale_discounts_by_service_id()
     package_discounts_map = fetch_active_sale_discounts_by_package_id()
@@ -646,21 +650,30 @@ def _fresh_home_featured_prices_context(lang='az'):
 
 
 def _fresh_home_categories_context(lang='az'):
-    """Homepage service cards — override stale categories from the page cache blob."""
+    """Homepage service cards — override stale categories from the page cache blob.
+
+    Regular services and trainings are listed in two groups."""
     return {
         'categories': _serialized_categories_with_fresh_sales(
             lang,
             show_on_main_page=True,
+            is_training=False,
+        ),
+        'training_categories': _serialized_categories_with_fresh_sales(
+            lang,
+            show_on_main_page=True,
+            is_training=True,
         ),
     }
 
 
-def _merge_fresh_sale_categories(ctx, lang, show_on_main_page=None, is_mock_test=False):
+def _merge_fresh_sale_categories(ctx, lang, show_on_main_page=None, is_mock_test=False, is_training=None):
     """Replace serialized categories in a page context with fresh sale pricing."""
     ctx['categories'] = _serialized_categories_with_fresh_sales(
         lang,
         show_on_main_page=show_on_main_page,
         is_mock_test=is_mock_test,
+        is_training=is_training,
     )
     slug = (ctx.get('filters') or {}).get('slug')
     if slug:
@@ -1332,6 +1345,7 @@ def serialize_project_category(category, lang='az', discounts_map=None, package_
     return {
         'id': category.id,
         'slug': category.slug,
+        'is_training': bool(getattr(category, 'is_training', False)),
         'name': _service_category_display_name(category, lang),
         'icon': resolve_service_category_icon(
             getattr(category, 'card_icon', '') or '',
@@ -1839,8 +1853,9 @@ def _get_courses_list_data_cached(request, lang):
 
 
 def get_courses_list_data(request, lang):
+    """/courses/ — regular courses only; trainings have their own page."""
     ctx = _get_courses_list_data_cached(request, lang)
-    _merge_fresh_sale_categories(ctx, lang)
+    _merge_fresh_sale_categories(ctx, lang, is_training=False)
     return ctx
 
 
@@ -1893,8 +1908,15 @@ def get_project_list_data(request, lang):
 
 @cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_nav_courses(lang='az'):
-    """Active non-mock services — header Courses dropdown."""
-    cats = get_project_categories(lang, is_mock_test=False)
+    """Active non-mock, non-training services — header Courses dropdown (first group)."""
+    cats = get_project_categories(lang, is_mock_test=False, is_training=False)
+    return [serialize_project_category(c, lang) for c in cats]
+
+
+@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
+def get_nav_trainings(lang='az'):
+    """Active trainings — header Courses dropdown (second group)."""
+    cats = get_project_categories(lang, is_mock_test=False, is_training=True)
     return [serialize_project_category(c, lang) for c in cats]
 
 
