@@ -78,8 +78,6 @@ class TrainingSplitTests(TestCase):
         menu = html.split('nav-courses-dropdown--split', 1)[1].split('nav-item dropdown', 1)[0]
         courses_col, trainings_col = menu.split('nav-courses-dropdown__col--trainings', 1)
         self.assertIn('nav-courses-dropdown__col--courses', courses_col)
-        self.assertIn('nav-courses-dropdown__icon-svg', courses_col)
-        self.assertIn('nav-courses-dropdown__icon-svg', trainings_col)
         self.assertIn('/courses/ielts-test/', courses_col)
         self.assertNotIn('/courses/pmp-test/', courses_col)
         self.assertIn('/courses/pmp-test/', trainings_col)
@@ -106,6 +104,24 @@ class TrainingSplitTests(TestCase):
     def test_home_trainings_are_their_own_section(self):
         html = self.client.get(reverse('projects:home-page')).content.decode()
         self.assertIn('id="home-trainings" class="hsvc-section hsvc-section--trainings"', html)
+        # the trainings section has no picture of its own (only its background sets it apart)
+        trainings = html.split('id="home-trainings"', 1)[1].split('</section>', 1)[0]
+        self.assertNotIn('<img', trainings)
+
+    def test_trainings_page_shows_the_training_books(self):
+        html = self.client.get(reverse('projects:trainings-page')).content.decode()
+        for label in ('FMVA', 'PMS', 'PMP', 'DipIFR', 'PHR'):
+            self.assertIn(f'aria-label="{label} kitab', html)
+        self.assertIn('courses-books.css', html)
+
+    def test_courses_page_books_no_longer_include_fmva(self):
+        html = self.client.get(reverse('projects:courses-page')).content.decode()
+        self.assertIn('aria-label="IELTS kitab', html)
+        self.assertNotIn('aria-label="FMVA kitab', html)
+
+    def test_services_page_has_no_books(self):
+        html = self.client.get(reverse('projects:services-page')).content.decode()
+        self.assertNotIn('ac-books', html)
 
     def test_training_detail_keeps_its_url(self):
         self.assertEqual(self.client.get(reverse('projects:course-detail', args=['pmp-test'])).status_code, 200)

@@ -155,8 +155,20 @@ ACADEMOR_BOOKS = [
      'x': 0, 'y': 67, 'rot': 3, 'tags': ['Literacy', 'Speaking']},
     {'label': 'AP', 'title': 'AP', 'sub': '', 'cover': '#0A6EBD', 'delay': '-2.8s',
      'x': 100, 'y': 84, 'rot': -3, 'tags': ['Calculus', 'Physics']},
-    {'label': 'FMVA', 'title': 'FMVA', 'sub': '', 'cover': '#C47A00', 'delay': '-4.9s',
-     'x': 0, 'y': 88, 'rot': -3, 'tags': ['Modeling', 'Valuation']},
+]
+
+# The same 3D books on the trainings page (/trainings/), one per professional program.
+TRAINING_BOOKS = [
+    {'label': 'FMVA', 'title': 'FMVA', 'sub': '', 'cover': '#C47A00', 'delay': '0s',
+     'x': 0, 'y': 6, 'rot': -3, 'tags': ['Modeling', 'Valuation']},
+    {'label': 'PMS', 'title': 'PMS', 'sub': '', 'cover': '#1E3A6E', 'delay': '-3.3s',
+     'x': 100, 'y': 18, 'rot': 3, 'tags': ['Planning', 'Control']},
+    {'label': 'PMP', 'title': 'PMP', 'sub': '', 'cover': '#A33A5E', 'delay': '-1.1s',
+     'x': 0, 'y': 44, 'rot': 3, 'tags': ['Scope', 'Risk']},
+    {'label': 'DipIFR', 'title': 'DipIFR', 'sub': '', 'cover': '#0F6B5C', 'delay': '-4.4s',
+     'x': 100, 'y': 56, 'rot': -3, 'tags': ['IFRS', 'Reporting']},
+    {'label': 'PHR', 'title': 'PHR', 'sub': '', 'cover': '#5B3E96', 'delay': '-2.2s',
+     'x': 0, 'y': 80, 'rot': -3, 'tags': ['HR', 'Compliance']},
 ]
 
 
@@ -348,6 +360,8 @@ class ServicesPageView(View):
             'background_image': get_background_image('service'),
             'is_trainings_page': self.is_training,
         }
+        if self.is_training:
+            context['academor_books'] = TRAINING_BOOKS
         return render(request, self.template_name, context)
 
 

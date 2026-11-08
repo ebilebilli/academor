@@ -1,6 +1,15 @@
 {% extends "base.html" %}
 {% load static i18n %}
 
+{% block extra_head %}
+{% if academor_books %}
+{# trainings page: the 3D books of the courses page, one per training #}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'assets/css/courses-books.css' %}">
+{% endif %}
+{% endblock %}
+
 {% block content %}
     <main id="main-content">
     {% include "includes/page_header_banner.html" %}
@@ -11,7 +20,21 @@
             <div class="container-xxl">
                 <div class="container">
                     <h1 id="services-heading" class="hsvc-title hsvc-title--centered wow fadeInUp" data-wow-delay="0.05s">{% if is_trainings_page %}{% trans "Trainings" %}{% else %}{% trans "Our Services" %}{% endif %}</h1>
-                    {% if is_trainings_page %}{% trans "No trainings yet." as no_trainings %}{% include "includes/hsvc_cards_grid.html" with empty_text=no_trainings %}{% else %}{% include "includes/hsvc_cards_grid.html" %}{% endif %}
+                    {% if is_trainings_page %}
+                    {% trans "No trainings yet." as no_trainings %}
+                    {% if academor_books %}
+                    <div class="ac-behind">
+                        {% include "includes/academor_books.html" %}
+                        <div class="ac-behind__front">
+                            {% include "includes/hsvc_cards_grid.html" with empty_text=no_trainings %}
+                        </div>
+                    </div>
+                    {% else %}
+                    {% include "includes/hsvc_cards_grid.html" with empty_text=no_trainings %}
+                    {% endif %}
+                    {% else %}
+                    {% include "includes/hsvc_cards_grid.html" %}
+                    {% endif %}
                 </div>
             </div>
         </div>
