@@ -664,6 +664,37 @@ h1.animated, h2.animated, h3.animated,
     min-width: 12rem;
 }
 
+/* Header: Courses dropdown with trainings — "Courses" and "Trainings" side by side
+   (stacked inside the collapsed mobile menu), separated like the dropdown's own dividers */
+.nav-courses-dropdown__cols {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.nav-courses-dropdown__col + .nav-courses-dropdown__col {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: var(--bs-border-width, 1px) solid var(--bs-dropdown-divider-bg, rgba(0, 0, 0, 0.15));
+}
+
+@media (min-width: 992px) {
+    .nav-courses-dropdown--split {
+        width: max-content;
+        max-width: min(92vw, 36rem);
+    }
+
+    .nav-courses-dropdown--split .nav-courses-dropdown__cols {
+        grid-template-columns: repeat(2, minmax(13rem, 1fr));
+    }
+
+    .nav-courses-dropdown__col + .nav-courses-dropdown__col {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: 0;
+        border-left: var(--bs-border-width, 1px) solid var(--bs-dropdown-divider-bg, rgba(0, 0, 0, 0.15));
+    }
+}
+
 /* Header: Study Abroad dropdown — ölkə + universitet sub-listi */
 .nav-abroad-dropdown {
     max-height: min(75vh, 480px);
