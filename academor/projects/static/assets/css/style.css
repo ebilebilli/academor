@@ -1330,6 +1330,19 @@ h1.animated, h2.animated, h3.animated,
     background-color: #FFF0EB;
 }
 
+/* Courses dropdown: "Courses" / "Trainings" group labels — the same small uppercase accent
+   label the service sections use (.hsvc-eyebrow) */
+.navbar .nav-courses-dropdown__group {
+    margin: 0;
+    padding-top: 0.45rem;
+    padding-bottom: 0.25rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
 .navbar-light.sticky-top {
     top: 0;
     z-index: var(--z-fixed);

@@ -9,6 +9,7 @@ from projects.utils.queries import (
     get_background_image,
     get_contact,
     get_nav_courses,
+    get_nav_trainings,
     get_nav_mock_tests,
     get_nav_abroad_items_with_universities,
     get_page_tagline,
@@ -18,6 +19,7 @@ URL_NAME_TO_TAGLINE_PAGE = {
     'about-page': TaglinePage.ABOUT,
     'contact-page': TaglinePage.CONTACT,
     'services-page': TaglinePage.SERVICE,
+    'trainings-page': TaglinePage.SERVICE,
     'courses-page': TaglinePage.COURSES,
     'course-detail': TaglinePage.COURSES,
     'mock-tests-page': TaglinePage.MOCK_TESTS,
@@ -196,6 +198,7 @@ def site_footer_context(request):
             'footer_contact': None,
             'footer_background_image': None,
             'nav_courses': [],
+            'nav_trainings': [],
             'nav_mock_tests': [],
             'nav_abroad_items': [],
             'nav_url_name': '',
@@ -225,6 +228,7 @@ def site_footer_context(request):
         'footer_contact': serialize_contact(contact, lang) if contact else None,
         'footer_background_image': get_background_image('footer'),
         'nav_courses': get_nav_courses(lang),
+        'nav_trainings': get_nav_trainings(lang),
         'nav_mock_tests': get_nav_mock_tests(lang),
         'nav_abroad_items': get_nav_abroad_items_with_universities(lang=lang, is_active=True),
         'nav_url_name': nav_url_name,
@@ -249,7 +253,7 @@ def _resolve_page_tagline(url_name, lang):
     if not page_key:
         return None
 
-    if url_name == 'services-page':
+    if url_name in ('services-page', 'trainings-page'):
         for key in (TaglinePage.SERVICE, TaglinePage.COURSES):
             tagline = get_page_tagline(key, lang)
             if tagline:

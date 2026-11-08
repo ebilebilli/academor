@@ -32,6 +32,24 @@
 
             {% include "includes/hsvc_cards_grid.html" %}
 
+            {% if training_categories %}
+            <header class="hsvc-header hsvc-header--group wow fadeInUp" data-wow-delay="0.05s">
+                <div>
+                    <span class="hsvc-eyebrow">{% trans "Trainings" %}</span>
+                    {% if use_h2_for_section_titles %}
+                    <h3 id="hsvc-trainings-heading" class="hsvc-title">{% trans "New trainings" %}</h3>
+                    {% else %}
+                    <h2 id="hsvc-trainings-heading" class="hsvc-title">{% trans "New trainings" %}</h2>
+                    {% endif %}
+                </div>
+                <a href="{% url 'projects:trainings-page' %}" class="btn btn-outline-accent rounded-pill px-4 px-md-5 fw-semibold">
+                    {% trans "All trainings" %}
+                    <i class="fas fa-arrow-right ms-2 small" aria-hidden="true"></i>
+                </a>
+            </header>
+            {% include "includes/hsvc_cards_grid.html" with categories=training_categories %}
+            {% endif %}
+
         </div>
     </div>
 </div>

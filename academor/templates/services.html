@@ -10,8 +10,8 @@
         <div class="hsvc-inner">
             <div class="container-xxl">
                 <div class="container">
-                    <h1 id="services-heading" class="hsvc-title hsvc-title--centered wow fadeInUp" data-wow-delay="0.05s">{% trans "Our Services" %}</h1>
-                    {% include "includes/hsvc_cards_grid.html" %}
+                    <h1 id="services-heading" class="hsvc-title hsvc-title--centered wow fadeInUp" data-wow-delay="0.05s">{% if is_trainings_page %}{% trans "Trainings" %}{% else %}{% trans "Our Services" %}{% endif %}</h1>
+                    {% if is_trainings_page %}{% trans "No trainings yet." as no_trainings %}{% include "includes/hsvc_cards_grid.html" with empty_text=no_trainings %}{% else %}{% include "includes/hsvc_cards_grid.html" %}{% endif %}
                 </div>
             </div>
         </div>

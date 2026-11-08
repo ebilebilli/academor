@@ -148,7 +148,7 @@
                         </div>
 
                         <div class="course-detail-actions d-flex flex-wrap gap-3 mt-4 wow fadeInUp" data-wow-delay="0.15s">
-                            {% url 'projects:courses-page' as courses_list_url %}
+                            {% if course.is_training %}{% url 'projects:trainings-page' as courses_list_url %}{% else %}{% url 'projects:courses-page' as courses_list_url %}{% endif %}
                             {% include "includes/detail_back_button.html" with fallback_url=courses_list_url %}
                         </div>
                     </div>

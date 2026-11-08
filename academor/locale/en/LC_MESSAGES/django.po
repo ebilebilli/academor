@@ -10506,6 +10506,27 @@ msgstr "Parent category"
 msgid "Bu quiz hazırda bağlıdır. Açılması üçün təlimçi ilə danışın."
 msgstr "This quiz is locked for now — ask your teacher to open it."
 
+msgid "Training"
+msgstr "Training"
+
+msgid "If enabled, this service is listed under Trainings (header dropdown, home page and /trainings/) instead of the general services and courses lists."
+msgstr "If enabled, this service is listed under Trainings (header dropdown, home page and /trainings/) instead of the general services and courses lists."
+
+msgid "A mock test cannot also be a training."
+msgstr "A mock test cannot also be a training."
+
+msgid "Trainings"
+msgstr "Trainings"
+
+msgid "All trainings"
+msgstr "All trainings"
+
+msgid "New trainings"
+msgstr "New trainings"
+
+msgid "No trainings yet."
+msgstr "No trainings yet."
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Try again in the next campaign — we will let you know."
 

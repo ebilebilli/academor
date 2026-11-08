@@ -116,6 +116,14 @@ class Service(SluggedModel):
             'If enabled, this course appears in the "Our Services" grid on the homepage.'
         ),
     )
+    is_training = models.BooleanField(
+        default=False,
+        verbose_name=_('Training'),
+        help_text=_(
+            'If enabled, this service is listed under Trainings (header dropdown, home page and '
+            '/trainings/) instead of the general services and courses lists.'
+        ),
+    )
     ielts_mock_test = models.BooleanField(
         default=False,
         verbose_name=_('IELTS mock test'),
@@ -205,6 +213,10 @@ class Service(SluggedModel):
         if self.ielts_mock_test and self.sat_mock_test:
             raise ValidationError(
                 _('Select only one mock test type: IELTS or SAT.'),
+            )
+        if self.is_training and self.is_mock_test:
+            raise ValidationError(
+                _('A mock test cannot also be a training.'),
             )
 
     @property

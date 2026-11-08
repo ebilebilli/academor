@@ -10742,6 +10742,27 @@ msgstr "Ana kateqoriya"
 msgid "Bu quiz hazırda bağlıdır. Açılması üçün təlimçi ilə danışın."
 msgstr "Bu quiz hələ bağlıdır — açmaq üçün müəlliminizlə danışın."
 
+msgid "Training"
+msgstr "Təlim"
+
+msgid "If enabled, this service is listed under Trainings (header dropdown, home page and /trainings/) instead of the general services and courses lists."
+msgstr "Seçilsə, bu xidmət ümumi xidmətlər və kurslar siyahısında deyil, «Təlimlər» bölməsində göstərilir (menyu, ana səhifə və /trainings/)."
+
+msgid "A mock test cannot also be a training."
+msgstr "Sınaq imtahanı eyni zamanda təlim ola bilməz."
+
+msgid "Trainings"
+msgstr "Təlimlər"
+
+msgid "All trainings"
+msgstr "Bütün təlimlər"
+
+msgid "New trainings"
+msgstr "Yeni təlimlər"
+
+msgid "No trainings yet."
+msgstr "Hələ təlim yoxdur."
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Növbəti kampaniyada yenə cəhd et — xəbərdar edəcəyik."
 

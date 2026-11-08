@@ -117,6 +117,14 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
             ),
             "keywords": "about academor, english school baku, language center azerbaijan, our story, " + _EN_KW_CORE,
         },
+        "trainings-page": {
+            "title": "Trainings | Academor — New Programs in Baku",
+            "description": (
+                "New Academor trainings in Baku: professional certificate programs and short courses "
+                "with experienced trainers."
+            ),
+            "keywords": "academor trainings, professional training baku, certificate programs, " + _EN_KW_CORE,
+        },
         "services-page": {
             "title": "Services | Academor — Courses, Exams & Support",
             "description": (
@@ -247,6 +255,13 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
             "keywords": (
                 "academor haqqında, Bakıda təhsil mərkəzləri, Bakıda dil kursları, missiya, " + _AZ_KW_CORE
             ),
+        },
+        "trainings-page": {
+            "title": "Təlimlər | Academor",
+            "description": (
+                "Academor-un yeni təlimləri: peşəkar sertifikat proqramları və təcrübəli təlimçilərlə qısa kurslar — Bakı."
+            ),
+            "keywords": "academor təlimlər, Bakıda təlimlər, sertifikat proqramları, " + _AZ_KW_CORE,
         },
         "services-page": {
             "title": "Xidmətlər | Academor",
@@ -394,6 +409,13 @@ SEO_PAGE_DEFAULTS: dict[str, dict[str, dict[str, str]]] = {
                 "Об Academor: методика, подготовка к экзаменам и поддержка при обучении за рубежом в Баку и Азербайджане."
             ),
             "keywords": "о academor, школа английского баку, языковой центр, " + _RU_KW_CORE,
+        },
+        "trainings-page": {
+            "title": "Тренинги | Academor",
+            "description": (
+                "Новые тренинги Academor в Баку: профессиональные сертификационные программы и короткие курсы."
+            ),
+            "keywords": "тренинги academor, тренинги баку, сертификационные программы, " + _RU_KW_CORE,
         },
         "services-page": {
             "title": "Услуги | Academor",

@@ -523,6 +523,10 @@ class ServiceAdminForm(forms.ModelForm):
             raise ValidationError(
                 _('Select only one mock test type: IELTS or SAT.'),
             )
+        if cleaned.get('is_training') and (cleaned.get('ielts_mock_test') or cleaned.get('sat_mock_test')):
+            raise ValidationError(
+                _('A mock test cannot also be a training.'),
+            )
         return cleaned
 
 
@@ -540,11 +544,12 @@ class ServiceAdmin(AdminImageCompressMixin, AcademorModelAdmin):
         'order',
         'is_active',
         'show_on_main_page',
+        'is_training',
         'created_at',
     )
     list_display_links = ('id',)
-    list_editable = ('order', 'is_active', 'show_on_main_page')
-    list_filter = ('is_active', 'show_on_main_page', 'ielts_mock_test', 'sat_mock_test', 'instructors', 'created_at')
+    list_editable = ('order', 'is_active', 'show_on_main_page', 'is_training')
+    list_filter = ('is_active', 'show_on_main_page', 'is_training', 'ielts_mock_test', 'sat_mock_test', 'instructors', 'created_at')
     search_fields = (
         'name_az', 'name_en', 'name_ru',
         'description_az', 'description_en', 'description_ru',
@@ -604,10 +609,12 @@ class ServiceAdmin(AdminImageCompressMixin, AcademorModelAdmin):
             ),
         }),
         ('Status', {
-            'fields': ('order', 'is_active', 'show_on_main_page', 'created_at'),
+            'fields': ('order', 'is_active', 'show_on_main_page', 'is_training', 'created_at'),
             'description': (
                 'Order: 0 = first on the site, courses list, and header dropdown; '
-                '1 = next, and so on. Duplicate positions shift automatically on save.'
+                '1 = next, and so on. Duplicate positions shift automatically on save. '
+                'Training: listed under Trainings (header dropdown, home page, /trainings/) '
+                'instead of the general services and courses lists.'
             ),
         }),
     )
