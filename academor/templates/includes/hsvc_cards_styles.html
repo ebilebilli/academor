@@ -44,7 +44,7 @@
     margin-bottom: clamp(1.75rem, 4vw, 2.5rem);
 }
 
-/* home: the courses heading carries an illustration */
+/* home: heading text with its button underneath; the courses heading also carries an illustration */
 .hsvc-header--illustrated {
     align-items: center;
 }
@@ -278,6 +278,10 @@
         align-items: flex-start;
         gap: 12px;
     }
+    /* stacked: the row flex-basis would turn into a height */
+    .hsvc-header--illustrated .hsvc-header__text,
+    .hsvc-header__art { flex-basis: auto; }
+    .hsvc-header__art { align-self: center; }
     .hsvc-card-wrap { border-radius: 16px; }
     .hsvc-card__body { padding: 10px 10px 10px 12px; gap: 8px; }
     .hsvc-card__title { font-size: 0.88rem; }

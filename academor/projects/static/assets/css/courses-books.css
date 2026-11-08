@@ -35,6 +35,13 @@
     .ac-books .ac-scene--r { left: calc(100% + 28px); }
 }
 
+/* trainings page: few cards, so a short grid: smaller books keep the stacks apart */
+.ac-books--compact .ac-scene { --scale: 0.22; }
+
+@media (min-width: 1800px) {
+    .ac-books--compact .ac-scene { --scale: 0.26; }
+}
+
 @media (max-width: 1559.98px) {
     .ac-books { display: none; }
 }

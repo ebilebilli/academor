@@ -1,6 +1,6 @@
 {% load i18n %}
 {# ACADEMOR 3D books behind the courses-page service cards (styles: assets/css/courses-books.css). #}
-<div class="ac-books" role="list" aria-label="{% trans 'Academor kitabları' %}">
+<div class="ac-books{% if books_compact %} ac-books--compact{% endif %}" role="list" aria-label="{% trans 'Academor kitabları' %}">
         {% for book in academor_books %}
         <div class="ac-scene ac-scene--{% if book.x < 50 %}l{% else %}r{% endif %}" role="listitem" style="--cover:{{ book.cover }}; --delay:{{ book.delay }}; --x:{{ book.x }}%; --y:{{ book.y }}%; --rot:{{ book.rot }}deg">
             <div class="ac-shadow"></div>
