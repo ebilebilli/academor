@@ -1,5 +1,5 @@
-{% load i18n static %}
-{# Home: regular courses (illustration beside the heading), then trainings on a tinted full-width band. #}
+{% load i18n %}
+{# Home: regular courses, then trainings on a tinted full-width band. #}
 <section id="home-services" class="hsvc-section{% if service_section_full_page %} hsvc-section--standalone{% endif %}" aria-labelledby="hsvc-heading">
 {% include "includes/hsvc_cards_styles.html" %}
 
@@ -7,7 +7,7 @@
     <div class="container-xxl">
         <div class="container">
 
-            <header class="hsvc-header{% if not service_section_full_page %} hsvc-header--illustrated{% endif %} wow fadeInUp" data-wow-delay="0.05s">
+            <header class="hsvc-header hsvc-header--stacked wow fadeInUp" data-wow-delay="0.05s">
                 <div class="hsvc-header__text">
                     {% if service_section_full_page %}
                     <span class="hsvc-eyebrow">{% trans "Services" %}</span>
@@ -25,9 +25,6 @@
                         <i class="fas fa-arrow-right ms-2 small" aria-hidden="true"></i>
                     </a>
                 </div>
-                {% if not service_section_full_page %}
-                <img class="hsvc-header__art" src="{% static 'assets/img/services/courses-languages-960.webp' %}" srcset="{% static 'assets/img/services/courses-languages-560.webp' %} 560w, {% static 'assets/img/services/courses-languages-960.webp' %} 960w" sizes="(min-width: 768px) 26rem, 90vw" width="960" height="640" alt="" loading="lazy" decoding="async">
-                {% endif %}
             </header>
 
             {% include "includes/hsvc_cards_grid.html" %}
@@ -43,7 +40,7 @@
     <div class="container-xxl">
         <div class="container">
 
-            <header class="hsvc-header hsvc-header--illustrated wow fadeInUp" data-wow-delay="0.05s">
+            <header class="hsvc-header hsvc-header--stacked wow fadeInUp" data-wow-delay="0.05s">
                 <div class="hsvc-header__text">
                     <span class="hsvc-eyebrow">{% trans "Trainings" %}</span>
                     <h2 id="hsvc-trainings-heading" class="hsvc-title">{% trans "Professional Trainings & Certification" %}</h2>

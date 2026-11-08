@@ -44,32 +44,18 @@
     margin-bottom: clamp(1.75rem, 4vw, 2.5rem);
 }
 
-/* home: heading text with its button underneath; the courses heading also carries an illustration */
-.hsvc-header--illustrated {
+/* home: heading text with its button underneath */
+.hsvc-header--stacked {
     align-items: center;
 }
 
-.hsvc-header--illustrated .hsvc-header__text {
+.hsvc-header--stacked .hsvc-header__text {
     flex: 1 1 20rem;
     min-width: 0;
 }
 
-.hsvc-header--illustrated .hsvc-header__text .btn {
+.hsvc-header--stacked .hsvc-header__text .btn {
     margin-top: 1.25rem;
-}
-
-.hsvc-header__art {
-    flex: 0 1 26rem;
-    width: 100%;
-    max-width: 26rem;
-    height: auto;
-}
-
-@media (max-width: 767.98px) {
-    .hsvc-header__art {
-        max-width: 22rem;
-        margin: 0 auto;
-    }
 }
 
 .hsvc-eyebrow {
@@ -279,9 +265,7 @@
         gap: 12px;
     }
     /* stacked: the row flex-basis would turn into a height */
-    .hsvc-header--illustrated .hsvc-header__text,
-    .hsvc-header__art { flex-basis: auto; }
-    .hsvc-header__art { align-self: center; }
+    .hsvc-header--stacked .hsvc-header__text { flex-basis: auto; }
     .hsvc-card-wrap { border-radius: 16px; }
     .hsvc-card__body { padding: 10px 10px 10px 12px; gap: 8px; }
     .hsvc-card__title { font-size: 0.88rem; }
