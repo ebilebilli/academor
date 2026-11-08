@@ -218,13 +218,15 @@
 
 .hsvc-card__arrow i { transition: translate 0.25s cubic-bezier(0.23, 1, 0.32, 1); }
 
-/* hover / focus */
+/* hover / focus — hover is read on the grid cell, which never moves, and only the card
+   inside lifts. Reading it on the card itself looped at the card's bottom edge: the lift
+   moved the card out from under the pointer, the hover dropped, the card fell back. */
 @media (hover: hover) {
-    .hsvc-card-wrap:hover { translate: 0 -4px; box-shadow: 0 0 0 1px rgba(0, 49, 61, 0.16), 0 4px 10px rgba(0, 49, 61, 0.10), 0 22px 44px rgba(0, 49, 61, 0.22); }
-    .hsvc-card-wrap:hover .hsvc-card__poster { scale: 1.03; }
-    .hsvc-card-wrap:hover .hsvc-card__glyph { rotate: -8deg; }
-    .hsvc-card-wrap:hover .hsvc-card__arrow { background: var(--accent, #ff5414); color: #fff; }
-    .hsvc-card-wrap:hover .hsvc-card__arrow i { translate: 3px 0; }
+    .hsvc-grid__item:hover > .hsvc-card-wrap { translate: 0 -4px; box-shadow: 0 0 0 1px rgba(0, 49, 61, 0.16), 0 4px 10px rgba(0, 49, 61, 0.10), 0 22px 44px rgba(0, 49, 61, 0.22); }
+    .hsvc-grid__item:hover > .hsvc-card-wrap .hsvc-card__poster { scale: 1.03; }
+    .hsvc-grid__item:hover > .hsvc-card-wrap .hsvc-card__glyph { rotate: -8deg; }
+    .hsvc-grid__item:hover > .hsvc-card-wrap .hsvc-card__arrow { background: var(--accent, #ff5414); color: #fff; }
+    .hsvc-grid__item:hover > .hsvc-card-wrap .hsvc-card__arrow i { translate: 3px 0; }
 }
 
 .hsvc-card-wrap--active { box-shadow: 0 0 0 3px var(--accent, #ff5414), 0 10px 26px rgba(0, 49, 61, 0.14); }

@@ -117,18 +117,24 @@ body.page-home {
 
 /* The abroad card's legacy hover moved it with `transform` (-3px); neutralise it so only
    the shared 4px lift remains. Team cards keep their original hover. */
-.page-home .abroad-card:hover {
+.page-home [class*="col-"]:hover > .abroad-card,
+.page-home .abroad-card:focus-visible {
     transform: none;
 }
 
 @media (hover: hover) and (pointer: fine) {
+    /* The lift is read on a parent that stays put (moving the hovered card itself looped at
+       its bottom edge). Blog cards and sale banners have no such parent, so on hover they
+       stay still and only their picture zooms; keyboard focus still lifts them. */
+    .page-home [class*="col-"]:hover > .abroad-card,
+    .page-home .swiper-slide:hover > .home-price-card.course-pay-card,
     .page-home :is(
         .abroad-card,
         .home-price-card.course-pay-card,
         .discount-banner,
         .hbh-card--featured,
         .hbh-card--regular
-    ):is(:hover, :focus-within) {
+    ):focus-visible {
         translate: 0 -4px;
     }
 

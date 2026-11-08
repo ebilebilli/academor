@@ -173,8 +173,9 @@ h1.animated, h2.animated, h3.animated,
 
 
 /*** Spinner — dairəvi banner + fırlanan accent halqa ***/
-/* Public səhifələr (base.html) artıq spinner render etmir (LCP). Bu qaydalar yalnız
-   templates/portals/login.html üçün qalır: orada include gizli (.hide) vəziyyətdə gəlir. */
+/* Opaque on purpose: the page builds underneath out of sight, so when the loader fades the
+   page is already whole (a see-through loader showed it appearing piece by piece). main.js
+   hides it once the first screen is ready, not after every image on the page. */
 #spinner.site-page-loader {
     /* Bootstrap utilities may load after first paint — keep overlay full-screen without them */
     position: fixed;
@@ -186,16 +187,23 @@ h1.animated, h2.animated, h3.animated,
     height: 100%;
     opacity: 1;
     visibility: visible;
-    transition: opacity 0.45s ease-out, visibility 0s linear 0.45s;
+    transition: opacity 0.38s ease-out 0.2s, visibility 0s linear 0.58s;
     z-index: var(--z-loader);
     pointer-events: none;
-    background: radial-gradient(
-            ellipse 85% 55% at 50% 42%,
-            rgba(255, 255, 255, 0.97) 0%,
-            rgba(244, 243, 255, 0.94) 38%,
-            rgba(255, 255, 255, 0.99) 100%
-        ),
-        linear-gradient(168deg, #ffffff 0%, rgba(232, 236, 244, 0.55) 100%);
+    background-color: #f6f7fb;
+    background-image:
+        radial-gradient(ellipse 85% 55% at 50% 42%, #ffffff 0%, #f4f3ff 38%, #ffffff 100%),
+        linear-gradient(168deg, #ffffff 0%, #eef1f6 100%);
+}
+
+/* the logo leaves first, so it never hangs over the page while the backdrop fades */
+#spinner.site-page-loader .site-page-loader__inner {
+    transition: opacity 0.15s ease-out, transform 0.25s ease-out;
+}
+
+#spinner.site-page-loader.hide .site-page-loader__inner {
+    opacity: 0;
+    transform: scale(0.94);
 }
 
 #spinner.site-page-loader.hide {
@@ -3008,7 +3016,11 @@ h1.animated, h2.animated, h3.animated,
     transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
 }
 
-.course-alt-card:hover {
+/* Hover lifts read :hover on the parent cell, which never moves. Reading it on the card itself
+   looped at the card's bottom edge: the lift pulled the card out from under the pointer, the
+   hover dropped, the card fell back, and so on. */
+:is([class*="col-"], .swiper-slide):hover > .course-alt-card,
+.course-alt-card:focus-within {
     transform: translateY(-8px) rotate(-0.6deg);
     box-shadow: 0 20px 42px rgba(16, 24, 40, 0.18);
     border-color: rgba(255, 84, 20, 0.45);
@@ -4226,7 +4238,7 @@ h1.animated, h2.animated, h3.animated,
     transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
 
-.testimonial-swiper .swiper-slide:not(.swiper-slide-active) .review-card:hover {
+.testimonial-swiper .swiper-slide:not(.swiper-slide-active):hover .review-card {
     transform: translateY(-2px);
 }
 
@@ -6920,7 +6932,7 @@ h1.animated, h2.animated, h3.animated,
     }
 }
 
-a.university-carousel-card:hover,
+.universities-list__item:hover > a.university-carousel-card,
 a.university-carousel-card:focus-visible {
     transform: translateY(-4px);
 }
@@ -7152,7 +7164,8 @@ a.university-carousel-card:focus-visible .university-flag-card {
     contain-intrinsic-size: 220px;
 }
 
-.abroad-card:hover {
+[class*="col-"]:hover > .abroad-card,
+.abroad-card:focus-visible {
     border-color: rgba(0, 49, 61, 0.2);
     transform: translateY(-3px);
     box-shadow: 0 10px 22px rgba(24, 29, 56, 0.1);
@@ -8802,8 +8815,8 @@ a.university-carousel-card:focus-visible .university-flag-card {
 }
 
 /* course-alt-card hover must beat scroll-reveal transform (home team + team listing page) */
-.course-alt-card.scroll-reveal.is-revealed:hover,
-.course-alt-card.scroll-reveal.is-visible:hover,
+:is([class*="col-"], .swiper-slide):hover > .course-alt-card.scroll-reveal.is-revealed,
+:is([class*="col-"], .swiper-slide):hover > .course-alt-card.scroll-reveal.is-visible,
 .course-alt-card.scroll-reveal.is-revealed:focus-within,
 .course-alt-card.scroll-reveal.is-visible:focus-within {
     transform: translateY(-8px) rotate(-0.6deg);
