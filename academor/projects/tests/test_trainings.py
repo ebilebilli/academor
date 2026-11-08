@@ -75,9 +75,11 @@ class TrainingSplitTests(TestCase):
     def test_navbar_dropdown_shows_courses_and_trainings_side_by_side(self):
         html = self.client.get(reverse('projects:about-page')).content.decode()
         self.assertIn('nav-courses-dropdown--split', html)
-        cols = re.findall(r'class="nav-courses-dropdown__col">(.*?)</div>', html, re.S)
-        self.assertEqual(len(cols), 2)
-        courses_col, trainings_col = cols
+        menu = html.split('nav-courses-dropdown--split', 1)[1].split('nav-item dropdown', 1)[0]
+        courses_col, trainings_col = menu.split('nav-courses-dropdown__col--trainings', 1)
+        self.assertIn('nav-courses-dropdown__col--courses', courses_col)
+        self.assertIn('nav-courses-dropdown__icon-svg', courses_col)
+        self.assertIn('nav-courses-dropdown__icon-svg', trainings_col)
         self.assertIn('/courses/ielts-test/', courses_col)
         self.assertNotIn('/courses/pmp-test/', courses_col)
         self.assertIn('/courses/pmp-test/', trainings_col)
