@@ -1,13 +1,15 @@
 {% load i18n %}
-{# Home: regular courses, then trainings on a tinted full-width band. #}
+{# Home: regular courses, then trainings on a tinted full-width band. Each group: heading column on the left
+   (eyebrow, title, lead, "All ..." button behind an orange rule), cards on the right; stacked below xl. #}
 <section id="home-services" class="hsvc-section{% if service_section_full_page %} hsvc-section--standalone{% endif %}" aria-labelledby="hsvc-heading">
 {% include "includes/hsvc_cards_styles.html" %}
 
 <div class="hsvc-inner">
     <div class="container-xxl">
         <div class="container">
+            <div class="hsvc-split">
 
-            <header class="hsvc-header hsvc-header--stacked wow fadeInUp" data-wow-delay="0.05s">
+            <header class="hsvc-header hsvc-header--side wow fadeInUp" data-wow-delay="0.05s">
                 <div class="hsvc-header__text">
                     {% if service_section_full_page %}
                     <span class="hsvc-eyebrow">{% trans "Services" %}</span>
@@ -19,6 +21,7 @@
                     {% else %}
                     <h1 id="hsvc-heading" class="hsvc-title">{% trans "Language & International Exams" %}</h1>
                     {% endif %}
+                    <p class="hsvc-lead">{% trans "Improve your language skills and take your knowledge and abilities to the next level to reach your international academic and career goals." %}</p>
                     {% endif %}
                     <a href="{% url 'projects:courses-page' %}" class="btn btn-outline-accent rounded-pill px-4 px-md-5 fw-semibold">
                         {% trans "All courses" %}
@@ -29,6 +32,7 @@
 
             {% include "includes/hsvc_cards_grid.html" %}
 
+            </div>
         </div>
     </div>
 </div>
@@ -39,11 +43,13 @@
 <div class="hsvc-inner">
     <div class="container-xxl">
         <div class="container">
+            <div class="hsvc-split">
 
-            <header class="hsvc-header hsvc-header--stacked wow fadeInUp" data-wow-delay="0.05s">
+            <header class="hsvc-header hsvc-header--side wow fadeInUp" data-wow-delay="0.05s">
                 <div class="hsvc-header__text">
                     <span class="hsvc-eyebrow">{% trans "Trainings" %}</span>
                     <h2 id="hsvc-trainings-heading" class="hsvc-title">{% trans "Professional Trainings & Certification" %}</h2>
+                    <p class="hsvc-lead">{% trans "Develop your professional knowledge and skills to gain a competitive edge in the job market and open the door to new career opportunities." %}</p>
                     <a href="{% url 'projects:trainings-page' %}" class="btn btn-outline-accent rounded-pill px-4 px-md-5 fw-semibold">
                         {% trans "All trainings" %}
                         <i class="fas fa-arrow-right ms-2 small" aria-hidden="true"></i>
@@ -53,6 +59,7 @@
 
             {% include "includes/hsvc_cards_grid.html" with categories=training_categories %}
 
+            </div>
         </div>
     </div>
 </div>
