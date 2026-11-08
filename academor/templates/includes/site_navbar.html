@@ -15,24 +15,43 @@
             <a href="{% url 'projects:team-page' %}" class="nav-item nav-link{% if u == 'team-page' or u == 'team-detail' %} active{% endif %}">{% trans "Our Team" %}</a>
             <div class="nav-item dropdown">
                 <a href="{% url 'projects:courses-page' %}" class="nav-link dropdown-toggle{% if u == 'courses-page' or u == 'course-detail' or u == 'trainings-page' %} active{% endif %}" data-bs-toggle="dropdown" aria-expanded="false">{% trans "Courses" %}</a>
+                {% if nav_trainings %}
+                {# courses and trainings side by side (stacked on small screens) #}
+                <div class="dropdown-menu fade-down m-0 nav-courses-dropdown nav-courses-dropdown--split shadow-sm">
+                    <div class="nav-courses-dropdown__cols">
+                        <div class="nav-courses-dropdown__col nav-courses-dropdown__col--courses">
+                            <div class="nav-courses-dropdown__head">
+                                <span class="nav-courses-dropdown__icon">{% include "includes/icons/nav_courses.svg.html" %}</span>
+                                <h6 class="dropdown-header nav-courses-dropdown__group">{% trans "Courses" %}</h6>
+                            </div>
+                            <a href="{% url 'projects:courses-page' %}" class="dropdown-item fw-semibold{% if u == 'courses-page' %} active{% endif %}">{% trans "All courses" %}</a>
+                            {% for course in nav_courses %}
+                            <a href="{% url 'projects:course-detail' slug=course.slug %}" class="dropdown-item text-wrap{% if u == 'course-detail' and slug_kw == course.slug %} active{% endif %}">{{ course.name }}</a>
+                            {% endfor %}
+                        </div>
+                        <div class="nav-courses-dropdown__col nav-courses-dropdown__col--trainings">
+                            <div class="nav-courses-dropdown__head">
+                                <span class="nav-courses-dropdown__icon">{% include "includes/icons/nav_trainings.svg.html" %}</span>
+                                <h6 class="dropdown-header nav-courses-dropdown__group">{% trans "Trainings" %}</h6>
+                            </div>
+                            <a href="{% url 'projects:trainings-page' %}" class="dropdown-item fw-semibold{% if u == 'trainings-page' %} active{% endif %}">{% trans "All trainings" %}</a>
+                            {% for course in nav_trainings %}
+                            <a href="{% url 'projects:course-detail' slug=course.slug %}" class="dropdown-item text-wrap{% if u == 'course-detail' and slug_kw == course.slug %} active{% endif %}">{{ course.name }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% else %}
                 <div class="dropdown-menu fade-down m-0 nav-courses-dropdown shadow-sm">
                     <a href="{% url 'projects:courses-page' %}" class="dropdown-item fw-semibold">{% trans "All courses" %}</a>
-                    {% if nav_trainings %}<a href="{% url 'projects:trainings-page' %}" class="dropdown-item fw-semibold{% if u == 'trainings-page' %} active{% endif %}">{% trans "All trainings" %}</a>{% endif %}
                     {% if nav_courses %}
                     <div class="dropdown-divider"></div>
-                    {% if nav_trainings %}<h6 class="dropdown-header nav-courses-dropdown__group">{% trans "Courses" %}</h6>{% endif %}
                     {% for course in nav_courses %}
                     <a href="{% url 'projects:course-detail' slug=course.slug %}" class="dropdown-item text-wrap{% if u == 'course-detail' and slug_kw == course.slug %} active{% endif %}">{{ course.name }}</a>
                     {% endfor %}
                     {% endif %}
-                    {% if nav_trainings %}
-                    <div class="dropdown-divider"></div>
-                    <h6 class="dropdown-header nav-courses-dropdown__group">{% trans "Trainings" %}</h6>
-                    {% for course in nav_trainings %}
-                    <a href="{% url 'projects:course-detail' slug=course.slug %}" class="dropdown-item text-wrap{% if u == 'course-detail' and slug_kw == course.slug %} active{% endif %}">{{ course.name }}</a>
-                    {% endfor %}
-                    {% endif %}
                 </div>
+                {% endif %}
             </div>
             <div class="nav-item dropdown">
                 <a href="{% url 'projects:mock-tests-page' %}" class="nav-link dropdown-toggle{% if u == 'mock-tests-page' or u == 'mock-test-detail' %} active{% endif %}" data-bs-toggle="dropdown" aria-expanded="false">{% trans "Mock tests" %}</a>

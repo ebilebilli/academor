@@ -1,4 +1,5 @@
 import re
+from html.parser import HTMLParser
 
 from django.core.cache import cache
 from django.core.exceptions import ValidationError
@@ -14,6 +15,26 @@ def _grid_slugs(html):
         sorted(set(re.findall(r'/courses/([a-z0-9-]+)/', grid)))
         for grid in re.findall(r'class="hsvc-grid".*?</ul>', html, re.S)
     ]
+
+
+class _NavParentFinder(HTMLParser):
+    """Records the classes of the open <div>s around each link (to catch unbalanced markup)."""
+
+    def __init__(self):
+        super().__init__()
+        self.stack = []
+        self.parents = {}
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if tag == 'div':
+            self.stack.append(attrs.get('class') or '')
+        elif tag == 'a' and attrs.get('href'):
+            self.parents.setdefault(attrs['href'], list(self.stack))
+
+    def handle_endtag(self, tag):
+        if tag == 'div' and self.stack:
+            self.stack.pop()
 
 
 class TrainingSplitTests(TestCase):
@@ -51,14 +72,40 @@ class TrainingSplitTests(TestCase):
         self.assertEqual(_grid_slugs(html), [['ielts-test', 'pmp-test']])
         self.assertNotIn('hsvc-trainings-heading', html)
 
-    def test_navbar_dropdown_has_two_groups(self):
+    def test_navbar_dropdown_shows_courses_and_trainings_side_by_side(self):
         html = self.client.get(reverse('projects:about-page')).content.decode()
-        menu = re.search(r'nav-courses-dropdown shadow-sm">(.*?)</div>\s*</div>', html, re.S).group(1)
-        self.assertEqual(menu.count('nav-courses-dropdown__group'), 2)
-        courses_part, trainings_part = menu.split('nav-courses-dropdown__group', 2)[1:]
-        self.assertIn('/courses/ielts-test/', courses_part)
-        self.assertNotIn('/courses/pmp-test/', courses_part)
-        self.assertIn('/courses/pmp-test/', trainings_part)
+        self.assertIn('nav-courses-dropdown--split', html)
+        menu = html.split('nav-courses-dropdown--split', 1)[1].split('nav-item dropdown', 1)[0]
+        courses_col, trainings_col = menu.split('nav-courses-dropdown__col--trainings', 1)
+        self.assertIn('nav-courses-dropdown__col--courses', courses_col)
+        self.assertIn('nav-courses-dropdown__icon-svg', courses_col)
+        self.assertIn('nav-courses-dropdown__icon-svg', trainings_col)
+        self.assertIn('/courses/ielts-test/', courses_col)
+        self.assertNotIn('/courses/pmp-test/', courses_col)
+        self.assertIn('/courses/pmp-test/', trainings_col)
+        self.assertIn(reverse('projects:trainings-page'), trainings_col)
+
+    def test_menu_items_after_the_courses_dropdown_stay_in_the_navbar(self):
+        for trainings in (True, False):
+            with self.subTest(trainings=trainings):
+                self.training.is_training = trainings
+                self.training.save()
+                cache.clear()
+                finder = _NavParentFinder()
+                finder.feed(self.client.get(reverse('projects:about-page')).content.decode())
+                parents = finder.parents[reverse('projects:mock-tests-page')]
+                self.assertTrue(any('navbar-nav' in c for c in parents), parents)
+
+    def test_navbar_dropdown_is_a_single_list_without_trainings(self):
+        self.training.is_training = False
+        self.training.save()
+        cache.clear()
+        html = self.client.get(reverse('projects:about-page')).content.decode()
+        self.assertNotIn('nav-courses-dropdown--split', html)
+
+    def test_home_trainings_are_their_own_section(self):
+        html = self.client.get(reverse('projects:home-page')).content.decode()
+        self.assertIn('id="home-trainings" class="hsvc-section hsvc-section--trainings"', html)
 
     def test_training_detail_keeps_its_url(self):
         self.assertEqual(self.client.get(reverse('projects:course-detail', args=['pmp-test'])).status_code, 200)

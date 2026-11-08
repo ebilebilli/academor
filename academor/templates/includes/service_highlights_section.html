@@ -1,4 +1,5 @@
 {% load i18n %}
+{# Home: regular courses, then trainings in their own dark band (same header + card grid). #}
 <section id="home-services" class="hsvc-section{% if service_section_full_page %} hsvc-section--standalone{% endif %}" aria-labelledby="hsvc-heading">
 {% include "includes/hsvc_cards_styles.html" %}
 
@@ -8,49 +9,52 @@
 
             <header class="hsvc-header wow fadeInUp" data-wow-delay="0.05s">
                 <div>
-                    <span class="hsvc-eyebrow">{% trans "Services" %}</span>
                     {% if service_section_full_page %}
+                    <span class="hsvc-eyebrow">{% trans "Services" %}</span>
                     <h1 id="hsvc-heading" class="hsvc-title">{% trans "Our Services" %}</h1>
-                    {% elif use_h2_for_section_titles %}
-                    <h2 id="hsvc-heading" class="hsvc-title">{% trans "Our Services" %}</h2>
                     {% else %}
-                    <h1 id="hsvc-heading" class="hsvc-title">{% trans "Our Services" %}</h1>
+                    <span class="hsvc-eyebrow">{% trans "Courses" %}</span>
+                    {% if use_h2_for_section_titles %}
+                    <h2 id="hsvc-heading" class="hsvc-title">{% trans "Language & International Exams" %}</h2>
+                    {% else %}
+                    <h1 id="hsvc-heading" class="hsvc-title">{% trans "Language & International Exams" %}</h1>
+                    {% endif %}
                     {% endif %}
                 </div>
-                {% if service_section_full_page %}
                 <a href="{% url 'projects:courses-page' %}" class="btn btn-outline-accent rounded-pill px-4 px-md-5 fw-semibold">
                     {% trans "All courses" %}
                     <i class="fas fa-arrow-right ms-2 small" aria-hidden="true"></i>
                 </a>
-                {% else %}
-                <a href="{% url 'projects:services-page' %}" class="btn btn-outline-accent rounded-pill px-4 px-md-5 fw-semibold">
-                    {% trans "View all services" %}
-                    <i class="fas fa-arrow-right ms-2 small" aria-hidden="true"></i>
-                </a>
-                {% endif %}
             </header>
 
             {% include "includes/hsvc_cards_grid.html" %}
 
-            {% if training_categories %}
-            <header class="hsvc-header hsvc-header--group wow fadeInUp" data-wow-delay="0.05s">
+        </div>
+    </div>
+</div>
+</section>
+
+{% if training_categories %}
+<section id="home-trainings" class="hsvc-section hsvc-section--trainings" aria-labelledby="hsvc-trainings-heading">
+<div class="hsvc-inner">
+    <div class="container-xxl">
+        <div class="container">
+
+            <header class="hsvc-header wow fadeInUp" data-wow-delay="0.05s">
                 <div>
                     <span class="hsvc-eyebrow">{% trans "Trainings" %}</span>
-                    {% if use_h2_for_section_titles %}
-                    <h3 id="hsvc-trainings-heading" class="hsvc-title">{% trans "New trainings" %}</h3>
-                    {% else %}
-                    <h2 id="hsvc-trainings-heading" class="hsvc-title">{% trans "New trainings" %}</h2>
-                    {% endif %}
+                    <h2 id="hsvc-trainings-heading" class="hsvc-title">{% trans "Professional Trainings & Certification" %}</h2>
                 </div>
                 <a href="{% url 'projects:trainings-page' %}" class="btn btn-outline-accent rounded-pill px-4 px-md-5 fw-semibold">
                     {% trans "All trainings" %}
                     <i class="fas fa-arrow-right ms-2 small" aria-hidden="true"></i>
                 </a>
             </header>
+
             {% include "includes/hsvc_cards_grid.html" with categories=training_categories %}
-            {% endif %}
 
         </div>
     </div>
 </div>
 </section>
+{% endif %}
