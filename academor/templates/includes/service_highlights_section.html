@@ -1,5 +1,5 @@
-{% load i18n %}
-{# Home: regular courses, then trainings in their own dark band (same header + card grid). #}
+{% load i18n static %}
+{# Home: regular courses (illustration beside the heading), then trainings on a tinted full-width band. #}
 <section id="home-services" class="hsvc-section{% if service_section_full_page %} hsvc-section--standalone{% endif %}" aria-labelledby="hsvc-heading">
 {% include "includes/hsvc_cards_styles.html" %}
 
@@ -7,8 +7,8 @@
     <div class="container-xxl">
         <div class="container">
 
-            <header class="hsvc-header wow fadeInUp" data-wow-delay="0.05s">
-                <div>
+            <header class="hsvc-header{% if not service_section_full_page %} hsvc-header--illustrated{% endif %} wow fadeInUp" data-wow-delay="0.05s">
+                <div class="hsvc-header__text">
                     {% if service_section_full_page %}
                     <span class="hsvc-eyebrow">{% trans "Services" %}</span>
                     <h1 id="hsvc-heading" class="hsvc-title">{% trans "Our Services" %}</h1>
@@ -20,11 +20,14 @@
                     <h1 id="hsvc-heading" class="hsvc-title">{% trans "Language & International Exams" %}</h1>
                     {% endif %}
                     {% endif %}
+                    <a href="{% url 'projects:courses-page' %}" class="btn btn-outline-accent rounded-pill px-4 px-md-5 fw-semibold">
+                        {% trans "All courses" %}
+                        <i class="fas fa-arrow-right ms-2 small" aria-hidden="true"></i>
+                    </a>
                 </div>
-                <a href="{% url 'projects:courses-page' %}" class="btn btn-outline-accent rounded-pill px-4 px-md-5 fw-semibold">
-                    {% trans "All courses" %}
-                    <i class="fas fa-arrow-right ms-2 small" aria-hidden="true"></i>
-                </a>
+                {% if not service_section_full_page %}
+                <img class="hsvc-header__art" src="{% static 'assets/img/services/courses-languages-960.webp' %}" srcset="{% static 'assets/img/services/courses-languages-560.webp' %} 560w, {% static 'assets/img/services/courses-languages-960.webp' %} 960w" sizes="(min-width: 768px) 26rem, 90vw" width="960" height="640" alt="" loading="lazy" decoding="async">
+                {% endif %}
             </header>
 
             {% include "includes/hsvc_cards_grid.html" %}

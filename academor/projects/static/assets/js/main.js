@@ -369,13 +369,27 @@
         });
 
         if (shouldEnable) {
+            /* closing a menu waits a moment (so a pointer slipping off it does not snap it shut),
+               but entering another menu closes the others at once — no two open side by side */
+            var closers = [];
             dropdowns.forEach(function (dropdown) {
                 var closeTimer = null;
+                function closeNow() {
+                    if (closeTimer) {
+                        clearTimeout(closeTimer);
+                        closeTimer = null;
+                    }
+                    setDropdownOpen(dropdown, false);
+                }
+                closers.push({ dropdown: dropdown, close: closeNow });
                 function enter() {
                     if (closeTimer) {
                         clearTimeout(closeTimer);
                         closeTimer = null;
                     }
+                    closers.forEach(function (other) {
+                        if (other.dropdown !== dropdown && other.dropdown.classList.contains("show")) other.close();
+                    });
                     setDropdownOpen(dropdown, true);
                 }
                 function leave() {
