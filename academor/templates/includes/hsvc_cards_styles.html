@@ -3,7 +3,6 @@
     position: relative;
     background: linear-gradient(180deg, #f8fafb 0%, #fff 100%);
     overflow: hidden;
-    overflow: clip; /* clips like hidden but is no scroll box, so the sticky heading column still sticks */
 }
 
 .hsvc-section::before {
@@ -46,7 +45,7 @@
 }
 
 /* home: heading column (eyebrow, title, lead, button) behind an orange rule;
-   from xl it sits to the left of the cards and stays in view while they scroll */
+   from xl it sits to the left of the cards */
 .hsvc-header--side {
     margin-bottom: clamp(1.5rem, 4vw, 2rem);
     padding-left: 1rem;
@@ -79,8 +78,6 @@
     }
 
     .hsvc-split .hsvc-header--side {
-        position: sticky;
-        top: 120px;
         margin-bottom: 0;
         padding-left: 1.4rem;
     }

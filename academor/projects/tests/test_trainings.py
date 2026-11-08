@@ -111,6 +111,8 @@ class TrainingSplitTests(TestCase):
         self.assertIn('class="hsvc-lead"', trainings)
         self.assertIn('href="%s"' % reverse('projects:trainings-page'), trainings)
         self.assertIn('class="hsvc-split"', trainings)
+        # template comments must never leak into the page ({# #} is single-line only)
+        self.assertNotIn('{#', html)
 
     def test_trainings_page_shows_the_training_books(self):
         html = self.client.get(reverse('projects:trainings-page')).content.decode()
