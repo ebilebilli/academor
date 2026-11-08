@@ -3,6 +3,7 @@
     position: relative;
     background: linear-gradient(180deg, #f8fafb 0%, #fff 100%);
     overflow: hidden;
+    overflow: clip; /* clips like hidden but is no scroll box, so the sticky heading column still sticks */
 }
 
 .hsvc-section::before {
@@ -44,31 +45,56 @@
     margin-bottom: clamp(1.75rem, 4vw, 2.5rem);
 }
 
-/* home: heading text with its button underneath; the courses heading also carries an illustration */
-.hsvc-header--illustrated {
-    align-items: center;
+/* home: heading column (eyebrow, title, lead, button) behind an orange rule;
+   from xl it sits to the left of the cards and stays in view while they scroll */
+.hsvc-header--side {
+    margin-bottom: clamp(1.5rem, 4vw, 2rem);
+    padding-left: 1rem;
+    border-left: 3px solid var(--accent, #ff5414);
 }
 
-.hsvc-header--illustrated .hsvc-header__text {
-    flex: 1 1 20rem;
+.hsvc-header--side .hsvc-header__text {
+    flex: 1 1 auto;
     min-width: 0;
 }
 
-.hsvc-header--illustrated .hsvc-header__text .btn {
+.hsvc-header--side .hsvc-header__text .btn {
     margin-top: 1.25rem;
 }
 
-.hsvc-header__art {
-    flex: 0 1 26rem;
-    width: 100%;
-    max-width: 26rem;
-    height: auto;
+.hsvc-lead {
+    margin: 0.85rem 0 0;
+    max-width: 36rem;
+    font-size: clamp(0.98rem, 1.6vw, 1.06rem);
+    line-height: 1.65;
+    color: #3d4f5a;
 }
 
-@media (max-width: 767.98px) {
-    .hsvc-header__art {
-        max-width: 22rem;
-        margin: 0 auto;
+@media (min-width: 1200px) {
+    .hsvc-split {
+        display: grid;
+        grid-template-columns: minmax(0, 0.95fr) minmax(0, 2.6fr);
+        gap: 3rem;
+        align-items: start;
+    }
+
+    .hsvc-split .hsvc-header--side {
+        position: sticky;
+        top: 120px;
+        margin-bottom: 0;
+        padding-left: 1.4rem;
+    }
+
+    .hsvc-split .hsvc-title {
+        font-size: clamp(1.65rem, 2.2vw, 2rem);
+    }
+
+    .hsvc-split .hsvc-grid {
+        gap: 16px;
+    }
+
+    .hsvc-split .hsvc-card__title {
+        font-size: 0.88rem;
     }
 }
 
@@ -278,10 +304,6 @@
         align-items: flex-start;
         gap: 12px;
     }
-    /* stacked: the row flex-basis would turn into a height */
-    .hsvc-header--illustrated .hsvc-header__text,
-    .hsvc-header__art { flex-basis: auto; }
-    .hsvc-header__art { align-self: center; }
     .hsvc-card-wrap { border-radius: 16px; }
     .hsvc-card__body { padding: 10px 10px 10px 12px; gap: 8px; }
     .hsvc-card__title { font-size: 0.88rem; }

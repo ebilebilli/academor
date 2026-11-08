@@ -107,6 +107,10 @@ class TrainingSplitTests(TestCase):
         # the trainings section has no picture of its own (only its background sets it apart)
         trainings = html.split('id="home-trainings"', 1)[1].split('</section>', 1)[0]
         self.assertNotIn('<img', trainings)
+        # heading column: lead text and the button to the trainings page
+        self.assertIn('class="hsvc-lead"', trainings)
+        self.assertIn('href="%s"' % reverse('projects:trainings-page'), trainings)
+        self.assertIn('class="hsvc-split"', trainings)
 
     def test_trainings_page_shows_the_training_books(self):
         html = self.client.get(reverse('projects:trainings-page')).content.decode()
