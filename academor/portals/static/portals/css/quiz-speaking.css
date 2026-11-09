@@ -88,7 +88,7 @@
 
 .portal-speaking-question-item__row {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr auto auto;
   gap: 0.65rem;
   align-items: start;
 }
@@ -278,6 +278,129 @@
   50% {
     transform: scale(1);
     box-shadow: 0 0 0 0.85rem rgba(239, 68, 68, 0);
+  }
+}
+
+/* microphone: opened once for the whole test */
+.portal-speaking-mic {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.65rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #64748b;
+  background: rgba(15, 23, 42, 0.05);
+}
+
+.portal-speaking-mic[hidden] {
+  display: none;
+}
+
+.portal-speaking-mic__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #94a3b8;
+}
+
+.portal-speaking-mic.is-live {
+  color: #15803d;
+  background: rgba(22, 163, 74, 0.1);
+}
+
+.portal-speaking-mic.is-live .portal-speaking-mic__dot {
+  background: #16a34a;
+}
+
+/* per-question countdown beside the active question */
+.portal-speaking-qtimer {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+  min-width: 4.75rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #dc2626;
+  white-space: nowrap;
+}
+
+.portal-speaking-qtimer[hidden] {
+  display: none;
+}
+
+.portal-speaking-qtimer .bi {
+  display: none;
+}
+
+.portal-speaking-qtimer__bar {
+  display: block;
+  width: 100%;
+  height: 0.25rem;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+}
+
+.portal-speaking-qtimer__fill {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: currentColor;
+  transition: width 1s linear;
+}
+
+.portal-speaking-qtimer.is-prep {
+  color: #4f46e5;
+}
+
+.portal-speaking-qtimer.is-ending {
+  color: var(--admin-accent, #ff5414);
+  animation: portal-speaking-blink 1s steps(2, start) infinite;
+}
+
+.portal-speaking-qtimer.is-up {
+  color: var(--admin-accent, #ff5414);
+  animation: none;
+}
+
+.portal-speaking-question--part-2 .portal-speaking-qtimer {
+  display: flex;
+  align-items: stretch;
+  margin-bottom: 0.25rem;
+}
+
+.portal-speaking-question--part-2 .portal-speaking-qtimer[hidden] {
+  display: none;
+}
+
+@keyframes portal-speaking-blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+/* between questions: the stage turns orange so the switch can't be missed */
+.portal-speaking-stage.is-switching {
+  box-shadow: inset 0 0 0 2px var(--admin-accent, #ff5414), 0 10px 30px rgba(15, 23, 42, 0.08);
+  background: rgba(255, 84, 20, 0.06);
+}
+
+.portal-speaking-stage.is-switching .portal-speaking-stage__phase {
+  color: var(--admin-accent, #ff5414);
+  font-weight: 700;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portal-speaking-qtimer.is-ending {
+    animation: none;
+  }
+  .portal-speaking-qtimer__fill {
+    transition: none;
   }
 }
 

@@ -49,6 +49,10 @@
     var msgNextQuestion = root.getAttribute("data-msg-next-question") || "Next question";
     var msgStartingPart = root.getAttribute("data-msg-starting-part") || "Starting";
     var msgAllComplete = root.getAttribute("data-msg-all-complete") || "All speaking tasks are complete.";
+    var msgMicLive = root.getAttribute("data-msg-mic-live") || "Microphone on";
+    var msgMicConnecting = root.getAttribute("data-msg-mic-connecting") || "Connecting microphone…";
+    var msgTimeUp = root.getAttribute("data-msg-time-up") || "Time is up";
+    var msgAnswerNext = root.getAttribute("data-msg-answer-next") || "Answer the next question";
 
     var stage = root.querySelector("[data-speaking-stage]");
     var phaseLabel = root.querySelector("[data-speaking-phase-label]");
@@ -64,6 +68,8 @@
     var finishHint = root.querySelector("[data-speaking-finish-hint]");
     var resultPanel = root.querySelector("[data-speaking-result]");
     var stageContext = root.querySelector("[data-speaking-stage-context]");
+    var micStatus = root.querySelector("[data-speaking-mic-status]");
+    var micStatusLabel = root.querySelector("[data-speaking-mic-status-label]");
     var questionNodes = Array.prototype.slice.call(root.querySelectorAll("[data-speaking-question]"));
     var expectedQuestionTotal = questionNodes.length;
     try {
@@ -88,6 +94,8 @@
     var recordings = {};
     var recordingDurations = {};
     var phaseRemaining = 0;
+    var streamPromise = null;
+    var audioCtx = null;
 
     function bindTaskButton(handler, label) {
       if (!taskBtn) {
@@ -213,12 +221,18 @@
       }
     }
 
-    function startPhaseCountdown(seconds, onComplete) {
+    function startPhaseCountdown(seconds, onComplete, onTick) {
       clearPhaseTimer();
       setPhaseTime(seconds);
+      if (onTick) {
+        onTick(seconds);
+      }
       phaseTimerId = window.setInterval(function () {
         phaseRemaining -= 1;
         setPhaseTime(phaseRemaining);
+        if (onTick) {
+          onTick(phaseRemaining);
+        }
         if (phaseRemaining <= 0) {
           clearPhaseTimer();
           onComplete();
@@ -226,7 +240,62 @@
       }, 1000);
     }
 
-    function stopMedia() {
+    function setMicStatus(state) {
+      if (!micStatus) {
+        return;
+      }
+      micStatus.hidden = state === "off";
+      micStatus.classList.toggle("is-live", state === "live");
+      if (micStatusLabel) {
+        micStatusLabel.textContent = state === "live" ? msgMicLive : msgMicConnecting;
+      }
+    }
+
+    function streamIsLive(stream) {
+      return Boolean(
+        stream
+          && stream.getAudioTracks().some(function (track) {
+            return track.readyState === "live";
+          })
+      );
+    }
+
+    /* The microphone is opened once, on the first "Start test" click, and stays open for the
+       whole test; every answer is its own MediaRecorder on that same stream, so there is no
+       reconnect (and no new permission prompt) between questions. */
+    function ensureStream() {
+      if (streamIsLive(mediaStream)) {
+        return Promise.resolve(mediaStream);
+      }
+      if (streamPromise) {
+        return streamPromise;
+      }
+      setMicStatus("connecting");
+      streamPromise = navigator.mediaDevices
+        .getUserMedia({ audio: true })
+        .then(function (stream) {
+          mediaStream = stream;
+          streamPromise = null;
+          stream.getAudioTracks().forEach(function (track) {
+            track.addEventListener("ended", function () {
+              if (mediaStream === stream) {
+                mediaStream = null;
+                setMicStatus("connecting");
+              }
+            });
+          });
+          setMicStatus("live");
+          return stream;
+        })
+        .catch(function (err) {
+          streamPromise = null;
+          setMicStatus("off");
+          throw err;
+        });
+      return streamPromise;
+    }
+
+    function stopRecorder() {
       if (mediaRecorder && mediaRecorder.state !== "inactive") {
         try {
           mediaRecorder.stop();
@@ -234,11 +303,105 @@
           /* ignore */
         }
       }
+    }
+
+    function releaseMicrophone() {
       if (mediaStream) {
         mediaStream.getTracks().forEach(function (track) {
           track.stop();
         });
         mediaStream = null;
+      }
+      setMicStatus("off");
+    }
+
+    function stopMedia() {
+      stopRecorder();
+      releaseMicrophone();
+    }
+
+    function unlockAudioCue() {
+      if (audioCtx) {
+        return;
+      }
+      var Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) {
+        return;
+      }
+      try {
+        audioCtx = new Ctx();
+      } catch (err) {
+        audioCtx = null;
+      }
+    }
+
+    /* short soft beep when a question's time runs out (only between recordings) */
+    function playTimeUpCue() {
+      if (!audioCtx) {
+        return;
+      }
+      try {
+        if (audioCtx.state === "suspended") {
+          audioCtx.resume();
+        }
+        var now = audioCtx.currentTime;
+        [0, 0.22].forEach(function (offset) {
+          var osc = audioCtx.createOscillator();
+          var gain = audioCtx.createGain();
+          osc.type = "sine";
+          osc.frequency.value = 880;
+          gain.gain.setValueAtTime(0.0001, now + offset);
+          gain.gain.exponentialRampToValueAtTime(0.18, now + offset + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + offset + 0.16);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now + offset);
+          osc.stop(now + offset + 0.18);
+        });
+      } catch (err) {
+        /* ignore */
+      }
+    }
+
+    /* countdown chip beside the active question */
+    function questionTimerParts(node) {
+      var wrap = node ? node.querySelector("[data-speaking-qtimer]") : null;
+      return {
+        wrap: wrap,
+        value: wrap ? wrap.querySelector("[data-speaking-qtimer-value]") : null,
+        fill: wrap ? wrap.querySelector("[data-speaking-qtimer-fill]") : null,
+      };
+    }
+
+    function showQuestionTimer(node, remaining, total, mode) {
+      var parts = questionTimerParts(node);
+      if (!parts.wrap) {
+        return;
+      }
+      parts.wrap.hidden = false;
+      parts.wrap.classList.toggle("is-prep", mode === "prep");
+      parts.wrap.classList.toggle("is-ending", mode === "record" && remaining <= 5);
+      parts.wrap.classList.remove("is-up");
+      if (parts.value) {
+        parts.value.textContent = formatDuration(Math.max(0, remaining));
+      }
+      if (parts.fill) {
+        parts.fill.style.width = String(total ? Math.max(0, (remaining / total) * 100) : 0) + "%";
+      }
+    }
+
+    function markQuestionTimeUp(node) {
+      var parts = questionTimerParts(node);
+      if (!parts.wrap) {
+        return;
+      }
+      parts.wrap.classList.remove("is-prep", "is-ending");
+      parts.wrap.classList.add("is-up");
+      if (parts.value) {
+        parts.value.textContent = msgTimeUp;
+      }
+      if (parts.fill) {
+        parts.fill.style.width = "0%";
       }
     }
 
@@ -251,39 +414,45 @@
       if (recPulse) {
         recPulse.classList.remove("is-paused");
       }
+      var timedOut = false;
       bindTaskButton(function () {
         clearPhaseTimer();
-        stopMedia();
+        stopRecorder();
       }, msgFinishAnswer);
 
       var questionId = node.getAttribute("data-question-id");
       var chunks = [];
 
-      navigator.mediaDevices
-        .getUserMedia({ audio: true })
+      ensureStream()
         .then(function (stream) {
-          mediaStream = stream;
           var mimeType = "";
           if (window.MediaRecorder && MediaRecorder.isTypeSupported("audio/webm")) {
             mimeType = "audio/webm";
           } else if (window.MediaRecorder && MediaRecorder.isTypeSupported("audio/mp4")) {
             mimeType = "audio/mp4";
           }
-          mediaRecorder = mimeType ? new MediaRecorder(stream, { mimeType: mimeType }) : new MediaRecorder(stream);
+          var recorder = mimeType ? new MediaRecorder(stream, { mimeType: mimeType }) : new MediaRecorder(stream);
+          mediaRecorder = recorder;
           var started = Date.now();
-          mediaRecorder.ondataavailable = function (event) {
+          recorder.ondataavailable = function (event) {
             if (event.data && event.data.size > 0) {
               chunks.push(event.data);
             }
           };
-          mediaRecorder.onstop = function () {
+          recorder.onstop = function () {
+            if (mediaRecorder === recorder) {
+              mediaRecorder = null;
+            }
             var duration = Math.max(1, Math.round((Date.now() - started) / 1000));
-            var blob = new Blob(chunks, { type: mediaRecorder.mimeType || "audio/webm" });
-            var ext = (mediaRecorder.mimeType || "").indexOf("mp4") >= 0 ? "m4a" : "webm";
+            var blob = new Blob(chunks, { type: recorder.mimeType || "audio/webm" });
+            var ext = (recorder.mimeType || "").indexOf("mp4") >= 0 ? "m4a" : "webm";
             recordings[questionId] = new File([blob], "speaking-" + questionId + "." + ext, {
               type: blob.type || "audio/webm",
             });
             recordingDurations[questionId] = duration;
+            if (timedOut) {
+              markQuestionTimeUp(node);
+            }
             markQuestionComplete(node);
             if (recorderWrap) {
               recorderWrap.hidden = true;
@@ -293,12 +462,22 @@
             }
             hideTaskButton();
             updateProgress();
-            onComplete();
+            if (submitting || submitted) {
+              return;
+            }
+            onComplete({ timedOut: timedOut });
           };
-          mediaRecorder.start();
-          startPhaseCountdown(answerSeconds, function () {
-            stopMedia();
-          });
+          recorder.start();
+          startPhaseCountdown(
+            answerSeconds,
+            function () {
+              timedOut = true;
+              stopRecorder();
+            },
+            function (remaining) {
+              showQuestionTimer(node, remaining, answerSeconds, "record");
+            }
+          );
         })
         .catch(function () {
           window.alert(msgMicDenied);
@@ -307,7 +486,20 @@
         });
     }
 
+    function hideOtherQuestionTimers(node) {
+      questionNodes.forEach(function (item) {
+        if (item === node) {
+          return;
+        }
+        var parts = questionTimerParts(item);
+        if (parts.wrap) {
+          parts.wrap.hidden = true;
+        }
+      });
+    }
+
     function runPrepThenRecord(node) {
+      hideOtherQuestionTimers(node);
       var prepSeconds = parseInt(node.getAttribute("data-prep-seconds") || "0", 10) || 0;
       var answerSeconds = parseInt(node.getAttribute("data-answer-seconds") || "30", 10) || 30;
       highlightActiveQuestion(node);
@@ -323,10 +515,16 @@
           clearPhaseTimer();
           startRecording(node, answerSeconds, advanceAfterTask);
         }, msgStartNow);
-        startPhaseCountdown(prepSeconds, function () {
-          hideTaskButton();
-          startRecording(node, answerSeconds, advanceAfterTask);
-        });
+        startPhaseCountdown(
+          prepSeconds,
+          function () {
+            hideTaskButton();
+            startRecording(node, answerSeconds, advanceAfterTask);
+          },
+          function (remaining) {
+            showQuestionTimer(node, remaining, prepSeconds, "prep");
+          }
+        );
       } else {
         startRecording(node, answerSeconds, advanceAfterTask);
       }
@@ -349,13 +547,13 @@
       return Boolean(previousSection && nextSection && previousSection !== nextSection);
     }
 
-    function showTransitionThenRun(nextNode, previousNode) {
+    function showTransitionThenRun(nextNode, previousNode, timedOut) {
       clearTransitionTimer();
       if (!nextNode) {
         return;
       }
       var partChanged = isNewPart(previousNode, nextNode);
-      var delayMs = partChanged ? 2800 : 700;
+      var delayMs = partChanged ? 2800 : 1500;
 
       highlightActiveQuestion(nextNode);
       updateStageContext(nextNode);
@@ -369,16 +567,27 @@
         setPhaseLabel(msgPartComplete + " — " + msgStartingPart + ": " + nextHeading);
         setPhaseTime(0);
       } else {
-        setPhaseLabel(msgTaskComplete + " — " + msgNextQuestion);
+        setPhaseLabel((timedOut ? msgTimeUp : msgTaskComplete) + " — " + msgAnswerNext);
+        setPhaseTime(0);
+      }
+      if (stage) {
+        stage.classList.add("is-switching");
+      }
+      if (timedOut) {
+        playTimeUpCue();
       }
 
       transitionTimerId = window.setTimeout(function () {
         transitionTimerId = null;
+        if (stage) {
+          stage.classList.remove("is-switching");
+        }
         runPrepThenRecord(nextNode);
       }, delayMs);
     }
 
-    function advanceAfterTask() {
+    function advanceAfterTask(result) {
+      var timedOut = Boolean(result && result.timedOut);
       var completedNode = getCurrentQuestionNode();
       if (completedNode) {
         completedNode.classList.remove("is-speaking-active");
@@ -388,13 +597,18 @@
       currentIndex += 1;
       if (currentIndex >= questionNodes.length) {
         clearTransitionTimer();
+        /* nothing left to record: let go of the microphone */
+        releaseMicrophone();
+        if (timedOut) {
+          playTimeUpCue();
+        }
         if (stage) {
           stage.hidden = true;
         }
         updateProgress();
         return;
       }
-      showTransitionThenRun(getCurrentQuestionNode(), completedNode);
+      showTransitionThenRun(getCurrentQuestionNode(), completedNode, timedOut);
       updateProgress();
     }
 
@@ -412,7 +626,16 @@
         recorderWrap.hidden = true;
       }
       bindTaskButton(function () {
-        runPrepThenRecord(node);
+        unlockAudioCue();
+        hideTaskButton();
+        ensureStream()
+          .then(function () {
+            runPrepThenRecord(node);
+          })
+          .catch(function () {
+            window.alert(msgMicDenied);
+            showCurrentTaskIntro();
+          });
       }, currentIndex === 0 ? msgStartTask : msgNextTask);
       updateProgress();
     }
@@ -494,6 +717,19 @@
         finishBtn.disabled = true;
         finishBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>' + msgSubmitting;
       }
+      /* an answer still being recorded is kept: wait for its recorder to flush (not when the
+         page is being left, where the keepalive request has to go out at once) */
+      var activeRecorder = mediaRecorder && mediaRecorder.state !== "inactive" ? mediaRecorder : null;
+      var recorderFlushed = new Promise(function (resolve) {
+        if (!activeRecorder || options.keepalive) {
+          resolve();
+          return;
+        }
+        activeRecorder.addEventListener("stop", function () {
+          resolve();
+        }, { once: true });
+        window.setTimeout(resolve, 1500);
+      });
       stopMedia();
       clearPhaseTimer();
       clearTransitionTimer();
@@ -502,6 +738,7 @@
         quizTimerId = null;
       }
 
+      return recorderFlushed.then(function () {
       var formData = new FormData();
       formData.append("duration_sec", String(Math.max(0, Math.round((Date.now() - startedAt) / 1000))));
       if (options.allowEmpty) {
@@ -638,6 +875,7 @@
           }
           return false;
         });
+      });
     }
 
     if (finishBtn) {

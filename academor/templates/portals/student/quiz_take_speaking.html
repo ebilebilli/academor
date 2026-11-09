@@ -5,7 +5,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20260813b">
-<link rel="stylesheet" href="{% static 'portals/css/quiz-speaking.css' %}?v=20260704b">
+<link rel="stylesheet" href="{% static 'portals/css/quiz-speaking.css' %}?v=20261109mic">
 {% endblock %}
 
 {% block content %}
@@ -45,6 +45,10 @@
   data-msg-next-question="{% trans 'Next question' %}"
   data-msg-starting-part="{% trans 'Starting' %}"
   data-msg-all-complete="{% trans 'All speaking tasks are complete.' %}"
+  data-msg-mic-live="{% trans 'Microphone on' %}"
+  data-msg-mic-connecting="{% trans 'Connecting microphone…' %}"
+  data-msg-time-up="{% trans 'Time is up' %}"
+  data-msg-answer-next="{% trans 'Answer the next question' %}"
   data-msg-start-task="{% trans 'Start test' %}"
   data-msg-next-task="{% trans 'Next task' %}"
   data-msg-start-now="{% trans 'Start recording now' %}"
@@ -100,6 +104,11 @@
         </div>
 
         <div class="portal-speaking-stage panel mb-4" data-speaking-stage hidden>
+          <div class="portal-speaking-mic" data-speaking-mic-status hidden>
+            <span class="portal-speaking-mic__dot" aria-hidden="true"></span>
+            <i class="bi bi-mic-fill" aria-hidden="true"></i>
+            <span data-speaking-mic-status-label>{% trans 'Microphone on' %}</span>
+          </div>
           <div class="portal-speaking-stage__context mb-2" data-speaking-stage-context aria-live="polite"></div>
           <div class="portal-speaking-stage__phase" data-speaking-phase-label aria-live="polite"></div>
           <div class="portal-speaking-stage__timer">
@@ -172,6 +181,6 @@
 {% if mock_id %}<script defer src="{% static 'portals/js/quiz-mock-section.js' %}?v=20260808a" data-portal-page-script="true"></script>{% endif %}
 <script defer src="{% static 'portals/js/quiz-start-gate.js' %}?v=20260808b" data-portal-page-script="true"></script>
 <script defer src="{% static 'portals/js/quiz-leave-guard.js' %}?v=20260705d" data-portal-page-script="true"></script>
-<script defer src="{% static 'portals/js/quiz-take-speaking.js' %}?v=20260808b" data-portal-page-script="true"></script>
+<script defer src="{% static 'portals/js/quiz-take-speaking.js' %}?v=20261109mic" data-portal-page-script="true"></script>
 {% endif %}
 {% endblock %}

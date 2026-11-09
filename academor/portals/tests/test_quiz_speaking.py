@@ -172,6 +172,13 @@ class QuizSpeakingTests(QuizVisibilityTests):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'IELTS Speaking Test')
         self.assertContains(response, 'data-quiz-speaking-take')
+        # one microphone indicator for the whole test, a countdown chip beside every question
+        html = response.content.decode()
+        self.assertEqual(html.count('data-speaking-mic-status '), 1)
+        self.assertEqual(html.count('data-speaking-qtimer '), html.count('data-speaking-question\n'))
+        self.assertGreater(html.count('data-speaking-qtimer '), 0)
+        self.assertContains(response, 'data-msg-time-up=')
+        self.assertContains(response, 'data-msg-answer-next=')
 
     def test_manual_take_data_excludes_speaking_quiz(self):
         from portals.utils.queries import get_student_manual_quiz_take_data
