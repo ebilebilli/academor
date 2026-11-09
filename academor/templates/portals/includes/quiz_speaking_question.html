@@ -9,6 +9,13 @@
   data-answer-seconds="{{ q.answer_seconds }}"
   id="speaking-question-{{ q.id }}"
 >
+  {% if not view_only %}
+  <span class="portal-speaking-qtimer" data-speaking-qtimer hidden>
+    <i class="bi bi-stopwatch" aria-hidden="true"></i>
+    <span class="portal-speaking-qtimer__value" data-speaking-qtimer-value>00:00</span>
+    <span class="portal-speaking-qtimer__bar" aria-hidden="true"><span class="portal-speaking-qtimer__fill" data-speaking-qtimer-fill></span></span>
+  </span>
+  {% endif %}
   {% if view_only and q.student_audio_url %}
   <div class="portal-speaking-playback">
     <audio controls preload="metadata" class="portal-speaking-playback__audio" src="{{ q.student_audio_url }}"></audio>
@@ -53,6 +60,13 @@
       <p class="text-muted small mb-0 mt-2">{% trans 'No recording submitted.' %}</p>
       {% endif %}
     </div>
+    {% if not view_only %}
+    <span class="portal-speaking-qtimer" data-speaking-qtimer hidden>
+      <i class="bi bi-stopwatch" aria-hidden="true"></i>
+      <span class="portal-speaking-qtimer__value" data-speaking-qtimer-value>00:00</span>
+      <span class="portal-speaking-qtimer__bar" aria-hidden="true"><span class="portal-speaking-qtimer__fill" data-speaking-qtimer-fill></span></span>
+    </span>
+    {% endif %}
     <span class="portal-speaking-question-item__status" aria-hidden="true"></span>
   </div>
 </li>
