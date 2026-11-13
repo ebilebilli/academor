@@ -15,7 +15,6 @@ from portals.models import (
     StudyGroup,
 )
 from portals.utils.teacher_courses import teacher_groups_queryset
-from portals.utils.group_services import resolve_group_lesson_service
 from portals.utils.lesson_media import build_lesson_edit_materials, _file_basename
 
 
@@ -100,7 +99,9 @@ class TeacherGroupForm(forms.ModelForm):
     def __init__(self, teacher_id, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.teacher_id = teacher_id
-        student_filter = Q(groups__teacher_id=teacher_id, groups__is_active=True)
+        from portals.utils.teacher_students import teacher_students_q
+
+        student_filter = teacher_students_q(teacher_id) & Q(is_active=True)
         if self.instance and self.instance.pk:
             student_filter |= Q(pk__in=self.instance.students.values_list('pk', flat=True))
         self.fields['students'].queryset = (
@@ -135,8 +136,31 @@ class TeacherLessonForm(forms.ModelForm):
         widget=forms.CheckboxSelectMultiple(attrs={'class': 'portal-lesson-group-input'}),
         help_text=_(
             'Choose every group that should receive this lesson. '
-            'The service (SAT, IELTS, etc.) is taken from each group\'s linked course in admin—not from your teacher profile.'
+            'You can also send it straight to chosen students below.'
         ),
+    )
+    students = forms.ModelMultipleChoiceField(
+        label=_('Students'),
+        queryset=StudentProfile.objects.none(),
+        required=False,
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'portal-lesson-student-input'}),
+        help_text=_('Send the lesson straight to these students (with or without a group).'),
+    )
+    quizzes = forms.ModelMultipleChoiceField(
+        label=_('Homework quizzes'),
+        queryset=Lesson.quizzes.rel.model.objects.none(),
+        required=False,
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'portal-lesson-quiz-input'}),
+        help_text=_(
+            'Quizzes attached here open automatically for everyone who receives the lesson; '
+            'you see each student\'s result on the lesson page.'
+        ),
+    )
+    service = forms.ChoiceField(
+        label=_('Service'),
+        required=False,
+        choices=(),
+        widget=forms.Select(attrs={'class': 'form-select'}),
     )
     category_name = forms.CharField(
         label=_('Category label'),
@@ -147,10 +171,7 @@ class TeacherLessonForm(forms.ModelForm):
             'autocomplete': 'off',
             'placeholder': _('e.g. Grammar, Homework'),
         })),
-        help_text=_(
-            'Optional label for filtering your lessons (e.g. Grammar, Homework). '
-            'Course is set automatically from the group you select.'
-        ),
+        help_text=_('Optional label for filtering your lessons (e.g. Grammar, Homework).'),
     )
     pdf_files = MultipleFileField(
         label=_('PDF files'),
@@ -197,22 +218,52 @@ class TeacherLessonForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.teacher_id = teacher_id
         self.category_suggestions = teacher_lesson_category_suggestions(teacher_id)
-        from portals.utils.group_services import study_group_portal_display_labels
+        from portals.utils.group_services import teacher_lesson_service_choices
+        from portals.utils.teacher_students import teacher_students_qs
 
         groups = (
             teacher_groups_queryset(teacher_id, active_only=True)
-            .prefetch_related('courses')
             .order_by('name')
         )
         is_edit = bool(self.instance and self.instance.pk)
+
+        # recipients besides groups: the teacher's own students (a student may have no group)
+        students_qs = teacher_students_qs(teacher_id)
+        if is_edit:
+            students_qs = (
+                StudentProfile.objects.filter(
+                    Q(pk__in=students_qs.values('pk'))
+                    | Q(pk__in=self.instance.students.values('pk'))
+                )
+            )
+        self.fields['students'].queryset = (
+            students_qs.select_related('user').order_by('user__username', 'id')
+        )
+        self.fields['students'].label_from_instance = lambda student: student.full_name
+
+        # homework quizzes: the quizzes of the teacher's own services
+        self.fields['quizzes'].queryset = self._teacher_quiz_queryset(teacher_id, is_edit)
+        self.fields['quizzes'].label_from_instance = self._quiz_choice_label
+
+        service_choices = teacher_lesson_service_choices(teacher_id)
+        self.fields['service'].choices = service_choices
+        self.show_service_field = len(service_choices) > 1
+        self.group_service_label = ''
         if is_edit:
             del self.fields['groups']
             self.fields['group'].queryset = groups
-            if self.instance.group_id:
-                labels = study_group_portal_display_labels(self.instance.group)
-                self.group_service_label = ', '.join(labels) if labels else ''
-            else:
-                self.group_service_label = ''
+            self.fields['group'].required = False
+            self.fields['group'].empty_label = _('No group — chosen students only')
+            if not self.data:
+                self.initial.setdefault(
+                    'students',
+                    list(self.instance.students.values_list('pk', flat=True)),
+                )
+                self.initial.setdefault(
+                    'quizzes',
+                    list(self.instance.quizzes.values_list('pk', flat=True)),
+                )
+                self.initial.setdefault('service', self.instance.subject)
             if self.instance.category_id:
                 self.initial.setdefault('category_name', self.instance.category.name)
             if self.instance.lesson_date is not None and not self.data:
@@ -246,9 +297,10 @@ class TeacherLessonForm(forms.ModelForm):
             del self.fields['group']
             del self.fields['remove_attachments']
             self.fields['groups'].queryset = groups
-            self.fields['groups'].required = True
+            self.fields['groups'].required = False
             self.fields['groups'].label_from_instance = self._lesson_group_choice_label
-            self.group_service_label = ''
+            if service_choices and not self.data:
+                self.initial.setdefault('service', service_choices[0][0])
             self.existing_materials = []
             self.existing_pdfs = []
             self.existing_images = []
@@ -264,13 +316,46 @@ class TeacherLessonForm(forms.ModelForm):
 
     @staticmethod
     def _lesson_group_choice_label(group):
-        from django.utils.translation import gettext as _
+        return group.name
 
-        from portals.utils.group_services import study_group_portal_display_labels
+    @staticmethod
+    def _quiz_choice_label(quiz):
+        category = getattr(quiz, 'category', None)
+        return f'{category.name} — {quiz.topic}' if category else quiz.topic
 
-        labels = study_group_portal_display_labels(group)
-        service = ', '.join(labels) if labels else str(_('No course linked'))
-        return f'{group.name} · {service}'
+    def _teacher_quiz_queryset(self, teacher_id, is_edit):
+        """Quizzes of the teacher's services (plus the ones already attached on edit)."""
+        from portals.models import Quiz
+        from portals.utils.quiz_category_services import quiz_category_slugs_for_portal_codes
+        from portals.utils.student_courses import quiz_visible_to_teacher
+        from portals.utils.teacher_courses import get_teacher_course_type_codes
+
+        slugs = quiz_category_slugs_for_portal_codes(get_teacher_course_type_codes(teacher_id))
+        candidates = (
+            Quiz.objects.filter(category__services__slug__in=slugs)
+            .select_related('category')
+            .prefetch_related('category__services')
+            .distinct()
+        ) if slugs else Quiz.objects.none()
+        visible_ids = {quiz.pk for quiz in candidates if quiz_visible_to_teacher(quiz, teacher_id)}
+        if is_edit:
+            visible_ids |= set(self.instance.quizzes.values_list('pk', flat=True))
+        return (
+            Quiz.objects.filter(pk__in=visible_ids)
+            .select_related('category')
+            .order_by('category__name', 'topic', 'id')
+        )
+
+    def _lesson_service(self, cleaned):
+        """Service the lesson is filed under: the chosen one, else the teacher's first."""
+        from portals.utils.group_services import resolve_teacher_default_lesson_service
+
+        chosen = (cleaned.get('service') or '').strip()
+        if chosen:
+            return chosen
+        if self.instance and self.instance.pk and self.instance.subject:
+            return self.instance.subject
+        return resolve_teacher_default_lesson_service(self.teacher_id)
 
     @staticmethod
     def _empty_video_url_row():
@@ -287,13 +372,12 @@ class TeacherLessonForm(forms.ModelForm):
     def _owned_groups(self):
         return teacher_groups_queryset(self.teacher_id, active_only=True)
 
-    def _build_group_payloads(self, groups, category_name):
+    def _build_group_payloads(self, groups, category_name, service):
         owned_ids = set(self._owned_groups().values_list('pk', flat=True))
         payloads = []
         for group in groups:
             if group.pk not in owned_ids:
                 return None
-            service = resolve_group_lesson_service(group)
             category = resolve_lesson_category(service, category_name) if category_name else None
             payloads.append({
                 'group': group,
@@ -311,28 +395,35 @@ class TeacherLessonForm(forms.ModelForm):
         else:
             cleaned['name'] = name
 
+        students = list(cleaned.get('students') or [])
         if is_edit:
             group = cleaned.get('group')
             groups = [group] if group else []
         else:
             groups = list(cleaned.get('groups') or [])
-            if not groups:
-                self.add_error('groups', _('Select at least one group.'))
-                return cleaned
+        # a lesson goes to a group or straight to students: one of them is needed
+        if not groups and not students:
+            self.add_error(
+                'group' if is_edit else 'groups',
+                _('Select at least one group or one student.'),
+            )
+            return cleaned
 
         category_name = (cleaned.get('category_name') or '').strip()
         cleaned['category_name'] = category_name or None
+        service = self._lesson_service(cleaned)
 
-        payloads = self._build_group_payloads(groups, category_name)
+        payloads = self._build_group_payloads(groups, category_name, service)
         if payloads is None:
             field = 'group' if is_edit else 'groups'
             self.add_error(field, _('You can only upload lessons to your own groups.'))
             return cleaned
 
         cleaned['group_lessons'] = payloads
-        if is_edit and payloads:
-            cleaned['subject'] = payloads[0]['subject']
-            cleaned['category'] = payloads[0]['category']
+        cleaned['subject'] = service
+        cleaned['category'] = (
+            resolve_lesson_category(service, category_name) if category_name else None
+        )
 
         pdf_files = list(self.files.getlist('pdf_files')) if hasattr(self, 'files') else []
         image_files = list(self.files.getlist('image_files')) if hasattr(self, 'files') else []
@@ -514,6 +605,11 @@ class TeacherLessonForm(forms.ModelForm):
         instance.category = self.cleaned_data['category']
         if commit:
             instance.save()
+            # to a group, or straight to the chosen students (never both on one lesson)
+            instance.students.set(
+                [] if instance.group_id else (self.cleaned_data.get('students') or [])
+            )
+            instance.quizzes.set(self.cleaned_data.get('quizzes') or [])
             self._apply_removals(instance)
             pdf_contents = self._read_uploads(self.cleaned_data.get('pdf_files') or [])
             image_contents = self._read_uploads(self.cleaned_data.get('image_files') or [])
@@ -538,14 +634,31 @@ class TeacherLessonForm(forms.ModelForm):
         }
         lessons = []
         video_urls = self.cleaned_data.get('video_urls') or []
-        for payload in self.cleaned_data['group_lessons']:
+        quizzes = list(self.cleaned_data.get('quizzes') or [])
+        direct_students = list(self.cleaned_data.get('students') or [])
+        targets = [
+            {'group': payload['group'], 'category': payload['category'], 'students': []}
+            for payload in self.cleaned_data['group_lessons']
+        ]
+        if direct_students:
+            # one more lesson with no group: it goes straight to the chosen students
+            targets.append({
+                'group': None,
+                'category': self.cleaned_data.get('category'),
+                'students': direct_students,
+            })
+        for target in targets:
             lesson = Lesson(
-                group=payload['group'],
-                subject=payload['subject'],
-                category=payload['category'],
+                group=target['group'],
+                subject=self.cleaned_data['subject'],
+                category=target['category'],
                 **shared,
             )
             lesson.save()
+            if target['students']:
+                lesson.students.set(target['students'])
+            if quizzes:
+                lesson.quizzes.set(quizzes)
             if pdf_contents or image_contents:
                 self._attach_file_contents(lesson, pdf_contents, image_contents)
             if video_urls:
@@ -645,3 +758,166 @@ def build_session_attendance_form(students, existing=None):
         )
     return type('SessionAttendanceForm', (forms.Form,), fields)
 
+
+
+# ---------------------------------------------------------------- students made by a teacher
+def student_service_choices(lang=None):
+    """Teaching services a student can be enrolled in: (portal code, label), one per code."""
+    from portals.utils.portal_services import (
+        get_active_services_queryset,
+        infer_course_type_for_service,
+        resolve_course_type_label,
+    )
+
+    choices = []
+    seen = set()
+    for service in get_active_services_queryset():
+        if getattr(service, 'is_mock_test', False):
+            continue  # mock-test SKUs are sold to customers, they are not a study service
+        code = infer_course_type_for_service(service) or (service.slug or '').strip()
+        if not code or code in seen:
+            continue
+        seen.add(code)
+        choices.append((code, resolve_course_type_label(code, lang) or code))
+    return choices
+
+
+class TeacherStudentCreateForm(forms.Form):
+    """A teacher adds a student: a real portal student, in the system straight away."""
+
+    full_name = forms.CharField(
+        label=_('Ad və soyad'),
+        max_length=150,
+        widget=forms.TextInput(attrs=_fc({'autocomplete': 'off'})),
+        help_text=_('Tələbə portala bu adla daxil olur.'),
+    )
+    phone = forms.CharField(
+        label=_('Telefon'),
+        max_length=30,
+        required=False,
+        widget=forms.TextInput(attrs=_fc({'autocomplete': 'off', 'inputmode': 'tel'})),
+    )
+    services = forms.MultipleChoiceField(
+        label=_('Xidmətlər'),
+        choices=(),
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'}),
+        help_text=_(
+            'Tələbənin quizləri, mock testləri və bildirişləri bu xidmətlərə görə açılır. '
+            'IELTS tələbələrində General English əvvəlcədən aktivdir.'
+        ),
+    )
+    group = forms.ModelChoiceField(
+        label=_('Qrup'),
+        queryset=StudyGroup.objects.none(),
+        required=False,
+        empty_label=_('Qrupsuz'),
+        widget=forms.Select(attrs={'class': 'form-select'}),
+        help_text=_('Qrup yalnız siyahıda filtrləmək üçündür; tələbə qrupsuz da ola bilər.'),
+    )
+    password = forms.CharField(
+        label=_('Parol'),
+        required=False,
+        min_length=6,
+        max_length=128,
+        widget=forms.TextInput(attrs=_fc({'autocomplete': 'off'})),
+        help_text=_('Boş qalsa tələbə portala daxil ola bilməz; parolu sonra admin təyin edə bilər.'),
+    )
+
+    def __init__(self, teacher_id, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        from portals.utils.quiz_assignments import _canonical_course_code
+        from portals.utils.student_courses import GENERAL_ENGLISH_COURSE_CODE, IELTS_COURSE_CODE
+        from portals.utils.teacher_courses import get_teacher_course_type_codes
+
+        self.teacher_id = teacher_id
+        choices = student_service_choices()
+        self.fields['services'].choices = choices
+        self.fields['group'].queryset = (
+            teacher_groups_queryset(teacher_id, active_only=True).order_by('name', 'id')
+        )
+        if not self.is_bound:
+            valid = {code for code, _label in choices}
+            initial = {
+                _canonical_course_code(code)
+                for code in get_teacher_course_type_codes(teacher_id)
+            } & valid
+            if IELTS_COURSE_CODE in initial and GENERAL_ENGLISH_COURSE_CODE in valid:
+                initial.add(GENERAL_ENGLISH_COURSE_CODE)
+            self.initial.setdefault('services', sorted(initial))
+
+    def clean_full_name(self):
+        from django.contrib.auth import get_user_model
+
+        from portals.utils.username_validators import portal_username_validator
+
+        name = ' '.join((self.cleaned_data.get('full_name') or '').split())
+        if not name:
+            raise ValidationError(_('Ad və soyadı yazın.'))
+        portal_username_validator(name)
+        if get_user_model().objects.filter(username__iexact=name).exists():
+            raise ValidationError(_('Bu adla istifadəçi artıq var. Ada fərqləndirici əlavə edin.'))
+        return name
+
+    def clean_phone(self):
+        from portals.utils.normalize_phone_number import phone_number_validator
+
+        phone = (self.cleaned_data.get('phone') or '').strip()
+        if phone:
+            phone_number_validator(phone)
+        return phone
+
+    def clean_group(self):
+        group = self.cleaned_data.get('group')
+        if group and group.max_students and group.students.count() >= group.max_students:
+            raise ValidationError(
+                _('Bu qrupda yer yoxdur (ən çox %(limit)s tələbə).') % {'limit': group.max_students},
+            )
+        return group
+
+    def save(self):
+        """Create the user, the student profile, the teacher link, the group and the services."""
+        from portals.utils.teacher_students import create_teacher_student
+
+        data = self.cleaned_data
+        return create_teacher_student(
+            self.teacher_id,
+            data['full_name'],
+            services=list(data.get('services') or []),
+            group=data.get('group'),
+            phone=data.get('phone') or '',
+            password=data.get('password') or '',
+        )
+
+
+class TeacherGroupCreateForm(forms.Form):
+    name = forms.CharField(
+        label=_('Qrupun adı'),
+        max_length=200,
+        widget=forms.TextInput(attrs=_fc({'autocomplete': 'off'})),
+    )
+
+    def __init__(self, teacher_id, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.teacher_id = teacher_id
+
+    def clean_name(self):
+        name = ' '.join((self.cleaned_data.get('name') or '').split())
+        if not name:
+            raise ValidationError(_('Enter a group name.'))
+        if StudyGroup.objects.filter(
+            teacher_id=self.teacher_id,
+            is_active=True,
+            name__iexact=name,
+        ).exists():
+            raise ValidationError(_('Bu adda qrupunuz artıq var.'))
+        return name
+
+    def save(self):
+        """A real group straight away: only a name, used for filtering."""
+        return StudyGroup.objects.create(
+            teacher_id=self.teacher_id,
+            name=self.cleaned_data['name'],
+            is_active=True,
+            is_register_only=False,
+            max_students=50,
+        )

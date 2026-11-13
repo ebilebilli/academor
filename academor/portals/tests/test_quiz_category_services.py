@@ -181,6 +181,10 @@ class SatVerbalMathSeparationTests(TestCase):
             course_type='sat',
             is_active=True,
         )
+        # this one-off maintenance helper reads the legacy group.courses rows
+        from portals.utils.portal_services import services_for_portal_codes
+
+        self.group.courses.set(services_for_portal_codes(['sat-verbal']))
         expand_generic_exam_track_enrollments()
         codes = set(
             StudentCourseSpecialization.objects.filter(

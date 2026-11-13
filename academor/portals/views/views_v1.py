@@ -185,30 +185,21 @@ class TeacherGroupsListView(TeacherRequiredMixin, View):
     template_name = 'portals/teacher/groups.html'
 
     def get(self, request):
+        """The Students page: every student of the teacher, filtered by group on the side."""
+        from portals.utils.teacher_students_page import build_teacher_students_page
+
         profile = get_teacher_profile(request.portal_user)
-        groups = [
-            serialize_group(g)
-            for g in teacher_groups_qs(profile.pk)
-            .select_related('teacher')
-            .annotate(student_count=Count('students', distinct=True))
-            .prefetch_related(
-                'courses',
-                Prefetch(
-                    'students',
-                    queryset=StudentProfile.objects.select_related('user').order_by(
-                        'user__username', 'id'
-                    ),
-                ),
-            )
-            .order_by('-is_active', 'name')
-        ]
+        page = build_teacher_students_page(
+            profile.pk,
+            group_filter=request.GET.get('group') or 'all',
+        )
         return render(
             request,
             self.template_name,
             _portal_context(
                 request,
                 teacher=serialize_teacher(profile),
-                groups=groups,
+                **page,
             ),
         )
 
@@ -252,6 +243,9 @@ class TeacherLessonsListView(TeacherRequiredMixin, View):
         )
 
 
+from portals.utils.lesson_quizzes import student_lesson_quiz_rows, teacher_lesson_quiz_rows  # noqa: E402
+
+
 class TeacherLessonDetailView(TeacherRequiredMixin, View):
     template_name = 'portals/lesson_detail.html'
 
@@ -268,10 +262,18 @@ class TeacherLessonDetailView(TeacherRequiredMixin, View):
                 teacher=serialize_teacher(profile),
                 lesson=get_lesson_detail(lesson),
                 lesson_homeworks=get_lesson_homeworks_for_teacher(lesson),
+                lesson_quiz_rows=teacher_lesson_quiz_rows(lesson),
+                lesson_direct_students=[
+                    student.full_name
+                    for student in lesson.students.select_related('user').order_by('user__username', 'id')
+                ] if not lesson.group_id else [],
                 page_eyebrow='Teacher',
                 back_url=reverse('portals:teacher-lessons'),
                 edit_url=reverse('portals:teacher-lesson-edit', kwargs={'pk': pk}),
-                group_detail_url=reverse('portals:teacher-group-detail', kwargs={'pk': lesson.group_id}),
+                group_detail_url=(
+                    reverse('portals:teacher-group-detail', kwargs={'pk': lesson.group_id})
+                    if lesson.group_id else ''
+                ),
             ),
         )
 
@@ -363,6 +365,12 @@ def _teacher_student_profile_stats(quiz_results, scores, daily_score_history):
         'score_count': len(scores),
         'active_days': len(daily_score_history),
     }
+
+
+def _student_service_rows(teacher_id, student_id):
+    from portals.utils.quiz_assignments import get_teacher_student_service_rows
+
+    return get_teacher_student_service_rows(teacher_id, student_id)
 
 
 class TeacherStudentProfileView(TeacherRequiredMixin, View):
@@ -541,6 +549,7 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
             has_mock_exam=has_mock_exam,
             quiz_access_categories=quiz_access_categories,
             quiz_access_count=quiz_access_count,
+            student_service_rows=_student_service_rows(profile.pk, student_pk),
         )
 
     def _build_tab_panel_context(self, request, profile, student, tab):
@@ -628,6 +637,8 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
                 quiz_access_count = 0
 
             mock_access_programs = get_teacher_student_mock_access_rows(profile.pk, student_pk)
+            from portals.utils.quiz_assignments import get_teacher_student_service_rows
+
             return _portal_context(
                 request,
                 student=serialize_student(student),
@@ -635,6 +646,7 @@ class TeacherStudentProfileView(TeacherRequiredMixin, View):
                 quiz_access_categories=quiz_access_categories,
                 quiz_access_count=quiz_access_count,
                 mock_access_programs=mock_access_programs,
+                student_service_rows=get_teacher_student_service_rows(profile.pk, student_pk),
             )
 
         if tab == 'mock-results':
@@ -926,6 +938,7 @@ class StudentLessonDetailView(StudentRequiredMixin, View):
                 lesson=get_lesson_detail(lesson),
                 homework=serialize_lesson_homework(homework) if homework else None,
                 homework_form=form,
+                lesson_quiz_rows=student_lesson_quiz_rows(lesson, profile.pk),
                 page_eyebrow='Student',
                 back_url=back_url,
             ),
@@ -1168,13 +1181,10 @@ def _student_scores_context(student_id, *, parent_id=None, request=None):
     quiz_average = compute_quiz_average_stats(quiz_results)
     weekly_average = compute_weekly_average_stats(all_weekly)
     group_averages = []
-    by_service = grouped.get('groups_by_service') or {}
     for group in score_groups:
         group_id = group['id']
-        group_quiz = [
-            row for row in quiz_results
-            if group_id in by_service.get(row.get('course_type') or '', [])
-        ]
+        # quizzes belong to the student, not to a group: every group tab averages them all
+        group_quiz = list(quiz_results)
         group_weekly = [row for row in all_weekly if group_id in row['group_ids']]
         entry = {
             'id': group_id,

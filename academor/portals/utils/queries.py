@@ -39,9 +39,19 @@ from portals.utils.teacher_courses import get_teacher_course_type_codes, teacher
 logger = logging.getLogger('portals.customer_mock')
 
 
+def _teacher_students_q(teacher_id, prefix=''):
+    from portals.utils.teacher_students import teacher_students_q
+
+    return teacher_students_q(teacher_id, prefix=prefix)
+
+
 def teacher_attendance_queryset(teacher_id):
-    """Attendance for a teacher's groups without courses M2M join (avoids duplicate rows)."""
-    groups = teacher_groups_queryset(teacher_id)
+    """Student attendance marked by a teacher.
+
+    Marks of a student without a group live on the teacher's general register, so the
+    register-only groups are included here.
+    """
+    groups = teacher_groups_queryset(teacher_id, include_register_only=True)
     if not groups.exists():
         return Attendance.objects.none()
     return Attendance.objects.filter(
@@ -318,7 +328,12 @@ def serialize_lesson(lesson):
         'category_id': lesson.category_id,
         'category_name': lesson.category.name if lesson.category_id else '',
         'group_id': lesson.group_id,
-        'group_name': lesson.group.name,
+        'group_name': lesson.group.name if lesson.group_id else '',
+        'is_direct': not lesson.group_id,
+        'direct_student_names': (
+            [student.full_name for student in lesson.students.all()]
+            if not lesson.group_id else []
+        ),
         'lesson_date': lesson.lesson_date,
         'created_at': lesson.created_at,
         **media,
@@ -508,18 +523,27 @@ def get_lesson_detail(lesson):
     return data
 
 
-def get_student_lesson(student_id, lesson_id):
-    group_ids = get_student_group_ids(student_id)
-    if not group_ids:
-        return None
+def _student_lessons_queryset(student_id):
+    """Lessons a student receives: through an active group, or sent straight to them."""
+    from portals.utils.lesson_quizzes import student_lessons_q
+
+    if not student_id:
+        return Lesson.objects.none()
+    group_lesson = Q(group__isnull=False, teacher_id=F('group__teacher_id'))
+    direct_lesson = Q(group__isnull=True)
     return (
-        Lesson.objects.filter(
-            pk=lesson_id,
-            group_id__in=group_ids,
-            teacher_id=F('group__teacher_id'),
-        )
+        Lesson.objects.filter(student_lessons_q(student_id))
+        .filter(group_lesson | direct_lesson)
+        .distinct()
+    )
+
+
+def get_student_lesson(student_id, lesson_id):
+    return (
+        _student_lessons_queryset(student_id)
+        .filter(pk=lesson_id)
         .select_related('group', 'teacher')
-        .prefetch_related('attachments')
+        .prefetch_related('attachments', 'quizzes__category')
         .first()
     )
 
@@ -590,11 +614,15 @@ def get_student_homework(student_id, homework_id):
 
 def get_lesson_homeworks_for_teacher(lesson):
     from portals.models import LessonHomework
+    from portals.utils.lesson_quizzes import lesson_recipients_qs
 
     if not lesson:
         return []
     qs = (
-        LessonHomework.objects.filter(lesson_id=lesson.pk, student__groups=lesson.group_id)
+        LessonHomework.objects.filter(
+            lesson_id=lesson.pk,
+            student__in=lesson_recipients_qs(lesson, include_inactive=True),
+        )
         .select_related('student', 'student__user', 'lesson', 'lesson__group')
         .order_by('-submitted_at', 'id')
         .distinct()
@@ -634,27 +662,16 @@ def build_lesson_subject_tabs(lessons, allowed_codes=None):
 
 
 def build_teacher_lesson_group_tabs(teacher_id, lessons):
-    """Group filter chips for teacher lesson lists (scoped to each group's linked courses)."""
-    from portals.utils.group_services import (
-        study_group_portal_display_labels,
-        study_group_teaching_portal_codes,
-    )
-
+    """Group filter chips for teacher lesson lists (a group is only a name)."""
     groups = []
-    for group in (
-        teacher_groups_queryset(teacher_id, active_only=True)
-        .prefetch_related('courses')
-        .order_by('name')
-    ):
-        service_codes = study_group_teaching_portal_codes(group)
-        service_labels = study_group_portal_display_labels(group)
+    for group in teacher_groups_queryset(teacher_id, active_only=True).order_by('name'):
         groups.append({
             'id': group.pk,
             'name': group.name,
             'total_count': sum(1 for lesson in lessons if lesson.get('group_id') == group.pk),
-            'service_codes': service_codes,
-            'service_codes_csv': ','.join(service_codes),
-            'service_label': ', '.join(service_labels) if service_labels else '',
+            'service_codes': [],
+            'service_codes_csv': '',
+            'service_label': '',
         })
     return groups
 
@@ -767,10 +784,11 @@ def prepare_student_scores_with_groups(student_id, quiz_scores, weekly_scores):
     from portals.utils.student_groups import build_student_group_maps
 
     groups, by_teacher, by_service = build_student_group_maps(student_id)
+    all_group_ids = [group['id'] for group in groups]
 
     def enrich_quiz(row):
-        service = row.get('course_type') or ''
-        return {**row, 'group_ids': by_service.get(service, [])}
+        # a quiz belongs to the student, not to a group: it shows under every group tab
+        return {**row, 'group_ids': list(all_group_ids)}
 
     def enrich_weekly(row):
         group_id = row.get('study_group_id')
@@ -1129,6 +1147,35 @@ def teacher_can_access_quiz_category(teacher_id, category_id):
     # Parent folders may have no direct services — allow if nested content is visible.
     _, _, _, visible_ids, _ = _quiz_category_tree_maps(course_codes)
     return category_id in visible_ids
+
+
+def _student_quiz_scope_q(student_id, course_codes):
+    """Q for the quizzes a student can reach: their services' categories, plus homework quizzes.
+
+    None when there is nothing at all (no services and no homework quiz).
+    """
+    from portals.utils.lesson_quizzes import get_student_homework_quiz_ids
+
+    homework_ids = get_student_homework_quiz_ids(student_id)
+    scope = Q(pk__in=homework_ids) if homework_ids else None
+    if course_codes:
+        by_service = Q(category__services__slug__in=quiz_category_slugs_for_portal_codes(course_codes))
+        scope = by_service if scope is None else (scope | by_service)
+    return scope
+
+
+def _student_result_scope_q(student_id, course_codes):
+    """Same as _student_quiz_scope_q, for QuizResult rows (``quiz__`` prefix)."""
+    from portals.utils.lesson_quizzes import get_student_homework_quiz_ids
+
+    homework_ids = get_student_homework_quiz_ids(student_id)
+    scope = Q(quiz_id__in=homework_ids) if homework_ids else None
+    if course_codes:
+        by_service = Q(
+            quiz__category__services__slug__in=quiz_category_slugs_for_portal_codes(course_codes),
+        )
+        scope = by_service if scope is None else (scope | by_service)
+    return scope
 
 
 def student_can_access_quiz_category(student_id, category_id):
@@ -1714,8 +1761,10 @@ def get_teacher_groups(teacher_id):
     qs = (
         teacher_groups_queryset(teacher_id, active_only=True)
         .select_related('teacher')
-        .annotate(student_count=Count('students', distinct=True))
-        .prefetch_related('students', 'courses')
+        .annotate(student_count=Count('students', filter=Q(students__is_active=True), distinct=True))
+        .prefetch_related(
+            Prefetch('students', queryset=StudentProfile.objects.filter(is_active=True).select_related('user')),
+        )
         .order_by('name', 'id')
     )
     return [serialize_group(g) for g in qs]
@@ -1728,8 +1777,13 @@ def get_teacher_group_detail(teacher_id, group_id):
         .filter(pk=group_id)
         .select_related('teacher')
         .prefetch_related(
-            'courses',
-            Prefetch('students', queryset=StudentProfile.objects.select_related('user').order_by('user__username', 'id')),
+            # deactivated students are hidden everywhere but the attendance register
+            Prefetch(
+                'students',
+                queryset=StudentProfile.objects.filter(is_active=True)
+                .select_related('user')
+                .order_by('user__username', 'id'),
+            ),
             Prefetch('schedules', queryset=Schedule.objects.order_by('weekday', 'start_time')),
         )
         .first()
@@ -1745,13 +1799,14 @@ def get_teacher_group_detail(teacher_id, group_id):
 
 @cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_teacher_lessons(teacher_id):
+    # group lessons of the teacher's own groups, and lessons sent straight to students
     qs = (
         Lesson.objects.filter(
+            Q(group__teacher_id=teacher_id) | Q(group__isnull=True),
             teacher_id=teacher_id,
-            group__teacher_id=teacher_id,
         )
         .select_related('group', 'teacher', 'category')
-        .prefetch_related('group__courses', 'attachments')
+        .prefetch_related('attachments', 'students__user')
         .order_by('-lesson_date', '-created_at', 'id')
     )
     return [serialize_lesson(row) for row in qs]
@@ -1775,14 +1830,13 @@ def get_teacher_weekly_score_students(teacher_id):
     if not get_teacher_course_type_codes(teacher_id):
         return []
 
-    teacher_groups = teacher_groups_queryset(teacher_id)
-    if not teacher_groups.exists():
-        return []
+    from portals.utils.teacher_students import teacher_students_qs
 
+    # the teacher's students: through a group, or directly when they have none
+    teacher_groups = teacher_groups_queryset(teacher_id)
     teacher_group_ids = list(teacher_groups.values_list('pk', flat=True))
     students = (
-        StudentProfile.objects.filter(groups__in=teacher_groups)
-        .distinct()
+        teacher_students_qs(teacher_id)
         .select_related('user')
         .prefetch_related(
             Prefetch(
@@ -1809,9 +1863,9 @@ def get_teacher_attendance_students(teacher_id):
     if not get_teacher_course_type_codes(teacher_id):
         return []
 
+    from portals.utils.teacher_students import teacher_students_qs
+
     teacher_groups = teacher_groups_queryset(teacher_id)
-    if not teacher_groups.exists():
-        return []
 
     stats_qs = (
         teacher_attendance_queryset(teacher_id)
@@ -1827,8 +1881,7 @@ def get_teacher_attendance_students(teacher_id):
 
     teacher_group_ids = list(teacher_groups.values_list('pk', flat=True))
     students = (
-        StudentProfile.objects.filter(groups__in=teacher_groups)
-        .distinct()
+        teacher_students_qs(teacher_id)
         .select_related('user')
         .prefetch_related(
             Prefetch(
@@ -1905,9 +1958,8 @@ def get_teacher_scores(teacher_id):
     quiz_qs = (
         _quiz_results_queryset()
         .filter(
+            _teacher_students_q(teacher_id, prefix='student__'),
             quiz__category__services__slug__in=quiz_category_slugs_for_portal_codes(course_codes),
-            student__groups__teacher_id=teacher_id,
-            student__groups__is_active=True,
         )
         .select_related('quiz__category', 'student')
         .distinct()[:500]
@@ -2063,12 +2115,13 @@ def get_student_reading_quiz_take_data(student_id, quiz_id, *, mock_attempt_id: 
     from portals.utils.quiz_reading import build_reading_sections_for_quiz
 
     course_codes = get_student_course_type_codes(student_id)
-    if not course_codes:
+    quiz_scope = _student_quiz_scope_q(student_id, course_codes)
+    if quiz_scope is None:
         return None
     quiz = (
         Quiz.objects.filter(
+            quiz_scope,
             pk=quiz_id,
-            category__services__slug__in=quiz_category_slugs_for_portal_codes(course_codes),
         )
         .select_related('category')
         .prefetch_related('category__services')
@@ -2130,12 +2183,13 @@ def get_student_listening_quiz_take_data(student_id, quiz_id, *, mock_attempt_id
     from portals.utils.quiz_listening import build_listening_sections_for_quiz
 
     course_codes = get_student_course_type_codes(student_id)
-    if not course_codes:
+    quiz_scope = _student_quiz_scope_q(student_id, course_codes)
+    if quiz_scope is None:
         return None
     quiz = (
         Quiz.objects.filter(
+            quiz_scope,
             pk=quiz_id,
-            category__services__slug__in=quiz_category_slugs_for_portal_codes(course_codes),
         )
         .select_related('category')
         .prefetch_related('category__services')
@@ -2203,12 +2257,13 @@ def get_student_speaking_quiz_take_data(student_id, quiz_id, *, mock_attempt_id:
     from portals.utils.quiz_submit import student_can_take_manual_quiz
 
     course_codes = get_student_course_type_codes(student_id)
-    if not course_codes:
+    quiz_scope = _student_quiz_scope_q(student_id, course_codes)
+    if quiz_scope is None:
         return None
     quiz = (
         Quiz.objects.filter(
+            quiz_scope,
             pk=quiz_id,
-            category__services__slug__in=quiz_category_slugs_for_portal_codes(course_codes),
         )
         .select_related('category')
         .first()
@@ -2305,12 +2360,13 @@ def get_student_quiz_take_data(student_id, quiz_id, *, mock_attempt_id: int | No
     from portals.utils.student_courses import quiz_visible_to_student, student_quiz_enrollment_ok
 
     course_codes = get_student_course_type_codes(student_id)
-    if not course_codes:
+    quiz_scope = _student_quiz_scope_q(student_id, course_codes)
+    if quiz_scope is None:
         return None
     quiz = (
         Quiz.objects.filter(
+            quiz_scope,
             pk=quiz_id,
-            category__services__slug__in=quiz_category_slugs_for_portal_codes(course_codes),
         )
         .select_related('category')
         .prefetch_related(
@@ -2366,12 +2422,13 @@ def get_student_manual_quiz_take_data(student_id, quiz_id, *, mock_attempt_id: i
     from portals.utils.quiz_submit import build_essay_question_responses, student_can_take_manual_quiz
 
     course_codes = get_student_course_type_codes(student_id)
-    if not course_codes:
+    quiz_scope = _student_quiz_scope_q(student_id, course_codes)
+    if quiz_scope is None:
         return None
     quiz = (
         Quiz.objects.filter(
+            quiz_scope,
             pk=quiz_id,
-            category__services__slug__in=quiz_category_slugs_for_portal_codes(course_codes),
         )
         .select_related('category')
         .prefetch_related(
@@ -2608,13 +2665,11 @@ def _teacher_pending_quiz_results_queryset(teacher_id):
     pending_filter = Q(reviewed_at__isnull=True) & Q(
         quiz__category__services__slug__in=quiz_category_slugs_for_portal_codes(course_codes),
     ) & (Q(quiz__is_essay=True) | Q(quiz__is_speaking=True))
-    # Do not require group.courses slug match here — empty/mismatched courses M2M
-    # would hide mock writing/speaking from the review queue. Python filter applies
-    # teacher_can_see_quiz_result (with shared-group fallback).
-    student_filter = pending_filter & Q(
-        student__isnull=False,
-        student__groups__teacher_id=teacher_id,
-        student__groups__is_active=True,
+    # The teacher's own students (through a group, or directly). The Python filter
+    # then applies teacher_can_see_quiz_result.
+    student_filter = pending_filter & Q(student__isnull=False) & _teacher_students_q(
+        teacher_id,
+        prefix='student__',
     )
     customer_filter = pending_filter & Q(
         customer__isnull=False,
@@ -2685,14 +2740,10 @@ def get_student_schedules(student_id):
 
 @cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
 def get_student_lessons(student_id):
-    group_ids = get_student_group_ids(student_id)
     qs = (
-        Lesson.objects.filter(
-            group_id__in=group_ids,
-            teacher_id=F('group__teacher_id'),
-        )
+        _student_lessons_queryset(student_id)
         .select_related('group', 'category')
-        .prefetch_related('attachments')
+        .prefetch_related('attachments', 'students__user')
         .order_by('-lesson_date', '-created_at', 'id')
     )
     return [serialize_lesson(row) for row in qs]
@@ -2714,13 +2765,14 @@ def get_student_scores(student_id):
     from portals.utils.student_courses import SCORE_LIST_LIMIT, filter_quiz_results_for_student
 
     codes = get_student_course_type_codes(student_id)
-    if not codes:
+    scope = _student_result_scope_q(student_id, codes)
+    if scope is None:
         return []
     quiz_qs = (
         _quiz_results_queryset()
         .filter(
+            scope,
             student_id=student_id,
-            quiz__category__services__slug__in=quiz_category_slugs_for_portal_codes(codes),
         )
         .select_related('quiz__category')
         .distinct()[:500]
@@ -2808,15 +2860,16 @@ def get_student_quiz_results(student_id, *, quiz_ids=None):
     from portals.utils.student_courses import filter_quiz_results_for_student
 
     codes = get_student_course_type_codes(student_id)
-    if not codes:
+    scope = _student_result_scope_q(student_id, codes)
+    if scope is None:
         return []
     if quiz_ids is not None and not quiz_ids:
         return []
     qs = (
         _quiz_results_queryset()
         .filter(
+            scope,
             student_id=student_id,
-            quiz__category__services__slug__in=quiz_category_slugs_for_portal_codes(codes),
         )
         .select_related('quiz__category')
         .distinct()
@@ -2931,21 +2984,9 @@ def resolve_teacher_profile_duration_group(request, profile_groups):
 
 
 def get_teacher_student_group_service_codes(teacher_id, student_id, group_id):
-    from portals.utils.group_services import study_group_portal_codes
-
-    group = (
-        StudyGroup.objects.filter(
-            pk=group_id,
-            teacher_id=teacher_id,
-            students__pk=student_id,
-            is_active=True,
-        )
-        .prefetch_related('courses')
-        .first()
-    )
-    if not group:
-        return None
-    return set(study_group_portal_codes(group))
+    """A group has no services, so choosing one never narrows a student's rows by service."""
+    del teacher_id, student_id, group_id
+    return None
 
 
 def filter_teacher_profile_rows_by_group(rows, service_codes, *, key='course_type'):
@@ -3014,7 +3055,7 @@ def resolve_teacher_student_profile_back(request, teacher_id, student_id):
             group_id,
         )
 
-    return reverse('portals:teacher-groups'), _('Qruplar'), None
+    return reverse('portals:teacher-groups'), _('Tələbələr'), None
 
 
 # ---------------------------------------------------------------------------
@@ -3047,7 +3088,6 @@ def get_teacher_dashboard_stats(teacher_id):
 
 def _student_performance_snapshot(student_id, *, parent_id=None, group_id=None, quiz_results=None):
     from portals.utils.attendance_stats import compute_attendance_stats
-    from portals.utils.group_services import study_group_portal_codes
     from portals.utils.ielts_mock_test import (
         get_student_completed_mock_attempts,
         get_student_mock_exam_programs,
@@ -3067,11 +3107,9 @@ def _student_performance_snapshot(student_id, *, parent_id=None, group_id=None, 
         group = (
             StudyGroup.objects.filter(pk=group_id, students__pk=student_id, is_active=True)
             .select_related('teacher')
-            .prefetch_related('courses')
             .first()
         )
-        if group:
-            group_service_codes = set(study_group_portal_codes(group))
+        # a group has no services: it never narrows quiz or mock rows by service
 
     weekly_scores = get_student_weekly_scores(student_id)
     if group:

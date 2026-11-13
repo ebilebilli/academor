@@ -1,0 +1,67 @@
+{% extends "portals/base.html" %}
+{% load i18n portal_tags %}
+
+{% block title %}{{ form_title }}{% endblock %}
+
+{% block content %}
+{% portal_page_heading icon="bi-people" eyebrow="Teacher" raw_title=form_title raw_subtitle=form_subtitle %}
+<div class="admin-card p-4">
+  <form method="post" class="portal-teacher-form" novalidate data-student-create-form>
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger py-2 small">{{ form.non_field_errors }}</div>
+    {% endif %}
+
+    <div class="row g-3">
+      <div class="col-md-7">
+        <label class="form-label" for="{{ form.full_name.id_for_label }}">{{ form.full_name.label }}</label>
+        {{ form.full_name }}
+        <div class="form-text">{{ form.full_name.help_text }}</div>
+        {% for error in form.full_name.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+      </div>
+      <div class="col-md-5">
+        <label class="form-label" for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
+        {{ form.phone }}
+        {% for error in form.phone.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+      </div>
+
+      <div class="col-12">
+        <span class="form-label d-block mb-2">{{ form.services.label }}</span>
+        <div class="portal-student-services" role="group" aria-label="{{ form.services.label }}">
+          {% for option in form.services %}
+          <div class="form-check form-check-inline">
+            {{ option.tag }}
+            <label class="form-check-label" for="{{ option.id_for_label }}">{{ option.choice_label }}</label>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="form-text">{{ form.services.help_text }}</div>
+        {% for error in form.services.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label" for="{{ form.group.id_for_label }}">{{ form.group.label }}</label>
+        {{ form.group }}
+        <div class="form-text">{{ form.group.help_text }}</div>
+        {% for error in form.group.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+        {{ form.password }}
+        <div class="form-text">{{ form.password.help_text }}</div>
+        {% for error in form.password.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+      </div>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 pt-4">
+      <button type="submit" class="btn btn-primary">
+        <i class="bi bi-check2 me-1" aria-hidden="true"></i>{% trans 'Save' %}
+      </button>
+      {% if cancel_href %}
+        <a class="btn btn-light" href="{{ cancel_href }}">{% trans 'Cancel' %}</a>
+      {% endif %}
+    </div>
+  </form>
+</div>
+{% endblock %}

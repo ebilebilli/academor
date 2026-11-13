@@ -416,3 +416,68 @@ def get_teacher_student_quiz_access_rows(teacher_id, student_id):
         program = bucket.get('quizzes') or []
         bucket['control_count'] = len(program)
     return [bucket for bucket in categories if bucket.get('quizzes')]
+
+# ---------------------------------------------------------------- student services (teacher-controlled)
+def _canonical_course_code(code):
+    from portals.utils.portal_services import normalize_portal_course_type
+
+    return normalize_portal_course_type(code) or code
+
+
+def teacher_toggleable_service_codes(teacher_id):
+    """Services a teacher may switch on/off for their students.
+
+    Their own specializations, plus General English for any student (its quizzes can be
+    opened or closed for whoever the teacher wants).
+    """
+    from portals.utils.portal_services import is_active_portal_course_type
+    from portals.utils.student_courses import GENERAL_ENGLISH_COURSE_CODE
+    from portals.utils.teacher_courses import get_teacher_course_type_codes
+
+    codes = {_canonical_course_code(code) for code in get_teacher_course_type_codes(teacher_id)}
+    if is_active_portal_course_type(GENERAL_ENGLISH_COURSE_CODE):
+        codes.add(GENERAL_ENGLISH_COURSE_CODE)
+    codes.discard('')
+    return codes
+
+
+def get_teacher_student_service_rows(teacher_id, student_id):
+    """The student's services with their on/off state, for the teacher's student page."""
+    from portals.models import StudentCourseSpecialization
+    from portals.utils.portal_services import resolve_course_type_label
+    from portals.utils.student_courses import GENERAL_ENGLISH_COURSE_CODE
+
+    if not get_teacher_student(teacher_id, student_id):
+        return []
+    toggleable = teacher_toggleable_service_codes(teacher_id)
+    state = {}
+    for row in StudentCourseSpecialization.objects.filter(student_id=student_id):
+        code = _canonical_course_code(row.course_type)
+        state[code] = state.get(code, False) or bool(row.is_active)
+    codes = set(state) | toggleable
+    rows = []
+    for code in sorted(codes, key=lambda item: (item != GENERAL_ENGLISH_COURSE_CODE, resolve_course_type_label(item))):
+        rows.append({
+            'code': code,
+            'label': resolve_course_type_label(code),
+            'is_active': bool(state.get(code, False)),
+            'can_toggle': code in toggleable,
+            'is_general_english': code == GENERAL_ENGLISH_COURSE_CODE,
+        })
+    return rows
+
+
+def set_teacher_student_service(teacher_id, student_id, code, *, is_active):
+    """Switch one of a student's services on or off. None when the teacher may not."""
+    from portals.utils.student_courses import set_student_course_enrollment
+
+    if not get_teacher_student(teacher_id, student_id):
+        return None
+    code = _canonical_course_code(code)
+    if code not in teacher_toggleable_service_codes(teacher_id):
+        return None
+    row = set_student_course_enrollment(student_id, code, is_active=is_active)
+    if row is None:
+        return None
+    invalidate_model_cache('QuizAssignment')
+    return row

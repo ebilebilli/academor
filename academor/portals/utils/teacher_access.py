@@ -44,10 +44,9 @@ def get_teacher_lesson(teacher_id, lesson_id):
         Lesson.objects.filter(
             pk=lesson_id,
             teacher_id=teacher_id,
-            group__teacher_id=teacher_id,
         )
         .select_related('group')
-        .prefetch_related('attachments', 'group__courses')
+        .prefetch_related('attachments', 'students__user', 'quizzes')
         .first()
     )
 
@@ -70,14 +69,13 @@ def get_teacher_quiz_question(teacher_id, quiz_id, question_id):
     return QuizQuestion.objects.filter(pk=question_id, quiz_id=quiz.pk).first()
 
 
-def get_teacher_student(teacher_id, student_id):
-    from portals.models import StudentProfile
+def get_teacher_student(teacher_id, student_id, *, include_inactive=False):
+    """The teacher's own student: in one of their active groups, or theirs directly."""
+    from portals.utils.teacher_students import teacher_students_qs
 
     return (
-        StudentProfile.objects.filter(
-            pk=student_id,
-            groups__in=teacher_groups_qs(teacher_id),
-        )
-        .distinct()
+        teacher_students_qs(teacher_id, include_inactive=include_inactive)
+        .filter(pk=student_id)
+        .select_related('user')
         .first()
     )

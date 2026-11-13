@@ -51,26 +51,14 @@ def _teacher_ids_for_quiz_result(result: QuizResult) -> set[int]:
     course_codes = get_quiz_portal_course_codes(quiz)
     if not course_codes:
         return set()
-    slugs = expand_course_types_to_service_slugs(course_codes)
-    if not slugs:
-        return set()
-    base = StudyGroup.objects.filter(students__pk=result.student_id, is_active=True)
-    teacher_ids = set(
-        base.filter(courses__slug__in=slugs)
-        .values_list('teacher_id', flat=True)
-        .distinct()
-    )
-    if teacher_ids:
-        return {tid for tid in teacher_ids if tid}
-
-    # Fallback when group.courses is empty/mismatched: teachers who share an
-    # active group with the student and whose specialization covers the quiz.
+    # The student's own teachers (through a group, or directly when they have none)
+    # whose services cover the quiz. Group courses play no part.
     from portals.utils.teacher_courses import get_teacher_course_type_codes
+    from portals.utils.teacher_students import student_teacher_ids
 
-    candidates = set(base.values_list('teacher_id', flat=True).distinct())
     return {
         tid
-        for tid in candidates
+        for tid in student_teacher_ids(result.student_id)
         if tid and portal_course_keys_overlap(course_codes, get_teacher_course_type_codes(tid))
     }
 
@@ -153,22 +141,21 @@ def _teacher_ids_for_mock_attempt(attempt) -> set[int]:
     if teacher_ids:
         return {tid for tid in teacher_ids if tid}
 
-    # Fallback: teachers of the student's active groups for this exam program,
-    # then any active group teacher if program courses are missing on the group.
+    # Fallback: the student's teachers who teach this exam program, then any of
+    # the student's teachers.
     if not attempt.student_id:
         return set()
+    from portals.utils.teacher_courses import get_teacher_course_type_codes
+    from portals.utils.teacher_students import student_teacher_ids
+
     program = (getattr(attempt, 'exam_program', None) or '').strip() or 'ielts'
-    slugs = expand_course_types_to_service_slugs([program])
-    base = StudyGroup.objects.filter(students__pk=attempt.student_id, is_active=True)
-    if slugs:
-        teacher_ids = set(
-            base.filter(courses__slug__in=slugs)
-            .values_list('teacher_id', flat=True)
-            .distinct()
-        )
-    if not teacher_ids:
-        teacher_ids = set(base.values_list('teacher_id', flat=True).distinct())
-    return {tid for tid in teacher_ids if tid}
+    candidates = {tid for tid in student_teacher_ids(attempt.student_id) if tid}
+    teacher_ids = {
+        tid
+        for tid in candidates
+        if portal_course_keys_overlap([program], get_teacher_course_type_codes(tid))
+    }
+    return teacher_ids or candidates
 
 
 TEACHER_PORTAL_BELL_KINDS = (

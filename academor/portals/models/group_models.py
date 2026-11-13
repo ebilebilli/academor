@@ -17,12 +17,14 @@ class StudyGroup(models.Model):
         max_length=200,
         verbose_name=_('Name'),
     )
+    # Legacy: a group is only a name now (used for filtering). Quiz, mock-test and
+    # notification access comes from each student's own services, never from here.
     courses = models.ManyToManyField(
         'projects.Service',
         related_name='study_groups',
         blank=True,
-        verbose_name=_('Courses'),
-        help_text=_('Site courses linked to this group.'),
+        verbose_name=_('Courses (legacy)'),
+        help_text=_('No longer used: access comes from each student\'s own services.'),
     )
     start_date = models.DateField(
         null=True,

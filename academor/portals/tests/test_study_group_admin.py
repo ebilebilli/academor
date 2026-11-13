@@ -48,22 +48,17 @@ class StudyGroupAdminTeacherQuerysetTests(TestCase):
         self.assertIsNotNone(self.ielts_service)
         self.assertIsNotNone(self.sat_service)
 
-    def test_teacher_queryset_uses_posted_courses_not_stale_group_courses(self):
+    def test_any_teacher_can_own_a_group(self):
+        """A group has no courses, so its teacher is not limited by them."""
         class Request:
             method = 'POST'
-            POST = MultiValueDict({
-                'courses': [str(self.sat_service.pk)],
-                'teacher': [str(self.sat_teacher.pk)],
-            })
+            POST = MultiValueDict({'teacher': [str(self.sat_teacher.pk)]})
 
-        queryset = study_group_teacher_queryset_for_admin(
-            Request(),
-            obj_id=self.group.pk,
-        )
+        queryset = study_group_teacher_queryset_for_admin(Request(), obj_id=self.group.pk)
         self.assertIn(self.sat_teacher, list(queryset))
-        self.assertNotIn(self.ielts_teacher, list(queryset))
+        self.assertIn(self.ielts_teacher, list(queryset))
 
-    def test_admin_can_change_group_courses_and_teacher_together(self):
+    def test_admin_can_change_group_teacher(self):
         client = Client()
         client.force_login(self.admin_user)
         url = reverse('admin:portals_studygroup_change', args=[self.group.pk])
@@ -71,7 +66,6 @@ class StudyGroupAdminTeacherQuerysetTests(TestCase):
             url,
             {
                 'name': self.group.name,
-                'courses': [str(self.sat_service.pk)],
                 'teacher': str(self.sat_teacher.pk),
                 'is_active': 'on',
                 'start_date': '',
@@ -91,7 +85,5 @@ class StudyGroupAdminTeacherQuerysetTests(TestCase):
         )
         self.group.refresh_from_db()
         self.assertEqual(self.group.teacher_id, self.sat_teacher.pk)
-        self.assertEqual(
-            list(self.group.courses.values_list('pk', flat=True)),
-            [self.sat_service.pk],
-        )
+        # the admin form no longer offers courses: a group is only a name
+        self.assertNotContains(response, 'name="courses"')

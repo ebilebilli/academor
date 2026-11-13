@@ -187,6 +187,7 @@
           <th class="portal-register-table__num" scope="row" data-row-num>{{ forloop.counter }}</th>
           <th class="portal-register-table__name" scope="row">
             <span class="portal-register-table__name-text">{{ student.name }}</span>
+            {% if not student.is_guest and student.is_active is False %}<em class="portal-register__group-tag">{% trans 'deaktiv' %}</em>{% endif %}
             {% if student.is_guest %}
             <button
               type="button"

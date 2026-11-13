@@ -169,16 +169,37 @@ def enforce_study_group_max_students(sender, instance, action, pk_set, **kwargs)
         )
 
 
-@receiver(m2m_changed, sender=StudyGroup.students.through)
-def sync_student_group_course_enrollments(sender, instance, action, pk_set, **kwargs):
-    if action != 'post_add' or not pk_set:
-        return
-    from portals.utils.student_courses import ensure_student_group_course_enrollments
+# A group no longer hands its services to its students: access comes from each
+# student's own services (StudentCourseSpecialization), so joining a group changes
+# nothing about quizzes, mock tests or notifications.
 
-    for student_id in pk_set:
-        if student_id:
-            ensure_student_group_course_enrollments(student_id, instance)
-    _invalidate_on_commit('StudentCourseSpecialization')
+
+@receiver(post_save, sender=StudentCourseSpecialization)
+def general_english_on_for_ielts_students(sender, instance, created, raw=False, **kwargs):
+    """A student who gets IELTS also gets General English, on by default."""
+    if raw or not created or not instance.is_active or not instance.student_id:
+        return
+    from portals.utils.portal_services import portal_course_keys_overlap
+    from portals.utils.student_courses import IELTS_COURSE_CODE, ensure_general_english_for_ielts
+
+    if portal_course_keys_overlap([instance.course_type], [IELTS_COURSE_CODE]):
+        ensure_general_english_for_ielts(instance.student_id)
+
+
+@receiver(m2m_changed, sender=StudentProfile.teachers.through)
+def invalidate_student_teachers_m2m(sender, instance, action, **kwargs):
+    if action in ('post_add', 'post_remove', 'post_clear'):
+        _invalidate_on_commit('StudentProfile')
+        _invalidate_on_commit('QuizResult')
+
+
+@receiver(m2m_changed, sender=Lesson.students.through)
+@receiver(m2m_changed, sender=Lesson.quizzes.through)
+def invalidate_lesson_targets_m2m(sender, instance, action, **kwargs):
+    if action in ('post_add', 'post_remove', 'post_clear'):
+        _invalidate_on_commit('Lesson')
+        _invalidate_on_commit('Quiz')
+        _invalidate_on_commit('QuizResult')
 
 
 @receiver(m2m_changed, sender=StudyGroup.students.through)

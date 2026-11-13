@@ -10787,6 +10787,222 @@ msgstr "Vaxt bitdi"
 msgid "Answer the next question"
 msgstr "Növbəti suala cavab verin"
 
+msgid "\"%(name)s\" qrupu yaradıldı."
+msgstr "\"%(name)s\" qrupu yaradıldı."
+
+msgid "\"Yeni tələbə\" düyməsi ilə tələbə əlavə edin; qrup seçmək məcburi deyil."
+msgstr "\"Yeni tələbə\" düyməsi ilə tələbə əlavə edin; qrup seçmək məcburi deyil."
+
+msgid "%(done)s / %(total)s tələbə edib"
+msgstr "%(done)s / %(total)s tələbə edib"
+
+msgid "%(name)s tələbə kimi əlavə olundu."
+msgstr "%(name)s tələbə kimi əlavə olundu."
+
+msgid "Ad və soyadı yazın."
+msgstr "Ad və soyadı yazın."
+
+msgid "Ad yalnız hərf, rəqəm, boşluq və @/./+/-/_ ola bilər."
+msgstr "Ad yalnız hərf, rəqəm, boşluq və @/./+/-/_ ola bilər."
+
+msgid "Adını dəyiş"
+msgstr "Adını dəyiş"
+
+msgid "Axtarışa uyğun tələbə tapılmadı."
+msgstr "Axtarışa uyğun tələbə tapılmadı."
+
+msgid "Açıq olanda tələbə General English quizlərini görür."
+msgstr "Açıq olanda tələbə General English quizlərini görür."
+
+msgid "Boş qalsa tələbə portala daxil ola bilməz; parolu sonra admin təyin edə bilər."
+msgstr "Boş qalsa tələbə portala daxil ola bilməz; parolu sonra admin təyin edə bilər."
+
+msgid "Bu adda qrupunuz artıq var."
+msgstr "Bu adda qrupunuz artıq var."
+
+msgid "Bu adla başqa istifadəçi var. Ada fərqləndirici əlavə edin."
+msgstr "Bu adla başqa istifadəçi var. Ada fərqləndirici əlavə edin."
+
+msgid "Bu adla istifadəçi artıq var. Ada fərqləndirici əlavə edin."
+msgstr "Bu adla istifadəçi artıq var. Ada fərqləndirici əlavə edin."
+
+msgid "Bu qrupda yer yoxdur (ən çox %(limit)s tələbə)."
+msgstr "Bu qrupda yer yoxdur (ən çox %(limit)s tələbə)."
+
+msgid "Bu qrupda yer yoxdur."
+msgstr "Bu qrupda yer yoxdur."
+
+msgid "Bu siyahıda tələbə yoxdur"
+msgstr "Bu siyahıda tələbə yoxdur"
+
+msgid "Bütün tələbələriniz. Kənardakı siyahıdan qrupa görə filtrləyin."
+msgstr "Bütün tələbələriniz. Kənardakı siyahıdan qrupa görə filtrləyin."
+
+msgid "Dərsi qrupa, birbaşa tələbələrə və ya hər ikisinə göndərin. Qrupu olmayan tələbələri aşağıdan seçin."
+msgstr "Dərsi qrupa, birbaşa tələbələrə və ya hər ikisinə göndərin. Qrupu olmayan tələbələri aşağıdan seçin."
+
+msgid "Edilib"
+msgstr "Edilib"
+
+msgid "Edilməyib"
+msgstr "Edilməyib"
+
+msgid "Ev tapşırığı quizləri"
+msgstr "Ev tapşırığı quizləri"
+
+msgid "Hesabınız deaktiv edilib. Ətraflı məlumat üçün Academor ilə əlaqə saxlayın."
+msgstr "Hesabınız deaktiv edilib. Ətraflı məlumat üçün Academor ilə əlaqə saxlayın."
+
+msgid "Hələ qrupunuz yoxdur."
+msgstr "Hələ qrupunuz yoxdur."
+
+msgid "Hələ tələbəniz yoxdur"
+msgstr "Hələ tələbəniz yoxdur"
+
+msgid "Hələ tələbəniz yoxdur."
+msgstr "Hələ tələbəniz yoxdur."
+
+msgid "Kimə göndərilir"
+msgstr "Kimə göndərilir"
+
+msgid "Nəticə"
+msgstr "Nəticə"
+
+msgid "Parol"
+msgstr "Parol"
+
+msgid "Parol təyin olunmayıb"
+msgstr "Parol təyin olunmayıb"
+
+msgid "Profil"
+msgstr "Profil"
+
+msgid "Qrup yalnız siyahıda filtrləmək üçündür; tələbə qrupsuz da ola bilər."
+msgstr "Qrup yalnız siyahıda filtrləmək üçündür; tələbə qrupsuz da ola bilər."
+
+msgid "Qrup yarat"
+msgstr "Qrup yarat"
+
+msgid "Qrupsuz"
+msgstr "Qrupsuz"
+
+msgid "Qrupun adı"
+msgstr "Qrupun adı"
+
+msgid "Qrupun cədvəli"
+msgstr "Qrupun cədvəli"
+
+msgid "Quiz axtar"
+msgstr "Quiz axtar"
+
+msgid "Quiz axtar..."
+msgstr "Quiz axtar..."
+
+msgid "Telefon"
+msgstr "Telefon"
+
+msgid "Tələbə"
+msgstr "Tələbə"
+
+msgid "Tələbə axtar"
+msgstr "Tələbə axtar"
+
+msgid "Tələbə axtar..."
+msgstr "Tələbə axtar..."
+
+msgid "Tələbə dərhal sistemə düşür: xidmətlərini siz seçirsiniz."
+msgstr "Tələbə dərhal sistemə düşür: xidmətlərini siz seçirsiniz."
+
+msgid "Tələbə portala bu adla daxil olur."
+msgstr "Tələbə portala bu adla daxil olur."
+
+msgid "Tələbələr"
+msgstr "Tələbələr"
+
+msgid "Tələbəni qrupa əlavə etmək üçün siyahıdakı \"Qrup\" düyməsindən istifadə edin."
+msgstr "Tələbəni qrupa əlavə etmək üçün siyahıdakı \"Qrup\" düyməsindən istifadə edin."
+
+msgid "Tələbənin quizləri, mock testləri və bildirişləri bu xidmətlərə görə açılır. IELTS tələbələrində General English əvvəlcədən aktivdir."
+msgstr "Tələbənin quizləri, mock testləri və bildirişləri bu xidmətlərə görə açılır. IELTS tələbələrində General English əvvəlcədən aktivdir."
+
+msgid "Tələbənin quizləri, mock testləri və bildirişləri qrupuna görə yox, öz xidmətlərinə görə açılır. General English quizlərini istənilən tələbə üçün aça və bağlaya bilərsiniz."
+msgstr "Tələbənin quizləri, mock testləri və bildirişləri qrupuna görə yox, öz xidmətlərinə görə açılır. General English quizlərini istənilən tələbə üçün aça və bağlaya bilərsiniz."
+
+msgid "Xidmət yoxdur"
+msgstr "Xidmət yoxdur"
+
+msgid "Xidmətlər"
+msgstr "Xidmətlər"
+
+msgid "Xidmətlərinizdə quiz tapılmadı."
+msgstr "Xidmətlərinizdə quiz tapılmadı."
+
+msgid "Yeni tələbə"
+msgstr "Yeni tələbə"
+
+msgid "Yoxlanılmalıdır"
+msgstr "Yoxlanılmalıdır"
+
+msgid "Yoxlanılır"
+msgstr "Yoxlanılır"
+
+msgid "deaktiv"
+msgstr "deaktiv"
+
+msgid "yalnız qrup seçilməyəndə"
+msgstr "yalnız qrup seçilməyəndə"
+
+msgid "Əməliyyatlar"
+msgstr "Əməliyyatlar"
+
+msgid "Any active student can be added. A student can belong to more than one group, or to none."
+msgstr "İstənilən aktiv tələbə əlavə edilə bilər. Tələbə bir neçə qrupda və ya heç bir qrupda olmaya bilər."
+
+msgid "Courses (legacy)"
+msgstr "Kurslar (köhnə)"
+
+msgid "Enter a group name."
+msgstr "Qrupun adını yazın."
+
+msgid "Enter a student name."
+msgstr "Tələbənin adını yazın."
+
+msgid "Homework quizzes"
+msgstr "Ev tapşırığı quizləri"
+
+msgid "Inactive students cannot sign in and are hidden from the portal lists; their rows stay in the attendance register."
+msgstr "Deaktiv tələbə portala daxil ola bilmir və portal siyahılarında görünmür; davamiyyət cədvəlində sətri qalır."
+
+msgid "No group — chosen students only"
+msgstr "Qrupsuz — yalnız seçilmiş tələbələr"
+
+msgid "No longer used: access comes from each student's own services."
+msgstr "Artıq istifadə olunmur: giriş hər tələbənin öz xidmətlərindən gəlir."
+
+msgid "Optional label for filtering your lessons (e.g. Grammar, Homework)."
+msgstr "Dərsləri filtrləmək üçün istəyə bağlı etiket (məs. Qrammatika, Ev işi)."
+
+msgid "Quizzes attached here open automatically for everyone who receives the lesson; you see each student's result on the lesson page."
+msgstr "Burada seçilən quizlər dərsi alan hər kəs üçün avtomatik açılır; hər tələbənin nəticəsini dərs səhifəsində görürsünüz."
+
+msgid "Select at least one group or one student."
+msgstr "Ən azı bir qrup və ya bir tələbə seçin."
+
+msgid "Send the lesson straight to these students (with or without a group)."
+msgstr "Dərsi birbaşa bu tələbələrə göndərin (qruplu və ya qrupsuz)."
+
+msgid "Students who receive this lesson directly (used when no group is set)."
+msgstr "Bu dərsi birbaşa alan tələbələr (qrup seçilməyəndə)."
+
+msgid "Teachers this student belongs to directly, with or without a group."
+msgstr "Tələbənin qrupdan asılı olmayaraq birbaşa aid olduğu müəllimlər."
+
+msgid "A group is only a name used for filtering. Quiz, mock-test and notification access comes from each student's own services, not from the group."
+msgstr "Qrup yalnız filtrləmə üçün addır. Quiz, mock test və bildiriş girişi qrupdan yox, hər tələbənin öz xidmətlərindən gəlir."
+
+msgid "Pick an existing login account, or create one under Users with role Student — a profile is created automatically. Assign active service enrollments below — quizzes and classrooms follow those services. Study groups are only names for filtering. Inactive students cannot sign in and disappear from the portal lists; their attendance rows stay."
+msgstr "Mövcud giriş hesabını seçin və ya İstifadəçilər bölməsində Tələbə rolu ilə yaradın — profil avtomatik yaranır. Aşağıda aktiv xidmətləri təyin edin — quizlər və dərsliklər bu xidmətlərə görə açılır. Qruplar yalnız filtrləmə üçün addır. Deaktiv tələbə daxil ola bilmir və portal siyahılarında görünmür; davamiyyət sətirləri qalır."
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Növbəti kampaniyada yenə cəhd et — xəbərdar edəcəyik."
 

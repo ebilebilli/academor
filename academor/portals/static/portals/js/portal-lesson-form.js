@@ -41,6 +41,21 @@
   }
 
   function bindLessonForm(form) {
+    /* Homework quiz search */
+    var quizSearch = form.querySelector("[data-lesson-quiz-search]");
+    if (quizSearch) {
+      var quizOptions = Array.prototype.slice.call(form.querySelectorAll("[data-lesson-quiz-option]"));
+      quizSearch.addEventListener("input", function () {
+        var term = quizSearch.value.trim().toLowerCase();
+        quizOptions.forEach(function (option) {
+          var input = option.querySelector("input");
+          var match = !term || option.textContent.toLowerCase().indexOf(term) !== -1;
+          // ticked quizzes always stay in view
+          option.hidden = !match && !(input && input.checked);
+        });
+      });
+    }
+
     /* Group select-all */
     var selectAll = form.querySelector("[data-lesson-select-all-groups]");
     var groupInputs = Array.prototype.slice.call(

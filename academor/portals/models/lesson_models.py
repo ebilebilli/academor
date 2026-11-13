@@ -31,11 +31,28 @@ class LessonCategory(models.Model):
 
 
 class Lesson(models.Model):
+    # A lesson goes to a whole group, or straight to chosen students (group empty).
     group = models.ForeignKey(
         'StudyGroup',
         on_delete=models.CASCADE,
         related_name='lessons',
+        null=True,
+        blank=True,
         verbose_name=_('Group'),
+    )
+    students = models.ManyToManyField(
+        'StudentProfile',
+        related_name='direct_lessons',
+        blank=True,
+        verbose_name=_('Students'),
+        help_text=_('Students who receive this lesson directly (used when no group is set).'),
+    )
+    # Homework quizzes: open for every recipient of the lesson, whatever their services.
+    quizzes = models.ManyToManyField(
+        'Quiz',
+        related_name='homework_lessons',
+        blank=True,
+        verbose_name=_('Homework quizzes'),
     )
     teacher = models.ForeignKey(
         'TeacherProfile',
@@ -101,7 +118,8 @@ class Lesson(models.Model):
         from portals.utils.portal_services import resolve_course_type_label
 
         label = (self.name or '').strip() or resolve_course_type_label(self.subject)
-        return f'{label} — {self.group.name}'
+        target = self.group.name if self.group_id else str(_('Students'))
+        return f'{label} — {target}'
 
     @property
     def display_name(self):

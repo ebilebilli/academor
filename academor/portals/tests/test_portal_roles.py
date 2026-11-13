@@ -321,7 +321,9 @@ class PortalRoleMultiGroupTests(PortalRoleFixtureMixin, TestCase):
             f'/portal/student/scores/?group={self.group_a.pk}'
         )
         ctx = _student_scores_context(self.student.pk, request=request)
-        self.assertEqual(ctx['quiz_average']['graded_count'], 1)
+        # quizzes belong to the student, not to a group: every group tab averages them all
+        self.assertEqual(ctx['quiz_average']['graded_count'], 2)
+        # weekly scores are given in a group, so they still follow the selected group
         self.assertEqual(ctx['weekly_average']['graded_count'], 1)
         # rows stay unfiltered (the group switch is client-side); each row knows its groups
         group_a_weekly = [row for row in ctx['weekly_scores'] if self.group_a.pk in row['group_ids']]
@@ -336,7 +338,7 @@ class PortalRoleMultiGroupTests(PortalRoleFixtureMixin, TestCase):
             f'/portal/student/scores/?group={self.group_b.pk}'
         )
         ctx_b = _student_scores_context(self.student.pk, request=request_b)
-        self.assertEqual(ctx_b['quiz_average']['graded_count'], 1)
+        self.assertEqual(ctx_b['quiz_average']['graded_count'], 2)
         self.assertEqual(ctx_b['weekly_average']['graded_count'], 1)
         group_b_weekly = [row for row in ctx_b['weekly_scores'] if self.group_b.pk in row['group_ids']]
         self.assertEqual(group_b_weekly[0]['score'], 4)

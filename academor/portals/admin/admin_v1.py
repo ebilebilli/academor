@@ -59,10 +59,7 @@ from portals.forms import (
     get_user_portal_role,
 )
 from portals.utils.admin_access import can_access_django_admin, strip_admin_flags_for_portal_user
-from portals.utils.group_services import (
-    students_matching_group_courses,
-    study_group_portal_codes,
-)
+from portals.utils.group_services import students_matching_group_courses
 from portals.utils.portal_services import (
     expand_course_types_to_service_slugs,
     get_active_course_type_choices,
@@ -1094,9 +1091,13 @@ class StudentProfileAdmin(PortalModelAdmin):
         'program_month',
         'lessons_per_month',
         'role_chip',
+        'is_active',
     )
     list_display_links = ('full_name_link',)
+    # switch a student off/on straight from the list
+    list_editable = ('is_active',)
     list_filter = (
+        'is_active',
         'course_specializations__course_type',
         'course_specializations__is_active',
         'groups',
@@ -1109,6 +1110,7 @@ class StudentProfileAdmin(PortalModelAdmin):
         'groups__name',
     )
     autocomplete_fields = ('user',)
+    filter_horizontal = ('teachers',)
     readonly_fields = ('profile_image_preview',)
     ordering = ('user__username', 'id')
     list_per_page = 25
@@ -1119,9 +1121,10 @@ class StudentProfileAdmin(PortalModelAdmin):
                 'Pick an existing login account, or create one under Users with role '
                 'Student — a profile is created automatically. Assign active service '
                 'enrollments below — quizzes and classrooms follow those services. '
-                'Study groups are for schedule and attendance only.'
+                'Study groups are only names for filtering. Inactive students cannot sign in '
+                'and disappear from the portal lists; their attendance rows stay.'
             ),
-            'fields': ('user',),
+            'fields': ('user', 'is_active', 'teachers'),
         }),
         (_('Personal information'), {
             'classes': ('portal-fieldset',),
@@ -1379,68 +1382,33 @@ def _parse_admin_int(value):
 
 
 def study_group_teacher_queryset_for_admin(request, *, obj_id=None):
-    """
-    Teachers selectable on StudyGroup admin.
-
-    Uses submitted course IDs on POST so validation matches the autocomplete
-    filter (group_courses) instead of stale courses still stored on the group.
-    """
-    codes = []
-    if request.method == 'POST':
-        codes = portal_codes_for_service_ids(request.POST.getlist('courses'))
-    elif obj_id:
-        group = StudyGroup.objects.filter(pk=obj_id).prefetch_related('courses').first()
-        if group:
-            codes = study_group_portal_codes(group)
-
-    if codes:
-        queryset = teachers_for_portal_course_codes(codes)
-    else:
-        queryset = TeacherProfile.objects.select_related('user')
-
-    submitted_teacher_id = _parse_admin_int(request.POST.get('teacher'))
-    if submitted_teacher_id:
-        teacher_pks = set(queryset.values_list('pk', flat=True))
-        teacher_pks.add(submitted_teacher_id)
-        queryset = TeacherProfile.objects.filter(pk__in=teacher_pks).select_related('user')
-
-    return queryset.distinct().order_by('user__username', 'id')
+    """Teachers selectable on StudyGroup admin: any teacher (a group has no courses)."""
+    del request, obj_id
+    return TeacherProfile.objects.select_related('user').order_by('user__username', 'id')
 
 
 class StudyGroupAdminForm(forms.ModelForm):
     class Meta:
         model = StudyGroup
-        fields = '__all__'
-
-    def clean(self):
-        cleaned = super().clean()
-        teacher = cleaned.get('teacher')
-        course_ids = self.data.getlist('courses')
-        codes = portal_codes_for_service_ids(course_ids)
-        if teacher and codes and not teacher_has_all_course_codes(teacher.pk, codes):
-            self.add_error(
-                'teacher',
-                _('This teacher is not assigned to all selected courses.'),
-            )
-        return cleaned
+        # ``courses`` is legacy: a group is only a name, access comes from each student's services
+        exclude = ('courses',)
 
 
 @admin.register(StudyGroup)
-class StudyGroupAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
+class StudyGroupAdmin(PortalModelAdmin):
     form = StudyGroupAdminForm
     list_display = (
         'name',
         'teacher_display',
-        'courses_display',
         'capacity_display',
         'is_active',
         'is_register_only',
     )
     list_display_links = ('name',)
-    list_filter = ('is_active', 'is_register_only', 'courses', 'teacher')
-    search_fields = ('name', 'teacher__user__username', 'courses__slug')
+    list_filter = ('is_active', 'is_register_only', 'teacher')
+    search_fields = ('name', 'teacher__user__username')
     autocomplete_fields = ('teacher',)
-    filter_horizontal = ('courses', 'students')
+    filter_horizontal = ('students',)
     list_editable = ('is_active',)
     ordering = ('-is_active', 'name', 'id')
     list_per_page = 25
@@ -1448,40 +1416,28 @@ class StudyGroupAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
     fieldsets = (
         ('Group basics', {
             'classes': ('portal-fieldset',),
-            'description': _('Name, linked courses, teacher, and active status.'),
-            'fields': ('name', 'courses', 'teacher', 'is_active', 'is_register_only'),
-        }),
-        ('Course details', {
-            'classes': ('portal-fieldset',),
             'description': _(
-                'Students inherit the course from the group you create — pick the matching '
-                'course(s) above. Only teachers assigned to those courses can be selected.'
+                'A group is only a name used for filtering. Quiz, mock-test and notification '
+                'access comes from each student\'s own services, not from the group.'
             ),
+            'fields': ('name', 'teacher', 'is_active', 'is_register_only'),
+        }),
+        ('Details', {
+            'classes': ('portal-fieldset',),
             'fields': ('start_date', 'max_students'),
         }),
         ('Students', {
             'classes': ('portal-fieldset',),
-            'description': _(
-                'Only students with a matching active service enrollment (or no enrollments yet) '
-                'are listed. A student can belong to more than one group.'
-            ),
+            'description': _('Any active student can be added. A student can belong to more than one group, or to none.'),
             'fields': ('students',),
         }),
     )
 
-    class Media(PortalModelAdmin.Media):
-        js = PortalModelAdmin.Media.js + ('portals/admin/js/study_group_admin.js',)
-
     def get_queryset(self, request):
         qs = admin.ModelAdmin.get_queryset(self, request)
-        qs = qs.select_related('teacher').prefetch_related('courses').annotate(
+        return qs.select_related('teacher').annotate(
             _student_count=Count('students', distinct=True),
         )
-        course_type = request.GET.get(self.course_type_query_param)
-        if course_type:
-            slugs = expand_course_types_to_service_slugs([course_type])
-            qs = qs.filter(courses__slug__in=slugs).distinct() if slugs else qs.none()
-        return qs
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'teacher':
@@ -1493,18 +1449,11 @@ class StudyGroupAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     def formfield_for_manytomany(self, db_field, request, **kwargs):
-        if db_field.name == 'courses':
-            kwargs['queryset'] = get_active_services_queryset()
         if db_field.name == 'students':
             obj_id = request.resolver_match.kwargs.get('object_id')
-            group = None
-            if obj_id:
-                group = StudyGroup.objects.filter(pk=obj_id).prefetch_related('courses').first()
+            group = StudyGroup.objects.filter(pk=obj_id).first() if obj_id else None
             kwargs['queryset'] = students_matching_group_courses(group)
         return super().formfield_for_manytomany(db_field, request, **kwargs)
-
-    def save_model(self, request, obj, form, change):
-        super().save_model(request, obj, form, change)
 
     def get_portal_stats(self, request):
         active = StudyGroup.objects.filter(is_active=True).count()
@@ -1523,27 +1472,6 @@ class StudyGroupAdmin(CourseTypeTabFilterMixin, PortalModelAdmin):
         if not obj.teacher_id:
             return '—'
         return portal_admin_change_link(obj.teacher, obj.teacher.full_name)
-
-    @admin.display(description=_('Courses'))
-    def courses_display(self, obj):
-        if not obj or not obj.pk:
-            return _('Select course(s) when creating the group.')
-        if hasattr(obj, '_prefetched_objects_cache') and 'courses' in obj._prefetched_objects_cache:
-            courses = list(obj.courses.all())
-        else:
-            courses = list(obj.courses.all())
-        if not courses:
-            return '—'
-        from portals.utils.portal_services import infer_course_type_for_service, localized_service_name
-
-        pills = [
-            portal_course_pill(
-                infer_course_type_for_service(course) or course.slug or '',
-                localized_service_name(course),
-            )
-            for course in courses
-        ]
-        return format_html(' '.join('{}' for _ in pills), *pills)
 
     @admin.display(description='Capacity')
     def capacity_display(self, obj):
@@ -2967,35 +2895,32 @@ class OfferNotificationAdmin(PortalModelAdmin):
         from portals.models.notification_models import OfferNotificationDelivery, PortalNotification
         from portals.models import StudentProfile, ParentProfile
 
-        # Get students/parents based on target role and services
-        if offer_notification.target_role == offer_notification.TargetRole.STUDENT:
-            recipients = StudentProfile.objects.all()
-        elif offer_notification.target_role == offer_notification.TargetRole.PARENT:
-            recipients = ParentProfile.objects.all()
-        else:  # ALL
-            recipients_student = StudentProfile.objects.all()
-            recipients_parent = ParentProfile.objects.all()
-            recipients = list(recipients_student) + list(recipients_parent)
-
-        # Filter by services if specified
+        # Students follow their own services (never a group); deactivated students get nothing.
+        students = StudentProfile.objects.filter(is_active=True)
         if offer_notification.services.exists():
-            service_ids = offer_notification.services.values_list('id', flat=True)
-            if offer_notification.target_role == offer_notification.TargetRole.STUDENT:
-                recipients = recipients.filter(
-                    studentcoursespecialization__course__services__in=service_ids
-                ).distinct()
-            elif offer_notification.target_role == offer_notification.TargetRole.PARENT:
-                child_ids = StudentProfile.objects.filter(
-                    studentcoursespecialization__course__services__in=service_ids
-                ).values_list('id', flat=True)
-                recipients = recipients.filter(child__id__in=child_ids).distinct()
-            else:  # ALL
-                recipients_student = recipients_student.filter(
-                    studentcoursespecialization__course__services__in=service_ids
-                ).distinct()
-                child_ids = recipients_student.values_list('id', flat=True)
-                recipients_parent = recipients_parent.filter(child__id__in=child_ids).distinct()
-                recipients = list(recipients_student) + list(recipients_parent)
+            from portals.utils.portal_services import (
+                expand_course_types_to_service_slugs,
+                portal_codes_for_service_ids,
+            )
+
+            codes = portal_codes_for_service_ids(
+                offer_notification.services.values_list('id', flat=True),
+            )
+            keys = set(codes) | set(expand_course_types_to_service_slugs(codes))
+            students = students.filter(
+                course_specializations__course_type__in=keys,
+                course_specializations__is_active=True,
+            ).distinct()
+            parents = ParentProfile.objects.filter(students__in=students).distinct()
+        else:
+            parents = ParentProfile.objects.all()
+
+        if offer_notification.target_role == offer_notification.TargetRole.STUDENT:
+            recipients = list(students)
+        elif offer_notification.target_role == offer_notification.TargetRole.PARENT:
+            recipients = list(parents)
+        else:  # ALL
+            recipients = list(students) + list(parents)
 
         # Create notifications for each recipient
         for recipient in recipients:

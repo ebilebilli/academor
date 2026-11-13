@@ -11,8 +11,10 @@ from django.views import View
 
 from portals.models import Attendance, AttendanceRegisterGuest, Schedule
 from portals.teacher_forms import (
+    TeacherGroupCreateForm,
     TeacherGroupNameForm,
     TeacherLessonForm,
+    TeacherStudentCreateForm,
     TeacherTextbookForm,
     build_session_attendance_form,
 )
@@ -233,6 +235,89 @@ class TeacherGroupRenameView(TeacherRequiredMixin, View):
             subtitle=group.name,
             cancel_href=reverse('portals:teacher-group-detail', kwargs={'pk': group.pk}),
         )
+
+
+def _students_page_url(group=None):
+    url = reverse('portals:teacher-groups')
+    return f'{url}?group={group}' if group else url
+
+
+class TeacherStudentCreateView(TeacherRequiredMixin, View):
+    """A teacher adds a student: a real portal student, in the system straight away."""
+
+    template_name = 'portals/teacher/student_form.html'
+
+    def _render(self, request, form):
+        return _form_response(
+            request,
+            self.template_name,
+            form,
+            title=_('Yeni tələbə'),
+            subtitle=_('Tələbə dərhal sistemə düşür: xidmətlərini siz seçirsiniz.'),
+            cancel_href=_students_page_url(request.GET.get('group')),
+        )
+
+    def get(self, request):
+        teacher = get_teacher_profile(request.portal_user)
+        initial = {}
+        group = get_teacher_group(teacher.pk, request.GET.get('group')) if (request.GET.get('group') or '').isdigit() else None
+        if group:
+            initial['group'] = group.pk
+        return self._render(request, TeacherStudentCreateForm(teacher.pk, initial=initial))
+
+    def post(self, request):
+        teacher = get_teacher_profile(request.portal_user)
+        form = TeacherStudentCreateForm(teacher.pk, request.POST)
+        if not form.is_valid():
+            return self._render(request, form)
+        student = form.save()
+        messages.success(
+            request,
+            _('%(name)s tələbə kimi əlavə olundu.') % {'name': student.full_name},
+        )
+        group = form.cleaned_data.get('group')
+        return redirect(_students_page_url(group.pk if group else None))
+
+
+class TeacherGroupCreateView(TeacherRequiredMixin, View):
+    """A teacher makes a group: only a name, used to filter their students."""
+
+    def post(self, request):
+        teacher = get_teacher_profile(request.portal_user)
+        form = TeacherGroupCreateForm(teacher.pk, request.POST)
+        if not form.is_valid():
+            for errors in form.errors.values():
+                for error in errors:
+                    messages.error(request, error)
+            return redirect(_students_page_url())
+        group = form.save()
+        messages.success(request, _('"%(name)s" qrupu yaradıldı.') % {'name': group.name})
+        return redirect(_students_page_url(group.pk))
+
+
+class TeacherStudentGroupsView(TeacherRequiredMixin, View):
+    """Put one of the teacher's students in (or out of) the teacher's groups."""
+
+    def post(self, request, student_pk):
+        from portals.utils.teacher_students_page import set_student_teacher_groups
+
+        teacher = get_teacher_profile(request.portal_user)
+        student = get_teacher_student(teacher.pk, student_pk)
+        if not student:
+            raise Http404
+        try:
+            payload = json.loads(request.body.decode('utf-8') or '{}')
+        except (json.JSONDecodeError, UnicodeDecodeError):
+            payload = {}
+        raw_ids = payload.get('group_ids')
+        if raw_ids is None:
+            raw_ids = request.POST.getlist('group_ids')
+        if not isinstance(raw_ids, (list, tuple)):
+            return JsonResponse({'ok': False, 'error': 'invalid_groups'}, status=400)
+        # the teacher keeps the student even when they leave every group
+        student.teachers.add(teacher)
+        result = set_student_teacher_groups(teacher.pk, student, raw_ids)
+        return JsonResponse({'ok': True, **result})
 
 
 class TeacherScheduleCreateView(TeacherRequiredMixin, View):
@@ -567,10 +652,13 @@ class TeacherAttendanceRegisterGuestView(TeacherRequiredMixin, View):
 
         result = add_register_guest(group=group, name=payload.get('name'))
         if not result.get('ok'):
-            return JsonResponse(
-                {'ok': False, 'error': str(_('Enter a student name.'))},
-                status=400,
-            )
+            messages_by_code = {
+                'name_taken': _('Bu adla başqa istifadəçi var. Ada fərqləndirici əlavə edin.'),
+                'group_full': _('Bu qrupda yer yoxdur.'),
+                'invalid_name': _('Ad yalnız hərf, rəqəm, boşluq və @/./+/-/_ ola bilər.'),
+            }
+            message = messages_by_code.get(result.get('error'), _('Enter a student name.'))
+            return JsonResponse({'ok': False, 'error': str(message)}, status=400)
         return JsonResponse(result)
 
     def delete(self, request):
@@ -689,7 +777,9 @@ class TeacherSessionAttendanceView(TeacherRequiredMixin, View):
         if not schedule_visible_on_date(schedule, session_date):
             return None, None, None
         students = list(
-            schedule.group.students.select_related('user').order_by('user__username', 'id'),
+            schedule.group.students.filter(is_active=True)
+            .select_related('user')
+            .order_by('user__username', 'id'),
         )
         existing = {
             row.student_id: row.status

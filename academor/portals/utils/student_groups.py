@@ -3,7 +3,6 @@
 from urllib.parse import urlencode
 
 from portals.models import StudyGroup
-from portals.utils.group_services import study_group_portal_codes
 
 
 def get_student_study_groups(student_id):
@@ -20,7 +19,6 @@ def build_student_group_maps(student_id):
     """Return (groups, by_teacher_id, by_service_code) for a student."""
     groups = list(
         StudyGroup.objects.filter(students__pk=student_id, is_active=True)
-        .prefetch_related('courses')
         .order_by('name')
     )
     by_teacher = {}
@@ -29,8 +27,7 @@ def build_student_group_maps(student_id):
     for group in groups:
         serialized.append({'id': group.pk, 'name': group.name})
         by_teacher.setdefault(group.teacher_id, []).append(group.pk)
-        for code in study_group_portal_codes(group):
-            by_service.setdefault(code, []).append(group.pk)
+    # by_service stays empty: a group has no services any more
     return serialized, by_teacher, by_service
 
 

@@ -7,6 +7,7 @@ from portals.views.teacher_manage_views import (
     TeacherAttendanceRegisterGroupView,
     TeacherAttendanceRegisterGuestView,
     TeacherAttendanceRegisterMarkView,
+    TeacherGroupCreateView,
     TeacherGroupRenameView,
     TeacherLessonCreateView,
     TeacherLessonEditView,
@@ -15,6 +16,8 @@ from portals.views.teacher_manage_views import (
     TeacherScheduleEditView,
     TeacherScheduleSlotCreateView,
     TeacherSessionAttendanceView,
+    TeacherStudentCreateView,
+    TeacherStudentGroupsView,
     TeacherTextbookCreateView,
     TeacherTextbookEditView,
     TeacherWeeklyScoresView,
@@ -36,6 +39,7 @@ from portals.views.notification_views import (
 )
 from portals.views.quiz_assignment_views import (
     TeacherMockAccessToggleView,
+    TeacherStudentServiceToggleView,
     TeacherQuizAssignmentBulkView,
     TeacherQuizAssignmentToggleView,
 )
@@ -147,6 +151,13 @@ urlpatterns = [
     path('teacher/', TeacherDashboardView.as_view(), name='teacher-dashboard'),
     path('teacher/dashboard-stats/', TeacherDashboardStatsView.as_view(), name='teacher-dashboard-stats'),
     path('teacher/groups/', TeacherGroupsListView.as_view(), name='teacher-groups'),
+    path('teacher/groups/new/', TeacherGroupCreateView.as_view(), name='teacher-group-create'),
+    path('teacher/students/new/', TeacherStudentCreateView.as_view(), name='teacher-student-create'),
+    path(
+        'teacher/students/<int:student_pk>/groups/',
+        TeacherStudentGroupsView.as_view(),
+        name='teacher-student-groups',
+    ),
     path('teacher/groups/<int:pk>/', TeacherGroupDetailView.as_view(), name='teacher-group-detail'),
     path('teacher/groups/<int:pk>/rename/', TeacherGroupRenameView.as_view(), name='teacher-group-rename'),
     path('teacher/groups/<int:group_pk>/schedule/new/', TeacherScheduleCreateView.as_view(), name='teacher-schedule-create'),
@@ -200,6 +211,11 @@ urlpatterns = [
         'teacher/students/<int:student_pk>/mock-access/<slug:program>/',
         TeacherMockAccessToggleView.as_view(),
         name='teacher-mock-access-toggle',
+    ),
+    path(
+        'teacher/students/<int:student_pk>/service-access/<str:code>/',
+        TeacherStudentServiceToggleView.as_view(),
+        name='teacher-student-service-toggle',
     ),
     path('teacher/attendance/session/', TeacherSessionAttendanceView.as_view(), name='teacher-attendance-session'),
     path('teacher/attendance/new/', TeacherAttendanceCreateView.as_view(), name='teacher-attendance-create'),

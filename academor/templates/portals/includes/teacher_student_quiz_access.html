@@ -10,6 +10,41 @@
     {% trans 'Yalnız IELTS və SAT quizlərini aça və bağlaya bilərsiniz. Digər adi kateqoriya quizləri tələbə üçün avtomatik açıqdır və bağlamaq mümkün deyil. Bağlı IELTS/SAT quizləri şagirdə kilid kimi görünür.' %}
   </p>
 
+  {% if student_service_rows %}
+  <section class="portal-quiz-access-mock mb-4" data-student-services-panel>
+    <h3 class="h6 mb-1">{% trans 'Xidmətlər' %}</h3>
+    <p class="text-muted small mb-3">
+      {% trans 'Tələbənin quizləri, mock testləri və bildirişləri qrupuna görə yox, öz xidmətlərinə görə açılır. General English quizlərini istənilən tələbə üçün aça və bağlaya bilərsiniz.' %}
+    </p>
+    {% for service in student_service_rows %}
+    <div class="portal-quiz-access-mock__row{% if not forloop.last %} mb-3 pb-3 border-bottom{% endif %}">
+      <div>
+        <h4 class="h6 mb-0">{{ service.label }}</h4>
+        {% if service.is_general_english %}
+        <p class="text-muted small mb-0">{% trans 'Açıq olanda tələbə General English quizlərini görür.' %}</p>
+        {% endif %}
+      </div>
+      <div class="form-check form-switch mb-0">
+        <input
+          class="form-check-input portal-quiz-access-toggle"
+          type="checkbox"
+          role="switch"
+          id="service-access-{{ student.id }}-{{ service.code }}"
+          data-mock-access-toggle
+          data-service-access-toggle
+          data-toggle-url="{% url 'portals:teacher-student-service-toggle' student_pk=student.id code=service.code %}"
+          {% if service.is_active %}checked{% endif %}
+          {% if not service.can_toggle %}disabled{% endif %}
+        >
+        <label class="form-check-label" for="service-access-{{ student.id }}-{{ service.code }}">
+          {% trans 'Aktiv' %}
+        </label>
+      </div>
+    </div>
+    {% endfor %}
+  </section>
+  {% endif %}
+
   {% if mock_access_programs %}
   <section class="portal-quiz-access-mock mb-4" data-mock-access-panel>
     {% for mock_access in mock_access_programs %}
@@ -145,7 +180,7 @@
       {% endif %}
     </section>
     {% endfor %}
-  {% elif not mock_access_programs %}
+  {% elif not mock_access_programs and not student_service_rows %}
     <div class="portal-student-empty">
       <div class="portal-student-empty-icon"><i class="ti ti-forms" aria-hidden="true"></i></div>
       <h3>{% trans 'Təyin oluna bilən IELTS/SAT quiz yoxdur' %}</h3>

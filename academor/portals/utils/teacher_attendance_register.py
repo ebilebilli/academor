@@ -52,11 +52,11 @@ def _teacher_group_ids(teacher_id):
 
 def _register_students_qs(group):
     """Real students on a register: the group's own, or every student of the teacher for the general one."""
+    # Deactivated students stay on the register: their rows are never removed from it.
     if group.is_main_register:
-        return StudentProfile.objects.filter(
-            groups__teacher_id=group.teacher_id,
-            groups__is_active=True,
-        ).distinct()
+        from portals.utils.teacher_students import teacher_students_qs
+
+        return teacher_students_qs(group.teacher_id, include_inactive=True)
     return StudentProfile.objects.filter(groups=group)
 
 
@@ -305,6 +305,7 @@ def build_teacher_attendance_register(teacher, *, year, month, group=None, today
                 'id': student.pk,
                 'guest_id': None,
                 'is_guest': False,
+                'is_active': bool(student.is_active),
                 'name': student.full_name,
                 'start_date': start,
                 'absent_count': absent,
@@ -418,40 +419,52 @@ def save_register_mark(*, group, session_date, status, student=None, guest=None)
 
 
 def add_register_guest(*, group, name):
+    """A name typed into the register becomes a real student of the teacher, straight away.
+
+    If the teacher already has a student by that name, that student is used (and put in
+    this group). A name that belongs to someone else's account is refused.
+    """
+    from django.contrib.auth import get_user_model
+
+    from portals.utils.teacher_students import create_teacher_student, teacher_students_qs
+    from portals.utils.username_validators import PORTAL_USERNAME_PATTERN
+
     cleaned = ' '.join(str(name or '').split())
     if not cleaned:
         return {'ok': False, 'error': 'empty_name'}
-    if len(cleaned) > MAX_GUEST_NAME_LEN:
+    if len(cleaned) > MAX_GUEST_NAME_LEN or len(cleaned) > 150:
         return {'ok': False, 'error': 'name_too_long'}
+    if not PORTAL_USERNAME_PATTERN.match(cleaned):
+        return {'ok': False, 'error': 'invalid_name'}
 
+    target_group = None if group.is_main_register else group
     existing = (
-        AttendanceRegisterGuest.objects.filter(
-            group=group,
-            is_active=True,
-            name__iexact=cleaned,
-        )
-        .order_by('id')
+        teacher_students_qs(group.teacher_id, include_inactive=True)
+        .filter(user__username__iexact=cleaned)
+        .select_related('user')
         .first()
     )
-    if existing:
+    if existing is not None:
+        if target_group is not None and not target_group.students.filter(pk=existing.pk).exists():
+            target_group.students.add(existing)
         return {
             'ok': True,
-            'guest': {
-                'id': existing.pk,
-                'name': existing.name,
-                'is_guest': True,
-            },
+            'student': {'id': existing.pk, 'name': existing.full_name, 'is_guest': False},
             'created': False,
         }
+    if get_user_model().objects.filter(username__iexact=cleaned).exists():
+        return {'ok': False, 'error': 'name_taken'}
+    if (
+        target_group is not None
+        and target_group.max_students
+        and target_group.students.count() >= target_group.max_students
+    ):
+        return {'ok': False, 'error': 'group_full'}
 
-    guest = AttendanceRegisterGuest.objects.create(group=group, name=cleaned)
+    student = create_teacher_student(group.teacher_id, cleaned, group=target_group)
     return {
         'ok': True,
-        'guest': {
-            'id': guest.pk,
-            'name': guest.name,
-            'is_guest': True,
-        },
+        'student': {'id': student.pk, 'name': student.full_name, 'is_guest': False},
         'created': True,
     }
 
@@ -473,11 +486,12 @@ def add_register_group(*, teacher, name):
     if len(cleaned) > MAX_GROUP_NAME_LEN:
         return {'ok': False, 'error': 'name_too_long'}
 
+    # a real group straight away (only a name, used for filtering), not a register-only list
     existing = (
         StudyGroup.objects.filter(
             teacher_id=teacher.pk,
             is_active=True,
-            is_register_only=True,
+            is_main_register=False,
             name__iexact=cleaned,
         )
         .order_by('id')
@@ -489,7 +503,7 @@ def add_register_group(*, teacher, name):
             'group': {
                 'id': existing.pk,
                 'name': existing.name,
-                'is_register_only': True,
+                'is_register_only': bool(existing.is_register_only),
             },
             'created': False,
         }
@@ -497,7 +511,7 @@ def add_register_group(*, teacher, name):
     group = StudyGroup.objects.create(
         teacher=teacher,
         name=cleaned,
-        is_register_only=True,
+        is_register_only=False,
         is_active=True,
         max_students=50,
     )
@@ -506,7 +520,7 @@ def add_register_group(*, teacher, name):
         'group': {
             'id': group.pk,
             'name': group.name,
-            'is_register_only': True,
+            'is_register_only': False,
         },
         'created': True,
     }

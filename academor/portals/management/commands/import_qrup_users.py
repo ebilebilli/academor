@@ -26,7 +26,7 @@ from portals.utils.qrup_import_helpers import (
     student_course_enrollment_slugs,
     sync_student_participation,
 )
-from portals.utils.student_courses import ensure_student_group_course_enrollments
+from portals.utils.student_courses import set_student_course_enrollment
 from projects.models.service_models import Service
 
 User = get_user_model()
@@ -463,8 +463,13 @@ class Command(BaseCommand):
                     services.append(service)
                 elif not service:
                     self.stdout.write(self.style.WARNING(f'    Unknown course for group: {slug}'))
-            if services:
-                group.courses.set(services)
+            # a group is only a name: the sheet's courses go to each student below
+            from portals.utils.portal_services import infer_course_type_for_service
+
+            group_service_codes = [
+                infer_course_type_for_service(service) or service.slug
+                for service in services
+            ]
 
             student_names = item.get('student_names') or []
             sync_group_schedules(
@@ -493,7 +498,9 @@ class Command(BaseCommand):
                     profile = StudentProfile.objects.filter(user__username=name).first()
                 if not profile:
                     continue
-                ensure_student_group_course_enrollments(profile.pk, group)
+                for code in group_service_codes:
+                    if code:
+                        set_student_course_enrollment(profile.pk, code, is_active=True)
                 payload_item = student_payload_by_name.get(name)
                 if payload_item:
                     ensure_student_course_enrollments(

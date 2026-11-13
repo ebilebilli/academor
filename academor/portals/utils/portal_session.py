@@ -92,7 +92,12 @@ def get_portal_user(request):
     if not user_id:
         return AnonymousUser()
     try:
-        return User.objects.get(pk=user_id, is_active=True)
+        # a deactivated student is signed out on their next request
+        return (
+            User.objects.filter(pk=user_id, is_active=True)
+            .exclude(student_profile__is_active=False)
+            .get()
+        )
     except User.DoesNotExist:
         # Clean up invalid session
         session = _get_portal_session(request)
