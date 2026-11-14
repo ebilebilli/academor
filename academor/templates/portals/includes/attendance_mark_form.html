@@ -49,7 +49,7 @@
     <div class="vr mx-2" style="opacity: 0.3;"></div>
 
     <label class="portal-bulk-label" style="cursor: pointer;">
-      <input type="checkbox" id="select-all-checkbox" class="me-2" style="width: 18px; height: 18px; cursor: pointer;" checked>
+      <input type="checkbox" id="select-all-checkbox" class="ds-check me-2" checked>
       {% trans 'Select all' %}
     </label>
 
@@ -71,7 +71,7 @@
       <div class="portal-student-select">
         <input
           type="checkbox"
-          class="student-checkbox"
+          class="student-checkbox ds-check"
           name="selected_students"
           value="{{ student_pk }}"
           aria-label="{% trans 'Select' %} {{ field.label }}"

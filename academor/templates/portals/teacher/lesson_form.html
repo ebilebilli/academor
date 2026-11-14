@@ -96,15 +96,6 @@
           <span class="portal-lesson-panel__step">2</span>
           {% trans 'Kimə göndərilir' %}
         </h2>
-        {% if form.groups %}
-        <div class="portal-lesson-group-toolbar">
-          <label class="portal-lesson-select-all">
-            <input type="checkbox" id="lesson-select-all-groups" data-lesson-select-all-groups>
-            <span>{% trans 'Select all' %}</span>
-          </label>
-          <span class="portal-lesson-group-count text-muted small" data-lesson-group-count></span>
-        </div>
-        {% endif %}
       </div>
       <div class="portal-lesson-panel__body">
         <p class="portal-lesson-hint mb-3">{% trans 'Dərsi qrupa, birbaşa tələbələrə və ya hər ikisinə göndərin. Qrupu olmayan tələbələri aşağıdan seçin.' %}</p>
@@ -112,14 +103,7 @@
         {% if form.groups %}
         <p class="portal-lesson-label mb-2">{{ form.groups.label }}</p>
         {% if form.groups.field.queryset.exists %}
-        <div class="portal-lesson-group-grid" role="group" aria-label="{{ form.groups.label }}">
-          {% for checkbox in form.groups %}
-          <label class="portal-lesson-group-card" data-lesson-group-card>
-            {{ checkbox.tag }}
-            <span class="portal-lesson-group-card__label">{{ checkbox.choice_label }}</span>
-          </label>
-          {% endfor %}
-        </div>
+        {% include "portals/includes/pick_list.html" with field=form.groups variant="chips" tools=True label=form.groups.label %}
         {% else %}
         <p class="text-muted small">{% trans 'Hələ qrupunuz yoxdur.' %}</p>
         {% endif %}
@@ -136,23 +120,16 @@
         </div>
         {% endif %}
 
-        <details class="portal-lesson-students mt-3"{% if form.students.value %} open{% endif %}>
-          <summary class="portal-lesson-label">{{ form.students.label }}{% if form.group %} <span class="text-muted small fw-normal">— {% trans 'yalnız qrup seçilməyəndə' %}</span>{% endif %}</summary>
-          <p class="portal-lesson-hint mt-2 mb-2">{{ form.students.help_text }}</p>
-          <div class="portal-lesson-group-grid portal-lesson-student-grid" role="group" aria-label="{{ form.students.label }}">
-            {% for checkbox in form.students %}
-            <label class="portal-lesson-group-card">
-              {{ checkbox.tag }}
-              <span class="portal-lesson-group-card__label">{{ checkbox.choice_label }}</span>
-            </label>
-            {% empty %}
-            <p class="text-muted small mb-0">{% trans 'Hələ tələbəniz yoxdur.' %}</p>
-            {% endfor %}
-          </div>
+        <div class="portal-lesson-students mt-4">
+          <p class="portal-lesson-label mb-1">{{ form.students.label }}{% if form.group %} <span class="text-muted small fw-normal">— {% trans 'yalnız qrup seçilməyəndə' %}</span>{% endif %}</p>
+          <p class="portal-lesson-hint mb-2">{{ form.students.help_text }}</p>
+          {% trans 'Tələbə axtar...' as student_search_placeholder %}
+          {% trans 'Hələ tələbəniz yoxdur.' as no_students_text %}
+          {% include "portals/includes/pick_list.html" with field=form.students variant="list" searchable=True tools=True label=form.students.label search_placeholder=student_search_placeholder empty_text=no_students_text %}
           {% for error in form.students.errors %}
             <div class="portal-lesson-error mt-2">{{ error }}</div>
           {% endfor %}
-        </details>
+        </div>
 
         {% if form.show_service_field %}
         <div class="portal-lesson-field portal-lesson-field--narrow mt-3">
@@ -174,15 +151,8 @@
       <div class="portal-lesson-panel__body">
         <p class="portal-lesson-hint mb-2">{{ form.quizzes.help_text }}</p>
         {% if form.quizzes.field.queryset.exists %}
-        <input type="search" class="form-control form-control-sm mb-2 portal-lesson-quiz-search" placeholder="{% trans 'Quiz axtar...' %}" aria-label="{% trans 'Quiz axtar' %}" data-lesson-quiz-search>
-        <div class="portal-lesson-quiz-list" role="group" aria-label="{{ form.quizzes.label }}">
-          {% for checkbox in form.quizzes %}
-          <label class="portal-lesson-quiz-option" data-lesson-quiz-option>
-            {{ checkbox.tag }}
-            <span>{{ checkbox.choice_label }}</span>
-          </label>
-          {% endfor %}
-        </div>
+        {% trans 'Quiz axtar...' as quiz_search_placeholder %}
+        {% include "portals/includes/pick_list.html" with groups=form.quiz_option_groups variant="list" searchable=True tools=True label=form.quizzes.label search_placeholder=quiz_search_placeholder %}
         {% else %}
         <p class="text-muted small mb-0">{% trans 'Xidmətlərinizdə quiz tapılmadı.' %}</p>
         {% endif %}

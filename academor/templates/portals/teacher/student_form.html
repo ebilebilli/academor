@@ -28,14 +28,7 @@
 
       <div class="col-12">
         <span class="form-label d-block mb-2">{{ form.services.label }}</span>
-        <div class="portal-student-services" role="group" aria-label="{{ form.services.label }}">
-          {% for option in form.services %}
-          <div class="form-check form-check-inline">
-            {{ option.tag }}
-            <label class="form-check-label" for="{{ option.id_for_label }}">{{ option.choice_label }}</label>
-          </div>
-          {% endfor %}
-        </div>
+        {% include "portals/includes/pick_list.html" with field=form.services variant="chips" label=form.services.label %}
         <div class="form-text">{{ form.services.help_text }}</div>
         {% for error in form.services.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
       </div>

@@ -1,0 +1,66 @@
+{% load i18n %}
+{% comment %}
+Multi-select pick list for a CheckboxSelectMultiple field (or plain choices).
+
+  field        the bound field (its subwidgets are the options)  — or —
+  groups       [{'label': '…', 'options': [subwidget, …]}, …] for headed groups
+  variant      "chips" (short lists, inline pills) or "list" (rows, scrolls)
+  searchable   True: a search box above the options
+  tools        True: "N selected", "Select all", "Clear" above the options
+  label        accessible name for the option group
+  empty_text   shown when there are no options at all
+
+Native checkboxes stay in the DOM (visually hidden, still focusable), so forms post as before.
+{% endcomment %}
+<div class="ds-pick ds-pick--{{ variant|default:'list' }}" data-pick>
+  {% if searchable or tools %}
+  <div class="ds-pick__bar">
+    {% if searchable %}
+    <label class="ds-pick__search">
+      <i class="ti ti-search" aria-hidden="true"></i>
+      <span class="visually-hidden">{% trans 'Axtar' %}</span>
+      <input type="search" class="ds-pick__search-input" placeholder="{% if search_placeholder %}{{ search_placeholder }}{% else %}{% trans 'Axtar…' %}{% endif %}" autocomplete="off" data-pick-search>
+    </label>
+    {% endif %}
+    {% if tools %}
+    <div class="ds-pick__tools">
+      <span class="ds-pick__count" data-pick-count data-suffix="{% trans 'seçilib' %}" aria-live="polite"></span>
+      <button type="button" class="ds-pick__tool" data-pick-all>{% trans 'Hamısını seç' %}</button>
+      <button type="button" class="ds-pick__tool" data-pick-clear>{% trans 'Təmizlə' %}</button>
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <div class="ds-pick__options" role="group"{% if label %} aria-label="{{ label }}"{% endif %}>
+    {% if groups %}
+      {% for group in groups %}
+      <div class="ds-pick__group" data-pick-group>
+        <p class="ds-pick__group-label">{{ group.label }}</p>
+        <div class="ds-pick__group-options">
+          {% for option in group.options %}
+          <label class="ds-pick__option{% if option.data.selected %} is-checked{% endif %}" data-pick-option>
+            {{ option.tag }}
+            <span class="ds-pick__box" aria-hidden="true"><i class="ti ti-check"></i></span>
+            <span class="ds-pick__text">{{ option.choice_label }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      {% for option in field %}
+      <label class="ds-pick__option{% if option.data.selected %} is-checked{% endif %}" data-pick-option>
+        {{ option.tag }}
+        <span class="ds-pick__box" aria-hidden="true"><i class="ti ti-check"></i></span>
+        <span class="ds-pick__text">{{ option.choice_label }}</span>
+      </label>
+      {% empty %}
+      <p class="ds-pick__none">{% if empty_text %}{{ empty_text }}{% else %}{% trans 'Seçim yoxdur.' %}{% endif %}</p>
+      {% endfor %}
+    {% endif %}
+  </div>
+  {% if searchable %}
+  <p class="ds-pick__none" data-pick-no-match hidden>{% trans 'Axtarışa uyğun nəticə yoxdur.' %}</p>
+  {% endif %}
+</div>
