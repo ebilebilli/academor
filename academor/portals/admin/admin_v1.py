@@ -1887,28 +1887,28 @@ class WeeklyStudentScoreAdmin(PortalModelAdmin):
         'student_display',
         'teacher_display',
         'study_group',
-        'week_start',
+        'score_date',
         'score_display',
         'updated_at',
     )
     list_display_links = ('student_display',)
-    list_filter = ('week_start', 'teacher', 'student__groups')
+    list_filter = ('score_date', 'teacher', 'student__groups')
     search_fields = (
         'student__user__username',
         'teacher__user__username',
         'comment',
     )
     autocomplete_fields = ('student', 'teacher', 'study_group')
-    date_hierarchy = 'week_start'
-    ordering = ('-week_start', '-updated_at', '-id')
+    date_hierarchy = 'score_date'
+    ordering = ('-score_date', '-updated_at', '-id')
     list_per_page = 25
     fieldsets = (
         (None, {
             'description': _(
-                'Weekly score out of 10 for a student. Teachers can also enter '
-                'scores from the portal weekly scores page.'
+                'Daily score out of 10 for a student. Teachers enter scores from the '
+                'portal daily scores page (today by default, or a day they pick).'
             ),
-            'fields': ('student', 'teacher', 'study_group', 'week_start'),
+            'fields': ('student', 'teacher', 'study_group', 'score_date'),
         }),
         ('Result', {
             'fields': ('score', 'comment', 'created_at', 'updated_at'),

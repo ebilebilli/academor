@@ -118,7 +118,7 @@ class StudentMultiGroupPortalTests(TestCase):
             student=self.student,
             teacher=self.teacher_a,
             study_group=self.group_a,
-            week_start=date(2026, 7, 6),
+            score_date=date(2026, 7, 6),
             score=7,
         )
         grouped = prepare_student_scores_with_groups(

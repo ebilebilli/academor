@@ -111,9 +111,12 @@
   }
 
   function readStateFromPanel(panel) {
-    var groupField = panel.querySelector("[data-weekly-group-field]");
+    var groupField = panel ? panel.querySelector("[data-weekly-group-field]") : null;
+    var dayInput = panel ? panel.querySelector("[data-daily-day-input]") : null;
+    var activeGroup = panel ? panel.querySelector("[data-weekly-group].is-active") : null;
     return {
-      group: groupField ? groupField.value : "all",
+      group: groupField ? groupField.value : (activeGroup ? activeGroup.getAttribute("data-weekly-group") : "all"),
+      day: dayInput ? dayInput.value : "",
     };
   }
 
@@ -288,6 +291,7 @@
       loadPanel(
         {
           group: params.group || search.get("group") || "all",
+          day: params.day || search.get("day") || "",
         },
         { pushState: false }
       );
@@ -299,7 +303,40 @@
       initSearch(initialPanel);
     }
 
-    var controller = { loadPanel: loadPanel };
+    /* day picker: today by default; an earlier day can be picked, never a future one */
+    function loadDay(day) {
+      if (!day) {
+        return;
+      }
+      var panel = mount.querySelector("[data-weekly-scores-panel]");
+      var state = readStateFromPanel(panel);
+      loadPanel({ group: state.group || "all", day: day });
+    }
+
+    app.addEventListener("change", function (event) {
+      var input = event.target.closest("[data-daily-day-input]");
+      if (!input || !app.contains(input)) {
+        return;
+      }
+      var max = input.getAttribute("max") || "";
+      var value = input.value || "";
+      if (max && value > max) {
+        value = max;
+        input.value = max;
+      }
+      loadDay(value);
+    });
+
+    app.addEventListener("click", function (event) {
+      var step = event.target.closest("[data-daily-day-step]");
+      if (!step || !app.contains(step) || step.disabled) {
+        return;
+      }
+      event.preventDefault();
+      loadDay(step.getAttribute("data-daily-day-step"));
+    });
+
+    var controller = { loadPanel: loadPanel, readState: readStateFromPanel };
     app.__weeklyScoresController = controller;
     return controller;
   }
@@ -327,8 +364,10 @@
     setWeeklyGroupActive(groupBtn);
     var controller = app.__weeklyScoresController || initWeeklyScoresApp(app);
     if (controller && typeof controller.loadPanel === "function") {
+      var dayInput = app.querySelector("[data-daily-day-input]");
       controller.loadPanel({
         group: groupBtn.getAttribute("data-weekly-group") || "all",
+        day: dayInput ? dayInput.value : "",
       });
     }
   }

@@ -73,9 +73,9 @@
           {% endif %}
         {% elif item.is_weekly_score %}
           {% if student %}
-            {% blocktrans with teacher=item.teacher_name week=item.week_label %}Your weekly score from {{ teacher }} for {{ week }} was published.{% endblocktrans %}
+            {% blocktrans with teacher=item.teacher_name day=item.week_label %}Your score from {{ teacher }} for {{ day }} was published.{% endblocktrans %}
           {% else %}
-            {% blocktrans with name=item.student_name teacher=item.teacher_name week=item.week_label %}{{ name }} — weekly score from {{ teacher }} for {{ week }}{% endblocktrans %}
+            {% blocktrans with name=item.student_name teacher=item.teacher_name day=item.week_label %}{{ name }} — score from {{ teacher }} for {{ day }}{% endblocktrans %}
           {% endif %}
         {% elif item.is_offer_notification %}
           {{ item.offer_notification_description }}

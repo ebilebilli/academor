@@ -795,3 +795,41 @@ strong.weekly-scores-readonly__value {
     white-space: normal;
   }
 }
+
+/* daily scores: day picker (today by default, earlier days allowed, never the future) */
+.weekly-scores-day__picker {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.weekly-scores-day__input {
+  width: auto;
+  min-width: 9.5rem;
+  font-weight: 600;
+}
+
+.weekly-scores-day__step {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--weekly-border, #e2e8f0);
+  border-radius: var(--radius-md, 10px);
+  background: var(--weekly-surface, #fff);
+  color: var(--weekly-text);
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.weekly-scores-day__step:hover:not(:disabled) {
+  background: var(--weekly-accent-subtle);
+  color: var(--weekly-accent);
+}
+
+.weekly-scores-day__step:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

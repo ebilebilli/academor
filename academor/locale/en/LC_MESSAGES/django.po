@@ -10767,6 +10767,126 @@ msgstr "A group is only a name used for filtering. Quiz, mock-test and notificat
 msgid "Pick an existing login account, or create one under Users with role Student — a profile is created automatically. Assign active service enrollments below — quizzes and classrooms follow those services. Study groups are only names for filtering. Inactive students cannot sign in and disappear from the portal lists; their attendance rows stay."
 msgstr "Pick an existing login account, or create one under Users with role Student — a profile is created automatically. Assign active service enrollments below — quizzes and classrooms follow those services. Study groups are only names for filtering. Inactive students cannot sign in and disappear from the portal lists; their attendance rows stay."
 
+msgid "Bu gün üçün bütün şagirdlər artıq qiymətləndirilib."
+msgstr "All students are already scored for this day."
+
+msgid "Günlük orta bal"
+msgstr "Daily average score"
+
+msgid "Günlük qiymət"
+msgstr "Daily score"
+
+msgid "Günlük qiymətləndirmə"
+msgstr "Daily scoring"
+
+msgid "Günlük qiymətləndirmələr"
+msgstr "Daily scores"
+
+msgid "Günlük qiymətlər"
+msgstr "Daily scores"
+
+msgid "Hələ günlük bal qeydə alınmayıb."
+msgstr "No daily scores recorded yet."
+
+msgid "Hələ günlük qiymət yoxdur"
+msgstr "No daily scores yet"
+
+msgid "Hələ günlük qiymət yoxdur."
+msgstr "No daily scores yet."
+
+msgid "Hər şagird üçün gündəlik 10 bal üzrə qiymət verin."
+msgstr "Give each student a daily score out of 10."
+
+msgid "Hər şagird üçün hər qrupda gündə bir bal verilir. Gün avtomatik bu gündür, istəsəniz əvvəlki günü seçə bilərsiniz. Bal saxlanandan sonra dəyişmək olmur."
+msgstr "Each student gets one score per group per day. The day is today by default; you can pick an earlier day. A saved score cannot be changed."
+
+msgid "Müəllim bal verdikdən sonra burada görünəcək."
+msgstr "It will appear here once the teacher gives a score."
+
+msgid "Müəlliminiz bal verdikcə burada görünəcək."
+msgstr "Scores from your teacher will appear here."
+
+msgid "Növbəti gün"
+msgstr "Next day"
+
+msgid "Quiz tarixçəsi və günlük qiymətlərə baxın."
+msgstr "See quiz history and daily scores."
+
+msgid "Seçilmiş gün"
+msgstr "Selected day"
+
+msgid "günlük bal · orta"
+msgstr "daily scores · average"
+
+msgid "Əvvəlki gün"
+msgstr "Previous day"
+
+msgid "%(name)s — score from %(teacher)s for %(day)s"
+msgstr "%(name)s — score from %(teacher)s for %(day)s"
+
+msgid "All scores for this day are already saved."
+msgstr "All scores for this day are already saved."
+
+msgid "Average daily score"
+msgstr "Average daily score"
+
+msgid "Choose a valid day."
+msgstr "Choose a valid day."
+
+msgid "Daily assessment"
+msgstr "Daily assessment"
+
+msgid "Daily average"
+msgstr "Daily average"
+
+msgid "Daily grades will appear here once they are recorded."
+msgstr "Daily grades will appear here once they are recorded."
+
+msgid "Daily student score"
+msgstr "Daily student score"
+
+msgid "Daily student scores"
+msgstr "Daily student scores"
+
+msgid "Day the score is for."
+msgstr "Day the score is for."
+
+msgid "Group the score was given in; empty for a student without a group."
+msgstr "Group the score was given in; empty for a student without a group."
+
+msgid "One score per teacher, student, group and day."
+msgstr "One score per teacher, student, group and day."
+
+msgid "Quiz & daily scores"
+msgstr "Quiz & daily scores"
+
+msgid "Score out of 10 for the day."
+msgstr "Score out of 10 for the day."
+
+msgid "Scores saved."
+msgstr "Scores saved."
+
+msgid "Teacher daily score out of 10 for each student."
+msgstr "Teacher daily score out of 10 for each student."
+
+msgid "The date is the scored day (today by default; earlier days can be picked)."
+msgstr "The date is the scored day (today by default; earlier days can be picked)."
+
+msgid "This score is already saved and cannot be changed."
+msgstr "This score is already saved and cannot be changed."
+
+msgid "You cannot score a future day."
+msgstr "You cannot score a future day."
+
+msgid "You cannot score this student for the selected group."
+msgstr "You cannot score this student for the selected group."
+
+msgid "Your score from %(teacher)s for %(day)s was published."
+msgstr "Your score from %(teacher)s for %(day)s was published."
+
+msgid "Daily scores"
+msgstr "Daily scores"
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Try again in the next campaign — we will let you know."
 

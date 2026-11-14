@@ -1,7 +1,7 @@
 {% extends "portals/base.html" %}
 {% load static i18n portal_tags %}
 
-{% block title %}{% trans 'Həftəlik qiymətlər' %}{% endblock %}
+{% block title %}{% trans 'Günlük qiymətlər' %}{% endblock %}
 
 {% block extra_css %}
 {% endblock %}
@@ -17,8 +17,8 @@
   data-msg-save-failed="{% filter escapejs %}{% trans 'Could not save.' %}{% endfilter %}"
 >
   {% url 'portals:teacher-scores' as teacher_scores_url %}
-  {% trans 'Həftəlik qiymətlər' as weekly_scores_page_title %}
-  {% trans 'Hər şagird üçün həftəlik 10 bal üzrə qiymət verin.' as weekly_scores_page_subtitle %}
+  {% trans 'Günlük qiymətlər' as weekly_scores_page_title %}
+  {% trans 'Hər şagird üçün gündəlik 10 bal üzrə qiymət verin.' as weekly_scores_page_subtitle %}
   {% trans 'Digər qiymətlər' as weekly_scores_action_label %}
   {% include "portals/includes/portal_page_hero.html" with title=weekly_scores_page_title subtitle=weekly_scores_page_subtitle icon="ti-calendar-stats" stickers=True action_url=teacher_scores_url action_label=weekly_scores_action_label action_icon="ti-star" %}
 

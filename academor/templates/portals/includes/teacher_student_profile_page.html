@@ -72,7 +72,7 @@
     <a class="portal-student-segment{% if active_tab == 'weekly-scores' %} is-active{% endif %}" href="?{% if profile_active_group_id %}from_group={{ profile_active_group_id }}&{% endif %}tab=weekly-scores" data-tab="weekly-scores"{% if active_tab == 'weekly-scores' %} aria-current="page"{% endif %}>
       <span class="portal-student-segment__icon portal-student-segment__icon--weekly" aria-hidden="true"><i class="ti ti-calendar-stats"></i></span>
       <span class="portal-student-segment__body">
-        <span class="portal-student-segment__label">{% trans 'Həftəlik qiymət' %}</span>
+        <span class="portal-student-segment__label">{% trans 'Günlük qiymət' %}</span>
         <em class="portal-student-segment__count">{{ weekly_scores|length }}</em>
       </span>
     </a>

@@ -961,10 +961,16 @@ class TeacherWeeklyScoresView(TeacherRequiredMixin, View):
         group = request.GET.get('group') or request.POST.get('group') or 'all'
         return str(group)
 
+    @staticmethod
+    def _resolve_day(request):
+        """Scored day: ?day=YYYY-MM-DD (or the posted one); today when missing."""
+        return request.POST.get('day') or request.GET.get('day') or None
+
     def _board_context(self, request, teacher):
         group = self._resolve_group(request)
         return build_teacher_weekly_score_view(
             teacher.pk,
+            score_date_iso=self._resolve_day(request),
             group_id=group,
         )
 
@@ -997,16 +1003,16 @@ class TeacherWeeklyScoresView(TeacherRequiredMixin, View):
 
         teacher = get_teacher_profile(request.portal_user)
         ctx = self._board_context(request, teacher)
-        week_start = ctx['week_value']
+        score_date = ctx['day_value']
         student_ids = rows_open_for_scoring(
             ctx['rows'],
             teacher_id=teacher.pk,
-            week_start=week_start,
+            score_date=score_date,
         )
         is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
 
         if not ctx.get('has_any_editable_rows'):
-            message = _('All weekly scores for this week are already saved.')
+            message = _('All scores for this day are already saved.')
             if is_ajax:
                 return JsonResponse({'ok': False, 'message': message}, status=400)
             messages.info(request, message)
@@ -1026,7 +1032,8 @@ class TeacherWeeklyScoresView(TeacherRequiredMixin, View):
         try:
             result = save_teacher_weekly_scores(
                 teacher_id=teacher.pk,
-                week_start=ctx['week_value'],
+                # the posted day itself: a future one must be refused, not moved to today
+                score_date=self._resolve_day(request) or score_date,
                 entries=entries,
             )
         except ValidationError as exc:
@@ -1038,7 +1045,7 @@ class TeacherWeeklyScoresView(TeacherRequiredMixin, View):
 
         saved = result['saved']
         if saved:
-            message = _('Weekly scores saved.')
+            message = _('Scores saved.')
             level = 'success'
         elif result.get('skipped'):
             message = _('All entered scores were already saved.')
@@ -1053,7 +1060,9 @@ class TeacherWeeklyScoresView(TeacherRequiredMixin, View):
 
         messages.success(request, message) if saved else messages.info(request, message)
         group = request.POST.get('group') or ctx.get('active_group', 'all')
-        url = reverse('portals:teacher-weekly-scores')
+        params = {'day': score_date}
         if group != 'all':
-            url = f'{url}?group={group}'
-        return redirect(url)
+            params['group'] = group
+        from urllib.parse import urlencode
+
+        return redirect(f"{reverse('portals:teacher-weekly-scores')}?{urlencode(params)}")

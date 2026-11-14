@@ -34,7 +34,7 @@
   <link rel="stylesheet" href="{% static 'portals/css/portal-shell.css' %}?v=20260911a">
   <link rel="stylesheet" href="{% static 'portals/css/portal-hero.css' %}?v=20261030a">
   {% if portal_role == 'teacher' or portal_role == 'student' or portal_role == 'parent' %}
-  <link rel="stylesheet" href="{% static 'portals/css/weekly-scores.css' %}">
+  <link rel="stylesheet" href="{% static 'portals/css/weekly-scores.css' %}?v=20261114d">
   {% endif %}
   {% block extra_css %}{% endblock %}
   <style>
@@ -109,7 +109,7 @@
   {% endif %}
   {% block extra_js %}{% endblock %}
   {% if portal_role == 'teacher' %}
-  <script defer src="{% static 'portals/js/weekly-scores.js' %}?v=20260704c" data-portal-page-script="true"></script>
+  <script defer src="{% static 'portals/js/weekly-scores.js' %}?v=20261114d" data-portal-page-script="true"></script>
   {% endif %}
   <script>
   (function () {

@@ -10919,6 +10919,126 @@ msgstr "Группа — это только название для фильт�
 msgid "Pick an existing login account, or create one under Users with role Student — a profile is created automatically. Assign active service enrollments below — quizzes and classrooms follow those services. Study groups are only names for filtering. Inactive students cannot sign in and disappear from the portal lists; their attendance rows stay."
 msgstr "Выберите существующий аккаунт или создайте его в разделе «Пользователи» с ролью «Ученик» — профиль создастся автоматически. Ниже назначьте активные услуги — квизы и учебники открываются по ним. Группы — это только названия для фильтрации. Неактивный ученик не может войти и скрыт в списках портала; его записи посещаемости остаются."
 
+msgid "Bu gün üçün bütün şagirdlər artıq qiymətləndirilib."
+msgstr "Все ученики за этот день уже оценены."
+
+msgid "Günlük orta bal"
+msgstr "Средний дневной балл"
+
+msgid "Günlük qiymət"
+msgstr "Дневная оценка"
+
+msgid "Günlük qiymətləndirmə"
+msgstr "Ежедневное оценивание"
+
+msgid "Günlük qiymətləndirmələr"
+msgstr "Ежедневные оценки"
+
+msgid "Günlük qiymətlər"
+msgstr "Ежедневные оценки"
+
+msgid "Hələ günlük bal qeydə alınmayıb."
+msgstr "Дневных оценок пока нет."
+
+msgid "Hələ günlük qiymət yoxdur"
+msgstr "Дневных оценок пока нет"
+
+msgid "Hələ günlük qiymət yoxdur."
+msgstr "Дневных оценок пока нет."
+
+msgid "Hər şagird üçün gündəlik 10 bal üzrə qiymət verin."
+msgstr "Ставьте каждому ученику дневную оценку по 10-балльной шкале."
+
+msgid "Hər şagird üçün hər qrupda gündə bir bal verilir. Gün avtomatik bu gündür, istəsəniz əvvəlki günü seçə bilərsiniz. Bal saxlanandan sonra dəyişmək olmur."
+msgstr "Каждый ученик получает одну оценку в группе за день. По умолчанию выбран сегодняшний день, можно выбрать более ранний. Сохранённую оценку изменить нельзя."
+
+msgid "Müəllim bal verdikdən sonra burada görünəcək."
+msgstr "Появится здесь, когда преподаватель поставит оценку."
+
+msgid "Müəlliminiz bal verdikcə burada görünəcək."
+msgstr "Оценки преподавателя будут появляться здесь."
+
+msgid "Növbəti gün"
+msgstr "Следующий день"
+
+msgid "Quiz tarixçəsi və günlük qiymətlərə baxın."
+msgstr "История квизов и ежедневные оценки."
+
+msgid "Seçilmiş gün"
+msgstr "Выбранный день"
+
+msgid "günlük bal · orta"
+msgstr "дневных оценок · средняя"
+
+msgid "Əvvəlki gün"
+msgstr "Предыдущий день"
+
+msgid "%(name)s — score from %(teacher)s for %(day)s"
+msgstr "%(name)s — оценка от %(teacher)s за %(day)s"
+
+msgid "All scores for this day are already saved."
+msgstr "Все оценки за этот день уже сохранены."
+
+msgid "Average daily score"
+msgstr "Средний дневной балл"
+
+msgid "Choose a valid day."
+msgstr "Выберите корректный день."
+
+msgid "Daily assessment"
+msgstr "Ежедневное оценивание"
+
+msgid "Daily average"
+msgstr "Дневное среднее"
+
+msgid "Daily grades will appear here once they are recorded."
+msgstr "Дневные оценки появятся здесь после выставления."
+
+msgid "Daily student score"
+msgstr "Дневная оценка ученика"
+
+msgid "Daily student scores"
+msgstr "Дневные оценки учеников"
+
+msgid "Day the score is for."
+msgstr "День, за который поставлена оценка."
+
+msgid "Group the score was given in; empty for a student without a group."
+msgstr "Группа, в которой поставлена оценка; пусто для ученика без группы."
+
+msgid "One score per teacher, student, group and day."
+msgstr "Одна оценка на преподавателя, ученика, группу и день."
+
+msgid "Quiz & daily scores"
+msgstr "Квизы и дневные оценки"
+
+msgid "Score out of 10 for the day."
+msgstr "Оценка за день по 10-балльной шкале."
+
+msgid "Scores saved."
+msgstr "Оценки сохранены."
+
+msgid "Teacher daily score out of 10 for each student."
+msgstr "Дневная оценка преподавателя каждому ученику по 10-балльной шкале."
+
+msgid "The date is the scored day (today by default; earlier days can be picked)."
+msgstr "Дата — день оценки (по умолчанию сегодня; можно выбрать более ранний)."
+
+msgid "This score is already saved and cannot be changed."
+msgstr "Эта оценка уже сохранена и не может быть изменена."
+
+msgid "You cannot score a future day."
+msgstr "Нельзя ставить оценку за будущий день."
+
+msgid "You cannot score this student for the selected group."
+msgstr "Вы не можете оценить этого ученика в выбранной группе."
+
+msgid "Your score from %(teacher)s for %(day)s was published."
+msgstr "Ваша оценка от %(teacher)s за %(day)s опубликована."
+
+msgid "Daily scores"
+msgstr "Ежедневные оценки"
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Попробуйте в следующей акции — мы сообщим."
 

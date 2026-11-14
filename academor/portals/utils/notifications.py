@@ -432,8 +432,7 @@ def _serialize_weekly_score_notification(row: PortalNotification, *, role: str) 
             'delete_url': reverse('portals:notification-delete', kwargs={'pk': row.pk}),
         }
 
-    week_end = record.week_start + timedelta(days=6)
-    week_label = f'{record.week_start:%d.%m.%Y} – {week_end:%d.%m.%Y}'
+    week_label = f'{record.score_date:%d.%m.%Y}'  # the scored day (scores were weekly once)
     return {
         'id': row.pk,
         'kind': row.kind,
@@ -445,7 +444,7 @@ def _serialize_weekly_score_notification(row: PortalNotification, *, role: str) 
         'quiz_topic': week_label,
         'week_label': week_label,
         'teacher_name': record.teacher.full_name,
-        'grading_mode_label': _('Weekly assessment'),
+        'grading_mode_label': _('Daily assessment'),
         'total_score': float(record.score),
         'max_value': WEEKLY_SCORE_MAX,
         'score_detail_url': _weekly_score_detail_url(role=role),

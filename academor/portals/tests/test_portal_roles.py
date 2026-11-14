@@ -306,14 +306,14 @@ class PortalRoleMultiGroupTests(PortalRoleFixtureMixin, TestCase):
             student=self.student,
             teacher=self.teacher_a,
             study_group=self.group_a,
-            week_start=date(2026, 7, 6),
+            score_date=date(2026, 7, 6),
             score=8,
         )
         WeeklyStudentScore.objects.create(
             student=self.student,
             teacher=self.teacher_b,
             study_group=self.group_b,
-            week_start=date(2026, 7, 6),
+            score_date=date(2026, 7, 6),
             score=4,
         )
 

@@ -1,10 +1,18 @@
-"""Weekly student scores (0–10 per week) — teacher grading helpers."""
+"""Daily student scores (0–10 per day) — teacher grading helpers.
+
+Scores used to be weekly; the helpers keep their ``weekly`` names so callers stay the
+same, but every score is for one day (``WeeklyStudentScore.score_date``). The teacher
+scores today by default and may pick an earlier day; never a future one. A student
+without a group gets one row of their own (``group_id`` None).
+"""
 
 from datetime import date, timedelta
 from decimal import Decimal, InvalidOperation
 
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
+from django.utils import timezone
+from django.utils.dateparse import parse_date
 from django.utils.translation import gettext as _
 
 from portals.models import StudyGroup, WeeklyStudentScore
@@ -13,13 +21,13 @@ from portals.utils.cache_utils import cached_query, invalidate_model_cache
 from portals.utils.queries import get_teacher_weekly_score_students
 from portals.utils.teacher_access import get_teacher_student
 from portals.utils.teacher_courses import teacher_groups_queryset
-from portals.utils.teacher_schedule import parse_week_start
+
+NO_GROUP_KEY = 'none'
 
 
 def serialize_weekly_score(row):
     from portals.utils.quiz_stats import quiz_average_score_tier, quiz_score_percent
 
-    week_end = row.week_start + timedelta(days=6)
     pct = quiz_score_percent(float(row.score), WEEKLY_SCORE_MAX)
     group_name = ''
     if row.study_group_id and getattr(row, 'study_group', None):
@@ -32,44 +40,42 @@ def serialize_weekly_score(row):
         'teacher_name': row.teacher.full_name,
         'study_group_id': row.study_group_id,
         'group_name': group_name,
-        'week_start': row.week_start,
-        'week_end': week_end,
+        'score_date': row.score_date,
         'score': float(row.score),
         'max_score': WEEKLY_SCORE_MAX,
         'tier': quiz_average_score_tier(pct),
         'comment': row.comment,
         'updated_at': row.updated_at,
-        'date': row.week_start,
+        'date': row.score_date,
     }
 
 
-def current_week_start():
-    return parse_week_start(None)
+def today():
+    return timezone.localdate()
 
 
-def is_current_week(week_start):
-    return _normalize_week_start(week_start) == current_week_start()
-
-
-def build_weekly_score_calendar(week_start=None):
-    week_start = _normalize_week_start(week_start) if week_start else current_week_start()
-    week_end = week_start + timedelta(days=6)
-    return {
-        'week_start': week_start,
-        'week_end': week_end,
-        'prev_week': (week_start - timedelta(days=7)).isoformat(),
-        'next_week': (week_start + timedelta(days=7)).isoformat(),
-    }
-
-
-def _normalize_week_start(week_start):
-    if isinstance(week_start, date):
-        parsed = week_start
+def parse_score_date(raw_value):
+    """The scored day: the given ISO date, today when missing/invalid, never in the future."""
+    if isinstance(raw_value, date):
+        parsed = raw_value
     else:
-        parsed = parse_week_start(str(week_start) if week_start else None)
-    if parsed.weekday() != 0:
-        parsed = parsed - timedelta(days=parsed.weekday())
+        parsed = parse_date(str(raw_value).strip()) if raw_value else None
+    current = today()
+    if parsed is None or parsed > current:
+        return current
     return parsed
+
+
+def build_score_day_calendar(score_date=None):
+    day = parse_score_date(score_date)
+    current = today()
+    return {
+        'date': day,
+        'is_today': day == current,
+        'max_date': current,
+        'prev_day': (day - timedelta(days=1)).isoformat(),
+        'next_day': (day + timedelta(days=1)).isoformat() if day < current else '',
+    }
 
 
 def _parse_score_value(raw_value):
@@ -87,8 +93,12 @@ def _parse_score_value(raw_value):
     return value.quantize(Decimal('0.1'))
 
 
+def _row_key(student_id, group_id):
+    return f"{student_id}_{group_id if group_id else NO_GROUP_KEY}"
+
+
 def _expand_weekly_score_rows(students):
-    """One grading card per student-group membership."""
+    """One grading card per student-group membership; one card for a student without a group."""
     rows = []
     for student in students:
         group_ids = student.get('group_ids') or []
@@ -98,10 +108,20 @@ def _expand_weekly_score_rows(students):
             for key, value in student.items()
             if key not in ('group_ids', 'group_names')
         }
+        if not group_ids:
+            rows.append({
+                **base,
+                'row_key': _row_key(student['id'], None),
+                'group_id': None,
+                'group_name': '',
+                'group_ids': [],
+                'group_names': [],
+            })
+            continue
         for group_id, group_name in zip(group_ids, group_names):
             rows.append({
                 **base,
-                'row_key': f"{student['id']}_{group_id}",
+                'row_key': _row_key(student['id'], group_id),
                 'group_id': group_id,
                 'group_name': group_name,
                 'group_ids': [group_id],
@@ -126,29 +146,38 @@ def _build_group_tabs_for_teacher(teacher_id, all_rows):
             'student_count': len(group_rows),
             'scored_count': sum(1 for row in group_rows if row.get('score') is not None),
         })
+    no_group_rows = [row for row in all_rows if not row.get('group_id')]
+    if no_group_rows:
+        groups.append({
+            'id': NO_GROUP_KEY,
+            'name': _('Qrupsuz'),
+            'student_count': len(no_group_rows),
+            'scored_count': sum(1 for row in no_group_rows if row.get('score') is not None),
+        })
     return groups
 
 
-def _weekly_score_lookup(teacher_id, week_start, student_ids, group_ids):
-    if not student_ids or not group_ids:
+def _weekly_score_lookup(teacher_id, score_date, student_ids, group_ids):
+    """(student_id, group_id or None) -> score row of that day."""
+    if not student_ids:
         return {}
     return {
         (row.student_id, row.study_group_id): row
         for row in WeeklyStudentScore.objects.filter(
             teacher_id=teacher_id,
-            week_start=week_start,
+            score_date=score_date,
             student_id__in=student_ids,
-            study_group_id__in=group_ids,
         ).select_related('student', 'teacher', 'study_group')
+        if row.study_group_id is None or row.study_group_id in group_ids
     }
 
 
 @cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
-def get_teacher_weekly_score_board(teacher_id, week_start_iso):
-    week_start = _normalize_week_start(week_start_iso)
+def get_teacher_weekly_score_board(teacher_id, score_date_iso):
+    score_date = parse_score_date(score_date_iso)
     students = get_teacher_weekly_score_students(teacher_id)
     if not students:
-        calendar = build_weekly_score_calendar(week_start)
+        calendar = build_score_day_calendar(score_date)
         return {
             'calendar': calendar,
             'rows': [],
@@ -160,8 +189,8 @@ def get_teacher_weekly_score_board(teacher_id, week_start_iso):
 
     expanded_rows = _expand_weekly_score_rows(students)
     student_ids = {row['id'] for row in expanded_rows}
-    group_ids = {row['group_id'] for row in expanded_rows}
-    existing = _weekly_score_lookup(teacher_id, week_start, student_ids, group_ids)
+    group_ids = {row['group_id'] for row in expanded_rows if row['group_id']}
+    existing = _weekly_score_lookup(teacher_id, score_date, student_ids, group_ids)
 
     rows = []
     scored_count = 0
@@ -180,7 +209,7 @@ def get_teacher_weekly_score_board(teacher_id, week_start_iso):
 
     student_count = len(rows)
     return {
-        'calendar': build_weekly_score_calendar(week_start),
+        'calendar': build_score_day_calendar(score_date),
         'rows': rows,
         'groups': _build_group_tabs_for_teacher(teacher_id, rows),
         'scored_count': scored_count,
@@ -189,12 +218,14 @@ def get_teacher_weekly_score_board(teacher_id, week_start_iso):
     }
 
 
-def build_teacher_weekly_score_view(teacher_id, week_start_iso=None, group_id=None):
-    week_start = _normalize_week_start(week_start_iso) if week_start_iso else current_week_start()
-    board = get_teacher_weekly_score_board(teacher_id, week_start.isoformat())
+def build_teacher_weekly_score_view(teacher_id, score_date_iso=None, group_id=None):
+    score_date = parse_score_date(score_date_iso)
+    board = get_teacher_weekly_score_board(teacher_id, score_date.isoformat())
     active_group = str(group_id or 'all')
     rows = board['rows']
-    if active_group != 'all':
+    if active_group == NO_GROUP_KEY:
+        rows = [row for row in rows if not row.get('group_id')]
+    elif active_group != 'all':
         try:
             selected_group_id = int(active_group)
         except (TypeError, ValueError):
@@ -223,8 +254,7 @@ def build_teacher_weekly_score_view(teacher_id, week_start_iso=None, group_id=No
         'total_scored_count': board['scored_count'],
         'total_student_count': board['student_count'],
         'progress_percent': round(100 * scored_count / student_count) if student_count else 0,
-        'week_value': board['calendar']['week_start'].isoformat(),
-        'is_current_week': True,
+        'day_value': board['calendar']['date'].isoformat(),
         'has_editable_rows': editable_count > 0,
         'has_any_editable_rows': total_editable_count > 0,
     }
@@ -235,7 +265,7 @@ def get_student_weekly_scores(student_id):
     qs = (
         WeeklyStudentScore.objects.filter(student_id=student_id)
         .select_related('student', 'teacher', 'teacher__user', 'study_group')
-        .order_by('-week_start', '-updated_at', '-id')[:52]
+        .order_by('-score_date', '-updated_at', '-id')[:52]
     )
     return [serialize_weekly_score(row) for row in qs]
 
@@ -245,7 +275,7 @@ def get_teacher_weekly_scores_list(teacher_id):
     qs = (
         WeeklyStudentScore.objects.filter(teacher_id=teacher_id)
         .select_related('student', 'teacher', 'teacher__user', 'student__user', 'study_group')
-        .order_by('-week_start', '-updated_at', '-id')[:200]
+        .order_by('-score_date', '-updated_at', '-id')[:200]
     )
     return [serialize_weekly_score(row) for row in qs]
 
@@ -260,7 +290,7 @@ def get_teacher_student_weekly_scores(teacher_id, student_id):
             student_id=student_id,
         )
         .select_related('student', 'teacher', 'teacher__user', 'study_group')
-        .order_by('-week_start', '-updated_at', '-id')[:52]
+        .order_by('-score_date', '-updated_at', '-id')[:52]
     )
     return [serialize_weekly_score(row) for row in qs]
 
@@ -275,27 +305,25 @@ def _entry_touches_locked_score(existing, score_value, comment):
     return False
 
 
-def _existing_scored_pairs(teacher_id, week_start, rows):
+def _existing_scored_pairs(teacher_id, score_date, rows):
     if not rows:
         return set()
     student_ids = {row['id'] for row in rows}
-    group_ids = {row['group_id'] for row in rows}
     return set(
         WeeklyStudentScore.objects.filter(
             teacher_id=teacher_id,
-            week_start=week_start,
+            score_date=score_date,
             student_id__in=student_ids,
-            study_group_id__in=group_ids,
         ).values_list('student_id', 'study_group_id')
     )
 
 
-def rows_open_for_scoring(rows, *, teacher_id, week_start):
-    """Return board rows that may receive a new weekly score."""
+def rows_open_for_scoring(rows, *, teacher_id, score_date):
+    """Return board rows that may still receive a score for that day."""
     if not rows:
         return []
-    week_start = _normalize_week_start(week_start)
-    scored_pairs = _existing_scored_pairs(teacher_id, week_start, rows)
+    score_date = parse_score_date(score_date)
+    scored_pairs = _existing_scored_pairs(teacher_id, score_date, rows)
     return [
         row for row in rows
         if (row['id'], row['group_id']) not in scored_pairs
@@ -310,15 +338,31 @@ def _resolve_teacher_group(teacher_id, student_id, group_id):
     ).first()
 
 
-def save_teacher_weekly_scores(*, teacher_id, week_start, entries):
-    """
-    Create weekly scores for teacher-owned students (one save per student per group per week).
+def _student_has_teacher_group(teacher_id, student_id):
+    return StudyGroup.objects.filter(
+        teacher_id=teacher_id,
+        is_active=True,
+        is_main_register=False,
+        students__pk=student_id,
+    ).exists()
 
+
+def save_teacher_weekly_scores(*, teacher_id, score_date, entries):
+    """
+    Create daily scores for teacher-owned students (one per student per group per day).
+
+    ``score_date`` is today or an earlier day the teacher picked; a future day is refused.
     Existing scores cannot be changed or removed through the teacher portal.
     """
-    week_start = _normalize_week_start(week_start)
-    if not is_current_week(week_start):
-        raise ValidationError(_('You can only score students for the current week.'))
+    if isinstance(score_date, date):
+        requested = score_date
+    else:
+        requested = parse_date(str(score_date or '').strip())
+    if requested is None:
+        raise ValidationError(_('Choose a valid day.'))
+    if requested > today():
+        raise ValidationError(_('You cannot score a future day.'))
+    score_date = requested
     saved = 0
     skipped = 0
     errors = []
@@ -326,13 +370,18 @@ def save_teacher_weekly_scores(*, teacher_id, week_start, entries):
     with transaction.atomic():
         for entry in entries:
             student_id = entry.get('student_id')
-            group_id = entry.get('group_id')
-            if not student_id or not group_id:
+            group_id = entry.get('group_id') or None
+            if not student_id:
                 continue
             if not get_teacher_student(teacher_id, student_id):
                 errors.append(_('You cannot score this student.'))
                 continue
-            if not _resolve_teacher_group(teacher_id, student_id, group_id):
+            if group_id is None:
+                # a score without a group is for a student who has none with this teacher
+                if _student_has_teacher_group(teacher_id, student_id):
+                    errors.append(_('You cannot score this student for the selected group.'))
+                    continue
+            elif not _resolve_teacher_group(teacher_id, student_id, group_id):
                 errors.append(_('You cannot score this student for the selected group.'))
                 continue
 
@@ -347,7 +396,7 @@ def save_teacher_weekly_scores(*, teacher_id, week_start, entries):
                 teacher_id=teacher_id,
                 student_id=student_id,
                 study_group_id=group_id,
-                week_start=week_start,
+                score_date=score_date,
             ).first()
 
             if existing:
@@ -355,7 +404,7 @@ def save_teacher_weekly_scores(*, teacher_id, week_start, entries):
                     skipped += 1
                     continue
                 if _entry_touches_locked_score(existing, score_value, comment):
-                    errors.append(_('This weekly score is already saved and cannot be changed.'))
+                    errors.append(_('This score is already saved and cannot be changed.'))
                 else:
                     skipped += 1
                 continue
@@ -367,7 +416,7 @@ def save_teacher_weekly_scores(*, teacher_id, week_start, entries):
                 teacher_id=teacher_id,
                 student_id=student_id,
                 study_group_id=group_id,
-                week_start=week_start,
+                score_date=score_date,
                 score=score_value,
                 comment=comment,
             )

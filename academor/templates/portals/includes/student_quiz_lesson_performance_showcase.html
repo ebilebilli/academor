@@ -2,7 +2,7 @@
 <section class="portal-profile-performance" aria-label="{% trans 'Performance overview' %}">
   <header class="portal-profile-performance__header">
     <p class="portal-profile-performance__eyebrow">{% trans 'Performance overview' %}</p>
-    <h2 class="portal-profile-performance__title">{% trans 'Quiz & weekly scores' %}</h2>
+    <h2 class="portal-profile-performance__title">{% trans 'Quiz & daily scores' %}</h2>
   </header>
 
   <div class="portal-profile-performance__grid">
@@ -60,7 +60,7 @@
     {% if weekly_average %}
     <article
       class="portal-profile-performance__card portal-profile-performance__card--lesson portal-profile-performance--{{ weekly_average.tier|default:'empty' }}"
-      aria-label="{% trans 'Weekly average' %}"
+      aria-label="{% trans 'Daily average' %}"
     >
       <div class="portal-profile-performance__ring-wrap" aria-hidden="true">
         <div
@@ -78,16 +78,16 @@
       </div>
       <div class="portal-profile-performance__copy">
         <span class="portal-profile-performance__icon lesson"><i class="ti ti-calendar-stats" aria-hidden="true"></i></span>
-        <h3 class="portal-profile-performance__card-title">{% trans 'Average weekly score' %}</h3>
+        <h3 class="portal-profile-performance__card-title">{% trans 'Average daily score' %}</h3>
         <p class="portal-profile-performance__hint">
           {% if weekly_average.graded_count %}
             {% blocktrans count counter=weekly_average.graded_count %}
-              From {{ counter }} weekly grade out of 10.
+              From {{ counter }} daily grade out of 10.
             {% plural %}
-              From {{ counter }} weekly grades out of 10.
+              From {{ counter }} daily grades out of 10.
             {% endblocktrans %}
           {% else %}
-            {% trans 'Weekly grades will appear here once they are recorded.' %}
+            {% trans 'Daily grades will appear here once they are recorded.' %}
           {% endif %}
         </p>
         {% if weekly_average.graded_count %}

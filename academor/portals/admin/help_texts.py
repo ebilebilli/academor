@@ -180,13 +180,13 @@ ADMIN_HELP = {
         ],
     },
     'WeeklyStudentScore': {
-        'icon': 'W',
-        'title': _('Weekly scores'),
-        'summary': _('Teacher weekly score out of 10 for each student.'),
+        'icon': 'D',
+        'title': _('Daily scores'),
+        'summary': _('Teacher daily score out of 10 for each student.'),
         'where': _('Teachers enter from portal; students view their history.'),
         'tips': [
-            _('Week start must be Monday.'),
-            _('One score per teacher, student, and week.'),
+            _('The date is the scored day (today by default; earlier days can be picked).'),
+            _('One score per teacher, student, group and day.'),
         ],
     },
     'QuizCategory': {

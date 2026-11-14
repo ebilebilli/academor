@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.generic import RedirectView
 
 from portals.views.auth_views import PortalLoginView, PortalLogoutView, PortalSessionPingView
 from portals.views.profile_views import PortalProfileView
@@ -220,7 +221,12 @@ urlpatterns = [
     path('teacher/attendance/session/', TeacherSessionAttendanceView.as_view(), name='teacher-attendance-session'),
     path('teacher/attendance/new/', TeacherAttendanceCreateView.as_view(), name='teacher-attendance-create'),
     path('teacher/scores/', TeacherScoresListView.as_view(), name='teacher-scores'),
-    path('teacher/weekly-scores/', TeacherWeeklyScoresView.as_view(), name='teacher-weekly-scores'),
+    path('teacher/daily-scores/', TeacherWeeklyScoresView.as_view(), name='teacher-weekly-scores'),
+    # old address of the page (scores were weekly)
+    path(
+        'teacher/weekly-scores/',
+        RedirectView.as_view(pattern_name='portals:teacher-weekly-scores', query_string=True, permanent=False),
+    ),
     path('teacher/notifications/', TeacherNotificationsView.as_view(), name='teacher-notifications'),
     path('teacher/scores/<int:result_pk>/', TeacherScoreDetailView.as_view(), name='teacher-score-detail'),
     path('teacher/quizzes/', TeacherQuizzesListView.as_view(), name='teacher-quizzes'),

@@ -74,7 +74,9 @@ class WeeklyStudentScoreTests(TestCase):
         link_study_group_services(self.group, 'ielts')
         self.group.students.add(self.student)
 
-        self.week_start = date.today() - timedelta(days=date.today().weekday())
+        from django.utils import timezone
+
+        self.day = timezone.localdate()
         self.teacher_client = Client()
         _portal_client_login(self.teacher_client, self.teacher_user)
         self.student_client = Client()
@@ -96,7 +98,7 @@ class WeeklyStudentScoreTests(TestCase):
     def test_teacher_can_save_weekly_score(self):
         result = save_teacher_weekly_scores(
             teacher_id=self.teacher.pk,
-            week_start=self.week_start,
+            score_date=self.day,
             entries=[self._entry('8.5', 'Good week')],
         )
         self.assertEqual(result['saved'], 1)
@@ -104,7 +106,7 @@ class WeeklyStudentScoreTests(TestCase):
             teacher=self.teacher,
             student=self.student,
             study_group=self.group,
-            week_start=self.week_start,
+            score_date=self.day,
         )
         self.assertEqual(float(record.score), 8.5)
         self.assertEqual(record.comment, 'Good week')
@@ -115,34 +117,34 @@ class WeeklyStudentScoreTests(TestCase):
         with self.assertRaises(ValidationError):
             save_teacher_weekly_scores(
                 teacher_id=self.other_teacher.pk,
-                week_start=self.week_start,
+                score_date=self.day,
                 entries=[self._entry('7', '')],
             )
 
     def test_student_sees_weekly_scores_on_scores_page(self):
         save_teacher_weekly_scores(
             teacher_id=self.teacher.pk,
-            week_start=self.week_start,
+            score_date=self.day,
             entries=[self._entry('9', '')],
         )
         response = self.student_client.get(reverse('portals:student-scores'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Nəticələr və qiymətləndirmələr')
         self.assertContains(response, 'Quiz tarixçəsi')
-        self.assertContains(response, 'Həftəlik qiymətləndirmələr')
+        self.assertContains(response, 'Günlük qiymətləndirmələr')
         self.assertContains(response, '9')
 
     def test_weekly_score_notifies_student_and_parent(self):
         save_teacher_weekly_scores(
             teacher_id=self.teacher.pk,
-            week_start=self.week_start,
+            score_date=self.day,
             entries=[self._entry('7.5', '')],
         )
         record = WeeklyStudentScore.objects.get(
             teacher=self.teacher,
             student=self.student,
             study_group=self.group,
-            week_start=self.week_start,
+            score_date=self.day,
         )
         self.assertTrue(
             PortalNotification.objects.filter(
@@ -170,7 +172,7 @@ class WeeklyStudentScoreTests(TestCase):
         response = self.teacher_client.post(
             url,
             {
-                'week': self.week_start.isoformat(),
+                'day': self.day.isoformat(),
                 f'score_{row_key}': '6.5',
                 f'comment_{row_key}': 'Steady progress',
             },
@@ -187,20 +189,20 @@ class WeeklyStudentScoreTests(TestCase):
 
         save_teacher_weekly_scores(
             teacher_id=self.teacher.pk,
-            week_start=self.week_start,
+            score_date=self.day,
             entries=[self._entry('5', 'First save')],
         )
         with self.assertRaises(ValidationError):
             save_teacher_weekly_scores(
                 teacher_id=self.teacher.pk,
-                week_start=self.week_start,
+                score_date=self.day,
                 entries=[self._entry('8', 'Changed')],
             )
         record = WeeklyStudentScore.objects.get(
             teacher=self.teacher,
             student=self.student,
             study_group=self.group,
-            week_start=self.week_start,
+            score_date=self.day,
         )
         self.assertEqual(float(record.score), 5.0)
         self.assertEqual(record.comment, 'First save')
@@ -210,13 +212,13 @@ class WeeklyStudentScoreTests(TestCase):
 
         save_teacher_weekly_scores(
             teacher_id=self.teacher.pk,
-            week_start=self.week_start,
+            score_date=self.day,
             entries=[self._entry('5', '')],
         )
         with self.assertRaises(ValidationError):
             save_teacher_weekly_scores(
                 teacher_id=self.teacher.pk,
-                week_start=self.week_start,
+                score_date=self.day,
                 entries=[self._entry('3', '')],
             )
         self.assertTrue(
@@ -224,14 +226,14 @@ class WeeklyStudentScoreTests(TestCase):
                 teacher=self.teacher,
                 student=self.student,
                 study_group=self.group,
-                week_start=self.week_start,
+                score_date=self.day,
             ).exists()
         )
 
     def test_empty_score_for_locked_student_is_skipped_in_batch(self):
         save_teacher_weekly_scores(
             teacher_id=self.teacher.pk,
-            week_start=self.week_start,
+            score_date=self.day,
             entries=[self._entry('5', '')],
         )
         other_user = User.objects.create_user(username='weekly_student_2', password='pass')
@@ -240,7 +242,7 @@ class WeeklyStudentScoreTests(TestCase):
 
         result = save_teacher_weekly_scores(
             teacher_id=self.teacher.pk,
-            week_start=self.week_start,
+            score_date=self.day,
             entries=[
                 self._entry('', '', student=self.student),
                 self._entry('7', '', student=other_student),
@@ -253,7 +255,7 @@ class WeeklyStudentScoreTests(TestCase):
                     teacher=self.teacher,
                     student=other_student,
                     study_group=self.group,
-                    week_start=self.week_start,
+                    score_date=self.day,
                 ).score
             ),
             7.0,
@@ -262,12 +264,12 @@ class WeeklyStudentScoreTests(TestCase):
     def test_teacher_cannot_repost_same_score(self):
         save_teacher_weekly_scores(
             teacher_id=self.teacher.pk,
-            week_start=self.week_start,
+            score_date=self.day,
             entries=[self._entry('7', '')],
         )
         result = save_teacher_weekly_scores(
             teacher_id=self.teacher.pk,
-            week_start=self.week_start,
+            score_date=self.day,
             entries=[self._entry('7', '')],
         )
         self.assertEqual(result['saved'], 0)
@@ -276,7 +278,7 @@ class WeeklyStudentScoreTests(TestCase):
     def test_locked_row_shown_on_teacher_page(self):
         save_teacher_weekly_scores(
             teacher_id=self.teacher.pk,
-            week_start=self.week_start,
+            score_date=self.day,
             entries=[self._entry('8', 'Done')],
         )
         response = self.teacher_client.get(reverse('portals:teacher-weekly-scores'))
@@ -284,26 +286,110 @@ class WeeklyStudentScoreTests(TestCase):
         self.assertContains(response, 'Kilidlənib')
         self.assertNotContains(response, f'name="score_{self._row_key()}"')
 
-    def test_teacher_cannot_score_past_week(self):
+    def test_teacher_can_score_an_earlier_day(self):
+        earlier = self.day - timedelta(days=3)
+        result = save_teacher_weekly_scores(
+            teacher_id=self.teacher.pk,
+            score_date=earlier,
+            entries=[self._entry('7', '')],
+        )
+        self.assertEqual(result['saved'], 1)
+        self.assertTrue(
+            WeeklyStudentScore.objects.filter(student=self.student, score_date=earlier).exists()
+        )
+        # the same student can still be scored today: one score per day
+        save_teacher_weekly_scores(
+            teacher_id=self.teacher.pk,
+            score_date=self.day,
+            entries=[self._entry('9', '')],
+        )
+        self.assertEqual(WeeklyStudentScore.objects.filter(student=self.student).count(), 2)
+
+    def test_teacher_cannot_score_a_future_day(self):
         from django.core.exceptions import ValidationError
 
-        past_week = self.week_start - timedelta(days=7)
         with self.assertRaises(ValidationError):
             save_teacher_weekly_scores(
                 teacher_id=self.teacher.pk,
-                week_start=past_week,
+                score_date=self.day + timedelta(days=1),
                 entries=[self._entry('7', '')],
             )
 
-    def test_weekly_scores_page_ignores_week_query_param(self):
-        past_week = (self.week_start - timedelta(days=7)).isoformat()
-        response = self.teacher_client.get(
-            reverse('portals:teacher-weekly-scores'),
-            {'week': past_week},
-        )
+    def test_page_defaults_to_today_and_accepts_a_picked_day(self):
+        response = self.teacher_client.get(reverse('portals:teacher-weekly-scores'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Cari həftə')
-        self.assertNotContains(response, 'data-weekly-week-nav')
+        self.assertContains(response, f'value="{self.day.isoformat()}"')
+        self.assertContains(response, f'max="{self.day.isoformat()}"')
+
+        earlier = (self.day - timedelta(days=2)).isoformat()
+        response = self.teacher_client.get(reverse('portals:teacher-weekly-scores'), {'day': earlier})
+        self.assertContains(response, f'name="day" value="{earlier}"')
+
+        # a future day in the address falls back to today
+        future = (self.day + timedelta(days=5)).isoformat()
+        response = self.teacher_client.get(reverse('portals:teacher-weekly-scores'), {'day': future})
+        self.assertContains(response, f'name="day" value="{self.day.isoformat()}"')
+
+    def test_posting_a_picked_day_saves_it(self):
+        earlier = self.day - timedelta(days=1)
+        response = self.teacher_client.post(
+            reverse('portals:teacher-weekly-scores'),
+            {
+                'day': earlier.isoformat(),
+                f'score_{self._row_key()}': '6.5',
+                f'comment_{self._row_key()}': '',
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        record = WeeklyStudentScore.objects.get(student=self.student)
+        self.assertEqual(record.score_date, earlier)
+
+    def test_old_address_redirects(self):
+        response = self.teacher_client.get('/portal/teacher/weekly-scores/?group=all')
+        self.assertEqual(response.status_code, 302)
+        self.assertIn(reverse('portals:teacher-weekly-scores'), response['Location'])
+
+    def test_student_without_group_can_be_scored(self):
+        from portals.models import StudentProfile
+
+        lone = StudentProfile.objects.create(
+            user=get_user_model().objects.create_user(username='daily_lone', password='pass'),
+        )
+        lone.teachers.add(self.teacher)
+        from portals.utils.cache_utils import invalidate_model_cache
+
+        invalidate_model_cache('StudentProfile')
+        board = build_teacher_weekly_score_view(self.teacher.pk, group_id='none')
+        rows = [row for row in board['rows'] if row['id'] == lone.pk]
+        self.assertEqual(len(rows), 1)
+        self.assertIsNone(rows[0]['group_id'])
+
+        save_teacher_weekly_scores(
+            teacher_id=self.teacher.pk,
+            score_date=self.day,
+            entries=[{'student_id': lone.pk, 'group_id': None, 'score': '8', 'comment': ''}],
+        )
+        record = WeeklyStudentScore.objects.get(student=lone)
+        self.assertIsNone(record.study_group_id)
+        # one score a day without a group
+        from django.core.exceptions import ValidationError
+
+        with self.assertRaises(ValidationError):
+            save_teacher_weekly_scores(
+                teacher_id=self.teacher.pk,
+                score_date=self.day,
+                entries=[{'student_id': lone.pk, 'group_id': None, 'score': '5', 'comment': ''}],
+            )
+
+    def test_student_with_group_cannot_get_a_groupless_score(self):
+        from django.core.exceptions import ValidationError
+
+        with self.assertRaises(ValidationError):
+            save_teacher_weekly_scores(
+                teacher_id=self.teacher.pk,
+                score_date=self.day,
+                entries=[{'student_id': self.student.pk, 'group_id': None, 'score': '5', 'comment': ''}],
+            )
 
     def test_student_in_two_teacher_groups_gets_two_weekly_cards(self):
         second_group = StudyGroup.objects.create(
@@ -324,7 +410,7 @@ class WeeklyStudentScoreTests(TestCase):
 
         save_teacher_weekly_scores(
             teacher_id=self.teacher.pk,
-            week_start=self.week_start,
+            score_date=self.day,
             entries=[
                 self._entry('8', group=self.group),
                 self._entry('6', group=second_group),
@@ -334,7 +420,7 @@ class WeeklyStudentScoreTests(TestCase):
             WeeklyStudentScore.objects.filter(
                 teacher=self.teacher,
                 student=self.student,
-                week_start=self.week_start,
+                score_date=self.day,
             ).count(),
             2,
         )

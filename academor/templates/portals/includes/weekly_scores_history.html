@@ -1,9 +1,9 @@
 {% load i18n portal_tags %}
-<section class="ds-card weekly-scores-history" aria-label="{% trans 'Həftəlik qiymətlər' %}">
+<section class="ds-card weekly-scores-history" aria-label="{% trans 'Günlük qiymətlər' %}">
   <div class="s-panel-head">
     <h2 class="s-panel-title">
       <i class="ti ti-calendar-stats" aria-hidden="true"></i>
-      {% trans 'Həftəlik qiymətlər' %}
+      {% trans 'Günlük qiymətlər' %}
       {% if weekly_scores %}<span class="ds-badge">{{ weekly_scores|length }}</span>{% endif %}
     </h2>
   </div>
@@ -13,7 +13,7 @@
     <table class="t-table weekly-scores-history-table">
       <thead>
         <tr>
-          <th>{% trans 'Həftə' %}</th>
+          <th>{% trans 'Tarix' %}</th>
           {% if show_teacher_column %}
           <th>{% trans 'Müəllim' %}</th>
           {% endif %}
@@ -28,12 +28,12 @@
       <tbody>
         {% for row in weekly_scores %}
         <tr>
-          <td class="fw-500" data-label="{% trans 'Həftə' %}">{% portal_week_label row.week_start row.week_end %}</td>
+          <td class="fw-500" data-label="{% trans 'Tarix' %}">{{ row.score_date|portal_date_long_weekday }}</td>
           {% if show_teacher_column %}
           <td data-label="{% trans 'Müəllim' %}">{{ row.teacher_name|default:"—" }}</td>
           {% endif %}
           {% if show_group_column|default:True %}
-          <td data-label="{% trans 'Qrup' %}">{{ row.group_name|default:"—" }}</td>
+          <td data-label="{% trans 'Qrup' %}">{% if row.group_name %}{{ row.group_name }}{% else %}{% trans 'Qrupsuz' %}{% endif %}</td>
           {% endif %}
           <td data-label="{% trans 'Bal' %}">
             <span class="weekly-scores-pill">{{ row.score|format_quiz_score }}/{{ row.max_score|format_quiz_score }}</span>
@@ -48,8 +48,8 @@
   {% else %}
   <div class="s-empty-state py-4">
     <i class="ti ti-calendar-off" aria-hidden="true"></i>
-    <h3 class="h6 mb-1">{% trans 'Hələ həftəlik qiymət yoxdur' %}</h3>
-    <p class="mb-0">{% trans 'Müəlliminiz həftəlik bal verdikcə burada görünəcək.' %}</p>
+    <h3 class="h6 mb-1">{% trans 'Hələ günlük qiymət yoxdur' %}</h3>
+    <p class="mb-0">{% trans 'Müəlliminiz bal verdikcə burada görünəcək.' %}</p>
   </div>
   {% endif %}
 </section>
