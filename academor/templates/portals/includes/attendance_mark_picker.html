@@ -19,18 +19,29 @@
   </h2>
   <p class="portal-attendance-student-pick__hint">{% trans 'Select one or more students, then choose a matching class session below.' %}</p>
   <form method="get" class="portal-attendance-student-pick__form" id="student-pick-form">
-    <div class="portal-attendance-student-pick__grid">
-      {% for student in picker_students %}
-      <label class="portal-attendance-student-pick__item">
-        <input
-          type="checkbox"
-          name="students"
-          value="{{ student.id }}"
-          {% if student.id in selected_student_ids %}checked{% endif %}
-        >
-        <span>{{ student.full_name }}</span>
-      </label>
-      {% endfor %}
+    <div class="ds-pick ds-pick--list" data-pick>
+      <div class="ds-pick__bar">
+        <label class="ds-pick__search">
+          <i class="ti ti-search" aria-hidden="true"></i>
+          <span class="visually-hidden">{% trans 'Axtar' %}</span>
+          <input type="search" class="ds-pick__search-input" placeholder="{% trans 'Tələbə axtar...' %}" autocomplete="off" data-pick-search>
+        </label>
+        <div class="ds-pick__tools">
+          <span class="ds-pick__count" data-pick-count data-suffix="{% trans 'seçilib' %}" aria-live="polite"></span>
+          <button type="button" class="ds-pick__tool" data-pick-all>{% trans 'Hamısını seç' %}</button>
+          <button type="button" class="ds-pick__tool" data-pick-clear>{% trans 'Təmizlə' %}</button>
+        </div>
+      </div>
+      <div class="ds-pick__options" role="group" aria-label="{% trans 'Students' %}">
+        {% for student in picker_students %}
+        <label class="ds-pick__option{% if student.id in selected_student_ids %} is-checked{% endif %}" data-pick-option>
+          <input type="checkbox" name="students" value="{{ student.id }}"{% if student.id in selected_student_ids %} checked{% endif %}>
+          <span class="ds-pick__box" aria-hidden="true"><i class="ti ti-check"></i></span>
+          <span class="ds-pick__text">{{ student.full_name }}</span>
+        </label>
+        {% endfor %}
+      </div>
+      <p class="ds-pick__none" data-pick-no-match hidden>{% trans 'Axtarışa uyğun nəticə yoxdur.' %}</p>
     </div>
     <div class="portal-attendance-student-pick__actions">
       <button type="submit" class="btn btn-primary btn-sm">

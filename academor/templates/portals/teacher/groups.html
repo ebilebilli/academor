@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'portals/js/portal-teacher-students.js' %}?v=20261113c" data-portal-page-script="true"></script>
+<script src="{% static 'portals/js/portal-teacher-students.js' %}?v=20261114p" data-portal-page-script="true"></script>
 {% endblock %}
 
 {% block content %}
@@ -103,12 +103,17 @@
                   {% trans 'Qrup' %}
                 </button>
                 <div class="dropdown-menu dropdown-menu-end p-2 portal-students__group-menu" data-student-groups data-url="{% url 'portals:teacher-student-groups' student_pk=student.id %}">
-                  {% for group in groups %}
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="{{ group.id }}" id="sg-{{ student.id }}-{{ group.id }}" data-group-name="{{ group.name }}"{% if group.id in student.group_ids %} checked{% endif %}>
-                    <label class="form-check-label" for="sg-{{ student.id }}-{{ group.id }}">{{ group.name }}</label>
+                  <div class="ds-pick ds-pick--menu" data-pick>
+                    <div class="ds-pick__options" role="group" aria-label="{% trans 'Qruplar' %}">
+                      {% for group in groups %}
+                      <label class="ds-pick__option{% if group.id in student.group_ids %} is-checked{% endif %}" data-pick-option>
+                        <input type="checkbox" value="{{ group.id }}" data-group-name="{{ group.name }}"{% if group.id in student.group_ids %} checked{% endif %}>
+                        <span class="ds-pick__box" aria-hidden="true"><i class="ti ti-check"></i></span>
+                        <span class="ds-pick__text">{{ group.name }}</span>
+                      </label>
+                      {% endfor %}
+                    </div>
                   </div>
-                  {% endfor %}
                 </div>
               </div>
               {% endif %}

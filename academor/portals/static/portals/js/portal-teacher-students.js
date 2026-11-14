@@ -35,6 +35,13 @@
     var row = menu.closest("[data-student-row]");
     var cell = row ? row.querySelector("[data-student-groups-cell]") : null;
     var boxes = Array.prototype.slice.call(menu.querySelectorAll("input[type=checkbox]"));
+    var pick = menu.querySelector("[data-pick]");
+
+    function syncPick() {
+      if (pick && window.PortalPick) {
+        window.PortalPick.sync(pick);
+      }
+    }
     boxes.forEach(function (box) {
       box.addEventListener("change", function () {
         var previous = boxes.map(function (item) {
@@ -79,11 +86,13 @@
             if (cell) {
               renderGroupChips(cell, names, emptyLabel);
             }
+            syncPick();
           })
           .catch(function () {
             boxes.forEach(function (item, index) {
               item.checked = previous[index];
             });
+            syncPick();
           })
           .finally(function () {
             boxes.forEach(function (item) {

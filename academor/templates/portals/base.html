@@ -35,6 +35,7 @@
   <link rel="stylesheet" href="{% static 'portals/css/portal-hero.css' %}?v=20261030a">
   {% if portal_role == 'teacher' or portal_role == 'student' or portal_role == 'parent' %}
   <link rel="stylesheet" href="{% static 'portals/css/weekly-scores.css' %}?v=20261114d">
+  <link rel="stylesheet" href="{% static 'portals/css/portal-pick.css' %}?v=20261114b">
   {% endif %}
   {% block extra_css %}{% endblock %}
   <style>
@@ -107,6 +108,7 @@
   {% if portal_is_authenticated %}
   <script defer src="{% static 'portals/js/portal-badges.js' %}?v=20260723a"></script>
   {% endif %}
+  <script defer src="{% static 'portals/js/portal-pick.js' %}?v=20261114a"></script>
   {% block extra_js %}{% endblock %}
   {% if portal_role == 'teacher' %}
   <script defer src="{% static 'portals/js/weekly-scores.js' %}?v=20261114d" data-portal-page-script="true"></script>

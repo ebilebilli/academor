@@ -5645,9 +5645,7 @@ msgstr ""
 msgid ""
 "Select one or more students, then choose a matching class session below."
 msgstr ""
-"Выберите одного или нескольких учеников, затем подходящее занятие "
-"ниже.Выберите одного или нескольких студентов, затем выберите подходящее "
-"занятие ниже."
+"Выберите одного или нескольких учеников, затем подходящее занятие ниже."
 
 #: academor/templates/portals/includes/attendance_mark_picker.html:37
 msgid "Show matching sessions"
@@ -11038,6 +11036,30 @@ msgstr "Ваша оценка от %(teacher)s за %(day)s опубликова
 
 msgid "Daily scores"
 msgstr "Ежедневные оценки"
+
+msgid "Axtar"
+msgstr "Поиск"
+
+msgid "Axtarışa uyğun nəticə yoxdur."
+msgstr "По запросу ничего не найдено."
+
+msgid "Axtar…"
+msgstr "Поиск…"
+
+msgid "Hamısını seç"
+msgstr "Выбрать все"
+
+msgid "Other"
+msgstr "Другое"
+
+msgid "Seçim yoxdur."
+msgstr "Нечего выбрать."
+
+msgid "Təmizlə"
+msgstr "Очистить"
+
+msgid "seçilib"
+msgstr "выбрано"
 
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Попробуйте в следующей акции — мы сообщим."

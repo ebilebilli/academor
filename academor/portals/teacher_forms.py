@@ -320,8 +320,28 @@ class TeacherLessonForm(forms.ModelForm):
 
     @staticmethod
     def _quiz_choice_label(quiz):
-        category = getattr(quiz, 'category', None)
-        return f'{category.name} — {quiz.topic}' if category else quiz.topic
+        # shown under its category heading (see quiz_option_groups)
+        return quiz.topic
+
+    def quiz_option_groups(self):
+        """Homework quiz options under their category headings, for the pick list."""
+        if 'quizzes' not in self.fields:
+            return []
+        categories = {
+            quiz.pk: (quiz.category.name if quiz.category_id else '')
+            for quiz in self.fields['quizzes'].queryset
+        }
+        groups = []
+        index = {}
+        for option in self['quizzes']:
+            raw = option.data['value']
+            pk = getattr(raw, 'value', raw)
+            label = categories.get(pk, '')
+            if label not in index:
+                index[label] = {'label': label or str(_('Other')), 'options': []}
+                groups.append(index[label])
+            index[label]['options'].append(option)
+        return groups
 
     def _teacher_quiz_queryset(self, teacher_id, is_edit):
         """Quizzes of the teacher's services (plus the ones already attached on edit)."""
@@ -800,7 +820,7 @@ class TeacherStudentCreateForm(forms.Form):
     services = forms.MultipleChoiceField(
         label=_('Xidmətlər'),
         choices=(),
-        widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'}),
+        widget=forms.CheckboxSelectMultiple(),
         help_text=_(
             'Tələbənin quizləri, mock testləri və bildirişləri bu xidmətlərə görə açılır. '
             'IELTS tələbələrində General English əvvəlcədən aktivdir.'
