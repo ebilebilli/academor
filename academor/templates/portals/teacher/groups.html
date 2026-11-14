@@ -1,179 +1,137 @@
 {% extends "portals/base.html" %}
 {% load i18n portal_tags static %}
 
-{% block title %}{% trans 'Groups' %}{% endblock %}
+{% block title %}{% trans 'Tələbələr' %}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'portals/css/portal-teacher-groups.css' %}">
+<link rel="stylesheet" href="{% static 'portals/css/portal-teacher-students.css' %}?v=20261113c">
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'portals/js/portal-teacher-groups.js' %}"></script>
+<script src="{% static 'portals/js/portal-teacher-students.js' %}?v=20261113c" data-portal-page-script="true"></script>
 {% endblock %}
 
 {% block content %}
-<div
-  id="portal-teacher-groups"
-  data-total-groups="{{ groups|length }}"
-  data-label-showing="{% trans 'Showing' %}"
-  data-label-of="{% trans 'of' %}"
->
-{% trans 'Qruplar' as groups_page_title %}
-{% trans 'Sizə təyin olunmuş bütün tədris qrupları.' as groups_page_subtitle %}
-{% include "portals/includes/portal_page_hero.html" with title=groups_page_title subtitle=groups_page_subtitle icon="ti-users" stickers=True %}
+{% trans 'Tələbələr' as students_page_title %}
+{% trans 'Bütün tələbələriniz. Kənardakı siyahıdan qrupa görə filtrləyin.' as students_page_subtitle %}
+{% include "portals/includes/portal_page_hero.html" with title=students_page_title subtitle=students_page_subtitle icon="ti-users" %}
 
-<!-- Control Toolbar -->
-<div class="portal-toolbar mb-3">
-  <div class="portal-toolbar-left">
-    <!-- Search Box -->
-    <div class="portal-search-box">
-      <i class="bi bi-search" aria-hidden="true"></i>
-      <input type="text" id="group-search" class="form-control form-control-sm" placeholder="{% trans 'Search groups...' %}">
-    </div>
+<div class="portal-students" id="portal-teacher-students" data-teacher-students data-label-no-group="{% trans 'Qrupsuz' %}">
+  {# side: groups are only names, used to filter the list #}
+  <aside class="portal-students__side" aria-label="{% trans 'Qruplar' %}">
+    <h2 class="portal-students__side-title">{% trans 'Qruplar' %}</h2>
+    <nav class="portal-students__groups">
+      <a class="portal-students__group{% if active_group_filter == 'all' %} is-active{% endif %}" href="{% url 'portals:teacher-groups' %}"{% if active_group_filter == 'all' %} aria-current="true"{% endif %}>
+        <span>{% trans 'Hamısı' %}</span>
+        <span class="portal-students__count">{{ total_students }}</span>
+      </a>
+      {% for group in groups %}
+      <a class="portal-students__group{% if active_group_filter == group.id %} is-active{% endif %}" href="{% url 'portals:teacher-groups' %}?group={{ group.id }}"{% if active_group_filter == group.id %} aria-current="true"{% endif %}>
+        <span>{{ group.name }}</span>
+        <span class="portal-students__count">{{ group.student_count }}</span>
+      </a>
+      {% endfor %}
+      <a class="portal-students__group{% if active_group_filter == 'none' %} is-active{% endif %}" href="{% url 'portals:teacher-groups' %}?group=none"{% if active_group_filter == 'none' %} aria-current="true"{% endif %}>
+        <span>{% trans 'Qrupsuz' %}</span>
+        <span class="portal-students__count">{{ without_group_count }}</span>
+      </a>
+    </nav>
 
-    <!-- Filter Dropdown -->
-    <div class="dropdown">
-      <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
-        <i class="bi bi-funnel me-1" aria-hidden="true"></i>{% trans 'Filter' %}
-      </button>
-      <ul class="dropdown-menu portal-filter-menu">
-        <li class="dropdown-header">{% trans 'Status' %}</li>
-        <li><a class="dropdown-item filter-option" href="#" data-portal-groups-filter="all">
-          <i class="bi bi-circle text-secondary me-2"></i>{% trans 'All groups' %}
-        </a></li>
-        <li><a class="dropdown-item filter-option" href="#" data-portal-groups-filter="active">
-          <i class="bi bi-check-circle text-success me-2"></i>{% trans 'Active only' %}
-        </a></li>
-        <li><a class="dropdown-item filter-option" href="#" data-portal-groups-filter="inactive">
-          <i class="bi bi-pause-circle text-muted me-2"></i>{% trans 'Inactive only' %}
-        </a></li>
-        <li><hr class="dropdown-divider"></li>
-        <li class="dropdown-header">{% trans 'Sort by' %}</li>
-        <li><a class="dropdown-item" href="#" data-portal-groups-sort="name">
-          <i class="bi bi-sort-alpha-down me-2"></i>{% trans 'Name' %}
-        </a></li>
-        <li><a class="dropdown-item" href="#" data-portal-groups-sort="students">
-          <i class="bi bi-sort-numeric-down me-2"></i>{% trans 'Student count' %}
-        </a></li>
-        <li><a class="dropdown-item" href="#" data-portal-groups-sort="date">
-          <i class="bi bi-calendar me-2"></i>{% trans 'Start date' %}
-        </a></li>
-      </ul>
-    </div>
-
-    <!-- Course Type Filter -->
-    <div class="dropdown">
-      <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
-        <i class="bi bi-book me-1" aria-hidden="true"></i>{% trans 'Course' %}
-      </button>
-      <ul class="dropdown-menu portal-filter-menu" id="course-filter-menu">
-        <li><a class="dropdown-item" href="#" data-portal-groups-course="all">{% trans 'All courses' %}</a></li>
-        <li><hr class="dropdown-divider"></li>
-        <!-- Course options will be populated by JS -->
-      </ul>
-    </div>
-  </div>
-
-  <div class="portal-toolbar-right">
-    <a class="btn btn-outline-secondary btn-sm" href="{% url 'portals:teacher-schedule' %}">
-      <i class="bi bi-calendar-week me-1" aria-hidden="true"></i>{% trans 'View Schedule' %}
-    </a>
-  </div>
-</div>
-
-<!-- Stats Summary -->
-<div class="portal-stats-bar mb-3">
-  <span class="portal-stat-item">
-    <i class="bi bi-people text-primary"></i>
-    <strong id="total-groups">{{ groups|length }}</strong> {% trans 'groups' %}
-  </span>
-  <span class="portal-stat-item">
-    <i class="bi bi-check-circle text-success"></i>
-    <strong id="active-groups">0</strong> {% trans 'active' %}
-  </span>
-  <span class="portal-stat-item">
-    <i class="bi bi-mortarboard text-info"></i>
-    <strong id="total-students">0</strong> {% trans 'students total' %}
-  </span>
-  <span class="portal-stat-divider"></span>
-  <span class="portal-stat-item text-muted">
-    <span id="showing-text">{% trans 'Showing all' %}</span>
-  </span>
-</div>
-
-{% if groups %}
-<section class="row g-3 portal-groups-cards" id="groups-cards-view">
-  {% for group in groups %}
-  <div class="col-12 col-sm-6 col-xl-4 group-card-item"
-       data-name="{{ group.name|lower }}"
-       data-course="{{ group.course_type_label }}"
-       data-status="{% if group.is_active %}active{% else %}inactive{% endif %}"
-       data-students="{{ group.student_count }}"
-       data-date="{{ group.start_date|default:'' }}"
-       data-student-names="{% for s in group.students %}{{ s.full_name|lower }} {% endfor %}">
-    <article class="portal-card">
-      <div class="portal-card-header">
-        <div class="portal-group-avatar-lg" style="background: {{ group.course_color|default:'#00313D' }}">
-          {{ group.name|slice:":2"|upper }}
-        </div>
-        <div class="portal-card-info">
-          <h4 class="portal-card-title">{{ group.name }}</h4>
-          <span class="portal-course-badge">{{ group.course_type_label }}</span>
-        </div>
-        <div class="portal-card-status">
-          {% if group.is_active %}
-            <span class="portal-status-dot active" title="{% trans 'Active' %}"></span>
-          {% else %}
-            <span class="portal-status-dot inactive" title="{% trans 'Inactive' %}"></span>
-          {% endif %}
-        </div>
+    <form class="portal-students__new-group" method="post" action="{% url 'portals:teacher-group-create' %}">
+      {% csrf_token %}
+      <label class="form-label small mb-1" for="new-group-name">{% trans 'Yeni qrup' %}</label>
+      <div class="input-group input-group-sm">
+        <input type="text" class="form-control" id="new-group-name" name="name" maxlength="200" required placeholder="{% trans 'Qrupun adı' %}" autocomplete="off">
+        <button type="submit" class="btn btn-outline-secondary" aria-label="{% trans 'Qrup yarat' %}"><i class="bi bi-plus-lg" aria-hidden="true"></i></button>
       </div>
-      <div class="portal-card-body">
-        <div class="portal-card-stats">
-          <div class="portal-card-stat">
-            <i class="bi bi-mortarboard" aria-hidden="true"></i>
-            <span>{{ group.student_count }} {% trans 'students' %}</span>
-          </div>
-          <div class="portal-card-stat">
-            <i class="bi bi-calendar3" aria-hidden="true"></i>
-            <span>{{ group.start_date|default:"—" }}</span>
-          </div>
+    </form>
+  </aside>
+
+  <section class="portal-students__main">
+    <div class="portal-toolbar mb-3">
+      <div class="portal-toolbar-left">
+        <div class="portal-search-box">
+          <i class="bi bi-search" aria-hidden="true"></i>
+          <input type="search" class="form-control form-control-sm" placeholder="{% trans 'Tələbə axtar...' %}" aria-label="{% trans 'Tələbə axtar' %}" data-students-search>
         </div>
-        {% if group.students %}
-        <div class="portal-card-students">
-          <span class="portal-card-students-label">{% trans 'Students' %}</span>
-          <ul class="portal-card-students-list">
-            {% for s in group.students %}
-            <li>{{ s.full_name }}</li>
-            {% endfor %}
-          </ul>
-        </div>
-        {% else %}
-        <div class="portal-card-meta">
-          <i class="bi bi-person-x" aria-hidden="true"></i>
-          <span>{% trans 'No students in this group yet.' %}</span>
-        </div>
+        {% if active_group %}
+        <a class="btn btn-outline-secondary btn-sm" href="{% url 'portals:teacher-group-detail' pk=active_group.id %}">
+          <i class="bi bi-calendar-week me-1" aria-hidden="true"></i>{% trans 'Qrupun cədvəli' %}
+        </a>
+        <a class="btn btn-outline-secondary btn-sm" href="{% url 'portals:teacher-group-rename' pk=active_group.id %}">
+          <i class="bi bi-pencil me-1" aria-hidden="true"></i>{% trans 'Adını dəyiş' %}
+        </a>
         {% endif %}
       </div>
-      <div class="portal-card-footer">
-        <a class="btn btn-primary btn-sm w-100" href="{% url 'portals:teacher-group-detail' pk=group.id %}">
-          <i class="bi bi-eye me-2" aria-hidden="true"></i>{% trans 'View Group' %}
+      <div class="portal-toolbar-right">
+        <a class="btn btn-primary btn-sm" href="{% url 'portals:teacher-student-create' %}{% if active_group %}?group={{ active_group.id }}{% endif %}">
+          <i class="bi bi-people me-1" aria-hidden="true"></i>{% trans 'Yeni tələbə' %}
         </a>
       </div>
-    </article>
-  </div>
-  {% endfor %}
-</section>
-{% else %}
-<!-- Empty State -->
-<section class="portal-empty-state">
-  <div class="portal-empty-icon">
-    <i class="bi bi-people" aria-hidden="true"></i>
-  </div>
-  <h3>{% trans 'No groups yet' %}</h3>
-  <p class="text-muted">{% trans 'Study groups are assigned by Academor administration.' %}</p>
-</section>
-{% endif %}
+    </div>
 
+    {% if students %}
+    <div class="table-responsive portal-students__table-wrap">
+      <table class="table align-middle portal-students__table">
+        <thead>
+          <tr>
+            <th scope="col">{% trans 'Tələbə' %}</th>
+            <th scope="col">{% trans 'Xidmətlər' %}</th>
+            <th scope="col">{% trans 'Qruplar' %}</th>
+            <th scope="col" class="text-end"><span class="visually-hidden">{% trans 'Əməliyyatlar' %}</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for student in students %}
+          <tr data-student-row data-student-name="{{ student.full_name|lower }}">
+            <td>
+              <a class="portal-students__name" href="{% url 'portals:teacher-student-profile' student_pk=student.id %}">{{ student.full_name }}</a>
+              {% if student.phone %}<div class="text-muted small">{{ student.phone }}</div>{% endif %}
+              {% if not student.can_sign_in %}<div class="text-muted small"><i class="bi bi-lock-fill me-1" aria-hidden="true"></i>{% trans 'Parol təyin olunmayıb' %}</div>{% endif %}
+            </td>
+            <td>
+              {% for label in student.services %}<span class="portal-students__chip">{{ label }}</span>{% empty %}<span class="text-muted small">{% trans 'Xidmət yoxdur' %}</span>{% endfor %}
+            </td>
+            <td data-student-groups-cell>
+              {% for group in student.groups %}<span class="portal-students__chip portal-students__chip--group">{{ group.name }}</span>{% empty %}<span class="text-muted small">{% trans 'Qrupsuz' %}</span>{% endfor %}
+            </td>
+            <td class="text-end">
+              {% if groups %}
+              <div class="dropdown d-inline-block">
+                <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                  {% trans 'Qrup' %}
+                </button>
+                <div class="dropdown-menu dropdown-menu-end p-2 portal-students__group-menu" data-student-groups data-url="{% url 'portals:teacher-student-groups' student_pk=student.id %}">
+                  {% for group in groups %}
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="{{ group.id }}" id="sg-{{ student.id }}-{{ group.id }}" data-group-name="{{ group.name }}"{% if group.id in student.group_ids %} checked{% endif %}>
+                    <label class="form-check-label" for="sg-{{ student.id }}-{{ group.id }}">{{ group.name }}</label>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+              {% endif %}
+              <a class="btn btn-primary btn-sm" href="{% url 'portals:teacher-student-profile' student_pk=student.id %}">{% trans 'Profil' %}</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <p class="text-muted small d-none" data-students-no-match>{% trans 'Axtarışa uyğun tələbə tapılmadı.' %}</p>
+    {% else %}
+    <section class="portal-empty-state">
+      <div class="portal-empty-icon"><i class="bi bi-people" aria-hidden="true"></i></div>
+      {% if active_group_filter == 'all' %}
+      <h3>{% trans 'Hələ tələbəniz yoxdur' %}</h3>
+      <p class="text-muted">{% trans '"Yeni tələbə" düyməsi ilə tələbə əlavə edin; qrup seçmək məcburi deyil.' %}</p>
+      {% else %}
+      <h3>{% trans 'Bu siyahıda tələbə yoxdur' %}</h3>
+      <p class="text-muted">{% trans 'Tələbəni qrupa əlavə etmək üçün siyahıdakı "Qrup" düyməsindən istifadə edin.' %}</p>
+      {% endif %}
+    </section>
+    {% endif %}
+  </section>
 </div>
 {% endblock %}

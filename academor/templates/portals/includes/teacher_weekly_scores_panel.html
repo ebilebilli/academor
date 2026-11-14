@@ -9,13 +9,33 @@
 
   <section class="weekly-scores-hero ds-card mb-3">
     <div class="weekly-scores-hero__row">
-      <div class="weekly-scores-current-week">
+      <div class="weekly-scores-current-week weekly-scores-day">
         <span class="weekly-scores-current-week__icon" aria-hidden="true">
           <i class="ti ti-calendar-event"></i>
         </span>
         <div class="weekly-scores-current-week__copy">
-          <span class="weekly-scores-current-week__label">{% trans 'Cari həftə' %}</span>
-          <span class="weekly-scores-current-week__dates">{% portal_week_label calendar.week_start calendar.week_end %}</span>
+          <label class="weekly-scores-current-week__label" for="daily-score-day">
+            {% if calendar.is_today %}{% trans 'Bu gün' %}{% else %}{% trans 'Seçilmiş gün' %}{% endif %}
+          </label>
+          <div class="weekly-scores-day__picker">
+            <button type="button" class="weekly-scores-day__step" data-daily-day-step="{{ calendar.prev_day }}" aria-label="{% trans 'Əvvəlki gün' %}">
+              <i class="ti ti-chevron-left" aria-hidden="true"></i>
+            </button>
+            <input
+              type="date"
+              id="daily-score-day"
+              class="form-control form-control-sm weekly-scores-day__input"
+              value="{{ day_value }}"
+              max="{{ calendar.max_date|date:'Y-m-d' }}"
+              data-daily-day-input
+            >
+            <button type="button" class="weekly-scores-day__step" data-daily-day-step="{{ calendar.next_day }}" aria-label="{% trans 'Növbəti gün' %}"{% if not calendar.next_day %} disabled{% endif %}>
+              <i class="ti ti-chevron-right" aria-hidden="true"></i>
+            </button>
+            {% if not calendar.is_today %}
+            <button type="button" class="ds-btn ds-btn--ghost btn-sm" data-daily-day-step="{{ calendar.max_date|date:'Y-m-d' }}">{% trans 'Bu gün' %}</button>
+            {% endif %}
+          </div>
         </div>
       </div>
 
@@ -41,7 +61,7 @@
 
     <p class="weekly-scores-current-note">
       <i class="ti ti-info-circle" aria-hidden="true"></i>
-      {% trans 'Hər şagird üçün hər qrupda həftəlik bal yalnız bir dəfə verilə bilər. Bal təsdiqləndikdən sonra onu dəyişdirmək mümkün deyil.' %}
+      {% trans 'Hər şagird üçün hər qrupda gündə bir bal verilir. Gün avtomatik bu gündür, istəsəniz əvvəlki günü seçə bilərsiniz. Bal saxlanandan sonra dəyişmək olmur.' %}
     </p>
   </section>
 
@@ -88,7 +108,7 @@
       {% elif has_any_editable_rows %}
         {% trans 'Bu qrupda bütün şagirdlər qiymətləndirilib. «Hamısı» seçin.' %}
       {% else %}
-        {% trans 'Bu həftə bütün şagirdlər artıq qiymətləndirilib.' %}
+        {% trans 'Bu gün üçün bütün şagirdlər artıq qiymətləndirilib.' %}
       {% endif %}
     </span>
   </div>
@@ -96,7 +116,7 @@
   {% if has_editable_rows %}
   <form method="post" class="weekly-scores-form" data-weekly-scores-form novalidate>
     {% csrf_token %}
-    <input type="hidden" name="week" value="{{ week_value }}" data-weekly-week-field>
+    <input type="hidden" name="day" value="{{ day_value }}" data-weekly-day-field>
     <input type="hidden" name="group" value="{{ active_group }}" data-weekly-group-field>
 
     <section class="ds-card weekly-scores-card">
@@ -115,7 +135,7 @@
               <a href="{% url 'portals:teacher-student-profile' student_pk=row.id %}?tab=weekly-scores{% if row.group_id %}&from_group={{ row.group_id }}{% endif %}" class="weekly-scores-student-link">
                 {{ row.full_name }}
               </a>
-              <span class="weekly-scores-card-item__groups">{{ row.group_name|default:"—" }}</span>
+              <span class="weekly-scores-card-item__groups">{% if row.group_name %}{{ row.group_name }}{% else %}{% trans 'Qrupsuz' %}{% endif %}</span>
             </div>
             <span
               class="weekly-scores-status ds-badge{% if row.is_locked or row.weekly_score_id %} ds-badge--success{% endif %}"
@@ -206,7 +226,7 @@
             <a href="{% url 'portals:teacher-student-profile' student_pk=row.id %}?tab=weekly-scores{% if row.group_id %}&from_group={{ row.group_id }}{% endif %}" class="weekly-scores-student-link">
               {{ row.full_name }}
             </a>
-            <span class="weekly-scores-card-item__groups">{{ row.group_name|default:"—" }}</span>
+            <span class="weekly-scores-card-item__groups">{% if row.group_name %}{{ row.group_name }}{% else %}{% trans 'Qrupsuz' %}{% endif %}</span>
           </div>
           <span class="weekly-scores-status ds-badge ds-badge--success">{% trans 'Kilidlənib' %}</span>
         </div>
@@ -243,7 +263,7 @@
             <a href="{% url 'portals:teacher-student-profile' student_pk=row.id %}?tab=weekly-scores{% if row.group_id %}&from_group={{ row.group_id }}{% endif %}" class="weekly-scores-student-link">
               {{ row.full_name }}
             </a>
-            <span class="weekly-scores-card-item__groups">{{ row.group_name|default:"—" }}</span>
+            <span class="weekly-scores-card-item__groups">{% if row.group_name %}{{ row.group_name }}{% else %}{% trans 'Qrupsuz' %}{% endif %}</span>
           </div>
           <span class="weekly-scores-status ds-badge ds-badge--success">{% trans 'Kilidlənib' %}</span>
         </div>

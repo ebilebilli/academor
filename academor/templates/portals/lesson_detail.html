@@ -5,7 +5,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'portals/css/lesson-video-lightbox.css' %}">
-<link rel="stylesheet" href="{% static 'portals/css/lesson-homework.css' %}">
+<link rel="stylesheet" href="{% static 'portals/css/lesson-homework.css' %}?v=20261113q">
 {% endblock %}
 
 {% block content %}
@@ -45,6 +45,12 @@
       <span class="s-lesson-detail-meta__item">
         <i class="ti ti-tag" aria-hidden="true"></i>
         {{ lesson.category_name }}
+      </span>
+      {% endif %}
+      {% if lesson_direct_students %}
+      <span class="s-lesson-detail-meta__item">
+        <i class="ti ti-user" aria-hidden="true"></i>
+        {{ lesson_direct_students|join:", " }}
       </span>
       {% endif %}
       {% if lesson.group_name %}
@@ -266,6 +272,87 @@
   </div>
   {% endif %}
 </section>
+
+{% if portal_role == 'student' and lesson_quiz_rows %}
+<section class="ds-card s-lesson-detail-section s-lesson-homework mt-4" data-lesson-homework-quizzes>
+  <div class="s-panel-head">
+    <h2 class="s-panel-title">
+      <i class="ti ti-forms" aria-hidden="true"></i>
+      {% trans 'Ev tapşırığı quizləri' %}
+    </h2>
+  </div>
+  <ul class="s-lesson-quiz__list">
+    {% for quiz in lesson_quiz_rows %}
+    <li class="s-lesson-quiz__item">
+      <div>
+        <strong class="s-lesson-quiz__topic">{{ quiz.topic }}</strong>
+        {% if quiz.category_name %}<span class="s-lesson-quiz__meta">{{ quiz.category_name }}</span>{% endif %}
+        {% if quiz.result %}
+          {% if quiz.result.is_pending_review %}
+          <span class="s-lesson-quiz__status s-lesson-quiz__status--pending">{% trans 'Yoxlanılır' %}</span>
+          {% elif quiz.result.is_published %}
+          <span class="s-lesson-quiz__status s-lesson-quiz__status--done">{% trans 'Edilib' %} · {{ quiz.result.total_score|format_quiz_score }}</span>
+          {% else %}
+          <span class="s-lesson-quiz__status s-lesson-quiz__status--done">{% trans 'Edilib' %}</span>
+          {% endif %}
+        {% else %}
+          <span class="s-lesson-quiz__status">{% trans 'Edilməyib' %}</span>
+        {% endif %}
+      </div>
+      <div class="s-lesson-quiz__actions">
+        {% if quiz.score_url and quiz.result.is_published %}
+        <a class="ds-btn ds-btn--ghost btn-sm" href="{{ quiz.score_url }}">{% trans 'Nəticə' %}</a>
+        {% endif %}
+        <a class="ds-btn ds-btn--primary btn-sm" href="{{ quiz.take_url }}">
+          {% if quiz.result %}{% trans 'Təkrar' %}{% else %}{% trans 'Başla' %}{% endif %}
+        </a>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% if portal_role == 'teacher' and lesson_quiz_rows %}
+<section class="ds-card s-lesson-detail-section s-lesson-homework mt-4" data-lesson-homework-quizzes>
+  <div class="s-panel-head">
+    <h2 class="s-panel-title">
+      <i class="ti ti-forms" aria-hidden="true"></i>
+      {% trans 'Ev tapşırığı quizləri' %}
+    </h2>
+  </div>
+  {% for quiz in lesson_quiz_rows %}
+  <div class="s-lesson-quiz__block">
+    <div class="s-lesson-quiz__block-head">
+      <strong class="s-lesson-quiz__topic">{{ quiz.topic }}</strong>
+      <span class="s-lesson-quiz__meta">{% blocktrans with done=quiz.done_count total=quiz.student_count %}{{ done }} / {{ total }} tələbə edib{% endblocktrans %}</span>
+    </div>
+    <ul class="s-lesson-quiz__list">
+      {% for row in quiz.students %}
+      <li class="s-lesson-quiz__item">
+        <a class="s-lesson-quiz__student" href="{{ row.profile_url }}">{{ row.student_name }}</a>
+        <div class="s-lesson-quiz__actions">
+          {% if row.result %}
+            {% if row.result.is_pending_review %}
+            <span class="s-lesson-quiz__status s-lesson-quiz__status--pending">{% trans 'Yoxlanılmalıdır' %}</span>
+            {% elif row.result.is_published %}
+            <span class="s-lesson-quiz__status s-lesson-quiz__status--done">{{ row.result.total_score|format_quiz_score }}</span>
+            {% else %}
+            <span class="s-lesson-quiz__status s-lesson-quiz__status--done">{% trans 'Edilib' %}</span>
+            {% endif %}
+            <span class="s-lesson-quiz__meta">{{ row.result.completed_at|portal_datetime }}</span>
+            <a class="ds-btn ds-btn--ghost btn-sm" href="{{ row.result_url }}">{% trans 'Bax' %}</a>
+          {% else %}
+            <span class="s-lesson-quiz__status">{% trans 'Edilməyib' %}</span>
+          {% endif %}
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endfor %}
+</section>
+{% endif %}
 
 {% if portal_role == 'student' and homework_form %}
 <section class="ds-card s-lesson-detail-section s-lesson-homework mt-4">

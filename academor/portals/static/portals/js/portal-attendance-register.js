@@ -244,8 +244,24 @@
       }
       removeEmptyRow();
       var node = rowTemplate.content.firstElementChild.cloneNode(true);
-      node.setAttribute("data-guest-id", String(guest.id));
-      node.setAttribute("data-student-id", "");
+      if (guest.is_guest === false) {
+        // a real student now: marks go to the student, and no "remove name" button
+        node.removeAttribute("data-is-guest");
+        node.setAttribute("data-guest-id", "");
+        node.setAttribute("data-student-id", String(guest.id));
+        var removeBtn = node.querySelector("[data-register-remove-guest]");
+        if (removeBtn) {
+          removeBtn.remove();
+        }
+        var existing = body.querySelector('tr[data-student-id="' + String(guest.id) + '"]');
+        if (existing) {
+          existing.scrollIntoView({ block: "center" });
+          return;
+        }
+      } else {
+        node.setAttribute("data-guest-id", String(guest.id));
+        node.setAttribute("data-student-id", "");
+      }
       node.setAttribute("data-student-name", guest.name);
       var nameText = node.querySelector(".portal-register-table__name-text");
       if (nameText) {
@@ -412,17 +428,19 @@
         })
           .then(function (result) {
             if (!result.ok) {
-              throw new Error("add-failed");
+              var failure = new Error("add-failed");
+              failure.userMessage = result.data && result.data.error;
+              throw failure;
             }
             if (input) {
               input.value = "";
               input.focus();
             }
-            appendGuestRow(result.data.guest);
+            appendGuestRow(result.data.student || result.data.guest);
             setStatus(guestAddedMsg, false);
           })
-          .catch(function () {
-            setStatus(errorMsg, true);
+          .catch(function (error) {
+            setStatus((error && error.userMessage) || errorMsg, true);
           });
       });
     }

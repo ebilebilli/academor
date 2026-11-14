@@ -42,7 +42,15 @@ class TeacherLessonCreateTests(TestCase):
         link_study_group_services(self.group, 'ielts')
         self.group.students.add(self.student)
 
-    def test_service_derived_from_group_courses(self):
+    def test_service_comes_from_teacher_specialization_not_group(self):
+        from portals.models import TeacherCourseSpecialization
+
+        # no specialization yet: the neutral default
+        self.assertEqual(resolve_group_lesson_service(self.group), 'other')
+        TeacherCourseSpecialization.objects.create(teacher=self.teacher, course_type='ielts')
+        from portals.utils.cache_utils import invalidate_model_cache
+
+        invalidate_model_cache('TeacherCourseSpecialization')  # on_commit does not fire in TestCase
         self.assertEqual(resolve_group_lesson_service(self.group), 'ielts')
 
     def test_teacher_without_specializations_can_create_lesson(self):
@@ -61,7 +69,8 @@ class TeacherLessonCreateTests(TestCase):
         lessons = form.save_for_groups(self.teacher)
         self.assertEqual(len(lessons), 1)
         lesson = lessons[0]
-        self.assertEqual(lesson.subject, 'ielts')
+        # a group carries no service; without a specialization the lesson gets the default
+        self.assertEqual(lesson.subject, 'other')
         self.assertEqual(lesson.category.name, 'Grammar')
         self.assertEqual(lesson.group_id, self.group.pk)
         self.assertEqual(lesson.teacher_id, self.teacher.pk)

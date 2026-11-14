@@ -71,6 +71,12 @@ class Score(models.Model):
 
 
 class WeeklyStudentScore(models.Model):
+    """A teacher's score for a student on one day (0–10).
+
+    The class keeps its historical name; scores were weekly until 2026-11 and are daily
+    now (``score_date``). ``study_group`` is empty for a student who has no group.
+    """
+
     student = models.ForeignKey(
         'StudentProfile',
         on_delete=models.CASCADE,
@@ -87,13 +93,15 @@ class WeeklyStudentScore(models.Model):
         'StudyGroup',
         on_delete=models.CASCADE,
         related_name='weekly_scores',
+        null=True,
+        blank=True,
         verbose_name=_('Study group'),
-        help_text=_('Weekly score applies to this group membership.'),
+        help_text=_('Group the score was given in; empty for a student without a group.'),
     )
-    week_start = models.DateField(
+    score_date = models.DateField(
         db_index=True,
-        verbose_name=_('Week start'),
-        help_text=_('Monday of the scored week.'),
+        verbose_name=_('Date'),
+        help_text=_('Day the score is for.'),
     )
     score = models.DecimalField(
         max_digits=4,
@@ -103,7 +111,7 @@ class WeeklyStudentScore(models.Model):
             MaxValueValidator(WEEKLY_SCORE_MAX),
         ],
         verbose_name=_('Score'),
-        help_text=_('Score out of 10 for the week.'),
+        help_text=_('Score out of 10 for the day.'),
     )
     comment = models.TextField(
         blank=True,
@@ -120,15 +128,21 @@ class WeeklyStudentScore(models.Model):
     )
 
     class Meta:
-        verbose_name = _('Weekly student score')
-        verbose_name_plural = _('Weekly student scores')
-        ordering = ('-week_start', '-updated_at', '-id')
+        verbose_name = _('Daily student score')
+        verbose_name_plural = _('Daily student scores')
+        ordering = ('-score_date', '-updated_at', '-id')
         constraints = [
             models.UniqueConstraint(
-                fields=('student', 'teacher', 'study_group', 'week_start'),
+                fields=('student', 'teacher', 'study_group', 'score_date'),
                 name='portals_weekly_score_unique_student_group_week',
+            ),
+            # NULL groups are not equal to each other in SQL: one score a day without a group
+            models.UniqueConstraint(
+                fields=('student', 'teacher', 'score_date'),
+                condition=models.Q(study_group__isnull=True),
+                name='portals_daily_score_unique_student_no_group_day',
             ),
         ]
 
     def __str__(self):
-        return f'{self.student} — {self.week_start}: {self.score}/{WEEKLY_SCORE_MAX}'
+        return f'{self.student} — {self.score_date}: {self.score}/{WEEKLY_SCORE_MAX}'

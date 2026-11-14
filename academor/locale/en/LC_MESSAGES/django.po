@@ -10551,6 +10551,342 @@ msgstr "Time is up"
 msgid "Answer the next question"
 msgstr "Answer the next question"
 
+msgid "\"%(name)s\" qrupu yaradıldı."
+msgstr "Group \"%(name)s\" created."
+
+msgid "\"Yeni tələbə\" düyməsi ilə tələbə əlavə edin; qrup seçmək məcburi deyil."
+msgstr "Add a student with the \"New student\" button; choosing a group is optional."
+
+msgid "%(done)s / %(total)s tələbə edib"
+msgstr "%(done)s / %(total)s students done"
+
+msgid "%(name)s tələbə kimi əlavə olundu."
+msgstr "%(name)s was added as a student."
+
+msgid "Ad və soyadı yazın."
+msgstr "Enter the full name."
+
+msgid "Ad yalnız hərf, rəqəm, boşluq və @/./+/-/_ ola bilər."
+msgstr "A name may contain only letters, digits, spaces and @/./+/-/_."
+
+msgid "Adını dəyiş"
+msgstr "Rename"
+
+msgid "Axtarışa uyğun tələbə tapılmadı."
+msgstr "No student matches your search."
+
+msgid "Açıq olanda tələbə General English quizlərini görür."
+msgstr "When on, the student sees General English quizzes."
+
+msgid "Boş qalsa tələbə portala daxil ola bilməz; parolu sonra admin təyin edə bilər."
+msgstr "If left empty the student cannot sign in yet; an admin can set the password later."
+
+msgid "Bu adda qrupunuz artıq var."
+msgstr "You already have a group with this name."
+
+msgid "Bu adla başqa istifadəçi var. Ada fərqləndirici əlavə edin."
+msgstr "Another user already has this name. Add something to tell them apart."
+
+msgid "Bu adla istifadəçi artıq var. Ada fərqləndirici əlavə edin."
+msgstr "A user with this name already exists. Add something to tell them apart."
+
+msgid "Bu qrupda yer yoxdur (ən çox %(limit)s tələbə)."
+msgstr "This group is full (at most %(limit)s students)."
+
+msgid "Bu qrupda yer yoxdur."
+msgstr "This group is full."
+
+msgid "Bu siyahıda tələbə yoxdur"
+msgstr "No students in this list"
+
+msgid "Bütün tələbələriniz. Kənardakı siyahıdan qrupa görə filtrləyin."
+msgstr "All your students. Filter by group in the side list."
+
+msgid "Dərsi qrupa, birbaşa tələbələrə və ya hər ikisinə göndərin. Qrupu olmayan tələbələri aşağıdan seçin."
+msgstr "Send the lesson to a group, straight to students, or both. Pick students without a group below."
+
+msgid "Edilib"
+msgstr "Done"
+
+msgid "Edilməyib"
+msgstr "Not done"
+
+msgid "Ev tapşırığı quizləri"
+msgstr "Homework quizzes"
+
+msgid "Hesabınız deaktiv edilib. Ətraflı məlumat üçün Academor ilə əlaqə saxlayın."
+msgstr "Your account has been deactivated. Please contact Academor for details."
+
+msgid "Hələ qrupunuz yoxdur."
+msgstr "You have no groups yet."
+
+msgid "Hələ tələbəniz yoxdur"
+msgstr "You have no students yet"
+
+msgid "Hələ tələbəniz yoxdur."
+msgstr "You have no students yet."
+
+msgid "Kimə göndərilir"
+msgstr "Who gets it"
+
+msgid "Nəticə"
+msgstr "Result"
+
+msgid "Parol"
+msgstr "Password"
+
+msgid "Parol təyin olunmayıb"
+msgstr "No password set"
+
+msgid "Profil"
+msgstr "Profile"
+
+msgid "Qrup yalnız siyahıda filtrləmək üçündür; tələbə qrupsuz da ola bilər."
+msgstr "A group is only for filtering the list; a student may have no group."
+
+msgid "Qrup yarat"
+msgstr "Create group"
+
+msgid "Qrupsuz"
+msgstr "No group"
+
+msgid "Qrupun adı"
+msgstr "Group name"
+
+msgid "Qrupun cədvəli"
+msgstr "Group schedule"
+
+msgid "Quiz axtar"
+msgstr "Search quizzes"
+
+msgid "Quiz axtar..."
+msgstr "Search quizzes..."
+
+msgid "Telefon"
+msgstr "Phone"
+
+msgid "Tələbə"
+msgstr "Student"
+
+msgid "Tələbə axtar"
+msgstr "Search students"
+
+msgid "Tələbə axtar..."
+msgstr "Search students..."
+
+msgid "Tələbə dərhal sistemə düşür: xidmətlərini siz seçirsiniz."
+msgstr "The student is added to the system right away; you choose their services."
+
+msgid "Tələbə portala bu adla daxil olur."
+msgstr "The student signs in to the portal with this name."
+
+msgid "Tələbələr"
+msgstr "Students"
+
+msgid "Tələbəni qrupa əlavə etmək üçün siyahıdakı \"Qrup\" düyməsindən istifadə edin."
+msgstr "Use the \"Group\" button in the list to add a student to a group."
+
+msgid "Tələbənin quizləri, mock testləri və bildirişləri bu xidmətlərə görə açılır. IELTS tələbələrində General English əvvəlcədən aktivdir."
+msgstr "The student's quizzes, mock tests and notifications follow these services. IELTS students get General English on by default."
+
+msgid "Tələbənin quizləri, mock testləri və bildirişləri qrupuna görə yox, öz xidmətlərinə görə açılır. General English quizlərini istənilən tələbə üçün aça və bağlaya bilərsiniz."
+msgstr "A student's quizzes, mock tests and notifications follow their own services, not their group. You can switch General English quizzes on or off for any student."
+
+msgid "Xidmət yoxdur"
+msgstr "No services"
+
+msgid "Xidmətlər"
+msgstr "Services"
+
+msgid "Xidmətlərinizdə quiz tapılmadı."
+msgstr "No quizzes found in your services."
+
+msgid "Yeni tələbə"
+msgstr "New student"
+
+msgid "Yoxlanılmalıdır"
+msgstr "Needs review"
+
+msgid "Yoxlanılır"
+msgstr "Under review"
+
+msgid "deaktiv"
+msgstr "inactive"
+
+msgid "yalnız qrup seçilməyəndə"
+msgstr "only when no group is chosen"
+
+msgid "Əməliyyatlar"
+msgstr "Actions"
+
+msgid "Any active student can be added. A student can belong to more than one group, or to none."
+msgstr "Any active student can be added. A student can belong to more than one group, or to none."
+
+msgid "Courses (legacy)"
+msgstr "Courses (legacy)"
+
+msgid "Enter a group name."
+msgstr "Enter a group name."
+
+msgid "Enter a student name."
+msgstr "Enter a student name."
+
+msgid "Homework quizzes"
+msgstr "Homework quizzes"
+
+msgid "Inactive students cannot sign in and are hidden from the portal lists; their rows stay in the attendance register."
+msgstr "Inactive students cannot sign in and are hidden from the portal lists; their rows stay in the attendance register."
+
+msgid "No group — chosen students only"
+msgstr "No group — chosen students only"
+
+msgid "No longer used: access comes from each student's own services."
+msgstr "No longer used: access comes from each student's own services."
+
+msgid "Optional label for filtering your lessons (e.g. Grammar, Homework)."
+msgstr "Optional label for filtering your lessons (e.g. Grammar, Homework)."
+
+msgid "Quizzes attached here open automatically for everyone who receives the lesson; you see each student's result on the lesson page."
+msgstr "Quizzes attached here open automatically for everyone who receives the lesson; you see each student's result on the lesson page."
+
+msgid "Select at least one group or one student."
+msgstr "Select at least one group or one student."
+
+msgid "Send the lesson straight to these students (with or without a group)."
+msgstr "Send the lesson straight to these students (with or without a group)."
+
+msgid "Students who receive this lesson directly (used when no group is set)."
+msgstr "Students who receive this lesson directly (used when no group is set)."
+
+msgid "Teachers this student belongs to directly, with or without a group."
+msgstr "Teachers this student belongs to directly, with or without a group."
+
+msgid "A group is only a name used for filtering. Quiz, mock-test and notification access comes from each student's own services, not from the group."
+msgstr "A group is only a name used for filtering. Quiz, mock-test and notification access comes from each student's own services, not from the group."
+
+msgid "Pick an existing login account, or create one under Users with role Student — a profile is created automatically. Assign active service enrollments below — quizzes and classrooms follow those services. Study groups are only names for filtering. Inactive students cannot sign in and disappear from the portal lists; their attendance rows stay."
+msgstr "Pick an existing login account, or create one under Users with role Student — a profile is created automatically. Assign active service enrollments below — quizzes and classrooms follow those services. Study groups are only names for filtering. Inactive students cannot sign in and disappear from the portal lists; their attendance rows stay."
+
+msgid "Bu gün üçün bütün şagirdlər artıq qiymətləndirilib."
+msgstr "All students are already scored for this day."
+
+msgid "Günlük orta bal"
+msgstr "Daily average score"
+
+msgid "Günlük qiymət"
+msgstr "Daily score"
+
+msgid "Günlük qiymətləndirmə"
+msgstr "Daily scoring"
+
+msgid "Günlük qiymətləndirmələr"
+msgstr "Daily scores"
+
+msgid "Günlük qiymətlər"
+msgstr "Daily scores"
+
+msgid "Hələ günlük bal qeydə alınmayıb."
+msgstr "No daily scores recorded yet."
+
+msgid "Hələ günlük qiymət yoxdur"
+msgstr "No daily scores yet"
+
+msgid "Hələ günlük qiymət yoxdur."
+msgstr "No daily scores yet."
+
+msgid "Hər şagird üçün gündəlik 10 bal üzrə qiymət verin."
+msgstr "Give each student a daily score out of 10."
+
+msgid "Hər şagird üçün hər qrupda gündə bir bal verilir. Gün avtomatik bu gündür, istəsəniz əvvəlki günü seçə bilərsiniz. Bal saxlanandan sonra dəyişmək olmur."
+msgstr "Each student gets one score per group per day. The day is today by default; you can pick an earlier day. A saved score cannot be changed."
+
+msgid "Müəllim bal verdikdən sonra burada görünəcək."
+msgstr "It will appear here once the teacher gives a score."
+
+msgid "Müəlliminiz bal verdikcə burada görünəcək."
+msgstr "Scores from your teacher will appear here."
+
+msgid "Növbəti gün"
+msgstr "Next day"
+
+msgid "Quiz tarixçəsi və günlük qiymətlərə baxın."
+msgstr "See quiz history and daily scores."
+
+msgid "Seçilmiş gün"
+msgstr "Selected day"
+
+msgid "günlük bal · orta"
+msgstr "daily scores · average"
+
+msgid "Əvvəlki gün"
+msgstr "Previous day"
+
+msgid "%(name)s — score from %(teacher)s for %(day)s"
+msgstr "%(name)s — score from %(teacher)s for %(day)s"
+
+msgid "All scores for this day are already saved."
+msgstr "All scores for this day are already saved."
+
+msgid "Average daily score"
+msgstr "Average daily score"
+
+msgid "Choose a valid day."
+msgstr "Choose a valid day."
+
+msgid "Daily assessment"
+msgstr "Daily assessment"
+
+msgid "Daily average"
+msgstr "Daily average"
+
+msgid "Daily grades will appear here once they are recorded."
+msgstr "Daily grades will appear here once they are recorded."
+
+msgid "Daily student score"
+msgstr "Daily student score"
+
+msgid "Daily student scores"
+msgstr "Daily student scores"
+
+msgid "Day the score is for."
+msgstr "Day the score is for."
+
+msgid "Group the score was given in; empty for a student without a group."
+msgstr "Group the score was given in; empty for a student without a group."
+
+msgid "One score per teacher, student, group and day."
+msgstr "One score per teacher, student, group and day."
+
+msgid "Quiz & daily scores"
+msgstr "Quiz & daily scores"
+
+msgid "Score out of 10 for the day."
+msgstr "Score out of 10 for the day."
+
+msgid "Scores saved."
+msgstr "Scores saved."
+
+msgid "Teacher daily score out of 10 for each student."
+msgstr "Teacher daily score out of 10 for each student."
+
+msgid "The date is the scored day (today by default; earlier days can be picked)."
+msgstr "The date is the scored day (today by default; earlier days can be picked)."
+
+msgid "This score is already saved and cannot be changed."
+msgstr "This score is already saved and cannot be changed."
+
+msgid "You cannot score a future day."
+msgstr "You cannot score a future day."
+
+msgid "You cannot score this student for the selected group."
+msgstr "You cannot score this student for the selected group."
+
+msgid "Your score from %(teacher)s for %(day)s was published."
+msgstr "Your score from %(teacher)s for %(day)s was published."
+
+msgid "Daily scores"
+msgstr "Daily scores"
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Try again in the next campaign — we will let you know."
 

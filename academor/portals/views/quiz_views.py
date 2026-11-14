@@ -68,13 +68,13 @@ def _quiz_back_url(quiz: dict) -> str:
 def _deny_locked_standalone_quiz(request, student_id: int, quiz_id: int, *, mock_id=None):
     """Redirect locked quizzes back to the category with a clear message."""
     from portals.models import Quiz
-    from portals.utils.student_courses import quiz_visible_to_student, student_quiz_enrollment_ok
+    from portals.utils.student_courses import quiz_visible_to_student, student_can_reach_quiz
 
     if mock_id:
         return None
 
     quiz = Quiz.objects.filter(pk=quiz_id).select_related('category').first()
-    if not quiz or not student_quiz_enrollment_ok(student_id, quiz):
+    if not quiz or not student_can_reach_quiz(student_id, quiz):
         raise Http404
     if quiz_visible_to_student(quiz, student_id):
         return None

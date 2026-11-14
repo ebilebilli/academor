@@ -1,14 +1,8 @@
 {% load i18n %}
 {% comment %}
-Reusable page hero: title + subtitle + optional watercolor stickers + optional actions.
-Pass stickers=True to show the sticker cluster picked by the hero icon.
+Reusable page hero: title + subtitle + optional actions. (The old `stickers` argument is ignored.)
 {% endcomment %}
-<header class="portal-page-hero s-page-head mb-4{% if stickers %} portal-page-hero--stickers{% endif %}{% if hero_class %} {{ hero_class }}{% endif %}">
-  {% if stickers and hero_class == "portal-page-hero--centered" %}
-  <div class="portal-page-hero__media">
-    {% include "portals/includes/portal_stickers.html" %}
-  </div>
-  {% endif %}
+<header class="portal-page-hero s-page-head mb-4{% if hero_class %} {{ hero_class }}{% endif %}">
   <div class="portal-page-hero__copy">
     <h1 class="s-page-head__title">
       {% if icon %}<span class="portal-page-hero__icon"><i class="ti {{ icon }}" aria-hidden="true"></i></span>{% endif %}
@@ -54,11 +48,6 @@ Pass stickers=True to show the sticker cluster picked by the hero icon.
       {% endif %}
     </div>
     {% endif %}
-  </div>
-  {% endif %}
-  {% if stickers and hero_class != "portal-page-hero--centered" %}
-  <div class="portal-page-hero__media">
-    {% include "portals/includes/portal_stickers.html" %}
   </div>
   {% endif %}
 </header>

@@ -232,6 +232,10 @@
         postToggle(url, toggle.checked)
           .then(function (data) {
             toggle.checked = !!data.is_active;
+            // a service switch changes which quizzes and mock tests the lists below show
+            if (toggle.hasAttribute("data-service-access-toggle")) {
+              window.location.reload();
+            }
           })
           .catch(function () {
             toggle.checked = previous;

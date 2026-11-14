@@ -2,7 +2,6 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 
 from portals.models import StudyGroup, TeacherCourseSpecialization, TeacherProfile
-from portals.tests.group_helpers import link_study_group_courses
 from portals.tests.test_quiz_visibility import _ensure_active_portal_services
 from portals.utils.group_services import lesson_effective_subject, resolve_group_lesson_service
 from portals.utils.portal_services import portal_codes_for_service_ids, services_for_portal_codes
@@ -50,19 +49,16 @@ class StudyGroupCourseTeacherTests(TestCase):
             course_type='general_english',
         )
 
-    def test_group_courses_are_not_synced_from_teacher(self):
+    def test_group_has_no_services(self):
+        """A group is only a name: it never hands services to anyone."""
         group = StudyGroup.objects.create(
             teacher=self.ielts_teacher,
-            name='Course-owned group',
+            name='Name-only group',
             max_students=10,
         )
-        self.assertEqual(list(group.courses.all()), [])
-
-        link_study_group_courses(group, 'general_english')
-        group.refresh_from_db()
-        codes = group.get_portal_course_codes()
-        self.assertIn('general_english', codes)
-        self.assertNotIn('ielts', codes)
+        group.courses.set(services_for_portal_codes(['general_english']))  # legacy data
+        self.assertEqual(group.get_portal_course_codes(), [])
+        self.assertEqual(group.get_course_labels(), [])
 
     def test_teachers_for_portal_course_codes_filters_by_specialization(self):
         ielts_only = teachers_for_portal_course_codes(['ielts'])
@@ -83,43 +79,30 @@ class StudyGroupCourseTeacherTests(TestCase):
         self.assertIn('ielts', codes)
         self.assertIn('general_english', codes)
 
-    def test_resolve_group_lesson_service_prefers_group_linked_sat(self):
-        from projects.models.service_models import Service
-
-        Service.objects.get_or_create(
-            slug='sat',
-            defaults={'name_az': 'SAT', 'name_en': 'SAT', 'is_active': True},
-        )
+    def test_lesson_service_comes_from_teacher_not_group(self):
         group = StudyGroup.objects.create(
-            teacher=self.ielts_teacher,
+            teacher=self.general_teacher,
             name='SAT online qrup',
             max_students=10,
         )
-        link_study_group_courses(group, 'sat')
-        group.refresh_from_db()
-        self.assertEqual(resolve_group_lesson_service(group), 'sat')
+        group.courses.set(services_for_portal_codes(['ielts']))  # legacy data, ignored
+        self.assertEqual(resolve_group_lesson_service(group), 'general_english')
 
-    def test_lesson_effective_subject_uses_group_sat_when_stored_subject_mismatches(self):
-        from projects.models.service_models import Service
+    def test_lesson_effective_subject_is_the_stored_one(self):
         from portals.models import Lesson
 
-        Service.objects.get_or_create(
-            slug='sat',
-            defaults={'name_az': 'SAT', 'name_en': 'SAT', 'is_active': True},
-        )
         group = StudyGroup.objects.create(
             teacher=self.ielts_teacher,
-            name='SAT online qrup',
+            name='Any group',
             max_students=10,
         )
-        link_study_group_courses(group, 'sat')
         lesson = Lesson.objects.create(
             group=group,
             teacher=self.ielts_teacher,
-            subject='general-english',
-            name='SAT unit 1',
+            subject='general_english',
+            name='Unit 1',
         )
-        self.assertEqual(lesson_effective_subject(lesson), 'sat')
+        self.assertEqual(lesson_effective_subject(lesson), 'general_english')
 
     def test_build_lesson_subject_tabs_respects_group_service_codes(self):
         from portals.utils.queries import build_lesson_subject_tabs
@@ -133,18 +116,3 @@ class StudyGroupCourseTeacherTests(TestCase):
         self.assertEqual(codes, ['all', 'sat'])
         self.assertEqual(tabs[0]['count'], 1)
         self.assertEqual(tabs[1]['count'], 1)
-
-    def test_group_portal_display_labels_use_linked_codes_not_all_service_names(self):
-        group = StudyGroup.objects.create(
-            teacher=self.ielts_teacher,
-            name='Display labels group',
-            max_students=10,
-        )
-        link_study_group_courses(group, 'ielts', 'general_english')
-        group.refresh_from_db()
-        labels = group.get_course_labels()
-        self.assertEqual(len(labels), 2)
-        codes = group.get_portal_course_codes()
-        self.assertIn('ielts', codes)
-        self.assertIn('general_english', codes)
-        self.assertNotIn('sat', codes)

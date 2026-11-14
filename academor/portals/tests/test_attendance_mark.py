@@ -424,7 +424,8 @@ class AttendanceMarkTests(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(Attendance.objects.count(), 0)
 
-    def test_register_add_guest_and_mark(self):
+    def test_register_add_name_creates_real_student_and_mark(self):
+        """A name typed on the register is a real student of the teacher straight away."""
         add_response = self.client.post(
             reverse('portals:teacher-attendance-register-guest'),
             data=json.dumps({
@@ -434,10 +435,14 @@ class AttendanceMarkTests(TestCase):
             content_type='application/json',
         )
         self.assertEqual(add_response.status_code, 200)
-        guest_payload = add_response.json()
-        self.assertTrue(guest_payload['ok'])
-        guest_id = guest_payload['guest']['id']
-        self.assertEqual(guest_payload['guest']['name'], 'Qonaq Tələbə')
+        payload = add_response.json()
+        self.assertTrue(payload['ok'])
+        self.assertTrue(payload['created'])
+        student_id = payload['student']['id']
+        self.assertEqual(payload['student']['name'], 'Qonaq Tələbə')
+        student = StudentProfile.objects.get(pk=student_id)
+        self.assertTrue(student.groups.filter(pk=self.group_one.pk).exists())
+        self.assertTrue(student.teachers.filter(pk=self.teacher.pk).exists())
 
         page = self._register_page()
         names = [row['name'] for row in page.context['register']['students']]
@@ -447,7 +452,7 @@ class AttendanceMarkTests(TestCase):
             reverse('portals:teacher-attendance-register-mark'),
             data=json.dumps({
                 'group_id': self.group_one.pk,
-                'guest_id': guest_id,
+                'student_id': student_id,
                 'date': self.session_date.isoformat(),
                 'status': Attendance.Status.ABSENT,
             }),
@@ -455,8 +460,8 @@ class AttendanceMarkTests(TestCase):
         )
         self.assertEqual(mark_response.status_code, 200)
         self.assertEqual(mark_response.json()['absent'], 1)
-        record = Attendance.objects.get(guest_id=guest_id)
-        self.assertIsNone(record.student_id)
+        record = Attendance.objects.get(student_id=student_id)
+        self.assertIsNone(record.guest_id)
         self.assertEqual(record.status, Attendance.Status.ABSENT)
 
     def test_register_remove_guest_hides_from_grid(self):
@@ -483,7 +488,8 @@ class AttendanceMarkTests(TestCase):
         ]
         self.assertNotIn(guest.pk, guest_ids)
 
-    def test_register_add_manual_group(self):
+    def test_register_add_group_creates_real_group(self):
+        """A group made on the register is an ordinary group (only a name)."""
         response = self.client.post(
             reverse('portals:teacher-attendance-register-group'),
             data=json.dumps({'name': '  Xüsusi Qrup  '}),
@@ -493,41 +499,31 @@ class AttendanceMarkTests(TestCase):
         payload = response.json()
         self.assertTrue(payload['ok'])
         group_id = payload['group']['id']
-        self.assertTrue(payload['group']['is_register_only'])
+        self.assertFalse(payload['group']['is_register_only'])
 
         page = self._register_page(group=group_id)
         register = page.context['register']
         self.assertEqual(register['group']['id'], group_id)
-        self.assertTrue(register['group']['is_register_only'])
         self.assertEqual(register['group']['name'], 'Xüsusi Qrup')
-        # Manual group must not pollute normal teacher group lists.
         from portals.utils.teacher_courses import teacher_groups_queryset
-        self.assertFalse(
-            teacher_groups_queryset(self.teacher.pk).filter(pk=group_id).exists()
-        )
-        self.assertTrue(
-            teacher_groups_queryset(
-                self.teacher.pk,
-                include_register_only=True,
-            ).filter(pk=group_id).exists()
-        )
+        self.assertTrue(teacher_groups_queryset(self.teacher.pk).filter(pk=group_id).exists())
 
-    def test_register_remove_manual_group(self):
-        create = self.client.post(
-            reverse('portals:teacher-attendance-register-group'),
-            data=json.dumps({'name': 'Silinəcək'}),
-            content_type='application/json',
+    def test_register_remove_legacy_manual_group(self):
+        legacy = StudyGroup.objects.create(
+            teacher=self.teacher,
+            name='Silinəcək',
+            is_register_only=True,
+            max_students=50,
         )
-        group_id = create.json()['group']['id']
         response = self.client.delete(
             reverse('portals:teacher-attendance-register-group'),
-            data=json.dumps({'group_id': group_id}),
+            data=json.dumps({'group_id': legacy.pk}),
             content_type='application/json',
         )
         self.assertEqual(response.status_code, 200)
         page = self._register_page()
         ids = [row['id'] for row in page.context['register']['groups']]
-        self.assertNotIn(group_id, ids)
+        self.assertNotIn(legacy.pk, ids)
 
     def test_cannot_remove_portal_group_via_register(self):
         response = self.client.delete(

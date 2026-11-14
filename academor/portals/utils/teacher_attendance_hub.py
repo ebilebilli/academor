@@ -54,8 +54,10 @@ def _hub_stats_from_summary(summary, *, student_count, needs_attention):
 
 @cached_query(timeout='CACHE_TIMEOUT_SHORT')
 def build_teacher_attendance_hub(teacher_id):
+    from portals.utils.teacher_students import teacher_students_qs
+
     teacher_groups = teacher_groups_queryset(teacher_id, active_only=True)
-    if not teacher_groups.exists():
+    if not teacher_groups.exists() and not teacher_students_qs(teacher_id).exists():
         empty = _hub_stats_from_summary(_empty_summary(), student_count=0, needs_attention=0)
         return {'groups': [], 'students': [], 'stats': {'all': empty}}
 
@@ -86,9 +88,10 @@ def build_teacher_attendance_hub(teacher_id):
         stats_by_student_group.setdefault(student_id, {})[group_id] = _summary_from_counts(row)
 
     teacher_group_ids = list(teacher_groups.values_list('pk', flat=True))
+    # every active student of the teacher: through a group, or directly when they have none
+    # (deactivated students stay only on the monthly register)
     students_qs = (
-        StudentProfile.objects.filter(groups__in=teacher_groups)
-        .distinct()
+        teacher_students_qs(teacher_id)
         .select_related('user')
         .prefetch_related(
             Prefetch(
@@ -112,7 +115,10 @@ def build_teacher_attendance_hub(teacher_id):
             summary = stats_by_student_group.get(student.pk, {}).get(group_id, _empty_summary())
             per_group[str(group_id)] = summary
             group_summaries.append(summary)
-        summary_all = _merge_summaries(*group_summaries) if group_summaries else _empty_summary()
+        # all of the student's marks with this teacher (a student without a group is
+        # marked on the general register, which is not one of their groups)
+        all_marks = list(stats_by_student_group.get(student.pk, {}).values())
+        summary_all = _merge_summaries(*all_marks) if all_marks else _empty_summary()
         if summary_all['absent'] > 0:
             needs_attention_all += 1
         all_summaries_for_hub.append(summary_all)

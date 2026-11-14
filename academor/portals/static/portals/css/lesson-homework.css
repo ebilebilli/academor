@@ -145,3 +145,79 @@
 .s-homework-lesson-link__copy .s-lesson-detail-meta {
   margin: 0;
 }
+
+/* homework quizzes on a lesson (student: take + status; teacher: every student's result) */
+.s-lesson-quiz__block + .s-lesson-quiz__block {
+  margin-top: 1.25rem;
+}
+
+.s-lesson-quiz__block-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 0.6rem;
+}
+
+.s-lesson-quiz__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.s-lesson-quiz__item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--color-gray-200, #e5e7eb);
+  border-radius: 0.75rem;
+  background: var(--color-white, #fff);
+}
+
+.s-lesson-quiz__topic {
+  font-weight: 700;
+  margin-right: 0.5rem;
+}
+
+.s-lesson-quiz__student {
+  font-weight: 600;
+  color: inherit;
+}
+
+.s-lesson-quiz__meta {
+  color: var(--color-gray-500, #6b7280);
+  font-size: 0.85rem;
+  margin-right: 0.5rem;
+}
+
+.s-lesson-quiz__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.s-lesson-quiz__status {
+  display: inline-block;
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: var(--color-gray-100, #f3f4f6);
+  color: var(--color-gray-700, #374151);
+}
+
+.s-lesson-quiz__status--done {
+  background: rgba(22, 163, 74, 0.12);
+  color: #15803d;
+}
+
+.s-lesson-quiz__status--pending {
+  background: rgba(255, 84, 20, 0.12);
+  color: #c23a00;
+}

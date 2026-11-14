@@ -28,7 +28,7 @@
       id="score-tab-weekly"
     >
       <i class="ti ti-calendar-stats" aria-hidden="true"></i>
-      {% trans 'Həftəlik qiymətləndirmələr' %}
+      {% trans 'Günlük qiymətləndirmələr' %}
       <span class="s-filter-tab__badge portal-score-segment__count">{{ weekly_scores|length }}</span>
     </button>
     {% if mock_attempts is not None %}
@@ -127,7 +127,7 @@
       <table class="t-table portal-score-table weekly-scores-history-table">
         <thead>
           <tr>
-            <th>{% trans 'Həftə' %}</th>
+            <th>{% trans 'Tarix' %}</th>
             {% if show_student_column %}
             <th>{% trans 'Şagird' %}</th>
             {% endif %}
@@ -146,8 +146,8 @@
         </thead>
         <tbody>
           {% for row in weekly_scores %}
-          <tr data-score-date="{{ row.week_start|date:'Y-m-d' }}"{% if row.group_ids %} data-group-ids="{{ row.group_ids|join:',' }}"{% endif %}>
-            <td class="fw-500" data-label="{% trans 'Həftə' %}">{% portal_week_label row.week_start row.week_end %}</td>
+          <tr data-score-date="{{ row.score_date|date:'Y-m-d' }}"{% if row.group_ids %} data-group-ids="{{ row.group_ids|join:',' }}"{% endif %}>
+            <td class="fw-500" data-label="{% trans 'Tarix' %}">{{ row.score_date|portal_date_long_weekday }}</td>
             {% if show_student_column %}
             <td data-label="{% trans 'Şagird' %}">{{ row.student_name|default:"—" }}</td>
             {% endif %}
@@ -170,7 +170,7 @@
             <td colspan="10">
               <div class="s-empty-state">
                 <i class="ti ti-calendar-off" aria-hidden="true"></i>
-                <p>{% trans 'Hələ həftəlik qiymət yoxdur.' %}</p>
+                <p>{% trans 'Hələ günlük qiymət yoxdur.' %}</p>
               </div>
             </td>
           </tr>

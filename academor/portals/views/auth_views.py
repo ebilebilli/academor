@@ -102,6 +102,11 @@ class PortalLoginView(View):
             )
             return redirect(fallback)
 
+        student = getattr(user, 'student_profile', None) if get_portal_role(user) == 'student' else None
+        if student is not None and not student.is_active:
+            messages.error(request, _('Hesabınız deaktiv edilib. Ətraflı məlumat üçün Academor ilə əlaqə saxlayın.'))
+            return redirect(fallback)
+
         portal_login(request, user)
         request.session.pop('portal_login_username', None)
         return _redirect_after_login(request, next_url)

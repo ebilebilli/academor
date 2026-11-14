@@ -8,6 +8,7 @@ from portals.utils.quiz_assignments import (
     set_student_mock_access,
     set_student_quiz_assignment,
     set_student_quiz_assignments,
+    set_teacher_student_service,
 )
 from portals.utils.teacher_access import get_teacher_student
 from portals.views.mixins import TeacherRequiredMixin
@@ -135,4 +136,29 @@ class TeacherMockAccessToggleView(TeacherRequiredMixin, View):
             'ok': True,
             'program': program,
             'is_active': access.is_active,
+        })
+
+
+class TeacherStudentServiceToggleView(TeacherRequiredMixin, View):
+    """Switch one of a student's services (e.g. General English quizzes) on or off."""
+
+    def post(self, request, student_pk, code):
+        profile = get_teacher_profile(request.portal_user)
+        if not get_teacher_student(profile.pk, student_pk):
+            raise Http404
+
+        payload = _read_payload(request)
+        row = set_teacher_student_service(
+            profile.pk,
+            student_pk,
+            code,
+            is_active=_parse_is_active(payload, request.POST.get('is_active')),
+        )
+        if row is None:
+            return JsonResponse({'ok': False, 'error': 'forbidden'}, status=403)
+
+        return JsonResponse({
+            'ok': True,
+            'code': code,
+            'is_active': row.is_active,
         })

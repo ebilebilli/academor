@@ -52,7 +52,7 @@
           {% if lesson.group_id %}data-group-id="{{ lesson.group_id }}" data-group-ids="{{ lesson.group_id }}"{% endif %}
         >
           <td class="fw-500" data-label="{% trans 'Name' %}">{{ lesson.name }}</td>
-          <td data-label="{% trans 'Group' %}">{{ lesson.group_name }}</td>
+          <td data-label="{% trans 'Group' %}">{% if lesson.group_name %}{{ lesson.group_name }}{% else %}<i class="bi bi-person me-1" aria-hidden="true"></i>{{ lesson.direct_student_names|join:", " }}{% endif %}</td>
           <td data-label="{% trans 'Service' %}"><span class="ds-badge">{{ lesson.subject_label }}</span></td>
           <td class="text-muted small" data-label="{% trans 'Date' %}">{{ lesson.lesson_date|portal_date_long }}</td>
           <td data-label="{% trans 'Category label' %}">{{ lesson.category_name|default:"—" }}</td>

@@ -57,7 +57,7 @@
       <div class="dashboard-perf-card__head">
         <span class="dashboard-perf-card__icon"><i class="ti ti-calendar-stats" aria-hidden="true"></i></span>
         <div class="dashboard-perf-card__titles">
-          <h3 class="dashboard-perf-card__title">{% trans 'Həftəlik qiymətləndirmə' %}</h3>
+          <h3 class="dashboard-perf-card__title">{% trans 'Günlük qiymətləndirmə' %}</h3>
           {% if weekly_average.tier and weekly_average.tier != 'empty' %}
           <span class="dashboard-perf-card__tier">{{ weekly_average.tier|performance_tier_label }}</span>
           {% endif %}
@@ -68,9 +68,9 @@
       </div>
       <p class="dashboard-perf-card__hint">
         {% if weekly_average.graded_count %}
-          {{ weekly_average.graded_count }} {% trans 'həftəlik bal · orta' %} {{ weekly_average.avg_score_ten }}/10
+          {{ weekly_average.graded_count }} {% trans 'günlük bal · orta' %} {{ weekly_average.avg_score_ten }}/10
         {% else %}
-          {% trans 'Hələ həftəlik bal qeydə alınmayıb.' %}
+          {% trans 'Hələ günlük bal qeydə alınmayıb.' %}
         {% endif %}
       </p>
     </div>

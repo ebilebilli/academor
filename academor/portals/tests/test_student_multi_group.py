@@ -118,7 +118,7 @@ class StudentMultiGroupPortalTests(TestCase):
             student=self.student,
             teacher=self.teacher_a,
             study_group=self.group_a,
-            week_start=date(2026, 7, 6),
+            score_date=date(2026, 7, 6),
             score=7,
         )
         grouped = prepare_student_scores_with_groups(
@@ -128,8 +128,9 @@ class StudentMultiGroupPortalTests(TestCase):
         )
         self.assertEqual(len(grouped['score_groups']), 2)
         quiz_ids = grouped['quiz_scores'][0]['group_ids']
+        # a quiz belongs to the student, not to a group: it shows under every group tab
         self.assertIn(self.group_a.pk, quiz_ids)
-        self.assertNotIn(self.group_b.pk, quiz_ids)
+        self.assertIn(self.group_b.pk, quiz_ids)
         weekly_ids = grouped['weekly_scores'][0]['group_ids']
         self.assertIn(self.group_a.pk, weekly_ids)
 

@@ -1,35 +1,95 @@
-"""Student course / service access via direct enrollments on the student profile."""
+"""Student course / service access via the student's own enrollments.
 
-from portals.models import StudentCourseSpecialization, StudyGroup
+Access never comes from a group: a group is only a name. A student sees a quiz when
+they are enrolled in its service (plus the per-quiz switch for IELTS/SAT), or when a
+teacher gave it to them as homework on a lesson.
+"""
+
+from portals.models import StudentCourseSpecialization
 from portals.utils.cache_utils import cached_query
-from portals.utils.portal_services import expand_course_types_to_service_slugs, portal_course_keys_overlap
-from portals.utils.teacher_courses import teacher_groups_queryset
+from portals.utils.portal_services import portal_course_keys_overlap
+
+IELTS_COURSE_CODE = 'ielts'
+GENERAL_ENGLISH_COURSE_CODE = 'general_english'
 
 SCORE_LIST_LIMIT = 200
 QUIZ_HISTORY_INITIAL_SIZE = 10
 QUIZ_HISTORY_PAGE_SIZE = 10
 
 
-def ensure_student_group_course_enrollments(student_id: int, group) -> None:
-    """Ensure active StudentCourseSpecialization rows for the group's portal services.
+def _course_type_keys(code):
+    """Every stored key (the code + its service slugs) that means this portal code."""
+    from portals.utils.portal_services import expand_course_types_to_service_slugs
 
-    Not cached — this is a write helper invoked from M2M signals.
-    """
-    from portals.models import StudentCourseSpecialization
-    from portals.utils.group_services import study_group_portal_codes
+    return set(expand_course_types_to_service_slugs([code])) | {code}
+
+
+def student_course_enrollment(student_id, code):
+    """The student's enrollment row for a portal code (stored as the code or a slug), or None."""
+    if not student_id or not code:
+        return None
+    return (
+        StudentCourseSpecialization.objects.filter(
+            student_id=student_id,
+            course_type__in=_course_type_keys(code),
+        )
+        .order_by('-is_active', 'id')
+        .first()
+    )
+
+
+def set_student_course_enrollment(student_id, code, *, is_active):
+    """Switch one service on or off for a student. Returns the row, or None if the code is unknown."""
     from portals.utils.portal_services import is_active_portal_course_type, normalize_portal_course_type
 
-    if not student_id or not group:
-        return
-    for code in study_group_portal_codes(group):
-        course_type = normalize_portal_course_type(code)
-        if not course_type or not is_active_portal_course_type(course_type):
-            continue
-        StudentCourseSpecialization.objects.update_or_create(
+    if not student_id or not code:
+        return None
+    rows = StudentCourseSpecialization.objects.filter(
+        student_id=student_id,
+        course_type__in=_course_type_keys(code),
+    )
+    if rows.exists():
+        rows.exclude(is_active=bool(is_active)).update(is_active=bool(is_active))
+        row = rows.order_by('id').first()
+    else:
+        course_type = normalize_portal_course_type(code) or code
+        if not is_active_portal_course_type(course_type):
+            return None
+        row = StudentCourseSpecialization.objects.create(
             student_id=student_id,
             course_type=course_type,
-            defaults={'is_active': True},
+            is_active=bool(is_active),
         )
+    from portals.utils.cache_utils import invalidate_model_cache
+
+    invalidate_model_cache('StudentCourseSpecialization')
+    return row
+
+
+def set_student_services(student_id, codes):
+    """Give a student exactly these services (others are switched off, never deleted)."""
+    wanted = {code for code in (codes or []) if code}
+    keep_keys = set()
+    for code in wanted:
+        keep_keys |= _course_type_keys(code)
+        set_student_course_enrollment(student_id, code, is_active=True)
+    StudentCourseSpecialization.objects.filter(student_id=student_id, is_active=True).exclude(
+        course_type__in=keep_keys,
+    ).update(is_active=False)
+    from portals.utils.cache_utils import invalidate_model_cache
+
+    invalidate_model_cache('StudentCourseSpecialization')
+
+
+def ensure_general_english_for_ielts(student_id):
+    """IELTS students get General English on by default (only when they have no row for it yet)."""
+    from portals.utils.portal_services import is_active_portal_course_type
+
+    if not student_id or not is_active_portal_course_type(GENERAL_ENGLISH_COURSE_CODE):
+        return None
+    if student_course_enrollment(student_id, GENERAL_ENGLISH_COURSE_CODE) is not None:
+        return None  # a teacher may have switched it off on purpose
+    return set_student_course_enrollment(student_id, GENERAL_ENGLISH_COURSE_CODE, is_active=True)
 
 
 @cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
@@ -87,7 +147,21 @@ def student_quiz_enrollment_ok(student_id, quiz):
     return portal_course_keys_overlap(codes, get_student_course_type_codes(student_id))
 
 
+def quiz_is_student_homework(quiz, student_id):
+    from portals.utils.lesson_quizzes import quiz_is_homework_for_student
+
+    return bool(quiz) and quiz_is_homework_for_student(quiz.pk, student_id)
+
+
+def student_can_reach_quiz(student_id, quiz):
+    """Enrolled in the quiz service, or got the quiz as homework (ignores per-quiz switches)."""
+    return student_quiz_enrollment_ok(student_id, quiz) or quiz_is_student_homework(quiz, student_id)
+
+
 def quiz_visible_to_student(quiz, student_id):
+    # A quiz given as homework is open for that student, whatever their services.
+    if quiz_is_student_homework(quiz, student_id):
+        return True
     if not student_quiz_enrollment_ok(student_id, quiz):
         return False
     from portals.utils.quiz_assignments import (
@@ -116,8 +190,18 @@ def filter_quizzes_for_student(quizzes, student_id):
         quiz_has_program_flag,
     )
 
-    enrolled = [quiz for quiz in quizzes if student_quiz_enrollment_ok(student_id, quiz)]
-    flagged = [quiz for quiz in enrolled if quiz_has_program_flag(quiz)]
+    from portals.utils.lesson_quizzes import get_student_homework_quiz_ids
+
+    homework_ids = set(get_student_homework_quiz_ids(student_id))
+    enrolled = [
+        quiz
+        for quiz in quizzes
+        if quiz.pk in homework_ids or student_quiz_enrollment_ok(student_id, quiz)
+    ]
+    flagged = [
+        quiz for quiz in enrolled
+        if quiz.pk not in homework_ids and quiz_has_program_flag(quiz)
+    ]
     if not flagged:
         return enrolled
     # Same rule as quiz_visible_to_student, resolved in one query instead of an
@@ -129,7 +213,9 @@ def filter_quizzes_for_student(quizzes, student_id):
     return [
         quiz
         for quiz in enrolled
-        if not quiz_has_program_flag(quiz) or assignment_map.get(quiz.pk, False)
+        if quiz.pk in homework_ids
+        or not quiz_has_program_flag(quiz)
+        or assignment_map.get(quiz.pk, False)
     ]
 
 
@@ -138,33 +224,20 @@ def filter_quiz_results_for_student(results, student_id):
     for row in results:
         quiz = getattr(row, 'quiz', None)
         # Past results stay visible even if the teacher later locks the quiz.
-        if quiz and student_quiz_enrollment_ok(student_id, quiz):
+        if quiz and student_can_reach_quiz(student_id, quiz):
             visible.append(row)
     return visible
 
 
-@cached_query(timeout='CACHE_TIMEOUT_MEDIUM')
-def get_teacher_student_service_pairs(teacher_id):
-    """Set of (student_id, service_slug) for active teacher groups — avoids N+1 per quiz row."""
-    pairs = set()
-    groups = teacher_groups_queryset(teacher_id, active_only=True).prefetch_related(
-        'students',
-        'courses',
-    )
-    for group in groups:
-        slugs = {course.slug for course in group.courses.all() if course.slug}
-        if not slugs:
-            continue
-        for student in group.students.all():
-            for slug in slugs:
-                pairs.add((student.pk, slug))
-    return frozenset(pairs)
-
-
 def filter_quiz_results_for_teacher(results, teacher_id):
-    """Filter results without per-row StudyGroup.exists() queries."""
-    from portals.models import CustomerProfile
+    """Results a teacher may see: the quiz is in their services and the student is theirs.
+
+    The student must be enrolled in the quiz service, or have got the quiz as homework
+    from this teacher. No per-row group queries.
+    """
+    from portals.models import CustomerProfile, Lesson
     from portals.utils.teacher_courses import get_teacher_course_type_codes
+    from portals.utils.teacher_students import teacher_student_ids
 
     rows = list(results)
     if not rows or not teacher_id:
@@ -176,18 +249,26 @@ def filter_quiz_results_for_teacher(results, teacher_id):
 
     student_ids = {row.student_id for row in rows if row.student_id}
     customer_ids = {row.customer_id for row in rows if row.customer_id}
-    pairs = get_teacher_student_service_pairs(teacher_id) if student_ids else frozenset()
-    shared_any = set()
-    if student_ids:
-        shared_any = set(
-            StudyGroup.objects.filter(
-                teacher_id=teacher_id,
-                is_active=True,
-                students__pk__in=student_ids,
-            )
-            .values_list('students', flat=True)
-            .distinct()
-        )
+    own_students = teacher_student_ids(teacher_id) & student_ids if student_ids else set()
+    homework_pairs = set()
+    if own_students:
+        # (student, quiz) pairs this teacher gave as homework: group lessons + direct lessons
+        group_pairs = Lesson.objects.filter(
+            teacher_id=teacher_id,
+            group__isnull=False,
+            group__is_active=True,
+            group__students__pk__in=own_students,
+            quizzes__isnull=False,
+        ).values_list('group__students__pk', 'quizzes__pk')
+        direct_pairs = Lesson.objects.filter(
+            teacher_id=teacher_id,
+            group__isnull=True,
+            students__pk__in=own_students,
+            quizzes__isnull=False,
+        ).values_list('students__pk', 'quizzes__pk')
+        for student_id, quiz_id in list(group_pairs) + list(direct_pairs):
+            if student_id in own_students and quiz_id:
+                homework_pairs.add((student_id, quiz_id))
     customer_teacher = {}
     if customer_ids:
         customer_teacher = dict(
@@ -212,15 +293,15 @@ def filter_quiz_results_for_teacher(results, teacher_id):
                 visible.append(row)
             continue
 
-        if not row.student_id:
-            continue
         sid = row.student_id
+        if not sid or sid not in own_students:
+            continue
+        if (sid, quiz.pk) in homework_pairs:
+            visible.append(row)
+            continue
         if sid not in student_codes_cache:
             student_codes_cache[sid] = get_student_course_type_codes(sid)
-        if not portal_course_keys_overlap(quiz_codes, student_codes_cache[sid]):
-            continue
-        slugs = expand_course_types_to_service_slugs(quiz_codes)
-        if any((sid, slug) in pairs for slug in slugs) or sid in shared_any:
+        if portal_course_keys_overlap(quiz_codes, student_codes_cache[sid]):
             visible.append(row)
     return visible
 
@@ -255,30 +336,21 @@ def teacher_can_review_quiz_result(teacher_id, result) -> bool:
 
 
 def teacher_can_see_quiz_result(teacher_id, student_id, quiz):
-    """Teacher sees a result when they teach the student and the quiz is in their services.
+    """Teacher sees a result when the student is theirs and the quiz is in their services.
 
-    Prefer a group whose courses overlap the quiz category. If the group's courses
-    M2M is empty/misconfigured, fall back to any active shared group — parents do
-    not need group courses, so this keeps teacher visibility aligned with that.
+    The student is enrolled in the quiz service, or got the quiz as homework from this
+    teacher. Groups play no part: a student may have none.
     """
+    from portals.utils.lesson_quizzes import teacher_gave_quiz_as_homework
+    from portals.utils.teacher_students import teacher_has_student
+
     if not quiz or not quiz_visible_to_teacher(quiz, teacher_id):
         return False
-    if not student_quiz_enrollment_ok(student_id, quiz):
+    if not teacher_has_student(teacher_id, student_id):
         return False
-    course_codes = get_quiz_portal_course_codes(quiz)
-    if not course_codes:
-        return False
-    slugs = expand_course_types_to_service_slugs(course_codes)
-    if not slugs:
-        return False
-    pairs = get_teacher_student_service_pairs(teacher_id)
-    if any((student_id, slug) in pairs for slug in slugs):
+    if student_quiz_enrollment_ok(student_id, quiz):
         return True
-    return StudyGroup.objects.filter(
-        teacher_id=teacher_id,
-        students__pk=student_id,
-        is_active=True,
-    ).exists()
+    return teacher_gave_quiz_as_homework(teacher_id, student_id, quiz.pk)
 
 
 def _classroom_portal_codes(classroom):

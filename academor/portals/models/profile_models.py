@@ -61,6 +61,24 @@ class StudentProfile(SocialLinksMixin, models.Model):
         blank=True,
         verbose_name=_('Birth date'),
     )
+    is_active = models.BooleanField(
+        default=True,
+        db_index=True,
+        verbose_name=_('Active'),
+        help_text=_(
+            'Inactive students cannot sign in and are hidden from the portal lists; '
+            'their rows stay in the attendance register.'
+        ),
+    )
+    # A student may have no group at all: this is the direct link to their teacher(s).
+    # Group membership still links a student to that group's teacher as before.
+    teachers = models.ManyToManyField(
+        'TeacherProfile',
+        related_name='direct_students',
+        blank=True,
+        verbose_name=_('Teachers'),
+        help_text=_('Teachers this student belongs to directly, with or without a group.'),
+    )
 
     class Meta:
         verbose_name = _('Student profile')
