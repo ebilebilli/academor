@@ -6595,14 +6595,11 @@ h1.animated, h2.animated, h3.animated,
     position: absolute;
     left: 50%;
     top: 50%;
-    width: 21%;
+    width: 26%;
     aspect-ratio: 1;
     display: grid;
     place-items: center;
-    border-radius: 50%;
     transform: translate(-50%, -50%);
-    background: radial-gradient(circle at 35% 30%, #ffffff 0%, #fffaf6 65%, #f6ece4 100%);
-    box-shadow: 0 8px 18px rgba(0, 20, 26, 0.35);
     pointer-events: none;
 }
 
@@ -6611,6 +6608,7 @@ h1.animated, h2.animated, h3.animated,
     width: 100%;
     height: auto;
     transform: translateY(3%);
+    filter: drop-shadow(0 3px 6px rgba(0, 32, 40, 0.35));
 }
 
 .abroad-hero__orb {
