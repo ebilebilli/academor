@@ -6553,7 +6553,7 @@ h1.animated, h2.animated, h3.animated,
     z-index: var(--z-raised);
 }
 
-/* 3D canvas globe (assets/js/abroad-globe.js): real world dots, flight arcs, orange energy rings */
+/* 3D canvas globe (assets/js/abroad-globe.js): real world dots, flight arcs, thin orbit rings */
 .abroad-globe {
     --globe-size: 340px;
     position: relative;
@@ -6570,8 +6570,8 @@ h1.animated, h2.animated, h3.animated,
     position: absolute;
     inset: 19%;
     border-radius: 50%;
-    background: radial-gradient(circle at 32% 28%, #1c6b7b 0%, #06414f 45%, #001b23 100%);
-    box-shadow: 0 0 0 1px rgba(255, 84, 20, 0.35), 0 0 42px rgba(255, 84, 20, 0.28);
+    background: radial-gradient(circle at 32% 28%, #74b9c4 0%, #33838f 45%, #155865 100%);
+    box-shadow: 0 0 0 1px rgba(255, 84, 20, 0.3);
     transition: opacity 0.4s ease;
 }
 
@@ -6601,33 +6601,9 @@ h1.animated, h2.animated, h3.animated,
     place-items: center;
     border-radius: 50%;
     transform: translate(-50%, -50%);
-    background: radial-gradient(circle at 35% 30%, #ffffff 0%, #fff6ef 58%, #ffe3d2 100%);
-    box-shadow:
-        0 0 0 3px rgba(255, 84, 20, 0.2),
-        0 0 24px 5px rgba(255, 84, 20, 0.5),
-        0 10px 20px rgba(0, 20, 26, 0.4);
+    background: radial-gradient(circle at 35% 30%, #ffffff 0%, #fffaf6 65%, #f6ece4 100%);
+    box-shadow: 0 8px 18px rgba(0, 20, 26, 0.35);
     pointer-events: none;
-    animation: abroadGlobeLogoGlow 3.2s ease-in-out infinite;
-}
-
-.abroad-globe__logo-ring {
-    position: absolute;
-    inset: -8px;
-    border-radius: 50%;
-    background: conic-gradient(
-        from 0deg,
-        rgba(255, 84, 20, 0) 0deg,
-        rgba(255, 84, 20, 0.95) 80deg,
-        #ffc29a 110deg,
-        rgba(255, 84, 20, 0) 170deg,
-        rgba(255, 84, 20, 0) 190deg,
-        rgba(255, 84, 20, 0.85) 260deg,
-        #ffc29a 290deg,
-        rgba(255, 84, 20, 0) 350deg
-    );
-    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2.5px));
-    mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2.5px));
-    animation: abroadGlobeLogoSpin 2.8s linear infinite;
 }
 
 .abroad-globe__logo-img {
@@ -6635,29 +6611,6 @@ h1.animated, h2.animated, h3.animated,
     width: 100%;
     height: auto;
     transform: translateY(3%);
-    filter: drop-shadow(0 1px 3px rgba(255, 84, 20, 0.35));
-}
-
-@keyframes abroadGlobeLogoGlow {
-    0%,
-    100% {
-        box-shadow:
-            0 0 0 3px rgba(255, 84, 20, 0.2),
-            0 0 20px 3px rgba(255, 84, 20, 0.42),
-            0 10px 20px rgba(0, 20, 26, 0.4);
-    }
-    50% {
-        box-shadow:
-            0 0 0 5px rgba(255, 84, 20, 0.26),
-            0 0 34px 9px rgba(255, 84, 20, 0.62),
-            0 10px 20px rgba(0, 20, 26, 0.4);
-    }
-}
-
-@keyframes abroadGlobeLogoSpin {
-    to {
-        transform: rotate(360deg);
-    }
 }
 
 .abroad-hero__orb {
@@ -6817,11 +6770,6 @@ h1.animated, h2.animated, h3.animated,
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .abroad-globe__logo,
-    .abroad-globe__logo-ring {
-        animation: none !important;
-    }
-
     .abroad-hero__orbit-spin,
     .abroad-hero__orbit-sat {
         animation: none !important;
@@ -8886,8 +8834,6 @@ a.university-carousel-card:focus-visible .university-flag-card {
     animation-play-state: paused;
 }
 
-.motion-paused .abroad-globe__logo,
-.motion-paused .abroad-globe__logo-ring,
 .motion-paused .abroad-hero__orbit-spin,
 .motion-paused .abroad-hero__orbit-sat,
 .motion-paused .abroad-hero__orbit-sat-body {
