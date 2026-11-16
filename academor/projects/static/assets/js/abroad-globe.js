@@ -1,6 +1,6 @@
 /* Study abroad hero globe (templates/includes/abroad_grid_section.html).
    A 3D world globe on canvas: real land (Natural Earth 1:50m, as a dot grid), flight arcs
-   from Baku to the study destinations, and orange energy rings orbiting in 3D.
+   from Baku to the study destinations, and thin orange orbit rings around it.
    Drag to turn it. Pauses off-screen and in background tabs; prefers-reduced-motion
    gets one still frame. */
 (function () {
@@ -95,11 +95,10 @@
     return lines;
   }
 
-  /* energy rings: radius (x globe radius), tilt around X and Z, speed (rad/s), comets */
+  /* thin orbit rings: radius (x globe radius), tilt around X and Z */
   var RINGS = [
-    { r: 1.16, ax: 74 * DEG, az: -22 * DEG, speed: 0.9, comets: [0, Math.PI] },
-    { r: 1.3, ax: 68 * DEG, az: 28 * DEG, speed: -0.65, comets: [1.2] },
-    { r: 1.44, ax: 80 * DEG, az: 6 * DEG, speed: 0.45, comets: [2.4, 4.6] }
+    { r: 1.18, ax: 74 * DEG, az: -22 * DEG },
+    { r: 1.36, ax: 70 * DEG, az: 24 * DEG }
   ];
 
   function ringPoint(ring, theta) {
@@ -114,25 +113,6 @@
     return [x2, y2, z];
   }
 
-  function makeSparks(count) {
-    var sparks = [];
-    var seed = 7;
-    function rnd() {
-      seed = (seed * 16807) % 2147483647;
-      return (seed - 1) / 2147483646;
-    }
-    for (var i = 0; i < count; i++) {
-      sparks.push({
-        ring: { r: 1.1 + rnd() * 0.45, ax: (55 + rnd() * 35) * DEG, az: (rnd() * 80 - 40) * DEG },
-        theta: rnd() * Math.PI * 2,
-        speed: (0.25 + rnd() * 0.5) * (rnd() > 0.5 ? 1 : -1),
-        size: 0.6 + rnd() * 1.1,
-        twinkle: rnd() * Math.PI * 2
-      });
-    }
-    return sparks;
-  }
-
   function Globe(root) {
     this.root = root;
     this.canvas = root.querySelector("canvas");
@@ -144,7 +124,6 @@
     this.arcs = DESTINATIONS.map(function (d, i) {
       return { pts: slerpArc(baku, unit(d[0], d[1]), 56), end: unit(d[0], d[1]), offset: i * 0.37 };
     });
-    this.sparks = makeSparks(34);
     this.lon = 30; // longitude facing the viewer: Europe and Azerbaijan first
     this.lat = 24; // camera latitude: the northern hemisphere a bit more in view
     this.spin = reduceMotion ? 0 : 7; // degrees per second
@@ -272,9 +251,16 @@
     return [x, y, z2];
   }
 
-  /* a point above the surface is visible when in front or outside the disc */
-  function seen(q) {
-    return q[2] >= 0 || q[0] * q[0] + q[1] * q[1] > 1;
+  /* arcs show on the front half only and fade out towards the horizon */
+  function horizonFade(a, b) {
+    return Math.min(pointFade(a), pointFade(b));
+  }
+
+  /* 1 well inside the visible face, 0 where a raised point would leave the disc */
+  function pointFade(q) {
+    var h2 = q[0] * q[0] + q[1] * q[1] + q[2] * q[2];
+    var edge = Math.sqrt(Math.max(0, h2 - 1));
+    return Math.max(0, Math.min(1, (q[2] - edge) / 0.3));
   }
 
   Globe.prototype.drawRings = function (front) {
@@ -282,8 +268,6 @@
     var R = this.R;
     var cx = this.cx;
     var cy = this.cy;
-    var t = this.t;
-    var self = this;
     ctx.lineCap = "round";
 
     RINGS.forEach(function (ring) {
@@ -304,53 +288,9 @@
           pen = false;
         }
       }
-      ctx.strokeStyle = "rgba(" + ORANGE + "," + (front ? 0.32 : 0.16) + ")";
+      ctx.strokeStyle = "rgba(" + ORANGE + "," + (front ? 0.26 : 0.12) + ")";
       ctx.lineWidth = 1;
       ctx.stroke();
-
-      // comets with a fading tail
-      ring.comets.forEach(function (start) {
-        var head = start + t * ring.speed;
-        var dir = ring.speed >= 0 ? -1 : 1;
-        var segs = 26;
-        var tail = 1.35;
-        var prev = ringPoint(ring, head);
-        for (var s = 1; s <= segs; s++) {
-          var q = ringPoint(ring, head + dir * (s / segs) * tail);
-          var mid = (prev[2] + q[2]) / 2;
-          if (mid >= 0 === front) {
-            var k = 1 - s / segs;
-            var depth = 0.55 + 0.45 * ((mid / ring.r + 1) / 2);
-            ctx.beginPath();
-            ctx.moveTo(cx + prev[0] * R, cy - prev[1] * R);
-            ctx.lineTo(cx + q[0] * R, cy - q[1] * R);
-            ctx.strokeStyle = "rgba(" + ORANGE + "," + (0.16 * k * depth).toFixed(3) + ")";
-            ctx.lineWidth = 7 * k + 1;
-            ctx.stroke();
-            ctx.strokeStyle = "rgba(255," + Math.round(120 + 100 * k) + "," + Math.round(60 + 120 * k) + "," + (0.95 * k * depth).toFixed(3) + ")";
-            ctx.lineWidth = 2.4 * k + 0.4;
-            ctx.stroke();
-          }
-          prev = q;
-        }
-        var h = ringPoint(ring, head);
-        if (h[2] >= 0 === front) {
-          self.glowDot(cx + h[0] * R, cy - h[1] * R, front ? 9 : 6, front ? 1 : 0.6);
-        }
-      });
-    });
-
-    // sparks
-    this.sparks.forEach(function (sp) {
-      var p = ringPoint(sp.ring, sp.theta + t * sp.speed);
-      if (p[2] >= 0 !== front) {
-        return;
-      }
-      var a = (0.35 + 0.65 * Math.abs(Math.sin(t * 2.2 + sp.twinkle))) * (front ? 0.95 : 0.45);
-      ctx.beginPath();
-      ctx.arc(cx + p[0] * R, cy - p[1] * R, sp.size, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(" + ORANGE + "," + a.toFixed(3) + ")";
-      ctx.fill();
     });
   };
 
@@ -381,8 +321,8 @@
 
     // orange aura
     g = ctx.createRadialGradient(cx, cy, R * 0.9, cx, cy, R * 1.32);
-    g.addColorStop(0, "rgba(" + ORANGE + ",0.28)");
-    g.addColorStop(0.45, "rgba(" + ORANGE + ",0.09)");
+    g.addColorStop(0, "rgba(" + ORANGE + ",0.14)");
+    g.addColorStop(0.45, "rgba(" + ORANGE + ",0.05)");
     g.addColorStop(1, "rgba(" + ORANGE + ",0)");
     ctx.fillStyle = g;
     ctx.beginPath();
@@ -456,23 +396,19 @@
       var pts2 = arc.pts.map(function (p) {
         return rotate(p, cam);
       });
-      ctx.beginPath();
-      var pen = false;
-      pts2.forEach(function (q) {
-        if (seen(q)) {
-          if (pen) {
-            ctx.lineTo(cx + q[0] * R, cy - q[1] * R);
-          } else {
-            ctx.moveTo(cx + q[0] * R, cy - q[1] * R);
-            pen = true;
-          }
-        } else {
-          pen = false;
+      // fade towards the horizon so arcs leaving the visible side do not stick out
+      for (var j = 1; j < pts2.length; j++) {
+        var f = horizonFade(pts2[j - 1], pts2[j]);
+        if (f <= 0) {
+          continue;
         }
-      });
-      ctx.strokeStyle = "rgba(" + ORANGE + ",0.55)";
-      ctx.lineWidth = 1.2;
-      ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(cx + pts2[j - 1][0] * R, cy - pts2[j - 1][1] * R);
+        ctx.lineTo(cx + pts2[j][0] * R, cy - pts2[j][1] * R);
+        ctx.strokeStyle = "rgba(" + ORANGE + "," + (0.5 * f).toFixed(3) + ")";
+        ctx.lineWidth = 1.1;
+        ctx.stroke();
+      }
 
       var phase = ((t / period + arc.offset) % 1.4) / 1.0; // 0..1 travel, 1..1.4 rest
       var n = pts2.length - 1;
@@ -482,10 +418,11 @@
         for (var s = Math.max(1, headIdx - tailLen); s <= headIdx; s++) {
           var a = pts2[s - 1];
           var b2 = pts2[s];
-          if (!seen(a) || !seen(b2)) {
+          var fade = horizonFade(a, b2);
+          if (fade <= 0) {
             continue;
           }
-          var k = 1 - (headIdx - s) / tailLen;
+          var k = (1 - (headIdx - s) / tailLen) * fade;
           ctx.beginPath();
           ctx.moveTo(cx + a[0] * R, cy - a[1] * R);
           ctx.lineTo(cx + b2[0] * R, cy - b2[1] * R);
