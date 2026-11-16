@@ -24,7 +24,7 @@
     [41.9, 12.5] // Rome
   ];
 
-  var CREAM = "237,230,220"; // #EDE6DC
+  var CREAM = "246,242,236"; // light #EDE6DC
   var ORANGE = "255,84,20"; // #FF5414
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -333,9 +333,9 @@
 
     // ocean sphere
     g = ctx.createRadialGradient(cx - R * 0.38, cy - R * 0.42, R * 0.05, cx, cy, R * 1.04);
-    g.addColorStop(0, "#1c6b7b");
-    g.addColorStop(0.42, "#06414f");
-    g.addColorStop(1, "#001b23");
+    g.addColorStop(0, "#74b9c4");
+    g.addColorStop(0.45, "#33838f");
+    g.addColorStop(1, "#155865");
     ctx.fillStyle = g;
     ctx.beginPath();
     ctx.arc(cx, cy, R, 0, Math.PI * 2);
@@ -343,7 +343,7 @@
 
     // graticule
     ctx.lineWidth = 0.6;
-    ctx.strokeStyle = "rgba(" + CREAM + ",0.09)";
+    ctx.strokeStyle = "rgba(255,255,255,0.12)";
     ctx.beginPath();
     this.grid.forEach(function (line) {
       var pen = false;
@@ -467,8 +467,8 @@
 
     // light: highlight top-left, darker limb, warm rim bottom-right
     g = ctx.createRadialGradient(cx - R * 0.42, cy - R * 0.48, 0, cx - R * 0.42, cy - R * 0.48, R * 1.1);
-    g.addColorStop(0, "rgba(255,255,255,0.16)");
-    g.addColorStop(0.5, "rgba(255,255,255,0.03)");
+    g.addColorStop(0, "rgba(255,255,255,0.22)");
+    g.addColorStop(0.5, "rgba(255,255,255,0.05)");
     g.addColorStop(1, "rgba(255,255,255,0)");
     ctx.fillStyle = g;
     ctx.beginPath();
@@ -477,7 +477,7 @@
 
     g = ctx.createRadialGradient(cx, cy, R * 0.72, cx, cy, R);
     g.addColorStop(0, "rgba(0,22,28,0)");
-    g.addColorStop(1, "rgba(0,22,28,0.5)");
+    g.addColorStop(1, "rgba(0,49,61,0.32)");
     ctx.fillStyle = g;
     ctx.fill();
 

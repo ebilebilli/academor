@@ -6570,7 +6570,7 @@ h1.animated, h2.animated, h3.animated,
     position: absolute;
     inset: 19%;
     border-radius: 50%;
-    background: radial-gradient(circle at 32% 28%, #1c6b7b 0%, #06414f 45%, #001b23 100%);
+    background: radial-gradient(circle at 32% 28%, #74b9c4 0%, #33838f 45%, #155865 100%);
     box-shadow: 0 0 0 1px rgba(255, 84, 20, 0.3);
     transition: opacity 0.4s ease;
 }
