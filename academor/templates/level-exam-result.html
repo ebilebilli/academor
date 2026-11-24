@@ -70,7 +70,7 @@
             <i class="bi bi-whatsapp" aria-hidden="true"></i>{% if is_sat %}{% trans "Sign up for SAT lessons with the discount" %}{% elif is_ielts %}{% trans "Sign up for IELTS lessons with the discount" %}{% else %}{% trans "Talk to us about IELTS preparation" %}{% endif %}
           </a>
           {% endif %}
-          <button type="button" class="lxr-btn lxr-btn--story" data-lx-story data-msg-error="{% trans 'Could not create the image. Please try again.' %}"><i class="bi bi-instagram" aria-hidden="true"></i>{% trans "Share to Instagram story" %}</button>
+          <button type="button" class="lxr-btn lxr-btn--story" data-lx-story data-msg-error="{% trans 'Could not create the image. Please try again.' %}"><i class="bi bi-instagram" aria-hidden="true"></i>{% trans "Share on Instagram" %}</button>
           <button type="button" class="lxr-btn" data-lx-print><i class="bi bi-printer" aria-hidden="true"></i>{% trans "Print / save as PDF" %}</button>
           <a class="lxr-btn" href="{% url 'projects:tests-page' %}">{% trans "Take another test" %}<i class="bi bi-arrow-right" aria-hidden="true"></i></a>
         </div>
