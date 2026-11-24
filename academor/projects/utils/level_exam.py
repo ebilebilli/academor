@@ -312,3 +312,55 @@ def section_was_late(quiz, started_at: str | None) -> bool:
 
 def percent(correct: int, total: int) -> int:
     return int(math.floor(100 * correct / total)) if total else 0
+
+
+# ---------------------------------------------------------------- SAT scaled score
+
+def parse_sat_score_table(text: str) -> dict:
+    """College Board raw-to-scale table pasted in the admin -> {'rw': {raw: (lo, hi)}, 'math': {...}}.
+
+    Rows look like "40 620 640", "40 600-640 620-660" or "58 - 750"; anything else is skipped.
+    """
+    table = {'rw': {}, 'math': {}}
+    for line in (text or '').splitlines():
+        parts = line.replace(';', ' ').replace(',', ' ').replace('\t', ' ').split()
+        if len(parts) < 2 or not parts[0].isdigit():
+            continue
+        raw = int(parts[0])
+        for key, cell in zip(('rw', 'math'), parts[1:3]):
+            cell = cell.replace('–', '-').replace('—', '-')
+            if cell == '-' or not cell:
+                continue
+            bounds = [b for b in cell.split('-') if b]
+            if not bounds or not all(b.isdigit() for b in bounds):
+                continue
+            low, high = int(bounds[0]), int(bounds[-1])
+            if 200 <= low <= high <= 800:
+                table[key][raw] = (low, high)
+    return table
+
+
+def sat_scaled_scores(test, sections: list[dict]) -> dict | None:
+    """Estimated SAT section scores (and total when both sections are there) from the admin table."""
+    table = parse_sat_score_table(getattr(test, 'sat_score_table', ''))
+    if not table['rw'] and not table['math']:
+        return None
+    rows = []
+    for row in sections:
+        key = 'math' if row.get('kind') == SECTION_SAT_MATH else 'rw'
+        found = table[key].get(int(row.get('correct') or 0))
+        if found is None:
+            continue
+        rows.append({'quiz_id': row.get('quiz_id'), 'kind': key, 'low': found[0], 'high': found[1]})
+    if not rows:
+        return None
+    result = {'sections': {r['quiz_id']: r for r in rows}}
+    kinds = {r['kind'] for r in rows}
+    if kinds == {'rw', 'math'} and len(rows) == 2:
+        result['total_low'] = sum(r['low'] for r in rows)
+        result['total_high'] = sum(r['high'] for r in rows)
+    return result
+
+
+def format_score_range(low: int, high: int) -> str:
+    return str(low) if low == high else f'{low}–{high}'

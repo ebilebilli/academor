@@ -10,6 +10,7 @@ from django.http import Http404, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils import timezone
+from django.templatetags.static import static
 from django.utils.translation import gettext as _
 from django.views import View
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -354,6 +355,14 @@ class LevelExamResultView(View):
             else:
                 scale = {'scale_pct': str(pct), 'marker': f'{pct}%', 'ticks': [0, 25, 50, 75, 100]}
             rows.append({**row, 'percent': pct, **scale})
+        sat_scaled = lx.sat_scaled_scores(test, rows) if ctx['is_sat'] else None
+        if sat_scaled:
+            for row in rows:
+                found = sat_scaled['sections'].get(row.get('quiz_id'))
+                if found:
+                    row['scaled'] = lx.format_score_range(found['low'], found['high'])
+            if 'total_low' in sat_scaled:
+                ctx['sat_total'] = lx.format_score_range(sat_scaled['total_low'], sat_scaled['total_high'])
         if ctx['is_sat']:
             whatsapp_text = _(
                 'Hello! I took the SAT practice test on the Academor website (%(score)s). '
@@ -369,7 +378,32 @@ class LevelExamResultView(View):
                 'Hello! I took the %(test)s on the Academor website (%(score)s). '
                 'I would like to talk about IELTS preparation.'
             ) % {'test': ctx['exam_title'], 'score': result.level}
+        story_rows = []
+        for row in rows:
+            if row.get('band_label'):
+                value = row['band_label']
+                sub = f"{_('Band')} · {row['correct']}/{row['total']} {_('correct answers')}"
+            else:
+                value = f"{row['correct']}/{row['total']}"
+                sub = _('correct answers')
+                if row.get('scaled'):
+                    sub += f" · {row['scaled']}/800"
+            story_rows.append({'label': row.get('label') or '', 'value': value, 'sub': sub})
+        story = {
+            'kicker': _('Score report'),
+            'name': result.first_name,
+            'test': ctx['exam_title'],
+            'date': result.created_at.strftime('%d.%m.%Y'),
+            'rows': story_rows,
+            'total_label': _('Estimated SAT score') if ctx.get('sat_total') else '',
+            'total': f"{ctx['sat_total']} / 1600" if ctx.get('sat_total') else '',
+            'cta': _('Check your level too'),
+            'site': f"{request.get_host()}/tests",
+            'logo': static('portals/img/new_logo.webp'),
+            'filename': 'academor-result.png',
+        }
         ctx.update({
+            'story': story,
             'result': result,
             'result_rows': rows,
             'whatsapp_text': whatsapp_text,

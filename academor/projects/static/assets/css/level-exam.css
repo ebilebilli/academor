@@ -285,6 +285,36 @@
     background: linear-gradient(180deg, var(--lx-sand) 0%, #f3eee6 100%);
 }
 
+/* the study-desk illustration as a faded, grey backdrop (like a photo behind a poster) */
+.tix-hero__art {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: min(70%, 980px);
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.2;
+    filter: grayscale(1) contrast(1.15);
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 42%), linear-gradient(0deg, transparent 0%, #000 30%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(90deg, transparent 0%, #000 42%), linear-gradient(0deg, transparent 0%, #000 30%);
+    mask-composite: intersect;
+}
+
+.tix-hero > .container {
+    position: relative;
+}
+
+@media (max-width: 991.98px) {
+    .tix-hero__art {
+        width: 100%;
+        opacity: 0.11;
+    }
+}
+
 .tix-hero__grid {
     display: grid;
     grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
@@ -1476,5 +1506,151 @@
 
     .lx-bar__inner {
         height: 68px;
+    }
+}
+
+/* ---------------------------------------------------------------- score report: print / save as PDF */
+.lxr-print-brand {
+    display: none;
+}
+
+button.lxr-btn {
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+@media print {
+    @page {
+        size: A4;
+        margin: 14mm;
+    }
+
+    body:has(.lxr-sheet) * {
+        visibility: hidden !important;
+    }
+
+    body:has(.lxr-sheet) .lxr-sheet,
+    body:has(.lxr-sheet) .lxr-sheet * {
+        visibility: visible !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .lxr-sheet {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        box-shadow: none;
+        animation: none !important;
+    }
+
+    .lxr-print-brand {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-bottom: 1.25rem;
+        color: #00313d;
+        font-weight: 700;
+    }
+
+    .lxr-print-brand img {
+        width: 34px;
+        height: auto;
+    }
+
+    .lxr-actions {
+        display: none !important;
+    }
+
+    .lxr-row {
+        break-inside: avoid;
+    }
+
+    .lxr-scale__fill,
+    .lxr-scale__marker {
+        animation: none !important;
+        opacity: 1 !important;
+    }
+
+    .lxr-scale__marker {
+        transform: translateX(-50%) !important;
+    }
+}
+
+/* estimated SAT score (from the admin score table) */
+.lxr-total {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem 0.85rem;
+    margin-top: 1.5rem;
+    padding: 1.1rem 1.4rem;
+    border-radius: var(--lx-r-lg);
+    background: var(--lx-ink);
+    color: #fff;
+}
+
+.lxr-total__label {
+    width: 100%;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.lxr-total__value {
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+}
+
+.lxr-total__max {
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 700;
+}
+
+.lxr-row__scaled {
+    display: inline-block;
+    margin: 0.75rem 0 0;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    background: var(--lx-orange-soft);
+    color: var(--lx-ink);
+    font-size: 0.88rem;
+}
+
+.lxr-row__scaled strong {
+    color: var(--lx-orange-hover);
+}
+
+.lxr-row__scaled span {
+    color: var(--lx-muted);
+}
+
+.lxr-btn--story {
+    border-color: var(--lx-orange);
+    background: var(--lx-orange);
+    color: #fff !important;
+    box-shadow: 0 12px 24px rgba(255, 84, 20, 0.22);
+}
+
+.lxr-btn--story:hover,
+.lxr-btn--story:focus-visible {
+    border-color: var(--lx-orange-hover);
+    background: var(--lx-orange-hover);
+    color: #fff !important;
+}
+
+@media print {
+    .lxr-btn--story {
+        display: none !important;
     }
 }

@@ -1,0 +1,91 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Test results · Academor</title>
+  <style>
+    @page { size: A4; margin: 14mm; }
+    * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body { margin: 0; background: #f4f1ec; color: #00313d; font: 14px/1.5 "Host Grotesk", "Segoe UI", Arial, sans-serif; }
+    .toolbar { position: sticky; top: 0; display: flex; gap: .75rem; align-items: center; justify-content: space-between; padding: .8rem 1.25rem; background: #00313d; color: #fff; }
+    .toolbar button { padding: .55rem 1.1rem; border: 0; border-radius: 10px; background: #ff5414; color: #fff; font: inherit; font-weight: 700; cursor: pointer; }
+    .page { width: 210mm; max-width: 100%; margin: 1.25rem auto; padding: 16mm; background: #fff; border-radius: 14px; box-shadow: 0 10px 30px rgba(0, 49, 61, .08); }
+    .brand { display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 2px solid #00313d; }
+    .brand strong { font-size: 18px; }
+    .brand img { height: 34px; }
+    h1 { margin: 18px 0 4px; font-size: 24px; letter-spacing: -.01em; }
+    .muted { color: #52676d; }
+    dl { display: grid; grid-template-columns: 140px 1fr; gap: 6px 14px; margin: 16px 0; }
+    dt { color: #52676d; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; padding-top: 2px; }
+    dd { margin: 0; font-weight: 600; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { padding: 8px 10px; border-bottom: 1px solid rgba(0, 49, 61, .14); text-align: left; vertical-align: top; }
+    th { background: #f4f1ec; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: #52676d; }
+    .score { font-weight: 800; font-size: 16px; }
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #fff1ea; color: #e04a10; font-size: 12px; font-weight: 700; }
+    .tag--ok { background: #e8f6ee; color: #1f8a5b; }
+    .foot { margin-top: 22px; font-size: 11px; color: #52676d; }
+    .empty { padding: 3rem; text-align: center; }
+    @media print {
+      body { background: #fff; }
+      .toolbar { display: none; }
+      .page { width: auto; margin: 0; padding: 0; border-radius: 0; box-shadow: none; }
+      .page + .page { break-before: page; }
+      tr { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <span>{{ rows|length }} result{{ rows|length|pluralize }}</span>
+    <button type="button" onclick="window.print()">Print / save as PDF</button>
+  </div>
+
+  {% for row in rows %}
+  {% with r=row.result %}
+  <section class="page">
+    <div class="brand">
+      <strong>Academor · Test result</strong>
+      <img src="{% static 'portals/img/new_logo.webp' %}" alt="Academor">
+    </div>
+    <h1>{{ r.first_name }} {{ r.last_name }}</h1>
+    <div class="muted">{{ r.test|default:"-" }}</div>
+
+    <dl>
+      <dt>Phone</dt><dd>{{ r.number }}</dd>
+      <dt>Email</dt><dd>{{ r.email|default:"-" }}</dd>
+      <dt>Date</dt><dd>{{ r.created_at|date:"d.m.Y H:i" }}</dd>
+      <dt>Result</dt><dd><span class="score">{{ r.level }}</span>{% if not row.is_exam %} · {{ r.score }} correct{% endif %}</dd>
+      {% if row.is_exam %}<dt>Status</dt><dd>{% if row.finished %}<span class="tag tag--ok">Finished</span>{% else %}<span class="tag">Not finished</span>{% endif %}</dd>{% endif %}
+    </dl>
+
+    {% if row.sections %}
+    <table>
+      <thead>
+        <tr><th>Section</th><th>Correct</th><th>Band</th><th>Wrong (question no.)</th><th>Not answered</th><th>Time</th></tr>
+      </thead>
+      <tbody>
+        {% for s in row.sections %}
+        <tr>
+          <td><strong>{{ s.label }}</strong></td>
+          <td class="score">{{ s.correct }} / {{ s.total }}</td>
+          <td>{{ s.band_label|default:"-" }}</td>
+          <td>{{ s.wrong_text }}</td>
+          <td>{{ s.unanswered_text }}</td>
+          <td>{{ s.minutes }} min{% if s.trigger == 'time_limit' %} · time ran out{% elif s.trigger == 'auto_leave' %} · left the page{% endif %}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+
+    <p class="foot">Printed {% now "d.m.Y H:i" %} · academor.az</p>
+  </section>
+  {% endwith %}
+  {% empty %}
+  <section class="page empty">No results selected.</section>
+  {% endfor %}
+</body>
+</html>
