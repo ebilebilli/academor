@@ -332,6 +332,24 @@ def _notify_crm(result):
         logger.exception('CRM update failed for level exam result=%s', result.pk)
 
 
+def _answer_map(row):
+    """Question numbers 1..total marked right / wrong / blank, from what the section stored.
+
+    Correct answers stay hidden (the test is reused); older results without the lists get no map.
+    """
+    if 'wrong' not in row:
+        return []
+    total = int(row.get('total') or 0)
+    wrong = {int(n) for n in row.get('wrong') or [] if str(n).isdigit()}
+    blank = {int(n) for n in row.get('unanswered') or [] if str(n).isdigit()}
+    if not total or any(n < 1 or n > total for n in wrong | blank):
+        return []
+    return [
+        {'number': n, 'status': 'wrong' if n in wrong else 'blank' if n in blank else 'correct'}
+        for n in range(1, total + 1)
+    ]
+
+
 class LevelExamResultView(View):
     template_name = 'level-exam-result.html'
 
@@ -356,7 +374,7 @@ class LevelExamResultView(View):
                 scale = {'scale_pct': f'{band / 9 * 100:.1f}', 'marker': row.get('band_label'), 'ticks': list(range(0, 10))}
             else:
                 scale = {'scale_pct': str(pct), 'marker': f'{pct}%', 'ticks': [0, 25, 50, 75, 100]}
-            rows.append({**row, 'percent': pct, **scale})
+            rows.append({**row, 'percent': pct, **scale, 'answer_map': _answer_map(row)})
         sat_scaled = lx.sat_scaled_scores(test, rows) if ctx['is_sat'] else None
         if sat_scaled:
             for row in rows:
