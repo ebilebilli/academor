@@ -3,120 +3,105 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'assets/css/level-test.css' %}">
-<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261124c">
+<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261124f">
 {% endblock %}
 
 {% block content %}
-    {% include "includes/page_header_banner.html" %}
-
-    <section class="lth">
+<div class="lx-page">
+    <header class="tix-hero">
         <div class="container">
-            <div class="lth-intro">
-                <div class="lth-intro__text">
-                    <p class="lxi-eyebrow">{% trans "Free online tests" %}</p>
-                    <h1 class="lth-intro__title">{% trans "Check your level and how ready you are for the exam" %}</h1>
-                    <p class="lth-intro__lead">{% trans "Take a real-format SAT or IELTS practice test, or find your English level in a few minutes. You see your result as soon as you finish." %}</p>
-                    <ul class="lth-trust" aria-label="{% trans 'About the test' %}">
-                        <li><i class="bi bi-gift" aria-hidden="true"></i>{% trans "Free" %}</li>
-                        <li><i class="bi bi-lightning-charge" aria-hidden="true"></i>{% trans "Instant result" %}</li>
-                        <li><i class="bi bi-people" aria-hidden="true"></i>{% blocktrans with count=test_takers %}{{ count }}+ people have taken it{% endblocktrans %}</li>
+            <div class="tix-hero__grid">
+                <div>
+                    <p class="lx-kicker lx-rise" style="--i:0">{% trans "Free online tests" %}</p>
+                    <h1 class="lx-display lx-rise" style="--i:1">{% trans "Check your level and how ready you are for the exam" %}</h1>
+                    <p class="lx-lead lx-rise" style="--i:2">{% trans "Take a real-format SAT or IELTS practice test, or find your English level in a few minutes. You see your result as soon as you finish." %}</p>
+                    <ul class="tix-stats lx-rise" style="--i:3" aria-label="{% trans 'About the test' %}">
+                        <li><strong>{{ test_takers }}+</strong><span>{% trans "people have taken a test" %}</span></li>
+                        <li><strong>{{ tests_total }}</strong><span>{% trans "tests to choose from" %}</span></li>
+                        <li><strong>0 ₼</strong><span>{% trans "Free" %}</span></li>
                     </ul>
                 </div>
-                <img class="lth-intro__art" src="{% static 'assets/img/level-test/exam.webp' %}" alt="" width="880" height="725" decoding="async">
-            </div>
-
-            {% if exam_tests %}
-            <div class="lth-head">
-                <h2 class="lth-head__title">{% trans "Exam practice tests" %}</h2>
-                <p class="lth-head__lead">{% trans "The same exam screen our students use in the Academor portal, with a timer for every section." %}</p>
-            </div>
-            <div class="row g-4 lth-grid">
-                {% for test in exam_tests %}
-                <div class="col-lg-4 col-md-6">
-                    <article class="lth-card lth-card--{{ test.kind }}">
-                        <div class="lth-card__top">
-                            <span class="lth-card__icon" aria-hidden="true">
-                                {% if test.kind == 'sat' %}<i class="bi bi-mortarboard"></i>{% elif test.kind == 'ielts_listening' %}<i class="bi bi-headphones"></i>{% else %}<i class="bi bi-book"></i>{% endif %}
-                            </span>
-                            <span class="lth-card__tag">{% if test.kind == 'sat' %}SAT{% if test.sections|length == 1 %} · {{ test.sections.0 }}{% endif %}{% elif test.kind == 'ielts_listening' %}IELTS · Listening{% elif test.kind == 'ielts_reading' %}IELTS · Reading{% else %}{% trans "Exam" %}{% endif %}</span>
-                            {% if test.kind == 'sat' %}<span class="lth-card__ribbon">{% trans "50% off lessons" %}</span>{% endif %}
-                        </div>
-                        <h3 class="lth-card__title">{{ test.title }}</h3>
-                        {% if test.description %}<p class="lth-card__desc">{{ test.description|striptags|truncatechars:150 }}</p>{% endif %}
-                        <ul class="lth-card__facts">
-                            <li><strong>{{ test.question_count }}</strong><span>{% trans "questions" %}</span></li>
-                            <li><strong>{{ test.minutes }}</strong><span>{% trans "minutes" %}</span></li>
-                            <li><strong>{{ test.sections|length }}</strong><span>{% if test.sections|length == 1 %}{% trans 'section' %}{% else %}{% trans 'sections' %}{% endif %}</span></li>
-                        </ul>
-                        <ul class="lth-card__points">
-                            {% if test.kind == 'sat' %}
-                            <li><i class="bi bi-check2" aria-hidden="true"></i>{{ test.sections|join:" + " }}</li>
-                            <li><i class="bi bi-check2" aria-hidden="true"></i>{% trans "Correct answers for each section" %}</li>
-                            <li><i class="bi bi-check2" aria-hidden="true"></i>{% trans "Your weak areas sent to you on WhatsApp" %}</li>
-                            {% else %}
-                            <li><i class="bi bi-check2" aria-hidden="true"></i>{% trans "Your IELTS band and correct answers" %}</li>
-                            {% if test.kind == 'ielts_listening' %}
-                            <li><i class="bi bi-check2" aria-hidden="true"></i>{% trans "Each recording plays once, as in the real exam" %}</li>
-                            {% else %}
-                            <li><i class="bi bi-check2" aria-hidden="true"></i>{% trans "Academic passages in the real exam format" %}</li>
-                            {% endif %}
-                            {% endif %}
-                        </ul>
-                        <a href="{% url 'projects:test-take' test.id %}" class="btn lth-card__cta">
-                            {% trans "Start test" %}<i class="bi bi-arrow-right" aria-hidden="true"></i>
-                        </a>
-                    </article>
+                <div class="tix-hero__sheet lx-rise" style="--i:2">
+                    {% include "includes/level_exam_sheet.html" %}
                 </div>
-                {% endfor %}
+            </div>
+        </div>
+    </header>
+
+    <section class="tix-list">
+        <div class="container">
+            {% if exam_tests %}
+            <div class="tix-group">
+                <div class="tix-group__head">
+                    <h2 class="tix-group__title">{% trans "Exam practice tests" %}</h2>
+                    <span class="tix-group__count">{{ exam_tests|length|stringformat:"02d" }}</span>
+                </div>
+                <ol class="tix-rows">
+                    {% for test in exam_tests %}
+                    <li class="lx-rise" style="--i:{{ forloop.counter }}">
+                        <a class="tix-row" href="{% url 'projects:test-take' test.id %}">
+                            <span class="tix-row__index">{{ forloop.counter|stringformat:"02d" }}</span>
+                            <span>
+                                <span class="tix-row__tag">{% if test.kind == 'sat' %}SAT{% if test.sections|length == 1 %} · {{ test.sections.0 }}{% endif %}{% elif test.kind == 'ielts_listening' %}IELTS · Listening{% elif test.kind == 'ielts_reading' %}IELTS · Reading{% else %}{% trans "Exam" %}{% endif %}</span>
+                                <span class="tix-row__title">{{ test.title }}{% if test.kind == 'sat' %}<span class="tix-row__deal">−50%</span>{% endif %}</span>
+                            </span>
+                            <ul class="tix-row__facts">
+                                <li><strong>{{ test.question_count }}</strong><span>{% trans "questions" %}</span></li>
+                                <li><strong>{{ test.minutes }}</strong><span>{% trans "minutes" %}</span></li>
+                                <li><strong>{{ test.sections|length }}</strong><span>{% if test.sections|length == 1 %}{% trans 'section' %}{% else %}{% trans 'sections' %}{% endif %}</span></li>
+                            </ul>
+                            <span class="tix-row__go"><span class="tix-row__go-label">{% trans "Start test" %}</span><span class="lx-arrow" aria-hidden="true"><i class="bi bi-arrow-right"></i></span></span>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ol>
             </div>
             {% endif %}
 
             {% if tests or not exam_tests %}
-            <div class="lth-head">
-                <h2 class="lth-head__title">{% trans "English level tests" %}</h2>
-                <p class="lth-head__lead">{% trans "Find your English level in a few minutes and see which course fits it." %}</p>
-            </div>
-            <div class="row g-4 lth-grid">
-                {% for test in tests %}
-                <div class="col-lg-4 col-md-6">
-                    <article class="lth-card lth-card--level">
-                        <div class="lth-card__top">
-                            <span class="lth-card__icon" aria-hidden="true"><i class="bi bi-translate"></i></span>
-                            <span class="lth-card__tag">{% trans "General English" %}</span>
-                        </div>
-                        <h3 class="lth-card__title">{{ test.title }}</h3>
-                        {% trans "This test is designed to measure your level." as default_test_desc %}
-                        <p class="lth-card__desc">{{ test.description|striptags|default:default_test_desc|truncatechars:150 }}</p>
-                        <ul class="lth-card__facts">
-                            <li><strong>{{ test.question_count }}</strong><span>{% trans "questions" %}</span></li>
-                            <li><strong>A1–C2</strong><span>{% trans "CEFR level" %}</span></li>
-                        </ul>
-                        <a href="{% url 'projects:test-take' test.id %}" class="btn lth-card__cta">
-                            {% trans "Start test" %}<i class="bi bi-arrow-right" aria-hidden="true"></i>
+            <div class="tix-group">
+                <div class="tix-group__head">
+                    <h2 class="tix-group__title">{% trans "English level tests" %}</h2>
+                    <span class="tix-group__count">{{ tests|length|stringformat:"02d" }}</span>
+                </div>
+                <ol class="tix-rows">
+                    {% for test in tests %}
+                    <li class="lx-rise" style="--i:{{ forloop.counter }}">
+                        <a class="tix-row" href="{% url 'projects:test-take' test.id %}">
+                            <span class="tix-row__index">{{ forloop.counter|stringformat:"02d" }}</span>
+                            <span>
+                                <span class="tix-row__tag">{% trans "General English" %}</span>
+                                <span class="tix-row__title">{{ test.title }}</span>
+                            </span>
+                            <ul class="tix-row__facts">
+                                <li><strong>{{ test.question_count }}</strong><span>{% trans "questions" %}</span></li>
+                                <li><strong>A1–C2</strong><span>{% trans "CEFR level" %}</span></li>
+                                <li><strong>0 ₼</strong><span>{% trans "Free" %}</span></li>
+                            </ul>
+                            <span class="tix-row__go"><span class="tix-row__go-label">{% trans "Start test" %}</span><span class="lx-arrow" aria-hidden="true"><i class="bi bi-arrow-right"></i></span></span>
                         </a>
-                    </article>
-                </div>
-                {% empty %}
-                <div class="col-12">
-                    <div class="lth-empty"><i class="bi bi-info-circle" aria-hidden="true"></i>{% trans "There is no active test at the moment." %}</div>
-                </div>
-                {% endfor %}
+                    </li>
+                    {% empty %}
+                    <li class="tix-empty">{% trans "There is no active test at the moment." %}</li>
+                    {% endfor %}
+                </ol>
             </div>
             {% endif %}
         </div>
     </section>
+</div>
 
-    <section class="lt-cefr-section py-5" aria-labelledby="lt-cefr-heading">
-        <div class="container">
-            <div class="lt-cefr-head wow fadeInUp" data-wow-delay="0.1s">
-                <div>
-                    <p class="lt-eyebrow">CEFR</p>
-                    <h2 id="lt-cefr-heading" class="lt-cefr-head__title">{% trans "What do the levels mean?" %}</h2>
-                    <p class="lt-cefr-head__lead">{% trans "The test places you on the CEFR scale — the international standard for language levels, from A1 to C2." %}</p>
-                </div>
-                <img class="lt-cefr-head__art" src="{% static 'assets/img/level-test/stairs.webp' %}" alt="" width="880" height="615" loading="lazy" decoding="async">
+<section class="lt-cefr-section py-5" aria-labelledby="lt-cefr-heading">
+    <div class="container">
+        <div class="lt-cefr-head wow fadeInUp" data-wow-delay="0.1s">
+            <div>
+                <p class="lt-eyebrow">CEFR</p>
+                <h2 id="lt-cefr-heading" class="lt-cefr-head__title">{% trans "What do the levels mean?" %}</h2>
+                <p class="lt-cefr-head__lead">{% trans "The test places you on the CEFR scale — the international standard for language levels, from A1 to C2." %}</p>
             </div>
-            {% include "includes/level_test_cefr.html" with levels=cefr_levels %}
+            <img class="lt-cefr-head__art" src="{% static 'assets/img/level-test/stairs.webp' %}" alt="" width="880" height="615" loading="lazy" decoding="async">
         </div>
-    </section>
+        {% include "includes/level_test_cefr.html" with levels=cefr_levels %}
+    </div>
+</section>
 {% endblock %}
