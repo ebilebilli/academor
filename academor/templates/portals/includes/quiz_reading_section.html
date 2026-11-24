@@ -1,6 +1,6 @@
 {% load i18n portal_tags %}
 <section
-  class="portal-reading-section{% if in_tabs %} portal-reading-section--tabbed{% endif %}"
+  class="portal-reading-section is-passage-pinned{% if in_tabs %} portal-reading-section--tabbed{% endif %}"
   aria-labelledby="reading-section-{{ section.section_number }}-title"
 >
   <div class="portal-reading-section__layout">
@@ -24,13 +24,13 @@
         {% if show_passage_return %}
         <button
           type="button"
-          class="btn btn-sm portal-reading-pin-btn"
+          class="btn btn-sm portal-reading-pin-btn is-active"
           data-reading-pin-passage
-          aria-pressed="false"
+          aria-pressed="true"
           title="{% trans 'Keep the passage visible while answering questions' %}"
         >
-          <i class="bi bi-pin-angle" aria-hidden="true" data-reading-pin-icon></i>
-          <span data-reading-pin-label>{% trans 'Pin passage' %}</span>
+          <i class="bi bi-pin-angle-fill" aria-hidden="true" data-reading-pin-icon></i>
+          <span data-reading-pin-label>{% trans 'Unpin passage' %}</span>
         </button>
         {% endif %}
       </header>
