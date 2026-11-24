@@ -3,7 +3,7 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'assets/css/level-test.css' %}">
-<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261124j">
+<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261124k">
 {% endblock %}
 
 {% block content %}
@@ -25,7 +25,7 @@
                         <span class="tix-available__label">{% trans "Available tests:" %}</span>
                         <ul>
                             {% for test in test_cards %}
-                            <li><a href="{% url 'projects:test-take' test.id %}">{{ test.title }}</a></li>
+                            <li>{{ test.title }}</li>
                             {% endfor %}
                         </ul>
                     </div>

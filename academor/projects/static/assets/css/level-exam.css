@@ -358,26 +358,16 @@
     list-style: none;
 }
 
-.tix-available a {
+.tix-available li {
     display: inline-flex;
     align-items: center;
     padding: 0.45rem 0.9rem;
     border: 1px solid var(--lx-line);
     border-radius: 999px;
     background: #fff;
-    color: var(--lx-ink) !important;
+    color: var(--lx-ink);
     font-size: 0.88rem;
     font-weight: 600;
-    text-decoration: none;
-    box-shadow: 0 1px 2px rgba(0, 49, 61, 0.04);
-    transition: border-color 0.3s var(--lx-ease), color 0.3s var(--lx-ease), transform 0.3s var(--lx-ease);
-}
-
-.tix-available a:hover,
-.tix-available a:focus-visible {
-    border-color: rgba(255, 84, 20, 0.5);
-    color: var(--lx-orange-hover) !important;
-    transform: translateY(-1px);
 }
 
 .tix-hero__sheet {
