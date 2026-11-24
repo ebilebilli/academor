@@ -11344,6 +11344,15 @@ msgstr "SAT və IELTS sınaq testləri ilə real imtahan formatında biliklərin
 msgid "Write your name and mobile number. We will share your test result with you and talk you through it."
 msgstr "Adınızı və mobil nömrənizi qeyd edin. Test nəticənizi sizinlə paylaşaq və nəticəniz barədə məlumat verək."
 
+msgid "Hello! I took the %(test)s on the Academor website (%(score)s). I would like to join IELTS lessons with the %(percent)s%% discount."
+msgstr "Salam! Academor saytında %(test)s keçdim (%(score)s). %(percent)s%% endirimlə IELTS dərslərinə yazılmaq istəyirəm."
+
+msgid "Sign up for IELTS lessons and mention that you took this practice test on our website: you get <strong>%(percent)s%% off</strong>."
+msgstr "IELTS dərslərinə yazılarkən saytımızda bu sınaq testini keçdiyinizi qeyd edin: <strong>%(percent)s%% endirim</strong> qazanın."
+
+msgid "Sign up for IELTS lessons with the discount"
+msgstr "Endirimlə IELTS dərslərinə yazılın"
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Növbəti kampaniyada yenə cəhd et — xəbərdar edəcəyik."
 

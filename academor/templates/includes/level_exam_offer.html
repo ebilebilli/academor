@@ -1,0 +1,20 @@
+{% load i18n %}{% comment %}Lesson offer for a public SAT / IELTS level test (intro under the form, and the result).{% endcomment %}
+{% if is_sat or is_ielts %}
+<div class="lxi-offer">
+  {% if is_sat %}
+  <div class="lx-note">
+    <i class="bi bi-whatsapp" aria-hidden="true"></i>
+    <p>{% trans "Your results will be reviewed by Academor specialists, and we will send your weak areas to you on WhatsApp." %}</p>
+  </div>
+  <div class="lx-coupon">
+    <span class="lx-coupon__stamp" aria-hidden="true">−{{ sat_discount_percent }}%</span>
+    <p class="lx-coupon__text">{% blocktrans with percent=sat_discount_percent months=sat_discount_months %}Sign up for SAT lessons and mention that you took this practice test on our website: you get <strong>{{ percent }}% off for the first {{ months }} months</strong>.{% endblocktrans %}</p>
+  </div>
+  {% else %}
+  <div class="lx-coupon">
+    <span class="lx-coupon__stamp" aria-hidden="true">−{{ ielts_discount_percent }}%</span>
+    <p class="lx-coupon__text">{% blocktrans with percent=ielts_discount_percent %}Sign up for IELTS lessons and mention that you took this practice test on our website: you get <strong>{{ percent }}% off</strong>.{% endblocktrans %}</p>
+  </div>
+  {% endif %}
+</div>
+{% endif %}

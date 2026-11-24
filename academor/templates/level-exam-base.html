@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="{% static 'portals/css/portal-redesign.css' %}?v=20261030a">
   <link rel="stylesheet" href="{% static 'portals/css/portal-hero.css' %}?v=20261030a">
   {% block extra_css %}{% endblock %}
-  <link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261124i">
+  <link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261124m">
 </head>
 <body class="level-exam-body">
   {% csrf_token %}
@@ -31,7 +31,9 @@
       </a>
       <div class="lx-bar__title">
         <span class="lx-bar__exam">{{ exam_title }}</span>
+        {% if exam_section_total > 1 %}
         <span class="lx-bar__section">{% blocktrans with index=exam_section_index total=exam_section_total %}Section {{ index }} of {{ total }}{% endblocktrans %} · {{ exam_section_label }}</span>
+        {% endif %}
       </div>
       {% if exam_section_total > 1 %}
       <ol class="lx-steps" aria-label="{% trans 'Sections' %}">
