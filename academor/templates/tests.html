@@ -38,7 +38,7 @@
                             <span class="lth-card__icon" aria-hidden="true">
                                 {% if test.kind == 'sat' %}<i class="bi bi-mortarboard"></i>{% elif test.kind == 'ielts_listening' %}<i class="bi bi-headphones"></i>{% else %}<i class="bi bi-book"></i>{% endif %}
                             </span>
-                            <span class="lth-card__tag">{% if test.kind == 'sat' %}SAT{% elif test.kind == 'ielts_listening' %}IELTS · Listening{% elif test.kind == 'ielts_reading' %}IELTS · Reading{% else %}{% trans "Exam" %}{% endif %}</span>
+                            <span class="lth-card__tag">{% if test.kind == 'sat' %}SAT{% if test.sections|length == 1 %} · {{ test.sections.0 }}{% endif %}{% elif test.kind == 'ielts_listening' %}IELTS · Listening{% elif test.kind == 'ielts_reading' %}IELTS · Reading{% else %}{% trans "Exam" %}{% endif %}</span>
                             {% if test.kind == 'sat' %}<span class="lth-card__ribbon">{% trans "50% off lessons" %}</span>{% endif %}
                         </div>
                         <h3 class="lth-card__title">{{ test.title }}</h3>
