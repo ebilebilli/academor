@@ -1302,7 +1302,7 @@
     /* the portal exam toolbar sits under a 64px top bar next to a sidebar; here there is no sidebar */
     --sidebar-width: 0px;
     --portal-shell-sidebar-width: 0px;
-    --topbar-height: 64px;
+    --topbar-height: 84px;
     min-height: 100vh;
     background: #f4f6f8;
 }
@@ -1324,7 +1324,7 @@
     display: flex;
     align-items: center;
     gap: 1.25rem;
-    height: 64px;
+    height: 84px;
     max-width: 1320px;
     margin: 0 auto;
     padding: 0.7rem clamp(1rem, 3vw, 1.75rem);
@@ -1333,7 +1333,7 @@
 .lx-bar__brand img {
     display: block;
     width: auto;
-    height: 36px;
+    height: 68px;
 }
 
 .lx-bar__title {
@@ -1433,7 +1433,7 @@
     }
 
     .lx-bar__brand img {
-        height: 30px;
+        height: 52px;
     }
 
     .lx-steps {
@@ -1459,4 +1459,14 @@
 .level-exam-body .portal-quiz-take-meta .badge.text-bg-primary {
     background-color: #00313d !important;
     color: #fff !important;
+}
+
+@media (max-width: 767.98px) {
+    .level-exam-body {
+        --topbar-height: 68px;
+    }
+
+    .lx-bar__inner {
+        height: 68px;
+    }
 }
