@@ -47,7 +47,7 @@
                         <span class="tix-row__index">{{ forloop.counter|stringformat:"02d" }}</span>
                         <span class="tix-row__main">
                             <span class="tix-row__tag">{% if test.kind == 'sat' %}SAT{% if test.sections|length == 1 %} · {{ test.sections.0 }}{% endif %}{% elif test.kind == 'ielts_listening' %}IELTS · Listening{% elif test.kind == 'ielts_reading' %}IELTS · Reading{% elif test.kind == 'level' %}{% trans "General English" %}{% else %}{% trans "Exam" %}{% endif %}</span>
-                            <span class="tix-row__title">{{ test.title }}{% if test.kind == 'sat' %}<span class="tix-row__deal">−50%</span>{% endif %}</span>
+                            <span class="tix-row__title">{{ test.title }}</span>
                         </span>
                         <ul class="tix-row__facts">
                             <li><strong>{{ test.question_count }}</strong><span>{% trans "questions" %}</span></li>
