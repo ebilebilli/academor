@@ -278,3 +278,55 @@ class LevelExamAdminTests(TestCase):
         self.assertContains(response, 'Wrong (question no.)')
         self.assertContains(response, '<td>2</td>', html=False)
         self.assertContains(self.client.get(reverse('admin:projects_userresult_changelist')), 'Finished')
+
+
+class SatScoreTableTests(TestCase):
+    def test_parse_rows_ranges_and_blanks(self):
+        table = lx.parse_sat_score_table('Raw  RW  Math\n0 200 200\n40 600-640 620–660\n58 - 750\nnot a row\n41 900 300')
+        self.assertEqual(table['rw'], {0: (200, 200), 40: (600, 640)})
+        self.assertEqual(table['math'], {0: (200, 200), 40: (620, 660), 58: (750, 750), 41: (300, 300)})
+
+    def test_result_shows_estimated_sat_score_print_and_story(self):
+        category = QuizCategory.objects.create(name='Exam sections')
+        rw, math = _sat_quizzes(category)
+        test = Test.objects.create(title_az='SAT', is_active=True, sat_score_table='0 200 200\n1 300 400\n2 400 500\n3 500 600')
+        test.portal_quizzes.set([rw, math])
+        self.client.post(reverse('projects:test-take', kwargs={'test_id': test.pk}), {'first_name': 'Aysel Namizəd', 'number': '+994 50 111 22 33'})
+        for section, quiz, answers in ((1, rw, {str(rw.questions.order_by('order')[0].pk): 0}), (2, math, {})):
+            self.client.post(reverse('projects:level-exam-start', kwargs={'test_id': test.pk, 'section': section}))
+            self.client.post(
+                reverse('projects:level-exam-submit', kwargs={'test_id': test.pk, 'section': section}),
+                data=json.dumps({'answers': answers}), content_type='application/json',
+            )
+        page = self.client.get(reverse('projects:level-exam-result', kwargs={'test_id': test.pk}))
+        self.assertEqual(page.context['sat_total'], '500')  # R&W 1 -> 300, Math 0 -> 200
+        self.assertContains(page, 'data-lx-print')
+        self.assertContains(page, 'id="lx-story-data"')
+        self.assertEqual(page.context['story']['total'], '500 / 1600')
+
+
+class LevelExamAdminPrintTests(TestCase):
+    def setUp(self):
+        from django.contrib.auth import get_user_model
+
+        self.client.force_login(get_user_model().objects.create_superuser('exam-admin2', 'a2@example.com', 'pass12345'))
+        test = Test.objects.create(title_az='IELTS Reading', is_active=True)
+        self.result = UserResult.objects.create(
+            first_name='Murad', number='+994551112233', test=test, score=30, level='Band 7.0 (30/40)',
+            details={'kind': 'ielts_reading', 'status': 'finished', 'sections': [
+                {'label': 'Reading', 'correct': 30, 'total': 40, 'band_label': '7.0', 'wrong': [4, 9],
+                 'unanswered': [], 'duration_sec': 3300, 'trigger': 'manual'},
+            ]},
+        )
+
+    def test_print_page_and_bulk_action(self):
+        url = reverse('admin:projects_userresult_print')
+        page = self.client.get(f'{url}?ids={self.result.pk}')
+        self.assertEqual(page.status_code, 200)
+        self.assertContains(page, 'Band 7.0 (30/40)')
+        self.assertContains(page, '4, 9')
+        response = self.client.post(reverse('admin:projects_userresult_changelist'), {
+            'action': 'print_selected', '_selected_action': [self.result.pk],
+        })
+        self.assertRedirects(response, f'{url}?ids={self.result.pk}', fetch_redirect_response=False)
+        self.assertContains(self.client.get(reverse('admin:projects_userresult_changelist')), 'Print / PDF')

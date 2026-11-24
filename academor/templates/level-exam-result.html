@@ -2,7 +2,7 @@
 {% load static i18n %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261124m">
+<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261124q">
 {% endblock %}
 
 {% block content %}
@@ -10,6 +10,10 @@
   <section class="lxr">
     <div class="container">
       <article class="lxr-sheet lx-rise" style="--i:0">
+        <div class="lxr-print-brand" aria-hidden="true">
+          <img src="{% static 'portals/img/new_logo.webp' %}" alt="" width="54" height="68">
+          <span>Academor · academor.az</span>
+        </div>
         <header class="lxr-head">
           <div>
             <p class="lx-kicker">{% trans "Score report" %}</p>
@@ -23,6 +27,14 @@
           </dl>
         </header>
 
+        {% if sat_total %}
+        <div class="lxr-total">
+          <span class="lxr-total__label">{% trans "Estimated SAT score" %}</span>
+          <strong class="lxr-total__value">{{ sat_total }}</strong>
+          <span class="lxr-total__max">/ 1600</span>
+        </div>
+        {% endif %}
+
         <ol class="lxr-rows">
           {% for row in result_rows %}
           <li class="lxr-row">
@@ -34,6 +46,7 @@
               {% else %}
               <p class="lxr-row__score"><span data-lx-count="{{ row.correct }}">{{ row.correct }}</span><small>/{{ row.total }}</small></p>
               <p class="lxr-row__sub">{% trans "correct answers" %}</p>
+              {% if row.scaled %}<p class="lxr-row__scaled">{% trans "Estimated section score" %}: <strong>{{ row.scaled }}</strong> <span>/ 800</span></p>{% endif %}
               {% endif %}
             </div>
             <div class="lxr-scale" style="--pct: {{ row.scale_pct }}%">
@@ -57,6 +70,8 @@
             <i class="bi bi-whatsapp" aria-hidden="true"></i>{% if is_sat %}{% trans "Sign up for SAT lessons with the discount" %}{% elif is_ielts %}{% trans "Sign up for IELTS lessons with the discount" %}{% else %}{% trans "Talk to us about IELTS preparation" %}{% endif %}
           </a>
           {% endif %}
+          <button type="button" class="lxr-btn lxr-btn--story" data-lx-story data-msg-error="{% trans 'Could not create the image. Please try again.' %}"><i class="bi bi-instagram" aria-hidden="true"></i>{% trans "Share to Instagram story" %}</button>
+          <button type="button" class="lxr-btn" data-lx-print><i class="bi bi-printer" aria-hidden="true"></i>{% trans "Print / save as PDF" %}</button>
           <a class="lxr-btn" href="{% url 'projects:tests-page' %}">{% trans "Take another test" %}<i class="bi bi-arrow-right" aria-hidden="true"></i></a>
         </div>
       </article>
@@ -66,5 +81,6 @@
 {% endblock %}
 
 {% block extra_js %}
-<script defer src="{% static 'assets/js/level-exam-ui.js' %}?v=20261124a"></script>
+{{ story|json_script:"lx-story-data" }}
+<script defer src="{% static 'assets/js/level-exam-ui.js' %}?v=20261124e"></script>
 {% endblock %}

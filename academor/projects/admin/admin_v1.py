@@ -1446,7 +1446,7 @@ class TestAdmin(AdminImageCompressMixin, AcademorModelAdmin):
         ('Azerbaijani', {'fields': ('title_az', 'description_az')}),
         ('English', {'fields': ('title_en', 'description_en')}),
         ('Russian', {'fields': ('title_ru', 'description_ru')}),
-        ('Portal exam (SAT / IELTS)', {'fields': ('portal_quizzes',)}),
+        ('Portal exam (SAT / IELTS)', {'fields': ('portal_quizzes', 'sat_score_table')}),
         ('Other', {'fields': ('order', 'is_active', 'created_at')}),
     )
 
@@ -1483,13 +1483,67 @@ class QuestionAdmin(AdminImageCompressMixin, AcademorModelAdmin):
 class UserResultAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     list_display = (
         'id', 'test', 'first_name', 'last_name', 'number', 'email', 'score', 'level', 'exam_status', 'created_at',
+        'print_link',
     )
     list_filter = ('test', 'level', 'created_at')
     search_fields = ('first_name', 'last_name', 'number', 'email', 'level')
     exclude = ('details',)
-    readonly_fields = ('created_at', 'exam_report')
+    readonly_fields = ('created_at', 'exam_report', 'print_link')
     ordering = ('-created_at',)
     list_per_page = 25
+    actions = ('print_selected',)
+
+    def get_urls(self):
+        custom = [
+            path(
+                'print/',
+                self.admin_site.admin_view(self.print_view),
+                name='projects_userresult_print',
+            ),
+        ]
+        return custom + super().get_urls()
+
+    def print_view(self, request):
+        """Printable A4 report(s); the browser's print dialog saves them as PDF."""
+        from django.shortcuts import render
+
+        ids = [int(v) for v in (request.GET.get('ids') or '').split(',') if v.strip().isdigit()][:200]
+        results = list(UserResult.objects.filter(pk__in=ids).select_related('test').order_by('-created_at'))
+        rows = []
+        for result in results:
+            details = result.details or {}
+            sections = []
+            for row in details.get('sections') or []:
+                sections.append({
+                    **row,
+                    'minutes': round((row.get('duration_sec') or 0) / 60),
+                    'wrong_text': ', '.join(str(n) for n in row.get('wrong') or []) or '-',
+                    'unanswered_text': ', '.join(str(n) for n in row.get('unanswered') or []) or '-',
+                })
+            rows.append({
+                'result': result,
+                'is_exam': bool(details.get('kind')),
+                'finished': details.get('status') == 'finished',
+                'sections': sections,
+            })
+        return render(request, 'admin/projects/userresult/print.html', {'rows': rows})
+
+    @admin.action(description='Print / save as PDF')
+    def print_selected(self, request, queryset):
+        from django.shortcuts import redirect
+
+        ids = ','.join(str(pk) for pk in queryset.values_list('pk', flat=True)[:200])
+        return redirect(f"{reverse('admin:projects_userresult_print')}?ids={ids}")
+
+    @admin.display(description='Print')
+    def print_link(self, obj):
+        if not obj.pk:
+            return '-'
+        return format_html(
+            '<a href="{}?ids={}" target="_blank" rel="noopener">Print / PDF</a>',
+            reverse('admin:projects_userresult_print'),
+            obj.pk,
+        )
 
     @admin.display(description='Exam')
     def exam_status(self, obj):

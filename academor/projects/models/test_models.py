@@ -58,6 +58,16 @@ class Test(models.Model):
             'level test built from the questions below.'
         ),
     )
+    sat_score_table = models.TextField(
+        blank=True,
+        verbose_name='SAT score table',
+        help_text=(
+            'Optional, SAT only: the raw-to-section-score table from the official College Board scoring guide '
+            'of this practice test. One row per raw score: "raw  reading-writing  math", e.g. "40 620 640" or '
+            'with ranges "40 600-640 620-660"; use "-" for an empty cell. When filled, the result page shows '
+            'the estimated SAT score (400-1600).'
+        ),
+    )
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name='Created at',
