@@ -27,6 +27,12 @@ from projects.views.views_v1 import (
     PrivacyPolicyPageView,
 )
 from projects.views.test_views import TestListPageView, TestTakePageView
+from projects.views.level_exam_views import (
+    LevelExamResultView,
+    LevelExamSectionView,
+    LevelExamStartView,
+    LevelExamSubmitView,
+)
 from projects.views.mock_results_views import MockResultsPageView, MockResultsTop5View
 from projects.views.conversation_topics_views import (
     EnglishConversationTopicsListView,
@@ -165,6 +171,26 @@ urlpatterns = [
         'tests/<int:test_id>/',
         TestTakePageView.as_view(),
         name='test-take',
+    ),
+    path(
+        'tests/<int:test_id>/exam/<int:section>/',
+        LevelExamSectionView.as_view(),
+        name='level-exam-section',
+    ),
+    path(
+        'tests/<int:test_id>/exam/<int:section>/start/',
+        LevelExamStartView.as_view(),
+        name='level-exam-start',
+    ),
+    path(
+        'tests/<int:test_id>/exam/<int:section>/submit/',
+        LevelExamSubmitView.as_view(),
+        name='level-exam-submit',
+    ),
+    path(
+        'tests/<int:test_id>/result/',
+        LevelExamResultView.as_view(),
+        name='level-exam-result',
     ),
     path(
         'results/',

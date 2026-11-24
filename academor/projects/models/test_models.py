@@ -41,6 +41,18 @@ class Test(models.Model):
         default=True,
         verbose_name='Active',
     )
+    portal_quizzes = models.ManyToManyField(
+        'portals.Quiz',
+        blank=True,
+        related_name='public_level_tests',
+        verbose_name='Portal quizzes (exam sections)',
+        help_text=(
+            'Pick quizzes from the student portal to run this test with the portal exam screen '
+            '(e.g. SAT Reading & Writing + SAT Math, or one IELTS Reading / Listening quiz). '
+            'Questions are read live from the portal, nothing is copied. Leave empty for a classic '
+            'level test built from the questions below.'
+        ),
+    )
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name='Created at',
@@ -103,6 +115,12 @@ class UserResult(models.Model):
     test = models.ForeignKey(Test, on_delete=models.CASCADE, related_name='results')
     score = models.IntegerField(verbose_name='Score')
     level = models.CharField(max_length=50, verbose_name='Level')
+    details = models.JSONField(
+        default=dict,
+        blank=True,
+        verbose_name='Exam details',
+        help_text='Portal-based tests: sections, answers, wrong questions and timing.',
+    )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created at')
 
     class Meta:

@@ -26,6 +26,7 @@ from projects.utils.cefr import (
 )
 from projects.utils.seo_text import meta_plain_excerpt
 from projects.utils.test_scoring import calculate_level
+from projects.views.level_exam_views import LevelExamIntroView, exam_test_cards, is_exam_test
 
 
 def _selected_option_ids_from_post(post, test):
@@ -99,10 +100,15 @@ class TestListPageView(View):
     def get(self, request):
         lang = get_language_from_request(request)
         tests_qs = get_tests(is_active=True)
-        tests = [serialize_test_for_list(t, lang) for t in tests_qs]
+        exam_cards = {card['id']: card for card in exam_test_cards(tests_qs, lang)}
+        exam_tests = [exam_cards[t.pk] for t in tests_qs if t.pk in exam_cards]
+        kind_order = {'sat': 0, 'ielts_reading': 1, 'ielts_listening': 2}
+        exam_tests.sort(key=lambda card: kind_order.get(card['kind'], 9))
+        tests = [serialize_test_for_list(t, lang) for t in tests_qs if t.pk not in exam_cards]
         categories = get_project_categories(lang)
         context = {
             'tests': tests,
+            'exam_tests': exam_tests,
             'cefr_levels': cefr_scale(),
             'test_takers': level_test_takers_label(get_level_test_taker_count()),
             'categories': [serialize_project_category(c, lang) for c in categories],
@@ -116,6 +122,8 @@ class TestTakePageView(View):
     template_name = 'test-take.html'
 
     def get(self, request, test_id: int):
+        if is_exam_test(test_id):
+            return LevelExamIntroView.as_view()(request, test_id=test_id)
         lang = get_language_from_request(request)
         test = get_test_by_id(test_id, is_active=True)
         if not test:
@@ -132,6 +140,8 @@ class TestTakePageView(View):
         return render(request, self.template_name, context)
 
     def post(self, request, test_id: int):
+        if is_exam_test(test_id):
+            return LevelExamIntroView.as_view()(request, test_id=test_id)
         lang = get_language_from_request(request)
         test = get_test_by_id(test_id, is_active=True)
         if not test:

@@ -1,4 +1,4 @@
-{% extends "portals/base.html" %}
+{% extends quiz_base_template|default:"portals/base.html" %}
 {% load static i18n portal_tags %}
 
 {% block title %}{{ quiz.topic }}{% endblock %}

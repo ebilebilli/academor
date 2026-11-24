@@ -3252,10 +3252,7 @@ msgstr "Normal temp"
 msgid ""
 "The selected students are not in the same group, or have no scheduled class "
 "this week."
-msgstr ""
-"Seçilmiş şagirdlər eyni qrupda deyil və ya bu həftə planlaşdırılmış dərs "
-"yoxdur.Seçilmiş tələbələr eyni qrupda deyil və ya bu həftə planlaşdırılmış "
-"dərs yoxdur."
+msgstr "Seçilmiş tələbələr eyni qrupda deyil və ya bu həftə planlaşdırılmış dərs yoxdur."
 
 #: academor/portals/utils/ielts_mock_test.py:155
 #, python-format
@@ -5590,10 +5587,7 @@ msgstr "Profil konfiqurasiya olunmayıb"
 
 #: academor/templates/portals/dashboard.html:13
 msgid "Please contact Academor administration to activate your portal access."
-msgstr ""
-"Portal girişinizi aktivləşdirmək üçün Academor administrasiyası ilə əlaqə "
-"saxlayın.Portal girişinizi aktivləşdirmək üçün Academor administrasiyası ilə"
-" əlaqə saxlayın."
+msgstr "Portal girişinizi aktivləşdirmək üçün Academor administrasiyası ilə əlaqə saxlayın."
 
 #: academor/templates/portals/dashboard.html:14
 msgid "Back to main site"
@@ -5654,10 +5648,7 @@ msgstr "Davamiyyət qeyd et"
 #: academor/templates/portals/includes/attendance_mark_picker.html:11
 msgid ""
 "Pick a class session from the calendar, then mark one or more students."
-msgstr ""
-"Təqvimdən dərs seansı seçin, sonra bir və ya bir neçə şagirdi qeyd "
-"edin.Təqvimdən dərs sessiyasını seçin, sonra bir və ya bir neçə tələbə üçün "
-"davamiyyət qeyd edin."
+msgstr "Təqvimdən dərs sessiyasını seçin, sonra bir və ya bir neçə tələbə üçün davamiyyət qeyd edin."
 
 #: academor/templates/portals/includes/attendance_mark_picker.html:20
 msgid ""
@@ -6010,10 +6001,7 @@ msgstr[1] ""
 
 #: academor/templates/portals/includes/quiz_average_showcase.html:32
 msgid "Complete graded quizzes to see the normalized average here."
-msgstr ""
-"Normallaşdırılmış ortanı burada görmək üçün qiymətləndirilmiş quizləri "
-"tamamlayın.Normallaşdırılmış orta balı görmək üçün qiymətləndirilmiş "
-"quizləri tamamlayın."
+msgstr "Normallaşdırılmış orta balı görmək üçün qiymətləndirilmiş quizləri tamamlayın."
 
 #: academor/templates/portals/includes/quiz_categories_panel.html:11
 msgid "Xidmət filteri"
@@ -6432,10 +6420,7 @@ msgstr "Vacib"
 msgid ""
 "If you leave this page or abandon the quiz unfinished, the quiz will be "
 "counted as completed."
-msgstr ""
-"Bu səhifədən çıxsanız və ya quizi yarımçıq tərk etsəniz, quiz tamamlanmış "
-"hesab ediləcək.Səhifədən çıxış etdiyiniz və ya quizi yarımçıq tərk etdiyiniz"
-" halda, quiz tamamlanmış hesab ediləcək."
+msgstr "Səhifədən çıxış etdiyiniz və ya quizi yarımçıq tərk etdiyiniz halda, quiz tamamlanmış hesab ediləcək."
 
 #: academor/templates/portals/includes/quiz_start_gate.html:26
 msgid "Start quiz"
@@ -7249,10 +7234,7 @@ msgstr "Bio qısa saxlayın ki, müəllimlər və sinif yoldaşlarınız sizi ta
 
 #: academor/templates/portals/profile.html:184
 msgid "Quiz averages update automatically after each graded attempt."
-msgstr ""
-"Quiz ortalamaları hər qiymətləndirilmiş cəhddən sonra avtomatik "
-"yenilənir.Quiz orta balları hər qiymətləndirilmiş cəhddən sonra avtomatik "
-"yenilənir."
+msgstr "Quiz orta balları hər qiymətləndirilmiş cəhddən sonra avtomatik yenilənir."
 
 #: academor/templates/portals/profile.html:185
 msgid "Attendance is recorded by your teacher after each session."
@@ -7593,10 +7575,7 @@ msgstr "Qalan vaxt"
 #: academor/templates/portals/student/quiz_take.html:78
 #: academor/templates/portals/student/quiz_take_reading.html:98
 msgid "The test ends when the timer reaches zero or when you click Finish."
-msgstr ""
-"Test taymer sıfıra çatdıqda və ya «Bitir» düyməsini basdıqda başa "
-"çatır.Taymer sıfıra çatdıqda və ya «Bitir» düyməsini basdıqda test başa "
-"çatacaq."
+msgstr "Taymer sıfıra çatdıqda və ya «Bitir» düyməsini basdıqda test başa çatacaq."
 
 #: academor/templates/portals/student/quiz_take.html:80
 #: academor/templates/portals/student/quiz_take_reading.html:100
@@ -7948,10 +7927,7 @@ msgstr "Qruplarınızda hələ tələbə yoxdur"
 msgid ""
 "Students appear here once they are assigned to your study groups in the "
 "admin panel."
-msgstr ""
-"Şagirdlər admin panelində tədris qruplarınıza təyin olunduqda burada "
-"görünəcək.Tələbələr admin panelində tədris qruplarınıza təyin olunduqda "
-"burada görünəcək."
+msgstr "Tələbələr admin panelində tədris qruplarınıza təyin olunduqda burada görünəcək."
 
 #: academor/templates/portals/teacher/attendance.html:219
 msgid "View groups"
@@ -11148,6 +11124,171 @@ msgstr "seçilib"
 
 msgid "World globe — study abroad destinations"
 msgstr "Dünya qlobusu — xaricdə təhsil istiqamətləri"
+
+msgid "%(correct)s of %(total)s answers correct"
+msgstr "%(total)s sualdan %(correct)s düzgün cavab"
+
+msgid "50% off lessons"
+msgstr "Dərslərə 50% endirim"
+
+msgid "Academic passages in the real exam format"
+msgstr "Real imtahan formatında akademik mətnlər"
+
+msgid "All tests"
+msgstr "Bütün testlər"
+
+msgid "Before you start"
+msgstr "Başlamazdan əvvəl"
+
+msgid "CEFR level"
+msgstr "CEFR səviyyəsi"
+
+msgid "Check your level and how ready you are for the exam"
+msgstr "Səviyyənizi və imtahana hazırlığınızı yoxlayın"
+
+msgid "Continue the test you started"
+msgstr "Başladığınız testə davam edin"
+
+msgid "Correct answers for each section"
+msgstr "Hər bölmə üzrə düzgün cavablar"
+
+msgid "Correct answers for each section."
+msgstr "Hər bölmə üzrə düzgün cavablarınızın sayı."
+
+msgid "Each recording plays once, as in the real exam"
+msgstr "Hər audio real imtahandakı kimi bir dəfə səslənir"
+
+msgid "English level tests"
+msgstr "İngilis dili səviyyə testləri"
+
+msgid "Enter your name and number"
+msgstr "Adınızı və nömrənizi yazın"
+
+msgid "Every section has its own timer, just like the real exam. When one section ends, the next one opens."
+msgstr "Real imtahandakı kimi hər bölmənin öz taymeri var. Bir bölmə bitəndə növbəti açılır."
+
+msgid "Exam practice tests"
+msgstr "İmtahan sınaq testləri"
+
+msgid "Find a quiet place and a stable internet connection."
+msgstr "Sakit yer və stabil internet bağlantısı seçin."
+
+msgid "Find your English level in a few minutes and see which course fits it."
+msgstr "Bir neçə dəqiqəyə ingilis dili səviyyənizi öyrənin və sizə uyğun kursu görün."
+
+msgid "Free online tests"
+msgstr "Ödənişsiz onlayn testlər"
+
+msgid "Hello! I took the %(test)s on the Academor website (%(score)s). I would like to talk about IELTS preparation."
+msgstr "Salam! Academor saytında %(test)s keçdim (%(score)s). IELTS hazırlığı barədə danışmaq istəyirəm."
+
+msgid "Hello! I took the SAT practice test on the Academor website (%(score)s). I would like to join SAT lessons with the %(percent)s%% discount for the first %(months)s months."
+msgstr "Salam! Academor saytında SAT sınaq testini keçdim (%(score)s). İlk %(months)s ay %(percent)s%% endirimlə SAT dərslərinə yazılmaq istəyirəm."
+
+msgid "IELTS Listening"
+msgstr "IELTS Listening"
+
+msgid "IELTS Reading"
+msgstr "IELTS Reading"
+
+msgid "If you leave the page, the section is counted as finished."
+msgstr "Səhifədən çıxsanız, bölmə bitmiş sayılır."
+
+msgid "Instant result"
+msgstr "Dərhal nəticə"
+
+msgid "It is free. Your details are only used to share your result with you."
+msgstr "Test ödənişsizdir. Məlumatlarınız yalnız nəticəni sizinlə bölüşmək üçün istifadə olunur."
+
+msgid "Math"
+msgstr "Math"
+
+msgid "Phone (WhatsApp)"
+msgstr "Telefon (WhatsApp)"
+
+msgid "Reading and Writing"
+msgstr "Reading and Writing"
+
+msgid "SAT practice test"
+msgstr "SAT sınaq testi"
+
+msgid "Section %(index)s"
+msgstr "Bölmə %(index)s"
+
+msgid "Section %(index)s of %(total)s"
+msgstr "Bölmə %(index)s / %(total)s"
+
+msgid "Sections"
+msgstr "Bölmələr"
+
+msgid "See your result straight away"
+msgstr "Nəticənizi dərhal görün"
+
+msgid "Sign up for SAT lessons and mention that you took this practice test on our website: you get <strong>%(percent)s%% off for the first %(months)s months</strong>."
+msgstr "SAT dərslərinə yazılarkən saytımızda bu sınaq testini keçdiyinizi qeyd edin: <strong>ilk %(months)s ay %(percent)s%% endirim</strong> qazanın."
+
+msgid "Sign up for SAT lessons with the discount"
+msgstr "Endirimlə SAT dərslərinə yazılın"
+
+msgid "So we can send you your result and talk it through with you."
+msgstr "Nəticənizi sizə göndərmək və sizinlə müzakirə etmək üçün."
+
+msgid "Start the test"
+msgstr "Testə başlayın"
+
+msgid "Take a real-format SAT or IELTS practice test, or find your English level in a few minutes. You see your result as soon as you finish."
+msgstr "Real formatda SAT və ya IELTS sınaq testi keçin, yaxud bir neçə dəqiqəyə ingilis dili səviyyənizi öyrənin. Nəticəni bitirən kimi görürsünüz."
+
+msgid "Take another test"
+msgstr "Başqa test keçin"
+
+msgid "Take each section on the exam screen"
+msgstr "Hər bölməni imtahan ekranında keçin"
+
+msgid "Talk to us about IELTS preparation"
+msgstr "IELTS hazırlığı barədə bizə yazın"
+
+msgid "The same exam screen our students use in the Academor portal, with a timer for every section."
+msgstr "Tələbələrimizin Academor portalında istifadə etdiyi eyni imtahan ekranı, hər bölmə üçün taymerlə."
+
+msgid "The section is timed, just like the real exam."
+msgstr "Real imtahandakı kimi bölmənin vaxtı məhduddur."
+
+msgid "The timer cannot be paused. When time runs out, your answers are submitted automatically."
+msgstr "Taymeri dayandırmaq olmur. Vaxt bitəndə cavablarınız avtomatik göndərilir."
+
+msgid "Use headphones. Each recording plays only once, as in the real exam."
+msgstr "Qulaqlıqdan istifadə edin. Real imtahandakı kimi hər audio yalnız bir dəfə səslənir."
+
+msgid "Well done, %(name)s! Here is your result."
+msgstr "Təbriklər, %(name)s! Nəticəniz hazırdır."
+
+msgid "Your IELTS band and correct answers"
+msgstr "IELTS band balınız və düzgün cavablar"
+
+msgid "Your IELTS band and the number of correct answers."
+msgstr "IELTS band balınız və düzgün cavablarınızın sayı."
+
+msgid "Your results will be reviewed by Academor specialists, and we will send your weak areas to you on WhatsApp."
+msgstr "Nəticələriniz Academor mütəxəssisləri tərəfindən təhlil ediləcək və zəif tərəfləriniz WhatsApp üzərindən sizə yazılacaq."
+
+msgid "Your weak areas sent to you on WhatsApp"
+msgstr "Zəif tərəfləriniz WhatsApp-a yazılır"
+
+msgid "correct answers"
+msgstr "düzgün cavab"
+
+msgid "minutes"
+msgstr "dəqiqə"
+
+msgid "optional"
+msgstr "istəyə bağlı"
+
+msgid "section"
+msgstr "bölmə"
+
+msgid "sections"
+msgstr "bölmə"
 
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Növbəti kampaniyada yenə cəhd et — xəbərdar edəcəyik."
