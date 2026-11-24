@@ -407,7 +407,8 @@
 
 .tix-list {
     padding: clamp(2.5rem, 5vw, 4rem) 0 clamp(3.5rem, 7vw, 5.5rem);
-    background: var(--lx-paper);
+    /* same as the home page body */
+    background: var(--site-surface, #f7f9fb);
 }
 
 .tix-rows {
@@ -426,7 +427,7 @@
     padding: 1.4rem 1.5rem 1.4rem 1.75rem;
     border: 1px solid var(--lx-line);
     border-radius: var(--lx-r-lg);
-    background: #fff;
+    background: var(--lx-paper);
     color: var(--lx-ink) !important;
     text-decoration: none;
     box-shadow: var(--lx-shadow-sm);
