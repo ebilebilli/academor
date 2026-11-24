@@ -84,21 +84,18 @@
     var readingTabs = root.querySelector("[data-reading-tabs]");
     var readingTabsNav = root.querySelector(".portal-reading-tabs__nav");
 
+    // the passage is pinned by default; only an explicit "unpin" in this tab turns it off
     function isPassagePinned() {
       try {
-        return window.sessionStorage.getItem(passagePinStorageKey) === "1";
+        return window.sessionStorage.getItem(passagePinStorageKey) !== "0";
       } catch (error) {
-        return false;
+        return true;
       }
     }
 
     function setPassagePinned(pinned) {
       try {
-        if (pinned) {
-          window.sessionStorage.setItem(passagePinStorageKey, "1");
-        } else {
-          window.sessionStorage.removeItem(passagePinStorageKey);
-        }
+        window.sessionStorage.setItem(passagePinStorageKey, pinned ? "1" : "0");
       } catch (error) {
         /* ignore */
       }
