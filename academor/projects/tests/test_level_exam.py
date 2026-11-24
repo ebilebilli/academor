@@ -151,6 +151,10 @@ class SatLevelExamFlowTests(TestCase):
         self.assertContains(page, 'data-lx-count="1">1</span><small>/3</small>', html=False)
         self.assertContains(page, 'data-lx-count="2">2</span><small>/2</small>', html=False)
         self.assertContains(page, '--pct: 33%')
+        # answer map: R&W question 1 right, 2 wrong, 3 blank (no answer key shown)
+        self.assertContains(page, 'class="lxa-cell is-correct"', count=3)
+        self.assertContains(page, 'class="lxa-cell is-wrong"', count=1)
+        self.assertContains(page, 'class="lxa-cell is-blank"', count=1)
 
     def test_double_submit_does_not_overwrite(self):
         self._start()

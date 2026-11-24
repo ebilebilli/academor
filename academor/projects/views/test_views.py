@@ -6,7 +6,7 @@ from django.templatetags.static import static
 from django.utils.translation import gettext as _
 
 from projects.forms.forms_v1 import TestUserForm
-from projects.models import Option, UserResult
+from projects.models import UserResult
 from projects.utils.queries import (
     get_language_from_request,
     get_project_categories,
@@ -20,6 +20,7 @@ from projects.utils.queries import (
     get_level_test_taker_count,
 )
 from projects.utils.cefr import (
+    CEFR_LEVELS,
     LEVEL_TEST_DISCOUNT_PERCENT,
     cefr_scale,
     level_test_offer_track,
@@ -41,6 +42,29 @@ def _selected_option_ids_from_post(post, test):
         except (TypeError, ValueError):
             continue
     return selected
+
+
+def _answer_review(test, selected_ids):
+    """Each question with the visitor's answer and the right one, for the result page."""
+    rows = []
+    for number, question in enumerate(test.questions.prefetch_related('options'), start=1):
+        options = list(question.options.all())
+        chosen = next((o for o in options if o.id == selected_ids.get(question.id)), None)
+        right = [o for o in options if o.is_correct]
+        if chosen is None:
+            status = 'blank'
+        elif chosen.is_correct:
+            status = 'correct'
+        else:
+            status = 'wrong'
+        rows.append({
+            'number': number,
+            'text': question.text,
+            'chosen': chosen.text if chosen else '',
+            'right': ' / '.join(o.text for o in right),
+            'status': status,
+        })
+    return rows
 
 
 def _wizard_step_from_post(post, questions):
@@ -179,18 +203,10 @@ class TestTakePageView(View):
         user_data = user_form.cleaned_data
 
         # answers: q_<question_id> = <option_id>
-        score = 0
-        total = test.questions.count()
-        for q in test.questions.all():
-            selected = request.POST.get(f'q_{q.id}')
-            if not selected:
-                continue
-            try:
-                opt = Option.objects.get(id=int(selected), question=q)
-            except Exception:
-                continue
-            if opt.is_correct:
-                score += 1
+        selected_ids = _selected_option_ids_from_post(request.POST, test)
+        review = _answer_review(test, selected_ids)
+        score = sum(1 for row in review if row['status'] == 'correct')
+        total = len(review)
 
         level = calculate_level(score, total)
         result = UserResult.objects.create(
@@ -203,7 +219,6 @@ class TestTakePageView(View):
             level=level,
         )
         total_questions = total
-        percentage = int((result.score / total_questions) * 100) if total_questions else 0
         ser = _serialize_take_test(lang, test)
         offer_track = level_test_offer_track(level)
         if offer_track == 'ielts':
@@ -217,6 +232,9 @@ class TestTakePageView(View):
                 'trial lesson and a consultation, and use my %(percent)s%% discount.'
             ) % {'level': level, 'percent': LEVEL_TEST_DISCOUNT_PERCENT}
         current_cefr = next((row for row in cefr_scale(level) if row['is_current']), None)
+        level_pct = (
+            f'{CEFR_LEVELS.index(level) / (len(CEFR_LEVELS) - 1) * 100:.1f}' if level in CEFR_LEVELS else '0'
+        )
         # the same shareable result image as the SAT / IELTS score report
         story = {
             'kicker': _('Level test result'),
@@ -238,21 +256,24 @@ class TestTakePageView(View):
             'art': static(STORY_ART),
             'filename': 'academor-level.png',
         }
-        return render(request, self.template_name, {
+        return render(request, 'level-test-result.html', {
             'test': ser,
-            'user_form': TestUserForm(),
             'result': result,
+            'review': review,
+            'review_counts': {
+                'correct': score,
+                'wrong': sum(1 for row in review if row['status'] == 'wrong'),
+                'blank': sum(1 for row in review if row['status'] == 'blank'),
+            },
+            'level_pct': level_pct,
+            'cefr_codes': CEFR_LEVELS,
             'story': story,
             'total_questions': total_questions,
-            'percentage': percentage,
-            'cefr_levels': cefr_scale(level),
             'current_cefr': current_cefr,
             'offer_track': offer_track,
             'offer_discount': LEVEL_TEST_DISCOUNT_PERCENT,
             'whatsapp_text': whatsapp_text,
-            'categories': _categories_ctx(lang),
             'language': lang,
-            **_take_page_extras(),
             **_take_meta(lang, ser),
         })
 

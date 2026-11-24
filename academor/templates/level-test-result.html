@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% comment %}English level test result: the same score report as the SAT / IELTS tests, plus every question with the visitor's answer and the right one.{% endcomment %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261124t">
+{% endblock %}
+
+{% block content %}
+<div class="lx-page">
+  <section class="lxr">
+    <div class="container">
+      <article class="lxr-sheet lx-rise" style="--i:0">
+        <div class="lxr-print-brand" aria-hidden="true">
+          <img src="{% static 'portals/img/new_logo.webp' %}" alt="" width="54" height="68">
+          <span>Academor · academor.az</span>
+        </div>
+        <header class="lxr-head">
+          <div>
+            <p class="lx-kicker">{% trans "Level test result" %}</p>
+            <h1 class="lx-display">{% blocktrans with name=result.first_name %}Well done, {{ name }}! Here is your result.{% endblocktrans %}</h1>
+          </div>
+          <dl class="lxr-head__meta">
+            <dt>{% trans "Test" %}</dt>
+            <dd>{{ test.title }}</dd>
+            <dt>{% trans "Date" %}</dt>
+            <dd>{{ result.created_at|date:"d.m.Y" }}</dd>
+          </dl>
+        </header>
+
+        <ol class="lxr-rows">
+          <li class="lxr-row">
+            <div>
+              <span class="lxr-row__label">{% trans "Your level" %}</span>
+              <p class="lxr-row__score">{{ result.level }}</p>
+              <p class="lxr-row__sub">{% if current_cefr %}{{ current_cefr.name }} · {% endif %}{% blocktrans with correct=result.score total=total_questions %}{{ correct }} of {{ total }} answers correct{% endblocktrans %}</p>
+            </div>
+            <div class="lxr-scale" style="--pct: {{ level_pct }}%">
+              <span class="lxr-scale__marker">{{ result.level }}</span>
+              <div class="lxr-scale__track"><span class="lxr-scale__fill"></span></div>
+              <ul class="lxr-scale__ticks" aria-hidden="true">
+                {% for code in cefr_codes %}<li>{{ code }}</li>{% endfor %}
+              </ul>
+            </div>
+          </li>
+        </ol>
+
+        {% if current_cefr %}
+        <div class="lxr-after">
+          <div class="lx-note">
+            <i class="bi bi-lightbulb" aria-hidden="true"></i>
+            <p>{{ current_cefr.about }}</p>
+          </div>
+          {% if offer_track %}
+          <div class="lx-coupon">
+            <span class="lx-coupon__stamp" aria-hidden="true">−{{ offer_discount }}%</span>
+            <p class="lx-coupon__text"><strong>{% blocktrans with percent=offer_discount %}A special {{ percent }}% discount for you{% endblocktrans %}</strong> {% trans "Just mention that you took the level test on our website." %}</p>
+          </div>
+          {% endif %}
+        </div>
+        {% endif %}
+
+        <div class="lxr-actions">
+          {% if footer_contact.whatsapp_number_me %}
+          <a class="lxr-btn lxr-btn--wa" href="https://wa.me/{{ footer_contact.whatsapp_number_me }}?text={{ whatsapp_text|urlencode }}" target="_blank" rel="noopener noreferrer">
+            <i class="bi bi-whatsapp" aria-hidden="true"></i>{% if offer_track == 'ielts' %}{% trans "Take your first step" %}{% else %}{% trans "Take the offer" %}{% endif %}
+          </a>
+          {% endif %}
+          <button type="button" class="lxr-btn lxr-btn--story" data-lx-story data-msg-error="{% trans 'Could not create the image. Please try again.' %}"><i class="bi bi-instagram" aria-hidden="true"></i>{% trans "Share your result" %}</button>
+          <button type="button" class="lxr-btn" data-lx-print><i class="bi bi-printer" aria-hidden="true"></i>{% trans "Print / save as PDF" %}</button>
+          <a class="lxr-btn" href="{% url 'projects:tests-page' %}">{% trans "Take another test" %}<i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+        </div>
+
+        {% if review %}
+        <section class="lxa" aria-labelledby="lxa-heading">
+          <div class="lxa-head">
+            <h2 id="lxa-heading" class="lxa-title">{% trans "Your answers" %}</h2>
+            <ul class="lxa-counts">
+              <li class="is-correct">{% trans "Correct" %}: <strong>{{ review_counts.correct }}</strong></li>
+              <li class="is-wrong">{% trans "Incorrect" %}: <strong>{{ review_counts.wrong }}</strong></li>
+              {% if review_counts.blank %}<li class="is-blank">{% trans "Unanswered" %}: <strong>{{ review_counts.blank }}</strong></li>{% endif %}
+            </ul>
+          </div>
+          {% if review_counts.wrong or review_counts.blank %}
+          <div class="lxa-filter" role="radiogroup" aria-label="{% trans 'Your answers' %}">
+            <input type="radio" name="lxa-filter" id="lxa-all" checked><label for="lxa-all">{% trans "All" %}</label>
+            <input type="radio" name="lxa-filter" id="lxa-mistakes"><label for="lxa-mistakes">{% trans "Mistakes only" %}</label>
+          </div>
+          {% endif %}
+          <ol class="lxa-list">
+            {% for row in review %}
+            <li class="lxa-item is-{{ row.status }}">
+              <span class="lxa-num" aria-hidden="true">{% if row.status == 'correct' %}<i class="bi bi-check-lg"></i>{% elif row.status == 'wrong' %}<i class="bi bi-x-lg"></i>{% else %}<i class="bi bi-dash-lg"></i>{% endif %}</span>
+              <div class="lxa-body">
+                <p class="lxa-q"><span class="lxa-q__n">{{ row.number }}.</span> {{ row.text }}</p>
+                {% if row.status == 'correct' %}
+                <p class="lxa-a lxa-a--ok"><span>{% trans "Your answer" %}:</span> {{ row.chosen }}</p>
+                {% else %}
+                <p class="lxa-a lxa-a--bad"><span>{% trans "Your answer" %}:</span> {% if row.chosen %}{{ row.chosen }}{% else %}<em>{% trans "Not answered" %}</em>{% endif %}</p>
+                <p class="lxa-a lxa-a--ok"><span>{% trans "Correct answer" %}:</span> {{ row.right }}</p>
+                {% endif %}
+              </div>
+            </li>
+            {% endfor %}
+          </ol>
+        </section>
+        {% endif %}
+      </article>
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{{ story|json_script:"lx-story-data" }}
+<script defer src="{% static 'assets/js/level-exam-ui.js' %}?v=20261124g"></script>
+{% endblock %}
