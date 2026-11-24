@@ -1,4 +1,5 @@
-/* Score report (templates/level-exam-result.html): print button, Instagram story card (drawn on a
+/* Score report (templates/level-exam-result.html, and the English level test result in
+   templates/test-take.html): print button, Instagram story card (drawn on a
    canvas, shared on phones or downloaded) and numbers that count up once in step with the scale. */
 (function () {
   "use strict";
@@ -11,6 +12,16 @@
   var SAND = "#ede6dc";
   var MUTED = "#52676d";
   var FONT = '"Host Grotesk", "Segoe UI", Arial, sans-serif';
+
+  // "i" must become "İ" in Azerbaijani, so upper-case with the page language
+  function upper(text) {
+    var lang = document.documentElement.lang || undefined;
+    try {
+      return String(text || "").toLocaleUpperCase(lang);
+    } catch (e) {
+      return String(text || "").toUpperCase();
+    }
+  }
 
   function roundRect(ctx, x, y, w, h, r) {
     ctx.beginPath();
@@ -60,7 +71,32 @@
     });
   }
 
-  function drawStory(data, logo) {
+  function drawArt(ctx, art, x, y, w) {
+    // the compass illustration as a taped, slightly tilted card in the sand band
+    var h = Math.round(w * art.height / art.width);
+    var frame = 14;
+    ctx.save();
+    ctx.translate(x + w / 2, y + h / 2);
+    ctx.rotate(0.045);
+    ctx.shadowColor = "rgba(0,49,61,0.28)";
+    ctx.shadowBlur = 40;
+    ctx.shadowOffsetY = 18;
+    roundRect(ctx, -w / 2 - frame, -h / 2 - frame, w + frame * 2, h + frame * 2, 34);
+    ctx.fillStyle = "#ffffff";
+    ctx.fill();
+    ctx.shadowColor = "rgba(0,0,0,0)";
+    ctx.save();
+    roundRect(ctx, -w / 2, -h / 2, w, h, 24);
+    ctx.clip();
+    ctx.drawImage(art, -w / 2, -h / 2, w, h);
+    ctx.restore();
+    ctx.rotate(-0.12);
+    ctx.fillStyle = "rgba(255,84,20,0.85)";
+    ctx.fillRect(-60, -h / 2 - frame - 22, 120, 40);
+    ctx.restore();
+  }
+
+  function drawStory(data, logo, art) {
     var canvas = document.createElement("canvas");
     canvas.width = W;
     canvas.height = H;
@@ -73,20 +109,27 @@
     ctx.fillStyle = SAND;
     ctx.fillRect(0, 0, W, 760);
 
-    // answer-sheet bubbles, top right
-    var bx = W - pad - 4 * 64;
-    for (var r = 0; r < 3; r++) {
-      for (var c = 0; c < 4; c++) {
-        var cx = bx + c * 64 + 26;
-        var cy = 150 + r * 64;
-        ctx.beginPath();
-        ctx.arc(cx, cy, 22, 0, Math.PI * 2);
-        var filled = (r === 0 && c === 1) || (r === 1 && c === 3) || (r === 2 && c === 0);
-        ctx.fillStyle = filled ? ORANGE : "rgba(0,0,0,0)";
-        ctx.fill();
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = filled ? ORANGE : "rgba(0,49,61,0.35)";
-        ctx.stroke();
+    var textW = W - pad * 2;
+    if (art) {
+      var artW = 300;
+      drawArt(ctx, art, W - pad - artW + 10, 236, artW);
+      textW = W - pad * 2 - artW - 56;
+    } else {
+      // answer-sheet bubbles, top right
+      var bx = W - pad - 4 * 64;
+      for (var r = 0; r < 3; r++) {
+        for (var c = 0; c < 4; c++) {
+          var cx = bx + c * 64 + 26;
+          var cy = 150 + r * 64;
+          ctx.beginPath();
+          ctx.arc(cx, cy, 22, 0, Math.PI * 2);
+          var filled = (r === 0 && c === 1) || (r === 1 && c === 3) || (r === 2 && c === 0);
+          ctx.fillStyle = filled ? ORANGE : "rgba(0,0,0,0)";
+          ctx.fill();
+          ctx.lineWidth = 3;
+          ctx.strokeStyle = filled ? ORANGE : "rgba(0,49,61,0.35)";
+          ctx.stroke();
+        }
       }
     }
 
@@ -100,14 +143,14 @@
 
     // kicker, name, test
     ctx.fillStyle = ORANGE;
-    ctx.font = "800 30px " + FONT;
-    ctx.fillText(String(data.kicker || "").toUpperCase(), pad, 330);
+    fitText(ctx, upper(data.kicker), textW, "800", 30, 22);
+    ctx.fillText(upper(data.kicker), pad, 330);
     ctx.fillStyle = INK;
-    fitText(ctx, data.name || "", W - pad * 2, "800", 120, 64);
+    fitText(ctx, data.name || "", textW, "800", 120, 56);
     ctx.fillText(data.name || "", pad, 470);
     ctx.fillStyle = MUTED;
     ctx.font = "600 40px " + FONT;
-    wrapLines(ctx, data.test, W - pad * 2).slice(0, 2).forEach(function (line, i) {
+    wrapLines(ctx, data.test, textW).slice(0, 2).forEach(function (line, i) {
       ctx.fillText(line, pad, 560 + i * 52);
     });
     ctx.font = "600 32px " + FONT;
@@ -129,7 +172,7 @@
       ctx.stroke();
       ctx.fillStyle = ORANGE;
       ctx.font = "800 30px " + FONT;
-      ctx.fillText(String(row.label || "").toUpperCase(), pad + 56, y + 76);
+      ctx.fillText(upper(row.label), pad + 56, y + 76);
       ctx.fillStyle = INK;
       var size = fitText(ctx, row.value, W - pad * 2 - 112, "800", valueSize, 64);
       ctx.fillText(row.value, pad + 52, y + 104 + size * 0.72);
@@ -146,7 +189,7 @@
       ctx.fill();
       ctx.fillStyle = "rgba(255,255,255,0.7)";
       ctx.font = "800 28px " + FONT;
-      ctx.fillText(String(data.total_label || "").toUpperCase(), pad + 56, y + 70);
+      ctx.fillText(upper(data.total_label), pad + 56, y + 70);
       ctx.fillStyle = "#ffffff";
       ctx.font = "800 96px " + FONT;
       ctx.fillText(data.total, pad + 52, y + 170);
@@ -181,9 +224,9 @@
         document.fonts.load('600 30px "Host Grotesk"'),
       ]).catch(function () {})
       : Promise.resolve();
-    Promise.all([fontsReady, loadImage(data.logo)])
+    Promise.all([fontsReady, loadImage(data.logo), data.art ? loadImage(data.art) : null])
       .then(function (parts) {
-        var canvas = drawStory(data, parts[1]);
+        var canvas = drawStory(data, parts[1], parts[2]);
         return new Promise(function (resolve) {
           canvas.toBlob(resolve, "image/png");
         });

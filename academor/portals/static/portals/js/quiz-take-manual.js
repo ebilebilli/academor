@@ -614,6 +614,10 @@
     var msgReady = root.getAttribute("data-msg-ready") || "You can complete the quiz whenever you are ready.";
 
     submitHints.forEach(function (submitHint) {
+      // listening keeps the same fixed hint as the reading / multiple-choice tests
+      if (submitHint.hasAttribute("data-hint-static")) {
+        return;
+      }
       submitHint.textContent = msgReady;
       submitHint.classList.add("is-ready");
     });

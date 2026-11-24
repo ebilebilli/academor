@@ -30,6 +30,8 @@ logger = logging.getLogger('projects.level_exam')
 SAT_DISCOUNT_PERCENT = 50
 SAT_DISCOUNT_MONTHS = 2
 IELTS_DISCOUNT_PERCENT = 25
+# illustration drawn on the shared result image and shown on the intro page
+STORY_ART = 'assets/img/level-test/compass-notes.webp'
 
 
 def get_exam_test(test_id: int):
@@ -400,6 +402,7 @@ class LevelExamResultView(View):
             'cta': _('Check your level too'),
             'site': f"{request.get_host()}/tests",
             'logo': static('portals/img/new_logo.webp'),
+            'art': static(STORY_ART),
             'filename': 'academor-result.png',
         }
         ctx.update({

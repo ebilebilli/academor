@@ -2,7 +2,7 @@
 {% load static i18n %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261124r">
+<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261124s">
 {% endblock %}
 
 {% block content %}
@@ -13,9 +13,16 @@
 
       <div class="lxi-grid">
         <div class="lxi-main">
+          <div class="lxi-head">
+          <div class="lxi-head__copy">
           <p class="lx-kicker lx-rise" style="--i:0">{% if is_sat %}{% trans "SAT practice test" %}{% elif is_listening %}{% trans "IELTS Listening" %}{% else %}{% trans "IELTS Reading" %}{% endif %} · {% trans "Free" %}</p>
           <h1 class="lx-display lx-rise" style="--i:1">{{ exam_title }}</h1>
           {% if exam_description %}<p class="lx-lead lx-rise" style="--i:2">{{ exam_description|striptags }}</p>{% endif %}
+          </div>
+          <figure class="lxi-art lx-rise" style="--i:2" aria-hidden="true">
+            <img src="{% static 'assets/img/level-test/compass-notes.webp' %}" alt="" width="700" height="811" decoding="async" fetchpriority="high">
+          </figure>
+          </div>
 
           <ul class="lxi-figures lx-rise" style="--i:3">
             <li><strong>{{ exam_total_questions }}</strong><span>{% trans "questions" %}</span></li>

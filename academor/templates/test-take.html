@@ -2,7 +2,7 @@
 {% load static i18n %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'assets/css/level-test.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/level-test.css' %}?v=20261124b">
 {% endblock %}
 
 {% block content %}
@@ -30,7 +30,7 @@
             <div class="row test-take-layout g-4 justify-content-center">
                 <div class="col-lg-{% if test_poster_image %}8{% else %}10{% endif %} order-2 order-lg-1">
                     {% if result %}
-                    <div class="wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="ltr-print wow fadeInUp" data-wow-delay="0.1s">
                         <section class="ltr-card" aria-labelledby="ltr-heading">
                             <div class="ltr-card__top">
                                 <div class="ltr-card__sticker" aria-hidden="true">
@@ -70,6 +70,10 @@
                                 {% url 'projects:tests-page' as tests_list_url %}
                                 {% include "includes/detail_back_button.html" with fallback_url=tests_list_url extra_classes="me-2" %}
                                 <a href="{% url 'projects:test-take' test.id %}" class="btn btn-outline-primary px-4 py-2 rounded-pill">{% trans "Retake this test" %}</a>
+                            </div>
+                            <div class="ltr-card__share">
+                                <button type="button" class="ltr-share-btn ltr-share-btn--story" data-lx-story data-msg-error="{% trans 'Could not create the image. Please try again.' %}"><i class="bi bi-instagram" aria-hidden="true"></i>{% trans "Share your result" %}</button>
+                                <button type="button" class="ltr-share-btn" data-lx-print><i class="bi bi-printer" aria-hidden="true"></i>{% trans "Print / save as PDF" %}</button>
                             </div>
                         </section>
 
@@ -205,6 +209,10 @@
 {% endblock %}
 
 {% block extra_js %}
+    {% if result %}
+    {{ story|json_script:"lx-story-data" }}
+    <script defer src="{% static 'assets/js/level-exam-ui.js' %}?v=20261124g"></script>
+    {% endif %}
     {% if not result and test and test.questions %}
     <script>
     (function () {

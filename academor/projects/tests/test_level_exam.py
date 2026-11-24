@@ -96,6 +96,7 @@ class SatLevelExamFlowTests(TestCase):
         self.assertIn('name="number"', content)
         self.assertIn('WhatsApp', content)
         self.assertIn('50%', content)
+        self.assertIn('compass-notes.webp', content)
 
     def test_name_and_phone_are_required_before_the_test(self):
         response = self.client.post(self.intro_url, {'first_name': '', 'number': '1'})
@@ -248,6 +249,23 @@ class TestsPageTests(TestCase):
         self.assertEqual([card['kind'] for card in response.context['test_cards']], ['level', 'sat'])
         self.assertNotContains(response, 'lt-cefr-heading')
 
+    def test_level_test_result_can_be_shared_and_printed(self):
+        level = Test.objects.create(title_az='Səviyyə testi', is_active=True)
+        question = Question.objects.create(test=level, text='Q', order=1)
+        right = Option.objects.create(question=question, text='a', is_correct=True)
+        Option.objects.create(question=question, text='b', is_correct=False)
+        response = self.client.post(
+            reverse('projects:test-take', kwargs={'test_id': level.pk}),
+            {'first_name': 'Aysel Namizəd', 'number': '+994 50 111 22 33', f'q_{question.pk}': right.pk},
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'data-lx-story')
+        self.assertContains(response, 'data-lx-print')
+        self.assertContains(response, 'id="lx-story-data"')
+        story = response.context['story']
+        self.assertEqual(story['rows'][0]['value'], response.context['result'].level)
+        self.assertTrue(story['art'].endswith('compass-notes.webp'))
+
 
 class LevelExamAdminTests(TestCase):
     def setUp(self):
@@ -303,6 +321,7 @@ class SatScoreTableTests(TestCase):
         self.assertContains(page, 'data-lx-print')
         self.assertContains(page, 'id="lx-story-data"')
         self.assertEqual(page.context['story']['total'], '500 / 1600')
+        self.assertTrue(page.context['story']['art'].endswith('compass-notes.webp'))
 
 
 class LevelExamAdminPrintTests(TestCase):

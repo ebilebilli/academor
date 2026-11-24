@@ -127,6 +127,23 @@
         {% endif %}
 
         {% if not quiz.view_only %}
+        {% if quiz.is_listening %}
+        {# same finish bar, label and hint as the reading / multiple-choice tests #}
+        <div class="portal-quiz-take-actions panel" data-quiz-take-actions-inline>
+          <button type="button" class="btn btn-primary" data-manual-submit-btn>
+            <i class="bi bi-check2-circle me-1" aria-hidden="true"></i>{% include "portals/includes/quiz_mock_finish_label.html" %}
+          </button>
+          <p class="text-muted small mb-0 mt-2" data-manual-submit-hint data-hint-static>
+            {% if mock_id and mock_attempt %}
+            {% trans 'Submit this section when you are ready to continue the mock test.' %}
+            {% elif quiz.is_time_limited %}
+            {% trans 'The test ends when the timer reaches zero or when you click Finish.' %}
+            {% else %}
+            {% trans 'Click Finish when you are ready.' %}
+            {% endif %}
+          </p>
+        </div>
+        {% else %}
         <div class="portal-quiz-take-actions portal-quiz-take-actions--writing panel d-lg-none mb-4" data-quiz-take-actions-inline>
           <button type="button" class="btn btn-primary btn-lg w-100" data-manual-submit-btn>
             <i class="bi bi-check2-circle me-1" aria-hidden="true"></i>{% include "portals/includes/quiz_mock_finish_label.html" with use_complete=True %}
@@ -139,6 +156,7 @@
             {% endif %}
           </p>
         </div>
+        {% endif %}
         {% endif %}
 
         {% if not quiz.view_only %}
@@ -194,6 +212,7 @@
   </div>
 
   {% if not quiz.view_only %}
+  {% if not quiz.is_listening %}
   <div class="portal-quiz-take-actions portal-quiz-take-actions--writing portal-quiz-take-actions--dock panel" data-quiz-take-actions hidden>
     <button type="button" class="btn btn-primary btn-lg" data-manual-submit-btn>
       <i class="bi bi-check2-circle me-1" aria-hidden="true"></i>{% include "portals/includes/quiz_mock_finish_label.html" with use_complete=True %}
@@ -206,6 +225,7 @@
       {% endif %}
     </p>
   </div>
+  {% endif %}
   {% endif %}
 </div>
 
@@ -223,7 +243,7 @@
 <script src="{% static 'portals/js/quiz-start-gate.js' %}?v=20260808b"></script>
 <script src="{% static 'portals/js/quiz-leave-guard.js' %}?v=20260703"></script>
 <script src="{% static 'portals/js/quiz-listening-inline.js' %}?v=20261124a"></script>
-<script src="{% static 'portals/js/quiz-take-manual.js' %}?v=20260808c"></script>
+<script src="{% static 'portals/js/quiz-take-manual.js' %}?v=20261124b"></script>
 {% endif %}
 <script src="{% static 'portals/js/quiz-take-qnav.js' %}?v=20260825a"></script>
 {% endblock %}
