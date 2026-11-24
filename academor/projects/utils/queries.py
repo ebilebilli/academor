@@ -830,7 +830,7 @@ def get_tests(is_active=True):
     queryset = Test.objects.all()
     if is_active is not None:
         queryset = queryset.filter(is_active=is_active)
-    return list(queryset.order_by('-created_at'))
+    return list(queryset.order_by('order', '-created_at'))
 
 
 @cached_query(timeout='CACHE_TIMEOUT_MEDIUM')

@@ -1427,7 +1427,7 @@ class OptionInline(AdminImageCompressMixin, admin.TabularInline):
 
 @admin.register(Test)
 class TestAdmin(AdminImageCompressMixin, AcademorModelAdmin):
-    list_display = ('id', 'list_title', 'list_format', 'is_active', 'created_at')
+    list_display = ('id', 'list_title', 'list_format', 'order', 'is_active', 'created_at')
     list_filter = ('is_active', 'created_at')
     search_fields = (
         'title_az',
@@ -1437,9 +1437,9 @@ class TestAdmin(AdminImageCompressMixin, AcademorModelAdmin):
         'description_en',
         'description_ru',
     )
-    list_editable = ('is_active',)
+    list_editable = ('order', 'is_active')
     readonly_fields = ('created_at',)
-    ordering = ('-created_at',)
+    ordering = ('order', '-created_at')
     list_per_page = 25
     autocomplete_fields = ('portal_quizzes',)
     fieldsets = (
@@ -1447,7 +1447,7 @@ class TestAdmin(AdminImageCompressMixin, AcademorModelAdmin):
         ('English', {'fields': ('title_en', 'description_en')}),
         ('Russian', {'fields': ('title_ru', 'description_ru')}),
         ('Portal exam (SAT / IELTS)', {'fields': ('portal_quizzes',)}),
-        ('Other', {'fields': ('is_active', 'created_at')}),
+        ('Other', {'fields': ('order', 'is_active', 'created_at')}),
     )
 
     @admin.display(description='Title')

@@ -2,7 +2,7 @@
 {% load static i18n %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261124f">
+<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261124i">
 {% endblock %}
 
 {% block content %}
@@ -40,11 +40,11 @@
           </div>
 
           <div class="lxi-block">
-            <p class="lxi-block__label"><span>{% trans "How it works" %}</span></p>
+            <h2 class="lxi-block__title">{% trans "How does the test work?" %}</h2>
             <ol class="lxi-steps">
-              <li><span class="lxi-steps__n">01</span><strong>{% trans "Enter your name and number" %}</strong><p>{% trans "So we can send you your result and talk it through with you." %}</p></li>
-              <li><span class="lxi-steps__n">02</span><strong>{% trans "Take each section on the exam screen" %}</strong><p>{% if exam_sections|length > 1 %}{% trans "Every section has its own timer, just like the real exam. When one section ends, the next one opens." %}{% else %}{% trans "The section is timed, just like the real exam." %}{% endif %}</p></li>
-              <li><span class="lxi-steps__n">03</span><strong>{% trans "See your result straight away" %}</strong><p>{% if is_sat %}{% trans "Correct answers for each section." %}{% else %}{% trans "Your IELTS band and the number of correct answers." %}{% endif %}</p></li>
+              <li><span class="lxi-steps__n">1</span><strong>{% trans "Enter your details" %}</strong><p>{% trans "Write your name and mobile number. We will share your test result with you and talk you through it." %}</p></li>
+              <li><span class="lxi-steps__n">2</span><strong>{% trans "Complete the test in the real exam format" %}</strong><p>{% trans "Finish each section within its time. Get practice as close to real exam conditions as possible." %}</p></li>
+              <li><span class="lxi-steps__n">3</span><strong>{% trans "Get your result straight away" %}</strong><p>{% if is_sat %}{% trans "See how many answers you got right in each section." %}{% else %}{% trans "See how many answers you got right and your estimated IELTS band score." %}{% endif %}</p></li>
             </ol>
           </div>
 
@@ -77,7 +77,6 @@
         <aside class="order-first order-lg-last">
           <form class="lxi-slip lx-rise" style="--i:2" method="post" novalidate>
             {% csrf_token %}
-            <p class="lxi-slip__no"><span>{% trans "Registration" %}</span><span>No. {{ exam_test.pk|stringformat:"04d" }}</span></p>
             <h2 class="lxi-slip__title">{% trans "Start the test" %}</h2>
             <p class="lxi-slip__lead">{% trans "It is free. Your details are only used to share your result with you." %}</p>
             {{ user_form.website }}{{ user_form.fax }}{{ user_form.company }}{{ user_form.last_name }}

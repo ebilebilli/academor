@@ -4,9 +4,9 @@
 {% block title %}{{ quiz.topic }}{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20260818a">
+<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20261124t">
 {% if quiz.is_reading or quiz.uses_shared_passage_layout %}
-<link rel="stylesheet" href="{% static 'portals/css/quiz-reading.css' %}?v=20260703f">
+<link rel="stylesheet" href="{% static 'portals/css/quiz-reading.css' %}?v=20261124t">
 {% endif %}
 {% if quiz.uses_shared_passage_layout %}
 <link rel="stylesheet" href="{% static 'portals/css/quiz-shared-passage.css' %}?v=20260815a">

@@ -4,9 +4,9 @@
 {% block title %}{% if result.is_pending_review %}{% trans 'Review submission' %}{% else %}{% trans 'View submission' %}{% endif %}{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20260813b">
+<link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20261124t">
 {% if result.is_reading %}
-<link rel="stylesheet" href="{% static 'portals/css/quiz-reading.css' %}?v=20260703h">
+<link rel="stylesheet" href="{% static 'portals/css/quiz-reading.css' %}?v=20261124t">
 {% endif %}
 {% if result.is_speaking %}
 <link rel="stylesheet" href="{% static 'portals/css/quiz-speaking.css' %}?v=20260703">

@@ -101,16 +101,21 @@ class TestListPageView(View):
         lang = get_language_from_request(request)
         tests_qs = get_tests(is_active=True)
         exam_cards = {card['id']: card for card in exam_test_cards(tests_qs, lang)}
-        exam_tests = [exam_cards[t.pk] for t in tests_qs if t.pk in exam_cards]
-        kind_order = {'sat': 0, 'ielts_reading': 1, 'ielts_listening': 2}
-        exam_tests.sort(key=lambda card: kind_order.get(card['kind'], 9))
-        tests = [serialize_test_for_list(t, lang) for t in tests_qs if t.pk not in exam_cards]
+        # one list in the admin order: SAT / IELTS exams and classic English level tests together
+        test_cards = []
+        for test in tests_qs:
+            if test.pk in exam_cards:
+                test_cards.append(exam_cards[test.pk])
+            else:
+                test_cards.append({**serialize_test_for_list(test, lang), 'kind': 'level'})
+        exam_tests = [card for card in test_cards if card['kind'] != 'level']
+        tests = [card for card in test_cards if card['kind'] == 'level']
         categories = get_project_categories(lang)
         context = {
+            'test_cards': test_cards,
             'tests': tests,
             'exam_tests': exam_tests,
-            'tests_total': len(exam_tests) + len(tests),
-            'cefr_levels': cefr_scale(),
+            'tests_total': len(test_cards),
             'test_takers': level_test_takers_label(get_level_test_taker_count()),
             'categories': [serialize_project_category(c, lang) for c in categories],
             'language': lang,
@@ -132,6 +137,7 @@ class TestTakePageView(View):
         ser = _serialize_take_test(lang, test)
         context = {
             'test': ser,
+            'cefr_levels': cefr_scale(),
             'user_form': TestUserForm(),
             'categories': _categories_ctx(lang),
             'language': lang,
@@ -158,6 +164,7 @@ class TestTakePageView(View):
             )
             return render(request, self.template_name, {
                 'test': ser,
+                'cefr_levels': cefr_scale(),
                 'user_form': user_form,
                 'test_current_step': _wizard_step_from_post(
                     request.POST,

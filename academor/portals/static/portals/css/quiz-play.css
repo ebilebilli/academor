@@ -988,7 +988,8 @@ html[data-theme="dark"] .portal-quiz-take-toolbar--timed {
   padding: 1rem 1.15rem;
   position: sticky;
   bottom: 0.75rem;
-  z-index: 2;
+  /* above a pinned reading passage (z 4) and the passage tabs (z 8) */
+  z-index: 9;
 }
 
 .portal-quiz-take-actions--dock {

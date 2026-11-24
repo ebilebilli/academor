@@ -39,7 +39,7 @@
   <div class="tab-content portal-reading-tabs__panels">
     {% for section in sections %}
     <div
-      class="tab-pane fade{% if forloop.first %} show active{% endif %}"
+      class="tab-pane{% if forloop.first %} show active{% endif %}"
       id="reading-passage-{{ section.section_number }}"
       role="tabpanel"
       aria-labelledby="reading-tab-{{ section.section_number }}"

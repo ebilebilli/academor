@@ -205,6 +205,11 @@ class IeltsReadingLevelExamTests(TestCase):
 
 
 class TestsPageTests(TestCase):
+    def setUp(self):
+        from django.core.cache import cache
+
+        cache.clear()  # get_tests is cached across requests
+
     def test_exam_and_level_tests_are_listed_separately(self):
         category = QuizCategory.objects.create(name='Exam sections')
         rw, math = _sat_quizzes(category)
@@ -220,10 +225,22 @@ class TestsPageTests(TestCase):
         self.assertEqual(response.context['exam_tests'][0]['question_count'], 5)
         self.assertEqual([t['id'] for t in response.context['tests']], [level.pk])
 
-    def test_classic_level_test_still_uses_its_own_page(self):
+    def test_classic_level_test_still_uses_its_own_page_with_the_cefr_scale(self):
         level = Test.objects.create(title_az='Səviyyə testi', is_active=True)
         response = self.client.get(reverse('projects:test-take', kwargs={'test_id': level.pk}))
         self.assertTemplateUsed(response, 'test-take.html')
+        self.assertContains(response, 'lt-cefr-heading')
+
+    def test_admin_order_decides_the_list_and_cefr_left_the_tests_page(self):
+        category = QuizCategory.objects.create(name='Exam sections')
+        rw, math = _sat_quizzes(category)
+        sat = Test.objects.create(title_az='SAT sınaq testi', is_active=True, order=2)
+        sat.portal_quizzes.set([rw, math])
+        level = Test.objects.create(title_az='Səviyyə testi', is_active=True, order=1)
+        response = self.client.get(reverse('projects:tests-page'))
+        self.assertEqual([card['id'] for card in response.context['test_cards']], [level.pk, sat.pk])
+        self.assertEqual([card['kind'] for card in response.context['test_cards']], ['level', 'sat'])
+        self.assertNotContains(response, 'lt-cefr-heading')
 
 
 class LevelExamAdminTests(TestCase):
