@@ -31,7 +31,9 @@
       </a>
       <div class="lx-bar__title">
         <span class="lx-bar__exam">{{ exam_title }}</span>
+        {% if exam_section_total > 1 %}
         <span class="lx-bar__section">{% blocktrans with index=exam_section_index total=exam_section_total %}Section {{ index }} of {{ total }}{% endblocktrans %} · {{ exam_section_label }}</span>
+        {% endif %}
       </div>
       {% if exam_section_total > 1 %}
       <ol class="lx-steps" aria-label="{% trans 'Sections' %}">
