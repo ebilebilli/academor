@@ -344,7 +344,13 @@ class LevelExamResultView(View):
 
         rows = []
         for row in details.get('sections') or []:
-            rows.append({**row, 'percent': lx.percent(row.get('correct', 0), row.get('total', 0))})
+            pct = lx.percent(row.get('correct', 0), row.get('total', 0))
+            band = row.get('band')
+            if band is not None:
+                scale = {'scale_pct': f'{band / 9 * 100:.1f}', 'marker': row.get('band_label'), 'ticks': list(range(0, 10))}
+            else:
+                scale = {'scale_pct': str(pct), 'marker': f'{pct}%', 'ticks': [0, 25, 50, 75, 100]}
+            rows.append({**row, 'percent': pct, **scale})
         if ctx['is_sat']:
             whatsapp_text = _(
                 'Hello! I took the SAT practice test on the Academor website (%(score)s). '

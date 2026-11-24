@@ -147,8 +147,9 @@ class SatLevelExamFlowTests(TestCase):
 
         page = self.client.get(data['next_url'])
         self.assertEqual(page.status_code, 200)
-        self.assertContains(page, '1<span>/3</span>', html=False)
-        self.assertContains(page, '2<span>/2</span>', html=False)
+        self.assertContains(page, 'data-lx-count="1">1</span><small>/3</small>', html=False)
+        self.assertContains(page, 'data-lx-count="2">2</span><small>/2</small>', html=False)
+        self.assertContains(page, '--pct: 33%')
 
     def test_double_submit_does_not_overwrite(self):
         self._start()
@@ -200,6 +201,7 @@ class IeltsReadingLevelExamTests(TestCase):
         self.assertEqual(result.level, 'Band 7.0 (3/4)')
         page = self.client.get(reverse('projects:level-exam-result', kwargs={'test_id': self.test.pk}))
         self.assertContains(page, '7.0')
+        self.assertContains(page, '--pct: 77.8%')  # band 7.0 on the 0-9 scale, dot decimal in any language
 
 
 class TestsPageTests(TestCase):

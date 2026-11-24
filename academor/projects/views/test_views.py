@@ -109,6 +109,7 @@ class TestListPageView(View):
         context = {
             'tests': tests,
             'exam_tests': exam_tests,
+            'tests_total': len(exam_tests) + len(tests),
             'cefr_levels': cefr_scale(),
             'test_takers': level_test_takers_label(get_level_test_taker_count()),
             'categories': [serialize_project_category(c, lang) for c in categories],
