@@ -2,7 +2,7 @@
 {% load static i18n %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261124k">
+<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261124m">
 {% endblock %}
 
 {% block content %}
@@ -47,23 +47,14 @@
           {% endfor %}
         </ol>
 
-        {% if is_sat %}
         <div class="lxr-after">
-          <div class="lx-note">
-            <i class="bi bi-whatsapp" aria-hidden="true"></i>
-            <p>{% trans "Your results will be reviewed by Academor specialists, and we will send your weak areas to you on WhatsApp." %}</p>
-          </div>
-          <div class="lx-coupon">
-            <span class="lx-coupon__stamp" aria-hidden="true">−{{ sat_discount_percent }}%</span>
-            <p class="lx-coupon__text">{% blocktrans with percent=sat_discount_percent months=sat_discount_months %}Sign up for SAT lessons and mention that you took this practice test on our website: you get <strong>{{ percent }}% off for the first {{ months }} months</strong>.{% endblocktrans %}</p>
-          </div>
+          {% include "includes/level_exam_offer.html" %}
         </div>
-        {% endif %}
 
         <div class="lxr-actions">
           {% if footer_contact.whatsapp_number_me %}
           <a class="lxr-btn lxr-btn--wa" href="https://wa.me/{{ footer_contact.whatsapp_number_me }}?text={{ whatsapp_text|urlencode }}" target="_blank" rel="noopener noreferrer">
-            <i class="bi bi-whatsapp" aria-hidden="true"></i>{% if is_sat %}{% trans "Sign up for SAT lessons with the discount" %}{% else %}{% trans "Talk to us about IELTS preparation" %}{% endif %}
+            <i class="bi bi-whatsapp" aria-hidden="true"></i>{% if is_sat %}{% trans "Sign up for SAT lessons with the discount" %}{% elif is_ielts %}{% trans "Sign up for IELTS lessons with the discount" %}{% else %}{% trans "Talk to us about IELTS preparation" %}{% endif %}
           </a>
           {% endif %}
           <a class="lxr-btn" href="{% url 'projects:tests-page' %}">{% trans "Take another test" %}<i class="bi bi-arrow-right" aria-hidden="true"></i></a>

@@ -837,10 +837,28 @@
     gap: 0.85rem;
 }
 
+.lxi-aside .lx-coupon {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1rem;
+    padding: 1.15rem 1.25rem;
+}
+
+.lxi-aside .lx-coupon__stamp {
+    width: 4.4rem;
+    height: 4.4rem;
+    font-size: 1.2rem;
+}
+
 /* registration card: light, soft */
-.lxi-slip {
+.lxi-aside {
     position: sticky;
     top: 110px;
+    display: grid;
+    gap: 1rem;
+}
+
+.lxi-slip {
+    position: relative;
     padding: clamp(1.5rem, 3vw, 2.1rem);
     border: 1px solid var(--lx-line);
     border-radius: var(--lx-r-xl);
@@ -969,7 +987,7 @@
         grid-template-columns: minmax(0, 1fr);
     }
 
-    .lxi-slip {
+    .lxi-aside {
         position: relative;
         top: auto;
     }

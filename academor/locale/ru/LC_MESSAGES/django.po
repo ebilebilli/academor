@@ -11260,6 +11260,15 @@ msgstr "Проверь знания в формате реального экз�
 msgid "Write your name and mobile number. We will share your test result with you and talk you through it."
 msgstr "Укажите имя и мобильный номер. Мы поделимся с вами результатом теста и расскажем о нём."
 
+msgid "Hello! I took the %(test)s on the Academor website (%(score)s). I would like to join IELTS lessons with the %(percent)s%% discount."
+msgstr "Здравствуйте! Я прошёл(а) %(test)s на сайте Academor (%(score)s). Хочу записаться на уроки IELTS со скидкой %(percent)s%%."
+
+msgid "Sign up for IELTS lessons and mention that you took this practice test on our website: you get <strong>%(percent)s%% off</strong>."
+msgstr "При записи на уроки IELTS укажите, что прошли этот пробный тест на нашем сайте: <strong>скидка %(percent)s%%</strong>."
+
+msgid "Sign up for IELTS lessons with the discount"
+msgstr "Записаться на IELTS со скидкой"
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Попробуйте в следующей акции — мы сообщим."
 

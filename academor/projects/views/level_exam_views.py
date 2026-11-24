@@ -28,6 +28,7 @@ logger = logging.getLogger('projects.level_exam')
 
 SAT_DISCOUNT_PERCENT = 50
 SAT_DISCOUNT_MONTHS = 2
+IELTS_DISCOUNT_PERCENT = 25
 
 
 def get_exam_test(test_id: int):
@@ -70,6 +71,8 @@ def _exam_context(request, test):
         'exam_total_questions': sum(s['question_count'] for s in sections),
         'is_sat': kind == lx.KIND_SAT,
         'is_listening': kind == lx.KIND_IELTS_LISTENING,
+        'is_ielts': kind in (lx.KIND_IELTS_READING, lx.KIND_IELTS_LISTENING),
+        'ielts_discount_percent': IELTS_DISCOUNT_PERCENT,
         'sat_discount_percent': SAT_DISCOUNT_PERCENT,
         'sat_discount_months': SAT_DISCOUNT_MONTHS,
         'language': lang,
@@ -356,6 +359,11 @@ class LevelExamResultView(View):
                 'Hello! I took the SAT practice test on the Academor website (%(score)s). '
                 'I would like to join SAT lessons with the %(percent)s%% discount for the first %(months)s months.'
             ) % {'score': result.level, 'percent': SAT_DISCOUNT_PERCENT, 'months': SAT_DISCOUNT_MONTHS}
+        elif ctx['is_ielts']:
+            whatsapp_text = _(
+                'Hello! I took the %(test)s on the Academor website (%(score)s). '
+                'I would like to join IELTS lessons with the %(percent)s%% discount.'
+            ) % {'test': ctx['exam_title'], 'score': result.level, 'percent': IELTS_DISCOUNT_PERCENT}
         else:
             whatsapp_text = _(
                 'Hello! I took the %(test)s on the Academor website (%(score)s). '

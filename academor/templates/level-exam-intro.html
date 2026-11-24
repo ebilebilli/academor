@@ -2,7 +2,7 @@
 {% load static i18n %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261124k">
+<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261124m">
 {% endblock %}
 
 {% block content %}
@@ -60,21 +60,9 @@
             </ul>
           </div>
 
-          {% if is_sat %}
-          <div class="lxi-block lxi-offer">
-            <div class="lx-note">
-              <i class="bi bi-whatsapp" aria-hidden="true"></i>
-              <p>{% trans "Your results will be reviewed by Academor specialists, and we will send your weak areas to you on WhatsApp." %}</p>
-            </div>
-            <div class="lx-coupon">
-              <span class="lx-coupon__stamp" aria-hidden="true">−{{ sat_discount_percent }}%</span>
-              <p class="lx-coupon__text">{% blocktrans with percent=sat_discount_percent months=sat_discount_months %}Sign up for SAT lessons and mention that you took this practice test on our website: you get <strong>{{ percent }}% off for the first {{ months }} months</strong>.{% endblocktrans %}</p>
-            </div>
-          </div>
-          {% endif %}
         </div>
 
-        <aside class="order-first order-lg-last">
+        <aside class="lxi-aside order-first order-lg-last">
           <form class="lxi-slip lx-rise" style="--i:2" method="post" novalidate>
             {% csrf_token %}
             <h2 class="lxi-slip__title">{% trans "Start the test" %}</h2>
@@ -106,6 +94,7 @@
               <li><i class="bi bi-check2" aria-hidden="true"></i>{% trans "Instant result" %}</li>
             </ul>
           </form>
+          {% include "includes/level_exam_offer.html" %}
         </aside>
       </div>
     </div>

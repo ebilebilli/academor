@@ -182,6 +182,12 @@ class IeltsReadingLevelExamTests(TestCase):
         self.test = Test.objects.create(title_az='IELTS Reading', is_active=True)
         self.test.portal_quizzes.set([self.quiz])
 
+    def test_intro_shows_the_ielts_discount(self):
+        url = reverse('projects:test-take', kwargs={'test_id': self.test.pk})
+        response = self.client.get(url)
+        self.assertEqual(response.context['ielts_discount_percent'], 25)
+        self.assertContains(response, '−25%')
+
     def test_band_on_result(self):
         url = reverse('projects:test-take', kwargs={'test_id': self.test.pk})
         self.client.post(url, {'first_name': 'Murad Namizəd', 'number': '+994 55 222 33 44'})
