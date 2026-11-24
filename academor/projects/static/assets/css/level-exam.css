@@ -1655,3 +1655,79 @@ button.lxr-btn {
         display: none !important;
     }
 }
+
+/* ---------------------------------------------------------------- intro illustration
+   The compass made of sticky notes sits beside the title; its own sand paper matches the brand
+   sand, so it reads as a pinned card rather than a photo. */
+.lxi-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) clamp(9.5rem, 30%, 15.5rem);
+    gap: clamp(1.25rem, 3.5vw, 2.5rem);
+    align-items: center;
+}
+
+.lxi-head__copy {
+    min-width: 0;
+}
+
+.lxi-art {
+    position: relative;
+    margin: 0;
+    padding: .55rem;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 1px 2px rgba(0, 49, 61, .06), 0 18px 40px -18px rgba(0, 49, 61, .35);
+    transform: rotate(2.5deg);
+}
+
+.lxi-art img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 18px;
+    background: #ede6dc;
+}
+
+.lxi-art::before {
+    /* a strip of tape holding the card */
+    content: "";
+    position: absolute;
+    top: -.7rem;
+    left: 50%;
+    width: 4.5rem;
+    height: 1.4rem;
+    background: rgba(255, 84, 20, .82);
+    border-radius: 3px;
+    transform: translateX(-50%) rotate(-4deg);
+    z-index: 1;
+}
+
+@media (max-width: 575.98px) {
+    .lxi-head {
+        grid-template-columns: minmax(0, 1fr) 6.75rem;
+        gap: 1rem;
+        align-items: start;
+    }
+
+    .lxi-art {
+        padding: .35rem;
+        border-radius: 16px;
+        margin-top: .35rem;
+    }
+
+    .lxi-art img {
+        border-radius: 12px;
+    }
+
+    .lxi-art::before {
+        width: 2.8rem;
+        height: .9rem;
+        top: -.45rem;
+    }
+}
+
+@media print {
+    .lxi-art {
+        display: none;
+    }
+}

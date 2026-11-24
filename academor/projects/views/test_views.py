@@ -2,6 +2,7 @@ from django.views import View
 from django.shortcuts import render
 from django.http import Http404
 from django.contrib import messages
+from django.templatetags.static import static
 from django.utils.translation import gettext as _
 
 from projects.forms.forms_v1 import TestUserForm
@@ -26,7 +27,7 @@ from projects.utils.cefr import (
 )
 from projects.utils.seo_text import meta_plain_excerpt
 from projects.utils.test_scoring import calculate_level
-from projects.views.level_exam_views import LevelExamIntroView, exam_test_cards, is_exam_test
+from projects.views.level_exam_views import STORY_ART, LevelExamIntroView, exam_test_cards, is_exam_test
 
 
 def _selected_option_ids_from_post(post, test):
@@ -215,14 +216,37 @@ class TestTakePageView(View):
                 'Hello! I got %(level)s on the Academor level test. I would like to book the free '
                 'trial lesson and a consultation, and use my %(percent)s%% discount.'
             ) % {'level': level, 'percent': LEVEL_TEST_DISCOUNT_PERCENT}
+        current_cefr = next((row for row in cefr_scale(level) if row['is_current']), None)
+        # the same shareable result image as the SAT / IELTS score report
+        story = {
+            'kicker': _('Level test result'),
+            'name': result.first_name,
+            'test': ser['title'],
+            'date': result.created_at.strftime('%d.%m.%Y'),
+            'rows': [{
+                'label': _('Your level'),
+                'value': level,
+                'sub': (
+                    f"{current_cefr['name']} · " if current_cefr else ''
+                ) + f"{result.score}/{total_questions} {_('correct answers')}",
+            }],
+            'total_label': '',
+            'total': '',
+            'cta': _('Check your level too'),
+            'site': f"{request.get_host()}/tests",
+            'logo': static('portals/img/new_logo.webp'),
+            'art': static(STORY_ART),
+            'filename': 'academor-level.png',
+        }
         return render(request, self.template_name, {
             'test': ser,
             'user_form': TestUserForm(),
             'result': result,
+            'story': story,
             'total_questions': total_questions,
             'percentage': percentage,
             'cefr_levels': cefr_scale(level),
-            'current_cefr': next((row for row in cefr_scale(level) if row['is_current']), None),
+            'current_cefr': current_cefr,
             'offer_track': offer_track,
             'offer_discount': LEVEL_TEST_DISCOUNT_PERCENT,
             'whatsapp_text': whatsapp_text,
