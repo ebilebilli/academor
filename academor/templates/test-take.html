@@ -186,6 +186,22 @@
             </div>
         </div>
     </div>
+
+    {% if not result and cefr_levels %}
+    <section class="lt-cefr-section py-5" aria-labelledby="lt-cefr-heading">
+        <div class="container">
+            <div class="lt-cefr-head wow fadeInUp" data-wow-delay="0.1s">
+                <div>
+                    <p class="lt-eyebrow">CEFR</p>
+                    <h2 id="lt-cefr-heading" class="lt-cefr-head__title">{% trans "What do the levels mean?" %}</h2>
+                    <p class="lt-cefr-head__lead">{% trans "The test places you on the CEFR scale — the international standard for language levels, from A1 to C2." %}</p>
+                </div>
+                <img class="lt-cefr-head__art" src="{% static 'assets/img/level-test/stairs.webp' %}" alt="" width="880" height="615" loading="lazy" decoding="async">
+            </div>
+            {% include "includes/level_test_cefr.html" with levels=cefr_levels %}
+        </div>
+    </section>
+    {% endif %}
 {% endblock %}
 
 {% block extra_js %}

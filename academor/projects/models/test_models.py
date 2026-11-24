@@ -41,6 +41,11 @@ class Test(models.Model):
         default=True,
         verbose_name='Active',
     )
+    order = models.PositiveIntegerField(
+        default=0,
+        verbose_name='Order',
+        help_text='Position on the tests page: lower numbers come first.',
+    )
     portal_quizzes = models.ManyToManyField(
         'portals.Quiz',
         blank=True,
@@ -61,7 +66,7 @@ class Test(models.Model):
     class Meta:
         verbose_name = 'Test'
         verbose_name_plural = 'Tests'
-        ordering = ('-created_at',)
+        ordering = ('order', '-created_at')
 
     def clean(self):
         super().clean()

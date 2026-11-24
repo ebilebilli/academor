@@ -198,6 +198,10 @@
       if (readingTabsNav) {
         topOffset += readingTabsNav.offsetHeight;
       }
+      if (rect.top >= topOffset) {
+        // the new passage already starts in view: keep the page still
+        return;
+      }
       var targetY = window.scrollY + rect.top - topOffset;
       window.scrollTo({
         top: Math.max(0, targetY),
