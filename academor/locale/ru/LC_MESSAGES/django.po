@@ -3216,10 +3216,7 @@ msgstr ""
 msgid ""
 "The selected students are not in the same group, or have no scheduled class "
 "this week."
-msgstr ""
-"Выбранные ученики не в одной группе или у них нет занятия на этой "
-"неделе.Выбранные студенты не в одной группе или на этой неделе нет "
-"запланированных занятий."
+msgstr "Выбранные студенты не в одной группе или на этой неделе нет запланированных занятий."
 
 #: academor/portals/utils/ielts_mock_test.py:155
 #, python-format
@@ -5636,10 +5633,7 @@ msgstr "Отметить посещаемость"
 #: academor/templates/portals/includes/attendance_mark_picker.html:11
 msgid ""
 "Pick a class session from the calendar, then mark one or more students."
-msgstr ""
-"Выберите занятие в календаре, затем отметьте одного или нескольких "
-"учеников.Выберите занятие в календаре, затем отметьте посещаемость одного "
-"или нескольких студентов."
+msgstr "Выберите занятие в календаре, затем отметьте посещаемость одного или нескольких студентов."
 
 #: academor/templates/portals/includes/attendance_mark_picker.html:20
 msgid ""
@@ -5986,10 +5980,7 @@ msgstr[2] ""
 
 #: academor/templates/portals/includes/quiz_average_showcase.html:32
 msgid "Complete graded quizzes to see the normalized average here."
-msgstr ""
-"Завершите оценённые тесты, чтобы увидеть здесь нормализованное "
-"среднее.Пройдите оценённые викторины, чтобы увидеть нормализованный средний "
-"балл."
+msgstr "Пройдите оценённые викторины, чтобы увидеть нормализованный средний балл."
 
 #: academor/templates/portals/includes/quiz_categories_panel.html:11
 msgid "Xidmət filteri"
@@ -6093,10 +6084,7 @@ msgstr "Выйти из викторины?"
 #: academor/templates/portals/student/quiz_take_reading.html:39
 #: academor/templates/portals/student/quiz_take_speaking.html:37
 msgid "If you leave this page now, your quiz will be counted as completed."
-msgstr ""
-"Если вы покинете эту страницу сейчас, тест будет засчитан как "
-"завершённый.Если вы сейчас покинете страницу, викторина будет засчитана как "
-"завершённая."
+msgstr "Если вы сейчас покинете страницу, викторина будет засчитана как завершённая."
 
 #: academor/templates/portals/includes/quiz_leave_gate.html:25
 msgid "Leave and complete"
@@ -7229,17 +7217,11 @@ msgstr "Краткие советы"
 
 #: academor/templates/portals/profile.html:183
 msgid "Keep your bio short so teachers and classmates can get to know you."
-msgstr ""
-"Сделайте биографию краткой, чтобы преподаватели и одногруппники могли вас "
-"узнать.Держите биографию короткой, чтобы преподаватели и одноклассники могли"
-" вас узнать."
+msgstr "Держите биографию короткой, чтобы преподаватели и одноклассники могли вас узнать."
 
 #: academor/templates/portals/profile.html:184
 msgid "Quiz averages update automatically after each graded attempt."
-msgstr ""
-"Средние значения тестов обновляются автоматически после каждой оценённой "
-"попытки.Средние баллы викторин обновляются автоматически после каждой "
-"оценённой попытки."
+msgstr "Средние баллы викторин обновляются автоматически после каждой оценённой попытки."
 
 #: academor/templates/portals/profile.html:185
 msgid "Attendance is recorded by your teacher after each session."
@@ -7580,9 +7562,7 @@ msgstr "Осталось времени"
 #: academor/templates/portals/student/quiz_take.html:78
 #: academor/templates/portals/student/quiz_take_reading.html:98
 msgid "The test ends when the timer reaches zero or when you click Finish."
-msgstr ""
-"Тест завершится, когда таймер дойдёт до нуля или вы нажмёте «Завершить».Тест"
-" завершится, когда таймер дойдёт до нуля или вы нажмёте «Завершить»."
+msgstr "Тест завершится, когда таймер дойдёт до нуля или вы нажмёте «Завершить»."
 
 #: academor/templates/portals/student/quiz_take.html:80
 #: academor/templates/portals/student/quiz_take_reading.html:100
@@ -7823,10 +7803,7 @@ msgstr "Посмотреть ваши еженедельные оценки."
 
 #: academor/templates/portals/teacher/attendance.html:11
 msgid "Track attendance across your groups and mark sessions in a few clicks."
-msgstr ""
-"Отслеживайте посещаемость по группам и отмечайте занятия в несколько "
-"кликов.Отслеживайте посещаемость по группам и отмечайте занятия в несколько "
-"кликов."
+msgstr "Отслеживайте посещаемость по группам и отмечайте занятия в несколько кликов."
 
 #: academor/templates/portals/teacher/attendance.html:14
 msgid "Attendance overview"
@@ -11063,6 +11040,171 @@ msgstr "выбрано"
 
 msgid "World globe — study abroad destinations"
 msgstr "Глобус мира — направления учёбы за рубежом"
+
+msgid "%(correct)s of %(total)s answers correct"
+msgstr "%(correct)s из %(total)s ответов верно"
+
+msgid "50% off lessons"
+msgstr "Скидка 50% на уроки"
+
+msgid "Academic passages in the real exam format"
+msgstr "Академические тексты в формате реального экзамена"
+
+msgid "All tests"
+msgstr "Все тесты"
+
+msgid "Before you start"
+msgstr "Перед началом"
+
+msgid "CEFR level"
+msgstr "Уровень CEFR"
+
+msgid "Check your level and how ready you are for the exam"
+msgstr "Проверьте свой уровень и готовность к экзамену"
+
+msgid "Continue the test you started"
+msgstr "Продолжить начатый тест"
+
+msgid "Correct answers for each section"
+msgstr "Верные ответы по каждому разделу"
+
+msgid "Correct answers for each section."
+msgstr "Число верных ответов по каждому разделу."
+
+msgid "Each recording plays once, as in the real exam"
+msgstr "Каждая запись звучит один раз, как на реальном экзамене"
+
+msgid "English level tests"
+msgstr "Тесты уровня английского"
+
+msgid "Enter your name and number"
+msgstr "Укажите имя и номер"
+
+msgid "Every section has its own timer, just like the real exam. When one section ends, the next one opens."
+msgstr "Как на реальном экзамене, у каждого раздела свой таймер. Когда раздел заканчивается, открывается следующий."
+
+msgid "Exam practice tests"
+msgstr "Пробные экзаменационные тесты"
+
+msgid "Find a quiet place and a stable internet connection."
+msgstr "Найдите тихое место и стабильный интернет."
+
+msgid "Find your English level in a few minutes and see which course fits it."
+msgstr "Узнайте свой уровень английского за несколько минут и подходящий курс."
+
+msgid "Free online tests"
+msgstr "Бесплатные онлайн-тесты"
+
+msgid "Hello! I took the %(test)s on the Academor website (%(score)s). I would like to talk about IELTS preparation."
+msgstr "Здравствуйте! Я прошёл(а) %(test)s на сайте Academor (%(score)s). Хочу обсудить подготовку к IELTS."
+
+msgid "Hello! I took the SAT practice test on the Academor website (%(score)s). I would like to join SAT lessons with the %(percent)s%% discount for the first %(months)s months."
+msgstr "Здравствуйте! Я прошёл(а) пробный тест SAT на сайте Academor (%(score)s). Хочу записаться на уроки SAT со скидкой %(percent)s%% на первые %(months)s месяца."
+
+msgid "IELTS Listening"
+msgstr "IELTS Listening"
+
+msgid "IELTS Reading"
+msgstr "IELTS Reading"
+
+msgid "If you leave the page, the section is counted as finished."
+msgstr "Если вы покинете страницу, раздел будет засчитан как завершённый."
+
+msgid "Instant result"
+msgstr "Мгновенный результат"
+
+msgid "It is free. Your details are only used to share your result with you."
+msgstr "Это бесплатно. Ваши данные нужны только, чтобы сообщить вам результат."
+
+msgid "Math"
+msgstr "Math"
+
+msgid "Phone (WhatsApp)"
+msgstr "Телефон (WhatsApp)"
+
+msgid "Reading and Writing"
+msgstr "Reading and Writing"
+
+msgid "SAT practice test"
+msgstr "Пробный тест SAT"
+
+msgid "Section %(index)s"
+msgstr "Раздел %(index)s"
+
+msgid "Section %(index)s of %(total)s"
+msgstr "Раздел %(index)s из %(total)s"
+
+msgid "Sections"
+msgstr "Разделы"
+
+msgid "See your result straight away"
+msgstr "Сразу узнайте результат"
+
+msgid "Sign up for SAT lessons and mention that you took this practice test on our website: you get <strong>%(percent)s%% off for the first %(months)s months</strong>."
+msgstr "При записи на уроки SAT укажите, что прошли этот пробный тест на нашем сайте: <strong>скидка %(percent)s%% на первые %(months)s месяца</strong>."
+
+msgid "Sign up for SAT lessons with the discount"
+msgstr "Записаться на SAT со скидкой"
+
+msgid "So we can send you your result and talk it through with you."
+msgstr "Чтобы мы отправили вам результат и обсудили его с вами."
+
+msgid "Start the test"
+msgstr "Начать тест"
+
+msgid "Take a real-format SAT or IELTS practice test, or find your English level in a few minutes. You see your result as soon as you finish."
+msgstr "Пройдите пробный тест SAT или IELTS в реальном формате или узнайте уровень английского за несколько минут. Результат вы увидите сразу."
+
+msgid "Take another test"
+msgstr "Пройти другой тест"
+
+msgid "Take each section on the exam screen"
+msgstr "Пройдите каждый раздел на экзаменационном экране"
+
+msgid "Talk to us about IELTS preparation"
+msgstr "Обсудить подготовку к IELTS"
+
+msgid "The same exam screen our students use in the Academor portal, with a timer for every section."
+msgstr "Тот же экзаменационный экран, что у наших студентов в портале Academor, с таймером на каждый раздел."
+
+msgid "The section is timed, just like the real exam."
+msgstr "Как на реальном экзамене, время раздела ограничено."
+
+msgid "The timer cannot be paused. When time runs out, your answers are submitted automatically."
+msgstr "Таймер нельзя поставить на паузу. Когда время выйдет, ответы отправятся автоматически."
+
+msgid "Use headphones. Each recording plays only once, as in the real exam."
+msgstr "Используйте наушники. Как на реальном экзамене, каждая запись звучит только один раз."
+
+msgid "Well done, %(name)s! Here is your result."
+msgstr "Отлично, %(name)s! Вот ваш результат."
+
+msgid "Your IELTS band and correct answers"
+msgstr "Ваш балл IELTS (band) и верные ответы"
+
+msgid "Your IELTS band and the number of correct answers."
+msgstr "Ваш балл IELTS (band) и число верных ответов."
+
+msgid "Your results will be reviewed by Academor specialists, and we will send your weak areas to you on WhatsApp."
+msgstr "Ваши результаты проанализируют специалисты Academor, а слабые места мы отправим вам в WhatsApp."
+
+msgid "Your weak areas sent to you on WhatsApp"
+msgstr "Слабые места — вам в WhatsApp"
+
+msgid "correct answers"
+msgstr "верных ответов"
+
+msgid "minutes"
+msgstr "минут"
+
+msgid "optional"
+msgstr "необязательно"
+
+msgid "section"
+msgstr "раздел"
+
+msgid "sections"
+msgstr "раздела"
 
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Попробуйте в следующей акции — мы сообщим."

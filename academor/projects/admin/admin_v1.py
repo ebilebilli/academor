@@ -1427,7 +1427,7 @@ class OptionInline(AdminImageCompressMixin, admin.TabularInline):
 
 @admin.register(Test)
 class TestAdmin(AdminImageCompressMixin, AcademorModelAdmin):
-    list_display = ('id', 'list_title', 'is_active', 'created_at')
+    list_display = ('id', 'list_title', 'list_format', 'is_active', 'created_at')
     list_filter = ('is_active', 'created_at')
     search_fields = (
         'title_az',
@@ -1441,16 +1441,27 @@ class TestAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     readonly_fields = ('created_at',)
     ordering = ('-created_at',)
     list_per_page = 25
+    autocomplete_fields = ('portal_quizzes',)
     fieldsets = (
         ('Azerbaijani', {'fields': ('title_az', 'description_az')}),
         ('English', {'fields': ('title_en', 'description_en')}),
         ('Russian', {'fields': ('title_ru', 'description_ru')}),
+        ('Portal exam (SAT / IELTS)', {'fields': ('portal_quizzes',)}),
         ('Other', {'fields': ('is_active', 'created_at')}),
     )
 
     @admin.display(description='Title')
     def list_title(self, obj):
         return obj.display_title() or '-'
+
+    @admin.display(description='Format')
+    def list_format(self, obj):
+        from projects.utils.level_exam import exam_quizzes, section_label
+
+        quizzes = exam_quizzes(obj)
+        if not quizzes:
+            return 'Level test (own questions)'
+        return 'Portal exam: ' + ' + '.join(str(section_label(q)) for q in quizzes)
 
 
 @admin.register(Question)
@@ -1470,12 +1481,54 @@ class QuestionAdmin(AdminImageCompressMixin, AcademorModelAdmin):
 
 @admin.register(UserResult)
 class UserResultAdmin(AdminImageCompressMixin, AcademorModelAdmin):
-    list_display = ('id', 'test', 'first_name', 'last_name', 'number', 'email', 'score', 'level', 'created_at')
+    list_display = (
+        'id', 'test', 'first_name', 'last_name', 'number', 'email', 'score', 'level', 'exam_status', 'created_at',
+    )
     list_filter = ('test', 'level', 'created_at')
     search_fields = ('first_name', 'last_name', 'number', 'email', 'level')
-    readonly_fields = ('created_at',)
+    exclude = ('details',)
+    readonly_fields = ('created_at', 'exam_report')
     ordering = ('-created_at',)
     list_per_page = 25
+
+    @admin.display(description='Exam')
+    def exam_status(self, obj):
+        details = obj.details or {}
+        if not details.get('kind'):
+            return '-'
+        return 'Finished' if details.get('status') == 'finished' else 'Not finished'
+
+    @admin.display(description='Exam report')
+    def exam_report(self, obj):
+        """Per section: score, IELTS band, wrong and unanswered question numbers, time."""
+        details = obj.details or {}
+        sections = details.get('sections') or []
+        if not details.get('kind'):
+            return '-'
+        if not sections:
+            return 'Started, no section submitted yet.'
+        rows = []
+        for row in sections:
+            minutes = round((row.get('duration_sec') or 0) / 60)
+            rows.append(format_html(
+                '<tr><td><strong>{}</strong></td><td>{} / {}</td><td>{}</td><td>{}</td><td>{}</td><td>{} min{}</td></tr>',
+                row.get('label') or '',
+                row.get('correct', 0),
+                row.get('total', 0),
+                row.get('band_label') or '-',
+                ', '.join(str(n) for n in row.get('wrong') or []) or '-',
+                ', '.join(str(n) for n in row.get('unanswered') or []) or '-',
+                minutes,
+                ' (time ran out)' if row.get('trigger') == 'time_limit' else (
+                    ' (left the page)' if row.get('trigger') == 'auto_leave' else ''
+                ),
+            ))
+        return format_html(
+            '<table style="border-collapse:collapse"><thead><tr>'
+            '<th>Section</th><th>Correct</th><th>Band</th><th>Wrong (question no.)</th>'
+            '<th>Not answered</th><th>Time</th></tr></thead><tbody>{}</tbody></table>',
+            mark_safe(''.join(rows)),
+        )
 
 
 class MockTestResultAdminForm(forms.ModelForm):

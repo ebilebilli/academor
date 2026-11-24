@@ -110,9 +110,45 @@ def lead_from_study_abroad(application):
 
 def lead_from_level_test(result):
     name = f'{result.first_name} {result.last_name}'.strip()
+    if (result.details or {}).get('kind'):
+        # SAT / IELTS exam: the lead opens when they start; the score arrives with level_exam_finished
+        return capture_lead(
+            full_name=name, phone=result.number, email=result.email or '',
+            source=Lead.Source.LEVEL_TEST, interest=str(result.test) if result.test_id else '',
+            message=f'Saytda sınaq testinə başladı: {result.test}',
+            created_at=result.created_at, link={'level_test_result': result},
+        )
     return capture_lead(
         full_name=name, phone=result.number, email=result.email or '',
         source=Lead.Source.LEVEL_TEST, interest=str(result.test) if result.test_id else '',
         level=result.level or '', message=f'Səviyyə testi: {result.level} ({result.score} bal)',
         created_at=result.created_at, link={'level_test_result': result},
     )
+
+
+def level_exam_finished(result):
+    """SAT / IELTS site exam finished: put the score and the weak spots on the lead."""
+    lead = Lead.objects.filter(level_test_result=result).first() or find_open_lead(result.number)
+    if lead is None:
+        return None
+    lines = [f'Sınaq testini bitirdi: {result.test} — {result.level}']
+    for row in (result.details or {}).get('sections') or []:
+        line = f"{row.get('label')}: {row.get('correct')}/{row.get('total')}"
+        if row.get('band_label'):
+            line += f" (band {row['band_label']})"
+        if row.get('wrong'):
+            line += ' · səhv: ' + ', '.join(str(n) for n in row['wrong'])
+        if row.get('unanswered'):
+            line += ' · cavabsız: ' + ', '.join(str(n) for n in row['unanswered'])
+        lines.append(line)
+    LeadActivity.objects.create(lead=lead, kind=LeadActivity.Kind.MESSAGE, text='\n'.join(lines))
+    sections = (result.details or {}).get('sections') or []
+    if (result.details or {}).get('kind') == 'sat':
+        short = 'SAT ' + '+'.join(f"{row.get('correct')}/{row.get('total')}" for row in sections)
+    elif sections and sections[0].get('band_label'):
+        short = f"Band {sections[0]['band_label']}"
+    else:
+        short = result.level or ''
+    lead.level = short[:20]
+    lead.save(update_fields=['level', 'updated_at'])
+    return lead

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261124c">
+{% endblock %}
+
+{% block content %}
+<section class="lxr">
+  <div class="container">
+    <div class="lxr-card">
+      <div class="lxr-head">
+        <span class="lxr-head__badge" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
+        <p class="lxi-eyebrow">{{ exam_title }} · {{ result.created_at|date:"d.m.Y" }}</p>
+        <h1 class="lxr-head__title">{% blocktrans with name=result.first_name %}Well done, {{ name }}! Here is your result.{% endblocktrans %}</h1>
+      </div>
+
+      <div class="lxr-scores{% if result_rows|length > 1 %} lxr-scores--split{% endif %}">
+        {% for row in result_rows %}
+        <div class="lxr-score">
+          <p class="lxr-score__label">{{ row.label }}</p>
+          {% if row.band_label %}
+          <p class="lxr-score__band"><span>{% trans "Band" %}</span>{{ row.band_label }}</p>
+          <p class="lxr-score__sub">{% blocktrans with correct=row.correct total=row.total %}{{ correct }} of {{ total }} answers correct{% endblocktrans %}</p>
+          {% else %}
+          <p class="lxr-score__value">{{ row.correct }}<span>/{{ row.total }}</span></p>
+          <p class="lxr-score__sub">{% trans "correct answers" %}</p>
+          {% endif %}
+          <span class="lxr-score__bar" aria-hidden="true"><span style="--pct: {{ row.percent }}%"></span></span>
+          <p class="lxr-score__pct">{{ row.percent }}%</p>
+        </div>
+        {% endfor %}
+      </div>
+
+      {% if is_sat %}
+      <div class="lxi-offer lxr-offer">
+        <div class="lxi-offer__item">
+          <span class="lxi-offer__icon" aria-hidden="true"><i class="bi bi-whatsapp"></i></span>
+          <p>{% trans "Your results will be reviewed by Academor specialists, and we will send your weak areas to you on WhatsApp." %}</p>
+        </div>
+        <div class="lxi-offer__item lxi-offer__item--accent">
+          <span class="lxi-offer__icon" aria-hidden="true"><i class="bi bi-percent"></i></span>
+          <p>{% blocktrans with percent=sat_discount_percent months=sat_discount_months %}Sign up for SAT lessons and mention that you took this practice test on our website: you get <strong>{{ percent }}% off for the first {{ months }} months</strong>.{% endblocktrans %}</p>
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="lxr-actions">
+        {% if footer_contact.whatsapp_number_me %}
+        <a class="btn lxr-actions__wa" href="https://wa.me/{{ footer_contact.whatsapp_number_me }}?text={{ whatsapp_text|urlencode }}" target="_blank" rel="noopener noreferrer">
+          <i class="bi bi-whatsapp" aria-hidden="true"></i>{% if is_sat %}{% trans "Sign up for SAT lessons with the discount" %}{% else %}{% trans "Talk to us about IELTS preparation" %}{% endif %}
+        </a>
+        {% endif %}
+        <a class="btn lxr-actions__ghost" href="{% url 'projects:tests-page' %}">{% trans "Take another test" %}</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

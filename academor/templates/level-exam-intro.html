@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261124c">
+{% endblock %}
+
+{% block content %}
+<section class="lxi">
+  <div class="container">
+    <a class="lxi-back" href="{% url 'projects:tests-page' %}"><i class="bi bi-arrow-left" aria-hidden="true"></i>{% trans "All tests" %}</a>
+
+    <div class="lxi-hero">
+      <div class="lxi-hero__text">
+        <p class="lxi-eyebrow">
+          {% if is_sat %}{% trans "SAT practice test" %}{% elif is_listening %}{% trans "IELTS Listening" %}{% else %}{% trans "IELTS Reading" %}{% endif %}
+          <span aria-hidden="true">·</span> {% trans "Free" %}
+        </p>
+        <h1 class="lxi-hero__title">{{ exam_title }}</h1>
+        {% if exam_description %}<p class="lxi-hero__lead">{{ exam_description|striptags }}</p>{% endif %}
+        <ul class="lxi-facts">
+          <li><strong>{{ exam_total_questions }}</strong><span>{% trans "questions" %}</span></li>
+          <li><strong>{{ exam_total_minutes }}</strong><span>{% trans "minutes" %}</span></li>
+          <li><strong>{{ exam_sections|length }}</strong><span>{% if exam_sections|length == 1 %}{% trans 'section' %}{% else %}{% trans 'sections' %}{% endif %}</span></li>
+        </ul>
+      </div>
+      <ol class="lxi-sections" aria-label="{% trans 'Sections' %}">
+        {% for section in exam_sections %}
+        <li class="lxi-section">
+          <span class="lxi-section__icon" aria-hidden="true">
+            {% if section.kind == 'sat_math' %}<i class="bi bi-calculator"></i>{% elif section.kind == 'listening' %}<i class="bi bi-headphones"></i>{% else %}<i class="bi bi-book"></i>{% endif %}
+          </span>
+          <span class="lxi-section__body">
+            <span class="lxi-section__step">{% blocktrans with index=section.index %}Section {{ index }}{% endblocktrans %}</span>
+            <span class="lxi-section__name">{{ section.label }}</span>
+            <span class="lxi-section__meta">{{ section.question_count }} {% trans "questions" %}{% if section.minutes %} · {{ section.minutes }} {% trans "min" %}{% endif %}</span>
+          </span>
+        </li>
+        {% endfor %}
+      </ol>
+    </div>
+
+    <div class="row g-4 lxi-grid">
+      <div class="col-lg-7">
+        <div class="lxi-panel">
+          <h2 class="lxi-panel__title">{% trans "How it works" %}</h2>
+          <ol class="lxi-steps">
+            <li><span class="lxi-steps__num">1</span><div><strong>{% trans "Enter your name and number" %}</strong><p>{% trans "So we can send you your result and talk it through with you." %}</p></div></li>
+            <li><span class="lxi-steps__num">2</span><div><strong>{% trans "Take each section on the exam screen" %}</strong><p>{% if exam_sections|length > 1 %}{% trans "Every section has its own timer, just like the real exam. When one section ends, the next one opens." %}{% else %}{% trans "The section is timed, just like the real exam." %}{% endif %}</p></div></li>
+            <li><span class="lxi-steps__num">3</span><div><strong>{% trans "See your result straight away" %}</strong><p>{% if is_sat %}{% trans "Correct answers for each section." %}{% else %}{% trans "Your IELTS band and the number of correct answers." %}{% endif %}</p></div></li>
+          </ol>
+
+          <h2 class="lxi-panel__title lxi-panel__title--sub">{% trans "Before you start" %}</h2>
+          <ul class="lxi-rules">
+            <li><i class="bi bi-stopwatch" aria-hidden="true"></i>{% trans "The timer cannot be paused. When time runs out, your answers are submitted automatically." %}</li>
+            {% if is_listening %}
+            <li><i class="bi bi-headphones" aria-hidden="true"></i>{% trans "Use headphones. Each recording plays only once, as in the real exam." %}</li>
+            {% endif %}
+            <li><i class="bi bi-door-open" aria-hidden="true"></i>{% trans "If you leave the page, the section is counted as finished." %}</li>
+            <li><i class="bi bi-wifi" aria-hidden="true"></i>{% trans "Find a quiet place and a stable internet connection." %}</li>
+          </ul>
+
+          {% if is_sat %}
+          <div class="lxi-offer">
+            <div class="lxi-offer__item">
+              <span class="lxi-offer__icon" aria-hidden="true"><i class="bi bi-whatsapp"></i></span>
+              <p>{% trans "Your results will be reviewed by Academor specialists, and we will send your weak areas to you on WhatsApp." %}</p>
+            </div>
+            <div class="lxi-offer__item lxi-offer__item--accent">
+              <span class="lxi-offer__icon" aria-hidden="true"><i class="bi bi-percent"></i></span>
+              <p>{% blocktrans with percent=sat_discount_percent months=sat_discount_months %}Sign up for SAT lessons and mention that you took this practice test on our website: you get <strong>{{ percent }}% off for the first {{ months }} months</strong>.{% endblocktrans %}</p>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="col-lg-5 order-first order-lg-last">
+        <form class="lxi-form" method="post" novalidate>
+          {% csrf_token %}
+          <h2 class="lxi-form__title">{% trans "Start the test" %}</h2>
+          <p class="lxi-form__lead">{% trans "It is free. Your details are only used to share your result with you." %}</p>
+          {{ user_form.website }}{{ user_form.fax }}{{ user_form.company }}{{ user_form.last_name }}
+          {% if user_form.non_field_errors %}<div class="alert alert-danger py-2">{{ user_form.non_field_errors|join:" " }}</div>{% endif %}
+          <div class="lxi-field">
+            <label for="{{ user_form.first_name.id_for_label }}">{% trans "Full name" %}</label>
+            <input type="text" name="first_name" id="{{ user_form.first_name.id_for_label }}" class="form-control{% if user_form.first_name.errors %} is-invalid{% endif %}" value="{{ user_form.first_name.value|default:'' }}" maxlength="100" autocomplete="name" required>
+            {% for error in user_form.first_name.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}
+          </div>
+          <div class="lxi-field">
+            <label for="{{ user_form.number.id_for_label }}">{% trans "Phone (WhatsApp)" %}</label>
+            <input type="tel" name="number" id="{{ user_form.number.id_for_label }}" class="form-control{% if user_form.number.errors %} is-invalid{% endif %}" value="{{ user_form.number.value|default:'' }}" maxlength="30" autocomplete="tel" inputmode="tel" placeholder="+994 50 000 00 00" required>
+            {% for error in user_form.number.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}
+          </div>
+          <div class="lxi-field">
+            <label for="{{ user_form.email.id_for_label }}">{% trans "Email" %} <span class="lxi-field__opt">{% trans "optional" %}</span></label>
+            <input type="email" name="email" id="{{ user_form.email.id_for_label }}" class="form-control{% if user_form.email.errors %} is-invalid{% endif %}" value="{{ user_form.email.value|default:'' }}" autocomplete="email">
+            {% for error in user_form.email.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}
+          </div>
+          <button type="submit" class="btn lxi-form__submit"><span>{% trans "Start the test" %}</span><i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+          {% if resume_url %}
+          <a class="lxi-form__resume" href="{{ resume_url }}">{% trans "Continue the test you started" %}</a>
+          {% endif %}
+          <ul class="lxi-form__trust">
+            <li><i class="bi bi-check-lg" aria-hidden="true"></i>{% trans "Free" %}</li>
+            <li><i class="bi bi-check-lg" aria-hidden="true"></i>{% trans "Real exam format" %}</li>
+            <li><i class="bi bi-check-lg" aria-hidden="true"></i>{% trans "Instant result" %}</li>
+          </ul>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
