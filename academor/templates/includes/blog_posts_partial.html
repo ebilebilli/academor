@@ -29,12 +29,6 @@
                     <span class="blog-badge-featured">
                         <img src="{% static 'assets/img/banner.webp' %}" alt="" class="featured-badge-icon" width="14" height="14" decoding="async">{% trans "Featured" %}
                     </span>
-                    {% if post.date %}
-                    <span class="blog-date-chip">
-                        <i class="fa fa-calendar-alt" style="font-size:.6rem;"></i>
-                        <time datetime="{{ post.date|date:'Y-m-d' }}">{{ post.date|date:"d M Y" }}</time>
-                    </span>
-                    {% endif %}
                 </div>
                 <div class="blog-featured-arrow" aria-hidden="true"><i class="fa fa-arrow-right"></i></div>
                 <div class="blog-featured-card__overlay">
