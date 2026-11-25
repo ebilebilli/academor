@@ -20,6 +20,7 @@ def academor_branded_lazy_img(
     fetchpriority='auto',
     reveal='fade',
     decoding='async',
+    mobile_src=None,
 ):
     """
     Wrap an image with a site-branded placeholder until load (same asset as header logo).
@@ -55,4 +56,6 @@ def academor_branded_lazy_img(
         'fetchpriority': fetchpriority,
         'reveal': reveal,
         'decoding': decoding,
+        # art direction: a different image on phones (<picture> with a media source)
+        'mobile_src': mobile_src,
     }

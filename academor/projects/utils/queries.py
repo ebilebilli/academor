@@ -347,6 +347,12 @@ def serialize_blog_post(post, lang='az'):
             (cover_card, 400),
             (cover_large, 800),
         ) if first_img else None
+    # phones get their own cover on the cards when one is uploaded
+    cover_mobile = None
+    if post.cover_mobile:
+        cover_mobile = image_spec_url(post.cover_mobile_card) or media_url(post.cover_mobile)
+        if not (cover_large or cover_card or cover_full):
+            cover_full = cover_large = cover_card = media_url(post.cover_mobile)
     desc_html = _localized_value(post, 'description', lang) or None
     desc_plain = richtext_plain_text(desc_html) if desc_html else ''
     uses_gallery_cover = not post.cover and not video and bool(images)
@@ -372,6 +378,7 @@ def serialize_blog_post(post, lang='az'):
         'video': video,
         'cover': cover_large or cover_card or cover_full,
         'cover_full': cover_full,
+        'cover_mobile': cover_mobile,
         'cover_srcset': cover_srcset,
         'images': images,
         'gallery_images': gallery_images,

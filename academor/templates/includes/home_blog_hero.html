@@ -584,9 +584,9 @@
                 <a href="{% if post.url %}{{ post.url }}{% else %}{% url 'projects:blog-detail' post.slug %}{% endif %}" class="hbh-card--featured">
                     {% if post.cover %}
                     <div class="hbh-featured-media">
-                    <img src="{{ post.cover }}" alt="{{ post.name }}" class="hbh-card__img"
+                    {% if post.cover_mobile %}<picture style="display:contents"><source media="(max-width: 767.98px)" srcset="{{ post.cover_mobile }}">{% endif %}<img src="{{ post.cover }}" alt="{{ post.name }}" class="hbh-card__img"
                          {% if post.cover_srcset %}srcset="{{ post.cover_srcset }}" sizes="(max-width: 767px) 100vw, 50vw"{% endif %}
-                         {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %} decoding="async">
+                         {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %} decoding="async">{% if post.cover_mobile %}</picture>{% endif %}
                     </div>
                     {% else %}
                     <div class="hbh-card__no-img">
@@ -625,7 +625,7 @@
                 <a href="{% if post.url %}{{ post.url }}{% else %}{% url 'projects:blog-detail' post.slug %}{% endif %}" class="hbh-card--regular">
                     <div class="hbh-card__thumb">
                         {% if post.cover %}
-                        <img src="{{ post.cover }}" alt="{{ post.name }}" loading="lazy" decoding="async">
+                        {% if post.cover_mobile %}<picture style="display:contents"><source media="(max-width: 767.98px)" srcset="{{ post.cover_mobile }}">{% endif %}<img src="{{ post.cover }}" alt="{{ post.name }}" loading="lazy" decoding="async">{% if post.cover_mobile %}</picture>{% endif %}
                         {% else %}
                         <div class="hbh-card__thumb-ph">
                             <i class="fa fa-newspaper text-white opacity-25"></i>

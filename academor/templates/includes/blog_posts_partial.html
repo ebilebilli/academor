@@ -7,6 +7,7 @@
             <a href="{% if post.url %}{{ post.url }}{% else %}{% url 'projects:blog-detail' post.slug %}{% endif %}" class="blog-featured-card">
                 {% if post.cover %}
                 <div class="blog-featured-media">
+                {% if post.cover_mobile %}<picture style="display:contents"><source media="(max-width: 767.98px)" srcset="{{ post.cover_mobile }}">{% endif %}
                 <img
                     src="{{ post.cover }}"
                     alt="{{ post.name }}"
@@ -17,6 +18,7 @@
                     width="1200"
                     height="800"
                     sizes="(max-width: 767px) 100vw, (max-width: 991px) min(90vw, 720px), {% if featured_posts|length == 1 %}min(1140px, 100vw){% else %}min(55vw, 700px){% endif %}">
+                {% if post.cover_mobile %}</picture>{% endif %}
                 </div>
                 {% else %}
                 <div class="blog-featured-card__no-img">
@@ -58,7 +60,7 @@
             <a href="{% if post.url %}{{ post.url }}{% else %}{% url 'projects:blog-detail' post.slug %}{% endif %}" class="blog-card__link text-decoration-none stretched-link">
                 <div class="blog-card__media ratio ratio-1x1">
                     {% if post.cover %}
-                        {% academor_branded_lazy_img post.cover post.name img_class='blog-card-cover-img' layout='cover' width='800' height='800' srcset=post.cover_srcset sizes='(max-width: 991.98px) 50vw, 33vw' loading='lazy' %}
+                        {% academor_branded_lazy_img post.cover post.name img_class='blog-card-cover-img' layout='cover' width='800' height='800' srcset=post.cover_srcset sizes='(max-width: 991.98px) 50vw, 33vw' loading='lazy' mobile_src=post.cover_mobile %}
                     {% else %}
                     <div class="blog-card__media-ph">
                         <i class="fa fa-newspaper fa-2x text-muted opacity-35"></i>

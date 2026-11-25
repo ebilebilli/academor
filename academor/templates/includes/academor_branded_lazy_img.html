@@ -1,5 +1,6 @@
 {% load static %}
 <div class="academor-branded-lazy{% if layout %} academor-branded-lazy--{{ layout }}{% endif %}{% if reveal == 'immediate' %} academor-branded-lazy--reveal-immediate{% endif %}" style="--academor-brand-ph: url('{% static 'assets/img/new_logo.webp' %}');" data-academor-lazy-brand>
+    {% if mobile_src %}<picture style="display:contents"><source media="(max-width: 767.98px)" srcset="{{ mobile_src }}">{% endif %}
     <img
         src="{{ src }}"
         alt="{{ alt }}"
@@ -12,4 +13,5 @@
         decoding="{{ decoding }}"
         {% if fetchpriority and fetchpriority != 'auto' %}fetchpriority="{{ fetchpriority }}"{% endif %}
     >
+    {% if mobile_src %}</picture>{% endif %}
 </div>

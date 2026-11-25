@@ -1303,7 +1303,7 @@ class BlogPostAdmin(AdminImageCompressMixin, AcademorModelAdmin):
         'name_az', 'name_en', 'name_ru', 'slug',
         'description_az', 'description_en', 'description_ru',
     )
-    readonly_fields = ('slug', 'created_at', 'cover_preview_detail')
+    readonly_fields = ('slug', 'created_at', 'cover_preview_detail', 'cover_mobile_preview')
     ordering = ('-on_top', '-date', '-id')
     list_per_page = 25
     fieldsets = (
@@ -1319,9 +1319,10 @@ class BlogPostAdmin(AdminImageCompressMixin, AcademorModelAdmin):
             ),
         }),
         ('Media', {
-            'fields': ('cover', 'cover_preview_detail', 'video'),
+            'fields': ('cover', 'cover_preview_detail', 'cover_mobile', 'cover_mobile_preview', 'video'),
             'description': (
                 'Upload a cover image for list cards and video poster. '
+                '"Cover (mobile)" is optional: phones show it on the cards instead of the cover. '
                 'If a video is set, it is shown large on the article page.'
             ),
         }),
@@ -1358,6 +1359,15 @@ class BlogPostAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     @admin.display(description='Cover preview')
     def cover_preview_detail(self, obj):
         return self.cover_preview(obj)
+
+    @admin.display(description='Mobile cover preview')
+    def cover_mobile_preview(self, obj):
+        if obj.cover_mobile:
+            return format_html(
+                '<img src="{}" style="height:96px;width:72px;object-fit:cover;border-radius:4px;">',
+                obj.cover_mobile.url,
+            )
+        return '-'
 
     @admin.display(description='Video')
     def video_status(self, obj):

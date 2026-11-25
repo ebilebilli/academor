@@ -283,7 +283,7 @@
                 <div class="col-md-6">
                     <a href="{% if post.url %}{{ post.url }}{% else %}{% url 'projects:blog-detail' post.slug %}{% endif %}" class="hb-hero">
                         {% if post.cover %}
-                        <img src="{{ post.cover }}" alt="{{ post.name }}" class="hb-hero__img" loading="lazy" decoding="async">
+                        {% if post.cover_mobile %}<picture style="display:contents"><source media="(max-width: 767.98px)" srcset="{{ post.cover_mobile }}">{% endif %}<img src="{{ post.cover }}" alt="{{ post.name }}" class="hb-hero__img" loading="lazy" decoding="async">{% if post.cover_mobile %}</picture>{% endif %}
                         {% else %}
                         <div class="hb-hero__no-img"><i class="fa fa-newspaper fa-3x text-white opacity-15"></i></div>
                         {% endif %}
@@ -318,7 +318,7 @@
                     <a href="{% if post.url %}{{ post.url }}{% else %}{% url 'projects:blog-detail' post.slug %}{% endif %}" class="hb-card h-100">
                         <div class="hb-card__thumb">
                             {% if post.cover %}
-                            <img src="{{ post.cover }}" alt="{{ post.name }}" loading="lazy" decoding="async">
+                            {% if post.cover_mobile %}<picture style="display:contents"><source media="(max-width: 767.98px)" srcset="{{ post.cover_mobile }}">{% endif %}<img src="{{ post.cover }}" alt="{{ post.name }}" loading="lazy" decoding="async">{% if post.cover_mobile %}</picture>{% endif %}
                             {% else %}
                             <div class="hb-card__thumb-placeholder"><i class="fa fa-newspaper text-muted opacity-25"></i></div>
                             {% endif %}
