@@ -1731,3 +1731,224 @@ button.lxr-btn {
         display: none;
     }
 }
+
+/* ---------------------------------------------------------------- answer review (lxa)
+   English level test: every question with the visitor's answer and the right one.
+   SAT / IELTS: a numbered map of right, wrong and blank questions (answers stay hidden). */
+.lxa {
+    margin-top: 2rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--lx-line);
+}
+
+.lxa-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.lxa-title {
+    margin: 0;
+    color: var(--lx-ink);
+    font-size: 1.45rem;
+    font-weight: 800;
+}
+
+.lxa-counts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.lxa-counts li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    background: var(--lx-paper);
+}
+
+.lxa-counts li::before {
+    content: "";
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.lxa-counts .is-correct,
+.lxa-item.is-correct .lxa-num,
+.lxa-a--ok span { color: var(--lx-ok); }
+.lxa-counts .is-wrong,
+.lxa-item.is-wrong .lxa-num,
+.lxa-a--bad span { color: #c8372d; }
+.lxa-counts .is-blank,
+.lxa-item.is-blank .lxa-num { color: var(--lx-muted); }
+
+.lxa-filter {
+    display: inline-flex;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+    padding: 0.25rem;
+    border-radius: 999px;
+    background: var(--lx-paper);
+}
+
+.lxa-filter input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.lxa-filter label {
+    padding: 0.45rem 1rem;
+    border-radius: 999px;
+    color: var(--lx-muted);
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.lxa-filter input:checked + label {
+    background: #fff;
+    color: var(--lx-ink);
+    box-shadow: var(--lx-shadow-sm);
+}
+
+.lxa-filter input:focus-visible + label {
+    outline: 2px solid var(--lx-orange);
+    outline-offset: 2px;
+}
+
+.lxa:has(#lxa-mistakes:checked) .lxa-item.is-correct {
+    display: none;
+}
+
+.lxa-list {
+    display: grid;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.lxa-item {
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr);
+    gap: 0.85rem;
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--lx-line);
+    border-radius: var(--lx-r-md);
+    background: #fff;
+}
+
+.lxa-item.is-wrong {
+    border-color: rgba(200, 55, 45, 0.28);
+    background: #fff8f7;
+}
+
+.lxa-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--lx-paper);
+    font-size: 1rem;
+}
+
+.lxa-q {
+    margin: 0 0 0.4rem;
+    color: var(--lx-ink);
+    font-weight: 600;
+    line-height: 1.45;
+}
+
+.lxa-q__n {
+    color: var(--lx-muted);
+}
+
+.lxa-a {
+    margin: 0.15rem 0 0;
+    color: var(--lx-ink);
+    font-size: 0.95rem;
+}
+
+.lxa-a span {
+    font-weight: 700;
+}
+
+.lxa-a em {
+    color: var(--lx-muted);
+}
+
+.lxa-map + .lxa-map {
+    margin-top: 1.1rem;
+}
+
+.lxa-map__label {
+    margin: 0 0 0.5rem;
+    color: var(--lx-muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.lxa-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(2.6rem, 1fr));
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.lxa-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.6rem;
+    border-radius: var(--lx-r-sm);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.lxa-cell.is-correct {
+    background: rgba(31, 138, 91, 0.12);
+    color: var(--lx-ok);
+}
+
+.lxa-cell.is-wrong {
+    background: rgba(200, 55, 45, 0.12);
+    color: #c8372d;
+}
+
+.lxa-cell.is-blank {
+    background: var(--lx-paper);
+    color: var(--lx-muted);
+}
+
+@media print {
+    .lxa-filter {
+        display: none !important;
+    }
+
+    .lxa-item.is-correct {
+        display: grid !important;
+    }
+
+    .lxa-item {
+        break-inside: avoid;
+    }
+}

@@ -2,7 +2,7 @@
 {% load static i18n %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261124s">
+<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261124t">
 {% endblock %}
 
 {% block content %}
@@ -59,6 +59,29 @@
           </li>
           {% endfor %}
         </ol>
+
+        {% if result_rows.0.answer_map %}
+        <section class="lxa" aria-labelledby="lxa-heading">
+          <div class="lxa-head">
+            <h2 id="lxa-heading" class="lxa-title">{% trans "Your answers" %}</h2>
+            <ul class="lxa-counts">
+              <li class="is-correct">{% trans "Correct" %}</li>
+              <li class="is-wrong">{% trans "Incorrect" %}</li>
+              <li class="is-blank">{% trans "Unanswered" %}</li>
+            </ul>
+          </div>
+          {% for row in result_rows %}{% if row.answer_map %}
+          <div class="lxa-map">
+            {% if result_rows|length > 1 %}<p class="lxa-map__label">{{ row.label }}</p>{% endif %}
+            <ol class="lxa-grid">
+              {% for cell in row.answer_map %}
+              <li class="lxa-cell is-{{ cell.status }}" title="{% if cell.status == 'correct' %}{% trans 'Correct' %}{% elif cell.status == 'wrong' %}{% trans 'Incorrect' %}{% else %}{% trans 'Unanswered' %}{% endif %}">{{ cell.number }}</li>
+              {% endfor %}
+            </ol>
+          </div>
+          {% endif %}{% endfor %}
+        </section>
+        {% endif %}
 
         <div class="lxr-after">
           {% include "includes/level_exam_offer.html" %}
