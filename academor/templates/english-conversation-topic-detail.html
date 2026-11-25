@@ -3,126 +3,143 @@
 
 {% block layout_head %}{% include "includes/site_layout_head.html" with page_title=page_title page_description=page_description page_keywords=page_keywords %}{% endblock %}
 
-{% block content %}
-    {% include "includes/page_header_banner.html" %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261124s">
+<link rel="stylesheet" href="{% static 'assets/css/topics.css' %}?v=20261125c">
+{% endblock %}
 
-    <article class="container-xxl py-5">
+{% block content %}
+{% url 'projects:english-conversation-topics' as topics_list_url %}
+<div class="lx-page tpx">
+    <header class="tpd-hero">
         <div class="container">
-            <nav aria-label="breadcrumb" class="mb-4">
-                <ol class="breadcrumb mb-0 bg-light rounded-3 px-3 py-2">
-                    <li class="breadcrumb-item">
-                        <a href="{% url 'projects:english-conversation-topics' %}" class="text-decoration-none">{% trans "English conversation topics" %}</a>
-                    </li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ topic.title }}</li>
+            <a class="tpd-back" href="{{ topics_list_url }}"><i class="bi bi-arrow-left" aria-hidden="true"></i>{% trans "All topics" %}</a>
+            <p class="lx-kicker lx-rise" style="--i:0">{% trans "Speaking topic" %}{% if topic_position %} · {{ topic_position }} / {{ topic_count }}{% endif %}</p>
+            <h1 class="lx-display lx-rise" style="--i:1">{{ topic.title }}</h1>
+            <ul class="tpd-counts lx-rise" style="--i:2">
+                <li><strong>{{ topic.vocabulary|length }}</strong>{% trans "words" %}</li>
+                <li><strong>{{ topic.useful_phrases|length }}</strong>{% trans "phrases" %}</li>
+                <li><strong>{{ topic.discussion_questions|length }}</strong>{% trans "questions" %}</li>
+                <li><strong>{{ topic.writing_prompts|length }}</strong>{% trans "writing tasks" %}</li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="tpd-layout">
+            <nav class="tpd-toc" aria-label="{% trans 'On this page' %}">
+                <p class="tpd-toc__label">{% trans "On this page" %}</p>
+                <ol>
+                    <li><a href="#overview">{% trans "How to use this topic" %}</a></li>
+                    <li><a href="#vocabulary">{% trans "Vocabulary" %}</a></li>
+                    <li><a href="#phrases">{% trans "Useful phrases" %}</a></li>
+                    <li><a href="#sentences">{% trans "Example sentences" %}</a></li>
+                    <li><a href="#questions">{% trans "Discussion questions" %}</a></li>
+                    <li><a href="#writing">{% trans "Writing prompts" %}</a></li>
                 </ol>
             </nav>
 
-            <header class="mb-4">
-                <div class="bg-white shadow-sm rounded-4 p-4 p-md-5 border border-light">
-                    <h1 class="h2 mb-0 text-dark">{{ topic.title }}</h1>
-                </div>
-            </header>
-
-            <section class="mb-4" aria-labelledby="overview-heading">
-                <div class="section-card bg-white shadow-sm rounded-4 border border-light p-4 p-md-5">
-                    <h2 id="overview-heading" class="h5 text-primary mb-3 d-flex align-items-center gap-2">
-                        <i class="fa fa-lightbulb-o text-primary" aria-hidden="true"></i>
-                        {% trans "How to use this topic" %}
-                    </h2>
+            <article class="tpd-main">
+                <section id="overview" class="tpd-section tpd-section--intro" aria-labelledby="overview-heading">
+                    <h2 id="overview-heading" class="tpd-section__title"><span class="tpd-section__icon"><i class="bi bi-lightbulb" aria-hidden="true"></i></span>{% trans "How to use this topic" %}</h2>
                     {% for p in topic.overview_paragraphs %}
-                    <p class="text-muted mb-3 last-mb-0">{{ p }}</p>
+                    <p>{{ p }}</p>
                     {% endfor %}
-                </div>
-            </section>
+                </section>
 
-            <section class="mb-4" aria-labelledby="vocab-heading">
-                <div class="section-card bg-white shadow-sm rounded-4 border border-light p-4 p-md-5">
-                    <h2 id="vocab-heading" class="h5 text-primary mb-3 d-flex align-items-center gap-2">
-                        <i class="fa fa-book text-primary" aria-hidden="true"></i>
-                        {% trans "Vocabulary" %}
-                    </h2>
-                    <p class="small text-muted mb-4">{% trans "Headwords stay in English; the short explanations follow your language." %}</p>
-                    <ul class="list-unstyled row g-3 mb-0">
+                <section id="vocabulary" class="tpd-section" aria-labelledby="vocab-heading">
+                    <h2 id="vocab-heading" class="tpd-section__title"><span class="tpd-section__icon"><i class="bi bi-book" aria-hidden="true"></i></span>{% trans "Vocabulary" %}</h2>
+                    <p class="tpd-section__note">{% trans "Headwords stay in English; the short explanations follow your language." %}</p>
+                    <ul class="tpd-vocab">
                         {% for v in topic.vocabulary %}
-                        <li class="col-md-6">
-                            <div class="vocab-tile h-100 p-3 rounded-3 border border-light bg-light bg-opacity-50 border-start border-4 border-primary">
-                                <strong class="d-block text-dark font-monospace small mb-1">{{ v.term }}</strong>
-                                <span class="text-muted small d-block">{{ v.gloss }}</span>
-                            </div>
+                        <li>
+                            <strong lang="en">{{ v.term }}</strong>
+                            <span>{{ v.gloss }}</span>
                         </li>
                         {% endfor %}
                     </ul>
-                </div>
-            </section>
+                </section>
 
-            <section class="mb-4" aria-labelledby="phrases-heading">
-                <div class="section-card bg-white shadow-sm rounded-4 border border-light p-4 p-md-5">
-                    <h2 id="phrases-heading" class="h5 text-primary mb-3 d-flex align-items-center gap-2">
-                        <i class="fa fa-quote-left text-primary" aria-hidden="true"></i>
-                        {% trans "Useful phrases" %}
-                    </h2>
-                    <p class="small text-muted border-start border-3 border-primary ps-3 mb-4">{% trans "These lines are in English so you can use them directly in class." %}</p>
-                    <ul class="list-group list-group-flush rounded-3 border shadow-sm mb-0">
+                <section id="phrases" class="tpd-section" aria-labelledby="phrases-heading">
+                    <h2 id="phrases-heading" class="tpd-section__title"><span class="tpd-section__icon"><i class="bi bi-quote" aria-hidden="true"></i></span>{% trans "Useful phrases" %}</h2>
+                    <p class="tpd-section__note">{% trans "These lines are in English so you can use them directly in class." %}</p>
+                    <ul class="tpd-phrases" lang="en">
                         {% for phrase in topic.useful_phrases %}
-                        <li class="list-group-item py-3 font-monospace small">{{ phrase }}</li>
+                        <li>{{ phrase }}</li>
                         {% endfor %}
                     </ul>
-                </div>
-            </section>
+                </section>
 
-            <section class="mb-4" aria-labelledby="sentences-heading">
-                <div class="section-card bg-white shadow-sm rounded-4 border border-light p-4 p-md-5">
-                    <h2 id="sentences-heading" class="h5 text-primary mb-3 d-flex align-items-center gap-2">
-                        <i class="fa fa-list-ol text-primary" aria-hidden="true"></i>
-                        {% trans "Example sentences" %}
-                    </h2>
-                    <p class="small text-muted border-start border-3 border-primary ps-3 mb-4">{% trans "Model sentences in English; try adapting them with your own details." %}</p>
-                    <ol class="list-group list-group-numbered rounded-3 border shadow-sm mb-0">
+                <section id="sentences" class="tpd-section" aria-labelledby="sentences-heading">
+                    <h2 id="sentences-heading" class="tpd-section__title"><span class="tpd-section__icon"><i class="bi bi-list-ol" aria-hidden="true"></i></span>{% trans "Example sentences" %}</h2>
+                    <p class="tpd-section__note">{% trans "Model sentences in English; try adapting them with your own details." %}</p>
+                    <ol class="tpd-numbered" lang="en">
                         {% for s in topic.example_sentences %}
-                        <li class="list-group-item py-3">{{ s }}</li>
+                        <li>{{ s }}</li>
                         {% endfor %}
                     </ol>
-                </div>
-            </section>
+                </section>
 
-            <section class="mb-4" aria-labelledby="questions-heading">
-                <div class="section-card bg-white shadow-sm rounded-4 border border-light p-4 p-md-5">
-                    <h2 id="questions-heading" class="h5 text-primary mb-3 d-flex align-items-center gap-2">
-                        <i class="fa fa-question-circle text-primary" aria-hidden="true"></i>
-                        {% trans "Discussion questions" %}
-                    </h2>
-                    <p class="small text-muted border-start border-3 border-primary ps-3 mb-4">{% trans "Questions are in English to match oral practice." %}</p>
-                    <ul class="list-group list-group-flush rounded-3 border shadow-sm mb-0">
+                <section id="questions" class="tpd-section" aria-labelledby="questions-heading">
+                    <h2 id="questions-heading" class="tpd-section__title"><span class="tpd-section__icon"><i class="bi bi-chat-dots" aria-hidden="true"></i></span>{% trans "Discussion questions" %}</h2>
+                    <p class="tpd-section__note">{% trans "Questions are in English to match oral practice." %}</p>
+                    <ol class="tpd-questions" lang="en">
                         {% for q in topic.discussion_questions %}
-                        <li class="list-group-item py-3">{{ q }}</li>
+                        <li><span class="tpd-questions__n">Q{{ forloop.counter }}</span><span>{{ q }}</span></li>
                         {% endfor %}
-                    </ul>
-                </div>
-            </section>
+                    </ol>
+                </section>
 
-            <section class="mb-4" aria-labelledby="writing-heading">
-                <div class="section-card bg-white shadow-sm rounded-4 border border-light p-4 p-md-5">
-                    <h2 id="writing-heading" class="h5 text-primary mb-3 d-flex align-items-center gap-2">
-                        <i class="fa fa-pencil text-primary" aria-hidden="true"></i>
-                        {% trans "Writing prompts" %}
-                    </h2>
-                    <p class="small text-muted border-start border-3 border-primary ps-3 mb-4">{% trans "Prompts are in English for written practice." %}</p>
-                    <ul class="list-group list-group-flush rounded-3 border shadow-sm mb-0">
+                <section id="writing" class="tpd-section" aria-labelledby="writing-heading">
+                    <h2 id="writing-heading" class="tpd-section__title"><span class="tpd-section__icon"><i class="bi bi-pencil" aria-hidden="true"></i></span>{% trans "Writing prompts" %}</h2>
+                    <p class="tpd-section__note">{% trans "Prompts are in English for written practice." %}</p>
+                    <ul class="tpd-writing" lang="en">
                         {% for w in topic.writing_prompts %}
-                        <li class="list-group-item py-3">{{ w }}</li>
+                        <li><i class="bi bi-pencil-square" aria-hidden="true"></i><span>{{ w }}</span></li>
                         {% endfor %}
                     </ul>
-                </div>
-            </section>
+                </section>
 
-            <p class="mb-0">
-                {% url 'projects:english-conversation-topics' as topics_list_url %}
-                {% include "includes/detail_back_button.html" with fallback_url=topics_list_url %}
-            </p>
+                <nav class="tpd-pager" aria-label="{% trans 'More topics' %}">
+                    {% if prev_topic %}
+                    <a class="tpd-pager__link" href="{% url 'projects:english-conversation-topic-detail' prev_topic.slug %}" rel="prev">
+                        <span class="tpd-pager__label"><i class="bi bi-arrow-left" aria-hidden="true"></i>{% trans "Previous topic" %}</span>
+                        <span class="tpd-pager__title">{{ prev_topic.title }}</span>
+                    </a>
+                    {% else %}<span></span>{% endif %}
+                    {% if next_topic %}
+                    <a class="tpd-pager__link tpd-pager__link--next" href="{% url 'projects:english-conversation-topic-detail' next_topic.slug %}" rel="next">
+                        <span class="tpd-pager__label">{% trans "Next topic" %}<i class="bi bi-arrow-right" aria-hidden="true"></i></span>
+                        <span class="tpd-pager__title">{{ next_topic.title }}</span>
+                    </a>
+                    {% endif %}
+                </nav>
+            </article>
         </div>
-    </article>
+    </div>
+</div>
+{% endblock %}
 
-    <style>
-        .last-mb-0:last-child { margin-bottom: 0 !important; }
-    </style>
+{% block extra_js %}
+<script>
+/* "On this page": highlight the section being read. */
+(function () {
+    var links = Array.prototype.slice.call(document.querySelectorAll('.tpd-toc a'));
+    if (!links.length || !('IntersectionObserver' in window)) return;
+    var byId = {};
+    links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
+    var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            links.forEach(function (a) { a.classList.remove('is-current'); });
+            var link = byId[entry.target.id];
+            if (link) link.classList.add('is-current');
+        });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    Object.keys(byId).forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) observer.observe(el);
+    });
+})();
+</script>
 {% endblock %}

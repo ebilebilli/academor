@@ -334,7 +334,7 @@
                         {% if other_posts %}
                         <div class="d-flex flex-column gap-3">
                             {% for other in other_posts %}
-                            <a href="{% url 'projects:blog-detail' other.slug %}" class="blog-sidebar-card">
+                            <a href="{% if other.url %}{{ other.url }}{% else %}{% url 'projects:blog-detail' other.slug %}{% endif %}" class="blog-sidebar-card">
                                 <div class="blog-sidebar-card__thumb">
                                     {% if other.cover %}
                                     <img src="{{ other.cover }}" alt="{{ other.name }}" loading="lazy" decoding="async">

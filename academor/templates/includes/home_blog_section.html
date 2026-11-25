@@ -281,7 +281,7 @@
             <div class="row g-4 mb-0 wow fadeInUp" data-wow-delay="0.1s">
                 {% for post in blog_featured %}
                 <div class="col-md-6">
-                    <a href="{% url 'projects:blog-detail' post.slug %}" class="hb-hero">
+                    <a href="{% if post.url %}{{ post.url }}{% else %}{% url 'projects:blog-detail' post.slug %}{% endif %}" class="hb-hero">
                         {% if post.cover %}
                         <img src="{{ post.cover }}" alt="{{ post.name }}" class="hb-hero__img" loading="lazy" decoding="async">
                         {% else %}
@@ -315,7 +315,7 @@
             <div class="row g-3 wow fadeInUp" data-wow-delay="0.15s">
                 {% for post in blog_posts %}
                 <div class="col-12 col-sm-6 col-lg-4">
-                    <a href="{% url 'projects:blog-detail' post.slug %}" class="hb-card h-100">
+                    <a href="{% if post.url %}{{ post.url }}{% else %}{% url 'projects:blog-detail' post.slug %}{% endif %}" class="hb-card h-100">
                         <div class="hb-card__thumb">
                             {% if post.cover %}
                             <img src="{{ post.cover }}" alt="{{ post.name }}" loading="lazy" decoding="async">

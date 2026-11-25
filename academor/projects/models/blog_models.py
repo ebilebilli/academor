@@ -66,6 +66,24 @@ class BlogPost(SluggedModel):
         verbose_name='On main page',
         help_text='Show this post on the homepage.',
     )
+    on_left = models.BooleanField(
+        default=False,
+        verbose_name='On the left (main page)',
+        help_text='Featured post shown in the LEFT big card on the homepage. Turns on "On top" too. '
+                  'Only one post can be on the left.',
+    )
+    on_right = models.BooleanField(
+        default=False,
+        verbose_name='On the right (main page)',
+        help_text='Featured post shown in the RIGHT big card on the homepage. Turns on "On top" too. '
+                  'Only one post can be on the right.',
+    )
+    on_way_to_test_page = models.BooleanField(
+        default=False,
+        verbose_name='Door to the tests page',
+        help_text='The card looks like a blog post, but clicking it opens the tests page (/tests/) '
+                  'instead of the article.',
+    )
     video = models.FileField(
         upload_to='videos/blog/',
         blank=True,
@@ -112,6 +130,25 @@ class BlogPost(SluggedModel):
 
     def clean(self):
         super().clean()
+        if self.on_left and self.on_right:
+            raise ValidationError({
+                'on_right': _('A post can be either on the left or on the right, not both.'),
+            })
+        for field, label in (('on_left', _('left')), ('on_right', _('right'))):
+            if not getattr(self, field):
+                continue
+            taken = BlogPost.objects.filter(**{field: True})
+            if self.pk:
+                taken = taken.exclude(pk=self.pk)
+            other = taken.first()
+            if other:
+                raise ValidationError({
+                    field: _('“%(post)s” is already on the %(side)s. Uncheck it there first.') % {
+                        'post': other, 'side': label,
+                    },
+                })
+            # a side only exists for the featured cards
+            self.on_top = True
         if not self.on_top:
             return
         qs = BlogPost.objects.filter(on_top=True)

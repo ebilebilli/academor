@@ -581,7 +581,7 @@
             {% if blog_featured %}
             <div class="hbh-grid {% if blog_featured|length == 1 %}hbh-grid--one{% else %}hbh-grid--two{% endif %}">
                 {% for post in blog_featured %}
-                <a href="{% url 'projects:blog-detail' post.slug %}" class="hbh-card--featured">
+                <a href="{% if post.url %}{{ post.url }}{% else %}{% url 'projects:blog-detail' post.slug %}{% endif %}" class="hbh-card--featured">
                     {% if post.cover %}
                     <div class="hbh-featured-media">
                     <img src="{{ post.cover }}" alt="{{ post.name }}" class="hbh-card__img"
@@ -622,7 +622,7 @@
                 </button>
                 <div class="hbh-reg-track" id="hbh-track">
                 {% for post in blog_posts %}
-                <a href="{% url 'projects:blog-detail' post.slug %}" class="hbh-card--regular">
+                <a href="{% if post.url %}{{ post.url }}{% else %}{% url 'projects:blog-detail' post.slug %}{% endif %}" class="hbh-card--regular">
                     <div class="hbh-card__thumb">
                         {% if post.cover %}
                         <img src="{{ post.cover }}" alt="{{ post.name }}" loading="lazy" decoding="async">
