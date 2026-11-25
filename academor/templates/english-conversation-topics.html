@@ -3,76 +3,128 @@
 
 {% block layout_head %}{% include "includes/site_layout_head.html" with page_title=page_title page_description=page_description page_keywords=page_keywords %}{% endblock %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261124s">
+<link rel="stylesheet" href="{% static 'assets/css/topics.css' %}?v=20261125a">
+{% endblock %}
+
 {% block content %}
-    {% include "includes/page_header_banner.html" %}
-
-    <div class="container-xxl py-5 pb-5">
+<div class="lx-page tpx">
+    <header class="tpx-hero">
         <div class="container">
-            <div class="row justify-content-center mb-5">
-                <div class="col-lg-10 col-xl-9">
-                    <div class="bg-white shadow rounded-4 p-4 p-md-5 border border-light">
-                        <div class="d-flex flex-column flex-md-row align-items-center align-items-md-start gap-4 mb-0">
-                            <a href="{% url 'projects:home-page' %}" class="flex-shrink-0 topic-list-brand d-flex align-items-center justify-content-center" aria-label="{% trans 'Home' %}">
-                                <img src="{% static 'assets/img/banner.webp' %}" alt="Academor" class="topic-list-logo" width="192" height="192" loading="eager" decoding="async">
-                            </a>
-                            <div class="flex-grow-1 text-center text-md-start w-100">
-                                <h1 class="h2 mb-2 text-dark">{{ list_h1 }}</h1>
-                                <p class="lead text-muted mb-0">{{ list_lead }}</p>
-                                <p class="text-primary small fw-semibold mt-3 mb-0">{{ topics_count_label }}</p>
-                            </div>
-                        </div>
-                    </div>
+            <div class="tpx-hero__grid">
+                <div>
+                    <p class="lx-kicker lx-rise" style="--i:0">{% trans "Speaking practice" %}</p>
+                    <h1 class="lx-display lx-rise" style="--i:1">{{ list_h1 }}</h1>
+                    <p class="lx-lead lx-rise" style="--i:2">{{ list_lead }}</p>
+                    <ul class="tpx-stats lx-rise" style="--i:3">
+                        <li><strong>{{ topic_count }}</strong><span>{% trans "topics" %}</span></li>
+                        <li><strong>A–Z</strong><span>{% trans "in alphabetical order" %}</span></li>
+                        <li><strong>{% trans "Completely" %}</strong><span>{% trans "Free" %}</span></li>
+                    </ul>
                 </div>
-            </div>
 
-            <div class="row g-4">
-                {% for item in topics %}
-                <div class="col-lg-4 col-md-6">
-                    <a href="{% url 'projects:english-conversation-topic-detail' item.slug %}" class="text-decoration-none topic-card-link">
-                        <div class="topic-card card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
-                            <div class="card-body p-4 d-flex align-items-center gap-3">
-                                <span class="topic-card-icon flex-shrink-0 rounded-circle bg-primary bg-opacity-10 text-primary d-inline-flex align-items-center justify-content-center" style="width: 2.5rem; height: 2.5rem;" aria-hidden="true">
-                                    <i class="fa fa-angle-right"></i>
-                                </span>
-                                <span class="fw-semibold text-dark topic-card-title">{{ item.title }}</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                {% endfor %}
+                {% if topic_of_the_day %}
+                <aside class="tpx-today lx-rise" style="--i:2" aria-labelledby="tpx-today-title">
+                    <p class="tpx-today__kicker"><i class="bi bi-chat-square-quote" aria-hidden="true"></i>{% trans "Topic of the day" %}</p>
+                    <h2 id="tpx-today-title" class="tpx-today__title">{{ topic_of_the_day.title }}</h2>
+                    <ol class="tpx-today__questions">
+                        {% for q in topic_of_the_day.questions %}
+                        <li>{{ q }}</li>
+                        {% endfor %}
+                    </ol>
+                    <a class="tpx-today__link" href="{% url 'projects:english-conversation-topic-detail' topic_of_the_day.slug %}">{% trans "Open the topic" %}<i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                </aside>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <div class="tpx-tools" data-topics-tools>
+        <div class="container">
+            <div class="tpx-tools__inner">
+                <label class="tpx-search">
+                    <i class="bi bi-search" aria-hidden="true"></i>
+                    <span class="visually-hidden">{% trans "Search a topic" %}</span>
+                    <input type="search" class="tpx-search__input" placeholder="{% trans 'Search a topic, e.g. Travel' %}" autocomplete="off" data-topics-search>
+                </label>
+                <nav class="tpx-letters" aria-label="{% trans 'Topics A–Z' %}">
+                    {% for letter in topic_letters %}
+                    <a href="#tpx-{{ letter }}" data-topics-letter="{{ letter }}">{{ letter }}</a>
+                    {% endfor %}
+                </nav>
             </div>
         </div>
     </div>
 
-    <style>
-        /* banner.png — bir az daha böyük, kvadrata yaxın ölçü */
-        .topic-list-logo {
-            height: 64px;
-            width: auto;
-            max-width: 128px;
-            object-fit: contain;
-        }
-        @media (min-width: 576px) {
-            .topic-list-logo {
-                height: 80px;
-                max-width: 160px;
-            }
-        }
-        @media (min-width: 992px) {
-            .topic-list-logo {
-                height: 96px;
-                max-width: 192px;
-            }
-        }
-        .topic-card-link:hover .topic-card {
-            transform: translateY(-4px);
-            box-shadow: 0 0.75rem 2rem rgba(6, 120, 236, 0.12) !important;
-        }
-        .topic-card {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .topic-card-link:hover .topic-card-title {
-            color: var(--bs-primary) !important;
-        }
-    </style>
+    <section class="tpx-index" aria-label="{% trans 'English conversation topics' %}">
+        <div class="container">
+            {% for group in topic_groups %}
+            <div class="tpx-group" id="tpx-{{ group.letter }}" data-topics-group="{{ group.letter }}">
+                <h2 class="tpx-group__letter">{{ group.letter }}</h2>
+                <ul class="tpx-group__list">
+                    {% for item in group.topics %}
+                    <li data-topics-item="{{ item.title|lower }}">
+                        <a class="tpx-topic" href="{% url 'projects:english-conversation-topic-detail' item.slug %}">
+                            <span class="tpx-topic__title">{{ item.title }}</span>
+                            <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+
+            <div class="tpx-empty" data-topics-empty hidden>
+                <i class="bi bi-search" aria-hidden="true"></i>
+                <p><strong>{% trans "No topics found" %}</strong>{% trans "Try a shorter word or pick a letter above." %}</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="tpx-cta">
+        <div class="container">
+            <div class="tpx-cta__card">
+                <div>
+                    <p class="tpx-cta__kicker">{% trans "Not sure where to start?" %}</p>
+                    <h2 class="tpx-cta__title">{% trans "Find your English level first, then pick topics that match it." %}</h2>
+                </div>
+                <a class="tpx-cta__btn" href="{% url 'projects:tests-page' %}">{% trans "Take a free test" %}<i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+/* Topic search: filters the A–Z index as you type; letters without matches fade out. */
+(function () {
+    var input = document.querySelector('[data-topics-search]');
+    if (!input) return;
+    var groups = Array.prototype.slice.call(document.querySelectorAll('[data-topics-group]'));
+    var empty = document.querySelector('[data-topics-empty]');
+    function norm(value) {
+        return String(value || '').toLowerCase().trim();
+    }
+    function apply() {
+        var q = norm(input.value);
+        var shown = 0;
+        groups.forEach(function (group) {
+            var visible = 0;
+            group.querySelectorAll('[data-topics-item]').forEach(function (item) {
+                var match = !q || item.getAttribute('data-topics-item').indexOf(q) !== -1;
+                item.hidden = !match;
+                if (match) visible += 1;
+            });
+            group.hidden = visible === 0;
+            var link = document.querySelector('[data-topics-letter="' + group.getAttribute('data-topics-group') + '"]');
+            if (link) link.classList.toggle('is-off', visible === 0);
+            shown += visible;
+        });
+        if (empty) empty.hidden = shown !== 0;
+    }
+    input.addEventListener('input', apply);
+})();
+</script>
 {% endblock %}
