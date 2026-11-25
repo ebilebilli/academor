@@ -593,14 +593,6 @@
                         <i class="fa fa-newspaper fa-4x text-white opacity-10"></i>
                     </div>
                     {% endif %}
-                    <div class="hbh-card__meta-top">
-                        {% if post.date %}
-                        <span class="hbh-date">
-                            <i class="fa fa-calendar-alt" style="font-size:.6rem;"></i>
-                            <time datetime="{{ post.date|date:'Y-m-d' }}">{{ post.date|date:"d M Y" }}</time>
-                        </span>
-                        {% endif %}
-                    </div>
                     <div class="hbh-arrow-btn" aria-hidden="true"><i class="fa fa-arrow-right"></i></div>
                     <div class="hbh-card__overlay">
                         <h2 class="hbh-title--lg">{{ post.name }}</h2>
