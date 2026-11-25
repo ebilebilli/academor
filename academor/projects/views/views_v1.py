@@ -703,6 +703,9 @@ class BlogDetailPageView(View):
             raise Http404(_("Blog post not found"))
 
         post = context['post']
+        if post.get('is_test_door'):
+            # the post is only a door to the tests page
+            return redirect('projects:tests-page')
         seo_defaults = get_page_seo_defaults('blog-detail', lang)
         context.update(
             blog_detail_seo(

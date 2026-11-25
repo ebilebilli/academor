@@ -11353,6 +11353,18 @@ msgstr "письменных заданий"
 msgid "in alphabetical order"
 msgstr "в алфавитном порядке"
 
+msgid "A post can be either on the left or on the right, not both."
+msgstr "Запись может быть либо слева, либо справа, но не там и там."
+
+msgid "left"
+msgstr "слева"
+
+msgid "right"
+msgstr "справа"
+
+msgid "“%(post)s” is already on the %(side)s. Uncheck it there first."
+msgstr "«%(post)s» уже стоит %(side)s. Сначала снимите там отметку."
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Попробуйте в следующей акции — мы сообщим."
 

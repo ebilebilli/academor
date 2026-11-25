@@ -129,7 +129,8 @@ class BlogSitemap(AcademorSitemap):
     priority = 0.65
 
     def items(self):
-        return BlogPost.objects.filter(is_active=True).order_by('-date', '-id')
+        # "door" posts redirect to the tests page, so they are not listed as articles
+        return BlogPost.objects.filter(is_active=True, on_way_to_test_page=False).order_by('-date', '-id')
 
     def location(self, obj):
         return reverse('projects:blog-detail', kwargs={'slug': obj.slug})

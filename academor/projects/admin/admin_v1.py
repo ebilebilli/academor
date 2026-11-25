@@ -1294,11 +1294,11 @@ class BlogPostAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     filter_horizontal = ('tags',)
     list_display = (
         'cover_preview', 'name_az', 'slug', 'date', 'video_status',
-        'is_active', 'on_top', 'on_main_page', 'created_at',
+        'is_active', 'on_top', 'on_left', 'on_right', 'on_main_page', 'on_way_to_test_page', 'created_at',
     )
     list_display_links = ('cover_preview', 'name_az')
-    list_editable = ('is_active', 'on_top', 'on_main_page')
-    list_filter = ('is_active', 'on_top', 'on_main_page', 'date', 'created_at')
+    list_editable = ('is_active', 'on_top', 'on_left', 'on_right', 'on_main_page', 'on_way_to_test_page')
+    list_filter = ('is_active', 'on_top', 'on_main_page', 'on_way_to_test_page', 'date', 'created_at')
     search_fields = (
         'name_az', 'name_en', 'name_ru', 'slug',
         'description_az', 'description_en', 'description_ru',
@@ -1309,6 +1309,14 @@ class BlogPostAdmin(AdminImageCompressMixin, AcademorModelAdmin):
     fieldsets = (
         (None, {
             'fields': ('slug', 'date', 'is_active', 'on_top', 'on_main_page', 'tags'),
+        }),
+        ('Main page placement', {
+            'fields': (('on_left', 'on_right'), 'on_way_to_test_page'),
+            'description': (
+                'The homepage shows up to two featured ("On top") posts side by side. '
+                'Choose which one is on the left and which one on the right. '
+                '"Door to the tests page" keeps the blog card design but sends the visitor to /tests/.'
+            ),
         }),
         ('Media', {
             'fields': ('cover', 'cover_preview_detail', 'video'),

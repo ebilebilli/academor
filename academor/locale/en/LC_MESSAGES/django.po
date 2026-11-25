@@ -11226,6 +11226,18 @@ msgstr "writing tasks"
 msgid "in alphabetical order"
 msgstr "in alphabetical order"
 
+msgid "A post can be either on the left or on the right, not both."
+msgstr "A post can be either on the left or on the right, not both."
+
+msgid "left"
+msgstr "left"
+
+msgid "right"
+msgstr "right"
+
+msgid "“%(post)s” is already on the %(side)s. Uncheck it there first."
+msgstr "“%(post)s” is already on the %(side)s. Uncheck it there first."
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Try again in the next campaign — we will let you know."
 

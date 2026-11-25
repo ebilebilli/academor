@@ -361,6 +361,14 @@ def serialize_blog_post(post, lang='az'):
         'created_at': post.created_at,
         'on_top': post.on_top,
         'on_main_page': post.on_main_page,
+        'on_left': post.on_left,
+        'on_right': post.on_right,
+        # a "door" post looks like an article but opens the tests page
+        'is_test_door': post.on_way_to_test_page,
+        'url': (
+            reverse('projects:tests-page') if post.on_way_to_test_page
+            else reverse('projects:blog-detail', kwargs={'slug': post.slug})
+        ),
         'video': video,
         'cover': cover_large or cover_card or cover_full,
         'cover_full': cover_full,
@@ -689,6 +697,11 @@ def get_home_sales_context(lang='az'):
     return {'sales': get_serialized_active_sales(lang)}
 
 
+def featured_side_order(posts):
+    """Featured posts: the one marked "on the left" first, "on the right" last."""
+    return sorted(posts, key=lambda p: 0 if p.on_left else (2 if p.on_right else 1))
+
+
 def _fresh_home_blog_context(lang):
     """Home hero + blog section bypass the cached page blob so edits show on the next reload."""
     posts = list(
@@ -698,7 +711,7 @@ def _fresh_home_blog_context(lang):
     )
     return {
         'blog_featured': [
-            serialize_blog_post(p, lang=lang) for p in posts if p.on_top
+            serialize_blog_post(p, lang=lang) for p in featured_side_order([p for p in posts if p.on_top])
         ][:2],
         'blog_posts': [
             serialize_blog_post(p, lang=lang) for p in posts if not p.on_top
@@ -730,7 +743,7 @@ def _cached_blog_list_blob(lang, tags_key=None):
     tags_key = (tags_key or '').strip()
     tag_slugs = [s for s in tags_key.split(',') if s] if tags_key else []
     all_posts = get_blog_posts(is_active=True, tag_slugs=tag_slugs or None)
-    featured = [p for p in all_posts if p.on_top][:2]
+    featured = featured_side_order([p for p in all_posts if p.on_top])[:2]
     regular = [p for p in all_posts if not p.on_top]
     serialized_featured = [serialize_blog_post(p, lang=lang) for p in featured]
     serialized_posts = [serialize_blog_post(p, lang=lang) for p in regular]

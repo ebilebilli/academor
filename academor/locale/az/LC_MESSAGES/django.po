@@ -11437,6 +11437,18 @@ msgstr "yazı tapşırığı"
 msgid "in alphabetical order"
 msgstr "əlifba sırası ilə"
 
+msgid "A post can be either on the left or on the right, not both."
+msgstr "Yazı ya solda, ya da sağda ola bilər, hər ikisində yox."
+
+msgid "left"
+msgstr "solda"
+
+msgid "right"
+msgstr "sağda"
+
+msgid "“%(post)s” is already on the %(side)s. Uncheck it there first."
+msgstr "“%(post)s” artıq %(side)s yerləşir. Əvvəlcə orada işarəni götürün."
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Növbəti kampaniyada yenə cəhd et — xəbərdar edəcəyik."
 

@@ -4,7 +4,7 @@
     <p class="blog-section-label">{% trans "Featured Posts" %}</p>
     <div class="blog-featured-grid blog-featured-grid--{% if featured_posts|length == 1 %}one{% else %}two{% endif %}">
         {% for post in featured_posts %}
-            <a href="{% url 'projects:blog-detail' post.slug %}" class="blog-featured-card">
+            <a href="{% if post.url %}{{ post.url }}{% else %}{% url 'projects:blog-detail' post.slug %}{% endif %}" class="blog-featured-card">
                 {% if post.cover %}
                 <div class="blog-featured-media">
                 <img
@@ -55,7 +55,7 @@
     {% for post in posts %}
     <div class="col-6 col-md-6 col-lg-4">
         <article class="blog-card">
-            <a href="{% url 'projects:blog-detail' post.slug %}" class="blog-card__link text-decoration-none stretched-link">
+            <a href="{% if post.url %}{{ post.url }}{% else %}{% url 'projects:blog-detail' post.slug %}{% endif %}" class="blog-card__link text-decoration-none stretched-link">
                 <div class="blog-card__media ratio ratio-1x1">
                     {% if post.cover %}
                         {% academor_branded_lazy_img post.cover post.name img_class='blog-card-cover-img' layout='cover' width='800' height='800' srcset=post.cover_srcset sizes='(max-width: 991.98px) 50vw, 33vw' loading='lazy' %}
