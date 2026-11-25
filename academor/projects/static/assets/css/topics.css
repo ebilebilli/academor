@@ -15,8 +15,42 @@
 
 /* ---------------------------------------------------------------- list: hero */
 .tpx-hero {
+    position: relative;
+    overflow: hidden;
     padding: clamp(2.5rem, 6vw, 4.75rem) 0 clamp(2.25rem, 5vw, 3.5rem);
     background: linear-gradient(180deg, var(--lx-sand) 0%, #f3eee6 100%);
+}
+
+/* the café illustration as a faded, grey backdrop, like the study desk on the tests page */
+.tpx-hero__art {
+    position: absolute;
+    top: 0;
+    /* shifted left so the girl at the table shows between the title and the topic card */
+    right: 16%;
+    width: min(62%, 900px);
+    height: 100%;
+    object-fit: cover;
+    object-position: center 48%;
+    opacity: 0.2;
+    filter: grayscale(1) contrast(1.15);
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 38%, #000 80%, transparent 100%), linear-gradient(0deg, transparent 0%, #000 30%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(90deg, transparent 0%, #000 38%, #000 80%, transparent 100%), linear-gradient(0deg, transparent 0%, #000 30%);
+    mask-composite: intersect;
+}
+
+.tpx-hero > .container {
+    position: relative;
+}
+
+@media (max-width: 991.98px) {
+    .tpx-hero__art {
+        right: 0;
+        width: 100%;
+        opacity: 0.11;
+    }
 }
 
 .tpx-hero__grid {
