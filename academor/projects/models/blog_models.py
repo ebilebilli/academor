@@ -98,6 +98,20 @@ class BlogPost(SluggedModel):
         verbose_name='Cover',
         help_text='Poster/thumbnail for the post or video.',
     )
+    cover_mobile = models.ImageField(
+        upload_to='blog/covers/mobile/',
+        blank=True,
+        null=True,
+        verbose_name='Cover (mobile)',
+        help_text='Optional. Shown on the post cards on phones (screens up to 767px) instead of the cover. '
+                  'A portrait or square image works best.',
+    )
+    cover_mobile_card = ImageSpecField(
+        source='cover_mobile',
+        processors=[ResizeToFit(720, 900)],
+        format='WEBP',
+        options={'quality': 80},
+    )
     cover_display = ImageSpecField(
         source='cover',
         processors=[ResizeToFit(800, 600)],

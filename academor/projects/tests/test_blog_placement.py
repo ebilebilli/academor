@@ -58,3 +58,50 @@ class BlogPlacementAdminTests(TestCase):
         self.assertContains(page, 'name="on_way_to_test_page"')
         listing = self.client.get(reverse('admin:projects_blogpost_changelist'))
         self.assertContains(listing, 'form-0-on_right')
+
+
+def _image_file(name, size):
+    from io import BytesIO
+
+    from django.core.files.uploadedfile import SimpleUploadedFile
+    from PIL import Image
+
+    buf = BytesIO()
+    Image.new('RGB', size, (0, 49, 61)).save(buf, format='PNG')
+    return SimpleUploadedFile(name, buf.getvalue(), content_type='image/png')
+
+
+class BlogMobileCoverTests(TestCase):
+    def setUp(self):
+        cache.clear()
+
+    def test_cards_use_the_mobile_cover_on_phones(self):
+        import tempfile
+
+        from django.test import override_settings
+
+        with tempfile.TemporaryDirectory() as media, override_settings(MEDIA_ROOT=media):
+            post = _post('Mobil cover', cover=_image_file('wide.png', (1200, 600)), cover_mobile=_image_file('tall.png', (600, 900)))
+            data = serialize_blog_post(post)
+            self.assertTrue(data['cover_mobile'])
+            self.assertNotEqual(data['cover_mobile'], data['cover'])
+
+            home = self.client.get(reverse('projects:home-page')).content.decode()
+            self.assertIn('<source media="(max-width: 767.98px)" srcset="%s">' % data['cover_mobile'], home)
+            listing = self.client.get(reverse('projects:blog-page')).content.decode()
+            self.assertIn('srcset="%s"' % data['cover_mobile'], listing)
+
+            # without a mobile cover nothing changes
+            plain = _post('Adi cover', cover=_image_file('only.png', (1200, 600)))
+            self.assertIsNone(serialize_blog_post(plain)['cover_mobile'])
+
+    def test_mobile_cover_alone_is_also_the_desktop_cover(self):
+        import tempfile
+
+        from django.test import override_settings
+
+        with tempfile.TemporaryDirectory() as media, override_settings(MEDIA_ROOT=media):
+            post = _post('Yalnız mobil', cover_mobile=_image_file('tall.png', (600, 900)))
+            data = serialize_blog_post(post)
+            self.assertTrue(data['cover'])
+            self.assertTrue(data['cover_mobile'])
