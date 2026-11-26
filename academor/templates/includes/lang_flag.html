@@ -1,25 +1,26 @@
-{# Inline SVG language flags — crisp at any DPR. Usage: {% include "includes/lang_flag.html" with code="az" %} #}
+{% comment %}Inline SVG language flags drawn to the official proportions and placed in one rounded 4:3 frame (slice keeps the centre). Usage: include "includes/lang_flag.html" with code="az".{% endcomment %}
 {% if code == "az" %}
-<svg class="nav-lang-flag" viewBox="0 0 36 24" width="18" height="12" aria-hidden="true" focusable="false">
-  <rect width="36" height="8" y="0" fill="#00B5E2"/>
-  <rect width="36" height="8" y="8" fill="#EF3340"/>
-  <rect width="36" height="8" y="16" fill="#509E2F"/>
-  <circle cx="14.2" cy="12" r="3.35" fill="none" stroke="#fff" stroke-width="1.35"/>
-  <circle cx="15.15" cy="12" r="2.7" fill="#EF3340"/>
-  <path fill="#fff" d="M20.1 12l-.55-1.55-1.55-.1 1.2-.95-.4-1.5 1.3.75 1.3-.75-.4 1.5 1.2.95-1.55.1z"/>
+<svg class="nav-lang-flag" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+  <rect width="1200" height="600" fill="#509E2F"/>
+  <rect width="1200" height="400" fill="#EF3340"/>
+  <rect width="1200" height="200" fill="#00B5E2"/>
+  <circle cx="580" cy="300" r="90" fill="#fff"/>
+  <circle cx="600" cy="300" r="75" fill="#EF3340"/>
+  <path fill="#fff" d="M680 250l9.57 26.9 25.79-12.26-12.26 25.79 26.9 9.57-26.9 9.57 12.26 25.79-25.79-12.26-9.57 26.9-9.57-26.9-25.79 12.26 12.26-25.79-26.9-9.57 26.9-9.57-12.26-25.79 25.79 12.26z"/>
 </svg>
 {% elif code == "ru" %}
-<svg class="nav-lang-flag" viewBox="0 0 36 24" width="18" height="12" aria-hidden="true" focusable="false">
-  <rect width="36" height="8" y="0" fill="#fff"/>
-  <rect width="36" height="8" y="8" fill="#0039A6"/>
-  <rect width="36" height="8" y="16" fill="#D52B1E"/>
+<svg class="nav-lang-flag" viewBox="0 0 9 6" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+  <rect width="9" height="6" fill="#fff"/>
+  <rect width="9" height="4" y="2" fill="#0039A6"/>
+  <rect width="9" height="2" y="4" fill="#D52B1E"/>
 </svg>
 {% else %}
-<svg class="nav-lang-flag" viewBox="0 0 36 24" width="18" height="12" aria-hidden="true" focusable="false">
-  <rect width="36" height="24" fill="#012169"/>
-  <path stroke="#fff" stroke-width="4" d="M0 0l36 24M36 0L0 24"/>
-  <path stroke="#C8102E" stroke-width="2.2" d="M0 0l36 24M36 0L0 24"/>
-  <path stroke="#fff" stroke-width="6.5" d="M18 0v24M0 12h36"/>
-  <path stroke="#C8102E" stroke-width="3.5" d="M18 0v24M0 12h36"/>
+<svg class="nav-lang-flag" viewBox="0 0 60 30" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+  <clipPath id="uk-flag-diag"><path d="M30 15h30v15zv15H0zH0V0zV0h30z"/></clipPath>
+  <rect width="60" height="30" fill="#012169"/>
+  <path d="M0 0l60 30M60 0L0 30" stroke="#fff" stroke-width="6"/>
+  <path d="M0 0l60 30M60 0L0 30" clip-path="url(#uk-flag-diag)" stroke="#C8102E" stroke-width="4"/>
+  <path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/>
+  <path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6"/>
 </svg>
 {% endif %}

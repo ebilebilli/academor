@@ -376,3 +376,38 @@ class LevelExamTimerResumeTests(TestCase):
             again = self.client.post(url).json()
         self.assertGreaterEqual(again['elapsed_sec'], 129)
         self.assertEqual(again['attempt_key'], first['attempt_key'])
+
+
+class LevelExamAnswerReviewTests(TestCase):
+    def test_result_lists_every_question_with_the_right_answer(self):
+        category = QuizCategory.objects.create(name='Exam sections')
+        rw, math = _sat_quizzes(category)
+        test = Test.objects.create(title_az='SAT', is_active=True)
+        test.portal_quizzes.set([rw, math])
+        self.client.post(reverse('projects:test-take', kwargs={'test_id': test.pk}), {'first_name': 'Aysel Namizəd', 'number': '+994 50 111 22 33'})
+        q1, q2, q3 = rw.questions.order_by('order')
+        for section, answers in ((1, {str(q1.pk): 0, str(q2.pk): 3}), (2, {})):
+            self.client.post(reverse('projects:level-exam-start', kwargs={'test_id': test.pk, 'section': section}))
+            self.client.post(
+                reverse('projects:level-exam-submit', kwargs={'test_id': test.pk, 'section': section}),
+                data=json.dumps({'answers': answers}), content_type='application/json',
+            )
+        page = self.client.get(reverse('projects:level-exam-result', kwargs={'test_id': test.pk}))
+        rows = page.context['result_rows']
+        review = rows[0]['review']
+        self.assertEqual([r['status'] for r in review], ['correct', 'wrong', 'blank'])
+        self.assertEqual(review[1]['chosen'], 'D. D')
+        self.assertEqual(review[1]['right'], 'B. B')
+        self.assertEqual(review[0]['text'], 'RW question 1')
+        self.assertEqual(page.context['review_counts'], {'correct': 1, 'wrong': 1, 'blank': 3})
+        self.assertContains(page, 'lxa-list')
+        self.assertContains(page, 'id="lxa-mistakes"')
+
+
+class LanguageSwitchTests(TestCase):
+    def test_short_codes_and_flags(self):
+        page = self.client.get(reverse('projects:home-page')).content.decode()
+        self.assertIn('<span class="nav-lang-code">En</span>', page)
+        self.assertIn('<span class="nav-lang-code">Ru</span>', page)
+        self.assertIn('uk-flag-diag', page)
+        self.assertNotIn('Azerbaijani</button>', page)

@@ -340,7 +340,7 @@ def _notify_crm(result):
 def _answer_map(row):
     """Question numbers 1..total marked right / wrong / blank, from what the section stored.
 
-    Correct answers stay hidden (the test is reused); older results without the lists get no map.
+    Older results without the lists get no map.
     """
     if 'wrong' not in row:
         return []
@@ -379,7 +379,15 @@ class LevelExamResultView(View):
                 scale = {'scale_pct': f'{band / 9 * 100:.1f}', 'marker': row.get('band_label'), 'ticks': list(range(0, 10))}
             else:
                 scale = {'scale_pct': str(pct), 'marker': f'{pct}%', 'ticks': [0, 25, 50, 75, 100]}
-            rows.append({**row, 'percent': pct, **scale, 'answer_map': _answer_map(row)})
+            review = []
+            if row.get('quiz_id') and 'answers' in row:
+                quiz = lx._load_quiz(row['quiz_id'])
+                if quiz:
+                    try:
+                        review = lx.review_section(quiz, row.get('answers') or {})
+                    except Exception:  # the review must never break the score report
+                        logger.exception('Answer review failed for result=%s quiz=%s', result.pk, row['quiz_id'])
+            rows.append({**row, 'percent': pct, **scale, 'answer_map': _answer_map(row), 'review': review})
         sat_scaled = lx.sat_scaled_scores(test, rows) if ctx['is_sat'] else None
         if sat_scaled:
             for row in rows:
@@ -428,7 +436,13 @@ class LevelExamResultView(View):
             'art': static(STORY_ART),
             'filename': 'academor-result.png',
         }
+        review_counts = {'correct': 0, 'wrong': 0, 'blank': 0}
+        for row in rows:
+            for item in row['review']:
+                review_counts[item['status']] += 1
         ctx.update({
+            'review_counts': review_counts,
+            'has_review': any(row['review'] for row in rows),
             'story': story,
             'result': result,
             'result_rows': rows,
