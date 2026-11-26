@@ -252,7 +252,12 @@ class LevelExamStartView(View):
         started.setdefault(str(section), timezone.now().isoformat())
         attempt['started'] = started
         lx.save_attempt(request, test_id, attempt)
-        return JsonResponse({'success': True})
+        # on a reload (F5) the timer goes on from the first start
+        return JsonResponse({
+            'success': True,
+            'elapsed_sec': lx.elapsed_seconds(started[str(section)]) or 0,
+            'attempt_key': f'{test_id}-{section}-{started[str(section)]}',
+        })
 
 
 class LevelExamSubmitView(View):

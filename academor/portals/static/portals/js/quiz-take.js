@@ -45,7 +45,8 @@
         && document.querySelector("[data-quiz-start-gate]").getAttribute("data-msg-session-expired"))
       || "Your session has expired. Please log in again.";
 
-    var startedAt = Date.now();
+    // kept across a reload (F5): the start gate sets data-quiz-started-at from the server
+    var startedAt = parseInt(root.getAttribute("data-quiz-started-at") || "", 10) || Date.now();
     var submitting = false;
     var submitted = false;
     var timerId = null;

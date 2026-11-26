@@ -121,7 +121,9 @@ class SatLevelExamFlowTests(TestCase):
         # cannot jump ahead
         self.assertRedirects(self.client.get(self._section(2)), self._section(1), fetch_redirect_response=False)
 
-        self.assertEqual(self.client.post(self._section(1, 'start')).json(), {'success': True})
+        started = self.client.post(self._section(1, 'start')).json()
+        self.assertTrue(started['success'])
+        self.assertEqual(started['elapsed_sec'], 0)
         q1, q2, q3 = self.rw.questions.order_by('order')
         data = self._submit(1, {str(q1.pk): 0, str(q2.pk): 3}).json()
         self.assertTrue(data['success'])
@@ -353,3 +355,24 @@ class LevelExamAdminPrintTests(TestCase):
         })
         self.assertRedirects(response, f'{url}?ids={self.result.pk}', fetch_redirect_response=False)
         self.assertContains(self.client.get(reverse('admin:projects_userresult_changelist')), 'Print / PDF')
+
+
+class LevelExamTimerResumeTests(TestCase):
+    def test_reload_keeps_the_section_clock(self):
+        from datetime import timedelta
+        from unittest import mock
+
+        from django.utils import timezone
+
+        category = QuizCategory.objects.create(name='Exam sections')
+        rw, math = _sat_quizzes(category)
+        test = Test.objects.create(title_az='SAT', is_active=True)
+        test.portal_quizzes.set([rw, math])
+        self.client.post(reverse('projects:test-take', kwargs={'test_id': test.pk}), {'first_name': 'Aysel Namizəd', 'number': '+994 50 111 22 33'})
+        url = reverse('projects:level-exam-start', kwargs={'test_id': test.pk, 'section': 1})
+        first = self.client.post(url).json()
+        self.assertEqual(first['elapsed_sec'], 0)
+        with mock.patch('django.utils.timezone.now', return_value=timezone.now() + timedelta(seconds=130)):
+            again = self.client.post(url).json()
+        self.assertGreaterEqual(again['elapsed_sec'], 129)
+        self.assertEqual(again['attempt_key'], first['attempt_key'])

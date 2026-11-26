@@ -211,6 +211,41 @@ def clear_quiz_attempt_start(request, quiz_id: int) -> None:
     pop_portal_session_value(request, quiz_start_session_key(quiz_id))
 
 
+# A start older than this is a forgotten attempt (tab closed days ago), not a page reload.
+QUIZ_START_STALE_GRACE_SEC = 30 * 60
+QUIZ_START_STALE_UNTIMED_SEC = 6 * 60 * 60
+
+
+def quiz_attempt_elapsed_seconds(request, quiz_id: int) -> int | None:
+    """Seconds since the attempt was started (kept in the session), or None."""
+    from django.utils import timezone
+    from django.utils.dateparse import parse_datetime
+
+    raw = get_quiz_attempt_start(request, quiz_id)
+    started = parse_datetime(raw) if isinstance(raw, str) else None
+    if not started:
+        return None
+    if timezone.is_naive(started):
+        started = timezone.make_aware(started, timezone.get_current_timezone())
+    return max(0, int((timezone.now() - started).total_seconds()))
+
+
+def resume_or_start_quiz_attempt(request, quiz_id: int, time_limit_sec: int | None = None) -> int:
+    """Keep the running attempt's start on a reload (F5) and return the seconds already used.
+
+    The clock goes on from where it was instead of starting at zero. A start that is far
+    beyond the time limit (or very old for an untimed quiz) is treated as abandoned and
+    the attempt starts fresh.
+    """
+    elapsed = quiz_attempt_elapsed_seconds(request, quiz_id)
+    limit = int(time_limit_sec or 0)
+    stale_after = (limit + QUIZ_START_STALE_GRACE_SEC) if limit else QUIZ_START_STALE_UNTIMED_SEC
+    if elapsed is None or elapsed > stale_after:
+        set_quiz_attempt_start(request, quiz_id)
+        return 0
+    return elapsed
+
+
 def quiz_questions_session_key(quiz_id: int) -> str:
     return f'{QUIZ_QUESTIONS_KEY_PREFIX}{quiz_id}'
 

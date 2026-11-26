@@ -16,7 +16,11 @@ from portals.utils.customer_mock import (
     resolve_customer_mock_take_request,
 )
 from portals.utils.ielts_mock_test import parse_mock_attempt_id
-from portals.utils.portal_session import clear_quiz_attempt_start, get_quiz_attempt_start, set_quiz_attempt_start
+from portals.utils.portal_session import (
+    clear_quiz_attempt_start,
+    get_quiz_attempt_start,
+    resume_or_start_quiz_attempt,
+)
 from portals.utils.queries import get_customer_mock_quiz_take_data, get_customer_profile
 from portals.utils.safe_redirect import safe_portal_next_url
 from portals.utils.quiz_submit import (
@@ -217,8 +221,13 @@ class CustomerQuizStartView(CustomerQuizTakeRequiredMixin, View):
                 if not ok:
                     return JsonResponse({'success': False, 'error': error}, status=400)
 
-        set_quiz_attempt_start(request, pk)
-        return JsonResponse({'success': True})
+        # a reload (F5) keeps the clock running from the first start
+        elapsed = resume_or_start_quiz_attempt(request, pk, quiz.get('time_limit_seconds'))
+        return JsonResponse({
+            'success': True,
+            'elapsed_sec': elapsed,
+            'attempt_key': str(get_quiz_attempt_start(request, pk) or ''),
+        })
 
 
 class CustomerQuizCancelView(CustomerQuizTakeRequiredMixin, View):

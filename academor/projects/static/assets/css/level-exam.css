@@ -1338,10 +1338,14 @@
 
 /* ---------------------------------------------------------------- exam shell (section pages) */
 .level-exam-body {
-    /* the portal exam toolbar sits under a 64px top bar next to a sidebar; here there is no sidebar */
+    /* the portal exam toolbar sits under the top bar next to a sidebar; here there is no sidebar.
+       Bar height and logo size follow the site navbar (style.css: --nav-bar-h / --nav-logo-max). */
+    --lx-bar-h: clamp(78px, calc(2.4vw + 3.4rem), 108px);
+    --lx-logo-max: clamp(190px, 13.5vw, 250px);
+    --lx-brand-pad: clamp(0.4rem, 1vw, 1.25rem);
     --sidebar-width: 0px;
     --portal-shell-sidebar-width: 0px;
-    --topbar-height: 84px;
+    --topbar-height: var(--lx-bar-h);
     min-height: 100vh;
     background: #f4f6f8;
 }
@@ -1363,37 +1367,50 @@
     display: flex;
     align-items: center;
     gap: 1.25rem;
-    height: 84px;
-    max-width: 1320px;
-    margin: 0 auto;
-    padding: 0.7rem clamp(1rem, 3vw, 1.75rem);
+    height: var(--lx-bar-h);
+    padding: 0 clamp(1rem, 3vw, 1.75rem) 0 var(--lx-brand-pad);
+}
+
+/* the logo sits at the left edge and fills the bar, like the navbar on the home page */
+.lx-bar__brand {
+    display: flex;
+    align-items: center;
+    height: 100%;
 }
 
 .lx-bar__brand img {
     display: block;
     width: auto;
-    height: 68px;
+    height: 100%;
+    max-width: var(--lx-logo-max);
+    object-fit: contain;
 }
 
-.lx-bar__title {
-    display: grid;
-    min-width: 0;
-    padding-left: 1.25rem;
-    border-left: 1px solid rgba(255, 255, 255, 0.16);
+/* exam name and section, at the top of the page */
+.lx-head {
+    margin: 0.5rem 0 1rem;
 }
 
-.lx-bar__exam {
-    overflow: hidden;
-    color: #fff;
+@media (max-width: 767.98px) {
+    .lx-head {
+        margin-top: 1.1rem;
+    }
+}
+
+.lx-head__title {
+    margin: 0;
+    color: #00313d;
+    font-size: clamp(1.35rem, 2.4vw, 1.75rem);
     font-weight: 800;
-    font-size: 0.98rem;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
 }
 
-.lx-bar__section {
-    color: rgba(255, 255, 255, 0.66);
-    font-size: 0.82rem;
+.lx-head__section {
+    margin: 0.3rem 0 0;
+    color: #52676d;
+    font-size: 0.95rem;
+    font-weight: 600;
 }
 
 .lx-steps {
@@ -1461,22 +1478,34 @@
     display: none;
 }
 
+@media (min-width: 1600px) {
+    .level-exam-body {
+        --lx-bar-h: 104px;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .level-exam-body {
+        --lx-bar-h: 78px;
+        --lx-logo-max: 193px;
+        --lx-brand-pad: 1.5rem;
+    }
+}
+
 @media (max-width: 767.98px) {
     .lx-bar__inner {
         gap: 0.75rem;
     }
 
-    .lx-bar__title {
-        flex: 1 1 0;
-        padding-left: 0.75rem;
-    }
-
-    .lx-bar__brand img {
-        height: 52px;
-    }
-
     .lx-steps {
         display: none;
+    }
+}
+
+@media (max-width: 360px) {
+    .level-exam-body {
+        --lx-logo-max: 143px;
+        --lx-brand-pad: 0.6rem;
     }
 }
 
@@ -1500,15 +1529,6 @@
     color: #fff !important;
 }
 
-@media (max-width: 767.98px) {
-    .level-exam-body {
-        --topbar-height: 68px;
-    }
-
-    .lx-bar__inner {
-        height: 68px;
-    }
-}
 
 /* ---------------------------------------------------------------- score report: print / save as PDF */
 .lxr-print-brand {

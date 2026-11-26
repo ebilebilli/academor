@@ -892,7 +892,8 @@
       });
     }
 
-    startedAt = Date.now();
+    // kept across a reload (F5): the start gate sets data-quiz-started-at from the server
+    startedAt = parseInt(root.getAttribute("data-quiz-started-at") || "", 10) || Date.now();
     startQuizTimer();
     beginSpeakingFlow();
 
