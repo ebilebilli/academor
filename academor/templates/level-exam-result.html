@@ -2,7 +2,7 @@
 {% load static i18n %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261126h">
+<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261127r">
 {% endblock %}
 
 {% block content %}
@@ -60,14 +60,20 @@
           {% endfor %}
         </ol>
 
-        {% if result_rows.0.answer_map %}
+        {% if result_rows.0.answer_map or has_review %}
         <section class="lxa" aria-labelledby="lxa-heading">
           <div class="lxa-head">
             <h2 id="lxa-heading" class="lxa-title">{% trans "Your answers" %}</h2>
             <ul class="lxa-counts">
+              {% if has_review %}
+              <li class="is-correct">{% trans "Correct" %}: <strong>{{ review_counts.correct }}</strong></li>
+              <li class="is-wrong">{% trans "Incorrect" %}: <strong>{{ review_counts.wrong }}</strong></li>
+              {% if review_counts.blank %}<li class="is-blank">{% trans "Unanswered" %}: <strong>{{ review_counts.blank }}</strong></li>{% endif %}
+              {% else %}
               <li class="is-correct">{% trans "Correct" %}</li>
               <li class="is-wrong">{% trans "Incorrect" %}</li>
               <li class="is-blank">{% trans "Unanswered" %}</li>
+              {% endif %}
             </ul>
           </div>
           {% for row in result_rows %}{% if row.answer_map %}
@@ -80,6 +86,35 @@
             </ol>
           </div>
           {% endif %}{% endfor %}
+
+          {% if has_review %}
+          {# every question with the visitor's answer and the right one, as on the English level test #}
+          {% if review_counts.wrong or review_counts.blank %}
+          <div class="lxa-filter" role="radiogroup" aria-label="{% trans 'Your answers' %}">
+            <input type="radio" name="lxa-filter" id="lxa-all" checked><label for="lxa-all">{% trans "All" %}</label>
+            <input type="radio" name="lxa-filter" id="lxa-mistakes"><label for="lxa-mistakes">{% trans "Mistakes only" %}</label>
+          </div>
+          {% endif %}
+          {% for row in result_rows %}{% if row.review %}
+          {% if result_rows|length > 1 %}<p class="lxa-map__label lxa-review-label">{{ row.label }}</p>{% endif %}
+          <ol class="lxa-list">
+            {% for item in row.review %}
+            <li class="lxa-item is-{{ item.status }}">
+              <span class="lxa-num" aria-hidden="true">{% if item.status == 'correct' %}<i class="bi bi-check-lg"></i>{% elif item.status == 'wrong' %}<i class="bi bi-x-lg"></i>{% else %}<i class="bi bi-dash-lg"></i>{% endif %}</span>
+              <div class="lxa-body">
+                <p class="lxa-q"><span class="lxa-q__n">{{ item.number }}.</span> {% if item.text %}{{ item.text }}{% else %}{% blocktrans with num=item.number %}Question {{ num }}{% endblocktrans %}{% endif %}</p>
+                {% if item.status == 'correct' %}
+                <p class="lxa-a lxa-a--ok"><span>{% trans "Your answer" %}:</span> {{ item.chosen }}</p>
+                {% else %}
+                <p class="lxa-a lxa-a--bad"><span>{% trans "Your answer" %}:</span> {% if item.chosen %}{{ item.chosen }}{% else %}<em>{% trans "Not answered" %}</em>{% endif %}</p>
+                <p class="lxa-a lxa-a--ok"><span>{% trans "Correct answer" %}:</span> {{ item.right }}</p>
+                {% endif %}
+              </div>
+            </li>
+            {% endfor %}
+          </ol>
+          {% endif %}{% endfor %}
+          {% endif %}
         </section>
         {% endif %}
 
