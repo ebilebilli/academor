@@ -4,51 +4,128 @@
 {% block title %}{% trans 'Dashboard' %}{% endblock %}
 
 {% block content %}
-{% include "portals/includes/portal_portal_banner.html" with greeting_name=student.full_name subtitle=_('Dərslərini, tapşırıqlarını və nəticələri bir yerdən izlə') %}
+{% include "portals/includes/portal_brand_hero.html" with kicker=_('Student portal') greeting_name=student.full_name subtitle=_('Dərslərini, tapşırıqlarını və nəticələri bir yerdən izlə') stats=hero_stats %}
 
 {% include "portals/includes/dashboard_performance_cards.html" with weekly_average=weekly_average attendance_stats=attendance_stats quiz_average=quiz_average mock_stats_list=mock_stats_list %}
 
-{# ── Today's Schedule ────────────────────────────────────────────── #}
-<section class="ds-card mb-4" aria-label="{% trans 'Bu günkü cədvəl' %}">
-  <div class="s-panel-head">
-    <h2 class="s-panel-title">
-      <i class="ti ti-clock" aria-hidden="true"></i>
-      {% trans 'Bu gün' %}
-    </h2>
-    <a href="{% url 'portals:student-schedule' %}" class="ds-btn ds-btn--ghost btn-sm">
-      {% trans 'Hamısı' %} <i class="ti ti-arrow-right" aria-hidden="true"></i>
-    </a>
-  </div>
-
-  {% if today_schedule %}
-  <div class="s-timeline">
-    {% for slot in today_schedule %}
-    <div class="s-timeline__item{% if slot.is_now %} is-now{% endif %}{% if slot.is_done %} is-done{% endif %}">
-      <div class="s-timeline__time">
-        <span class="s-timeline__start">{{ slot.start_time }}</span>
-        <span class="s-timeline__end">{{ slot.end_time }}</span>
-      </div>
-      <div class="s-timeline__dot"></div>
-      <div class="s-timeline__body">
-        <p class="s-timeline__subject">{{ slot.subject }}</p>
-        {% if slot.teacher_name %}<p class="s-timeline__meta">{{ slot.teacher_name }} · {{ slot.room|default:"—" }}</p>{% endif %}
-        {% if slot.is_now %}
-          <span class="ds-badge ds-badge--info">{% trans 'İndi' %}</span>
-        {% elif slot.is_done %}
-          <span class="ds-badge ds-badge--success">{% trans 'Tamamlandı' %}</span>
-        {% else %}
-          <span class="ds-badge ds-badge--warning">{% trans 'Gələcək' %}</span>
-        {% endif %}
-      </div>
+<div class="pb-split">
+  {# ── Today's lessons ─────────────────────────────────────────── #}
+  <section class="ds-card pb-agenda" aria-labelledby="pb-agenda-title">
+    <div class="s-panel-head">
+      <h2 class="s-panel-title" id="pb-agenda-title">
+        <i class="ti ti-clock" aria-hidden="true"></i>
+        {% trans 'Bu gün' %}
+      </h2>
+      <a href="{% url 'portals:student-schedule' %}" class="ds-btn ds-btn--ghost btn-sm">
+        {% trans 'Full schedule' %} <i class="ti ti-arrow-right" aria-hidden="true"></i>
+      </a>
     </div>
-    {% endfor %}
-  </div>
-  {% else %}
-  <div class="s-empty-state">
-    <i class="ti ti-calendar-off" aria-hidden="true"></i>
-    <p>{% trans 'Bu gün dərs yoxdur.' %}</p>
-  </div>
-  {% endif %}
-</section>
 
+    {% if today_schedule %}
+    <ol class="pb-agenda__list">
+      {% for slot in today_schedule %}
+      <li class="pb-slot{% if slot.is_now %} is-now{% elif slot.is_done %} is-done{% endif %}">
+        <span class="pb-slot__time">
+          <strong>{{ slot.start_time }}</strong>
+          <span>{{ slot.end_time }}</span>
+        </span>
+        <span class="pb-slot__body">
+          <span class="pb-slot__title">{{ slot.group_name }}</span>
+          <span class="pb-slot__meta">
+            {% if slot.details %}{{ slot.details }} · {% endif %}{% blocktrans with minutes=slot.duration_min %}{{ minutes }} min{% endblocktrans %}
+          </span>
+        </span>
+        <span class="pb-slot__state">
+          {% if slot.is_now %}
+            {% if slot.join_url %}
+            <a class="ds-btn ds-btn--primary btn-sm" href="{{ slot.join_url }}" target="_blank" rel="noopener">
+              <i class="ti ti-external-link" aria-hidden="true"></i> {% trans 'Join' %}
+            </a>
+            {% else %}
+            <span class="pb-chip pb-chip--live">{% trans 'İndi' %}</span>
+            {% endif %}
+          {% elif slot.is_done %}
+            <span class="pb-chip pb-chip--done">{% trans 'Tamamlandı' %}</span>
+          {% else %}
+            {% if slot.join_url %}
+            <a class="ds-btn ds-btn--ghost btn-sm" href="{{ slot.join_url }}" target="_blank" rel="noopener">
+              <i class="ti ti-external-link" aria-hidden="true"></i> {% trans 'Lesson link' %}
+            </a>
+            {% else %}
+            <span class="pb-chip">{% trans 'Gələcək' %}</span>
+            {% endif %}
+          {% endif %}
+        </span>
+      </li>
+      {% endfor %}
+    </ol>
+    {% else %}
+    <div class="pb-agenda__empty">
+      <span class="pb-agenda__empty-icon" aria-hidden="true"><i class="ti ti-calendar-off"></i></span>
+      <p class="pb-agenda__empty-title">{% trans 'Bu gün dərs yoxdur.' %}</p>
+    </div>
+    {% endif %}
+
+    {% if next_session %}
+    <p class="pb-agenda__next">
+      <span class="pb-agenda__next-label">{% trans 'Next lesson' %}</span>
+      <span>{{ next_session.date|date:"l, j E" }} · <strong>{{ next_session.start_time }}</strong> · {{ next_session.group_name }}</span>
+    </p>
+    {% endif %}
+  </section>
+
+  {# ── Shortcuts ───────────────────────────────────────────────── #}
+  <section class="ds-card pb-shortcuts" aria-labelledby="pb-shortcuts-title">
+    <div class="s-panel-head">
+      <h2 class="s-panel-title" id="pb-shortcuts-title">
+        <i class="ti ti-list-check" aria-hidden="true"></i>
+        {% trans 'Continue studying' %}
+      </h2>
+    </div>
+    <ol class="pb-links">
+      <li>
+        <a class="pb-link" href="{% url 'portals:student-quizzes' %}">
+          <span class="pb-link__index">01</span>
+          <span class="pb-link__main">
+            <span class="pb-link__title">{% trans 'Quizzes' %}</span>
+            <span class="pb-link__meta">{% trans 'Practise by category' %}</span>
+          </span>
+          <span class="pb-arrow" aria-hidden="true"><i class="ti ti-arrow-right"></i></span>
+        </a>
+      </li>
+      <li>
+        <a class="pb-link" href="{% url 'portals:student-lessons' %}">
+          <span class="pb-link__index">02</span>
+          <span class="pb-link__main">
+            <span class="pb-link__title">{% trans 'Lessons' %}</span>
+            <span class="pb-link__meta">{% blocktrans with n=lesson_count|default:0 %}Total: {{ n }}{% endblocktrans %}</span>
+          </span>
+          <span class="pb-arrow" aria-hidden="true"><i class="ti ti-arrow-right"></i></span>
+        </a>
+      </li>
+      <li>
+        <a class="pb-link" href="{% url 'portals:student-scores' %}">
+          <span class="pb-link__index">03</span>
+          <span class="pb-link__main">
+            <span class="pb-link__title">{% trans 'Nəticələr' %}</span>
+            <span class="pb-link__meta">{% blocktrans with n=quiz_result_count|default:0 %}Total: {{ n }}{% endblocktrans %}</span>
+          </span>
+          <span class="pb-arrow" aria-hidden="true"><i class="ti ti-arrow-right"></i></span>
+        </a>
+      </li>
+      {% if mock_count is not None and portal_student_mock_url %}
+      <li>
+        <a class="pb-link" href="{{ portal_student_mock_url }}">
+          <span class="pb-link__index">04</span>
+          <span class="pb-link__main">
+            <span class="pb-link__title">{% trans 'Mock Test' %}</span>
+            <span class="pb-link__meta">{% blocktrans with n=mock_count %}Completed: {{ n }}{% endblocktrans %}</span>
+          </span>
+          <span class="pb-arrow" aria-hidden="true"><i class="ti ti-arrow-right"></i></span>
+        </a>
+      </li>
+      {% endif %}
+    </ol>
+  </section>
+</div>
 {% endblock %}

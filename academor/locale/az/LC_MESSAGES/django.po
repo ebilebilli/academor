@@ -11449,6 +11449,81 @@ msgstr "sağda"
 msgid "“%(post)s” is already on the %(side)s. Uncheck it there first."
 msgstr "“%(post)s” artıq %(side)s yerləşir. Əvvəlcə orada işarəni götürün."
 
+msgid "Mock test portal"
+msgstr "Mock test paneli"
+
+msgid "Real exam format, your credits and every result in one place."
+msgstr "Real imtahan formatı, kreditləriniz və bütün nəticələriniz bir yerdə."
+
+msgid "Lessons today"
+msgstr "Bu gün dərs"
+
+msgid "%(program)s credits"
+msgstr "%(program)s krediti"
+
+msgid "Completed mocks"
+msgstr "Tamamlanmış mock"
+
+msgid "Full schedule"
+msgstr "Tam cədvəl"
+
+msgid "Join"
+msgstr "Qoşul"
+
+msgid "Lesson link"
+msgstr "Dərs linki"
+
+msgid "Next lesson"
+msgstr "Növbəti dərs"
+
+msgid "Continue studying"
+msgstr "Öyrənməyə davam"
+
+msgid "Practise by category"
+msgstr "Kateqoriyalar üzrə məşq"
+
+msgid "Total: %(n)s"
+msgstr "Cəmi: %(n)s"
+
+msgid "Completed: %(n)s"
+msgstr "Tamamlanıb: %(n)s"
+
+msgid "Your mock tests"
+msgstr "Mock testləriniz"
+
+msgid "credits"
+msgstr "kredit"
+
+msgid "completed"
+msgstr "tamamlanıb"
+
+msgid "How a mock test works"
+msgstr "Mock test necə keçir"
+
+msgid "Get credits"
+msgstr "Kredit əldə edin"
+
+msgid "Each IELTS or SAT package adds credits to your account. One credit is one full mock test."
+msgstr "Hər IELTS və ya SAT paketi hesabınıza kredit əlavə edir. Bir kredit bir tam mock testdir."
+
+msgid "Sit the test"
+msgstr "Testi verin"
+
+msgid "Sections run in the real exam order, each with its own timer. Your progress is saved if the page reloads."
+msgstr "Bölmələr real imtahan ardıcıllığı ilə, hər biri öz taymeri ilə gedir. Səhifə yenilənsə də irəliləyişiniz qorunur."
+
+msgid "Read your result"
+msgstr "Nəticəni öyrənin"
+
+msgid "Auto-graded sections are scored at once; Writing and Speaking are scored after a teacher reviews them."
+msgstr "Avtomatik yoxlanan bölmələr dərhal qiymətləndirilir; Writing və Speaking müəllim yoxladıqdan sonra qiymətləndirilir."
+
+msgid "Need more credits?"
+msgstr "Daha çox kredit lazımdır?"
+
+msgid "Choose an IELTS or SAT package to add more mock tests to your account."
+msgstr "Hesabınıza yeni mock testlər əlavə etmək üçün IELTS və ya SAT paketi seçin."
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Növbəti kampaniyada yenə cəhd et — xəbərdar edəcəyik."
 

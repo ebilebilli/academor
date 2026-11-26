@@ -1,6 +1,6 @@
 """Teacher weekly schedule calendar helpers."""
 
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 
 from django.urls import reverse
 from django.utils import timezone
@@ -206,4 +206,60 @@ def build_student_week_calendar(student_id, week_start=None):
         'next_week': (week_start + timedelta(days=7)).isoformat(),
         'days': days,
         'has_sessions': any(day['sessions'] for day in days),
+    }
+
+
+def _agenda_slot(session, now):
+    start = timezone.make_aware(
+        datetime.combine(session['session_date'], session['start_time']),
+        timezone.get_current_timezone(),
+    )
+    end = start + timedelta(minutes=session['duration_min'] or 0)
+    room = (session['room_or_link'] or '').strip()
+    is_link = room.startswith(('http://', 'https://'))
+    course = session['course_type_label']
+    return {
+        'group_name': session['group_name'],
+        'details': ' · '.join(part for part in (course if course != '—' else '', '' if is_link else room) if part),
+        'date': session['session_date'],
+        'start_time': start.strftime('%H:%M'),
+        'end_time': end.strftime('%H:%M'),
+        'duration_min': session['duration_min'],
+        'join_url': room if is_link else '',
+        'is_now': start <= now < end,
+        'is_done': now >= end,
+    }
+
+
+def build_student_today_agenda(student_id, now=None):
+    """Today's sessions for the student dashboard, and the next one when none is left today.
+
+    Read live on every request: the "now" and "done" marks go stale in any cache.
+    """
+    now = timezone.localtime(now) if now else timezone.localtime()
+    today = now.date()
+    week_start = today - timedelta(days=today.weekday())
+
+    today_slots = []
+    next_slot = None
+    for offset in (0, 7):
+        calendar = build_student_week_calendar(student_id, week_start=week_start + timedelta(days=offset))
+        for day in calendar['days']:
+            if day['date'] < today:
+                continue
+            for session in day['sessions']:
+                slot = _agenda_slot(session, now)
+                if day['date'] == today:
+                    today_slots.append(slot)
+                if next_slot is None and not slot['is_done'] and not slot['is_now'] and day['date'] > today:
+                    next_slot = slot
+        if next_slot is not None:
+            break
+
+    upcoming_today = [slot for slot in today_slots if not slot['is_done']]
+    return {
+        'today_schedule': today_slots,
+        'today_remaining': len(upcoming_today),
+        # the next lesson is only worth a line when nothing is left today
+        'next_session': None if upcoming_today else next_slot,
     }
