@@ -11,6 +11,7 @@ from portals.models import QuizResult
 from portals.utils.portal_session import (
     clear_quiz_attempt_start,
     get_quiz_attempt_start,
+    resume_or_start_quiz_attempt,
     set_quiz_attempt_start,
 )
 from portals.utils.queries import (
@@ -435,10 +436,16 @@ class StudentQuizStartView(StudentQuizTakeRequiredMixin, View):
         if is_retest:
             clear_quiz_attempt_start(request, pk)
             set_quiz_attempt_start(request, pk)
-        elif not get_quiz_attempt_start(request, pk):
-            set_quiz_attempt_start(request, pk)
+            elapsed = 0
+        else:
+            # a reload (F5) keeps the clock running from the first start
+            elapsed = resume_or_start_quiz_attempt(request, pk, quiz.get('time_limit_seconds'))
 
-        return JsonResponse({'success': True})
+        return JsonResponse({
+            'success': True,
+            'elapsed_sec': elapsed,
+            'attempt_key': str(get_quiz_attempt_start(request, pk) or ''),
+        })
 
 
 class StudentQuizCancelView(StudentQuizTakeRequiredMixin, View):

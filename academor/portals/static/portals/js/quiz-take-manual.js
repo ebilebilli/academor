@@ -1023,7 +1023,8 @@
 
     function boot() {
       root.setAttribute("data-quiz-started", "true");
-      root.dataset.manualQuizBootedAt = String(Date.now());
+      // kept across a reload (F5): the start gate sets data-quiz-started-at from the server
+      root.dataset.manualQuizBootedAt = root.getAttribute("data-quiz-started-at") || String(Date.now());
       initManualQuizTake(root);
     }
 

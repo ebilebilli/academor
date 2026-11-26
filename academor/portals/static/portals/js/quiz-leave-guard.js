@@ -233,8 +233,25 @@
       true
     );
 
+    // F5 / Ctrl+R / Cmd+R reload the page: the timer and the answers come back (quiz-draft.js),
+    // so a reload must not count as leaving the quiz
+    var reloading = false;
+    document.addEventListener(
+      "keydown",
+      function (event) {
+        var key = event.key || "";
+        if (key === "F5" || ((event.ctrlKey || event.metaKey) && (key === "r" || key === "R"))) {
+          reloading = true;
+          window.setTimeout(function () {
+            reloading = false;
+          }, 4000);
+        }
+      },
+      true
+    );
+
     window.addEventListener("beforeunload", function (event) {
-      if (!isQuizActive() || navigationAllowed) {
+      if (!isQuizActive() || navigationAllowed || reloading) {
         return;
       }
       event.preventDefault();
@@ -253,7 +270,7 @@
     });
 
     window.addEventListener("pagehide", function () {
-      if (!isQuizActive() || navigationAllowed || isMockQuiz()) {
+      if (!isQuizActive() || navigationAllowed || isMockQuiz() || reloading) {
         return;
       }
       beforeLeave();

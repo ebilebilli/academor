@@ -201,6 +201,11 @@
           if (!payload.ok || !payload.data.success) {
             throw new Error((payload.data && payload.data.error) || msgError);
           }
+          // after a reload (F5) the server says how much time is already used, so the
+          // timer goes on from there instead of starting again at zero
+          var elapsedSec = Math.max(0, Number(payload.data.elapsed_sec) || 0);
+          root.setAttribute("data-quiz-started-at", String(Date.now() - elapsedSec * 1000));
+          root.setAttribute("data-quiz-attempt-key", String(payload.data.attempt_key || ""));
           root.setAttribute("data-quiz-started", "true");
           hideStartModal(modalEl, modal);
           unlockQuizRoot(root);
