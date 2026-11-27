@@ -909,6 +909,137 @@ class TeacherStudentCreateForm(forms.Form):
         )
 
 
+class TeacherStudentEditForm(forms.Form):
+    """A teacher corrects one of their students: name, phone, dates, groups, a new password."""
+
+    full_name = forms.CharField(
+        label=_('Ad və soyad'),
+        max_length=150,
+        widget=forms.TextInput(attrs=_fc({'autocomplete': 'off'})),
+        help_text=_('Tələbə portala bu adla daxil olur.'),
+    )
+    phone = forms.CharField(
+        label=_('Telefon'),
+        max_length=30,
+        required=False,
+        widget=forms.TextInput(attrs=_fc({'autocomplete': 'off', 'inputmode': 'tel'})),
+    )
+    birth_date = forms.DateField(
+        label=_('Birth date'),
+        required=False,
+        widget=forms.DateInput(attrs=_fc({'type': 'date'}), format='%Y-%m-%d'),
+    )
+    enrollment_date = forms.DateField(
+        label=_('Enrollment date'),
+        required=False,
+        widget=forms.DateInput(attrs=_fc({'type': 'date'}), format='%Y-%m-%d'),
+    )
+    lessons_per_month = forms.IntegerField(
+        label=_('Lessons per month'),
+        required=False,
+        min_value=1,
+        max_value=60,
+        widget=forms.NumberInput(attrs=_fc({'inputmode': 'numeric'})),
+    )
+    program_month = forms.IntegerField(
+        label=_('Program month'),
+        required=False,
+        min_value=1,
+        max_value=60,
+        widget=forms.NumberInput(attrs=_fc({'inputmode': 'numeric'})),
+    )
+    groups = forms.ModelMultipleChoiceField(
+        label=_('Qruplar'),
+        queryset=StudyGroup.objects.none(),
+        required=False,
+        widget=forms.CheckboxSelectMultiple(),
+        help_text=_('Yalnız öz qruplarınız dəyişir; başqa müəllimlərin qrupları olduğu kimi qalır.'),
+    )
+    password = forms.CharField(
+        label=_('Yeni parol'),
+        required=False,
+        min_length=6,
+        max_length=128,
+        widget=forms.TextInput(attrs=_fc({'autocomplete': 'new-password'})),
+        help_text=_('Boş qalsa parol dəyişmir.'),
+    )
+
+    def __init__(self, teacher_id, student, *args, **kwargs):
+        self.teacher_id = teacher_id
+        self.student = student
+        own_groups = teacher_groups_queryset(teacher_id, active_only=True).order_by('name', 'id')
+        kwargs.setdefault('initial', {
+            'full_name': student.user.username,
+            'phone': student.phone,
+            'birth_date': student.birth_date,
+            'enrollment_date': student.enrollment_date,
+            'lessons_per_month': student.lessons_per_month,
+            'program_month': student.program_month,
+            'groups': list(student.groups.filter(pk__in=own_groups.values('pk')).values_list('pk', flat=True)),
+        })
+        super().__init__(*args, **kwargs)
+        self.fields['groups'].queryset = own_groups
+
+    def clean_full_name(self):
+        from django.contrib.auth import get_user_model
+
+        from portals.utils.username_validators import portal_username_validator
+
+        name = ' '.join((self.cleaned_data.get('full_name') or '').split())
+        if not name:
+            raise ValidationError(_('Ad və soyadı yazın.'))
+        portal_username_validator(name)
+        taken = get_user_model().objects.filter(username__iexact=name).exclude(pk=self.student.user_id)
+        if taken.exists():
+            raise ValidationError(_('Bu adla istifadəçi artıq var. Ada fərqləndirici əlavə edin.'))
+        return name
+
+    def clean_phone(self):
+        from portals.utils.normalize_phone_number import phone_number_validator
+
+        phone = (self.cleaned_data.get('phone') or '').strip()
+        if phone:
+            phone_number_validator(phone)
+        return phone
+
+    def clean_groups(self):
+        groups = list(self.cleaned_data.get('groups') or [])
+        current = set(self.student.groups.values_list('pk', flat=True))
+        full = [
+            group.name for group in groups
+            if group.pk not in current and group.max_students and group.students.count() >= group.max_students
+        ]
+        if full:
+            raise ValidationError(
+                _('Bu qruplarda yer yoxdur: %(names)s.') % {'names': ', '.join(full)},
+            )
+        return groups
+
+    def save(self):
+        from django.db import transaction
+
+        from portals.utils.teacher_students_page import set_student_teacher_groups
+
+        data = self.cleaned_data
+        student = self.student
+        user = student.user
+        with transaction.atomic():
+            user.username = data['full_name']
+            if data.get('password'):
+                user.set_password(data['password'])
+            user.save()
+            student.phone = data.get('phone') or ''
+            student.birth_date = data.get('birth_date')
+            student.enrollment_date = data.get('enrollment_date')
+            student.lessons_per_month = data.get('lessons_per_month')
+            student.program_month = data.get('program_month')
+            student.save(update_fields=['phone', 'birth_date', 'enrollment_date', 'lessons_per_month', 'program_month'])
+            # the teacher keeps the student even when they leave every group
+            student.teachers.add(self.teacher_id)
+            set_student_teacher_groups(self.teacher_id, student, [group.pk for group in data.get('groups') or []])
+        return student
+
+
 class TeacherGroupCreateForm(forms.Form):
     name = forms.CharField(
         label=_('Qrupun adı'),

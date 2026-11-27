@@ -2,7 +2,7 @@
 {% load static i18n %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261127r">
+<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261127j">
 {% endblock %}
 
 {% block content %}
@@ -81,7 +81,7 @@
             {% if result_rows|length > 1 %}<p class="lxa-map__label">{{ row.label }}</p>{% endif %}
             <ol class="lxa-grid">
               {% for cell in row.answer_map %}
-              <li class="lxa-cell is-{{ cell.status }}" title="{% if cell.status == 'correct' %}{% trans 'Correct' %}{% elif cell.status == 'wrong' %}{% trans 'Incorrect' %}{% else %}{% trans 'Unanswered' %}{% endif %}">{{ cell.number }}</li>
+              <li class="lxa-cell is-{{ cell.status }}" title="{% if cell.status == 'correct' %}{% trans 'Correct' %}{% elif cell.status == 'wrong' %}{% trans 'Incorrect' %}{% else %}{% trans 'Unanswered' %}{% endif %}">{% if row.review %}<a href="#lxa-q-{{ row.index }}-{{ cell.number }}" data-lxa-jump-link>{{ cell.number }}</a>{% else %}{{ cell.number }}{% endif %}</li>
               {% endfor %}
             </ol>
           </div>
@@ -95,11 +95,12 @@
             <input type="radio" name="lxa-filter" id="lxa-mistakes"><label for="lxa-mistakes">{% trans "Mistakes only" %}</label>
           </div>
           {% endif %}
+          {% include "includes/level_exam_answer_jump.html" with sections=jump_sections %}
           {% for row in result_rows %}{% if row.review %}
           {% if result_rows|length > 1 %}<p class="lxa-map__label lxa-review-label">{{ row.label }}</p>{% endif %}
           <ol class="lxa-list">
             {% for item in row.review %}
-            <li class="lxa-item is-{{ item.status }}">
+            <li class="lxa-item is-{{ item.status }}" id="lxa-q-{{ row.index }}-{{ item.number }}">
               <span class="lxa-num" aria-hidden="true">{% if item.status == 'correct' %}<i class="bi bi-check-lg"></i>{% elif item.status == 'wrong' %}<i class="bi bi-x-lg"></i>{% else %}<i class="bi bi-dash-lg"></i>{% endif %}</span>
               <div class="lxa-body">
                 <p class="lxa-q"><span class="lxa-q__n">{{ item.number }}.</span> {% if item.text %}{{ item.text }}{% else %}{% blocktrans with num=item.number %}Question {{ num }}{% endblocktrans %}{% endif %}</p>
@@ -141,4 +142,5 @@
 {% block extra_js %}
 {{ story|json_script:"lx-story-data" }}
 <script defer src="{% static 'assets/js/level-exam-ui.js' %}?v=20261124g"></script>
+<script defer src="{% static 'assets/js/level-exam-answers.js' %}?v=20261127a"></script>
 {% endblock %}

@@ -11,6 +11,7 @@ from django.views import View
 
 from portals.models import Attendance, AttendanceRegisterGuest, Schedule
 from portals.teacher_forms import (
+    TeacherStudentEditForm,
     TeacherGroupCreateForm,
     TeacherGroupNameForm,
     TeacherLessonForm,
@@ -277,6 +278,50 @@ class TeacherStudentCreateView(TeacherRequiredMixin, View):
         )
         group = form.cleaned_data.get('group')
         return redirect(_students_page_url(group.pk if group else None))
+
+
+class TeacherStudentEditView(TeacherRequiredMixin, View):
+    """A teacher edits one of their own students' details."""
+
+    template_name = 'portals/teacher/student_form.html'
+
+    def _student(self, request, student_pk):
+        teacher = get_teacher_profile(request.portal_user)
+        student = get_teacher_student(teacher.pk, student_pk)
+        if not student:
+            raise Http404
+        return teacher, student
+
+    def _back(self, request):
+        nxt = request.POST.get('next') or request.GET.get('next') or ''
+        # only our own pages: the students list or this student's profile
+        if nxt.startswith('/portal/teacher/') and '//' not in nxt:
+            return nxt
+        return _students_page_url(request.GET.get('group'))
+
+    def _render(self, request, form, student):
+        return _form_response(
+            request,
+            self.template_name,
+            form,
+            title=_('Tələbəni redaktə et'),
+            subtitle=student.user.username,
+            cancel_href=self._back(request),
+            extra={'is_edit': True, 'next_url': self._back(request)},
+        )
+
+    def get(self, request, student_pk):
+        teacher, student = self._student(request, student_pk)
+        return self._render(request, TeacherStudentEditForm(teacher.pk, student), student)
+
+    def post(self, request, student_pk):
+        teacher, student = self._student(request, student_pk)
+        form = TeacherStudentEditForm(teacher.pk, student, request.POST)
+        if not form.is_valid():
+            return self._render(request, form, student)
+        student = form.save()
+        messages.success(request, _('%(name)s yeniləndi.') % {'name': student.user.username})
+        return redirect(self._back(request))
 
 
 class TeacherGroupCreateView(TeacherRequiredMixin, View):

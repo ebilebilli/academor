@@ -18,6 +18,7 @@ from portals.views.teacher_manage_views import (
     TeacherScheduleSlotCreateView,
     TeacherSessionAttendanceView,
     TeacherStudentCreateView,
+    TeacherStudentEditView,
     TeacherStudentGroupsView,
     TeacherTextbookCreateView,
     TeacherTextbookEditView,
@@ -154,6 +155,7 @@ urlpatterns = [
     path('teacher/groups/', TeacherGroupsListView.as_view(), name='teacher-groups'),
     path('teacher/groups/new/', TeacherGroupCreateView.as_view(), name='teacher-group-create'),
     path('teacher/students/new/', TeacherStudentCreateView.as_view(), name='teacher-student-create'),
+    path('teacher/students/<int:student_pk>/edit/', TeacherStudentEditView.as_view(), name='teacher-student-edit'),
     path(
         'teacher/students/<int:student_pk>/groups/',
         TeacherStudentGroupsView.as_view(),

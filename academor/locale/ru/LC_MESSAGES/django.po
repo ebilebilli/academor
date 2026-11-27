@@ -11482,6 +11482,42 @@ msgstr "Новый студент"
 msgid "Add a student to a group"
 msgstr "Добавить студента в группу"
 
+msgid "Go to question"
+msgstr "Перейти к вопросу"
+
+msgid "Birth date"
+msgstr "Дата рождения"
+
+msgid "Lessons per month"
+msgstr "Уроков в месяц"
+
+msgid "Program month"
+msgstr "Месяц программы"
+
+msgid "Yeni parol"
+msgstr "Новый пароль"
+
+msgid "Boş qalsa parol dəyişmir."
+msgstr "Оставьте пустым, чтобы не менять пароль."
+
+msgid "Tələbəni redaktə et"
+msgstr "Редактировать студента"
+
+msgid "%(name)s yeniləndi."
+msgstr "Данные %(name)s обновлены."
+
+msgid "Yalnız öz qruplarınız dəyişir; başqa müəllimlərin qrupları olduğu kimi qalır."
+msgstr "Меняются только ваши группы; группы других преподавателей остаются без изменений."
+
+msgid "Bu qruplarda yer yoxdur: %(names)s."
+msgstr "В этих группах нет мест: %(names)s."
+
+msgid "Hələlik qrupunuz yoxdur."
+msgstr "У вас пока нет групп."
+
+msgid "Edit %(name)s"
+msgstr "Редактировать: %(name)s"
+
 #~ msgid "Try again in the next campaign — we will let you know."
 #~ msgstr "Попробуйте в следующей акции — мы сообщим."
 
