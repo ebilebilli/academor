@@ -4,40 +4,40 @@
 {% block title %}{% trans 'Dashboard' %}{% endblock %}
 
 {% block content %}
-{% include "portals/includes/portal_portal_banner.html" with greeting_name=teacher.full_name subtitle=_('Qruplarını, dərslərini və şagirdlərinin nəticələrini bir yerdən idarə et') %}
+{% include "portals/includes/portal_brand_hero.html" with kicker=_('Teacher portal') greeting_name=teacher.full_name subtitle=_('Qruplarını, dərslərini və şagirdlərinin nəticələrini bir yerdən idarə et') stats=hero_stats %}
 
-{# ── Stats row ────────────────────────────────────────────────── #}
-<section class="t-stats mb-4 is-loading" aria-label="{% trans 'Statistika' %}" data-portal-dashboard-stats="{% url 'portals:teacher-dashboard-stats' %}">
+{# ── Counts (loaded after the page renders) ───────────────────── #}
+<section class="t-stats pb-counts mb-4 is-loading" aria-label="{% trans 'Statistika' %}" data-portal-dashboard-stats="{% url 'portals:teacher-dashboard-stats' %}">
   <a class="t-stat text-decoration-none" href="{% url 'portals:teacher-groups' %}">
-    <span class="t-stat__icon t-stat__icon--emerald"><i class="ti ti-users" aria-hidden="true"></i></span>
+    <span class="t-stat__icon"><i class="ti ti-users" aria-hidden="true"></i></span>
     <div class="t-stat__body">
       <span class="t-stat__number" data-portal-stat="student_count">{{ student_count|default:0 }}</span>
       <span class="t-stat__label">{% trans 'Şagird' %}</span>
     </div>
   </a>
   <a class="t-stat text-decoration-none" href="{% url 'portals:teacher-groups' %}">
-    <span class="t-stat__icon t-stat__icon--teal"><i class="ti ti-users-group" aria-hidden="true"></i></span>
+    <span class="t-stat__icon"><i class="ti ti-users-group" aria-hidden="true"></i></span>
     <div class="t-stat__body">
       <span class="t-stat__number" data-portal-stat="group_count">{{ group_count|default:0 }}</span>
       <span class="t-stat__label">{% trans 'Qrup' %}</span>
     </div>
   </a>
   <a class="t-stat text-decoration-none" href="{% url 'portals:teacher-lessons' %}">
-    <span class="t-stat__icon t-stat__icon--indigo"><i class="ti ti-book" aria-hidden="true"></i></span>
+    <span class="t-stat__icon"><i class="ti ti-book" aria-hidden="true"></i></span>
     <div class="t-stat__body">
       <span class="t-stat__number" data-portal-stat="lesson_count">{{ lesson_count|default:0 }}</span>
       <span class="t-stat__label">{% trans 'Dərs' %}</span>
     </div>
   </a>
   <a class="t-stat text-decoration-none" href="{% url 'portals:teacher-scores' %}?view=quiz">
-    <span class="t-stat__icon t-stat__icon--amber"><i class="ti ti-forms" aria-hidden="true"></i></span>
+    <span class="t-stat__icon"><i class="ti ti-forms" aria-hidden="true"></i></span>
     <div class="t-stat__body">
       <span class="t-stat__number" data-portal-stat="quiz_result_count">{{ quiz_result_count|default:0 }}</span>
       <span class="t-stat__label">{% trans 'quiz nəticəsi' %}</span>
     </div>
   </a>
   <a class="t-stat text-decoration-none" href="{% url 'portals:teacher-scores' %}?view=weekly">
-    <span class="t-stat__icon t-stat__icon--violet"><i class="ti ti-star" aria-hidden="true"></i></span>
+    <span class="t-stat__icon"><i class="ti ti-star" aria-hidden="true"></i></span>
     <div class="t-stat__body">
       <span class="t-stat__number" data-portal-stat="weekly_score_count">{{ weekly_score_count|default:0 }}</span>
       <span class="t-stat__label">{% trans 'Günlük qiymətləndirmə' %}</span>
@@ -45,73 +45,181 @@
   </a>
 </section>
 
-{# ── Groups table ─────────────────────────────────────────────── #}
-<section class="ds-card" aria-label="{% trans 'Qruplarım' %}">
-  <div class="s-panel-head">
-    <h2 class="s-panel-title">
-      <i class="ti ti-users" aria-hidden="true"></i>
-      {% trans 'Qruplarım' %}
-      <span class="ds-badge">{{ groups|length }}</span>
-    </h2>
+<div class="pb-split">
+  {# ── Today's sessions ─────────────────────────────────────────── #}
+  <section class="ds-card pb-agenda" aria-labelledby="pb-agenda-title">
+    <div class="s-panel-head">
+      <h2 class="s-panel-title" id="pb-agenda-title">
+        <i class="ti ti-clock" aria-hidden="true"></i>
+        {% trans 'Bu gün' %}
+      </h2>
+      <a href="{% url 'portals:teacher-schedule' %}" class="ds-btn ds-btn--ghost btn-sm">
+        {% trans 'Full schedule' %} <i class="ti ti-arrow-right" aria-hidden="true"></i>
+      </a>
+    </div>
+
+    {% if today_schedule %}
+    <ol class="pb-agenda__list">
+      {% for slot in today_schedule %}
+      <li class="pb-slot{% if slot.is_now %} is-now{% elif slot.is_done and slot.is_marked %} is-done{% endif %}">
+        <span class="pb-slot__time">
+          <strong>{{ slot.start_time }}</strong>
+          <span>{{ slot.end_time }}</span>
+        </span>
+        <span class="pb-slot__body">
+          <a class="pb-slot__title" href="{% url 'portals:teacher-group-detail' pk=slot.group_id %}">{{ slot.group_name }}</a>
+          <span class="pb-slot__meta">
+            {% if slot.details %}{{ slot.details }} · {% endif %}{% blocktrans with minutes=slot.duration_min %}{{ minutes }} min{% endblocktrans %}
+          </span>
+        </span>
+        <span class="pb-slot__state">
+          {% if slot.is_marked %}
+            <a class="pb-chip pb-chip--done" href="{{ slot.mark_url }}"><i class="ti ti-check" aria-hidden="true"></i> {% trans 'Attendance taken' %}</a>
+          {% elif slot.is_now or slot.is_done %}
+            <a class="ds-btn ds-btn--primary btn-sm" href="{{ slot.mark_url }}">
+              <i class="ti ti-list-check" aria-hidden="true"></i> {% trans 'Take attendance' %}
+            </a>
+          {% elif slot.join_url %}
+            <a class="ds-btn ds-btn--ghost btn-sm" href="{{ slot.join_url }}" target="_blank" rel="noopener">
+              <i class="ti ti-external-link" aria-hidden="true"></i> {% trans 'Lesson link' %}
+            </a>
+          {% else %}
+            <span class="pb-chip">{% trans 'Gələcək' %}</span>
+          {% endif %}
+        </span>
+      </li>
+      {% endfor %}
+    </ol>
+    {% else %}
+    <div class="pb-agenda__empty">
+      <span class="pb-agenda__empty-icon" aria-hidden="true"><i class="ti ti-calendar-off"></i></span>
+      <p class="pb-agenda__empty-title">{% trans 'Bu gün dərs yoxdur.' %}</p>
+    </div>
+    {% endif %}
+
+    {% if next_session %}
+    <p class="pb-agenda__next">
+      <span class="pb-agenda__next-label">{% trans 'Next lesson' %}</span>
+      <span>{{ next_session.date|date:"l, j E" }} · <strong>{{ next_session.start_time }}</strong> · {{ next_session.group_name }}</span>
+    </p>
+    {% endif %}
+  </section>
+
+  <div class="pb-stack">
+    {# ── What needs the teacher now ──────────────────────────────── #}
+    <section class="ds-card" aria-labelledby="pb-todo-title">
+      <div class="s-panel-head">
+        <h2 class="s-panel-title" id="pb-todo-title">
+          <i class="ti ti-alert-circle" aria-hidden="true"></i>
+          {% trans 'Needs your attention' %}
+        </h2>
+      </div>
+      {% if portal_pending_reviews_count or unmarked_count %}
+      <ul class="pb-todo">
+        {% if portal_pending_reviews_count %}
+        <li>
+          <a class="pb-todo__item" href="{% url 'portals:teacher-quiz-results' %}">
+            <strong class="pb-todo__count">{{ portal_pending_reviews_count }}</strong>
+            <span class="pb-todo__text">{% trans 'quiz answers are waiting for your review' %}</span>
+            <i class="ti ti-chevron-right" aria-hidden="true"></i>
+          </a>
+        </li>
+        {% endif %}
+        {% if unmarked_count %}
+        <li>
+          <a class="pb-todo__item" href="{{ first_unmarked_url }}">
+            <strong class="pb-todo__count">{{ unmarked_count }}</strong>
+            <span class="pb-todo__text">{% trans 'finished lessons today without attendance' %}</span>
+            <i class="ti ti-chevron-right" aria-hidden="true"></i>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+      {% else %}
+      <p class="pb-allclear"><i class="ti ti-circle-check" aria-hidden="true"></i> {% trans 'All caught up: no reviews or attendance waiting.' %}</p>
+      {% endif %}
+    </section>
+
+    {# ── Quick actions ──────────────────────────────────────────── #}
+    <section class="ds-card" aria-labelledby="pb-actions-title">
+      <div class="s-panel-head">
+        <h2 class="s-panel-title" id="pb-actions-title">
+          <i class="ti ti-bolt" aria-hidden="true"></i>
+          {% trans 'Quick actions' %}
+        </h2>
+      </div>
+      <ol class="pb-links">
+        <li>
+          <a class="pb-link" href="{% url 'portals:teacher-lesson-create' %}">
+            <span class="pb-link__index">01</span>
+            <span class="pb-link__main">
+              <span class="pb-link__title">{% trans 'New lesson' %}</span>
+              <span class="pb-link__meta">{% trans 'Materials, homework and quizzes' %}</span>
+            </span>
+            <span class="pb-arrow" aria-hidden="true"><i class="ti ti-arrow-right"></i></span>
+          </a>
+        </li>
+        <li>
+          <a class="pb-link" href="{% url 'portals:teacher-weekly-scores' %}">
+            <span class="pb-link__index">02</span>
+            <span class="pb-link__main">
+              <span class="pb-link__title">{% trans 'Günlük qiymətləndirmə' %}</span>
+              <span class="pb-link__meta">{% trans 'Score today’s lesson' %}</span>
+            </span>
+            <span class="pb-arrow" aria-hidden="true"><i class="ti ti-arrow-right"></i></span>
+          </a>
+        </li>
+        <li>
+          <a class="pb-link" href="{% url 'portals:teacher-student-create' %}">
+            <span class="pb-link__index">03</span>
+            <span class="pb-link__main">
+              <span class="pb-link__title">{% trans 'New student' %}</span>
+              <span class="pb-link__meta">{% trans 'Add a student to a group' %}</span>
+            </span>
+            <span class="pb-arrow" aria-hidden="true"><i class="ti ti-arrow-right"></i></span>
+          </a>
+        </li>
+      </ol>
+    </section>
+  </div>
+</div>
+
+{# ── Groups ──────────────────────────────────────────────────── #}
+<section class="pb-section mb-4" aria-labelledby="pb-groups-title">
+  <div class="pb-section__head">
+    <h2 class="pb-section__title" id="pb-groups-title">{% trans 'Qruplarım' %} <span class="pb-section__count">{{ groups|length }}</span></h2>
     <a href="{% url 'portals:teacher-groups' %}" class="ds-btn ds-btn--ghost btn-sm">
       {% trans 'Hamısı' %} <i class="ti ti-arrow-right" aria-hidden="true"></i>
     </a>
   </div>
 
-  <div class="table-responsive">
-    <table class="t-table" aria-label="{% trans 'Qruplar siyahısı' %}">
-      <thead>
-        <tr>
-          <th>{% trans 'Qrup' %}</th>
-          <th>{% trans 'Kurs' %}</th>
-          <th class="text-center">{% trans 'Şagird' %}</th>
-          <th>{% trans 'Status' %}</th>
-          <th class="text-end">{% trans 'Əməliyyat' %}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for group in groups|slice:":6" %}
-        <tr>
-          <td>
-            <div class="t-table__name-cell">
-              <div class="t-group-chip">{{ group.name|slice:":1"|upper }}</div>
-              <span class="fw-500">{{ group.name }}</span>
-            </div>
-          </td>
-          <td>
-            <span class="ds-badge">{{ group.course_type_label }}</span>
-          </td>
-          <td class="text-center">
-            <span class="t-table__count">
-              <i class="ti ti-users" aria-hidden="true"></i> {{ group.student_count }}
-            </span>
-          </td>
-          <td>
-            {% if group.is_active %}
-              <span class="ds-badge ds-badge--success">{% trans 'Aktiv' %}</span>
-            {% else %}
-              <span class="ds-badge">{% trans 'Qeyri-aktiv' %}</span>
-            {% endif %}
-          </td>
-          <td class="text-end">
-            <a class="ds-btn ds-btn--ghost btn-sm" href="{% url 'portals:teacher-group-detail' pk=group.id %}">
-              {% trans 'Aç' %} <i class="ti ti-arrow-right" aria-hidden="true"></i>
-            </a>
-          </td>
-        </tr>
-        {% empty %}
-        <tr>
-          <td colspan="5">
-            <div class="s-empty-state">
-              <i class="ti ti-user-off" aria-hidden="true"></i>
-              <p>{% trans 'Hələlik qrup yoxdur.' %}</p>
-            </div>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+  <ol class="pb-rows pb-rows--compact">
+    {% for group in groups|slice:":6" %}
+    <li>
+      <a class="pb-row" href="{% url 'portals:teacher-group-detail' pk=group.id %}">
+        <span class="pb-row__index">{{ forloop.counter|stringformat:"02d" }}</span>
+        <span class="pb-row__main">
+          {% if group.course_type_label and group.course_type_label != '—' %}<span class="pb-row__tag">{{ group.course_type_label }}</span>{% endif %}
+          <span class="pb-row__title">
+            {{ group.name }}
+            {% if not group.is_active %}<span class="pb-chip">{% trans 'Qeyri-aktiv' %}</span>{% endif %}
+          </span>
+        </span>
+        <ul class="pb-row__facts pb-row__facts--one">
+          <li><strong>{{ group.student_count }}</strong><span>{% trans 'Şagird' %}</span></li>
+        </ul>
+        <span class="pb-row__go">
+          <span class="pb-row__go-label">{% trans 'Aç' %}</span>
+          <span class="pb-arrow" aria-hidden="true"><i class="ti ti-arrow-right"></i></span>
+        </span>
+      </a>
+    </li>
+    {% empty %}
+    <li class="pb-empty">
+      <p>{% trans 'Hələlik qrup yoxdur.' %}</p>
+    </li>
+    {% endfor %}
+  </ol>
 </section>
 {% endblock %}
 

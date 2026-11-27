@@ -7,6 +7,7 @@ from django.utils import timezone
 
 from portals.models import (
     CustomerProfile,
+    Attendance,
     IeltsMockTestAttempt,
     Quiz,
     Schedule,
@@ -18,8 +19,8 @@ from portals.tests.group_helpers import create_quiz_category, link_study_group_s
 from portals.tests.portal_helpers import ensure_active_portal_services, portal_client_login
 from portals.utils.customer_mock import build_customer_mock_dashboard_sections
 from portals.utils.ielts_mock_test import IELTS_SERVICE, SAT_SERVICE
-from portals.utils.portal_hero import customer_hero_stats, student_hero_stats
-from portals.utils.teacher_schedule import build_student_today_agenda
+from portals.utils.portal_hero import customer_hero_stats, student_hero_stats, teacher_hero_stats
+from portals.utils.teacher_schedule import build_student_today_agenda, build_teacher_today_agenda
 
 
 def _at(day, hour, minute=0):
@@ -159,9 +160,74 @@ class CustomerDashboardTests(TestCase):
         self.assertContains(response, 'pb-steps')
         self.assertContains(response, reverse('portals:customer-mock-packages'))
 
-    def test_teacher_pages_do_not_load_the_brand_layer(self):
+
+class TeacherDashboardTests(TestCase):
+    def setUp(self):
+        ensure_active_portal_services('ielts')
+        self.teacher_user = User.objects.create_user(username='teacher1', password='pass')
+        self.teacher = TeacherProfile.objects.create(user=self.teacher_user)
+        other = TeacherProfile.objects.create(user=User.objects.create_user(username='teacher2', password='pass'))
+        self.student = StudentProfile.objects.create(user=User.objects.create_user(username='student1', password='pass'))
+        self.group = StudyGroup.objects.create(teacher=self.teacher, name='IELTS A', max_students=10)
+        self.other_group = StudyGroup.objects.create(teacher=other, name='Other B', max_students=10)
+        link_study_group_services(self.group, 'ielts')
+        self.group.students.add(self.student)
+        self.today = timezone.localdate()
+        self.effective = self.today - timedelta(days=30)
+
+    def _slot(self, group, start, minutes=60):
+        return Schedule.objects.create(
+            group=group,
+            weekday=self.today.weekday(),
+            start_time=start,
+            duration_min=minutes,
+            room_or_link='Room 1',
+            effective_from=self.effective,
+        )
+
+    def test_agenda_marks_attendance_and_counts_finished_unmarked_lessons(self):
+        done_marked = self._slot(self.group, time(9, 0))
+        done_unmarked = self._slot(self.group, time(11, 0))
+        self._slot(self.group, time(13, 0))
+        self._slot(self.other_group, time(10, 0))
+        Attendance.objects.create(
+            schedule=done_marked,
+            group=self.group,
+            student=self.student,
+            session_date=self.today,
+            status=Attendance.Status.PRESENT,
+        )
+
+        agenda = build_teacher_today_agenda(self.teacher.pk, now=_at(self.today, 13, 15))
+
+        slots = agenda['today_schedule']
+        self.assertEqual([slot['start_time'] for slot in slots], ['09:00', '11:00', '13:00'])
+        self.assertEqual([slot['is_marked'] for slot in slots], [True, False, False])
+        self.assertTrue(slots[2]['is_now'])
+        # the live lesson is not "missing" attendance yet
+        self.assertEqual(agenda['unmarked_count'], 1)
+        self.assertIn(f'schedule={done_unmarked.pk}', agenda['first_unmarked_url'])
+        self.assertIn(f'date={self.today.isoformat()}', slots[0]['mark_url'])
+
+    def test_hero_stats(self):
+        stats = teacher_hero_stats(
+            {'groups': [{'is_active': True}, {'is_active': False}]},
+            {'today_schedule': [{}]},
+            3,
+        )
+        self.assertEqual([stat['value'] for stat in stats], [1, 1, 3])
+
+    def test_dashboard_renders_agenda_actions_and_brand_layer(self):
+        self._slot(self.group, time(0, 0), minutes=1)
         client = Client()
         portal_client_login(client, self.teacher_user)
+
         response = client.get(reverse('portals:teacher-dashboard'))
+
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, 'portal-brand.css')
+        self.assertContains(response, 'portal-brand.css')
+        self.assertContains(response, 'class="pb-hero')
+        self.assertContains(response, reverse('portals:teacher-lesson-create'))
+        self.assertContains(response, reverse('portals:teacher-group-detail', kwargs={'pk': self.group.pk}))
+        self.assertContains(response, reverse('portals:teacher-attendance-session'))
+        self.assertNotContains(response, 'Other B')
