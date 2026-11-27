@@ -169,6 +169,15 @@ def enforce_study_group_max_students(sender, instance, action, pk_set, **kwargs)
         )
 
 
+@receiver(m2m_changed, sender=StudyGroup.students.through)
+@receiver(m2m_changed, sender=StudentProfile.teachers.through)
+def invalidate_teacher_student_links(sender, instance, action, **kwargs):
+    """Joining or leaving a group, or a direct teacher link, changes the teacher's lists and counts."""
+    if action in ('post_add', 'post_remove', 'post_clear'):
+        _invalidate_on_commit('StudyGroup')
+        _invalidate_on_commit('StudentProfile')
+
+
 # A group no longer hands its services to its students: access comes from each
 # student's own services (StudentCourseSpecialization), so joining a group changes
 # nothing about quizzes, mock tests or notifications.

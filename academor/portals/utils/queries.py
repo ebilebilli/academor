@@ -3073,14 +3073,16 @@ def get_teacher_dashboard_stats(teacher_id):
     """Heavy dashboard counts — loaded via AJAX after the shell renders."""
     from portals.utils.weekly_scores import get_teacher_weekly_scores_list
 
-    groups = get_teacher_groups(teacher_id)
+    from portals.utils.teacher_students import teacher_students_qs
+
     quiz_scores = get_teacher_scores(teacher_id)
     weekly_scores = get_teacher_weekly_scores_list(teacher_id)
     return {
-        'group_count': len(groups),
+        # counted live: every own group, and every own student once — with or without a group
+        'group_count': teacher_groups_queryset(teacher_id, active_only=True).count(),
         'lesson_count': len(get_teacher_lessons(teacher_id)),
         'quiz_count': len(get_teacher_quizzes(teacher_id)),
-        'student_count': sum(g.get('student_count', 0) for g in groups),
+        'student_count': teacher_students_qs(teacher_id).count(),
         'quiz_result_count': len(quiz_scores),
         'weekly_score_count': len(weekly_scores),
     }

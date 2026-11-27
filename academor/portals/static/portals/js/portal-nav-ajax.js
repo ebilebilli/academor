@@ -335,6 +335,13 @@
       } else if (path !== "/portal" && current.indexOf(path + "/") === 0) {
         score = path.length;
       }
+      // pages that live under another path but belong to this item (data-nav-also="/a/ /b/")
+      (link.getAttribute("data-nav-also") || "").split(/\s+/).forEach(function (prefix) {
+        var also = normalizePath(prefix);
+        if (also && (current === also || current.indexOf(also + "/") === 0) && also.length > score) {
+          score = also.length;
+        }
+      });
       if (score > bestScore) {
         bestMatch = link;
         bestScore = score;

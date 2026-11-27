@@ -231,3 +231,16 @@ class TeacherDashboardTests(TestCase):
         self.assertContains(response, reverse('portals:teacher-group-detail', kwargs={'pk': self.group.pk}))
         self.assertContains(response, reverse('portals:teacher-attendance-session'))
         self.assertNotContains(response, 'Other B')
+
+    def test_stats_count_own_students_once_with_or_without_a_group(self):
+        second = StudyGroup.objects.create(teacher=self.teacher, name='IELTS B', max_students=10)
+        second.students.add(self.student)  # in two of the teacher's groups: still one student
+        groupless = StudentProfile.objects.create(user=User.objects.create_user(username='Test Namizəd', password='x'))
+        groupless.teachers.add(self.teacher)  # added by the teacher without a group
+        client = Client()
+        portal_client_login(client, self.teacher_user)
+
+        stats = client.get(reverse('portals:teacher-dashboard-stats')).json()
+
+        self.assertEqual(stats['student_count'], 2)
+        self.assertEqual(stats['group_count'], 2)
