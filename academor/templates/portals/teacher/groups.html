@@ -117,6 +117,9 @@
                 </div>
               </div>
               {% endif %}
+              <a class="btn btn-outline-secondary btn-sm" href="{% url 'portals:teacher-student-edit' student_pk=student.id %}?next={{ request.get_full_path|urlencode }}" aria-label="{% blocktrans with name=student.full_name %}Edit {{ name }}{% endblocktrans %}">
+                <i class="ti ti-pencil" aria-hidden="true"></i> {% trans 'Edit' %}
+              </a>
               <a class="btn btn-primary btn-sm" href="{% url 'portals:teacher-student-profile' student_pk=student.id %}">{% trans 'Profil' %}</a>
             </td>
           </tr>

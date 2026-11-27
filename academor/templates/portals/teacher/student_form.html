@@ -6,13 +6,53 @@
 {% block content %}
 {% portal_page_heading icon="bi-people" eyebrow="Teacher" raw_title=form_title raw_subtitle=form_subtitle %}
 <div class="admin-card p-4">
-  <form method="post" class="portal-teacher-form" novalidate data-student-create-form>
+  <form method="post" class="portal-teacher-form" novalidate{% if not is_edit %} data-student-create-form{% endif %}>
     {% csrf_token %}
 
     {% if form.non_field_errors %}
       <div class="alert alert-danger py-2 small">{{ form.non_field_errors }}</div>
     {% endif %}
 
+    {% if is_edit %}
+    <div class="row g-3">
+      <div class="col-md-7">
+        <label class="form-label" for="{{ form.full_name.id_for_label }}">{{ form.full_name.label }}</label>
+        {{ form.full_name }}
+        <div class="form-text">{{ form.full_name.help_text }}</div>
+        {% for error in form.full_name.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+      </div>
+      <div class="col-md-5">
+        <label class="form-label" for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
+        {{ form.phone }}
+        {% for error in form.phone.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+      </div>
+
+      <div class="col-12">
+        <span class="form-label d-block mb-2">{{ form.groups.label }}</span>
+        {% if form.groups.field.queryset %}
+        {% include "portals/includes/pick_list.html" with field=form.groups variant="chips" label=form.groups.label %}
+        <div class="form-text">{{ form.groups.help_text }}</div>
+        {% else %}
+        <p class="form-text mb-0">{% trans 'Hələlik qrupunuz yoxdur.' %}</p>
+        {% endif %}
+        {% for error in form.groups.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+      </div>
+
+      {% include "portals/includes/form_field_col.html" with field=form.birth_date col="col-6 col-md-3" %}
+      {% include "portals/includes/form_field_col.html" with field=form.enrollment_date col="col-6 col-md-3" %}
+      {% include "portals/includes/form_field_col.html" with field=form.lessons_per_month col="col-6 col-md-3" %}
+      {% include "portals/includes/form_field_col.html" with field=form.program_month col="col-6 col-md-3" %}
+
+      <div class="col-md-6">
+        <label class="form-label" for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+        {{ form.password }}
+        <div class="form-text">{{ form.password.help_text }}</div>
+        {% for error in form.password.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+      </div>
+    </div>
+    <input type="hidden" name="next" value="{{ next_url }}">
+
+    {% else %}
     <div class="row g-3">
       <div class="col-md-7">
         <label class="form-label" for="{{ form.full_name.id_for_label }}">{{ form.full_name.label }}</label>
@@ -46,6 +86,8 @@
         {% for error in form.password.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
       </div>
     </div>
+
+    {% endif %}
 
     <div class="d-flex flex-wrap gap-2 pt-4">
       <button type="submit" class="btn btn-primary">

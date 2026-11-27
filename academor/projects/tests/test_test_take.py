@@ -71,3 +71,7 @@ class TestTakeFormValidationTests(TestCase):
         self.assertEqual((first['chosen'], first['right']), ('go', 'goes'))
         self.assertContains(response, 'class="lxa-item is-wrong"')
         self.assertContains(response, 'id="lxa-mistakes"')
+        # a sticky strip of question numbers jumps to each answer
+        self.assertContains(response, 'id="lxa-q-1-1"')
+        self.assertContains(response, 'class="lxa-jump__n is-wrong" href="#lxa-q-1-1"')
+        self.assertContains(response, 'class="lxa-jump__n is-blank" href="#lxa-q-1-3"')

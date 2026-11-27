@@ -1,0 +1,16 @@
+{% load i18n %}
+{% comment %}
+Sticky strip of question numbers above the answer review; each number jumps to its question.
+Arguments: sections — a list of {index, label, items}; each item has number and status;
+index — the section number used in the question ids (lxa-q-<index>-<number>).
+{% endcomment %}
+<nav class="lxa-jump" data-lxa-jump aria-label="{% trans 'Go to question' %}">
+  <div class="lxa-jump__track" data-lxa-jump-track>
+    {% for row in sections %}
+      {% if sections|length > 1 %}<span class="lxa-jump__sec">{{ row.label }}</span>{% endif %}
+      {% for item in row.items %}
+      <a class="lxa-jump__n is-{{ item.status }}" href="#lxa-q-{{ row.index }}-{{ item.number }}" data-lxa-jump-link>{{ item.number }}</a>
+      {% endfor %}
+    {% endfor %}
+  </div>
+</nav>

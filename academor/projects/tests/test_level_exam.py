@@ -402,6 +402,12 @@ class LevelExamAnswerReviewTests(TestCase):
         self.assertEqual(page.context['review_counts'], {'correct': 1, 'wrong': 1, 'blank': 3})
         self.assertContains(page, 'lxa-list')
         self.assertContains(page, 'id="lxa-mistakes"')
+        # the sticky number strip and the answer map both jump to a question
+        self.assertEqual([s['index'] for s in page.context['jump_sections']], [1, 2])
+        self.assertContains(page, 'id="lxa-q-1-2"')
+        self.assertContains(page, 'class="lxa-jump__n is-wrong" href="#lxa-q-1-2"')
+        self.assertContains(page, '<a href="#lxa-q-2-1" data-lxa-jump-link>')
+        self.assertContains(page, 'level-exam-answers.js')
 
 
 class LanguageSwitchTests(TestCase):

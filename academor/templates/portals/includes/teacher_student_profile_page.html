@@ -48,6 +48,11 @@
     <a class="ds-btn ds-btn--secondary btn-sm" href="{{ profile_back_url }}">
       <i class="ti ti-arrow-left" aria-hidden="true"></i> {% trans 'Geri' %}
     </a>
+    {% if portal_role == 'teacher' %}
+    <a class="ds-btn ds-btn--primary btn-sm" href="{% url 'portals:teacher-student-edit' student_pk=student.id %}?next={{ request.get_full_path|urlencode }}">
+      <i class="ti ti-pencil" aria-hidden="true"></i> {% trans 'Edit' %}
+    </a>
+    {% endif %}
   </div>
 </section>
 

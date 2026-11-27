@@ -260,6 +260,7 @@ class TestTakePageView(View):
             'test': ser,
             'result': result,
             'review': review,
+            'jump_sections': [{'index': 1, 'label': '', 'items': review}] if review else [],
             'review_counts': {
                 'correct': score,
                 'wrong': sum(1 for row in review if row['status'] == 'wrong'),

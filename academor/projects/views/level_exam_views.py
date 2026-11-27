@@ -437,12 +437,17 @@ class LevelExamResultView(View):
             'filename': 'academor-result.png',
         }
         review_counts = {'correct': 0, 'wrong': 0, 'blank': 0}
-        for row in rows:
+        for index, row in enumerate(rows, start=1):
+            row['index'] = index  # section number in the question anchors: #lxa-q-<index>-<number>
             for item in row['review']:
                 review_counts[item['status']] += 1
         ctx.update({
             'review_counts': review_counts,
             'has_review': any(row['review'] for row in rows),
+            'jump_sections': [
+                {'index': row['index'], 'label': row['label'], 'items': row['review']}
+                for row in rows if row['review']
+            ],
             'story': story,
             'result': result,
             'result_rows': rows,

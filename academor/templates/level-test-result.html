@@ -3,7 +3,7 @@
 {% comment %}English level test result: the same score report as the SAT / IELTS tests, plus every question with the visitor's answer and the right one.{% endcomment %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261127r">
+<link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261127j">
 {% endblock %}
 
 {% block content %}
@@ -87,9 +87,10 @@
             <input type="radio" name="lxa-filter" id="lxa-mistakes"><label for="lxa-mistakes">{% trans "Mistakes only" %}</label>
           </div>
           {% endif %}
+          {% include "includes/level_exam_answer_jump.html" with sections=jump_sections %}
           <ol class="lxa-list">
             {% for row in review %}
-            <li class="lxa-item is-{{ row.status }}">
+            <li class="lxa-item is-{{ row.status }}" id="lxa-q-1-{{ row.number }}">
               <span class="lxa-num" aria-hidden="true">{% if row.status == 'correct' %}<i class="bi bi-check-lg"></i>{% elif row.status == 'wrong' %}<i class="bi bi-x-lg"></i>{% else %}<i class="bi bi-dash-lg"></i>{% endif %}</span>
               <div class="lxa-body">
                 <p class="lxa-q"><span class="lxa-q__n">{{ row.number }}.</span> {{ row.text }}</p>
@@ -114,4 +115,5 @@
 {% block extra_js %}
 {{ story|json_script:"lx-story-data" }}
 <script defer src="{% static 'assets/js/level-exam-ui.js' %}?v=20261124g"></script>
+<script defer src="{% static 'assets/js/level-exam-answers.js' %}?v=20261127a"></script>
 {% endblock %}
