@@ -66,11 +66,27 @@ def build_customer_mock_dashboard_sections(customer_id: int) -> list[dict]:
     if not profile:
         return []
 
+    from django.db.models import Count
+
+    from portals.utils.mock_programs import get_program_sections
+
+    completed_counts = dict(
+        IeltsMockTestAttempt.objects.filter(
+            customer_id=customer_id,
+            status=IeltsMockTestAttempt.Status.COMPLETED,
+        )
+        .values('exam_program')
+        .annotate(c=Count('id'))
+        .values_list('exam_program', 'c')
+    )
+
     sections = []
     for program in MOCK_EXAM_PROGRAMS:
         if not customer_can_view_mock_program(customer_id, program):
             continue
         sections.append({
+            'section_labels': [str(spec.label) for spec in get_program_sections(program)],
+            'completed_count': int(completed_counts.get(program, 0)),
             'program': program,
             'label': get_program_label(program),
             'credits': profile.mock_credits_for_program(program),

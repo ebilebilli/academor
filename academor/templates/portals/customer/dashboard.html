@@ -4,73 +4,100 @@
 {% block title %}{% trans 'Dashboard' %}{% endblock %}
 
 {% block content %}
-{% include "portals/includes/portal_portal_banner.html" with greeting_name=customer.full_name %}
+{% include "portals/includes/portal_brand_hero.html" with kicker=_('Mock test portal') greeting_name=customer.full_name subtitle=_('Real exam format, your credits and every result in one place.') stats=hero_stats %}
 
-{% include "portals/includes/customer_dashboard_mock_stat.html" with mock_stats_list=mock_stats_list %}
-
-{% for section in mock_program_sections %}
-<section class="ds-card mb-4" aria-label="{% blocktrans with program_label=section.label %}{{ program_label }} mock test{% endblocktrans %}">
-  <div class="s-panel-head">
-    <h2 class="s-panel-title">
-      <i class="ti ti-clipboard-list" aria-hidden="true"></i>
-      {% blocktrans with program_label=section.label %}{{ program_label }} mock test{% endblocktrans %}
-    </h2>
-  </div>
-
-  <p class="mb-3">
-    {% with program_label=section.label credit_count=section.credits %}
-    {% blocktrans count counter=credit_count with program_label=program_label %}
-    {{ program_label }} credits: <strong>{{ counter }}</strong>
-    {% plural %}
-    {{ program_label }} credits: <strong>{{ counter }}</strong>
-    {% endblocktrans %}
-    {% endwith %}
-  </p>
-
-  <div class="d-flex flex-wrap gap-2">
-    {% if section.in_progress %}
-    <a class="ds-btn ds-btn--primary" href="{{ section.landing_url }}">
-      <i class="ti ti-player-play" aria-hidden="true"></i>
-      {% trans 'Continue mock test' %}
-    </a>
-    {% elif section.credits > 0 %}
-    <a class="ds-btn ds-btn--primary" href="{{ section.landing_url }}">
-      <i class="ti ti-clipboard-list" aria-hidden="true"></i>
-      {% trans 'Start mock test' %}
-    </a>
-    {% else %}
-    <a class="ds-btn ds-btn--secondary" href="{% url 'portals:customer-mock-history' %}">
-      <i class="ti ti-history" aria-hidden="true"></i>
-      {% trans 'View history' %}
+<section class="pb-section mb-4" aria-labelledby="pb-programs-title">
+  <div class="pb-section__head">
+    <h2 class="pb-section__title" id="pb-programs-title">{% trans 'Your mock tests' %}</h2>
+    {% if completed_mock_count %}
+    <a class="ds-btn ds-btn--ghost btn-sm" href="{% url 'portals:customer-mock-history' %}">
+      {% trans 'View history' %} <i class="ti ti-arrow-right" aria-hidden="true"></i>
     </a>
     {% endif %}
   </div>
+
+  <ol class="pb-rows">
+    {% for section in mock_program_sections %}
+    <li>
+      {% if section.in_progress or section.credits > 0 or section.completed_count %}
+      <a class="pb-row" href="{{ section.landing_url }}">
+      {% else %}
+      <a class="pb-row" href="{% url 'portals:customer-mock-packages' %}">
+      {% endif %}
+        <span class="pb-row__index">{{ forloop.counter|stringformat:"02d" }}</span>
+        <span class="pb-row__main">
+          <span class="pb-row__tag">{{ section.label }} · {% trans 'Mock Test' %}</span>
+          <span class="pb-row__title">
+            {{ section.label }} {% trans 'Mock Test' %}
+            {% if section.in_progress %}<span class="pb-chip pb-chip--live">{% trans 'In progress' %}</span>{% endif %}
+          </span>
+          <span class="pb-row__sections">{{ section.section_labels|join:" · " }}</span>
+        </span>
+        <ul class="pb-row__facts">
+          <li><strong>{{ section.credits }}</strong><span>{% trans 'credits' %}</span></li>
+          <li><strong>{{ section.section_labels|length }}</strong><span>{% trans 'sections' %}</span></li>
+          <li><strong>{{ section.completed_count }}</strong><span>{% trans 'completed' %}</span></li>
+        </ul>
+        <span class="pb-row__go">
+          <span class="pb-row__go-label">
+            {% if section.in_progress %}{% trans 'Continue mock test' %}
+            {% elif section.credits > 0 %}{% trans 'Start mock test' %}
+            {% elif section.completed_count %}{% trans 'Results' %}
+            {% else %}{% trans 'Buy mock package' %}{% endif %}
+          </span>
+          <span class="pb-arrow" aria-hidden="true"><i class="ti ti-arrow-right"></i></span>
+        </span>
+      </a>
+    </li>
+    {% empty %}
+    <li class="pb-empty">
+      <p>{% trans 'Purchase a package to start your first mock test.' %}</p>
+      <a class="ds-btn ds-btn--primary" href="{% url 'portals:customer-mock-packages' %}">
+        <i class="ti ti-shopping-cart" aria-hidden="true"></i>
+        {% trans 'Buy mock package' %}
+      </a>
+    </li>
+    {% endfor %}
+  </ol>
 </section>
-{% empty %}
-<section class="ds-card mb-4" aria-label="{% trans 'Mock test' %}">
-  <div class="s-panel-head">
-    <h2 class="s-panel-title">
-      <i class="ti ti-clipboard-list" aria-hidden="true"></i>
-      {% trans 'Mock test' %}
-    </h2>
+
+{% include "portals/includes/customer_dashboard_mock_stat.html" with mock_stats_list=mock_stats_list %}
+
+{% if not completed_mock_count %}
+<section class="pb-section mb-4" aria-labelledby="pb-steps-title">
+  <div class="pb-section__head">
+    <h2 class="pb-section__title" id="pb-steps-title">{% trans 'How a mock test works' %}</h2>
   </div>
-  <p class="mb-3 text-muted">{% trans 'Purchase a package to start your first mock test.' %}</p>
-  <a class="ds-btn ds-btn--primary" href="{% url 'portals:customer-mock-packages' %}">
-    <i class="ti ti-shopping-cart" aria-hidden="true"></i>
-    {% trans 'Buy mock package' %}
-  </a>
+  <ol class="pb-steps">
+    <li>
+      <span class="pb-steps__num">1</span>
+      <h3>{% trans 'Get credits' %}</h3>
+      <p>{% trans 'Each IELTS or SAT package adds credits to your account. One credit is one full mock test.' %}</p>
+    </li>
+    <li>
+      <span class="pb-steps__num">2</span>
+      <h3>{% trans 'Sit the test' %}</h3>
+      <p>{% trans 'Sections run in the real exam order, each with its own timer. Your progress is saved if the page reloads.' %}</p>
+    </li>
+    <li>
+      <span class="pb-steps__num">3</span>
+      <h3>{% trans 'Read your result' %}</h3>
+      <p>{% trans 'Auto-graded sections are scored at once; Writing and Speaking are scored after a teacher reviews them.' %}</p>
+    </li>
+  </ol>
 </section>
-{% endfor %}
+{% endif %}
 
 {% if mock_program_sections %}
-<section class="ds-card mb-4" aria-label="{% trans 'Buy mock package' %}">
-  <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
-    <p class="mb-0 text-muted">{% trans 'Need more credits? Purchase a mock test package.' %}</p>
-    <a class="ds-btn ds-btn--secondary" href="{% url 'portals:customer-mock-packages' %}">
-      <i class="ti ti-shopping-cart" aria-hidden="true"></i>
-      {% trans 'Buy mock package' %}
-    </a>
+<section class="pb-band mb-4" aria-labelledby="pb-band-title">
+  <div class="pb-band__copy">
+    <h2 class="pb-band__title" id="pb-band-title">{% trans 'Need more credits?' %}</h2>
+    <p class="pb-band__text">{% trans 'Choose an IELTS or SAT package to add more mock tests to your account.' %}</p>
   </div>
+  <a class="pb-band__cta" href="{% url 'portals:customer-mock-packages' %}">
+    {% trans 'Buy mock package' %}
+    <i class="ti ti-arrow-right" aria-hidden="true"></i>
+  </a>
 </section>
 {% endif %}
 {% endblock %}

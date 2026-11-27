@@ -243,6 +243,125 @@ def score_section(quiz, data: dict) -> dict:
     }
 
 
+_LETTERS = 'ABCDEFGHIJ'
+
+
+_WORD_ANSWERS = {'true', 'false', 'not given', 'yes', 'no'}
+
+
+def _plain(html) -> str:
+    import re
+    from html import unescape
+
+    from django.utils.html import strip_tags
+
+    # keep paragraphs apart ("…after class. Which choice…")
+    spaced = re.sub(r'(?i)<(br|/p|/div|/li|/h[1-6])\b[^>]*>', ' ', str(html or ''))
+    return ' '.join(unescape(strip_tags(spaced)).split())
+
+
+def _option_label(options, index) -> str:
+    if index is None or not (0 <= index < len(options)):
+        return ''
+    text = _plain(options[index])
+    # True / False / Not Given (and Yes / No) read better without a letter
+    if text and all(_plain(o).lower() in _WORD_ANSWERS for o in options):
+        return text
+    letter = _LETTERS[index] if index < len(_LETTERS) else str(index + 1)
+    return f'{letter}. {text}' if text else letter
+
+
+def _chosen_label(options, raw) -> str:
+    """What the student picked or typed, as text ("B. gathered" for a choice)."""
+    if raw in (None, ''):
+        return ''
+    value = str(raw).strip()
+    if options:
+        if value.lstrip('-').isdigit():
+            label = _option_label(options, int(value))
+            if label:
+                return label
+        if len(value) == 1 and value.upper() in _LETTERS[:len(options)]:
+            return _option_label(options, _LETTERS.index(value.upper()))
+        plain = [_plain(o) for o in options]
+        if value in plain:
+            return _option_label(options, plain.index(value))
+    return _plain(value)
+
+
+def review_section(quiz, answers: dict) -> list[dict]:
+    """Every question of a submitted section with the visitor's answer and the right one.
+
+    Re-scores the answers stored for the section, so the result page can show the same
+    question-by-question review as the English level test.
+    """
+    answers = answers or {}
+    fmt = section_format(quiz)
+    if fmt == FORMAT_READING:
+        from portals.utils.quiz_reading import get_reading_questions_for_quiz, reading_correct_option_index
+        from portals.utils.quiz_reading_score import normalize_reading_answers, score_reading_quiz
+
+        questions = get_reading_questions_for_quiz(quiz)
+        given = normalize_reading_answers(quiz, answers, questions=questions)
+        _score, _total, breakdown = score_reading_quiz(quiz, given, questions=questions)
+        right_index = reading_correct_option_index
+    elif fmt == FORMAT_LISTENING:
+        from portals.utils.quiz_listening import get_listening_questions_for_quiz, listening_correct_option_index
+        from portals.utils.quiz_listening_score import score_listening_quiz
+        from portals.utils.quiz_submit import _normalize_listening_model_answers
+
+        questions = get_listening_questions_for_quiz(quiz)
+        given = _normalize_listening_model_answers(answers, quiz, questions=questions)
+        _score, _total, breakdown = score_listening_quiz(quiz, given, questions=questions)
+        right_index = listening_correct_option_index
+    else:
+        from portals.utils.quiz_submit import score_variant_quiz
+
+        questions = list(quiz.questions.all())
+        _score, _total, breakdown = score_variant_quiz(quiz, answers)
+        right_index = None
+
+    by_id = {q.pk: q for q in questions}
+    numbers = [item.get('number') for item in breakdown]
+    use_own_numbers = all(numbers) and len(set(numbers)) == len(numbers)
+    rows = []
+    for index, item in enumerate(breakdown, start=1):
+        question = by_id.get(item.get('id'))
+        number = item['number'] if use_own_numbers else index
+        if fmt == FORMAT_VARIANT:
+            options = list(getattr(question, 'answer_options', None) or []) if question else []
+            raw = item.get('selected_index')
+            if raw is None:
+                raw = item.get('student_answer')
+            if options and item.get('correct_index') is not None:
+                right = _option_label(options, item.get('correct_index'))
+            else:
+                accepted = list(getattr(question, 'spr_correct_answers', None) or []) if question else []
+                right = ' / '.join(str(a) for a in accepted) or _plain(getattr(question, 'correct_answer', '') if question else '')
+        else:
+            options = list(question.variant_options) if question is not None and getattr(question, 'is_variant', False) else []
+            raw = item.get('student_answer')
+            if options:
+                right = _option_label(options, right_index(question))
+            else:
+                accepted = item.get('spr_correct_answers') or []
+                right = ' / '.join(str(a) for a in accepted) or _plain(item.get('correct_answer'))
+        chosen = _chosen_label(options, raw)
+        if raw in (None, ''):
+            status = 'blank'
+        else:
+            status = 'correct' if item.get('is_correct') else 'wrong'
+        text = _plain(getattr(question, 'question', '')) if question is not None else ''
+        rows.append({
+            'number': number,
+            'text': text,
+            'chosen': chosen,
+            'right': right or '—',
+            'status': status,
+        })
+    return rows
+
+
 def ielts_band(kind: str, correct: int, total: int) -> float | None:
     """Official raw-to-band table; a test shorter than 40 questions is scaled to 40."""
     if kind not in (KIND_IELTS_READING, KIND_IELTS_LISTENING) or not total:

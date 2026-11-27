@@ -1,0 +1,28 @@
+{% load i18n portal_tags %}
+{% comment %}
+Dashboard hero for the student and customer portals, in the /tests/ page style.
+Arguments: kicker, greeting_name, subtitle, stats (a list of {value, label} dicts, optional).
+{% endcomment %}
+<header class="pb-hero mb-4">
+  <div class="pb-hero__copy">
+    <p class="pb-kicker">{{ kicker }}</p>
+    <h1 class="pb-display">{% trans "Salam," %} <span class="pb-hero__name">{{ greeting_name }}</span></h1>
+    {% if subtitle %}<p class="pb-lead">{{ subtitle }}</p>{% endif %}
+  </div>
+
+  <div class="pb-hero__date" aria-label="{% portal_today_long %}">
+    <span class="pb-hero__day">{% portal_today_day %}</span>
+    <span class="pb-hero__date-text">
+      <strong data-portal-today-date>{% portal_today_weekday %}</strong>
+      <span>{% portal_today_month %} {% portal_today_year %}</span>
+    </span>
+  </div>
+
+  {% if stats %}
+  <ul class="pb-stats">
+    {% for stat in stats %}
+    <li><strong>{{ stat.value }}</strong><span>{{ stat.label }}</span></li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</header>

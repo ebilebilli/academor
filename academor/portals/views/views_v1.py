@@ -100,7 +100,9 @@ from portals.utils.weekly_scores import (
     get_teacher_weekly_scores_list,
 )
 from portals.utils.teacher_access import get_teacher_group, get_teacher_lesson, get_teacher_student, teacher_groups_qs
+from portals.utils.portal_hero import student_hero_stats
 from portals.utils.teacher_schedule import (
+    build_student_today_agenda,
     build_student_week_calendar,
     build_teacher_week_calendar,
     parse_week_start,
@@ -841,6 +843,7 @@ class StudentDashboardView(StudentRequiredMixin, View):
     def get(self, request):
         profile = get_student_profile(request.portal_user)
         data = get_student_dashboard_data(request, profile.pk)
+        agenda = build_student_today_agenda(profile.pk)
         return render(
             request,
             self.template_name,
@@ -848,6 +851,8 @@ class StudentDashboardView(StudentRequiredMixin, View):
                 request,
                 student=serialize_student(profile),
                 **data,
+                **agenda,
+                hero_stats=student_hero_stats(data, agenda),
             ),
         )
 

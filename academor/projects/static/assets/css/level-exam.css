@@ -2055,3 +2055,23 @@ button.lxr-btn {
     height: 1.35rem;
     font-size: 0.6rem;
 }
+
+/* SAT / IELTS result: question-by-question review under the answer map */
+.lxa .lxa-filter {
+    margin-top: 1.25rem;
+}
+
+.lxa-review-label {
+    margin-top: 1.25rem;
+}
+
+.lxa .lxa-map + .lxa-list,
+.lxa .lxa-filter + .lxa-list {
+    margin-top: 1rem;
+}
+
+@media print {
+    .lxa .lxa-filter {
+        display: none;
+    }
+}

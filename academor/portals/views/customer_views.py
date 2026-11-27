@@ -10,6 +10,7 @@ from portals.utils.customer_mock import (
     get_customer_completed_mock_attempts,
     serialize_customer_mock_attempt_summary,
 )
+from portals.utils.portal_hero import customer_hero_stats
 from portals.utils.queries import get_customer_profile, serialize_customer
 from projects.utils.queries import serialize_project_category_detail
 from portals.utils.quiz_stats import build_mock_stats_list
@@ -62,6 +63,8 @@ class CustomerDashboardView(CustomerRequiredMixin, View):
                 customer=serialize_customer(profile),
                 mock_stats_list=build_mock_stats_list(mock_attempts),
                 mock_program_sections=mock_program_sections,
+                hero_stats=customer_hero_stats(mock_program_sections),
+                completed_mock_count=len(mock_attempts),
             ),
         )
 

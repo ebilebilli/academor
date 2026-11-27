@@ -96,38 +96,39 @@
                 </div>
             </div>
             <div class="nav-item dropdown nav-lang-dropdown">
-                <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+                {# short codes (Az / En / Ru) with a proper flag; the full language name stays for screen readers #}
+                <a href="#" class="nav-link dropdown-toggle d-flex align-items-center nav-lang-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{% trans 'Language' %}">
                     {% if LANG == 'az' %}
-                    {% include "includes/lang_flag.html" with code="az" %}AZ
+                    {% include "includes/lang_flag.html" with code="az" %}<span class="nav-lang-code">Az</span>
                     {% elif LANG == 'ru' %}
-                    {% include "includes/lang_flag.html" with code="ru" %}RU
+                    {% include "includes/lang_flag.html" with code="ru" %}<span class="nav-lang-code">Ru</span>
                     {% else %}
-                    {% include "includes/lang_flag.html" with code="en" %}EN
+                    {% include "includes/lang_flag.html" with code="en" %}<span class="nav-lang-code">En</span>
                     {% endif %}
                 </a>
-                <div class="dropdown-menu fade-down m-0">
+                <div class="dropdown-menu fade-down m-0 nav-lang-menu">
                     <form action="{% url 'set_language' %}" method="post" class="lang-switch-form">
                         {% csrf_token %}
                         <input type="hidden" name="next" value="{{ request.get_full_path }}">
-                        <input type="hidden" name="language" value="en">
-                        <button type="submit" class="dropdown-item d-flex align-items-center lang-option{% if LANG == 'en' %} active{% endif %}"{% if LANG == 'en' %} aria-current="true"{% endif %}>
-                            {% include "includes/lang_flag.html" with code="en" %}{% trans "English" %}
+                        <input type="hidden" name="language" value="az">
+                        <button type="submit" class="dropdown-item d-flex align-items-center lang-option{% if LANG == 'az' %} active{% endif %}" lang="az" title="Azərbaycanca"{% if LANG == 'az' %} aria-current="true"{% endif %}>
+                            {% include "includes/lang_flag.html" with code="az" %}<span class="nav-lang-code">Az</span><span class="visually-hidden">Azərbaycanca</span>
                         </button>
                     </form>
                     <form action="{% url 'set_language' %}" method="post" class="lang-switch-form">
                         {% csrf_token %}
                         <input type="hidden" name="next" value="{{ request.get_full_path }}">
-                        <input type="hidden" name="language" value="az">
-                        <button type="submit" class="dropdown-item d-flex align-items-center lang-option{% if LANG == 'az' %} active{% endif %}"{% if LANG == 'az' %} aria-current="true"{% endif %}>
-                            {% include "includes/lang_flag.html" with code="az" %}{% trans "Azerbaijani" %}
+                        <input type="hidden" name="language" value="en">
+                        <button type="submit" class="dropdown-item d-flex align-items-center lang-option{% if LANG == 'en' %} active{% endif %}" lang="en" title="English"{% if LANG == 'en' %} aria-current="true"{% endif %}>
+                            {% include "includes/lang_flag.html" with code="en" %}<span class="nav-lang-code">En</span><span class="visually-hidden">English</span>
                         </button>
                     </form>
                     <form action="{% url 'set_language' %}" method="post" class="lang-switch-form">
                         {% csrf_token %}
                         <input type="hidden" name="next" value="{{ request.get_full_path }}">
                         <input type="hidden" name="language" value="ru">
-                        <button type="submit" class="dropdown-item d-flex align-items-center lang-option{% if LANG == 'ru' %} active{% endif %}"{% if LANG == 'ru' %} aria-current="true"{% endif %}>
-                            {% include "includes/lang_flag.html" with code="ru" %}{% trans "Russian" %}
+                        <button type="submit" class="dropdown-item d-flex align-items-center lang-option{% if LANG == 'ru' %} active{% endif %}" lang="ru" title="Русский"{% if LANG == 'ru' %} aria-current="true"{% endif %}>
+                            {% include "includes/lang_flag.html" with code="ru" %}<span class="nav-lang-code">Ru</span><span class="visually-hidden">Русский</span>
                         </button>
                     </form>
                 </div>
