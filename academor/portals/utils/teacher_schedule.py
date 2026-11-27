@@ -217,8 +217,10 @@ def _agenda_slot(session, now):
     end = start + timedelta(minutes=session['duration_min'] or 0)
     room = (session['room_or_link'] or '').strip()
     is_link = room.startswith(('http://', 'https://'))
-    course = session['course_type_label']
+    course = session.get('course_type_label') or ''
     return {
+        'schedule_id': session['schedule_id'],
+        'group_id': session['group_id'],
         'group_name': session['group_name'],
         'details': ' · '.join(part for part in (course if course != '—' else '', '' if is_link else room) if part),
         'date': session['session_date'],
@@ -226,24 +228,21 @@ def _agenda_slot(session, now):
         'end_time': end.strftime('%H:%M'),
         'duration_min': session['duration_min'],
         'join_url': room if is_link else '',
+        'mark_url': session.get('mark_url', ''),
         'is_now': start <= now < end,
         'is_done': now >= end,
     }
 
 
-def build_student_today_agenda(student_id, now=None):
-    """Today's sessions for the student dashboard, and the next one when none is left today.
-
-    Read live on every request: the "now" and "done" marks go stale in any cache.
-    """
-    now = timezone.localtime(now) if now else timezone.localtime()
+def _today_agenda(week_calendar, now):
+    """Today's sessions from a week-calendar builder, and the next one when none is left today."""
     today = now.date()
     week_start = today - timedelta(days=today.weekday())
 
     today_slots = []
     next_slot = None
     for offset in (0, 7):
-        calendar = build_student_week_calendar(student_id, week_start=week_start + timedelta(days=offset))
+        calendar = week_calendar(week_start + timedelta(days=offset))
         for day in calendar['days']:
             if day['date'] < today:
                 continue
@@ -251,7 +250,7 @@ def build_student_today_agenda(student_id, now=None):
                 slot = _agenda_slot(session, now)
                 if day['date'] == today:
                     today_slots.append(slot)
-                if next_slot is None and not slot['is_done'] and not slot['is_now'] and day['date'] > today:
+                elif next_slot is None:
                     next_slot = slot
         if next_slot is not None:
             break
@@ -263,3 +262,39 @@ def build_student_today_agenda(student_id, now=None):
         # the next lesson is only worth a line when nothing is left today
         'next_session': None if upcoming_today else next_slot,
     }
+
+
+def build_student_today_agenda(student_id, now=None):
+    """Today's sessions for the student dashboard.
+
+    Read live on every request: the "now" and "done" marks go stale in any cache.
+    """
+    now = timezone.localtime(now) if now else timezone.localtime()
+    return _today_agenda(
+        lambda week_start: build_student_week_calendar(student_id, week_start=week_start),
+        now,
+    )
+
+
+def build_teacher_today_agenda(teacher_id, now=None):
+    """Today's sessions for the teacher dashboard, each marked with whether attendance is in."""
+    from portals.models import Attendance
+
+    now = timezone.localtime(now) if now else timezone.localtime()
+    agenda = _today_agenda(
+        lambda week_start: build_teacher_week_calendar(teacher_id, week_start=week_start),
+        now,
+    )
+    slots = agenda['today_schedule']
+    marked = set(
+        Attendance.objects.filter(
+            schedule_id__in=[slot['schedule_id'] for slot in slots],
+            session_date=now.date(),
+        ).values_list('schedule_id', flat=True)
+    ) if slots else set()
+    for slot in slots:
+        slot['is_marked'] = slot['schedule_id'] in marked
+    unmarked = [slot for slot in slots if slot['is_done'] and not slot['is_marked']]
+    agenda['unmarked_count'] = len(unmarked)
+    agenda['first_unmarked_url'] = unmarked[0]['mark_url'] if unmarked else ''
+    return agenda

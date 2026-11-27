@@ -38,8 +38,8 @@
   <link rel="stylesheet" href="{% static 'portals/css/portal-pick.css' %}?v=20261114b">
   {% endif %}
   {% block extra_css %}{% endblock %}
-  {% if portal_role == 'student' or portal_role == 'customer' %}
-  <link rel="stylesheet" href="{% static 'portals/css/portal-brand.css' %}?v=20261126a">
+  {% if portal_role == 'student' or portal_role == 'customer' or portal_role == 'teacher' %}
+  <link rel="stylesheet" href="{% static 'portals/css/portal-brand.css' %}?v=20261127a">
   {% endif %}
   <style>
     #page-loader {
@@ -69,7 +69,7 @@
     }
   </style>
 </head>
-<body{% if portal_role == 'student' or portal_role == 'customer' %} class="portal-brand"{% endif %} data-portal-role="{{ portal_role|default:'' }}"{% if portal_is_authenticated %} data-portal-badges-url="{% url 'portals:portal-badges' %}"{% endif %}>
+<body{% if portal_role == 'student' or portal_role == 'customer' or portal_role == 'teacher' %} class="portal-brand"{% endif %} data-portal-role="{{ portal_role|default:'' }}"{% if portal_is_authenticated %} data-portal-badges-url="{% url 'portals:portal-badges' %}"{% endif %}>
   <div id="page-loader"><div class="spinner"></div></div>
   <div class="admin-shell">
     <div class="sidebar-backdrop" data-sidebar-close></div>

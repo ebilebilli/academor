@@ -100,10 +100,12 @@ from portals.utils.weekly_scores import (
     get_teacher_weekly_scores_list,
 )
 from portals.utils.teacher_access import get_teacher_group, get_teacher_lesson, get_teacher_student, teacher_groups_qs
-from portals.utils.portal_hero import student_hero_stats
+from portals.utils.notifications import get_teacher_pending_review_count
+from portals.utils.portal_hero import student_hero_stats, teacher_hero_stats
 from portals.utils.teacher_schedule import (
     build_student_today_agenda,
     build_student_week_calendar,
+    build_teacher_today_agenda,
     build_teacher_week_calendar,
     parse_week_start,
 )
@@ -160,12 +162,15 @@ class TeacherDashboardView(TeacherRequiredMixin, View):
     def get(self, request):
         profile = get_teacher_profile(request.portal_user)
         data = get_teacher_dashboard_data(request, profile.pk)
+        agenda = build_teacher_today_agenda(profile.pk)
         return render(
             request,
             self.template_name,
             _portal_context(
                 request,
                 teacher=serialize_teacher(profile),
+                **agenda,
+                hero_stats=teacher_hero_stats(data, agenda, get_teacher_pending_review_count(profile.pk)),
                 dashboard_stats_deferred=True,
                 student_count=0,
                 group_count=0,

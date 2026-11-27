@@ -27,3 +27,12 @@ def customer_hero_stats(sections: list[dict]) -> list[dict]:
         'label': _('Completed mocks'),
     })
     return stats
+
+
+def teacher_hero_stats(data: dict, agenda: dict, pending_reviews: int) -> list[dict]:
+    groups = data.get('groups') or []
+    return [
+        {'value': len(agenda.get('today_schedule') or []), 'label': _('Lessons today')},
+        {'value': sum(1 for group in groups if group.get('is_active', True)), 'label': _('Active groups')},
+        {'value': pending_reviews, 'label': _('Awaiting review')},
+    ]
