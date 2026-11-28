@@ -3,6 +3,7 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'assets/css/level-exam.css' %}?v=20261127j">
+{% if akira %}<link rel="stylesheet" href="{% static 'assets/css/akira.css' %}?v=20261128a">{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -59,6 +60,8 @@
           </li>
           {% endfor %}
         </ol>
+
+        {% if akira %}{% include "includes/akira_card.html" with akira=akira %}{% endif %}
 
         {% if result_rows.0.answer_map or has_review %}
         <section class="lxa" aria-labelledby="lxa-heading">
@@ -143,4 +146,5 @@
 {{ story|json_script:"lx-story-data" }}
 <script defer src="{% static 'assets/js/level-exam-ui.js' %}?v=20261124g"></script>
 <script defer src="{% static 'assets/js/level-exam-answers.js' %}?v=20261127a"></script>
+{% if akira %}<script defer src="{% static 'assets/js/akira.js' %}?v=20261128a"></script>{% endif %}
 {% endblock %}

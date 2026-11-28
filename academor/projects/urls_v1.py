@@ -28,6 +28,7 @@ from projects.views.views_v1 import (
 )
 from projects.views.test_views import TestListPageView, TestTakePageView
 from projects.views.level_exam_views import (
+    LevelExamAkiraView,
     LevelExamResultView,
     LevelExamSectionView,
     LevelExamStartView,
@@ -191,6 +192,11 @@ urlpatterns = [
         'tests/<int:test_id>/result/',
         LevelExamResultView.as_view(),
         name='level-exam-result',
+    ),
+    path(
+        'tests/<int:test_id>/result/akira/',
+        LevelExamAkiraView.as_view(),
+        name='level-exam-akira',
     ),
     path(
         'results/',

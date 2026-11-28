@@ -329,6 +329,22 @@ Environment files are loaded from `docker/.env` first, then project `.env` / `ac
 | `UNITED_PAYMENT_DECLINE_URL` | Return URL after decline |
 | `PAYMENT_FRONTEND_RETURN_URL` | Optional post-callback redirect (empty = render payment result templates) |
 
+### AKIRA — AI mentor (optional)
+
+AKIRA writes a short comment under SAT results (public test + portal). The numbers are always
+computed by the site; without a key the pages still show them and AKIRA stays silent.
+
+| Variable | Purpose |
+| --- | --- |
+| `ANTHROPIC_API_KEY` | Claude API key (empty = AKIRA switched off) |
+| `AKIRA_MODEL` | Optional, default `claude-opus-5-5` |
+| `AKIRA_MONTHLY_BUDGET_USD` | Optional, default `80`; new comments stop when the month's spend reaches it |
+| `AKIRA_STUDENT_MONTHLY_LIMIT` | Optional, default `30` comments per student per month |
+| `AKIRA_ENABLED` | Optional, `0` switches AKIRA off without removing the key |
+
+Spend, reports, explanations and teaching materials are in the admin under *AKIRA*. A new course
+(IELTS, General English, FMVA, DipIFR…) is switched on in `portals/akira/courses.py`.
+
 ### Email (local `settings_local` only, optional)
 
 `EMAIL_BACKEND`, `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_USE_TLS`, `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD`, `DEFAULT_FROM_EMAIL`, `SERVER_EMAIL`
@@ -353,6 +369,9 @@ POSTGRES_PORT=5432
 # Optional — leave empty to disable
 TURNSTILE_SITE_KEY=
 TURNSTILE_SECRET_KEY=
+
+# Optional — AKIRA AI mentor (empty = off)
+ANTHROPIC_API_KEY=
 
 # Optional — required only for live checkout
 UNITED_PAYMENT_AUTH_URL=

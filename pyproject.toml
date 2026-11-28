@@ -17,4 +17,5 @@ dependencies = [
     "redis>=5.0.0",
     "unidecode>=1.4.0",
     "requests>=2.31.0",
+    "anthropic>=2.14.0",
 ]

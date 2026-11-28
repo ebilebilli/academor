@@ -4,6 +4,7 @@
 {% block title %}{% trans 'Score detail' %}{% endblock %}
 
 {% block extra_css %}
+{% if detail.akira %}<link rel="stylesheet" href="{% static 'assets/css/akira.css' %}?v=20261128a">{% endif %}
 <link rel="stylesheet" href="{% static 'portals/css/quiz-play.css' %}?v=20261124v">
 {% if detail.is_reading or detail.uses_shared_passage_layout %}
 <link rel="stylesheet" href="{% static 'portals/css/quiz-reading.css' %}?v=20261124t">
@@ -35,6 +36,8 @@
 </div>
 
 {% include "portals/includes/quiz_attempt_timing_panel.html" with result=detail %}
+
+{% if detail.akira %}{% include "includes/akira_card.html" with akira=detail.akira %}{% endif %}
 
 {% if detail.is_reading and detail.reading_sections %}
 <section class="panel mb-4 portal-reading-teacher-review">
@@ -153,6 +156,7 @@
 {% endblock %}
 
 {% block extra_js %}
+{% if detail.akira %}<script defer src="{% static 'assets/js/akira.js' %}?v=20261128a"></script>{% endif %}
 {% if detail.breakdown %}
 <script src="{% static 'portals/js/score-qnav.js' %}?v=20260809c"></script>
 {% endif %}
