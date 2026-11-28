@@ -337,6 +337,48 @@ def _notify_crm(result):
         logger.exception('CRM update failed for level exam result=%s', result.pk)
 
 
+def _akira_card(result, rows, quizzes, total_scaled):
+    """AKIRA facts for the result page; the comment is fetched after the page renders."""
+    try:
+        from portals.akira.service import report_for_public_result
+
+        report = report_for_public_result(result, rows, quizzes, total_scaled)
+    except Exception:  # AKIRA must never break the score report
+        logger.exception('AKIRA: report failed for result=%s', result.pk)
+        return None
+    if report is None:
+        return None
+    return {
+        'facts': report.facts,
+        'url': reverse('projects:level-exam-akira', kwargs={'test_id': result.test_id}),
+        'can_vote': True,
+        'audience': 'visitor',
+    }
+
+
+class LevelExamAkiraView(View):
+    """POST: write (once) or return the AKIRA comment for this visitor's finished test."""
+
+    def post(self, request, test_id):
+        from portals.akira import service
+        from portals.models import AkiraReport
+
+        test = get_exam_test(test_id)
+        attempt = lx.get_attempt(request, test_id) if test else None
+        result = _attempt_result(attempt)
+        if not result or (result.details or {}).get('status') != 'finished':
+            raise Http404
+        report = AkiraReport.objects.filter(user_result=result).first()
+        if report is None:
+            return JsonResponse(service.report_payload(None))
+        data = _json_body(request) or {}
+        if 'helpful' in data:
+            AkiraReport.objects.filter(pk=report.pk).update(helpful=bool(data['helpful']))
+            report.refresh_from_db()
+            return JsonResponse(service.report_payload(report))
+        return JsonResponse(service.report_payload(service.write_comment(report.pk)))
+
+
 def _answer_map(row):
     """Question numbers 1..total marked right / wrong / blank, from what the section stored.
 
@@ -372,6 +414,7 @@ class LevelExamResultView(View):
             return redirect(_next_url(test_id, attempt, len(ctx['exam_sections'])))
 
         rows = []
+        section_quizzes = {}
         for row in details.get('sections') or []:
             pct = lx.percent(row.get('correct', 0), row.get('total', 0))
             band = row.get('band')
@@ -383,6 +426,7 @@ class LevelExamResultView(View):
             if row.get('quiz_id') and 'answers' in row:
                 quiz = lx._load_quiz(row['quiz_id'])
                 if quiz:
+                    section_quizzes[quiz.pk] = quiz
                     try:
                         review = lx.review_section(quiz, row.get('answers') or {})
                     except Exception:  # the review must never break the score report
@@ -396,6 +440,7 @@ class LevelExamResultView(View):
                     row['scaled'] = lx.format_score_range(found['low'], found['high'])
             if 'total_low' in sat_scaled:
                 ctx['sat_total'] = lx.format_score_range(sat_scaled['total_low'], sat_scaled['total_high'])
+        ctx['akira'] = _akira_card(result, rows, section_quizzes, ctx.get('sat_total') or '') if ctx['is_sat'] else None
         if ctx['is_sat']:
             whatsapp_text = _(
                 'Hello! I took the SAT practice test on the Academor website (%(score)s). '

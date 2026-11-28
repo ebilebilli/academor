@@ -1,0 +1,43 @@
+{% load static i18n %}
+{# AKIRA block: the numbers render now, the comment is fetched from akira.url after the page loads. #}
+<section class="akira" aria-labelledby="akira-title" data-akira-card data-url="{{ akira.url }}" data-can-vote="{% if akira.can_vote %}1{% endif %}">
+  {% csrf_token %}
+  <header class="akira__head">
+    <div class="akira__orb" aria-hidden="true">
+      <canvas data-akira-orb data-mode="think" data-mark="{% static 'assets/img/akira/academor-mark-white.svg' %}"></canvas>
+    </div>
+    <div class="akira__title">
+      <h2 id="akira-title">AKIRA</h2>
+      <p>{% trans "Academor's AI mentor" %}</p>
+    </div>
+  </header>
+
+  {% with facts=akira.facts %}
+  <div class="akira__facts">
+    {% if facts.sections %}
+      {% for section in facts.sections %}
+        {% include "includes/akira_section_facts.html" with section=section show_label=True %}
+      {% endfor %}
+    {% else %}
+      {% include "includes/akira_section_facts.html" with section=facts show_label=False %}
+    {% endif %}
+  </div>
+  {% endwith %}
+
+  <div class="akira__comment" data-akira-comment aria-live="polite">
+    <p class="akira__loading" data-akira-loading>{% trans "AKIRA is reading your result…" %}</p>
+    <span class="akira__skeleton" aria-hidden="true"></span>
+    <span class="akira__skeleton akira__skeleton--short" aria-hidden="true"></span>
+  </div>
+  <p class="akira__fallback" data-akira-fallback hidden>{% trans "AKIRA could not write a comment this time. The numbers above are complete." %}</p>
+
+  <footer class="akira__foot">
+    <span class="akira__note">{% trans "The numbers are computed by Academor; AKIRA explains them." %}</span>
+    <div class="akira__vote" data-akira-vote hidden>
+      <span>{% trans "Was this helpful?" %}</span>
+      <button type="button" data-akira-helpful="1">{% trans "Yes" %}</button>
+      <button type="button" data-akira-helpful="0">{% trans "No" %}</button>
+    </div>
+    <span class="akira__thanks" data-akira-thanks hidden>{% trans "Thanks for the feedback." %}</span>
+  </footer>
+</section>

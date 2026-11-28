@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from datetime import datetime, time, timedelta
 
 from django.db.models import Prefetch
@@ -24,6 +25,8 @@ from portals.utils.student_courses import (
     get_quiz_portal_course_codes,
     teacher_can_review_quiz_result,
 )
+
+logger = logging.getLogger(__name__)
 
 
 def is_quiz_result_published(result: QuizResult) -> bool:
@@ -952,6 +955,27 @@ def customer_can_view_quiz_result(customer_id: int, result: QuizResult) -> bool:
     return result.customer_id == customer_id and is_quiz_result_published(result)
 
 
+def _akira_card(row: QuizResult, role: str) -> dict | None:
+    """The AKIRA block on a result page: the computed facts now, the comment by fetch."""
+    if role not in ('student', 'teacher', 'parent', 'customer'):
+        return None
+    try:
+        from portals.akira.service import report_for_quiz_result
+
+        report = report_for_quiz_result(row)
+    except Exception:  # AKIRA must never break the score page
+        logger.exception('AKIRA: report failed for result=%s', row.pk)
+        return None
+    if report is None:
+        return None
+    return {
+        'facts': report.facts,
+        'url': reverse('portals:akira-quiz-result', kwargs={'result_pk': row.pk}),
+        'can_vote': role in ('student', 'customer'),
+        'audience': 'teacher' if role == 'teacher' else 'student',
+    }
+
+
 def _build_variant_breakdown(result: QuizResult) -> list[dict]:
     from portals.utils.quiz_submit import _normalize_given_answers, _question_correct_index
     from portals.utils.sat_spr_validation import plain_spr_text, validate_spr_answer
@@ -1117,6 +1141,7 @@ def _serialize_score_detail(row: QuizResult, *, role: str) -> dict:
     }
     if quiz.is_variant_quiz:
         data['breakdown'] = _build_variant_breakdown(row)
+        data['akira'] = _akira_card(row, role)
     elif quiz.is_reading_quiz:
         from portals.utils.quiz_reading import build_reading_sections_for_quiz
 

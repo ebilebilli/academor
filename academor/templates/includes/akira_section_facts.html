@@ -1,0 +1,18 @@
+{% load i18n %}
+<div class="akira-sec">
+  {% if show_label %}
+  <p class="akira-sec__label">{{ section.label }}{% if section.scaled %} <span>· {{ section.scaled }}{% if section.scale_max %}/{{ section.scale_max }}{% endif %}</span>{% endif %}</p>
+  {% endif %}
+  <ul class="akira-sec__domains">
+    {% for row in section.domains %}
+    <li class="akira-dom{% if row.name in section.weak_domains %} is-weak{% elif row.name in section.strong_domains %} is-strong{% endif %}">
+      <span class="akira-dom__name">{{ row.name }}</span>
+      <span class="akira-dom__bar" aria-hidden="true"><span style="width: {{ row.percent }}%"></span></span>
+      <span class="akira-dom__pct">{{ row.correct }}/{{ row.total }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+  {% if section.time_pressure %}
+  <p class="akira-sec__flag">{% trans "Most mistakes came near the end: time pressure, not knowledge." %}</p>
+  {% endif %}
+</div>

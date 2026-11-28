@@ -42,6 +42,7 @@ from .speaking_models import (
 from .ielts_mock_models import IeltsMockTestAttempt, MockTestAttempt, StudentMockAccess
 from .crm_models import Enrollment, Lead, LeadActivity, StudentCharge, StudentPayment
 from .notification_models import PortalNotification, QuizResultReview, OfferNotification, OfferNotificationDelivery
+from .akira_models import AkiraExplanation, AkiraMaterial, AkiraReport, AkiraUsage
 
 __all__ = [
     'Lead',
@@ -91,4 +92,8 @@ __all__ = [
     'QuizResultReview',
     'OfferNotification',
     'OfferNotificationDelivery',
+    'AkiraExplanation',
+    'AkiraMaterial',
+    'AkiraReport',
+    'AkiraUsage',
 ]

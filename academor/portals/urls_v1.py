@@ -3,6 +3,7 @@ from django.views.generic import RedirectView
 
 from portals.views.auth_views import PortalLoginView, PortalLogoutView, PortalSessionPingView
 from portals.views.profile_views import PortalProfileView
+from portals.views.akira_views import AkiraQuizResultView
 from portals.views.teacher_manage_views import (
     TeacherAttendanceCreateView,
     TeacherAttendanceRegisterGroupView,
@@ -256,6 +257,7 @@ urlpatterns = [
     path('student/scores/quiz-history/', StudentQuizHistoryLoadView.as_view(), name='student-quiz-history-load'),
     path('student/notifications/', StudentNotificationsView.as_view(), name='student-notifications'),
     path('student/scores/<int:result_pk>/', StudentScoreDetailView.as_view(), name='student-score-detail'),
+    path('akira/quiz-results/<int:result_pk>/', AkiraQuizResultView.as_view(), name='akira-quiz-result'),
     path('student/quizzes/', StudentQuizzesView.as_view(), name='student-quizzes'),
     path(
         'student/quizzes/category/<int:category_pk>/',
